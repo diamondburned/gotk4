@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer   = (*ShortcutManager)(nil)
 )
 
-func wrapShortcutManager(obj *externglib.Object) ShortcutManagerer {
+func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
 	return &ShortcutManager{
 		Object: obj,
 	}

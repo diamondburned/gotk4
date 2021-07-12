@@ -29,7 +29,7 @@ var (
 	_ gextras.Nativer      = (*HeaderBarAccessible)(nil)
 )
 
-func wrapHeaderBarAccessible(obj *externglib.Object) HeaderBarAccessibler {
+func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

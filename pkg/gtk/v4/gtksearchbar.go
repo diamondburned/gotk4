@@ -94,7 +94,7 @@ var (
 	_ gextras.Nativer = (*SearchBar)(nil)
 )
 
-func wrapSearchBar(obj *externglib.Object) SearchBarer {
+func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -130,7 +130,7 @@ func NewSearchBar() *SearchBar {
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchBar)
+	_searchBar = wrapSearchBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }
@@ -162,7 +162,7 @@ func (bar *SearchBar) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -178,7 +178,7 @@ func (bar *SearchBar) KeyCaptureWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

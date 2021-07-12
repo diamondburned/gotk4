@@ -67,7 +67,7 @@ var (
 	_ gextras.Nativer = (*FixedLayout)(nil)
 )
 
-func wrapFixedLayout(obj *externglib.Object) FixedLayouter {
+func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -89,7 +89,7 @@ func NewFixedLayout() *FixedLayout {
 
 	var _fixedLayout *FixedLayout // out
 
-	_fixedLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FixedLayout)
+	_fixedLayout = wrapFixedLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fixedLayout
 }
@@ -115,7 +115,7 @@ var (
 	_ gextras.Nativer    = (*FixedLayoutChild)(nil)
 )
 
-func wrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChilder {
+func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,

@@ -72,7 +72,7 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	var day uint            // out
 	var userData cgo.Handle // out
 
-	calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Calendar)
+	calendar = wrapCalendar(externglib.Take(unsafe.Pointer(arg0)))
 	year = uint(arg1)
 	month = uint(arg2)
 	day = uint(arg3)
@@ -160,7 +160,7 @@ var (
 	_ gextras.Nativer = (*Calendar)(nil)
 )
 
-func wrapCalendar(obj *externglib.Object) Calendarer {
+func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -190,7 +190,7 @@ func NewCalendar() *Calendar {
 
 	var _calendar *Calendar // out
 
-	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Calendar)
+	_calendar = wrapCalendar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _calendar
 }

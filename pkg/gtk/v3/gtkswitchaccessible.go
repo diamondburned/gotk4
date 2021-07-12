@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer   = (*SwitchAccessible)(nil)
 )
 
-func wrapSwitchAccessible(obj *externglib.Object) SwitchAccessibler {
+func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 	return &SwitchAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

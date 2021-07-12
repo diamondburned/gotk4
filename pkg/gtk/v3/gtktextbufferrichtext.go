@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,9 +37,13 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	var createTags bool     // out
 	var userData cgo.Handle // out
 
-	registerBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextBuffer)
-	contentBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TextBuffer)
+	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
+	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	iter = (*TextIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(iter, func(v *TextIter) {
+		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
+	})
+	defer C.free(unsafe.Pointer(arg3))
 	data = make([]byte, arg4)
 	copy(data, unsafe.Slice((*byte)(unsafe.Pointer(arg3)), arg4))
 	if arg5 != 0 {
@@ -74,10 +78,16 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	var end *TextIter              // out
 	var userData cgo.Handle        // out
 
-	registerBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextBuffer)
-	contentBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TextBuffer)
+	registerBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg0)))
+	contentBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(arg1)))
 	start = (*TextIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(start, func(v *TextIter) {
+		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
+	})
 	end = (*TextIter)(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(end, func(v *TextIter) {
+		C.gtk_text_iter_free((*C.GtkTextIter)(unsafe.Pointer(v)))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg5))
 
 	fn := v.(TextBufferSerializeFunc)

@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer   = (*DropTargetAsync)(nil)
 )
 
-func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsyncer {
+func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{
 		EventController: EventController{
 			Object: obj,
@@ -106,7 +106,7 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 
 	var _dropTargetAsync *DropTargetAsync // out
 
-	_dropTargetAsync = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropTargetAsync)
+	_dropTargetAsync = wrapDropTargetAsync(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTargetAsync
 }

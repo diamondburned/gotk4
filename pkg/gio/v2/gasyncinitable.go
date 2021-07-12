@@ -199,7 +199,7 @@ var (
 	_ gextras.Nativer = (*AsyncInitable)(nil)
 )
 
-func wrapAsyncInitable(obj *externglib.Object) AsyncInitabler {
+func wrapAsyncInitable(obj *externglib.Object) *AsyncInitable {
 	return &AsyncInitable{
 		Object: obj,
 	}
@@ -297,7 +297,7 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object,
 	var _object *externglib.Object // out
 	var _goerr error               // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _object, _goerr

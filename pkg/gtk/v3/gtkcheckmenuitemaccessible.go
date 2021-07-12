@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer          = (*CheckMenuItemAccessible)(nil)
 )
 
-func wrapCheckMenuItemAccessible(obj *externglib.Object) CheckMenuItemAccessibler {
+func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{
 		MenuItemAccessible: MenuItemAccessible{
 			ContainerAccessible: ContainerAccessible{

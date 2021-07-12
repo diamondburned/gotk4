@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer       = (*FileDescriptorBased)(nil)
 )
 
-func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBaseder {
+func wrapFileDescriptorBased(obj *externglib.Object) *FileDescriptorBased {
 	return &FileDescriptorBased{
 		Object: obj,
 	}

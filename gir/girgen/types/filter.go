@@ -277,12 +277,12 @@ func EqNamespace(nsp, girType string) (typ string, ok bool) {
 }
 
 type fileFilter struct {
-	match *regexp.Regexp
+	match string
 }
 
 // FileFilter filters based on the source position.
-func FileFilter(regex string) FilterMatcher {
-	return fileFilter{regexp.MustCompile(regex)}
+func FileFilter(contains string) FilterMatcher {
+	return fileFilter{contains}
 }
 
 func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
@@ -297,13 +297,13 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 	}
 
 	if info.Elements.SourcePosition != nil {
-		if ff.match.MatchString(info.Elements.SourcePosition.Filename) {
+		if strings.Contains(info.Elements.SourcePosition.Filename, ff.match) {
 			return true
 		}
 	}
 
 	if info.Elements.Doc != nil {
-		if ff.match.MatchString(info.Elements.Doc.Filename) {
+		if strings.Contains(info.Elements.Doc.Filename, ff.match) {
 			return true
 		}
 	}

@@ -123,7 +123,6 @@ func (rgba *RGBA) Parse(spec string) bool {
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 

@@ -65,7 +65,7 @@ var (
 	_ gextras.Nativer     = (*UnixSocketAddress)(nil)
 )
 
-func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddresser {
+func wrapUnixSocketAddress(obj *externglib.Object) *UnixSocketAddress {
 	return &UnixSocketAddress{
 		SocketAddress: SocketAddress{
 			Object: obj,
@@ -91,13 +91,12 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 	var _cret *C.GSocketAddress // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_socket_address_new(_arg1)
 
 	var _unixSocketAddress *UnixSocketAddress // out
 
-	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddress)
+	_unixSocketAddress = wrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
@@ -112,13 +111,15 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 	var _cret *C.GSocketAddress // in
 
 	_arg2 = C.gint(len(path))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	if len(path) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	}
 
 	_cret = C.g_unix_socket_address_new_abstract(_arg1, _arg2)
 
 	var _unixSocketAddress *UnixSocketAddress // out
 
-	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddress)
+	_unixSocketAddress = wrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }
@@ -161,14 +162,16 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixS
 	var _cret *C.GSocketAddress        // in
 
 	_arg2 = C.gint(len(path))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	if len(path) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&path[0]))
+	}
 	_arg3 = C.GUnixSocketAddressType(typ)
 
 	_cret = C.g_unix_socket_address_new_with_type(_arg1, _arg2, _arg3)
 
 	var _unixSocketAddress *UnixSocketAddress // out
 
-	_unixSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixSocketAddress)
+	_unixSocketAddress = wrapUnixSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixSocketAddress
 }

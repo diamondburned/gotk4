@@ -100,7 +100,7 @@ var (
 	_ gextras.Nativer = (*PadController)(nil)
 )
 
-func wrapPadController(obj *externglib.Object) PadControllerer {
+func wrapPadController(obj *externglib.Object) *PadController {
 	return &PadController{
 		EventController: EventController{
 			Object: obj,
@@ -137,7 +137,7 @@ func NewPadController(window Windower, group gio.ActionGrouper, pad gdk.Devicer)
 
 	var _padController *PadController // out
 
-	_padController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PadController)
+	_padController = wrapPadController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _padController
 }
@@ -163,9 +163,7 @@ func (controller *PadController) SetAction(typ PadActionType, index int, mode in
 	_arg2 = C.gint(index)
 	_arg3 = C.gint(mode)
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg5))
 
 	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -180,7 +178,9 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
 	_arg2 = C.gint(len(entries))
-	_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
+	if len(entries) > 0 {
+		_arg1 = (*C.GtkPadActionEntry)(unsafe.Pointer(&entries[0]))
+	}
 
 	C.gtk_pad_controller_set_action_entries(_arg0, _arg1, _arg2)
 }

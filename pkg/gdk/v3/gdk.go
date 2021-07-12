@@ -57,7 +57,7 @@ var (
 	_ gextras.Nativer = (*DeviceTool)(nil)
 )
 
-func wrapDeviceTool(obj *externglib.Object) DeviceTooler {
+func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,
 	}
@@ -165,7 +165,7 @@ var (
 	_ gextras.Nativer = (*DragContext)(nil)
 )
 
-func wrapDragContext(obj *externglib.Object) DragContexter {
+func wrapDragContext(obj *externglib.Object) *DragContext {
 	return &DragContext{
 		Object: obj,
 	}
@@ -205,7 +205,7 @@ func (context *DragContext) DestWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -221,7 +221,7 @@ func (context *DragContext) Device() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -241,7 +241,7 @@ func (context *DragContext) DragWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -289,7 +289,7 @@ func (context *DragContext) SourceWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }

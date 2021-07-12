@@ -109,7 +109,7 @@ var (
 	_ gextras.Nativer = (*CSSProvider)(nil)
 )
 
-func wrapCSSProvider(obj *externglib.Object) CSSProviderer {
+func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -132,7 +132,7 @@ func NewCSSProvider() *CSSProvider {
 
 	var _cssProvider *CSSProvider // out
 
-	_cssProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CSSProvider)
+	_cssProvider = wrapCSSProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }
@@ -147,7 +147,9 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg2 = C.gssize(len(data))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
+	}
 
 	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
 
@@ -186,7 +188,6 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
 
@@ -208,7 +209,6 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(cssProvider.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
@@ -245,7 +245,7 @@ func CssProviderGetDefault() *CSSProvider {
 
 	var _cssProvider *CSSProvider // out
 
-	_cssProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CSSProvider)
+	_cssProvider = wrapCSSProvider(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }
@@ -257,15 +257,13 @@ func CssProviderGetNamed(name string, variant string) *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
 
 	var _cssProvider *CSSProvider // out
 
-	_cssProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CSSProvider)
+	_cssProvider = wrapCSSProvider(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cssProvider
 }

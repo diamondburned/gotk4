@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer  = (*EntryAccessible)(nil)
 )
 
-func wrapEntryAccessible(obj *externglib.Object) EntryAccessibler {
+func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 	return &EntryAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

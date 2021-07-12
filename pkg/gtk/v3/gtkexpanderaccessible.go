@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer     = (*ExpanderAccessible)(nil)
 )
 
-func wrapExpanderAccessible(obj *externglib.Object) ExpanderAccessibler {
+func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

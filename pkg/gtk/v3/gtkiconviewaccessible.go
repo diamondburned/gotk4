@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer     = (*IconViewAccessible)(nil)
 )
 
-func wrapIconViewAccessible(obj *externglib.Object) IconViewAccessibler {
+func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 	return &IconViewAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

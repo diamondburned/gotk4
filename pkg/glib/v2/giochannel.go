@@ -178,9 +178,7 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _cerr *C.GError     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mode)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_io_channel_new_file(_arg1, _arg2, &_cerr)
 
@@ -412,7 +410,6 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesRead))
 
@@ -472,10 +469,9 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
 
-	_strReturn = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_strReturn, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_strReturn = make([]byte, _arg2)
+	copy(_strReturn, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 	_ioStatus = IOStatus(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -668,7 +664,6 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(encoding)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
 
@@ -712,7 +707,6 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(lineTerm)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	C.g_io_channel_set_line_term(_arg0, _arg1, _arg2)
@@ -783,7 +777,6 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buf)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gsize(count)
 	_arg3 = (*C.gsize)(unsafe.Pointer(bytesWritten))
 
@@ -811,7 +804,9 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 	var _cerr *C.GError   // in
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
+	if len(buf) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buf[0]))
+	}
 	_arg2 = C.gssize(count)
 
 	_cret = C.g_io_channel_write_chars(_arg0, _arg1, _arg2, &_arg3, &_cerr)

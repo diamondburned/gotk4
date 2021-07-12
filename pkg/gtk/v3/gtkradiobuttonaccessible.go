@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer        = (*RadioButtonAccessible)(nil)
 )
 
-func wrapRadioButtonAccessible(obj *externglib.Object) RadioButtonAccessibler {
+func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 	return &RadioButtonAccessible{
 		ToggleButtonAccessible: ToggleButtonAccessible{
 			ButtonAccessible: ButtonAccessible{

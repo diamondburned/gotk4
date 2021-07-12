@@ -136,7 +136,7 @@ var (
 	_ gextras.Nativer = (*Image)(nil)
 )
 
-func wrapImage(obj *externglib.Object) Imager {
+func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -169,7 +169,7 @@ func NewImage() *Image {
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -192,13 +192,12 @@ func NewImageFromFile(filename string) *Image {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_file(_arg1)
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -219,7 +218,7 @@ func NewImageFromGIcon(icon gio.Iconer) *Image {
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -235,13 +234,12 @@ func NewImageFromIconName(iconName string) *Image {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_icon_name(_arg1)
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -264,7 +262,7 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -291,7 +289,7 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *Image {
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -315,13 +313,12 @@ func NewImageFromResource(resourcePath string) *Image {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_image_new_from_resource(_arg1)
 
 	var _image *Image // out
 
-	_image = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Image)
+	_image = wrapImage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -350,7 +347,12 @@ func (image *Image) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -406,7 +408,12 @@ func (image *Image) Paintable() *gdk.Paintable {
 
 	var _paintable *gdk.Paintable // out
 
-	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_paintable = &gdk.Paintable{
+			Object: obj,
+		}
+	}
 
 	return _paintable
 }
@@ -456,7 +463,6 @@ func (image *Image) SetFromFile(filename string) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
@@ -483,7 +489,6 @@ func (image *Image) SetFromIconName(iconName string) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
 }
@@ -526,7 +531,6 @@ func (image *Image) SetFromResource(resourcePath string) {
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)
 }

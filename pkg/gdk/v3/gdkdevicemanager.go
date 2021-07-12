@@ -143,7 +143,7 @@ var (
 	_ gextras.Nativer = (*DeviceManager)(nil)
 )
 
-func wrapDeviceManager(obj *externglib.Object) DeviceManagerer {
+func wrapDeviceManager(obj *externglib.Object) *DeviceManager {
 	return &DeviceManager{
 		Object: obj,
 	}
@@ -174,7 +174,7 @@ func (deviceManager *DeviceManager) ClientPointer() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -190,7 +190,7 @@ func (deviceManager *DeviceManager) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }

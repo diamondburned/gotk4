@@ -160,7 +160,7 @@ var (
 	_ gextras.Nativer = (*MediaStream)(nil)
 )
 
-func wrapMediaStream(obj *externglib.Object) MediaStreamer {
+func wrapMediaStream(obj *externglib.Object) *MediaStream {
 	return &MediaStream{
 		Object: obj,
 		Paintable: gdk.Paintable{

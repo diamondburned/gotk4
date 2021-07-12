@@ -86,7 +86,7 @@ var (
 	_ gextras.Nativer = (*X11Surface)(nil)
 )
 
-func wrapX11Surface(obj *externglib.Object) X11Surfacer {
+func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{
 		Surface: gdk.Surface{
 			Object: obj,
@@ -127,7 +127,12 @@ func (surface *X11Surface) Group() *gdk.Surface {
 
 	var _ret *gdk.Surface // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Surface)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_ret = &gdk.Surface{
+			Object: obj,
+		}
+	}
 
 	return _ret
 }
@@ -231,7 +236,6 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
 }
@@ -280,9 +284,7 @@ func (surface *X11Surface) SetUTF8Property(name string, value string) {
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_surface_set_utf8_property(_arg0, _arg1, _arg2)
 }

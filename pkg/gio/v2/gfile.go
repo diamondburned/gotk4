@@ -1339,7 +1339,7 @@ var (
 	_ gextras.Nativer = (*File)(nil)
 )
 
-func wrapFile(obj *externglib.Object) Filer {
+func wrapFile(obj *externglib.Object) *File {
 	return &File{
 		Object: obj,
 	}
@@ -1382,7 +1382,7 @@ func (file *File) AppendTo(flags FileCreateFlags, cancellable Cancellabler) (*Fi
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -1429,7 +1429,7 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -1644,7 +1644,7 @@ func (file *File) Create(flags FileCreateFlags, cancellable Cancellabler) (*File
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -1692,7 +1692,7 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -1734,7 +1734,7 @@ func (file *File) CreateReadwrite(flags FileCreateFlags, cancellable Cancellable
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -1782,7 +1782,7 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -1882,7 +1882,7 @@ func (file *File) Dup() *File {
 
 	var _ret *File // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2008,7 +2008,6 @@ func (file *File) EnumerateChildren(attributes string, flags FileQueryInfoFlags,
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -2017,7 +2016,7 @@ func (file *File) EnumerateChildren(attributes string, flags FileQueryInfoFlags,
 	var _fileEnumerator *FileEnumerator // out
 	var _goerr error                    // out
 
-	_fileEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileEnumerator)
+	_fileEnumerator = wrapFileEnumerator(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileEnumerator, _goerr
@@ -2043,7 +2042,6 @@ func (file *File) EnumerateChildrenAsync(attributes string, flags FileQueryInfoF
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -2069,7 +2067,7 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	var _fileEnumerator *FileEnumerator // out
 	var _goerr error                    // out
 
-	_fileEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileEnumerator)
+	_fileEnumerator = wrapFileEnumerator(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileEnumerator, _goerr
@@ -2123,7 +2121,7 @@ func (file *File) FindEnclosingMount(cancellable Cancellabler) (*Mount, error) {
 	var _mount *Mount // out
 	var _goerr error  // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -2168,7 +2166,7 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	var _mount *Mount // out
 	var _goerr error  // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -2218,13 +2216,12 @@ func (file *File) Child(name string) *File {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child(_arg0, _arg1)
 
 	var _ret *File // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2244,14 +2241,13 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -2271,7 +2267,7 @@ func (file *File) Parent() *File {
 
 	var _ret *File // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2456,7 +2452,6 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
 
@@ -2563,10 +2558,9 @@ func (file *File) LoadContents(cancellable Cancellabler) ([]byte, string, error)
 	var _etagOut string // out
 	var _goerr error    // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -2622,10 +2616,9 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	var _etagOut string // out
 	var _goerr error    // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -2654,10 +2647,9 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	var _etagOut string // out
 	var _goerr error    // out
 
-	_contents = unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_contents, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
 	_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 	defer C.free(unsafe.Pointer(_arg4))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -2776,7 +2768,6 @@ func (file *File) MakeSymbolicLink(symlinkValue string, cancellable Cancellabler
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
@@ -2839,7 +2830,7 @@ func (file *File) Monitor(flags FileMonitorFlags, cancellable Cancellabler) (*Fi
 	var _fileMonitor *FileMonitor // out
 	var _goerr error              // out
 
-	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileMonitor)
+	_fileMonitor = wrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -2873,7 +2864,7 @@ func (file *File) MonitorDirectory(flags FileMonitorFlags, cancellable Cancellab
 	var _fileMonitor *FileMonitor // out
 	var _goerr error              // out
 
-	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileMonitor)
+	_fileMonitor = wrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -2908,7 +2899,7 @@ func (file *File) MonitorFile(flags FileMonitorFlags, cancellable Cancellabler) 
 	var _fileMonitor *FileMonitor // out
 	var _goerr error              // out
 
-	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileMonitor)
+	_fileMonitor = wrapFileMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -3008,7 +2999,7 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -3099,7 +3090,7 @@ func (file *File) OpenReadwrite(cancellable Cancellabler) (*FileIOStream, error)
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -3144,7 +3135,7 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -3235,7 +3226,7 @@ func (file *File) QueryDefaultHandler(cancellable Cancellabler) (*AppInfo, error
 	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -3274,7 +3265,7 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -3377,7 +3368,6 @@ func (file *File) QueryFilesystemInfo(attributes string, cancellable Cancellable
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
@@ -3385,7 +3375,7 @@ func (file *File) QueryFilesystemInfo(attributes string, cancellable Cancellable
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -3410,7 +3400,6 @@ func (file *File) QueryFilesystemInfoAsync(attributes string, ioPriority int, ca
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -3435,7 +3424,7 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -3477,7 +3466,6 @@ func (file *File) QueryInfo(attributes string, flags FileQueryInfoFlags, cancell
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -3486,7 +3474,7 @@ func (file *File) QueryInfo(attributes string, flags FileQueryInfoFlags, cancell
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -3512,7 +3500,6 @@ func (file *File) QueryInfoAsync(attributes string, flags FileQueryInfoFlags, io
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -3538,7 +3525,7 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -3634,7 +3621,7 @@ func (file *File) Read(cancellable Cancellabler) (*FileInputStream, error) {
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
 
-	_fileInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInputStream)
+	_fileInputStream = wrapFileInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInputStream, _goerr
@@ -3679,7 +3666,7 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
 
-	_fileInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInputStream)
+	_fileInputStream = wrapFileInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInputStream, _goerr
@@ -3733,7 +3720,6 @@ func (file *File) Replace(etag string, makeBackup bool, flags FileCreateFlags, c
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -3745,7 +3731,7 @@ func (file *File) Replace(etag string, makeBackup bool, flags FileCreateFlags, c
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -3771,7 +3757,6 @@ func (file *File) ReplaceAsync(etag string, makeBackup bool, flags FileCreateFla
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -3814,9 +3799,10 @@ func (file *File) ReplaceContents(contents []byte, etag string, makeBackup bool,
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg2 = C.gsize(len(contents))
-	_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	if len(contents) > 0 {
+		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg3))
 	if makeBackup {
 		_arg4 = C.TRUE
 	}
@@ -3867,9 +3853,10 @@ func (file *File) ReplaceContentsAsync(contents []byte, etag string, makeBackup 
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg2 = C.gsize(len(contents))
-	_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	if len(contents) > 0 {
+		_arg1 = (*C.char)(unsafe.Pointer(&contents[0]))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg3))
 	if makeBackup {
 		_arg4 = C.TRUE
 	}
@@ -3921,7 +3908,7 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileOutputStream)
+	_fileOutputStream = wrapFileOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
@@ -3948,7 +3935,6 @@ func (file *File) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreat
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -3960,7 +3946,7 @@ func (file *File) ReplaceReadwrite(etag string, makeBackup bool, flags FileCreat
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -3986,7 +3972,6 @@ func (file *File) ReplaceReadwriteAsync(etag string, makeBackup bool, flags File
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if makeBackup {
 		_arg2 = C.TRUE
 	}
@@ -4015,7 +4000,7 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIOStream)
+	_fileIOStream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileIOStream, _goerr
@@ -4031,13 +4016,12 @@ func (file *File) ResolveRelativePath(relativePath string) *File {
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
 
 	var _ret *File // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -4062,7 +4046,6 @@ func (file *File) SetAttribute(attribute string, typ FileAttributeType, valueP c
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GFileAttributeType(typ)
 	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
 	_arg4 = C.GFileQueryInfoFlags(flags)
@@ -4094,9 +4077,7 @@ func (file *File) SetAttributeByteString(attribute string, value string, flags F
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -4125,7 +4106,6 @@ func (file *File) SetAttributeInt32(attribute string, value int32, flags FileQue
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint32(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -4155,7 +4135,6 @@ func (file *File) SetAttributeInt64(attribute string, value int64, flags FileQue
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -4185,9 +4164,7 @@ func (file *File) SetAttributeString(attribute string, value string, flags FileQ
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -4216,7 +4193,6 @@ func (file *File) SetAttributeUint32(attribute string, value uint32, flags FileQ
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint32(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -4246,7 +4222,6 @@ func (file *File) SetAttributeUint64(attribute string, value uint64, flags FileQ
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
 	_arg3 = C.GFileQueryInfoFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -4303,7 +4278,7 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _info *FileInfo // out
 	var _goerr error    // out
 
-	_info = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(*FileInfo)
+	_info = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _info, _goerr
@@ -4365,7 +4340,6 @@ func (file *File) SetDisplayName(displayName string, cancellable Cancellabler) (
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
@@ -4373,7 +4347,7 @@ func (file *File) SetDisplayName(displayName string, cancellable Cancellabler) (
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -4396,7 +4370,6 @@ func (file *File) SetDisplayNameAsync(displayName string, ioPriority int, cancel
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -4421,7 +4394,7 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_ret = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -4725,13 +4698,12 @@ func FileNewForCommandlineArg(arg string) *File {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_commandline_arg(_arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -4753,15 +4725,13 @@ func FileNewForCommandlineArgAndCwd(arg string, cwd string) *File {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(cwd)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_file_new_for_commandline_arg_and_cwd(_arg1, _arg2)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -4774,13 +4744,12 @@ func FileNewForPath(path string) *File {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_path(_arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -4793,13 +4762,12 @@ func FileNewForURI(uri string) *File {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_for_uri(_arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -4821,7 +4789,6 @@ func FileNewTmp(tmpl string) (*FileIOStream, *File, error) {
 	var _cerr *C.GError        // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_new_tmp(_arg1, &_arg2, &_cerr)
 
@@ -4829,8 +4796,8 @@ func FileNewTmp(tmpl string) (*FileIOStream, *File, error) {
 	var _file *File             // out
 	var _goerr error            // out
 
-	_iostream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(*FileIOStream)
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_iostream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _iostream, _file, _goerr
@@ -4845,13 +4812,12 @@ func FileParseName(parseName string) *File {
 	var _cret *C.GFile // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_parse_name(_arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }

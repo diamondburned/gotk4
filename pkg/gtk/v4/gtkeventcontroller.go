@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer   = (*EventController)(nil)
 )
 
-func wrapEventController(obj *externglib.Object) EventControllerer {
+func wrapEventController(obj *externglib.Object) *EventController {
 	return &EventController{
 		Object: obj,
 	}
@@ -103,7 +103,12 @@ func (controller *EventController) CurrentEvent() *gdk.Event {
 
 	var _event *gdk.Event // out
 
-	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Event)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_event = &gdk.Event{
+			Object: obj,
+		}
+	}
 
 	return _event
 }
@@ -120,7 +125,12 @@ func (controller *EventController) CurrentEventDevice() *gdk.Device {
 
 	var _device *gdk.Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Device)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_device = &gdk.Device{
+			Object: obj,
+		}
+	}
 
 	return _device
 }
@@ -219,7 +229,7 @@ func (controller *EventController) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -240,7 +250,6 @@ func (controller *EventController) SetName(name string) {
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_event_controller_set_name(_arg0, _arg1)
 }

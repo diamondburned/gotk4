@@ -223,7 +223,7 @@ var (
 	_ gextras.Nativer = (*Drive)(nil)
 )
 
-func wrapDrive(obj *externglib.Object) Driver {
+func wrapDrive(obj *externglib.Object) *Drive {
 	return &Drive{
 		Object: obj,
 	}
@@ -431,7 +431,6 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -449,7 +448,7 @@ func (drive *Drive) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -463,7 +462,6 @@ func (drive *Drive) Identifier(kind string) string {
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 
@@ -535,7 +533,7 @@ func (drive *Drive) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }

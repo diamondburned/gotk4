@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer        = (*DropControllerMotion)(nil)
 )
 
-func wrapDropControllerMotion(obj *externglib.Object) DropControllerMotioner {
+func wrapDropControllerMotion(obj *externglib.Object) *DropControllerMotion {
 	return &DropControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -75,7 +75,7 @@ func NewDropControllerMotion() *DropControllerMotion {
 
 	var _dropControllerMotion *DropControllerMotion // out
 
-	_dropControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropControllerMotion)
+	_dropControllerMotion = wrapDropControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropControllerMotion
 }
@@ -111,7 +111,12 @@ func (self *DropControllerMotion) Drop() *gdk.Drop {
 
 	var _drop *gdk.Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drop)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_drop = &gdk.Drop{
+			Object: obj,
+		}
+	}
 
 	return _drop
 }

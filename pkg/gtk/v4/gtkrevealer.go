@@ -111,7 +111,7 @@ var (
 	_ gextras.Nativer = (*Revealer)(nil)
 )
 
-func wrapRevealer(obj *externglib.Object) Revealerer {
+func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -144,7 +144,7 @@ func NewRevealer() *Revealer {
 
 	var _revealer *Revealer // out
 
-	_revealer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Revealer)
+	_revealer = wrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }
@@ -160,7 +160,7 @@ func (revealer *Revealer) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

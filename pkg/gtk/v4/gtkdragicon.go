@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer = (*DragIcon)(nil)
 )
 
-func wrapDragIcon(obj *externglib.Object) DragIconer {
+func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	return &DragIcon{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -112,7 +112,7 @@ func (self *DragIcon) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -147,7 +147,7 @@ func DragIconCreateWidgetForValue(value *externglib.Value) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -165,7 +165,7 @@ func DragIconGetForDrag(drag gdk.Drager) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

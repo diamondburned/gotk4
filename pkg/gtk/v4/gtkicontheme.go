@@ -84,7 +84,7 @@ var (
 	_ gextras.Nativer = (*IconPaintable)(nil)
 )
 
-func wrapIconPaintable(obj *externglib.Object) IconPaintabler {
+func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
 	return &IconPaintable{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -117,7 +117,7 @@ func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable
 
 	var _iconPaintable *IconPaintable // out
 
-	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+	_iconPaintable = wrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconPaintable
 }
@@ -135,7 +135,12 @@ func (self *IconPaintable) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -260,7 +265,7 @@ var (
 	_ gextras.Nativer = (*IconTheme)(nil)
 )
 
-func wrapIconTheme(obj *externglib.Object) IconThemer {
+func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{
 		Object: obj,
 	}
@@ -284,7 +289,7 @@ func NewIconTheme() *IconTheme {
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconTheme)
+	_iconTheme = wrapIconTheme(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconTheme
 }
@@ -302,7 +307,6 @@ func (self *IconTheme) AddResourcePath(path string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
 }
@@ -316,7 +320,6 @@ func (self *IconTheme) AddSearchPath(path string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
 }
@@ -332,7 +335,12 @@ func (self *IconTheme) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Display)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
 
 	return _display
 }
@@ -359,7 +367,6 @@ func (self *IconTheme) IconNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -378,7 +385,6 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
@@ -425,7 +431,6 @@ func (self *IconTheme) ResourcePath() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -456,7 +461,6 @@ func (self *IconTheme) SearchPath() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -511,7 +515,6 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 
@@ -548,7 +551,7 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconer, size int, scale int, direc
 
 	var _iconPaintable *IconPaintable // out
 
-	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+	_iconPaintable = wrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconPaintable
 }
@@ -581,14 +584,11 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int,
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(fallbacks)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(fallbacks))
 		for i := range fallbacks {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(fallbacks[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg3 = C.int(size)
@@ -600,7 +600,7 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int,
 
 	var _iconPaintable *IconPaintable // out
 
-	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+	_iconPaintable = wrapIconPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconPaintable
 }
@@ -625,12 +625,10 @@ func (self *IconTheme) SetSearchPath(path []string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(path)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(path))
 		for i := range path {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(path[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -648,7 +646,6 @@ func (self *IconTheme) SetThemeName(themeName string) {
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(themeName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
 }
@@ -671,7 +668,7 @@ func IconThemeGetForDisplay(display gdk.Displayer) *IconTheme {
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconTheme)
+	_iconTheme = wrapIconTheme(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconTheme
 }

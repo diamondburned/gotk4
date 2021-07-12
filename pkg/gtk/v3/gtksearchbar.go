@@ -72,7 +72,7 @@ var (
 	_ gextras.Nativer = (*SearchBar)(nil)
 )
 
-func wrapSearchBar(obj *externglib.Object) SearchBarer {
+func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
 		Bin: Bin{
 			Container: Container{
@@ -107,7 +107,7 @@ func NewSearchBar() *SearchBar {
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchBar)
+	_searchBar = wrapSearchBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }

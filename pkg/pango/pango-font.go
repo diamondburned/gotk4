@@ -220,7 +220,7 @@ var (
 	_ gextras.Nativer = (*Font)(nil)
 )
 
-func wrapFont(obj *externglib.Object) Fonter {
+func wrapFont(obj *externglib.Object) *Font {
 	return &Font{
 		Object: obj,
 	}
@@ -289,7 +289,7 @@ func (font *Font) Coverage(language *Language) *Coverage {
 
 	var _coverage *Coverage // out
 
-	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+	_coverage = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }
@@ -305,7 +305,7 @@ func (font *Font) Face() *FontFace {
 
 	var _fontFace *FontFace // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFace)
+	_fontFace = wrapFontFace(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontFace
 }
@@ -330,7 +330,7 @@ func (font *Font) FontMap() *FontMap {
 
 	var _fontMap *FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontMap)
+	_fontMap = wrapFontMap(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontMap
 }
@@ -393,11 +393,11 @@ func FontDescriptionsFree(descs []*FontDescription) {
 
 	_arg2 = C.int(len(descs))
 	_arg1 = (**C.PangoFontDescription)(C.malloc(C.ulong(len(descs)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(descs))
+		out := unsafe.Slice((**C.PangoFontDescription)(_arg1), len(descs))
 		for i := range descs {
 			out[i] = (*C.PangoFontDescription)(unsafe.Pointer(descs[i]))
-			runtime.SetFinalizer(descs[i], nil)
 		}
 	}
 
@@ -461,7 +461,7 @@ var (
 	_ gextras.Nativer = (*FontFace)(nil)
 )
 
-func wrapFontFace(obj *externglib.Object) FontFacer {
+func wrapFontFace(obj *externglib.Object) *FontFace {
 	return &FontFace{
 		Object: obj,
 	}
@@ -523,7 +523,7 @@ func (face *FontFace) Family() *FontFamily {
 
 	var _fontFamily *FontFamily // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFamily)
+	_fontFamily = wrapFontFamily(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontFamily
 }
@@ -565,10 +565,9 @@ func (face *FontFace) ListSizes() []int {
 
 	var _sizes []int
 
-	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_sizes, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_sizes = make([]int, _arg2)
+	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _sizes
 }
@@ -640,7 +639,7 @@ var (
 	_ gextras.Nativer = (*FontFamily)(nil)
 )
 
-func wrapFontFamily(obj *externglib.Object) FontFamilier {
+func wrapFontFamily(obj *externglib.Object) *FontFamily {
 	return &FontFamily{
 		Object: obj,
 	}
@@ -660,13 +659,12 @@ func (family *FontFamily) Face(name string) *FontFace {
 
 	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(family.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
 
 	var _fontFace *FontFace // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFace)
+	_fontFace = wrapFontFace(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontFace
 }
@@ -759,7 +757,7 @@ func (family *FontFamily) ListFaces() []*FontFace {
 		src := unsafe.Slice(_arg1, _arg2)
 		_faces = make([]*FontFace, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(*FontFace)
+			_faces[i] = wrapFontFace(externglib.Take(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -1182,7 +1180,6 @@ func (desc *FontDescription) SetFamily(family string) {
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family(_arg0, _arg1)
 }
@@ -1201,7 +1198,6 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_family_static(_arg0, _arg1)
 }
@@ -1306,7 +1302,6 @@ func (desc *FontDescription) SetVariations(variations string) {
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations(_arg0, _arg1)
 }
@@ -1324,7 +1319,6 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 
 	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variations)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.pango_font_description_set_variations_static(_arg0, _arg1)
 }
@@ -1445,7 +1439,6 @@ func FontDescriptionFromString(str string) *FontDescription {
 	var _cret *C.PangoFontDescription // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_description_from_string(_arg1)
 

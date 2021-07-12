@@ -124,7 +124,7 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 
 	var _drawingContext *DrawingContext // out
 
-	_drawingContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingContext)
+	_drawingContext = wrapDrawingContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingContext
 }

@@ -118,7 +118,7 @@ var (
 	_ gextras.Nativer = (*GLContext)(nil)
 )
 
-func wrapGLContext(obj *externglib.Object) GLContexter {
+func wrapGLContext(obj *externglib.Object) *GLContext {
 	return &GLContext{
 		Object: obj,
 	}
@@ -160,7 +160,7 @@ func (context *GLContext) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -215,7 +215,7 @@ func (context *GLContext) SharedContext() *GLContext {
 
 	var _glContext *GLContext // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GLContext)
+	_glContext = wrapGLContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glContext
 }
@@ -270,7 +270,7 @@ func (context *GLContext) Window() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -429,7 +429,7 @@ func GLContextGetCurrent() *GLContext {
 
 	var _glContext *GLContext // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GLContext)
+	_glContext = wrapGLContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glContext
 }

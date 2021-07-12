@@ -153,7 +153,7 @@ var (
 	_ gextras.Nativer = (*Popover)(nil)
 )
 
-func wrapPopover(obj *externglib.Object) Popoverer {
+func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -205,7 +205,7 @@ func NewPopover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
+	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -266,7 +266,7 @@ func (popover *Popover) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

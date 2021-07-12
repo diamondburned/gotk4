@@ -90,7 +90,7 @@ var (
 	_ gextras.Nativer       = (*ContentDeserializer)(nil)
 )
 
-func wrapContentDeserializer(obj *externglib.Object) ContentDeserializerer {
+func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	return &ContentDeserializer{
 		Object: obj,
 		AsyncResult: gio.AsyncResult{
@@ -119,7 +119,12 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 
 	var _cancellable *gio.Cancellable // out
 
-	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Cancellable)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_cancellable = &gio.Cancellable{
+			Object: obj,
+		}
+	}
 
 	return _cancellable
 }
@@ -153,7 +158,12 @@ func (deserializer *ContentDeserializer) InputStream() *gio.InputStream {
 
 	var _inputStream *gio.InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_inputStream = &gio.InputStream{
+			Object: obj,
+		}
+	}
 
 	return _inputStream
 }

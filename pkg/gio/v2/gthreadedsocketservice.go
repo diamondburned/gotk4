@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer        = (*ThreadedSocketService)(nil)
 )
 
-func wrapThreadedSocketService(obj *externglib.Object) ThreadedSocketServicer {
+func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{
 		SocketService: SocketService{
 			SocketListener: SocketListener{
@@ -94,7 +94,7 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 
 	var _threadedSocketService *ThreadedSocketService // out
 
-	_threadedSocketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ThreadedSocketService)
+	_threadedSocketService = wrapThreadedSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
 }

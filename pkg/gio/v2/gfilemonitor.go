@@ -74,7 +74,7 @@ var (
 	_ gextras.Nativer = (*FileMonitor)(nil)
 )
 
-func wrapFileMonitor(obj *externglib.Object) FileMonitorer {
+func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	return &FileMonitor{
 		Object: obj,
 	}

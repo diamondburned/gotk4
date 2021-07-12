@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -52,7 +51,6 @@ func KeyvalFromName(keyvalName string) uint {
 	var _cret C.guint  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(keyvalName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_keyval_from_name(_arg1)
 
@@ -228,7 +226,7 @@ var (
 	_ gextras.Nativer = (*Keymap)(nil)
 )
 
-func wrapKeymap(obj *externglib.Object) Keymaper {
+func wrapKeymap(obj *externglib.Object) *Keymap {
 	return &Keymap{
 		Object: obj,
 	}
@@ -296,14 +294,12 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	var _keyvals []uint
 	var _ok bool // out
 
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
-	runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_keys = make([]KeymapKey, _arg4)
+	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+	defer C.free(unsafe.Pointer(_arg3))
+	_keyvals = make([]uint, _arg4)
+	copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -335,10 +331,9 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _keys []KeymapKey
 	var _ok bool // out
 
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_keys = make([]KeymapKey, _arg3)
+	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -535,7 +530,7 @@ func KeymapGetDefault() *Keymap {
 
 	var _keymap *Keymap // out
 
-	_keymap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Keymap)
+	_keymap = wrapKeymap(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _keymap
 }
@@ -551,7 +546,7 @@ func KeymapGetForDisplay(display Displayer) *Keymap {
 
 	var _keymap *Keymap // out
 
-	_keymap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Keymap)
+	_keymap = wrapKeymap(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _keymap
 }

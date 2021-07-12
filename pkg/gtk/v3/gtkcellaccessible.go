@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer = (*CellAccessible)(nil)
 )
 
-func wrapCellAccessible(obj *externglib.Object) CellAccessibler {
+func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 	return &CellAccessible{
 		Accessible: Accessible{
 			ObjectClass: atk.ObjectClass{

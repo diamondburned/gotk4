@@ -224,7 +224,7 @@ var (
 	_ gextras.Nativer = (*CellRenderer)(nil)
 )
 
-func wrapCellRenderer(obj *externglib.Object) CellRendererer {
+func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 	return &CellRenderer{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -255,7 +255,6 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgeter, path stri
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
 	_arg6 = C.GtkCellRendererState(flags)
@@ -716,7 +715,6 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgeter, path 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
 	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
 	_arg6 = C.GtkCellRendererState(flags)
@@ -725,7 +723,7 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgeter, path 
 
 	var _cellEditable *CellEditable // out
 
-	_cellEditable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellEditable)
+	_cellEditable = wrapCellEditable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellEditable
 }

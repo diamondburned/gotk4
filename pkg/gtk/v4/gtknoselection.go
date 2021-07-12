@@ -46,7 +46,7 @@ var (
 	_ gextras.Nativer = (*NoSelection)(nil)
 )
 
-func wrapNoSelection(obj *externglib.Object) NoSelectioner {
+func wrapNoSelection(obj *externglib.Object) *NoSelection {
 	return &NoSelection{
 		Object: obj,
 		SelectionModel: SelectionModel{
@@ -74,7 +74,7 @@ func NewNoSelection(model gio.ListModeler) *NoSelection {
 
 	var _noSelection *NoSelection // out
 
-	_noSelection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoSelection)
+	_noSelection = wrapNoSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noSelection
 }
@@ -90,7 +90,12 @@ func (self *NoSelection) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

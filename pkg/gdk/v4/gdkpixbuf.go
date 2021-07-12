@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,7 +42,15 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -60,7 +69,15 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }

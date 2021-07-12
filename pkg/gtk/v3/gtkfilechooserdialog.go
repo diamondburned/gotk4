@@ -182,7 +182,7 @@ var (
 	_ gextras.Nativer     = (*FileChooserDialog)(nil)
 )
 
-func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialoger {
+func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{
 		Dialog: Dialog{
 			Window: Window{

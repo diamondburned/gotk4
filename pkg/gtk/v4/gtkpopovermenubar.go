@@ -68,7 +68,7 @@ var (
 	_ gextras.Nativer  = (*PopoverMenuBar)(nil)
 )
 
-func wrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBarer {
+func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 	return &PopoverMenuBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -104,7 +104,7 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeler) *PopoverMenuBar {
 
 	var _popoverMenuBar *PopoverMenuBar // out
 
-	_popoverMenuBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenuBar)
+	_popoverMenuBar = wrapPopoverMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenuBar
 }
@@ -122,7 +122,6 @@ func (bar *PopoverMenuBar) AddChild(child Widgeter, id string) bool {
 	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_popover_menu_bar_add_child(_arg0, _arg1, _arg2)
 
@@ -146,7 +145,12 @@ func (bar *PopoverMenuBar) MenuModel() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }

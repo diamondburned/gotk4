@@ -83,7 +83,7 @@ var (
 	_ gextras.Nativer     = (*MenuAttributeIter)(nil)
 )
 
-func wrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIterer {
+func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 	return &MenuAttributeIter{
 		Object: obj,
 	}
@@ -242,7 +242,7 @@ var (
 	_ gextras.Nativer = (*MenuLinkIter)(nil)
 )
 
-func wrapMenuLinkIter(obj *externglib.Object) MenuLinkIterer {
+func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 	return &MenuLinkIter{
 		Object: obj,
 	}
@@ -300,7 +300,7 @@ func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
 	var _ok bool          // out
 
 	_outLink = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	_value = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))).(*MenuModel)
+	_value = wrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -321,7 +321,7 @@ func (iter *MenuLinkIter) Value() *MenuModel {
 
 	var _menuModel *MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MenuModel)
+	_menuModel = wrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuModel
 }
@@ -538,7 +538,7 @@ var (
 	_ gextras.Nativer = (*MenuModel)(nil)
 )
 
-func wrapMenuModel(obj *externglib.Object) MenuModeler {
+func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	return &MenuModel{
 		Object: obj,
 	}
@@ -571,7 +571,6 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GVariantType)(unsafe.Pointer(expectedType))
 
 	_cret = C.g_menu_model_get_item_attribute_value(_arg0, _arg1, _arg2, _arg3)
@@ -601,13 +600,12 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) *MenuModel {
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	_arg1 = C.gint(itemIndex)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_menu_model_get_item_link(_arg0, _arg1, _arg2)
 
 	var _menuModel *MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MenuModel)
+	_menuModel = wrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuModel
 }
@@ -694,7 +692,7 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) *MenuAttributeIter 
 
 	var _menuAttributeIter *MenuAttributeIter // out
 
-	_menuAttributeIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MenuAttributeIter)
+	_menuAttributeIter = wrapMenuAttributeIter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuAttributeIter
 }
@@ -715,7 +713,7 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) *MenuLinkIter {
 
 	var _menuLinkIter *MenuLinkIter // out
 
-	_menuLinkIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MenuLinkIter)
+	_menuLinkIter = wrapMenuLinkIter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuLinkIter
 }

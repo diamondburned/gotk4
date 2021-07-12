@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer         = (*SignalListItemFactory)(nil)
 )
 
-func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactorier {
+func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -100,7 +100,7 @@ func NewSignalListItemFactory() *SignalListItemFactory {
 
 	var _signalListItemFactory *SignalListItemFactory // out
 
-	_signalListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalListItemFactory)
+	_signalListItemFactory = wrapSignalListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalListItemFactory
 }

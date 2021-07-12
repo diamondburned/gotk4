@@ -41,7 +41,7 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 	var item *externglib.Object // out
 	var userData cgo.Handle     // out
 
-	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
+	item = externglib.Take(unsafe.Pointer(arg0))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FlowBoxCreateWidgetFunc)
@@ -68,7 +68,7 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.g
 	var child *FlowBoxChild // out
 	var userData cgo.Handle // out
 
-	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
+	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FlowBoxFilterFunc)
@@ -97,8 +97,8 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 	var child *FlowBoxChild // out
 	var userData cgo.Handle // out
 
-	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBox)
-	child = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
+	box = wrapFlowBox(externglib.Take(unsafe.Pointer(arg0)))
+	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FlowBoxForeachFunc)
@@ -120,8 +120,8 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	var child2 *FlowBoxChild // out
 	var userData cgo.Handle  // out
 
-	child1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*FlowBoxChild)
-	child2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*FlowBoxChild)
+	child1 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
+	child2 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FlowBoxSortFunc)
@@ -247,7 +247,7 @@ var (
 	_ gextras.Nativer = (*FlowBox)(nil)
 )
 
-func wrapFlowBox(obj *externglib.Object) FlowBoxer {
+func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	return &FlowBox{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -283,7 +283,7 @@ func NewFlowBox() *FlowBox {
 
 	var _flowBox *FlowBox // out
 
-	_flowBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FlowBox)
+	_flowBox = wrapFlowBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBox
 }
@@ -325,7 +325,7 @@ func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FlowBoxChild)
+	_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBoxChild
 }
@@ -347,7 +347,7 @@ func (box *FlowBox) ChildAtPos(x int, y int) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FlowBoxChild)
+	_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBoxChild
 }
@@ -724,7 +724,7 @@ var (
 	_ gextras.Nativer = (*FlowBoxChild)(nil)
 )
 
-func wrapFlowBoxChild(obj *externglib.Object) FlowBoxChilder {
+func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -759,7 +759,7 @@ func NewFlowBoxChild() *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FlowBoxChild)
+	_flowBoxChild = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBoxChild
 }
@@ -801,7 +801,7 @@ func (self *FlowBoxChild) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

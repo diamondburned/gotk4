@@ -49,7 +49,6 @@ func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(isoDate)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_time_val_from_iso8601(_arg1, (*C.GTimeVal)(unsafe.Pointer(&_time_)))
 

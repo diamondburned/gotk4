@@ -238,7 +238,7 @@ var (
 	_ gextras.Nativer = (*Mount)(nil)
 )
 
-func wrapMount(obj *externglib.Object) Mounter {
+func wrapMount(obj *externglib.Object) *Mount {
 	return &Mount{
 		Object: obj,
 	}
@@ -383,7 +383,7 @@ func (mount *Mount) DefaultLocation() *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -402,7 +402,7 @@ func (mount *Mount) Drive() *Drive {
 
 	var _drive *Drive // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Drive)
+	_drive = wrapDrive(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _drive
 }
@@ -418,7 +418,7 @@ func (mount *Mount) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -451,7 +451,7 @@ func (mount *Mount) Root() *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -483,7 +483,7 @@ func (mount *Mount) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -518,7 +518,7 @@ func (mount *Mount) Volume() *Volume {
 
 	var _volume *Volume // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Volume)
+	_volume = wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _volume
 }
@@ -581,7 +581,6 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -627,7 +626,6 @@ func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellab
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

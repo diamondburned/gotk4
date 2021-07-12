@@ -86,7 +86,7 @@ var (
 	_ gextras.Nativer = (*Overlay)(nil)
 )
 
-func wrapOverlay(obj *externglib.Object) Overlayer {
+func wrapOverlay(obj *externglib.Object) *Overlay {
 	return &Overlay{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -119,7 +119,7 @@ func NewOverlay() *Overlay {
 
 	var _overlay *Overlay // out
 
-	_overlay = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Overlay)
+	_overlay = wrapOverlay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _overlay
 }
@@ -152,7 +152,7 @@ func (overlay *Overlay) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

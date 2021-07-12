@@ -51,7 +51,6 @@ func NewPaperSize(name string) *PaperSize {
 	var _cret *C.GtkPaperSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_paper_size_new(_arg1)
 
@@ -75,9 +74,7 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	var _cret *C.GtkPaperSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gdouble(width)
 	_arg4 = C.gdouble(height)
 	_arg5 = C.GtkUnit(unit)
@@ -113,15 +110,14 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	return _paperSize
 }
 
-// NewPaperSizeFromIpp constructs a struct PaperSize.
-func NewPaperSizeFromIpp(ippName string, width float64, height float64) *PaperSize {
+// NewPaperSizeFromIPP constructs a struct PaperSize.
+func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gdouble       // out
 	var _arg3 C.gdouble       // out
 	var _cret *C.GtkPaperSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(ippName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(width)
 	_arg3 = C.gdouble(height)
 
@@ -146,7 +142,6 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
 
@@ -162,8 +157,8 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	return _paperSize, _goerr
 }
 
-// NewPaperSizeFromPpd constructs a struct PaperSize.
-func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
+// NewPaperSizeFromPPD constructs a struct PaperSize.
+func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
 	var _arg3 C.gdouble       // out
@@ -171,9 +166,7 @@ func NewPaperSizeFromPpd(ppdName string, ppdDisplayName string, width float64, h
 	var _cret *C.GtkPaperSize // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(ppdName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(ppdDisplayName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gdouble(width)
 	_arg4 = C.gdouble(height)
 
@@ -344,8 +337,8 @@ func (size *PaperSize) Name() string {
 	return _utf8
 }
 
-// PpdName gets the PPD name of the PaperSize, which may be nil.
-func (size *PaperSize) PpdName() string {
+// PPDName gets the PPD name of the PaperSize, which may be nil.
+func (size *PaperSize) PPDName() string {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.gchar        // in
 
@@ -416,8 +409,8 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 	return _ok
 }
 
-// IsIpp returns true if @size is an IPP standard paper size.
-func (size *PaperSize) IsIpp() bool {
+// IsIPP returns true if @size is an IPP standard paper size.
+func (size *PaperSize) IsIPP() bool {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
 
@@ -478,7 +471,6 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	_arg0 = (*C.GtkPaperSize)(unsafe.Pointer(size))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)
 }

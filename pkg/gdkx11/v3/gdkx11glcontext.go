@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer = (*X11GLContext)(nil)
 )
 
-func wrapX11GLContext(obj *externglib.Object) X11GLContexter {
+func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 	return &X11GLContext{
 		GLContext: gdk.GLContext{
 			Object: obj,

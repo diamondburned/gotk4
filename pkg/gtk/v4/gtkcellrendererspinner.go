@@ -46,7 +46,7 @@ var (
 	_ gextras.Nativer       = (*CellRendererSpinner)(nil)
 )
 
-func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinnerer {
+func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 	return &CellRendererSpinner{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -71,7 +71,7 @@ func NewCellRendererSpinner() *CellRendererSpinner {
 
 	var _cellRendererSpinner *CellRendererSpinner // out
 
-	_cellRendererSpinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererSpinner)
+	_cellRendererSpinner = wrapCellRendererSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpinner
 }

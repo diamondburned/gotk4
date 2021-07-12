@@ -143,7 +143,7 @@ var (
 	_ gextras.Nativer = (*ColumnView)(nil)
 )
 
-func wrapColumnView(obj *externglib.Object) ColumnViewer {
+func wrapColumnView(obj *externglib.Object) *ColumnView {
 	return &ColumnView{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -185,7 +185,7 @@ func NewColumnView(model SelectionModeler) *ColumnView {
 
 	var _columnView *ColumnView // out
 
-	_columnView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColumnView)
+	_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _columnView
 }
@@ -221,7 +221,12 @@ func (self *ColumnView) Columns() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -256,7 +261,7 @@ func (self *ColumnView) Model() *SelectionModel {
 
 	var _selectionModel *SelectionModel // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+	_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }
@@ -361,7 +366,7 @@ func (self *ColumnView) Sorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Sorter)
+	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sorter
 }

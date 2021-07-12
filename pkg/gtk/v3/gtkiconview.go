@@ -68,8 +68,11 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 	var path *TreePath     // out
 	var data cgo.Handle    // out
 
-	iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*IconView)
+	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(path, func(v *TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(IconViewForeachFunc)
@@ -283,7 +286,7 @@ var (
 	_ gextras.Nativer = (*IconView)(nil)
 )
 
-func wrapIconView(obj *externglib.Object) IconViewer {
+func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{
 		Container: Container{
 			Widget: Widget{
@@ -321,7 +324,7 @@ func NewIconView() *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconView)
+	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -338,7 +341,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconView)
+	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -354,7 +357,7 @@ func NewIconViewWithModel(model TreeModeler) *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconView)
+	_iconView = wrapIconView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconView
 }
@@ -421,7 +424,9 @@ func (iconView *IconView) EnableModelDragDest(targets []TargetEntry, actions gdk
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg2 = C.gint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 	_arg3 = C.GdkDragAction(actions)
 
 	C.gtk_icon_view_enable_model_drag_dest(_arg0, _arg1, _arg2, _arg3)
@@ -439,7 +444,9 @@ func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = C.gint(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 	_arg4 = C.GdkDragAction(actions)
 
 	C.gtk_icon_view_enable_model_drag_source(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -540,7 +547,7 @@ func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
 	var _cell *CellRenderer // out
 	var _ok bool            // out
 
-	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*CellRenderer)
+	_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg2)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -615,7 +622,7 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, *CellRenderer, boo
 	var _cell *CellRenderer // out
 	var _ok bool            // out
 
-	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(*CellRenderer)
+	_cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(_arg4)))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -754,7 +761,7 @@ func (iconView *IconView) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

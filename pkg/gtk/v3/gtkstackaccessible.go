@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer  = (*StackAccessible)(nil)
 )
 
-func wrapStackAccessible(obj *externglib.Object) StackAccessibler {
+func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 	return &StackAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

@@ -58,7 +58,7 @@ var (
 	_ gextras.Nativer     = (*CellRendererAccel)(nil)
 )
 
-func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceler {
+func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -84,7 +84,7 @@ func NewCellRendererAccel() *CellRendererAccel {
 
 	var _cellRendererAccel *CellRendererAccel // out
 
-	_cellRendererAccel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererAccel)
+	_cellRendererAccel = wrapCellRendererAccel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererAccel
 }

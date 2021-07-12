@@ -153,7 +153,6 @@ func ColorParse(spec string) (Color, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_color_parse(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 

@@ -3,7 +3,6 @@
 package atk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -123,7 +122,6 @@ func TextAttributeForName(name string) TextAttribute {
 	var _cret C.AtkTextAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_for_name(_arg1)
 
@@ -174,7 +172,6 @@ func TextAttributeRegister(name string) TextAttribute {
 	var _cret C.AtkTextAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_text_attribute_register(_arg1)
 
@@ -476,7 +473,7 @@ var (
 	_ gextras.Nativer = (*Text)(nil)
 )
 
-func wrapText(obj *externglib.Object) Texter {
+func wrapText(obj *externglib.Object) *Text {
 	return &Text{
 		Object: obj,
 	}
@@ -540,9 +537,6 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
 			_textRanges[i] = (*TextRange)(unsafe.Pointer(src[i]))
-			runtime.SetFinalizer(_textRanges[i], func(v *TextRange) {
-				C.free(unsafe.Pointer(v))
-			})
 		}
 	}
 

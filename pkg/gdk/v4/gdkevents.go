@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -354,7 +355,7 @@ var (
 	_ gextras.Nativer = (*ButtonEvent)(nil)
 )
 
-func wrapButtonEvent(obj *externglib.Object) ButtonEventer {
+func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	return &ButtonEvent{
 		Event: Event{
 			Object: obj,
@@ -404,7 +405,7 @@ var (
 	_ gextras.Nativer = (*CrossingEvent)(nil)
 )
 
-func wrapCrossingEvent(obj *externglib.Object) CrossingEventer {
+func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	return &CrossingEvent{
 		Event: Event{
 			Object: obj,
@@ -484,7 +485,7 @@ var (
 	_ gextras.Nativer = (*DNDEvent)(nil)
 )
 
-func wrapDNDEvent(obj *externglib.Object) DNDEventer {
+func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	return &DNDEvent{
 		Event: Event{
 			Object: obj,
@@ -509,7 +510,7 @@ func (event *DNDEvent) Drop() *Drop {
 
 	var _drop *Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Drop)
+	_drop = wrapDrop(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drop
 }
@@ -529,7 +530,7 @@ var (
 	_ gextras.Nativer = (*DeleteEvent)(nil)
 )
 
-func wrapDeleteEvent(obj *externglib.Object) DeleteEventer {
+func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	return &DeleteEvent{
 		Event: Event{
 			Object: obj,
@@ -601,7 +602,7 @@ var (
 	_ gextras.Nativer = (*Event)(nil)
 )
 
-func wrapEvent(obj *externglib.Object) Eventer {
+func wrapEvent(obj *externglib.Object) *Event {
 	return &Event{
 		Object: obj,
 	}
@@ -627,8 +628,10 @@ func (event *Event) Axes() ([]float64, bool) {
 	var _axes []float64
 	var _ok bool // out
 
-	_axes = make([]float64, _arg2)
-	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2))
+	_axes = unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_axes, func(v *[]float64) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -671,7 +674,7 @@ func (event *Event) Device() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -695,7 +698,7 @@ func (event *Event) DeviceTool() *DeviceTool {
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceTool)
+	_deviceTool = wrapDeviceTool(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _deviceTool
 }
@@ -711,7 +714,7 @@ func (event *Event) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -822,7 +825,7 @@ func (event *Event) Seat() *Seat {
 
 	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
+	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _seat
 }
@@ -838,7 +841,7 @@ func (event *Event) Surface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -873,7 +876,7 @@ func (event *Event) ref() *Event {
 
 	var _ret *Event // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Event)
+	_ret = wrapEvent(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -930,7 +933,7 @@ var (
 	_ gextras.Nativer = (*FocusEvent)(nil)
 )
 
-func wrapFocusEvent(obj *externglib.Object) FocusEventer {
+func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	return &FocusEvent{
 		Event: Event{
 			Object: obj,
@@ -981,7 +984,7 @@ var (
 	_ gextras.Nativer   = (*GrabBrokenEvent)(nil)
 )
 
-func wrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEventer {
+func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	return &GrabBrokenEvent{
 		Event: Event{
 			Object: obj,
@@ -1006,7 +1009,7 @@ func (event *GrabBrokenEvent) GrabSurface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -1059,7 +1062,7 @@ var (
 	_ gextras.Nativer = (*KeyEvent)(nil)
 )
 
-func wrapKeyEvent(obj *externglib.Object) KeyEventer {
+func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	return &KeyEvent{
 		Event: Event{
 			Object: obj,
@@ -1239,7 +1242,7 @@ var (
 	_ gextras.Nativer = (*MotionEvent)(nil)
 )
 
-func wrapMotionEvent(obj *externglib.Object) MotionEventer {
+func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	return &MotionEvent{
 		Event: Event{
 			Object: obj,
@@ -1275,7 +1278,7 @@ var (
 	_ gextras.Nativer = (*PadEvent)(nil)
 )
 
-func wrapPadEvent(obj *externglib.Object) PadEventer {
+func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	return &PadEvent{
 		Event: Event{
 			Object: obj,
@@ -1358,7 +1361,7 @@ var (
 	_ gextras.Nativer  = (*ProximityEvent)(nil)
 )
 
-func wrapProximityEvent(obj *externglib.Object) ProximityEventer {
+func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	return &ProximityEvent{
 		Event: Event{
 			Object: obj,
@@ -1394,7 +1397,7 @@ var (
 	_ gextras.Nativer = (*ScrollEvent)(nil)
 )
 
-func wrapScrollEvent(obj *externglib.Object) ScrollEventer {
+func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	return &ScrollEvent{
 		Event: Event{
 			Object: obj,
@@ -1487,7 +1490,7 @@ var (
 	_ gextras.Nativer = (*TouchEvent)(nil)
 )
 
-func wrapTouchEvent(obj *externglib.Object) TouchEventer {
+func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	return &TouchEvent{
 		Event: Event{
 			Object: obj,
@@ -1548,7 +1551,7 @@ var (
 	_ gextras.Nativer = (*TouchpadEvent)(nil)
 )
 
-func wrapTouchpadEvent(obj *externglib.Object) TouchpadEventer {
+func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	return &TouchpadEvent{
 		Event: Event{
 			Object: obj,

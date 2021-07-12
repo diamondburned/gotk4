@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*CheckButton)(nil)
 )
 
-func wrapCheckButton(obj *externglib.Object) CheckButtoner {
+func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
 		ToggleButton: ToggleButton{
 			Button: Button{
@@ -117,7 +117,7 @@ func NewCheckButton() *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
+	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -129,13 +129,12 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_button_new_with_label(_arg1)
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
+	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -148,13 +147,12 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckButton)
+	_checkButton = wrapCheckButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }

@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer = (*ProxyResolver)(nil)
 )
 
-func wrapProxyResolver(obj *externglib.Object) ProxyResolverer {
+func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
 	return &ProxyResolver{
 		Object: obj,
 	}
@@ -148,7 +148,6 @@ func (resolver *ProxyResolver) Lookup(uri string, cancellable Cancellabler) ([]s
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
@@ -167,7 +166,6 @@ func (resolver *ProxyResolver) Lookup(uri string, cancellable Cancellabler) ([]s
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -186,7 +184,6 @@ func (resolver *ProxyResolver) LookupAsync(uri string, cancellable Cancellabler,
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
@@ -222,7 +219,6 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -238,7 +234,7 @@ func ProxyResolverGetDefault() *ProxyResolver {
 
 	var _proxyResolver *ProxyResolver // out
 
-	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProxyResolver)
+	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }

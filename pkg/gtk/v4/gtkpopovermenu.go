@@ -147,7 +147,7 @@ var (
 	_ gextras.Nativer = (*PopoverMenu)(nil)
 )
 
-func wrapPopoverMenu(obj *externglib.Object) PopoverMenuer {
+func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{
 		Popover: Popover{
 			Widget: Widget{
@@ -216,7 +216,7 @@ func NewPopoverMenuFromModel(model gio.MenuModeler) *PopoverMenu {
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenu)
+	_popoverMenu = wrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -245,7 +245,7 @@ func NewPopoverMenuFromModelFull(model gio.MenuModeler, flags PopoverMenuFlags) 
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PopoverMenu)
+	_popoverMenu = wrapPopoverMenu(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -263,7 +263,6 @@ func (popover *PopoverMenu) AddChild(child Widgeter, id string) bool {
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)
 
@@ -287,7 +286,12 @@ func (popover *PopoverMenu) MenuModel() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }

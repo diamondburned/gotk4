@@ -77,7 +77,7 @@ var (
 	_ gextras.Nativer = (*Clipboard)(nil)
 )
 
-func wrapClipboard(obj *externglib.Object) Clipboarder {
+func wrapClipboard(obj *externglib.Object) *Clipboard {
 	return &Clipboard{
 		Object: obj,
 	}
@@ -103,7 +103,7 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProvider)
+	_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -119,7 +119,7 @@ func (clipboard *Clipboard) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -189,7 +189,12 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.I
 	var _goerr error                  // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_inputStream = &gio.InputStream{
+			Object: obj,
+		}
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr
@@ -236,7 +241,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Textur
 	var _texture *Texture // out
 	var _goerr error      // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _texture, _goerr

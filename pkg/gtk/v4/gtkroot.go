@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer = (*Root)(nil)
 )
 
-func wrapRoot(obj *externglib.Object) Rooter {
+func wrapRoot(obj *externglib.Object) *Root {
 	return &Root{
 		NativeSurface: NativeSurface{
 			Widget: Widget{
@@ -94,7 +94,12 @@ func (self *Root) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Display)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
 
 	return _display
 }
@@ -114,7 +119,7 @@ func (self *Root) Focus() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

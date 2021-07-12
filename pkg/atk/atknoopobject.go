@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer = (*NoOpObject)(nil)
 )
 
-func wrapNoOpObject(obj *externglib.Object) NoOpObjector {
+func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 	return &NoOpObject{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -117,7 +117,7 @@ func NewNoOpObject(obj gextras.Objector) *NoOpObject {
 
 	var _noOpObject *NoOpObject // out
 
-	_noOpObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObject)
+	_noOpObject = wrapNoOpObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObject
 }

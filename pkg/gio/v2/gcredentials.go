@@ -91,7 +91,7 @@ var (
 	_ gextras.Nativer = (*Credentials)(nil)
 )
 
-func wrapCredentials(obj *externglib.Object) Credentialser {
+func wrapCredentials(obj *externglib.Object) *Credentials {
 	return &Credentials{
 		Object: obj,
 	}
@@ -112,7 +112,7 @@ func NewCredentials() *Credentials {
 
 	var _credentials *Credentials // out
 
-	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Credentials)
+	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _credentials
 }

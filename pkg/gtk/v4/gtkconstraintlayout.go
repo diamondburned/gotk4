@@ -200,7 +200,7 @@ var (
 	_ gextras.Nativer    = (*ConstraintLayout)(nil)
 )
 
-func wrapConstraintLayout(obj *externglib.Object) ConstraintLayouter {
+func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -225,7 +225,7 @@ func NewConstraintLayout() *ConstraintLayout {
 
 	var _constraintLayout *ConstraintLayout // out
 
-	_constraintLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConstraintLayout)
+	_constraintLayout = wrapConstraintLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
 }
@@ -294,7 +294,12 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -318,7 +323,12 @@ func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -372,7 +382,7 @@ var (
 	_ gextras.Nativer         = (*ConstraintLayoutChild)(nil)
 )
 
-func wrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChilder {
+func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,

@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer     = (*FileChooserWidget)(nil)
 )
 
-func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidgeter {
+func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	return &FileChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -93,7 +93,7 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 
 	var _fileChooserWidget *FileChooserWidget // out
 
-	_fileChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserWidget)
+	_fileChooserWidget = wrapFileChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserWidget
 }

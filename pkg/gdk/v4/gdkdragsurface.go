@@ -37,7 +37,7 @@ var (
 	_ gextras.Nativer = (*DragSurface)(nil)
 )
 
-func wrapDragSurface(obj *externglib.Object) DragSurfacer {
+func wrapDragSurface(obj *externglib.Object) *DragSurface {
 	return &DragSurface{
 		Surface: Surface{
 			Object: obj,

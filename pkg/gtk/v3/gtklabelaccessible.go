@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer  = (*LabelAccessible)(nil)
 )
 
-func wrapLabelAccessible(obj *externglib.Object) LabelAccessibler {
+func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 	return &LabelAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

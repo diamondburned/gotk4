@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -426,7 +427,7 @@ var (
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windower {
+func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Bin: Bin{
 			Container: Container{
@@ -480,7 +481,7 @@ func NewWindow(typ WindowType) *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -708,7 +709,7 @@ func (window *Window) Application() *Application {
 
 	var _application *Application // out
 
-	_application = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Application)
+	_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _application
 }
@@ -725,7 +726,7 @@ func (window *Window) AttachedTo() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -782,7 +783,7 @@ func (window *Window) DefaultWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -839,7 +840,7 @@ func (window *Window) Focus() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -908,7 +909,7 @@ func (window *Window) Group() *WindowGroup {
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowGroup)
+	_windowGroup = wrapWindowGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }
@@ -965,7 +966,15 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -1179,7 +1188,12 @@ func (window *Window) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	return _screen
 }
@@ -1307,7 +1321,7 @@ func (window *Window) Titlebar() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -1324,7 +1338,7 @@ func (window *Window) TransientFor() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1646,7 +1660,6 @@ func (window *Window) ParseGeometry(geometry string) bool {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(geometry)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_window_parse_geometry(_arg0, _arg1)
 
@@ -2208,7 +2221,6 @@ func (window *Window) SetIconFromFile(filename string) error {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_from_file(_arg0, _arg1, &_cerr)
 
@@ -2231,7 +2243,6 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
 }
@@ -2396,7 +2407,6 @@ func (window *Window) SetRole(role string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_role(_arg0, _arg1)
 }
@@ -2459,7 +2469,6 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
 }
@@ -2477,7 +2486,6 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_title(_arg0, _arg1)
 }
@@ -2576,9 +2584,7 @@ func (window *Window) SetWmclass(wmclassName string, wmclassClass string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(wmclassClass)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_window_set_wmclass(_arg0, _arg1, _arg2)
 }
@@ -2701,7 +2707,6 @@ func WindowSetDefaultIconFromFile(filename string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_from_file(_arg1, &_cerr)
 
@@ -2719,7 +2724,6 @@ func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_name(_arg1)
 }

@@ -47,7 +47,7 @@ var (
 	_ gextras.Nativer = (*Invisible)(nil)
 )
 
-func wrapInvisible(obj *externglib.Object) Invisibler {
+func wrapInvisible(obj *externglib.Object) *Invisible {
 	return &Invisible{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -77,7 +77,7 @@ func NewInvisible() *Invisible {
 
 	var _invisible *Invisible // out
 
-	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Invisible)
+	_invisible = wrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -93,7 +93,7 @@ func NewInvisibleForScreen(screen gdk.Screener) *Invisible {
 
 	var _invisible *Invisible // out
 
-	_invisible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Invisible)
+	_invisible = wrapInvisible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -109,7 +109,12 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	return _screen
 }

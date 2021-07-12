@@ -70,7 +70,7 @@ var (
 	_ gextras.Nativer = (*Switch)(nil)
 )
 
-func wrapSwitch(obj *externglib.Object) Switcher {
+func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -116,7 +116,7 @@ func NewSwitch() *Switch {
 
 	var __switch *Switch // out
 
-	__switch = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Switch)
+	__switch = wrapSwitch(externglib.Take(unsafe.Pointer(_cret)))
 
 	return __switch
 }

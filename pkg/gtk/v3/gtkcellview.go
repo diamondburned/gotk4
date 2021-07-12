@@ -90,7 +90,7 @@ var (
 	_ gextras.Nativer = (*CellView)(nil)
 )
 
-func wrapCellView(obj *externglib.Object) CellViewer {
+func wrapCellView(obj *externglib.Object) *CellView {
 	return &CellView{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -126,7 +126,7 @@ func NewCellView() *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
+	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -149,7 +149,7 @@ func NewCellViewWithContext(area CellAreaer, context CellAreaContexter) *CellVie
 
 	var _cellView *CellView // out
 
-	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
+	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -162,13 +162,12 @@ func NewCellViewWithMarkup(markup string) *CellView {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_markup(_arg1)
 
 	var _cellView *CellView // out
 
-	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
+	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -185,7 +184,7 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbufer) *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
+	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -197,13 +196,12 @@ func NewCellViewWithText(text string) *CellView {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_cell_view_new_with_text(_arg1)
 
 	var _cellView *CellView // out
 
-	_cellView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellView)
+	_cellView = wrapCellView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellView
 }
@@ -283,7 +281,7 @@ func (cellView *CellView) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

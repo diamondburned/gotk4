@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer = (*BinLayout)(nil)
 )
 
-func wrapBinLayout(obj *externglib.Object) BinLayouter {
+func wrapBinLayout(obj *externglib.Object) *BinLayout {
 	return &BinLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -64,7 +64,7 @@ func NewBinLayout() *BinLayout {
 
 	var _binLayout *BinLayout // out
 
-	_binLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BinLayout)
+	_binLayout = wrapBinLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
 }

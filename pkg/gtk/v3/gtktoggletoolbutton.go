@@ -57,7 +57,7 @@ var (
 	_ gextras.Nativer    = (*ToggleToolButton)(nil)
 )
 
-func wrapToggleToolButton(obj *externglib.Object) ToggleToolButtoner {
+func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	return &ToggleToolButton{
 		ToolButton: ToolButton{
 			ToolItem: ToolItem{
@@ -111,7 +111,7 @@ func NewToggleToolButton() *ToggleToolButton {
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButton)
+	_toggleToolButton = wrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
@@ -128,13 +128,12 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleToolButton)
+	_toggleToolButton = wrapToggleToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }

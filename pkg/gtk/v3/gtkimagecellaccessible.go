@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer      = (*ImageCellAccessible)(nil)
 )
 
-func wrapImageCellAccessible(obj *externglib.Object) ImageCellAccessibler {
+func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 	return &ImageCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{

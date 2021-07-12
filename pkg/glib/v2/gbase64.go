@@ -19,7 +19,9 @@ func Base64Encode(data []byte) string {
 	var _cret *C.gchar // in
 
 	_arg2 = C.gsize(len(data))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	}
 
 	_cret = C.g_base64_encode(_arg1, _arg2)
 

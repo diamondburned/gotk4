@@ -69,7 +69,7 @@ var (
 	_ gextras.Nativer         = (*PrintOperationPreview)(nil)
 )
 
-func wrapPrintOperationPreview(obj *externglib.Object) PrintOperationPreviewer {
+func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
 	return &PrintOperationPreview{
 		Object: obj,
 	}

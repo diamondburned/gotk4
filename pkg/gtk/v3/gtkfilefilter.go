@@ -63,6 +63,9 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gb
 	var data cgo.Handle            // out
 
 	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(filterInfo, func(v *FileFilterInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FileFilterFunc)
@@ -149,7 +152,7 @@ var (
 	_ gextras.Nativer = (*FileFilter)(nil)
 )
 
-func wrapFileFilter(obj *externglib.Object) FileFilterer {
+func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -180,7 +183,7 @@ func NewFileFilter() *FileFilter {
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileFilter)
+	_fileFilter = wrapFileFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -197,7 +200,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileFilter)
+	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -215,7 +218,6 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
@@ -227,7 +229,6 @@ func (filter *FileFilter) AddPattern(pattern string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
@@ -313,7 +314,6 @@ func (filter *FileFilter) SetName(name string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }

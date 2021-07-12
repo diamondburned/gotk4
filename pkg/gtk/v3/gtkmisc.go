@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer = (*Misc)(nil)
 )
 
-func wrapMisc(obj *externglib.Object) Miscer {
+func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{

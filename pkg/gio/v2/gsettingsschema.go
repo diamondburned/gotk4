@@ -104,7 +104,6 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 
 	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_get_key(_arg0, _arg1)
 
@@ -151,7 +150,6 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 
 	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_settings_schema_has_key(_arg0, _arg1)
 
@@ -188,7 +186,6 @@ func (schema *SettingsSchema) ListChildren() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -221,7 +218,6 @@ func (schema *SettingsSchema) ListKeys() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -507,7 +503,6 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _cerr *C.GError                // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(directory)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GSettingsSchemaSource)(unsafe.Pointer(parent))
 	if trusted {
 		_arg3 = C.TRUE
@@ -610,7 +605,6 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if recursive {
 		_arg2 = C.TRUE
 	}

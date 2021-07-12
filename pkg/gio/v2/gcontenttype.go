@@ -32,7 +32,6 @@ func ContentTypeCanBeExecutable(typ string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_can_be_executable(_arg1)
 
@@ -52,9 +51,7 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(type1)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(type2)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_equals(_arg1, _arg2)
 
@@ -74,7 +71,6 @@ func ContentTypeFromMIMEType(mimeType string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_from_mime_type(_arg1)
 
@@ -93,7 +89,6 @@ func ContentTypeGetDescription(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_description(_arg1)
 
@@ -115,7 +110,6 @@ func ContentTypeGetGenericIconName(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_generic_icon_name(_arg1)
 
@@ -133,13 +127,12 @@ func ContentTypeGetIcon(typ string) *Icon {
 	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -164,6 +157,7 @@ func ContentTypeGetMIMEDirs() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -177,7 +171,6 @@ func ContentTypeGetMIMEType(typ string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_mime_type(_arg1)
 
@@ -195,13 +188,12 @@ func ContentTypeGetSymbolicIcon(typ string) *Icon {
 	var _cret *C.GIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -218,9 +210,10 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _cret *C.gchar   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.gsize(len(data))
-	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	}
 
 	_cret = C.g_content_type_guess(_arg1, _arg2, _arg3, &_arg4)
 
@@ -269,7 +262,6 @@ func ContentTypeGuessForTree(root Filer) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -283,9 +275,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(supertype)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 
@@ -306,9 +296,7 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
 
@@ -329,7 +317,6 @@ func ContentTypeIsUnknown(typ string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_content_type_is_unknown(_arg1)
 
@@ -367,12 +354,10 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar
 
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(dirs))
 		for i := range dirs {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

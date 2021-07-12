@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer         = (*NotebookPageAccessible)(nil)
 )
 
-func wrapNotebookPageAccessible(obj *externglib.Object) NotebookPageAccessibler {
+func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible {
 	return &NotebookPageAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -69,7 +69,7 @@ func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgeter) *No
 
 	var _notebookPageAccessible *NotebookPageAccessible // out
 
-	_notebookPageAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NotebookPageAccessible)
+	_notebookPageAccessible = wrapNotebookPageAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _notebookPageAccessible
 }

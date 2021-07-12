@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer = (*GestureDrag)(nil)
 )
 
-func wrapGestureDrag(obj *externglib.Object) GestureDrager {
+func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	return &GestureDrag{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -78,7 +78,7 @@ func NewGestureDrag(widget Widgeter) *GestureDrag {
 
 	var _gestureDrag *GestureDrag // out
 
-	_gestureDrag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureDrag)
+	_gestureDrag = wrapGestureDrag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureDrag
 }

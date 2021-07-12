@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -45,9 +46,13 @@ func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, ar
 	var iter *TreeIter              // out
 	var userData cgo.Handle         // out
 
-	completion = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*EntryCompletion)
+	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(EntryCompletionMatchFunc)
@@ -169,7 +174,7 @@ var (
 	_ gextras.Nativer   = (*EntryCompletion)(nil)
 )
 
-func wrapEntryCompletion(obj *externglib.Object) EntryCompletioner {
+func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	return &EntryCompletion{
 		Object: obj,
 		Buildable: Buildable{
@@ -195,7 +200,7 @@ func NewEntryCompletion() *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletion)
+	_entryCompletion = wrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -215,7 +220,7 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryCompletion)
+	_entryCompletion = wrapEntryCompletion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -245,7 +250,6 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 
@@ -285,7 +289,7 @@ func (completion *EntryCompletion) Entry() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -356,7 +360,7 @@ func (completion *EntryCompletion) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

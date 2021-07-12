@@ -78,7 +78,7 @@ var (
 	_ gextras.Nativer = (*Fixed)(nil)
 )
 
-func wrapFixed(obj *externglib.Object) Fixeder {
+func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{
 		Container: Container{
 			Widget: Widget{
@@ -110,7 +110,7 @@ func NewFixed() *Fixed {
 
 	var _fixed *Fixed // out
 
-	_fixed = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Fixed)
+	_fixed = wrapFixed(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fixed
 }

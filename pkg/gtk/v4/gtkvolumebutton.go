@@ -39,7 +39,7 @@ var (
 	_ gextras.Nativer = (*VolumeButton)(nil)
 )
 
-func wrapVolumeButton(obj *externglib.Object) VolumeButtoner {
+func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{
 			Widget: Widget{
@@ -81,7 +81,7 @@ func NewVolumeButton() *VolumeButton {
 
 	var _volumeButton *VolumeButton // out
 
-	_volumeButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VolumeButton)
+	_volumeButton = wrapVolumeButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _volumeButton
 }

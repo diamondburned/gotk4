@@ -169,7 +169,7 @@ var (
 	_ gextras.Nativer = (*Snapshot)(nil)
 )
 
-func wrapSnapshot(obj *externglib.Object) Snapshoter {
+func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{
 		Snapshot: gdk.Snapshot{
 			Object: obj,
@@ -191,7 +191,7 @@ func NewSnapshot() *Snapshot {
 
 	var _snapshot *Snapshot // out
 
-	_snapshot = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Snapshot)
+	_snapshot = wrapSnapshot(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _snapshot
 }
@@ -266,7 +266,9 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
 	_arg3 = C.float(rotation)
 	_arg5 = C.gsize(len(stops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	if len(stops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	}
 
 	C.gtk_snapshot_append_conic_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -319,7 +321,9 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
 	_arg5 = C.gsize(len(stops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	if len(stops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	}
 
 	C.gtk_snapshot_append_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -382,7 +386,9 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(stops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	if len(stops) > 0 {
+		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	}
 
 	C.gtk_snapshot_append_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
@@ -402,7 +408,9 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
 	_arg5 = C.gsize(len(stops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	if len(stops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	}
 
 	C.gtk_snapshot_append_repeating_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -428,7 +436,9 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(stops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	if len(stops) > 0 {
+		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
+	}
 
 	C.gtk_snapshot_append_repeating_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
@@ -826,7 +836,12 @@ func (snapshot *Snapshot) ToNode() *gsk.RenderNode {
 
 	var _renderNode *gsk.RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gsk.RenderNode)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_renderNode = &gsk.RenderNode{
+			Object: obj,
+		}
+	}
 
 	return _renderNode
 }
@@ -849,7 +864,12 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 
 	var _paintable *gdk.Paintable // out
 
-	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_paintable = &gdk.Paintable{
+			Object: obj,
+		}
+	}
 
 	return _paintable
 }

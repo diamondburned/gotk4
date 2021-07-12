@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer = (*RecentAction)(nil)
 )
 
-func wrapRecentAction(obj *externglib.Object) RecentActioner {
+func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	return &RecentAction{
 		Action: Action{
 			Object: obj,
@@ -84,19 +84,15 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 	var _cret *C.GtkAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
 
 	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
 	var _recentAction *RecentAction // out
 
-	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentAction)
+	_recentAction = wrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
@@ -115,20 +111,16 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	var _cret *C.GtkAction        // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _recentAction *RecentAction // out
 
-	_recentAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentAction)
+	_recentAction = wrapRecentAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }

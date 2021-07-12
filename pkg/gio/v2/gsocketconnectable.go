@@ -131,7 +131,7 @@ var (
 	_ gextras.Nativer    = (*SocketConnectable)(nil)
 )
 
-func wrapSocketConnectable(obj *externglib.Object) SocketConnectabler {
+func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
 	return &SocketConnectable{
 		Object: obj,
 	}
@@ -154,7 +154,7 @@ func (connectable *SocketConnectable) Enumerate() *SocketAddressEnumerator {
 
 	var _socketAddressEnumerator *SocketAddressEnumerator // out
 
-	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressEnumerator)
+	_socketAddressEnumerator = wrapSocketAddressEnumerator(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketAddressEnumerator
 }
@@ -174,7 +174,7 @@ func (connectable *SocketConnectable) ProxyEnumerate() *SocketAddressEnumerator 
 
 	var _socketAddressEnumerator *SocketAddressEnumerator // out
 
-	_socketAddressEnumerator = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddressEnumerator)
+	_socketAddressEnumerator = wrapSocketAddressEnumerator(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketAddressEnumerator
 }

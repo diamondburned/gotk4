@@ -66,7 +66,9 @@ func TargetTableFree(targets []TargetEntry) {
 	var _arg2 C.gint
 
 	_arg2 = C.gint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 
 	C.gtk_target_table_free(_arg1, _arg2)
 }
@@ -90,7 +92,6 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(target)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(flags)
 	_arg3 = C.guint(info)
 
@@ -158,7 +159,9 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	var _cret *C.GtkTargetList // in
 
 	_arg2 = C.guint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 
 	_cret = C.gtk_target_list_new(_arg1, _arg2)
 
@@ -222,7 +225,9 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 
 	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
 	_arg2 = C.guint(len(targets))
-	_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 
 	C.gtk_target_list_add_table(_arg0, _arg1, _arg2)
 }

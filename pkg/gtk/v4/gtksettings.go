@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer = (*Settings)(nil)
 )
 
-func wrapSettings(obj *externglib.Object) Settingser {
+func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -92,7 +92,6 @@ func (settings *Settings) ResetProperty(name string) {
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
 }
@@ -108,7 +107,7 @@ func SettingsGetDefault() *Settings {
 
 	var _settings *Settings // out
 
-	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -125,7 +124,7 @@ func SettingsGetForDisplay(display gdk.Displayer) *Settings {
 
 	var _settings *Settings // out
 
-	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }

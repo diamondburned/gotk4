@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*Renderer)(nil)
 )
 
-func wrapRenderer(obj *externglib.Object) Rendererer {
+func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{
 		Object: obj,
 	}
@@ -94,7 +94,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 
 	var _renderer *Renderer // out
 
-	_renderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Renderer)
+	_renderer = wrapRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _renderer
 }
@@ -112,7 +112,12 @@ func (renderer *Renderer) Surface() *gdk.Surface {
 
 	var _surface *gdk.Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Surface)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_surface = &gdk.Surface{
+			Object: obj,
+		}
+	}
 
 	return _surface
 }
@@ -198,7 +203,15 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	var _texture *gdk.Texture // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Texture)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_texture = &gdk.Texture{
+			Object: obj,
+			Paintable: gdk.Paintable{
+				Object: obj,
+			},
+		}
+	}
 
 	return _texture
 }

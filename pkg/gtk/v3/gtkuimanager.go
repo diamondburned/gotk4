@@ -370,7 +370,7 @@ var (
 	_ gextras.Nativer = (*UIManager)(nil)
 )
 
-func wrapUIManager(obj *externglib.Object) UIManagerer {
+func wrapUIManager(obj *externglib.Object) *UIManager {
 	return &UIManager{
 		Object: obj,
 		Buildable: Buildable{
@@ -395,7 +395,7 @@ func NewUIManager() *UIManager {
 
 	var _uiManager *UIManager // out
 
-	_uiManager = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UIManager)
+	_uiManager = wrapUIManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _uiManager
 }
@@ -423,11 +423,8 @@ func (manager *UIManager) AddUi(mergeId uint, path string, name string, action s
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = C.guint(mergeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.GtkUIManagerItemType(typ)
 	if top {
 		_arg6 = C.TRUE
@@ -448,7 +445,6 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
 
@@ -473,7 +469,6 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
 
@@ -500,7 +495,6 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, erro
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, &_cerr)
@@ -551,7 +545,7 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelGroup)
+	_accelGroup = wrapAccelGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -567,13 +561,12 @@ func (manager *UIManager) Action(path string) *Action {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
 
 	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
+	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -641,13 +634,12 @@ func (manager *UIManager) Widget(path string) *Widget {
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

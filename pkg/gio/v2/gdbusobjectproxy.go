@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer   = (*DBusObjectProxy)(nil)
 )
 
-func wrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxier {
+func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{
 		Object: obj,
 		DBusObject: DBusObject{
@@ -75,13 +75,12 @@ func NewDBusObjectProxy(connection DBusConnectioner, objectPath string) *DBusObj
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
 	var _dBusObjectProxy *DBusObjectProxy // out
 
-	_dBusObjectProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectProxy)
+	_dBusObjectProxy = wrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
@@ -97,7 +96,7 @@ func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnection)
+	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }

@@ -69,7 +69,7 @@ var (
 	_ gextras.Nativer    = (*DataOutputStream)(nil)
 )
 
-func wrapDataOutputStream(obj *externglib.Object) DataOutputStreamer {
+func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
@@ -99,7 +99,7 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 
 	var _dataOutputStream *DataOutputStream // out
 
-	_dataOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataOutputStream)
+	_dataOutputStream = wrapDataOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dataOutputStream
 }
@@ -209,7 +209,6 @@ func (stream *DataOutputStream) PutString(str string, cancellable Cancellabler) 
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, &_cerr)

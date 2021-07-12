@@ -124,7 +124,7 @@ var (
 	_ gextras.Nativer = (*ModelButton)(nil)
 )
 
-func wrapModelButton(obj *externglib.Object) ModelButtoner {
+func wrapModelButton(obj *externglib.Object) *ModelButton {
 	return &ModelButton{
 		Button: Button{
 			Bin: Bin{
@@ -176,7 +176,7 @@ func NewModelButton() *ModelButton {
 
 	var _modelButton *ModelButton // out
 
-	_modelButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ModelButton)
+	_modelButton = wrapModelButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _modelButton
 }

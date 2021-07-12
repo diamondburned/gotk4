@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer = (*MultiSorter)(nil)
 )
 
-func wrapMultiSorter(obj *externglib.Object) MultiSorterer {
+func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	return &MultiSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -80,7 +80,7 @@ func NewMultiSorter() *MultiSorter {
 
 	var _multiSorter *MultiSorter // out
 
-	_multiSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSorter)
+	_multiSorter = wrapMultiSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
 }

@@ -207,7 +207,7 @@ var (
 	_ gextras.Nativer = (*Volume)(nil)
 )
 
-func wrapVolume(obj *externglib.Object) Volumer {
+func wrapVolume(obj *externglib.Object) *Volume {
 	return &Volume{
 		Object: obj,
 	}
@@ -363,7 +363,6 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -393,7 +392,7 @@ func (volume *Volume) ActivationRoot() *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -409,7 +408,7 @@ func (volume *Volume) Drive() *Drive {
 
 	var _drive *Drive // out
 
-	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Drive)
+	_drive = wrapDrive(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _drive
 }
@@ -425,7 +424,7 @@ func (volume *Volume) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -440,7 +439,6 @@ func (volume *Volume) Identifier(kind string) string {
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
 
@@ -463,7 +461,7 @@ func (volume *Volume) GetMount() *Mount {
 
 	var _mount *Mount // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mount
 }
@@ -512,7 +510,7 @@ func (volume *Volume) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }

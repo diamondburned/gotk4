@@ -73,7 +73,7 @@ var (
 	_ gextras.Nativer = (*ListStore)(nil)
 )
 
-func wrapListStore(obj *externglib.Object) ListStorer {
+func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{
 		Object: obj,
 		ListModel: ListModel{
@@ -100,7 +100,7 @@ func NewListStore(itemType externglib.Type) *ListStore {
 
 	var _listStore *ListStore // out
 
-	_listStore = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ListStore)
+	_listStore = wrapListStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _listStore
 }
@@ -260,9 +260,8 @@ func (store *ListStore) Splice(position uint, nRemovals uint, additions []*exter
 	_arg2 = C.guint(nRemovals)
 	_arg4 = C.guint(len(additions))
 	_arg3 = (*C.gpointer)(C.malloc(C.ulong(len(additions)) * C.ulong(C.sizeof_gpointer)))
-	defer C.free(unsafe.Pointer(_arg3))
 	{
-		out := unsafe.Slice(_arg3, len(additions))
+		out := unsafe.Slice((*C.gpointer)(_arg3), len(additions))
 		for i := range additions {
 			out[i] = C.gpointer(unsafe.Pointer(additions[i].Native()))
 		}

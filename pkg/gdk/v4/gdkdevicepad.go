@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*DevicePad)(nil)
 )
 
-func wrapDevicePad(obj *externglib.Object) DevicePader {
+func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	return &DevicePad{
 		Device: Device{
 			Object: obj,

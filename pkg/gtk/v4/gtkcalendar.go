@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer = (*Calendar)(nil)
 )
 
-func wrapCalendar(obj *externglib.Object) Calendarer {
+func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -128,7 +128,7 @@ func NewCalendar() *Calendar {
 
 	var _calendar *Calendar // out
 
-	_calendar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Calendar)
+	_calendar = wrapCalendar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _calendar
 }

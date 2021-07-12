@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer = (*OverlayLayout)(nil)
 )
 
-func wrapOverlayLayout(obj *externglib.Object) OverlayLayouter {
+func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	return &OverlayLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -65,7 +65,7 @@ func NewOverlayLayout() *OverlayLayout {
 
 	var _overlayLayout *OverlayLayout // out
 
-	_overlayLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*OverlayLayout)
+	_overlayLayout = wrapOverlayLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _overlayLayout
 }
@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer      = (*OverlayLayoutChild)(nil)
 )
 
-func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChilder {
+func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,

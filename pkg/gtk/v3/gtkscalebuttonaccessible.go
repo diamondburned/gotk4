@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer        = (*ScaleButtonAccessible)(nil)
 )
 
-func wrapScaleButtonAccessible(obj *externglib.Object) ScaleButtonAccessibler {
+func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 	return &ScaleButtonAccessible{
 		ButtonAccessible: ButtonAccessible{
 			ContainerAccessible: ContainerAccessible{

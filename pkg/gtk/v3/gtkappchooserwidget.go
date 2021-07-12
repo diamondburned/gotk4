@@ -105,7 +105,7 @@ var (
 	_ gextras.Nativer    = (*AppChooserWidget)(nil)
 )
 
-func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidgeter {
+func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -154,13 +154,12 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_widget_new(_arg1)
 
 	var _appChooserWidget *AppChooserWidget // out
 
-	_appChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserWidget)
+	_appChooserWidget = wrapAppChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserWidget
 }
@@ -290,7 +289,6 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_widget_set_default_text(_arg0, _arg1)
 }

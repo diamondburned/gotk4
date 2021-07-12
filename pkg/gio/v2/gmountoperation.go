@@ -123,7 +123,7 @@ var (
 	_ gextras.Nativer  = (*MountOperation)(nil)
 )
 
-func wrapMountOperation(obj *externglib.Object) MountOperationer {
+func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		Object: obj,
 	}
@@ -143,7 +143,7 @@ func NewMountOperation() *MountOperation {
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperation)
+	_mountOperation = wrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -344,7 +344,6 @@ func (op *MountOperation) SetDomain(domain string) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_mount_operation_set_domain(_arg0, _arg1)
 }
@@ -384,7 +383,6 @@ func (op *MountOperation) SetPassword(password string) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(password)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_mount_operation_set_password(_arg0, _arg1)
 }
@@ -418,7 +416,6 @@ func (op *MountOperation) SetUsername(username string) {
 
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(username)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_mount_operation_set_username(_arg0, _arg1)
 }

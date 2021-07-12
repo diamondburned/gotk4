@@ -333,7 +333,7 @@ var (
 	_ gextras.Nativer = (*Container)(nil)
 )
 
-func wrapContainer(obj *externglib.Object) Containerer {
+func wrapContainer(obj *externglib.Object) *Container {
 	return &Container{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -394,7 +394,6 @@ func (container *Container) ChildGetProperty(child Widgeter, propertyName string
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_get_property(_arg0, _arg1, _arg2, _arg3)
@@ -414,7 +413,6 @@ func (container *Container) ChildNotify(child Widgeter, childProperty string) {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
 }
@@ -429,7 +427,6 @@ func (container *Container) ChildSetProperty(child Widgeter, propertyName string
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_container_child_set_property(_arg0, _arg1, _arg2, _arg3)
@@ -525,7 +522,7 @@ func (container *Container) FocusChild() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -542,7 +539,7 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -559,7 +556,7 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

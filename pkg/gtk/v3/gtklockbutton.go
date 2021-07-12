@@ -72,7 +72,7 @@ var (
 	_ gextras.Nativer = (*LockButton)(nil)
 )
 
-func wrapLockButton(obj *externglib.Object) LockButtoner {
+func wrapLockButton(obj *externglib.Object) *LockButton {
 	return &LockButton{
 		Button: Button{
 			Bin: Bin{
@@ -127,7 +127,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 
 	var _lockButton *LockButton // out
 
-	_lockButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LockButton)
+	_lockButton = wrapLockButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _lockButton
 }
@@ -143,7 +143,12 @@ func (button *LockButton) Permission() *gio.Permission {
 
 	var _permission *gio.Permission // out
 
-	_permission = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Permission)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_permission = &gio.Permission{
+			Object: obj,
+		}
+	}
 
 	return _permission
 }

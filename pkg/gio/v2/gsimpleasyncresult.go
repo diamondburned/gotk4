@@ -255,7 +255,7 @@ var (
 	_ gextras.Nativer     = (*SimpleAsyncResult)(nil)
 )
 
-func wrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResulter {
+func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{
 		Object: obj,
 		AsyncResult: AsyncResult{
@@ -298,7 +298,7 @@ func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCall
 
 	var _simpleAsyncResult *SimpleAsyncResult // out
 
-	_simpleAsyncResult = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SimpleAsyncResult)
+	_simpleAsyncResult = wrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAsyncResult
 }
@@ -322,7 +322,7 @@ func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback Async
 
 	var _simpleAsyncResult *SimpleAsyncResult // out
 
-	_simpleAsyncResult = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SimpleAsyncResult)
+	_simpleAsyncResult = wrapSimpleAsyncResult(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAsyncResult
 }

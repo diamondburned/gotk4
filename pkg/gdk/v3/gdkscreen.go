@@ -112,7 +112,7 @@ var (
 	_ gextras.Nativer = (*Screen)(nil)
 )
 
-func wrapScreen(obj *externglib.Object) Screener {
+func wrapScreen(obj *externglib.Object) *Screen {
 	return &Screen{
 		Object: obj,
 	}
@@ -149,7 +149,7 @@ func (screen *Screen) ActiveWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -165,7 +165,7 @@ func (screen *Screen) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -518,7 +518,7 @@ func (screen *Screen) RGBAVisual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -534,7 +534,7 @@ func (screen *Screen) RootWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -551,7 +551,6 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
@@ -577,7 +576,7 @@ func (screen *Screen) SystemVisual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -703,7 +702,7 @@ func ScreenGetDefault() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
 }

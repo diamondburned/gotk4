@@ -123,7 +123,7 @@ var (
 	_ gextras.Nativer       = (*BufferedInputStream)(nil)
 )
 
-func wrapBufferedInputStream(obj *externglib.Object) BufferedInputStreamer {
+func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 	return &BufferedInputStream{
 		FilterInputStream: FilterInputStream{
 			InputStream: InputStream{
@@ -154,7 +154,7 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedInputStream)
+	_bufferedInputStream = wrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -173,7 +173,7 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedInputStream)
+	_bufferedInputStream = wrapBufferedInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -312,7 +312,9 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg2 = C.gsize(offset)
 
 	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)

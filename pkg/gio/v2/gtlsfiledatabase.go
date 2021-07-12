@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer  = (*TLSFileDatabase)(nil)
 )
 
-func wrapTLSFileDatabase(obj *externglib.Object) TLSFileDatabaser {
+func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
 	return &TLSFileDatabase{
 		TLSDatabase: TLSDatabase{
 			Object: obj,
@@ -75,14 +75,13 @@ func TlsFileDatabaseNew(anchors string) (*TLSFileDatabase, error) {
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(anchors)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
 
 	var _tlsFileDatabase *TLSFileDatabase // out
 	var _goerr error                      // out
 
-	_tlsFileDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSFileDatabase)
+	_tlsFileDatabase = wrapTLSFileDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsFileDatabase, _goerr

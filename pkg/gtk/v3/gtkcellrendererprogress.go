@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer        = (*CellRendererProgress)(nil)
 )
 
-func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgresser {
+func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -70,7 +70,7 @@ func NewCellRendererProgress() *CellRendererProgress {
 
 	var _cellRendererProgress *CellRendererProgress // out
 
-	_cellRendererProgress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererProgress)
+	_cellRendererProgress = wrapCellRendererProgress(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
 }

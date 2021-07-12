@@ -53,7 +53,7 @@ var (
 	_ gextras.Nativer     = (*GestureMultiPress)(nil)
 )
 
-func wrapGestureMultiPress(obj *externglib.Object) GestureMultiPresser {
+func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -83,7 +83,7 @@ func NewGestureMultiPress(widget Widgeter) *GestureMultiPress {
 
 	var _gestureMultiPress *GestureMultiPress // out
 
-	_gestureMultiPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureMultiPress)
+	_gestureMultiPress = wrapGestureMultiPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureMultiPress
 }

@@ -58,7 +58,7 @@ var (
 	_ gextras.Nativer = (*EmblemedIcon)(nil)
 )
 
-func wrapEmblemedIcon(obj *externglib.Object) EmblemedIconer {
+func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	return &EmblemedIcon{
 		Object: obj,
 		Icon: Icon{
@@ -87,7 +87,7 @@ func NewEmblemedIcon(icon Iconer, emblem Emblemer) *EmblemedIcon {
 
 	var _emblemedIcon *EmblemedIcon // out
 
-	_emblemedIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EmblemedIcon)
+	_emblemedIcon = wrapEmblemedIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _emblemedIcon
 }
@@ -123,7 +123,7 @@ func (emblemed *EmblemedIcon) GetIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
 }

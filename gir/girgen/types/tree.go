@@ -1,6 +1,9 @@
 package types
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -354,36 +357,51 @@ type ImplImporter interface {
 
 // Wrap generates the wrapper for the implementation struct.
 func (tree *Tree) Wrap(obj string, h ImplImporter) string {
-	return "&" + tree.wrap(obj, h, tree.gen)
+	return wrapRef(obj, tree.wrap(obj, h, tree.gen))
+}
+
+// WrapInNamespace wraps with the given current namespace.
+func (tree *Tree) WrapInNamespace(obj string, h ImplImporter, n *gir.NamespaceFindResult) string {
+	return wrapRef(obj, tree.wrap(obj, h, OverrideNamespace(tree.gen, n)))
+}
+
+func wrapRef(obj, wrap string) string {
+	if wrap == obj {
+		// GObject is already a pointer.
+		return obj
+	}
+	return "&" + wrap
 }
 
 func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
+	if tree.Resolved.Builtin != nil {
+		switch {
+		case tree.Resolved.IsExternGLib("Object"):
+			return "obj"
+		case tree.Resolved.IsExternGLib("InitiallyUnowned"):
+			h.ImportImpl(tree.Resolved)
+			return fmt.Sprintf("externglib.InitiallyUnowned{\nObject: %s,\n}", obj)
+		default:
+			tree.gen.Logln(logger.Debug, "unknown builtin wrap:", spew.Sdump(tree.Resolved))
+			return fmt.Sprintf("nil /* unknown type %s */", tree.Resolved.ImplType(true))
+		}
+	}
+
 	needsNamespace := tree.Resolved.NeedsNamespace(gen.Namespace())
 	if needsNamespace {
 		h.ImportImpl(tree.Resolved)
 	}
 
+	typ := tree.Resolved.ImplType(needsNamespace)
+
 	p := pen.NewPiece()
-	p.Write(tree.Resolved.ImplType(needsNamespace)).Char('{')
+	p.Write(strings.TrimPrefix(typ, "*")).Char('{')
 	p.EmptyLine()
 
 	for _, typ := range tree.Requires {
-		if typ.Resolved.Extern != nil {
-			// Recursively resolve the wrapper.
-			typ := typ
-			p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj, h, gen))
-			continue
-		}
-
-		switch {
-		case typ.Resolved.IsExternGLib("InitiallyUnowned"):
-			p.Linef("InitiallyUnowned: externglib.InitiallyUnowned{\nObject: %s,\n},", obj)
-		case typ.Resolved.IsExternGLib("Object"):
-			p.Linef("Object: %s,", obj)
-		default:
-			p.Linef("// unknown type %s", typ.Resolved.ImplType(true))
-			tree.gen.Logln(logger.Debug, "unknown builtin wrap:", spew.Sdump(typ.Resolved))
-		}
+		// Recursively resolve the wrapper.
+		typ := typ
+		p.Linef("%s: %s,", typ.Resolved.Name(), typ.wrap(obj, h, gen))
 	}
 
 	p.Char('}')

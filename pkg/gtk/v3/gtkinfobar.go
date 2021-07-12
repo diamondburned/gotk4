@@ -149,7 +149,7 @@ var (
 	_ gextras.Nativer = (*InfoBar)(nil)
 )
 
-func wrapInfoBar(obj *externglib.Object) InfoBarer {
+func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
 		Box: Box{
 			Container: Container{
@@ -186,7 +186,7 @@ func NewInfoBar() *InfoBar {
 
 	var _infoBar *InfoBar // out
 
-	_infoBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InfoBar)
+	_infoBar = wrapInfoBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _infoBar
 }
@@ -219,14 +219,13 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(responseId)
 
 	_cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
 
 	var _button *Button // out
 
-	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -242,7 +241,7 @@ func (infoBar *InfoBar) ActionArea() *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -258,7 +257,7 @@ func (infoBar *InfoBar) ContentArea() *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }

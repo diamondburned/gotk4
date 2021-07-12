@@ -32,7 +32,9 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _cerr *C.GError // in
 
 	_arg2 = C.gsize(len(blob))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
+	if len(blob) > 0 {
+		_arg1 = (*C.guchar)(unsafe.Pointer(&blob[0]))
+	}
 
 	_cret = C.g_dbus_message_bytes_needed(_arg1, _arg2, &_cerr)
 

@@ -81,7 +81,7 @@ var (
 	_ gextras.Nativer = (*CheckMenuItem)(nil)
 )
 
-func wrapCheckMenuItem(obj *externglib.Object) CheckMenuItemer {
+func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 	return &CheckMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -133,7 +133,7 @@ func NewCheckMenuItem() *CheckMenuItem {
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
+	_checkMenuItem = wrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -144,13 +144,12 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
+	_checkMenuItem = wrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -163,13 +162,12 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CheckMenuItem)
+	_checkMenuItem = wrapCheckMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }

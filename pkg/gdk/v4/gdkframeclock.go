@@ -128,7 +128,7 @@ var (
 	_ gextras.Nativer = (*FrameClock)(nil)
 )
 
-func wrapFrameClock(obj *externglib.Object) FrameClocker {
+func wrapFrameClock(obj *externglib.Object) *FrameClock {
 	return &FrameClock{
 		Object: obj,
 	}

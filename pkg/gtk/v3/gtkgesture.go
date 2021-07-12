@@ -169,7 +169,7 @@ var (
 	_ gextras.Nativer = (*Gesture)(nil)
 )
 
-func wrapGesture(obj *externglib.Object) Gesturer {
+func wrapGesture(obj *externglib.Object) *Gesture {
 	return &Gesture{
 		EventController: EventController{
 			Object: obj,
@@ -248,7 +248,12 @@ func (gesture *Gesture) Device() *gdk.Device {
 
 	var _device *gdk.Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Device)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_device = &gdk.Device{
+			Object: obj,
+		}
+	}
 
 	return _device
 }
@@ -328,7 +333,12 @@ func (gesture *Gesture) Window() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }

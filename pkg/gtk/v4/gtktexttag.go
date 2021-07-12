@@ -58,7 +58,7 @@ var (
 	_ gextras.Nativer = (*TextTag)(nil)
 )
 
-func wrapTextTag(obj *externglib.Object) TextTager {
+func wrapTextTag(obj *externglib.Object) *TextTag {
 	return &TextTag{
 		Object: obj,
 	}
@@ -76,13 +76,12 @@ func NewTextTag(name string) *TextTag {
 	var _cret *C.GtkTextTag // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_new(_arg1)
 
 	var _textTag *TextTag // out
 
-	_textTag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextTag)
+	_textTag = wrapTextTag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
 }

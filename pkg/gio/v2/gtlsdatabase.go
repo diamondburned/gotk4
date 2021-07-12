@@ -205,7 +205,7 @@ var (
 	_ gextras.Nativer = (*TLSDatabase)(nil)
 )
 
-func wrapTLSDatabase(obj *externglib.Object) TLSDatabaser {
+func wrapTLSDatabase(obj *externglib.Object) *TLSDatabase {
 	return &TLSDatabase{
 		Object: obj,
 	}
@@ -267,7 +267,6 @@ func (self *TLSDatabase) LookupCertificateForHandle(handle string, interaction T
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(handle)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -277,7 +276,7 @@ func (self *TLSDatabase) LookupCertificateForHandle(handle string, interaction T
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -297,7 +296,6 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(handle string, interact
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(handle)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -327,7 +325,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -360,7 +358,7 @@ func (self *TLSDatabase) LookupCertificateIssuer(certificate TLSCertificater, in
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -406,7 +404,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (*T
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -429,8 +427,11 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, int
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
-	_arg1 = C.g_byte_array_new_take((*C.guint8)(&issuerRawDn[0]), C.gsize(len(issuerRawDn)))
-	defer C.g_byte_array_steal(_arg1, nil)
+	_arg1 = C.g_byte_array_sized_new(C.guint(len(issuerRawDn)))
+	if len(issuerRawDn) > 0 {
+		_arg1 = C.g_byte_array_append(_arg1, (*C.guint8)(&issuerRawDn[0]), C.guint(len(issuerRawDn)))
+	}
+	defer C.g_byte_array_unref(_arg1)
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -489,7 +490,6 @@ func (self *TLSDatabase) VerifyChain(chain TLSCertificater, purpose string, iden
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((chain).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(purpose)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
 	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
@@ -523,7 +523,6 @@ func (self *TLSDatabase) VerifyChainAsync(chain TLSCertificater, purpose string,
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer((chain).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(purpose)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
 	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
 	_arg5 = C.GTlsDatabaseVerifyFlags(flags)

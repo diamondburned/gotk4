@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -67,10 +68,13 @@ func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, 
 	var iter *TreeIter             // out
 	var data cgo.Handle            // out
 
-	treeColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeViewColumn)
-	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
-	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
+	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
+	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
+	treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(arg2)))
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeCellDataFunc)
@@ -227,7 +231,7 @@ var (
 	_ gextras.Nativer  = (*TreeViewColumn)(nil)
 )
 
-func wrapTreeViewColumn(obj *externglib.Object) TreeViewColumner {
+func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
 	return &TreeViewColumn{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -255,7 +259,7 @@ func NewTreeViewColumn() *TreeViewColumn {
 
 	var _treeViewColumn *TreeViewColumn // out
 
-	_treeViewColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeViewColumn)
+	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
 }
@@ -272,7 +276,7 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 
 	var _treeViewColumn *TreeViewColumn // out
 
-	_treeViewColumn = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeViewColumn)
+	_treeViewColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeViewColumn
 }
@@ -297,7 +301,6 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attr
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
 
 	C.gtk_tree_view_column_add_attribute(_arg0, _arg1, _arg2, _arg3)
@@ -474,7 +477,7 @@ func (treeColumn *TreeViewColumn) Button() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -716,7 +719,7 @@ func (treeColumn *TreeViewColumn) TreeView() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -751,7 +754,7 @@ func (treeColumn *TreeViewColumn) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -1035,7 +1038,6 @@ func (treeColumn *TreeViewColumn) SetTitle(title string) {
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tree_view_column_set_title(_arg0, _arg1)
 }

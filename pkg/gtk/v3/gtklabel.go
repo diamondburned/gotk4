@@ -190,7 +190,7 @@ var (
 	_ gextras.Nativer = (*Label)(nil)
 )
 
-func wrapLabel(obj *externglib.Object) Labeler {
+func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
 		Misc: Misc{
 			Widget: Widget{
@@ -221,13 +221,12 @@ func NewLabel(str string) *Label {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_label_new(_arg1)
 
 	var _label *Label // out
 
-	_label = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Label)
+	_label = wrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -250,13 +249,12 @@ func NewLabelWithMnemonic(str string) *Label {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_label_new_with_mnemonic(_arg1)
 
 	var _label *Label // out
 
-	_label = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Label)
+	_label = wrapLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _label
 }
@@ -387,7 +385,12 @@ func (label *Label) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }
@@ -518,7 +521,7 @@ func (label *Label) MnemonicWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -793,7 +796,6 @@ func (label *Label) SetLabel(str string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_label(_arg0, _arg1)
 }
@@ -874,7 +876,6 @@ func (label *Label) SetMarkup(str string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup(_arg0, _arg1)
 }
@@ -893,7 +894,6 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_markup_with_mnemonic(_arg0, _arg1)
 }
@@ -942,7 +942,6 @@ func (label *Label) SetPattern(pattern string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_pattern(_arg0, _arg1)
 }
@@ -990,7 +989,6 @@ func (label *Label) SetText(str string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text(_arg0, _arg1)
 }
@@ -1006,7 +1004,6 @@ func (label *Label) SetTextWithMnemonic(str string) {
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_label_set_text_with_mnemonic(_arg0, _arg1)
 }

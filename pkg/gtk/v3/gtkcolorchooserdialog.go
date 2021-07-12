@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer      = (*ColorChooserDialog)(nil)
 )
 
-func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialoger {
+func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -82,14 +82,13 @@ func NewColorChooserDialog(title string, parent Windower) *ColorChooserDialog {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 
 	var _colorChooserDialog *ColorChooserDialog // out
 
-	_colorChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserDialog)
+	_colorChooserDialog = wrapColorChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }

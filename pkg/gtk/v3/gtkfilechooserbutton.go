@@ -94,7 +94,7 @@ var (
 	_ gextras.Nativer     = (*FileChooserButton)(nil)
 )
 
-func wrapFileChooserButton(obj *externglib.Object) FileChooserButtoner {
+func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	return &FileChooserButton{
 		Box: Box{
 			Container: Container{
@@ -133,14 +133,13 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 	var _cret *C.GtkWidget           // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkFileChooserAction(action)
 
 	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
 
 	var _fileChooserButton *FileChooserButton // out
 
-	_fileChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserButton)
+	_fileChooserButton = wrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
@@ -164,7 +163,7 @@ func NewFileChooserButtonWithDialog(dialog Dialoger) *FileChooserButton {
 
 	var _fileChooserButton *FileChooserButton // out
 
-	_fileChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserButton)
+	_fileChooserButton = wrapFileChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
@@ -255,7 +254,6 @@ func (button *FileChooserButton) SetTitle(title string) {
 
 	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_chooser_button_set_title(_arg0, _arg1)
 }

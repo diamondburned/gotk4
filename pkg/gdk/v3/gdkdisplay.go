@@ -156,7 +156,7 @@ var (
 	_ gextras.Nativer = (*Display)(nil)
 )
 
-func wrapDisplay(obj *externglib.Object) Displayer {
+func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
 		Object: obj,
 	}
@@ -237,7 +237,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
+	_appLaunchContext = wrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }
@@ -271,7 +271,7 @@ func (display *Display) DefaultGroup() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -287,7 +287,7 @@ func (display *Display) DefaultScreen() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
 }
@@ -303,7 +303,7 @@ func (display *Display) DefaultSeat() *Seat {
 
 	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
+	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _seat
 }
@@ -321,7 +321,7 @@ func (display *Display) DeviceManager() *DeviceManager {
 
 	var _deviceManager *DeviceManager // out
 
-	_deviceManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceManager)
+	_deviceManager = wrapDeviceManager(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _deviceManager
 }
@@ -358,7 +358,7 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -379,7 +379,7 @@ func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -398,7 +398,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -476,7 +476,7 @@ func (display *Display) Pointer() (screen *Screen, x int, y int, mask ModifierTy
 	var _y int             // out
 	var _mask ModifierType // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_arg1)))
 	_x = int(_arg2)
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
@@ -500,7 +500,7 @@ func (display *Display) PrimaryMonitor() *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -521,7 +521,7 @@ func (display *Display) Screen(screenNum int) *Screen {
 
 	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
 }
@@ -548,7 +548,7 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window *Window) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _winX, _winY, _window
 }
@@ -615,7 +615,6 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
@@ -870,7 +869,7 @@ func DisplayGetDefault() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -881,13 +880,12 @@ func DisplayOpen(displayName string) *Display {
 	var _cret *C.GdkDisplay // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_open(_arg1)
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -906,7 +904,7 @@ func DisplayOpenDefaultLibgtkOnly() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }

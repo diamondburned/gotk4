@@ -58,7 +58,7 @@ var (
 	_ gextras.Nativer = (*BookmarkList)(nil)
 )
 
-func wrapBookmarkList(obj *externglib.Object) BookmarkLister {
+func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
 	return &BookmarkList{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -80,15 +80,13 @@ func NewBookmarkList(filename string, attributes string) *BookmarkList {
 	var _cret *C.GtkBookmarkList // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_bookmark_list_new(_arg1, _arg2)
 
 	var _bookmarkList *BookmarkList // out
 
-	_bookmarkList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BookmarkList)
+	_bookmarkList = wrapBookmarkList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bookmarkList
 }
@@ -173,7 +171,6 @@ func (self *BookmarkList) SetAttributes(attributes string) {
 
 	_arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_bookmark_list_set_attributes(_arg0, _arg1)
 }

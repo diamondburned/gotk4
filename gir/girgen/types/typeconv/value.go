@@ -197,7 +197,7 @@ func (value *ConversionValue) ParameterIsOutput() bool {
 // outputAllocs returns true if the parameter is a value we need to allocate
 // ourselves.
 func (value *ConversionValue) outputAllocs() bool {
-	return value.ParameterIsOutput() && (value.CallerAllocates || value.isTransferring())
+	return value.ParameterIsOutput() && (value.CallerAllocates || value.ownershipIsTransferring())
 }
 
 // isTransferring is true when the ownership is either full or container. If the
@@ -208,10 +208,56 @@ func (value *ConversionValue) outputAllocs() bool {
 // If the generating code is an array, and the conversion is being passed into
 // the same generation routine for the inner type, then the ownership should be
 // turned into "none" just for that inner type. See TypeConversion.inner().
-func (prop *ConversionValue) isTransferring() bool {
+func (prop *ConversionValue) ownershipIsTransferring() bool {
 	return false ||
 		prop.TransferOwnership.TransferOwnership == "full" ||
 		prop.TransferOwnership.TransferOwnership == "container"
+}
+
+// ShouldFree returns true if the C value must be freed once we're done.
+func (prop *ConversionValue) ShouldFree() bool {
+	// goReceiving is true when we're receiving the C value.
+	goReceiving := prop.ParameterIndex == ReturnValueIndex || prop.ParameterIsOutput()
+	// If we're not converting C to Go, then we're probably in a callback, so
+	// the ownership is flipped.
+	if prop.Direction != ConvertCToGo {
+		goReceiving = !goReceiving
+	}
+
+	if goReceiving {
+		return prop.ownershipIsTransferring()
+	}
+
+	return !prop.ownershipIsTransferring()
+}
+
+// MustRealloc returns true if we need to malloc our values to give it to C.
+// Generally, if a conversion routine has a no-alloc path, it should check
+// MustRealloc first. If MustRealloc is true, then it must check ShouldFree.
+//
+//    if prop.MustAlloc() {
+//        v = &oldValue
+//    } else {
+//        v = malloc()
+//        if prop.ShouldFree() {
+//            defer free(v)
+//        }
+//    }
+//
+func (prop *ConversionValue) MustRealloc() bool {
+	// goGiving is true when we're giving the C value.
+	goGiving := prop.ParameterIndex > -1 && !prop.ParameterIsOutput()
+	// If we're not converting Go to C, then we're probably in a callback, so
+	// the ownership is flipped.
+	if prop.Direction != ConvertGoToC {
+		goGiving = !goGiving
+	}
+
+	if goGiving {
+		return prop.ownershipIsTransferring()
+	}
+
+	return !prop.ownershipIsTransferring()
 }
 
 // ValueConverted is the result of conversion for a single value.
@@ -233,6 +279,7 @@ type ValueConverted struct {
 
 	// internal states
 	Resolved       *types.Resolved // only for type conversions
+	IsPublic       bool
 	NeedsNamespace bool
 
 	log func(lvl logger.Level, v ...interface{})
@@ -358,8 +405,17 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// Go input should always be the public (interface) type.
 		if value.PreferPublic {
 			value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
+			value.IsPublic = true
 		} else {
 			value.In.Type = value.Resolved.ImplType(value.NeedsNamespace)
+		}
+	}
+
+	if value.NeedsNamespace {
+		if value.IsPublic {
+			value.header.ImportPubl(value.Resolved)
+		} else {
+			value.header.ImportImpl(value.Resolved)
 		}
 	}
 
@@ -384,7 +440,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 // function. This should only be used for C to Go conversion.
 func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	var gobjectFunction string
-	if value.isTransferring() {
+	if value.ownershipIsTransferring() {
 		// Full or container means we implicitly own the object, so we must
 		// not take another reference.
 		gobjectFunction = "AssumeOwnership"
@@ -400,6 +456,38 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	m := gotmpl.M{
 		"Value": value,
 		"Func":  gobjectFunction,
+	}
+
+	if value.Resolved.IsExternGLib("Object") {
+		// Shortcut for GObject.
+		value.p.LineTmpl(m, `
+			<.Value.Out.Set> = externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+		`)
+		return true
+	}
+
+	if !value.NeedsNamespace {
+		value.p.LineTmpl(m, `
+			<.Value.Out.Set> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
+				(externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))
+		`)
+		return true
+	}
+
+	if tree := types.NewTree(conv.fgen); tree.ResolveFromType(value.Resolved) {
+		wrap := tree.WrapInNamespace("obj", &value.header, conv.sourceNamespace)
+		if value.OutPtr(1) == "*" {
+			// Dereference the wrapped struct value by removing the &.
+			wrap = strings.TrimPrefix(wrap, "&")
+		}
+		m["Wrap"] = wrap
+
+		value.p.LineTmpl(m, `{
+			obj := externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			<.Value.Out.Set> = <.Wrap>
+		}`)
+
+		return true
 	}
 
 	value.header.ImportCore("gextras")
@@ -430,7 +518,7 @@ func (value *ValueConverted) csizeof() string {
 		return value.ptrsz()
 	}
 
-	return "C.sizeof_" + value.Resolved.CType
+	return "C.sizeof_" + types.CleanCType(value.Resolved.CType, true)
 }
 
 func (value *ValueConverted) ptrsz() string {
@@ -487,7 +575,7 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 // InNamePtrPubl adds in an edge case if the value being inputted is possibly a
 // Go interface.
 func (value *ValueConverted) InNamePtrPubl(want int) string {
-	if want > 0 && value.PreferPublic && value.Resolved.PublicIsInterface() {
+	if want > 0 && value.IsPublic {
 		want--
 	}
 	return value.InNamePtr(want)

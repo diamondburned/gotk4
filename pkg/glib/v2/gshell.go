@@ -40,7 +40,6 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(commandLine)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
 
@@ -71,7 +70,6 @@ func ShellQuote(unquotedString string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(unquotedString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_quote(_arg1)
 
@@ -107,7 +105,6 @@ func ShellUnquote(quotedString string) (string, error) {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(quotedString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_shell_unquote(_arg1, &_cerr)
 

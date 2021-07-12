@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer    = (*FlattenListModel)(nil)
 )
 
-func wrapFlattenListModel(obj *externglib.Object) FlattenListModeler {
+func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	return &FlattenListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -74,7 +74,7 @@ func NewFlattenListModel(model gio.ListModeler) *FlattenListModel {
 
 	var _flattenListModel *FlattenListModel // out
 
-	_flattenListModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FlattenListModel)
+	_flattenListModel = wrapFlattenListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _flattenListModel
 }
@@ -90,7 +90,12 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -108,7 +113,12 @@ func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -339,7 +340,15 @@ func RenderIconPixbuf(context StyleContexter, source *IconSource, size int) *gdk
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }

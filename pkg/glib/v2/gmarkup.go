@@ -126,7 +126,6 @@ func MarkupEscapeText(text string, length int) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
@@ -268,7 +267,6 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
 
 	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)

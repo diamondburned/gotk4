@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,7 +61,7 @@ var (
 	_ gextras.Nativer   = (*OffscreenWindow)(nil)
 )
 
-func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindower {
+func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{
 		Window: Window{
 			Bin: Bin{
@@ -97,7 +98,7 @@ func NewOffscreenWindow() *OffscreenWindow {
 
 	var _offscreenWindow *OffscreenWindow // out
 
-	_offscreenWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OffscreenWindow)
+	_offscreenWindow = wrapOffscreenWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _offscreenWindow
 }
@@ -115,7 +116,15 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }

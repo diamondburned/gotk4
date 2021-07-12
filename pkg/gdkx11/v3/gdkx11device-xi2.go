@@ -36,7 +36,7 @@ var (
 	_ gextras.Nativer = (*X11DeviceXI2)(nil)
 )
 
-func wrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2er {
+func wrapX11DeviceXI2(obj *externglib.Object) *X11DeviceXI2 {
 	return &X11DeviceXI2{
 		Device: gdk.Device{
 			Object: obj,

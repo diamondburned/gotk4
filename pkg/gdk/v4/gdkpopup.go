@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer = (*Popup)(nil)
 )
 
-func wrapPopup(obj *externglib.Object) Popuper {
+func wrapPopup(obj *externglib.Object) *Popup {
 	return &Popup{
 		Surface: Surface{
 			Object: obj,
@@ -98,7 +98,7 @@ func (popup *Popup) Parent() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }

@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*Viewport)(nil)
 )
 
-func wrapViewport(obj *externglib.Object) Viewporter {
+func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -108,7 +108,7 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 
 	var _viewport *Viewport // out
 
-	_viewport = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Viewport)
+	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -130,7 +130,7 @@ func (viewport *Viewport) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

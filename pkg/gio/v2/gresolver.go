@@ -148,7 +148,7 @@ var (
 	_ gextras.Nativer = (*Resolver)(nil)
 )
 
-func wrapResolver(obj *externglib.Object) Resolverer {
+func wrapResolver(obj *externglib.Object) *Resolver {
 	return &Resolver{
 		Object: obj,
 	}
@@ -250,7 +250,6 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable Cancell
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
@@ -272,7 +271,6 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(hostname string, flags Reso
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResolverNameLookupFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -295,7 +293,6 @@ func (resolver *Resolver) LookupRecordsAsync(rrname string, recordType ResolverR
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResolverRecordType(recordType)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -319,11 +316,8 @@ func (resolver *Resolver) LookupServiceAsync(service string, protocol string, do
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.Assign(callback))
@@ -358,7 +352,7 @@ func ResolverGetDefault() *Resolver {
 
 	var _resolver *Resolver // out
 
-	_resolver = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Resolver)
+	_resolver = wrapResolver(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _resolver
 }

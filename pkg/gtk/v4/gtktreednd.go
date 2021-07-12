@@ -37,7 +37,12 @@ func TreeCreateRowDragContent(treeModel TreeModeler, path *TreePath) *gdk.Conten
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.ContentProvider)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_contentProvider = &gdk.ContentProvider{
+			Object: obj,
+		}
+	}
 
 	return _contentProvider
 }
@@ -60,7 +65,7 @@ func TreeGetRowDragData(value *externglib.Value) (*TreeModel, *TreePath, bool) {
 
 	var _ok bool // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg2)))
 
 	if _cret != 0 {
 		_ok = true
@@ -109,7 +114,7 @@ var (
 	_ gextras.Nativer = (*TreeDragDest)(nil)
 )
 
-func wrapTreeDragDest(obj *externglib.Object) TreeDragDester {
+func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	return &TreeDragDest{
 		Object: obj,
 	}
@@ -217,7 +222,7 @@ var (
 	_ gextras.Nativer = (*TreeDragSource)(nil)
 )
 
-func wrapTreeDragSource(obj *externglib.Object) TreeDragSourcer {
+func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	return &TreeDragSource{
 		Object: obj,
 	}
@@ -267,7 +272,12 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.ContentProvider)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_contentProvider = &gdk.ContentProvider{
+			Object: obj,
+		}
+	}
 
 	return _contentProvider
 }

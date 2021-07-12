@@ -87,7 +87,7 @@ var (
 	_ gextras.Nativer  = (*WindowControls)(nil)
 )
 
-func wrapWindowControls(obj *externglib.Object) WindowControlser {
+func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	return &WindowControls{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -123,7 +123,7 @@ func NewWindowControls(side PackType) *WindowControls {
 
 	var _windowControls *WindowControls // out
 
-	_windowControls = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowControls)
+	_windowControls = wrapWindowControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowControls
 }
@@ -198,7 +198,6 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
 }

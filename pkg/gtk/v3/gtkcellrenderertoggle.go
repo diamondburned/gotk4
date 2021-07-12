@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer     = (*CellRendererToggle)(nil)
 )
 
-func wrapCellRendererToggle(obj *externglib.Object) CellRendererToggler {
+func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	return &CellRendererToggle{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -90,7 +90,7 @@ func NewCellRendererToggle() *CellRendererToggle {
 
 	var _cellRendererToggle *CellRendererToggle // out
 
-	_cellRendererToggle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererToggle)
+	_cellRendererToggle = wrapCellRendererToggle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererToggle
 }

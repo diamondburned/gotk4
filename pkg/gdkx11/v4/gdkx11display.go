@@ -3,7 +3,6 @@
 package gdkx11
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -33,7 +32,6 @@ func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
@@ -90,7 +88,7 @@ var (
 	_ gextras.Nativer = (*X11Display)(nil)
 )
 
-func wrapX11Display(obj *externglib.Object) X11Displayer {
+func wrapX11Display(obj *externglib.Object) *X11Display {
 	return &X11Display{
 		Display: gdk.Display{
 			Object: obj,
@@ -163,7 +161,12 @@ func (display *X11Display) DefaultGroup() *gdk.Surface {
 
 	var _surface *gdk.Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Surface)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_surface = &gdk.Surface{
+			Object: obj,
+		}
+	}
 
 	return _surface
 }
@@ -211,7 +214,12 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 
 	var _monitor *gdk.Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Monitor)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_monitor = &gdk.Monitor{
+			Object: obj,
+		}
+	}
 
 	return _monitor
 }
@@ -227,7 +235,7 @@ func (display *X11Display) Screen() *X11Screen {
 
 	var _x11Screen *X11Screen // out
 
-	_x11Screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*X11Screen)
+	_x11Screen = wrapX11Screen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _x11Screen
 }
@@ -293,7 +301,6 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(theme)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(size)
 
 	C.gdk_x11_display_set_cursor_theme(_arg0, _arg1, _arg2)
@@ -318,7 +325,6 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_x11_display_set_startup_notification_id(_arg0, _arg1)
 }
@@ -353,7 +359,6 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -364,10 +369,9 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
-	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
-	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg4))
+	_ctext = make([]byte, _arg5)
+	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
 	_gint = int(_cret)
 
 	return _encoding, _format, _ctext, _gint
@@ -394,7 +398,6 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
@@ -405,10 +408,9 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	_format = int(_arg3)
-	_ctext = unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5)
-	runtime.SetFinalizer(&_ctext, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg4))
+	_ctext = make([]byte, _arg5)
+	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -423,13 +425,17 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 	var _cret *C.GdkDisplay // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_x11_display_open(_arg1)
 
 	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Display)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
 
 	return _display
 }
@@ -444,7 +450,6 @@ func X11DisplaySetProgramClass(display gdk.Displayer, programClass string) {
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(programClass)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gdk_x11_display_set_program_class(_arg1, _arg2)
 }

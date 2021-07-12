@@ -129,7 +129,7 @@ var (
 	_ gextras.Nativer        = (*PollableOutputStream)(nil)
 )
 
-func wrapPollableOutputStream(obj *externglib.Object) PollableOutputStreamer {
+func wrapPollableOutputStream(obj *externglib.Object) *PollableOutputStream {
 	return &PollableOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -244,7 +244,9 @@ func (stream *PollableOutputStream) WriteNonblocking(buffer []byte, cancellable 
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
@@ -284,7 +286,9 @@ func (stream *PollableOutputStream) WritevNonblocking(vectors []OutputVector, ca
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
-	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_output_stream_writev_nonblocking(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)

@@ -97,7 +97,7 @@ var (
 	_ gextras.Nativer = (*Scrollable)(nil)
 )
 
-func wrapScrollable(obj *externglib.Object) Scrollabler {
+func wrapScrollable(obj *externglib.Object) *Scrollable {
 	return &Scrollable{
 		Object: obj,
 	}
@@ -144,7 +144,7 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -176,7 +176,7 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

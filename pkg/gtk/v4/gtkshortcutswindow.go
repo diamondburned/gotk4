@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer   = (*ShortcutsWindow)(nil)
 )
 
-func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindower {
+func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
 		Window: Window{
 			Widget: Widget{

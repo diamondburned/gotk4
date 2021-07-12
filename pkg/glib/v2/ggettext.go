@@ -22,9 +22,7 @@ func Dcgettext(domain string, msgid string, category int) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(msgid)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(category)
 
 	_cret = C.g_dcgettext(_arg1, _arg2, _arg3)
@@ -73,9 +71,7 @@ func Dgettext(domain string, msgid string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(msgid)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dgettext(_arg1, _arg2)
 
@@ -99,11 +95,8 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(msgid)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(msgidPlural)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.gulong(n)
 
 	_cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
@@ -133,9 +126,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(msgctxtid)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gsize(msgidoffset)
 
 	_cret = C.g_dpgettext(_arg1, _arg2, _arg3)
@@ -163,11 +154,8 @@ func Dpgettext2(domain string, context string, msgid string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(msgid)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dpgettext2(_arg1, _arg2, _arg3)
 
@@ -185,9 +173,7 @@ func StripContext(msgid string, msgval string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(msgid)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(msgval)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_strip_context(_arg1, _arg2)
 

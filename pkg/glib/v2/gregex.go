@@ -379,7 +379,6 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stringToExpand)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_expand_references(_arg0, _arg1, &_cerr)
 
@@ -461,7 +460,6 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -483,7 +481,6 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_fetch_named(_arg0, _arg1)
 
@@ -510,7 +507,6 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 
 	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_match_info_fetch_named_pos(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -830,7 +826,6 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexCompileFlags(compileOptions)
 	_arg3 = C.GRegexMatchFlags(matchOptions)
 
@@ -984,7 +979,6 @@ func (regex *Regex) StringNumber(name string) int {
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_regex_get_string_number(_arg0, _arg1)
 
@@ -1042,7 +1036,6 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
@@ -1078,7 +1071,6 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
@@ -1136,7 +1128,6 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 
 	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
 	_cret = C.g_regex_split(_arg0, _arg1, _arg2)
@@ -1154,7 +1145,6 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1185,7 +1175,6 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 	var _cerr *C.GError  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(replacement)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_regex_check_replacement(_arg1, &_arg2, &_cerr)
 
@@ -1211,7 +1200,6 @@ func RegexEscapeNUL(_string string, length int) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(length)
 
 	_cret = C.g_regex_escape_nul(_arg1, _arg2)
@@ -1242,9 +1230,7 @@ func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompil
 	var _cret C.gboolean           // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GRegexCompileFlags(compileOptions)
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
@@ -1292,9 +1278,7 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GRegexCompileFlags(compileOptions)
 	_arg4 = C.GRegexMatchFlags(matchOptions)
 
@@ -1313,7 +1297,6 @@ func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompil
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

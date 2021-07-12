@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer  = (*IMContextSimple)(nil)
 )
 
-func wrapIMContextSimple(obj *externglib.Object) IMContextSimpler {
+func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 	return &IMContextSimple{
 		IMContext: IMContext{
 			Object: obj,
@@ -82,7 +82,7 @@ func NewIMContextSimple() *IMContextSimple {
 
 	var _imContextSimple *IMContextSimple // out
 
-	_imContextSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMContextSimple)
+	_imContextSimple = wrapIMContextSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imContextSimple
 }
@@ -94,7 +94,6 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 
 	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(contextSimple.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(composeFile)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_context_simple_add_compose_file(_arg0, _arg1)
 }

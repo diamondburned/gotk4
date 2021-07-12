@@ -192,7 +192,6 @@ func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_add_default_file(_arg1)
 }
@@ -206,7 +205,6 @@ func RCFindModuleInPath(moduleFile string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(moduleFile)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
 
@@ -232,7 +230,6 @@ func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile s
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(pixmapFile)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
 
@@ -266,6 +263,7 @@ func RCGetDefaultFiles() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -343,7 +341,7 @@ func RCGetStyle(widget Widgeter) *Style {
 
 	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
+	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -372,16 +370,14 @@ func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string,
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(classPath)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GType(typ)
 
 	_cret = C.gtk_rc_get_style_by_paths(_arg1, _arg2, _arg3, _arg4)
 
 	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
+	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -410,7 +406,6 @@ func RCParse(filename string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse(_arg1)
 }
@@ -489,7 +484,6 @@ func RCParseString(rcString string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rcString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_rc_parse_string(_arg1)
 }
@@ -565,12 +559,10 @@ func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar
 
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(filenames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(filenames))
 		for i := range filenames {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(filenames[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -604,7 +596,7 @@ var (
 	_ gextras.Nativer = (*RCStyle)(nil)
 )
 
-func wrapRCStyle(obj *externglib.Object) RCStyler {
+func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	return &RCStyle{
 		Object: obj,
 	}
@@ -627,7 +619,7 @@ func NewRCStyle() *RCStyle {
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyle)
+	_rcStyle = wrapRCStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }
@@ -646,7 +638,7 @@ func (orig *RCStyle) Copy() *RCStyle {
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RCStyle)
+	_rcStyle = wrapRCStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }

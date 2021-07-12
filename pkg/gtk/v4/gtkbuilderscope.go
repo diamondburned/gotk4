@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer = (*BuilderScope)(nil)
 )
 
-func wrapBuilderScope(obj *externglib.Object) BuilderScoper {
+func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
 	return &BuilderScope{
 		Object: obj,
 	}
@@ -124,7 +124,7 @@ var (
 	_ gextras.Nativer = (*BuilderCScope)(nil)
 )
 
-func wrapBuilderCScope(obj *externglib.Object) BuilderCScoper {
+func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 	return &BuilderCScope{
 		Object: obj,
 		BuilderScope: BuilderScope{
@@ -151,7 +151,7 @@ func NewBuilderCScope() *BuilderCScope {
 
 	var _builderCScope *BuilderCScope // out
 
-	_builderCScope = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderCScope)
+	_builderCScope = wrapBuilderCScope(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderCScope
 }

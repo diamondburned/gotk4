@@ -70,7 +70,7 @@ func DragGetSourceWidget(context gdk.DragContexter) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -113,7 +113,6 @@ func DragSetIconName(context gdk.DragContexter, iconName string, hotX int, hotY 
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 
@@ -146,7 +145,6 @@ func DragSetIconStock(context gdk.DragContexter, stockId string, hotX int, hotY 
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(hotX)
 	_arg4 = C.gint(hotY)
 

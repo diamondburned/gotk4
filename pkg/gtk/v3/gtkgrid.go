@@ -104,7 +104,7 @@ var (
 	_ gextras.Nativer = (*Grid)(nil)
 )
 
-func wrapGrid(obj *externglib.Object) Grider {
+func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{
 		Container: Container{
 			Widget: Widget{
@@ -139,7 +139,7 @@ func NewGrid() *Grid {
 
 	var _grid *Grid // out
 
-	_grid = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Grid)
+	_grid = wrapGrid(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _grid
 }
@@ -230,7 +230,7 @@ func (grid *Grid) ChildAt(left int, top int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

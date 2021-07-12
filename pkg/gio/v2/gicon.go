@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer = (*Icon)(nil)
 )
 
-func wrapIcon(obj *externglib.Object) Iconer {
+func wrapIcon(obj *externglib.Object) *Icon {
 	return &Icon{
 		Object: obj,
 	}
@@ -198,7 +198,7 @@ func IconDeserialize(value *glib.Variant) *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -231,14 +231,13 @@ func IconNewForString(str string) (*Icon, error) {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
 
 	var _icon *Icon  // out
 	var _goerr error // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _icon, _goerr

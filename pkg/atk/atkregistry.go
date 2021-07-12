@@ -34,7 +34,7 @@ func GetDefaultRegistry() *Registry {
 
 	var _registry *Registry // out
 
-	_registry = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Registry)
+	_registry = wrapRegistry(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _registry
 }
@@ -65,7 +65,7 @@ var (
 	_ gextras.Nativer = (*Registry)(nil)
 )
 
-func wrapRegistry(obj *externglib.Object) Registrier {
+func wrapRegistry(obj *externglib.Object) *Registry {
 	return &Registry{
 		Object: obj,
 	}
@@ -91,7 +91,7 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 
 	var _objectFactory *ObjectFactory // out
 
-	_objectFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectFactory)
+	_objectFactory = wrapObjectFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _objectFactory
 }

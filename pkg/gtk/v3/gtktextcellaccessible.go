@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer     = (*TextCellAccessible)(nil)
 )
 
-func wrapTextCellAccessible(obj *externglib.Object) TextCellAccessibler {
+func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{

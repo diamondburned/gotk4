@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*Hypertext)(nil)
 )
 
-func wrapHypertext(obj *externglib.Object) Hypertexter {
+func wrapHypertext(obj *externglib.Object) *Hypertext {
 	return &Hypertext{
 		Object: obj,
 	}
@@ -88,7 +88,7 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 
 	var _hyperlink *Hyperlink // out
 
-	_hyperlink = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Hyperlink)
+	_hyperlink = wrapHyperlink(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hyperlink
 }

@@ -126,7 +126,7 @@ var (
 	_ gextras.Nativer = (*Paned)(nil)
 )
 
-func wrapPaned(obj *externglib.Object) Paneder {
+func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -165,7 +165,7 @@ func NewPaned(orientation Orientation) *Paned {
 
 	var _paned *Paned // out
 
-	_paned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Paned)
+	_paned = wrapPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _paned
 }
@@ -189,7 +189,7 @@ func (paned *Paned) EndChild() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -295,7 +295,7 @@ func (paned *Paned) StartChild() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

@@ -75,7 +75,7 @@ var (
 	_ gextras.Nativer = (*Buildable)(nil)
 )
 
-func wrapBuildable(obj *externglib.Object) Buildabler {
+func wrapBuildable(obj *externglib.Object) *Buildable {
 	return &Buildable{
 		Object: obj,
 	}

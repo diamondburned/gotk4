@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer      = (*EventControllerKey)(nil)
 )
 
-func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyer {
+func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	return &EventControllerKey{
 		EventController: EventController{
 			Object: obj,
@@ -69,7 +69,7 @@ func NewEventControllerKey(widget Widgeter) *EventControllerKey {
 
 	var _eventControllerKey *EventControllerKey // out
 
-	_eventControllerKey = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerKey)
+	_eventControllerKey = wrapEventControllerKey(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerKey
 }
@@ -119,7 +119,7 @@ func (controller *EventControllerKey) ImContext() *IMContext {
 
 	var _imContext *IMContext // out
 
-	_imContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IMContext)
+	_imContext = wrapIMContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _imContext
 }

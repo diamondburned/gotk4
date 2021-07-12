@@ -41,8 +41,8 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	var font *Font          // out
 	var userData cgo.Handle // out
 
-	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Fontset)
-	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Font)
+	fontset = wrapFontset(externglib.Take(unsafe.Pointer(arg0)))
+	font = wrapFont(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FontsetForeachFunc)
@@ -101,7 +101,7 @@ var (
 	_ gextras.Nativer = (*Fontset)(nil)
 )
 
-func wrapFontset(obj *externglib.Object) Fontseter {
+func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{
 		Object: obj,
 	}
@@ -143,7 +143,7 @@ func (fontset *Fontset) Font(wc uint) *Font {
 
 	var _font *Font // out
 
-	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Font)
+	_font = wrapFont(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _font
 }
@@ -190,7 +190,7 @@ var (
 	_ gextras.Nativer = (*FontsetSimple)(nil)
 )
 
-func wrapFontsetSimple(obj *externglib.Object) FontsetSimpler {
+func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{
 		Fontset: Fontset{
 			Object: obj,
@@ -215,7 +215,7 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 
 	var _fontsetSimple *FontsetSimple // out
 
-	_fontsetSimple = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FontsetSimple)
+	_fontsetSimple = wrapFontsetSimple(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontsetSimple
 }

@@ -110,7 +110,7 @@ var (
 	_ gextras.Nativer = (*Device)(nil)
 )
 
-func wrapDevice(obj *externglib.Object) Devicer {
+func wrapDevice(obj *externglib.Object) *Device {
 	return &Device{
 		Object: obj,
 	}
@@ -154,7 +154,7 @@ func (device *Device) DeviceTool() *DeviceTool {
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DeviceTool)
+	_deviceTool = wrapDeviceTool(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _deviceTool
 }
@@ -191,7 +191,7 @@ func (device *Device) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -338,7 +338,7 @@ func (device *Device) Seat() *Seat {
 
 	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
+	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _seat
 }
@@ -380,7 +380,7 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface *
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _winX, _winY, _surface
 }

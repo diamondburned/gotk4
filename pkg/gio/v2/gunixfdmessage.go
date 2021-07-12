@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer = (*UnixFDMessage)(nil)
 )
 
-func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessager {
+func wrapUnixFDMessage(obj *externglib.Object) *UnixFDMessage {
 	return &UnixFDMessage{
 		SocketControlMessage: SocketControlMessage{
 			Object: obj,
@@ -84,7 +84,7 @@ func NewUnixFDMessage() *UnixFDMessage {
 
 	var _unixFDMessage *UnixFDMessage // out
 
-	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessage)
+	_unixFDMessage = wrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
@@ -100,7 +100,7 @@ func NewUnixFDMessageWithFdList(fdList UnixFDLister) *UnixFDMessage {
 
 	var _unixFDMessage *UnixFDMessage // out
 
-	_unixFDMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixFDMessage)
+	_unixFDMessage = wrapUnixFDMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixFDMessage
 }
@@ -143,7 +143,7 @@ func (message *UnixFDMessage) FdList() *UnixFDList {
 
 	var _unixFDList *UnixFDList // out
 
-	_unixFDList = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*UnixFDList)
+	_unixFDList = wrapUnixFDList(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _unixFDList
 }

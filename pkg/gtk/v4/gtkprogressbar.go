@@ -111,7 +111,7 @@ var (
 	_ gextras.Nativer = (*ProgressBar)(nil)
 )
 
-func wrapProgressBar(obj *externglib.Object) ProgressBarer {
+func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	return &ProgressBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -147,7 +147,7 @@ func NewProgressBar() *ProgressBar {
 
 	var _progressBar *ProgressBar // out
 
-	_progressBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProgressBar)
+	_progressBar = wrapProgressBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
 }
@@ -378,7 +378,6 @@ func (pbar *ProgressBar) SetText(text string) {
 
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_progress_bar_set_text(_arg0, _arg1)
 }

@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,8 +35,9 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 	var handle string             // out
 	var userData cgo.Handle       // out
 
-	toplevel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*WaylandToplevel)
+	toplevel = wrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0)))
 	handle = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(WaylandToplevelExported)

@@ -155,7 +155,7 @@ var (
 	_ gextras.Nativer = (*GLShader)(nil)
 )
 
-func wrapGLShader(obj *externglib.Object) GLShaderer {
+func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{
 		Object: obj,
 	}
@@ -174,13 +174,12 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _cret *C.GskGLShader // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_new_from_resource(_arg1)
 
 	var _glShader *GLShader // out
 
-	_glShader = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLShader)
+	_glShader = wrapGLShader(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _glShader
 }
@@ -221,7 +220,6 @@ func (shader *GLShader) FindUniformByName(name string) int {
 
 	_arg0 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
 

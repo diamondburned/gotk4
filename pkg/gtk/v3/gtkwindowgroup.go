@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer = (*WindowGroup)(nil)
 )
 
-func wrapWindowGroup(obj *externglib.Object) WindowGrouper {
+func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,
 	}
@@ -81,7 +81,7 @@ func NewWindowGroup() *WindowGroup {
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroup)
+	_windowGroup = wrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }
@@ -111,7 +111,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -128,7 +128,7 @@ func (windowGroup *WindowGroup) CurrentGrab() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

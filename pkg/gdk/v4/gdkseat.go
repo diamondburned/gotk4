@@ -71,7 +71,7 @@ var (
 	_ gextras.Nativer = (*Seat)(nil)
 )
 
-func wrapSeat(obj *externglib.Object) Seater {
+func wrapSeat(obj *externglib.Object) *Seat {
 	return &Seat{
 		Object: obj,
 	}
@@ -110,7 +110,7 @@ func (seat *Seat) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -126,7 +126,7 @@ func (seat *Seat) Keyboard() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -142,7 +142,7 @@ func (seat *Seat) Pointer() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }

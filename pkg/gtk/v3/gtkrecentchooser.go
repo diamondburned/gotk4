@@ -220,7 +220,7 @@ var (
 	_ gextras.Nativer = (*RecentChooser)(nil)
 )
 
-func wrapRecentChooser(obj *externglib.Object) RecentChooserer {
+func wrapRecentChooser(obj *externglib.Object) *RecentChooser {
 	return &RecentChooser{
 		Object: obj,
 	}
@@ -295,7 +295,7 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 
 	var _recentFilter *RecentFilter // out
 
-	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilter)
+	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
 }
@@ -475,7 +475,6 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
 
@@ -494,7 +493,6 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
 
@@ -642,7 +640,6 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 
 	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
 }

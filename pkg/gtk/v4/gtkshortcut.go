@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*Shortcut)(nil)
 )
 
-func wrapShortcut(obj *externglib.Object) Shortcuter {
+func wrapShortcut(obj *externglib.Object) *Shortcut {
 	return &Shortcut{
 		Object: obj,
 	}
@@ -89,7 +89,7 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 
 	var _shortcut *Shortcut // out
 
-	_shortcut = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Shortcut)
+	_shortcut = wrapShortcut(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcut
 }
@@ -105,7 +105,7 @@ func (self *Shortcut) Action() *ShortcutAction {
 
 	var _shortcutAction *ShortcutAction // out
 
-	_shortcutAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutAction)
+	_shortcutAction = wrapShortcutAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutAction
 }
@@ -141,7 +141,7 @@ func (self *Shortcut) Trigger() *ShortcutTrigger {
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutTrigger)
+	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }

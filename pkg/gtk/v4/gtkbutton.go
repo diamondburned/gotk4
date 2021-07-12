@@ -97,7 +97,7 @@ var (
 	_ gextras.Nativer = (*Button)(nil)
 )
 
-func wrapButton(obj *externglib.Object) Buttoner {
+func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -148,7 +148,7 @@ func NewButton() *Button {
 
 	var _button *Button // out
 
-	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -164,13 +164,12 @@ func NewButtonFromIconName(iconName string) *Button {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_from_icon_name(_arg1)
 
 	var _button *Button // out
 
-	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -181,13 +180,12 @@ func NewButtonWithLabel(label string) *Button {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_label(_arg1)
 
 	var _button *Button // out
 
-	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -204,13 +202,12 @@ func NewButtonWithMnemonic(label string) *Button {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_button_new_with_mnemonic(_arg1)
 
 	var _button *Button // out
 
-	_button = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_button = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _button
 }
@@ -232,7 +229,7 @@ func (button *Button) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -351,7 +348,6 @@ func (button *Button) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_button_set_icon_name(_arg0, _arg1)
 }
@@ -365,7 +361,6 @@ func (button *Button) SetLabel(label string) {
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_button_set_label(_arg0, _arg1)
 }

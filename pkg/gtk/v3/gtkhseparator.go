@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer = (*HSeparator)(nil)
 )
 
-func wrapHSeparator(obj *externglib.Object) HSeparatorer {
+func wrapHSeparator(obj *externglib.Object) *HSeparator {
 	return &HSeparator{
 		Separator: Separator{
 			Widget: Widget{
@@ -85,7 +85,7 @@ func NewHSeparator() *HSeparator {
 
 	var _hSeparator *HSeparator // out
 
-	_hSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSeparator)
+	_hSeparator = wrapHSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hSeparator
 }

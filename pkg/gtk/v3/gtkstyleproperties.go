@@ -72,7 +72,7 @@ var (
 	_ gextras.Nativer   = (*StyleProperties)(nil)
 )
 
-func wrapStyleProperties(obj *externglib.Object) StylePropertieser {
+func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	return &StyleProperties{
 		Object: obj,
 		StyleProvider: StyleProvider{
@@ -97,7 +97,7 @@ func NewStyleProperties() *StyleProperties {
 
 	var _styleProperties *StyleProperties // out
 
-	_styleProperties = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleProperties)
+	_styleProperties = wrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _styleProperties
 }
@@ -126,7 +126,6 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
 	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
@@ -136,7 +135,7 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 
 	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
-		C.g_value_unset((*C.GValue)(v.GValue))
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
 	})
 	if _cret != 0 {
 		_ok = true
@@ -155,7 +154,6 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
 
@@ -181,7 +179,6 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
 
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
@@ -217,7 +214,6 @@ func (props *StyleProperties) SetPropertyStylePropertieser(property string, stat
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -234,7 +230,6 @@ func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStateFlags(state)
 
 	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
@@ -532,7 +527,6 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	var _cret *C.GtkSymbolicColor // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_symbolic_color_new_name(_arg1)
 
@@ -576,7 +570,6 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	var _cret *C.GtkSymbolicColor // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(id)
 
 	_cret = C.gtk_symbolic_color_new_win32(_arg1, _arg2)

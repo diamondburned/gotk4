@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer       = (*NativeVolumeMonitor)(nil)
 )
 
-func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitorer {
+func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	return &NativeVolumeMonitor{
 		VolumeMonitor: VolumeMonitor{
 			Object: obj,

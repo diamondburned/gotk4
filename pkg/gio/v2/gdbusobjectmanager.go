@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer     = (*DBusObjectManager)(nil)
 )
 
-func wrapDBusObjectManager(obj *externglib.Object) DBusObjectManagerer {
+func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
 	return &DBusObjectManager{
 		Object: obj,
 	}
@@ -98,15 +98,13 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 
 	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterface)
+	_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusInterface
 }
@@ -119,13 +117,12 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 
 	var _dBusObject *DBusObject // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObject)
+	_dBusObject = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObject
 }

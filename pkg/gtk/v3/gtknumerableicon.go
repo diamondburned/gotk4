@@ -71,7 +71,7 @@ var (
 	_ gextras.Nativer = (*NumerableIcon)(nil)
 )
 
-func wrapNumerableIcon(obj *externglib.Object) NumerableIconer {
+func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	return &NumerableIcon{
 		EmblemedIcon: gio.EmblemedIcon{
 			Object: obj,
@@ -103,7 +103,12 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -177,7 +182,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 
 	var _styleContext *StyleContext // out
 
-	_styleContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleContext)
+	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _styleContext
 }
@@ -219,7 +224,6 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
 }
@@ -264,7 +268,6 @@ func (self *NumerableIcon) SetLabel(label string) {
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_numerable_icon_set_label(_arg0, _arg1)
 }
@@ -296,7 +299,12 @@ func NumerableIconNew(baseIcon gio.Iconer) *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -318,7 +326,12 @@ func NumerableIconNewWithStyleContext(baseIcon gio.Iconer, context StyleContexte
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }

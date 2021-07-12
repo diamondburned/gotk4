@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer = (*StackSwitcher)(nil)
 )
 
-func wrapStackSwitcher(obj *externglib.Object) StackSwitcherer {
+func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -99,7 +99,7 @@ func NewStackSwitcher() *StackSwitcher {
 
 	var _stackSwitcher *StackSwitcher // out
 
-	_stackSwitcher = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSwitcher)
+	_stackSwitcher = wrapStackSwitcher(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSwitcher
 }
@@ -115,7 +115,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
+	_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }

@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer     = (*FontChooserDialog)(nil)
 )
 
-func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialoger {
+func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	return &FontChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -112,14 +112,13 @@ func NewFontChooserDialog(title string, parent Windower) *FontChooserDialog {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 
 	var _fontChooserDialog *FontChooserDialog // out
 
-	_fontChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserDialog)
+	_fontChooserDialog = wrapFontChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserDialog
 }

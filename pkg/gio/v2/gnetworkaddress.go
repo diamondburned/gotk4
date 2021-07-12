@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer  = (*NetworkAddress)(nil)
 )
 
-func wrapNetworkAddress(obj *externglib.Object) NetworkAddresser {
+func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{
 		Object: obj,
 		SocketConnectable: SocketConnectable{
@@ -89,14 +89,13 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _cret *C.GSocketConnectable // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_network_address_new(_arg1, _arg2)
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -122,7 +121,7 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkAddress
 }
@@ -203,7 +202,6 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
@@ -211,7 +209,7 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _networkAddress, _goerr
@@ -229,7 +227,6 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(defaultPort)
 
 	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)
@@ -237,7 +234,7 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_networkAddress = wrapNetworkAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _networkAddress, _goerr

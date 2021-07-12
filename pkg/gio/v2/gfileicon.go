@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer = (*FileIcon)(nil)
 )
 
-func wrapFileIcon(obj *externglib.Object) FileIconer {
+func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	return &FileIcon{
 		Object: obj,
 		LoadableIcon: LoadableIcon{
@@ -77,7 +77,7 @@ func NewFileIcon(file Filer) *FileIcon {
 
 	var _fileIcon *FileIcon // out
 
-	_fileIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileIcon)
+	_fileIcon = wrapFileIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileIcon
 }
@@ -93,7 +93,7 @@ func (icon *FileIcon) File() *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }

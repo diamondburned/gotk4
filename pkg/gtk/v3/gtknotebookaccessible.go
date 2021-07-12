@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer     = (*NotebookAccessible)(nil)
 )
 
-func wrapNotebookAccessible(obj *externglib.Object) NotebookAccessibler {
+func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 	return &NotebookAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

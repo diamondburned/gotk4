@@ -132,7 +132,7 @@ var (
 	_ gextras.Nativer = (*PrintContext)(nil)
 )
 
-func wrapPrintContext(obj *externglib.Object) PrintContexter {
+func wrapPrintContext(obj *externglib.Object) *PrintContext {
 	return &PrintContext{
 		Object: obj,
 	}
@@ -156,7 +156,12 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 
 	var _ret *pango.Context // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_ret = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _ret
 }
@@ -173,7 +178,12 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }
@@ -286,7 +296,7 @@ func (context *PrintContext) PageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -303,7 +313,12 @@ func (context *PrintContext) PangoFontmap() *pango.FontMap {
 
 	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontMap)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_fontMap = &pango.FontMap{
+			Object: obj,
+		}
+	}
 
 	return _fontMap
 }

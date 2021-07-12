@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer   = (*UnixInputStream)(nil)
 )
 
-func wrapUnixInputStream(obj *externglib.Object) UnixInputStreamer {
+func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 	return &UnixInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -103,7 +103,7 @@ func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 
 	var _unixInputStream *UnixInputStream // out
 
-	_unixInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixInputStream)
+	_unixInputStream = wrapUnixInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixInputStream
 }

@@ -88,7 +88,6 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 
 	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(orig))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(splitIndex)
 
 	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
@@ -190,7 +189,6 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
 
@@ -216,7 +214,6 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
 

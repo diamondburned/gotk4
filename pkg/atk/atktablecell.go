@@ -74,7 +74,7 @@ var (
 	_ gextras.Nativer = (*TableCell)(nil)
 )
 
-func wrapTableCell(obj *externglib.Object) TableCeller {
+func wrapTableCell(obj *externglib.Object) *TableCell {
 	return &TableCell{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -190,7 +190,7 @@ func (cell *TableCell) Table() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }

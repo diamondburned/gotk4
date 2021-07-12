@@ -115,7 +115,7 @@ var (
 	_ gextras.Nativer = (*Initable)(nil)
 )
 
-func wrapInitable(obj *externglib.Object) Initabler {
+func wrapInitable(obj *externglib.Object) *Initable {
 	return &Initable{
 		Object: obj,
 	}

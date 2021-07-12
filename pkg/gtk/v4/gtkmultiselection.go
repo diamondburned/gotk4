@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer  = (*MultiSelection)(nil)
 )
 
-func wrapMultiSelection(obj *externglib.Object) MultiSelectioner {
+func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
 	return &MultiSelection{
 		Object: obj,
 		SelectionModel: SelectionModel{
@@ -71,7 +71,7 @@ func NewMultiSelection(model gio.ListModeler) *MultiSelection {
 
 	var _multiSelection *MultiSelection // out
 
-	_multiSelection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MultiSelection)
+	_multiSelection = wrapMultiSelection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSelection
 }
@@ -87,7 +87,12 @@ func (self *MultiSelection) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

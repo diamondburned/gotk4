@@ -73,7 +73,7 @@ var (
 	_ gextras.Nativer = (*LoadableIcon)(nil)
 )
 
-func wrapLoadableIcon(obj *externglib.Object) LoadableIconer {
+func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	return &LoadableIcon{
 		Icon: Icon{
 			Object: obj,
@@ -109,7 +109,7 @@ func (icon *LoadableIcon) Load(size int, cancellable Cancellabler) (string, *Inp
 
 	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr
@@ -154,7 +154,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, *InputStream, e
 
 	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr

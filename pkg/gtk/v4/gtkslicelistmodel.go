@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer  = (*SliceListModel)(nil)
 )
 
-func wrapSliceListModel(obj *externglib.Object) SliceListModeler {
+func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	return &SliceListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -87,7 +87,7 @@ func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceList
 
 	var _sliceListModel *SliceListModel // out
 
-	_sliceListModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SliceListModel)
+	_sliceListModel = wrapSliceListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sliceListModel
 }
@@ -103,7 +103,12 @@ func (self *SliceListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

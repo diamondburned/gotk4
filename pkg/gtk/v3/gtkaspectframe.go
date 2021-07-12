@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer = (*AspectFrame)(nil)
 )
 
-func wrapAspectFrame(obj *externglib.Object) AspectFramer {
+func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Frame: Frame{
 			Bin: Bin{
@@ -87,7 +87,6 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gfloat(xalign)
 	_arg3 = C.gfloat(yalign)
 	_arg4 = C.gfloat(ratio)
@@ -99,7 +98,7 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 
 	var _aspectFrame *AspectFrame // out
 
-	_aspectFrame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AspectFrame)
+	_aspectFrame = wrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
 }

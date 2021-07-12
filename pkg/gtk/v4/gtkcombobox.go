@@ -146,7 +146,7 @@ var (
 	_ gextras.Nativer = (*ComboBox)(nil)
 )
 
-func wrapComboBox(obj *externglib.Object) ComboBoxer {
+func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -198,7 +198,7 @@ func NewComboBox() *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBox)
+	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -211,7 +211,7 @@ func NewComboBoxWithEntry() *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBox)
+	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -227,7 +227,7 @@ func NewComboBoxWithModel(model TreeModeler) *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBox)
+	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -244,7 +244,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeler) *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ComboBox)
+	_comboBox = wrapComboBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _comboBox
 }
@@ -352,7 +352,7 @@ func (comboBox *ComboBox) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -420,7 +420,7 @@ func (comboBox *ComboBox) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }
@@ -510,7 +510,6 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(activeId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
 

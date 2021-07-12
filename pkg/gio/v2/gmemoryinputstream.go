@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer     = (*MemoryInputStream)(nil)
 )
 
-func wrapMemoryInputStream(obj *externglib.Object) MemoryInputStreamer {
+func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	return &MemoryInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -82,7 +82,7 @@ func NewMemoryInputStream() *MemoryInputStream {
 
 	var _memoryInputStream *MemoryInputStream // out
 
-	_memoryInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryInputStream)
+	_memoryInputStream = wrapMemoryInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryInputStream
 }

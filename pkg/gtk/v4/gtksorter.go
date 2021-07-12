@@ -131,7 +131,7 @@ var (
 	_ gextras.Nativer = (*Sorter)(nil)
 )
 
-func wrapSorter(obj *externglib.Object) Sorterer {
+func wrapSorter(obj *externglib.Object) *Sorter {
 	return &Sorter{
 		Object: obj,
 	}

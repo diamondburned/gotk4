@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer   = (*SocketAccessible)(nil)
 )
 
-func wrapSocketAccessible(obj *externglib.Object) SocketAccessibler {
+func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	return &SocketAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
@@ -67,7 +67,6 @@ func (socket *SocketAccessible) Embed(path string) {
 
 	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_socket_accessible_embed(_arg0, _arg1)
 }

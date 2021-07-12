@@ -59,7 +59,7 @@ var (
 	_ gextras.Nativer = (*DrawContext)(nil)
 )
 
-func wrapDrawContext(obj *externglib.Object) DrawContexter {
+func wrapDrawContext(obj *externglib.Object) *DrawContext {
 	return &DrawContext{
 		Object: obj,
 	}
@@ -132,7 +132,7 @@ func (context *DrawContext) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -171,7 +171,7 @@ func (context *DrawContext) Surface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }

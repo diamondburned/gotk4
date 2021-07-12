@@ -120,7 +120,7 @@ var (
 	_ gextras.Nativer = (*MenuShell)(nil)
 )
 
-func wrapMenuShell(obj *externglib.Object) MenuSheller {
+func wrapMenuShell(obj *externglib.Object) *MenuShell {
 	return &MenuShell{
 		Container: Container{
 			Widget: Widget{
@@ -207,7 +207,6 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeler, actionNamespace str
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
-	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
 		_arg3 = C.TRUE
 	}
@@ -258,7 +257,7 @@ func (menuShell *MenuShell) ParentShell() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -274,7 +273,7 @@ func (menuShell *MenuShell) SelectedItem() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

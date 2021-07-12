@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer     = (*TreeViewAccessible)(nil)
 )
 
-func wrapTreeViewAccessible(obj *externglib.Object) TreeViewAccessibler {
+func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 	return &TreeViewAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

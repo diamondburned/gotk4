@@ -37,8 +37,11 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 	var event *gdk.EventKey // out
 	var funcData cgo.Handle // out
 
-	grabWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
+	grabWidget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(event, func(v *gdk.EventKey) {
+		C.free(unsafe.Pointer(v))
+	})
 	funcData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(KeySnoopFunc)
@@ -195,7 +198,12 @@ func GetCurrentEventDevice() *gdk.Device {
 
 	var _device *gdk.Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Device)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_device = &gdk.Device{
+			Object: obj,
+		}
+	}
 
 	return _device
 }
@@ -389,7 +397,7 @@ func GrabGetCurrent() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

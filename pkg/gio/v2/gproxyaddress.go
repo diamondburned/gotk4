@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*ProxyAddress)(nil)
 )
 
-func wrapProxyAddress(obj *externglib.Object) ProxyAddresser {
+func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{
 		InetSocketAddress: InetSocketAddress{
 			SocketAddress: SocketAddress{
@@ -102,20 +102,16 @@ func NewProxyAddress(inetaddr InetAddresser, port uint16, protocol string, destH
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((inetaddr).(gextras.Nativer).Native()))
 	_arg2 = C.guint16(port)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.guint16(destPort)
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(username)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
-	defer C.free(unsafe.Pointer(_arg7))
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
 	var _proxyAddress *ProxyAddress // out
 
-	_proxyAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ProxyAddress)
+	_proxyAddress = wrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }

@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer = (*WindowHandle)(nil)
 )
 
-func wrapWindowHandle(obj *externglib.Object) WindowHandler {
+func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	return &WindowHandle{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -85,7 +85,7 @@ func NewWindowHandle() *WindowHandle {
 
 	var _windowHandle *WindowHandle // out
 
-	_windowHandle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowHandle)
+	_windowHandle = wrapWindowHandle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowHandle
 }
@@ -101,7 +101,7 @@ func (self *WindowHandle) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

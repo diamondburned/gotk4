@@ -113,7 +113,7 @@ var (
 	_ gextras.Nativer    = (*FileOutputStream)(nil)
 )
 
-func wrapFileOutputStream(obj *externglib.Object) FileOutputStreamer {
+func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 	return &FileOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -179,7 +179,6 @@ func (stream *FileOutputStream) QueryInfo(attributes string, cancellable Cancell
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
@@ -187,7 +186,7 @@ func (stream *FileOutputStream) QueryInfo(attributes string, cancellable Cancell
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr
@@ -209,7 +208,6 @@ func (stream *FileOutputStream) QueryInfoAsync(attributes string, ioPriority int
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -234,7 +232,7 @@ func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

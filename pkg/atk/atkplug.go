@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer = (*Plug)(nil)
 )
 
-func wrapPlug(obj *externglib.Object) Pluger {
+func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -76,7 +76,7 @@ func NewPlug() *Plug {
 
 	var _plug *Plug // out
 
-	_plug = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Plug)
+	_plug = wrapPlug(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _plug
 }

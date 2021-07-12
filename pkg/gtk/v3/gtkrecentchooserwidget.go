@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer       = (*RecentChooserWidget)(nil)
 )
 
-func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidgeter {
+func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -90,7 +90,7 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidget)
+	_recentChooserWidget = wrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }
@@ -110,7 +110,7 @@ func NewRecentChooserWidgetForManager(manager RecentManagerer) *RecentChooserWid
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserWidget)
+	_recentChooserWidget = wrapRecentChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }

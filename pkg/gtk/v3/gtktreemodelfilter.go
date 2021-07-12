@@ -46,8 +46,11 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	var column int       // out
 	var data cgo.Handle  // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	column = int(arg3)
 	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
@@ -72,8 +75,11 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	var iter *TreeIter   // out
 	var data cgo.Handle  // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeModelFilterVisibleFunc)
@@ -194,7 +200,7 @@ var (
 	_ gextras.Nativer   = (*TreeModelFilter)(nil)
 )
 
-func wrapTreeModelFilter(obj *externglib.Object) TreeModelFilterer {
+func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
 	return &TreeModelFilter{
 		Object: obj,
 		TreeDragSource: TreeDragSource{
@@ -325,7 +331,7 @@ func (filter *TreeModelFilter) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

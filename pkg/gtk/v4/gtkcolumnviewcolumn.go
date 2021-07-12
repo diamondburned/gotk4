@@ -87,7 +87,7 @@ var (
 	_ gextras.Nativer    = (*ColumnViewColumn)(nil)
 )
 
-func wrapColumnViewColumn(obj *externglib.Object) ColumnViewColumner {
+func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{
 		Object: obj,
 	}
@@ -114,14 +114,13 @@ func NewColumnViewColumn(title string, factory ListItemFactorier) *ColumnViewCol
 	var _cret *C.GtkColumnViewColumn // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
 	var _columnViewColumn *ColumnViewColumn // out
 
-	_columnViewColumn = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ColumnViewColumn)
+	_columnViewColumn = wrapColumnViewColumn(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _columnViewColumn
 }
@@ -139,7 +138,7 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 
 	var _columnView *ColumnView // out
 
-	_columnView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColumnView)
+	_columnView = wrapColumnView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _columnView
 }
@@ -174,7 +173,7 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
+	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listItemFactory
 }
@@ -207,7 +206,12 @@ func (self *ColumnViewColumn) HeaderMenu() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }
@@ -241,7 +245,7 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Sorter)
+	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sorter
 }
@@ -378,7 +382,6 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_column_view_column_set_title(_arg0, _arg1)
 }

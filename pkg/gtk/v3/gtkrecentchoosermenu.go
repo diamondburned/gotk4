@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer     = (*RecentChooserMenu)(nil)
 )
 
-func wrapRecentChooserMenu(obj *externglib.Object) RecentChooserMenuer {
+func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{
 		Menu: Menu{
 			MenuShell: MenuShell{
@@ -116,7 +116,7 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenu)
+	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -137,7 +137,7 @@ func NewRecentChooserMenuForManager(manager RecentManagerer) *RecentChooserMenu 
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentChooserMenu)
+	_recentChooserMenu = wrapRecentChooserMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }

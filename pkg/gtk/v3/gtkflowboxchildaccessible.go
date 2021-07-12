@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer         = (*FlowBoxChildAccessible)(nil)
 )
 
-func wrapFlowBoxChildAccessible(obj *externglib.Object) FlowBoxChildAccessibler {
+func wrapFlowBoxChildAccessible(obj *externglib.Object) *FlowBoxChildAccessible {
 	return &FlowBoxChildAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

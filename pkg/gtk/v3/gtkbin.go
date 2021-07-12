@@ -46,7 +46,7 @@ var (
 	_ gextras.Nativer = (*Bin)(nil)
 )
 
-func wrapBin(obj *externglib.Object) Biner {
+func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{
 		Container: Container{
 			Widget: Widget{
@@ -83,7 +83,7 @@ func (bin *Bin) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

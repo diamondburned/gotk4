@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer = (*VSeparator)(nil)
 )
 
-func wrapVSeparator(obj *externglib.Object) VSeparatorer {
+func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	return &VSeparator{
 		Separator: Separator{
 			Widget: Widget{
@@ -80,7 +80,7 @@ func NewVSeparator() *VSeparator {
 
 	var _vSeparator *VSeparator // out
 
-	_vSeparator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VSeparator)
+	_vSeparator = wrapVSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vSeparator
 }

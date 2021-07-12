@@ -490,7 +490,6 @@ func RoleForName(name string) Role {
 	var _cret C.AtkRole // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_for_name(_arg1)
 
@@ -545,7 +544,6 @@ func RoleRegister(name string) Role {
 	var _cret C.AtkRole // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_role_register(_arg1)
 
@@ -598,7 +596,7 @@ var (
 	_ gextras.Nativer   = (*ImplementorIface)(nil)
 )
 
-func wrapImplementorIface(obj *externglib.Object) ImplementorIfacer {
+func wrapImplementorIface(obj *externglib.Object) *ImplementorIface {
 	return &ImplementorIface{
 		Object: obj,
 	}
@@ -769,7 +767,7 @@ var (
 	_ gextras.Nativer = (*ObjectClass)(nil)
 )
 
-func wrapObject(obj *externglib.Object) ObjectClasser {
+func wrapObject(obj *externglib.Object) *ObjectClass {
 	return &ObjectClass{
 		Object: obj,
 	}
@@ -957,7 +955,7 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -1009,7 +1007,7 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -1029,7 +1027,7 @@ func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -1045,7 +1043,7 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 
 	var _relationSet *RelationSet // out
 
-	_relationSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RelationSet)
+	_relationSet = wrapRelationSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relationSet
 }
@@ -1062,7 +1060,7 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
+	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }
@@ -1114,7 +1112,6 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_accessible_id(_arg0, _arg1)
 }
@@ -1129,7 +1126,6 @@ func (accessible *ObjectClass) SetDescription(description string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_description(_arg0, _arg1)
 }
@@ -1144,7 +1140,6 @@ func (accessible *ObjectClass) SetName(name string) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_name(_arg0, _arg1)
 }

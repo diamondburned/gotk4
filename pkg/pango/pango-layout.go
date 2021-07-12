@@ -265,7 +265,7 @@ var (
 	_ gextras.Nativer = (*Layout)(nil)
 )
 
-func wrapLayout(obj *externglib.Object) Layouter {
+func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{
 		Object: obj,
 	}
@@ -289,7 +289,7 @@ func NewLayout(context Contexter) *Layout {
 
 	var _layout *Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Layout)
+	_layout = wrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -321,7 +321,7 @@ func (src *Layout) Copy() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Layout)
+	_layout = wrapLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -428,7 +428,7 @@ func (layout *Layout) Context() *Context {
 
 	var _context *Context // out
 
-	_context = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Context)
+	_context = wrapContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -704,10 +704,9 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	var _attrs []LogAttr
 
-	_attrs = unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_attrs, func(v *[]LogAttr) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_attrs = make([]LogAttr, _arg2)
+	copy(_attrs, unsafe.Slice((*LogAttr)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _attrs
 }
@@ -1267,7 +1266,6 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
@@ -1294,7 +1292,6 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
 
@@ -1378,7 +1375,6 @@ func (layout *Layout) SetText(text string, length int) {
 
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	C.pango_layout_set_text(_arg0, _arg1, _arg2)
@@ -1590,7 +1586,7 @@ func (iter *LayoutIter) Layout() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Layout)
+	_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -1882,10 +1878,9 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 
 	var _ranges []int
 
-	_ranges = unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4)
-	runtime.SetFinalizer(&_ranges, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg3))
+	_ranges = make([]int, _arg4)
+	copy(_ranges, unsafe.Slice((*int)(unsafe.Pointer(_arg3)), _arg4))
 
 	return _ranges
 }

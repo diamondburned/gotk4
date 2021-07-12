@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*Scrollbar)(nil)
 )
 
-func wrapScrollbar(obj *externglib.Object) Scrollbarer {
+func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
 		Range: Range{
 			Widget: Widget{
@@ -116,7 +116,7 @@ func NewScrollbar(orientation Orientation, adjustment Adjustmenter) *Scrollbar {
 
 	var _scrollbar *Scrollbar // out
 
-	_scrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scrollbar)
+	_scrollbar = wrapScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
 }

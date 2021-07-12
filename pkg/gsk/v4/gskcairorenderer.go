@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer = (*CairoRenderer)(nil)
 )
 
-func wrapCairoRenderer(obj *externglib.Object) CairoRendererer {
+func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	return &CairoRenderer{
 		Renderer: Renderer{
 			Object: obj,
@@ -66,7 +66,7 @@ func NewCairoRenderer() *CairoRenderer {
 
 	var _cairoRenderer *CairoRenderer // out
 
-	_cairoRenderer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoRenderer)
+	_cairoRenderer = wrapCairoRenderer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoRenderer
 }

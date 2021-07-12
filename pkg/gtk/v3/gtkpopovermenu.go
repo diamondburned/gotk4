@@ -107,7 +107,7 @@ var (
 	_ gextras.Nativer = (*PopoverMenu)(nil)
 )
 
-func wrapPopoverMenu(obj *externglib.Object) PopoverMenuer {
+func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{
 		Popover: Popover{
 			Bin: Bin{
@@ -143,7 +143,7 @@ func NewPopoverMenu() *PopoverMenu {
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PopoverMenu)
+	_popoverMenu = wrapPopoverMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -161,7 +161,6 @@ func (popover *PopoverMenu) OpenSubmenu(name string) {
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 }

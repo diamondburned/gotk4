@@ -336,7 +336,7 @@ var (
 	_ gextras.Nativer = (*TextView)(nil)
 )
 
-func wrapTextView(obj *externglib.Object) TextViewer {
+func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
 		Container: Container{
 			Widget: Widget{
@@ -375,7 +375,7 @@ func NewTextView() *TextView {
 
 	var _textView *TextView // out
 
-	_textView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextView)
+	_textView = wrapTextView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textView
 }
@@ -395,7 +395,7 @@ func NewTextViewWithBuffer(buffer TextBufferer) *TextView {
 
 	var _textView *TextView // out
 
-	_textView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextView)
+	_textView = wrapTextView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textView
 }
@@ -646,7 +646,7 @@ func (textView *TextView) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBuffer)
+	_textBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }
@@ -759,7 +759,7 @@ func (textView *TextView) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -1127,7 +1127,7 @@ func (textView *TextView) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -1163,7 +1163,12 @@ func (textView *TextView) Window(win TextWindowType) *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }

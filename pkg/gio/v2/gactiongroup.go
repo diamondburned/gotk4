@@ -292,7 +292,7 @@ var (
 	_ gextras.Nativer = (*ActionGroup)(nil)
 )
 
-func wrapActionGroup(obj *externglib.Object) ActionGrouper {
+func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	return &ActionGroup{
 		Object: obj,
 	}
@@ -313,7 +313,6 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_group_action_added(_arg0, _arg1)
 }
@@ -329,7 +328,6 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if enabled {
 		_arg2 = C.TRUE
 	}
@@ -346,7 +344,6 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_action_group_action_removed(_arg0, _arg1)
 }
@@ -362,7 +359,6 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(state))
 
 	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
@@ -404,7 +400,6 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
 
 	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
@@ -428,7 +423,6 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 
 	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
@@ -446,7 +440,6 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
 
@@ -479,7 +472,6 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
 
@@ -506,7 +498,6 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state(_arg0, _arg1)
 
@@ -545,7 +536,6 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
 
@@ -582,7 +572,6 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
 
@@ -601,7 +590,6 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_has_action(_arg0, _arg1)
 
@@ -639,7 +627,6 @@ func (actionGroup *ActionGroup) ListActions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -684,7 +671,6 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
 

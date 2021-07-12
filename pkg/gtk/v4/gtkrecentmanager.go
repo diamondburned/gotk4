@@ -134,7 +134,7 @@ var (
 	_ gextras.Nativer = (*RecentManager)(nil)
 )
 
-func wrapRecentManager(obj *externglib.Object) RecentManagerer {
+func wrapRecentManager(obj *externglib.Object) *RecentManager {
 	return &RecentManager{
 		Object: obj,
 	}
@@ -162,7 +162,7 @@ func NewRecentManager() *RecentManager {
 
 	var _recentManager *RecentManager // out
 
-	_recentManager = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RecentManager)
+	_recentManager = wrapRecentManager(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentManager
 }
@@ -191,7 +191,6 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkRecentData)(unsafe.Pointer(recentData))
 
 	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
@@ -221,7 +220,6 @@ func (manager *RecentManager) AddItem(uri string) bool {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
 
@@ -243,7 +241,6 @@ func (manager *RecentManager) HasItem(uri string) bool {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
 
@@ -267,7 +264,6 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
 
@@ -297,9 +293,7 @@ func (manager *RecentManager) MoveItem(uri string, newUri string) error {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(newUri)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
 
@@ -338,7 +332,6 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
 
@@ -358,7 +351,7 @@ func RecentManagerGetDefault() *RecentManager {
 
 	var _recentManager *RecentManager // out
 
-	_recentManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentManager)
+	_recentManager = wrapRecentManager(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentManager
 }
@@ -399,14 +392,18 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
 
 	var _appInfo *gio.AppInfo // out
 	var _goerr error          // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.AppInfo)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_appInfo = &gio.AppInfo{
+			Object: obj,
+		}
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -493,7 +490,12 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -602,7 +604,6 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
 
@@ -624,7 +625,6 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
 

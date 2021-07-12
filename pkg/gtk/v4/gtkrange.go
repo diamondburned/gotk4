@@ -115,7 +115,7 @@ var (
 	_ gextras.Nativer = (*Range)(nil)
 )
 
-func wrapRange(obj *externglib.Object) Ranger {
+func wrapRange(obj *externglib.Object) *Range {
 	return &Range{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -160,7 +160,7 @@ func (_range *Range) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

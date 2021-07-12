@@ -153,7 +153,7 @@ var (
 	_ gextras.Nativer = (*Editable)(nil)
 )
 
-func wrapEditable(obj *externglib.Object) Editabler {
+func wrapEditable(obj *externglib.Object) *Editable {
 	return &Editable{
 		Object: obj,
 	}

@@ -81,7 +81,7 @@ var (
 	_ gextras.Nativer = (*TLSCertificate)(nil)
 )
 
-func wrapTLSCertificate(obj *externglib.Object) TLSCertificater {
+func wrapTLSCertificate(obj *externglib.Object) *TLSCertificate {
 	return &TLSCertificate{
 		Object: obj,
 	}
@@ -110,14 +110,13 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -141,16 +140,14 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificat
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -176,7 +173,6 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
 	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
@@ -184,7 +180,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -219,16 +215,14 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	var _cerr *C.GError          // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsCertificate, _goerr
@@ -245,7 +239,7 @@ func (cert *TLSCertificate) Issuer() *TLSCertificate {
 
 	var _tlsCertificate *TLSCertificate // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsCertificate
 }

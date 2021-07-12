@@ -56,7 +56,6 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 
 	_arg1 = C.GType(typ)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg2))
 	if warn {
 		_arg4 = C.TRUE
 	}
@@ -90,7 +89,6 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _cret C.gboolean     // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if warn {
 		_arg3 = C.TRUE
 	}
@@ -119,7 +117,6 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _cret C.gboolean   // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if warn {
 		_arg3 = C.TRUE
 	}
@@ -148,7 +145,6 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _cret C.gboolean     // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if warn {
 		_arg3 = C.TRUE
 	}
@@ -177,7 +173,6 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _cret C.gboolean    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if warn {
 		_arg3 = C.TRUE
 	}
@@ -204,7 +199,6 @@ func SplitFileList(str string) []string {
 	var _cret **C.char
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_split_file_list(_arg1)
 
@@ -221,7 +215,6 @@ func SplitFileList(str string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -236,7 +229,6 @@ func TrimString(str string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_trim_string(_arg1)
 

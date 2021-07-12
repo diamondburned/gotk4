@@ -59,7 +59,7 @@ var (
 	_ gextras.Nativer        = (*DTLSClientConnection)(nil)
 )
 
-func wrapDTLSClientConnection(obj *externglib.Object) DTLSClientConnectioner {
+func wrapDTLSClientConnection(obj *externglib.Object) *DTLSClientConnection {
 	return &DTLSClientConnection{
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
@@ -86,7 +86,7 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 
 	var _socketConnectable *SocketConnectable // out
 
-	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectable)
+	_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socketConnectable
 }
@@ -151,7 +151,7 @@ func DtlsClientConnectionNew(baseSocket DatagramBaseder, serverIdentity SocketCo
 	var _dtlsClientConnection *DTLSClientConnection // out
 	var _goerr error                                // out
 
-	_dtlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DTLSClientConnection)
+	_dtlsClientConnection = wrapDTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dtlsClientConnection, _goerr

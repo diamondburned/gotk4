@@ -70,7 +70,6 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg4 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
 	_arg4 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
@@ -103,10 +102,8 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	var _arg6 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
 	_arg6 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
@@ -137,10 +134,8 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 	var _arg7 C.PangoShapeFlags   // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(itemLength)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.int(paragraphLength)
 	_arg5 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
 	_arg6 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
@@ -315,7 +310,6 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
 	_arg4 = C.int(index_)
@@ -361,7 +355,6 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
 	_arg4 = C.int(xPos)

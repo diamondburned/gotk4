@@ -46,7 +46,6 @@ func UTF8ToStringTarget(str string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_utf8_to_string_target(_arg1)
 

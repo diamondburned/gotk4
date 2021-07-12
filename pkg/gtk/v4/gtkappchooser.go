@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer = (*AppChooser)(nil)
 )
 
-func wrapAppChooser(obj *externglib.Object) AppChooserer {
+func wrapAppChooser(obj *externglib.Object) *AppChooser {
 	return &AppChooser{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -96,7 +96,12 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 
 	var _appInfo *gio.AppInfo // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.AppInfo)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_appInfo = &gio.AppInfo{
+			Object: obj,
+		}
+	}
 
 	return _appInfo
 }

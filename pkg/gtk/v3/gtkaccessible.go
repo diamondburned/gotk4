@@ -67,7 +67,7 @@ var (
 	_ gextras.Nativer = (*Accessible)(nil)
 )
 
-func wrapAccessible(obj *externglib.Object) Accessibler {
+func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,
@@ -105,7 +105,7 @@ func (accessible *Accessible) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

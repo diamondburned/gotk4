@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*StyleProvider)(nil)
 )
 
-func wrapStyleProvider(obj *externglib.Object) StyleProviderer {
+func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	return &StyleProvider{
 		Object: obj,
 	}
@@ -91,7 +91,7 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 
 	var _iconFactory *IconFactory // out
 
-	_iconFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconFactory)
+	_iconFactory = wrapIconFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconFactory
 }
@@ -113,7 +113,7 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 
 	var _styleProperties *StyleProperties // out
 
-	_styleProperties = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StyleProperties)
+	_styleProperties = wrapStyleProperties(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _styleProperties
 }

@@ -114,7 +114,7 @@ var (
 	_ gextras.Nativer = (*RadioButton)(nil)
 )
 
-func wrapRadioButton(obj *externglib.Object) RadioButtoner {
+func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	return &RadioButton{
 		CheckButton: CheckButton{
 			ToggleButton: ToggleButton{
@@ -175,7 +175,7 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButtoner) *RadioButton {
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioButton)
+	_radioButton = wrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
@@ -189,13 +189,12 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtoner, label str
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioButton)
+	_radioButton = wrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }
@@ -210,13 +209,12 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtoner, label 
 
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioButton)
+	_radioButton = wrapRadioButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioButton
 }

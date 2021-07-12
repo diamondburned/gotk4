@@ -69,7 +69,7 @@ var (
 	_ gextras.Nativer  = (*ConstraintGuide)(nil)
 )
 
-func wrapConstraintGuide(obj *externglib.Object) ConstraintGuider {
+func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
 	return &ConstraintGuide{
 		Object: obj,
 		ConstraintTarget: ConstraintTarget{
@@ -92,7 +92,7 @@ func NewConstraintGuide() *ConstraintGuide {
 
 	var _constraintGuide *ConstraintGuide // out
 
-	_constraintGuide = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConstraintGuide)
+	_constraintGuide = wrapConstraintGuide(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintGuide
 }
@@ -210,7 +210,6 @@ func (guide *ConstraintGuide) SetName(name string) {
 
 	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_constraint_guide_set_name(_arg0, _arg1)
 }

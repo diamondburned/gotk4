@@ -47,7 +47,7 @@ var (
 	_ gextras.Nativer = (*GestureSwipe)(nil)
 )
 
-func wrapGestureSwipe(obj *externglib.Object) GestureSwiper {
+func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	return &GestureSwipe{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -73,7 +73,7 @@ func NewGestureSwipe() *GestureSwipe {
 
 	var _gestureSwipe *GestureSwipe // out
 
-	_gestureSwipe = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureSwipe)
+	_gestureSwipe = wrapGestureSwipe(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
 }

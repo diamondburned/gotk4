@@ -85,7 +85,7 @@ var (
 	_ gextras.Nativer = (*HandleBox)(nil)
 )
 
-func wrapHandleBox(obj *externglib.Object) HandleBoxer {
+func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	return &HandleBox{
 		Bin: Bin{
 			Container: Container{
@@ -121,7 +121,7 @@ func NewHandleBox() *HandleBox {
 
 	var _handleBox *HandleBox // out
 
-	_handleBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HandleBox)
+	_handleBox = wrapHandleBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
 }

@@ -118,7 +118,7 @@ var (
 	_ gextras.Nativer = (*Box)(nil)
 )
 
-func wrapBox(obj *externglib.Object) Boxer {
+func wrapBox(obj *externglib.Object) *Box {
 	return &Box{
 		Container: Container{
 			Widget: Widget{
@@ -158,7 +158,7 @@ func NewBox(orientation Orientation, spacing int) *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -196,7 +196,7 @@ func (box *Box) CenterWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

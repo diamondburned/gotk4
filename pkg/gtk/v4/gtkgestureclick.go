@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer = (*GestureClick)(nil)
 )
 
-func wrapGestureClick(obj *externglib.Object) GestureClicker {
+func wrapGestureClick(obj *externglib.Object) *GestureClick {
 	return &GestureClick{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -69,7 +69,7 @@ func NewGestureClick() *GestureClick {
 
 	var _gestureClick *GestureClick // out
 
-	_gestureClick = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureClick)
+	_gestureClick = wrapGestureClick(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureClick
 }

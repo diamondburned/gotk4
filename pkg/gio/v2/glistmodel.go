@@ -119,7 +119,7 @@ var (
 	_ gextras.Nativer = (*ListModel)(nil)
 )
 
-func wrapListModel(obj *externglib.Object) ListModeler {
+func wrapListModel(obj *externglib.Object) *ListModel {
 	return &ListModel{
 		Object: obj,
 	}
@@ -188,7 +188,7 @@ func (list *ListModel) GetObject(position uint) *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }

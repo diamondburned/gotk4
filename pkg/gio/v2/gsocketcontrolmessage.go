@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer       = (*SocketControlMessage)(nil)
 )
 
-func wrapSocketControlMessage(obj *externglib.Object) SocketControlMessager {
+func wrapSocketControlMessage(obj *externglib.Object) *SocketControlMessage {
 	return &SocketControlMessage{
 		Object: obj,
 	}
@@ -187,13 +187,15 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketCon
 	_arg1 = C.int(level)
 	_arg2 = C.int(typ)
 	_arg3 = C.gsize(len(data))
-	_arg4 = (C.gpointer)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg4 = (C.gpointer)(unsafe.Pointer(&data[0]))
+	}
 
 	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
 
 	var _socketControlMessage *SocketControlMessage // out
 
-	_socketControlMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketControlMessage)
+	_socketControlMessage = wrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketControlMessage
 }

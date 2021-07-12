@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketer {
+func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Container: Container{
 			Widget: Widget{
@@ -127,7 +127,7 @@ func NewSocket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Socket)
+	_socket = wrapSocket(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -144,7 +144,12 @@ func (socket_ *Socket) PlugWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }

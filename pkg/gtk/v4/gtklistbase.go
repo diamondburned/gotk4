@@ -39,7 +39,7 @@ var (
 	_ gextras.Nativer = (*ListBase)(nil)
 )
 
-func wrapListBase(obj *externglib.Object) ListBaser {
+func wrapListBase(obj *externglib.Object) *ListBase {
 	return &ListBase{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{

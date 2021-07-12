@@ -36,7 +36,7 @@ var (
 	_ gextras.Nativer = (*X11Cursor)(nil)
 )
 
-func wrapX11Cursor(obj *externglib.Object) X11Cursorer {
+func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 	return &X11Cursor{
 		Cursor: gdk.Cursor{
 			Object: obj,

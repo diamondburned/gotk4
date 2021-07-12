@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer    = (*ShortcutsSection)(nil)
 )
 
-func wrapShortcutsSection(obj *externglib.Object) ShortcutsSectioner {
+func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{
 		Box: Box{
 			Widget: Widget{

@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*HSV)(nil)
 )
 
-func wrapHSV(obj *externglib.Object) HSVer {
+func wrapHSV(obj *externglib.Object) *HSV {
 	return &HSV{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -94,7 +94,7 @@ func NewHSV() *HSV {
 
 	var _hsV *HSV // out
 
-	_hsV = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HSV)
+	_hsV = wrapHSV(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hsV
 }

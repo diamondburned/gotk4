@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer     = (*SeparatorToolItem)(nil)
 )
 
-func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItemer {
+func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{
 		ToolItem: ToolItem{
 			Bin: Bin{
@@ -94,7 +94,7 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 
 	var _separatorToolItem *SeparatorToolItem // out
 
-	_separatorToolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorToolItem)
+	_separatorToolItem = wrapSeparatorToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorToolItem
 }

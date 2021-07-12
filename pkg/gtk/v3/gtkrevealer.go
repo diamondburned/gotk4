@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer = (*Revealer)(nil)
 )
 
-func wrapRevealer(obj *externglib.Object) Revealerer {
+func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
 		Bin: Bin{
 			Container: Container{
@@ -127,7 +127,7 @@ func NewRevealer() *Revealer {
 
 	var _revealer *Revealer // out
 
-	_revealer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Revealer)
+	_revealer = wrapRevealer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }

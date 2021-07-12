@@ -54,7 +54,9 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 
 	_arg1 = C.GChecksumType(checksumType)
 	_arg3 = C.gsize(len(data))
-	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	}
 
 	_cret = C.g_compute_checksum_for_data(_arg1, _arg2, _arg3)
 
@@ -77,7 +79,6 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 
 	_arg1 = C.GChecksumType(checksumType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gssize(length)
 
 	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
@@ -196,7 +197,9 @@ func (checksum *Checksum) Update(data []byte) {
 
 	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
 	_arg2 = C.gssize(len(data))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	if len(data) > 0 {
+		_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+	}
 
 	C.g_checksum_update(_arg0, _arg1, _arg2)
 }

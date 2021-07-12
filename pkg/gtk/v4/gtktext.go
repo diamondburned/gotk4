@@ -180,7 +180,7 @@ var (
 	_ gextras.Nativer = (*Text)(nil)
 )
 
-func wrapText(obj *externglib.Object) Texter {
+func wrapText(obj *externglib.Object) *Text {
 	return &Text{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -229,7 +229,7 @@ func NewText() *Text {
 
 	var _text *Text // out
 
-	_text = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Text)
+	_text = wrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -245,7 +245,7 @@ func NewTextWithBuffer(buffer EntryBufferer) *Text {
 
 	var _text *Text // out
 
-	_text = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Text)
+	_text = wrapText(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -306,7 +306,7 @@ func (self *Text) Buffer() *EntryBuffer {
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EntryBuffer)
+	_entryBuffer = wrapEntryBuffer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -341,7 +341,12 @@ func (self *Text) ExtraMenu() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }
@@ -721,7 +726,6 @@ func (self *Text) SetPlaceholderText(text string) {
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_text_set_placeholder_text(_arg0, _arg1)
 }

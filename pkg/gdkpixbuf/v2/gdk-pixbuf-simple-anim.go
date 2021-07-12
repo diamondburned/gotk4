@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer    = (*PixbufSimpleAnim)(nil)
 )
 
-func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnimer {
+func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{
 			Object: obj,
@@ -72,7 +72,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim 
 
 	var _pixbufSimpleAnim *PixbufSimpleAnim // out
 
-	_pixbufSimpleAnim = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufSimpleAnim)
+	_pixbufSimpleAnim = wrapPixbufSimpleAnim(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufSimpleAnim
 }

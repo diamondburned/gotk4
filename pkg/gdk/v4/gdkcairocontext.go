@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*CairoContext)(nil)
 )
 
-func wrapCairoContext(obj *externglib.Object) CairoContexter {
+func wrapCairoContext(obj *externglib.Object) *CairoContext {
 	return &CairoContext{
 		DrawContext: DrawContext{
 			Object: obj,

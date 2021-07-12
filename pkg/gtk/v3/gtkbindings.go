@@ -106,7 +106,6 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 
 	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
 
@@ -199,7 +198,6 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
 	_arg1 = C.GtkPathType(pathType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathPattern)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GtkPathPriorityType(priority)
 
 	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
@@ -214,7 +212,6 @@ func BindingSetFind(setName string) *BindingSet {
 	var _cret *C.GtkBindingSet // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(setName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_binding_set_find(_arg1)
 

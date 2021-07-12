@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer = (*FontMap)(nil)
 )
 
-func wrapFontMap(obj *externglib.Object) FontMaper {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{
 		Object: obj,
 	}
@@ -137,7 +137,7 @@ func (fontmap *FontMap) CreateContext() *Context {
 
 	var _context *Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Context)
+	_context = wrapContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -150,13 +150,12 @@ func (fontmap *FontMap) Family(name string) *FontFamily {
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_font_map_get_family(_arg0, _arg1)
 
 	var _fontFamily *FontFamily // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontFamily)
+	_fontFamily = wrapFontFamily(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontFamily
 }
@@ -205,7 +204,7 @@ func (fontmap *FontMap) ListFamilies() []*FontFamily {
 		src := unsafe.Slice(_arg1, _arg2)
 		_families = make([]*FontFamily, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(*FontFamily)
+			_families[i] = wrapFontFamily(externglib.Take(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -227,7 +226,7 @@ func (fontmap *FontMap) LoadFont(context Contexter, desc *FontDescription) *Font
 
 	var _font *Font // out
 
-	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Font)
+	_font = wrapFont(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _font
 }
@@ -250,7 +249,7 @@ func (fontmap *FontMap) LoadFontset(context Contexter, desc *FontDescription, la
 
 	var _fontset *Fontset // out
 
-	_fontset = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Fontset)
+	_fontset = wrapFontset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontset
 }

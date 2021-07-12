@@ -156,7 +156,7 @@ var (
 	_ gextras.Nativer = (*InputStream)(nil)
 )
 
-func wrapInputStream(obj *externglib.Object) InputStreamer {
+func wrapInputStream(obj *externglib.Object) *InputStream {
 	return &InputStream{
 		Object: obj,
 	}

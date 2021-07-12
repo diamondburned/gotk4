@@ -108,7 +108,7 @@ var (
 	_ gextras.Nativer = (*Drag)(nil)
 )
 
-func wrapDrag(obj *externglib.Object) Drager {
+func wrapDrag(obj *externglib.Object) *Drag {
 	return &Drag{
 		Object: obj,
 	}
@@ -169,7 +169,7 @@ func (drag *Drag) Content() *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ContentProvider)
+	_contentProvider = wrapContentProvider(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -185,7 +185,7 @@ func (drag *Drag) Device() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -201,7 +201,7 @@ func (drag *Drag) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -223,7 +223,7 @@ func (drag *Drag) DragSurface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -275,7 +275,7 @@ func (drag *Drag) Surface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -328,7 +328,7 @@ func DragBegin(surface Surfacer, device Devicer, content ContentProviderer, acti
 
 	var _drag *Drag // out
 
-	_drag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Drag)
+	_drag = wrapDrag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _drag
 }

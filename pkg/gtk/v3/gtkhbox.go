@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer = (*HBox)(nil)
 )
 
-func wrapHBox(obj *externglib.Object) HBoxer {
+func wrapHBox(obj *externglib.Object) *HBox {
 	return &HBox{
 		Box: Box{
 			Container: Container{
@@ -104,7 +104,7 @@ func NewHBox(homogeneous bool, spacing int) *HBox {
 
 	var _hBox *HBox // out
 
-	_hBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HBox)
+	_hBox = wrapHBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hBox
 }

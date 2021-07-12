@@ -127,7 +127,7 @@ var (
 	_ gextras.Nativer = (*ToolItem)(nil)
 )
 
-func wrapToolItem(obj *externglib.Object) ToolItemer {
+func wrapToolItem(obj *externglib.Object) *ToolItem {
 	return &ToolItem{
 		Bin: Bin{
 			Container: Container{
@@ -164,7 +164,7 @@ func NewToolItem() *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
+	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -300,13 +300,12 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) *Widget {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -379,7 +378,7 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SizeGroup)
+	_sizeGroup = wrapSizeGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }
@@ -493,7 +492,7 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -558,7 +557,6 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgeter)
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((menuItem).(gextras.Nativer).Native()))
 
 	C.gtk_tool_item_set_proxy_menu_item(_arg0, _arg1, _arg2)
@@ -572,7 +570,6 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_markup(_arg0, _arg1)
 }
@@ -585,7 +582,6 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_set_tooltip_text(_arg0, _arg1)
 }

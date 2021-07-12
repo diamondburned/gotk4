@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer        = (*EventControllerFocus)(nil)
 )
 
-func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocuser {
+func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{
 		EventController: EventController{
 			Object: obj,
@@ -72,7 +72,7 @@ func NewEventControllerFocus() *EventControllerFocus {
 
 	var _eventControllerFocus *EventControllerFocus // out
 
-	_eventControllerFocus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerFocus)
+	_eventControllerFocus = wrapEventControllerFocus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerFocus
 }

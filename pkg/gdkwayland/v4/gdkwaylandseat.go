@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer = (*WaylandSeat)(nil)
 )
 
-func wrapWaylandSeat(obj *externglib.Object) WaylandSeater {
+func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
 	return &WaylandSeat{
 		Seat: gdk.Seat{
 			Object: obj,

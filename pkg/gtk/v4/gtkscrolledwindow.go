@@ -247,7 +247,7 @@ var (
 	_ gextras.Nativer  = (*ScrolledWindow)(nil)
 )
 
-func wrapScrolledWindow(obj *externglib.Object) ScrolledWindower {
+func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -280,7 +280,7 @@ func NewScrolledWindow() *ScrolledWindow {
 
 	var _scrolledWindow *ScrolledWindow // out
 
-	_scrolledWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScrolledWindow)
+	_scrolledWindow = wrapScrolledWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrolledWindow
 }
@@ -296,7 +296,7 @@ func (scrolledWindow *ScrolledWindow) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -315,7 +315,7 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -349,7 +349,7 @@ func (scrolledWindow *ScrolledWindow) Hscrollbar() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -547,7 +547,7 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -563,7 +563,7 @@ func (scrolledWindow *ScrolledWindow) Vscrollbar() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

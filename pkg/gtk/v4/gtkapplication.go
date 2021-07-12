@@ -163,7 +163,7 @@ var (
 	_ gextras.Nativer = (*Application)(nil)
 )
 
-func wrapApplication(obj *externglib.Object) Applicationer {
+func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
 		Application: gio.Application{
 			Object: obj,
@@ -207,14 +207,13 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) *Applicati
 	var _cret *C.GtkApplication   // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GApplicationFlags(flags)
 
 	_cret = C.gtk_application_new(_arg1, _arg2)
 
 	var _application *Application // out
 
-	_application = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Application)
+	_application = wrapApplication(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _application
 }
@@ -252,7 +251,6 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
@@ -269,7 +267,6 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -300,7 +297,6 @@ func (application *Application) ActionsForAccel(accel string) []string {
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(accel)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
@@ -317,7 +313,6 @@ func (application *Application) ActionsForAccel(accel string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -340,7 +335,7 @@ func (application *Application) ActiveWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -357,7 +352,12 @@ func (application *Application) Menubar() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }
@@ -378,7 +378,7 @@ func (application *Application) WindowByID(id uint) *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -415,7 +415,6 @@ func (application *Application) Inhibit(window Windower, flags ApplicationInhibi
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 	_arg2 = C.GtkApplicationInhibitFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(reason)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
@@ -451,7 +450,6 @@ func (application *Application) ListActionDescriptions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -493,14 +491,11 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (**C.char)(C.malloc(C.ulong(len(accels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg2))
 	{
 		out := unsafe.Slice(_arg2, len(accels))
 		for i := range accels {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(accels[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

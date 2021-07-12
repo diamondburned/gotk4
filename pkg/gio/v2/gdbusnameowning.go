@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,8 +40,9 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var name string                // out
 	var userData cgo.Handle        // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusAcquiredCallback)
@@ -63,8 +63,9 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var name string                // out
 	var userData cgo.Handle        // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusNameAcquiredCallback)
@@ -86,8 +87,9 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	var name string                // out
 	var userData cgo.Handle        // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusNameLostCallback)

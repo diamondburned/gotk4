@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer = (*AnyFilter)(nil)
 )
 
-func wrapAnyFilter(obj *externglib.Object) AnyFilterer {
+func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	return &AnyFilter{
 		MultiFilter: MultiFilter{
 			Filter: Filter{
@@ -78,7 +78,7 @@ func NewAnyFilter() *AnyFilter {
 
 	var _anyFilter *AnyFilter // out
 
-	_anyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AnyFilter)
+	_anyFilter = wrapAnyFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _anyFilter
 }
@@ -103,7 +103,7 @@ var (
 	_ gextras.Nativer = (*EveryFilter)(nil)
 )
 
-func wrapEveryFilter(obj *externglib.Object) EveryFilterer {
+func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	return &EveryFilter{
 		MultiFilter: MultiFilter{
 			Filter: Filter{
@@ -139,7 +139,7 @@ func NewEveryFilter() *EveryFilter {
 
 	var _everyFilter *EveryFilter // out
 
-	_everyFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EveryFilter)
+	_everyFilter = wrapEveryFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _everyFilter
 }
@@ -169,7 +169,7 @@ var (
 	_ gextras.Nativer = (*MultiFilter)(nil)
 )
 
-func wrapMultiFilter(obj *externglib.Object) MultiFilterer {
+func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 	return &MultiFilter{
 		Filter: Filter{
 			Object: obj,

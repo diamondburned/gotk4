@@ -53,7 +53,7 @@ var (
 	_ gextras.Nativer  = (*MountOperation)(nil)
 )
 
-func wrapMountOperation(obj *externglib.Object) MountOperationer {
+func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{
 		MountOperation: gio.MountOperation{
 			Object: obj,
@@ -78,7 +78,7 @@ func NewMountOperation(parent Windower) *MountOperation {
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MountOperation)
+	_mountOperation = wrapMountOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -94,7 +94,7 @@ func (op *MountOperation) Parent() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -110,7 +110,12 @@ func (op *MountOperation) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	return _screen
 }

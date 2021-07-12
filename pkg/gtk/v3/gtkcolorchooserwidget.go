@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer      = (*ColorChooserWidget)(nil)
 )
 
-func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidgeter {
+func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -100,7 +100,7 @@ func NewColorChooserWidget() *ColorChooserWidget {
 
 	var _colorChooserWidget *ColorChooserWidget // out
 
-	_colorChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorChooserWidget)
+	_colorChooserWidget = wrapColorChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
 }

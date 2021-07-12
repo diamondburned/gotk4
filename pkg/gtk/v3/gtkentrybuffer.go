@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer = (*EntryBuffer)(nil)
 )
 
-func wrapEntryBuffer(obj *externglib.Object) EntryBufferer {
+func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	return &EntryBuffer{
 		Object: obj,
 	}
@@ -120,14 +120,13 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _cret *C.GtkEntryBuffer // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(initialChars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nInitialChars)
 
 	_cret = C.gtk_entry_buffer_new(_arg1, _arg2)
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EntryBuffer)
+	_entryBuffer = wrapEntryBuffer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -182,7 +181,6 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint(nChars)
 
 	C.gtk_entry_buffer_emit_inserted_text(_arg0, _arg1, _arg2, _arg3)
@@ -275,7 +273,6 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(nChars)
 
 	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
@@ -313,7 +310,6 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(nChars)
 
 	C.gtk_entry_buffer_set_text(_arg0, _arg1, _arg2)

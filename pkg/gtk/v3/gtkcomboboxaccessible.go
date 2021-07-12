@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer     = (*ComboBoxAccessible)(nil)
 )
 
-func wrapComboBoxAccessible(obj *externglib.Object) ComboBoxAccessibler {
+func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 	return &ComboBoxAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

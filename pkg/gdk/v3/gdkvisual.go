@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -68,8 +69,10 @@ func QueryDepths() []int {
 
 	var _depths []int
 
-	_depths = make([]int, _arg2)
-	copy(_depths, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
+	_depths = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
+	runtime.SetFinalizer(&_depths, func(v *[]int) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
 
 	return _depths
 }
@@ -138,7 +141,7 @@ var (
 	_ gextras.Nativer = (*Visual)(nil)
 )
 
-func wrapVisual(obj *externglib.Object) Visualer {
+func wrapVisual(obj *externglib.Object) *Visual {
 	return &Visual{
 		Object: obj,
 	}
@@ -321,7 +324,7 @@ func (visual *Visual) Screen() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
 }
@@ -354,7 +357,7 @@ func VisualGetBest() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -411,7 +414,7 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -433,7 +436,7 @@ func VisualGetBestWithDepth(depth int) *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -455,7 +458,7 @@ func VisualGetBestWithType(visualType VisualType) *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -472,7 +475,7 @@ func VisualGetSystem() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }

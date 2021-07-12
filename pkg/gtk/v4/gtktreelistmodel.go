@@ -44,7 +44,7 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret 
 	var item *externglib.Object // out
 	var userData cgo.Handle     // out
 
-	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
+	item = externglib.Take(unsafe.Pointer(arg0))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TreeListModelCreateModelFunc)
@@ -86,7 +86,7 @@ var (
 	_ gextras.Nativer = (*TreeListModel)(nil)
 )
 
-func wrapTreeListModel(obj *externglib.Object) TreeListModeler {
+func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	return &TreeListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -142,7 +142,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRow)
+	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRow
 }
@@ -158,7 +158,12 @@ func (self *TreeListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -216,7 +221,7 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRow)
+	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRow
 }
@@ -285,7 +290,7 @@ var (
 	_ gextras.Nativer = (*TreeListRow)(nil)
 )
 
-func wrapTreeListRow(obj *externglib.Object) TreeListRower {
+func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	return &TreeListRow{
 		Object: obj,
 	}
@@ -311,7 +316,7 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRow)
+	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRow
 }
@@ -332,7 +337,12 @@ func (self *TreeListRow) Children() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -390,7 +400,7 @@ func (self *TreeListRow) Item() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -412,7 +422,7 @@ func (self *TreeListRow) Parent() *TreeListRow {
 
 	var _treeListRow *TreeListRow // out
 
-	_treeListRow = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRow)
+	_treeListRow = wrapTreeListRow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRow
 }

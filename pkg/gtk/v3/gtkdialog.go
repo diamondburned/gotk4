@@ -279,7 +279,7 @@ var (
 	_ gextras.Nativer = (*Dialog)(nil)
 )
 
-func wrapDialog(obj *externglib.Object) Dialoger {
+func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
 		Window: Window{
 			Bin: Bin{
@@ -318,7 +318,7 @@ func NewDialog() *Dialog {
 
 	var _dialog *Dialog // out
 
-	_dialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Dialog)
+	_dialog = wrapDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dialog
 }
@@ -352,14 +352,13 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) *Widget {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(responseId)
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -378,7 +377,7 @@ func (dialog *Dialog) ActionArea() *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -394,7 +393,7 @@ func (dialog *Dialog) ContentArea() *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -411,7 +410,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 	var _headerBar *HeaderBar // out
 
-	_headerBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HeaderBar)
+	_headerBar = wrapHeaderBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
 }
@@ -449,7 +448,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -542,7 +541,9 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(dialog.Native()))
 	_arg1 = C.gint(len(newOrder))
-	_arg2 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
+	if len(newOrder) > 0 {
+		_arg2 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
+	}
 
 	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
 }

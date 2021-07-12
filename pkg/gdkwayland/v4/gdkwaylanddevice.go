@@ -44,7 +44,7 @@ var (
 	_ gextras.Nativer = (*WaylandDevice)(nil)
 )
 
-func wrapWaylandDevice(obj *externglib.Object) WaylandDevicer {
+func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
 	return &WaylandDevice{
 		Device: gdk.Device{
 			Object: obj,

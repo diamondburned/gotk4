@@ -35,7 +35,7 @@ var (
 	_ gextras.Nativer       = (*X11DeviceManagerXI2)(nil)
 )
 
-func wrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2er {
+func wrapX11DeviceManagerXI2(obj *externglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{
 		Object: obj,
 	}

@@ -57,7 +57,7 @@ var (
 	_ gextras.Nativer = (*Arrow)(nil)
 )
 
-func wrapArrow(obj *externglib.Object) Arrower {
+func wrapArrow(obj *externglib.Object) *Arrow {
 	return &Arrow{
 		Misc: Misc{
 			Widget: Widget{
@@ -96,7 +96,7 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 
 	var _arrow *Arrow // out
 
-	_arrow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Arrow)
+	_arrow = wrapArrow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _arrow
 }

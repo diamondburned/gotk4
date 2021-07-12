@@ -101,7 +101,7 @@ var (
 	_ gextras.Nativer       = (*TLSClientConnection)(nil)
 )
 
-func wrapTLSClientConnection(obj *externglib.Object) TLSClientConnectioner {
+func wrapTLSClientConnection(obj *externglib.Object) *TLSClientConnection {
 	return &TLSClientConnection{
 		TLSConnection: TLSConnection{
 			IOStream: IOStream{
@@ -165,7 +165,7 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 
 	var _socketConnectable *SocketConnectable // out
 
-	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SocketConnectable)
+	_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socketConnectable
 }
@@ -278,7 +278,7 @@ func TlsClientConnectionNew(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _tlsClientConnection *TLSClientConnection // out
 	var _goerr error                              // out
 
-	_tlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSClientConnection)
+	_tlsClientConnection = wrapTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsClientConnection, _goerr

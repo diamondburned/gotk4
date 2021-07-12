@@ -46,7 +46,7 @@ var (
 	_ gextras.Nativer = (*BoolFilter)(nil)
 )
 
-func wrapBoolFilter(obj *externglib.Object) BoolFilterer {
+func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 	return &BoolFilter{
 		Filter: Filter{
 			Object: obj,
@@ -71,7 +71,7 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 
 	var _boolFilter *BoolFilter // out
 
-	_boolFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoolFilter)
+	_boolFilter = wrapBoolFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boolFilter
 }
@@ -88,7 +88,7 @@ func (self *BoolFilter) Expression() *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expression
 }

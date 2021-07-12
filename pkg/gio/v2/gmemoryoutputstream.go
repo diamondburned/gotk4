@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer      = (*MemoryOutputStream)(nil)
 )
 
-func wrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStreamer {
+func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{
 		OutputStream: OutputStream{
 			Object: obj,
@@ -94,7 +94,7 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 
 	var _memoryOutputStream *MemoryOutputStream // out
 
-	_memoryOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryOutputStream)
+	_memoryOutputStream = wrapMemoryOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryOutputStream
 }

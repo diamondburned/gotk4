@@ -334,7 +334,7 @@ func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean)
 	var window *Window      // out
 	var userData cgo.Handle // out
 
-	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Window)
+	window = wrapWindow(externglib.Take(unsafe.Pointer(arg0)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(WindowChildFunc)
@@ -356,7 +356,7 @@ func GetDefaultRootWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -372,7 +372,7 @@ func OffscreenWindowGetEmbedder(window Windower) *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -841,7 +841,7 @@ var (
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windower {
+func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Object: obj,
 	}
@@ -870,7 +870,7 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -923,7 +923,7 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 
 	var _drawingContext *DrawingContext // out
 
-	_drawingContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingContext)
+	_drawingContext = wrapDrawingContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingContext
 }
@@ -1186,7 +1186,7 @@ func (window *Window) CreateGLContext() (*GLContext, error) {
 	var _glContext *GLContext // out
 	var _goerr error          // out
 
-	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GLContext)
+	_glContext = wrapGLContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -1567,7 +1567,7 @@ func (window *Window) Cursor() *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -1610,7 +1610,7 @@ func (window *Window) DeviceCursor(device Devicer) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -1660,7 +1660,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	_x = int(_arg2)
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _x, _y, _mask, _ret
 }
@@ -1689,7 +1689,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _x, _y, _mask, _ret
 }
@@ -1705,7 +1705,7 @@ func (window *Window) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -1723,7 +1723,7 @@ func (window *Window) DragProtocol() (*Window, DragProtocol) {
 	var _target *Window            // out
 	var _dragProtocol DragProtocol // out
 
-	_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(*Window)
+	_target = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
 	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
@@ -1744,7 +1744,7 @@ func (window *Window) EffectiveParent() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1765,7 +1765,7 @@ func (window *Window) EffectiveToplevel() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1836,7 +1836,7 @@ func (window *Window) FrameClock() *FrameClock {
 
 	var _frameClock *FrameClock // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FrameClock)
+	_frameClock = wrapFrameClock(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frameClock
 }
@@ -1927,7 +1927,7 @@ func (window *Window) Group() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2015,7 +2015,7 @@ func (window *Window) Parent() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2064,7 +2064,7 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret *Window) {
 	_x = int(_arg1)
 	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _x, _y, _mask, _ret
 }
@@ -2175,7 +2175,7 @@ func (window *Window) Screen() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+	_screen = wrapScreen(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
 }
@@ -2254,7 +2254,7 @@ func (window *Window) Toplevel() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2348,7 +2348,7 @@ func (window *Window) Visual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+	_visual = wrapVisual(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -3307,7 +3307,6 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_icon_name(_arg0, _arg1)
 }
@@ -3486,7 +3485,6 @@ func (window *Window) SetRole(role string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_role(_arg0, _arg1)
 }
@@ -3575,7 +3573,6 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_startup_id(_arg0, _arg1)
 }
@@ -3636,7 +3633,6 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_window_set_title(_arg0, _arg1)
 }
@@ -3877,7 +3873,7 @@ func WindowAtPointer() (winX int, winY int, window *Window) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _winX, _winY, _window
 }

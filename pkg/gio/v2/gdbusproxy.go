@@ -146,7 +146,7 @@ var (
 	_ gextras.Nativer = (*DBusProxy)(nil)
 )
 
-func wrapDBusProxy(obj *externglib.Object) DBusProxier {
+func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{
 		Object: obj,
 		AsyncInitable: AsyncInitable{
@@ -180,7 +180,7 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _dBusProxy *DBusProxy // out
 	var _goerr error          // out
 
-	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -199,7 +199,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _dBusProxy *DBusProxy // out
 	var _goerr error          // out
 
-	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -224,11 +224,8 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
@@ -236,7 +233,7 @@ func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInt
 	var _dBusProxy *DBusProxy // out
 	var _goerr error          // out
 
-	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -279,11 +276,8 @@ func NewDBusProxySync(connection DBusConnectioner, flags DBusProxyFlags, info *D
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_proxy_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
@@ -291,7 +285,7 @@ func NewDBusProxySync(connection DBusConnectioner, flags DBusProxyFlags, info *D
 	var _dBusProxy *DBusProxy // out
 	var _goerr error          // out
 
-	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_dBusProxy = wrapDBusProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusProxy, _goerr
@@ -348,7 +342,6 @@ func (proxy *DBusProxy) Call(methodName string, parameters *glib.Variant, flags 
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
@@ -427,7 +420,6 @@ func (proxy *DBusProxy) CallSync(methodName string, parameters *glib.Variant, fl
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
@@ -464,7 +456,6 @@ func (proxy *DBusProxy) CallWithUnixFdList(methodName string, parameters *glib.V
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
@@ -494,7 +485,7 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(*UnixFDList)
+	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
@@ -523,7 +514,6 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(methodName string, parameters *gl
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
@@ -536,7 +526,7 @@ func (proxy *DBusProxy) CallWithUnixFdListSync(methodName string, parameters *gl
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_outFdList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*UnixFDList)
+	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
@@ -560,7 +550,6 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_proxy_get_cached_property(_arg0, _arg1)
 
@@ -597,7 +586,6 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -615,7 +603,7 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnection)
+	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }
@@ -782,7 +770,6 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 
 	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 
 	C.g_dbus_proxy_set_cached_property(_arg0, _arg1, _arg2)
@@ -857,11 +844,8 @@ func DBusProxyNew(connection DBusConnectioner, flags DBusProxyFlags, info *DBusI
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg9 = C.gpointer(gbox.Assign(callback))
@@ -888,11 +872,8 @@ func DBusProxyNewForBus(busType BusType, flags DBusProxyFlags, info *DBusInterfa
 	_arg2 = C.GDBusProxyFlags(flags)
 	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg9 = C.gpointer(gbox.Assign(callback))

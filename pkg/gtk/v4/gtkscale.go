@@ -37,7 +37,7 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 	var value float64       // out
 	var userData cgo.Handle // out
 
-	scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Scale)
+	scale = wrapScale(externglib.Take(unsafe.Pointer(arg0)))
 	value = float64(arg1)
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
@@ -174,7 +174,7 @@ var (
 	_ gextras.Nativer = (*Scale)(nil)
 )
 
-func wrapScale(obj *externglib.Object) Scaler {
+func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{
 		Range: Range{
 			Widget: Widget{
@@ -217,7 +217,7 @@ func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
 
 	var _scale *Scale // out
 
-	_scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scale)
+	_scale = wrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -248,7 +248,7 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 
 	var _scale *Scale // out
 
-	_scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scale)
+	_scale = wrapScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scale
 }
@@ -272,7 +272,6 @@ func (scale *Scale) AddMark(value float64, position PositionType, markup string)
 	_arg1 = C.double(value)
 	_arg2 = C.GtkPositionType(position)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
 }
@@ -353,7 +352,12 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }

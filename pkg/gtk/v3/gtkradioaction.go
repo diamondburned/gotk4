@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer = (*RadioAction)(nil)
 )
 
-func wrapRadioAction(obj *externglib.Object) RadioActioner {
+func wrapRadioAction(obj *externglib.Object) *RadioAction {
 	return &RadioAction{
 		ToggleAction: ToggleAction{
 			Action: Action{
@@ -88,20 +88,16 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 	var _cret *C.GtkRadioAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.gint(value)
 
 	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _radioAction *RadioAction // out
 
-	_radioAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RadioAction)
+	_radioAction = wrapRadioAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _radioAction
 }

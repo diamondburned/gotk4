@@ -3,6 +3,7 @@
 package pangocairo
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -43,7 +44,13 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 	var data cgo.Handle       // out
 
 	cr = (*cairo.Context)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(cr, func(v *cairo.Context) {
+		C.free(unsafe.Pointer(v))
+	})
 	attr = (*pango.AttrShape)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(attr, func(v *pango.AttrShape) {
+		C.free(unsafe.Pointer(v))
+	})
 	if arg2 != 0 {
 		doPath = true
 	}
@@ -140,7 +147,12 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }
@@ -167,7 +179,12 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }
@@ -281,7 +298,6 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 
 	C.pango_cairo_show_glyph_item(_arg1, _arg2, _arg3)
@@ -378,7 +394,7 @@ var (
 	_ gextras.Nativer = (*Font)(nil)
 )
 
-func wrapFont(obj *externglib.Object) Fonter {
+func wrapFont(obj *externglib.Object) *Font {
 	return &Font{
 		Font: pango.Font{
 			Object: obj,
@@ -435,7 +451,7 @@ var (
 	_ gextras.Nativer = (*FontMap)(nil)
 )
 
-func wrapFontMap(obj *externglib.Object) FontMaper {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{
 		FontMap: pango.FontMap{
 			Object: obj,
@@ -540,7 +556,12 @@ func FontMapGetDefault() *pango.FontMap {
 
 	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontMap)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_fontMap = &pango.FontMap{
+			Object: obj,
+		}
+	}
 
 	return _fontMap
 }
@@ -567,7 +588,12 @@ func FontMapNew() *pango.FontMap {
 
 	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.FontMap)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_fontMap = &pango.FontMap{
+			Object: obj,
+		}
+	}
 
 	return _fontMap
 }
@@ -587,7 +613,12 @@ func FontMapNewForFontType(fonttype cairo.FontType) *pango.FontMap {
 
 	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.FontMap)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_fontMap = &pango.FontMap{
+			Object: obj,
+		}
+	}
 
 	return _fontMap
 }

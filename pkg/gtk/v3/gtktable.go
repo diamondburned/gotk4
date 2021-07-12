@@ -117,7 +117,7 @@ var (
 	_ gextras.Nativer = (*Table)(nil)
 )
 
-func wrapTable(obj *externglib.Object) Tabler {
+func wrapTable(obj *externglib.Object) *Table {
 	return &Table{
 		Container: Container{
 			Widget: Widget{
@@ -164,7 +164,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 
 	var _table *Table // out
 
-	_table = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Table)
+	_table = wrapTable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _table
 }

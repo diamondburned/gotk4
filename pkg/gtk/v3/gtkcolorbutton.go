@@ -75,7 +75,7 @@ var (
 	_ gextras.Nativer = (*ColorButton)(nil)
 )
 
-func wrapColorButton(obj *externglib.Object) ColorButtoner {
+func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
 		Button: Button{
 			Bin: Bin{
@@ -135,7 +135,7 @@ func NewColorButton() *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
+	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -153,7 +153,7 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
+	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -169,7 +169,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorButton)
+	_colorButton = wrapColorButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorButton
 }
@@ -281,7 +281,6 @@ func (button *ColorButton) SetTitle(title string) {
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_color_button_set_title(_arg0, _arg1)
 }

@@ -215,7 +215,7 @@ var (
 	_ gextras.Nativer = (*CellRenderer)(nil)
 )
 
-func wrapCellRenderer(obj *externglib.Object) CellRendererer {
+func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 	return &CellRenderer{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,

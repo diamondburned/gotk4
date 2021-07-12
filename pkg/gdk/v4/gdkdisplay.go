@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -110,7 +109,7 @@ var (
 	_ gextras.Nativer = (*Display)(nil)
 )
 
-func wrapDisplay(obj *externglib.Object) Displayer {
+func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
 		Object: obj,
 	}
@@ -193,7 +192,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
+	_appLaunchContext = wrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }
@@ -209,7 +208,7 @@ func (display *Display) Clipboard() *Clipboard {
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Clipboard)
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _clipboard
 }
@@ -228,7 +227,7 @@ func (display *Display) DefaultSeat() *Seat {
 
 	var _seat *Seat // out
 
-	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Seat)
+	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _seat
 }
@@ -249,7 +248,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -271,7 +270,12 @@ func (self *Display) Monitors() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -306,7 +310,7 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Clipboard)
+	_clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _clipboard
 }
@@ -321,7 +325,6 @@ func (display *Display) Setting(name string, value *externglib.Value) bool {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
@@ -449,14 +452,12 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _keyvals []uint
 	var _ok bool // out
 
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
-	_keyvals = unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4)
-	runtime.SetFinalizer(&_keyvals, func(v *[]uint) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_keys = make([]KeymapKey, _arg4)
+	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg4))
+	defer C.free(unsafe.Pointer(_arg3))
+	_keyvals = make([]uint, _arg4)
+	copy(_keyvals, unsafe.Slice((*uint)(unsafe.Pointer(_arg3)), _arg4))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -494,10 +495,9 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _keys []KeymapKey
 	var _ok bool // out
 
-	_keys = unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_keys, func(v *[]KeymapKey) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_keys = make([]KeymapKey, _arg3)
+	copy(_keys, unsafe.Slice((*KeymapKey)(unsafe.Pointer(_arg2)), _arg3))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -518,7 +518,6 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
@@ -643,7 +642,7 @@ func DisplayGetDefault() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -654,13 +653,12 @@ func DisplayOpen(displayName string) *Display {
 	var _cret *C.GdkDisplay // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_open(_arg1)
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }

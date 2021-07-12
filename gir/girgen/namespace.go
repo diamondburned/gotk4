@@ -189,8 +189,11 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		}
 	}
 
+	for _, v := range n.current.Namespace.Constants {
+		n.logIfSkipped(generators.GenerateConstant(n, &v), "constant "+v.Name)
+	}
 	for _, v := range n.current.Namespace.Aliases {
-		n.logIfSkipped(generators.GenerateAlias(n, &v), "alias"+v.Name)
+		n.logIfSkipped(generators.GenerateAlias(n, &v), "alias "+v.Name)
 	}
 	for _, v := range n.current.Namespace.Enums {
 		if !generators.GenerateEnum(n, &v) {

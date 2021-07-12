@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer   = (*EventController)(nil)
 )
 
-func wrapEventController(obj *externglib.Object) EventControllerer {
+func wrapEventController(obj *externglib.Object) *EventController {
 	return &EventController{
 		Object: obj,
 	}
@@ -89,7 +89,7 @@ func (controller *EventController) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

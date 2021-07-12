@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer     = (*InetSocketAddress)(nil)
 )
 
-func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddresser {
+func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{
 		SocketAddress: SocketAddress{
 			Object: obj,
@@ -86,7 +86,7 @@ func NewInetSocketAddress(address InetAddresser, port uint16) *InetSocketAddress
 
 	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddress)
+	_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -102,14 +102,13 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 	var _cret *C.GSocketAddress // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(port)
 
 	_cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
 	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetSocketAddress)
+	_inetSocketAddress = wrapInetSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetSocketAddress
 }
@@ -125,7 +124,7 @@ func (address *InetSocketAddress) Address() *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InetAddress)
+	_inetAddress = wrapInetAddress(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }

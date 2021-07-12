@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*VScale)(nil)
 )
 
-func wrapVScale(obj *externglib.Object) VScaler {
+func wrapVScale(obj *externglib.Object) *VScale {
 	return &VScale{
 		Scale: Scale{
 			Range: Range{
@@ -87,7 +87,7 @@ func NewVScale(adjustment Adjustmenter) *VScale {
 
 	var _vScale *VScale // out
 
-	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScale)
+	_vScale = wrapVScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }
@@ -117,7 +117,7 @@ func NewVScaleWithRange(min float64, max float64, step float64) *VScale {
 
 	var _vScale *VScale // out
 
-	_vScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScale)
+	_vScale = wrapVScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }

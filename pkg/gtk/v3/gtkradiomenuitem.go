@@ -65,7 +65,7 @@ var (
 	_ gextras.Nativer = (*RadioMenuItem)(nil)
 )
 
-func wrapRadioMenuItem(obj *externglib.Object) RadioMenuItemer {
+func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	return &RadioMenuItem{
 		CheckMenuItem: CheckMenuItem{
 			MenuItem: MenuItem{
@@ -123,7 +123,7 @@ func NewRadioMenuItemFromWidget(group RadioMenuItemer) *RadioMenuItem {
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
+	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -138,13 +138,12 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemer, label string) *R
 
 	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
+	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }
@@ -162,13 +161,12 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemer, label string)
 
 	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioMenuItem)
+	_radioMenuItem = wrapRadioMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioMenuItem
 }

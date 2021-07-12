@@ -197,7 +197,9 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 	_arg1 = C.uint(len(points))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	if len(points) > 0 {
+		_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
+	}
 	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
 
 	_cret = C.graphene_sphere_init_from_points(_arg0, _arg1, _arg2, _arg3)
@@ -223,7 +225,9 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 
 	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
 	_arg1 = C.uint(len(vectors))
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
 
 	_cret = C.graphene_sphere_init_from_vectors(_arg0, _arg1, _arg2, _arg3)

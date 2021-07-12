@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer = (*VBox)(nil)
 )
 
-func wrapVBox(obj *externglib.Object) VBoxer {
+func wrapVBox(obj *externglib.Object) *VBox {
 	return &VBox{
 		Box: Box{
 			Container: Container{
@@ -110,7 +110,7 @@ func NewVBox(homogeneous bool, spacing int) *VBox {
 
 	var _vBox *VBox // out
 
-	_vBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VBox)
+	_vBox = wrapVBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
 }

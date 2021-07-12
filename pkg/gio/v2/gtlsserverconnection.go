@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer       = (*TLSServerConnection)(nil)
 )
 
-func wrapTLSServerConnection(obj *externglib.Object) TLSServerConnectioner {
+func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 	return &TLSServerConnection{
 		TLSConnection: TLSConnection{
 			IOStream: IOStream{
@@ -86,7 +86,7 @@ func TlsServerConnectionNew(baseIoStream IOStreamer, certificate TLSCertificater
 	var _tlsServerConnection *TLSServerConnection // out
 	var _goerr error                              // out
 
-	_tlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSServerConnection)
+	_tlsServerConnection = wrapTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsServerConnection, _goerr

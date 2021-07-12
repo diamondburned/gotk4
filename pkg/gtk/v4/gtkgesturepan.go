@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer = (*GesturePan)(nil)
 )
 
-func wrapGesturePan(obj *externglib.Object) GesturePaner {
+func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	return &GesturePan{
 		GestureDrag: GestureDrag{
 			GestureSingle: GestureSingle{
@@ -84,7 +84,7 @@ func NewGesturePan(orientation Orientation) *GesturePan {
 
 	var _gesturePan *GesturePan // out
 
-	_gesturePan = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GesturePan)
+	_gesturePan = wrapGesturePan(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gesturePan
 }

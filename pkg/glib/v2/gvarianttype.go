@@ -169,7 +169,6 @@ func NewVariantType(typeString string) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_new(_arg1)
 
@@ -249,7 +248,9 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg2 = C.gint(len(items))
-	_arg1 = (**C.GVariantType)(unsafe.Pointer(&items[0]))
+	if len(items) > 0 {
+		_arg1 = (**C.GVariantType)(unsafe.Pointer(&items[0]))
+	}
 
 	_cret = C.g_variant_type_new_tuple(_arg1, _arg2)
 
@@ -726,7 +727,6 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	var _cret *C.GVariantType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg0)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_checked_(_arg1)
 
@@ -742,7 +742,6 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 	var _cret C.gsize  // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_get_depth_(_arg1)
 
@@ -761,7 +760,6 @@ func VariantTypeStringIsValid(typeString string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_variant_type_string_is_valid(_arg1)
 
@@ -793,9 +791,7 @@ func VariantTypeStringScan(_string string, limit string) (string, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
 

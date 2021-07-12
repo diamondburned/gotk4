@@ -108,7 +108,17 @@ type Class struct {
 	Fields         []Field         `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 }
 
-type Constant struct{}
+type Constant struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constant"`
+	Name    string   `xml:"name,attr"`
+	Value   string   `xml:"value,attr"`
+	CType   string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+
+	Type Type
+
+	InfoAttrs
+	InfoElements
+}
 
 type Constructor struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`

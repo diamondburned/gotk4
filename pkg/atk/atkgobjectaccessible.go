@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer    = (*GObjectAccessible)(nil)
 )
 
-func wrapGObjectAccessible(obj *externglib.Object) GObjectAccessibler {
+func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -65,7 +65,7 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -81,7 +81,7 @@ func GObjectAccessibleForObject(obj gextras.Objector) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }

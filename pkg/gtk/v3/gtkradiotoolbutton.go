@@ -50,7 +50,7 @@ var (
 	_ gextras.Nativer   = (*RadioToolButton)(nil)
 )
 
-func wrapRadioToolButton(obj *externglib.Object) RadioToolButtoner {
+func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	return &RadioToolButton{
 		ToggleToolButton: ToggleToolButton{
 			ToolButton: ToolButton{
@@ -110,7 +110,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButtoner) *RadioToolButton {
 
 	var _radioToolButton *RadioToolButton // out
 
-	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButton)
+	_radioToolButton = wrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }
@@ -127,13 +127,12 @@ func NewRadioToolButtonWithStockFromWidget(group RadioToolButtoner, stockId stri
 
 	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
 
 	var _radioToolButton *RadioToolButton // out
 
-	_radioToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RadioToolButton)
+	_radioToolButton = wrapRadioToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _radioToolButton
 }

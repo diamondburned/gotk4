@@ -91,7 +91,7 @@ var (
 	_ gextras.Nativer = (*GridView)(nil)
 )
 
-func wrapGridView(obj *externglib.Object) GridViewer {
+func wrapGridView(obj *externglib.Object) *GridView {
 	return &GridView{
 		ListBase: ListBase{
 			Widget: Widget{
@@ -142,7 +142,7 @@ func NewGridView(model SelectionModeler, factory ListItemFactorier) *GridView {
 
 	var _gridView *GridView // out
 
-	_gridView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GridView)
+	_gridView = wrapGridView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _gridView
 }
@@ -177,7 +177,7 @@ func (self *GridView) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
+	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listItemFactory
 }
@@ -225,7 +225,7 @@ func (self *GridView) Model() *SelectionModel {
 
 	var _selectionModel *SelectionModel // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+	_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }

@@ -47,7 +47,7 @@ var (
 	_ gextras.Nativer = (*VulkanContext)(nil)
 )
 
-func wrapVulkanContext(obj *externglib.Object) VulkanContexter {
+func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 	return &VulkanContext{
 		DrawContext: DrawContext{
 			Object: obj,

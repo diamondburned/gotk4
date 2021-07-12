@@ -44,7 +44,7 @@ var (
 	_ gextras.Nativer = (*StyleProvider)(nil)
 )
 
-func wrapStyleProvider(obj *externglib.Object) StyleProviderer {
+func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	return &StyleProvider{
 		Object: obj,
 	}

@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer           = (*ScrolledWindowAccessible)(nil)
 )
 
-func wrapScrolledWindowAccessible(obj *externglib.Object) ScrolledWindowAccessibler {
+func wrapScrolledWindowAccessible(obj *externglib.Object) *ScrolledWindowAccessible {
 	return &ScrolledWindowAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

@@ -86,7 +86,7 @@ var (
 	_ gextras.Nativer = (*DirectoryList)(nil)
 )
 
-func wrapDirectoryList(obj *externglib.Object) DirectoryLister {
+func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	return &DirectoryList{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -111,14 +111,13 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _cret *C.GtkDirectoryList // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 
 	var _directoryList *DirectoryList // out
 
-	_directoryList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DirectoryList)
+	_directoryList = wrapDirectoryList(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _directoryList
 }
@@ -173,7 +172,12 @@ func (self *DirectoryList) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -245,7 +249,6 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 }

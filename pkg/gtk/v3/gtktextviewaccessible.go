@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer     = (*TextViewAccessible)(nil)
 )
 
-func wrapTextViewAccessible(obj *externglib.Object) TextViewAccessibler {
+func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 	return &TextViewAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

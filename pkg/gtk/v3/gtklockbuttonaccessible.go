@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer       = (*LockButtonAccessible)(nil)
 )
 
-func wrapLockButtonAccessible(obj *externglib.Object) LockButtonAccessibler {
+func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 	return &LockButtonAccessible{
 		ButtonAccessible: ButtonAccessible{
 			ContainerAccessible: ContainerAccessible{

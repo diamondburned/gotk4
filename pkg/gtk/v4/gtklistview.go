@@ -142,7 +142,7 @@ var (
 	_ gextras.Nativer = (*ListView)(nil)
 )
 
-func wrapListView(obj *externglib.Object) ListViewer {
+func wrapListView(obj *externglib.Object) *ListView {
 	return &ListView{
 		ListBase: ListBase{
 			Widget: Widget{
@@ -193,7 +193,7 @@ func NewListView(model SelectionModeler, factory ListItemFactorier) *ListView {
 
 	var _listView *ListView // out
 
-	_listView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListView)
+	_listView = wrapListView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listView
 }
@@ -228,7 +228,7 @@ func (self *ListView) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
+	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listItemFactory
 }
@@ -244,7 +244,7 @@ func (self *ListView) Model() *SelectionModel {
 
 	var _selectionModel *SelectionModel // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+	_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }

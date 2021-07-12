@@ -128,7 +128,7 @@ var (
 	_ gextras.Nativer   = (*CellAreaContext)(nil)
 )
 
-func wrapCellAreaContext(obj *externglib.Object) CellAreaContexter {
+func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	return &CellAreaContext{
 		Object: obj,
 	}
@@ -205,7 +205,7 @@ func (context *CellAreaContext) Area() *CellArea {
 
 	var _cellArea *CellArea // out
 
-	_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellArea)
+	_cellArea = wrapCellArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellArea
 }

@@ -104,7 +104,7 @@ var (
 	_ gextras.Nativer       = (*PollableInputStream)(nil)
 )
 
-func wrapPollableInputStream(obj *externglib.Object) PollableInputStreamer {
+func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
 	return &PollableInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -215,7 +215,9 @@ func (stream *PollableInputStream) ReadNonblocking(buffer []byte, cancellable Ca
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)

@@ -72,7 +72,7 @@ var (
 	_ gextras.Nativer = (*SearchEntry)(nil)
 )
 
-func wrapSearchEntry(obj *externglib.Object) SearchEntrier {
+func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
 		Entry: Entry{
 			Widget: Widget{
@@ -121,7 +121,7 @@ func NewSearchEntry() *SearchEntry {
 
 	var _searchEntry *SearchEntry // out
 
-	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntry)
+	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }

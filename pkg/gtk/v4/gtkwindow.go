@@ -219,7 +219,7 @@ var (
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windower {
+func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -284,7 +284,7 @@ func NewWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -365,7 +365,7 @@ func (window *Window) Application() *Application {
 
 	var _application *Application // out
 
-	_application = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Application)
+	_application = wrapApplication(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _application
 }
@@ -381,7 +381,7 @@ func (window *Window) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -438,7 +438,7 @@ func (window *Window) DefaultWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -495,7 +495,7 @@ func (window *Window) Focus() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -531,7 +531,7 @@ func (window *Window) Group() *WindowGroup {
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowGroup)
+	_windowGroup = wrapWindowGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }
@@ -672,7 +672,7 @@ func (window *Window) Titlebar() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -688,7 +688,7 @@ func (window *Window) TransientFor() *Window {
 
 	var _ret *Window // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1103,7 +1103,6 @@ func (window *Window) SetIconName(name string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_icon_name(_arg0, _arg1)
 }
@@ -1173,7 +1172,6 @@ func (window *Window) SetStartupID(startupId string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_startup_id(_arg0, _arg1)
 }
@@ -1194,7 +1192,6 @@ func (window *Window) SetTitle(title string) {
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_title(_arg0, _arg1)
 }
@@ -1323,7 +1320,12 @@ func WindowGetToplevels() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -1358,7 +1360,6 @@ func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_set_default_icon_name(_arg1)
 }

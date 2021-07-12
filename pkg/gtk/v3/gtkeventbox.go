@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer = (*EventBox)(nil)
 )
 
-func wrapEventBox(obj *externglib.Object) EventBoxer {
+func wrapEventBox(obj *externglib.Object) *EventBox {
 	return &EventBox{
 		Bin: Bin{
 			Container: Container{
@@ -85,7 +85,7 @@ func NewEventBox() *EventBox {
 
 	var _eventBox *EventBox // out
 
-	_eventBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EventBox)
+	_eventBox = wrapEventBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _eventBox
 }

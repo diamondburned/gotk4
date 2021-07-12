@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -153,10 +154,9 @@ func (iconSet *IconSet) Sizes() []int {
 
 	var _sizes []int
 
-	_sizes = unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_sizes, func(v *[]int) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_sizes = make([]int, _arg2)
+	copy(_sizes, unsafe.Slice((*int)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _sizes
 }
@@ -207,13 +207,20 @@ func (iconSet *IconSet) RenderIcon(style Styler, direction TextDirection, state 
 	_arg4 = C.GtkIconSize(size)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 
 	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -240,7 +247,15 @@ func (iconSet *IconSet) RenderIconPixbuf(context StyleContexter, size int) *gdkp
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -451,7 +466,15 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -585,7 +608,6 @@ func (source *IconSource) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_filename(_arg0, _arg1)
 }
@@ -600,7 +622,6 @@ func (source *IconSource) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 }
@@ -759,7 +780,12 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Display)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
 
 	return _display
 }
@@ -807,7 +833,15 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -851,7 +885,6 @@ func (selectionData *SelectionData) Uris() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -889,7 +922,6 @@ func (selectionData *SelectionData) SetText(str string, len int) bool {
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 
 	_cret = C.gtk_selection_data_set_text(_arg0, _arg1, _arg2)
@@ -912,12 +944,10 @@ func (selectionData *SelectionData) SetUris(uris []string) bool {
 
 	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(uris)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(uris))
 		for i := range uris {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(uris[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -1241,7 +1271,6 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
 }
@@ -1262,7 +1291,6 @@ func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GtkRegionFlags(flags)
 
 	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
@@ -1425,7 +1453,6 @@ func (path *WidgetPath) IterHasClass(pos int, name string) bool {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
 
@@ -1449,7 +1476,6 @@ func (path *WidgetPath) IterHasName(pos int, name string) bool {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
 
@@ -1476,7 +1502,6 @@ func (path *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) 
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
 
@@ -1501,7 +1526,6 @@ func (path *WidgetPath) IterRemoveClass(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
 }
@@ -1518,7 +1542,6 @@ func (path *WidgetPath) IterRemoveRegion(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
 }
@@ -1533,7 +1556,6 @@ func (path *WidgetPath) IterSetName(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
 }
@@ -1550,7 +1572,6 @@ func (path *WidgetPath) IterSetObjectName(pos int, name string) {
 	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
 	_arg1 = C.gint(pos)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
 }

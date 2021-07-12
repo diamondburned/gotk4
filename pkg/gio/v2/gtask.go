@@ -265,7 +265,7 @@ var (
 	_ gextras.Nativer = (*Task)(nil)
 )
 
-func wrapTask(obj *externglib.Object) Tasker {
+func wrapTask(obj *externglib.Object) *Task {
 	return &Task{
 		Object: obj,
 		AsyncResult: AsyncResult{
@@ -311,7 +311,7 @@ func NewTask(sourceObject gextras.Objector, cancellable Cancellabler, callback A
 
 	var _task *Task // out
 
-	_task = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Task)
+	_task = wrapTask(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _task
 }
@@ -327,7 +327,7 @@ func (task *Task) Cancellable() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cancellable)
+	_cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cancellable
 }
@@ -460,7 +460,7 @@ func (task *Task) SourceObject() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -741,7 +741,6 @@ func (task *Task) SetName(name string) {
 
 	_arg0 = (*C.GTask)(unsafe.Pointer(task.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_task_set_name(_arg0, _arg1)
 }

@@ -116,7 +116,7 @@ var (
 	_ gextras.Nativer = (*Expander)(nil)
 )
 
-func wrapExpander(obj *externglib.Object) Expanderer {
+func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
 		Bin: Bin{
 			Container: Container{
@@ -148,13 +148,12 @@ func NewExpander(label string) *Expander {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_expander_new(_arg1)
 
 	var _expander *Expander // out
 
-	_expander = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expander)
+	_expander = wrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -170,13 +169,12 @@ func NewExpanderWithMnemonic(label string) *Expander {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_expander_new_with_mnemonic(_arg1)
 
 	var _expander *Expander // out
 
-	_expander = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expander)
+	_expander = wrapExpander(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expander
 }
@@ -258,7 +256,7 @@ func (expander *Expander) LabelWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -363,7 +361,6 @@ func (expander *Expander) SetLabel(label string) {
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(expander.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_expander_set_label(_arg0, _arg1)
 }

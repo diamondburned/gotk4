@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -44,8 +45,11 @@ func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.i
 	var height int               // out
 	var userData cgo.Handle      // out
 
-	drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DrawingArea)
+	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
 	cr = (*cairo.Context)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(cr, func(v *cairo.Context) {
+		C.free(unsafe.Pointer(v))
+	})
 	width = int(arg2)
 	height = int(arg3)
 	userData = (cgo.Handle)(unsafe.Pointer(arg4))
@@ -154,7 +158,7 @@ var (
 	_ gextras.Nativer = (*DrawingArea)(nil)
 )
 
-func wrapDrawingArea(obj *externglib.Object) DrawingAreaer {
+func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -187,7 +191,7 @@ func NewDrawingArea() *DrawingArea {
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingArea)
+	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }

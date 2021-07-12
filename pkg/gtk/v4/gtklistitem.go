@@ -70,7 +70,7 @@ var (
 	_ gextras.Nativer = (*ListItem)(nil)
 )
 
-func wrapListItem(obj *externglib.Object) ListItemer {
+func wrapListItem(obj *externglib.Object) *ListItem {
 	return &ListItem{
 		Object: obj,
 	}
@@ -113,7 +113,7 @@ func (self *ListItem) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -131,7 +131,7 @@ func (self *ListItem) Item() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }

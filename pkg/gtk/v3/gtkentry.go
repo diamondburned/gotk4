@@ -351,7 +351,7 @@ var (
 	_ gextras.Nativer = (*Entry)(nil)
 )
 
-func wrapEntry(obj *externglib.Object) Entrier {
+func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -397,7 +397,7 @@ func NewEntry() *Entry {
 
 	var _entry *Entry // out
 
-	_entry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Entry)
+	_entry = wrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -413,7 +413,7 @@ func NewEntryWithBuffer(buffer EntryBufferer) *Entry {
 
 	var _entry *Entry // out
 
-	_entry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Entry)
+	_entry = wrapEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -491,7 +491,7 @@ func (entry *Entry) Buffer() *EntryBuffer {
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EntryBuffer)
+	_entryBuffer = wrapEntryBuffer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -508,7 +508,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EntryCompletion)
+	_entryCompletion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _entryCompletion
 }
@@ -544,7 +544,7 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -646,7 +646,12 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -688,7 +693,15 @@ func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -885,7 +898,12 @@ func (entry *Entry) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }
@@ -1400,7 +1418,6 @@ func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName stri
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
 }
@@ -1435,7 +1452,6 @@ func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_from_stock(_arg0, _arg1, _arg2)
 }
@@ -1471,7 +1487,6 @@ func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip stri
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
 }
@@ -1497,7 +1512,6 @@ func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
 }
@@ -1620,7 +1634,6 @@ func (entry *Entry) SetPlaceholderText(text string) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
 }
@@ -1672,7 +1685,6 @@ func (entry *Entry) SetText(text string) {
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_entry_set_text(_arg0, _arg1)
 }

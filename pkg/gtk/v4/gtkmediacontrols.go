@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer = (*MediaControls)(nil)
 )
 
-func wrapMediaControls(obj *externglib.Object) MediaControlser {
+func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	return &MediaControls{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -80,7 +80,7 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 
 	var _mediaControls *MediaControls // out
 
-	_mediaControls = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaControls)
+	_mediaControls = wrapMediaControls(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaControls
 }
@@ -96,7 +96,7 @@ func (controls *MediaControls) MediaStream() *MediaStream {
 
 	var _mediaStream *MediaStream // out
 
-	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaStream)
+	_mediaStream = wrapMediaStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaStream
 }

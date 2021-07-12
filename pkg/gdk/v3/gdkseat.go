@@ -64,8 +64,8 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 	var window *Window      // out
 	var userData cgo.Handle // out
 
-	seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Seat)
-	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*Window)
+	seat = wrapSeat(externglib.Take(unsafe.Pointer(arg0)))
+	window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SeatGrabPrepareFunc)
@@ -96,7 +96,7 @@ var (
 	_ gextras.Nativer = (*Seat)(nil)
 )
 
-func wrapSeat(obj *externglib.Object) Seater {
+func wrapSeat(obj *externglib.Object) *Seat {
 	return &Seat{
 		Object: obj,
 	}
@@ -135,7 +135,7 @@ func (seat *Seat) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -151,7 +151,7 @@ func (seat *Seat) Keyboard() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -167,7 +167,7 @@ func (seat *Seat) Pointer() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }

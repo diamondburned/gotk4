@@ -75,7 +75,7 @@ var (
 	_ gextras.Nativer  = (*MenuToolButton)(nil)
 )
 
-func wrapMenuToolButton(obj *externglib.Object) MenuToolButtoner {
+func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 	return &MenuToolButton{
 		ToolButton: ToolButton{
 			ToolItem: ToolItem{
@@ -130,13 +130,12 @@ func NewMenuToolButton(iconWidget Widgeter, label string) *MenuToolButton {
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 
 	var _menuToolButton *MenuToolButton // out
 
-	_menuToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuToolButton)
+	_menuToolButton = wrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -151,13 +150,12 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
 
 	var _menuToolButton *MenuToolButton // out
 
-	_menuToolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuToolButton)
+	_menuToolButton = wrapMenuToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -173,7 +171,7 @@ func (button *MenuToolButton) Menu() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -187,7 +185,6 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_markup(_arg0, _arg1)
 }
@@ -201,7 +198,6 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_tool_button_set_arrow_tooltip_text(_arg0, _arg1)
 }

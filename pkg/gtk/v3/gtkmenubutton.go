@@ -152,7 +152,7 @@ var (
 	_ gextras.Nativer = (*MenuButton)(nil)
 )
 
-func wrapMenuButton(obj *externglib.Object) MenuButtoner {
+func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
 		ToggleButton: ToggleButton{
 			Button: Button{
@@ -208,7 +208,7 @@ func NewMenuButton() *MenuButton {
 
 	var _menuButton *MenuButton // out
 
-	_menuButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuButton)
+	_menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
 }
@@ -224,7 +224,7 @@ func (menuButton *MenuButton) AlignWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -256,7 +256,12 @@ func (menuButton *MenuButton) MenuModel() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }
@@ -273,7 +278,7 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
+	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -290,7 +295,7 @@ func (menuButton *MenuButton) Popup() *Menu {
 
 	var _menu *Menu // out
 
-	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Menu)
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }

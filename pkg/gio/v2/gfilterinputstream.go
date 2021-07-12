@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer     = (*FilterInputStream)(nil)
 )
 
-func wrapFilterInputStream(obj *externglib.Object) FilterInputStreamer {
+func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
 	return &FilterInputStream{
 		InputStream: InputStream{
 			Object: obj,
@@ -81,7 +81,7 @@ func (stream *FilterInputStream) BaseStream() *InputStream {
 
 	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _inputStream
 }

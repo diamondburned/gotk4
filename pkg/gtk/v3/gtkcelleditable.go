@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer = (*CellEditable)(nil)
 )
 
-func wrapCellEditable(obj *externglib.Object) CellEditabler {
+func wrapCellEditable(obj *externglib.Object) *CellEditable {
 	return &CellEditable{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{

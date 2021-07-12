@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer = (*Orientable)(nil)
 )
 
-func wrapOrientable(obj *externglib.Object) Orientabler {
+func wrapOrientable(obj *externglib.Object) *Orientable {
 	return &Orientable{
 		Object: obj,
 	}

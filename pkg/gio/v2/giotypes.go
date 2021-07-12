@@ -9,7 +9,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,8 +56,8 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 	var res *AsyncResult                // out
 	var userData cgo.Handle             // out
 
-	sourceObject = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
-	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*AsyncResult)
+	sourceObject = externglib.Take(unsafe.Pointer(arg0))
+	res = wrapAsyncResult(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(AsyncReadyCallback)
@@ -79,7 +78,7 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 	var cancellable *Cancellable // out
 	var userData cgo.Handle      // out
 
-	cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Cancellable)
+	cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CancellableSourceFunc)
@@ -112,9 +111,11 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	var interfaceName string             // out
 	var userData cgo.Handle              // out
 
-	manager = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusObjectManagerClient)
+	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	defer C.free(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(DBusProxyTypeFunc)
@@ -140,7 +141,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 	var condition glib.IOCondition   // out
 	var userData cgo.Handle          // out
 
-	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DatagramBased)
+	datagramBased = wrapDatagramBased(externglib.Take(unsafe.Pointer(arg0)))
 	condition = glib.IOCondition(arg1)
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
@@ -251,6 +252,7 @@ func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (
 	var callbackData cgo.Handle // out
 
 	fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
+	defer C.free(unsafe.Pointer(arg0))
 	fileSize = int64(arg1)
 	callbackData = (cgo.Handle)(unsafe.Pointer(arg2))
 
@@ -279,7 +281,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean
 	var pollableStream *externglib.Object // out
 	var userData cgo.Handle               // out
 
-	pollableStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
+	pollableStream = externglib.Take(unsafe.Pointer(arg0))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PollableSourceFunc)
@@ -307,7 +309,7 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 	var condition glib.IOCondition // out
 	var userData cgo.Handle        // out
 
-	socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Socket)
+	socket = wrapSocket(externglib.Take(unsafe.Pointer(arg0)))
 	condition = glib.IOCondition(arg1)
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
@@ -337,7 +339,6 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _cret *C.GFileAttributeMatcher // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_new(_arg1)
 
@@ -370,7 +371,6 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ns)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
 
@@ -409,7 +409,6 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
 
@@ -431,7 +430,6 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
 
@@ -769,7 +767,6 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
@@ -788,7 +785,6 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -810,7 +806,6 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -839,7 +834,6 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 
 	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
@@ -847,7 +841,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr
@@ -915,7 +909,6 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	var _cret *C.GSrvTarget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint16(port)
 	_arg3 = C.guint16(priority)
 	_arg4 = C.guint16(weight)

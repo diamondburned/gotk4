@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer  = (*ShortcutsGroup)(nil)
 )
 
-func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGrouper {
+func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{
 		Box: Box{
 			Widget: Widget{

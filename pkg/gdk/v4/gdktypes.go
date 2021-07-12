@@ -283,12 +283,10 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	_arg2 = C.guint(len(mimeTypes))
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(mimeTypes))
+		out := unsafe.Slice((**C.char)(_arg1), len(mimeTypes))
 		for i := range mimeTypes {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -358,7 +356,6 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
 

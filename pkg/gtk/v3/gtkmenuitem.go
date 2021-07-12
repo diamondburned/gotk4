@@ -125,7 +125,7 @@ var (
 	_ gextras.Nativer = (*MenuItem)(nil)
 )
 
-func wrapMenuItem(obj *externglib.Object) MenuItemer {
+func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
 		Bin: Bin{
 			Container: Container{
@@ -175,7 +175,7 @@ func NewMenuItem() *MenuItem {
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuItem)
+	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -186,13 +186,12 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_item_new_with_label(_arg1)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuItem)
+	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -206,13 +205,12 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_menu_item_new_with_mnemonic(_arg1)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuItem)
+	_menuItem = wrapMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -328,7 +326,7 @@ func (menuItem *MenuItem) Submenu() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -385,7 +383,6 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
 }
@@ -397,7 +394,6 @@ func (menuItem *MenuItem) SetLabel(label string) {
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_item_set_label(_arg0, _arg1)
 }

@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer        = (*DTLSServerConnection)(nil)
 )
 
-func wrapDTLSServerConnection(obj *externglib.Object) DTLSServerConnectioner {
+func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 	return &DTLSServerConnection{
 		DTLSConnection: DTLSConnection{
 			DatagramBased: DatagramBased{
@@ -81,7 +81,7 @@ func DtlsServerConnectionNew(baseSocket DatagramBaseder, certificate TLSCertific
 	var _dtlsServerConnection *DTLSServerConnection // out
 	var _goerr error                                // out
 
-	_dtlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DTLSServerConnection)
+	_dtlsServerConnection = wrapDTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dtlsServerConnection, _goerr

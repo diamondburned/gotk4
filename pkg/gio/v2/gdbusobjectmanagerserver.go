@@ -80,7 +80,7 @@ var (
 	_ gextras.Nativer           = (*DBusObjectManagerServer)(nil)
 )
 
-func wrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServerer {
+func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServer {
 	return &DBusObjectManagerServer{
 		Object: obj,
 		DBusObjectManager: DBusObjectManager{
@@ -107,13 +107,12 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _cret *C.GDBusObjectManagerServer // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_new(_arg1)
 
 	var _dBusObjectManagerServer *DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObjectManagerServer)
+	_dBusObjectManagerServer = wrapDBusObjectManagerServer(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectManagerServer
 }
@@ -163,7 +162,7 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusConnection)
+	_dBusConnection = wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }
@@ -212,7 +211,6 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
 

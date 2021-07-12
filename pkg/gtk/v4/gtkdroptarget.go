@@ -115,7 +115,7 @@ var (
 	_ gextras.Nativer = (*DropTarget)(nil)
 )
 
-func wrapDropTarget(obj *externglib.Object) DropTargeter {
+func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	return &DropTarget{
 		EventController: EventController{
 			Object: obj,
@@ -145,7 +145,7 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 
 	var _dropTarget *DropTarget // out
 
-	_dropTarget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropTarget)
+	_dropTarget = wrapDropTarget(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropTarget
 }
@@ -179,7 +179,12 @@ func (self *DropTarget) Drop() *gdk.Drop {
 
 	var _drop *gdk.Drop // out
 
-	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drop)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_drop = &gdk.Drop{
+			Object: obj,
+		}
+	}
 
 	return _drop
 }
@@ -275,9 +280,8 @@ func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 	_arg2 = C.gsize(len(types))
 	_arg1 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(types))
+		out := unsafe.Slice((*C.GType)(_arg1), len(types))
 		for i := range types {
 			out[i] = C.GType(types[i])
 		}

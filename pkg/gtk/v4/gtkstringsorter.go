@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer = (*StringSorter)(nil)
 )
 
-func wrapStringSorter(obj *externglib.Object) StringSorterer {
+func wrapStringSorter(obj *externglib.Object) *StringSorter {
 	return &StringSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -81,7 +81,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 
 	var _stringSorter *StringSorter // out
 
-	_stringSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StringSorter)
+	_stringSorter = wrapStringSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringSorter
 }
@@ -98,7 +98,7 @@ func (self *StringSorter) Expression() *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expression
 }

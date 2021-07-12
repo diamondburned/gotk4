@@ -231,7 +231,7 @@ var (
 	_ gextras.Nativer = (*AppInfo)(nil)
 )
 
-func wrapAppInfo(obj *externglib.Object) AppInfor {
+func wrapAppInfo(obj *externglib.Object) *AppInfo {
 	return &AppInfo{
 		Object: obj,
 	}
@@ -253,7 +253,6 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_add_supports_type(_arg0, _arg1, &_cerr)
 
@@ -335,7 +334,7 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 
 	var _appInfo *AppInfo // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfo
 }
@@ -440,7 +439,7 @@ func (appinfo *AppInfo) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -508,6 +507,7 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -540,7 +540,6 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_remove_supports_type(_arg0, _arg1, &_cerr)
 
@@ -560,7 +559,6 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(extension)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_extension(_arg0, _arg1, &_cerr)
 
@@ -580,7 +578,6 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_default_for_type(_arg0, _arg1, &_cerr)
 
@@ -602,7 +599,6 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(appinfo.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_set_as_last_used_for_type(_arg0, _arg1, &_cerr)
 
@@ -685,9 +681,7 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(commandline)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(applicationName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GAppInfoCreateFlags(flags)
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
@@ -695,7 +689,7 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -708,7 +702,6 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 	var _cret *C.GAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if mustSupportUris {
 		_arg2 = C.TRUE
 	}
@@ -717,7 +710,7 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 
 	var _appInfo *AppInfo // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfo
 }
@@ -730,13 +723,12 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	var _cret *C.GAppInfo // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 
 	var _appInfo *AppInfo // out
 
-	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfo
 }
@@ -754,7 +746,6 @@ func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContexter) error {
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
@@ -784,7 +775,6 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContexter, can
 	var _arg5 C.gpointer
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -818,7 +808,6 @@ func AppInfoResetTypeAssociations(contentType string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_info_reset_type_associations(_arg1)
 }
@@ -839,7 +828,7 @@ func AppInfoMonitorGet() *AppInfoMonitor {
 
 	var _appInfoMonitor *AppInfoMonitor // out
 
-	_appInfoMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoMonitor)
+	_appInfoMonitor = wrapAppInfoMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfoMonitor
 }
@@ -885,7 +874,7 @@ var (
 	_ gextras.Nativer    = (*AppLaunchContext)(nil)
 )
 
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContexter {
+func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		Object: obj,
 	}
@@ -907,7 +896,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
+	_appLaunchContext = wrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }
@@ -936,7 +925,6 @@ func (context *AppLaunchContext) Environment() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -952,7 +940,6 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupNotifyId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
@@ -966,9 +953,7 @@ func (context *AppLaunchContext) Setenv(variable string, value string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
@@ -981,7 +966,6 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_app_launch_context_unsetenv(_arg0, _arg1)
 }

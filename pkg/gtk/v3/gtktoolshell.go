@@ -104,7 +104,7 @@ var (
 	_ gextras.Nativer = (*ToolShell)(nil)
 )
 
-func wrapToolShell(obj *externglib.Object) ToolSheller {
+func wrapToolShell(obj *externglib.Object) *ToolShell {
 	return &ToolShell{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -264,7 +264,7 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SizeGroup)
+	_sizeGroup = wrapSizeGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }

@@ -148,7 +148,7 @@ var (
 	_ gextras.Nativer = (*Permission)(nil)
 )
 
-func wrapPermission(obj *externglib.Object) Permissioner {
+func wrapPermission(obj *externglib.Object) *Permission {
 	return &Permission{
 		Object: obj,
 	}

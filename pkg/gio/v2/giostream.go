@@ -141,7 +141,7 @@ var (
 	_ gextras.Nativer = (*IOStream)(nil)
 )
 
-func wrapIOStream(obj *externglib.Object) IOStreamer {
+func wrapIOStream(obj *externglib.Object) *IOStream {
 	return &IOStream{
 		Object: obj,
 	}
@@ -265,7 +265,7 @@ func (stream *IOStream) InputStream() *InputStream {
 
 	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _inputStream
 }
@@ -282,7 +282,7 @@ func (stream *IOStream) OutputStream() *OutputStream {
 
 	var _outputStream *OutputStream // out
 
-	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*OutputStream)
+	_outputStream = wrapOutputStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _outputStream
 }

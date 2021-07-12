@@ -156,7 +156,7 @@ var (
 	_ gextras.Nativer  = (*FileEnumerator)(nil)
 )
 
-func wrapFileEnumerator(obj *externglib.Object) FileEnumeratorer {
+func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{
 		Object: obj,
 	}
@@ -262,7 +262,7 @@ func (enumerator *FileEnumerator) Child(info FileInfor) *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -278,7 +278,7 @@ func (enumerator *FileEnumerator) Container() *File {
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -368,8 +368,8 @@ func (direnum *FileEnumerator) Iterate(cancellable Cancellabler) (*FileInfo, *Fi
 	var _outChild *File    // out
 	var _goerr error       // out
 
-	_outInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*FileInfo)
-	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*File)
+	_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
+	_outChild = wrapFile(externglib.Take(unsafe.Pointer(_arg2)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr
@@ -399,7 +399,7 @@ func (enumerator *FileEnumerator) NextFile(cancellable Cancellabler) (*FileInfo,
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileInfo, _goerr

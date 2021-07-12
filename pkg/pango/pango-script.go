@@ -366,7 +366,6 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	var _cret *C.PangoScriptIter // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 
 	_cret = C.pango_script_iter_new(_arg1, _arg2)

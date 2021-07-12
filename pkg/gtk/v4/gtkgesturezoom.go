@@ -42,7 +42,7 @@ var (
 	_ gextras.Nativer = (*GestureZoom)(nil)
 )
 
-func wrapGestureZoom(obj *externglib.Object) GestureZoomer {
+func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -67,7 +67,7 @@ func NewGestureZoom() *GestureZoom {
 
 	var _gestureZoom *GestureZoom // out
 
-	_gestureZoom = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureZoom)
+	_gestureZoom = wrapGestureZoom(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureZoom
 }

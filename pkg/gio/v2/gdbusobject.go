@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer = (*DBusObject)(nil)
 )
 
-func wrapDBusObject(obj *externglib.Object) DBusObjector {
+func wrapDBusObject(obj *externglib.Object) *DBusObject {
 	return &DBusObject{
 		Object: obj,
 	}
@@ -87,13 +87,12 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 
 	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
 	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusInterface)
+	_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusInterface
 }

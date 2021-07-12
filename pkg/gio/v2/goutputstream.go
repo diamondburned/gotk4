@@ -288,7 +288,7 @@ var (
 	_ gextras.Nativer = (*OutputStream)(nil)
 )
 
-func wrapOutputStream(obj *externglib.Object) OutputStreamer {
+func wrapOutputStream(obj *externglib.Object) *OutputStream {
 	return &OutputStream{
 		Object: obj,
 	}
@@ -637,7 +637,9 @@ func (stream *OutputStream) Write(buffer []byte, cancellable Cancellabler) (int,
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
@@ -679,7 +681,9 @@ func (stream *OutputStream) WriteAll(buffer []byte, cancellable Cancellabler) (u
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_output_stream_write_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
@@ -719,7 +723,9 @@ func (stream *OutputStream) WriteAllAsync(buffer []byte, ioPriority int, cancell
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -802,7 +808,9 @@ func (stream *OutputStream) WriteAsync(buffer []byte, ioPriority int, cancellabl
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -886,7 +894,9 @@ func (stream *OutputStream) Writev(vectors []OutputVector, cancellable Cancellab
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
-	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_output_stream_writev(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
@@ -931,7 +941,9 @@ func (stream *OutputStream) WritevAll(vectors []OutputVector, cancellable Cancel
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
-	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	C.g_output_stream_writev_all(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
@@ -972,7 +984,9 @@ func (stream *OutputStream) WritevAllAsync(vectors []OutputVector, ioPriority in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
-	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -1051,7 +1065,9 @@ func (stream *OutputStream) WritevAsync(vectors []OutputVector, ioPriority int, 
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg2 = C.gsize(len(vectors))
-	_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)

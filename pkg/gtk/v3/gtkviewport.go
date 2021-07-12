@@ -74,7 +74,7 @@ var (
 	_ gextras.Nativer = (*Viewport)(nil)
 )
 
-func wrapViewport(obj *externglib.Object) Viewporter {
+func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
 		Bin: Bin{
 			Container: Container{
@@ -117,7 +117,7 @@ func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
 
 	var _viewport *Viewport // out
 
-	_viewport = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Viewport)
+	_viewport = wrapViewport(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -139,7 +139,12 @@ func (viewport *Viewport) BinWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }
@@ -157,7 +162,7 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -192,7 +197,7 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -208,7 +213,12 @@ func (viewport *Viewport) ViewWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }

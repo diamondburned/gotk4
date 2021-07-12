@@ -116,7 +116,7 @@ var (
 	_ gextras.Nativer = (*ToggleButton)(nil)
 )
 
-func wrapToggleButton(obj *externglib.Object) ToggleButtoner {
+func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	return &ToggleButton{
 		Button: Button{
 			Widget: Widget{
@@ -169,7 +169,7 @@ func NewToggleButton() *ToggleButton {
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
+	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -180,13 +180,12 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_label(_arg1)
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
+	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }
@@ -201,13 +200,12 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToggleButton)
+	_toggleButton = wrapToggleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleButton
 }

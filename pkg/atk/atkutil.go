@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -77,6 +78,9 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 	var userData cgo.Handle   // out
 
 	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(event, func(v *KeyEventStruct) {
+		C.free(unsafe.Pointer(v))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(KeySnoopFunc)
@@ -110,7 +114,7 @@ func GetFocusObject() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -123,7 +127,7 @@ func GetRoot() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -232,7 +236,7 @@ var (
 	_ gextras.Nativer = (*Util)(nil)
 )
 
-func wrapUtil(obj *externglib.Object) Utiler {
+func wrapUtil(obj *externglib.Object) *Util {
 	return &Util{
 		Object: obj,
 	}

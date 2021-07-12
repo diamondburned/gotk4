@@ -94,7 +94,7 @@ var (
 	_ gextras.Nativer = (*Monitor)(nil)
 )
 
-func wrapMonitor(obj *externglib.Object) Monitorer {
+func wrapMonitor(obj *externglib.Object) *Monitor {
 	return &Monitor{
 		Object: obj,
 	}
@@ -117,7 +117,7 @@ func (monitor *Monitor) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }

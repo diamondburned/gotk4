@@ -77,7 +77,7 @@ var (
 	_ gextras.Nativer  = (*UnixConnection)(nil)
 )
 
-func wrapUnixConnection(obj *externglib.Object) UnixConnectioner {
+func wrapUnixConnection(obj *externglib.Object) *UnixConnection {
 	return &UnixConnection{
 		SocketConnection: SocketConnection{
 			IOStream: IOStream{
@@ -123,7 +123,7 @@ func (connection *UnixConnection) ReceiveCredentials(cancellable Cancellabler) (
 	var _credentials *Credentials // out
 	var _goerr error              // out
 
-	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Credentials)
+	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
@@ -167,7 +167,7 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 	var _credentials *Credentials // out
 	var _goerr error              // out
 
-	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Credentials)
+	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr

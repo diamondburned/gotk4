@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer = (*X11Keymap)(nil)
 )
 
-func wrapX11Keymap(obj *externglib.Object) X11Keymaper {
+func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 	return &X11Keymap{
 		Keymap: gdk.Keymap{
 			Object: obj,

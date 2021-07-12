@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*VScrollbar)(nil)
 )
 
-func wrapVScrollbar(obj *externglib.Object) VScrollbarer {
+func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	return &VScrollbar{
 		Scrollbar: Scrollbar{
 			Range: Range{
@@ -87,7 +87,7 @@ func NewVScrollbar(adjustment Adjustmenter) *VScrollbar {
 
 	var _vScrollbar *VScrollbar // out
 
-	_vScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VScrollbar)
+	_vScrollbar = wrapVScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScrollbar
 }

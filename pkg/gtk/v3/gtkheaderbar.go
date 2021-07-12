@@ -87,7 +87,7 @@ var (
 	_ gextras.Nativer = (*HeaderBar)(nil)
 )
 
-func wrapHeaderBar(obj *externglib.Object) HeaderBarer {
+func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{
 		Container: Container{
 			Widget: Widget{
@@ -119,7 +119,7 @@ func NewHeaderBar() *HeaderBar {
 
 	var _headerBar *HeaderBar // out
 
-	_headerBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HeaderBar)
+	_headerBar = wrapHeaderBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
 }
@@ -136,7 +136,7 @@ func (bar *HeaderBar) CustomTitle() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -292,7 +292,6 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(layout)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
 }
@@ -337,7 +336,6 @@ func (bar *HeaderBar) SetSubtitle(subtitle string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(subtitle)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_subtitle(_arg0, _arg1)
 }
@@ -351,7 +349,6 @@ func (bar *HeaderBar) SetTitle(title string) {
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(bar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_header_bar_set_title(_arg0, _arg1)
 }

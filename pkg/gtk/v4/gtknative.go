@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*NativeSurface)(nil)
 )
 
-func wrapNativeSurface(obj *externglib.Object) NativeSurfacer {
+func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 	return &NativeSurface{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -99,7 +99,12 @@ func (self *NativeSurface) Renderer() *gsk.Renderer {
 
 	var _renderer *gsk.Renderer // out
 
-	_renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gsk.Renderer)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_renderer = &gsk.Renderer{
+			Object: obj,
+		}
+	}
 
 	return _renderer
 }
@@ -115,7 +120,12 @@ func (self *NativeSurface) Surface() *gdk.Surface {
 
 	var _surface *gdk.Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Surface)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_surface = &gdk.Surface{
+			Object: obj,
+		}
+	}
 
 	return _surface
 }
@@ -175,7 +185,7 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 
 	var _native *NativeSurface // out
 
-	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NativeSurface)
+	_native = wrapNativeSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _native
 }

@@ -62,7 +62,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (c
 	var args *glib.Variant  // out
 	var userData cgo.Handle // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
+	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	args = (*glib.Variant)(unsafe.Pointer(arg1))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer  = (*ActivateAction)(nil)
 )
 
-func wrapActivateAction(obj *externglib.Object) ActivateActioner {
+func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 	return &ActivateAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -122,7 +122,7 @@ func ActivateActionGet() *ActivateAction {
 
 	var _activateAction *ActivateAction // out
 
-	_activateAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActivateAction)
+	_activateAction = wrapActivateAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _activateAction
 }
@@ -142,7 +142,7 @@ var (
 	_ gextras.Nativer  = (*CallbackAction)(nil)
 )
 
-func wrapCallbackAction(obj *externglib.Object) CallbackActioner {
+func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 	return &CallbackAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -174,7 +174,7 @@ var (
 	_ gextras.Nativer  = (*MnemonicAction)(nil)
 )
 
-func wrapMnemonicAction(obj *externglib.Object) MnemonicActioner {
+func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 	return &MnemonicAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -201,7 +201,7 @@ func MnemonicActionGet() *MnemonicAction {
 
 	var _mnemonicAction *MnemonicAction // out
 
-	_mnemonicAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MnemonicAction)
+	_mnemonicAction = wrapMnemonicAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mnemonicAction
 }
@@ -222,7 +222,7 @@ var (
 	_ gextras.Nativer = (*NamedAction)(nil)
 )
 
-func wrapNamedAction(obj *externglib.Object) NamedActioner {
+func wrapNamedAction(obj *externglib.Object) *NamedAction {
 	return &NamedAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -248,13 +248,12 @@ func NewNamedAction(name string) *NamedAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_named_action_new(_arg1)
 
 	var _namedAction *NamedAction // out
 
-	_namedAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NamedAction)
+	_namedAction = wrapNamedAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _namedAction
 }
@@ -290,7 +289,7 @@ var (
 	_ gextras.Nativer = (*NothingAction)(nil)
 )
 
-func wrapNothingAction(obj *externglib.Object) NothingActioner {
+func wrapNothingAction(obj *externglib.Object) *NothingAction {
 	return &NothingAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -316,7 +315,7 @@ func NothingActionGet() *NothingAction {
 
 	var _nothingAction *NothingAction // out
 
-	_nothingAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NothingAction)
+	_nothingAction = wrapNothingAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _nothingAction
 }
@@ -365,7 +364,7 @@ var (
 	_ gextras.Nativer  = (*ShortcutAction)(nil)
 )
 
-func wrapShortcutAction(obj *externglib.Object) ShortcutActioner {
+func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
 	return &ShortcutAction{
 		Object: obj,
 	}
@@ -393,13 +392,12 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_action_parse_string(_arg1)
 
 	var _shortcutAction *ShortcutAction // out
 
-	_shortcutAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutAction)
+	_shortcutAction = wrapShortcutAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutAction
 }
@@ -473,7 +471,7 @@ var (
 	_ gextras.Nativer = (*SignalAction)(nil)
 )
 
-func wrapSignalAction(obj *externglib.Object) SignalActioner {
+func wrapSignalAction(obj *externglib.Object) *SignalAction {
 	return &SignalAction{
 		ShortcutAction: ShortcutAction{
 			Object: obj,
@@ -496,13 +494,12 @@ func NewSignalAction(signalName string) *SignalAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(signalName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_signal_action_new(_arg1)
 
 	var _signalAction *SignalAction // out
 
-	_signalAction = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SignalAction)
+	_signalAction = wrapSignalAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalAction
 }

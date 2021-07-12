@@ -98,7 +98,7 @@ var (
 	_ gextras.Nativer = (*ToolButton)(nil)
 )
 
-func wrapToolButton(obj *externglib.Object) ToolButtoner {
+func wrapToolButton(obj *externglib.Object) *ToolButton {
 	return &ToolButton{
 		ToolItem: ToolItem{
 			Bin: Bin{
@@ -151,13 +151,12 @@ func NewToolButton(iconWidget Widgeter, label string) *ToolButton {
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((iconWidget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_tool_button_new(_arg1, _arg2)
 
 	var _toolButton *ToolButton // out
 
-	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButton)
+	_toolButton = wrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
@@ -175,13 +174,12 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 	var _cret *C.GtkToolItem // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tool_button_new_from_stock(_arg1)
 
 	var _toolButton *ToolButton // out
 
-	_toolButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolButton)
+	_toolButton = wrapToolButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolButton
 }
@@ -221,7 +219,7 @@ func (button *ToolButton) IconWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -256,7 +254,7 @@ func (button *ToolButton) LabelWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -311,7 +309,6 @@ func (button *ToolButton) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_button_set_icon_name(_arg0, _arg1)
 }
@@ -342,7 +339,6 @@ func (button *ToolButton) SetLabel(label string) {
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_button_set_label(_arg0, _arg1)
 }
@@ -374,7 +370,6 @@ func (button *ToolButton) SetStockID(stockId string) {
 
 	_arg0 = (*C.GtkToolButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_button_set_stock_id(_arg0, _arg1)
 }

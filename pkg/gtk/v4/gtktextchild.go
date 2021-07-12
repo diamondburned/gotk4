@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer   = (*TextChildAnchor)(nil)
 )
 
-func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchorer {
+func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
 		Object: obj,
 	}
@@ -66,7 +66,7 @@ func NewTextChildAnchor() *TextChildAnchor {
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextChildAnchor)
+	_textChildAnchor = wrapTextChildAnchor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }

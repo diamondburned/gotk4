@@ -148,7 +148,7 @@ var (
 	_ gextras.Nativer = (*Converter)(nil)
 )
 
-func wrapConverter(obj *externglib.Object) Converterer {
+func wrapConverter(obj *externglib.Object) *Converter {
 	return &Converter{
 		Object: obj,
 	}
@@ -251,9 +251,13 @@ func (converter *Converter) Convert(inbuf []byte, outbuf []byte, flags Converter
 
 	_arg0 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 	_arg2 = C.gsize(len(inbuf))
-	_arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
+	if len(inbuf) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&inbuf[0]))
+	}
 	_arg4 = C.gsize(len(outbuf))
-	_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
+	if len(outbuf) > 0 {
+		_arg3 = (*C.void)(unsafe.Pointer(&outbuf[0]))
+	}
 	_arg5 = C.GConverterFlags(flags)
 
 	_cret = C.g_converter_convert(_arg0, unsafe.Pointer(_arg1), _arg2, unsafe.Pointer(_arg3), _arg4, _arg5, &_arg6, &_arg7, &_cerr)

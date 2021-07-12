@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer  = (*DrawingContext)(nil)
 )
 
-func wrapDrawingContext(obj *externglib.Object) DrawingContexter {
+func wrapDrawingContext(obj *externglib.Object) *DrawingContext {
 	return &DrawingContext{
 		Object: obj,
 	}
@@ -118,7 +118,7 @@ func (context *DrawingContext) Window() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }

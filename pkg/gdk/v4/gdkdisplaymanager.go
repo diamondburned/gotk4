@@ -56,7 +56,6 @@ func SetAllowedBackends(backends string) {
 	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(backends)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_set_allowed_backends(_arg1)
 }
@@ -109,7 +108,7 @@ var (
 	_ gextras.Nativer  = (*DisplayManager)(nil)
 )
 
-func wrapDisplayManager(obj *externglib.Object) DisplayManagerer {
+func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	return &DisplayManager{
 		Object: obj,
 	}
@@ -132,7 +131,7 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -145,13 +144,12 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -182,7 +180,7 @@ func DisplayManagerGet() *DisplayManager {
 
 	var _displayManager *DisplayManager // out
 
-	_displayManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayManager)
+	_displayManager = wrapDisplayManager(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _displayManager
 }

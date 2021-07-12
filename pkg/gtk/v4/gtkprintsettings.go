@@ -41,7 +41,9 @@ func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 	var userData cgo.Handle // out
 
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
+	defer C.free(unsafe.Pointer(arg0))
 	value = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PrintSettingsFunc)
@@ -231,7 +233,7 @@ var (
 	_ gextras.Nativer = (*PrintSettings)(nil)
 )
 
-func wrapPrintSettings(obj *externglib.Object) PrintSettingser {
+func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
 	return &PrintSettings{
 		Object: obj,
 	}
@@ -251,7 +253,7 @@ func NewPrintSettings() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -269,14 +271,13 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 	var _cerr *C.GError           // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_new_from_file(_arg1, &_cerr)
 
 	var _printSettings *PrintSettings // out
 	var _goerr error                  // out
 
-	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
@@ -297,7 +298,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -316,14 +317,13 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, &_cerr)
 
 	var _printSettings *PrintSettings // out
 	var _goerr error                  // out
 
-	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _printSettings, _goerr
@@ -340,7 +340,7 @@ func (other *PrintSettings) Copy() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -366,7 +366,6 @@ func (settings *PrintSettings) Get(key string) string {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_get(_arg0, _arg1)
 
@@ -388,7 +387,6 @@ func (settings *PrintSettings) Bool(key string) bool {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_get_bool(_arg0, _arg1)
 
@@ -459,7 +457,6 @@ func (settings *PrintSettings) Double(key string) float64 {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_get_double(_arg0, _arg1)
 
@@ -483,7 +480,6 @@ func (settings *PrintSettings) DoubleWithDefault(key string, def float64) float6
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.double(def)
 
 	_cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
@@ -535,7 +531,6 @@ func (settings *PrintSettings) Int(key string) int {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_get_int(_arg0, _arg1)
 
@@ -556,7 +551,6 @@ func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(def)
 
 	_cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
@@ -579,7 +573,6 @@ func (settings *PrintSettings) Length(key string, unit Unit) float64 {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkUnit(unit)
 
 	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
@@ -937,7 +930,6 @@ func (settings *PrintSettings) HasKey(key string) bool {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_print_settings_has_key(_arg0, _arg1)
 
@@ -963,7 +955,6 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_load_file(_arg0, _arg1, &_cerr)
 
@@ -987,7 +978,6 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
@@ -1006,9 +996,7 @@ func (settings *PrintSettings) Set(key string, value string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_print_settings_set(_arg0, _arg1, _arg2)
 }
@@ -1021,7 +1009,6 @@ func (settings *PrintSettings) SetBool(key string, value bool) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if value {
 		_arg2 = C.TRUE
 	}
@@ -1049,7 +1036,6 @@ func (settings *PrintSettings) SetDefaultSource(defaultSource string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(defaultSource)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_default_source(_arg0, _arg1)
 }
@@ -1061,7 +1047,6 @@ func (settings *PrintSettings) SetDither(dither string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(dither)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_dither(_arg0, _arg1)
 }
@@ -1074,7 +1059,6 @@ func (settings *PrintSettings) SetDouble(key string, value float64) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.double(value)
 
 	C.gtk_print_settings_set_double(_arg0, _arg1, _arg2)
@@ -1098,7 +1082,6 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(finishings)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_finishings(_arg0, _arg1)
 }
@@ -1111,7 +1094,6 @@ func (settings *PrintSettings) SetInt(key string, value int) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(value)
 
 	C.gtk_print_settings_set_int(_arg0, _arg1, _arg2)
@@ -1126,7 +1108,6 @@ func (settings *PrintSettings) SetLength(key string, value float64, unit Unit) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.double(value)
 	_arg3 = C.GtkUnit(unit)
 
@@ -1142,7 +1123,6 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mediaType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_media_type(_arg0, _arg1)
 }
@@ -1198,7 +1178,6 @@ func (settings *PrintSettings) SetOutputBin(outputBin string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(outputBin)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_output_bin(_arg0, _arg1)
 }
@@ -1211,7 +1190,9 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = C.int(len(pageRanges))
-	_arg1 = (*C.GtkPageRange)(unsafe.Pointer(&pageRanges[0]))
+	if len(pageRanges) > 0 {
+		_arg1 = (*C.GtkPageRange)(unsafe.Pointer(&pageRanges[0]))
+	}
 
 	C.gtk_print_settings_set_page_ranges(_arg0, _arg1, _arg2)
 }
@@ -1284,7 +1265,6 @@ func (settings *PrintSettings) SetPrinter(printer string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(printer)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_set_printer(_arg0, _arg1)
 }
@@ -1385,7 +1365,6 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_to_file(_arg0, _arg1, &_cerr)
 
@@ -1425,7 +1404,6 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_print_settings_to_key_file(_arg0, _arg1, _arg2)
 }
@@ -1439,7 +1417,6 @@ func (settings *PrintSettings) Unset(key string) {
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_settings_unset(_arg0, _arg1)
 }

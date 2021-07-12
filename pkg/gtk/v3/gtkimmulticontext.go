@@ -44,7 +44,7 @@ var (
 	_ gextras.Nativer  = (*IMMulticontext)(nil)
 )
 
-func wrapIMMulticontext(obj *externglib.Object) IMMulticontexter {
+func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{
 		IMContext: IMContext{
 			Object: obj,
@@ -66,7 +66,7 @@ func NewIMMulticontext() *IMMulticontext {
 
 	var _imMulticontext *IMMulticontext // out
 
-	_imMulticontext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IMMulticontext)
+	_imMulticontext = wrapIMMulticontext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }
@@ -114,7 +114,6 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
 }

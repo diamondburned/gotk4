@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer        = (*ProgressBarAccessible)(nil)
 )
 
-func wrapProgressBarAccessible(obj *externglib.Object) ProgressBarAccessibler {
+func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 	return &ProgressBarAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

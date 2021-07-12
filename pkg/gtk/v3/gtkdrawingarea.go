@@ -114,7 +114,7 @@ var (
 	_ gextras.Nativer = (*DrawingArea)(nil)
 )
 
-func wrapDrawingArea(obj *externglib.Object) DrawingAreaer {
+func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -144,7 +144,7 @@ func NewDrawingArea() *DrawingArea {
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DrawingArea)
+	_drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }

@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer        = (*BooleanCellAccessible)(nil)
 )
 
-func wrapBooleanCellAccessible(obj *externglib.Object) BooleanCellAccessibler {
+func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{

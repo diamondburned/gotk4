@@ -114,7 +114,7 @@ var (
 	_ gextras.Nativer = (*Picture)(nil)
 )
 
-func wrapPicture(obj *externglib.Object) Picturer {
+func wrapPicture(obj *externglib.Object) *Picture {
 	return &Picture{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -147,7 +147,7 @@ func NewPicture() *Picture {
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -170,7 +170,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -185,13 +185,12 @@ func NewPictureForFilename(filename string) *Picture {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_picture_new_for_filename(_arg1)
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -210,7 +209,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -231,7 +230,7 @@ func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -246,13 +245,12 @@ func NewPictureForResource(resourcePath string) *Picture {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_picture_new_for_resource(_arg1)
 
 	var _picture *Picture // out
 
-	_picture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Picture)
+	_picture = wrapPicture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _picture
 }
@@ -307,7 +305,12 @@ func (self *Picture) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -342,7 +345,12 @@ func (self *Picture) Paintable() *gdk.Paintable {
 
 	var _paintable *gdk.Paintable // out
 
-	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Paintable)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_paintable = &gdk.Paintable{
+			Object: obj,
+		}
+	}
 
 	return _paintable
 }
@@ -361,7 +369,6 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(alternativeText)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_alternative_text(_arg0, _arg1)
 }
@@ -411,7 +418,6 @@ func (self *Picture) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_filename(_arg0, _arg1)
 }
@@ -476,7 +482,6 @@ func (self *Picture) SetResource(resourcePath string) {
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_picture_set_resource(_arg0, _arg1)
 }

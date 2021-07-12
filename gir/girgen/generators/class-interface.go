@@ -48,7 +48,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	)
 
 	{{ $wrapper := .Tree.WrapName false }}
-	func {{ $wrapper }}(obj *externglib.Object) {{ .InterfaceName }} {
+	func {{ $wrapper }}(obj *externglib.Object) *{{ .StructName }} {
 		return {{ .Wrap "obj" }}
 	}
 

@@ -163,7 +163,7 @@ var (
 	_ gextras.Nativer         = (*ApplicationCommandLine)(nil)
 )
 
-func wrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLiner {
+func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{
 		Object: obj,
 	}
@@ -188,13 +188,12 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -258,6 +257,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -374,7 +374,7 @@ func (cmdline *ApplicationCommandLine) Stdin() *InputStream {
 
 	var _inputStream *InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inputStream
 }
@@ -397,7 +397,6 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(cmdline.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
 

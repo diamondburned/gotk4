@@ -265,7 +265,7 @@ var (
 	_ gextras.Nativer = (*Value)(nil)
 )
 
-func wrapValue(obj *externglib.Object) Valueer {
+func wrapValue(obj *externglib.Object) *Value {
 	return &Value{
 		Object: obj,
 	}

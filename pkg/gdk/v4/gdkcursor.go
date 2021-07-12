@@ -78,7 +78,7 @@ var (
 	_ gextras.Nativer = (*Cursor)(nil)
 )
 
-func wrapCursor(obj *externglib.Object) Cursorer {
+func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
 		Object: obj,
 	}
@@ -121,14 +121,13 @@ func NewCursorFromName(name string, fallback Cursorer) *Cursor {
 	var _cret *C.GdkCursor // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -150,7 +149,7 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -172,7 +171,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 
 	var _ret *Cursor // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cursor)
+	_ret = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -252,7 +251,7 @@ func (cursor *Cursor) Texture() *Texture {
 
 	var _texture *Texture // out
 
-	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Texture)
+	_texture = wrapTexture(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _texture
 }

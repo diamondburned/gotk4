@@ -153,7 +153,7 @@ var (
 	_ gextras.Nativer      = (*EntryIconAccessible)(nil)
 )
 
-func wrapEntryIconAccessible(obj *externglib.Object) EntryIconAccessibler {
+func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,

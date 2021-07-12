@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer          = (*RadioMenuItemAccessible)(nil)
 )
 
-func wrapRadioMenuItemAccessible(obj *externglib.Object) RadioMenuItemAccessibler {
+func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessible {
 	return &RadioMenuItemAccessible{
 		CheckMenuItemAccessible: CheckMenuItemAccessible{
 			MenuItemAccessible: MenuItemAccessible{

@@ -231,7 +231,7 @@ var (
 	_ gextras.Nativer = (*Editable)(nil)
 )
 
-func wrapEditable(obj *externglib.Object) Editabler {
+func wrapEditable(obj *externglib.Object) *Editable {
 	return &Editable{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -356,7 +356,7 @@ func (editable *Editable) Delegate() *Editable {
 
 	var _ret *Editable // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Editable)
+	_ret = wrapEditable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -615,7 +615,6 @@ func (editable *Editable) SetText(text string) {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_editable_set_text(_arg0, _arg1)
 }

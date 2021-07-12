@@ -62,11 +62,11 @@ const (
 	FormatSizeFlagsBits FormatSizeFlags = 0b100
 )
 
-// BitNthLsf: find the position of the first bit set in @mask, searching from
+// BitNthLSF: find the position of the first bit set in @mask, searching from
 // (but not including) @nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set @nth_bit to -1.
-func BitNthLsf(mask uint32, nthBit int) int {
+func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -83,11 +83,11 @@ func BitNthLsf(mask uint32, nthBit int) int {
 	return _gint
 }
 
-// BitNthMsf: find the position of the first bit set in @mask, searching from
+// BitNthMSF: find the position of the first bit set in @mask, searching from
 // (but not including) @nth_bit downwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
-func BitNthMsf(mask uint32, nthBit int) int {
+func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -140,7 +140,6 @@ func FindProgramInPath(program string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(program)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_find_program_in_path(_arg1)
 
@@ -317,7 +316,6 @@ func GetOsInfo(keyName string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(keyName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_os_info(_arg1)
 
@@ -401,6 +399,7 @@ func GetSystemConfigDirs() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -456,6 +455,7 @@ func GetSystemDataDirs() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -655,9 +655,10 @@ func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _cret C.guint // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = C.guint(len(keys))
-	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
+	if len(keys) > 0 {
+		_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
+	}
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
 
@@ -694,7 +695,6 @@ func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_application_name(_arg1)
 }
@@ -712,7 +712,6 @@ func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prgname)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_set_prgname(_arg1)
 }

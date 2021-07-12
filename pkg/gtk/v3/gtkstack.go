@@ -162,7 +162,7 @@ var (
 	_ gextras.Nativer = (*Stack)(nil)
 )
 
-func wrapStack(obj *externglib.Object) Stacker {
+func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
 		Container: Container{
 			Widget: Widget{
@@ -194,7 +194,7 @@ func NewStack() *Stack {
 
 	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
+	_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }
@@ -208,7 +208,6 @@ func (stack *Stack) AddNamed(child Widgeter, name string) {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 }
@@ -225,9 +224,7 @@ func (stack *Stack) AddTitled(child Widgeter, name string, title string) {
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
 }
@@ -241,13 +238,12 @@ func (stack *Stack) ChildByName(name string) *Widget {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -393,7 +389,7 @@ func (stack *Stack) VisibleChild() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -538,7 +534,6 @@ func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionT
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkStackTransitionType(transition)
 
 	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
@@ -557,7 +552,6 @@ func (stack *Stack) SetVisibleChildName(name string) {
 
 	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
 }

@@ -39,7 +39,7 @@ var (
 	_ gextras.Nativer = (*WaylandPopup)(nil)
 )
 
-func wrapWaylandPopup(obj *externglib.Object) WaylandPopuper {
+func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	return &WaylandPopup{
 		WaylandSurface: WaylandSurface{
 			Surface: gdk.Surface{
@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*WaylandSurface)(nil)
 )
 
-func wrapWaylandSurface(obj *externglib.Object) WaylandSurfacer {
+func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 	return &WaylandSurface{
 		Surface: gdk.Surface{
 			Object: obj,
@@ -119,7 +119,7 @@ var (
 	_ gextras.Nativer   = (*WaylandToplevel)(nil)
 )
 
-func wrapWaylandToplevel(obj *externglib.Object) WaylandTopleveler {
+func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	return &WaylandToplevel{
 		WaylandSurface: WaylandSurface{
 			Surface: gdk.Surface{
@@ -142,7 +142,6 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
@@ -162,7 +161,6 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parentHandleStr)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
 

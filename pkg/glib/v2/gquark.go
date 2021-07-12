@@ -28,7 +28,6 @@ func InternStaticString(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_static_string(_arg1)
 
@@ -51,7 +50,6 @@ func InternString(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_intern_string(_arg1)
 

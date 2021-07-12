@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer = (*Snapshot)(nil)
 )
 
-func wrapSnapshot(obj *externglib.Object) Snapshoter {
+func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{
 		Object: obj,
 	}

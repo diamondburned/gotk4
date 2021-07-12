@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*BoxLayout)(nil)
 )
 
-func wrapBoxLayout(obj *externglib.Object) BoxLayouter {
+func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 	return &BoxLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -92,7 +92,7 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 
 	var _boxLayout *BoxLayout // out
 
-	_boxLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoxLayout)
+	_boxLayout = wrapBoxLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boxLayout
 }

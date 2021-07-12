@@ -130,7 +130,7 @@ var (
 	_ gextras.Nativer = (*Toolbar)(nil)
 )
 
-func wrapToolbar(obj *externglib.Object) Toolbarer {
+func wrapToolbar(obj *externglib.Object) *Toolbar {
 	return &Toolbar{
 		Container: Container{
 			Widget: Widget{
@@ -178,7 +178,7 @@ func NewToolbar() *Toolbar {
 
 	var _toolbar *Toolbar // out
 
-	_toolbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Toolbar)
+	_toolbar = wrapToolbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolbar
 }
@@ -279,7 +279,7 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
+	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }

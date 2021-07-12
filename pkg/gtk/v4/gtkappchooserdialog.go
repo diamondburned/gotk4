@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer    = (*AppChooserDialog)(nil)
 )
 
-func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialoger {
+func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	return &AppChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -139,7 +139,7 @@ func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *Ap
 
 	var _appChooserDialog *AppChooserDialog // out
 
-	_appChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserDialog)
+	_appChooserDialog = wrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -157,13 +157,12 @@ func NewAppChooserDialogForContentType(parent Windower, flags DialogFlags, conte
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
 
 	var _appChooserDialog *AppChooserDialog // out
 
-	_appChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserDialog)
+	_appChooserDialog = wrapAppChooserDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserDialog
 }
@@ -201,7 +200,7 @@ func (self *AppChooserDialog) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -215,7 +214,6 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(heading)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 }

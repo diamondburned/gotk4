@@ -80,7 +80,7 @@ var (
 	_ gextras.Nativer       = (*RecentChooserDialog)(nil)
 )
 
-func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialoger {
+func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{
 		Dialog: Dialog{
 			Window: Window{

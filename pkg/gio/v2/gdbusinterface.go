@@ -70,7 +70,7 @@ var (
 	_ gextras.Nativer = (*DBusInterface)(nil)
 )
 
-func wrapDBusInterface(obj *externglib.Object) DBusInterfacer {
+func wrapDBusInterface(obj *externglib.Object) *DBusInterface {
 	return &DBusInterface{
 		Object: obj,
 	}
@@ -93,7 +93,7 @@ func (interface_ *DBusInterface) DupObject() *DBusObject {
 
 	var _dBusObject *DBusObject // out
 
-	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusObject)
+	_dBusObject = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObject
 }

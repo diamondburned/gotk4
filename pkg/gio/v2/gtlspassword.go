@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*TLSPassword)(nil)
 )
 
-func wrapTLSPassword(obj *externglib.Object) TLSPassworder {
+func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	return &TLSPassword{
 		Object: obj,
 	}
@@ -96,13 +96,12 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 
 	_arg1 = C.GTlsPasswordFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_tls_password_new(_arg1, _arg2)
 
 	var _tlsPassword *TLSPassword // out
 
-	_tlsPassword = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSPassword)
+	_tlsPassword = wrapTLSPassword(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tlsPassword
 }
@@ -187,7 +186,6 @@ func (password *TLSPassword) SetDescription(description string) {
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
 }
@@ -217,7 +215,9 @@ func (password *TLSPassword) SetValue(value []byte) {
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg2 = C.gssize(len(value))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
+	if len(value) > 0 {
+		_arg1 = (*C.guchar)(unsafe.Pointer(&value[0]))
+	}
 
 	C.g_tls_password_set_value(_arg0, _arg1, _arg2)
 }
@@ -231,7 +231,6 @@ func (password *TLSPassword) SetWarning(warning string) {
 
 	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(warning)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_warning(_arg0, _arg1)
 }

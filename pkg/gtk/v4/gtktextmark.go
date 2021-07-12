@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*TextMark)(nil)
 )
 
-func wrapTextMark(obj *externglib.Object) TextMarker {
+func wrapTextMark(obj *externglib.Object) *TextMark {
 	return &TextMark{
 		Object: obj,
 	}
@@ -104,7 +104,6 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _cret *C.GtkTextMark // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if leftGravity {
 		_arg2 = C.TRUE
 	}
@@ -113,7 +112,7 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 
 	var _textMark *TextMark // out
 
-	_textMark = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextMark)
+	_textMark = wrapTextMark(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textMark
 }
@@ -131,7 +130,7 @@ func (mark *TextMark) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBuffer)
+	_textBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }

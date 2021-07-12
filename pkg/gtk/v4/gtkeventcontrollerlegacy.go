@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer         = (*EventControllerLegacy)(nil)
 )
 
-func wrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacier {
+func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
 	return &EventControllerLegacy{
 		EventController: EventController{
 			Object: obj,
@@ -62,7 +62,7 @@ func NewEventControllerLegacy() *EventControllerLegacy {
 
 	var _eventControllerLegacy *EventControllerLegacy // out
 
-	_eventControllerLegacy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerLegacy)
+	_eventControllerLegacy = wrapEventControllerLegacy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerLegacy
 }

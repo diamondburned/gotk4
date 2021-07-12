@@ -282,6 +282,13 @@ var girToBuiltin = map[string]string{
 	"filename": "string",
 }
 
+// GIRPrimitiveGo returns Go built-in types (primitive types and string). It
+// returns an empty string if there's none.
+func GIRBuiltinGo(typ string) string {
+	v, _ := girToBuiltin[typ]
+	return v
+}
+
 // GIRPrimitiveGo returns Go primitive types that can be copied by-value without
 // doing any pointer work. It returns an empty string if there's none.
 func GIRPrimitiveGo(typ string) string {

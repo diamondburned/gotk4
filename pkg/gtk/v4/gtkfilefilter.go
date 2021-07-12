@@ -87,7 +87,7 @@ var (
 	_ gextras.Nativer = (*FileFilter)(nil)
 )
 
-func wrapFileFilter(obj *externglib.Object) FileFilterer {
+func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{
 		Filter: Filter{
 			Object: obj,
@@ -120,7 +120,7 @@ func NewFileFilter() *FileFilter {
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileFilter)
+	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -139,7 +139,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 
 	var _fileFilter *FileFilter // out
 
-	_fileFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileFilter)
+	_fileFilter = wrapFileFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fileFilter
 }
@@ -157,7 +157,6 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_mime_type(_arg0, _arg1)
 }
@@ -169,7 +168,6 @@ func (filter *FileFilter) AddPattern(pattern string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_add_pattern(_arg0, _arg1)
 }
@@ -213,6 +211,7 @@ func (filter *FileFilter) Attributes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -247,7 +246,6 @@ func (filter *FileFilter) SetName(name string) {
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }

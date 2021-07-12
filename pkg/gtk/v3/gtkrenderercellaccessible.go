@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer         = (*RendererCellAccessible)(nil)
 )
 
-func wrapRendererCellAccessible(obj *externglib.Object) RendererCellAccessibler {
+func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{
 		CellAccessible: CellAccessible{
 			Accessible: Accessible{
@@ -72,7 +72,7 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 
 	var _rendererCellAccessible *RendererCellAccessible // out
 
-	_rendererCellAccessible = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RendererCellAccessible)
+	_rendererCellAccessible = wrapRendererCellAccessible(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
 }

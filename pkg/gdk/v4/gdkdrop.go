@@ -74,7 +74,7 @@ var (
 	_ gextras.Nativer = (*Drop)(nil)
 )
 
-func wrapDrop(obj *externglib.Object) Droper {
+func wrapDrop(obj *externglib.Object) *Drop {
 	return &Drop{
 		Object: obj,
 	}
@@ -139,7 +139,7 @@ func (self *Drop) Device() *Device {
 
 	var _device *Device // out
 
-	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Device)
+	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
 }
@@ -155,7 +155,7 @@ func (self *Drop) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -174,7 +174,7 @@ func (self *Drop) Drag() *Drag {
 
 	var _drag *Drag // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Drag)
+	_drag = wrapDrag(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _drag
 }
@@ -211,7 +211,7 @@ func (self *Drop) Surface() *Surface {
 
 	var _surface *Surface // out
 
-	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Surface)
+	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _surface
 }
@@ -242,7 +242,12 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_inputStream = &gio.InputStream{
+			Object: obj,
+		}
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr

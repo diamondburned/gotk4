@@ -226,7 +226,7 @@ var (
 	_ gextras.Nativer = (*Table)(nil)
 )
 
-func wrapTable(obj *externglib.Object) Tabler {
+func wrapTable(obj *externglib.Object) *Table {
 	return &Table{
 		Object: obj,
 	}
@@ -289,7 +289,7 @@ func (table *Table) Caption() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -368,7 +368,7 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -501,7 +501,7 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -556,7 +556,7 @@ func (table *Table) Summary() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -642,7 +642,7 @@ func (table *Table) RefAt(row int, column int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -708,7 +708,6 @@ func (table *Table) SetColumnDescription(column int, description string) {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(column)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_column_description(_arg0, _arg1, _arg2)
 }
@@ -735,7 +734,6 @@ func (table *Table) SetRowDescription(row int, description string) {
 	_arg0 = (*C.AtkTable)(unsafe.Pointer(table.Native()))
 	_arg1 = C.gint(row)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.atk_table_set_row_description(_arg0, _arg1, _arg2)
 }

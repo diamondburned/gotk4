@@ -80,7 +80,7 @@ var (
 	_ gextras.Nativer = (*SocketService)(nil)
 )
 
-func wrapSocketService(obj *externglib.Object) SocketServicer {
+func wrapSocketService(obj *externglib.Object) *SocketService {
 	return &SocketService{
 		SocketListener: SocketListener{
 			Object: obj,
@@ -108,7 +108,7 @@ func NewSocketService() *SocketService {
 
 	var _socketService *SocketService // out
 
-	_socketService = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketService)
+	_socketService = wrapSocketService(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketService
 }

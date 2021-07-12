@@ -35,7 +35,7 @@ var (
 	_ gextras.Nativer        = (*PixbufSimpleAnimIter)(nil)
 )
 
-func wrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIterer {
+func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 	return &PixbufSimpleAnimIter{
 		PixbufAnimationIter: PixbufAnimationIter{
 			Object: obj,

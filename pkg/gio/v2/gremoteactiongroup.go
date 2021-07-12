@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer     = (*RemoteActionGroup)(nil)
 )
 
-func wrapRemoteActionGroup(obj *externglib.Object) RemoteActionGrouper {
+func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 	return &RemoteActionGroup{
 		ActionGroup: ActionGroup{
 			Object: obj,
@@ -124,7 +124,6 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData))
 
@@ -148,7 +147,6 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value 
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(remote.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData))
 

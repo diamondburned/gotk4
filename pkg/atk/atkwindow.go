@@ -37,7 +37,7 @@ var (
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windower {
+func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
 		ObjectClass: ObjectClass{
 			Object: obj,

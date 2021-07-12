@@ -41,7 +41,6 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _cerr *C.GError      // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 	if writable {
 		_arg2 = C.TRUE
 	}

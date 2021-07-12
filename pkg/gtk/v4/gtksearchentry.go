@@ -85,7 +85,7 @@ var (
 	_ gextras.Nativer = (*SearchEntry)(nil)
 )
 
-func wrapSearchEntry(obj *externglib.Object) SearchEntrier {
+func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -134,7 +134,7 @@ func NewSearchEntry() *SearchEntry {
 
 	var _searchEntry *SearchEntry // out
 
-	_searchEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SearchEntry)
+	_searchEntry = wrapSearchEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -156,7 +156,7 @@ func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

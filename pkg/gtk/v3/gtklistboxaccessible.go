@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer    = (*ListBoxAccessible)(nil)
 )
 
-func wrapListBoxAccessible(obj *externglib.Object) ListBoxAccessibler {
+func wrapListBoxAccessible(obj *externglib.Object) *ListBoxAccessible {
 	return &ListBoxAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

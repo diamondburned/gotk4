@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -84,7 +83,7 @@ var (
 	_ gextras.Nativer  = (*ColorSelection)(nil)
 )
 
-func wrapColorSelection(obj *externglib.Object) ColorSelectioner {
+func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	return &ColorSelection{
 		Box: Box{
 			Container: Container{
@@ -121,7 +120,7 @@ func NewColorSelection() *ColorSelection {
 
 	var _colorSelection *ColorSelection // out
 
-	_colorSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ColorSelection)
+	_colorSelection = wrapColorSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelection
 }
@@ -394,17 +393,15 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
 
 	var _colors []gdk.Color
 	var _ok bool // out
 
-	_colors = unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3)
-	runtime.SetFinalizer(&_colors, func(v *[]gdk.Color) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg2))
+	_colors = make([]gdk.Color, _arg3)
+	copy(_colors, unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -420,7 +417,9 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	var _cret *C.gchar // in
 
 	_arg2 = C.gint(len(colors))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(&colors[0]))
+	if len(colors) > 0 {
+		_arg1 = (*C.GdkColor)(unsafe.Pointer(&colors[0]))
+	}
 
 	_cret = C.gtk_color_selection_palette_to_string(_arg1, _arg2)
 

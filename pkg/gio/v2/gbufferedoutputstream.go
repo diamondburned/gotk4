@@ -69,7 +69,7 @@ var (
 	_ gextras.Nativer        = (*BufferedOutputStream)(nil)
 )
 
-func wrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStreamer {
+func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
@@ -100,7 +100,7 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStream)
+	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }
@@ -119,7 +119,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BufferedOutputStream)
+	_bufferedOutputStream = wrapBufferedOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedOutputStream
 }

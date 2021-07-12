@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -67,6 +68,9 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret 
 	var userData cgo.Handle          // out
 
 	filterInfo = (*RecentFilterInfo)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(filterInfo, func(v *RecentFilterInfo) {
+		C.free(unsafe.Pointer(v))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(RecentFilterFunc)
@@ -171,7 +175,7 @@ var (
 	_ gextras.Nativer = (*RecentFilter)(nil)
 )
 
-func wrapRecentFilter(obj *externglib.Object) RecentFilterer {
+func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 	return &RecentFilter{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -204,7 +208,7 @@ func NewRecentFilter() *RecentFilter {
 
 	var _recentFilter *RecentFilter // out
 
-	_recentFilter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentFilter)
+	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
 }
@@ -235,7 +239,6 @@ func (filter *RecentFilter) AddApplication(application string) {
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(application)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_application(_arg0, _arg1)
 }
@@ -248,7 +251,6 @@ func (filter *RecentFilter) AddGroup(group string) {
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(group)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_group(_arg0, _arg1)
 }
@@ -261,7 +263,6 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_mime_type(_arg0, _arg1)
 }
@@ -274,7 +275,6 @@ func (filter *RecentFilter) AddPattern(pattern string) {
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_add_pattern(_arg0, _arg1)
 }
@@ -361,7 +361,6 @@ func (filter *RecentFilter) SetName(name string) {
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_recent_filter_set_name(_arg0, _arg1)
 }

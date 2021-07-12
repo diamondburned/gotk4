@@ -84,7 +84,7 @@ var (
 	_ gextras.Nativer = (*GridLayout)(nil)
 )
 
-func wrapGridLayout(obj *externglib.Object) GridLayouter {
+func wrapGridLayout(obj *externglib.Object) *GridLayout {
 	return &GridLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -106,7 +106,7 @@ func NewGridLayout() *GridLayout {
 
 	var _gridLayout *GridLayout // out
 
-	_gridLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GridLayout)
+	_gridLayout = wrapGridLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gridLayout
 }
@@ -329,7 +329,7 @@ var (
 	_ gextras.Nativer   = (*GridLayoutChild)(nil)
 )
 
-func wrapGridLayoutChild(obj *externglib.Object) GridLayoutChilder {
+func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 	return &GridLayoutChild{
 		LayoutChild: LayoutChild{
 			Object: obj,

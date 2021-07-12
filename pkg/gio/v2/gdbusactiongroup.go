@@ -45,15 +45,13 @@ func DBusActionGroupGet(connection DBusConnectioner, busName string, objectPath 
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_action_group_get(_arg1, _arg2, _arg3)
 
 	var _dBusActionGroup *DBusActionGroup // out
 
-	_dBusActionGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusActionGroup)
+	_dBusActionGroup = wrapDBusActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusActionGroup
 }

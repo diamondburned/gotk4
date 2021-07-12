@@ -109,7 +109,7 @@ var (
 	_ gextras.Nativer = (*LevelBar)(nil)
 )
 
-func wrapLevelBar(obj *externglib.Object) LevelBarer {
+func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -142,7 +142,7 @@ func NewLevelBar() *LevelBar {
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LevelBar)
+	_levelBar = wrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -161,7 +161,7 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) *LevelBar {
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LevelBar)
+	_levelBar = wrapLevelBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -185,7 +185,6 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
 
 	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
@@ -267,7 +266,6 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
@@ -306,7 +304,6 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
 }

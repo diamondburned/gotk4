@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer         = (*ToggleButtonAccessible)(nil)
 )
 
-func wrapToggleButtonAccessible(obj *externglib.Object) ToggleButtonAccessibler {
+func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible {
 	return &ToggleButtonAccessible{
 		ButtonAccessible: ButtonAccessible{
 			ContainerAccessible: ContainerAccessible{

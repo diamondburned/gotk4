@@ -58,7 +58,7 @@ var (
 	_ gextras.Nativer = (*Texture)(nil)
 )
 
-func wrapTexture(obj *externglib.Object) Texturer {
+func wrapTexture(obj *externglib.Object) *Texture {
 	return &Texture{
 		Object: obj,
 		Paintable: Paintable{
@@ -85,7 +85,7 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Texture {
 
 	var _texture *Texture // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -108,7 +108,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _texture *Texture // out
 	var _goerr error      // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _texture, _goerr
@@ -128,13 +128,12 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	var _cret *C.GdkTexture // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_texture_new_from_resource(_arg1)
 
 	var _texture *Texture // out
 
-	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Texture)
+	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -184,7 +183,6 @@ func (texture *Texture) SaveToPng(filename string) bool {
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 

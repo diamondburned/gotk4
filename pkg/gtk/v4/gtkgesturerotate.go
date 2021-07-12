@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer = (*GestureRotate)(nil)
 )
 
-func wrapGestureRotate(obj *externglib.Object) GestureRotater {
+func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{
 		Gesture: Gesture{
 			EventController: EventController{
@@ -65,7 +65,7 @@ func NewGestureRotate() *GestureRotate {
 
 	var _gestureRotate *GestureRotate // out
 
-	_gestureRotate = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureRotate)
+	_gestureRotate = wrapGestureRotate(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureRotate
 }

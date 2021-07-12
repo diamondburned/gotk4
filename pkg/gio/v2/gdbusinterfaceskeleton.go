@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer         = (*DBusInterfaceSkeleton)(nil)
 )
 
-func wrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeletoner {
+func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{
 		Object: obj,
 		DBusInterface: DBusInterface{
@@ -130,7 +130,6 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection DBusConnectioner, obj
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
 
@@ -167,7 +166,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DBusConnection)
+	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }

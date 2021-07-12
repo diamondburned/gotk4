@@ -71,7 +71,7 @@ var (
 	_ gextras.Nativer    = (*AppLaunchContext)(nil)
 )
 
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContexter {
+func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
 		AppLaunchContext: gio.AppLaunchContext{
 			Object: obj,
@@ -95,7 +95,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppLaunchContext)
+	_appLaunchContext = wrapAppLaunchContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }
@@ -161,7 +161,6 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
 }

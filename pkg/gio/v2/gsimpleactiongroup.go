@@ -59,7 +59,7 @@ var (
 	_ gextras.Nativer     = (*SimpleActionGroup)(nil)
 )
 
-func wrapSimpleActionGroup(obj *externglib.Object) SimpleActionGrouper {
+func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{
 		Object: obj,
 		ActionGroup: ActionGroup{
@@ -85,7 +85,7 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 
 	var _simpleActionGroup *SimpleActionGroup // out
 
-	_simpleActionGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SimpleActionGroup)
+	_simpleActionGroup = wrapSimpleActionGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleActionGroup
 }
@@ -102,7 +102,9 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg2 = C.gint(len(entries))
-	_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	if len(entries) > 0 {
+		_arg1 = (*C.GActionEntry)(unsafe.Pointer(&entries[0]))
+	}
 	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
@@ -138,13 +140,12 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 
 	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
+	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -160,7 +161,6 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(simple.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_simple_action_group_remove(_arg0, _arg1)
 }

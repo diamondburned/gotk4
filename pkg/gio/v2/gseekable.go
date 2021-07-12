@@ -109,7 +109,7 @@ var (
 	_ gextras.Nativer = (*Seekable)(nil)
 )
 
-func wrapSeekable(obj *externglib.Object) Seekabler {
+func wrapSeekable(obj *externglib.Object) *Seekable {
 	return &Seekable{
 		Object: obj,
 	}

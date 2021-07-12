@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer    = (*GestureLongPress)(nil)
 )
 
-func wrapGestureLongPress(obj *externglib.Object) GestureLongPresser {
+func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	return &GestureLongPress{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -79,7 +79,7 @@ func NewGestureLongPress() *GestureLongPress {
 
 	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureLongPress)
+	_gestureLongPress = wrapGestureLongPress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }

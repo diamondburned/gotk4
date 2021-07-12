@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -41,9 +42,15 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	var iter *TreeIter   // out
 	var data cgo.Handle  // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(path, func(v *TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+	})
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeSelectionForeachFunc)
@@ -71,9 +78,12 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	var pathCurrentlySelected bool // out
 	var data cgo.Handle            // out
 
-	selection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeSelection)
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*TreeModel)
+	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg1)))
 	path = (*TreePath)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(path, func(v *TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+	})
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}
@@ -162,7 +172,7 @@ var (
 	_ gextras.Nativer = (*TreeSelection)(nil)
 )
 
-func wrapTreeSelection(obj *externglib.Object) TreeSelectioner {
+func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 	return &TreeSelection{
 		Object: obj,
 	}
@@ -227,7 +237,7 @@ func (selection *TreeSelection) Selected() (*TreeModel, TreeIter, bool) {
 
 	var _ok bool // out
 
-	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*TreeModel)
+	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg1)))
 
 	if _cret != 0 {
 		_ok = true
@@ -247,7 +257,7 @@ func (selection *TreeSelection) TreeView() *TreeView {
 
 	var _treeView *TreeView // out
 
-	_treeView = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeView)
+	_treeView = wrapTreeView(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeView
 }

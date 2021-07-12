@@ -35,7 +35,12 @@ func PangoContextGet() *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }
@@ -63,7 +68,12 @@ func PangoContextGetForDisplay(display Displayer) *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }
@@ -91,7 +101,12 @@ func PangoContextGetForScreen(screen Screener) *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }

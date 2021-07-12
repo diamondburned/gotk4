@@ -186,7 +186,7 @@ var (
 	_ gextras.Nativer = (*PlacesSidebar)(nil)
 )
 
-func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebarer {
+func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	return &PlacesSidebar{
 		ScrolledWindow: ScrolledWindow{
 			Bin: Bin{
@@ -225,7 +225,7 @@ func NewPlacesSidebar() *PlacesSidebar {
 
 	var _placesSidebar *PlacesSidebar // out
 
-	_placesSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PlacesSidebar)
+	_placesSidebar = wrapPlacesSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _placesSidebar
 }
@@ -288,7 +288,12 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -309,7 +314,12 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }

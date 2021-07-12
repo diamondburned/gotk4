@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer  = (*PanedAccessible)(nil)
 )
 
-func wrapPanedAccessible(obj *externglib.Object) PanedAccessibler {
+func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 	return &PanedAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

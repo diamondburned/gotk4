@@ -58,8 +58,8 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 	var anim *PixbufAnimation // out
 	var userData cgo.Handle   // out
 
-	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Pixbuf)
-	anim = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*PixbufAnimation)
+	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
+	anim = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PixbufModulePreparedFunc)
@@ -121,7 +121,7 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 	var height int          // out
 	var userData cgo.Handle // out
 
-	pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Pixbuf)
+	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
 	x = int(arg1)
 	y = int(arg2)
 	width = int(arg3)
@@ -141,7 +141,6 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 	var _cret *C.GdkPixbufFormat // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_get_file_info(_arg1, &_arg2, &_arg3)
 
@@ -199,7 +198,6 @@ func PixbufInitModules(path string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_pixbuf_init_modules(_arg1, &_cerr)
 
@@ -298,7 +296,6 @@ func (format *PixbufFormat) Extensions() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -348,7 +345,6 @@ func (format *PixbufFormat) MIMETypes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -404,7 +400,6 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(format))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(optionKey)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
 

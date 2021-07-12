@@ -28,7 +28,6 @@ func RelationTypeForName(name string) RelationType {
 	var _cret C.AtkRelationType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_for_name(_arg1)
 
@@ -62,7 +61,6 @@ func RelationTypeRegister(name string) RelationType {
 	var _cret C.AtkRelationType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.atk_relation_type_register(_arg1)
 
@@ -97,7 +95,7 @@ var (
 	_ gextras.Nativer = (*Relation)(nil)
 )
 
-func wrapRelation(obj *externglib.Object) Relationer {
+func wrapRelation(obj *externglib.Object) *Relation {
 	return &Relation{
 		Object: obj,
 	}
@@ -119,9 +117,8 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 	_arg2 = C.gint(len(targets))
 	_arg1 = (**C.AtkObject)(C.malloc(C.ulong(len(targets)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(targets))
+		out := unsafe.Slice((**C.AtkObject)(_arg1), len(targets))
 		for i := range targets {
 			out[i] = (*C.AtkObject)(unsafe.Pointer(targets[i].Native()))
 		}
@@ -132,7 +129,7 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 	var _relation *Relation // out
 
-	_relation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Relation)
+	_relation = wrapRelation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relation
 }

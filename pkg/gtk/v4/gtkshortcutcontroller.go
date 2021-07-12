@@ -87,7 +87,7 @@ var (
 	_ gextras.Nativer      = (*ShortcutController)(nil)
 )
 
-func wrapShortcutController(obj *externglib.Object) ShortcutControllerer {
+func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 	return &ShortcutController{
 		EventController: EventController{
 			Object: obj,
@@ -115,7 +115,7 @@ func NewShortcutController() *ShortcutController {
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutController)
+	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }
@@ -136,7 +136,7 @@ func NewShortcutControllerForModel(model gio.ListModeler) *ShortcutController {
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutController)
+	_shortcutController = wrapShortcutController(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutController
 }

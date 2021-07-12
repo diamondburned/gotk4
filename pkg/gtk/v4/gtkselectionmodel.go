@@ -154,7 +154,7 @@ var (
 	_ gextras.Nativer  = (*SelectionModel)(nil)
 )
 
-func wrapSelectionModel(obj *externglib.Object) SelectionModeler {
+func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	return &SelectionModel{
 		ListModel: gio.ListModel{
 			Object: obj,

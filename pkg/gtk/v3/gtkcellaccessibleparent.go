@@ -65,7 +65,7 @@ var (
 	_ gextras.Nativer        = (*CellAccessibleParent)(nil)
 )
 
-func wrapCellAccessibleParent(obj *externglib.Object) CellAccessibleParenter {
+func wrapCellAccessibleParent(obj *externglib.Object) *CellAccessibleParent {
 	return &CellAccessibleParent{
 		Object: obj,
 	}

@@ -37,7 +37,7 @@ var (
 	_ gextras.Nativer = (*CustomSorter)(nil)
 )
 
-func wrapCustomSorter(obj *externglib.Object) CustomSorterer {
+func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	return &CustomSorter{
 		Sorter: Sorter{
 			Object: obj,

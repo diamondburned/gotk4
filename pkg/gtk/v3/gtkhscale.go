@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*HScale)(nil)
 )
 
-func wrapHScale(obj *externglib.Object) HScaler {
+func wrapHScale(obj *externglib.Object) *HScale {
 	return &HScale{
 		Scale: Scale{
 			Range: Range{
@@ -87,7 +87,7 @@ func NewHScale(adjustment Adjustmenter) *HScale {
 
 	var _hScale *HScale // out
 
-	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScale)
+	_hScale = wrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }
@@ -117,7 +117,7 @@ func NewHScaleWithRange(min float64, max float64, step float64) *HScale {
 
 	var _hScale *HScale // out
 
-	_hScale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScale)
+	_hScale = wrapHScale(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }

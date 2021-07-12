@@ -86,7 +86,7 @@ var (
 	_ gextras.Nativer = (*Cancellable)(nil)
 )
 
-func wrapCancellable(obj *externglib.Object) Cancellabler {
+func wrapCancellable(obj *externglib.Object) *Cancellable {
 	return &Cancellable{
 		Object: obj,
 	}
@@ -112,7 +112,7 @@ func NewCancellable() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cancellable)
+	_cancellable = wrapCancellable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cancellable
 }
@@ -358,7 +358,7 @@ func CancellableGetCurrent() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cancellable)
+	_cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cancellable
 }

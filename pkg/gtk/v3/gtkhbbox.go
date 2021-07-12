@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer = (*HButtonBox)(nil)
 )
 
-func wrapHButtonBox(obj *externglib.Object) HButtonBoxer {
+func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 	return &HButtonBox{
 		ButtonBox: ButtonBox{
 			Box: Box{
@@ -79,7 +79,7 @@ func NewHButtonBox() *HButtonBox {
 
 	var _hButtonBox *HButtonBox // out
 
-	_hButtonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HButtonBox)
+	_hButtonBox = wrapHButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hButtonBox
 }

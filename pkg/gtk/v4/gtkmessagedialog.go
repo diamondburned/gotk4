@@ -107,7 +107,7 @@ var (
 	_ gextras.Nativer = (*MessageDialog)(nil)
 )
 
-func wrapMessageDialog(obj *externglib.Object) MessageDialoger {
+func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -173,7 +173,7 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -185,7 +185,6 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(messageDialog.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }

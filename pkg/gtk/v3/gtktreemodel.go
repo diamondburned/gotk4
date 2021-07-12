@@ -66,9 +66,15 @@ func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 
 	var iter *TreeIter   // out
 	var data cgo.Handle  // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(path, func(v *TreePath) {
+		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+	})
 	iter = (*TreeIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeModelForeachFunc)
@@ -414,7 +420,7 @@ var (
 	_ gextras.Nativer = (*TreeModel)(nil)
 )
 
-func wrapTreeModel(obj *externglib.Object) TreeModeler {
+func wrapTreeModel(obj *externglib.Object) *TreeModel {
 	return &TreeModel{
 		Object: obj,
 	}
@@ -440,7 +446,7 @@ func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }
@@ -550,7 +556,6 @@ func (treeModel *TreeModel) IterFromString(pathString string) (TreeIter, bool) {
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathString)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
 
@@ -915,7 +920,9 @@ func (treeModel *TreeModel) RowsReorderedWithLength(path *TreePath, iter *TreeIt
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg4 = C.gint(len(newOrder))
-	_arg3 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
+	if len(newOrder) > 0 {
+		_arg3 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
+	}
 
 	C.gtk_tree_model_rows_reordered_with_length(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -1036,7 +1043,9 @@ func NewTreePathFromIndicesv(indices []int) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg2 = C.gsize(len(indices))
-	_arg1 = (*C.gint)(unsafe.Pointer(&indices[0]))
+	if len(indices) > 0 {
+		_arg1 = (*C.gint)(unsafe.Pointer(&indices[0]))
+	}
 
 	_cret = C.gtk_tree_path_new_from_indicesv(_arg1, _arg2)
 
@@ -1056,7 +1065,6 @@ func NewTreePathFromString(path string) *TreePath {
 	var _cret *C.GtkTreePath // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tree_path_new_from_string(_arg1)
 
@@ -1381,7 +1389,7 @@ func (reference *TreeRowReference) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
 }

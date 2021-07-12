@@ -153,7 +153,7 @@ var (
 	_ gextras.Nativer = (*Popover)(nil)
 )
 
-func wrapPopover(obj *externglib.Object) Popoverer {
+func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
 		Bin: Bin{
 			Container: Container{
@@ -190,7 +190,7 @@ func NewPopover(relativeTo Widgeter) *Popover {
 
 	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
+	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -216,7 +216,7 @@ func NewPopoverFromModel(relativeTo Widgeter, model gio.MenuModeler) *Popover {
 
 	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
+	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -249,7 +249,6 @@ func (popover *Popover) BindModel(model gio.MenuModeler, actionNamespace string)
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_popover_bind_model(_arg0, _arg1, _arg2)
 }
@@ -283,7 +282,7 @@ func (popover *Popover) DefaultWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -355,7 +354,7 @@ func (popover *Popover) RelativeTo() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

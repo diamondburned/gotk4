@@ -94,7 +94,7 @@ var (
 	_ gextras.Nativer = (*InetAddress)(nil)
 )
 
-func wrapInetAddress(obj *externglib.Object) InetAddresser {
+func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	return &InetAddress{
 		Object: obj,
 	}
@@ -118,7 +118,7 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
+	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -130,13 +130,12 @@ func NewInetAddressFromString(_string string) *InetAddress {
 	var _cret *C.GInetAddress // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
+	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -153,7 +152,7 @@ func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
+	_inetAddress = wrapInetAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }

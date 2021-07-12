@@ -50,7 +50,7 @@ var (
 	_ gextras.Nativer      = (*AlternativeTrigger)(nil)
 )
 
-func wrapAlternativeTrigger(obj *externglib.Object) AlternativeTriggerer {
+func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -81,7 +81,7 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 
 	var _alternativeTrigger *AlternativeTrigger // out
 
-	_alternativeTrigger = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AlternativeTrigger)
+	_alternativeTrigger = wrapAlternativeTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _alternativeTrigger
 }
@@ -99,7 +99,7 @@ func (self *AlternativeTrigger) First() *ShortcutTrigger {
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutTrigger)
+	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }
@@ -118,7 +118,7 @@ func (self *AlternativeTrigger) Second() *ShortcutTrigger {
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutTrigger)
+	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }
@@ -143,7 +143,7 @@ var (
 	_ gextras.Nativer = (*KeyvalTrigger)(nil)
 )
 
-func wrapKeyvalTrigger(obj *externglib.Object) KeyvalTriggerer {
+func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -171,7 +171,7 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 
 	var _keyvalTrigger *KeyvalTrigger // out
 
-	_keyvalTrigger = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*KeyvalTrigger)
+	_keyvalTrigger = wrapKeyvalTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _keyvalTrigger
 }
@@ -229,7 +229,7 @@ var (
 	_ gextras.Nativer   = (*MnemonicTrigger)(nil)
 )
 
-func wrapMnemonicTrigger(obj *externglib.Object) MnemonicTriggerer {
+func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -258,7 +258,7 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 
 	var _mnemonicTrigger *MnemonicTrigger // out
 
-	_mnemonicTrigger = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MnemonicTrigger)
+	_mnemonicTrigger = wrapMnemonicTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mnemonicTrigger
 }
@@ -294,7 +294,7 @@ var (
 	_ gextras.Nativer = (*NeverTrigger)(nil)
 )
 
-func wrapNeverTrigger(obj *externglib.Object) NeverTriggerer {
+func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
 	return &NeverTrigger{
 		ShortcutTrigger: ShortcutTrigger{
 			Object: obj,
@@ -321,7 +321,7 @@ func NeverTriggerGet() *NeverTrigger {
 
 	var _neverTrigger *NeverTrigger // out
 
-	_neverTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NeverTrigger)
+	_neverTrigger = wrapNeverTrigger(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _neverTrigger
 }
@@ -365,7 +365,7 @@ var (
 	_ gextras.Nativer   = (*ShortcutTrigger)(nil)
 )
 
-func wrapShortcutTrigger(obj *externglib.Object) ShortcutTriggerer {
+func wrapShortcutTrigger(obj *externglib.Object) *ShortcutTrigger {
 	return &ShortcutTrigger{
 		Object: obj,
 	}
@@ -398,13 +398,12 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	var _cret *C.GtkShortcutTrigger // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	_shortcutTrigger = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShortcutTrigger)
+	_shortcutTrigger = wrapShortcutTrigger(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcutTrigger
 }

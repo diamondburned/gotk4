@@ -41,7 +41,7 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 	var item *externglib.Object // out
 	var userData cgo.Handle     // out
 
-	item = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0)))).(*externglib.Object)
+	item = externglib.AssumeOwnership(unsafe.Pointer(arg0))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(MapListModelMapFunc)
@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer = (*MapListModel)(nil)
 )
 
-func wrapMapListModel(obj *externglib.Object) MapListModeler {
+func wrapMapListModel(obj *externglib.Object) *MapListModel {
 	return &MapListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -119,7 +119,12 @@ func (self *MapListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

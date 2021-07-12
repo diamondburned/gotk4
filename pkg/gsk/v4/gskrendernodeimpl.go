@@ -71,7 +71,7 @@ var (
 	_ gextras.Nativer = (*BlendNode)(nil)
 )
 
-func wrapBlendNode(obj *externglib.Object) BlendNoder {
+func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	return &BlendNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -101,7 +101,7 @@ func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *Ble
 
 	var _blendNode *BlendNode // out
 
-	_blendNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BlendNode)
+	_blendNode = wrapBlendNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _blendNode
 }
@@ -133,7 +133,7 @@ func (node *BlendNode) BottomChild() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -149,7 +149,7 @@ func (node *BlendNode) TopChild() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -172,7 +172,7 @@ var (
 	_ gextras.Nativer = (*BlurNode)(nil)
 )
 
-func wrapBlurNode(obj *externglib.Object) BlurNoder {
+func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	return &BlurNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -199,7 +199,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 
 	var _blurNode *BlurNode // out
 
-	_blurNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BlurNode)
+	_blurNode = wrapBlurNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _blurNode
 }
@@ -215,7 +215,7 @@ func (node *BlurNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -256,7 +256,7 @@ var (
 	_ gextras.Nativer = (*BorderNode)(nil)
 )
 
-func wrapBorderNode(obj *externglib.Object) BorderNoder {
+func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	return &BorderNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -288,7 +288,7 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 
 	var _borderNode *BorderNode // out
 
-	_borderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BorderNode)
+	_borderNode = wrapBorderNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _borderNode
 }
@@ -360,7 +360,7 @@ var (
 	_ gextras.Nativer = (*CairoNode)(nil)
 )
 
-func wrapCairoNode(obj *externglib.Object) CairoNoder {
+func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	return &CairoNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -389,7 +389,7 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 
 	var _cairoNode *CairoNode // out
 
-	_cairoNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CairoNode)
+	_cairoNode = wrapCairoNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoNode
 }
@@ -451,7 +451,7 @@ var (
 	_ gextras.Nativer = (*ClipNode)(nil)
 )
 
-func wrapClipNode(obj *externglib.Object) ClipNoder {
+func wrapClipNode(obj *externglib.Object) *ClipNode {
 	return &ClipNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -479,7 +479,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 
 	var _clipNode *ClipNode // out
 
-	_clipNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ClipNode)
+	_clipNode = wrapClipNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _clipNode
 }
@@ -495,7 +495,7 @@ func (node *ClipNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -538,7 +538,7 @@ var (
 	_ gextras.Nativer  = (*ColorMatrixNode)(nil)
 )
 
-func wrapColorMatrixNode(obj *externglib.Object) ColorMatrixNoder {
+func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -574,7 +574,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 
 	var _colorMatrixNode *ColorMatrixNode // out
 
-	_colorMatrixNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ColorMatrixNode)
+	_colorMatrixNode = wrapColorMatrixNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _colorMatrixNode
 }
@@ -591,7 +591,7 @@ func (node *ColorMatrixNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -644,7 +644,7 @@ var (
 	_ gextras.Nativer = (*ColorNode)(nil)
 )
 
-func wrapColorNode(obj *externglib.Object) ColorNoder {
+func wrapColorNode(obj *externglib.Object) *ColorNode {
 	return &ColorNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -672,7 +672,7 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 
 	var _colorNode *ColorNode // out
 
-	_colorNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ColorNode)
+	_colorNode = wrapColorNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _colorNode
 }
@@ -716,7 +716,7 @@ var (
 	_ gextras.Nativer    = (*ConicGradientNode)(nil)
 )
 
-func wrapConicGradientNode(obj *externglib.Object) ConicGradientNoder {
+func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -747,13 +747,15 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
 	_arg3 = C.float(rotation)
 	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	if len(colorStops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	}
 
 	_cret = C.gsk_conic_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _conicGradientNode *ConicGradientNode // out
 
-	_conicGradientNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConicGradientNode)
+	_conicGradientNode = wrapConicGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _conicGradientNode
 }
@@ -846,7 +848,7 @@ var (
 	_ gextras.Nativer = (*ContainerNode)(nil)
 )
 
-func wrapContainerNode(obj *externglib.Object) ContainerNoder {
+func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	return &ContainerNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -871,9 +873,8 @@ func NewContainerNode(children []*RenderNode) *ContainerNode {
 
 	_arg2 = C.guint(len(children))
 	_arg1 = (**C.GskRenderNode)(C.malloc(C.ulong(len(children)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(children))
+		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
 		for i := range children {
 			out[i] = (*C.GskRenderNode)(unsafe.Pointer(children[i].Native()))
 		}
@@ -883,7 +884,7 @@ func NewContainerNode(children []*RenderNode) *ContainerNode {
 
 	var _containerNode *ContainerNode // out
 
-	_containerNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContainerNode)
+	_containerNode = wrapContainerNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _containerNode
 }
@@ -901,7 +902,7 @@ func (node *ContainerNode) Child(idx uint) *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -944,7 +945,7 @@ var (
 	_ gextras.Nativer = (*CrossFadeNode)(nil)
 )
 
-func wrapCrossFadeNode(obj *externglib.Object) CrossFadeNoder {
+func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -974,7 +975,7 @@ func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *Cro
 
 	var _crossFadeNode *CrossFadeNode // out
 
-	_crossFadeNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CrossFadeNode)
+	_crossFadeNode = wrapCrossFadeNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _crossFadeNode
 }
@@ -990,7 +991,7 @@ func (node *CrossFadeNode) EndChild() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1023,7 +1024,7 @@ func (node *CrossFadeNode) StartChild() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1047,7 +1048,7 @@ var (
 	_ gextras.Nativer = (*DebugNode)(nil)
 )
 
-func wrapDebugNode(obj *externglib.Object) DebugNoder {
+func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	return &DebugNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1072,12 +1073,13 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gsk_debug_node_new(_arg1, _arg2)
 
 	var _debugNode *DebugNode // out
 
-	_debugNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DebugNode)
+	_debugNode = wrapDebugNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _debugNode
 }
@@ -1093,7 +1095,7 @@ func (node *DebugNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1134,7 +1136,7 @@ var (
 	_ gextras.Nativer = (*GLShaderNode)(nil)
 )
 
-func wrapGLShaderNode(obj *externglib.Object) GLShaderNoder {
+func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	return &GLShaderNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1161,7 +1163,7 @@ func (node *GLShaderNode) Child(idx uint) *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1193,7 +1195,7 @@ func (node *GLShaderNode) Shader() *GLShader {
 
 	var _glShader *GLShader // out
 
-	_glShader = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GLShader)
+	_glShader = wrapGLShader(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glShader
 }
@@ -1224,7 +1226,7 @@ var (
 	_ gextras.Nativer  = (*InsetShadowNode)(nil)
 )
 
-func wrapInsetShadowNode(obj *externglib.Object) InsetShadowNoder {
+func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1260,7 +1262,7 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy fl
 
 	var _insetShadowNode *InsetShadowNode // out
 
-	_insetShadowNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InsetShadowNode)
+	_insetShadowNode = wrapInsetShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _insetShadowNode
 }
@@ -1381,7 +1383,7 @@ var (
 	_ gextras.Nativer     = (*LinearGradientNode)(nil)
 )
 
-func wrapLinearGradientNode(obj *externglib.Object) LinearGradientNoder {
+func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1410,13 +1412,15 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
 	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	if len(colorStops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	}
 
 	_cret = C.gsk_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _linearGradientNode *LinearGradientNode // out
 
-	_linearGradientNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*LinearGradientNode)
+	_linearGradientNode = wrapLinearGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _linearGradientNode
 }
@@ -1487,7 +1491,7 @@ var (
 	_ gextras.Nativer = (*OpacityNode)(nil)
 )
 
-func wrapOpacityNode(obj *externglib.Object) OpacityNoder {
+func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	return &OpacityNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1515,7 +1519,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 
 	var _opacityNode *OpacityNode // out
 
-	_opacityNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*OpacityNode)
+	_opacityNode = wrapOpacityNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _opacityNode
 }
@@ -1531,7 +1535,7 @@ func (node *OpacityNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1578,7 +1582,7 @@ var (
 	_ gextras.Nativer   = (*OutsetShadowNode)(nil)
 )
 
-func wrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNoder {
+func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1614,7 +1618,7 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy f
 
 	var _outsetShadowNode *OutsetShadowNode // out
 
-	_outsetShadowNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*OutsetShadowNode)
+	_outsetShadowNode = wrapOutsetShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _outsetShadowNode
 }
@@ -1741,7 +1745,7 @@ var (
 	_ gextras.Nativer     = (*RadialGradientNode)(nil)
 )
 
-func wrapRadialGradientNode(obj *externglib.Object) RadialGradientNoder {
+func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1778,13 +1782,15 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(colorStops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	if len(colorStops) > 0 {
+		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	}
 
 	_cret = C.gsk_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
 	var _radialGradientNode *RadialGradientNode // out
 
-	_radialGradientNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RadialGradientNode)
+	_radialGradientNode = wrapRadialGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _radialGradientNode
 }
@@ -1903,7 +1909,7 @@ var (
 	_ gextras.Nativer = (*RepeatNode)(nil)
 )
 
-func wrapRepeatNode(obj *externglib.Object) RepeatNoder {
+func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	return &RepeatNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -1933,7 +1939,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 
 	var _repeatNode *RepeatNode // out
 
-	_repeatNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RepeatNode)
+	_repeatNode = wrapRepeatNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _repeatNode
 }
@@ -1949,7 +1955,7 @@ func (node *RepeatNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -1985,7 +1991,7 @@ var (
 	_ gextras.Nativer              = (*RepeatingLinearGradientNode)(nil)
 )
 
-func wrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNoder {
+func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2014,13 +2020,15 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
 	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
 	_arg5 = C.gsize(len(colorStops))
-	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	if len(colorStops) > 0 {
+		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	}
 
 	_cret = C.gsk_repeating_linear_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _repeatingLinearGradientNode *RepeatingLinearGradientNode // out
 
-	_repeatingLinearGradientNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RepeatingLinearGradientNode)
+	_repeatingLinearGradientNode = wrapRepeatingLinearGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _repeatingLinearGradientNode
 }
@@ -2042,7 +2050,7 @@ var (
 	_ gextras.Nativer              = (*RepeatingRadialGradientNode)(nil)
 )
 
-func wrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNoder {
+func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2080,13 +2088,15 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	_arg5 = C.float(start)
 	_arg6 = C.float(end)
 	_arg8 = C.gsize(len(colorStops))
-	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	if len(colorStops) > 0 {
+		_arg7 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
+	}
 
 	_cret = C.gsk_repeating_radial_gradient_node_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
 	var _repeatingRadialGradientNode *RepeatingRadialGradientNode // out
 
-	_repeatingRadialGradientNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RepeatingRadialGradientNode)
+	_repeatingRadialGradientNode = wrapRepeatingRadialGradientNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _repeatingRadialGradientNode
 }
@@ -2113,7 +2123,7 @@ var (
 	_ gextras.Nativer  = (*RoundedClipNode)(nil)
 )
 
-func wrapRoundedClipNode(obj *externglib.Object) RoundedClipNoder {
+func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2141,7 +2151,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 
 	var _roundedClipNode *RoundedClipNode // out
 
-	_roundedClipNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RoundedClipNode)
+	_roundedClipNode = wrapRoundedClipNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _roundedClipNode
 }
@@ -2157,7 +2167,7 @@ func (node *RoundedClipNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -2199,7 +2209,7 @@ var (
 	_ gextras.Nativer = (*ShadowNode)(nil)
 )
 
-func wrapShadowNode(obj *externglib.Object) ShadowNoder {
+func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	return &ShadowNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2223,13 +2233,15 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(shadows))
-	_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
+	if len(shadows) > 0 {
+		_arg2 = (*C.GskShadow)(unsafe.Pointer(&shadows[0]))
+	}
 
 	_cret = C.gsk_shadow_node_new(_arg1, _arg2, _arg3)
 
 	var _shadowNode *ShadowNode // out
 
-	_shadowNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ShadowNode)
+	_shadowNode = wrapShadowNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shadowNode
 }
@@ -2245,7 +2257,7 @@ func (node *ShadowNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -2308,7 +2320,7 @@ var (
 	_ gextras.Nativer = (*TextNode)(nil)
 )
 
-func wrapTextNode(obj *externglib.Object) TextNoder {
+func wrapTextNode(obj *externglib.Object) *TextNode {
 	return &TextNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2341,7 +2353,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 
 	var _textNode *TextNode // out
 
-	_textNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextNode)
+	_textNode = wrapTextNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textNode
 }
@@ -2373,7 +2385,12 @@ func (node *TextNode) Font() *pango.Font {
 
 	var _font *pango.Font // out
 
-	_font = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.Font)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_font = &pango.Font{
+			Object: obj,
+		}
+	}
 
 	return _font
 }
@@ -2445,7 +2462,7 @@ var (
 	_ gextras.Nativer = (*TextureNode)(nil)
 )
 
-func wrapTextureNode(obj *externglib.Object) TextureNoder {
+func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	return &TextureNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2473,7 +2490,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 
 	var _textureNode *TextureNode // out
 
-	_textureNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextureNode)
+	_textureNode = wrapTextureNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textureNode
 }
@@ -2489,7 +2506,15 @@ func (node *TextureNode) Texture() *gdk.Texture {
 
 	var _texture *gdk.Texture // out
 
-	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Texture)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_texture = &gdk.Texture{
+			Object: obj,
+			Paintable: gdk.Paintable{
+				Object: obj,
+			},
+		}
+	}
 
 	return _texture
 }
@@ -2513,7 +2538,7 @@ var (
 	_ gextras.Nativer = (*TransformNode)(nil)
 )
 
-func wrapTransformNode(obj *externglib.Object) TransformNoder {
+func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	return &TransformNode{
 		RenderNode: RenderNode{
 			Object: obj,
@@ -2541,7 +2566,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 
 	var _transformNode *TransformNode // out
 
-	_transformNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TransformNode)
+	_transformNode = wrapTransformNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _transformNode
 }
@@ -2557,7 +2582,7 @@ func (node *TransformNode) Child() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }

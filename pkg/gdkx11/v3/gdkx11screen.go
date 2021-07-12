@@ -62,7 +62,7 @@ var (
 	_ gextras.Nativer = (*X11Screen)(nil)
 )
 
-func wrapX11Screen(obj *externglib.Object) X11Screener {
+func wrapX11Screen(obj *externglib.Object) *X11Screen {
 	return &X11Screen{
 		Screen: gdk.Screen{
 			Object: obj,

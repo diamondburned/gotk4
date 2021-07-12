@@ -66,7 +66,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	var y *int              // out
 	var userData cgo.Handle // out
 
-	menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Menu)
+	menu = wrapMenu(externglib.Take(unsafe.Pointer(arg0)))
 	x = (*int)(unsafe.Pointer(arg1))
 	y = (*int)(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg4))
@@ -171,7 +171,7 @@ var (
 	_ gextras.Nativer = (*Menu)(nil)
 )
 
-func wrapMenu(obj *externglib.Object) Menuer {
+func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
 		MenuShell: MenuShell{
 			Container: Container{
@@ -205,7 +205,7 @@ func NewMenu() *Menu {
 
 	var _menu *Menu // out
 
-	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Menu)
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -230,7 +230,7 @@ func NewMenuFromModel(model gio.MenuModeler) *Menu {
 
 	var _menu *Menu // out
 
-	_menu = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Menu)
+	_menu = wrapMenu(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -283,7 +283,7 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelGroup)
+	_accelGroup = wrapAccelGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }
@@ -316,7 +316,7 @@ func (menu *Menu) Active() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -332,7 +332,7 @@ func (menu *Menu) AttachWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -537,7 +537,6 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_accel_path(_arg0, _arg1)
 }
@@ -628,7 +627,6 @@ func (menu *Menu) SetTitle(title string) {
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_set_title(_arg0, _arg1)
 }

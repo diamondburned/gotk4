@@ -144,7 +144,7 @@ func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	var pageSetup *PageSetup // out
 	var data cgo.Handle      // out
 
-	pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*PageSetup)
+	pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg0)))
 	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PageSetupDoneFunc)
@@ -172,7 +172,7 @@ func PrintRunPageSetupDialog(parent Windower, pageSetup PageSetuper, settings Pr
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -363,7 +363,7 @@ var (
 	_ gextras.Nativer  = (*PrintOperation)(nil)
 )
 
-func wrapPrintOperation(obj *externglib.Object) PrintOperationer {
+func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 	return &PrintOperation{
 		Object: obj,
 		PrintOperationPreview: PrintOperationPreview{
@@ -386,7 +386,7 @@ func NewPrintOperation() *PrintOperation {
 
 	var _printOperation *PrintOperation // out
 
-	_printOperation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PrintOperation)
+	_printOperation = wrapPrintOperation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _printOperation
 }
@@ -430,7 +430,7 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -533,7 +533,7 @@ func (op *PrintOperation) PrintSettings() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PrintSettings)
+	_printSettings = wrapPrintSettings(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }
@@ -722,7 +722,6 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
 }
@@ -787,7 +786,6 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_export_filename(_arg0, _arg1)
 }
@@ -822,7 +820,6 @@ func (op *PrintOperation) SetJobName(jobName string) {
 
 	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(op.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(jobName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_print_operation_set_job_name(_arg0, _arg1)
 }

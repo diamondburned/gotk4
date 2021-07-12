@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer         = (*EventControllerScroll)(nil)
 )
 
-func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroller {
+func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
 		EventController: EventController{
 			Object: obj,
@@ -125,7 +125,7 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) *EventController
 
 	var _eventControllerScroll *EventControllerScroll // out
 
-	_eventControllerScroll = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerScroll)
+	_eventControllerScroll = wrapEventControllerScroll(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerScroll
 }

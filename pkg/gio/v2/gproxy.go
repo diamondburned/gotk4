@@ -88,7 +88,7 @@ var (
 	_ gextras.Nativer = (*Proxy)(nil)
 )
 
-func wrapProxy(obj *externglib.Object) Proxier {
+func wrapProxy(obj *externglib.Object) *Proxy {
 	return &Proxy{
 		Object: obj,
 	}
@@ -122,7 +122,7 @@ func (proxy *Proxy) ConnectProxier(connection IOStreamer, proxyAddress ProxyAddr
 	var _ioStream *IOStream // out
 	var _goerr error        // out
 
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
+	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
@@ -162,7 +162,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (*IOStream, error) {
 	var _ioStream *IOStream // out
 	var _goerr error        // out
 
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
+	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
@@ -198,13 +198,12 @@ func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	var _cret *C.GProxy // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_proxy_get_default_for_protocol(_arg1)
 
 	var _proxy *Proxy // out
 
-	_proxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Proxy)
+	_proxy = wrapProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxy
 }

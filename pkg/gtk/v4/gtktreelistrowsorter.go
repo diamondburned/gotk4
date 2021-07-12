@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer     = (*TreeListRowSorter)(nil)
 )
 
-func wrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorterer {
+func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{
 		Sorter: Sorter{
 			Object: obj,
@@ -78,7 +78,7 @@ func NewTreeListRowSorter(sorter Sorterer) *TreeListRowSorter {
 
 	var _treeListRowSorter *TreeListRowSorter // out
 
-	_treeListRowSorter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeListRowSorter)
+	_treeListRowSorter = wrapTreeListRowSorter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListRowSorter
 }
@@ -94,7 +94,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Sorter)
+	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sorter
 }

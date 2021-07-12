@@ -89,7 +89,7 @@ var (
 	_ gextras.Nativer = (*AccelMap)(nil)
 )
 
-func wrapAccelMap(obj *externglib.Object) AccelMaper {
+func wrapAccelMap(obj *externglib.Object) *AccelMap {
 	return &AccelMap{
 		Object: obj,
 	}
@@ -119,7 +119,6 @@ func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierTyp
 	var _arg3 C.GdkModifierType // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(accelKey)
 	_arg3 = C.GdkModifierType(accelMods)
 
@@ -137,7 +136,6 @@ func AccelMapAddFilter(filterPattern string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filterPattern)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_add_filter(_arg1)
 }
@@ -161,7 +159,6 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 	var _cret C.gboolean        // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(accelKey)
 	_arg3 = C.GdkModifierType(accelMods)
 	if replace {
@@ -189,7 +186,7 @@ func AccelMapGet() *AccelMap {
 
 	var _accelMap *AccelMap // out
 
-	_accelMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelMap)
+	_accelMap = wrapAccelMap(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelMap
 }
@@ -200,7 +197,6 @@ func AccelMapLoad(fileName string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_load(_arg1)
 }
@@ -243,7 +239,6 @@ func AccelMapLockPath(accelPath string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_lock_path(_arg1)
 }
@@ -256,7 +251,6 @@ func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_map_lookup_entry(_arg1, (*C.GtkAccelKey)(unsafe.Pointer(&_key)))
 
@@ -276,7 +270,6 @@ func AccelMapSave(fileName string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_save(_arg1)
 }
@@ -299,7 +292,6 @@ func AccelMapUnlockPath(accelPath string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accel_map_unlock_path(_arg1)
 }

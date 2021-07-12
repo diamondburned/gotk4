@@ -191,7 +191,7 @@ var (
 	_ gextras.Nativer = (*SpinButton)(nil)
 )
 
-func wrapSpinButton(obj *externglib.Object) SpinButtoner {
+func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{
 		Entry: Entry{
 			Widget: Widget{
@@ -249,7 +249,7 @@ func NewSpinButton(adjustment Adjustmenter, climbRate float64, digits uint) *Spi
 
 	var _spinButton *SpinButton // out
 
-	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButton)
+	_spinButton = wrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
@@ -277,7 +277,7 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton 
 
 	var _spinButton *SpinButton // out
 
-	_spinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SpinButton)
+	_spinButton = wrapSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinButton
 }
@@ -315,7 +315,7 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

@@ -19,16 +19,13 @@ func EnvironGetenv(envp []string, variable string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_environ_getenv(_arg1, _arg2)
 
@@ -49,16 +46,16 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	var _cret **C.gchar
 
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg3))
 	if overwrite {
 		_arg4 = C.TRUE
 	}
@@ -78,7 +75,6 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -93,14 +89,15 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	var _cret **C.gchar
 
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(envp))
 		for i := range envp {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_environ_unsetenv(_arg1, _arg2)
 
@@ -117,7 +114,6 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -152,7 +148,6 @@ func GetEnviron() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -170,7 +165,6 @@ func Getenv(variable string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_getenv(_arg1)
 
@@ -207,7 +201,6 @@ func Listenv() []string {
 		_filenames = make([]string, i)
 		for i := range src {
 			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -239,9 +232,7 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 	if overwrite {
 		_arg3 = C.TRUE
 	}
@@ -277,7 +268,6 @@ func Unsetenv(variable string) {
 	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_unsetenv(_arg1)
 }

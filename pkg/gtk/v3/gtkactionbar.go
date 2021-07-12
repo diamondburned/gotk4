@@ -59,7 +59,7 @@ var (
 	_ gextras.Nativer = (*ActionBar)(nil)
 )
 
-func wrapActionBar(obj *externglib.Object) ActionBarer {
+func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{
 		Bin: Bin{
 			Container: Container{
@@ -93,7 +93,7 @@ func NewActionBar() *ActionBar {
 
 	var _actionBar *ActionBar // out
 
-	_actionBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ActionBar)
+	_actionBar = wrapActionBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -109,7 +109,7 @@ func (actionBar *ActionBar) CenterWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

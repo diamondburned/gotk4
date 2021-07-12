@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -48,9 +49,15 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 	var b *TreeIter         // out
 	var userData cgo.Handle // out
 
-	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TreeModel)
+	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	a = (*TreeIter)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(a, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	b = (*TreeIter)(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(b, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeIterCompareFunc)
@@ -118,7 +125,7 @@ var (
 	_ gextras.Nativer = (*TreeSortable)(nil)
 )
 
-func wrapTreeSortable(obj *externglib.Object) TreeSortabler {
+func wrapTreeSortable(obj *externglib.Object) *TreeSortable {
 	return &TreeSortable{
 		TreeModel: TreeModel{
 			Object: obj,

@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer    = (*CharsetConverter)(nil)
 )
 
-func wrapCharsetConverter(obj *externglib.Object) CharsetConverterer {
+func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	return &CharsetConverter{
 		Object: obj,
 		Converter: Converter{
@@ -82,16 +82,14 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
 
 	var _charsetConverter *CharsetConverter // out
 	var _goerr error                        // out
 
-	_charsetConverter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CharsetConverter)
+	_charsetConverter = wrapCharsetConverter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _charsetConverter, _goerr

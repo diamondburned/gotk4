@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -43,7 +44,13 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	var userData cgo.Handle  // out
 
 	start = (*ParseLocation)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(start, func(v *ParseLocation) {
+		C.free(unsafe.Pointer(v))
+	})
 	end = (*ParseLocation)(unsafe.Pointer(arg1))
+	runtime.SetFinalizer(end, func(v *ParseLocation) {
+		C.free(unsafe.Pointer(v))
+	})
 	err = gerror.Take(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
@@ -90,7 +97,7 @@ var (
 	_ gextras.Nativer = (*RenderNode)(nil)
 )
 
-func wrapRenderNode(obj *externglib.Object) RenderNoder {
+func wrapRenderNode(obj *externglib.Object) *RenderNode {
 	return &RenderNode{
 		Object: obj,
 	}
@@ -161,7 +168,7 @@ func (node *RenderNode) ref() *RenderNode {
 
 	var _renderNode *RenderNode // out
 
-	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RenderNode)
+	_renderNode = wrapRenderNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _renderNode
 }
@@ -192,7 +199,6 @@ func (node *RenderNode) WriteToFile(filename string) error {
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gsk_render_node_write_to_file(_arg0, _arg1, &_cerr)
 

@@ -69,7 +69,7 @@ var (
 	_ gextras.Nativer = (*AspectFrame)(nil)
 )
 
-func wrapAspectFrame(obj *externglib.Object) AspectFramer {
+func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -113,7 +113,7 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 
 	var _aspectFrame *AspectFrame // out
 
-	_aspectFrame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AspectFrame)
+	_aspectFrame = wrapAspectFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
 }
@@ -129,7 +129,7 @@ func (self *AspectFrame) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

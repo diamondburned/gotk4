@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer    = (*CellRendererCombo)(nil)
 )
 
-func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombor {
+func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 	return &CellRendererCombo{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -80,7 +80,7 @@ func NewCellRendererCombo() *CellRendererCombo {
 
 	var _cellRendererCombo *CellRendererCombo // out
 
-	_cellRendererCombo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererCombo)
+	_cellRendererCombo = wrapCellRendererCombo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
 }

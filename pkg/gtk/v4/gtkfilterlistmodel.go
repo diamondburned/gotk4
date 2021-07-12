@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer   = (*FilterListModel)(nil)
 )
 
-func wrapFilterListModel(obj *externglib.Object) FilterListModeler {
+func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	return &FilterListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -89,7 +89,7 @@ func NewFilterListModel(model gio.ListModeler, filter Filterer) *FilterListModel
 
 	var _filterListModel *FilterListModel // out
 
-	_filterListModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FilterListModel)
+	_filterListModel = wrapFilterListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _filterListModel
 }
@@ -105,7 +105,7 @@ func (self *FilterListModel) Filter() *Filter {
 
 	var _filter *Filter // out
 
-	_filter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Filter)
+	_filter = wrapFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _filter
 }
@@ -141,7 +141,12 @@ func (self *FilterListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }

@@ -62,7 +62,7 @@ var (
 	_ gextras.Nativer = (*CenterLayout)(nil)
 )
 
-func wrapCenterLayout(obj *externglib.Object) CenterLayouter {
+func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
 	return &CenterLayout{
 		LayoutManager: LayoutManager{
 			Object: obj,
@@ -84,7 +84,7 @@ func NewCenterLayout() *CenterLayout {
 
 	var _centerLayout *CenterLayout // out
 
-	_centerLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*CenterLayout)
+	_centerLayout = wrapCenterLayout(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _centerLayout
 }
@@ -116,7 +116,7 @@ func (self *CenterLayout) CenterWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -132,7 +132,7 @@ func (self *CenterLayout) EndWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -164,7 +164,7 @@ func (self *CenterLayout) StartWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

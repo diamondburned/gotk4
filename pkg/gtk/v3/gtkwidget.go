@@ -68,7 +68,7 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 	var widget *Widget  // out
 	var data cgo.Handle // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
+	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(Callback)
@@ -90,8 +90,13 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 	var frameClock *gdk.FrameClock // out
 	var userData cgo.Handle        // out
 
-	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*Widget)
-	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*gdk.FrameClock)
+	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
+	{
+		obj := externglib.Take(unsafe.Pointer(arg1))
+		frameClock = &gdk.FrameClock{
+			Object: obj,
+		}
+	}
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TickCallback)
@@ -1160,7 +1165,7 @@ var (
 	_ gextras.Nativer = (*Widget)(nil)
 )
 
-func wrapWidget(obj *externglib.Object) Widgeter {
+func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -1225,7 +1230,6 @@ func (widget *Widget) AddAccelerator(accelSignal string, accelGroup AccelGrouper
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelSignal)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 	_arg3 = C.guint(accelKey)
 	_arg4 = C.GdkModifierType(accelMods)
@@ -1350,7 +1354,6 @@ func (widget *Widget) ChildNotify(childProperty string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_child_notify(_arg0, _arg1)
 }
@@ -1424,7 +1427,12 @@ func (widget *Widget) CreatePangoContext() *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }
@@ -1442,13 +1450,17 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_create_pango_layout(_arg0, _arg1)
 
 	var _layout *pango.Layout // out
 
-	_layout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*pango.Layout)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_layout = &pango.Layout{
+			Object: obj,
+		}
+	}
 
 	return _layout
 }
@@ -1667,7 +1679,9 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkDestDefaults(flags)
 	_arg3 = C.gint(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 	_arg4 = C.GdkDragAction(actions)
 
 	C.gtk_drag_dest_set(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1813,7 +1827,9 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GdkModifierType(startButtonMask)
 	_arg3 = C.gint(len(targets))
-	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	if len(targets) > 0 {
+		_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	}
 	_arg4 = C.GdkDragAction(actions)
 
 	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1840,7 +1856,6 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_name(_arg0, _arg1)
 }
@@ -1868,7 +1883,6 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
 }
@@ -1993,7 +2007,12 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 
 	var _object *atk.ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*atk.ObjectClass)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_object = &atk.ObjectClass{
+			Object: obj,
+		}
+	}
 
 	return _object
 }
@@ -2010,13 +2029,17 @@ func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(prefix)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
 
 	var _actionGroup *gio.ActionGroup // out
 
-	_actionGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ActionGroup)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_actionGroup = &gio.ActionGroup{
+			Object: obj,
+		}
+	}
 
 	return _actionGroup
 }
@@ -2096,7 +2119,7 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) *Widget {
 
 	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2306,7 +2329,12 @@ func (widget *Widget) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Display)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
 
 	return _display
 }
@@ -2383,7 +2411,12 @@ func (widget *Widget) FontMap() *pango.FontMap {
 
 	var _fontMap *pango.FontMap // out
 
-	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontMap)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_fontMap = &pango.FontMap{
+			Object: obj,
+		}
+	}
 
 	return _fontMap
 }
@@ -2434,7 +2467,12 @@ func (widget *Widget) FrameClock() *gdk.FrameClock {
 
 	var _frameClock *gdk.FrameClock // out
 
-	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.FrameClock)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_frameClock = &gdk.FrameClock{
+			Object: obj,
+		}
+	}
 
 	return _frameClock
 }
@@ -2715,7 +2753,7 @@ func (widget *Widget) ModifierStyle() *RCStyle {
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RCStyle)
+	_rcStyle = wrapRCStyle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _rcStyle
 }
@@ -2790,7 +2828,12 @@ func (widget *Widget) PangoContext() *pango.Context {
 
 	var _context *pango.Context // out
 
-	_context = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.Context)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_context = &pango.Context{
+			Object: obj,
+		}
+	}
 
 	return _context
 }
@@ -2806,7 +2849,7 @@ func (widget *Widget) Parent() *Widget {
 
 	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -2822,7 +2865,12 @@ func (widget *Widget) ParentWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }
@@ -3146,7 +3194,12 @@ func (widget *Widget) RootWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }
@@ -3188,7 +3241,12 @@ func (widget *Widget) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	return _screen
 }
@@ -3229,7 +3287,7 @@ func (widget *Widget) Settings() *Settings {
 
 	var _settings *Settings // out
 
-	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+	_settings = wrapSettings(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }
@@ -3310,7 +3368,7 @@ func (widget *Widget) Style() *Style {
 
 	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
+	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -3327,7 +3385,7 @@ func (widget *Widget) StyleContext() *StyleContext {
 
 	var _styleContext *StyleContext // out
 
-	_styleContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StyleContext)
+	_styleContext = wrapStyleContext(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _styleContext
 }
@@ -3369,13 +3427,12 @@ func (widget *Widget) TemplateChild(widgetType externglib.Type, name string) *ex
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_widget_get_template_child(_arg0, _arg1, _arg2)
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -3427,7 +3484,7 @@ func (widget *Widget) TooltipWindow() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -3469,7 +3526,7 @@ func (widget *Widget) Toplevel() *Widget {
 
 	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -3590,7 +3647,12 @@ func (widget *Widget) Visual() *gdk.Visual {
 
 	var _visual *gdk.Visual // out
 
-	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Visual)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_visual = &gdk.Visual{
+			Object: obj,
+		}
+	}
 
 	return _visual
 }
@@ -3606,7 +3668,12 @@ func (widget *Widget) Window() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }
@@ -3900,7 +3967,6 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 
 	C.gtk_widget_insert_action_group(_arg0, _arg1, _arg2)
@@ -4144,6 +4210,7 @@ func (widget *Widget) ListActionPrefixes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -4447,7 +4514,6 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
 
 	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
@@ -4737,16 +4803,22 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -4769,14 +4841,21 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_widget_render_icon_pixbuf(_arg0, _arg1, _arg2)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -4848,7 +4927,6 @@ func (widget *Widget) SetAccelPath(accelPath string, accelGroup AccelGrouper) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
 
 	C.gtk_widget_set_accel_path(_arg0, _arg1, _arg2)
@@ -4943,7 +5021,6 @@ func (widget *Widget) SetCompositeName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_composite_name(_arg0, _arg1)
 }
@@ -5322,7 +5399,6 @@ func (widget *Widget) SetName(name string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_name(_arg0, _arg1)
 }
@@ -5598,7 +5674,6 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_markup(_arg0, _arg1)
 }
@@ -5614,7 +5689,6 @@ func (widget *Widget) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
 }
@@ -5838,7 +5912,6 @@ func (widget *Widget) StyleGetProperty(propertyName string, value *externglib.Va
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	C.gtk_widget_style_get_property(_arg0, _arg1, _arg2)

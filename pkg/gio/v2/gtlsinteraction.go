@@ -180,7 +180,7 @@ var (
 	_ gextras.Nativer  = (*TLSInteraction)(nil)
 )
 
-func wrapTLSInteraction(obj *externglib.Object) TLSInteractioner {
+func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	return &TLSInteraction{
 		Object: obj,
 	}

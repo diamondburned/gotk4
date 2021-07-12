@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -229,7 +230,7 @@ var (
 	_ gextras.Nativer = (*Cursor)(nil)
 )
 
-func wrapCursor(obj *externglib.Object) Cursorer {
+func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
 		Object: obj,
 	}
@@ -257,7 +258,7 @@ func NewCursor(cursorType CursorType) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -275,7 +276,7 @@ func NewCursorForDisplay(display Displayer, cursorType CursorType) *Cursor {
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -309,13 +310,12 @@ func NewCursorFromName(display Displayer, name string) *Cursor {
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -351,7 +351,7 @@ func NewCursorFromPixbuf(display Displayer, pixbuf gdkpixbuf.Pixbufer, x int, y 
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -383,7 +383,7 @@ func NewCursorFromSurface(display Displayer, surface *cairo.Surface, x float64, 
 
 	var _cursor *Cursor // out
 
-	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_cursor = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -415,7 +415,7 @@ func (cursor *Cursor) Display() *Display {
 
 	var _display *Display // out
 
-	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -435,7 +435,15 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -483,7 +491,7 @@ func (cursor *Cursor) ref() *Cursor {
 
 	var _ret *Cursor // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+	_ret = wrapCursor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }

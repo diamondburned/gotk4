@@ -59,7 +59,7 @@ var (
 	_ gextras.Nativer = (*ObjectFactory)(nil)
 )
 
-func wrapObjectFactory(obj *externglib.Object) ObjectFactorier {
+func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	return &ObjectFactory{
 		Object: obj,
 	}
@@ -85,7 +85,7 @@ func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *ObjectClas
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }

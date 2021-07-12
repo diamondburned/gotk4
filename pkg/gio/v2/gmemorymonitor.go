@@ -95,7 +95,7 @@ var (
 	_ gextras.Nativer = (*MemoryMonitor)(nil)
 )
 
-func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitorer {
+func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 	return &MemoryMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -120,7 +120,7 @@ func MemoryMonitorDupDefault() *MemoryMonitor {
 
 	var _memoryMonitor *MemoryMonitor // out
 
-	_memoryMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryMonitor)
+	_memoryMonitor = wrapMemoryMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryMonitor
 }

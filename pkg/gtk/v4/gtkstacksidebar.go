@@ -54,7 +54,7 @@ var (
 	_ gextras.Nativer = (*StackSidebar)(nil)
 )
 
-func wrapStackSidebar(obj *externglib.Object) StackSidebarer {
+func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -87,7 +87,7 @@ func NewStackSidebar() *StackSidebar {
 
 	var _stackSidebar *StackSidebar // out
 
-	_stackSidebar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*StackSidebar)
+	_stackSidebar = wrapStackSidebar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackSidebar
 }
@@ -103,7 +103,7 @@ func (self *StackSidebar) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	_stack = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Stack)
+	_stack = wrapStack(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }

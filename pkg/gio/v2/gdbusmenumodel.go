@@ -40,15 +40,13 @@ func DBusMenuModelGet(connection DBusConnectioner, busName string, objectPath st
 
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_dbus_menu_model_get(_arg1, _arg2, _arg3)
 
 	var _dBusMenuModel *DBusMenuModel // out
 
-	_dBusMenuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusMenuModel)
+	_dBusMenuModel = wrapDBusMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusMenuModel
 }

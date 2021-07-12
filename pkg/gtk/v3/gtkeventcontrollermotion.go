@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer         = (*EventControllerMotion)(nil)
 )
 
-func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotioner {
+func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
 		EventController: EventController{
 			Object: obj,
@@ -67,7 +67,7 @@ func NewEventControllerMotion(widget Widgeter) *EventControllerMotion {
 
 	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*EventControllerMotion)
+	_eventControllerMotion = wrapEventControllerMotion(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

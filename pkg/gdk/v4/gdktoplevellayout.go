@@ -138,7 +138,7 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Monitor)
+	_monitor = wrapMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }

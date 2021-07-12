@@ -100,7 +100,7 @@ var (
 	_ gextras.Nativer = (*Adjustment)(nil)
 )
 
-func wrapAdjustment(obj *externglib.Object) Adjustmenter {
+func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	return &Adjustment{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -135,7 +135,7 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketer {
+func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -101,7 +101,7 @@ func NewSocket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
+	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -126,7 +126,6 @@ func (obj *Socket) Embed(plugId string) {
 
 	_arg0 = (*C.AtkSocket)(unsafe.Pointer(obj.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_socket_embed(_arg0, _arg1)
 }

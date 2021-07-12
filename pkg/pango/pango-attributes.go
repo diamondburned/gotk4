@@ -149,7 +149,6 @@ func AttrTypeRegister(name string) AttrType {
 	var _cret C.PangoAttrType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_type_register(_arg1)
 
@@ -268,6 +267,9 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gbool
 	var userData cgo.Handle  // out
 
 	attribute = (*Attribute)(unsafe.Pointer(arg0))
+	runtime.SetFinalizer(attribute, func(v *Attribute) {
+		C.free(unsafe.Pointer(v))
+	})
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(AttrFilterFunc)
@@ -377,7 +379,6 @@ func NewAttrFamily(family string) *Attribute {
 	var _cret *C.PangoAttribute // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_family_new(_arg1)
 
@@ -886,7 +887,6 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	var _cerr *C.GError  // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = C.gunichar(accelMarker)
 
@@ -976,7 +976,6 @@ func AttrFontFeaturesNew(features string) *Attribute {
 	var _cret *C.PangoAttribute // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(features)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_attr_font_features_new(_arg1)
 
@@ -1198,7 +1197,6 @@ func (list *AttrList) Change(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr))
-	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_change(_arg0, _arg1)
 }
@@ -1299,7 +1297,6 @@ func (list *AttrList) Insert(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr))
-	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert(_arg0, _arg1)
 }
@@ -1313,7 +1310,6 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr))
-	runtime.SetFinalizer(attr, nil)
 
 	C.pango_attr_list_insert_before(_arg0, _arg1)
 }
@@ -1629,7 +1625,6 @@ func (color *Color) Parse(spec string) bool {
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(color))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.pango_color_parse(_arg0, _arg1)
 
@@ -1663,7 +1658,6 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(color))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.pango_color_parse_with_alpha(_arg0, &_arg1, _arg2)
 

@@ -50,7 +50,7 @@ var (
 	_ gextras.Nativer          = (*BuilderListItemFactory)(nil)
 )
 
-func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactorier {
+func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{
 		ListItemFactory: ListItemFactory{
 			Object: obj,
@@ -74,13 +74,12 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 
 	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer((scope).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
 
 	var _builderListItemFactory *BuilderListItemFactory // out
 
-	_builderListItemFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BuilderListItemFactory)
+	_builderListItemFactory = wrapBuilderListItemFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderListItemFactory
 }
@@ -112,7 +111,7 @@ func (self *BuilderListItemFactory) Scope() *BuilderScope {
 
 	var _builderScope *BuilderScope // out
 
-	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*BuilderScope)
+	_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _builderScope
 }

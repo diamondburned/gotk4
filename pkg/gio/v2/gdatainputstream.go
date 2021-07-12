@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer   = (*DataInputStream)(nil)
 )
 
-func wrapDataInputStream(obj *externglib.Object) DataInputStreamer {
+func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{
 		BufferedInputStream: BufferedInputStream{
 			FilterInputStream: FilterInputStream{
@@ -131,7 +131,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 
 	var _dataInputStream *DataInputStream // out
 
-	_dataInputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DataInputStream)
+	_dataInputStream = wrapDataInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dataInputStream
 }
@@ -533,7 +533,6 @@ func (stream *DataInputStream) ReadUntil(stopChars string, cancellable Cancellab
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, &_arg2, _arg3, &_cerr)
@@ -576,7 +575,6 @@ func (stream *DataInputStream) ReadUntilAsync(stopChars string, ioPriority int, 
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
@@ -635,7 +633,6 @@ func (stream *DataInputStream) ReadUpto(stopChars string, stopCharsLen int, canc
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -675,7 +672,6 @@ func (stream *DataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int,
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(stopCharsLen)
 	_arg3 = C.gint(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

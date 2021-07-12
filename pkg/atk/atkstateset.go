@@ -62,7 +62,7 @@ var (
 	_ gextras.Nativer = (*StateSet)(nil)
 )
 
-func wrapStateSet(obj *externglib.Object) StateSeter {
+func wrapStateSet(obj *externglib.Object) *StateSet {
 	return &StateSet{
 		Object: obj,
 	}
@@ -82,7 +82,7 @@ func NewStateSet() *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
+	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }
@@ -127,9 +127,8 @@ func (set *StateSet) AddStates(types []StateType) {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = C.gint(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(types))
+		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
 		for i := range types {
 			out[i] = C.AtkStateType(types[i])
 		}
@@ -152,7 +151,7 @@ func (set *StateSet) AndSets(compareSet StateSeter) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
+	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }
@@ -198,9 +197,8 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
 	_arg2 = C.gint(len(types))
 	_arg1 = (*C.AtkStateType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_AtkStateType)))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(types))
+		out := unsafe.Slice((*C.AtkStateType)(_arg1), len(types))
 		for i := range types {
 			out[i] = C.AtkStateType(types[i])
 		}
@@ -248,7 +246,7 @@ func (set *StateSet) OrSets(compareSet StateSeter) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
+	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }
@@ -293,7 +291,7 @@ func (set *StateSet) XorSets(compareSet StateSeter) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StateSet)
+	_stateSet = wrapStateSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }

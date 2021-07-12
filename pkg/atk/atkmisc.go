@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer = (*Misc)(nil)
 )
 
-func wrapMisc(obj *externglib.Object) Miscer {
+func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{
 		Object: obj,
 	}
@@ -120,7 +120,7 @@ func MiscGetInstance() *Misc {
 
 	var _misc *Misc // out
 
-	_misc = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Misc)
+	_misc = wrapMisc(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _misc
 }

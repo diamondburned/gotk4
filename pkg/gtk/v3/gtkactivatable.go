@@ -305,7 +305,7 @@ var (
 	_ gextras.Nativer = (*Activatable)(nil)
 )
 
-func wrapActivatable(obj *externglib.Object) Activatabler {
+func wrapActivatable(obj *externglib.Object) *Activatable {
 	return &Activatable{
 		Object: obj,
 	}
@@ -355,7 +355,7 @@ func (activatable *Activatable) RelatedAction() *Action {
 
 	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Action)
+	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }

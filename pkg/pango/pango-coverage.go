@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -84,7 +83,7 @@ var (
 	_ gextras.Nativer = (*Coverage)(nil)
 )
 
-func wrapCoverage(obj *externglib.Object) Coverager {
+func wrapCoverage(obj *externglib.Object) *Coverage {
 	return &Coverage{
 		Object: obj,
 	}
@@ -104,7 +103,7 @@ func NewCoverage() *Coverage {
 
 	var _coverage *Coverage // out
 
-	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+	_coverage = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }
@@ -120,7 +119,7 @@ func (coverage *Coverage) Copy() *Coverage {
 
 	var _ret *Coverage // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+	_ret = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -169,7 +168,7 @@ func (coverage *Coverage) ref() *Coverage {
 
 	var _ret *Coverage // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+	_ret = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -201,10 +200,9 @@ func (coverage *Coverage) ToBytes() []byte {
 
 	var _bytes []byte
 
-	_bytes = unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_bytes, func(v *[]byte) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_bytes = make([]byte, _arg2)
+	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _bytes
 }
@@ -230,13 +228,15 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 	var _cret *C.PangoCoverage // in
 
 	_arg2 = C.int(len(bytes))
-	_arg1 = (*C.guchar)(unsafe.Pointer(&bytes[0]))
+	if len(bytes) > 0 {
+		_arg1 = (*C.guchar)(unsafe.Pointer(&bytes[0]))
+	}
 
 	_cret = C.pango_coverage_from_bytes(_arg1, _arg2)
 
 	var _coverage *Coverage // out
 
-	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+	_coverage = wrapCoverage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }

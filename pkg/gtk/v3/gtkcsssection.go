@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -136,7 +135,12 @@ func (section *CSSSection) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }

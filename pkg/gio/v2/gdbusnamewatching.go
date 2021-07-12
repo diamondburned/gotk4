@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,9 +41,11 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var nameOwner string           // out
 	var userData cgo.Handle        // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	defer C.free(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(BusNameAppearedCallback)
@@ -69,8 +70,9 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var name string                // out
 	var userData cgo.Handle        // out
 
-	connection = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*DBusConnection)
+	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusNameVanishedCallback)

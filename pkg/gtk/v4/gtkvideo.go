@@ -70,7 +70,7 @@ var (
 	_ gextras.Nativer = (*Video)(nil)
 )
 
-func wrapVideo(obj *externglib.Object) Videoer {
+func wrapVideo(obj *externglib.Object) *Video {
 	return &Video{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -103,7 +103,7 @@ func NewVideo() *Video {
 
 	var _video *Video // out
 
-	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -119,7 +119,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 
 	var _video *Video // out
 
-	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -133,13 +133,12 @@ func NewVideoForFilename(filename string) *Video {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_video_new_for_filename(_arg1)
 
 	var _video *Video // out
 
-	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -155,7 +154,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 
 	var _video *Video // out
 
-	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -169,13 +168,12 @@ func NewVideoForResource(resourcePath string) *Video {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_video_new_for_resource(_arg1)
 
 	var _video *Video // out
 
-	_video = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Video)
+	_video = wrapVideo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _video
 }
@@ -209,7 +207,12 @@ func (self *Video) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -243,7 +246,7 @@ func (self *Video) MediaStream() *MediaStream {
 
 	var _mediaStream *MediaStream // out
 
-	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MediaStream)
+	_mediaStream = wrapMediaStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaStream
 }
@@ -282,7 +285,6 @@ func (self *Video) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_video_set_filename(_arg0, _arg1)
 }
@@ -327,7 +329,6 @@ func (self *Video) SetResource(resourcePath string) {
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_video_set_resource(_arg0, _arg1)
 }

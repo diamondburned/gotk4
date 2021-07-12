@@ -35,6 +35,7 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 	var funcData cgo.Handle // out
 
 	path = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
+	defer C.free(unsafe.Pointer(arg0))
 	funcData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TranslateFunc)
@@ -57,7 +58,9 @@ func StockAdd(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = C.guint(len(items))
-	_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	if len(items) > 0 {
+		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	}
 
 	C.gtk_stock_add(_arg1, _arg2)
 }
@@ -71,7 +74,9 @@ func StockAddStatic(items []StockItem) {
 	var _arg2 C.guint
 
 	_arg2 = C.guint(len(items))
-	_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	if len(items) > 0 {
+		_arg1 = (*C.GtkStockItem)(unsafe.Pointer(&items[0]))
+	}
 
 	C.gtk_stock_add_static(_arg1, _arg2)
 }
@@ -86,7 +91,6 @@ func StockLookup(stockId string) (StockItem, bool) {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_stock_lookup(_arg1, (*C.GtkStockItem)(unsafe.Pointer(&_item)))
 

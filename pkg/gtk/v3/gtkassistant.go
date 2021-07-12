@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -198,7 +199,7 @@ var (
 	_ gextras.Nativer = (*Assistant)(nil)
 )
 
-func wrapAssistant(obj *externglib.Object) Assistanter {
+func wrapAssistant(obj *externglib.Object) *Assistant {
 	return &Assistant{
 		Window: Window{
 			Bin: Bin{
@@ -234,7 +235,7 @@ func NewAssistant() *Assistant {
 
 	var _assistant *Assistant // out
 
-	_assistant = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Assistant)
+	_assistant = wrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -328,7 +329,7 @@ func (assistant *Assistant) NthPage(pageNum int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -389,7 +390,15 @@ func (assistant *Assistant) PageHeaderImage(page Widgeter) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -409,7 +418,15 @@ func (assistant *Assistant) PageSideImage(page Widgeter) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -633,7 +650,6 @@ func (assistant *Assistant) SetPageTitle(page Widgeter, title string) {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
 }

@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer     = (*ToplevelAccessible)(nil)
 )
 
-func wrapToplevelAccessible(obj *externglib.Object) ToplevelAccessibler {
+func wrapToplevelAccessible(obj *externglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{
 		ObjectClass: atk.ObjectClass{
 			Object: obj,

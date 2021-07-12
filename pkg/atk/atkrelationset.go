@@ -63,7 +63,7 @@ var (
 	_ gextras.Nativer = (*RelationSet)(nil)
 )
 
-func wrapRelationSet(obj *externglib.Object) RelationSeter {
+func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	return &RelationSet{
 		Object: obj,
 	}
@@ -83,7 +83,7 @@ func NewRelationSet() *RelationSet {
 
 	var _relationSet *RelationSet // out
 
-	_relationSet = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*RelationSet)
+	_relationSet = wrapRelationSet(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relationSet
 }
@@ -192,7 +192,7 @@ func (set *RelationSet) Relation(i int) *Relation {
 
 	var _relation *Relation // out
 
-	_relation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Relation)
+	_relation = wrapRelation(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _relation
 }
@@ -210,7 +210,7 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 
 	var _relation *Relation // out
 
-	_relation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Relation)
+	_relation = wrapRelation(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _relation
 }

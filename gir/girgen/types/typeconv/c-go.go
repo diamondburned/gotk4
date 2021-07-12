@@ -35,8 +35,15 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	if array.Type.CType == "" {
 		// Copy the inner type so we don't accidentally change a reference.
 		typ := *array.Type
-		// Dereference the inner type by 1.
-		typ.CType = strings.Replace(array.CType, "*", "", 1)
+
+		if types.CleanCType(array.CType, true) == "void" {
+			// We can't dereference the array type to get a void type, so we
+			// have to guess from the GIR type. Thanks, GIR.
+			typ.CType = types.CTypeFallback("", typ.Name)
+		} else {
+			// Dereference the inner type by 1.
+			typ.CType = strings.Replace(array.CType, "*", "", 1)
+		}
 
 		array.AnyType.Type = &typ
 		value.AnyType.Array = &array
@@ -121,7 +128,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		// TODO: record conversion should handle ownership: if
 		// transfer-ownership is none, then the native pointer should probably
 		// not be freed.
-		if value.isTransferring() && inner.Resolved.CanCast() {
+		if !value.MustRealloc() && inner.Resolved.CanCast() {
 			value.header.Import("runtime")
 
 			value.p.Linef("%s = unsafe.Slice((*%s)(unsafe.Pointer(%s)), %s)",
@@ -136,7 +143,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		}
 
 		// Make sure to free the input by the time we're done.
-		if value.isTransferring() {
+		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 
@@ -178,7 +185,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 	case array.Name == "GLib.ByteArray":
 		value.header.Import("unsafe")
 
-		if value.isTransferring() {
+		if !value.MustRealloc() {
 			value.header.Import("runtime")
 
 			value.p.Descend()
@@ -264,7 +271,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.Out.Set, value.InName,
 		)
 		// Only free this if C is transferring ownership to us.
-		if value.isTransferring() {
+		if value.ShouldFree() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.InName)
 		}
 		return true
@@ -318,13 +325,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		return true
 	}
 
-	// Only add these imports afterwards, since all imports above are manually
-	// resolved.
-	if value.NeedsNamespace {
-		// We're using the PublicType, so add that import.
-		value.header.ImportPubl(value.Resolved)
-	}
-
 	// Resolve special-case GLib types.
 	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
 	case "GObject.Type", "GType":
@@ -342,12 +342,12 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			<- .OutPtr 1>externglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
 
 		// Set this to be freed if we have the ownership now.
-		if value.isTransferring() {
+		if value.ShouldFree() {
 			value.header.Import("runtime")
 
 			// https://pkg.go.dev/github.com/gotk3/gotk3/glib?utm_source=godoc#Value
 			value.p.Linef("runtime.SetFinalizer(%s, func(v *externglib.Value) {", value.OutName)
-			value.p.Linef("  C.g_value_unset((*C.GValue)(v.GValue))")
+			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))")
 			value.p.Linef("})")
 		}
 		return true
@@ -412,7 +412,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		}
 
 		// We can take ownership if the type can be reference-counted anyway.
-		if value.isTransferring() || unref {
+		if value.ShouldFree() || unref {
 			value.header.Import("runtime")
 			value.p.LineTmpl(value,
 				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {")

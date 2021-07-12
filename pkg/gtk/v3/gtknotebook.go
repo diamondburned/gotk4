@@ -239,7 +239,7 @@ var (
 	_ gextras.Nativer = (*Notebook)(nil)
 )
 
-func wrapNotebook(obj *externglib.Object) Notebooker {
+func wrapNotebook(obj *externglib.Object) *Notebook {
 	return &Notebook{
 		Container: Container{
 			Widget: Widget{
@@ -271,7 +271,7 @@ func NewNotebook() *Notebook {
 
 	var _notebook *Notebook // out
 
-	_notebook = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Notebook)
+	_notebook = wrapNotebook(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _notebook
 }
@@ -348,7 +348,7 @@ func (notebook *Notebook) ActionWidget(packType PackType) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -398,7 +398,7 @@ func (notebook *Notebook) MenuLabel(child Widgeter) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -451,7 +451,7 @@ func (notebook *Notebook) NthPage(pageNum int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -567,7 +567,7 @@ func (notebook *Notebook) TabLabel(child Widgeter) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -865,7 +865,6 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_notebook_set_group_name(_arg0, _arg1)
 }
@@ -892,7 +891,6 @@ func (notebook *Notebook) SetMenuLabelText(child Widgeter, menuText string) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(menuText)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_menu_label_text(_arg0, _arg1, _arg2)
 }
@@ -1018,7 +1016,6 @@ func (notebook *Notebook) SetTabLabelText(child Widgeter, tabText string) {
 	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tabText)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_notebook_set_tab_label_text(_arg0, _arg1, _arg2)
 }

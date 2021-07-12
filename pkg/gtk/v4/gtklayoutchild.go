@@ -49,7 +49,7 @@ var (
 	_ gextras.Nativer = (*LayoutChild)(nil)
 )
 
-func wrapLayoutChild(obj *externglib.Object) LayoutChilder {
+func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
 	return &LayoutChild{
 		Object: obj,
 	}
@@ -72,7 +72,7 @@ func (layoutChild *LayoutChild) ChildWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -89,7 +89,7 @@ func (layoutChild *LayoutChild) LayoutManager() *LayoutManager {
 
 	var _layoutManager *LayoutManager // out
 
-	_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LayoutManager)
+	_layoutManager = wrapLayoutManager(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layoutManager
 }

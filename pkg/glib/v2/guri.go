@@ -469,7 +469,6 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(baseUri))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
@@ -550,18 +549,12 @@ func UriBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 
 	_arg1 = C.GUriFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(userinfo)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.gint(port)
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
-	defer C.free(unsafe.Pointer(_arg7))
 	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
-	defer C.free(unsafe.Pointer(_arg8))
 
 	_cret = C.g_uri_build(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
@@ -598,22 +591,14 @@ func UriBuildWithUser(flags URIFlags, scheme string, user string, password strin
 
 	_arg1 = C.GUriFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(user)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(authParams)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(port)
 	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg8))
 	_arg9 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
-	defer C.free(unsafe.Pointer(_arg9))
 	_arg10 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
-	defer C.free(unsafe.Pointer(_arg10))
 
 	_cret = C.g_uri_build_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 
@@ -644,9 +629,10 @@ func UriEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	var _cret *C.char // in
 
 	_arg2 = C.gsize(len(unescaped))
-	_arg1 = (*C.guint8)(unsafe.Pointer(&unescaped[0]))
+	if len(unescaped) > 0 {
+		_arg1 = (*C.guint8)(unsafe.Pointer(&unescaped[0]))
+	}
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(reservedCharsAllowed)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_uri_escape_bytes(_arg1, _arg2, _arg3)
 
@@ -672,9 +658,7 @@ func UriEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bo
 	var _cret *C.char    // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(unescaped)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(reservedCharsAllowed)))
-	defer C.free(unsafe.Pointer(_arg2))
 	if allowUtf8 {
 		_arg3 = C.TRUE
 	}
@@ -703,7 +687,6 @@ func UriIsValid(uriString string, flags URIFlags) error {
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	C.g_uri_is_valid(_arg1, _arg2, &_cerr)
@@ -742,18 +725,12 @@ func UriJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 
 	_arg1 = C.GUriFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(userinfo)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.gint(port)
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
-	defer C.free(unsafe.Pointer(_arg7))
 	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
-	defer C.free(unsafe.Pointer(_arg8))
 
 	_cret = C.g_uri_join(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
@@ -789,22 +766,14 @@ func UriJoinWithUser(flags URIFlags, scheme string, user string, password string
 
 	_arg1 = C.GUriFlags(flags)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(user)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(authParams)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(port)
 	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg8))
 	_arg9 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
-	defer C.free(unsafe.Pointer(_arg9))
 	_arg10 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
-	defer C.free(unsafe.Pointer(_arg10))
 
 	_cret = C.g_uri_join_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 
@@ -826,7 +795,6 @@ func UriParse(uriString string, flags URIFlags) (*URI, error) {
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_parse(_arg1, _arg2, &_cerr)
@@ -876,10 +844,8 @@ func UriParseParams(params string, length int, separators string, flags URIParam
 	var _cerr *C.GError         // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GUriParamsFlags(flags)
 
 	_cret = C.g_uri_parse_params(_arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -907,7 +873,6 @@ func UriParseScheme(uri string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_parse_scheme(_arg1)
 
@@ -933,7 +898,6 @@ func UriPeekScheme(uri string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_peek_scheme(_arg1)
 
@@ -959,9 +923,7 @@ func UriResolveRelative(baseUriString string, uriRef string, flags URIFlags) (st
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(baseUriString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GUriFlags(flags)
 
 	_cret = C.g_uri_resolve_relative(_arg1, _arg2, _arg3, &_cerr)
@@ -1004,7 +966,6 @@ func UriSplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	C.g_uri_split(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7, &_arg8, &_arg9, &_cerr)
@@ -1051,7 +1012,6 @@ func UriSplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	C.g_uri_split_network(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_cerr)
@@ -1096,7 +1056,6 @@ func UriSplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 	var _cerr *C.GError   // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GUriFlags(flags)
 
 	C.g_uri_split_with_user(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7, &_arg8, &_arg9, &_arg10, &_arg11, &_cerr)
@@ -1151,11 +1110,8 @@ func UriUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(escapedString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(escapedStringEnd)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(illegalCharacters)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.g_uri_unescape_segment(_arg1, _arg2, _arg3)
 
@@ -1180,9 +1136,7 @@ func UriUnescapeString(escapedString string, illegalCharacters string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(escapedString)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(illegalCharacters)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_uri_unescape_string(_arg1, _arg2)
 
@@ -1253,10 +1207,8 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 
 	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = C.GUriParamsFlags(flags)
 
 	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)

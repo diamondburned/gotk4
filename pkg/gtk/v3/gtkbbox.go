@@ -83,7 +83,7 @@ var (
 	_ gextras.Nativer = (*ButtonBox)(nil)
 )
 
-func wrapButtonBox(obj *externglib.Object) ButtonBoxer {
+func wrapButtonBox(obj *externglib.Object) *ButtonBox {
 	return &ButtonBox{
 		Box: Box{
 			Container: Container{
@@ -123,7 +123,7 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 
 	var _buttonBox *ButtonBox // out
 
-	_buttonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonBox)
+	_buttonBox = wrapButtonBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _buttonBox
 }

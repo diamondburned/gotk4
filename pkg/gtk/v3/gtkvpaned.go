@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer = (*VPaned)(nil)
 )
 
-func wrapVPaned(obj *externglib.Object) VPaneder {
+func wrapVPaned(obj *externglib.Object) *VPaned {
 	return &VPaned{
 		Paned: Paned{
 			Container: Container{
@@ -82,7 +82,7 @@ func NewVPaned() *VPaned {
 
 	var _vPaned *VPaned // out
 
-	_vPaned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VPaned)
+	_vPaned = wrapVPaned(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vPaned
 }

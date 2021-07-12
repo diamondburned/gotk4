@@ -48,7 +48,7 @@ var (
 	_ gextras.Nativer      = (*CellRendererPixbuf)(nil)
 )
 
-func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbufer {
+func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	return &CellRendererPixbuf{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -77,7 +77,7 @@ func NewCellRendererPixbuf() *CellRendererPixbuf {
 
 	var _cellRendererPixbuf *CellRendererPixbuf // out
 
-	_cellRendererPixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererPixbuf)
+	_cellRendererPixbuf = wrapCellRendererPixbuf(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererPixbuf
 }

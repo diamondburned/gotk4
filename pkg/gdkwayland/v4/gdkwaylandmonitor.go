@@ -41,7 +41,7 @@ var (
 	_ gextras.Nativer  = (*WaylandMonitor)(nil)
 )
 
-func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitorer {
+func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
 	return &WaylandMonitor{
 		Monitor: gdk.Monitor{
 			Object: obj,

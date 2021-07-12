@@ -81,7 +81,7 @@ var (
 	_ gextras.Nativer = (*ToolItemGroup)(nil)
 )
 
-func wrapToolItemGroup(obj *externglib.Object) ToolItemGrouper {
+func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{
 		Container: Container{
 			Widget: Widget{
@@ -124,13 +124,12 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_tool_item_group_new(_arg1)
 
 	var _toolItemGroup *ToolItemGroup // out
 
-	_toolItemGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItemGroup)
+	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
 }
@@ -174,7 +173,7 @@ func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
+	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -257,7 +256,7 @@ func (group *ToolItemGroup) LabelWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -291,7 +290,7 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
+	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -367,7 +366,6 @@ func (group *ToolItemGroup) SetLabel(label string) {
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_tool_item_group_set_label(_arg0, _arg1)
 }

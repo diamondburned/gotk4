@@ -115,7 +115,7 @@ var (
 	_ gextras.Nativer = (*SizeGroup)(nil)
 )
 
-func wrapSizeGroup(obj *externglib.Object) SizeGrouper {
+func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{
 		Object: obj,
 		Buildable: Buildable{
@@ -141,7 +141,7 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SizeGroup)
+	_sizeGroup = wrapSizeGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sizeGroup
 }

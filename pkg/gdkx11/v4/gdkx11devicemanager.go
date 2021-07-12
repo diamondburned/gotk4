@@ -27,7 +27,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2er, deviceId int) *
 
 	var _x11DeviceXI2 *X11DeviceXI2 // out
 
-	_x11DeviceXI2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*X11DeviceXI2)
+	_x11DeviceXI2 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _x11DeviceXI2
 }

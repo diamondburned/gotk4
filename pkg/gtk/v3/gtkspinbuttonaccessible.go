@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer       = (*SpinButtonAccessible)(nil)
 )
 
-func wrapSpinButtonAccessible(obj *externglib.Object) SpinButtonAccessibler {
+func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{
 		EntryAccessible: EntryAccessible{
 			WidgetAccessible: WidgetAccessible{

@@ -121,6 +121,7 @@ func GetLanguageNames() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -142,7 +143,6 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(categoryName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_language_names_with_category(_arg1)
 
@@ -159,6 +159,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -185,7 +186,6 @@ func GetLocaleVariants(locale string) []string {
 	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_get_locale_variants(_arg1)
 
@@ -202,7 +202,6 @@ func GetLocaleVariants(locale string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

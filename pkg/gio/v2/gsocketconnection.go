@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer    = (*SocketConnection)(nil)
 )
 
-func wrapSocketConnection(obj *externglib.Object) SocketConnectioner {
+func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	return &SocketConnection{
 		IOStream: IOStream{
 			Object: obj,
@@ -168,7 +168,7 @@ func (connection *SocketConnection) LocalAddress() (*SocketAddress, error) {
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -193,7 +193,7 @@ func (connection *SocketConnection) RemoteAddress() (*SocketAddress, error) {
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -212,7 +212,7 @@ func (connection *SocketConnection) Socket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Socket)
+	_socket = wrapSocket(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }

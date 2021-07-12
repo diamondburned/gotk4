@@ -104,7 +104,7 @@ var (
 	_ gextras.Nativer = (*DragSource)(nil)
 )
 
-func wrapDragSource(obj *externglib.Object) DragSourcer {
+func wrapDragSource(obj *externglib.Object) *DragSource {
 	return &DragSource{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -130,7 +130,7 @@ func NewDragSource() *DragSource {
 
 	var _dragSource *DragSource // out
 
-	_dragSource = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DragSource)
+	_dragSource = wrapDragSource(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dragSource
 }
@@ -171,7 +171,12 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.ContentProvider)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_contentProvider = &gdk.ContentProvider{
+			Object: obj,
+		}
+	}
 
 	return _contentProvider
 }
@@ -187,7 +192,12 @@ func (source *DragSource) Drag() *gdk.Drag {
 
 	var _drag *gdk.Drag // out
 
-	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drag)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_drag = &gdk.Drag{
+			Object: obj,
+		}
+	}
 
 	return _drag
 }

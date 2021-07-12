@@ -67,7 +67,7 @@ var (
 	_ gextras.Nativer = (*MediaFile)(nil)
 )
 
-func wrapMediaFile(obj *externglib.Object) MediaFiler {
+func wrapMediaFile(obj *externglib.Object) *MediaFile {
 	return &MediaFile{
 		MediaStream: MediaStream{
 			Object: obj,
@@ -92,7 +92,7 @@ func NewMediaFile() *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MediaFile)
+	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -108,7 +108,7 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MediaFile)
+	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -122,13 +122,12 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 	var _cret *C.GtkMediaStream // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_filename(_arg1)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MediaFile)
+	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -147,7 +146,7 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MediaFile)
+	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -161,13 +160,12 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _cret *C.GtkMediaStream // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_media_file_new_for_resource(_arg1)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MediaFile)
+	_mediaFile = wrapMediaFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -194,7 +192,12 @@ func (self *MediaFile) File() *gio.File {
 
 	var _file *gio.File // out
 
-	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.File)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_file = &gio.File{
+			Object: obj,
+		}
+	}
 
 	return _file
 }
@@ -212,7 +215,12 @@ func (self *MediaFile) InputStream() *gio.InputStream {
 
 	var _inputStream *gio.InputStream // out
 
-	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.InputStream)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_inputStream = &gio.InputStream{
+			Object: obj,
+		}
+	}
 
 	return _inputStream
 }
@@ -240,7 +248,6 @@ func (self *MediaFile) SetFilename(filename string) {
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_filename(_arg0, _arg1)
 }
@@ -271,7 +278,6 @@ func (self *MediaFile) SetResource(resourcePath string) {
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 }

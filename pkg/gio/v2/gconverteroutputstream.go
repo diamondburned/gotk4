@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer         = (*ConverterOutputStream)(nil)
 )
 
-func wrapConverterOutputStream(obj *externglib.Object) ConverterOutputStreamer {
+func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
 	return &ConverterOutputStream{
 		FilterOutputStream: FilterOutputStream{
 			OutputStream: OutputStream{
@@ -87,7 +87,7 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 
 	var _converterOutputStream *ConverterOutputStream // out
 
-	_converterOutputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConverterOutputStream)
+	_converterOutputStream = wrapConverterOutputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterOutputStream
 }
@@ -109,7 +109,7 @@ func (converterStream *ConverterOutputStream) Converter() *Converter {
 
 	var _converter *Converter // out
 
-	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Converter)
+	_converter = wrapConverter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _converter
 }

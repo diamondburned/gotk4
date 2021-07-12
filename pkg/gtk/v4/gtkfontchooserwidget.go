@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer     = (*FontChooserWidget)(nil)
 )
 
-func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgeter {
+func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 	return &FontChooserWidget{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -91,7 +91,7 @@ func NewFontChooserWidget() *FontChooserWidget {
 
 	var _fontChooserWidget *FontChooserWidget // out
 
-	_fontChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontChooserWidget)
+	_fontChooserWidget = wrapFontChooserWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserWidget
 }

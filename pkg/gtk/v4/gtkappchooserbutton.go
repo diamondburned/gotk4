@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer    = (*AppChooserButton)(nil)
 )
 
-func wrapAppChooserButton(obj *externglib.Object) AppChooserButtoner {
+func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	return &AppChooserButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -141,13 +141,12 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_app_chooser_button_new(_arg1)
 
 	var _appChooserButton *AppChooserButton // out
 
-	_appChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserButton)
+	_appChooserButton = wrapAppChooserButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _appChooserButton
 }
@@ -174,9 +173,7 @@ func (self *AppChooserButton) AppendCustomItem(name string, label string, icon g
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
@@ -276,7 +273,6 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
 }
@@ -290,7 +286,6 @@ func (self *AppChooserButton) SetHeading(heading string) {
 
 	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(heading)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)
 }

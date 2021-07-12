@@ -153,7 +153,7 @@ var (
 	_ gextras.Nativer = (*GLArea)(nil)
 )
 
-func wrapGLArea(obj *externglib.Object) GLAreaer {
+func wrapGLArea(obj *externglib.Object) *GLArea {
 	return &GLArea{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -183,7 +183,7 @@ func NewGLArea() *GLArea {
 
 	var _glArea *GLArea // out
 
-	_glArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GLArea)
+	_glArea = wrapGLArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _glArea
 }
@@ -231,7 +231,12 @@ func (area *GLArea) Context() *gdk.GLContext {
 
 	var _glContext *gdk.GLContext // out
 
-	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.GLContext)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_glContext = &gdk.GLContext{
+			Object: obj,
+		}
+	}
 
 	return _glContext
 }

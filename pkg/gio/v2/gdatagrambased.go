@@ -271,7 +271,7 @@ var (
 	_ gextras.Nativer = (*DatagramBased)(nil)
 )
 
-func wrapDatagramBased(obj *externglib.Object) DatagramBaseder {
+func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	return &DatagramBased{
 		Object: obj,
 	}
@@ -459,7 +459,9 @@ func (datagramBased *DatagramBased) ReceiveMessages(messages []InputMessage, fla
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
 	_arg2 = C.guint(len(messages))
-	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	if len(messages) > 0 {
+		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
@@ -526,7 +528,9 @@ func (datagramBased *DatagramBased) SendMessages(messages []OutputMessage, flags
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
 	_arg2 = C.guint(len(messages))
-	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	if len(messages) > 0 {
+		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))

@@ -191,7 +191,7 @@ var (
 	_ gextras.Nativer = (*Component)(nil)
 )
 
-func wrapComponent(obj *externglib.Object) Componenter {
+func wrapComponent(obj *externglib.Object) *Component {
 	return &Component{
 		Object: obj,
 	}
@@ -399,7 +399,7 @@ func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordTy
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }

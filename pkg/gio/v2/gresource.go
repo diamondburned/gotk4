@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,7 +37,6 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
@@ -57,7 +55,6 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -77,7 +74,6 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -105,7 +101,6 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputSt
 	var _cerr *C.GError              // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
@@ -113,7 +108,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputSt
 	var _inputStream *InputStream // out
 	var _goerr error              // out
 
-	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr
@@ -155,7 +150,6 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _cerr *C.GError    // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_resource_load(_arg1, &_cerr)
 

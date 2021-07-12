@@ -170,7 +170,7 @@ var (
 	_ gextras.Nativer = (*Renderer)(nil)
 )
 
-func wrapRenderer(obj *externglib.Object) Rendererer {
+func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{
 		Object: obj,
 	}
@@ -254,7 +254,6 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
@@ -408,7 +407,7 @@ func (renderer *Renderer) Layout() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Layout)
+	_layout = wrapLayout(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }

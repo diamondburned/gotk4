@@ -36,7 +36,7 @@ var (
 	_ gextras.Nativer = (*X11Monitor)(nil)
 )
 
-func wrapX11Monitor(obj *externglib.Object) X11Monitorer {
+func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 	return &X11Monitor{
 		Monitor: gdk.Monitor{
 			Object: obj,

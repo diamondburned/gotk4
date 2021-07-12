@@ -67,7 +67,7 @@ var (
 	_ gextras.Nativer = (*FontSelection)(nil)
 )
 
-func wrapFontSelection(obj *externglib.Object) FontSelectioner {
+func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	return &FontSelection{
 		Box: Box{
 			Container: Container{
@@ -106,7 +106,7 @@ func NewFontSelection() *FontSelection {
 
 	var _fontSelection *FontSelection // out
 
-	_fontSelection = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelection)
+	_fontSelection = wrapFontSelection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelection
 }
@@ -125,7 +125,12 @@ func (fontsel *FontSelection) Face() *pango.FontFace {
 
 	var _fontFace *pango.FontFace // out
 
-	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFace)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_fontFace = &pango.FontFace{
+			Object: obj,
+		}
+	}
 
 	return _fontFace
 }
@@ -144,7 +149,7 @@ func (fontsel *FontSelection) FaceList() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -162,7 +167,12 @@ func (fontsel *FontSelection) Family() *pango.FontFamily {
 
 	var _fontFamily *pango.FontFamily // out
 
-	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*pango.FontFamily)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_fontFamily = &pango.FontFamily{
+			Object: obj,
+		}
+	}
 
 	return _fontFamily
 }
@@ -181,7 +191,7 @@ func (fontsel *FontSelection) FamilyList() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -225,7 +235,7 @@ func (fontsel *FontSelection) PreviewEntry() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -280,7 +290,7 @@ func (fontsel *FontSelection) SizeEntry() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -298,7 +308,7 @@ func (fontsel *FontSelection) SizeList() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -317,7 +327,6 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_set_font_name(_arg0, _arg1)
 
@@ -340,7 +349,6 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 
 	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(fontsel.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
@@ -372,7 +380,7 @@ var (
 	_ gextras.Nativer       = (*FontSelectionDialog)(nil)
 )
 
-func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialoger {
+func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	return &FontSelectionDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -410,13 +418,12 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_new(_arg1)
 
 	var _fontSelectionDialog *FontSelectionDialog // out
 
-	_fontSelectionDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FontSelectionDialog)
+	_fontSelectionDialog = wrapFontSelectionDialog(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelectionDialog
 }
@@ -434,7 +441,7 @@ func (fsd *FontSelectionDialog) CancelButton() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -478,7 +485,7 @@ func (fsd *FontSelectionDialog) FontSelection() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -496,7 +503,7 @@ func (fsd *FontSelectionDialog) OkButton() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -529,7 +536,6 @@ func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_font_selection_dialog_set_font_name(_arg0, _arg1)
 
@@ -551,7 +557,6 @@ func (fsd *FontSelectionDialog) SetPreviewText(text string) {
 
 	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(fsd.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)
 }

@@ -62,7 +62,7 @@ var (
 	_ gextras.Nativer = (*CellAreaBox)(nil)
 )
 
-func wrapCellAreaBox(obj *externglib.Object) CellAreaBoxer {
+func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	return &CellAreaBox{
 		CellArea: CellArea{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -95,7 +95,7 @@ func NewCellAreaBox() *CellAreaBox {
 
 	var _cellAreaBox *CellAreaBox // out
 
-	_cellAreaBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellAreaBox)
+	_cellAreaBox = wrapCellAreaBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellAreaBox
 }

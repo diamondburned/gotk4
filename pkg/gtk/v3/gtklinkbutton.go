@@ -75,7 +75,7 @@ var (
 	_ gextras.Nativer = (*LinkButton)(nil)
 )
 
-func wrapLinkButton(obj *externglib.Object) LinkButtoner {
+func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{
 		Button: Button{
 			Bin: Bin{
@@ -125,13 +125,12 @@ func NewLinkButton(uri string) *LinkButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_link_button_new(_arg1)
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButton)
+	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -143,15 +142,13 @@ func NewLinkButtonWithLabel(uri string, label string) *LinkButton {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*LinkButton)
+	_linkButton = wrapLinkButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _linkButton
 }
@@ -202,7 +199,6 @@ func (linkButton *LinkButton) SetURI(uri string) {
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(linkButton.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_link_button_set_uri(_arg0, _arg1)
 }

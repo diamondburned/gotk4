@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -85,8 +86,10 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	var userData cgo.Handle    // out
 
 	logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
+	defer C.free(unsafe.Pointer(arg0))
 	logLevel = LogLevelFlags(arg1)
 	message = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	defer C.free(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(LogFunc)
@@ -125,6 +128,7 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 	var userData cgo.Handle // out
 
 	logLevel = LogLevelFlags(arg0)
+	defer C.free(unsafe.Pointer(arg1))
 	fields = make([]LogField, arg2)
 	copy(fields, unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
@@ -145,14 +149,10 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 	var _arg5 *C.char // out
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(line)
 	_arg4 = (*C.char)(unsafe.Pointer(C.CString(prettyFunction)))
-	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = (*C.char)(unsafe.Pointer(C.CString(expression)))
-	defer C.free(unsafe.Pointer(_arg5))
 
 	C.g_assert_warning(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -188,10 +188,8 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	var _arg4 C.gpointer       // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (C.gpointer)(unsafe.Pointer(unusedData))
 
 	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
@@ -206,7 +204,6 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg2 C.guint  // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(handlerId)
 
 	C.g_log_remove_handler(_arg1, _arg2)
@@ -262,7 +259,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _cret C.GLogLevelFlags // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(fatalMask)
 
 	_cret = C.g_log_set_fatal_mask(_arg1, _arg2)
@@ -290,7 +286,9 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if len(fields) > 0 {
+		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	}
 
 	C.g_log_structured_array(_arg1, _arg2, _arg3)
 }
@@ -318,7 +316,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg3 *C.GVariant      // out
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GLogLevelFlags(logLevel)
 	_arg3 = (*C.GVariant)(unsafe.Pointer(fields))
 
@@ -353,7 +350,9 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if len(fields) > 0 {
+		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_default(_arg1, _arg2, _arg3, _arg4)
@@ -413,7 +412,6 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(logDomain)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 
@@ -444,7 +442,9 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if len(fields) > 0 {
+		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	}
 	if useColor {
 		_arg4 = C.TRUE
 	}
@@ -502,7 +502,9 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if len(fields) > 0 {
+		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_journald(_arg1, _arg2, _arg3, _arg4)
@@ -536,7 +538,9 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 
 	_arg1 = C.GLogLevelFlags(logLevel)
 	_arg3 = C.gsize(len(fields))
-	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if len(fields) > 0 {
+		_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	}
 	_arg4 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_log_writer_standard_streams(_arg1, _arg2, _arg3, _arg4)

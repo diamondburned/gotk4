@@ -43,7 +43,7 @@ var (
 	_ gextras.Nativer        = (*SelectionFilterModel)(nil)
 )
 
-func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModeler {
+func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -70,7 +70,7 @@ func NewSelectionFilterModel(model SelectionModeler) *SelectionFilterModel {
 
 	var _selectionFilterModel *SelectionFilterModel // out
 
-	_selectionFilterModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SelectionFilterModel)
+	_selectionFilterModel = wrapSelectionFilterModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionFilterModel
 }
@@ -86,7 +86,7 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 
 	var _selectionModel *SelectionModel // out
 
-	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SelectionModel)
+	_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }

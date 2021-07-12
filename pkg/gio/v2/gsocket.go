@@ -229,7 +229,7 @@ var (
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketer {
+func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
 		Object: obj,
 		DatagramBased: DatagramBased{
@@ -274,7 +274,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 	var _socket *Socket // out
 	var _goerr error    // out
 
-	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
+	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socket, _goerr
@@ -304,7 +304,7 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 	var _socket *Socket // out
 	var _goerr error    // out
 
-	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
+	_socket = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socket, _goerr
@@ -334,7 +334,7 @@ func (socket *Socket) Accept(cancellable Cancellabler) (*Socket, error) {
 	var _ret *Socket // out
 	var _goerr error // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
+	_ret = wrapSocket(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -584,7 +584,7 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 
 	var _socketConnection *SocketConnection // out
 
-	_socketConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketConnection)
+	_socketConnection = wrapSocketConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketConnection
 }
@@ -681,7 +681,7 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 	var _credentials *Credentials // out
 	var _goerr error              // out
 
-	_credentials = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Credentials)
+	_credentials = wrapCredentials(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _credentials, _goerr
@@ -773,7 +773,7 @@ func (socket *Socket) LocalAddress() (*SocketAddress, error) {
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -881,7 +881,7 @@ func (socket *Socket) RemoteAddress() (*SocketAddress, error) {
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -1005,7 +1005,6 @@ func (socket *Socket) JoinMulticastGroup(group InetAddresser, sourceSpecific boo
 		_arg2 = C.TRUE
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1041,7 +1040,6 @@ func (socket *Socket) JoinMulticastGroupSSM(group InetAddresser, sourceSpecific 
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1074,7 +1072,6 @@ func (socket *Socket) LeaveMulticastGroup(group InetAddresser, sourceSpecific bo
 		_arg2 = C.TRUE
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1102,7 +1099,6 @@ func (socket *Socket) LeaveMulticastGroupSSM(group InetAddresser, sourceSpecific
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg2 = (*C.GInetAddress)(unsafe.Pointer((sourceSpecific).(gextras.Nativer).Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -1193,7 +1189,9 @@ func (socket *Socket) ReceiveMessages(messages []InputMessage, flags int, cancel
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg2 = C.guint(len(messages))
-	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	if len(messages) > 0 {
+		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	}
 	_arg3 = C.gint(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -1232,7 +1230,9 @@ func (socket *Socket) Send(buffer []byte, cancellable Cancellabler) (int, error)
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, &_cerr)
@@ -1300,12 +1300,13 @@ func (socket *Socket) SendMessage(address SocketAddresser, vectors []OutputVecto
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gint(len(vectors))
-	_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg5 = C.gint(len(messages))
 	_arg4 = (**C.GSocketControlMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg4))
 	{
-		out := unsafe.Slice(_arg4, len(messages))
+		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {
 			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
@@ -1348,12 +1349,13 @@ func (socket *Socket) SendMessageWithTimeout(address SocketAddresser, vectors []
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gint(len(vectors))
-	_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	if len(vectors) > 0 {
+		_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	}
 	_arg5 = C.gint(len(messages))
 	_arg4 = (**C.GSocketControlMessage)(C.malloc(C.ulong(len(messages)) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg4))
 	{
-		out := unsafe.Slice(_arg4, len(messages))
+		out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
 		for i := range messages {
 			out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(messages[i].Native()))
 		}
@@ -1419,7 +1421,9 @@ func (socket *Socket) SendMessages(messages []OutputMessage, flags int, cancella
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg2 = C.guint(len(messages))
-	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	if len(messages) > 0 {
+		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	}
 	_arg3 = C.gint(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
@@ -1450,7 +1454,9 @@ func (socket *Socket) SendTo(address SocketAddresser, buffer []byte, cancellable
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg3 = C.gsize(len(buffer))
-	_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
 	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
@@ -1478,7 +1484,9 @@ func (socket *Socket) SendWithBlocking(buffer []byte, blocking bool, cancellable
 
 	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 	_arg2 = C.gsize(len(buffer))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	if len(buffer) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	}
 	if blocking {
 		_arg3 = C.TRUE
 	}

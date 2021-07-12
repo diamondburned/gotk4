@@ -44,7 +44,7 @@ var (
 	_ gextras.Nativer = (*GestureStylus)(nil)
 )
 
-func wrapGestureStylus(obj *externglib.Object) GestureStyluser {
+func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -73,7 +73,7 @@ func NewGestureStylus(widget Widgeter) *GestureStylus {
 
 	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylus)
+	_gestureStylus = wrapGestureStylus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureStylus
 }
@@ -117,7 +117,12 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	var _deviceTool *gdk.DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceTool)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_deviceTool = &gdk.DeviceTool{
+			Object: obj,
+		}
+	}
 
 	return _deviceTool
 }

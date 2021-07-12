@@ -38,7 +38,7 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	var tag *TextTag    // out
 	var data cgo.Handle // out
 
-	tag = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*TextTag)
+	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
 	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TextTagTableForeach)
@@ -85,7 +85,7 @@ var (
 	_ gextras.Nativer = (*TextTagTable)(nil)
 )
 
-func wrapTextTagTable(obj *externglib.Object) TextTagTabler {
+func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{
 		Object: obj,
 		Buildable: Buildable{
@@ -110,7 +110,7 @@ func NewTextTagTable() *TextTagTable {
 
 	var _textTagTable *TextTagTable // out
 
-	_textTagTable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TextTagTable)
+	_textTagTable = wrapTextTagTable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTagTable
 }
@@ -180,13 +180,12 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
 
 	var _textTag *TextTag // out
 
-	_textTag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextTag)
+	_textTag = wrapTextTag(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textTag
 }

@@ -96,7 +96,7 @@ var (
 	_ gextras.Nativer = (*DropDown)(nil)
 )
 
-func wrapDropDown(obj *externglib.Object) DropDowner {
+func wrapDropDown(obj *externglib.Object) *DropDown {
 	return &DropDown{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -137,7 +137,7 @@ func NewDropDown(model gio.ListModeler, expression Expressioner) *DropDown {
 
 	var _dropDown *DropDown // out
 
-	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDown)
+	_dropDown = wrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
 }
@@ -149,12 +149,10 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (**C.char)(C.malloc(C.ulong(len(strings)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(strings))
 		for i := range strings {
 			out[i] = (*C.char)(unsafe.Pointer(C.CString(strings[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -162,7 +160,7 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 
 	var _dropDown *DropDown // out
 
-	_dropDown = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DropDown)
+	_dropDown = wrapDropDown(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dropDown
 }
@@ -198,7 +196,7 @@ func (self *DropDown) Expression() *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expression
 }
@@ -218,7 +216,7 @@ func (self *DropDown) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
+	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listItemFactory
 }
@@ -235,7 +233,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	_listItemFactory = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListItemFactory)
+	_listItemFactory = wrapListItemFactory(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listItemFactory
 }
@@ -251,7 +249,12 @@ func (self *DropDown) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -283,7 +286,7 @@ func (self *DropDown) SelectedItem() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }

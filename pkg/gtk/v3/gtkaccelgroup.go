@@ -197,7 +197,6 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _arg3 C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accelerator_parse(_arg1, &_arg2, &_arg3)
 
@@ -230,7 +229,6 @@ func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.Modifier
 	var _arg4 C.GdkModifierType // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_accelerator_parse_with_keycode(_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -340,7 +338,7 @@ var (
 	_ gextras.Nativer = (*AccelGroup)(nil)
 )
 
-func wrapAccelGroup(obj *externglib.Object) AccelGrouper {
+func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	return &AccelGroup{
 		Object: obj,
 	}
@@ -360,7 +358,7 @@ func NewAccelGroup() *AccelGroup {
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AccelGroup)
+	_accelGroup = wrapAccelGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _accelGroup
 }

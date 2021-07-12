@@ -121,7 +121,7 @@ var (
 	_ gextras.Nativer   = (*PixbufAnimation)(nil)
 )
 
-func wrapPixbufAnimation(obj *externglib.Object) PixbufAnimationer {
+func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{
 		Object: obj,
 	}
@@ -147,14 +147,13 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_animation_new_from_file(_arg1, &_cerr)
 
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimation)
+	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -171,14 +170,13 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 	var _cerr *C.GError             // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, &_cerr)
 
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimation)
+	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -211,7 +209,7 @@ func NewPixbufAnimationFromStream(stream gio.InputStreamer, cancellable gio.Canc
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimation)
+	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -232,7 +230,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 	var _pixbufAnimation *PixbufAnimation // out
 	var _goerr error                      // out
 
-	_pixbufAnimation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimation)
+	_pixbufAnimation = wrapPixbufAnimation(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbufAnimation, _goerr
@@ -296,7 +294,7 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 
 	var _pixbufAnimationIter *PixbufAnimationIter // out
 
-	_pixbufAnimationIter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PixbufAnimationIter)
+	_pixbufAnimationIter = wrapPixbufAnimationIter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pixbufAnimationIter
 }
@@ -322,7 +320,7 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Pixbuf)
+	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }
@@ -451,7 +449,7 @@ var (
 	_ gextras.Nativer       = (*PixbufAnimationIter)(nil)
 )
 
-func wrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIterer {
+func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{
 		Object: obj,
 	}
@@ -550,7 +548,7 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Pixbuf)
+	_pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _pixbuf
 }

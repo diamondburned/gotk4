@@ -99,7 +99,7 @@ var (
 	_ gextras.Nativer           = (*SocketAddressEnumerator)(nil)
 )
 
-func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumeratorer {
+func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerator {
 	return &SocketAddressEnumerator{
 		Object: obj,
 	}
@@ -136,7 +136,7 @@ func (enumerator *SocketAddressEnumerator) Next(cancellable Cancellabler) (*Sock
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -179,7 +179,7 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (*So
 	var _socketAddress *SocketAddress // out
 	var _goerr error                  // out
 
-	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketAddress)
+	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

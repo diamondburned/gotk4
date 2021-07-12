@@ -42,7 +42,7 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	var menuButton *MenuButton // out
 	var userData cgo.Handle    // out
 
-	menuButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*MenuButton)
+	menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(arg0)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(MenuButtonCreatePopupFunc)
@@ -151,7 +151,7 @@ var (
 	_ gextras.Nativer = (*MenuButton)(nil)
 )
 
-func wrapMenuButton(obj *externglib.Object) MenuButtoner {
+func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -187,7 +187,7 @@ func NewMenuButton() *MenuButton {
 
 	var _menuButton *MenuButton // out
 
-	_menuButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuButton)
+	_menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuButton
 }
@@ -269,7 +269,12 @@ func (menuButton *MenuButton) MenuModel() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }
@@ -287,7 +292,7 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Popover)
+	_popover = wrapPopover(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _popover
 }
@@ -369,7 +374,6 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_icon_name(_arg0, _arg1)
 }
@@ -381,7 +385,6 @@ func (menuButton *MenuButton) SetLabel(label string) {
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_menu_button_set_label(_arg0, _arg1)
 }

@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer  = (*FrameAccessible)(nil)
 )
 
-func wrapFrameAccessible(obj *externglib.Object) FrameAccessibler {
+func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	return &FrameAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

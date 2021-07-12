@@ -31,6 +31,8 @@ Eof
 Md5
 Dmy
 Cas
+Lsf
+Msf
 Gpl
 Mit
 Bsd
@@ -39,6 +41,8 @@ Ssl
 Ssm
 Tcp
 Udp
+Ipp
+Ppd
 Nfc
 Nfd
 Nfkc

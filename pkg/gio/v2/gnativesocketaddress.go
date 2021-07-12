@@ -47,7 +47,7 @@ var (
 	_ gextras.Nativer       = (*NativeSocketAddress)(nil)
 )
 
-func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddresser {
+func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 	return &NativeSocketAddress{
 		SocketAddress: SocketAddress{
 			Object: obj,
@@ -77,7 +77,7 @@ func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 
 	var _nativeSocketAddress *NativeSocketAddress // out
 
-	_nativeSocketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NativeSocketAddress)
+	_nativeSocketAddress = wrapNativeSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _nativeSocketAddress
 }

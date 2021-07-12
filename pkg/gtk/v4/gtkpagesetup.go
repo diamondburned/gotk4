@@ -126,7 +126,7 @@ var (
 	_ gextras.Nativer = (*PageSetup)(nil)
 )
 
-func wrapPageSetup(obj *externglib.Object) PageSetuper {
+func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	return &PageSetup{
 		Object: obj,
 	}
@@ -146,7 +146,7 @@ func NewPageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -161,14 +161,13 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_page_setup_new_from_file(_arg1, &_cerr)
 
 	var _pageSetup *PageSetup // out
 	var _goerr error          // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
@@ -188,7 +187,7 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -206,14 +205,13 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
 
 	var _pageSetup *PageSetup // out
 	var _goerr error          // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pageSetup, _goerr
@@ -230,7 +228,7 @@ func (other *PageSetup) Copy() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PageSetup)
+	_pageSetup = wrapPageSetup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -433,7 +431,6 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_page_setup_load_file(_arg0, _arg1, &_cerr)
 
@@ -455,7 +452,6 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
@@ -563,7 +559,6 @@ func (setup *PageSetup) ToFile(fileName string) error {
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_page_setup_to_file(_arg0, _arg1, &_cerr)
 
@@ -603,7 +598,6 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)
 }

@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer  = (*ImageAccessible)(nil)
 )
 
-func wrapImageAccessible(obj *externglib.Object) ImageAccessibler {
+func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 	return &ImageAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

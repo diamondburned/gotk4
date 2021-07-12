@@ -54,7 +54,7 @@ var (
 	_ gextras.Nativer = (*WindowGroup)(nil)
 )
 
-func wrapWindowGroup(obj *externglib.Object) WindowGrouper {
+func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{
 		Object: obj,
 	}
@@ -76,7 +76,7 @@ func NewWindowGroup() *WindowGroup {
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WindowGroup)
+	_windowGroup = wrapWindowGroup(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _windowGroup
 }

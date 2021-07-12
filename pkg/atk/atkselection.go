@@ -104,7 +104,7 @@ var (
 	_ gextras.Nativer = (*Selection)(nil)
 )
 
-func wrapSelection(obj *externglib.Object) Selectioner {
+func wrapSelection(obj *externglib.Object) *Selection {
 	return &Selection{
 		Object: obj,
 	}
@@ -217,7 +217,7 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }

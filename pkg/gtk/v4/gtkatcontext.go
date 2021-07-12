@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*ATContext)(nil)
 )
 
-func wrapATContext(obj *externglib.Object) ATContexter {
+func wrapATContext(obj *externglib.Object) *ATContext {
 	return &ATContext{
 		Object: obj,
 	}
@@ -76,7 +76,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 
 	var _atContext *ATContext // out
 
-	_atContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ATContext)
+	_atContext = wrapATContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _atContext
 }
@@ -92,7 +92,7 @@ func (self *ATContext) Accessible() *Accessible {
 
 	var _accessible *Accessible // out
 
-	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Accessible)
+	_accessible = wrapAccessible(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accessible
 }

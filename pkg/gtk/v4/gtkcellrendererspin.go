@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer          = (*CellRendererSpinButton)(nil)
 )
 
-func wrapCellRendererSpinButton(obj *externglib.Object) CellRendererSpinButtoner {
+func wrapCellRendererSpinButton(obj *externglib.Object) *CellRendererSpinButton {
 	return &CellRendererSpinButton{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -78,7 +78,7 @@ func NewCellRendererSpinButton() *CellRendererSpinButton {
 
 	var _cellRendererSpinButton *CellRendererSpinButton // out
 
-	_cellRendererSpinButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellRendererSpinButton)
+	_cellRendererSpinButton = wrapCellRendererSpinButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpinButton
 }

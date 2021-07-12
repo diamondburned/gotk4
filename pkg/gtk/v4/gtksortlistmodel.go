@@ -62,7 +62,7 @@ var (
 	_ gextras.Nativer = (*SortListModel)(nil)
 )
 
-func wrapSortListModel(obj *externglib.Object) SortListModeler {
+func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	return &SortListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -91,7 +91,7 @@ func NewSortListModel(model gio.ListModeler, sorter Sorterer) *SortListModel {
 
 	var _sortListModel *SortListModel // out
 
-	_sortListModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SortListModel)
+	_sortListModel = wrapSortListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sortListModel
 }
@@ -127,7 +127,12 @@ func (self *SortListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -171,7 +176,7 @@ func (self *SortListModel) Sorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	_sorter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Sorter)
+	_sorter = wrapSorter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _sorter
 }

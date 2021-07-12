@@ -43,7 +43,6 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_mount_path_system_internal(_arg1)
 
@@ -69,7 +68,6 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(devicePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_device_path(_arg1)
 
@@ -94,7 +92,6 @@ func UnixIsSystemFSType(fsType string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fsType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_is_system_fs_type(_arg1)
 
@@ -118,7 +115,6 @@ func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
 	var _cret *C.GUnixMountEntry // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_at(_arg1, &_arg2)
 
@@ -182,7 +178,6 @@ func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
 	var _cret *C.GUnixMountEntry // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filePath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_for(_arg1, &_arg2)
 
@@ -324,7 +319,7 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -377,7 +372,7 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -477,7 +472,7 @@ var (
 	_ gextras.Nativer    = (*UnixMountMonitor)(nil)
 )
 
-func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitorer {
+func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	return &UnixMountMonitor{
 		Object: obj,
 	}
@@ -501,7 +496,7 @@ func NewUnixMountMonitor() *UnixMountMonitor {
 
 	var _unixMountMonitor *UnixMountMonitor // out
 
-	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitor)
+	_unixMountMonitor = wrapUnixMountMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixMountMonitor
 }
@@ -539,7 +534,7 @@ func UnixMountMonitorGet() *UnixMountMonitor {
 
 	var _unixMountMonitor *UnixMountMonitor // out
 
-	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitor)
+	_unixMountMonitor = wrapUnixMountMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _unixMountMonitor
 }
@@ -715,7 +710,7 @@ func (mountPoint *UnixMountPoint) GuessIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -749,7 +744,7 @@ func (mountPoint *UnixMountPoint) GuessSymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -820,7 +815,6 @@ func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
 	var _cret *C.GUnixMountPoint // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_unix_mount_point_at(_arg1, &_arg2)
 

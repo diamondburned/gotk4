@@ -88,7 +88,7 @@ var (
 	_ gextras.Nativer = (*TLSBackend)(nil)
 )
 
-func wrapTLSBackend(obj *externglib.Object) TLSBackender {
+func wrapTLSBackend(obj *externglib.Object) *TLSBackend {
 	return &TLSBackend{
 		Object: obj,
 	}
@@ -144,7 +144,7 @@ func (backend *TLSBackend) DefaultDatabase() *TLSDatabase {
 
 	var _tlsDatabase *TLSDatabase // out
 
-	_tlsDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSDatabase)
+	_tlsDatabase = wrapTLSDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tlsDatabase
 }
@@ -280,7 +280,7 @@ func TlsBackendGetDefault() *TLSBackend {
 
 	var _tlsBackend *TLSBackend // out
 
-	_tlsBackend = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSBackend)
+	_tlsBackend = wrapTLSBackend(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsBackend
 }

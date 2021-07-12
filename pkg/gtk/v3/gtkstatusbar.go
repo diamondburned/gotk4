@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer = (*Statusbar)(nil)
 )
 
-func wrapStatusbar(obj *externglib.Object) Statusbarer {
+func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
 		Box: Box{
 			Container: Container{
@@ -130,7 +130,7 @@ func NewStatusbar() *Statusbar {
 
 	var _statusbar *Statusbar // out
 
-	_statusbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Statusbar)
+	_statusbar = wrapStatusbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _statusbar
 }
@@ -144,7 +144,6 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contextDescription)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
@@ -166,7 +165,7 @@ func (statusbar *Statusbar) MessageArea() *Box {
 
 	var _box *Box // out
 
-	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+	_box = wrapBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _box
 }
@@ -196,7 +195,6 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(statusbar.Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
 

@@ -6,8 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -109,7 +109,15 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
@@ -158,7 +166,9 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 
 	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
 	_arg1 = C.guint(len(stream))
-	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
+	if len(stream) > 0 {
+		_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
+	}
 
 	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, &_cerr)
 

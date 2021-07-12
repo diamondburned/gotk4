@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -46,7 +45,7 @@ var (
 	_ gextras.Nativer = (*GestureStylus)(nil)
 )
 
-func wrapGestureStylus(obj *externglib.Object) GestureStyluser {
+func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -72,7 +71,7 @@ func NewGestureStylus() *GestureStylus {
 
 	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylus)
+	_gestureStylus = wrapGestureStylus(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureStylus
 }
@@ -131,10 +130,9 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _backlog []gdk.TimeCoord
 	var _ok bool // out
 
-	_backlog = unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2)
-	runtime.SetFinalizer(&_backlog, func(v *[]gdk.TimeCoord) {
-		C.free(unsafe.Pointer(&(*v)[0]))
-	})
+	defer C.free(unsafe.Pointer(_arg1))
+	_backlog = make([]gdk.TimeCoord, _arg2)
+	copy(_backlog, unsafe.Slice((*gdk.TimeCoord)(unsafe.Pointer(_arg1)), _arg2))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -159,7 +157,12 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	var _deviceTool *gdk.DeviceTool // out
 
-	_deviceTool = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.DeviceTool)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_deviceTool = &gdk.DeviceTool{
+			Object: obj,
+		}
+	}
 
 	return _deviceTool
 }

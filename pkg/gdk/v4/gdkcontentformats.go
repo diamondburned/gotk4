@@ -30,7 +30,6 @@ func InternMIMEType(_string string) string {
 	var _cret *C.char // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gdk_intern_mime_type(_arg1)
 
@@ -104,7 +103,6 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(builder))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
 }

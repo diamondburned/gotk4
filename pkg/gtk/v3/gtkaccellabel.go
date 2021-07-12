@@ -84,7 +84,7 @@ var (
 	_ gextras.Nativer = (*AccelLabel)(nil)
 )
 
-func wrapAccelLabel(obj *externglib.Object) AccelLabeler {
+func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	return &AccelLabel{
 		Label: Label{
 			Misc: Misc{
@@ -116,13 +116,12 @@ func NewAccelLabel(_string string) *AccelLabel {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_accel_label_new(_arg1)
 
 	var _accelLabel *AccelLabel // out
 
-	_accelLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelLabel)
+	_accelLabel = wrapAccelLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelLabel
 }
@@ -158,7 +157,7 @@ func (accelLabel *AccelLabel) AccelWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

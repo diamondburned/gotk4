@@ -113,7 +113,7 @@ var (
 	_ gextras.Nativer = (*Hyperlink)(nil)
 )
 
-func wrapHyperlink(obj *externglib.Object) Hyperlinker {
+func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 	return &Hyperlink{
 		Object: obj,
 		Action: Action{
@@ -177,7 +177,7 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
+	_object = wrapObject(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }

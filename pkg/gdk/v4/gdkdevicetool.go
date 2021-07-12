@@ -71,7 +71,7 @@ var (
 	_ gextras.Nativer = (*DeviceTool)(nil)
 )
 
-func wrapDeviceTool(obj *externglib.Object) DeviceTooler {
+func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
 		Object: obj,
 	}

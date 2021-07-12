@@ -76,7 +76,7 @@ var (
 	_ gextras.Nativer = (*ScaleButton)(nil)
 )
 
-func wrapScaleButton(obj *externglib.Object) ScaleButtoner {
+func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	return &ScaleButton{
 		Button: Button{
 			Bin: Bin{
@@ -138,12 +138,10 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 	_arg3 = C.gdouble(max)
 	_arg4 = C.gdouble(step)
 	_arg5 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg5))
 	{
 		out := unsafe.Slice(_arg5, len(icons))
 		for i := range icons {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 
@@ -151,7 +149,7 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 
 	var _scaleButton *ScaleButton // out
 
-	_scaleButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ScaleButton)
+	_scaleButton = wrapScaleButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _scaleButton
 }
@@ -174,7 +172,7 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -190,7 +188,7 @@ func (button *ScaleButton) MinusButton() *Button {
 
 	var _ret *Button // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_ret = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -206,7 +204,7 @@ func (button *ScaleButton) PlusButton() *Button {
 
 	var _ret *Button // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Button)
+	_ret = wrapButton(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -222,7 +220,7 @@ func (button *ScaleButton) Popup() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -263,12 +261,10 @@ func (button *ScaleButton) SetIcons(icons []string) {
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(icons))
 		for i := range icons {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

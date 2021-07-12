@@ -66,7 +66,7 @@ var (
 	_ gextras.Nativer = (*Plug)(nil)
 )
 
-func wrapPlug(obj *externglib.Object) Pluger {
+func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
 		Window: Window{
 			Bin: Bin{
@@ -123,7 +123,12 @@ func (plug *Plug) SocketWindow() *gdk.Window {
 
 	var _window *gdk.Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Window)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_window = &gdk.Window{
+			Object: obj,
+		}
+	}
 
 	return _window
 }

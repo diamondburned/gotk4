@@ -55,7 +55,7 @@ var (
 	_ gextras.Nativer = (*MenuBar)(nil)
 )
 
-func wrapMenuBar(obj *externglib.Object) MenuBarer {
+func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	return &MenuBar{
 		MenuShell: MenuShell{
 			Container: Container{
@@ -89,7 +89,7 @@ func NewMenuBar() *MenuBar {
 
 	var _menuBar *MenuBar // out
 
-	_menuBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuBar)
+	_menuBar = wrapMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuBar
 }
@@ -110,7 +110,7 @@ func NewMenuBarFromModel(model gio.MenuModeler) *MenuBar {
 
 	var _menuBar *MenuBar // out
 
-	_menuBar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*MenuBar)
+	_menuBar = wrapMenuBar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuBar
 }

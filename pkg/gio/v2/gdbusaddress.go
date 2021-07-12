@@ -38,7 +38,6 @@ func DBusAddressEscapeValue(_string string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_address_escape_value(_arg1)
 
@@ -95,7 +94,6 @@ func DBusAddressGetStream(address string, cancellable Cancellabler, callback Asy
 	var _arg4 C.gpointer
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
@@ -124,7 +122,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
+	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
@@ -149,7 +147,6 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellabler) (string,
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
 
 	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
@@ -160,7 +157,7 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellabler) (string,
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IOStream)
+	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
@@ -176,7 +173,6 @@ func DBusIsAddress(_string string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_dbus_is_address(_arg1)
 
@@ -198,7 +194,6 @@ func DBusIsSupportedAddress(_string string) error {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_dbus_is_supported_address(_arg1, &_cerr)
 

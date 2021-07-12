@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -283,7 +284,6 @@ func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *T
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
@@ -971,7 +971,6 @@ func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *Te
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.GtkTextSearchFlags(flags)
 	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
@@ -1307,7 +1306,7 @@ func (iter *TextIter) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextBuffer)
+	_textBuffer = wrapTextBuffer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textBuffer
 }
@@ -1379,7 +1378,7 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TextChildAnchor)
+	_textChildAnchor = wrapTextChildAnchor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }
@@ -1490,7 +1489,15 @@ func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }

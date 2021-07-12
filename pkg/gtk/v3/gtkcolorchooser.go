@@ -83,7 +83,7 @@ var (
 	_ gextras.Nativer = (*ColorChooser)(nil)
 )
 
-func wrapColorChooser(obj *externglib.Object) ColorChooserer {
+func wrapColorChooser(obj *externglib.Object) *ColorChooser {
 	return &ColorChooser{
 		Object: obj,
 	}
@@ -120,7 +120,9 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 	_arg1 = C.GtkOrientation(orientation)
 	_arg2 = C.gint(colorsPerLine)
 	_arg3 = C.gint(len(colors))
-	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
+	if len(colors) > 0 {
+		_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
+	}
 
 	C.gtk_color_chooser_add_palette(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

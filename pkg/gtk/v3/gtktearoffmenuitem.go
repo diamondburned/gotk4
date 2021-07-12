@@ -52,7 +52,7 @@ var (
 	_ gextras.Nativer   = (*TearoffMenuItem)(nil)
 )
 
-func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItemer {
+func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -107,7 +107,7 @@ func NewTearoffMenuItem() *TearoffMenuItem {
 
 	var _tearoffMenuItem *TearoffMenuItem // out
 
-	_tearoffMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TearoffMenuItem)
+	_tearoffMenuItem = wrapTearoffMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tearoffMenuItem
 }

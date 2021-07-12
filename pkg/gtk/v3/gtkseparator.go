@@ -50,7 +50,7 @@ var (
 	_ gextras.Nativer = (*Separator)(nil)
 )
 
-func wrapSeparator(obj *externglib.Object) Separatorer {
+func wrapSeparator(obj *externglib.Object) *Separator {
 	return &Separator{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -86,7 +86,7 @@ func NewSeparator(orientation Orientation) *Separator {
 
 	var _separator *Separator // out
 
-	_separator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Separator)
+	_separator = wrapSeparator(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
 }

@@ -191,7 +191,7 @@ var (
 	_ gextras.Nativer = (*IMContext)(nil)
 )
 
-func wrapIMContext(obj *externglib.Object) IMContexter {
+func wrapIMContext(obj *externglib.Object) *IMContext {
 	return &IMContext{
 		Object: obj,
 	}
@@ -393,7 +393,6 @@ func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) 
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(len)
 	_arg3 = C.gint(cursorIndex)
 

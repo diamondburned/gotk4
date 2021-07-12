@@ -82,7 +82,7 @@ var (
 	_ gextras.Nativer = (*MemoryTexture)(nil)
 )
 
-func wrapMemoryTexture(obj *externglib.Object) MemoryTexturer {
+func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	return &MemoryTexture{
 		Texture: Texture{
 			Object: obj,

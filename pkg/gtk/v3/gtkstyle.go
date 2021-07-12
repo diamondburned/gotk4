@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -72,7 +73,6 @@ func PaintArrow(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.GtkArrowType(arrowType)
 	if fill {
 		_arg8 = C.TRUE
@@ -106,7 +106,6 @@ func PaintBox(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -140,7 +139,6 @@ func PaintBoxGap(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -174,7 +172,6 @@ func PaintCheck(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -205,7 +202,6 @@ func PaintDiamond(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -239,7 +235,6 @@ func PaintExpander(style Styler, cr *cairo.Context, stateType StateType, widget 
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.gint(x)
 	_arg7 = C.gint(y)
 	_arg8 = C.GtkExpanderStyle(expanderStyle)
@@ -269,7 +264,6 @@ func PaintExtension(style Styler, cr *cairo.Context, stateType StateType, shadow
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -300,7 +294,6 @@ func PaintFlatBox(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -329,7 +322,6 @@ func PaintFocus(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.gint(x)
 	_arg7 = C.gint(y)
 	_arg8 = C.gint(width)
@@ -360,7 +352,6 @@ func PaintHandle(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -389,7 +380,6 @@ func PaintHline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.gint(x1)
 	_arg7 = C.gint(x2)
 	_arg8 = C.gint(y)
@@ -419,7 +409,6 @@ func PaintLayout(style Styler, cr *cairo.Context, stateType StateType, useText b
 	}
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = (*C.PangoLayout)(unsafe.Pointer((layout).(gextras.Nativer).Native()))
@@ -449,7 +438,6 @@ func PaintOption(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -479,7 +467,6 @@ func PaintResizeGrip(style Styler, cr *cairo.Context, stateType StateType, widge
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.GdkWindowEdge(edge)
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
@@ -511,7 +498,6 @@ func PaintShadow(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -545,7 +531,6 @@ func PaintShadowGap(style Styler, cr *cairo.Context, stateType StateType, shadow
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -580,7 +565,6 @@ func PaintSlider(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -611,7 +595,6 @@ func PaintSpinner(style Styler, cr *cairo.Context, stateType StateType, widget W
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.guint(step)
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
@@ -643,7 +626,6 @@ func PaintTab(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	_arg4 = C.GtkShadowType(shadowType)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
 	_arg9 = C.gint(width)
@@ -671,7 +653,6 @@ func PaintVline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg5))
 	_arg6 = C.gint(y1)
 	_arg7 = C.gint(y2)
 	_arg8 = C.gint(x)
@@ -771,7 +752,7 @@ var (
 	_ gextras.Nativer = (*Style)(nil)
 )
 
-func wrapStyle(obj *externglib.Object) Styler {
+func wrapStyle(obj *externglib.Object) *Style {
 	return &Style{
 		Object: obj,
 	}
@@ -793,7 +774,7 @@ func NewStyle() *Style {
 
 	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Style)
+	_style = wrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _style
 }
@@ -834,7 +815,7 @@ func (style *Style) Copy() *Style {
 
 	var _ret *Style // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Style)
+	_ret = wrapStyle(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -862,7 +843,6 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = C.GType(widgetType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
 
@@ -905,7 +885,6 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_color(_arg0, _arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -929,7 +908,6 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_style_lookup_icon_set(_arg0, _arg1)
 
@@ -965,13 +943,20 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 	_arg4 = C.GtkIconSize(size)
 	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-	defer C.free(unsafe.Pointer(_arg6))
 
 	_cret = C.gtk_style_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -1004,7 +989,7 @@ func WidgetGetDefaultStyle() *Style {
 
 	var _style *Style // out
 
-	_style = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Style)
+	_style = wrapStyle(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
 }

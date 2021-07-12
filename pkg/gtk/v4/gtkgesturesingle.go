@@ -68,7 +68,7 @@ var (
 	_ gextras.Nativer = (*GestureSingle)(nil)
 )
 
-func wrapGestureSingle(obj *externglib.Object) GestureSingler {
+func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 	return &GestureSingle{
 		Gesture: Gesture{
 			EventController: EventController{

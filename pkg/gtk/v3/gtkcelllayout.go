@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
@@ -42,10 +43,13 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 	var iter *TreeIter         // out
 	var data cgo.Handle        // out
 
-	cellLayout = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*CellLayout)
-	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*CellRenderer)
-	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(*TreeModel)
+	cellLayout = wrapCellLayout(externglib.Take(unsafe.Pointer(arg0)))
+	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
+	treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(arg2)))
 	iter = (*TreeIter)(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(iter, func(v *TreeIter) {
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+	})
 	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(CellLayoutDataFunc)
@@ -210,7 +214,7 @@ var (
 	_ gextras.Nativer = (*CellLayout)(nil)
 )
 
-func wrapCellLayout(obj *externglib.Object) CellLayouter {
+func wrapCellLayout(obj *externglib.Object) *CellLayout {
 	return &CellLayout{
 		Object: obj,
 	}
@@ -237,7 +241,6 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gint(column)
 
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
@@ -277,7 +280,7 @@ func (cellLayout *CellLayout) Area() *CellArea {
 
 	var _cellArea *CellArea // out
 
-	_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CellArea)
+	_cellArea = wrapCellArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellArea
 }

@@ -46,7 +46,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bo
 
 	var _ok bool // out
 
-	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(*TreeModel)
+	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg2)))
 
 	if _cret != 0 {
 		_ok = true
@@ -117,7 +117,7 @@ var (
 	_ gextras.Nativer = (*TreeDragDest)(nil)
 )
 
-func wrapTreeDragDest(obj *externglib.Object) TreeDragDester {
+func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	return &TreeDragDest{
 		Object: obj,
 	}
@@ -226,7 +226,7 @@ var (
 	_ gextras.Nativer = (*TreeDragSource)(nil)
 )
 
-func wrapTreeDragSource(obj *externglib.Object) TreeDragSourcer {
+func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	return &TreeDragSource{
 		Object: obj,
 	}

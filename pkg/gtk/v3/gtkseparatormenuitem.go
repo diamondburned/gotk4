@@ -46,7 +46,7 @@ var (
 	_ gextras.Nativer     = (*SeparatorMenuItem)(nil)
 )
 
-func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItemer {
+func wrapSeparatorMenuItem(obj *externglib.Object) *SeparatorMenuItem {
 	return &SeparatorMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -98,7 +98,7 @@ func NewSeparatorMenuItem() *SeparatorMenuItem {
 
 	var _separatorMenuItem *SeparatorMenuItem // out
 
-	_separatorMenuItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*SeparatorMenuItem)
+	_separatorMenuItem = wrapSeparatorMenuItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorMenuItem
 }

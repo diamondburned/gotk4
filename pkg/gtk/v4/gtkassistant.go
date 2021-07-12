@@ -191,7 +191,7 @@ var (
 	_ gextras.Nativer = (*Assistant)(nil)
 )
 
-func wrapAssistant(obj *externglib.Object) Assistanter {
+func wrapAssistant(obj *externglib.Object) *Assistant {
 	return &Assistant{
 		Window: Window{
 			Widget: Widget{
@@ -247,7 +247,7 @@ func NewAssistant() *Assistant {
 
 	var _assistant *Assistant // out
 
-	_assistant = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Assistant)
+	_assistant = wrapAssistant(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -343,7 +343,7 @@ func (assistant *Assistant) NthPage(pageNum int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -361,7 +361,7 @@ func (assistant *Assistant) Page(child Widgeter) *AssistantPage {
 
 	var _assistantPage *AssistantPage // out
 
-	_assistantPage = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AssistantPage)
+	_assistantPage = wrapAssistantPage(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistantPage
 }
@@ -433,7 +433,12 @@ func (assistant *Assistant) Pages() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gio.ListModel)
+	{
+		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_listModel = &gio.ListModel{
+			Object: obj,
+		}
+	}
 
 	return _listModel
 }
@@ -571,7 +576,6 @@ func (assistant *Assistant) SetPageTitle(page Widgeter, title string) {
 	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
 }
@@ -625,7 +629,7 @@ var (
 	_ gextras.Nativer = (*AssistantPage)(nil)
 )
 
-func wrapAssistantPage(obj *externglib.Object) AssistantPager {
+func wrapAssistantPage(obj *externglib.Object) *AssistantPage {
 	return &AssistantPage{
 		Object: obj,
 	}
@@ -648,7 +652,7 @@ func (page *AssistantPage) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

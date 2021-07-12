@@ -149,7 +149,7 @@ var (
 	_ gextras.Nativer = (*ToolPalette)(nil)
 )
 
-func wrapToolPalette(obj *externglib.Object) ToolPaletter {
+func wrapToolPalette(obj *externglib.Object) *ToolPalette {
 	return &ToolPalette{
 		Container: Container{
 			Widget: Widget{
@@ -187,7 +187,7 @@ func NewToolPalette() *ToolPalette {
 
 	var _toolPalette *ToolPalette // out
 
-	_toolPalette = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolPalette)
+	_toolPalette = wrapToolPalette(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolPalette
 }
@@ -231,7 +231,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -251,7 +251,7 @@ func (palette *ToolPalette) DropGroup(x int, y int) *ToolItemGroup {
 
 	var _toolItemGroup *ToolItemGroup // out
 
-	_toolItemGroup = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItemGroup)
+	_toolItemGroup = wrapToolItemGroup(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItemGroup
 }
@@ -272,7 +272,7 @@ func (palette *ToolPalette) DropItem(x int, y int) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ToolItem)
+	_toolItem = wrapToolItem(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolItem
 }
@@ -351,7 +351,7 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -402,7 +402,7 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }

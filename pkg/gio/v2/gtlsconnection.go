@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -155,7 +156,7 @@ var (
 	_ gextras.Nativer = (*TLSConnection)(nil)
 )
 
-func wrapTLSConnection(obj *externglib.Object) TLSConnectioner {
+func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
 	return &TLSConnection{
 		IOStream: IOStream{
 			Object: obj,
@@ -204,7 +205,7 @@ func (conn *TLSConnection) Certificate() *TLSCertificate {
 
 	var _tlsCertificate *TLSCertificate // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsCertificate
 }
@@ -236,8 +237,14 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 	var _data []byte
 	var _goerr error // out
 
-	_data = make([]byte, _arg2.len)
-	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
+	{
+		var len uintptr
+		p := C.g_byte_array_steal(&_arg2, (*C.gsize)(&len))
+		_data = unsafe.Slice((*byte)(p), len)
+		runtime.SetFinalizer(&_data, func(v *[]byte) {
+			C.free(unsafe.Pointer(&(*v)[0]))
+		})
+	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _data, _goerr
@@ -255,7 +262,7 @@ func (conn *TLSConnection) Database() *TLSDatabase {
 
 	var _tlsDatabase *TLSDatabase // out
 
-	_tlsDatabase = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSDatabase)
+	_tlsDatabase = wrapTLSDatabase(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsDatabase
 }
@@ -273,7 +280,7 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 
 	var _tlsInteraction *TLSInteraction // out
 
-	_tlsInteraction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSInteraction)
+	_tlsInteraction = wrapTLSInteraction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsInteraction
 }
@@ -312,7 +319,7 @@ func (conn *TLSConnection) PeerCertificate() *TLSCertificate {
 
 	var _tlsCertificate *TLSCertificate // out
 
-	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSCertificate)
+	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _tlsCertificate
 }
@@ -495,12 +502,10 @@ func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(protocols)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
 		out := unsafe.Slice(_arg1, len(protocols))
 		for i := range protocols {
 			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
-			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
 

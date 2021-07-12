@@ -40,7 +40,7 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 	var item *externglib.Object // out
 	var userData cgo.Handle     // out
 
-	item = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*externglib.Object)
+	item = externglib.Take(unsafe.Pointer(arg0))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(ListBoxCreateWidgetFunc)
@@ -65,7 +65,7 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gbo
 	var row *ListBoxRow     // out
 	var userData cgo.Handle // out
 
-	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
+	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(ListBoxFilterFunc)
@@ -94,8 +94,8 @@ func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.
 	var row *ListBoxRow     // out
 	var userData cgo.Handle // out
 
-	box = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBox)
-	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
+	box = wrapListBox(externglib.Take(unsafe.Pointer(arg0)))
+	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxForeachFunc)
@@ -116,8 +116,8 @@ func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.
 	var row2 *ListBoxRow    // out
 	var userData cgo.Handle // out
 
-	row1 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
-	row2 = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
+	row1 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	row2 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxSortFunc)
@@ -146,8 +146,8 @@ func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow,
 	var before *ListBoxRow  // out
 	var userData cgo.Handle // out
 
-	row = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*ListBoxRow)
-	before = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(*ListBoxRow)
+	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ListBoxUpdateHeaderFunc)
@@ -278,7 +278,7 @@ var (
 	_ gextras.Nativer = (*ListBox)(nil)
 )
 
-func wrapListBox(obj *externglib.Object) ListBoxer {
+func wrapListBox(obj *externglib.Object) *ListBox {
 	return &ListBox{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -311,7 +311,7 @@ func NewListBox() *ListBox {
 
 	var _listBox *ListBox // out
 
-	_listBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBox)
+	_listBox = wrapListBox(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBox
 }
@@ -387,7 +387,7 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Adjustment)
+	_adjustment = wrapAdjustment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -408,7 +408,7 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBoxRow)
+	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -426,7 +426,7 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBoxRow)
+	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -445,7 +445,7 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBoxRow)
+	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -740,7 +740,7 @@ var (
 	_ gextras.Nativer = (*ListBoxRow)(nil)
 )
 
-func wrapListBoxRow(obj *externglib.Object) ListBoxRower {
+func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
 	return &ListBoxRow{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -789,7 +789,7 @@ func NewListBoxRow() *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ListBoxRow)
+	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
 }
@@ -854,7 +854,7 @@ func (row *ListBoxRow) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -873,7 +873,7 @@ func (row *ListBoxRow) Header() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

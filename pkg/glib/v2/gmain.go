@@ -383,7 +383,9 @@ func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
 	_arg1 = C.gint(maxPriority)
 	_arg3 = C.gint(len(fds))
-	_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
+	if len(fds) > 0 {
+		_arg2 = (*C.GPollFD)(unsafe.Pointer(&fds[0]))
+	}
 
 	_cret = C.g_main_context_check(_arg0, _arg1, _arg2, _arg3)
 
@@ -1459,7 +1461,6 @@ func (source *Source) SetName(name string) {
 
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_source_set_name(_arg0, _arg1)
 }
@@ -1619,7 +1620,6 @@ func SourceSetNameByID(tag uint, name string) {
 
 	_arg1 = C.guint(tag)
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.g_source_set_name_by_id(_arg1, _arg2)
 }

@@ -83,7 +83,7 @@ var (
 	_ gextras.Nativer = (*StringFilter)(nil)
 )
 
-func wrapStringFilter(obj *externglib.Object) StringFilterer {
+func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	return &StringFilter{
 		Filter: Filter{
 			Object: obj,
@@ -111,7 +111,7 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 
 	var _stringFilter *StringFilter // out
 
-	_stringFilter = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StringFilter)
+	_stringFilter = wrapStringFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringFilter
 }
@@ -128,7 +128,7 @@ func (self *StringFilter) Expression() *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expression
 }
@@ -228,7 +228,6 @@ func (self *StringFilter) SetSearch(search string) {
 
 	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(search)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_string_filter_set_search(_arg0, _arg1)
 }

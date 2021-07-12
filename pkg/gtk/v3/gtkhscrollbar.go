@@ -45,7 +45,7 @@ var (
 	_ gextras.Nativer = (*HScrollbar)(nil)
 )
 
-func wrapHScrollbar(obj *externglib.Object) HScrollbarer {
+func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	return &HScrollbar{
 		Scrollbar: Scrollbar{
 			Range: Range{
@@ -87,7 +87,7 @@ func NewHScrollbar(adjustment Adjustmenter) *HScrollbar {
 
 	var _hScrollbar *HScrollbar // out
 
-	_hScrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*HScrollbar)
+	_hScrollbar = wrapHScrollbar(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScrollbar
 }

@@ -83,7 +83,7 @@ var (
 	_ gextras.Nativer = (*VolumeMonitor)(nil)
 )
 
-func wrapVolumeMonitor(obj *externglib.Object) VolumeMonitorer {
+func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	return &VolumeMonitor{
 		Object: obj,
 	}
@@ -103,13 +103,12 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
 	var _mount *Mount // out
 
-	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Mount)
+	_mount = wrapMount(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mount
 }
@@ -122,13 +121,12 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 
 	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(volumeMonitor.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 
 	var _volume *Volume // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Volume)
+	_volume = wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _volume
 }
@@ -176,7 +174,7 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 
 	var _volume *Volume // out
 
-	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Volume)
+	_volume = wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _volume
 }
@@ -189,7 +187,7 @@ func VolumeMonitorGet() *VolumeMonitor {
 
 	var _volumeMonitor *VolumeMonitor // out
 
-	_volumeMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*VolumeMonitor)
+	_volumeMonitor = wrapVolumeMonitor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _volumeMonitor
 }

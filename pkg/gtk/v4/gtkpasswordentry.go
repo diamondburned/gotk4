@@ -79,7 +79,7 @@ var (
 	_ gextras.Nativer = (*PasswordEntry)(nil)
 )
 
-func wrapPasswordEntry(obj *externglib.Object) PasswordEntrier {
+func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 	return &PasswordEntry{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -128,7 +128,7 @@ func NewPasswordEntry() *PasswordEntry {
 
 	var _passwordEntry *PasswordEntry // out
 
-	_passwordEntry = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*PasswordEntry)
+	_passwordEntry = wrapPasswordEntry(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
 }
@@ -150,7 +150,12 @@ func (entry *PasswordEntry) ExtraMenu() *gio.MenuModel {
 
 	var _menuModel *gio.MenuModel // out
 
-	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menuModel = &gio.MenuModel{
+			Object: obj,
+		}
+	}
 
 	return _menuModel
 }

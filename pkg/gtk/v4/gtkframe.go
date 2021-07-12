@@ -84,7 +84,7 @@ var (
 	_ gextras.Nativer = (*Frame)(nil)
 )
 
-func wrapFrame(obj *externglib.Object) Framer {
+func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -117,13 +117,12 @@ func NewFrame(label string) *Frame {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_frame_new(_arg1)
 
 	var _frame *Frame // out
 
-	_frame = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Frame)
+	_frame = wrapFrame(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
 }
@@ -139,7 +138,7 @@ func (frame *Frame) Child() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -189,7 +188,7 @@ func (frame *Frame) LabelWidget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -213,7 +212,6 @@ func (frame *Frame) SetLabel(label string) {
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_frame_set_label(_arg0, _arg1)
 }

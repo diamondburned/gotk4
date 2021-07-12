@@ -61,7 +61,7 @@ func ValueDupExpression(value *externglib.Value) *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _expression
 }
@@ -78,7 +78,7 @@ func ValueGetExpression(value *externglib.Value) *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _expression
 }
@@ -124,7 +124,7 @@ var (
 	_ gextras.Nativer      = (*CClosureExpression)(nil)
 )
 
-func wrapCClosureExpression(obj *externglib.Object) CClosureExpressioner {
+func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 	return &CClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -156,7 +156,7 @@ var (
 	_ gextras.Nativer     = (*ClosureExpression)(nil)
 )
 
-func wrapClosureExpression(obj *externglib.Object) ClosureExpressioner {
+func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 	return &ClosureExpression{
 		Expression: Expression{
 			Object: obj,
@@ -188,7 +188,7 @@ var (
 	_ gextras.Nativer      = (*ConstantExpression)(nil)
 )
 
-func wrapConstantExpression(obj *externglib.Object) ConstantExpressioner {
+func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 	return &ConstantExpression{
 		Expression: Expression{
 			Object: obj,
@@ -214,7 +214,7 @@ func NewConstantExpressionForValue(value *externglib.Value) *ConstantExpression 
 
 	var _constantExpression *ConstantExpression // out
 
-	_constantExpression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ConstantExpression)
+	_constantExpression = wrapConstantExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constantExpression
 }
@@ -376,7 +376,7 @@ var (
 	_ gextras.Nativer = (*Expression)(nil)
 )
 
-func wrapExpression(obj *externglib.Object) Expressioner {
+func wrapExpression(obj *externglib.Object) *Expression {
 	return &Expression{
 		Object: obj,
 	}
@@ -409,7 +409,6 @@ func (self *Expression) Bind(target gextras.Objector, property string, this_ gex
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(target.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.gpointer(unsafe.Pointer(this_.Native()))
 
 	_cret = C.gtk_expression_bind(_arg0, _arg1, _arg2, _arg3)
@@ -509,7 +508,7 @@ func (self *Expression) ref() *Expression {
 
 	var _expression *Expression // out
 
-	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Expression)
+	_expression = wrapExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _expression
 }
@@ -542,7 +541,7 @@ var (
 	_ gextras.Nativer    = (*ObjectExpression)(nil)
 )
 
-func wrapObjectExpression(obj *externglib.Object) ObjectExpressioner {
+func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 	return &ObjectExpression{
 		Expression: Expression{
 			Object: obj,
@@ -575,7 +574,7 @@ func NewObjectExpression(object gextras.Objector) *ObjectExpression {
 
 	var _objectExpression *ObjectExpression // out
 
-	_objectExpression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectExpression)
+	_objectExpression = wrapObjectExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _objectExpression
 }
@@ -591,7 +590,7 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -613,7 +612,7 @@ var (
 	_ gextras.Nativer      = (*PropertyExpression)(nil)
 )
 
-func wrapPropertyExpression(obj *externglib.Object) PropertyExpressioner {
+func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 	return &PropertyExpression{
 		Expression: Expression{
 			Object: obj,
@@ -644,13 +643,12 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 	_arg1 = C.GType(thisType)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg3))
 
 	_cret = C.gtk_property_expression_new(_arg1, _arg2, _arg3)
 
 	var _propertyExpression *PropertyExpression // out
 
-	_propertyExpression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PropertyExpression)
+	_propertyExpression = wrapPropertyExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _propertyExpression
 }
@@ -667,7 +665,7 @@ func (expression *PropertyExpression) GetExpression() *Expression {
 
 	var _ret *Expression // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Expression)
+	_ret = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }

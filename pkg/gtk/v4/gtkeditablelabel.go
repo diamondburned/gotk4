@@ -64,7 +64,7 @@ var (
 	_ gextras.Nativer = (*EditableLabel)(nil)
 )
 
-func wrapEditableLabel(obj *externglib.Object) EditableLabeler {
+func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	return &EditableLabel{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -111,13 +111,12 @@ func NewEditableLabel(str string) *EditableLabel {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_editable_label_new(_arg1)
 
 	var _editableLabel *EditableLabel // out
 
-	_editableLabel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EditableLabel)
+	_editableLabel = wrapEditableLabel(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _editableLabel
 }

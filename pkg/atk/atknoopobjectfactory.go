@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer     = (*NoOpObjectFactory)(nil)
 )
 
-func wrapNoOpObjectFactory(obj *externglib.Object) NoOpObjectFactorier {
+func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{
 		ObjectFactory: ObjectFactory{
 			Object: obj,
@@ -61,7 +61,7 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 
 	var _noOpObjectFactory *NoOpObjectFactory // out
 
-	_noOpObjectFactory = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NoOpObjectFactory)
+	_noOpObjectFactory = wrapNoOpObjectFactory(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObjectFactory
 }

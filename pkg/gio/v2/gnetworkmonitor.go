@@ -105,7 +105,7 @@ var (
 	_ gextras.Nativer  = (*NetworkMonitor)(nil)
 )
 
-func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitorer {
+func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -278,7 +278,7 @@ func NetworkMonitorGetDefault() *NetworkMonitor {
 
 	var _networkMonitor *NetworkMonitor // out
 
-	_networkMonitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NetworkMonitor)
+	_networkMonitor = wrapNetworkMonitor(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _networkMonitor
 }

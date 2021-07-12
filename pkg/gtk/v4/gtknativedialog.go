@@ -94,7 +94,7 @@ var (
 	_ gextras.Nativer = (*NativeDialog)(nil)
 )
 
-func wrapNativeDialog(obj *externglib.Object) NativeDialoger {
+func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	return &NativeDialog{
 		Object: obj,
 	}
@@ -170,7 +170,7 @@ func (self *NativeDialog) TransientFor() *Window {
 
 	var _window *Window // out
 
-	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Window)
+	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -233,7 +233,6 @@ func (self *NativeDialog) SetTitle(title string) {
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_native_dialog_set_title(_arg0, _arg1)
 }

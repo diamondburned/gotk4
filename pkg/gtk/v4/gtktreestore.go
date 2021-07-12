@@ -102,7 +102,7 @@ var (
 	_ gextras.Nativer = (*TreeStore)(nil)
 )
 
-func wrapTreeStore(obj *externglib.Object) TreeStorer {
+func wrapTreeStore(obj *externglib.Object) *TreeStore {
 	return &TreeStore{
 		Object: obj,
 		Buildable: Buildable{
@@ -137,9 +137,8 @@ func NewTreeStoreV(types []externglib.Type) *TreeStore {
 
 	_arg1 = C.int(len(types))
 	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(_arg2))
 	{
-		out := unsafe.Slice(_arg2, len(types))
+		out := unsafe.Slice((*C.GType)(_arg2), len(types))
 		for i := range types {
 			out[i] = C.GType(types[i])
 		}
@@ -149,7 +148,7 @@ func NewTreeStoreV(types []externglib.Type) *TreeStore {
 
 	var _treeStore *TreeStore // out
 
-	_treeStore = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TreeStore)
+	_treeStore = wrapTreeStore(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeStore
 }
@@ -267,12 +266,13 @@ func (treeStore *TreeStore) InsertWithValuesv(parent *TreeIter, position int, co
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
 	_arg3 = C.int(position)
 	_arg6 = C.int(len(columns))
-	_arg4 = (*C.int)(unsafe.Pointer(&columns[0]))
+	if len(columns) > 0 {
+		_arg4 = (*C.int)(unsafe.Pointer(&columns[0]))
+	}
 	_arg6 = C.int(len(values))
 	_arg5 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg5))
 	{
-		out := unsafe.Slice(_arg5, len(values))
+		out := unsafe.Slice((*C.GValue)(_arg5), len(values))
 		for i := range values {
 			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
 		}
@@ -432,9 +432,8 @@ func (treeStore *TreeStore) SetColumnTypes(types []externglib.Type) {
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = C.int(len(types))
 	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(_arg2))
 	{
-		out := unsafe.Slice(_arg2, len(types))
+		out := unsafe.Slice((*C.GType)(_arg2), len(types))
 		for i := range types {
 			out[i] = C.GType(types[i])
 		}
@@ -473,12 +472,13 @@ func (treeStore *TreeStore) SetValuesv(iter *TreeIter, columns []int, values []e
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
 	_arg4 = C.int(len(columns))
-	_arg2 = (*C.int)(unsafe.Pointer(&columns[0]))
+	if len(columns) > 0 {
+		_arg2 = (*C.int)(unsafe.Pointer(&columns[0]))
+	}
 	_arg4 = C.int(len(values))
 	_arg3 = (*C.GValue)(C.malloc(C.ulong(len(values)) * C.ulong(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg3))
 	{
-		out := unsafe.Slice(_arg3, len(values))
+		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
 			out[i] = *(*C.GValue)(unsafe.Pointer(&(&values[i]).GValue))
 		}

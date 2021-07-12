@@ -60,7 +60,7 @@ var (
 	_ gextras.Nativer = (*Alignment)(nil)
 )
 
-func wrapAlignment(obj *externglib.Object) Alignmenter {
+func wrapAlignment(obj *externglib.Object) *Alignment {
 	return &Alignment{
 		Bin: Bin{
 			Container: Container{
@@ -105,7 +105,7 @@ func NewAlignment(xalign float32, yalign float32, xscale float32, yscale float32
 
 	var _alignment *Alignment // out
 
-	_alignment = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Alignment)
+	_alignment = wrapAlignment(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _alignment
 }

@@ -57,7 +57,7 @@ var (
 	_ gextras.Nativer = (*Spinner)(nil)
 )
 
-func wrapSpinner(obj *externglib.Object) Spinnerer {
+func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -90,7 +90,7 @@ func NewSpinner() *Spinner {
 
 	var _spinner *Spinner // out
 
-	_spinner = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Spinner)
+	_spinner = wrapSpinner(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _spinner
 }

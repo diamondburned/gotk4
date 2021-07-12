@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer = (*MenuAccessible)(nil)
 )
 
-func wrapMenuAccessible(obj *externglib.Object) MenuAccessibler {
+func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 	return &MenuAccessible{
 		MenuShellAccessible: MenuShellAccessible{
 			ContainerAccessible: ContainerAccessible{

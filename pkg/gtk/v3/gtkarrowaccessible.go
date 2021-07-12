@@ -40,7 +40,7 @@ var (
 	_ gextras.Nativer  = (*ArrowAccessible)(nil)
 )
 
-func wrapArrowAccessible(obj *externglib.Object) ArrowAccessibler {
+func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	return &ArrowAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{

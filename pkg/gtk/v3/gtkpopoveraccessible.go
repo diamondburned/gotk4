@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer    = (*PopoverAccessible)(nil)
 )
 
-func wrapPopoverAccessible(obj *externglib.Object) PopoverAccessibler {
+func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 	return &PopoverAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

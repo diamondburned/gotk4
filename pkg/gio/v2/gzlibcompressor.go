@@ -51,7 +51,7 @@ var (
 	_ gextras.Nativer  = (*ZlibCompressor)(nil)
 )
 
-func wrapZlibCompressor(obj *externglib.Object) ZlibCompressorer {
+func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	return &ZlibCompressor{
 		Object: obj,
 		Converter: Converter{
@@ -79,7 +79,7 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 
 	var _zlibCompressor *ZlibCompressor // out
 
-	_zlibCompressor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ZlibCompressor)
+	_zlibCompressor = wrapZlibCompressor(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _zlibCompressor
 }
@@ -95,7 +95,7 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 
 	var _fileInfo *FileInfo // out
 
-	_fileInfo = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileInfo)
+	_fileInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileInfo
 }

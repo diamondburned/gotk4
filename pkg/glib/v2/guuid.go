@@ -24,7 +24,6 @@ func UUIDStringIsValid(str string) bool {
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uuid_string_is_valid(_arg1)
 

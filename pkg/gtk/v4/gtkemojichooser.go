@@ -56,7 +56,7 @@ var (
 	_ gextras.Nativer = (*EmojiChooser)(nil)
 )
 
-func wrapEmojiChooser(obj *externglib.Object) EmojiChooserer {
+func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 	return &EmojiChooser{
 		Popover: Popover{
 			Widget: Widget{
@@ -110,7 +110,7 @@ func NewEmojiChooser() *EmojiChooser {
 
 	var _emojiChooser *EmojiChooser // out
 
-	_emojiChooser = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*EmojiChooser)
+	_emojiChooser = wrapEmojiChooser(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _emojiChooser
 }

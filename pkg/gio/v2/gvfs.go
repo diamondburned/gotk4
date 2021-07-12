@@ -52,8 +52,9 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	var identifier string   // out
 	var userData cgo.Handle // out
 
-	vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(*VFS)
+	vfs = wrapVFS(externglib.Take(unsafe.Pointer(arg0)))
 	identifier = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	defer C.free(unsafe.Pointer(arg1))
 	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(VFSFileLookupFunc)
@@ -120,7 +121,7 @@ var (
 	_ gextras.Nativer = (*VFS)(nil)
 )
 
-func wrapVFS(obj *externglib.Object) VFSer {
+func wrapVFS(obj *externglib.Object) *VFS {
 	return &VFS{
 		Object: obj,
 	}
@@ -140,13 +141,12 @@ func (vfs *VFS) FileForPath(path string) *File {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -162,13 +162,12 @@ func (vfs *VFS) FileForURI(uri string) *File {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -195,6 +194,7 @@ func (vfs *VFS) SupportedURISchemes() []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -229,13 +229,12 @@ func (vfs *VFS) ParseName(parseName string) *File {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
 
 	var _file *File // out
 
-	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*File)
+	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -249,7 +248,6 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(vfs.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
 
@@ -270,7 +268,7 @@ func VfsGetDefault() *VFS {
 
 	var _vfs *VFS // out
 
-	_vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VFS)
+	_vfs = wrapVFS(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vfs
 }
@@ -283,7 +281,7 @@ func VfsGetLocal() *VFS {
 
 	var _vfs *VFS // out
 
-	_vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VFS)
+	_vfs = wrapVFS(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _vfs
 }

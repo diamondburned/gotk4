@@ -82,7 +82,7 @@ var (
 	_ gextras.Nativer     = (*ShortcutsShortcut)(nil)
 )
 
-func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcuter {
+func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{

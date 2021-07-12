@@ -59,7 +59,6 @@ func FilenameDisplayBasename(filename string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_display_basename(_arg1)
 
@@ -91,7 +90,6 @@ func FilenameDisplayName(filename string) string {
 	var _cret *C.gchar // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_display_name(_arg1)
 
@@ -112,7 +110,6 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_filename_from_uri(_arg1, &_arg2, &_cerr)
 
@@ -148,7 +145,6 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(utf8String)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_from_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -176,9 +172,7 @@ func FilenameToURI(filename string, hostname string) (string, error) {
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.g_filename_to_uri(_arg1, _arg2, &_cerr)
 
@@ -212,7 +206,6 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(opsysstring)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_filename_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
@@ -302,7 +295,9 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	var _cerr *C.GError // in
 
 	_arg2 = C.gssize(len(opsysstring))
-	_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
+	if len(opsysstring) > 0 {
+		_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
+	}
 
 	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -328,7 +323,6 @@ func UriListExtractUris(uriList string) []string {
 	var _cret **C.gchar
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriList)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_uri_list_extract_uris(_arg1)
 
@@ -345,7 +339,6 @@ func UriListExtractUris(uriList string) []string {
 		_utf8s = make([]string, i)
 		for i := range src {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 

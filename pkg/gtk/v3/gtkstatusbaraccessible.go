@@ -38,7 +38,7 @@ var (
 	_ gextras.Nativer      = (*StatusbarAccessible)(nil)
 )
 
-func wrapStatusbarAccessible(obj *externglib.Object) StatusbarAccessibler {
+func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 	return &StatusbarAccessible{
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{

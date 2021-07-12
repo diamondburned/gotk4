@@ -61,7 +61,7 @@ var (
 	_ gextras.Nativer  = (*WidgetPaintable)(nil)
 )
 
-func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintabler {
+func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
 		Object: obj,
 		Paintable: gdk.Paintable{
@@ -87,7 +87,7 @@ func NewWidgetPaintable(widget Widgeter) *WidgetPaintable {
 
 	var _widgetPaintable *WidgetPaintable // out
 
-	_widgetPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*WidgetPaintable)
+	_widgetPaintable = wrapWidgetPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _widgetPaintable
 }
@@ -103,7 +103,7 @@ func (self *WidgetPaintable) Widget() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }

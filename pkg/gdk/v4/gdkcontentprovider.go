@@ -93,7 +93,7 @@ var (
 	_ gextras.Nativer   = (*ContentProvider)(nil)
 )
 
-func wrapContentProvider(obj *externglib.Object) ContentProviderer {
+func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{
 		Object: obj,
 	}
@@ -117,7 +117,7 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProvider)
+	_contentProvider = wrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -141,8 +141,9 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	_arg2 = C.gsize(len(providers))
 	_arg1 = (**C.GdkContentProvider)(C.malloc(C.ulong(len(providers)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(providers))
+		out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
 		for i := range providers {
 			out[i] = (*C.GdkContentProvider)(unsafe.Pointer(providers[i].Native()))
 		}
@@ -152,7 +153,7 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ContentProvider)
+	_contentProvider = wrapContentProvider(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }

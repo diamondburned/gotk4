@@ -192,7 +192,7 @@ var (
 	_ gextras.Nativer = (*Paintable)(nil)
 )
 
-func wrapPaintable(obj *externglib.Object) Paintabler {
+func wrapPaintable(obj *externglib.Object) *Paintable {
 	return &Paintable{
 		Object: obj,
 	}
@@ -257,7 +257,7 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 
 	var _ret *Paintable // out
 
-	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Paintable)
+	_ret = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -441,7 +441,7 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) *Paintable {
 
 	var _paintable *Paintable // out
 
-	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Paintable)
+	_paintable = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _paintable
 }

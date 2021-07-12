@@ -150,7 +150,7 @@ var (
 	_ gextras.Nativer = (*AsyncResult)(nil)
 )
 
-func wrapAsyncResult(obj *externglib.Object) AsyncResulter {
+func wrapAsyncResult(obj *externglib.Object) *AsyncResult {
 	return &AsyncResult{
 		Object: obj,
 	}
@@ -173,7 +173,7 @@ func (res *AsyncResult) SourceObject() *externglib.Object {
 
 	var _object *externglib.Object // out
 
-	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*externglib.Object)
+	_object = externglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }

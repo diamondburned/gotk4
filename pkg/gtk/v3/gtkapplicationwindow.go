@@ -148,7 +148,7 @@ var (
 	_ gextras.Nativer     = (*ApplicationWindow)(nil)
 )
 
-func wrapApplicationWindow(obj *externglib.Object) ApplicationWindower {
+func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
 		Window: Window{
 			Bin: Bin{
@@ -193,7 +193,7 @@ func NewApplicationWindow(application Applicationer) *ApplicationWindow {
 
 	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ApplicationWindow)
+	_applicationWindow = wrapApplicationWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -216,7 +216,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
-	_shortcutsWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ShortcutsWindow)
+	_shortcutsWindow = wrapShortcutsWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _shortcutsWindow
 }

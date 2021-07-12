@@ -150,7 +150,7 @@ var (
 	_ gextras.Nativer = (*StatusIcon)(nil)
 )
 
-func wrapStatusIcon(obj *externglib.Object) StatusIconer {
+func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	return &StatusIcon{
 		Object: obj,
 	}
@@ -173,7 +173,7 @@ func NewStatusIcon() *StatusIcon {
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -190,13 +190,12 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_file(_arg1)
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -216,7 +215,7 @@ func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -232,13 +231,12 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_icon_name(_arg1)
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -260,7 +258,7 @@ func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *StatusIcon {
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -277,13 +275,12 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.gtk_status_icon_new_from_stock(_arg1)
 
 	var _statusIcon *StatusIcon // out
 
-	_statusIcon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*StatusIcon)
+	_statusIcon = wrapStatusIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _statusIcon
 }
@@ -319,7 +316,12 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_arg1))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	_orientation = Orientation(_arg3)
 	if _cret != 0 {
@@ -348,7 +350,12 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -414,7 +421,15 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		}
+	}
 
 	return _pixbuf
 }
@@ -434,7 +449,12 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 
 	var _screen *gdk.Screen // out
 
-	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Screen)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
 
 	return _screen
 }
@@ -653,7 +673,6 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
@@ -686,7 +705,6 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_icon_name(_arg0, _arg1)
 }
@@ -717,7 +735,6 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_from_stock(_arg0, _arg1)
 }
@@ -755,7 +772,6 @@ func (statusIcon *StatusIcon) SetName(name string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_name(_arg0, _arg1)
 }
@@ -789,7 +805,6 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_title(_arg0, _arg1)
 }
@@ -810,7 +825,6 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_tooltip_markup(_arg0, _arg1)
 }
@@ -830,7 +844,6 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_status_icon_set_tooltip_text(_arg0, _arg1)
 }

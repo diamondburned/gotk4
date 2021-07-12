@@ -50,7 +50,7 @@ var (
 	_ gextras.Nativer        = (*TCPWrapperConnection)(nil)
 )
 
-func wrapTCPWrapperConnection(obj *externglib.Object) TCPWrapperConnectioner {
+func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{
 		TCPConnection: TCPConnection{
 			SocketConnection: SocketConnection{
@@ -82,7 +82,7 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket Socketer) *TCPWrapp
 
 	var _tcpWrapperConnection *TCPWrapperConnection // out
 
-	_tcpWrapperConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TCPWrapperConnection)
+	_tcpWrapperConnection = wrapTCPWrapperConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tcpWrapperConnection
 }
@@ -98,7 +98,7 @@ func (conn *TCPWrapperConnection) BaseIOStream() *IOStream {
 
 	var _ioStream *IOStream // out
 
-	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IOStream)
+	_ioStream = wrapIOStream(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ioStream
 }

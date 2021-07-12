@@ -228,7 +228,7 @@ var (
 	_ gextras.Nativer = (*Action)(nil)
 )
 
-func wrapAction(obj *externglib.Object) Actioner {
+func wrapAction(obj *externglib.Object) *Action {
 	return &Action{
 		Object: obj,
 		Buildable: Buildable{
@@ -258,19 +258,15 @@ func NewAction(name string, label string, tooltip string, stockId string) *Actio
 	var _cret *C.GtkAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg3))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg4))
 
 	_cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
 
 	var _action *Action // out
 
-	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Action)
+	_action = wrapAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -340,7 +336,7 @@ func (action *Action) CreateIcon(iconSize int) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -361,7 +357,7 @@ func (action *Action) CreateMenu() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -379,7 +375,7 @@ func (action *Action) CreateMenuItem() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -399,7 +395,7 @@ func (action *Action) CreateToolItem() *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -471,7 +467,12 @@ func (action *Action) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_icon = &gio.Icon{
+			Object: obj,
+		}
+	}
 
 	return _icon
 }
@@ -768,7 +769,6 @@ func (action *Action) SetAccelPath(accelPath string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_accel_path(_arg0, _arg1)
 }
@@ -819,7 +819,6 @@ func (action *Action) SetIconName(iconName string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_icon_name(_arg0, _arg1)
 }
@@ -852,7 +851,6 @@ func (action *Action) SetLabel(label string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_label(_arg0, _arg1)
 }
@@ -883,7 +881,6 @@ func (action *Action) SetShortLabel(shortLabel string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(shortLabel)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_short_label(_arg0, _arg1)
 }
@@ -897,7 +894,6 @@ func (action *Action) SetStockID(stockId string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_stock_id(_arg0, _arg1)
 }
@@ -912,7 +908,6 @@ func (action *Action) SetTooltip(tooltip string) {
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_action_set_tooltip(_arg0, _arg1)
 }

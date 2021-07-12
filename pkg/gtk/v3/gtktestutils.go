@@ -30,15 +30,13 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget {
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(windowTitle)))
-	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(dialogText)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_test_create_simple_window(_arg1, _arg2)
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -57,13 +55,12 @@ func TestFindLabel(widget Widgeter, labelPattern string) *Widget {
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(labelPattern)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_test_find_label(_arg1, _arg2)
 
 	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -86,7 +83,7 @@ func TestFindSibling(baseWidget Widgeter, widgetType externglib.Type) *Widget {
 
 	var _widget *Widget // out
 
-	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _widget
 }
@@ -106,14 +103,13 @@ func TestFindWidget(widget Widgeter, labelPattern string, widgetType externglib.
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(labelPattern)))
-	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.GType(widgetType)
 
 	_cret = C.gtk_test_find_widget(_arg1, _arg2, _arg3)
 
 	var _ret *Widget // out
 
-	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -220,7 +216,6 @@ func TestTextSet(widget Widgeter, _string string) {
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
-	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_test_text_set(_arg1, _arg2)
 }

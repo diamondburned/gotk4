@@ -8,12 +8,12 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +26,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -41,9 +40,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FileOutputStreamOverrider interface {
-	//
 	CanSeek() bool
-	//
 	CanTruncate() bool
 	// Etag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -76,9 +73,8 @@ type FileOutputStreamOverrider interface {
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-	//
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error
 	Tell() int64
-	//
 	TruncateFn(size int64, cancellable Cancellabler) error
 }
 

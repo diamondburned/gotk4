@@ -16,7 +16,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
@@ -84,6 +83,27 @@ func marshalBlendNoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBlendNode(obj), nil
+}
+
+// NewBlendNode creates a `GskRenderNode` that will use @blend_mode to blend the
+// @top node onto the @bottom node.
+func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *BlendNode {
+	var _arg1 *C.GskRenderNode // out
+	var _arg2 *C.GskRenderNode // out
+	var _arg3 C.GskBlendMode   // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((bottom).(gextras.Nativer).Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer((top).(gextras.Nativer).Native()))
+	_arg3 = C.GskBlendMode(blendMode)
+
+	_cret = C.gsk_blend_node_new(_arg1, _arg2, _arg3)
+
+	var _blendNode *BlendNode // out
+
+	_blendNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BlendNode)
+
+	return _blendNode
 }
 
 // BlendMode retrieves the blend mode used by @node.

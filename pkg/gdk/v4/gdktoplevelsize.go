@@ -8,12 +8,10 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
-//
 func ToplevelSizeGetType() externglib.Type {
 	var _cret C.GType // in
 

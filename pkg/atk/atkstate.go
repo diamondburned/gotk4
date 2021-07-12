@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -21,7 +20,6 @@ func init() {
 	})
 }
 
-//
 type State = uint64
 
 // StateType: possible types of states of an object
@@ -247,4 +245,55 @@ const (
 
 func marshalStateType(p uintptr) (interface{}, error) {
 	return StateType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// StateTypeForName gets the StateType corresponding to the description string
+// @name.
+func StateTypeForName(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_for_name(_arg1)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
+}
+
+// StateTypeGetName gets the description string describing the StateType @type.
+func StateTypeGetName(typ StateType) string {
+	var _arg1 C.AtkStateType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_type_get_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// StateTypeRegister: register a new object state.
+func StateTypeRegister(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_register(_arg1)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
 }

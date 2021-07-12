@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -67,6 +66,22 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 	var _object *externglib.Object // out
 
 	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*externglib.Object)
+
+	return _object
+}
+
+// GObjectAccessibleForObject gets the accessible object for the specified @obj.
+func GObjectAccessibleForObject(obj gextras.Objector) *ObjectClass {
+	var _arg1 *C.GObject   // out
+	var _cret *C.AtkObject // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+
+	_cret = C.atk_gobject_accessible_for_object(_arg1)
+
+	var _object *ObjectClass // out
+
+	_object = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ObjectClass)
 
 	return _object
 }

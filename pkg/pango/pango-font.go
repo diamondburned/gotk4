@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -166,7 +165,6 @@ type FontOverrider interface {
 	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
 	// size in device units.
 	Describe() *FontDescription
-	//
 	DescribeAbsolute() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
@@ -386,6 +384,24 @@ func (font *Font) HasChar(wc uint32) bool {
 	}
 
 	return _ok
+}
+
+// FontDescriptionsFree frees an array of font descriptions.
+func FontDescriptionsFree(descs []*FontDescription) {
+	var _arg1 **C.PangoFontDescription
+	var _arg2 C.int
+
+	_arg2 = C.int(len(descs))
+	_arg1 = (**C.PangoFontDescription)(C.malloc(C.ulong(len(descs)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice(_arg1, len(descs))
+		for i := range descs {
+			out[i] = (*C.PangoFontDescription)(unsafe.Pointer(descs[i]))
+			runtime.SetFinalizer(descs[i], nil)
+		}
+	}
+
+	C.pango_font_descriptions_free(_arg1, _arg2)
 }
 
 // FontFaceOverrider contains methods that are overridable.
@@ -1190,6 +1206,24 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 	C.pango_font_description_set_family_static(_arg0, _arg1)
 }
 
+// SetGravity sets the gravity field of a font description.
+//
+// The gravity field specifies how the glyphs should be rotated. If @gravity is
+// PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
+// description.
+//
+// This function is seldom useful to the user. Gravity should normally be set on
+// a `PangoContext`.
+func (desc *FontDescription) SetGravity(gravity Gravity) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoGravity          // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoGravity(gravity)
+
+	C.pango_font_description_set_gravity(_arg0, _arg1)
+}
+
 // SetSize sets the size field of a font description in fractional points.
 //
 // This is mutually exclusive with
@@ -1202,6 +1236,53 @@ func (desc *FontDescription) SetSize(size int) {
 	_arg1 = C.gint(size)
 
 	C.pango_font_description_set_size(_arg0, _arg1)
+}
+
+// SetStretch sets the stretch field of a font description.
+//
+// The [enum@Pango.Stretch] field specifies how narrow or wide the font should
+// be.
+func (desc *FontDescription) SetStretch(stretch Stretch) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoStretch          // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoStretch(stretch)
+
+	C.pango_font_description_set_stretch(_arg0, _arg1)
+}
+
+// SetStyle sets the style field of a `PangoFontDescription`.
+//
+// The [enum@Pango.Style] enumeration describes whether the font is slanted and
+// the manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
+// NGO_STYLE_ITALIC, or NGO_STYLE_OBLIQUE.
+//
+// Most fonts will either have a italic style or an oblique style, but not both,
+// and font matching in Pango will match italic specifications with oblique
+// fonts and vice-versa if an exact match is not found.
+func (desc *FontDescription) SetStyle(style Style) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoStyle            // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoStyle(style)
+
+	C.pango_font_description_set_style(_arg0, _arg1)
+}
+
+// SetVariant sets the variant field of a font description.
+//
+// The [enum@Pango.Variant] can either be PANGO_VARIANT_NORMAL or
+// PANGO_VARIANT_SMALL_CAPS.
+func (desc *FontDescription) SetVariant(variant Variant) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoVariant          // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoVariant(variant)
+
+	C.pango_font_description_set_variant(_arg0, _arg1)
 }
 
 // SetVariations sets the variations field of a font description.
@@ -1248,6 +1329,21 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 	C.pango_font_description_set_variations_static(_arg0, _arg1)
 }
 
+// SetWeight sets the weight field of a font description.
+//
+// The weight field specifies how bold or light the font should be. In addition
+// to the values of the [enum@Pango.Weight] enumeration, other intermediate
+// numeric values are possible.
+func (desc *FontDescription) SetWeight(weight Weight) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoWeight           // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoWeight(weight)
+
+	C.pango_font_description_set_weight(_arg0, _arg1)
+}
+
 // ToFilename creates a filename representation of a font description.
 //
 // The filename is identical to the result from calling
@@ -1289,6 +1385,78 @@ func (desc *FontDescription) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// UnsetFields unsets some of the fields in a `PangoFontDescription`.
+//
+// The unset fields will get back to their default values.
+func (desc *FontDescription) UnsetFields(toUnset FontMask) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 C.PangoFontMask         // out
+
+	_arg0 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = C.PangoFontMask(toUnset)
+
+	C.pango_font_description_unset_fields(_arg0, _arg1)
+}
+
+// FontDescriptionFromString creates a new font description from a string
+// representation.
+//
+// The string must have the form
+//
+//    "\[FAMILY-LIST] \[STYLE-OPTIONS] \[SIZE] \[VARIATIONS]",
+//
+// where FAMILY-LIST is a comma-separated list of families optionally terminated
+// by a comma, STYLE_OPTIONS is a whitespace-separated list of words where each
+// word describes one of style, variant, weight, stretch, or gravity, and SIZE
+// is a decimal number (size in points) or optionally followed by the unit
+// modifier "px" for absolute size. VARIATIONS is a comma-separated list of font
+// variation specifications of the form "\@axis=value" (the = sign is optional).
+//
+// The following words are understood as styles: "Normal", "Roman", "Oblique",
+// "Italic".
+//
+// The following words are understood as variants: "Small-Caps".
+//
+// The following words are understood as weights: "Thin", "Ultra-Light",
+// "Extra-Light", "Light", "Semi-Light", "Demi-Light", "Book", "Regular",
+// "Medium", "Semi-Bold", "Demi-Bold", "Bold", "Ultra-Bold", "Extra-Bold",
+// "Heavy", "Black", "Ultra-Black", "Extra-Black".
+//
+// The following words are understood as stretch values: "Ultra-Condensed",
+// "Extra-Condensed", "Condensed", "Semi-Condensed", "Semi-Expanded",
+// "Expanded", "Extra-Expanded", "Ultra-Expanded".
+//
+// The following words are understood as gravity values: "Not-Rotated", "South",
+// "Upside-Down", "North", "Rotated-Left", "East", "Rotated-Right", "West".
+//
+// Any one of the options may be absent. If FAMILY-LIST is absent, then the
+// family_name field of the resulting font description will be initialized to
+// nil. If STYLE-OPTIONS is missing, then all style options will be set to the
+// default values. If SIZE is missing, the size in the resulting font
+// description will be set to 0.
+//
+// A typical example:
+//
+//    "Cantarell Italic Light 15 \@wght=200"
+func FontDescriptionFromString(str string) *FontDescription {
+	var _arg1 *C.char                 // out
+	var _cret *C.PangoFontDescription // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.pango_font_description_from_string(_arg1)
+
+	var _fontDescription *FontDescription // out
+
+	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontDescription, func(v *FontDescription) {
+		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+	})
+
+	return _fontDescription
 }
 
 // FontMetrics: `PangoFontMetrics` structure holds the overall metric

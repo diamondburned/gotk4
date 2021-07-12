@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,13 +25,12 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorrer},
+		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorer},
 	})
 }
 
@@ -67,8 +65,8 @@ type SocketAddressEnumeratorOverrider interface {
 	NextFinish(result AsyncResulter) (*SocketAddress, error)
 }
 
-// SocketAddressEnumeratorrer describes SocketAddressEnumerator's methods.
-type SocketAddressEnumeratorrer interface {
+// SocketAddressEnumeratorer describes SocketAddressEnumerator's methods.
+type SocketAddressEnumeratorer interface {
 	// Next retrieves the next Address from @enumerator.
 	Next(cancellable Cancellabler) (*SocketAddress, error)
 	// NextAsync: asynchronously retrieves the next Address from @enumerator and
@@ -97,17 +95,17 @@ type SocketAddressEnumerator struct {
 }
 
 var (
-	_ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
-	_ gextras.Nativer            = (*SocketAddressEnumerator)(nil)
+	_ SocketAddressEnumeratorer = (*SocketAddressEnumerator)(nil)
+	_ gextras.Nativer           = (*SocketAddressEnumerator)(nil)
 )
 
-func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumeratorrer {
+func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumeratorer {
 	return &SocketAddressEnumerator{
 		Object: obj,
 	}
 }
 
-func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalSocketAddressEnumeratorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocketAddressEnumerator(obj), nil

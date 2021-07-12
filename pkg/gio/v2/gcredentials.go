@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -12,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -42,6 +42,9 @@ type Credentialser interface {
 	// IsSameUser checks if @credentials and @other_credentials is the same
 	// user.
 	IsSameUser(otherCredentials Credentialser) error
+	// SetNative copies the native credentials of type @native_type from @native
+	// into @credentials.
+	SetNative(nativeType CredentialsType, native cgo.Handle)
 	// SetUnixUser tries to set the UNIX user identifier on @credentials.
 	SetUnixUser(uid uint) error
 	// String creates a human-readable textual representation of @credentials
@@ -179,6 +182,24 @@ func (credentials *Credentials) IsSameUser(otherCredentials Credentialser) error
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// SetNative copies the native credentials of type @native_type from @native
+// into @credentials.
+//
+// It is a programming error (which will cause a warning to be logged) to use
+// this method if there is no #GCredentials support for the OS or if
+// @native_type isn't supported by the OS.
+func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo.Handle) {
+	var _arg0 *C.GCredentials    // out
+	var _arg1 C.GCredentialsType // out
+	var _arg2 C.gpointer         // out
+
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+	_arg1 = C.GCredentialsType(nativeType)
+	_arg2 = (C.gpointer)(unsafe.Pointer(native))
+
+	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
 // SetUnixUser tries to set the UNIX user identifier on @credentials. This

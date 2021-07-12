@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelectioner},
-		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialogger},
+		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialoger},
 	})
 }
 
@@ -59,7 +58,6 @@ type FontSelectioner interface {
 	SetPreviewText(text string)
 }
 
-//
 type FontSelection struct {
 	Box
 }
@@ -347,8 +345,8 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
 
-// FontSelectionDialogger describes FontSelectionDialog's methods.
-type FontSelectionDialogger interface {
+// FontSelectionDialoger describes FontSelectionDialog's methods.
+type FontSelectionDialoger interface {
 	// CancelButton gets the “Cancel” button.
 	CancelButton() *Widget
 	// FontName gets the currently-selected font name.
@@ -365,17 +363,16 @@ type FontSelectionDialogger interface {
 	SetPreviewText(text string)
 }
 
-//
 type FontSelectionDialog struct {
 	Dialog
 }
 
 var (
-	_ FontSelectionDialogger = (*FontSelectionDialog)(nil)
-	_ gextras.Nativer        = (*FontSelectionDialog)(nil)
+	_ FontSelectionDialoger = (*FontSelectionDialog)(nil)
+	_ gextras.Nativer       = (*FontSelectionDialog)(nil)
 )
 
-func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialogger {
+func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialoger {
 	return &FontSelectionDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -399,7 +396,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) FontSelectionDialogger {
 	}
 }
 
-func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
+func marshalFontSelectionDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontSelectionDialog(obj), nil

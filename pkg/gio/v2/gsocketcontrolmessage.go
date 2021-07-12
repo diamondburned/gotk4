@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -44,7 +43,6 @@ type SocketControlMessageOverrider interface {
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	Size() uint
-	//
 	Type() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
@@ -170,4 +168,32 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_socket_control_message_serialize(_arg0, _arg1)
+}
+
+// SocketControlMessageDeserialize tries to deserialize a socket control message
+// of a given @level and @type. This will ask all known (to GType) subclasses of
+// ControlMessage if they can understand this kind of message and if so
+// deserialize it into a ControlMessage.
+//
+// If there is no implementation for this kind of control message, nil will be
+// returned.
+func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketControlMessage {
+	var _arg1 C.int // out
+	var _arg2 C.int // out
+	var _arg4 C.gpointer
+	var _arg3 C.gsize
+	var _cret *C.GSocketControlMessage // in
+
+	_arg1 = C.int(level)
+	_arg2 = C.int(typ)
+	_arg3 = C.gsize(len(data))
+	_arg4 = (C.gpointer)(unsafe.Pointer(&data[0]))
+
+	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
+
+	var _socketControlMessage *SocketControlMessage // out
+
+	_socketControlMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SocketControlMessage)
+
+	return _socketControlMessage
 }

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -59,7 +58,7 @@ func ShowURI(screen gdk.Screener, uri string, timestamp uint32) error {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIOnWindow(parent Windowwer, uri string, timestamp uint32) error {
+func ShowURIOnWindow(parent Windower, uri string, timestamp uint32) error {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4-x11 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
@@ -27,7 +26,6 @@ type X11DeviceManagerXI2er interface {
 	privateX11DeviceManagerXI2()
 }
 
-//
 type X11DeviceManagerXI2 struct {
 	*externglib.Object
 }

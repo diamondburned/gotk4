@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -27,11 +26,9 @@ func init() {
 
 // NotebookPageAccessibler describes NotebookPageAccessible's methods.
 type NotebookPageAccessibler interface {
-	//
 	Invalidate()
 }
 
-//
 type NotebookPageAccessible struct {
 	atk.ObjectClass
 
@@ -60,8 +57,7 @@ func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(obj), nil
 }
 
-//
-func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgetter) *NotebookPageAccessible {
+func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgeter) *NotebookPageAccessible {
 	var _arg1 *C.GtkNotebookAccessible // out
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
@@ -84,7 +80,6 @@ func (v *NotebookPageAccessible) Native() uintptr {
 	return v.ObjectClass.Object.Native()
 }
 
-//
 func (page *NotebookPageAccessible) Invalidate() {
 	var _arg0 *C.GtkNotebookPageAccessible // out
 

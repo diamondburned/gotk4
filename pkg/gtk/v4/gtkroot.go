@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -31,7 +30,7 @@ type Rooter interface {
 	Focus() *Widget
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the root.
-	SetFocus(focus Widgetter)
+	SetFocus(focus Widgeter)
 }
 
 // Root: `GtkRoot` is the interface implemented by all widgets that can act as a
@@ -127,7 +126,7 @@ func (self *Root) Focus() *Widget {
 //
 // To set the focus to a particular widget in the root, it is usually more
 // convenient to use [method@Gtk.Widget.grab_focus] instead of this function.
-func (self *Root) SetFocus(focus Widgetter) {
+func (self *Root) SetFocus(focus Widgeter) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out
 

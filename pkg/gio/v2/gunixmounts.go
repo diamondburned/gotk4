@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorrer},
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorer},
 		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
 		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
 	})
@@ -462,8 +461,8 @@ func UnixMountsChangedSince(time uint64) bool {
 	return _ok
 }
 
-// UnixMountMonitorrer describes UnixMountMonitor's methods.
-type UnixMountMonitorrer interface {
+// UnixMountMonitorer describes UnixMountMonitor's methods.
+type UnixMountMonitorer interface {
 	// SetRateLimit: this function does nothing.
 	SetRateLimit(limitMsec int)
 }
@@ -474,17 +473,17 @@ type UnixMountMonitor struct {
 }
 
 var (
-	_ UnixMountMonitorrer = (*UnixMountMonitor)(nil)
-	_ gextras.Nativer     = (*UnixMountMonitor)(nil)
+	_ UnixMountMonitorer = (*UnixMountMonitor)(nil)
+	_ gextras.Nativer    = (*UnixMountMonitor)(nil)
 )
 
-func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitorrer {
+func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitorer {
 	return &UnixMountMonitor{
 		Object: obj,
 	}
 }
 
-func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
+func marshalUnixMountMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUnixMountMonitor(obj), nil
@@ -523,6 +522,26 @@ func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 	_arg1 = C.int(limitMsec)
 
 	C.g_unix_mount_monitor_set_rate_limit(_arg0, _arg1)
+}
+
+// UnixMountMonitorGet gets the MountMonitor for the current thread-default main
+// context.
+//
+// The mount monitor can be used to monitor for changes to the list of mounted
+// filesystems as well as the list of mount points (ie: fstab entries).
+//
+// You must only call g_object_unref() on the return value from under the same
+// main context as you called this function.
+func UnixMountMonitorGet() *UnixMountMonitor {
+	var _cret *C.GUnixMountMonitor // in
+
+	_cret = C.g_unix_mount_monitor_get()
+
+	var _unixMountMonitor *UnixMountMonitor // out
+
+	_unixMountMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UnixMountMonitor)
+
+	return _unixMountMonitor
 }
 
 // UnixMountEntry defines a Unix mount entry (e.g.
@@ -787,4 +806,32 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 	}
 
 	return _ok
+}
+
+// UnixMountPointAt gets a MountPoint for a given mount path. If @time_read is
+// set, it will be filled with a unix timestamp for checking if the mount points
+// have changed since with g_unix_mount_points_changed_since().
+//
+// If more mount points have the same mount path, the last matching mount point
+// is returned.
+func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
+	var _arg1 *C.char            // out
+	var _arg2 C.guint64          // in
+	var _cret *C.GUnixMountPoint // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mountPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_unix_mount_point_at(_arg1, &_arg2)
+
+	var _timeRead uint64                // out
+	var _unixMountPoint *UnixMountPoint // out
+
+	_timeRead = uint64(_arg2)
+	_unixMountPoint = (*UnixMountPoint)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_unixMountPoint, func(v *UnixMountPoint) {
+		C.g_unix_mount_point_free((*C.GUnixMountPoint)(unsafe.Pointer(v)))
+	})
+
+	return _timeRead, _unixMountPoint
 }

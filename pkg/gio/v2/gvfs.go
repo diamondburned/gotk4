@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -70,7 +69,6 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type VFSOverrider interface {
-	//
 	AddWritableNamespaces(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for @path.
 	FileForPath(path string) *File
@@ -84,10 +82,9 @@ type VFSOverrider interface {
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
-	//
 	LocalFileMoved(source string, dest string)
-	//
 	LocalFileRemoved(filename string)
+	LocalFileSetAttributes(filename string, info FileInfor, flags FileQueryInfoFlags, cancellable Cancellabler) error
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the @parse_name cannot be parsed by the
 	// #GVfs module.
@@ -263,4 +260,30 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	}
 
 	return _ok
+}
+
+// VFSGetDefault gets the default #GVfs for the system.
+func VFSGetDefault() *VFS {
+	var _cret *C.GVfs // in
+
+	_cret = C.g_vfs_get_default()
+
+	var _vfs *VFS // out
+
+	_vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VFS)
+
+	return _vfs
+}
+
+// VFSGetLocal gets the local #GVfs for the system.
+func VFSGetLocal() *VFS {
+	var _cret *C.GVfs // in
+
+	_cret = C.g_vfs_get_local()
+
+	var _vfs *VFS // out
+
+	_vfs = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*VFS)
+
+	return _vfs
 }

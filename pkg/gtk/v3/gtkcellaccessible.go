@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -30,7 +29,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellAccessibleOverrider interface {
-	//
 	UpdateCache(emitSignal bool)
 }
 
@@ -39,7 +37,6 @@ type CellAccessibler interface {
 	privateCellAccessible()
 }
 
-//
 type CellAccessible struct {
 	Accessible
 

@@ -218,7 +218,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 				value.Out.Set, value.InName, value.InName)
 			// Steal will free the GByteArray, but not the underlying array
 			// itself, which is the Go memory.
-			value.p.Linef("defer C.g_byte_array_steal(%s, nil)", value.InName)
+			value.p.Linef("defer C.g_byte_array_steal(%s, nil)", value.OutName)
 			return true
 		}
 
@@ -282,6 +282,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	}
 
 	if !value.resolveType(conv) {
+		value.Logln(logger.Debug, "cannot resolve type")
 		return false
 	}
 
@@ -340,10 +341,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.ImportCore("gerror")
 		value.header.Import("unsafe")
 
-		value.p.Linef("%s = (*C.GError)(gerror.New(%s))", value.Out.Set, value.InName)
+		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(gerror.New(<.InNamePtr 0>))")
+
+		// TODO: figure this out.
 		// if !value.isTransferring() {
-		// 	value.p.Linef("if %s != nil {", value.OutName)
-		// 	value.p.Linef("  defer C.g_error_free(%s)", value.OutName)
+		// 	value.p.Linef("if %s != nil {", value.Out.Set)
+		// 	value.p.Linef("  defer C.g_error_free(%s)", value.Out.Set)
 		// 	value.p.Linef("}")
 		// }
 		return true
@@ -397,7 +400,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
 		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
-		return value.fail
+		return true
 
 	case *gir.Class, *gir.Interface:
 		value.header.Import("unsafe")
@@ -437,7 +440,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		closure := conv.convertParam(*value.Closure)
 		if closure == nil {
-			value.logln(conv, logger.Debug, exportedName, "closure", *value.Closure, "not found")
+			value.Logln(logger.Debug, exportedName, "closure", *value.Closure, "not found")
 			return false
 		}
 

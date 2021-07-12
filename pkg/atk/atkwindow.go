@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindowwer},
+		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindower},
 	})
 }
 
-// Windowwer describes Window's methods.
-type Windowwer interface {
+// Windower describes Window's methods.
+type Windower interface {
 	privateWindow()
 }
 
@@ -34,11 +33,11 @@ type Window struct {
 }
 
 var (
-	_ Windowwer       = (*Window)(nil)
+	_ Windower        = (*Window)(nil)
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windowwer {
+func wrapWindow(obj *externglib.Object) Windower {
 	return &Window{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -46,7 +45,7 @@ func wrapWindow(obj *externglib.Object) Windowwer {
 	}
 }
 
-func marshalWindowwer(p uintptr) (interface{}, error) {
+func marshalWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -26,7 +25,7 @@ func init() {
 
 // TreeCreateRowDragContent creates a content provider for dragging @path from
 // @tree_model.
-func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
+func TreeCreateRowDragContent(treeModel TreeModeler, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in

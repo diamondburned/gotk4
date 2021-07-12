@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -13,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,7 +31,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ColorSelectionOverrider interface {
-	//
 	ColorChanged()
 }
 
@@ -76,7 +75,6 @@ type ColorSelectioner interface {
 	SetPreviousRGBA(rgba *gdk.RGBA)
 }
 
-//
 type ColorSelection struct {
 	Box
 }
@@ -385,4 +383,51 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
 
 	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
+}
+
+// ColorSelectionPaletteFromString parses a color palette string; the string is
+// a colon-separated list of color names readable by gdk_color_parse().
+func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.GdkColor
+	var _arg3 C.gint     // in
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_color_selection_palette_from_string(_arg1, &_arg2, &_arg3)
+
+	var _colors []gdk.Color
+	var _ok bool // out
+
+	_colors = unsafe.Slice((*gdk.Color)(unsafe.Pointer(_arg2)), _arg3)
+	runtime.SetFinalizer(&_colors, func(v *[]gdk.Color) {
+		C.free(unsafe.Pointer(&(*v)[0]))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _colors, _ok
+}
+
+// ColorSelectionPaletteToString encodes a palette as a string, useful for
+// persistent storage.
+func ColorSelectionPaletteToString(colors []gdk.Color) string {
+	var _arg1 *C.GdkColor
+	var _arg2 C.gint
+	var _cret *C.gchar // in
+
+	_arg2 = C.gint(len(colors))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(&colors[0]))
+
+	_cret = C.gtk_color_selection_palette_to_string(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }

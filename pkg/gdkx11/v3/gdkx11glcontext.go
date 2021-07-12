@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
@@ -23,12 +22,35 @@ func init() {
 	})
 }
 
+// X11DisplayGetGlxVersion retrieves the version of the GLX implementation.
+func X11DisplayGetGlxVersion(display gdk.Displayer) (major int, minor int, ok bool) {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 C.gint        // in
+	var _arg3 C.gint        // in
+	var _cret C.gboolean    // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	_cret = C.gdk_x11_display_get_glx_version(_arg1, &_arg2, &_arg3)
+
+	var _major int // out
+	var _minor int // out
+	var _ok bool   // out
+
+	_major = int(_arg2)
+	_minor = int(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _major, _minor, _ok
+}
+
 // X11GLContexter describes X11GLContext's methods.
 type X11GLContexter interface {
 	privateX11GLContext()
 }
 
-//
 type X11GLContext struct {
 	gdk.GLContext
 }

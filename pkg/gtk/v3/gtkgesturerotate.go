@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -61,7 +60,7 @@ func marshalGestureRotater(p uintptr) (interface{}, error) {
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
 // rotation gestures.
-func NewGestureRotate(widget Widgetter) *GestureRotate {
+func NewGestureRotate(widget Widgeter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

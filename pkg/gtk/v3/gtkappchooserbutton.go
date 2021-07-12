@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtonner},
+		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtoner},
 	})
 }
 
@@ -31,15 +30,14 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AppChooserButtonOverrider interface {
-	//
 	CustomItemActivated(itemName string)
 }
 
-// AppChooserButtonner describes AppChooserButton's methods.
-type AppChooserButtonner interface {
+// AppChooserButtoner describes AppChooserButton's methods.
+type AppChooserButtoner interface {
 	// AppendCustomItem appends a custom item to the list of applications that
 	// is shown in the popup; the item name must be unique per-widget.
-	AppendCustomItem(name string, label string, icon gio.Iconner)
+	AppendCustomItem(name string, label string, icon gio.Iconer)
 	// AppendSeparator appends a separator to the list of applications that is
 	// shown in the popup.
 	AppendSeparator()
@@ -92,11 +90,11 @@ type AppChooserButton struct {
 }
 
 var (
-	_ AppChooserButtonner = (*AppChooserButton)(nil)
-	_ gextras.Nativer     = (*AppChooserButton)(nil)
+	_ AppChooserButtoner = (*AppChooserButton)(nil)
+	_ gextras.Nativer    = (*AppChooserButton)(nil)
 )
 
-func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
+func wrapAppChooserButton(obj *externglib.Object) AppChooserButtoner {
 	return &AppChooserButton{
 		ComboBox: ComboBox{
 			Bin: Bin{
@@ -147,7 +145,7 @@ func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
 	}
 }
 
-func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
+func marshalAppChooserButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserButton(obj), nil
@@ -182,7 +180,7 @@ func (v *AppChooserButton) Native() uintptr {
 // the provided name as a detail for the AppChooserButton::custom-item-activated
 // signal, to add a callback for the activation of a particular custom item in
 // the list. See also gtk_app_chooser_button_append_separator().
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconer) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out

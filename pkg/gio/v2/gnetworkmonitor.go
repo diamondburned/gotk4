@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,13 +25,12 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
+		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorer},
 	})
 }
 
@@ -70,12 +68,11 @@ type NetworkMonitorOverrider interface {
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
 	CanReachFinish(result AsyncResulter) error
-	//
 	NetworkChanged(networkAvailable bool)
 }
 
-// NetworkMonitorrer describes NetworkMonitor's methods.
-type NetworkMonitorrer interface {
+// NetworkMonitorer describes NetworkMonitor's methods.
+type NetworkMonitorer interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// @connectable can be reached, without actually trying to connect to it.
 	CanReach(connectable SocketConnectabler, cancellable Cancellabler) error
@@ -104,11 +101,11 @@ type NetworkMonitor struct {
 }
 
 var (
-	_ NetworkMonitorrer = (*NetworkMonitor)(nil)
-	_ gextras.Nativer   = (*NetworkMonitor)(nil)
+	_ NetworkMonitorer = (*NetworkMonitor)(nil)
+	_ gextras.Nativer  = (*NetworkMonitor)(nil)
 )
 
-func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitorrer {
+func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitorer {
 	return &NetworkMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -116,7 +113,7 @@ func wrapNetworkMonitor(obj *externglib.Object) NetworkMonitorrer {
 	}
 }
 
-func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
+func marshalNetworkMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNetworkMonitor(obj), nil
@@ -271,4 +268,17 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	}
 
 	return _ok
+}
+
+// NetworkMonitorGetDefault gets the default Monitor for the system.
+func NetworkMonitorGetDefault() *NetworkMonitor {
+	var _cret *C.GNetworkMonitor // in
+
+	_cret = C.g_network_monitor_get_default()
+
+	var _networkMonitor *NetworkMonitor // out
+
+	_networkMonitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NetworkMonitor)
+
+	return _networkMonitor
 }

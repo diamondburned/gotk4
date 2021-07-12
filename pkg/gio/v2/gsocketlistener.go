@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -41,8 +39,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketListenerOverrider interface {
-	//
 	Changed()
+	Event(event SocketListenerEvent, socket Socketer)
 }
 
 // SocketListenerer describes SocketListener's methods.
@@ -63,6 +61,10 @@ type SocketListenerer interface {
 	AcceptSocketAsync(cancellable Cancellabler, callback AsyncReadyCallback)
 	// AcceptSocketFinish finishes an async accept operation.
 	AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error)
+	// AddAddress creates a socket of type @type and protocol @protocol, binds
+	// it to @address and adds it to the set of sockets we're accepting sockets
+	// from.
+	AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (*SocketAddress, error)
 	// AddAnyInetPort listens for TCP connections on any available port number
 	// for both IPv6 and IPv4 (if each is available).
 	AddAnyInetPort(sourceObject gextras.Objector) (uint16, error)
@@ -72,7 +74,7 @@ type SocketListenerer interface {
 	AddInetPort(port uint16, sourceObject gextras.Objector) error
 	// AddSocket adds @socket to the set of sockets that we try to accept new
 	// clients from.
-	AddSocket(socket Socketter, sourceObject gextras.Objector) error
+	AddSocket(socket Socketer, sourceObject gextras.Objector) error
 	// Close closes all the sockets in the listener.
 	Close()
 	// SetBacklog sets the listen backlog on the sockets in the listener.
@@ -280,6 +282,52 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 	return _sourceObject, _socket, _goerr
 }
 
+// AddAddress creates a socket of type @type and protocol @protocol, binds it to
+// @address and adds it to the set of sockets we're accepting sockets from.
+//
+// Note that adding an IPv6 address, depending on the platform, may or may not
+// result in a listener that also accepts IPv4 connections. For more
+// deterministic behavior, see g_socket_listener_add_inet_port().
+//
+// @source_object will be passed out in the various calls to accept to identify
+// this particular source, which is useful if you're listening on multiple
+// addresses and do different things depending on what address is connected to.
+//
+// If successful and @effective_address is non-nil then it will be set to the
+// address that the binding actually occurred at. This is helpful for
+// determining the port number that was used for when requesting a binding to
+// port 0 (ie: "any port"). This address, if requested, belongs to the caller
+// and must be freed.
+//
+// Call g_socket_listener_close() to stop listening on @address; this will not
+// be done automatically when you drop your final reference to @listener, as
+// references may be held internally.
+func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (*SocketAddress, error) {
+	var _arg0 *C.GSocketListener // out
+	var _arg1 *C.GSocketAddress  // out
+	var _arg2 C.GSocketType      // out
+	var _arg3 C.GSocketProtocol  // out
+	var _arg4 *C.GObject         // out
+	var _arg5 *C.GSocketAddress  // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg2 = C.GSocketType(typ)
+	_arg3 = C.GSocketProtocol(protocol)
+	_arg4 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+
+	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
+
+	var _effectiveAddress *SocketAddress // out
+	var _goerr error                     // out
+
+	_effectiveAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(*SocketAddress)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _effectiveAddress, _goerr
+}
+
 // AddAnyInetPort listens for TCP connections on any available port number for
 // both IPv6 and IPv4 (if each is available).
 //
@@ -350,7 +398,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject gextras.Ob
 // unless the listener held the final reference to the socket. Before GLib 2.42,
 // the @socket was automatically closed on finalization of the @listener, even
 // if references to it were held elsewhere.
-func (listener *SocketListener) AddSocket(socket Socketter, sourceObject gextras.Objector) error {
+func (listener *SocketListener) AddSocket(socket Socketer, sourceObject gextras.Objector) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
 	var _arg2 *C.GObject         // out

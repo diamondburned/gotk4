@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -56,7 +55,7 @@ type TextBufferOverrider interface {
 	// ApplyTag emits the “apply-tag” signal on @buffer. The default handler for
 	// the signal applies @tag to the given range. @start and @end do not have
 	// to be in order.
-	ApplyTag(tag TextTagger, start *TextIter, end *TextIter)
+	ApplyTag(tag TextTager, start *TextIter, end *TextIter)
 	// BeginUserAction: called to indicate that the buffer operations between
 	// here and a call to gtk_text_buffer_end_user_action() are part of a single
 	// user-visible operation. The operations between
@@ -74,9 +73,7 @@ type TextBufferOverrider interface {
 	// add extra calls if you user action consists solely of a single call to
 	// one of those functions.
 	BeginUserAction()
-	//
 	Changed()
-	//
 	DeleteRange(start *TextIter, end *TextIter)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
@@ -92,7 +89,7 @@ type TextBufferOverrider interface {
 	// gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 	// this function. The buffer will add a reference to the anchor, so you can
 	// unref it after insertion.
-	InsertChildAnchor(iter *TextIter, anchor TextChildAnchorrer)
+	InsertChildAnchor(iter *TextIter, anchor TextChildAnchorer)
 	// InsertPixbuf inserts an image into the text buffer at @iter. The image
 	// will be counted as one character in character counts, and when obtaining
 	// the buffer contents as a string, will be represented by the Unicode
@@ -100,21 +97,16 @@ type TextBufferOverrider interface {
 	// obtaining portions of the buffer as a string include this character for
 	// pixbufs, but the “text” variants do not. e.g. see
 	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
-	InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbuffer)
-	//
+	InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbufer)
 	InsertText(pos *TextIter, newText string, newTextLength int)
-	//
 	MarkDeleted(mark TextMarker)
-	//
 	MarkSet(location *TextIter, mark TextMarker)
-	//
 	ModifiedChanged()
-	//
 	PasteDone(clipboard Clipboarder)
 	// RemoveTag emits the “remove-tag” signal. The default handler for the
 	// signal removes all occurrences of @tag from the given range. @start and
 	// @end don’t have to be in order.
-	RemoveTag(tag TextTagger, start *TextIter, end *TextIter)
+	RemoveTag(tag TextTager, start *TextIter, end *TextIter)
 }
 
 // TextBufferer describes TextBuffer's methods.
@@ -125,7 +117,7 @@ type TextBufferer interface {
 	// the selection contents of @buffer are available.
 	AddSelectionClipboard(clipboard Clipboarder)
 	// ApplyTag emits the “apply-tag” signal on @buffer.
-	ApplyTag(tag TextTagger, start *TextIter, end *TextIter)
+	ApplyTag(tag TextTager, start *TextIter, end *TextIter)
 	// ApplyTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 	// table to get a TextTag, then calls gtk_text_buffer_apply_tag().
 	ApplyTagByName(name string, start *TextIter, end *TextIter)
@@ -179,7 +171,7 @@ type TextBufferer interface {
 	// GetInsert returns the mark that represents the cursor (insertion point).
 	GetInsert() *TextMark
 	// IterAtChildAnchor obtains the location of @anchor within @buffer.
-	IterAtChildAnchor(anchor TextChildAnchorrer) TextIter
+	IterAtChildAnchor(anchor TextChildAnchorer) TextIter
 	// IterAtLine initializes @iter to the start of the given line.
 	IterAtLine(lineNumber int) TextIter
 	// IterAtLineIndex obtains an iterator pointing to @byte_index within the
@@ -226,7 +218,7 @@ type TextBufferer interface {
 	InsertAtCursor(text string, len int)
 	// InsertChildAnchor inserts a child widget anchor into the text buffer at
 	// @iter.
-	InsertChildAnchor(iter *TextIter, anchor TextChildAnchorrer)
+	InsertChildAnchor(iter *TextIter, anchor TextChildAnchorer)
 	// InsertInteractive: like gtk_text_buffer_insert(), but the insertion will
 	// not occur if @iter is at a non-editable location in the buffer.
 	InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool
@@ -236,7 +228,7 @@ type TextBufferer interface {
 	// InsertMarkup inserts the text in @markup at position @iter.
 	InsertMarkup(iter *TextIter, markup string, len int)
 	// InsertPixbuf inserts an image into the text buffer at @iter.
-	InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbuffer)
+	InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbufer)
 	// InsertRange copies text, tags, and pixbufs between @start and @end (the
 	// order of @start and @end doesn’t matter) and inserts the copy at @iter.
 	InsertRange(iter *TextIter, start *TextIter, end *TextIter)
@@ -259,7 +251,7 @@ type TextBufferer interface {
 	// gtk_text_buffer_add_selection_clipboard().
 	RemoveSelectionClipboard(clipboard Clipboarder)
 	// RemoveTag emits the “remove-tag” signal.
-	RemoveTag(tag TextTagger, start *TextIter, end *TextIter)
+	RemoveTag(tag TextTager, start *TextIter, end *TextIter)
 	// RemoveTagByName calls gtk_text_tag_table_lookup() on the buffer’s tag
 	// table to get a TextTag, then calls gtk_text_buffer_remove_tag().
 	RemoveTagByName(name string, start *TextIter, end *TextIter)
@@ -347,7 +339,7 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard Clipboarder) {
 // ApplyTag emits the “apply-tag” signal on @buffer. The default handler for the
 // signal applies @tag to the given range. @start and @end do not have to be in
 // order.
-func (buffer *TextBuffer) ApplyTag(tag TextTagger, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) ApplyTag(tag TextTager, start *TextIter, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextTag    // out
 	var _arg2 *C.GtkTextIter   // out
@@ -754,7 +746,7 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 }
 
 // IterAtChildAnchor obtains the location of @anchor within @buffer.
-func (buffer *TextBuffer) IterAtChildAnchor(anchor TextChildAnchorrer) TextIter {
+func (buffer *TextBuffer) IterAtChildAnchor(anchor TextChildAnchorer) TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _iter TextIter
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -1131,7 +1123,7 @@ func (buffer *TextBuffer) InsertAtCursor(text string, len int) {
 // gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 // this function. The buffer will add a reference to the anchor, so you can
 // unref it after insertion.
-func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor TextChildAnchorrer) {
+func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor TextChildAnchorer) {
 	var _arg0 *C.GtkTextBuffer      // out
 	var _arg1 *C.GtkTextIter        // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -1238,7 +1230,7 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string, len int) {
 // portions of the buffer as a string include this character for pixbufs, but
 // the “text” variants do not. e.g. see gtk_text_buffer_get_slice() and
 // gtk_text_buffer_get_text().
-func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbuffer) {
+func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextIter   // out
 	var _arg2 *C.GdkPixbuf     // out
@@ -1403,7 +1395,7 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard Clipboarder) {
 // RemoveTag emits the “remove-tag” signal. The default handler for the signal
 // removes all occurrences of @tag from the given range. @start and @end don’t
 // have to be in order.
-func (buffer *TextBuffer) RemoveTag(tag TextTagger, start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) RemoveTag(tag TextTager, start *TextIter, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 *C.GtkTextTag    // out
 	var _arg2 *C.GtkTextIter   // out

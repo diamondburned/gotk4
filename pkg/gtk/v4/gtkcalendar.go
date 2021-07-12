@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarer},
 	})
 }
 
-// Calendarrer describes Calendar's methods.
-type Calendarrer interface {
+// Calendarer describes Calendar's methods.
+type Calendarer interface {
 	// ClearMarks: remove all visual markers.
 	ClearMarks()
 	// DayIsMarked returns if the @day of the @calendar is already marked.
@@ -92,11 +91,11 @@ type Calendar struct {
 }
 
 var (
-	_ Calendarrer     = (*Calendar)(nil)
+	_ Calendarer      = (*Calendar)(nil)
 	_ gextras.Nativer = (*Calendar)(nil)
 )
 
-func wrapCalendar(obj *externglib.Object) Calendarrer {
+func wrapCalendar(obj *externglib.Object) Calendarer {
 	return &Calendar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -115,7 +114,7 @@ func wrapCalendar(obj *externglib.Object) Calendarrer {
 	}
 }
 
-func marshalCalendarrer(p uintptr) (interface{}, error) {
+func marshalCalendarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCalendar(obj), nil

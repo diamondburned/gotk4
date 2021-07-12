@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -33,6 +32,8 @@ func init() {
 type StylePropertieser interface {
 	// Clear clears all style information from @props.
 	Clear()
+	// Property gets a style property from @props for the given state.
+	Property(property string, state StateFlags) (externglib.Value, bool)
 	// LookupColor returns the symbolic color that is mapped to @name.
 	LookupColor(name string) *SymbolicColor
 	// MapColor maps @color so it can be referenced by @name.
@@ -40,6 +41,10 @@ type StylePropertieser interface {
 	// Merge merges into @props all the style information contained in
 	// @props_to_merge.
 	Merge(propsToMerge StylePropertieser, replace bool)
+	// SetPropertyStylePropertieser sets a styling property in @props.
+	SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value)
+	// UnsetProperty unsets a style property in @props.
+	UnsetProperty(property string, state StateFlags)
 }
 
 // StyleProperties provides the storage for style information that is used by
@@ -108,6 +113,38 @@ func (props *StyleProperties) Clear() {
 	C.gtk_style_properties_clear(_arg0)
 }
 
+// Property gets a style property from @props for the given state. When done
+// with @value, g_value_unset() needs to be called to free any allocated memory.
+//
+// Deprecated: StyleProperties are deprecated.
+func (props *StyleProperties) Property(property string, state StateFlags) (externglib.Value, bool) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 C.GValue              // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
+
+	var _value externglib.Value // out
+	var _ok bool                // out
+
+	_value = *externglib.ValueFromNative(unsafe.Pointer((&_arg3)))
+	runtime.SetFinalizer(_value, func(v *externglib.Value) {
+		C.g_value_unset((*C.GValue)(v.GValue))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
 // LookupColor returns the symbolic color that is mapped to @name.
 //
 // Deprecated: SymbolicColor is deprecated.
@@ -167,6 +204,40 @@ func (props *StyleProperties) Merge(propsToMerge StylePropertieser, replace bool
 	}
 
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
+}
+
+// SetPropertyStylePropertieser sets a styling property in @props.
+//
+// Deprecated: StyleProperties are deprecated.
+func (props *StyleProperties) SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 *C.GValue             // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+
+	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
+}
+
+// UnsetProperty unsets a style property in @props.
+//
+// Deprecated: StyleProperties are deprecated.
+func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
 }
 
 // Gradient is a boxed type that represents a gradient. It is the result of
@@ -316,7 +387,6 @@ func (gradient *Gradient) Resolve(props StylePropertieser) (*cairo.Pattern, bool
 	return _resolvedGradient, _ok
 }
 
-//
 func (gradient *Gradient) ResolveForContext(context StyleContexter) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out

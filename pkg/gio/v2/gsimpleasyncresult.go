@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -27,7 +26,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -37,12 +35,12 @@ func init() {
 	})
 }
 
-// SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
+// SimpleAsyncReportGErrorInIdle reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
 //
 // Deprecated: Use g_task_report_error().
-func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err error) {
+func SimpleAsyncReportGErrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
@@ -513,4 +511,37 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	_arg1 = C.gssize(opRes)
 
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
+}
+
+// SimpleAsyncResultIsValid ensures that the data passed to the _finish function
+// of an async operation is consistent. Three checks are performed.
+//
+// First, @result is checked to ensure that it is really a AsyncResult. Second,
+// @source is checked to ensure that it matches the source object of @result.
+// Third, @source_tag is checked to ensure that it is equal to the @source_tag
+// argument given to g_simple_async_result_new() (which, by convention, is a
+// pointer to the _async function corresponding to the _finish function from
+// which this function is called). (Alternatively, if either @source_tag or
+// @result's source tag is nil, then the source tag check is skipped.)
+//
+// Deprecated: Use #GTask and g_task_is_valid() instead.
+func SimpleAsyncResultIsValid(result AsyncResulter, source gextras.Objector, sourceTag cgo.Handle) bool {
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GObject      // out
+	var _arg3 C.gpointer      // out
+	var _cret C.gboolean      // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
+	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
+
+	_cret = C.g_simple_async_result_is_valid(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

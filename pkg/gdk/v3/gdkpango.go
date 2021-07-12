@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 import "C"
 
@@ -54,7 +53,7 @@ func PangoContextGet() *pango.Context {
 // be updated. Using gtk_widget_get_pango_context() is more convenient if you
 // want to keep a context around and track changes to the font rendering
 // settings.
-func PangoContextGetForDisplay(display Displayyer) *pango.Context {
+func PangoContextGetForDisplay(display Displayer) *pango.Context {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.PangoContext // in
 

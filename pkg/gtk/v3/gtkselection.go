@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -52,7 +51,7 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
-func SelectionRemoveAll(widget Widgetter) {
+func SelectionRemoveAll(widget Widgeter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))

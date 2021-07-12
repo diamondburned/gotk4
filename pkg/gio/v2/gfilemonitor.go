@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorrer},
+		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorer},
 	})
 }
 
@@ -39,12 +38,15 @@ func init() {
 type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
+	Changed(file Filer, otherFile Filer, eventType FileMonitorEvent)
 }
 
-// FileMonitorrer describes FileMonitor's methods.
-type FileMonitorrer interface {
+// FileMonitorer describes FileMonitor's methods.
+type FileMonitorer interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
+	// EmitEvent emits the Monitor::changed signal if a change has taken place.
+	EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent)
 	// IsCancelled returns whether the monitor is canceled.
 	IsCancelled() bool
 	// SetRateLimit sets the rate limit to which the @monitor will report
@@ -68,17 +70,17 @@ type FileMonitor struct {
 }
 
 var (
-	_ FileMonitorrer  = (*FileMonitor)(nil)
+	_ FileMonitorer   = (*FileMonitor)(nil)
 	_ gextras.Nativer = (*FileMonitor)(nil)
 )
 
-func wrapFileMonitor(obj *externglib.Object) FileMonitorrer {
+func wrapFileMonitor(obj *externglib.Object) FileMonitorer {
 	return &FileMonitor{
 		Object: obj,
 	}
 }
 
-func marshalFileMonitorrer(p uintptr) (interface{}, error) {
+func marshalFileMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileMonitor(obj), nil
@@ -100,6 +102,26 @@ func (monitor *FileMonitor) Cancel() bool {
 	}
 
 	return _ok
+}
+
+// EmitEvent emits the Monitor::changed signal if a change has taken place.
+// Should be called from file monitor implementations only.
+//
+// Implementations are responsible to call this method from the [thread-default
+// main context][g-main-context-push-thread-default] of the thread that the
+// monitor was created in.
+func (monitor *FileMonitor) EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent) {
+	var _arg0 *C.GFileMonitor     // out
+	var _arg1 *C.GFile            // out
+	var _arg2 *C.GFile            // out
+	var _arg3 C.GFileMonitorEvent // out
+
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(monitor.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer((otherFile).(gextras.Nativer).Native()))
+	_arg3 = C.GFileMonitorEvent(eventType)
+
+	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
 // IsCancelled returns whether the monitor is canceled.

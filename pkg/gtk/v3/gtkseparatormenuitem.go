@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_menu_item_get_type()), F: marshalSeparatorMenuItemmer},
+		{T: externglib.Type(C.gtk_separator_menu_item_get_type()), F: marshalSeparatorMenuItemer},
 	})
 }
 
-// SeparatorMenuItemmer describes SeparatorMenuItem's methods.
-type SeparatorMenuItemmer interface {
+// SeparatorMenuItemer describes SeparatorMenuItem's methods.
+type SeparatorMenuItemer interface {
 	privateSeparatorMenuItem()
 }
 
@@ -43,11 +42,11 @@ type SeparatorMenuItem struct {
 }
 
 var (
-	_ SeparatorMenuItemmer = (*SeparatorMenuItem)(nil)
-	_ gextras.Nativer      = (*SeparatorMenuItem)(nil)
+	_ SeparatorMenuItemer = (*SeparatorMenuItem)(nil)
+	_ gextras.Nativer     = (*SeparatorMenuItem)(nil)
 )
 
-func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItemmer {
+func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItemer {
 	return &SeparatorMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -85,7 +84,7 @@ func wrapSeparatorMenuItem(obj *externglib.Object) SeparatorMenuItemmer {
 	}
 }
 
-func marshalSeparatorMenuItemmer(p uintptr) (interface{}, error) {
+func marshalSeparatorMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparatorMenuItem(obj), nil

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -116,6 +115,8 @@ type FileInfor interface {
 	ListAttributes(nameSpace string) []string
 	// RemoveAttribute removes all cases of @attribute from @info if it exists.
 	RemoveAttribute(attribute string)
+	// SetAttribute sets the @attribute to contain the given value, if possible.
+	SetAttribute(attribute string, typ FileAttributeType, valueP cgo.Handle)
 	// SetAttributeBoolean sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeBoolean(attribute string, attrValue bool)
@@ -133,6 +134,8 @@ type FileInfor interface {
 	// SetAttributeObject sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeObject(attribute string, attrValue gextras.Objector)
+	// SetAttributeStatus sets the attribute status for an attribute key.
+	SetAttributeStatus(attribute string, status FileAttributeStatus) bool
 	// SetAttributeString sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeString(attribute string, attrValue string)
@@ -151,8 +154,10 @@ type FileInfor interface {
 	SetDisplayName(displayName string)
 	// SetEditName sets the edit name for the current file.
 	SetEditName(editName string)
+	// SetFileType sets the file type in a Info to @type.
+	SetFileType(typ FileType)
 	// SetIcon sets the icon for a given Info.
-	SetIcon(icon Iconner)
+	SetIcon(icon Iconer)
 	// SetIsHidden sets the "is_hidden" attribute in a Info according to
 	// @is_hidden.
 	SetIsHidden(isHidden bool)
@@ -171,7 +176,7 @@ type FileInfor interface {
 	// SetSortOrder sets the sort order attribute in the file info structure.
 	SetSortOrder(sortOrder int32)
 	// SetSymbolicIcon sets the symbolic icon for a given Info.
-	SetSymbolicIcon(icon Iconner)
+	SetSymbolicIcon(icon Iconer)
 	// SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET
 	// attribute in the file info to the given symlink target.
 	SetSymlinkTarget(symlinkTarget string)
@@ -903,6 +908,23 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 	C.g_file_info_remove_attribute(_arg0, _arg1)
 }
 
+// SetAttribute sets the @attribute to contain the given value, if possible. To
+// unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for @type.
+func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP cgo.Handle) {
+	var _arg0 *C.GFileInfo         // out
+	var _arg1 *C.char              // out
+	var _arg2 C.GFileAttributeType // out
+	var _arg3 C.gpointer           // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
+
+	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
+}
+
 // SetAttributeBoolean sets the @attribute to contain the given @attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
@@ -990,6 +1012,34 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue gextras.Obj
 	_arg2 = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
 
 	C.g_file_info_set_attribute_object(_arg0, _arg1, _arg2)
+}
+
+// SetAttributeStatus sets the attribute status for an attribute key. This is
+// only needed by external code that implement g_file_set_attributes_from_info()
+// or similar functions.
+//
+// The attribute must exist in @info for this to work. Otherwise false is
+// returned and @info is unchanged.
+func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
+	var _arg0 *C.GFileInfo           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GFileAttributeStatus // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeStatus(status)
+
+	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetAttributeString sets the @attribute to contain the given @attr_value, if
@@ -1102,8 +1152,20 @@ func (info *FileInfo) SetEditName(editName string) {
 	C.g_file_info_set_edit_name(_arg0, _arg1)
 }
 
+// SetFileType sets the file type in a Info to @type. See
+// G_FILE_ATTRIBUTE_STANDARD_TYPE.
+func (info *FileInfo) SetFileType(typ FileType) {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 C.GFileType  // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = C.GFileType(typ)
+
+	C.g_file_info_set_file_type(_arg0, _arg1)
+}
+
 // SetIcon sets the icon for a given Info. See G_FILE_ATTRIBUTE_STANDARD_ICON.
-func (info *FileInfo) SetIcon(icon Iconner) {
+func (info *FileInfo) SetIcon(icon Iconer) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 
@@ -1196,7 +1258,7 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 
 // SetSymbolicIcon sets the symbolic icon for a given Info. See
 // G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
+func (info *FileInfo) SetSymbolicIcon(icon Iconer) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 

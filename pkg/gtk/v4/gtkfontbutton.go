@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtoner},
 	})
 }
 
-// FontButtonner describes FontButton's methods.
-type FontButtonner interface {
+// FontButtoner describes FontButton's methods.
+type FontButtoner interface {
 	// Modal gets whether the dialog is modal.
 	Modal() bool
 	// Title retrieves the title of the font chooser dialog.
@@ -65,11 +64,11 @@ type FontButton struct {
 }
 
 var (
-	_ FontButtonner   = (*FontButton)(nil)
+	_ FontButtoner    = (*FontButton)(nil)
 	_ gextras.Nativer = (*FontButton)(nil)
 )
 
-func wrapFontButton(obj *externglib.Object) FontButtonner {
+func wrapFontButton(obj *externglib.Object) FontButtoner {
 	return &FontButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -91,7 +90,7 @@ func wrapFontButton(obj *externglib.Object) FontButtonner {
 	}
 }
 
-func marshalFontButtonner(p uintptr) (interface{}, error) {
+func marshalFontButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontButton(obj), nil

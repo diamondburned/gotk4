@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -108,7 +107,7 @@ type PaintableOverrider interface {
 	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
 	// @width and @height are not larger than zero, this function will do
 	// nothing.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshoter, width float64, height float64)
 }
 
 // Paintabler describes Paintable's methods.
@@ -136,7 +135,7 @@ type Paintabler interface {
 	// their size.
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given @width and @height.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshoter, width float64, height float64)
 }
 
 // Paintable: `GdkPaintable` is a simple interface used by GTK to represent
@@ -409,7 +408,7 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the @snapshot. If
 // @width and @height are not larger than zero, this function will do nothing.
-func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height float64) {
+func (paintable *Paintable) Snapshot(snapshot Snapshoter, width float64, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out
 	var _arg2 C.double        // out
@@ -421,4 +420,28 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	_arg3 = C.double(height)
 
 	C.gdk_paintable_snapshot(_arg0, _arg1, _arg2, _arg3)
+}
+
+// PaintableNewEmpty returns a paintable that has the given intrinsic size and
+// draws nothing.
+//
+// This is often useful for implementing the
+// PaintableInterface.get_current_image() virtual function when the paintable is
+// in an incomplete state (like a [class@Gtk.MediaStream] before receiving the
+// first frame).
+func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) *Paintable {
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
+	var _cret *C.GdkPaintable // in
+
+	_arg1 = C.int(intrinsicWidth)
+	_arg2 = C.int(intrinsicHeight)
+
+	_cret = C.gdk_paintable_new_empty(_arg1, _arg2)
+
+	var _paintable *Paintable // out
+
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Paintable)
+
+	return _paintable
 }

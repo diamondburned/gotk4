@@ -9,13 +9,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -48,27 +49,18 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryOverrider interface {
-	//
 	Activate()
-	//
 	Backspace()
-	//
 	CopyClipboard()
-	//
 	CutClipboard()
-	//
+	DeleteFromCursor(typ DeleteType, count int)
 	FrameSize(x *int, y *int, width *int, height *int)
-	//
 	TextAreaSize(x *int, y *int, width *int, height *int)
-	//
 	InsertAtCursor(str string)
-	//
 	InsertEmoji()
-	//
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	//
-	PopulatePopup(popup Widgetter)
-	//
+	PopulatePopup(popup Widgeter)
 	ToggleOverwrite()
 }
 
@@ -95,8 +87,37 @@ type Entrier interface {
 	CursorHAdjustment() *Adjustment
 	// HasFrame gets the value set by gtk_entry_set_has_frame().
 	HasFrame() bool
+	// IconActivatable returns whether the icon is activatable.
+	IconActivatable(iconPos EntryIconPosition) bool
+	// IconArea gets the area where entry’s icon at @icon_pos is drawn.
+	IconArea(iconPos EntryIconPosition) gdk.Rectangle
 	// IconAtPos finds the icon at the given position and return its index.
 	IconAtPos(x int, y int) int
+	// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
+	// icon or if the icon was set by some other method (e.g., by stock, pixbuf,
+	// or icon name).
+	IconGIcon(iconPos EntryIconPosition) *gio.Icon
+	// IconName retrieves the icon name used for the icon, or nil if there is no
+	// icon or if the icon was set by some other method (e.g., by pixbuf, stock
+	// or gicon).
+	IconName(iconPos EntryIconPosition) string
+	// IconPixbuf retrieves the image used for the icon.
+	IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf
+	// IconSensitive returns whether the icon appears sensitive or insensitive.
+	IconSensitive(iconPos EntryIconPosition) bool
+	// IconStock retrieves the stock id used for the icon, or nil if there is no
+	// icon or if the icon was set by some other method (e.g., by pixbuf, icon
+	// name or gicon).
+	IconStock(iconPos EntryIconPosition) string
+	// IconStorageType gets the type of representation being used by the icon to
+	// store image data.
+	IconStorageType(iconPos EntryIconPosition) ImageType
+	// IconTooltipMarkup gets the contents of the tooltip on the icon at the
+	// specified position in @entry.
+	IconTooltipMarkup(iconPos EntryIconPosition) string
+	// IconTooltipText gets the contents of the tooltip on the icon at the
+	// specified position in @entry.
+	IconTooltipText(iconPos EntryIconPosition) string
 	// InnerBorder: this function returns the entry’s Entry:inner-border
 	// property.
 	InnerBorder() *Border
@@ -175,9 +196,40 @@ type Entrier interface {
 	SetCursorHAdjustment(adjustment Adjustmenter)
 	// SetHasFrame sets whether the entry has a beveled frame around it.
 	SetHasFrame(setting bool)
+	// SetIconActivatable sets whether the icon is activatable.
+	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
+	// SetIconDragSource sets up the icon at the given position so that GTK+
+	// will start a drag operation when the user clicks and drags the icon.
+	SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
+	// SetIconFromGIcon sets the icon shown in the entry at the specified
+	// position from the current icon theme.
+	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer)
+	// SetIconFromIconName sets the icon shown in the entry at the specified
+	// position from the current icon theme.
+	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
+	// SetIconFromPixbuf sets the icon shown in the specified position using a
+	// pixbuf.
+	SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pixbufer)
+	// SetIconFromStock sets the icon shown in the entry at the specified
+	// position from a stock image.
+	SetIconFromStock(iconPos EntryIconPosition, stockId string)
+	// SetIconSensitive sets the sensitivity for the specified icon.
+	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
+	// SetIconTooltipMarkup sets @tooltip as the contents of the tooltip for the
+	// icon at the specified position.
+	SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
+	// SetIconTooltipText sets @tooltip as the contents of the tooltip for the
+	// icon at the specified position.
+	SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
 	// SetInnerBorder sets entry’s inner-border property to @border, or clears
 	// it if nil is passed.
 	SetInnerBorder(border *Border)
+	// SetInputHints sets the Entry:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose sets the Entry:input-purpose property which can be used
+	// by on-screen keyboards and other input methods to adjust their behaviour.
+	SetInputPurpose(purpose InputPurpose)
 	// SetInvisibleChar sets the character to use in place of the actual text
 	// when gtk_entry_set_visibility() has been called to set text visibility to
 	// false.
@@ -515,6 +567,47 @@ func (entry *Entry) HasFrame() bool {
 	return _ok
 }
 
+// IconActivatable returns whether the icon is activatable.
+func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconArea gets the area where entry’s icon at @icon_pos is drawn. This
+// function is useful when drawing something to the entry in a draw callback.
+//
+// If the entry is not realized or has no icon at the given position, @icon_area
+// is filled with zeros. Otherwise, @icon_area will be filled with the icon’s
+// allocation, relative to @entry’s allocation.
+//
+// See also gtk_entry_get_text_area()
+func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _iconArea gdk.Rectangle
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	C.gtk_entry_get_icon_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_iconArea)))
+
+	return _iconArea
+}
+
 // IconAtPos finds the icon at the given position and return its index. The
 // position’s coordinates are relative to the @entry’s top left corner. If @x,
 // @y doesn’t lie inside an icon, -1 is returned. This function is intended for
@@ -536,6 +629,170 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// IconGIcon retrieves the #GIcon used for the icon, or nil if there is no icon
+// or if the icon was set by some other method (e.g., by stock, pixbuf, or icon
+// name).
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GIcon               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
+
+	var _icon *gio.Icon // out
+
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.Icon)
+
+	return _icon
+}
+
+// IconName retrieves the icon name used for the icon, or nil if there is no
+// icon or if the icon was set by some other method (e.g., by pixbuf, stock or
+// gicon).
+func (entry *Entry) IconName(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IconPixbuf retrieves the image used for the icon.
+//
+// Unlike the other methods of setting and getting icon data, this method will
+// work regardless of whether the icon was set using a Pixbuf, a #GIcon, a stock
+// item, or an icon name.
+func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GdkPixbuf           // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_pixbuf(_arg0, _arg1)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	_pixbuf = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
+// IconSensitive returns whether the icon appears sensitive or insensitive.
+func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconStock retrieves the stock id used for the icon, or nil if there is no
+// icon or if the icon was set by some other method (e.g., by pixbuf, icon name
+// or gicon).
+//
+// Deprecated: Use gtk_entry_get_icon_name() instead.
+func (entry *Entry) IconStock(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_stock(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IconStorageType gets the type of representation being used by the icon to
+// store image data. If the icon has no image data, the return value will be
+// GTK_IMAGE_EMPTY.
+func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.GtkImageType         // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_storage_type(_arg0, _arg1)
+
+	var _imageType ImageType // out
+
+	_imageType = ImageType(_cret)
+
+	return _imageType
+}
+
+// IconTooltipMarkup gets the contents of the tooltip on the icon at the
+// specified position in @entry.
+func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// IconTooltipText gets the contents of the tooltip on the icon at the specified
+// position in @entry.
+func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // InnerBorder: this function returns the entry’s Entry:inner-border property.
@@ -1070,6 +1327,181 @@ func (entry *Entry) SetHasFrame(setting bool) {
 	C.gtk_entry_set_has_frame(_arg0, _arg1)
 }
 
+// SetIconActivatable sets whether the icon is activatable.
+func (entry *Entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if activatable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
+}
+
+// SetIconDragSource sets up the icon at the given position so that GTK+ will
+// start a drag operation when the user clicks and drags the icon.
+//
+// To handle the drag operation, you need to connect to the usual
+// Widget::drag-data-get (or possibly Widget::drag-data-delete) signal, and use
+// gtk_entry_get_current_icon_drag_source() in your signal handler to find out
+// if the drag was started from an icon.
+//
+// By default, GTK+ uses the icon as the drag icon. You can use the
+// Widget::drag-begin signal to set a different icon. Note that you have to use
+// g_signal_connect_after() to ensure that your signal handler gets executed
+// after the default handler.
+func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GtkTargetList       // out
+	var _arg3 C.GdkDragAction        // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.GtkTargetList)(unsafe.Pointer(targetList))
+	_arg3 = C.GdkDragAction(actions)
+
+	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SetIconFromGIcon sets the icon shown in the entry at the specified position
+// from the current icon theme. If the icon isn’t known, a “broken image” icon
+// will be displayed instead.
+//
+// If @icon is nil, no icon will be shown in the specified position.
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GIcon               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+
+	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
+}
+
+// SetIconFromIconName sets the icon shown in the entry at the specified
+// position from the current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead.
+//
+// If @icon_name is nil, no icon will be shown in the specified position.
+func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
+}
+
+// SetIconFromPixbuf sets the icon shown in the specified position using a
+// pixbuf.
+//
+// If @pixbuf is nil, no icon will be shown in the specified position.
+func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pixbufer) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkPixbuf           // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+
+	C.gtk_entry_set_icon_from_pixbuf(_arg0, _arg1, _arg2)
+}
+
+// SetIconFromStock sets the icon shown in the entry at the specified position
+// from a stock image.
+//
+// If @stock_id is nil, no icon will be shown in the specified position.
+//
+// Deprecated: Use gtk_entry_set_icon_from_icon_name() instead.
+func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_entry_set_icon_from_stock(_arg0, _arg1, _arg2)
+}
+
+// SetIconSensitive sets the sensitivity for the specified icon.
+func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if sensitive {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_sensitive(_arg0, _arg1, _arg2)
+}
+
+// SetIconTooltipMarkup sets @tooltip as the contents of the tooltip for the
+// icon at the specified position. @tooltip is assumed to be marked up with the
+// [Pango text markup language][PangoMarkupFormat].
+//
+// Use nil for @tooltip to remove an existing tooltip.
+//
+// See also gtk_widget_set_tooltip_markup() and
+// gtk_entry_set_icon_tooltip_text().
+func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
+}
+
+// SetIconTooltipText sets @tooltip as the contents of the tooltip for the icon
+// at the specified position.
+//
+// Use nil for @tooltip to remove an existing tooltip.
+//
+// See also gtk_widget_set_tooltip_text() and
+// gtk_entry_set_icon_tooltip_markup().
+//
+// If you unset the widget tooltip via gtk_widget_set_tooltip_text() or
+// gtk_widget_set_tooltip_markup(), this sets GtkWidget:has-tooltip to false,
+// which suppresses icon tooltips too. You can resolve this by then calling
+// gtk_widget_set_has_tooltip() to set GtkWidget:has-tooltip back to true, or
+// setting at least one non-empty tooltip on any icon achieves the same result.
+func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
+}
+
 // SetInnerBorder sets entry’s inner-border property to @border, or clears it if
 // nil is passed. The inner-border is the area around the entry’s text, but
 // inside its frame.
@@ -1090,6 +1522,30 @@ func (entry *Entry) SetInnerBorder(border *Border) {
 	_arg1 = (*C.GtkBorder)(unsafe.Pointer(border))
 
 	C.gtk_entry_set_inner_border(_arg0, _arg1)
+}
+
+// SetInputHints sets the Entry:input-hints property, which allows input methods
+// to fine-tune their behaviour.
+func (entry *Entry) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkEntry     // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_entry_set_input_hints(_arg0, _arg1)
+}
+
+// SetInputPurpose sets the Entry:input-purpose property which can be used by
+// on-screen keyboards and other input methods to adjust their behaviour.
+func (entry *Entry) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_entry_set_input_purpose(_arg0, _arg1)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text when

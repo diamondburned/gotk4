@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -27,9 +26,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ShortcutManagerOverrider interface {
-	//
 	AddController(controller ShortcutControllerer)
-	//
 	RemoveController(controller ShortcutControllerer)
 }
 

@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_center_box_get_type()), F: marshalCenterBoxxer},
+		{T: externglib.Type(C.gtk_center_box_get_type()), F: marshalCenterBoxer},
 	})
 }
 
-// CenterBoxxer describes CenterBox's methods.
-type CenterBoxxer interface {
+// CenterBoxer describes CenterBox's methods.
+type CenterBoxer interface {
 	// BaselinePosition gets the value set by
 	// gtk_center_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
@@ -33,12 +32,14 @@ type CenterBoxxer interface {
 	EndWidget() *Widget
 	// StartWidget gets the start widget, or nil if there is none.
 	StartWidget() *Widget
+	// SetBaselinePosition sets the baseline position of a center box.
+	SetBaselinePosition(position BaselinePosition)
 	// SetCenterWidget sets the center widget.
-	SetCenterWidget(child Widgetter)
+	SetCenterWidget(child Widgeter)
 	// SetEndWidget sets the end widget.
-	SetEndWidget(child Widgetter)
+	SetEndWidget(child Widgeter)
 	// SetStartWidget sets the start widget.
-	SetStartWidget(child Widgetter)
+	SetStartWidget(child Widgeter)
 }
 
 // CenterBox: `GtkCenterBox` arranges three children in a row, keeping the
@@ -84,11 +85,11 @@ type CenterBox struct {
 }
 
 var (
-	_ CenterBoxxer    = (*CenterBox)(nil)
+	_ CenterBoxer     = (*CenterBox)(nil)
 	_ gextras.Nativer = (*CenterBox)(nil)
 )
 
-func wrapCenterBox(obj *externglib.Object) CenterBoxxer {
+func wrapCenterBox(obj *externglib.Object) CenterBoxer {
 	return &CenterBox{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -110,7 +111,7 @@ func wrapCenterBox(obj *externglib.Object) CenterBoxxer {
 	}
 }
 
-func marshalCenterBoxxer(p uintptr) (interface{}, error) {
+func marshalCenterBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCenterBox(obj), nil
@@ -200,10 +201,26 @@ func (self *CenterBox) StartWidget() *Widget {
 	return _widget
 }
 
+// SetBaselinePosition sets the baseline position of a center box.
+//
+// This affects only horizontal boxes with at least one baseline aligned child.
+// If there is more vertical space available than requested, and the baseline is
+// not allocated by the parent then @position is used to allocate the baseline
+// wrt. the extra space available.
+func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
+	var _arg0 *C.GtkCenterBox       // out
+	var _arg1 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkBaselinePosition(position)
+
+	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
+}
+
 // SetCenterWidget sets the center widget.
 //
 // To remove the existing center widget, pas nil.
-func (self *CenterBox) SetCenterWidget(child Widgetter) {
+func (self *CenterBox) SetCenterWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -216,7 +233,7 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 // SetEndWidget sets the end widget.
 //
 // To remove the existing end widget, pass nil.
-func (self *CenterBox) SetEndWidget(child Widgetter) {
+func (self *CenterBox) SetEndWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -229,7 +246,7 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 // SetStartWidget sets the start widget.
 //
 // To remove the existing start widget, pass nil.
-func (self *CenterBox) SetStartWidget(child Widgetter) {
+func (self *CenterBox) SetStartWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 

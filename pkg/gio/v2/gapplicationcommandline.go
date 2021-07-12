@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -49,9 +48,7 @@ type ApplicationCommandLineOverrider interface {
 	//
 	// You must only call this function once per commandline invocation.
 	Stdin() *InputStream
-	//
 	PrintLiteral(message string)
-	//
 	PrinterrLiteral(message string)
 }
 

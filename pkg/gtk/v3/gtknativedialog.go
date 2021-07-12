@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialogger},
+		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialoger},
 	})
 }
 
@@ -35,7 +34,6 @@ type NativeDialogOverrider interface {
 	//
 	// If the dialog is not visible this does nothing.
 	Hide()
-	//
 	Response(responseId int)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
@@ -46,8 +44,8 @@ type NativeDialogOverrider interface {
 	Show()
 }
 
-// NativeDialogger describes NativeDialog's methods.
-type NativeDialogger interface {
+// NativeDialoger describes NativeDialog's methods.
+type NativeDialoger interface {
 	// Destroy destroys a dialog.
 	Destroy()
 	// Modal returns whether the dialog is modal.
@@ -69,7 +67,7 @@ type NativeDialogger interface {
 	SetTitle(title string)
 	// SetTransientFor: dialog windows should be set transient for the main
 	// application window they were spawned from.
-	SetTransientFor(parent Windowwer)
+	SetTransientFor(parent Windower)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it.
 	Show()
@@ -94,17 +92,17 @@ type NativeDialog struct {
 }
 
 var (
-	_ NativeDialogger = (*NativeDialog)(nil)
+	_ NativeDialoger  = (*NativeDialog)(nil)
 	_ gextras.Nativer = (*NativeDialog)(nil)
 )
 
-func wrapNativeDialog(obj *externglib.Object) NativeDialogger {
+func wrapNativeDialog(obj *externglib.Object) NativeDialoger {
 	return &NativeDialog{
 		Object: obj,
 	}
 }
 
-func marshalNativeDialogger(p uintptr) (interface{}, error) {
+func marshalNativeDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeDialog(obj), nil
@@ -287,7 +285,7 @@ func (self *NativeDialog) SetTitle(title string) {
 // center the dialog over the main window.
 //
 // Passing nil for @parent unsets the current transient window.
-func (self *NativeDialog) SetTransientFor(parent Windowwer) {
+func (self *NativeDialog) SetTransientFor(parent Windower) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out
 

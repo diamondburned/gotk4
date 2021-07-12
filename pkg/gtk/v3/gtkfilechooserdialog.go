@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialogger},
+		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialoger},
 	})
 }
 
-// FileChooserDialogger describes FileChooserDialog's methods.
-type FileChooserDialogger interface {
+// FileChooserDialoger describes FileChooserDialog's methods.
+type FileChooserDialoger interface {
 	privateFileChooserDialog()
 }
 
@@ -179,11 +178,11 @@ type FileChooserDialog struct {
 }
 
 var (
-	_ FileChooserDialogger = (*FileChooserDialog)(nil)
-	_ gextras.Nativer      = (*FileChooserDialog)(nil)
+	_ FileChooserDialoger = (*FileChooserDialog)(nil)
+	_ gextras.Nativer     = (*FileChooserDialog)(nil)
 )
 
-func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialogger {
+func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialoger {
 	return &FileChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -210,7 +209,7 @@ func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialogger {
 	}
 }
 
-func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
+func marshalFileChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserDialog(obj), nil

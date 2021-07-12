@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 import "C"
@@ -27,7 +26,6 @@ type PixbufSimpleAnimIterer interface {
 	privatePixbufSimpleAnimIter()
 }
 
-//
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }

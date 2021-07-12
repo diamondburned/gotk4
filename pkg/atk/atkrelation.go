@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -20,6 +19,58 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_relation_get_type()), F: marshalRelationer},
 	})
+}
+
+// RelationTypeForName: get the RelationType type corresponding to a relation
+// name.
+func RelationTypeForName(name string) RelationType {
+	var _arg1 *C.gchar          // out
+	var _cret C.AtkRelationType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_relation_type_for_name(_arg1)
+
+	var _relationType RelationType // out
+
+	_relationType = RelationType(_cret)
+
+	return _relationType
+}
+
+// RelationTypeGetName gets the description string describing the RelationType
+// @type.
+func RelationTypeGetName(typ RelationType) string {
+	var _arg1 C.AtkRelationType // out
+	var _cret *C.gchar          // in
+
+	_arg1 = C.AtkRelationType(typ)
+
+	_cret = C.atk_relation_type_get_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RelationTypeRegister: associate @name with a new RelationType
+func RelationTypeRegister(name string) RelationType {
+	var _arg1 *C.gchar          // out
+	var _cret C.AtkRelationType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_relation_type_register(_arg1)
+
+	var _relationType RelationType // out
+
+	_relationType = RelationType(_cret)
+
+	return _relationType
 }
 
 // Relationer describes Relation's methods.
@@ -56,6 +107,34 @@ func marshalRelationer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRelation(obj), nil
+}
+
+// NewRelation: create a new relation for the specified key and the specified
+// list of targets. See also atk_object_add_relationship().
+func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
+	var _arg1 **C.AtkObject
+	var _arg2 C.gint
+	var _arg3 C.AtkRelationType // out
+	var _cret *C.AtkRelation    // in
+
+	_arg2 = C.gint(len(targets))
+	_arg1 = (**C.AtkObject)(C.malloc(C.ulong(len(targets)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice(_arg1, len(targets))
+		for i := range targets {
+			out[i] = (*C.AtkObject)(unsafe.Pointer(targets[i].Native()))
+		}
+	}
+	_arg3 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_new(_arg1, _arg2, _arg3)
+
+	var _relation *Relation // out
+
+	_relation = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Relation)
+
+	return _relation
 }
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it

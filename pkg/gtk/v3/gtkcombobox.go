@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxxer},
+		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxer},
 	})
 }
 
@@ -31,14 +30,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComboBoxOverrider interface {
-	//
 	Changed()
-	//
 	FormatEntryText(path string) string
 }
 
-// ComboBoxxer describes ComboBox's methods.
-type ComboBoxxer interface {
+// ComboBoxer describes ComboBox's methods.
+type ComboBoxer interface {
 	// Active returns the index of the currently active item, or -1 if there’s
 	// no active item.
 	Active() int
@@ -102,6 +99,11 @@ type ComboBoxxer interface {
 	// SetAddTearoffs sets whether the popup menu should have a tearoff menu
 	// item.
 	SetAddTearoffs(addTearoffs bool)
+	// SetButtonSensitivity sets whether the dropdown button of the combo box
+	// should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
+	// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
+	// (GTK_SENSITIVITY_AUTO).
+	SetButtonSensitivity(sensitivity SensitivityType)
 	// SetColumnSpanColumn sets the column with column span information for
 	// @combo_box to be @column_span.
 	SetColumnSpanColumn(columnSpan int)
@@ -115,7 +117,7 @@ type ComboBoxxer interface {
 	// string IDs for values from.
 	SetIDColumn(idColumn int)
 	// SetModel sets the model used by @combo_box to be @model.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 	// width matching the allocated width of the combo box.
 	SetPopupFixedWidth(fixed bool)
@@ -173,11 +175,11 @@ type ComboBox struct {
 }
 
 var (
-	_ ComboBoxxer     = (*ComboBox)(nil)
+	_ ComboBoxer      = (*ComboBox)(nil)
 	_ gextras.Nativer = (*ComboBox)(nil)
 )
 
-func wrapComboBox(obj *externglib.Object) ComboBoxxer {
+func wrapComboBox(obj *externglib.Object) ComboBoxer {
 	return &ComboBox{
 		Bin: Bin{
 			Container: Container{
@@ -213,7 +215,7 @@ func wrapComboBox(obj *externglib.Object) ComboBoxxer {
 	}
 }
 
-func marshalComboBoxxer(p uintptr) (interface{}, error) {
+func marshalComboBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapComboBox(obj), nil
@@ -281,7 +283,7 @@ func NewComboBoxWithEntry() *ComboBox {
 
 // NewComboBoxWithModel creates a new ComboBox with the model initialized to
 // @model.
-func NewComboBoxWithModel(model TreeModeller) *ComboBox {
+func NewComboBoxWithModel(model TreeModeler) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -298,7 +300,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty ComboBox with an entry and
 // with the model initialized to @model.
-func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModeler) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -721,6 +723,20 @@ func (comboBox *ComboBox) SetAddTearoffs(addTearoffs bool) {
 	C.gtk_combo_box_set_add_tearoffs(_arg0, _arg1)
 }
 
+// SetButtonSensitivity sets whether the dropdown button of the combo box should
+// be always sensitive (GTK_SENSITIVITY_ON), never sensitive
+// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
+// (GTK_SENSITIVITY_AUTO).
+func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
+	var _arg0 *C.GtkComboBox       // out
+	var _arg1 C.GtkSensitivityType // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
+	_arg1 = C.GtkSensitivityType(sensitivity)
+
+	C.gtk_combo_box_set_button_sensitivity(_arg0, _arg1)
+}
+
 // SetColumnSpanColumn sets the column with column span information for
 // @combo_box to be @column_span. The column span column contains integers which
 // indicate how many columns an item should span.
@@ -788,7 +804,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 // Note that this function does not clear the cell renderers, you have to call
 // gtk_cell_layout_clear() yourself if you need to set up different cell
 // renderers for the new model.
-func (comboBox *ComboBox) SetModel(model TreeModeller) {
+func (comboBox *ComboBox) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 

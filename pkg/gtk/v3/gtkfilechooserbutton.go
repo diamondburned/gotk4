@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButtonner},
+		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FileChooserButtonOverrider interface {
-	//
 	FileSet()
 }
 
-// FileChooserButtonner describes FileChooserButton's methods.
-type FileChooserButtonner interface {
+// FileChooserButtoner describes FileChooserButton's methods.
+type FileChooserButtoner interface {
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse.
 	FocusOnClick() bool
@@ -92,11 +90,11 @@ type FileChooserButton struct {
 }
 
 var (
-	_ FileChooserButtonner = (*FileChooserButton)(nil)
-	_ gextras.Nativer      = (*FileChooserButton)(nil)
+	_ FileChooserButtoner = (*FileChooserButton)(nil)
+	_ gextras.Nativer     = (*FileChooserButton)(nil)
 )
 
-func wrapFileChooserButton(obj *externglib.Object) FileChooserButtonner {
+func wrapFileChooserButton(obj *externglib.Object) FileChooserButtoner {
 	return &FileChooserButton{
 		Box: Box{
 			Container: Container{
@@ -122,10 +120,29 @@ func wrapFileChooserButton(obj *externglib.Object) FileChooserButtonner {
 	}
 }
 
-func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
+func marshalFileChooserButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserButton(obj), nil
+}
+
+// NewFileChooserButton creates a new file-selecting button widget.
+func NewFileChooserButton(title string, action FileChooserAction) *FileChooserButton {
+	var _arg1 *C.gchar               // out
+	var _arg2 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
+
+	var _fileChooserButton *FileChooserButton // out
+
+	_fileChooserButton = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserButton)
+
+	return _fileChooserButton
 }
 
 // NewFileChooserButtonWithDialog creates a FileChooserButton widget which uses
@@ -137,7 +154,7 @@ func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 // Also note that the dialog needs to have its confirmative button added with
 // response GTK_RESPONSE_ACCEPT or GTK_RESPONSE_OK in order for the button to
 // take over the file selected in the dialog.
-func NewFileChooserButtonWithDialog(dialog Dialogger) *FileChooserButton {
+func NewFileChooserButtonWithDialog(dialog Dialoger) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 

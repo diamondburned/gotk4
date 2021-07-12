@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -58,7 +57,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bo
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
-func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, path *TreePath) bool {
+func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeler, path *TreePath) bool {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // out
 	var _arg3 *C.GtkTreePath      // out
@@ -109,7 +108,6 @@ type TreeDragDester interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
-//
 type TreeDragDest struct {
 	*externglib.Object
 }
@@ -219,7 +217,6 @@ type TreeDragSourcer interface {
 	RowDraggable(path *TreePath) bool
 }
 
-//
 type TreeDragSource struct {
 	*externglib.Object
 }

@@ -178,14 +178,36 @@ func (n *NamespaceGenerator) makeFile(filename string) *FileGenerator {
 // Generate generates everything in the current namespace into files. The
 // returned map maps the filename to the raw file content.
 func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
+	// TODO: constants
+	// TODO: unions
+
+	generateFunctions := func(parent string, fns []gir.Function) {
+		for _, f := range fns {
+			if parent != "" {
+				f.Name = parent + "_" + f.Name
+			}
+
+			if !generators.GenerateFunction(n, &f) {
+				prefix := "function " + f.Name
+				if parent != "" {
+					prefix = "parent " + parent + " " + prefix
+				}
+
+				n.logIfSkipped(false, prefix)
+			}
+		}
+	}
+
 	for _, v := range n.current.Namespace.Aliases {
 		n.logIfSkipped(generators.GenerateAlias(n, &v), "alias"+v.Name)
 	}
 	for _, v := range n.current.Namespace.Enums {
 		n.logIfSkipped(generators.GenerateEnum(n, &v), "enum "+v.Name)
+		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Bitfields {
 		n.logIfSkipped(generators.GenerateBitfield(n, &v), "bitfield "+v.Name)
+		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Callbacks {
 		n.logIfSkipped(generators.GenerateCallback(n, &v), "callback "+v.Name)
@@ -195,20 +217,15 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	}
 	for _, v := range n.current.Namespace.Interfaces {
 		n.logIfSkipped(generators.GenerateInterface(n, &v), "interface "+v.Name)
+		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Classes {
 		n.logIfSkipped(generators.GenerateClass(n, &v), "class "+v.Name)
+		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Records {
 		n.logIfSkipped(generators.GenerateRecord(n, &v), "record "+v.Name)
-	}
-
-	// Ensure that the root file has CallbackDelete if any other files do.
-	for _, file := range n.files {
-		if file.header.CallbackDelete {
-			n.makeFile("").header.CallbackDelete = true
-			break
-		}
+		generateFunctions(v.Name, v.Functions)
 	}
 
 	files := make(map[string][]byte, len(n.files))

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,12 +19,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuffer},
+		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbufer},
 	})
 }
 
-// CellRendererPixbuffer describes CellRendererPixbuf's methods.
-type CellRendererPixbuffer interface {
+// CellRendererPixbufer describes CellRendererPixbuf's methods.
+type CellRendererPixbufer interface {
 	privateCellRendererPixbuf()
 }
 
@@ -45,11 +44,11 @@ type CellRendererPixbuf struct {
 }
 
 var (
-	_ CellRendererPixbuffer = (*CellRendererPixbuf)(nil)
-	_ gextras.Nativer       = (*CellRendererPixbuf)(nil)
+	_ CellRendererPixbufer = (*CellRendererPixbuf)(nil)
+	_ gextras.Nativer      = (*CellRendererPixbuf)(nil)
 )
 
-func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuffer {
+func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbufer {
 	return &CellRendererPixbuf{
 		CellRenderer: CellRenderer{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -59,7 +58,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuffer {
 	}
 }
 
-func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
+func marshalCellRendererPixbufer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererPixbuf(obj), nil

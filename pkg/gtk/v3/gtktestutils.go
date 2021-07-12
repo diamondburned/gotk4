@@ -6,12 +6,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -50,7 +50,7 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget {
 // other than "C“ tend to alter (translate” label strings, so this function is
 // genrally only useful in test programs with predetermined locales, see
 // gtk_test_init() for more details.
-func TestFindLabel(widget Widgetter, labelPattern string) *Widget {
+func TestFindLabel(widget Widgeter, labelPattern string) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -74,7 +74,7 @@ func TestFindLabel(widget Widgetter, labelPattern string) *Widget {
 // be returned. The general purpose of this function is to find the most likely
 // “action” widget, relative to another labeling widget. Such as finding a
 // button or text entry widget, given its corresponding label widget.
-func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) *Widget {
+func TestFindSibling(baseWidget Widgeter, widgetType externglib.Type) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.GType      // out
 	var _cret *C.GtkWidget // in
@@ -98,7 +98,7 @@ func TestFindSibling(baseWidget Widgetter, widgetType externglib.Type) *Widget {
 // gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
 // for possible caveats involving the search of such widgets and synthesizing
 // widget events.
-func TestFindWidget(widget Widgetter, labelPattern string, widgetType externglib.Type) *Widget {
+func TestFindWidget(widget Widgeter, labelPattern string, widgetType externglib.Type) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.GType      // out
@@ -131,7 +131,7 @@ func TestRegisterAllTypes() {
 // @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSliderGetValue(widget Widgetter) float64 {
+func TestSliderGetValue(widget Widgeter) float64 {
 	var _arg1 *C.GtkWidget // out
 	var _cret C.double     // in
 
@@ -152,7 +152,7 @@ func TestSliderGetValue(widget Widgetter) float64 {
 // lower and upper limits, according to the @percentage argument.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSliderSetPerc(widget Widgetter, percentage float64) {
+func TestSliderSetPerc(widget Widgeter, percentage float64) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
 
@@ -167,7 +167,7 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 // or decrease of spin button’s value.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSpinButtonClick(spinner SpinButtonner, button uint, upwards bool) bool {
+func TestSpinButtonClick(spinner SpinButtoner, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
@@ -194,7 +194,7 @@ func TestSpinButtonClick(spinner SpinButtonner, button uint, upwards bool) bool 
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestTextGet(widget Widgetter) string {
+func TestTextGet(widget Widgeter) string {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.gchar     // in
 
@@ -214,7 +214,7 @@ func TestTextGet(widget Widgetter) string {
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestTextSet(widget Widgetter, _string string) {
+func TestTextSet(widget Widgeter, _string string) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
 
@@ -225,13 +225,72 @@ func TestTextSet(widget Widgetter, _string string) {
 	C.gtk_test_text_set(_arg1, _arg2)
 }
 
+// TestWidgetClick: this function will generate a @button click (button press
+// and button release event) in the middle of the first GdkWindow found that
+// belongs to @widget. For windowless widgets like Button (which returns false
+// from gtk_widget_get_has_window()), this will often be an input-only event
+// window. For other widgets, this is usually widget->window. Certain caveats
+// should be considered when using this function, in particular because the
+// mouse pointer is warped to the button click location, see
+// gdk_test_simulate_button() for details.
+//
+// Deprecated: This testing infrastructure is phased out in favor of reftests.
+func TestWidgetClick(widget Widgeter, button uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = C.guint(button)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TestWidgetSendKey: this function will generate keyboard press and release
+// events in the middle of the first GdkWindow found that belongs to @widget.
+// For windowless widgets like Button (which returns false from
+// gtk_widget_get_has_window()), this will often be an input-only event window.
+// For other widgets, this is usually widget->window. Certain caveats should be
+// considered when using this function, in particular because the mouse pointer
+// is warped to the key press location, see gdk_test_simulate_key() for details.
+func TestWidgetSendKey(widget Widgeter, keyval uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be
 // “drawn”. In this context that means it waits for the frame clock of @widget
 // to have run a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
-func TestWidgetWaitForDraw(widget Widgetter) {
+func TestWidgetWaitForDraw(widget Widgeter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))

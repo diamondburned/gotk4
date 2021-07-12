@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,13 +20,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrowwer},
+		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrower},
 	})
 }
 
-// Arrowwer describes Arrow's methods.
-type Arrowwer interface {
-	privateArrow()
+// Arrower describes Arrow's methods.
+type Arrower interface {
+	// Set sets the direction and style of the Arrow, @arrow.
+	Set(arrowType ArrowType, shadowType ShadowType)
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the
@@ -53,11 +53,11 @@ type Arrow struct {
 }
 
 var (
-	_ Arrowwer        = (*Arrow)(nil)
+	_ Arrower         = (*Arrow)(nil)
 	_ gextras.Nativer = (*Arrow)(nil)
 )
 
-func wrapArrow(obj *externglib.Object) Arrowwer {
+func wrapArrow(obj *externglib.Object) Arrower {
 	return &Arrow{
 		Misc: Misc{
 			Widget: Widget{
@@ -75,10 +75,43 @@ func wrapArrow(obj *externglib.Object) Arrowwer {
 	}
 }
 
-func marshalArrowwer(p uintptr) (interface{}, error) {
+func marshalArrower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapArrow(obj), nil
 }
 
-func (*Arrow) privateArrow() {}
+// NewArrow creates a new Arrow widget.
+//
+// Deprecated: Use a Image with a suitable icon.
+func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
+	var _arg1 C.GtkArrowType  // out
+	var _arg2 C.GtkShadowType // out
+	var _cret *C.GtkWidget    // in
+
+	_arg1 = C.GtkArrowType(arrowType)
+	_arg2 = C.GtkShadowType(shadowType)
+
+	_cret = C.gtk_arrow_new(_arg1, _arg2)
+
+	var _arrow *Arrow // out
+
+	_arrow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Arrow)
+
+	return _arrow
+}
+
+// Set sets the direction and style of the Arrow, @arrow.
+//
+// Deprecated: Use a Image with a suitable icon.
+func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
+	var _arg0 *C.GtkArrow     // out
+	var _arg1 C.GtkArrowType  // out
+	var _arg2 C.GtkShadowType // out
+
+	_arg0 = (*C.GtkArrow)(unsafe.Pointer(arrow.Native()))
+	_arg1 = C.GtkArrowType(arrowType)
+	_arg2 = C.GtkShadowType(shadowType)
+
+	C.gtk_arrow_set(_arg0, _arg1, _arg2)
+}

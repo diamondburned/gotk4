@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk.h>
 import "C"
 
@@ -110,4 +109,81 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 	}
 
 	return _value, _ok
+}
+
+// BitsetIterInitAt initializes @iter to point to @target.
+//
+// If @target is not found, finds the next value after it. If no value >=
+// @target exists in @set, this function returns false.
+func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
+	var _iter BitsetIter
+	var _arg2 *C.GtkBitset // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // in
+	var _cret C.gboolean   // in
+
+	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+	_arg3 = C.guint(target)
+
+	_cret = C.gtk_bitset_iter_init_at((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, &_arg4)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
+}
+
+// BitsetIterInitFirst initializes an iterator for @set and points it to the
+// first value in @set.
+//
+// If @set is empty, false is returned and @value is set to G_MAXUINT.
+func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
+	var _iter BitsetIter
+	var _arg2 *C.GtkBitset // out
+	var _arg3 C.guint      // in
+	var _cret C.gboolean   // in
+
+	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+
+	_cret = C.gtk_bitset_iter_init_first((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, &_arg3)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
+}
+
+// BitsetIterInitLast initializes an iterator for @set and points it to the last
+// value in @set.
+//
+// If @set is empty, false is returned.
+func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
+	var _iter BitsetIter
+	var _arg2 *C.GtkBitset // out
+	var _arg3 C.guint      // in
+	var _cret C.gboolean   // in
+
+	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+
+	_cret = C.gtk_bitset_iter_init_last((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, &_arg3)
+
+	var _value uint // out
+	var _ok bool    // out
+
+	_value = uint(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _value, _ok
 }

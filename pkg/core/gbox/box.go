@@ -6,6 +6,11 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/slab"
 )
 
+//export callbackDelete
+func callbackDelete(ptr uintptr) {
+	Delete(ptr)
+}
+
 var registry struct {
 	sync.RWMutex
 	slab slab.Slab

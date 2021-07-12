@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -27,7 +26,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -56,11 +54,9 @@ type InputStreamOverrider interface {
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
-	//
 	CloseFn(cancellable Cancellabler) error
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
-	//
 	ReadFn(buffer *cgo.Handle, count uint, cancellable Cancellabler) (int, error)
 	// Skip tries to skip @count bytes from the stream. Will block during the
 	// operation.

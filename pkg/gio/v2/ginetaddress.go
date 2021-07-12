@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -107,6 +106,23 @@ func marshalInetAddresser(p uintptr) (interface{}, error) {
 	return wrapInetAddress(obj), nil
 }
 
+// NewInetAddressAny creates a Address for the "any" address (unassigned/"don't
+// care") for @family.
+func NewInetAddressAny(family SocketFamily) *InetAddress {
+	var _arg1 C.GSocketFamily // out
+	var _cret *C.GInetAddress // in
+
+	_arg1 = C.GSocketFamily(family)
+
+	_cret = C.g_inet_address_new_any(_arg1)
+
+	var _inetAddress *InetAddress // out
+
+	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
+
+	return _inetAddress
+}
+
 // NewInetAddressFromString parses @string as an IP address and creates a new
 // Address.
 func NewInetAddressFromString(_string string) *InetAddress {
@@ -117,6 +133,23 @@ func NewInetAddressFromString(_string string) *InetAddress {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_inet_address_new_from_string(_arg1)
+
+	var _inetAddress *InetAddress // out
+
+	_inetAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InetAddress)
+
+	return _inetAddress
+}
+
+// NewInetAddressLoopback creates a Address for the loopback address for
+// @family.
+func NewInetAddressLoopback(family SocketFamily) *InetAddress {
+	var _arg1 C.GSocketFamily // out
+	var _cret *C.GInetAddress // in
+
+	_arg1 = C.GSocketFamily(family)
+
+	_cret = C.g_inet_address_new_loopback(_arg1)
 
 	var _inetAddress *InetAddress // out
 

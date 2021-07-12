@@ -93,12 +93,10 @@ func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
 }
 
 // UseConstructor calls Use with the constructor flag.
+//
+// Deprecated: This method only calls Use().
 func (g *Generator) UseConstructor(cattrs *gir.CallableAttrs) bool {
-	g.constructor = true
-	ok := g.Use(cattrs)
-	g.constructor = false
-
-	return ok
+	return g.Use(cattrs)
 }
 
 // UseFromNamespace uses the given CallableAttrs from the given namespace
@@ -216,8 +214,6 @@ func (g *Generator) renderBlock() bool {
 			value := typeconv.NewReturnValue(
 				"_cret", returnName, typeconv.ConvertCToGo, *g.ReturnValue,
 			)
-			// Use the return value's type if we're generating the constructor.
-			value.ManualCast = g.constructor
 
 			callableValues = append(callableValues, value)
 		}

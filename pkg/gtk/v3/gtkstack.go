@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -86,9 +85,9 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 // Stacker describes Stack's methods.
 type Stacker interface {
 	// AddNamed adds a child to @stack.
-	AddNamed(child Widgetter, name string)
+	AddNamed(child Widgeter, name string)
 	// AddTitled adds a child to @stack.
-	AddTitled(child Widgetter, name string, title string)
+	AddTitled(child Widgeter, name string, title string)
 	// ChildByName finds the child of the Stack with the name given as the
 	// argument.
 	ChildByName(name string) *Widget
@@ -126,10 +125,15 @@ type Stacker interface {
 	// SetTransitionDuration sets the duration that transitions between pages in
 	// @stack will take.
 	SetTransitionDuration(duration uint)
+	// SetTransitionType sets the type of animation that will be used for
+	// transitions between pages in @stack.
+	SetTransitionType(transition StackTransitionType)
 	// SetVhomogeneous sets the Stack to be vertically homogeneous or not.
 	SetVhomogeneous(vhomogeneous bool)
 	// SetVisibleChild makes @child the visible child of @stack.
-	SetVisibleChild(child Widgetter)
+	SetVisibleChild(child Widgeter)
+	// SetVisibleChildFull makes the child with the given name visible.
+	SetVisibleChildFull(name string, transition StackTransitionType)
 	// SetVisibleChildName makes the child with the given name visible.
 	SetVisibleChildName(name string)
 }
@@ -196,7 +200,7 @@ func NewStack() *Stack {
 }
 
 // AddNamed adds a child to @stack. The child is identified by the @name.
-func (stack *Stack) AddNamed(child Widgetter, name string) {
+func (stack *Stack) AddNamed(child Widgeter, name string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -212,7 +216,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) {
 // AddTitled adds a child to @stack. The child is identified by the @name. The
 // @title will be used by StackSwitcher to represent @child in a tab bar, so it
 // should be short.
-func (stack *Stack) AddTitled(child Widgetter, name string, title string) {
+func (stack *Stack) AddTitled(child Widgeter, name string, title string) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -474,6 +478,23 @@ func (stack *Stack) SetTransitionDuration(duration uint) {
 	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }
 
+// SetTransitionType sets the type of animation that will be used for
+// transitions between pages in @stack. Available types include various kinds of
+// fades and slides.
+//
+// The transition type can be changed without problems at runtime, so it is
+// possible to change the animation based on the page that is about to become
+// current.
+func (stack *Stack) SetTransitionType(transition StackTransitionType) {
+	var _arg0 *C.GtkStack              // out
+	var _arg1 C.GtkStackTransitionType // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg1 = C.GtkStackTransitionType(transition)
+
+	C.gtk_stack_set_transition_type(_arg0, _arg1)
+}
+
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it is
 // homogeneous, the Stack will request the same height for all its children. If
 // it isn't, the stack may change height when a different child becomes visible.
@@ -496,7 +517,7 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the @child widget has to be visible itself (see gtk_widget_show())
 // in order to become the visible child of @stack.
-func (stack *Stack) SetVisibleChild(child Widgetter) {
+func (stack *Stack) SetVisibleChild(child Widgeter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -504,6 +525,23 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_stack_set_visible_child(_arg0, _arg1)
+}
+
+// SetVisibleChildFull makes the child with the given name visible.
+//
+// Note that the child widget has to be visible itself (see gtk_widget_show())
+// in order to become the visible child of @stack.
+func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionType) {
+	var _arg0 *C.GtkStack              // out
+	var _arg1 *C.gchar                 // out
+	var _arg2 C.GtkStackTransitionType // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStackTransitionType(transition)
+
+	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
 }
 
 // SetVisibleChildName makes the child with the given name visible.

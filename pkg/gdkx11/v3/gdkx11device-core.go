@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
@@ -28,7 +27,6 @@ type X11DeviceCorer interface {
 	privateX11DeviceCore()
 }
 
-//
 type X11DeviceCore struct {
 	gdk.Device
 }

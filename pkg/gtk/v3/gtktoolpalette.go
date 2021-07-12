@@ -7,12 +7,12 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -42,6 +42,10 @@ func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
 
 // ToolPaletter describes ToolPalette's methods.
 type ToolPaletter interface {
+	// AddDragDest sets @palette as drag source (see
+	// gtk_tool_palette_set_drag_source()) and sets @widget as a drag
+	// destination for drags from @palette.
+	AddDragDest(widget Widgeter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction)
 	// DragItem: get the dragged item from the selection.
 	DragItem(selection *SelectionData) *Widget
 	// DropGroup gets the group at position (x, y).
@@ -62,6 +66,8 @@ type ToolPaletter interface {
 	Style() ToolbarStyle
 	// VAdjustment gets the vertical adjustment of the tool palette.
 	VAdjustment() *Adjustment
+	// SetDragSource sets the tool palette as a drag source.
+	SetDragSource(targets ToolPaletteDragTargets)
 	// SetExclusive sets whether the group should be exclusive or not.
 	SetExclusive(group ToolItemGrouper, exclusive bool)
 	// SetExpand sets whether the group should be given extra space.
@@ -71,6 +77,9 @@ type ToolPaletter interface {
 	SetGroupPosition(group ToolItemGrouper, position int)
 	// SetIconSize sets the size of icons in the tool palette.
 	SetIconSize(iconSize int)
+	// SetStyle sets the style (text, icons or both) of items in the tool
+	// palette.
+	SetStyle(style ToolbarStyle)
 	// UnsetIconSize unsets the tool palette icon size set with
 	// gtk_tool_palette_set_icon_size(), so that user preferences will be used
 	// to determine the icon size.
@@ -187,6 +196,25 @@ func NewToolPalette() *ToolPalette {
 // field.
 func (v *ToolPalette) Native() uintptr {
 	return v.Container.Widget.InitiallyUnowned.Object.Native()
+}
+
+// AddDragDest sets @palette as drag source (see
+// gtk_tool_palette_set_drag_source()) and sets @widget as a drag destination
+// for drags from @palette. See gtk_drag_dest_set().
+func (palette *ToolPalette) AddDragDest(widget Widgeter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
+	var _arg0 *C.GtkToolPalette           // out
+	var _arg1 *C.GtkWidget                // out
+	var _arg2 C.GtkDestDefaults           // out
+	var _arg3 C.GtkToolPaletteDragTargets // out
+	var _arg4 C.GdkDragAction             // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = C.GtkDestDefaults(flags)
+	_arg3 = C.GtkToolPaletteDragTargets(targets)
+	_arg4 = C.GdkDragAction(actions)
+
+	C.gtk_tool_palette_add_drag_dest(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // DragItem: get the dragged item from the selection. This could be a ToolItem
@@ -379,6 +407,19 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 	return _adjustment
 }
 
+// SetDragSource sets the tool palette as a drag source. Enables all groups and
+// items in the tool palette as drag sources on button 1 and button 3 press with
+// copy and move actions. See gtk_drag_source_set().
+func (palette *ToolPalette) SetDragSource(targets ToolPaletteDragTargets) {
+	var _arg0 *C.GtkToolPalette           // out
+	var _arg1 C.GtkToolPaletteDragTargets // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
+	_arg1 = C.GtkToolPaletteDragTargets(targets)
+
+	C.gtk_tool_palette_set_drag_source(_arg0, _arg1)
+}
+
 // SetExclusive sets whether the group should be exclusive or not. If an
 // exclusive group is expanded all other groups are collapsed.
 func (palette *ToolPalette) SetExclusive(group ToolItemGrouper, exclusive bool) {
@@ -436,6 +477,17 @@ func (palette *ToolPalette) SetIconSize(iconSize int) {
 	C.gtk_tool_palette_set_icon_size(_arg0, _arg1)
 }
 
+// SetStyle sets the style (text, icons or both) of items in the tool palette.
+func (palette *ToolPalette) SetStyle(style ToolbarStyle) {
+	var _arg0 *C.GtkToolPalette // out
+	var _arg1 C.GtkToolbarStyle // out
+
+	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
+	_arg1 = C.GtkToolbarStyle(style)
+
+	C.gtk_tool_palette_set_style(_arg0, _arg1)
+}
+
 // UnsetIconSize unsets the tool palette icon size set with
 // gtk_tool_palette_set_icon_size(), so that user preferences will be used to
 // determine the icon size.
@@ -455,4 +507,31 @@ func (palette *ToolPalette) UnsetStyle() {
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
 
 	C.gtk_tool_palette_unset_style(_arg0)
+}
+
+// ToolPaletteGetDragTargetGroup: get the target entry for a dragged
+// ToolItemGroup.
+func ToolPaletteGetDragTargetGroup() *TargetEntry {
+	var _cret *C.GtkTargetEntry // in
+
+	_cret = C.gtk_tool_palette_get_drag_target_group()
+
+	var _targetEntry *TargetEntry // out
+
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+
+	return _targetEntry
+}
+
+// ToolPaletteGetDragTargetItem gets the target entry for a dragged ToolItem.
+func ToolPaletteGetDragTargetItem() *TargetEntry {
+	var _cret *C.GtkTargetEntry // in
+
+	_cret = C.gtk_tool_palette_get_drag_target_item()
+
+	var _targetEntry *TargetEntry // out
+
+	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+
+	return _targetEntry
 }

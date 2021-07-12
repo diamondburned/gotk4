@@ -4,8 +4,10 @@ package gio
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -13,7 +15,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -30,7 +31,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconner},
+		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconer},
 	})
 }
 
@@ -40,7 +41,7 @@ func init() {
 // yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Iconner) bool
+	Equal(icon2 Iconer) bool
 	// Hash gets a hash for an icon.
 	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -52,10 +53,10 @@ type IconOverrider interface {
 	Serialize() *glib.Variant
 }
 
-// Iconner describes Icon's methods.
-type Iconner interface {
+// Iconer describes Icon's methods.
+type Iconer interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Iconner) bool
+	Equal(icon2 Iconer) bool
 	// Serialize serializes a #GIcon into a #GVariant.
 	Serialize() *glib.Variant
 	// String generates a textual representation of @icon that can be used for
@@ -94,24 +95,24 @@ type Icon struct {
 }
 
 var (
-	_ Iconner         = (*Icon)(nil)
+	_ Iconer          = (*Icon)(nil)
 	_ gextras.Nativer = (*Icon)(nil)
 )
 
-func wrapIcon(obj *externglib.Object) Iconner {
+func wrapIcon(obj *externglib.Object) Iconer {
 	return &Icon{
 		Object: obj,
 	}
 }
 
-func marshalIconner(p uintptr) (interface{}, error) {
+func marshalIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapIcon(obj), nil
 }
 
 // Equal checks if two icons are equal.
-func (icon1 *Icon) Equal(icon2 Iconner) bool {
+func (icon1 *Icon) Equal(icon2 Iconer) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
@@ -183,4 +184,62 @@ func (icon *Icon) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// IconDeserialize deserializes a #GIcon previously serialized using
+// g_icon_serialize().
+func IconDeserialize(value *glib.Variant) *Icon {
+	var _arg1 *C.GVariant // out
+	var _cret *C.GIcon    // in
+
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+
+	_cret = C.g_icon_deserialize(_arg1)
+
+	var _icon *Icon // out
+
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+
+	return _icon
+}
+
+// IconHash gets a hash for an icon.
+func IconHash(icon cgo.Handle) uint {
+	var _arg1 C.gconstpointer // out
+	var _cret C.guint         // in
+
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(icon))
+
+	_cret = C.g_icon_hash(_arg1)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// IconNewForString: generate a #GIcon instance from @str. This function can
+// fail if @str is not valid - see g_icon_to_string() for discussion.
+//
+// If your application or library provides one or more #GIcon implementations
+// you need to ensure that each #GType is registered with the type system prior
+// to calling g_icon_new_for_string().
+func IconNewForString(str string) (*Icon, error) {
+	var _arg1 *C.gchar  // out
+	var _cret *C.GIcon  // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
+
+	var _icon *Icon  // out
+	var _goerr error // out
+
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Icon)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _icon, _goerr
 }

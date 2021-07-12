@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -188,6 +187,9 @@ type FileChooserer interface {
 	SelectFilename(filename string) bool
 	// SelectURI selects the file to by @uri.
 	SelectURI(uri string) bool
+	// SetAction sets the type of operation that the chooser is performing; the
+	// user interface is adapted to suit the selected action.
+	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	SetChoice(id string, option string)
@@ -210,7 +212,7 @@ type FileChooserer interface {
 	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
 	// SetExtraWidget sets an application-supplied widget to provide extra
 	// options to the user.
-	SetExtraWidget(extraWidget Widgetter)
+	SetExtraWidget(extraWidget Widgeter)
 	// SetFile sets @file as the current filename for the file chooser, by
 	// changing to the file’s parent folder and actually selecting the file in
 	// list.
@@ -227,7 +229,7 @@ type FileChooserer interface {
 	SetLocalOnly(localOnly bool)
 	// SetPreviewWidget sets an application-supplied widget to use to display a
 	// custom preview of the currently selected file.
-	SetPreviewWidget(previewWidget Widgetter)
+	SetPreviewWidget(previewWidget Widgeter)
 	// SetPreviewWidgetActive sets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename.
@@ -1016,6 +1018,21 @@ func (chooser *FileChooser) SelectURI(uri string) bool {
 	return _ok
 }
 
+// SetAction sets the type of operation that the chooser is performing; the user
+// interface is adapted to suit the selected action. For example, an option to
+// create a new folder might be shown if the action is
+// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+// GTK_FILE_CHOOSER_ACTION_OPEN.
+func (chooser *FileChooser) SetAction(action FileChooserAction) {
+	var _arg0 *C.GtkFileChooser      // out
+	var _arg1 C.GtkFileChooserAction // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = C.GtkFileChooserAction(action)
+
+	C.gtk_file_chooser_set_action(_arg0, _arg1)
+}
+
 // SetChoice selects an option in a 'choice' that has been added with
 // gtk_file_chooser_add_choice(). For a boolean choice, the possible options are
 // "true" and "false".
@@ -1167,7 +1184,7 @@ func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation b
 
 // SetExtraWidget sets an application-supplied widget to provide extra options
 // to the user.
-func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
+func (chooser *FileChooser) SetExtraWidget(extraWidget Widgeter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 
@@ -1323,7 +1340,7 @@ func (chooser *FileChooser) SetLocalOnly(localOnly bool) {
 // When there is no application-supplied preview widget, or the
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
-func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
+func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgeter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 

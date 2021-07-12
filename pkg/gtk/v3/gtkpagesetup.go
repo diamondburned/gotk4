@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,29 +22,55 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetupper},
+		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetuper},
 	})
 }
 
-// PageSetupper describes PageSetup's methods.
-type PageSetupper interface {
+// PageSetuper describes PageSetup's methods.
+type PageSetuper interface {
 	// Copy copies a PageSetup.
 	Copy() *PageSetup
+	// BottomMargin gets the bottom margin in units of @unit.
+	BottomMargin(unit Unit) float64
+	// LeftMargin gets the left margin in units of @unit.
+	LeftMargin(unit Unit) float64
 	// Orientation gets the page orientation of the PageSetup.
 	Orientation() PageOrientation
+	// PageHeight returns the page height in units of @unit.
+	PageHeight(unit Unit) float64
+	// PageWidth returns the page width in units of @unit.
+	PageWidth(unit Unit) float64
+	// PaperHeight returns the paper height in units of @unit.
+	PaperHeight(unit Unit) float64
 	// PaperSize gets the paper size of the PageSetup.
 	PaperSize() *PaperSize
+	// PaperWidth returns the paper width in units of @unit.
+	PaperWidth(unit Unit) float64
+	// RightMargin gets the right margin in units of @unit.
+	RightMargin(unit Unit) float64
+	// TopMargin gets the top margin in units of @unit.
+	TopMargin(unit Unit) float64
 	// LoadFile reads the page setup from the file @file_name.
 	LoadFile(fileName string) error
 	// LoadKeyFile reads the page setup from the group @group_name in the key
 	// file @key_file.
 	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
+	// SetBottomMargin sets the bottom margin of the PageSetup.
+	SetBottomMargin(margin float64, unit Unit)
+	// SetLeftMargin sets the left margin of the PageSetup.
+	SetLeftMargin(margin float64, unit Unit)
+	// SetOrientation sets the page orientation of the PageSetup.
+	SetOrientation(orientation PageOrientation)
 	// SetPaperSize sets the paper size of the PageSetup without changing the
 	// margins.
 	SetPaperSize(size *PaperSize)
 	// SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
 	// modifies the margins according to the new paper size.
 	SetPaperSizeAndDefaultMargins(size *PaperSize)
+	// SetRightMargin sets the right margin of the PageSetup.
+	SetRightMargin(margin float64, unit Unit)
+	// SetTopMargin sets the top margin of the PageSetup.
+	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
 	ToFile(fileName string) error
 	// ToGVariant: serialize page setup to an a{sv} variant.
@@ -100,17 +125,17 @@ type PageSetup struct {
 }
 
 var (
-	_ PageSetupper    = (*PageSetup)(nil)
+	_ PageSetuper     = (*PageSetup)(nil)
 	_ gextras.Nativer = (*PageSetup)(nil)
 )
 
-func wrapPageSetup(obj *externglib.Object) PageSetupper {
+func wrapPageSetup(obj *externglib.Object) PageSetuper {
 	return &PageSetup{
 		Object: obj,
 	}
 }
 
-func marshalPageSetupper(p uintptr) (interface{}, error) {
+func marshalPageSetuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPageSetup(obj), nil
@@ -208,6 +233,42 @@ func (other *PageSetup) Copy() *PageSetup {
 	return _pageSetup
 }
 
+// BottomMargin gets the bottom margin in units of @unit.
+func (setup *PageSetup) BottomMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// LeftMargin gets the left margin in units of @unit.
+func (setup *PageSetup) LeftMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // Orientation gets the page orientation of the PageSetup.
 func (setup *PageSetup) Orientation() PageOrientation {
 	var _arg0 *C.GtkPageSetup      // out
@@ -224,6 +285,69 @@ func (setup *PageSetup) Orientation() PageOrientation {
 	return _pageOrientation
 }
 
+// PageHeight returns the page height in units of @unit.
+//
+// Note that this function takes orientation and margins into consideration. See
+// gtk_page_setup_get_paper_height().
+func (setup *PageSetup) PageHeight(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// PageWidth returns the page width in units of @unit.
+//
+// Note that this function takes orientation and margins into consideration. See
+// gtk_page_setup_get_paper_width().
+func (setup *PageSetup) PageWidth(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// PaperHeight returns the paper height in units of @unit.
+//
+// Note that this function takes orientation, but not margins into
+// consideration. See gtk_page_setup_get_page_height().
+func (setup *PageSetup) PaperHeight(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // PaperSize gets the paper size of the PageSetup.
 func (setup *PageSetup) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPageSetup // out
@@ -238,6 +362,63 @@ func (setup *PageSetup) PaperSize() *PaperSize {
 	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
 
 	return _paperSize
+}
+
+// PaperWidth returns the paper width in units of @unit.
+//
+// Note that this function takes orientation, but not margins into
+// consideration. See gtk_page_setup_get_page_width().
+func (setup *PageSetup) PaperWidth(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// RightMargin gets the right margin in units of @unit.
+func (setup *PageSetup) RightMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// TopMargin gets the top margin in units of @unit.
+func (setup *PageSetup) TopMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // LoadFile reads the page setup from the file @file_name. See
@@ -282,6 +463,43 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 	return _goerr
 }
 
+// SetBottomMargin sets the bottom margin of the PageSetup.
+func (setup *PageSetup) SetBottomMargin(margin float64, unit Unit) {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.gdouble(margin)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_page_setup_set_bottom_margin(_arg0, _arg1, _arg2)
+}
+
+// SetLeftMargin sets the left margin of the PageSetup.
+func (setup *PageSetup) SetLeftMargin(margin float64, unit Unit) {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.gdouble(margin)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_page_setup_set_left_margin(_arg0, _arg1, _arg2)
+}
+
+// SetOrientation sets the page orientation of the PageSetup.
+func (setup *PageSetup) SetOrientation(orientation PageOrientation) {
+	var _arg0 *C.GtkPageSetup      // out
+	var _arg1 C.GtkPageOrientation // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.GtkPageOrientation(orientation)
+
+	C.gtk_page_setup_set_orientation(_arg0, _arg1)
+}
+
 // SetPaperSize sets the paper size of the PageSetup without changing the
 // margins. See gtk_page_setup_set_paper_size_and_default_margins().
 func (setup *PageSetup) SetPaperSize(size *PaperSize) {
@@ -304,6 +522,32 @@ func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size))
 
 	C.gtk_page_setup_set_paper_size_and_default_margins(_arg0, _arg1)
+}
+
+// SetRightMargin sets the right margin of the PageSetup.
+func (setup *PageSetup) SetRightMargin(margin float64, unit Unit) {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.gdouble(margin)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_page_setup_set_right_margin(_arg0, _arg1, _arg2)
+}
+
+// SetTopMargin sets the top margin of the PageSetup.
+func (setup *PageSetup) SetTopMargin(margin float64, unit Unit) {
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
+
+	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
+	_arg1 = C.gdouble(margin)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_page_setup_set_top_margin(_arg0, _arg1, _arg2)
 }
 
 // ToFile: this function saves the information from @setup to @file_name.

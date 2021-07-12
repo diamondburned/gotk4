@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -84,9 +82,17 @@ type ResolverOverrider interface {
 	// call g_resolver_lookup_by_name_finish() to get the result. See
 	// g_resolver_lookup_by_name() for more details.
 	LookupByNameAsync(hostname string, cancellable Cancellabler, callback AsyncReadyCallback)
-	//
+	// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
+	// determine its associated IP address(es), and eventually calls @callback,
+	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
+	// result. See g_resolver_lookup_by_name() for more details.
+	LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
+	// given @rrname, and eventually calls @callback, which must call
+	// g_resolver_lookup_records_finish() to get the final result. See
+	// g_resolver_lookup_records() for more details.
+	LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellabler, callback AsyncReadyCallback)
 	LookupServiceAsync(rrname string, cancellable Cancellabler, callback AsyncReadyCallback)
-	//
 	Reload()
 }
 
@@ -106,6 +112,15 @@ type Resolverer interface {
 	// its associated IP address(es), and eventually calls @callback, which must
 	// call g_resolver_lookup_by_name_finish() to get the result.
 	LookupByNameAsync(hostname string, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
+	// determine its associated IP address(es), and eventually calls @callback,
+	// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
+	// result.
+	LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
+	// given @rrname, and eventually calls @callback, which must call
+	// g_resolver_lookup_records_finish() to get the final result.
+	LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellabler, callback AsyncReadyCallback)
 	// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
 	// the given @service and @protocol in the given @domain, and eventually
 	// calls @callback, which must call g_resolver_lookup_service_finish() to
@@ -243,6 +258,52 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable Cancell
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
+// LookupByNameWithFlagsAsync begins asynchronously resolving @hostname to
+// determine its associated IP address(es), and eventually calls @callback,
+// which must call g_resolver_lookup_by_name_with_flags_finish() to get the
+// result. See g_resolver_lookup_by_name() for more details.
+func (resolver *Resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver               // out
+	var _arg1 *C.gchar                   // out
+	var _arg2 C.GResolverNameLookupFlags // out
+	var _arg3 *C.GCancellable            // out
+	var _arg4 C.GAsyncReadyCallback      // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverNameLookupFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.Assign(callback))
+
+	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// LookupRecordsAsync begins asynchronously performing a DNS lookup for the
+// given @rrname, and eventually calls @callback, which must call
+// g_resolver_lookup_records_finish() to get the final result. See
+// g_resolver_lookup_records() for more details.
+func (resolver *Resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GResolverRecordType // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverRecordType(recordType)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.Assign(callback))
+
+	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 // LookupServiceAsync begins asynchronously performing a DNS SRV lookup for the
 // given @service and @protocol in the given @domain, and eventually calls
 // @callback, which must call g_resolver_lookup_service_finish() to get the
@@ -285,4 +346,19 @@ func (resolver *Resolver) SetDefault() {
 	_arg0 = (*C.GResolver)(unsafe.Pointer(resolver.Native()))
 
 	C.g_resolver_set_default(_arg0)
+}
+
+// ResolverGetDefault gets the default #GResolver. You should unref it when you
+// are done with it. #GResolver may use its reference count as a hint about how
+// many threads it should allocate for concurrent DNS resolutions.
+func ResolverGetDefault() *Resolver {
+	var _cret *C.GResolver // in
+
+	_cret = C.g_resolver_get_default()
+
+	var _resolver *Resolver // out
+
+	_resolver = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Resolver)
+
+	return _resolver
 }

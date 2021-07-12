@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -31,6 +30,8 @@ type BoxLayouter interface {
 	Homogeneous() bool
 	// Spacing returns the space that @box_layout puts between children.
 	Spacing() uint
+	// SetBaselinePosition sets the baseline position of a box layout.
+	SetBaselinePosition(position BaselinePosition)
 	// SetHomogeneous sets whether the box layout will allocate the same size to
 	// all children.
 	SetHomogeneous(homogeneous bool)
@@ -78,6 +79,22 @@ func marshalBoxLayouter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBoxLayout(obj), nil
+}
+
+// NewBoxLayout creates a new `GtkBoxLayout`.
+func NewBoxLayout(orientation Orientation) *BoxLayout {
+	var _arg1 C.GtkOrientation    // out
+	var _cret *C.GtkLayoutManager // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_box_layout_new(_arg1)
+
+	var _boxLayout *BoxLayout // out
+
+	_boxLayout = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*BoxLayout)
+
+	return _boxLayout
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject
@@ -135,6 +152,22 @@ func (boxLayout *BoxLayout) Spacing() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// SetBaselinePosition sets the baseline position of a box layout.
+//
+// The baseline position affects only horizontal boxes with at least one
+// baseline aligned child. If there is more vertical space available than
+// requested, and the baseline is not allocated by the parent then the given
+// @position is used to allocate the baseline within the extra space available.
+func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
+	var _arg0 *C.GtkBoxLayout       // out
+	var _arg1 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(boxLayout.Native()))
+	_arg1 = C.GtkBaselinePosition(position)
+
+	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
 }
 
 // SetHomogeneous sets whether the box layout will allocate the same size to all

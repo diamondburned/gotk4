@@ -76,10 +76,9 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	if f.header.CallbackDelete {
 		// C headers are per-file.
 		f.header.AddCallbackHeader("extern void callbackDelete(gpointer);")
-
-		if f.isRoot {
-			f.header.ImportCore("gbox")
-		}
+		// Ensure that gbox is imported, so we have the exported callbackDelete
+		// function.
+		f.header.DashImport(file.ImportCore("gbox"))
 	}
 
 	fpen := pen.NewPaperBufferSize(4096 + f.pen.Len()) // 4KB + pen
@@ -126,14 +125,12 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 	fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 
 	if incls := f.CIncludes(); len(incls) > 0 {
-		fpen.Words("//")
 		for _, incl := range incls {
 			fpen.Linef("// #include <%s>", incl)
 		}
 	}
 
 	if len(f.header.Callbacks) > 0 {
-		fpen.Words("//")
 		for _, callback := range f.header.SortedCallbackHeaders() {
 			fpen.Words("//", callback)
 		}
@@ -150,14 +147,6 @@ func (f *FileGenerator) Generate() ([]byte, error) {
 		}
 		fpen.Words("  })")
 		fpen.Words("}")
-	}
-
-	if f.isRoot && f.header.CallbackDelete {
-		fpen.Words("//export callbackDelete")
-		fpen.Words("func callbackDelete(ptr C.gpointer) {")
-		fpen.Words("  gbox.Delete(gbox.Callback, uintptr(ptr))")
-		fpen.Words("}")
-		fpen.EmptyLine()
 	}
 
 	fpen.Write(f.pen.Bytes())

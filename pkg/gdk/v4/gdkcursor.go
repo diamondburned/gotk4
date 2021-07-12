@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
 	})
 }
 
-// Cursorrer describes Cursor's methods.
-type Cursorrer interface {
+// Cursorer describes Cursor's methods.
+type Cursorer interface {
 	// Fallback returns the fallback for this @cursor.
 	Fallback() *Cursor
 	// HotspotX returns the horizontal offset of the hotspot.
@@ -75,17 +74,17 @@ type Cursor struct {
 }
 
 var (
-	_ Cursorrer       = (*Cursor)(nil)
+	_ Cursorer        = (*Cursor)(nil)
 	_ gextras.Nativer = (*Cursor)(nil)
 )
 
-func wrapCursor(obj *externglib.Object) Cursorrer {
+func wrapCursor(obj *externglib.Object) Cursorer {
 	return &Cursor{
 		Object: obj,
 	}
 }
 
-func marshalCursorrer(p uintptr) (interface{}, error) {
+func marshalCursorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil
@@ -116,7 +115,7 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
 // "zoom-out" | |
-func NewCursorFromName(name string, fallback Cursorrer) *Cursor {
+func NewCursorFromName(name string, fallback Cursorer) *Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
@@ -135,7 +134,7 @@ func NewCursorFromName(name string, fallback Cursorrer) *Cursor {
 }
 
 // NewCursorFromTexture creates a new cursor from a `GdkTexture`.
-func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback Cursorrer) *Cursor {
+func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback Cursorer) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out

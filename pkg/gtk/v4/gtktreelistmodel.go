@@ -14,15 +14,14 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModeller},
-		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRowwer},
+		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModeler},
+		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRower},
 	})
 }
 
@@ -56,8 +55,8 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret 
 	return cret
 }
 
-// TreeListModeller describes TreeListModel's methods.
-type TreeListModeller interface {
+// TreeListModeler describes TreeListModel's methods.
+type TreeListModeler interface {
 	// Autoexpand gets whether the model is set to automatically expand new rows
 	// that get added.
 	Autoexpand() bool
@@ -83,11 +82,11 @@ type TreeListModel struct {
 }
 
 var (
-	_ TreeListModeller = (*TreeListModel)(nil)
-	_ gextras.Nativer  = (*TreeListModel)(nil)
+	_ TreeListModeler = (*TreeListModel)(nil)
+	_ gextras.Nativer = (*TreeListModel)(nil)
 )
 
-func wrapTreeListModel(obj *externglib.Object) TreeListModeller {
+func wrapTreeListModel(obj *externglib.Object) TreeListModeler {
 	return &TreeListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -96,7 +95,7 @@ func wrapTreeListModel(obj *externglib.Object) TreeListModeller {
 	}
 }
 
-func marshalTreeListModeller(p uintptr) (interface{}, error) {
+func marshalTreeListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeListModel(obj), nil
@@ -239,8 +238,8 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
 }
 
-// TreeListRowwer describes TreeListRow's methods.
-type TreeListRowwer interface {
+// TreeListRower describes TreeListRow's methods.
+type TreeListRower interface {
 	// ChildRow: if @self is not expanded or @position is greater than the
 	// number of children, nil is returned.
 	ChildRow(position uint) *TreeListRow
@@ -282,17 +281,17 @@ type TreeListRow struct {
 }
 
 var (
-	_ TreeListRowwer  = (*TreeListRow)(nil)
+	_ TreeListRower   = (*TreeListRow)(nil)
 	_ gextras.Nativer = (*TreeListRow)(nil)
 )
 
-func wrapTreeListRow(obj *externglib.Object) TreeListRowwer {
+func wrapTreeListRow(obj *externglib.Object) TreeListRower {
 	return &TreeListRow{
 		Object: obj,
 	}
 }
 
-func marshalTreeListRowwer(p uintptr) (interface{}, error) {
+func marshalTreeListRower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeListRow(obj), nil

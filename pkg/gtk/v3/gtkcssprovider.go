@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -54,7 +53,6 @@ func marshalCSSProviderError(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CSSProviderOverrider interface {
-	//
 	ParsingError(section *CSSSection, err error)
 }
 
@@ -234,4 +232,40 @@ func (provider *CSSProvider) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// CSSProviderGetDefault returns the provider containing the style settings used
+// as a fallback for all widgets.
+//
+// Deprecated: Use gtk_css_provider_new() instead.
+func CSSProviderGetDefault() *CSSProvider {
+	var _cret *C.GtkCssProvider // in
+
+	_cret = C.gtk_css_provider_get_default()
+
+	var _cssProvider *CSSProvider // out
+
+	_cssProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CSSProvider)
+
+	return _cssProvider
+}
+
+// CSSProviderGetNamed loads a theme from the usual theme paths
+func CSSProviderGetNamed(name string, variant string) *CSSProvider {
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _cret *C.GtkCssProvider // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.gtk_css_provider_get_named(_arg1, _arg2)
+
+	var _cssProvider *CSSProvider // out
+
+	_cssProvider = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*CSSProvider)
+
+	return _cssProvider
 }

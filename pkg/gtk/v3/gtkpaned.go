@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaneder},
 	})
 }
 
@@ -31,24 +30,20 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PanedOverrider interface {
-	//
 	AcceptPosition() bool
-	//
 	CancelPosition() bool
-	//
 	CycleChildFocus(reverse bool) bool
-	//
 	CycleHandleFocus(reverse bool) bool
-	//
+	MoveHandle(scroll ScrollType) bool
 	ToggleHandleFocus() bool
 }
 
-// Panedder describes Paned's methods.
-type Panedder interface {
+// Paneder describes Paned's methods.
+type Paneder interface {
 	// Add1 adds a child to the top or left pane with default parameters.
-	Add1(child Widgetter)
+	Add1(child Widgeter)
 	// Add2 adds a child to the bottom or right pane with default parameters.
-	Add2(child Widgetter)
+	Add2(child Widgeter)
 	// Child1 obtains the first child of the paned widget.
 	Child1() *Widget
 	// Child2 obtains the second child of the paned widget.
@@ -60,9 +55,9 @@ type Panedder interface {
 	// WideHandle gets the Paned:wide-handle property.
 	WideHandle() bool
 	// Pack1 adds a child to the top or left pane.
-	Pack1(child Widgetter, resize bool, shrink bool)
+	Pack1(child Widgeter, resize bool, shrink bool)
 	// Pack2 adds a child to the bottom or right pane.
-	Pack2(child Widgetter, resize bool, shrink bool)
+	Pack2(child Widgeter, resize bool, shrink bool)
 	// SetPosition sets the position of the divider between the two panes.
 	SetPosition(position int)
 	// SetWideHandle sets the Paned:wide-handle property.
@@ -115,11 +110,11 @@ type Paned struct {
 }
 
 var (
-	_ Panedder        = (*Paned)(nil)
+	_ Paneder         = (*Paned)(nil)
 	_ gextras.Nativer = (*Paned)(nil)
 )
 
-func wrapPaned(obj *externglib.Object) Panedder {
+func wrapPaned(obj *externglib.Object) Paneder {
 	return &Paned{
 		Container: Container{
 			Widget: Widget{
@@ -140,10 +135,26 @@ func wrapPaned(obj *externglib.Object) Panedder {
 	}
 }
 
-func marshalPanedder(p uintptr) (interface{}, error) {
+func marshalPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPaned(obj), nil
+}
+
+// NewPaned creates a new Paned widget.
+func NewPaned(orientation Orientation) *Paned {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_paned_new(_arg1)
+
+	var _paned *Paned // out
+
+	_paned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Paned)
+
+	return _paned
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject
@@ -154,7 +165,7 @@ func (v *Paned) Native() uintptr {
 
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
-func (paned *Paned) Add1(child Widgetter) {
+func (paned *Paned) Add1(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -166,7 +177,7 @@ func (paned *Paned) Add1(child Widgetter) {
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
 // is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
-func (paned *Paned) Add2(child Widgetter) {
+func (paned *Paned) Add2(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -261,7 +272,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // Pack1 adds a child to the top or left pane.
-func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
+func (paned *Paned) Pack1(child Widgeter, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -280,7 +291,7 @@ func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
-func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
+func (paned *Paned) Pack2(child Widgeter, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out

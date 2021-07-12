@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -107,7 +106,7 @@ type EntryCompletioner interface {
 	// to be at least @length.
 	SetMinimumKeyLength(length int)
 	// SetModel sets the model for a `GtkEntryCompletion`.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 	// SetPopupCompletion sets whether the completions should be presented in a
 	// popup window.
 	SetPopupCompletion(popupCompletion bool)
@@ -493,7 +492,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 //
 // If @completion already has a model set, it will remove it before setting the
 // new model. If model is nil, then it will unset the model.
-func (completion *EntryCompletion) SetModel(model TreeModeller) {
+func (completion *EntryCompletion) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 

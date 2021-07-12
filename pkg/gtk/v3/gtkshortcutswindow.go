@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindowwer},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindower},
 	})
 }
 
@@ -30,14 +29,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ShortcutsWindowOverrider interface {
-	//
 	Close()
-	//
 	Search()
 }
 
-// ShortcutsWindowwer describes ShortcutsWindow's methods.
-type ShortcutsWindowwer interface {
+// ShortcutsWindower describes ShortcutsWindow's methods.
+type ShortcutsWindower interface {
 	privateShortcutsWindow()
 }
 
@@ -89,11 +86,11 @@ type ShortcutsWindow struct {
 }
 
 var (
-	_ ShortcutsWindowwer = (*ShortcutsWindow)(nil)
-	_ gextras.Nativer    = (*ShortcutsWindow)(nil)
+	_ ShortcutsWindower = (*ShortcutsWindow)(nil)
+	_ gextras.Nativer   = (*ShortcutsWindow)(nil)
 )
 
-func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindowwer {
+func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindower {
 	return &ShortcutsWindow{
 		Window: Window{
 			Bin: Bin{
@@ -115,7 +112,7 @@ func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindowwer {
 	}
 }
 
-func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
+func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutsWindow(obj), nil

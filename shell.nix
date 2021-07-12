@@ -53,9 +53,6 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 };
 
 in unstable.mkShell {
-	# Disable this to allow -O0.
-	hardeningDisable = [ "fortify" ];
-
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
@@ -81,7 +78,6 @@ in unstable.mkShell {
 			# Development tools.
 			gopls
 			goimports
-			expect
 
 			# minitime is a mini-output time wrapper.
 			(sh "minitime" "command time --format $'%C -> %es\\n' \"$@\"")
@@ -91,4 +87,11 @@ in unstable.mkShell {
 			# (sh "zcc" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig cc  -target x86_64-linux "$@"'')
 			# (sh "zxx" ''ZIG_LOCAL_CACHE_DIR=$TMP/z ${unstable.zig}/bin/zig c++ -target x86_64-linux "$@"'')
 		];
+
+	CGO_ENABLED = "1";
+
+	# Use /tmp, since /run/user/1000 (XDG_RUNTIME_DIRECTORY) might be too small.
+	# See https://github.com/NixOS/nix/issues/395.
+	TMP    = "/tmp";
+	TMPDIR = "/tmp";
 }

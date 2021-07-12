@@ -11,20 +11,19 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_constraint_target_get_type()), F: marshalConstraintTargetter},
+		{T: externglib.Type(C.gtk_constraint_target_get_type()), F: marshalConstraintTargeter},
 		{T: externglib.Type(C.gtk_constraint_get_type()), F: marshalConstrainter},
 	})
 }
 
-// ConstraintTargetter describes ConstraintTarget's methods.
-type ConstraintTargetter interface {
+// ConstraintTargeter describes ConstraintTarget's methods.
+type ConstraintTargeter interface {
 	privateConstraintTarget()
 }
 
@@ -37,17 +36,17 @@ type ConstraintTarget struct {
 }
 
 var (
-	_ ConstraintTargetter = (*ConstraintTarget)(nil)
-	_ gextras.Nativer     = (*ConstraintTarget)(nil)
+	_ ConstraintTargeter = (*ConstraintTarget)(nil)
+	_ gextras.Nativer    = (*ConstraintTarget)(nil)
 )
 
-func wrapConstraintTarget(obj *externglib.Object) ConstraintTargetter {
+func wrapConstraintTarget(obj *externglib.Object) ConstraintTargeter {
 	return &ConstraintTarget{
 		Object: obj,
 	}
 }
 
-func marshalConstraintTargetter(p uintptr) (interface{}, error) {
+func marshalConstraintTargeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapConstraintTarget(obj), nil
@@ -122,6 +121,62 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapConstraint(obj), nil
+}
+
+// NewConstraint creates a new constraint representing a relation between a
+// layout attribute on a source and a layout attribute on a target.
+func NewConstraint(target ConstraintTargeter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargeter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint {
+	var _arg1 C.gpointer               // out
+	var _arg2 C.GtkConstraintAttribute // out
+	var _arg3 C.GtkConstraintRelation  // out
+	var _arg4 C.gpointer               // out
+	var _arg5 C.GtkConstraintAttribute // out
+	var _arg6 C.double                 // out
+	var _arg7 C.double                 // out
+	var _arg8 C.int                    // out
+	var _cret *C.GtkConstraint         // in
+
+	_arg1 = C.gpointer(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = C.GtkConstraintAttribute(targetAttribute)
+	_arg3 = C.GtkConstraintRelation(relation)
+	_arg4 = C.gpointer(unsafe.Pointer((source).(gextras.Nativer).Native()))
+	_arg5 = C.GtkConstraintAttribute(sourceAttribute)
+	_arg6 = C.double(multiplier)
+	_arg7 = C.double(constant)
+	_arg8 = C.int(strength)
+
+	_cret = C.gtk_constraint_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+
+	var _constraint *Constraint // out
+
+	_constraint = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Constraint)
+
+	return _constraint
+}
+
+// NewConstraintConstant creates a new constraint representing a relation
+// between a layout attribute on a target and a constant value.
+func NewConstraintConstant(target ConstraintTargeter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
+	var _arg1 C.gpointer               // out
+	var _arg2 C.GtkConstraintAttribute // out
+	var _arg3 C.GtkConstraintRelation  // out
+	var _arg4 C.double                 // out
+	var _arg5 C.int                    // out
+	var _cret *C.GtkConstraint         // in
+
+	_arg1 = C.gpointer(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = C.GtkConstraintAttribute(targetAttribute)
+	_arg3 = C.GtkConstraintRelation(relation)
+	_arg4 = C.double(constant)
+	_arg5 = C.int(strength)
+
+	_cret = C.gtk_constraint_new_constant(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _constraint *Constraint // out
+
+	_constraint = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Constraint)
+
+	return _constraint
 }
 
 // Constant retrieves the constant factor added to the source attributes' value.

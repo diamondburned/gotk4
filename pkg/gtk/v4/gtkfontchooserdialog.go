@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialogger},
+		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialoger},
 	})
 }
 
-// FontChooserDialogger describes FontChooserDialog's methods.
-type FontChooserDialogger interface {
+// FontChooserDialoger describes FontChooserDialog's methods.
+type FontChooserDialoger interface {
 	privateFontChooserDialog()
 }
 
@@ -49,11 +48,11 @@ type FontChooserDialog struct {
 }
 
 var (
-	_ FontChooserDialogger = (*FontChooserDialog)(nil)
-	_ gextras.Nativer      = (*FontChooserDialog)(nil)
+	_ FontChooserDialoger = (*FontChooserDialog)(nil)
+	_ gextras.Nativer     = (*FontChooserDialog)(nil)
 )
 
-func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialogger {
+func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialoger {
 	return &FontChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -100,14 +99,14 @@ func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialogger {
 	}
 }
 
-func marshalFontChooserDialogger(p uintptr) (interface{}, error) {
+func marshalFontChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontChooserDialog(obj), nil
 }
 
 // NewFontChooserDialog creates a new `GtkFontChooserDialog`.
-func NewFontChooserDialog(title string, parent Windowwer) *FontChooserDialog {
+func NewFontChooserDialog(title string, parent Windower) *FontChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in

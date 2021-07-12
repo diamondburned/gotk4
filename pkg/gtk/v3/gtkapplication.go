@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -54,10 +53,8 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ApplicationOverrider interface {
-	//
-	WindowAdded(window Windowwer)
-	//
-	WindowRemoved(window Windowwer)
+	WindowAdded(window Windower)
+	WindowRemoved(window Windower)
 }
 
 // Applicationer describes Application's methods.
@@ -67,7 +64,7 @@ type Applicationer interface {
 	// pressed.
 	AddAccelerator(accelerator string, actionName string, parameter *glib.Variant)
 	// AddWindow adds a window to @application.
-	AddWindow(window Windowwer)
+	AddWindow(window Windower)
 	// AccelsForAction gets the accelerators that are currently associated with
 	// the given action.
 	AccelsForAction(detailedActionName string) []string
@@ -84,6 +81,12 @@ type Applicationer interface {
 	Menubar() *gio.MenuModel
 	// WindowByID returns the ApplicationWindow with the given ID.
 	WindowByID(id uint) *Window
+	// Inhibit: inform the session manager that certain types of actions should
+	// be inhibited.
+	Inhibit(window Windower, flags ApplicationInhibitFlags, reason string) uint
+	// IsInhibited determines if any of the actions specified in @flags are
+	// currently inhibited (possibly by another application).
+	IsInhibited(flags ApplicationInhibitFlags) bool
 	// ListActionDescriptions lists the detailed action names which have
 	// associated accelerators.
 	ListActionDescriptions() []string
@@ -94,14 +97,14 @@ type Applicationer interface {
 	// with gtk_application_add_accelerator().
 	RemoveAccelerator(actionName string, parameter *glib.Variant)
 	// RemoveWindow: remove a window from @application.
-	RemoveWindow(window Windowwer)
+	RemoveWindow(window Windower)
 	// SetAccelsForAction sets zero or more keyboard accelerators that will
 	// trigger the given action.
 	SetAccelsForAction(detailedActionName string, accels []string)
 	// SetAppMenu sets or unsets the application menu for @application.
-	SetAppMenu(appMenu gio.MenuModeller)
+	SetAppMenu(appMenu gio.MenuModeler)
 	// SetMenubar sets or unsets the menubar for windows of @application.
-	SetMenubar(menubar gio.MenuModeller)
+	SetMenubar(menubar gio.MenuModeler)
 	// Uninhibit removes an inhibitor that has been established with
 	// gtk_application_inhibit().
 	Uninhibit(cookie uint)
@@ -213,6 +216,46 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(obj), nil
 }
 
+// NewApplication creates a new Application instance.
+//
+// When using Application, it is not necessary to call gtk_init() manually. It
+// is called as soon as the application gets registered as the primary instance.
+//
+// Concretely, gtk_init() is called in the default handler for the
+// #GApplication::startup signal. Therefore, Application subclasses should chain
+// up in their #GApplication::startup handler before using any GTK+ API.
+//
+// Note that commandline arguments are not passed to gtk_init(). All GTK+
+// functionality that is available via commandline arguments can also be
+// achieved by setting suitable environment variables such as `G_DEBUG`, so this
+// should not be a big problem. If you absolutely must support GTK+ commandline
+// arguments, you can explicitly call gtk_init() before creating the application
+// instance.
+//
+// If non-nil, the application ID must be valid. See
+// g_application_id_is_valid().
+//
+// If no application ID is given then some features (most notably application
+// uniqueness) will be disabled. A null application ID is only allowed with GTK+
+// 3.6 or later.
+func NewApplication(applicationId string, flags gio.ApplicationFlags) *Application {
+	var _arg1 *C.gchar            // out
+	var _arg2 C.GApplicationFlags // out
+	var _cret *C.GtkApplication   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GApplicationFlags(flags)
+
+	_cret = C.gtk_application_new(_arg1, _arg2)
+
+	var _application *Application // out
+
+	_application = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Application)
+
+	return _application
+}
+
 // AddAccelerator installs an accelerator that will cause the named action to be
 // activated when the key combination specificed by @accelerator is pressed.
 //
@@ -259,7 +302,7 @@ func (application *Application) AddAccelerator(accelerator string, actionName st
 // gtk_application_remove_window().
 //
 // GTK+ will keep the @application running as long as it has any windows.
-func (application *Application) AddWindow(window Windowwer) {
+func (application *Application) AddWindow(window Windower) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -423,6 +466,72 @@ func (application *Application) WindowByID(id uint) *Window {
 	return _window
 }
 
+// Inhibit: inform the session manager that certain types of actions should be
+// inhibited. This is not guaranteed to work on all platforms and for all types
+// of actions.
+//
+// Applications should invoke this method when they begin an operation that
+// should not be interrupted, such as creating a CD or DVD. The types of actions
+// that may be blocked are specified by the @flags parameter. When the
+// application completes the operation it should call
+// gtk_application_uninhibit() to remove the inhibitor. Note that an application
+// can have multiple inhibitors, and all of them must be individually removed.
+// Inhibitors are also cleared when the application exits.
+//
+// Applications should not expect that they will always be able to block the
+// action. In most cases, users will be given the option to force the action to
+// take place.
+//
+// Reasons should be short and to the point.
+//
+// If @window is given, the session manager may point the user to this window to
+// find out more about why the action is inhibited.
+func (application *Application) Inhibit(window Windower, flags ApplicationInhibitFlags, reason string) uint {
+	var _arg0 *C.GtkApplication            // out
+	var _arg1 *C.GtkWindow                 // out
+	var _arg2 C.GtkApplicationInhibitFlags // out
+	var _arg3 *C.gchar                     // out
+	var _cret C.guint                      // in
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg2 = C.GtkApplicationInhibitFlags(flags)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(reason)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// IsInhibited determines if any of the actions specified in @flags are
+// currently inhibited (possibly by another application).
+//
+// Note that this information may not be available (for example when the
+// application is running in a sandbox).
+func (application *Application) IsInhibited(flags ApplicationInhibitFlags) bool {
+	var _arg0 *C.GtkApplication            // out
+	var _arg1 C.GtkApplicationInhibitFlags // out
+	var _cret C.gboolean                   // in
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = C.GtkApplicationInhibitFlags(flags)
+
+	_cret = C.gtk_application_is_inhibited(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ListActionDescriptions lists the detailed action names which have associated
 // accelerators. See gtk_application_set_accels_for_action().
 func (application *Application) ListActionDescriptions() []string {
@@ -523,7 +632,7 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 // the Window:application property of @window to nil.
 //
 // The application may stop running as a result of a call to this function.
-func (application *Application) RemoveWindow(window Windowwer) {
+func (application *Application) RemoveWindow(window Windower) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -578,7 +687,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
+func (application *Application) SetAppMenu(appMenu gio.MenuModeler) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -605,7 +714,7 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetMenubar(menubar gio.MenuModeller) {
+func (application *Application) SetMenubar(menubar gio.MenuModeler) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 

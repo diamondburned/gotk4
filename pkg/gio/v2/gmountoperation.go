@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -37,11 +36,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MountOperationOverrider interface {
-	//
 	Aborted()
+	AskPassword(message string, defaultUser string, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	AskQuestion(message string, choices []string)
-	//
+	// Reply emits the Operation::reply signal.
+	Reply(result MountOperationResult)
 	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
 }
 
@@ -68,6 +68,8 @@ type MountOperationer interface {
 	Pim() uint
 	// Username: get the user name from the mount operation.
 	Username() string
+	// Reply emits the Operation::reply signal.
+	Reply(result MountOperationResult)
 	// SetAnonymous sets the mount operation to use an anonymous user if
 	// @anonymous is true.
 	SetAnonymous(anonymous bool)
@@ -83,6 +85,9 @@ type MountOperationer interface {
 	SetIsTcryptSystemVolume(systemVolume bool)
 	// SetPassword sets the mount operation's password to @password.
 	SetPassword(password string)
+	// SetPasswordSave sets the state of saving passwords for the mount
+	// operation.
+	SetPasswordSave(save PasswordSave)
 	// SetPim sets the mount operation's PIM to @pim.
 	SetPim(pim uint)
 	// SetUsername sets the user name within @op to @username.
@@ -296,6 +301,17 @@ func (op *MountOperation) Username() string {
 	return _utf8
 }
 
+// Reply emits the Operation::reply signal.
+func (op *MountOperation) Reply(result MountOperationResult) {
+	var _arg0 *C.GMountOperation      // out
+	var _arg1 C.GMountOperationResult // out
+
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
+	_arg1 = C.GMountOperationResult(result)
+
+	C.g_mount_operation_reply(_arg0, _arg1)
+}
+
 // SetAnonymous sets the mount operation to use an anonymous user if @anonymous
 // is true.
 func (op *MountOperation) SetAnonymous(anonymous bool) {
@@ -371,6 +387,17 @@ func (op *MountOperation) SetPassword(password string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_mount_operation_set_password(_arg0, _arg1)
+}
+
+// SetPasswordSave sets the state of saving passwords for the mount operation.
+func (op *MountOperation) SetPasswordSave(save PasswordSave) {
+	var _arg0 *C.GMountOperation // out
+	var _arg1 C.GPasswordSave    // out
+
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(op.Native()))
+	_arg1 = C.GPasswordSave(save)
+
+	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
 // SetPim sets the mount operation's PIM to @pim.

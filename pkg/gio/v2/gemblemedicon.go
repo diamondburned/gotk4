@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,14 +27,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconner},
+		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconer},
 	})
 }
 
-// EmblemedIconner describes EmblemedIcon's methods.
-type EmblemedIconner interface {
+// EmblemedIconer describes EmblemedIcon's methods.
+type EmblemedIconer interface {
 	// AddEmblem adds @emblem to the #GList of #GEmblems.
-	AddEmblem(emblem Emblemmer)
+	AddEmblem(emblem Emblemer)
 	// ClearEmblems removes all the emblems from @icon.
 	ClearEmblems()
 	// GetIcon gets the main icon for @emblemed.
@@ -55,11 +54,11 @@ type EmblemedIcon struct {
 }
 
 var (
-	_ EmblemedIconner = (*EmblemedIcon)(nil)
+	_ EmblemedIconer  = (*EmblemedIcon)(nil)
 	_ gextras.Nativer = (*EmblemedIcon)(nil)
 )
 
-func wrapEmblemedIcon(obj *externglib.Object) EmblemedIconner {
+func wrapEmblemedIcon(obj *externglib.Object) EmblemedIconer {
 	return &EmblemedIcon{
 		Object: obj,
 		Icon: Icon{
@@ -68,7 +67,7 @@ func wrapEmblemedIcon(obj *externglib.Object) EmblemedIconner {
 	}
 }
 
-func marshalEmblemedIconner(p uintptr) (interface{}, error) {
+func marshalEmblemedIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEmblemedIcon(obj), nil
@@ -76,7 +75,7 @@ func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 
 // NewEmblemedIcon creates a new emblemed icon for @icon with the emblem
 // @emblem.
-func NewEmblemedIcon(icon Iconner, emblem Emblemmer) *EmblemedIcon {
+func NewEmblemedIcon(icon Iconer, emblem Emblemer) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -94,7 +93,7 @@ func NewEmblemedIcon(icon Iconner, emblem Emblemmer) *EmblemedIcon {
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
-func (emblemed *EmblemedIcon) AddEmblem(emblem Emblemmer) {
+func (emblemed *EmblemedIcon) AddEmblem(emblem Emblemer) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 

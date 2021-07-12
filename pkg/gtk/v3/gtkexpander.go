@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -30,7 +29,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ExpanderOverrider interface {
-	//
 	Activate()
 }
 
@@ -66,7 +64,7 @@ type Expanderer interface {
 	// horizontal space allocated to @expander.
 	SetLabelFill(labelFill bool)
 	// SetLabelWidget: set the label widget for the expander.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
 	// SetResizeToplevel sets whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	SetResizeToplevel(resizeToplevel bool)
@@ -388,7 +386,7 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 
 // SetLabelWidget: set the label widget for the expander. This is the widget
 // that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

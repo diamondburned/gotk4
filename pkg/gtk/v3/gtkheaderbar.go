@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarrer},
+		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarer},
 	})
 }
 
-// HeaderBarrer describes HeaderBar's methods.
-type HeaderBarrer interface {
+// HeaderBarer describes HeaderBar's methods.
+type HeaderBarer interface {
 	// CustomTitle retrieves the custom title widget of the header.
 	CustomTitle() *Widget
 	// DecorationLayout gets the decoration layout set with
@@ -44,12 +43,12 @@ type HeaderBarrer interface {
 	Title() string
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
-	PackEnd(child Widgetter)
+	PackEnd(child Widgeter)
 	// PackStart adds @child to @bar, packed with reference to the start of the
 	// @bar.
-	PackStart(child Widgetter)
+	PackStart(child Widgeter)
 	// SetCustomTitle sets a custom title for the HeaderBar.
-	SetCustomTitle(titleWidget Widgetter)
+	SetCustomTitle(titleWidget Widgeter)
 	// SetDecorationLayout sets the decoration layout for this header bar,
 	// overriding the Settings:gtk-decoration-layout setting.
 	SetDecorationLayout(layout string)
@@ -84,11 +83,11 @@ type HeaderBar struct {
 }
 
 var (
-	_ HeaderBarrer    = (*HeaderBar)(nil)
+	_ HeaderBarer     = (*HeaderBar)(nil)
 	_ gextras.Nativer = (*HeaderBar)(nil)
 )
 
-func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
+func wrapHeaderBar(obj *externglib.Object) HeaderBarer {
 	return &HeaderBar{
 		Container: Container{
 			Widget: Widget{
@@ -106,7 +105,7 @@ func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
 	}
 }
 
-func marshalHeaderBarrer(p uintptr) (interface{}, error) {
+func marshalHeaderBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHeaderBar(obj), nil
@@ -231,7 +230,7 @@ func (bar *HeaderBar) Title() string {
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the @bar.
-func (bar *HeaderBar) PackEnd(child Widgetter) {
+func (bar *HeaderBar) PackEnd(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -243,7 +242,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 
 // PackStart adds @child to @bar, packed with reference to the start of the
 // @bar.
-func (bar *HeaderBar) PackStart(child Widgetter) {
+func (bar *HeaderBar) PackStart(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -262,7 +261,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // You should set the custom title to nil, for the header title label to be
 // visible again.
-func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
+func (bar *HeaderBar) SetCustomTitle(titleWidget Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 

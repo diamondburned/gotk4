@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -13,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,6 +26,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -668,6 +669,181 @@ func (appinfo *AppInfo) SupportsUris() bool {
 	return _ok
 }
 
+// AppInfoCreateFromCommandline creates a new Info from the given information.
+//
+// Note that for @commandline, the quoting rules of the Exec key of the
+// freedesktop.org Desktop Entry Specification
+// (http://freedesktop.org/Standards/desktop-entry-spec) are applied. For
+// example, if the @commandline contains percent-encoded URIs, the
+// percent-character must be doubled in order to prevent it from being swallowed
+// by Exec key unquoting. See the specification for exact quoting rules.
+func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
+	var _arg1 *C.char               // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GAppInfoCreateFlags // out
+	var _cret *C.GAppInfo           // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(commandline)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(applicationName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GAppInfoCreateFlags(flags)
+
+	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
+
+	var _appInfo *AppInfo // out
+	var _goerr error      // out
+
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _appInfo, _goerr
+}
+
+// AppInfoGetDefaultForType gets the default Info for a given content type.
+func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
+	var _arg1 *C.char     // out
+	var _arg2 C.gboolean  // out
+	var _cret *C.GAppInfo // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if mustSupportUris {
+		_arg2 = C.TRUE
+	}
+
+	_cret = C.g_app_info_get_default_for_type(_arg1, _arg2)
+
+	var _appInfo *AppInfo // out
+
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+
+	return _appInfo
+}
+
+// AppInfoGetDefaultForURIScheme gets the default application for handling URIs
+// with the given URI scheme. A URI scheme is the initial part of the URI, up to
+// but not including the ':', e.g. "http", "ftp" or "sip".
+func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
+	var _arg1 *C.char     // out
+	var _cret *C.GAppInfo // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
+
+	var _appInfo *AppInfo // out
+
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfo)
+
+	return _appInfo
+}
+
+// AppInfoLaunchDefaultForURI: utility function that launches the default
+// application registered to handle the specified uri. Synchronous I/O is done
+// on the uri to detect the type of the file if required.
+//
+// The D-Bus–activated applications don't have to be started if your application
+// terminates too soon after this function. To prevent this, use
+// g_app_info_launch_default_for_uri_async() instead.
+func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContexter) error {
+	var _arg1 *C.char              // out
+	var _arg2 *C.GAppLaunchContext // out
+	var _cerr *C.GError            // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+
+	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AppInfoLaunchDefaultForURIAsync: async version of
+// g_app_info_launch_default_for_uri().
+//
+// This version is useful if you are interested in receiving error information
+// in the case where the application is sandboxed and the portal may present an
+// application chooser dialog to the user.
+//
+// This is also useful if you want to be sure that the D-Bus–activated
+// applications are really started before termination and if you are interested
+// in receiving error information from their activation.
+func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContexter, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 *C.char               // out
+	var _arg2 *C.GAppLaunchContext  // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.Assign(callback))
+
+	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// AppInfoLaunchDefaultForURIFinish finishes an asynchronous
+// launch-default-for-uri operation.
+func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+
+	C.g_app_info_launch_default_for_uri_finish(_arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// AppInfoResetTypeAssociations removes all changes to the type associations
+// done by g_app_info_set_as_default_for_type(),
+// g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
+// g_app_info_remove_supports_type().
+func AppInfoResetTypeAssociations(contentType string) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_app_info_reset_type_associations(_arg1)
+}
+
+// AppInfoMonitorGet gets the InfoMonitor for the current thread-default main
+// context.
+//
+// The InfoMonitor will emit a "changed" signal in the thread-default main
+// context whenever the list of installed applications (as reported by
+// g_app_info_get_all()) may have changed.
+//
+// You must only call g_object_unref() on the return value from under the same
+// main context as you created it.
+func AppInfoMonitorGet() *AppInfoMonitor {
+	var _cret *C.GAppInfoMonitor // in
+
+	_cret = C.g_app_info_monitor_get()
+
+	var _appInfoMonitor *AppInfoMonitor // out
+
+	_appInfoMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*AppInfoMonitor)
+
+	return _appInfoMonitor
+}
+
 // AppLaunchContextOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
@@ -677,7 +853,6 @@ type AppLaunchContextOverrider interface {
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
-	//
 	Launched(info AppInfor, platformData *glib.Variant)
 }
 

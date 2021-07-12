@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTagger},
+		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTager},
 	})
 }
 
-// TextTagger describes TextTag's methods.
-type TextTagger interface {
+// TextTager describes TextTag's methods.
+type TextTager interface {
 	// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
 	// `GtkTextTagTable` where the tag is included.
 	Changed(sizeChanged bool)
@@ -55,17 +54,17 @@ type TextTag struct {
 }
 
 var (
-	_ TextTagger      = (*TextTag)(nil)
+	_ TextTager       = (*TextTag)(nil)
 	_ gextras.Nativer = (*TextTag)(nil)
 )
 
-func wrapTextTag(obj *externglib.Object) TextTagger {
+func wrapTextTag(obj *externglib.Object) TextTager {
 	return &TextTag{
 		Object: obj,
 	}
 }
 
-func marshalTextTagger(p uintptr) (interface{}, error) {
+func marshalTextTager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextTag(obj), nil

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtonner},
+		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolButtonOverrider interface {
-	//
 	Clicked()
 }
 
-// ToolButtonner describes ToolButton's methods.
-type ToolButtonner interface {
+// ToolButtoner describes ToolButton's methods.
+type ToolButtoner interface {
 	// IconName returns the name of the themed icon for the tool button, see
 	// gtk_tool_button_set_icon_name().
 	IconName() string
@@ -54,12 +52,12 @@ type ToolButtonner interface {
 	// SetIconName sets the icon for the tool button from a named themed icon.
 	SetIconName(iconName string)
 	// SetIconWidget sets @icon as the widget used as icon on @button.
-	SetIconWidget(iconWidget Widgetter)
+	SetIconWidget(iconWidget Widgeter)
 	// SetLabel sets @label as the label used for the tool button.
 	SetLabel(label string)
 	// SetLabelWidget sets @label_widget as the widget that will be used as the
 	// label for @button.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
 	// SetStockID sets the name of the stock item.
 	SetStockID(stockId string)
 	// SetUseUnderline: if set, an underline in the label property indicates
@@ -96,11 +94,11 @@ type ToolButton struct {
 }
 
 var (
-	_ ToolButtonner   = (*ToolButton)(nil)
+	_ ToolButtoner    = (*ToolButton)(nil)
 	_ gextras.Nativer = (*ToolButton)(nil)
 )
 
-func wrapToolButton(obj *externglib.Object) ToolButtonner {
+func wrapToolButton(obj *externglib.Object) ToolButtoner {
 	return &ToolButton{
 		ToolItem: ToolItem{
 			Bin: Bin{
@@ -138,7 +136,7 @@ func wrapToolButton(obj *externglib.Object) ToolButtonner {
 	}
 }
 
-func marshalToolButtonner(p uintptr) (interface{}, error) {
+func marshalToolButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolButton(obj), nil
@@ -146,7 +144,7 @@ func marshalToolButtonner(p uintptr) (interface{}, error) {
 
 // NewToolButton creates a new ToolButton using @icon_widget as contents and
 // @label as label.
-func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
+func NewToolButton(iconWidget Widgeter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -322,7 +320,7 @@ func (button *ToolButton) SetIconName(iconName string) {
 // @icon_widget is nil the icon is determined by the ToolButton:stock-id
 // property. If the ToolButton:stock-id property is also nil, @button will not
 // have an icon.
-func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
+func (button *ToolButton) SetIconWidget(iconWidget Widgeter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -354,7 +352,7 @@ func (button *ToolButton) SetLabel(label string) {
 // used as label. If ToolButton:label is also nil, the label in the stock item
 // determined by the ToolButton:stock-id property is used as label. If
 // ToolButton:stock-id is also nil, @button does not have a label.
-func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
+func (button *ToolButton) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 

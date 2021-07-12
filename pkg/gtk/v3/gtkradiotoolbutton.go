@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtonner},
+		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtoner},
 	})
 }
 
-// RadioToolButtonner describes RadioToolButton's methods.
-type RadioToolButtonner interface {
+// RadioToolButtoner describes RadioToolButton's methods.
+type RadioToolButtoner interface {
 	privateRadioToolButton()
 }
 
@@ -47,11 +46,11 @@ type RadioToolButton struct {
 }
 
 var (
-	_ RadioToolButtonner = (*RadioToolButton)(nil)
-	_ gextras.Nativer    = (*RadioToolButton)(nil)
+	_ RadioToolButtoner = (*RadioToolButton)(nil)
+	_ gextras.Nativer   = (*RadioToolButton)(nil)
 )
 
-func wrapRadioToolButton(obj *externglib.Object) RadioToolButtonner {
+func wrapRadioToolButton(obj *externglib.Object) RadioToolButtoner {
 	return &RadioToolButton{
 		ToggleToolButton: ToggleToolButton{
 			ToolButton: ToolButton{
@@ -93,7 +92,7 @@ func wrapRadioToolButton(obj *externglib.Object) RadioToolButtonner {
 	}
 }
 
-func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
+func marshalRadioToolButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioToolButton(obj), nil
@@ -101,7 +100,7 @@ func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
 // same group as @gruup
-func NewRadioToolButtonFromWidget(group RadioToolButtonner) *RadioToolButton {
+func NewRadioToolButtonFromWidget(group RadioToolButtoner) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
@@ -121,7 +120,7 @@ func NewRadioToolButtonFromWidget(group RadioToolButtonner) *RadioToolButton {
 // label from the stock item indicated by @stock_id.
 //
 // Deprecated: gtk_radio_tool_button_new_from_widget.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButtonner, stockId string) *RadioToolButton {
+func NewRadioToolButtonWithStockFromWidget(group RadioToolButtoner, stockId string) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in

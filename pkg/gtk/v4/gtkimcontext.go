@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -29,7 +28,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IMContextOverrider interface {
-	//
 	Commit(str string)
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// delete characters around the cursor position by emitting the
@@ -107,25 +105,21 @@ type IMContextOverrider interface {
 	// `::retrieve-surrounding` signal, so input methods must be prepared to
 	// function without context.
 	SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool)
-	//
 	PreeditChanged()
-	//
 	PreeditEnd()
-	//
 	PreeditStart()
 	// Reset: notify the input method that a change such as a change in cursor
 	// position has been made.
 	//
 	// This will typically cause the input method to clear the preedit state.
 	Reset()
-	//
 	RetrieveSurrounding() bool
 	// SetClientWidget: set the client widget for the input context.
 	//
 	// This is the `GtkWidget` holding the input focus. This widget is used in
 	// order to correctly position status windows, and may also be used for
 	// purposes internal to the input method.
-	SetClientWidget(widget Widgetter)
+	SetClientWidget(widget Widgeter)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	//
@@ -161,6 +155,10 @@ type IMContexter interface {
 	// delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
 	DeleteSurrounding(offset int, nChars int) bool
+	// FilterKey: allow an input method to forward key press and release events
+	// to another input methodm without necessarily having a `GdkEvent`
+	// available.
+	FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	FilterKeypress(event gdk.Eventer) bool
@@ -181,7 +179,7 @@ type IMContexter interface {
 	// position has been made.
 	Reset()
 	// SetClientWidget: set the client widget for the input context.
-	SetClientWidget(widget Widgetter)
+	SetClientWidget(widget Widgeter)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -281,6 +279,41 @@ func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
 	_arg2 = C.int(nChars)
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// FilterKey: allow an input method to forward key press and release events to
+// another input methodm without necessarily having a `GdkEvent` available.
+func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool {
+	var _arg0 *C.GtkIMContext   // out
+	var _arg1 C.gboolean        // out
+	var _arg2 *C.GdkSurface     // out
+	var _arg3 *C.GdkDevice      // out
+	var _arg4 C.guint32         // out
+	var _arg5 C.guint           // out
+	var _arg6 C.GdkModifierType // out
+	var _arg7 C.int             // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
+	if press {
+		_arg1 = C.TRUE
+	}
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg4 = C.guint32(time)
+	_arg5 = C.guint(keycode)
+	_arg6 = C.GdkModifierType(state)
+	_arg7 = C.int(group)
+
+	_cret = C.gtk_im_context_filter_key(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
 	var _ok bool // out
 
@@ -468,7 +501,7 @@ func (context *IMContext) Reset() {
 // This is the `GtkWidget` holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
-func (context *IMContext) SetClientWidget(widget Widgetter) {
+func (context *IMContext) SetClientWidget(widget Widgeter) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GtkWidget    // out
 

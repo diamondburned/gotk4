@@ -6,28 +6,28 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconner},
+		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconer},
 	})
 }
 
-// DragIconner describes DragIcon's methods.
-type DragIconner interface {
+// DragIconer describes DragIcon's methods.
+type DragIconer interface {
 	// Child gets the widget currently used as drag icon.
 	Child() *Widget
 	// SetChild sets the widget to display as the drag icon.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 }
 
 // DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
@@ -48,11 +48,11 @@ type DragIcon struct {
 }
 
 var (
-	_ DragIconner     = (*DragIcon)(nil)
+	_ DragIconer      = (*DragIcon)(nil)
 	_ gextras.Nativer = (*DragIcon)(nil)
 )
 
-func wrapDragIcon(obj *externglib.Object) DragIconner {
+func wrapDragIcon(obj *externglib.Object) DragIconer {
 	return &DragIcon{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -89,7 +89,7 @@ func wrapDragIcon(obj *externglib.Object) DragIconner {
 	}
 }
 
-func marshalDragIconner(p uintptr) (interface{}, error) {
+func marshalDragIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDragIcon(obj), nil
@@ -118,7 +118,7 @@ func (self *DragIcon) Child() *Widget {
 }
 
 // SetChild sets the widget to display as the drag icon.
-func (self *DragIcon) SetChild(child Widgetter) {
+func (self *DragIcon) SetChild(child Widgeter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -126,4 +126,65 @@ func (self *DragIcon) SetChild(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_drag_icon_set_child(_arg0, _arg1)
+}
+
+// DragIconCreateWidgetForValue creates a widget that can be used as a drag icon
+// for the given @value.
+//
+// Supported types include strings, `GdkRGBA` and `GtkTextBuffer`. If GTK does
+// not know how to create a widget for a given value, it will return nil.
+//
+// This method is used to set the default drag icon on drag'n'drop operations
+// started by `GtkDragSource`, so you don't need to set a drag icon using this
+// function there.
+func DragIconCreateWidgetForValue(value *externglib.Value) *Widget {
+	var _arg1 *C.GValue    // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+
+	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
+
+	var _widget *Widget // out
+
+	_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Widget)
+
+	return _widget
+}
+
+// DragIconGetForDrag gets the `GtkDragIcon` in use with @drag.
+//
+// If no drag icon exists yet, a new one will be created and shown.
+func DragIconGetForDrag(drag gdk.Drager) *Widget {
+	var _arg1 *C.GdkDrag   // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer((drag).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
+
+	var _widget *Widget // out
+
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+
+	return _widget
+}
+
+// DragIconSetFromPaintable creates a `GtkDragIcon` that shows @paintable, and
+// associates it with the drag operation.
+//
+// The hotspot position on the paintable is aligned with the hotspot of the
+// cursor.
+func DragIconSetFromPaintable(drag gdk.Drager, paintable gdk.Paintabler, hotX int, hotY int) {
+	var _arg1 *C.GdkDrag      // out
+	var _arg2 *C.GdkPaintable // out
+	var _arg3 C.int           // out
+	var _arg4 C.int           // out
+
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer((drag).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer((paintable).(gextras.Nativer).Native()))
+	_arg3 = C.int(hotX)
+	_arg4 = C.int(hotY)
+
+	C.gtk_drag_icon_set_from_paintable(_arg1, _arg2, _arg3, _arg4)
 }

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -501,4 +500,88 @@ func (v *Vec4) ToFloat() [4]float32 {
 	_dest = *(*[4]float32)(unsafe.Pointer(&_arg1))
 
 	return _dest
+}
+
+// Vec4One retrieves a pointer to a #graphene_vec4_t with all its components set
+// to 1.
+func Vec4One() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_one()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
+}
+
+// Vec4WAxis retrieves a pointer to a #graphene_vec4_t with its components set
+// to (0, 0, 0, 1).
+func Vec4WAxis() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_w_axis()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
+}
+
+// Vec4XAxis retrieves a pointer to a #graphene_vec4_t with its components set
+// to (1, 0, 0, 0).
+func Vec4XAxis() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_x_axis()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
+}
+
+// Vec4YAxis retrieves a pointer to a #graphene_vec4_t with its components set
+// to (0, 1, 0, 0).
+func Vec4YAxis() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_y_axis()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
+}
+
+// Vec4ZAxis retrieves a pointer to a #graphene_vec4_t with its components set
+// to (0, 0, 1, 0).
+func Vec4ZAxis() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_z_axis()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
+}
+
+// Vec4Zero retrieves a pointer to a #graphene_vec4_t with all its components
+// set to 0.
+func Vec4Zero() *Vec4 {
+	var _cret *C.graphene_vec4_t // in
+
+	_cret = C.graphene_vec4_zero()
+
+	var _vec4 *Vec4 // out
+
+	_vec4 = (*Vec4)(unsafe.Pointer(_cret))
+
+	return _vec4
 }

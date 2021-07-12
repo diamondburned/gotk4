@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,12 +21,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtonner},
+		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtoner},
 	})
 }
 
-// MenuButtonner describes MenuButton's methods.
-type MenuButtonner interface {
+// MenuButtoner describes MenuButton's methods.
+type MenuButtoner interface {
 	// AlignWidget returns the parent Widget to use to line up with menu.
 	AlignWidget() *Widget
 	// Direction returns the direction the popup will be pointing at when popped
@@ -44,17 +43,20 @@ type MenuButtonner interface {
 	UsePopover() bool
 	// SetAlignWidget sets the Widget to use to line the menu with when popped
 	// up.
-	SetAlignWidget(alignWidget Widgetter)
+	SetAlignWidget(alignWidget Widgeter)
+	// SetDirection sets the direction in which the popup will be popped up, as
+	// well as changing the arrow’s direction.
+	SetDirection(direction ArrowType)
 	// SetMenuModel sets the Model from which the popup will be constructed, or
 	// nil to dissociate any existing menu model and disable the button.
-	SetMenuModel(menuModel gio.MenuModeller)
+	SetMenuModel(menuModel gio.MenuModeler)
 	// SetPopover sets the Popover that will be popped up when the @menu_button
 	// is clicked, or nil to dissociate any existing popover and disable the
 	// button.
-	SetPopover(popover Widgetter)
+	SetPopover(popover Widgeter)
 	// SetPopup sets the Menu that will be popped up when the @menu_button is
 	// clicked, or nil to dissociate any existing menu and disable the button.
-	SetPopup(menu Widgetter)
+	SetPopup(menu Widgeter)
 	// SetUsePopover sets whether to construct a Popover instead of Menu when
 	// gtk_menu_button_set_menu_model() is called.
 	SetUsePopover(usePopover bool)
@@ -146,11 +148,11 @@ type MenuButton struct {
 }
 
 var (
-	_ MenuButtonner   = (*MenuButton)(nil)
+	_ MenuButtoner    = (*MenuButton)(nil)
 	_ gextras.Nativer = (*MenuButton)(nil)
 )
 
-func wrapMenuButton(obj *externglib.Object) MenuButtonner {
+func wrapMenuButton(obj *externglib.Object) MenuButtoner {
 	return &MenuButton{
 		ToggleButton: ToggleButton{
 			Button: Button{
@@ -190,7 +192,7 @@ func wrapMenuButton(obj *externglib.Object) MenuButtonner {
 	}
 }
 
-func marshalMenuButtonner(p uintptr) (interface{}, error) {
+func marshalMenuButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuButton(obj), nil
@@ -319,7 +321,7 @@ func (menuButton *MenuButton) UsePopover() bool {
 //
 // Note that this property is only used with menus currently, and not for
 // popovers.
-func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
+func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -327,6 +329,25 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((alignWidget).(gextras.Nativer).Native()))
 
 	C.gtk_menu_button_set_align_widget(_arg0, _arg1)
+}
+
+// SetDirection sets the direction in which the popup will be popped up, as well
+// as changing the arrow’s direction. The child will not be changed to an arrow
+// if it was customized.
+//
+// If the does not fit in the available space in the given direction, GTK+ will
+// its best to keep it inside the screen and fully visible.
+//
+// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if you
+// passed GTK_ARROW_DOWN (although you won’t see any arrows).
+func (menuButton *MenuButton) SetDirection(direction ArrowType) {
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 C.GtkArrowType   // out
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
+	_arg1 = C.GtkArrowType(direction)
+
+	C.gtk_menu_button_set_direction(_arg0, _arg1)
 }
 
 // SetMenuModel sets the Model from which the popup will be constructed, or nil
@@ -339,7 +360,7 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 //
 // If MenuButton:popup or MenuButton:popover are already set, those widgets are
 // dissociated from the @menu_button, and those properties are set to nil.
-func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
+func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
@@ -354,7 +375,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // If MenuButton:menu-model or MenuButton:popup are set, those objects are
 // dissociated from the @menu_button, and those properties are set to nil.
-func (menuButton *MenuButton) SetPopover(popover Widgetter) {
+func (menuButton *MenuButton) SetPopover(popover Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -369,7 +390,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 //
 // If MenuButton:menu-model or MenuButton:popover are set, those objects are
 // dissociated from the @menu_button, and those properties are set to nil.
-func (menuButton *MenuButton) SetPopup(menu Widgetter) {
+func (menuButton *MenuButton) SetPopup(menu Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -58,7 +57,7 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given @widget.
-func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
+func NewEventControllerMotion(widget Widgeter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 

@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -72,6 +71,27 @@ const (
 
 func marshalBidiType(p uintptr) (interface{}, error) {
 	return BidiType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BidiTypeForUnichar determines the bidirectional type of a character.
+//
+// The bidirectional type is specified in the Unicode Character Database.
+//
+// A simplified version of this function is available as
+// [func@unichar_direction].
+func BidiTypeForUnichar(ch uint32) BidiType {
+	var _arg1 C.gunichar      // out
+	var _cret C.PangoBidiType // in
+
+	_arg1 = C.gunichar(ch)
+
+	_cret = C.pango_bidi_type_for_unichar(_arg1)
+
+	var _bidiType BidiType // out
+
+	_bidiType = BidiType(_cret)
+
+	return _bidiType
 }
 
 // FindBaseDir searches a string the first character that has a strong

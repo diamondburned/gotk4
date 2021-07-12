@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarrer},
+		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarer},
 	})
 }
 
-// Scrollbarrer describes Scrollbar's methods.
-type Scrollbarrer interface {
+// Scrollbarer describes Scrollbar's methods.
+type Scrollbarer interface {
 	privateScrollbar()
 }
 
@@ -73,11 +72,11 @@ type Scrollbar struct {
 }
 
 var (
-	_ Scrollbarrer    = (*Scrollbar)(nil)
+	_ Scrollbarer     = (*Scrollbar)(nil)
 	_ gextras.Nativer = (*Scrollbar)(nil)
 )
 
-func wrapScrollbar(obj *externglib.Object) Scrollbarrer {
+func wrapScrollbar(obj *externglib.Object) Scrollbarer {
 	return &Scrollbar{
 		Range: Range{
 			Widget: Widget{
@@ -98,10 +97,28 @@ func wrapScrollbar(obj *externglib.Object) Scrollbarrer {
 	}
 }
 
-func marshalScrollbarrer(p uintptr) (interface{}, error) {
+func marshalScrollbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScrollbar(obj), nil
+}
+
+// NewScrollbar creates a new scrollbar with the given orientation.
+func NewScrollbar(orientation Orientation, adjustment Adjustmenter) *Scrollbar {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
+
+	var _scrollbar *Scrollbar // out
+
+	_scrollbar = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scrollbar)
+
+	return _scrollbar
 }
 
 func (*Scrollbar) privateScrollbar() {}

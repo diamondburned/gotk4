@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -30,42 +29,60 @@ func init() {
 type ValueType int
 
 const (
-	//
 	ValueTypeVeryWeak ValueType = iota
-	//
 	ValueTypeWeak
-	//
 	ValueTypeAcceptable
-	//
 	ValueTypeStrong
-	//
 	ValueTypeVeryStrong
-	//
 	ValueTypeVeryLow
-	//
 	ValueTypeLow
-	//
 	ValueTypeMedium
-	//
 	ValueTypeHigh
-	//
 	ValueTypeVeryHigh
-	//
 	ValueTypeVeryBad
-	//
 	ValueTypeBad
-	//
 	ValueTypeGood
-	//
 	ValueTypeVeryGood
-	//
 	ValueTypeBest
-	//
 	ValueTypeLastDefined
 )
 
 func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ValueTypeGetLocalizedName gets the localized description string describing
+// the ValueType @value_type.
+func ValueTypeGetLocalizedName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_localized_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ValueTypeGetName gets the description string describing the ValueType
+// @value_type.
+func ValueTypeGetName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // ValueOverrider contains methods that are overridable.

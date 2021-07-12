@@ -16,7 +16,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,6 +27,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the @get_property function in
@@ -400,6 +400,27 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	return cret
 }
 
+// BusGet: asynchronously connects to the message bus specified by @bus_type.
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_bus_get_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See g_bus_get_sync() for the
+// synchronous version.
+func BusGet(busType BusType, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 C.GBusType            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg1 = C.GBusType(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(gbox.Assign(callback))
+
+	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
+}
+
 // BusGetFinish finishes an operation started with g_bus_get().
 //
 // The returned object is a singleton, that is, shared with other callers of
@@ -425,6 +446,117 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
+}
+
+// BusGetSync: synchronously connects to the message bus specified by @bus_type.
+// Note that the returned object may shared with other callers, e.g. if two
+// separate parts of a process calls this function with the same @bus_type, they
+// will share the same object.
+//
+// This is a synchronous failable function. See g_bus_get() and
+// g_bus_get_finish() for the asynchronous version.
+//
+// The returned object is a singleton, that is, shared with other callers of
+// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
+// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_dbus_connection_new_for_address().
+//
+// Note that the returned BusConnection object will (usually) have the
+// BusConnection:exit-on-close property set to true.
+func BusGetSync(busType BusType, cancellable Cancellabler) (*DBusConnection, error) {
+	var _arg1 C.GBusType         // out
+	var _arg2 *C.GCancellable    // out
+	var _cret *C.GDBusConnection // in
+	var _cerr *C.GError          // in
+
+	_arg1 = C.GBusType(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
+
+	var _dBusConnection *DBusConnection // out
+	var _goerr error                    // out
+
+	_dBusConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dBusConnection, _goerr
+}
+
+// NewDBusConnection: asynchronously sets up a D-Bus connection for exchanging
+// D-Bus messages with the end represented by @stream.
+//
+// If @stream is a Connection, then the corresponding #GSocket will be put into
+// non-blocking mode.
+//
+// The D-Bus connection will interact with @stream from a worker thread. As a
+// result, the caller should not interact with @stream after this method has
+// been called, except by calling g_object_unref() on it.
+//
+// If @observer is not nil it may be used to control the authentication process.
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_dbus_connection_new_finish() to get the result of the operation.
+//
+// This is an asynchronous failable constructor. See
+// g_dbus_connection_new_sync() for the synchronous version.
+func NewDBusConnection(stream IOStreamer, guid string, flags DBusConnectionFlags, observer DBusAuthObserverer, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 *C.GIOStream           // out
+	var _arg2 *C.gchar               // out
+	var _arg3 C.GDBusConnectionFlags // out
+	var _arg4 *C.GDBusAuthObserver   // out
+	var _arg5 *C.GCancellable        // out
+	var _arg6 C.GAsyncReadyCallback  // out
+	var _arg7 C.gpointer
+
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GDBusConnectionFlags(flags)
+	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer((observer).(gextras.Nativer).Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
+// DBusConnectionNewForAddress: asynchronously connects and sets up a D-Bus
+// client connection for exchanging D-Bus messages with an endpoint specified by
+// @address which must be in the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// This constructor can only be used to initiate client-side connections - use
+// g_dbus_connection_new() if you need to act as the server. In particular,
+// @flags cannot contain the G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER,
+// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS or
+// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flags.
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_dbus_connection_new_for_address_finish() to get the result of the
+// operation.
+//
+// If @observer is not nil it may be used to control the authentication process.
+//
+// This is an asynchronous failable constructor. See
+// g_dbus_connection_new_for_address_sync() for the synchronous version.
+func DBusConnectionNewForAddress(address string, flags DBusConnectionFlags, observer DBusAuthObserverer, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 *C.gchar               // out
+	var _arg2 C.GDBusConnectionFlags // out
+	var _arg3 *C.GDBusAuthObserver   // out
+	var _arg4 *C.GCancellable        // out
+	var _arg5 C.GAsyncReadyCallback  // out
+	var _arg6 C.gpointer
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GDBusConnectionFlags(flags)
+	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer((observer).(gextras.Nativer).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

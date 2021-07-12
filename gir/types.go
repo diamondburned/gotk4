@@ -100,6 +100,7 @@ type Class struct {
 	InfoAttrs
 	InfoElements
 
+	Functions      []Function      `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 	Implements     []Implements    `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
 	Constructors   []Constructor   `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	Methods        []Method        `xml:"http://www.gtk.org/introspection/core/1.0 method"`

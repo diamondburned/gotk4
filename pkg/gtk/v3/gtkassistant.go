@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -99,22 +98,18 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) (cret C.gint) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AssistantOverrider interface {
-	//
 	Apply()
-	//
 	Cancel()
-	//
 	Close()
-	//
-	Prepare(page Widgetter)
+	Prepare(page Widgeter)
 }
 
 // Assistanter describes Assistant's methods.
 type Assistanter interface {
 	// AddActionWidget adds a widget to the action area of a Assistant.
-	AddActionWidget(child Widgetter)
+	AddActionWidget(child Widgeter)
 	// AppendPage appends a page to the @assistant.
-	AppendPage(page Widgetter) int
+	AppendPage(page Widgeter) int
 	// Commit erases the visited page history so the back button is not shown on
 	// the current page, and removes the cancel button from subsequent pages.
 	Commit()
@@ -125,42 +120,44 @@ type Assistanter interface {
 	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) *Widget
 	// PageComplete gets whether @page is complete.
-	PageComplete(page Widgetter) bool
+	PageComplete(page Widgeter) bool
 	// PageHasPadding gets whether page has padding.
-	PageHasPadding(page Widgetter) bool
+	PageHasPadding(page Widgeter) bool
 	// PageHeaderImage gets the header image for @page.
-	PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf
+	PageHeaderImage(page Widgeter) *gdkpixbuf.Pixbuf
 	// PageSideImage gets the side image for @page.
-	PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf
+	PageSideImage(page Widgeter) *gdkpixbuf.Pixbuf
 	// PageTitle gets the title for @page.
-	PageTitle(page Widgetter) string
+	PageTitle(page Widgeter) string
 	// PageType gets the page type of @page.
-	PageType(page Widgetter) AssistantPageType
+	PageType(page Widgeter) AssistantPageType
 	// InsertPage inserts a page in the @assistant at a given position.
-	InsertPage(page Widgetter, position int) int
+	InsertPage(page Widgeter, position int) int
 	// NextPage: navigate to the next page.
 	NextPage()
 	// PrependPage prepends a page to the @assistant.
-	PrependPage(page Widgetter) int
+	PrependPage(page Widgeter) int
 	// PreviousPage: navigate to the previous visited page.
 	PreviousPage()
 	// RemoveActionWidget removes a widget from the action area of a Assistant.
-	RemoveActionWidget(child Widgetter)
+	RemoveActionWidget(child Widgeter)
 	// RemovePage removes the @page_num’s page from @assistant.
 	RemovePage(pageNum int)
 	// SetCurrentPage switches the page to @page_num.
 	SetCurrentPage(pageNum int)
 	// SetPageComplete sets whether @page contents are complete.
-	SetPageComplete(page Widgetter, complete bool)
+	SetPageComplete(page Widgeter, complete bool)
 	// SetPageHasPadding sets whether the assistant is adding padding around the
 	// page.
-	SetPageHasPadding(page Widgetter, hasPadding bool)
+	SetPageHasPadding(page Widgeter, hasPadding bool)
 	// SetPageHeaderImage sets a header image for @page.
-	SetPageHeaderImage(page Widgetter, pixbuf gdkpixbuf.Pixbuffer)
+	SetPageHeaderImage(page Widgeter, pixbuf gdkpixbuf.Pixbufer)
 	// SetPageSideImage sets a side image for @page.
-	SetPageSideImage(page Widgetter, pixbuf gdkpixbuf.Pixbuffer)
+	SetPageSideImage(page Widgeter, pixbuf gdkpixbuf.Pixbufer)
 	// SetPageTitle sets a title for @page.
-	SetPageTitle(page Widgetter, title string)
+	SetPageTitle(page Widgeter, title string)
+	// SetPageType sets the page type for @page.
+	SetPageType(page Widgeter, typ AssistantPageType)
 	// UpdateButtonsState forces @assistant to recompute the buttons state.
 	UpdateButtonsState()
 }
@@ -243,7 +240,7 @@ func NewAssistant() *Assistant {
 }
 
 // AddActionWidget adds a widget to the action area of a Assistant.
-func (assistant *Assistant) AddActionWidget(child Widgetter) {
+func (assistant *Assistant) AddActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -254,7 +251,7 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 }
 
 // AppendPage appends a page to the @assistant.
-func (assistant *Assistant) AppendPage(page Widgetter) int {
+func (assistant *Assistant) AppendPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gint          // in
@@ -337,7 +334,7 @@ func (assistant *Assistant) NthPage(pageNum int) *Widget {
 }
 
 // PageComplete gets whether @page is complete.
-func (assistant *Assistant) PageComplete(page Widgetter) bool {
+func (assistant *Assistant) PageComplete(page Widgeter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -357,7 +354,7 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 }
 
 // PageHasPadding gets whether page has padding.
-func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
+func (assistant *Assistant) PageHasPadding(page Widgeter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -380,7 +377,7 @@ func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
 //
 // Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
 // decoration to the page content instead.
-func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
+func (assistant *Assistant) PageHeaderImage(page Widgeter) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPixbuf    // in
@@ -400,7 +397,7 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 // PageSideImage gets the side image for @page.
 //
 // Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
-func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
+func (assistant *Assistant) PageSideImage(page Widgeter) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPixbuf    // in
@@ -418,7 +415,7 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 }
 
 // PageTitle gets the title for @page.
-func (assistant *Assistant) PageTitle(page Widgetter) string {
+func (assistant *Assistant) PageTitle(page Widgeter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.gchar        // in
@@ -436,7 +433,7 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 }
 
 // PageType gets the page type of @page.
-func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
+func (assistant *Assistant) PageType(page Widgeter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
@@ -454,7 +451,7 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
-func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
+func (assistant *Assistant) InsertPage(page Widgeter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out
@@ -488,7 +485,7 @@ func (assistant *Assistant) NextPage() {
 }
 
 // PrependPage prepends a page to the @assistant.
-func (assistant *Assistant) PrependPage(page Widgetter) int {
+func (assistant *Assistant) PrependPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gint          // in
@@ -521,7 +518,7 @@ func (assistant *Assistant) PreviousPage() {
 }
 
 // RemoveActionWidget removes a widget from the action area of a Assistant.
-func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
+func (assistant *Assistant) RemoveActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -560,7 +557,7 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 //
 // This will make @assistant update the buttons state to be able to continue the
 // task.
-func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
+func (assistant *Assistant) SetPageComplete(page Widgeter, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -576,7 +573,7 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 
 // SetPageHasPadding sets whether the assistant is adding padding around the
 // page.
-func (assistant *Assistant) SetPageHasPadding(page Widgetter, hasPadding bool) {
+func (assistant *Assistant) SetPageHasPadding(page Widgeter, hasPadding bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -594,7 +591,7 @@ func (assistant *Assistant) SetPageHasPadding(page Widgetter, hasPadding bool) {
 //
 // Deprecated: Since GTK+ 3.2, a header is no longer shown; add your header
 // decoration to the page content instead.
-func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf gdkpixbuf.Pixbuffer) {
+func (assistant *Assistant) SetPageHeaderImage(page Widgeter, pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkPixbuf    // out
@@ -612,7 +609,7 @@ func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf gdkpixbuf.
 // is the current page.
 //
 // Deprecated: Since GTK+ 3.2, sidebar images are not shown anymore.
-func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf gdkpixbuf.Pixbuffer) {
+func (assistant *Assistant) SetPageSideImage(page Widgeter, pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkPixbuf    // out
@@ -628,7 +625,7 @@ func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf gdkpixbuf.Pi
 //
 // The title is displayed in the header area of the assistant when @page is the
 // current page.
-func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
+func (assistant *Assistant) SetPageTitle(page Widgeter, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.gchar        // out
@@ -639,6 +636,21 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
+}
+
+// SetPageType sets the page type for @page.
+//
+// The page type determines the page behavior in the @assistant.
+func (assistant *Assistant) SetPageType(page Widgeter, typ AssistantPageType) {
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 C.GtkAssistantPageType // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
+	_arg2 = C.GtkAssistantPageType(typ)
+
+	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
 }
 
 // UpdateButtonsState forces @assistant to recompute the buttons state.

@@ -6,24 +6,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialogger},
+		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialoger},
 	})
 }
 
-// AppChooserDialogger describes AppChooserDialog's methods.
-type AppChooserDialogger interface {
+// AppChooserDialoger describes AppChooserDialog's methods.
+type AppChooserDialoger interface {
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
 	// Widget returns the `GtkAppChooserWidget` of this dialog.
@@ -51,11 +51,11 @@ type AppChooserDialog struct {
 }
 
 var (
-	_ AppChooserDialogger = (*AppChooserDialog)(nil)
-	_ gextras.Nativer     = (*AppChooserDialog)(nil)
+	_ AppChooserDialoger = (*AppChooserDialog)(nil)
+	_ gextras.Nativer    = (*AppChooserDialog)(nil)
 )
 
-func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialogger {
+func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialoger {
 	return &AppChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -115,10 +115,57 @@ func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialogger {
 	}
 }
 
-func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
+func marshalAppChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserDialog(obj), nil
+}
+
+// NewAppChooserDialog creates a new `GtkAppChooserDialog` for the provided
+// `GFile`.
+//
+// The dialog will show applications that can open the file.
+func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *AppChooserDialog {
+	var _arg1 *C.GtkWindow     // out
+	var _arg2 C.GtkDialogFlags // out
+	var _arg3 *C.GFile         // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = C.GtkDialogFlags(flags)
+	_arg3 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
+
+	var _appChooserDialog *AppChooserDialog // out
+
+	_appChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserDialog)
+
+	return _appChooserDialog
+}
+
+// NewAppChooserDialogForContentType creates a new `GtkAppChooserDialog` for the
+// provided content type.
+//
+// The dialog will show applications that can open the content type.
+func NewAppChooserDialogForContentType(parent Windower, flags DialogFlags, contentType string) *AppChooserDialog {
+	var _arg1 *C.GtkWindow     // out
+	var _arg2 C.GtkDialogFlags // out
+	var _arg3 *C.char          // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = C.GtkDialogFlags(flags)
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
+
+	var _appChooserDialog *AppChooserDialog // out
+
+	_appChooserDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AppChooserDialog)
+
+	return _appChooserDialog
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject

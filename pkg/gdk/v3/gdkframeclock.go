@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -81,6 +80,8 @@ type FrameClocker interface {
 	// Timings retrieves a FrameTimings object holding timing information for
 	// the current frame or a recent frame.
 	Timings(frameCounter int64) *FrameTimings
+	// RequestPhase asks the frame clock to run a particular phase.
+	RequestPhase(phase FrameClockPhase)
 }
 
 // FrameClock tells the application when to update and repaint a window. This
@@ -279,4 +280,22 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	})
 
 	return _frameTimings
+}
+
+// RequestPhase asks the frame clock to run a particular phase. The signal
+// corresponding the requested phase will be emitted the next time the frame
+// clock processes. Multiple calls to gdk_frame_clock_request_phase() will be
+// combined together and only one frame processed. If you are displaying
+// animated content and want to continually request the
+// GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period of time, you should use
+// gdk_frame_clock_begin_updating() instead, since this allows GTK+ to adjust
+// system parameters to get maximally smooth animations.
+func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
+	var _arg0 *C.GdkFrameClock     // out
+	var _arg1 C.GdkFrameClockPhase // out
+
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
+	_arg1 = C.GdkFrameClockPhase(phase)
+
+	C.gdk_frame_clock_request_phase(_arg0, _arg1)
 }

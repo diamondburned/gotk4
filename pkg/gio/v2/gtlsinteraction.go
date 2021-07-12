@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -84,6 +82,36 @@ type TLSInteractionOverrider interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code.
 	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
+	// RequestCertificate: run synchronous interaction to ask the user to choose
+	// a certificate to use with the connection. In general,
+	// g_tls_interaction_invoke_request_certificate() should be used instead of
+	// this function.
+	//
+	// Derived subclasses usually implement a certificate selector, although
+	// they may also choose to provide a certificate from elsewhere.
+	// Alternatively the user may abort this certificate request, which will
+	// usually abort the TLS connection.
+	//
+	// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
+	// g_tls_interaction_request_certificate() will have had its
+	// Connection:certificate filled in.
+	//
+	// If the interaction is cancelled by the cancellation object, or by the
+	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
+	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
+	// not support immediate cancellation.
+	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	// RequestCertificateAsync: run asynchronous interaction to ask the user for
+	// a certificate to use with the connection. In general,
+	// g_tls_interaction_invoke_request_certificate() should be used instead of
+	// this function.
+	//
+	// Derived subclasses usually implement a certificate selector, although
+	// they may also choose to provide a certificate from elsewhere. @callback
+	// will be called when the operation completes. Alternatively the user may
+	// abort this certificate request, which will usually abort the TLS
+	// connection.
+	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -110,6 +138,15 @@ type TLSInteractioner interface {
 	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	// InvokeAskPassword: invoke the interaction to ask the user for a password.
 	InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	// InvokeRequestCertificate: invoke the interaction to ask the user to
+	// choose a certificate to use with the connection.
+	InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	// RequestCertificate: run synchronous interaction to ask the user to choose
+	// a certificate to use with the connection.
+	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	// RequestCertificateAsync: run asynchronous interaction to ask the user for
+	// a certificate to use with the connection.
+	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request.
 	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
@@ -289,6 +326,119 @@ func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, can
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsInteractionResult, _goerr
+}
+
+// InvokeRequestCertificate: invoke the interaction to ask the user to choose a
+// certificate to use with the connection. It invokes this interaction in the
+// main loop, specifically the Context returned by
+// g_main_context_get_thread_default() when the interaction is created. This is
+// called by called by Connection when the peer requests a certificate during
+// the handshake.
+//
+// Derived subclasses usually implement a certificate selector, although they
+// may also choose to provide a certificate from elsewhere. Alternatively the
+// user may abort this certificate request, which may or may not abort the TLS
+// connection.
+//
+// The implementation can either be a synchronous (eg: modal dialog) or an
+// asynchronous one (eg: modeless dialog). This function will take care of
+// calling which ever one correctly.
+//
+// If the interaction is cancelled by the cancellation object, or by the user
+// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
+// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
+// immediate cancellation.
+func (interaction *TLSInteraction) InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error) {
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg3 *C.GCancellable               // out
+	var _cret C.GTlsInteractionResult       // in
+	var _cerr *C.GError                     // in
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _tlsInteractionResult TLSInteractionResult // out
+	var _goerr error                               // out
+
+	_tlsInteractionResult = TLSInteractionResult(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsInteractionResult, _goerr
+}
+
+// RequestCertificate: run synchronous interaction to ask the user to choose a
+// certificate to use with the connection. In general,
+// g_tls_interaction_invoke_request_certificate() should be used instead of this
+// function.
+//
+// Derived subclasses usually implement a certificate selector, although they
+// may also choose to provide a certificate from elsewhere. Alternatively the
+// user may abort this certificate request, which will usually abort the TLS
+// connection.
+//
+// If G_TLS_INTERACTION_HANDLED is returned, then the Connection passed to
+// g_tls_interaction_request_certificate() will have had its
+// Connection:certificate filled in.
+//
+// If the interaction is cancelled by the cancellation object, or by the user
+// then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
+// G_IO_ERROR_CANCELLED error code. Certain implementations may not support
+// immediate cancellation.
+func (interaction *TLSInteraction) RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error) {
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg3 *C.GCancellable               // out
+	var _cret C.GTlsInteractionResult       // in
+	var _cerr *C.GError                     // in
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _tlsInteractionResult TLSInteractionResult // out
+	var _goerr error                               // out
+
+	_tlsInteractionResult = TLSInteractionResult(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsInteractionResult, _goerr
+}
+
+// RequestCertificateAsync: run asynchronous interaction to ask the user for a
+// certificate to use with the connection. In general,
+// g_tls_interaction_invoke_request_certificate() should be used instead of this
+// function.
+//
+// Derived subclasses usually implement a certificate selector, although they
+// may also choose to provide a certificate from elsewhere. @callback will be
+// called when the operation completes. Alternatively the user may abort this
+// certificate request, which will usually abort the TLS connection.
+func (interaction *TLSInteraction) RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg3 *C.GCancellable               // out
+	var _arg4 C.GAsyncReadyCallback         // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.Assign(callback))
+
+	C.g_tls_interaction_request_certificate_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // RequestCertificateFinish: complete a request certificate user interaction

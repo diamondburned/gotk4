@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -57,7 +56,6 @@ type SelectionOverrider interface {
 	// SelectAllSelection causes every child of the object to be selected if the
 	// object supports multiple selections.
 	SelectAllSelection() bool
-	//
 	SelectionChanged()
 }
 

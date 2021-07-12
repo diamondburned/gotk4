@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -22,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
 	})
 }
 
@@ -202,8 +201,8 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Cursorrer describes Cursor's methods.
-type Cursorrer interface {
+// Cursorer describes Cursor's methods.
+type Cursorer interface {
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
 	// Display returns the display on which the Cursor is defined.
@@ -226,20 +225,59 @@ type Cursor struct {
 }
 
 var (
-	_ Cursorrer       = (*Cursor)(nil)
+	_ Cursorer        = (*Cursor)(nil)
 	_ gextras.Nativer = (*Cursor)(nil)
 )
 
-func wrapCursor(obj *externglib.Object) Cursorrer {
+func wrapCursor(obj *externglib.Object) Cursorer {
 	return &Cursor{
 		Object: obj,
 	}
 }
 
-func marshalCursorrer(p uintptr) (interface{}, error) {
+func marshalCursorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil
+}
+
+// NewCursor creates a new cursor from the set of builtin cursors for the
+// default display. See gdk_cursor_new_for_display().
+//
+// To make the cursor invisible, use GDK_BLANK_CURSOR.
+//
+// Deprecated: Use gdk_cursor_new_for_display() instead.
+func NewCursor(cursorType CursorType) *Cursor {
+	var _arg1 C.GdkCursorType // out
+	var _cret *C.GdkCursor    // in
+
+	_arg1 = C.GdkCursorType(cursorType)
+
+	_cret = C.gdk_cursor_new(_arg1)
+
+	var _cursor *Cursor // out
+
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+
+	return _cursor
+}
+
+// NewCursorForDisplay creates a new cursor from the set of builtin cursors.
+func NewCursorForDisplay(display Displayer, cursorType CursorType) *Cursor {
+	var _arg1 *C.GdkDisplay   // out
+	var _arg2 C.GdkCursorType // out
+	var _cret *C.GdkCursor    // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg2 = C.GdkCursorType(cursorType)
+
+	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
+
+	var _cursor *Cursor // out
+
+	_cursor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Cursor)
+
+	return _cursor
 }
 
 // NewCursorFromName creates a new cursor by looking up @name in the current
@@ -264,7 +302,7 @@ func marshalCursorrer(p uintptr) (interface{}, error) {
 // (ns_resize_cursor.png) "ns-resize" - ! (nesw_resize_cursor.png) "nesw-resize"
 // - ! (nwse_resize_cursor.png) "nwse-resize" - ! (zoom_in_cursor.png) "zoom-in"
 // - ! (zoom_out_cursor.png) "zoom-out"
-func NewCursorFromName(display Displayyer, name string) *Cursor {
+func NewCursorFromName(display Displayer, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
 	var _cret *C.GdkCursor  // in
@@ -297,7 +335,7 @@ func NewCursorFromName(display Displayyer, name string) *Cursor {
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromPixbuf(display Displayyer, pixbuf gdkpixbuf.Pixbuffer, x int, y int) *Cursor {
+func NewCursorFromPixbuf(display Displayer, pixbuf gdkpixbuf.Pixbufer, x int, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out
@@ -329,7 +367,7 @@ func NewCursorFromPixbuf(display Displayyer, pixbuf gdkpixbuf.Pixbuffer, x int, 
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromSurface(display Displayyer, surface *cairo.Surface, x float64, y float64) *Cursor {
+func NewCursorFromSurface(display Displayer, surface *cairo.Surface, x float64, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out

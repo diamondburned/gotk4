@@ -12,23 +12,22 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModeller},
+		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModeler},
 	})
 }
 
-// SelectionFilterModeller describes SelectionFilterModel's methods.
-type SelectionFilterModeller interface {
+// SelectionFilterModeler describes SelectionFilterModel's methods.
+type SelectionFilterModeler interface {
 	// Model gets the model currently filtered or nil if none.
 	Model() *SelectionModel
 	// SetModel sets the model to be filtered.
-	SetModel(model SelectionModeller)
+	SetModel(model SelectionModeler)
 }
 
 // SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
@@ -40,11 +39,11 @@ type SelectionFilterModel struct {
 }
 
 var (
-	_ SelectionFilterModeller = (*SelectionFilterModel)(nil)
-	_ gextras.Nativer         = (*SelectionFilterModel)(nil)
+	_ SelectionFilterModeler = (*SelectionFilterModel)(nil)
+	_ gextras.Nativer        = (*SelectionFilterModel)(nil)
 )
 
-func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModeller {
+func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModeler {
 	return &SelectionFilterModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -53,7 +52,7 @@ func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModeller {
 	}
 }
 
-func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
+func marshalSelectionFilterModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSelectionFilterModel(obj), nil
@@ -61,7 +60,7 @@ func marshalSelectionFilterModeller(p uintptr) (interface{}, error) {
 
 // NewSelectionFilterModel creates a new `GtkSelectionFilterModel` that will
 // include the selected items from the underlying selection model.
-func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
+func NewSelectionFilterModel(model SelectionModeler) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
 	var _cret *C.GtkSelectionFilterModel // in
 
@@ -97,7 +96,7 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 // Note that GTK makes no effort to ensure that @model conforms to the item type
 // of @self. It assumes that the caller knows what they are doing and have set
 // up an appropriate filter to ensure that item types match.
-func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
+func (self *SelectionFilterModel) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _arg1 *C.GtkSelectionModel       // out
 

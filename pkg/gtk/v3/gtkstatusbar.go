@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarrer},
+		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarer},
 	})
 }
 
@@ -30,14 +29,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StatusbarOverrider interface {
-	//
 	TextPopped(contextId uint, text string)
-	//
 	TextPushed(contextId uint, text string)
 }
 
-// Statusbarrer describes Statusbar's methods.
-type Statusbarrer interface {
+// Statusbarer describes Statusbar's methods.
+type Statusbarer interface {
 	// ContextID returns a new context identifier, given a description of the
 	// actual context.
 	ContextID(contextDescription string) uint
@@ -92,11 +89,11 @@ type Statusbar struct {
 }
 
 var (
-	_ Statusbarrer    = (*Statusbar)(nil)
+	_ Statusbarer     = (*Statusbar)(nil)
 	_ gextras.Nativer = (*Statusbar)(nil)
 )
 
-func wrapStatusbar(obj *externglib.Object) Statusbarrer {
+func wrapStatusbar(obj *externglib.Object) Statusbarer {
 	return &Statusbar{
 		Box: Box{
 			Container: Container{
@@ -119,7 +116,7 @@ func wrapStatusbar(obj *externglib.Object) Statusbarrer {
 	}
 }
 
-func marshalStatusbarrer(p uintptr) (interface{}, error) {
+func marshalStatusbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusbar(obj), nil

@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDragger},
+		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrager},
 	})
 }
 
-// GestureDragger describes GestureDrag's methods.
-type GestureDragger interface {
+// GestureDrager describes GestureDrag's methods.
+type GestureDrager interface {
 	// Offset gets the offset from the start point.
 	Offset() (x float64, y float64, ok bool)
 	// StartPoint gets the point where the drag started.
@@ -42,11 +41,11 @@ type GestureDrag struct {
 }
 
 var (
-	_ GestureDragger  = (*GestureDrag)(nil)
+	_ GestureDrager   = (*GestureDrag)(nil)
 	_ gextras.Nativer = (*GestureDrag)(nil)
 )
 
-func wrapGestureDrag(obj *externglib.Object) GestureDragger {
+func wrapGestureDrag(obj *externglib.Object) GestureDrager {
 	return &GestureDrag{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -58,7 +57,7 @@ func wrapGestureDrag(obj *externglib.Object) GestureDragger {
 	}
 }
 
-func marshalGestureDragger(p uintptr) (interface{}, error) {
+func marshalGestureDrager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGestureDrag(obj), nil

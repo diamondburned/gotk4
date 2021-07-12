@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -720,4 +719,94 @@ func (typ *VariantType) Value() *VariantType {
 	_variantType = (*VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
+}
+
+func VariantTypeChecked_(arg0 string) *VariantType {
+	var _arg1 *C.gchar        // out
+	var _cret *C.GVariantType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg0)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_variant_type_checked_(_arg1)
+
+	var _variantType *VariantType // out
+
+	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+
+	return _variantType
+}
+
+func VariantTypeStringGetDepth_(typeString string) uint {
+	var _arg1 *C.gchar // out
+	var _cret C.gsize  // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_variant_type_string_get_depth_(_arg1)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
+// VariantTypeStringIsValid checks if @type_string is a valid GVariant type
+// string. This call is equivalent to calling g_variant_type_string_scan() and
+// confirming that the following character is a nul terminator.
+func VariantTypeStringIsValid(typeString string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typeString)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_variant_type_string_is_valid(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// VariantTypeStringScan: scan for a single complete and valid GVariant type
+// string in @string. The memory pointed to by @limit (or bytes beyond it) is
+// never accessed.
+//
+// If a valid type string is found, @endptr is updated to point to the first
+// character past the end of the string that was found and true is returned.
+//
+// If there is no valid type string starting at @string, or if the type string
+// does not end before @limit then false is returned.
+//
+// For the simple case of checking if a string is a valid type string, see
+// g_variant_type_string_is_valid().
+func VariantTypeStringScan(_string string, limit string) (string, bool) {
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _arg3 *C.gchar   // in
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(limit)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_variant_type_string_scan(_arg1, _arg2, &_arg3)
+
+	var _endptr string // out
+	var _ok bool       // out
+
+	_endptr = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _endptr, _ok
 }

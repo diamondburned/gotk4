@@ -8,13 +8,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 import "C"
@@ -129,6 +130,84 @@ func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, ar
 
 	fn := v.(PixbufModuleUpdatedFunc)
 	fn(pixbuf, x, y, width, height, userData)
+}
+
+// PixbufGetFileInfo parses an image file far enough to determine its format and
+// size.
+func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
+	var _arg1 *C.gchar           // out
+	var _arg2 C.gint             // in
+	var _arg3 C.gint             // in
+	var _cret *C.GdkPixbufFormat // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_pixbuf_get_file_info(_arg1, &_arg2, &_arg3)
+
+	var _width int                  // out
+	var _height int                 // out
+	var _pixbufFormat *PixbufFormat // out
+
+	_width = int(_arg2)
+	_height = int(_arg3)
+	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
+
+	return _width, _height, _pixbufFormat
+}
+
+// PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
+// started with gdk_pixbuf_get_file_info_async().
+func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
+	var _arg1 *C.GAsyncResult    // out
+	var _arg2 C.gint             // in
+	var _arg3 C.gint             // in
+	var _cret *C.GdkPixbufFormat // in
+	var _cerr *C.GError          // in
+
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((asyncResult).(gextras.Nativer).Native()))
+
+	_cret = C.gdk_pixbuf_get_file_info_finish(_arg1, &_arg2, &_arg3, &_cerr)
+
+	var _width int                  // out
+	var _height int                 // out
+	var _pixbufFormat *PixbufFormat // out
+	var _goerr error                // out
+
+	_width = int(_arg2)
+	_height = int(_arg3)
+	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _width, _height, _pixbufFormat, _goerr
+}
+
+// PixbufInitModules initalizes the gdk-pixbuf loader modules referenced by the
+// `loaders.cache` file present inside that directory.
+//
+// This is to be used by applications that want to ship certain loaders in a
+// different location from the system ones.
+//
+// This is needed when the OS or runtime ships a minimal number of loaders so as
+// to reduce the potential attack surface of carefully crafted image files,
+// especially for uncommon file types. Applications that require broader image
+// file types coverage, such as image viewers, would be expected to ship the
+// gdk-pixbuf modules in a separate location, bundled with the application in a
+// separate directory from the OS or runtime- provided modules.
+func PixbufInitModules(path string) error {
+	var _arg1 *C.char   // out
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gdk_pixbuf_init_modules(_arg1, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // PixbufFormat: `GdkPixbufFormat` contains information about the image format

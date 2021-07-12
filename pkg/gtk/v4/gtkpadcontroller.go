@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -43,6 +42,8 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 
 // PadControllerer describes PadController's methods.
 type PadControllerer interface {
+	// SetAction adds an individual action to @controller.
+	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
 	// SetActionEntries: convenience function to add a group of action entries
 	// on @controller.
 	SetActionEntries(entries []PadActionEntry)
@@ -140,6 +141,35 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	_padController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PadController)
 
 	return _padController
+}
+
+// SetAction adds an individual action to @controller.
+//
+// This action will only be activated if the given button/ring/strip number in
+// @index is interacted while the current mode is @mode. -1 may be used for
+// simple cases, so the action is triggered on all modes.
+//
+// The given @label should be considered user-visible, so internationalization
+// rules apply. Some windowing systems may be able to use those for user
+// feedback.
+func (controller *PadController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
+	var _arg0 *C.GtkPadController // out
+	var _arg1 C.GtkPadActionType  // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 *C.char             // out
+	var _arg5 *C.char             // out
+
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
+	_arg1 = C.GtkPadActionType(typ)
+	_arg2 = C.int(index)
+	_arg3 = C.int(mode)
+	_arg4 = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SetActionEntries: convenience function to add a group of action entries on

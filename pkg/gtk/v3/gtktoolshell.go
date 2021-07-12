@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -35,7 +34,6 @@ type ToolShellOverrider interface {
 	// Tool items must not call this function directly, but rely on
 	// gtk_tool_item_get_ellipsize_mode() instead.
 	EllipsizeMode() pango.EllipsizeMode
-	//
 	IconSize() IconSize
 	// Orientation retrieves the current orientation for the tool shell. Tool
 	// items must not call this function directly, but rely on

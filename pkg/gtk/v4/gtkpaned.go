@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaneder},
 	})
 }
 
-// Panedder describes Paned's methods.
-type Panedder interface {
+// Paneder describes Paned's methods.
+type Paneder interface {
 	// EndChild retrieves the end child of the given `GtkPaned`.
 	EndChild() *Widget
 	// Position obtains the position of the divider between the two panes.
@@ -41,7 +40,7 @@ type Panedder interface {
 	// WideHandle gets whether the separator should be wide.
 	WideHandle() bool
 	// SetEndChild sets the end child of @paned to @child.
-	SetEndChild(child Widgetter)
+	SetEndChild(child Widgeter)
 	// SetPosition sets the position of the divider between the two panes.
 	SetPosition(position int)
 	// SetResizeEndChild sets the `GtkPaned`:resize-end-child property
@@ -53,7 +52,7 @@ type Panedder interface {
 	// SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
 	SetShrinkStartChild(resize bool)
 	// SetStartChild sets the start child of @paned to @child.
-	SetStartChild(child Widgetter)
+	SetStartChild(child Widgeter)
 	// SetWideHandle sets whether the separator should be wide.
 	SetWideHandle(wide bool)
 }
@@ -123,11 +122,11 @@ type Paned struct {
 }
 
 var (
-	_ Panedder        = (*Paned)(nil)
+	_ Paneder         = (*Paned)(nil)
 	_ gextras.Nativer = (*Paned)(nil)
 )
 
-func wrapPaned(obj *externglib.Object) Panedder {
+func wrapPaned(obj *externglib.Object) Paneder {
 	return &Paned{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -149,10 +148,26 @@ func wrapPaned(obj *externglib.Object) Panedder {
 	}
 }
 
-func marshalPanedder(p uintptr) (interface{}, error) {
+func marshalPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPaned(obj), nil
+}
+
+// NewPaned creates a new `GtkPaned` widget.
+func NewPaned(orientation Orientation) *Paned {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_paned_new(_arg1)
+
+	var _paned *Paned // out
+
+	_paned = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Paned)
+
+	return _paned
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject
@@ -304,7 +319,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // SetEndChild sets the end child of @paned to @child.
-func (paned *Paned) SetEndChild(child Widgetter) {
+func (paned *Paned) SetEndChild(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -378,7 +393,7 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 }
 
 // SetStartChild sets the start child of @paned to @child.
-func (paned *Paned) SetStartChild(child Widgetter) {
+func (paned *Paned) SetStartChild(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -25,9 +24,9 @@ func init() {
 // WindowGrouper describes WindowGroup's methods.
 type WindowGrouper interface {
 	// AddWindow adds a window to a `GtkWindowGroup`.
-	AddWindow(window Windowwer)
+	AddWindow(window Windower)
 	// RemoveWindow removes a window from a `GtkWindowGroup`.
-	RemoveWindow(window Windowwer)
+	RemoveWindow(window Windower)
 }
 
 // WindowGroup: `GtkWindowGroup` makes group of windows behave like separate
@@ -83,7 +82,7 @@ func NewWindowGroup() *WindowGroup {
 }
 
 // AddWindow adds a window to a `GtkWindowGroup`.
-func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
+func (windowGroup *WindowGroup) AddWindow(window Windower) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -94,7 +93,7 @@ func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
 }
 
 // RemoveWindow removes a window from a `GtkWindowGroup`.
-func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
+func (windowGroup *WindowGroup) RemoveWindow(window Windower) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

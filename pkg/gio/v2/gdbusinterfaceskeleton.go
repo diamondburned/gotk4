@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -31,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletonner},
+		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletoner},
 	})
 }
 
@@ -48,7 +47,6 @@ type DBusInterfaceSkeletonOverrider interface {
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
 	Flush()
-	//
 	GAuthorizeMethod(invocation DBusMethodInvocationer) bool
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
@@ -57,8 +55,8 @@ type DBusInterfaceSkeletonOverrider interface {
 	Properties() *glib.Variant
 }
 
-// DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's methods.
-type DBusInterfaceSkeletonner interface {
+// DBusInterfaceSkeletoner describes DBusInterfaceSkeleton's methods.
+type DBusInterfaceSkeletoner interface {
 	// Export exports @interface_ at @object_path on @connection.
 	Export(connection DBusConnectioner, objectPath string) error
 	// Flush: if @interface_ has outstanding changes, request for these changes
@@ -79,6 +77,8 @@ type DBusInterfaceSkeletonner interface {
 	Properties() *glib.Variant
 	// HasConnection checks if @interface_ is exported on @connection.
 	HasConnection(connection DBusConnectioner) bool
+	// SetFlags sets flags describing what the behavior of @skeleton should be.
+	SetFlags(flags DBusInterfaceSkeletonFlags)
 	// Unexport stops exporting @interface_ on all connections it is exported
 	// on.
 	Unexport()
@@ -95,11 +95,11 @@ type DBusInterfaceSkeleton struct {
 }
 
 var (
-	_ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
-	_ gextras.Nativer          = (*DBusInterfaceSkeleton)(nil)
+	_ DBusInterfaceSkeletoner = (*DBusInterfaceSkeleton)(nil)
+	_ gextras.Nativer         = (*DBusInterfaceSkeleton)(nil)
 )
 
-func wrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeletonner {
+func wrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeletoner {
 	return &DBusInterfaceSkeleton{
 		Object: obj,
 		DBusInterface: DBusInterface{
@@ -108,7 +108,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeletonner 
 	}
 }
 
-func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
+func marshalDBusInterfaceSkeletoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusInterfaceSkeleton(obj), nil
@@ -264,6 +264,17 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection DBusConnection
 	}
 
 	return _ok
+}
+
+// SetFlags sets flags describing what the behavior of @skeleton should be.
+func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
+	var _arg0 *C.GDBusInterfaceSkeleton     // out
+	var _arg1 C.GDBusInterfaceSkeletonFlags // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg1 = C.GDBusInterfaceSkeletonFlags(flags)
+
+	C.g_dbus_interface_skeleton_set_flags(_arg0, _arg1)
 }
 
 // Unexport stops exporting @interface_ on all connections it is exported on.

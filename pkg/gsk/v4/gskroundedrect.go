@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gsk/gsk.h>
 import "C"
 

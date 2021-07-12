@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
 	})
 }
 
-// Displayyer describes Display's methods.
-type Displayyer interface {
+// Displayer describes Display's methods.
+type Displayer interface {
 	// Beep emits a short beep on @display
 	Beep()
 	// Close closes the connection to the windowing system for the given
@@ -61,7 +60,7 @@ type Displayyer interface {
 	MonitorAtPoint(x int, y int) *Monitor
 	// MonitorAtWindow gets the monitor in which the largest area of @window
 	// resides, or a monitor close to @window if it is outside of all monitors.
-	MonitorAtWindow(window Windowwer) *Monitor
+	MonitorAtWindow(window Windower) *Monitor
 	// NMonitors gets the number of monitors that belong to @display.
 	NMonitors() int
 	// NScreens gets the number of screen managed by the @display.
@@ -153,17 +152,17 @@ type Display struct {
 }
 
 var (
-	_ Displayyer      = (*Display)(nil)
+	_ Displayer       = (*Display)(nil)
 	_ gextras.Nativer = (*Display)(nil)
 )
 
-func wrapDisplay(obj *externglib.Object) Displayyer {
+func wrapDisplay(obj *externglib.Object) Displayer {
 	return &Display{
 		Object: obj,
 	}
 }
 
-func marshalDisplayyer(p uintptr) (interface{}, error) {
+func marshalDisplayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDisplay(obj), nil
@@ -387,7 +386,7 @@ func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 
 // MonitorAtWindow gets the monitor in which the largest area of @window
 // resides, or a monitor close to @window if it is outside of all monitors.
-func (display *Display) MonitorAtWindow(window Windowwer) *Monitor {
+func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
 	var _cret *C.GdkMonitor // in
@@ -860,4 +859,54 @@ func (display *Display) WarpPointer(screen Screener, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
+}
+
+// DisplayGetDefault gets the default Display. This is a convenience function
+// for: `gdk_display_manager_get_default_display (gdk_display_manager_get ())`.
+func DisplayGetDefault() *Display {
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_display_get_default()
+
+	var _display *Display // out
+
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+
+	return _display
+}
+
+// DisplayOpen opens a display.
+func DisplayOpen(displayName string) *Display {
+	var _arg1 *C.gchar      // out
+	var _cret *C.GdkDisplay // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_display_open(_arg1)
+
+	var _display *Display // out
+
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+
+	return _display
+}
+
+// DisplayOpenDefaultLibgtkOnly opens the default display specified by command
+// line arguments or environment variables, sets it as the default display, and
+// returns it. gdk_parse_args() must have been called first. If the default
+// display has previously been set, simply returns that. An internal function
+// that should not be used by applications.
+//
+// Deprecated: This symbol was never meant to be used outside of GTK+.
+func DisplayOpenDefaultLibgtkOnly() *Display {
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_display_open_default_libgtk_only()
+
+	var _display *Display // out
+
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+
+	return _display
 }

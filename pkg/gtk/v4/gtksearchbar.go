@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarer},
 	})
 }
 
-// SearchBarrer describes SearchBar's methods.
-type SearchBarrer interface {
+// SearchBarer describes SearchBar's methods.
+type SearchBarer interface {
 	// ConnectEntry connects the `GtkEditable widget passed as the one to be
 	// used in this search bar.
 	ConnectEntry(entry Editabler)
@@ -36,10 +35,10 @@ type SearchBarrer interface {
 	// ShowCloseButton returns whether the close button is shown.
 	ShowCloseButton() bool
 	// SetChild sets the child widget of @bar.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetKeyCaptureWidget sets @widget as the widget that @bar will capture key
 	// events from.
-	SetKeyCaptureWidget(widget Widgetter)
+	SetKeyCaptureWidget(widget Widgeter)
 	// SetSearchMode switches the search mode on or off.
 	SetSearchMode(searchMode bool)
 	// SetShowCloseButton shows or hides the close button.
@@ -91,11 +90,11 @@ type SearchBar struct {
 }
 
 var (
-	_ SearchBarrer    = (*SearchBar)(nil)
+	_ SearchBarer     = (*SearchBar)(nil)
 	_ gextras.Nativer = (*SearchBar)(nil)
 )
 
-func wrapSearchBar(obj *externglib.Object) SearchBarrer {
+func wrapSearchBar(obj *externglib.Object) SearchBarer {
 	return &SearchBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -114,7 +113,7 @@ func wrapSearchBar(obj *externglib.Object) SearchBarrer {
 	}
 }
 
-func marshalSearchBarrer(p uintptr) (interface{}, error) {
+func marshalSearchBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSearchBar(obj), nil
@@ -221,7 +220,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 }
 
 // SetChild sets the child widget of @bar.
-func (bar *SearchBar) SetChild(child Widgetter) {
+func (bar *SearchBar) SetChild(child Widgeter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -242,7 +241,7 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
+func (bar *SearchBar) SetKeyCaptureWidget(widget Widgeter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 

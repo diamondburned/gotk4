@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -334,7 +333,7 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyle(widget Widgetter) *Style {
+func RCGetStyle(widget Widgeter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
@@ -583,9 +582,7 @@ func RCSetDefaultFiles(filenames []string) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RCStyleOverrider interface {
-	//
 	Merge(src RCStyler)
-	//
 	Parse(settings Settingser, scanner *glib.Scanner) uint
 }
 

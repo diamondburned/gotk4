@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -94,6 +93,9 @@ type SorterOverrider interface {
 
 // Sorterer describes Sorter's methods.
 type Sorterer interface {
+	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
+	// of the sorter that it has changed.
+	Changed(change SorterChange)
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
@@ -139,6 +141,28 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSorter(obj), nil
+}
+
+// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users of
+// the sorter that it has changed.
+//
+// Users of the sorter should then update the sort order via
+// gtk_sorter_compare().
+//
+// Depending on the @change parameter, it may be possible to update the sort
+// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
+// documentation for details.
+//
+// This function is intended for implementors of `GtkSorter` subclasses and
+// should not be called from other functions.
+func (self *Sorter) Changed(change SorterChange) {
+	var _arg0 *C.GtkSorter      // out
+	var _arg1 C.GtkSorterChange // out
+
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkSorterChange(change)
+
+	C.gtk_sorter_changed(_arg0, _arg1)
 }
 
 // Compare compares two given items according to the sort order implemented by

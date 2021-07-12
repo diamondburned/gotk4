@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -20,7 +19,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
 		{T: externglib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
-		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindowwer},
+		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindower},
 	})
 }
 
@@ -70,8 +69,8 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ScrolledWindowwer describes ScrolledWindow's methods.
-type ScrolledWindowwer interface {
+// ScrolledWindower describes ScrolledWindow's methods.
+type ScrolledWindower interface {
 	// Child gets the child widget of @scrolled_window.
 	Child() *Widget
 	// HAdjustment returns the horizontal scrollbar’s adjustment.
@@ -112,7 +111,7 @@ type ScrolledWindowwer interface {
 	// Vscrollbar returns the vertical scrollbar of @scrolled_window.
 	Vscrollbar() *Widget
 	// SetChild sets the child widget of @scrolled_window.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetHAdjustment sets the `GtkAdjustment` for the horizontal scrollbar.
 	SetHAdjustment(hadjustment Adjustmenter)
 	// SetHasFrame changes the frame drawn around the contents of
@@ -135,6 +134,12 @@ type ScrolledWindowwer interface {
 	// SetOverlayScrolling enables or disables overlay scrolling for this
 	// scrolled window.
 	SetOverlayScrolling(overlayScrolling bool)
+	// SetPlacement sets the placement of the contents with respect to the
+	// scrollbars for the scrolled window.
+	SetPlacement(windowPlacement CornerType)
+	// SetPolicy sets the scrollbar policy for the horizontal and vertical
+	// scrollbars.
+	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// SetPropagateNaturalHeight sets whether the natural height of the child
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural height.
@@ -238,11 +243,11 @@ type ScrolledWindow struct {
 }
 
 var (
-	_ ScrolledWindowwer = (*ScrolledWindow)(nil)
-	_ gextras.Nativer   = (*ScrolledWindow)(nil)
+	_ ScrolledWindower = (*ScrolledWindow)(nil)
+	_ gextras.Nativer  = (*ScrolledWindow)(nil)
 )
 
-func wrapScrolledWindow(obj *externglib.Object) ScrolledWindowwer {
+func wrapScrolledWindow(obj *externglib.Object) ScrolledWindower {
 	return &ScrolledWindow{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -261,7 +266,7 @@ func wrapScrolledWindow(obj *externglib.Object) ScrolledWindowwer {
 	}
 }
 
-func marshalScrolledWindowwer(p uintptr) (interface{}, error) {
+func marshalScrolledWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScrolledWindow(obj), nil
@@ -564,7 +569,7 @@ func (scrolledWindow *ScrolledWindow) Vscrollbar() *Widget {
 }
 
 // SetChild sets the child widget of @scrolled_window.
-func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
+func (scrolledWindow *ScrolledWindow) SetChild(child Widgeter) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkWidget         // out
 
@@ -697,6 +702,47 @@ func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 	}
 
 	C.gtk_scrolled_window_set_overlay_scrolling(_arg0, _arg1)
+}
+
+// SetPlacement sets the placement of the contents with respect to the
+// scrollbars for the scrolled window.
+//
+// The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
+// with the scrollbars underneath and to the right. Other values in
+// [enum@Gtk.CornerType] are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
+// GTK_CORNER_BOTTOM_RIGHT.
+//
+// See also [method@Gtk.ScrolledWindow.get_placement] and
+// [method@Gtk.ScrolledWindow.unset_placement].
+func (scrolledWindow *ScrolledWindow) SetPlacement(windowPlacement CornerType) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.GtkCornerType      // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
+	_arg1 = C.GtkCornerType(windowPlacement)
+
+	C.gtk_scrolled_window_set_placement(_arg0, _arg1)
+}
+
+// SetPolicy sets the scrollbar policy for the horizontal and vertical
+// scrollbars.
+//
+// The policy determines when the scrollbar should appear; it is a value from
+// the [enum@Gtk.PolicyType] enumeration. If GTK_POLICY_ALWAYS, the scrollbar is
+// always present; if GTK_POLICY_NEVER, the scrollbar is never present; if
+// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is, if
+// the slider part of the bar would be smaller than the trough — the display is
+// larger than the page size).
+func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.GtkPolicyType      // out
+	var _arg2 C.GtkPolicyType      // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(scrolledWindow.Native()))
+	_arg1 = C.GtkPolicyType(hscrollbarPolicy)
+	_arg2 = C.GtkPolicyType(vscrollbarPolicy)
+
+	C.gtk_scrolled_window_set_policy(_arg0, _arg1, _arg2)
 }
 
 // SetPropagateNaturalHeight sets whether the natural height of the child should

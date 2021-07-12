@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBinner},
+		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBiner},
 	})
 }
 
-// Binner describes Bin's methods.
-type Binner interface {
+// Biner describes Bin's methods.
+type Biner interface {
 	// Child gets the child of the Bin, or nil if the bin contains no child
 	// widget.
 	Child() *Widget
@@ -43,11 +42,11 @@ type Bin struct {
 }
 
 var (
-	_ Binner          = (*Bin)(nil)
+	_ Biner           = (*Bin)(nil)
 	_ gextras.Nativer = (*Bin)(nil)
 )
 
-func wrapBin(obj *externglib.Object) Binner {
+func wrapBin(obj *externglib.Object) Biner {
 	return &Bin{
 		Container: Container{
 			Widget: Widget{
@@ -65,7 +64,7 @@ func wrapBin(obj *externglib.Object) Binner {
 	}
 }
 
-func marshalBinner(p uintptr) (interface{}, error) {
+func marshalBiner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBin(obj), nil

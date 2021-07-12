@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialogger},
+		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialoger},
 	})
 }
 
-// ColorChooserDialogger describes ColorChooserDialog's methods.
-type ColorChooserDialogger interface {
+// ColorChooserDialoger describes ColorChooserDialog's methods.
+type ColorChooserDialoger interface {
 	privateColorChooserDialog()
 }
 
@@ -46,11 +45,11 @@ type ColorChooserDialog struct {
 }
 
 var (
-	_ ColorChooserDialogger = (*ColorChooserDialog)(nil)
-	_ gextras.Nativer       = (*ColorChooserDialog)(nil)
+	_ ColorChooserDialoger = (*ColorChooserDialog)(nil)
+	_ gextras.Nativer      = (*ColorChooserDialog)(nil)
 )
 
-func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialogger {
+func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialoger {
 	return &ColorChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -97,14 +96,14 @@ func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialogger {
 	}
 }
 
-func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
+func marshalColorChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooserDialog(obj), nil
 }
 
 // NewColorChooserDialog creates a new `GtkColorChooserDialog`.
-func NewColorChooserDialog(title string, parent Windowwer) *ColorChooserDialog {
+func NewColorChooserDialog(title string, parent Windower) *ColorChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in

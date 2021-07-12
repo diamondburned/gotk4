@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -24,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
+		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarer},
 	})
 }
 
@@ -68,8 +67,8 @@ func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 	return PlacesOpenFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PlacesSidebarrer describes PlacesSidebar's methods.
-type PlacesSidebarrer interface {
+// PlacesSidebarer describes PlacesSidebar's methods.
+type PlacesSidebarer interface {
 	// AddShortcut applications may want to present some folders in the places
 	// sidebar if they could be immediately useful to users.
 	AddShortcut(location gio.Filer)
@@ -118,6 +117,9 @@ type PlacesSidebarrer interface {
 	// surrounding the @sidebar, for example, in a folder view in a file
 	// manager.
 	SetLocation(location gio.Filer)
+	// SetOpenFlags sets the way in which the calling application can open new
+	// locations from the places sidebar.
+	SetOpenFlags(flags PlacesOpenFlags)
 	// SetShowConnectToServer sets whether the @sidebar should show an item for
 	// connecting to a network server; this is off by default.
 	SetShowConnectToServer(showConnectToServer bool)
@@ -180,11 +182,11 @@ type PlacesSidebar struct {
 }
 
 var (
-	_ PlacesSidebarrer = (*PlacesSidebar)(nil)
-	_ gextras.Nativer  = (*PlacesSidebar)(nil)
+	_ PlacesSidebarer = (*PlacesSidebar)(nil)
+	_ gextras.Nativer = (*PlacesSidebar)(nil)
 )
 
-func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebarrer {
+func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebarer {
 	return &PlacesSidebar{
 		ScrolledWindow: ScrolledWindow{
 			Bin: Bin{
@@ -206,7 +208,7 @@ func wrapPlacesSidebar(obj *externglib.Object) PlacesSidebarrer {
 	}
 }
 
-func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
+func marshalPlacesSidebarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlacesSidebar(obj), nil
@@ -526,6 +528,31 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	_arg1 = (*C.GFile)(unsafe.Pointer((location).(gextras.Nativer).Native()))
 
 	C.gtk_places_sidebar_set_location(_arg0, _arg1)
+}
+
+// SetOpenFlags sets the way in which the calling application can open new
+// locations from the places sidebar. For example, some applications only open
+// locations “directly” into their main view, while others may support opening
+// locations in a new notebook tab or a new window.
+//
+// This function is used to tell the places @sidebar about the ways in which the
+// application can open new locations, so that the sidebar can display (or not)
+// the “Open in new tab” and “Open in new window” menu items as appropriate.
+//
+// When the PlacesSidebar::open-location signal is emitted, its flags argument
+// will be set to one of the @flags that was passed in
+// gtk_places_sidebar_set_open_flags().
+//
+// Passing 0 for @flags will cause K_PLACES_OPEN_NORMAL to always be sent to
+// callbacks for the “open-location” signal.
+func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
+	var _arg0 *C.GtkPlacesSidebar  // out
+	var _arg1 C.GtkPlacesOpenFlags // out
+
+	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(sidebar.Native()))
+	_arg1 = C.GtkPlacesOpenFlags(flags)
+
+	C.gtk_places_sidebar_set_open_flags(_arg0, _arg1)
 }
 
 // SetShowConnectToServer sets whether the @sidebar should show an item for

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -172,7 +171,7 @@ func DragDropSucceeded(context DragContexter) bool {
 //
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context DragContexter, dragWindow Windowwer, screen Screener, xRoot int, yRoot int) (*Window, DragProtocol) {
+func DragFindWindowForScreen(context DragContexter, dragWindow Windower, screen Screener, xRoot int, yRoot int) (*Window, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 *C.GdkScreen      // out
@@ -196,6 +195,60 @@ func DragFindWindowForScreen(context DragContexter, dragWindow Windowwer, screen
 	_protocol = DragProtocol(_arg7)
 
 	return _destWindow, _protocol
+}
+
+// DragMotion updates the drag context when the pointer moves or the set of
+// actions changes.
+//
+// This function is called by the drag source.
+//
+// This function does not need to be called in managed drag and drop operations.
+// See gdk_drag_context_manage_dnd() for more information.
+func DragMotion(context DragContexter, destWindow Windower, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool {
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GdkWindow      // out
+	var _arg3 C.GdkDragProtocol // out
+	var _arg4 C.gint            // out
+	var _arg5 C.gint            // out
+	var _arg6 C.GdkDragAction   // out
+	var _arg7 C.GdkDragAction   // out
+	var _arg8 C.guint32         // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer((destWindow).(gextras.Nativer).Native()))
+	_arg3 = C.GdkDragProtocol(protocol)
+	_arg4 = C.gint(xRoot)
+	_arg5 = C.gint(yRoot)
+	_arg6 = C.GdkDragAction(suggestedAction)
+	_arg7 = C.GdkDragAction(possibleActions)
+	_arg8 = C.guint32(time_)
+
+	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// DragStatus selects one of the actions offered by the drag source.
+//
+// This function is called by the drag destination in response to
+// gdk_drag_motion() called by the drag source.
+func DragStatus(context DragContexter, action DragAction, time_ uint32) {
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.GdkDragAction   // out
+	var _arg3 C.guint32         // out
+
+	_arg1 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = C.GdkDragAction(action)
+	_arg3 = C.guint32(time_)
+
+	C.gdk_drag_status(_arg1, _arg2, _arg3)
 }
 
 // DropFinish ends the drag operation after a drop.

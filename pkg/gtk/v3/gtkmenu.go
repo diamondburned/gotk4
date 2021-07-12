@@ -16,12 +16,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // void gotk4_MenuPositionFunc(GtkMenu*, gint*, gint*, gboolean*, gpointer);
 import "C"
 
@@ -84,7 +82,7 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 // Menuer describes Menu's methods.
 type Menuer interface {
 	// Attach adds a new MenuItem to a (table) menu.
-	Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// Detach detaches the menu from the widget to which it had been attached.
 	Detach()
 	// AccelGroup gets the AccelGroup which holds global accelerators for the
@@ -106,14 +104,14 @@ type Menuer interface {
 	// Title returns the title of the menu.
 	Title() string
 	// PlaceOnMonitor places @menu on the given monitor.
-	PlaceOnMonitor(monitor gdk.Monitorrer)
+	PlaceOnMonitor(monitor gdk.Monitorer)
 	// Popdown removes the menu from the screen.
 	Popdown()
 	// Popup displays a menu and makes it available for selection.
-	Popup(parentMenuShell Widgetter, parentMenuItem Widgetter, fn MenuPositionFunc, button uint, activateTime uint32)
+	Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn MenuPositionFunc, button uint, activateTime uint32)
 	// ReorderChild moves @child to a new @position in the list of @menu
 	// children.
-	ReorderChild(child Widgetter, position int)
+	ReorderChild(child Widgeter, position int)
 	// Reposition repositions the menu according to its position function.
 	Reposition()
 	// SetAccelGroup: set the AccelGroup which holds global accelerators for the
@@ -222,7 +220,7 @@ func NewMenu() *Menu {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the
 // menu's attach widget or on any of its parent widgets.
-func NewMenuFromModel(model gio.MenuModeller) *Menu {
+func NewMenuFromModel(model gio.MenuModeler) *Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -244,7 +242,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -414,7 +412,7 @@ func (menu *Menu) Title() string {
 }
 
 // PlaceOnMonitor places @menu on the given monitor.
-func (menu *Menu) PlaceOnMonitor(monitor gdk.Monitorrer) {
+func (menu *Menu) PlaceOnMonitor(monitor gdk.Monitorer) {
 	var _arg0 *C.GtkMenu    // out
 	var _arg1 *C.GdkMonitor // out
 
@@ -456,7 +454,7 @@ func (menu *Menu) Popdown() {
 //
 // Deprecated: Please use gtk_menu_popup_at_widget(),
 // gtk_menu_popup_at_pointer(). or gtk_menu_popup_at_rect() instead.
-func (menu *Menu) Popup(parentMenuShell Widgetter, parentMenuItem Widgetter, fn MenuPositionFunc, button uint, activateTime uint32) {
+func (menu *Menu) Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn MenuPositionFunc, button uint, activateTime uint32) {
 	var _arg0 *C.GtkMenu            // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkWidget          // out
@@ -477,7 +475,7 @@ func (menu *Menu) Popup(parentMenuShell Widgetter, parentMenuItem Widgetter, fn 
 }
 
 // ReorderChild moves @child to a new @position in the list of @menu children.
-func (menu *Menu) ReorderChild(child Widgetter, position int) {
+func (menu *Menu) ReorderChild(child Widgeter, position int) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

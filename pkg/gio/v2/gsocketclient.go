@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -34,6 +32,14 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_socket_client_get_type()), F: marshalSocketClienter},
 	})
+}
+
+// SocketClientOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type SocketClientOverrider interface {
+	Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 }
 
 // SocketClienter describes SocketClient's methods.
@@ -93,14 +99,23 @@ type SocketClienter interface {
 	// SetEnableProxy sets whether or not @client attempts to make connections
 	// via a proxy server.
 	SetEnableProxy(enable bool)
+	// SetFamily sets the socket family of the socket client.
+	SetFamily(family SocketFamily)
 	// SetLocalAddress sets the local address of the socket client.
 	SetLocalAddress(address SocketAddresser)
+	// SetProtocol sets the protocol of the socket client.
+	SetProtocol(protocol SocketProtocol)
 	// SetProxyResolver overrides the Resolver used by @client.
 	SetProxyResolver(proxyResolver ProxyResolverer)
+	// SetSocketType sets the socket type of the socket client.
+	SetSocketType(typ SocketType)
 	// SetTimeout sets the I/O timeout for sockets created by @client.
 	SetTimeout(timeout uint)
 	// SetTLS sets whether @client creates TLS (aka SSL) connections.
 	SetTLS(tls bool)
+	// SetTLSValidationFlags sets the TLS validation flags used when creating
+	// TLS connections via @client.
+	SetTLSValidationFlags(flags TLSCertificateFlags)
 }
 
 // SocketClient is a lightweight high-level utility class for connecting to a
@@ -722,6 +737,23 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
 }
 
+// SetFamily sets the socket family of the socket client. If this is set to
+// something other than G_SOCKET_FAMILY_INVALID then the sockets created by this
+// object will be of the specified family.
+//
+// This might be useful for instance if you want to force the local connection
+// to be an ipv4 socket, even though the address might be an ipv6 mapped to ipv4
+// address.
+func (client *SocketClient) SetFamily(family SocketFamily) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketFamily  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	_arg1 = C.GSocketFamily(family)
+
+	C.g_socket_client_set_family(_arg0, _arg1)
+}
+
 // SetLocalAddress sets the local address of the socket client. The sockets
 // created by this object will bound to the specified address (if not nil)
 // before connecting.
@@ -736,6 +768,21 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 
 	C.g_socket_client_set_local_address(_arg0, _arg1)
+}
+
+// SetProtocol sets the protocol of the socket client. The sockets created by
+// this object will use of the specified protocol.
+//
+// If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
+// protocol for the socket family and type.
+func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 C.GSocketProtocol // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	_arg1 = C.GSocketProtocol(protocol)
+
+	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
 // SetProxyResolver overrides the Resolver used by @client. You can call this if
@@ -753,6 +800,21 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	_arg1 = (*C.GProxyResolver)(unsafe.Pointer((proxyResolver).(gextras.Nativer).Native()))
 
 	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
+}
+
+// SetSocketType sets the socket type of the socket client. The sockets created
+// by this object will be of the specified type.
+//
+// It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
+// GSocketClient is used for connection oriented services.
+func (client *SocketClient) SetSocketType(typ SocketType) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketType    // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	_arg1 = C.GSocketType(typ)
+
+	C.g_socket_client_set_socket_type(_arg0, _arg1)
 }
 
 // SetTimeout sets the I/O timeout for sockets created by @client. @timeout is a
@@ -797,4 +859,16 @@ func (client *SocketClient) SetTLS(tls bool) {
 	}
 
 	C.g_socket_client_set_tls(_arg0, _arg1)
+}
+
+// SetTLSValidationFlags sets the TLS validation flags used when creating TLS
+// connections via @client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
+func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
+	var _arg0 *C.GSocketClient       // out
+	var _arg1 C.GTlsCertificateFlags // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	_arg1 = C.GTlsCertificateFlags(flags)
+
+	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
 }

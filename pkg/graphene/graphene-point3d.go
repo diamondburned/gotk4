@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -311,4 +310,17 @@ func (p *Point3D) ToVec3() Vec3 {
 	C.graphene_point3d_to_vec3(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_v)))
 
 	return _v
+}
+
+// Point3DZero retrieves a constant point with all three coordinates set to 0.
+func Point3DZero() *Point3D {
+	var _cret *C.graphene_point3d_t // in
+
+	_cret = C.graphene_point3d_zero()
+
+	var _point3D *Point3D // out
+
+	_point3D = (*Point3D)(unsafe.Pointer(_cret))
+
+	return _point3D
 }

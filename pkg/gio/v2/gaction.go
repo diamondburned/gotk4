@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -13,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -369,4 +369,105 @@ func (action *Action) StateType() *glib.VariantType {
 	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
 
 	return _variantType
+}
+
+// ActionNameIsValid checks if @action_name is valid.
+//
+// @action_name is valid if it consists only of alphanumeric characters, plus
+// '-' and '.'. The empty string is not a valid action name.
+//
+// It is an error to call this function with a non-utf8 @action_name.
+// @action_name must not be nil.
+func ActionNameIsValid(actionName string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_action_name_is_valid(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ActionParseDetailedName parses a detailed action name into its separate name
+// and target components.
+//
+// Detailed action names can have three formats.
+//
+// The first format is used to represent an action name with no target value and
+// consists of just an action name containing no whitespace nor the characters
+// ':', '(' or ')'. For example: "app.action".
+//
+// The second format is used to represent an action with a target value that is
+// a non-empty string consisting only of alphanumerics, plus '-' and '.'. In
+// that case, the action name and target value are separated by a double colon
+// ("::"). For example: "app.action::target".
+//
+// The third format is used to represent an action with any type of target
+// value, including strings. The target value follows the action name,
+// surrounded in parens. For example: "app.action(42)". The target value is
+// parsed using g_variant_parse(). If a tuple-typed value is desired, it must be
+// specified in the same way, resulting in two sets of parens, for example:
+// "app.action((1,2,3))". A string target can be specified this way as well:
+// "app.action('target')". For strings, this third format must be used if *
+// target value is empty or contains characters other than alphanumerics, '-'
+// and '.'.
+func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // in
+	var _targetValue *glib.Variant
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_action_parse_detailed_name(_arg1, &_arg2, (**C.GVariant)(unsafe.Pointer(&_targetValue)), &_cerr)
+
+	var _actionName string // out
+
+	var _goerr error // out
+
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _actionName, _targetValue, _goerr
+}
+
+// ActionPrintDetailedName formats a detailed action name from @action_name and
+// @target_value.
+//
+// It is an error to call this function with an invalid action name.
+//
+// This function is the opposite of g_action_parse_detailed_name(). It will
+// produce a string that can be parsed back to the @action_name and
+// @target_value by that function.
+//
+// See that function for the types of strings that will be printed by this
+// function.
+func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.GVariant // out
+	var _cret *C.gchar    // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(targetValue))
+
+	_cret = C.g_action_print_detailed_name(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }

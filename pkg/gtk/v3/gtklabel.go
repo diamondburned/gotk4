@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeller},
+		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeler},
 	})
 }
 
@@ -32,16 +31,14 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type LabelOverrider interface {
-	//
 	ActivateLink(uri string) bool
-	//
 	CopyClipboard()
-	//
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PopulatePopup(menu Menuer)
 }
 
-// Labeller describes Label's methods.
-type Labeller interface {
+// Labeler describes Label's methods.
+type Labeler interface {
 	// Angle gets the angle of rotation for the label.
 	Angle() float64
 	// Attributes gets the attribute list that was set on the label using
@@ -110,10 +107,19 @@ type Labeller interface {
 	// SetAttributes sets a AttrList; the attributes in the list are applied to
 	// the label text.
 	SetAttributes(attrs *pango.AttrList)
+	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
+	// the text if there is not enough space to render the entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
+	// SetJustify sets the alignment of the lines in the text of the label
+	// relative to each other.
+	SetJustify(jtype Justification)
 	// SetLabel sets the text of the label.
 	SetLabel(str string)
 	// SetLineWrap toggles line wrapping within the Label widget.
 	SetLineWrap(wrap bool)
+	// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
+	// this controls how the line wrapping is done.
+	SetLineWrapMode(wrapMode pango.WrapMode)
 	// SetLines sets the number of lines to which an ellipsized, wrapping label
 	// should be limited.
 	SetLines(lines int)
@@ -130,7 +136,7 @@ type Labeller interface {
 	SetMaxWidthChars(nChars int)
 	// SetMnemonicWidget: if the label has been set so that it has an mnemonic
 	// key (using i.e.
-	SetMnemonicWidget(widget Widgetter)
+	SetMnemonicWidget(widget Widgeter)
 	// SetPattern: pattern of underlines you want under the existing text within
 	// the Label widget.
 	SetPattern(pattern string)
@@ -180,11 +186,11 @@ type Label struct {
 }
 
 var (
-	_ Labeller        = (*Label)(nil)
+	_ Labeler         = (*Label)(nil)
 	_ gextras.Nativer = (*Label)(nil)
 )
 
-func wrapLabel(obj *externglib.Object) Labeller {
+func wrapLabel(obj *externglib.Object) Labeler {
 	return &Label{
 		Misc: Misc{
 			Widget: Widget{
@@ -202,7 +208,7 @@ func wrapLabel(obj *externglib.Object) Labeller {
 	}
 }
 
-func marshalLabeller(p uintptr) (interface{}, error) {
+func marshalLabeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLabel(obj), nil
@@ -750,6 +756,34 @@ func (label *Label) SetAttributes(attrs *pango.AttrList) {
 	C.gtk_label_set_attributes(_arg0, _arg1)
 }
 
+// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to the
+// text if there is not enough space to render the entire string.
+func (label *Label) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkLabel          // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
+	_arg1 = C.PangoEllipsizeMode(mode)
+
+	C.gtk_label_set_ellipsize(_arg0, _arg1)
+}
+
+// SetJustify sets the alignment of the lines in the text of the label relative
+// to each other. GTK_JUSTIFY_LEFT is the default value when the widget is first
+// created with gtk_label_new(). If you instead want to set the alignment of the
+// label as a whole, use gtk_widget_set_halign() instead.
+// gtk_label_set_justify() has no effect on labels containing only a single
+// line.
+func (label *Label) SetJustify(jtype Justification) {
+	var _arg0 *C.GtkLabel        // out
+	var _arg1 C.GtkJustification // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
+	_arg1 = C.GtkJustification(jtype)
+
+	C.gtk_label_set_justify(_arg0, _arg1)
+}
+
 // SetLabel sets the text of the label. The label is interpreted as including
 // embedded underlines and/or Pango markup depending on the values of the
 // Label:use-underline and Label:use-markup properties.
@@ -783,6 +817,19 @@ func (label *Label) SetLineWrap(wrap bool) {
 	}
 
 	C.gtk_label_set_line_wrap(_arg0, _arg1)
+}
+
+// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap()) this
+// controls how the line wrapping is done. The default is PANGO_WRAP_WORD which
+// means wrap on word boundaries.
+func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
+	var _arg0 *C.GtkLabel     // out
+	var _arg1 C.PangoWrapMode // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(label.Native()))
+	_arg1 = C.PangoWrapMode(wrapMode)
+
+	C.gtk_label_set_line_wrap_mode(_arg0, _arg1)
 }
 
 // SetLines sets the number of lines to which an ellipsized, wrapping label
@@ -876,7 +923,7 @@ func (label *Label) SetMaxWidthChars(nChars int) {
 // GtkWidget::mnemonic-activate signal on it. The default handler for this
 // signal will activate the widget if there are no mnemonic collisions and
 // toggle focus between the colliding widgets otherwise.
-func (label *Label) SetMnemonicWidget(widget Widgetter) {
+func (label *Label) SetMnemonicWidget(widget Widgeter) {
 	var _arg0 *C.GtkLabel  // out
 	var _arg1 *C.GtkWidget // out
 

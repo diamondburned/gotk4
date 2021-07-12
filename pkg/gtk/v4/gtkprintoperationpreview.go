@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -31,12 +30,10 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
-	//
-	GotPageSize(context PrintContexter, pageSetup PageSetupper)
+	GotPageSize(context PrintContexter, pageSetup PageSetuper)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
-	//
 	Ready(context PrintContexter)
 	// RenderPage renders a page to the preview.
 	//

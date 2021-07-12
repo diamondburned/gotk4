@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarrer},
+		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarer},
 	})
 }
 
-// HScrollbarrer describes HScrollbar's methods.
-type HScrollbarrer interface {
+// HScrollbarer describes HScrollbar's methods.
+type HScrollbarer interface {
 	privateHScrollbar()
 }
 
@@ -42,11 +41,11 @@ type HScrollbar struct {
 }
 
 var (
-	_ HScrollbarrer   = (*HScrollbar)(nil)
+	_ HScrollbarer    = (*HScrollbar)(nil)
 	_ gextras.Nativer = (*HScrollbar)(nil)
 )
 
-func wrapHScrollbar(obj *externglib.Object) HScrollbarrer {
+func wrapHScrollbar(obj *externglib.Object) HScrollbarer {
 	return &HScrollbar{
 		Scrollbar: Scrollbar{
 			Range: Range{
@@ -69,7 +68,7 @@ func wrapHScrollbar(obj *externglib.Object) HScrollbarrer {
 	}
 }
 
-func marshalHScrollbarrer(p uintptr) (interface{}, error) {
+func marshalHScrollbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHScrollbar(obj), nil

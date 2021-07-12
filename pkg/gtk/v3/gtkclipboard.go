@@ -15,12 +15,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // void gotk4_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
 // void gotk4_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
 // void gotk4_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
@@ -157,7 +155,7 @@ type Clipboarder interface {
 	// the application exits or when gtk_clipboard_store () is called.
 	SetCanStore(targets []TargetEntry)
 	// SetImage sets the contents of the clipboard to the given Pixbuf.
-	SetImage(pixbuf gdkpixbuf.Pixbuffer)
+	SetImage(pixbuf gdkpixbuf.Pixbufer)
 	// SetText sets the contents of the clipboard to the given UTF-8 string.
 	SetText(text string, len int)
 	// Store stores the current clipboard data somewhere so that it will stay
@@ -387,7 +385,7 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
 // take responsibility for responding for requests for the image, and for
 // converting the image into the requested format.
-func (clipboard *Clipboard) SetImage(pixbuf gdkpixbuf.Pixbuffer) {
+func (clipboard *Clipboard) SetImage(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.GdkPixbuf    // out
 
@@ -592,4 +590,21 @@ func (clipboard *Clipboard) WaitIsUrisAvailable() bool {
 	}
 
 	return _ok
+}
+
+// ClipboardGetDefault returns the default clipboard object for use with
+// cut/copy/paste menu items and keyboard shortcuts.
+func ClipboardGetDefault(display gdk.Displayer) *Clipboard {
+	var _arg1 *C.GdkDisplay   // out
+	var _cret *C.GtkClipboard // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_clipboard_get_default(_arg1)
+
+	var _clipboard *Clipboard // out
+
+	_clipboard = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Clipboard)
+
+	return _clipboard
 }

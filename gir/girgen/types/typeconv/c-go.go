@@ -187,7 +187,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			// it (since we own it now), which is less copying.
 			value.p.Linef("p := C.g_byte_array_steal(&%s, (*C.gsize)(&len))", value.InName)
 			value.p.Linef("%s = unsafe.Slice((*byte)(p), len)", value.Out.Set)
-			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {")
+			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {", value.OutName)
 			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
 			value.p.Linef("})")
 			value.p.Ascend()
@@ -238,6 +238,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	if !value.resolveType(conv) {
+		value.Logln(logger.Debug, "cannot resolve type")
 		return false
 	}
 
@@ -298,7 +299,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.ImportCore("gerror")
 		value.header.Import("unsafe")
 
-		value.p.Linef("%s = gerror.Take(unsafe.Pointer(%s))", value.Out.Set, value.InName)
+		value.p.LineTmpl(value, "<.Out.Set> = gerror.Take(unsafe.Pointer(<.InNamePtr 1>))")
 		return true
 
 	case value.Resolved.IsPrimitive():

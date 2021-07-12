@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtonner},
+		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtoner},
 	})
 }
 
-// VolumeButtonner describes VolumeButton's methods.
-type VolumeButtonner interface {
+// VolumeButtoner describes VolumeButton's methods.
+type VolumeButtoner interface {
 	privateVolumeButton()
 }
 
@@ -36,11 +35,11 @@ type VolumeButton struct {
 }
 
 var (
-	_ VolumeButtonner = (*VolumeButton)(nil)
+	_ VolumeButtoner  = (*VolumeButton)(nil)
 	_ gextras.Nativer = (*VolumeButton)(nil)
 )
 
-func wrapVolumeButton(obj *externglib.Object) VolumeButtonner {
+func wrapVolumeButton(obj *externglib.Object) VolumeButtoner {
 	return &VolumeButton{
 		ScaleButton: ScaleButton{
 			Widget: Widget{
@@ -64,7 +63,7 @@ func wrapVolumeButton(obj *externglib.Object) VolumeButtonner {
 	}
 }
 
-func marshalVolumeButtonner(p uintptr) (interface{}, error) {
+func marshalVolumeButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVolumeButton(obj), nil

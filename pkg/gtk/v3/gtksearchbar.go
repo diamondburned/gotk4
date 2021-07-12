@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarer},
 	})
 }
 
-// SearchBarrer describes SearchBar's methods.
-type SearchBarrer interface {
+// SearchBarer describes SearchBar's methods.
+type SearchBarer interface {
 	// ConnectEntry connects the Entry widget passed as the one to be used in
 	// this search bar.
 	ConnectEntry(entry Entrier)
@@ -69,11 +68,11 @@ type SearchBar struct {
 }
 
 var (
-	_ SearchBarrer    = (*SearchBar)(nil)
+	_ SearchBarer     = (*SearchBar)(nil)
 	_ gextras.Nativer = (*SearchBar)(nil)
 )
 
-func wrapSearchBar(obj *externglib.Object) SearchBarrer {
+func wrapSearchBar(obj *externglib.Object) SearchBarer {
 	return &SearchBar{
 		Bin: Bin{
 			Container: Container{
@@ -93,7 +92,7 @@ func wrapSearchBar(obj *externglib.Object) SearchBarrer {
 	}
 }
 
-func marshalSearchBarrer(p uintptr) (interface{}, error) {
+func marshalSearchBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSearchBar(obj), nil

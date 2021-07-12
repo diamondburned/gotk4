@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,7 +27,7 @@ type MultiSelectioner interface {
 	// Model returns the underlying model of @self.
 	Model() *gio.ListModel
 	// SetModel sets the model that @self should wrap.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 }
 
 // MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
@@ -62,7 +61,7 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSelection creates a new selection to handle @model.
-func NewMultiSelection(model gio.ListModeller) *MultiSelection {
+func NewMultiSelection(model gio.ListModeler) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
@@ -96,7 +95,7 @@ func (self *MultiSelection) Model() *gio.ListModel {
 // SetModel sets the model that @self should wrap.
 //
 // If @model is nil, @self will be empty.
-func (self *MultiSelection) SetModel(model gio.ListModeller) {
+func (self *MultiSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out
 

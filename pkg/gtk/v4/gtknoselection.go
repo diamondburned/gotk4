@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,7 +27,7 @@ type NoSelectioner interface {
 	// Model gets the model that @self is wrapping.
 	Model() *gio.ListModel
 	// SetModel sets the model that @self should wrap.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 }
 
 // NoSelection: `GtkNoSelection` is a `GtkSelectionModel` that does not allow
@@ -65,7 +64,7 @@ func marshalNoSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewNoSelection creates a new selection to handle @model.
-func NewNoSelection(model gio.ListModeller) *NoSelection {
+func NewNoSelection(model gio.ListModeler) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in
 
@@ -99,7 +98,7 @@ func (self *NoSelection) Model() *gio.ListModel {
 // SetModel sets the model that @self should wrap.
 //
 // If @model is nil, this model will be empty.
-func (self *NoSelection) SetModel(model gio.ListModeller) {
+func (self *NoSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkNoSelection // out
 	var _arg1 *C.GListModel     // out
 

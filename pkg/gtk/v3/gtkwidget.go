@@ -20,7 +20,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -30,7 +29,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
-		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgetter},
+		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgeter},
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
@@ -113,7 +112,7 @@ func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointe
 // system this function will return true for all windows, so you need to draw
 // the bottommost window first. Also, do not use “else if” statements to check
 // which window should be drawn.
-func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windowwer) bool {
+func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -141,7 +140,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windowwer) bool {
 // expose event to be emitted with the Widget::draw signal. It is intended to
 // help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
 // GTK+ 3.
-func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Windowwer) {
+func CairoTransformToWindow(cr *cairo.Context, widget Widgeter, window gdk.Windower) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
@@ -158,13 +157,11 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WidgetOverrider interface {
-	//
 	AdjustBaselineAllocation(baseline *int)
-	//
 	AdjustBaselineRequest(minimumBaseline *int, naturalBaseline *int)
-	//
+	AdjustSizeAllocation(orientation Orientation, minimumSize *int, naturalSize *int, allocatedPos *int, allocatedSize *int)
+	AdjustSizeRequest(orientation Orientation, minimumSize *int, naturalSize *int)
 	ButtonPressEvent(event *gdk.EventButton) bool
-	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	// CanActivateAccel determines whether an accelerator that activates the
 	// signal identified by @signal_id can currently be activated. This is done
@@ -173,13 +170,9 @@ type WidgetOverrider interface {
 	// default check is that the widget must be sensitive, and the widget and
 	// all its ancestors mapped.
 	CanActivateAccel(signalId uint) bool
-	//
 	CompositedChanged()
-	//
 	ConfigureEvent(event *gdk.EventConfigure) bool
-	//
 	DamageEvent(event *gdk.EventExpose) bool
-	//
 	DeleteEvent(event *gdk.EventAny) bool
 	// Destroy destroys a widget.
 	//
@@ -213,31 +206,21 @@ type WidgetOverrider interface {
 	//
 	// See also: gtk_container_remove()
 	Destroy()
-	//
 	DestroyEvent(event *gdk.EventAny) bool
-	//
+	DirectionChanged(previousDirection TextDirection)
 	DragBegin(context gdk.DragContexter)
-	//
 	DragDataDelete(context gdk.DragContexter)
-	//
 	DragDataGet(context gdk.DragContexter, selectionData *SelectionData, info uint, time_ uint)
-	//
 	DragDataReceived(context gdk.DragContexter, x int, y int, selectionData *SelectionData, info uint, time_ uint)
-	//
 	DragDrop(context gdk.DragContexter, x int, y int, time_ uint) bool
-	//
 	DragEnd(context gdk.DragContexter)
-	//
+	DragFailed(context gdk.DragContexter, result DragResult) bool
 	DragLeave(context gdk.DragContexter, time_ uint)
-	//
 	DragMotion(context gdk.DragContexter, x int, y int, time_ uint) bool
-	//
 	Draw(cr *cairo.Context) bool
-	//
 	EnterNotifyEvent(event *gdk.EventCrossing) bool
-	//
+	Focus(direction DirectionType) bool
 	FocusInEvent(event *gdk.EventFocus) bool
-	//
 	FocusOutEvent(event *gdk.EventFocus) bool
 	// Accessible returns the accessible object that describes the widget to an
 	// assistive technology.
@@ -309,7 +292,6 @@ type WidgetOverrider interface {
 	// widgets need to request something either in context of their children or
 	// in context of their allocation capabilities.
 	RequestMode() SizeRequestMode
-	//
 	GrabBrokenEvent(event *gdk.EventGrabBroken) bool
 	// GrabFocus causes @widget to have the keyboard focus for the Window it's
 	// inside. @widget must be a focusable widget, such as a Entry; something
@@ -322,40 +304,55 @@ type WidgetOverrider interface {
 	// related signals. Grabbing the focus immediately after creating the widget
 	// will likely fail and cause critical warnings.
 	GrabFocus()
-	//
 	GrabNotify(wasGrabbed bool)
 	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
 	// hidden (invisible to the user).
 	Hide()
-	//
-	HierarchyChanged(previousToplevel Widgetter)
-	//
+	HierarchyChanged(previousToplevel Widgeter)
 	KeyPressEvent(event *gdk.EventKey) bool
-	//
 	KeyReleaseEvent(event *gdk.EventKey) bool
+	// KeynavFailed: this function should be called whenever keyboard navigation
+	// within a single widget hits a boundary. The function emits the
+	// Widget::keynav-failed signal on the widget and its return value should be
+	// interpreted in a way similar to the return value of
+	// gtk_widget_child_focus():
 	//
+	// When true is returned, stay in the widget, the failed keyboard navigation
+	// is OK and/or there is nowhere we can/should move the focus to.
+	//
+	// When false is returned, the caller should continue with keyboard
+	// navigation outside the widget, e.g. by calling gtk_widget_child_focus()
+	// on the widget’s toplevel.
+	//
+	// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD
+	// and GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it
+	// returns true.
+	//
+	// Whenever the default handler returns true, it also calls
+	// gtk_widget_error_bell() to notify the user of the failed keyboard
+	// navigation.
+	//
+	// A use case for providing an own implementation of ::keynav-failed (either
+	// by connecting to it or by overriding it) would be a row of Entry widgets
+	// where the user should be able to navigate the entire row with the cursor
+	// keys, as e.g. known from user interfaces that require entering license
+	// keys.
+	KeynavFailed(direction DirectionType) bool
 	LeaveNotifyEvent(event *gdk.EventCrossing) bool
 	// Map: this function is only for use in widget implementations. Causes a
 	// widget to be mapped if it isn’t already.
 	Map()
-	//
 	MapEvent(event *gdk.EventAny) bool
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
-	//
 	MotionNotifyEvent(event *gdk.EventMotion) bool
-	//
-	ParentSet(previousParent Widgetter)
-	//
+	MoveFocus(direction DirectionType)
+	ParentSet(previousParent Widgeter)
 	PopupMenu() bool
-	//
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
-	//
 	ProximityInEvent(event *gdk.EventProximity) bool
-	//
 	ProximityOutEvent(event *gdk.EventProximity) bool
-	//
-	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltipper) bool
+	QueryTooltip(x int, y int, keyboardTooltip bool, tooltip Tooltiper) bool
 	// QueueDrawRegion invalidates the area of @widget defined by @region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows. Once the main loop becomes idle (after the current batch
@@ -383,19 +380,12 @@ type WidgetOverrider interface {
 	// is realized automatically, such as Widget::draw. Or simply
 	// g_signal_connect () to the Widget::realize signal.
 	Realize()
-	//
 	ScreenChanged(previousScreen gdk.Screener)
-	//
 	ScrollEvent(event *gdk.EventScroll) bool
-	//
 	SelectionClearEvent(event *gdk.EventSelection) bool
-	//
 	SelectionGet(selectionData *SelectionData, info uint, time_ uint)
-	//
 	SelectionNotifyEvent(event *gdk.EventSelection) bool
-	//
 	SelectionReceived(selectionData *SelectionData, time_ uint)
-	//
 	SelectionRequestEvent(event *gdk.EventSelection) bool
 	// Show flags a widget to be displayed. Any widget that isn’t shown will not
 	// appear on the screen. If you want to show all the widgets in a container,
@@ -412,47 +402,58 @@ type WidgetOverrider interface {
 	// ShowAll: recursively shows a widget, and any child widgets (if the widget
 	// is a container).
 	ShowAll()
-	//
+	ShowHelp(helpType WidgetHelpType) bool
+	StateChanged(previousState StateType)
+	StateFlagsChanged(previousStateFlags StateFlags)
 	StyleSet(previousStyle Styler)
-	//
 	StyleUpdated()
-	//
 	TouchEvent(event *gdk.EventTouch) bool
 	// Unmap: this function is only for use in widget implementations. Causes a
 	// widget to be unmapped if it’s currently mapped.
 	Unmap()
-	//
 	UnmapEvent(event *gdk.EventAny) bool
 	// Unrealize: this function is only useful in widget implementations. Causes
 	// a widget to be unrealized (frees all GDK resources associated with the
 	// widget, such as @widget->window).
 	Unrealize()
-	//
 	VisibilityNotifyEvent(event *gdk.EventVisibility) bool
-	//
 	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
-// Widgetter describes Widget's methods.
-type Widgetter interface {
+// Widgeter describes Widget's methods.
+type Widgeter interface {
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
 	Activate() bool
+	// AddAccelerator installs an accelerator for this @widget in @accel_group
+	// that causes @accel_signal to be emitted if the accelerator is activated.
+	AddAccelerator(accelSignal string, accelGroup AccelGrouper, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags)
+	// AddDeviceEvents adds the device events in the bitfield @events to the
+	// event mask for @widget.
+	AddDeviceEvents(device gdk.Devicer, events gdk.EventMask)
 	// AddEvents adds the events in the bitfield @events to the event mask for
 	// @widget.
 	AddEvents(events int)
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
-	AddMnemonicLabel(label Widgetter)
+	AddMnemonicLabel(label Widgeter)
 	// CanActivateAccel determines whether an accelerator that activates the
 	// signal identified by @signal_id can currently be activated.
 	CanActivateAccel(signalId uint) bool
+	// ChildFocus: this function is used by custom widget implementations; if
+	// you're writing an app, you’d use gtk_widget_grab_focus() to move the
+	// focus to a particular widget, and gtk_container_set_focus_chain() to
+	// change the focus tab order.
+	ChildFocus(direction DirectionType) bool
 	// ChildNotify emits a Widget::child-notify signal for the [child
 	// property][child-properties] @child_property on @widget.
 	ChildNotify(childProperty string)
 	// ClassPath: same as gtk_widget_path(), but always uses the name of a
 	// widget’s type, never uses a custom name set with gtk_widget_set_name().
 	ClassPath() (pathLength uint, path string, pathReversed string)
+	// ComputeExpand computes whether a container should give this widget extra
+	// space when possible.
+	ComputeExpand(orientation Orientation) bool
 	// CreatePangoContext creates a new Context with the appropriate font map,
 	// font options, font description, and base direction for drawing text for
 	// this widget.
@@ -486,6 +487,11 @@ type Widgetter interface {
 	// DragDestGetTrackMotion returns whether the widget has been configured to
 	// always emit Widget::drag-motion signals.
 	DragDestGetTrackMotion() bool
+	// DragDestSet sets a widget as a potential drop destination, and adds
+	// default behaviors.
+	DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction)
+	// DragDestSetProxy sets this widget as a proxy for drops to another window.
+	DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool)
 	// DragDestSetTargetList sets the target types that this widget can accept
 	// from drag-and-drop.
 	DragDestSetTargetList(targetList *TargetList)
@@ -510,15 +516,18 @@ type Widgetter interface {
 	// DragSourceGetTargetList gets the list of targets this widget can provide
 	// for drag-and-drop.
 	DragSourceGetTargetList() *TargetList
+	// DragSourceSet sets up a widget so that GTK+ will start a drag operation
+	// when the user clicks and drags on the widget.
+	DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
 	// DragSourceSetIconGIcon sets the icon that will be used for drags from a
 	// particular source to @icon.
-	DragSourceSetIconGIcon(icon gio.Iconner)
+	DragSourceSetIconGIcon(icon gio.Iconer)
 	// DragSourceSetIconName sets the icon that will be used for drags from a
 	// particular source to a themed icon.
 	DragSourceSetIconName(iconName string)
 	// DragSourceSetIconPixbuf sets the icon that will be used for drags from a
 	// particular widget from a Pixbuf.
-	DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbufer)
 	// DragSourceSetIconStock sets the icon that will be used for drags from a
 	// particular source to a stock icon.
 	DragSourceSetIconStock(stockId string)
@@ -620,6 +629,9 @@ type Widgetter interface {
 	MarginStart() int
 	// MarginTop gets the value of the Widget:margin-top property.
 	MarginTop() int
+	// ModifierMask returns the modifier mask the @widget’s windowing system
+	// backend uses for a particular purpose.
+	ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType
 	// ModifierStyle returns the current modifier style for the widget.
 	ModifierStyle() *RCStyle
 	// Name retrieves the name of a widget.
@@ -773,7 +785,7 @@ type Widgetter interface {
 	Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool)
 	// IsAncestor determines whether @widget is somewhere inside @ancestor,
 	// possibly with intermediate containers.
-	IsAncestor(ancestor Widgetter) bool
+	IsAncestor(ancestor Widgeter) bool
 	// IsComposited: whether @widget can rely on having its alpha channel drawn
 	// correctly.
 	IsComposited() bool
@@ -789,6 +801,9 @@ type Widgetter interface {
 	// IsVisible determines whether the widget and all its parents are marked as
 	// visible.
 	IsVisible() bool
+	// KeynavFailed: this function should be called whenever keyboard navigation
+	// within a single widget hits a boundary.
+	KeynavFailed(direction DirectionType) bool
 	// ListActionPrefixes retrieves a nil-terminated array of strings containing
 	// the prefixes of Group's available to @widget.
 	ListActionPrefixes() []string
@@ -796,13 +811,25 @@ type Widgetter interface {
 	Map()
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
+	// ModifyBase sets the base color for a widget in a particular state.
+	ModifyBase(state StateType, color *gdk.Color)
+	// ModifyBg sets the background color for a widget in a particular state.
+	ModifyBg(state StateType, color *gdk.Color)
 	// ModifyCursor sets the cursor color to use in a widget, overriding the
 	// Widget cursor-color and secondary-cursor-color style properties.
 	ModifyCursor(primary *gdk.Color, secondary *gdk.Color)
+	// ModifyFg sets the foreground color for a widget in a particular state.
+	ModifyFg(state StateType, color *gdk.Color)
 	// ModifyFont sets the font to use for a widget.
 	ModifyFont(fontDesc *pango.FontDescription)
 	// ModifyStyle modifies style values on the widget.
 	ModifyStyle(style RCStyler)
+	// ModifyText sets the text color for a widget in a particular state.
+	ModifyText(state StateType, color *gdk.Color)
+	// OverrideBackgroundColor sets the background color to use for a widget.
+	OverrideBackgroundColor(state StateFlags, color *gdk.RGBA)
+	// OverrideColor sets the color to use for a widget.
+	OverrideColor(state StateFlags, color *gdk.RGBA)
 	// OverrideCursor sets the cursor color to use in a widget, overriding the
 	// cursor-color and secondary-cursor-color style properties.
 	OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA)
@@ -841,10 +868,13 @@ type Widgetter interface {
 	RegionIntersect(region *cairo.Region) *cairo.Region
 	// RegisterWindow registers a Window with the widget and sets it up so that
 	// the widget receives events for it.
-	RegisterWindow(window gdk.Windowwer)
+	RegisterWindow(window gdk.Windower)
+	// RemoveAccelerator removes an accelerator from @widget, previously
+	// installed with gtk_widget_add_accelerator().
+	RemoveAccelerator(accelGroup AccelGrouper, accelKey uint, accelMods gdk.ModifierType) bool
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget.
-	RemoveMnemonicLabel(label Widgetter)
+	RemoveMnemonicLabel(label Widgeter)
 	// RemoveTickCallback removes a tick callback previously registered with
 	// gtk_widget_add_tick_callback().
 	RemoveTickCallback(id uint)
@@ -857,7 +887,7 @@ type Widgetter interface {
 	RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf
 	// Reparent moves a widget from one Container to another, handling reference
 	// count issues to avoid destroying the widget.
-	Reparent(newParent Widgetter)
+	Reparent(newParent Widgeter)
 	// ResetRCStyles: reset the styles of @widget and all descendents, so when
 	// they are looked up again, they get the correct values for the currently
 	// loaded RC file settings.
@@ -885,6 +915,10 @@ type Widgetter interface {
 	// SetDeviceEnabled enables or disables a Device to interact with @widget
 	// and all its children.
 	SetDeviceEnabled(device gdk.Devicer, enabled bool)
+	// SetDeviceEvents sets the device event mask (see EventMask) for a widget.
+	SetDeviceEvents(device gdk.Devicer, events gdk.EventMask)
+	// SetDirection sets the reading direction on a particular widget.
+	SetDirection(dir TextDirection)
 	// SetDoubleBuffered widgets are double buffered by default; you can use
 	// this function to turn off the buffering.
 	SetDoubleBuffered(doubleBuffered bool)
@@ -894,10 +928,12 @@ type Widgetter interface {
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
 	// SetFontMap sets the font map to use for Pango rendering.
-	SetFontMap(fontMap pango.FontMapper)
+	SetFontMap(fontMap pango.FontMaper)
 	// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
 	// this widget.
 	SetFontOptions(options *cairo.FontOptions)
+	// SetHAlign sets the horizontal alignment of @widget.
+	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on @widget to @has_tooltip.
 	SetHasTooltip(hasTooltip bool)
 	// SetHasWindow specifies whether @widget has a Window of its own.
@@ -933,9 +969,9 @@ type Widgetter interface {
 	SetOpacity(opacity float64)
 	// SetParent: this function is useful only when implementing subclasses of
 	// Container.
-	SetParent(parent Widgetter)
+	SetParent(parent Widgeter)
 	// SetParentWindow sets a non default parent window for @widget.
-	SetParentWindow(parentWindow gdk.Windowwer)
+	SetParentWindow(parentWindow gdk.Windower)
 	// SetRealized marks the widget as being realized.
 	SetRealized(realized bool)
 	// SetReceivesDefault specifies whether @widget will be treated as the
@@ -950,6 +986,10 @@ type Widgetter interface {
 	// SetSizeRequest sets the minimum size of a widget; that is, the widget’s
 	// size request will be at least @width by @height.
 	SetSizeRequest(width int, height int)
+	// SetState: this function is for use in widget implementations.
+	SetState(state StateType)
+	// SetStateFlags: this function is for use in widget implementations.
+	SetStateFlags(flags StateFlags, clear bool)
 	// SetStyle: used to set the Style for a widget (@widget->style).
 	SetStyle(style Styler)
 	// SetSupportMultidevice enables or disables multiple pointer awareness.
@@ -961,7 +1001,9 @@ type Widgetter interface {
 	SetTooltipText(text string)
 	// SetTooltipWindow replaces the default window used for displaying tooltips
 	// with @custom_window.
-	SetTooltipWindow(customWindow Windowwer)
+	SetTooltipWindow(customWindow Windower)
+	// SetVAlign sets the vertical alignment of @widget.
+	SetVAlign(align Align)
 	// SetVExpand sets whether the widget would like any available extra
 	// vertical space.
 	SetVExpand(expand bool)
@@ -974,7 +1016,7 @@ type Widgetter interface {
 	// children for creating Windows.
 	SetVisual(visual gdk.Visualer)
 	// SetWindow sets a widget’s window.
-	SetWindow(window gdk.Windowwer)
+	SetWindow(window gdk.Windower)
 	// ShapeCombineRegion sets a shape for this widget’s GDK window.
 	ShapeCombineRegion(region *cairo.Region)
 	// Show flags a widget to be displayed.
@@ -997,7 +1039,7 @@ type Widgetter interface {
 	ThawChildNotify()
 	// TranslateCoordinates: translate coordinates relative to @src_widget’s
 	// allocation to coordinates relative to @dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool)
+	TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of @widget is located.
 	TriggerTooltipQuery()
@@ -1009,7 +1051,9 @@ type Widgetter interface {
 	Unrealize()
 	// UnregisterWindow unregisters a Window from the widget that was previously
 	// set up with gtk_widget_register_window().
-	UnregisterWindow(window gdk.Windowwer)
+	UnregisterWindow(window gdk.Windower)
+	// UnsetStateFlags: this function is for use in widget implementations.
+	UnsetStateFlags(flags StateFlags)
 }
 
 // Widget is the base class all widgets in GTK+ derive from. It manages the
@@ -1112,11 +1156,11 @@ type Widget struct {
 }
 
 var (
-	_ Widgetter       = (*Widget)(nil)
+	_ Widgeter        = (*Widget)(nil)
 	_ gextras.Nativer = (*Widget)(nil)
 )
 
-func wrapWidget(obj *externglib.Object) Widgetter {
+func wrapWidget(obj *externglib.Object) Widgeter {
 	return &Widget{
 		InitiallyUnowned: externglib.InitiallyUnowned{
 			Object: obj,
@@ -1130,7 +1174,7 @@ func wrapWidget(obj *externglib.Object) Widgetter {
 	}
 }
 
-func marshalWidgetter(p uintptr) (interface{}, error) {
+func marshalWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
@@ -1163,6 +1207,47 @@ func (widget *Widget) Activate() bool {
 	return _ok
 }
 
+// AddAccelerator installs an accelerator for this @widget in @accel_group that
+// causes @accel_signal to be emitted if the accelerator is activated. The
+// @accel_group needs to be added to the widget’s toplevel via
+// gtk_window_add_accel_group(), and the signal must be of type G_SIGNAL_ACTION.
+// Accelerators added through this function are not user changeable during
+// runtime. If you want to support accelerators that can be changed by the user,
+// use gtk_accel_map_add_entry() and gtk_widget_set_accel_path() or
+// gtk_menu_item_set_accel_path() instead.
+func (widget *Widget) AddAccelerator(accelSignal string, accelGroup AccelGrouper, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GtkAccelGroup  // out
+	var _arg3 C.guint           // out
+	var _arg4 C.GdkModifierType // out
+	var _arg5 C.GtkAccelFlags   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelSignal)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
+	_arg3 = C.guint(accelKey)
+	_arg4 = C.GdkModifierType(accelMods)
+	_arg5 = C.GtkAccelFlags(accelFlags)
+
+	C.gtk_widget_add_accelerator(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// AddDeviceEvents adds the device events in the bitfield @events to the event
+// mask for @widget. See gtk_widget_set_device_events() for details.
+func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = C.GdkEventMask(events)
+
+	C.gtk_widget_add_device_events(_arg0, _arg1, _arg2)
+}
+
 // AddEvents adds the events in the bitfield @events to the event mask for
 // @widget. See gtk_widget_set_events() and the [input handling
 // overview][event-masks] for details.
@@ -1181,7 +1266,7 @@ func (widget *Widget) AddEvents(events int) {
 // labels for the widget is cleared when the widget is destroyed, so the caller
 // must make sure to update its internal state at this point as well, by using a
 // connection to the Widget::destroy signal or a weak notifier.
-func (widget *Widget) AddMnemonicLabel(label Widgetter) {
+func (widget *Widget) AddMnemonicLabel(label Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1206,6 +1291,43 @@ func (widget *Widget) CanActivateAccel(signalId uint) bool {
 	_arg1 = C.guint(signalId)
 
 	_cret = C.gtk_widget_can_activate_accel(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildFocus: this function is used by custom widget implementations; if you're
+// writing an app, you’d use gtk_widget_grab_focus() to move the focus to a
+// particular widget, and gtk_container_set_focus_chain() to change the focus
+// tab order. So you may want to investigate those functions instead.
+//
+// gtk_widget_child_focus() is called by containers as the user moves around the
+// window using keyboard shortcuts. @direction indicates what kind of motion is
+// taking place (up, down, left, right, tab forward, tab backward).
+// gtk_widget_child_focus() emits the Widget::focus signal; widgets override the
+// default handler for this signal in order to implement appropriate focus
+// behavior.
+//
+// The default ::focus handler for a widget should return true if moving in
+// @direction left the focus on a focusable location inside that widget, and
+// false if moving in @direction moved the focus outside the widget. If
+// returning true, widgets normally call gtk_widget_grab_focus() to place the
+// focus accordingly; if returning false, they don’t modify the current focus
+// location.
+func (widget *Widget) ChildFocus(direction DirectionType) bool {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_widget_child_focus(_arg0, _arg1)
 
 	var _ok bool // out
 
@@ -1258,6 +1380,35 @@ func (widget *Widget) ClassPath() (pathLength uint, path string, pathReversed st
 	defer C.free(unsafe.Pointer(_arg3))
 
 	return _pathLength, _path, _pathReversed
+}
+
+// ComputeExpand computes whether a container should give this widget extra
+// space when possible. Containers should check this, rather than looking at
+// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
+//
+// This function already checks whether the widget is visible, so visibility
+// does not need to be checked separately. Non-visible widgets are not expanded.
+//
+// The computed expand value uses either the expand setting explicitly set on
+// the widget itself, or, if none has been explicitly set, the widget may expand
+// if some of its children do.
+func (widget *Widget) ComputeExpand(orientation Orientation) bool {
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkOrientation // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_widget_compute_expand(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // CreatePangoContext creates a new Context with the appropriate font map, font
@@ -1467,6 +1618,80 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 	return _ok
 }
 
+// DragDestSet sets a widget as a potential drop destination, and adds default
+// behaviors.
+//
+// The default behaviors listed in @flags have an effect similar to installing
+// default handlers for the widget’s drag-and-drop signals (Widget::drag-motion,
+// Widget::drag-drop, ...). They all exist for convenience. When passing
+// K_DEST_DEFAULT_ALL for instance it is sufficient to connect to the widget’s
+// Widget::drag-data-received signal to get primitive, but consistent
+// drag-and-drop support.
+//
+// Things become more complicated when you try to preview the dragged data, as
+// described in the documentation for Widget::drag-motion. The default behaviors
+// described by @flags make some assumptions, that can conflict with your own
+// signal handlers. For instance K_DEST_DEFAULT_DROP causes invokations of
+// gdk_drag_status() in the context of Widget::drag-motion, and invokations of
+// gtk_drag_finish() in Widget::drag-data-received. Especially the later is
+// dramatic, when your own Widget::drag-motion handler calls gtk_drag_get_data()
+// to inspect the dragged data.
+//
+// There’s no way to set a default action here, you can use the
+// Widget::drag-motion callback for that. Here’s an example which selects the
+// action to use depending on whether the control key is pressed or not:
+//
+//    static void
+//    drag_motion (GtkWidget *widget,
+//                 GdkDragContext *context,
+//                 gint x,
+//                 gint y,
+//                 guint time)
+//    {
+//      GdkModifierType mask;
+//
+//      gdk_window_get_pointer (gtk_widget_get_window (widget),
+//                              NULL, NULL, &mask);
+//      if (mask & GDK_CONTROL_MASK)
+//        gdk_drag_status (context, GDK_ACTION_COPY, time);
+//      else
+//        gdk_drag_status (context, GDK_ACTION_MOVE, time);
+//    }
+func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 C.GtkDestDefaults // out
+	var _arg2 *C.GtkTargetEntry
+	var _arg3 C.gint
+	var _arg4 C.GdkDragAction // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkDestDefaults(flags)
+	_arg3 = C.gint(len(targets))
+	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg4 = C.GdkDragAction(actions)
+
+	C.gtk_drag_dest_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// DragDestSetProxy sets this widget as a proxy for drops to another window.
+//
+// Deprecated: since version 3.22.
+func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GdkWindow      // out
+	var _arg2 C.GdkDragProtocol // out
+	var _arg3 C.gboolean        // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((proxyWindow).(gextras.Nativer).Native()))
+	_arg2 = C.GdkDragProtocol(protocol)
+	if useCoordinates {
+		_arg3 = C.TRUE
+	}
+
+	C.gtk_drag_dest_set_proxy(_arg0, _arg1, _arg2, _arg3)
+}
+
 // DragDestSetTargetList sets the target types that this widget can accept from
 // drag-and-drop. The widget must first be made into a drag destination with
 // gtk_drag_dest_set().
@@ -1576,9 +1801,27 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	return _targetList
 }
 
+// DragSourceSet sets up a widget so that GTK+ will start a drag operation when
+// the user clicks and drags on the widget. The widget must have a window.
+func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 C.GdkModifierType // out
+	var _arg2 *C.GtkTargetEntry
+	var _arg3 C.gint
+	var _arg4 C.GdkDragAction // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GdkModifierType(startButtonMask)
+	_arg3 = C.gint(len(targets))
+	_arg2 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
+	_arg4 = C.GdkDragAction(actions)
+
+	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
 // DragSourceSetIconGIcon sets the icon that will be used for drags from a
 // particular source to @icon. See the docs for IconTheme for more details.
-func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 
@@ -1605,7 +1848,7 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 // DragSourceSetIconPixbuf sets the icon that will be used for drags from a
 // particular widget from a Pixbuf. GTK+ retains a reference for @pixbuf and
 // will release it when it is no longer needed.
-func (widget *Widget) DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (widget *Widget) DragSourceSetIconPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkPixbuf // out
 
@@ -2425,6 +2668,27 @@ func (widget *Widget) MarginTop() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// ModifierMask returns the modifier mask the @widget’s windowing system backend
+// uses for a particular purpose.
+//
+// See gdk_keymap_get_modifier_mask().
+func (widget *Widget) ModifierMask(intent gdk.ModifierIntent) gdk.ModifierType {
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 C.GdkModifierIntent // out
+	var _cret C.GdkModifierType   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GdkModifierIntent(intent)
+
+	_cret = C.gtk_widget_get_modifier_mask(_arg0, _arg1)
+
+	var _modifierType gdk.ModifierType // out
+
+	_modifierType = gdk.ModifierType(_cret)
+
+	return _modifierType
 }
 
 // ModifierStyle returns the current modifier style for the widget. (As set by
@@ -3668,7 +3932,7 @@ func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 
 // IsAncestor determines whether @widget is somewhere inside @ancestor, possibly
 // with intermediate containers.
-func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
+func (widget *Widget) IsAncestor(ancestor Widgeter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3816,6 +4080,47 @@ func (widget *Widget) IsVisible() bool {
 	return _ok
 }
 
+// KeynavFailed: this function should be called whenever keyboard navigation
+// within a single widget hits a boundary. The function emits the
+// Widget::keynav-failed signal on the widget and its return value should be
+// interpreted in a way similar to the return value of gtk_widget_child_focus():
+//
+// When true is returned, stay in the widget, the failed keyboard navigation is
+// OK and/or there is nowhere we can/should move the focus to.
+//
+// When false is returned, the caller should continue with keyboard navigation
+// outside the widget, e.g. by calling gtk_widget_child_focus() on the widget’s
+// toplevel.
+//
+// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD and
+// GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it returns true.
+//
+// Whenever the default handler returns true, it also calls
+// gtk_widget_error_bell() to notify the user of the failed keyboard navigation.
+//
+// A use case for providing an own implementation of ::keynav-failed (either by
+// connecting to it or by overriding it) would be a row of Entry widgets where
+// the user should be able to navigate the entire row with the cursor keys, as
+// e.g. known from user interfaces that require entering license keys.
+func (widget *Widget) KeynavFailed(direction DirectionType) bool {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_widget_keynav_failed(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ListActionPrefixes retrieves a nil-terminated array of strings containing the
 // prefixes of Group's available to @widget.
 func (widget *Widget) ListActionPrefixes() []string {
@@ -3877,6 +4182,57 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	return _ok
 }
 
+// ModifyBase sets the base color for a widget in a particular state. All other
+// style values are left untouched. The base color is the background color used
+// along with the text color (see gtk_widget_modify_text()) for widgets such as
+// Entry and TextView. See also gtk_widget_modify_style().
+//
+// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
+// draw on their parent container’s window and thus may > not draw any
+// background themselves. This is the case for e.g. > Label. > > To modify the
+// background of such widgets, you have to set the > base color on their parent;
+// if you want to set the background > of a rectangular area around a label, try
+// placing the label in > a EventBox widget and setting the base color on that.
+//
+// Deprecated: Use gtk_widget_override_background_color() instead.
+func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+
+	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
+}
+
+// ModifyBg sets the background color for a widget in a particular state.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
+// draw on their parent container’s window and thus may > not draw any
+// background themselves. This is the case for e.g. > Label. > > To modify the
+// background of such widgets, you have to set the > background color on their
+// parent; if you want to set the background > of a rectangular area around a
+// label, try placing the label in > a EventBox widget and setting the
+// background color on that.
+//
+// Deprecated: Use gtk_widget_override_background_color() instead.
+func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+
+	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
+}
+
 // ModifyCursor sets the cursor color to use in a widget, overriding the Widget
 // cursor-color and secondary-cursor-color style properties.
 //
@@ -3894,6 +4250,24 @@ func (widget *Widget) ModifyCursor(primary *gdk.Color, secondary *gdk.Color) {
 	_arg2 = (*C.GdkColor)(unsafe.Pointer(secondary))
 
 	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
+}
+
+// ModifyFg sets the foreground color for a widget in a particular state.
+//
+// All other style values are left untouched. See also
+// gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_color() instead.
+func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+
+	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
 }
 
 // ModifyFont sets the font to use for a widget.
@@ -3938,6 +4312,83 @@ func (widget *Widget) ModifyStyle(style RCStyler) {
 	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
 
 	C.gtk_widget_modify_style(_arg0, _arg1)
+}
+
+// ModifyText sets the text color for a widget in a particular state.
+//
+// All other style values are left untouched. The text color is the foreground
+// color used along with the base color (see gtk_widget_modify_base()) for
+// widgets such as Entry and TextView. See also gtk_widget_modify_style().
+//
+// Deprecated: Use gtk_widget_override_color() instead.
+func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+	var _arg2 *C.GdkColor    // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+
+	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
+}
+
+// OverrideBackgroundColor sets the background color to use for a widget.
+//
+// All other style values are left untouched. See gtk_widget_override_color().
+//
+// Deprecated: This function is not useful in the context of CSS-based
+// rendering. If you wish to change the way a widget renders its background you
+// should use a custom CSS style, through an application-specific StyleProvider
+// and a CSS style class. You can also override the default drawing of a widget
+// through the Widget::draw signal, and use Cairo to draw a specific color,
+// regardless of the CSS style.
+func (widget *Widget) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 *C.GdkRGBA      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(state)
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+
+	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
+}
+
+// OverrideColor sets the color to use for a widget.
+//
+// All other style values are left untouched.
+//
+// This function does not act recursively. Setting the color of a container does
+// not affect its children. Note that some widgets that you may not think of as
+// containers, for instance Buttons, are actually containers.
+//
+// This API is mostly meant as a quick way for applications to change a widget
+// appearance. If you are developing a widgets library and intend this change to
+// be themeable, it is better done by setting meaningful CSS classes in your
+// widget/container implementation through gtk_style_context_add_class().
+//
+// This way, your widget library can install a CssProvider with the
+// GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority in order to provide a default
+// styling for those widgets that need so, and this theming may fully overridden
+// by the user’s theme.
+//
+// Note that for complex widgets this may bring in undesired results (such as
+// uniform background color everywhere), in these cases it is better to fully
+// style such widgets through a CssProvider with the
+// GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority.
+//
+// Deprecated: Use a custom style provider and style classes instead.
+func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 *C.GdkRGBA      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(state)
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+
+	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
 }
 
 // OverrideCursor sets the cursor color to use in a widget, overriding the
@@ -4205,7 +4656,7 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 // up. This is now deprecated and you should use gtk_widget_register_window()
 // instead. Old code will keep working as is, although some new features like
 // transparency might not work perfectly.
-func (widget *Widget) RegisterWindow(window gdk.Windowwer) {
+func (widget *Widget) RegisterWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4215,10 +4666,35 @@ func (widget *Widget) RegisterWindow(window gdk.Windowwer) {
 	C.gtk_widget_register_window(_arg0, _arg1)
 }
 
+// RemoveAccelerator removes an accelerator from @widget, previously installed
+// with gtk_widget_add_accelerator().
+func (widget *Widget) RemoveAccelerator(accelGroup AccelGrouper, accelKey uint, accelMods gdk.ModifierType) bool {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkAccelGroup  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+
+	_cret = C.gtk_widget_remove_accelerator(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 // this widget. (See gtk_widget_list_mnemonic_labels()). The widget must have
 // previously been added to the list with gtk_widget_add_mnemonic_label().
-func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
+func (widget *Widget) RemoveMnemonicLabel(label Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4309,7 +4785,7 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 // count issues to avoid destroying the widget.
 //
 // Deprecated: Use gtk_container_remove() and gtk_container_add().
-func (widget *Widget) Reparent(newParent Widgetter) {
+func (widget *Widget) Reparent(newParent Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4492,6 +4968,49 @@ func (widget *Widget) SetDeviceEnabled(device gdk.Devicer, enabled bool) {
 	C.gtk_widget_set_device_enabled(_arg0, _arg1, _arg2)
 }
 
+// SetDeviceEvents sets the device event mask (see EventMask) for a widget. The
+// event mask determines which events a widget will receive from @device. Keep
+// in mind that different widgets have different default event masks, and by
+// changing the event mask you may disrupt a widget’s functionality, so be
+// careful. This function must be called while a widget is unrealized. Consider
+// gtk_widget_add_device_events() for widgets that are already realized, or if
+// you want to preserve the existing event mask. This function can’t be used
+// with windowless widgets (which return false from
+// gtk_widget_get_has_window()); to get events on those widgets, place them
+// inside a EventBox and receive events on the event box.
+func (widget *Widget) SetDeviceEvents(device gdk.Devicer, events gdk.EventMask) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg2 = C.GdkEventMask(events)
+
+	C.gtk_widget_set_device_events(_arg0, _arg1, _arg2)
+}
+
+// SetDirection sets the reading direction on a particular widget. This
+// direction controls the primary direction for widgets containing text, and
+// also the direction in which the children of a container are packed. The
+// ability to set the direction is present in order so that correct localization
+// into languages with right-to-left reading directions can be done. Generally,
+// applications will let the default reading direction present, except for
+// containers where the containers are arranged in an order that is explicitly
+// visual rather than logical (such as buttons for text justification).
+//
+// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
+// gtk_widget_set_default_direction() will be used.
+func (widget *Widget) SetDirection(dir TextDirection) {
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkTextDirection // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkTextDirection(dir)
+
+	C.gtk_widget_set_direction(_arg0, _arg1)
+}
+
 // SetDoubleBuffered widgets are double buffered by default; you can use this
 // function to turn off the buffering. “Double buffered” simply means that
 // gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() are called
@@ -4567,7 +5086,7 @@ func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 
 // SetFontMap sets the font map to use for Pango rendering. When not set, the
 // widget will inherit the font map from its parent.
-func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
+func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -4588,6 +5107,18 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
 
 	C.gtk_widget_set_font_options(_arg0, _arg1)
+}
+
+// SetHAlign sets the horizontal alignment of @widget. See the Widget:halign
+// property.
+func (widget *Widget) SetHAlign(align Align) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GtkAlign   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkAlign(align)
+
+	C.gtk_widget_set_halign(_arg0, _arg1)
 }
 
 // SetHasTooltip sets the has-tooltip property on @widget to @has_tooltip. See
@@ -4840,7 +5371,7 @@ func (widget *Widget) SetOpacity(opacity float64) {
 // Container. Sets the container as the parent of @widget, and takes care of
 // some details such as updating the state and style of the child to reflect its
 // new location. The opposite function is gtk_widget_unparent().
-func (widget *Widget) SetParent(parent Widgetter) {
+func (widget *Widget) SetParent(parent Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4856,7 +5387,7 @@ func (widget *Widget) SetParent(parent Widgetter) {
 // toplevel window or can be embedded into other widgets.
 //
 // For Window classes, this needs to be called before the window is realized.
-func (widget *Widget) SetParentWindow(parentWindow gdk.Windowwer) {
+func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4981,6 +5512,48 @@ func (widget *Widget) SetSizeRequest(width int, height int) {
 	C.gtk_widget_set_size_request(_arg0, _arg1, _arg2)
 }
 
+// SetState: this function is for use in widget implementations. Sets the state
+// of a widget (insensitive, prelighted, etc.) Usually you should set the state
+// using wrapper functions such as gtk_widget_set_sensitive().
+//
+// Deprecated: Use gtk_widget_set_state_flags() instead.
+func (widget *Widget) SetState(state StateType) {
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 C.GtkStateType // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateType(state)
+
+	C.gtk_widget_set_state(_arg0, _arg1)
+}
+
+// SetStateFlags: this function is for use in widget implementations. Turns on
+// flag values in the current widget state (insensitive, prelighted, etc.).
+//
+// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
+// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
+// direction, use gtk_widget_set_direction().
+//
+// It is worth mentioning that any other state than GTK_STATE_FLAG_INSENSITIVE,
+// will be propagated down to all non-internal children if @widget is a
+// Container, while GTK_STATE_FLAG_INSENSITIVE itself will be propagated down to
+// all Container children by different means than turning on the state flag down
+// the hierarchy, both gtk_widget_get_state_flags() and
+// gtk_widget_is_sensitive() will make use of these.
+func (widget *Widget) SetStateFlags(flags StateFlags, clear bool) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+	var _arg2 C.gboolean      // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(flags)
+	if clear {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_widget_set_state_flags(_arg0, _arg1, _arg2)
+}
+
 // SetStyle: used to set the Style for a widget (@widget->style). Since GTK 3,
 // this function does nothing, the passed in style is ignored.
 //
@@ -5050,7 +5623,7 @@ func (widget *Widget) SetTooltipText(text string) {
 // with @custom_window. GTK+ will take care of showing and hiding @custom_window
 // at the right moment, to behave likewise as the default tooltip window. If
 // @custom_window is nil, the default tooltip window will be used.
-func (widget *Widget) SetTooltipWindow(customWindow Windowwer) {
+func (widget *Widget) SetTooltipWindow(customWindow Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWindow // out
 
@@ -5058,6 +5631,18 @@ func (widget *Widget) SetTooltipWindow(customWindow Windowwer) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer((customWindow).(gextras.Nativer).Native()))
 
 	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
+}
+
+// SetVAlign sets the vertical alignment of @widget. See the Widget:valign
+// property.
+func (widget *Widget) SetVAlign(align Align) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.GtkAlign   // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkAlign(align)
+
+	C.gtk_widget_set_valign(_arg0, _arg1)
 }
 
 // SetVExpand sets whether the widget would like any available extra vertical
@@ -5137,7 +5722,7 @@ func (widget *Widget) SetVisual(visual gdk.Visualer) {
 // function.
 //
 // Note that this function does not add any reference to @window.
-func (widget *Widget) SetWindow(window gdk.Windowwer) {
+func (widget *Widget) SetWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -5274,7 +5859,7 @@ func (widget *Widget) ThawChildNotify() {
 // allocation to coordinates relative to @dest_widget’s allocations. In order to
 // perform this operation, both widgets must be realized, and must share a
 // common toplevel.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -5349,7 +5934,7 @@ func (widget *Widget) Unrealize() {
 // UnregisterWindow unregisters a Window from the widget that was previously set
 // up with gtk_widget_register_window(). You need to call this when the window
 // is no longer used by the widget, such as when you destroy it.
-func (widget *Widget) UnregisterWindow(window gdk.Windowwer) {
+func (widget *Widget) UnregisterWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -5357,6 +5942,69 @@ func (widget *Widget) UnregisterWindow(window gdk.Windowwer) {
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	C.gtk_widget_unregister_window(_arg0, _arg1)
+}
+
+// UnsetStateFlags: this function is for use in widget implementations. Turns
+// off flag values for the current widget state (insensitive, prelighted, etc.).
+// See gtk_widget_set_state_flags().
+func (widget *Widget) UnsetStateFlags(flags StateFlags) {
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkStateFlags(flags)
+
+	C.gtk_widget_unset_state_flags(_arg0, _arg1)
+}
+
+// WidgetGetDefaultDirection obtains the current default reading direction. See
+// gtk_widget_set_default_direction().
+func WidgetGetDefaultDirection() TextDirection {
+	var _cret C.GtkTextDirection // in
+
+	_cret = C.gtk_widget_get_default_direction()
+
+	var _textDirection TextDirection // out
+
+	_textDirection = TextDirection(_cret)
+
+	return _textDirection
+}
+
+// WidgetPopCompositeChild cancels the effect of a previous call to
+// gtk_widget_push_composite_child().
+//
+// Deprecated: Use gtk_widget_class_set_template(), or don’t use this API at
+// all.
+func WidgetPopCompositeChild() {
+	C.gtk_widget_pop_composite_child()
+}
+
+// WidgetPushCompositeChild makes all newly-created widgets as composite
+// children until the corresponding gtk_widget_pop_composite_child() call.
+//
+// A composite child is a child that’s an implementation detail of the container
+// it’s inside and should not be visible to people using the container.
+// Composite children aren’t treated differently by GTK+ (but see
+// gtk_container_foreach() vs. gtk_container_forall()), but e.g. GUI builders
+// might want to treat them in a different way.
+//
+// Deprecated: This API never really worked well and was mostly unused, now we
+// have a more complete mechanism for composite children, see
+// gtk_widget_class_set_template().
+func WidgetPushCompositeChild() {
+	C.gtk_widget_push_composite_child()
+}
+
+// WidgetSetDefaultDirection sets the default reading direction for widgets
+// where the direction has not been explicitly set by
+// gtk_widget_set_direction().
+func WidgetSetDefaultDirection(dir TextDirection) {
+	var _arg1 C.GtkTextDirection // out
+
+	_arg1 = C.GtkTextDirection(dir)
+
+	C.gtk_widget_set_default_direction(_arg1)
 }
 
 // Requisition represents the desired size of a widget. See [GtkWidget’s

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -32,6 +31,8 @@ type NumericSorterer interface {
 	// SetExpression sets the expression that is evaluated to obtain numbers
 	// from items.
 	SetExpression(expression Expressioner)
+	// SetSortOrder sets whether to sort smaller numbers before larger ones.
+	SetSortOrder(sortOrder SortType)
 }
 
 // NumericSorter: `GtkNumericSorter` is a `GtkSorter` that compares numbers.
@@ -129,4 +130,15 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer((expression).(gextras.Nativer).Native()))
 
 	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
+}
+
+// SetSortOrder sets whether to sort smaller numbers before larger ones.
+func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
+	var _arg0 *C.GtkNumericSorter // out
+	var _arg1 C.GtkSortType       // out
+
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkSortType(sortOrder)
+
+	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
 }

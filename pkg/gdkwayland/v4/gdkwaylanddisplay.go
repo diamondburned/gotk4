@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayyer},
+		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayer},
 	})
 }
 
-// WaylandDisplayyer describes WaylandDisplay's methods.
-type WaylandDisplayyer interface {
+// WaylandDisplayer describes WaylandDisplay's methods.
+type WaylandDisplayer interface {
 	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
@@ -51,11 +50,11 @@ type WaylandDisplay struct {
 }
 
 var (
-	_ WaylandDisplayyer = (*WaylandDisplay)(nil)
-	_ gextras.Nativer   = (*WaylandDisplay)(nil)
+	_ WaylandDisplayer = (*WaylandDisplay)(nil)
+	_ gextras.Nativer  = (*WaylandDisplay)(nil)
 )
 
-func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplayyer {
+func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplayer {
 	return &WaylandDisplay{
 		Display: gdk.Display{
 			Object: obj,
@@ -63,7 +62,7 @@ func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplayyer {
 	}
 }
 
-func marshalWaylandDisplayyer(p uintptr) (interface{}, error) {
+func marshalWaylandDisplayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandDisplay(obj), nil

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,19 +19,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyyer},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
 	})
 }
 
-// EventControllerKeyyer describes EventControllerKey's methods.
-type EventControllerKeyyer interface {
-	//
-	Forward(widget Widgetter) bool
-	//
+// EventControllerKeyer describes EventControllerKey's methods.
+type EventControllerKeyer interface {
+	Forward(widget Widgeter) bool
 	Group() uint
 	// ImContext gets the IM context of a key controller.
 	ImContext() *IMContext
-	//
 	SetImContext(imContext IMContexter)
 }
 
@@ -45,11 +41,11 @@ type EventControllerKey struct {
 }
 
 var (
-	_ EventControllerKeyyer = (*EventControllerKey)(nil)
-	_ gextras.Nativer       = (*EventControllerKey)(nil)
+	_ EventControllerKeyer = (*EventControllerKey)(nil)
+	_ gextras.Nativer      = (*EventControllerKey)(nil)
 )
 
-func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyyer {
+func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyer {
 	return &EventControllerKey{
 		EventController: EventController{
 			Object: obj,
@@ -57,14 +53,13 @@ func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyyer {
 	}
 }
 
-func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerKey(obj), nil
 }
 
-//
-func NewEventControllerKey(widget Widgetter) *EventControllerKey {
+func NewEventControllerKey(widget Widgeter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
@@ -79,8 +74,7 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	return _eventControllerKey
 }
 
-//
-func (controller *EventControllerKey) Forward(widget Widgetter) bool {
+func (controller *EventControllerKey) Forward(widget Widgeter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -99,7 +93,6 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	return _ok
 }
 
-//
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
@@ -131,7 +124,6 @@ func (controller *EventControllerKey) ImContext() *IMContext {
 	return _imContext
 }
 
-//
 func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out

@@ -6,12 +6,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,12 +21,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_map_get_type()), F: marshalAccelMapper},
+		{T: externglib.Type(C.gtk_accel_map_get_type()), F: marshalAccelMaper},
 	})
 }
 
-// AccelMapper describes AccelMap's methods.
-type AccelMapper interface {
+// AccelMaper describes AccelMap's methods.
+type AccelMaper interface {
 	privateAccelMap()
 }
 
@@ -84,20 +85,221 @@ type AccelMap struct {
 }
 
 var (
-	_ AccelMapper     = (*AccelMap)(nil)
+	_ AccelMaper      = (*AccelMap)(nil)
 	_ gextras.Nativer = (*AccelMap)(nil)
 )
 
-func wrapAccelMap(obj *externglib.Object) AccelMapper {
+func wrapAccelMap(obj *externglib.Object) AccelMaper {
 	return &AccelMap{
 		Object: obj,
 	}
 }
 
-func marshalAccelMapper(p uintptr) (interface{}, error) {
+func marshalAccelMaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAccelMap(obj), nil
 }
 
 func (*AccelMap) privateAccelMap() {}
+
+// AccelMapAddEntry registers a new accelerator with the global accelerator map.
+// This function should only be called once per @accel_path with the canonical
+// @accel_key and @accel_mods for this path. To change the accelerator during
+// runtime programatically, use gtk_accel_map_change_entry().
+//
+// Set @accel_key and @accel_mods to 0 to request a removal of the accelerator.
+//
+// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType) {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+
+	C.gtk_accel_map_add_entry(_arg1, _arg2, _arg3)
+}
+
+// AccelMapAddFilter adds a filter to the global list of accel path filters.
+//
+// Accel map entries whose accel path matches one of the filters are skipped by
+// gtk_accel_map_foreach().
+//
+// This function is intended for GTK+ modules that create their own menus, but
+// don’t want them to be saved into the applications accelerator map dump.
+func AccelMapAddFilter(filterPattern string) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filterPattern)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_accel_map_add_filter(_arg1)
+}
+
+// AccelMapChangeEntry changes the @accel_key and @accel_mods currently
+// associated with @accel_path. Due to conflicts with other accelerators, a
+// change may not always be possible, @replace indicates whether other
+// accelerators may be deleted to resolve such conflicts. A change will only
+// occur if all conflicts could be resolved (which might not be the case if
+// conflicting accelerators are locked). Successful changes are indicated by a
+// true return value.
+//
+// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType, replace bool) bool {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _arg4 C.gboolean        // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+	if replace {
+		_arg4 = C.TRUE
+	}
+
+	_cret = C.gtk_accel_map_change_entry(_arg1, _arg2, _arg3, _arg4)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AccelMapGet gets the singleton global AccelMap object. This object is useful
+// only for notification of changes to the accelerator map via the ::changed
+// signal; it isn’t a parameter to the other accelerator map functions.
+func AccelMapGet() *AccelMap {
+	var _cret *C.GtkAccelMap // in
+
+	_cret = C.gtk_accel_map_get()
+
+	var _accelMap *AccelMap // out
+
+	_accelMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*AccelMap)
+
+	return _accelMap
+}
+
+// AccelMapLoad parses a file previously saved with gtk_accel_map_save() for
+// accelerator specifications, and propagates them accordingly.
+func AccelMapLoad(fileName string) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_accel_map_load(_arg1)
+}
+
+// AccelMapLoadFd: filedescriptor variant of gtk_accel_map_load().
+//
+// Note that the file descriptor will not be closed by this function.
+func AccelMapLoadFd(fd int) {
+	var _arg1 C.gint // out
+
+	_arg1 = C.gint(fd)
+
+	C.gtk_accel_map_load_fd(_arg1)
+}
+
+// AccelMapLoadScanner variant of gtk_accel_map_load().
+func AccelMapLoadScanner(scanner *glib.Scanner) {
+	var _arg1 *C.GScanner // out
+
+	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+
+	C.gtk_accel_map_load_scanner(_arg1)
+}
+
+// AccelMapLockPath locks the given accelerator path. If the accelerator map
+// doesn’t yet contain an entry for @accel_path, a new one is created.
+//
+// Locking an accelerator path prevents its accelerator from being changed
+// during runtime. A locked accelerator path can be unlocked by
+// gtk_accel_map_unlock_path(). Refer to gtk_accel_map_change_entry() for
+// information about runtime accelerator changes.
+//
+// If called more than once, @accel_path remains locked until
+// gtk_accel_map_unlock_path() has been called an equivalent number of times.
+//
+// Note that locking of individual accelerator paths is independent from locking
+// the AccelGroup containing them. For runtime accelerator changes to be
+// possible, both the accelerator path and its AccelGroup have to be unlocked.
+func AccelMapLockPath(accelPath string) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_accel_map_lock_path(_arg1)
+}
+
+// AccelMapLookupEntry looks up the accelerator entry for @accel_path and fills
+// in @key.
+func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
+	var _arg1 *C.gchar // out
+	var _key AccelKey
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_accel_map_lookup_entry(_arg1, (*C.GtkAccelKey)(unsafe.Pointer(&_key)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _key, _ok
+}
+
+// AccelMapSave saves current accelerator specifications (accelerator path, key
+// and modifiers) to @file_name. The file is written in a format suitable to be
+// read back in by gtk_accel_map_load().
+func AccelMapSave(fileName string) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_accel_map_save(_arg1)
+}
+
+// AccelMapSaveFd: filedescriptor variant of gtk_accel_map_save().
+//
+// Note that the file descriptor will not be closed by this function.
+func AccelMapSaveFd(fd int) {
+	var _arg1 C.gint // out
+
+	_arg1 = C.gint(fd)
+
+	C.gtk_accel_map_save_fd(_arg1)
+}
+
+// AccelMapUnlockPath undoes the last call to gtk_accel_map_lock_path() on this
+// @accel_path. Refer to gtk_accel_map_lock_path() for information about
+// accelerator path locking.
+func AccelMapUnlockPath(accelPath string) {
+	var _arg1 *C.gchar // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_accel_map_unlock_path(_arg1)
+}

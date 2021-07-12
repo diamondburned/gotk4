@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -139,7 +138,7 @@ func marshalTreeModelSorter(p uintptr) (interface{}, error) {
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with @child_model as
 // the child model.
-func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
+func NewTreeModelSortWithModel(childModel TreeModeler) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 

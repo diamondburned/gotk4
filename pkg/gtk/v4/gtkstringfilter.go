@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -56,6 +55,8 @@ type StringFilterer interface {
 	SetExpression(expression Expressioner)
 	// SetIgnoreCase sets whether the filter ignores case differences.
 	SetIgnoreCase(ignoreCase bool)
+	// SetMatchMode sets the match mode for the filter.
+	SetMatchMode(mode StringFilterMatchMode)
 	// SetSearch sets the string to search for.
 	SetSearch(search string)
 }
@@ -207,6 +208,17 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	}
 
 	C.gtk_string_filter_set_ignore_case(_arg0, _arg1)
+}
+
+// SetMatchMode sets the match mode for the filter.
+func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
+	var _arg0 *C.GtkStringFilter         // out
+	var _arg1 C.GtkStringFilterMatchMode // out
+
+	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkStringFilterMatchMode(mode)
+
+	C.gtk_string_filter_set_match_mode(_arg0, _arg1)
 }
 
 // SetSearch sets the string to search for.

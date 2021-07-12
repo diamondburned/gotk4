@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -22,7 +21,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_coord_type_get_type()), F: marshalCoordType},
 		{T: externglib.Type(C.atk_key_event_type_get_type()), F: marshalKeyEventType},
-		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiller},
+		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiler},
 	})
 }
 
@@ -215,8 +214,8 @@ func RemoveKeyEventListener(listenerId uint) {
 	C.atk_remove_key_event_listener(_arg1)
 }
 
-// Utiller describes Util's methods.
-type Utiller interface {
+// Utiler describes Util's methods.
+type Utiler interface {
 	privateUtil()
 }
 
@@ -229,17 +228,17 @@ type Util struct {
 }
 
 var (
-	_ Utiller         = (*Util)(nil)
+	_ Utiler          = (*Util)(nil)
 	_ gextras.Nativer = (*Util)(nil)
 )
 
-func wrapUtil(obj *externglib.Object) Utiller {
+func wrapUtil(obj *externglib.Object) Utiler {
 	return &Util{
 		Object: obj,
 	}
 }
 
-func marshalUtiller(p uintptr) (interface{}, error) {
+func marshalUtiler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUtil(obj), nil

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -33,7 +32,7 @@ type PasswordEntrier interface {
 	ShowPeekIcon() bool
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @entry.
-	SetExtraMenu(model gio.MenuModeller)
+	SetExtraMenu(model gio.MenuModeler)
 	// SetShowPeekIcon sets whether the entry should have a clickable icon to
 	// reveal the contents.
 	SetShowPeekIcon(showPeekIcon bool)
@@ -177,7 +176,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // @entry.
-func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
+func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -27,7 +26,7 @@ type WindowHandler interface {
 	// Child gets the child widget of @self.
 	Child() *Widget
 	// SetChild sets the child widget of @self.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 }
 
 // WindowHandle: `GtkWindowHandle` is a titlebar area widget.
@@ -108,7 +107,7 @@ func (self *WindowHandle) Child() *Widget {
 }
 
 // SetChild sets the child widget of @self.
-func (self *WindowHandle) SetChild(child Widgetter) {
+func (self *WindowHandle) SetChild(child Widgeter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 

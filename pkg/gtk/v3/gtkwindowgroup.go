@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -28,7 +27,7 @@ func init() {
 // WindowGrouper describes WindowGroup's methods.
 type WindowGrouper interface {
 	// AddWindow adds a window to a WindowGroup.
-	AddWindow(window Windowwer)
+	AddWindow(window Windower)
 	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
 	// none.
 	CurrentDeviceGrab(device gdk.Devicer) *Widget
@@ -36,7 +35,7 @@ type WindowGrouper interface {
 	// gtk_grab_add().
 	CurrentGrab() *Widget
 	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(window Windowwer)
+	RemoveWindow(window Windower)
 }
 
 // WindowGroup restricts the effect of grabs to windows in the same group,
@@ -88,7 +87,7 @@ func NewWindowGroup() *WindowGroup {
 }
 
 // AddWindow adds a window to a WindowGroup.
-func (windowGroup *WindowGroup) AddWindow(window Windowwer) {
+func (windowGroup *WindowGroup) AddWindow(window Windower) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
@@ -135,7 +134,7 @@ func (windowGroup *WindowGroup) CurrentGrab() *Widget {
 }
 
 // RemoveWindow removes a window from a WindowGroup.
-func (windowGroup *WindowGroup) RemoveWindow(window Windowwer) {
+func (windowGroup *WindowGroup) RemoveWindow(window Windower) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 

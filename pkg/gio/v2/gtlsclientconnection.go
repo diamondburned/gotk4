@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -85,6 +85,9 @@ type TLSClientConnectioner interface {
 	SetServerIdentity(identity SocketConnectabler)
 	// SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
 	SetUseSSL3(useSsl3 bool)
+	// SetValidationFlags sets @conn's validation flags, to override the default
+	// set of checks performed when validating a server certificate.
+	SetValidationFlags(flags TLSCertificateFlags)
 }
 
 // TLSClientConnection is the client-side subclass of Connection, representing a
@@ -239,4 +242,44 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	}
 
 	C.g_tls_client_connection_set_use_ssl3(_arg0, _arg1)
+}
+
+// SetValidationFlags sets @conn's validation flags, to override the default set
+// of checks performed when validating a server certificate. By default,
+// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
+	var _arg0 *C.GTlsClientConnection // out
+	var _arg1 C.GTlsCertificateFlags  // out
+
+	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(conn.Native()))
+	_arg1 = C.GTlsCertificateFlags(flags)
+
+	C.g_tls_client_connection_set_validation_flags(_arg0, _arg1)
+}
+
+// NewTLSClientConnection creates a new ClientConnection wrapping
+// @base_io_stream (which must have pollable input and output streams) which is
+// assumed to communicate with the server identified by @server_identity.
+//
+// See the documentation for Connection:base-io-stream for restrictions on when
+// application code can run operations on the @base_io_stream after this
+// function has returned.
+func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GSocketConnectable // out
+	var _cret *C.GIOStream          // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer((serverIdentity).(gextras.Nativer).Native()))
+
+	_cret = C.g_tls_client_connection_new(_arg1, _arg2, &_cerr)
+
+	var _tlsClientConnection *TLSClientConnection // out
+	var _goerr error                              // out
+
+	_tlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSClientConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsClientConnection, _goerr
 }

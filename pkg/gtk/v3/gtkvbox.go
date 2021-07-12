@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxxer},
+		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxer},
 	})
 }
 
-// VBoxxer describes VBox's methods.
-type VBoxxer interface {
+// VBoxer describes VBox's methods.
+type VBoxer interface {
 	privateVBox()
 }
 
@@ -58,11 +57,11 @@ type VBox struct {
 }
 
 var (
-	_ VBoxxer         = (*VBox)(nil)
+	_ VBoxer          = (*VBox)(nil)
 	_ gextras.Nativer = (*VBox)(nil)
 )
 
-func wrapVBox(obj *externglib.Object) VBoxxer {
+func wrapVBox(obj *externglib.Object) VBoxer {
 	return &VBox{
 		Box: Box{
 			Container: Container{
@@ -85,7 +84,7 @@ func wrapVBox(obj *externglib.Object) VBoxxer {
 	}
 }
 
-func marshalVBoxxer(p uintptr) (interface{}, error) {
+func marshalVBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVBox(obj), nil

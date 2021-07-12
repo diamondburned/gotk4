@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -211,10 +210,15 @@ type IconThemer interface {
 	ThemeName() string
 	// HasGIcon checks whether an icon theme includes an icon for a particular
 	// `GIcon`.
-	HasGIcon(gicon gio.Iconner) bool
+	HasGIcon(gicon gio.Iconer) bool
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
+	// LookupByGIcon looks up a icon for a desired size and window scale.
+	LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
+	// LookupIcon looks up a named icon for a desired size and window scale,
+	// returning a `GtkIconPaintable`.
+	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
 	// SetSearchPath sets the search path for the icon theme object.
 	SetSearchPath(path []string)
 	// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
@@ -480,7 +484,7 @@ func (self *IconTheme) ThemeName() string {
 
 // HasGIcon checks whether an icon theme includes an icon for a particular
 // `GIcon`.
-func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
+func (self *IconTheme) HasGIcon(gicon gio.Iconer) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
@@ -518,6 +522,87 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 	}
 
 	return _ok
+}
+
+// LookupByGIcon looks up a icon for a desired size and window scale.
+//
+// The icon can then be rendered by using it as a `GdkPaintable`, or you can get
+// information such as the filename and size.
+func (self *IconTheme) LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 *C.GIcon             // out
+	var _arg2 C.int                // out
+	var _arg3 C.int                // out
+	var _arg4 C.GtkTextDirection   // out
+	var _arg5 C.GtkIconLookupFlags // out
+	var _cret *C.GtkIconPaintable  // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+	_arg4 = C.GtkTextDirection(direction)
+	_arg5 = C.GtkIconLookupFlags(flags)
+
+	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+
+	return _iconPaintable
+}
+
+// LookupIcon looks up a named icon for a desired size and window scale,
+// returning a `GtkIconPaintable`.
+//
+// The icon can then be rendered by using it as a `GdkPaintable`, or you can get
+// information such as the filename and size.
+//
+// If the available @icon_name is not available and @fallbacks are provided,
+// they will be tried in order.
+//
+// If no matching icon is found, then a paintable that renders the "missing
+// icon" icon is returned. If you need to do something else for missing icons
+// you need to use [method@Gtk.IconTheme.has_icon].
+//
+// Note that you probably want to listen for icon theme changes and update the
+// icon. This is usually done by overriding the GtkWidgetClass.css-changed()
+// function.
+func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+	var _arg2 **C.char
+	var _arg3 C.int                // out
+	var _arg4 C.int                // out
+	var _arg5 C.GtkTextDirection   // out
+	var _arg6 C.GtkIconLookupFlags // out
+	var _cret *C.GtkIconPaintable  // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc(C.ulong(len(fallbacks)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice(_arg2, len(fallbacks))
+		for i := range fallbacks {
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(fallbacks[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg3 = C.int(size)
+	_arg4 = C.int(scale)
+	_arg5 = C.GtkTextDirection(direction)
+	_arg6 = C.GtkIconLookupFlags(flags)
+
+	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*IconPaintable)
+
+	return _iconPaintable
 }
 
 // SetSearchPath sets the search path for the icon theme object.
@@ -566,4 +651,27 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
+}
+
+// IconThemeGetForDisplay gets the icon theme object associated with @display.
+//
+// If this function has not previously been called for the given display, a new
+// icon theme object will be created and associated with the display. Icon theme
+// objects are fairly expensive to create, so using this function is usually a
+// better choice than calling [ctor@Gtk.IconTheme.new] and setting the display
+// yourself; by using this function a single icon theme object will be shared
+// between users.
+func IconThemeGetForDisplay(display gdk.Displayer) *IconTheme {
+	var _arg1 *C.GdkDisplay   // out
+	var _cret *C.GtkIconTheme // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_icon_theme_get_for_display(_arg1)
+
+	var _iconTheme *IconTheme // out
+
+	_iconTheme = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*IconTheme)
+
+	return _iconTheme
 }

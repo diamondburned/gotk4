@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -32,10 +31,10 @@ type AppLaunchContexter interface {
 	SetDesktop(desktop int)
 	// SetDisplay sets the display on which applications will be launched when
 	// using this context.
-	SetDisplay(display Displayyer)
+	SetDisplay(display Displayer)
 	// SetIcon sets the icon for applications that are launched with this
 	// context.
-	SetIcon(icon gio.Iconner)
+	SetIcon(icon gio.Iconer)
 	// SetIconName sets the icon for applications that are launched with this
 	// context.
 	SetIconName(iconName string)
@@ -122,7 +121,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // this context. See also gdk_app_launch_context_set_screen().
 //
 // Deprecated: Use gdk_display_get_app_launch_context() instead.
-func (context *AppLaunchContext) SetDisplay(display Displayyer) {
+func (context *AppLaunchContext) SetDisplay(display Displayer) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkDisplay          // out
 
@@ -138,7 +137,7 @@ func (context *AppLaunchContext) SetDisplay(display Displayyer) {
 // notification.
 //
 // See also gdk_app_launch_context_set_icon_name().
-func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
+func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

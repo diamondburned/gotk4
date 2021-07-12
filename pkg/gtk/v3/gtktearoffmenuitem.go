@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemmer},
+		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemer},
 	})
 }
 
-// TearoffMenuItemmer describes TearoffMenuItem's methods.
-type TearoffMenuItemmer interface {
+// TearoffMenuItemer describes TearoffMenuItem's methods.
+type TearoffMenuItemer interface {
 	privateTearoffMenuItem()
 }
 
@@ -49,11 +48,11 @@ type TearoffMenuItem struct {
 }
 
 var (
-	_ TearoffMenuItemmer = (*TearoffMenuItem)(nil)
-	_ gextras.Nativer    = (*TearoffMenuItem)(nil)
+	_ TearoffMenuItemer = (*TearoffMenuItem)(nil)
+	_ gextras.Nativer   = (*TearoffMenuItem)(nil)
 )
 
-func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItemmer {
+func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItemer {
 	return &TearoffMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -91,7 +90,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) TearoffMenuItemmer {
 	}
 }
 
-func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
+func marshalTearoffMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTearoffMenuItem(obj), nil

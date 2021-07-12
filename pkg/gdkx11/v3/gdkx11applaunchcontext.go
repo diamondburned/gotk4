@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
@@ -29,7 +28,6 @@ type X11AppLaunchContexter interface {
 	privateX11AppLaunchContext()
 }
 
-//
 type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }

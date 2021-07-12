@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,12 +22,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindowwer},
+		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindower},
 	})
 }
 
-// OffscreenWindowwer describes OffscreenWindow's methods.
-type OffscreenWindowwer interface {
+// OffscreenWindower describes OffscreenWindow's methods.
+type OffscreenWindower interface {
 	// Pixbuf retrieves a snapshot of the contained widget in the form of a
 	// Pixbuf.
 	Pixbuf() *gdkpixbuf.Pixbuf
@@ -57,11 +56,11 @@ type OffscreenWindow struct {
 }
 
 var (
-	_ OffscreenWindowwer = (*OffscreenWindow)(nil)
-	_ gextras.Nativer    = (*OffscreenWindow)(nil)
+	_ OffscreenWindower = (*OffscreenWindow)(nil)
+	_ gextras.Nativer   = (*OffscreenWindow)(nil)
 )
 
-func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindowwer {
+func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindower {
 	return &OffscreenWindow{
 		Window: Window{
 			Bin: Bin{
@@ -83,7 +82,7 @@ func wrapOffscreenWindow(obj *externglib.Object) OffscreenWindowwer {
 	}
 }
 
-func marshalOffscreenWindowwer(p uintptr) (interface{}, error) {
+func marshalOffscreenWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapOffscreenWindow(obj), nil

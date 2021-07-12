@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -15,7 +16,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -750,6 +750,107 @@ func marshalResource(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Resource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// EnumerateChildren returns all the names of children at the specified @path in
+// the resource. The return result is a nil terminated list of strings which
+// should be released with g_strfreev().
+//
+// If @path is invalid or does not exist in the #GResource,
+// G_RESOURCE_ERROR_NOT_FOUND will be returned.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
+	var _arg0 *C.GResource           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
+	var _cret **C.char
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
+
+	_cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, &_cerr)
+
+	var _utf8s []string
+	var _goerr error // out
+
+	{
+		var i int
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8s, _goerr
+}
+
+// Info looks for a file at the specified @path in the resource and if found
+// returns information about it.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
+	var _arg0 *C.GResource           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
+	var _arg3 C.gsize                // in
+	var _arg4 C.guint32              // in
+	var _cerr *C.GError              // in
+
+	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
+
+	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
+
+	var _size uint    // out
+	var _flags uint32 // out
+	var _goerr error  // out
+
+	_size = uint(_arg3)
+	_flags = uint32(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _size, _flags, _goerr
+}
+
+// OpenStream looks for a file at the specified @path in the resource and
+// returns a Stream that lets you read the data.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (*InputStream, error) {
+	var _arg0 *C.GResource           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
+	var _cret *C.GInputStream        // in
+	var _cerr *C.GError              // in
+
+	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResourceLookupFlags(lookupFlags)
+
+	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
+
+	var _inputStream *InputStream // out
+	var _goerr error              // out
+
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*InputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _inputStream, _goerr
 }
 
 // Ref: atomically increments the reference count of @resource by one. This

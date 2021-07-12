@@ -7,19 +7,19 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindowwer},
+		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindower},
 	})
 }
 
@@ -28,20 +28,15 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type WindowOverrider interface {
-	//
 	ActivateDefault()
-	//
 	ActivateFocus()
-	//
 	CloseRequest() bool
-	//
 	EnableDebugging(toggle bool) bool
-	//
 	KeysChanged()
 }
 
-// Windowwer describes Window's methods.
-type Windowwer interface {
+// Windower describes Window's methods.
+type Windower interface {
 	// Close requests that the window is closed.
 	Close()
 	// Destroy: drop the internal reference GTK holds on toplevel windows.
@@ -50,7 +45,7 @@ type Windowwer interface {
 	Fullscreen()
 	// FullscreenOnMonitor asks to place @window in the fullscreen state on the
 	// given @monitor.
-	FullscreenOnMonitor(monitor gdk.Monitorrer)
+	FullscreenOnMonitor(monitor gdk.Monitorer)
 	// Application gets the `GtkApplication` associated with the window.
 	Application() *Application
 	// Child gets the child widget of @window.
@@ -114,22 +109,22 @@ type Windowwer interface {
 	// window.
 	SetApplication(application Applicationer)
 	// SetChild sets the child widget of @window.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetDecorated sets whether the window should be decorated.
 	SetDecorated(setting bool)
 	// SetDefaultSize sets the default size of a window.
 	SetDefaultSize(width int, height int)
 	// SetDefaultWidget sets the default widget.
-	SetDefaultWidget(defaultWidget Widgetter)
+	SetDefaultWidget(defaultWidget Widgeter)
 	// SetDeletable sets whether the window should be deletable.
 	SetDeletable(setting bool)
 	// SetDestroyWithParent: if @setting is true, then destroying the transient
 	// parent of @window will also destroy @window itself.
 	SetDestroyWithParent(setting bool)
 	// SetDisplay sets the `GdkDisplay` where the @window is displayed.
-	SetDisplay(display gdk.Displayyer)
+	SetDisplay(display gdk.Displayer)
 	// SetFocus sets the focus widget.
-	SetFocus(focus Widgetter)
+	SetFocus(focus Widgeter)
 	// SetFocusVisible sets whether “focus rectangles” are supposed to be
 	// visible.
 	SetFocusVisible(setting bool)
@@ -152,10 +147,10 @@ type Windowwer interface {
 	// SetTitle sets the title of the `GtkWindow`.
 	SetTitle(title string)
 	// SetTitlebar sets a custom titlebar for @window.
-	SetTitlebar(titlebar Widgetter)
+	SetTitlebar(titlebar Widgeter)
 	// SetTransientFor: dialog windows should be set transient for the main
 	// application window they were spawned from.
-	SetTransientFor(parent Windowwer)
+	SetTransientFor(parent Windower)
 	// Unfullscreen asks to remove the fullscreen state for @window, and return
 	// to its previous state.
 	Unfullscreen()
@@ -220,11 +215,11 @@ type Window struct {
 }
 
 var (
-	_ Windowwer       = (*Window)(nil)
+	_ Windower        = (*Window)(nil)
 	_ gextras.Nativer = (*Window)(nil)
 )
 
-func wrapWindow(obj *externglib.Object) Windowwer {
+func wrapWindow(obj *externglib.Object) Windower {
 	return &Window{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -264,7 +259,7 @@ func wrapWindow(obj *externglib.Object) Windowwer {
 	}
 }
 
-func marshalWindowwer(p uintptr) (interface{}, error) {
+func marshalWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil
@@ -349,7 +344,7 @@ func (window *Window) Fullscreen() {
 // You can track the result of this operation via the
 // [property@Gdk.Toplevel:state] property, or by listening to notifications of
 // the [property@Gtk.Window:fullscreened] property.
-func (window *Window) FullscreenOnMonitor(monitor gdk.Monitorrer) {
+func (window *Window) FullscreenOnMonitor(monitor gdk.Monitorer) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkMonitor // out
 
@@ -899,7 +894,7 @@ func (window *Window) SetApplication(application Applicationer) {
 }
 
 // SetChild sets the child widget of @window.
-func (window *Window) SetChild(child Widgetter) {
+func (window *Window) SetChild(child Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -973,7 +968,7 @@ func (window *Window) SetDefaultSize(width int, height int) {
 //
 // The default widget is the widget that is activated when the user presses
 // Enter in a dialog (for example).
-func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
+func (window *Window) SetDefaultWidget(defaultWidget Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1027,7 +1022,7 @@ func (window *Window) SetDestroyWithParent(setting bool) {
 //
 // If the window is already mapped, it will be unmapped, and then remapped on
 // the new display.
-func (window *Window) SetDisplay(display gdk.Displayyer) {
+func (window *Window) SetDisplay(display gdk.Displayer) {
 	var _arg0 *C.GtkWindow  // out
 	var _arg1 *C.GdkDisplay // out
 
@@ -1044,7 +1039,7 @@ func (window *Window) SetDisplay(display gdk.Displayyer) {
 // this window. To set the focus to a particular widget in the toplevel, it is
 // usually more convenient to use [method@Gtk.Widget.grab_focus] instead of this
 // function.
-func (window *Window) SetFocus(focus Widgetter) {
+func (window *Window) SetFocus(focus Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1214,7 +1209,7 @@ func (window *Window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the system,
 // this function may not work for a window that is already visible, so you set
 // the titlebar before calling [method@Gtk.Widget.show].
-func (window *Window) SetTitlebar(titlebar Widgetter) {
+func (window *Window) SetTitlebar(titlebar Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1235,7 +1230,7 @@ func (window *Window) SetTitlebar(titlebar Widgetter) {
 //
 // On Windows, this function puts the child window on top of the parent, much as
 // the window manager would have done on X.
-func (window *Window) SetTransientFor(parent Windowwer) {
+func (window *Window) SetTransientFor(parent Windower) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWindow // out
 
@@ -1298,4 +1293,87 @@ func (window *Window) Unminimize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_unminimize(_arg0)
+}
+
+// WindowGetDefaultIconName returns the fallback icon name for windows.
+//
+// The returned string is owned by GTK and should not be modified. It is only
+// valid until the next call to [func@Gtk.Window.set_default_icon_name].
+func WindowGetDefaultIconName() string {
+	var _cret *C.char // in
+
+	_cret = C.gtk_window_get_default_icon_name()
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// WindowGetToplevels returns a list of all existing toplevel windows.
+//
+// If you want to iterate through the list and perform actions involving
+// callbacks that might destroy the widgets or add new ones, be aware that the
+// list of toplevels will change and emit the "items-changed" signal.
+func WindowGetToplevels() *gio.ListModel {
+	var _cret *C.GListModel // in
+
+	_cret = C.gtk_window_get_toplevels()
+
+	var _listModel *gio.ListModel // out
+
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.ListModel)
+
+	return _listModel
+}
+
+// WindowSetAutoStartupNotification sets whether the window should request
+// startup notification.
+//
+// By default, after showing the first `GtkWindow`, GTK calls
+// [method@Gdk.Display.notify_startup_complete]. Call this function to disable
+// the automatic startup notification. You might do this if your first window is
+// a splash screen, and you want to delay notification until after your real
+// main window has been shown, for example.
+//
+// In that example, you would disable startup notification temporarily, show
+// your splash screen, then re-enable it so that showing the main window would
+// automatically result in notification.
+func WindowSetAutoStartupNotification(setting bool) {
+	var _arg1 C.gboolean // out
+
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_window_set_auto_startup_notification(_arg1)
+}
+
+// WindowSetDefaultIconName sets an icon to be used as fallback.
+//
+// The fallback icon is used for windows that haven't had
+// [method@Gtk.Window.set_icon_name] called on them.
+func WindowSetDefaultIconName(name string) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_window_set_default_icon_name(_arg1)
+}
+
+// WindowSetInteractiveDebugging opens or closes the interactive debugger
+// (#interactive-debugging).
+//
+// The debugger offers access to the widget hierarchy of the application and to
+// useful debugging tools.
+func WindowSetInteractiveDebugging(enable bool) {
+	var _arg1 C.gboolean // out
+
+	if enable {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_window_set_interactive_debugging(_arg1)
 }

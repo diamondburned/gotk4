@@ -16,21 +16,21 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	// As of right now, interface overriding and subclassing is not supported
 	// yet, so the interface currently has no use.
 	type {{ .StructName }}Overrider interface {
-		{{ range .Virtuals }}
+		{{ range .Virtuals -}}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
-		{{ end }}
+		{{ end -}}
 	}
 	{{ end }}
 
 	// {{ .InterfaceName }} describes {{ .StructName }}'s methods.
 	type {{ .InterfaceName }} interface {
-		{{ range .Methods }}
+		{{ range .Methods -}}
 		{{- Synopsis . 1 TrailingNewLine -}}
 		{{- .Name }}{{ .Tail }}
 		{{ else }}
 		private{{ .StructName }}()
-		{{ end }}
+		{{ end -}}
 	}
 
 	{{ GoDoc . 0 (OverrideSelfName .StructName) }}

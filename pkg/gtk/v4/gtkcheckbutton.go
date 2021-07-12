@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtoner},
 	})
 }
 
@@ -27,14 +26,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
-	//
 	Activate()
-	//
 	Toggled()
 }
 
-// CheckButtonner describes CheckButton's methods.
-type CheckButtonner interface {
+// CheckButtoner describes CheckButton's methods.
+type CheckButtoner interface {
 	// Active returns whether the check button is active.
 	Active() bool
 	// Inconsistent returns whether the check button is in an inconsistent
@@ -47,7 +44,7 @@ type CheckButtonner interface {
 	// SetActive changes the check buttons active state.
 	SetActive(setting bool)
 	// SetGroup adds @self to the group of @group.
-	SetGroup(group CheckButtonner)
+	SetGroup(group CheckButtoner)
 	// SetInconsistent sets the `GtkCheckButton` to inconsistent state.
 	SetInconsistent(inconsistent bool)
 	// SetLabel sets the text of @self.
@@ -114,11 +111,11 @@ type CheckButton struct {
 }
 
 var (
-	_ CheckButtonner  = (*CheckButton)(nil)
+	_ CheckButtoner   = (*CheckButton)(nil)
 	_ gextras.Nativer = (*CheckButton)(nil)
 )
 
-func wrapCheckButton(obj *externglib.Object) CheckButtonner {
+func wrapCheckButton(obj *externglib.Object) CheckButtoner {
 	return &CheckButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -153,7 +150,7 @@ func wrapCheckButton(obj *externglib.Object) CheckButtonner {
 	}
 }
 
-func marshalCheckButtonner(p uintptr) (interface{}, error) {
+func marshalCheckButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckButton(obj), nil
@@ -310,7 +307,7 @@ func (self *CheckButton) SetActive(setting bool) {
 // Note that the same effect can be achieved via the [interface@Gtk.Actionable]
 // API, by using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
-func (self *CheckButton) SetGroup(group CheckButtonner) {
+func (self *CheckButton) SetGroup(group CheckButtoner) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 

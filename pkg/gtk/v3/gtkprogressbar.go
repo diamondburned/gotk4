@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,12 +21,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarrer},
+		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarer},
 	})
 }
 
-// ProgressBarrer describes ProgressBar's methods.
-type ProgressBarrer interface {
+// ProgressBarer describes ProgressBar's methods.
+type ProgressBarer interface {
 	// Ellipsize returns the ellipsizing position of the progress bar.
 	Ellipsize() pango.EllipsizeMode
 	// Fraction returns the current fraction of the task that’s been completed.
@@ -45,6 +44,9 @@ type ProgressBarrer interface {
 	// Pulse indicates that some progress has been made, but you don’t know how
 	// much.
 	Pulse()
+	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
+	// text if there is not enough space to render the entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
 	// SetFraction causes the progress bar to “fill in” the given fraction of
 	// the bar.
 	SetFraction(fraction float64)
@@ -104,11 +106,11 @@ type ProgressBar struct {
 }
 
 var (
-	_ ProgressBarrer  = (*ProgressBar)(nil)
+	_ ProgressBarer   = (*ProgressBar)(nil)
 	_ gextras.Nativer = (*ProgressBar)(nil)
 )
 
-func wrapProgressBar(obj *externglib.Object) ProgressBarrer {
+func wrapProgressBar(obj *externglib.Object) ProgressBarer {
 	return &ProgressBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -127,7 +129,7 @@ func wrapProgressBar(obj *externglib.Object) ProgressBarrer {
 	}
 }
 
-func marshalProgressBarrer(p uintptr) (interface{}, error) {
+func marshalProgressBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapProgressBar(obj), nil
@@ -268,6 +270,18 @@ func (pbar *ProgressBar) Pulse() {
 	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
 
 	C.gtk_progress_bar_pulse(_arg0)
+}
+
+// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
+// text if there is not enough space to render the entire string.
+func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkProgressBar    // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(pbar.Native()))
+	_arg1 = C.PangoEllipsizeMode(mode)
+
+	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of the

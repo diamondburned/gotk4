@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -114,7 +113,7 @@ type Builderer interface {
 	ExposeObject(name string, object gextras.Objector)
 	// ExtendWithTemplate: main private entry point for building composite
 	// container components from template XML.
-	ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error)
+	ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error)
 	// Application gets the Application associated with the builder.
 	Application() *Application
 	// GetObject gets the object named @name.
@@ -691,7 +690,7 @@ func (builder *Builder) ExposeObject(name string, object gextras.Objector) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
-func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
+func (builder *Builder) ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.GType       // out

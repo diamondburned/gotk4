@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -236,4 +234,47 @@ func (connection *SocketConnection) IsConnected() bool {
 	}
 
 	return _ok
+}
+
+// SocketConnectionFactoryLookupType looks up the #GType to be used when
+// creating socket connections on sockets with the specified @family, @type and
+// @protocol_id.
+//
+// If no type is registered, the Connection base type is returned.
+func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) externglib.Type {
+	var _arg1 C.GSocketFamily // out
+	var _arg2 C.GSocketType   // out
+	var _arg3 C.gint          // out
+	var _cret C.GType         // in
+
+	_arg1 = C.GSocketFamily(family)
+	_arg2 = C.GSocketType(typ)
+	_arg3 = C.gint(protocolId)
+
+	_cret = C.g_socket_connection_factory_lookup_type(_arg1, _arg2, _arg3)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+// SocketConnectionFactoryRegisterType looks up the #GType to be used when
+// creating socket connections on sockets with the specified @family, @type and
+// @protocol.
+//
+// If no type is registered, the Connection base type is returned.
+func SocketConnectionFactoryRegisterType(gType externglib.Type, family SocketFamily, typ SocketType, protocol int) {
+	var _arg1 C.GType         // out
+	var _arg2 C.GSocketFamily // out
+	var _arg3 C.GSocketType   // out
+	var _arg4 C.gint          // out
+
+	_arg1 = C.GType(gType)
+	_arg2 = C.GSocketFamily(family)
+	_arg3 = C.GSocketType(typ)
+	_arg4 = C.gint(protocol)
+
+	C.g_socket_connection_factory_register_type(_arg1, _arg2, _arg3, _arg4)
 }

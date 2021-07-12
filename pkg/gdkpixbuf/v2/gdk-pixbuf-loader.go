@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 import "C"
@@ -28,13 +27,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PixbufLoaderOverrider interface {
-	//
 	AreaPrepared()
-	//
 	AreaUpdated(x int, y int, width int, height int)
-	//
 	Closed()
-	//
 	SizePrepared(width int, height int)
 }
 

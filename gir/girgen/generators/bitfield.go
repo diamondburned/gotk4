@@ -14,7 +14,7 @@ var bitfieldTmpl = gotmpl.NewGoTemplate(`
 	type {{ .GoName }} int
 
 	const (
-		{{ range .Members }}
+		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
 		{{- GoDoc . 1 TrailingNewLine (OverrideSelfName $name) -}}
 		{{- $name }} {{ $.GoName }} = {{ $.Bits .Value }}

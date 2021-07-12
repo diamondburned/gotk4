@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -33,14 +32,14 @@ type Framer interface {
 	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
 	// SetChild sets the child widget of @frame.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetLabel creates a new `GtkLabel` with the @label and sets it as the
 	// frame's label widget.
 	SetLabel(label string)
 	// SetLabelAlign sets the X alignment of the frame widget’s label.
 	SetLabelAlign(xalign float32)
 	// SetLabelWidget sets the label widget for the frame.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
 }
 
 // Frame: `GtkFrame` is a widget that surrounds its child with a decorative
@@ -196,7 +195,7 @@ func (frame *Frame) LabelWidget() *Widget {
 }
 
 // SetChild sets the child widget of @frame.
-func (frame *Frame) SetChild(child Widgetter) {
+func (frame *Frame) SetChild(child Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -236,7 +235,7 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 //
 // This is the widget that will appear embedded in the top edge of the frame as
 // a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

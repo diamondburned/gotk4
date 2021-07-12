@@ -11,26 +11,25 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
 	})
 }
 
-// InfoBarrer describes InfoBar's methods.
-type InfoBarrer interface {
+// InfoBarer describes InfoBar's methods.
+type InfoBarer interface {
 	// AddActionWidget: add an activatable widget to the action area of a
 	// `GtkInfoBar`.
-	AddActionWidget(child Widgetter, responseId int)
+	AddActionWidget(child Widgeter, responseId int)
 	// AddButton adds a button with the given text.
 	AddButton(buttonText string, responseId int) *Button
 	// AddChild adds a widget to the content area of the info bar.
-	AddChild(widget Widgetter)
+	AddChild(widget Widgeter)
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
 	// Revealed returns whether the info bar is currently revealed.
@@ -39,14 +38,16 @@ type InfoBarrer interface {
 	// button.
 	ShowCloseButton() bool
 	// RemoveActionWidget removes a widget from the action area of @info_bar.
-	RemoveActionWidget(widget Widgetter)
+	RemoveActionWidget(widget Widgeter)
 	// RemoveChild removes a widget from the content area of the info bar.
-	RemoveChild(widget Widgetter)
+	RemoveChild(widget Widgeter)
 	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
 	// SetDefaultResponse sets the last widget in the info bar’s action area
 	// with the given response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
+	// SetMessageType sets the message type of the message area.
+	SetMessageType(messageType MessageType)
 	// SetResponseSensitive sets the sensitivity of action widgets for
 	// @response_id.
 	SetResponseSensitive(responseId int, setting bool)
@@ -118,11 +119,11 @@ type InfoBar struct {
 }
 
 var (
-	_ InfoBarrer      = (*InfoBar)(nil)
+	_ InfoBarer       = (*InfoBar)(nil)
 	_ gextras.Nativer = (*InfoBar)(nil)
 )
 
-func wrapInfoBar(obj *externglib.Object) InfoBarrer {
+func wrapInfoBar(obj *externglib.Object) InfoBarer {
 	return &InfoBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -141,7 +142,7 @@ func wrapInfoBar(obj *externglib.Object) InfoBarrer {
 	}
 }
 
-func marshalInfoBarrer(p uintptr) (interface{}, error) {
+func marshalInfoBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -167,7 +168,7 @@ func NewInfoBar() *InfoBar {
 // [signal@Gtk.InfoBar::response] signal on the message area when the widget is
 // activated. The widget is appended to the end of the message areas action
 // area.
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -205,7 +206,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 }
 
 // AddChild adds a widget to the content area of the info bar.
-func (infoBar *InfoBar) AddChild(widget Widgetter) {
+func (infoBar *InfoBar) AddChild(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -272,7 +273,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 // The widget must have been put there by a call to
 // [method@Gtk.InfoBar.add_action_widget] or [method@Gtk.InfoBar.add_button].
-func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
+func (infoBar *InfoBar) RemoveActionWidget(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -283,7 +284,7 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 }
 
 // RemoveChild removes a widget from the content area of the info bar.
-func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
+func (infoBar *InfoBar) RemoveChild(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -319,6 +320,19 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	_arg1 = C.int(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+}
+
+// SetMessageType sets the message type of the message area.
+//
+// GTK uses this type to determine how the message is displayed.
+func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
+	var _arg0 *C.GtkInfoBar    // out
+	var _arg1 C.GtkMessageType // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
+	_arg1 = C.GtkMessageType(messageType)
+
+	C.gtk_info_bar_set_message_type(_arg0, _arg1)
 }
 
 // SetResponseSensitive sets the sensitivity of action widgets for @response_id.

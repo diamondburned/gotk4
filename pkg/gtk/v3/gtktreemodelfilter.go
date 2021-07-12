@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -92,10 +91,8 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
-	//
-	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
-	//
-	Visible(childModel TreeModeller, iter *TreeIter) bool
+	Modify(childModel TreeModeler, iter *TreeIter, value *externglib.Value, column int)
+	Visible(childModel TreeModeler, iter *TreeIter) bool
 }
 
 // TreeModelFilterer describes TreeModelFilter's methods.

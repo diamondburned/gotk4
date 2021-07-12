@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,12 +21,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindowwer},
+		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindower},
 	})
 }
 
-// ApplicationWindowwer describes ApplicationWindow's methods.
-type ApplicationWindowwer interface {
+// ApplicationWindower describes ApplicationWindow's methods.
+type ApplicationWindower interface {
 	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
 	// call to gtk_application_window_set_help_overlay().
 	HelpOverlay() *ShortcutsWindow
@@ -38,7 +37,7 @@ type ApplicationWindowwer interface {
 	ShowMenubar() bool
 	// SetHelpOverlay associates a shortcuts window with the application window,
 	// and sets up an action with the name win.show-help-overlay to present it.
-	SetHelpOverlay(helpOverlay ShortcutsWindowwer)
+	SetHelpOverlay(helpOverlay ShortcutsWindower)
 	// SetShowMenubar sets whether the window will display a menubar for the app
 	// menu and menubar as needed.
 	SetShowMenubar(showMenubar bool)
@@ -145,11 +144,11 @@ type ApplicationWindow struct {
 }
 
 var (
-	_ ApplicationWindowwer = (*ApplicationWindow)(nil)
-	_ gextras.Nativer      = (*ApplicationWindow)(nil)
+	_ ApplicationWindower = (*ApplicationWindow)(nil)
+	_ gextras.Nativer     = (*ApplicationWindow)(nil)
 )
 
-func wrapApplicationWindow(obj *externglib.Object) ApplicationWindowwer {
+func wrapApplicationWindow(obj *externglib.Object) ApplicationWindower {
 	return &ApplicationWindow{
 		Window: Window{
 			Bin: Bin{
@@ -177,7 +176,7 @@ func wrapApplicationWindow(obj *externglib.Object) ApplicationWindowwer {
 	}
 }
 
-func marshalApplicationWindowwer(p uintptr) (interface{}, error) {
+func marshalApplicationWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapApplicationWindow(obj), nil
@@ -262,7 +261,7 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 // sets up an action with the name win.show-help-overlay to present it.
 //
 // @window takes resposibility for destroying @help_overlay.
-func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindowwer) {
+func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindower) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 

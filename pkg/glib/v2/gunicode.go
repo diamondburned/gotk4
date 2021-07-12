@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib.h>
 import "C"
 
@@ -1325,6 +1324,29 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	return _unicodeScript
 }
 
+// UnicodeScriptToISO15924 looks up the ISO 15924 code for @script. ISO 15924
+// assigns four-letter codes to scripts. For example, the code for Arabic is
+// 'Arab'. The four letter codes are encoded as a @guint32 by this function in a
+// big-endian fashion. That is, the code returned for Arabic is 0x41726162 (0x41
+// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+//
+// See Codes for the representation of names of scripts
+// (http://unicode.org/iso15924/codelists.html) for details.
+func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
+	var _arg1 C.GUnicodeScript // out
+	var _cret C.guint32        // in
+
+	_arg1 = C.GUnicodeScript(script)
+
+	_cret = C.g_unicode_script_to_iso15924(_arg1)
+
+	var _guint32 uint32 // out
+
+	_guint32 = uint32(_cret)
+
+	return _guint32
+}
+
 // UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
 func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
@@ -1622,6 +1644,45 @@ func UTF8MakeValid(str string, len int) string {
 	_arg2 = C.gssize(len)
 
 	_cret = C.g_utf8_make_valid(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// UTF8Normalize converts a string into canonical form, standardizing such
+// issues as whether a character with an accent is represented as a base
+// character and combining accent or as a single precomposed character. The
+// string has to be valid UTF-8, otherwise nil is returned. You should generally
+// call g_utf8_normalize() before comparing two Unicode strings.
+//
+// The normalization mode G_NORMALIZE_DEFAULT only standardizes differences that
+// do not affect the text content, such as the above-mentioned accent
+// representation. G_NORMALIZE_ALL also standardizes the "compatibility"
+// characters in Unicode, such as SUPERSCRIPT THREE to the standard forms (in
+// this case DIGIT THREE). Formatting information may be lost but for most text
+// operations such characters should be considered the same.
+//
+// G_NORMALIZE_DEFAULT_COMPOSE and G_NORMALIZE_ALL_COMPOSE are like
+// G_NORMALIZE_DEFAULT and G_NORMALIZE_ALL, but returned a result with composed
+// forms rather than a maximally decomposed form. This is often useful if you
+// intend to convert the string to a legacy encoding or pass it to a system with
+// less capable Unicode handling.
+func UTF8Normalize(str string, len int, mode NormalizeMode) string {
+	var _arg1 *C.gchar         // out
+	var _arg2 C.gssize         // out
+	var _arg3 C.GNormalizeMode // out
+	var _cret *C.gchar         // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(len)
+	_arg3 = C.GNormalizeMode(mode)
+
+	_cret = C.g_utf8_normalize(_arg1, _arg2, _arg3)
 
 	var _utf8 string // out
 

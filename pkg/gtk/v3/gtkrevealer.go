@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -66,6 +65,9 @@ type Revealerer interface {
 	SetRevealChild(revealChild bool)
 	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
+	// SetTransitionType sets the type of animation that will be used for
+	// transitions in @revealer.
+	SetTransitionType(transition RevealerTransitionType)
 }
 
 // Revealer widget is a container which animates the transition of its child
@@ -231,4 +233,17 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	_arg1 = C.guint(duration)
 
 	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
+}
+
+// SetTransitionType sets the type of animation that will be used for
+// transitions in @revealer. Available types include various kinds of fades and
+// slides.
+func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
+	var _arg0 *C.GtkRevealer              // out
+	var _arg1 C.GtkRevealerTransitionType // out
+
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(revealer.Native()))
+	_arg1 = C.GtkRevealerTransitionType(transition)
+
+	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 }

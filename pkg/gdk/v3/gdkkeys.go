@@ -13,14 +13,13 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymapper},
+		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymaper},
 	})
 }
 
@@ -184,8 +183,8 @@ func UnicodeToKeyval(wc uint32) uint {
 	return _guint
 }
 
-// Keymapper describes Keymap's methods.
-type Keymapper interface {
+// Keymaper describes Keymap's methods.
+type Keymaper interface {
 	// CapsLockState returns whether the Caps Lock modifer is locked.
 	CapsLockState() bool
 	// Direction returns the direction of effective layout of the keymap.
@@ -195,6 +194,9 @@ type Keymapper interface {
 	// EntriesForKeyval obtains a list of keycode/group/level combinations that
 	// will generate @keyval.
 	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
+	// ModifierMask returns the modifier mask the @keymap’s windowing system
+	// backend uses for a particular purpose.
+	ModifierMask(intent ModifierIntent) ModifierType
 	// ModifierState returns the current modifier state.
 	ModifierState() uint
 	// NumLockState returns whether the Num Lock modifer is locked.
@@ -206,6 +208,9 @@ type Keymapper interface {
 	HaveBidiLayouts() bool
 	// LookupKey looks up the keyval mapped to a keycode/group/level triplet.
 	LookupKey(key *KeymapKey) uint
+	// TranslateKeyboardState translates the contents of a EventKey into a
+	// keyval, effective group, and level.
+	TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
 }
 
 // Keymap defines the translation from keyboard state (including a hardware key,
@@ -219,17 +224,17 @@ type Keymap struct {
 }
 
 var (
-	_ Keymapper       = (*Keymap)(nil)
+	_ Keymaper        = (*Keymap)(nil)
 	_ gextras.Nativer = (*Keymap)(nil)
 )
 
-func wrapKeymap(obj *externglib.Object) Keymapper {
+func wrapKeymap(obj *externglib.Object) Keymaper {
 	return &Keymap{
 		Object: obj,
 	}
 }
 
-func marshalKeymapper(p uintptr) (interface{}, error) {
+func marshalKeymaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapKeymap(obj), nil
@@ -341,6 +346,31 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	return _keys, _ok
 }
 
+// ModifierMask returns the modifier mask the @keymap’s windowing system backend
+// uses for a particular purpose.
+//
+// Note that this function always returns real hardware modifiers, not virtual
+// ones (e.g. it will return K_MOD1_MASK rather than K_META_MASK if the backend
+// maps MOD1 to META), so there are use cases where the return value of this
+// function has to be transformed by gdk_keymap_add_virtual_modifiers() in order
+// to contain the expected result.
+func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
+	var _arg0 *C.GdkKeymap        // out
+	var _arg1 C.GdkModifierIntent // out
+	var _cret C.GdkModifierType   // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	_arg1 = C.GdkModifierIntent(intent)
+
+	_cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
+
+	var _modifierType ModifierType // out
+
+	_modifierType = ModifierType(_cret)
+
+	return _modifierType
+}
+
 // ModifierState returns the current modifier state.
 func (keymap *Keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
@@ -431,6 +461,99 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// TranslateKeyboardState translates the contents of a EventKey into a keyval,
+// effective group, and level. Modifiers that affected the translation and are
+// thus unavailable for application use are returned in @consumed_modifiers. See
+// [Groups][key-group-explanation] for an explanation of groups and levels. The
+// @effective_group is the group that was actually used for the translation;
+// some keys such as Enter are not affected by the active keyboard group. The
+// @level is derived from @state. For convenience, EventKey already contains the
+// translated keyval, so this function isn’t as useful as you might think.
+//
+// @consumed_modifiers gives modifiers that should be masked outfrom @state when
+// comparing this key press to a hot key. For instance, on a US keyboard, the
+// `plus` symbol is shifted, so when comparing a key press to a `<Control>plus`
+// accelerator `<Shift>` should be masked out.
+//
+//    // XXX Don’t do this XXX
+//    if (keyval == accel_keyval &&
+//        (event->state & ~consumed & ALL_ACCELS_MASK) == (accel_mods & ~consumed))
+//      // Accelerator was pressed
+//
+// However, this did not work if multi-modifier combinations were used in the
+// keymap, since, for instance, `<Control>` would be masked out even if only
+// `<Control><Alt>` was used in the keymap. To support this usage as well as
+// well as possible, all single modifier combinations that could affect the key
+// for any combination of modifiers will be returned in @consumed_modifiers;
+// multi-modifier combinations are returned only when actually found in @state.
+// When you store accelerators, you should always store them with consumed
+// modifiers removed. Store `<Control>plus`, not `<Control><Shift>plus`,
+func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
+	var _arg0 *C.GdkKeymap      // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.gint            // out
+	var _arg4 C.guint           // in
+	var _arg5 C.gint            // in
+	var _arg6 C.gint            // in
+	var _arg7 C.GdkModifierType // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	_arg1 = C.guint(hardwareKeycode)
+	_arg2 = C.GdkModifierType(state)
+	_arg3 = C.gint(group)
+
+	_cret = C.gdk_keymap_translate_keyboard_state(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+
+	var _keyval uint                    // out
+	var _effectiveGroup int             // out
+	var _level int                      // out
+	var _consumedModifiers ModifierType // out
+	var _ok bool                        // out
+
+	_keyval = uint(_arg4)
+	_effectiveGroup = int(_arg5)
+	_level = int(_arg6)
+	_consumedModifiers = ModifierType(_arg7)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keyval, _effectiveGroup, _level, _consumedModifiers, _ok
+}
+
+// KeymapGetDefault returns the Keymap attached to the default display.
+//
+// Deprecated: Use gdk_keymap_get_for_display() instead.
+func KeymapGetDefault() *Keymap {
+	var _cret *C.GdkKeymap // in
+
+	_cret = C.gdk_keymap_get_default()
+
+	var _keymap *Keymap // out
+
+	_keymap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Keymap)
+
+	return _keymap
+}
+
+// KeymapGetForDisplay returns the Keymap attached to @display.
+func KeymapGetForDisplay(display Displayer) *Keymap {
+	var _arg1 *C.GdkDisplay // out
+	var _cret *C.GdkKeymap  // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	_cret = C.gdk_keymap_get_for_display(_arg1)
+
+	var _keymap *Keymap // out
+
+	_keymap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Keymap)
+
+	return _keymap
 }
 
 // KeymapKey is a hardware key that can be mapped to a keyval.

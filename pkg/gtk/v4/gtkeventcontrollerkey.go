@@ -11,21 +11,20 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyyer},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
 	})
 }
 
-// EventControllerKeyyer describes EventControllerKey's methods.
-type EventControllerKeyyer interface {
+// EventControllerKeyer describes EventControllerKey's methods.
+type EventControllerKeyer interface {
 	// Forward forwards the current event of this @controller to a @widget.
-	Forward(widget Widgetter) bool
+	Forward(widget Widgeter) bool
 	// Group gets the key group of the current event of this @controller.
 	Group() uint
 	// ImContext gets the input method context of the key @controller.
@@ -41,11 +40,11 @@ type EventControllerKey struct {
 }
 
 var (
-	_ EventControllerKeyyer = (*EventControllerKey)(nil)
-	_ gextras.Nativer       = (*EventControllerKey)(nil)
+	_ EventControllerKeyer = (*EventControllerKey)(nil)
+	_ gextras.Nativer      = (*EventControllerKey)(nil)
 )
 
-func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyyer {
+func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyer {
 	return &EventControllerKey{
 		EventController: EventController{
 			Object: obj,
@@ -53,7 +52,7 @@ func wrapEventControllerKey(obj *externglib.Object) EventControllerKeyyer {
 	}
 }
 
-func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerKey(obj), nil
@@ -79,7 +78,7 @@ func NewEventControllerKey() *EventControllerKey {
 // [signal@Gtk.EventControllerKey::key-pressed],
 // [signal@Gtk.EventControllerKey::key-released] or
 // [signal@Gtk.EventControllerKey::modifiers] signals.
-func (controller *EventControllerKey) Forward(widget Widgetter) bool {
+func (controller *EventControllerKey) Forward(widget Widgeter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in

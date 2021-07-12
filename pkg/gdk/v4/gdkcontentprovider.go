@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -30,11 +29,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ContentProviderOverrider interface {
-	//
 	AttachClipboard(clipboard Clipboarder)
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
-	//
 	DetachClipboard(clipboard Clipboarder)
 	// Value gets the contents of @provider stored in @value.
 	//

@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: cairo-gobject gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <cairo-gobject.h>
 // #include <glib-object.h>
 import "C"
@@ -52,87 +51,47 @@ func init() {
 	})
 }
 
-//
 type Status int
 
 const (
-	//
 	StatusSuccess Status = iota
-	//
 	StatusNoMemory
-	//
 	StatusInvalidRestore
-	//
 	StatusInvalidPopGroup
-	//
 	StatusNoCurrentPoint
-	//
 	StatusInvalidMatrix
-	//
 	StatusInvalidStatus
-	//
 	StatusNullPointer
-	//
 	StatusInvalidString
-	//
 	StatusInvalidPathData
-	//
 	StatusReadError
-	//
 	StatusWriteError
-	//
 	StatusSurfaceFinished
-	//
 	StatusSurfaceTypeMismatch
-	//
 	StatusPatternTypeMismatch
-	//
 	StatusInvalidContent
-	//
 	StatusInvalidFormat
-	//
 	StatusInvalidVisual
-	//
 	StatusFileNotFound
-	//
 	StatusInvalidDash
-	//
 	StatusInvalidDscComment
-	//
 	StatusInvalidIndex
-	//
 	StatusClipNotRepresentable
-	//
 	StatusTempFileError
-	//
 	StatusInvalidStride
-	//
 	StatusFontTypeMismatch
-	//
 	StatusUserFontImmutable
-	//
 	StatusUserFontError
-	//
 	StatusNegativeCount
-	//
 	StatusInvalidClusters
-	//
 	StatusInvalidSlant
-	//
 	StatusInvalidWeight
-	//
 	StatusInvalidSize
-	//
 	StatusUserFontNotImplemented
-	//
 	StatusDeviceTypeMismatch
-	//
 	StatusDeviceError
-	//
 	StatusInvalidMeshConstruction
-	//
 	StatusDeviceFinished
-	//
 	StatusJbig2GlobalMissing
 )
 
@@ -140,15 +99,11 @@ func marshalStatus(p uintptr) (interface{}, error) {
 	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Content int
 
 const (
-	//
-	ContentColor Content = 4096
-	//
-	ContentAlpha Content = 8192
-	//
+	ContentColor      Content = 4096
+	ContentAlpha      Content = 8192
 	ContentColorAlpha Content = 12288
 )
 
@@ -156,67 +111,37 @@ func marshalContent(p uintptr) (interface{}, error) {
 	return Content(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Operator int
 
 const (
-	//
 	OperatorClear Operator = iota
-	//
 	OperatorSource
-	//
 	OperatorOver
-	//
 	OperatorIn
-	//
 	OperatorOut
-	//
 	OperatorAtop
-	//
 	OperatorDest
-	//
 	OperatorDestOver
-	//
 	OperatorDestIn
-	//
 	OperatorDestOut
-	//
 	OperatorDestAtop
-	//
 	OperatorXor
-	//
 	OperatorAdd
-	//
 	OperatorSaturate
-	//
 	OperatorMultiply
-	//
 	OperatorScreen
-	//
 	OperatorOverlay
-	//
 	OperatorDarken
-	//
 	OperatorLighten
-	//
 	OperatorColorDodge
-	//
 	OperatorColorBurn
-	//
 	OperatorHardLight
-	//
 	OperatorSoftLight
-	//
 	OperatorDifference
-	//
 	OperatorExclusion
-	//
 	OperatorHSLHue
-	//
 	OperatorHSLSaturation
-	//
 	OperatorHSLColor
-	//
 	OperatorHSLLuminosity
 )
 
@@ -224,23 +149,15 @@ func marshalOperator(p uintptr) (interface{}, error) {
 	return Operator(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Antialias int
 
 const (
-	//
 	AntialiasDefault Antialias = iota
-	//
 	AntialiasNone
-	//
 	AntialiasGray
-	//
 	AntialiasSubpixel
-	//
 	AntialiasFast
-	//
 	AntialiasGood
-	//
 	AntialiasBest
 )
 
@@ -248,13 +165,10 @@ func marshalAntialias(p uintptr) (interface{}, error) {
 	return Antialias(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type FillRule int
 
 const (
-	//
 	FillRuleWinding FillRule = iota
-	//
 	FillRuleEvenOdd
 )
 
@@ -262,15 +176,11 @@ func marshalFillRule(p uintptr) (interface{}, error) {
 	return FillRule(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type LineCap int
 
 const (
-	//
 	LineCapButt LineCap = iota
-	//
 	LineCapRound
-	//
 	LineCapSquare
 )
 
@@ -278,15 +188,11 @@ func marshalLineCap(p uintptr) (interface{}, error) {
 	return LineCap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type LineJoin int
 
 const (
-	//
 	LineJoinMiter LineJoin = iota
-	//
 	LineJoinRound
-	//
 	LineJoinBevel
 )
 
@@ -294,11 +200,9 @@ func marshalLineJoin(p uintptr) (interface{}, error) {
 	return LineJoin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type TextClusterFlags int
 
 const (
-	//
 	TextClusterFlagsBackward TextClusterFlags = 1
 )
 
@@ -306,15 +210,11 @@ func marshalTextClusterFlags(p uintptr) (interface{}, error) {
 	return TextClusterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type FontSlant int
 
 const (
-	//
 	FontSlantNormal FontSlant = iota
-	//
 	FontSlantItalic
-	//
 	FontSlantOblique
 )
 
@@ -322,13 +222,10 @@ func marshalFontSlant(p uintptr) (interface{}, error) {
 	return FontSlant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type FontWeight int
 
 const (
-	//
 	FontWeightNormal FontWeight = iota
-	//
 	FontWeightBold
 )
 
@@ -336,19 +233,13 @@ func marshalFontWeight(p uintptr) (interface{}, error) {
 	return FontWeight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type SubpixelOrder int
 
 const (
-	//
 	SubpixelOrderDefault SubpixelOrder = iota
-	//
 	SubpixelOrderRGB
-	//
 	SubpixelOrderBGR
-	//
 	SubpixelOrderVRGB
-	//
 	SubpixelOrderVBGR
 )
 
@@ -356,19 +247,13 @@ func marshalSubpixelOrder(p uintptr) (interface{}, error) {
 	return SubpixelOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type HintStyle int
 
 const (
-	//
 	HintStyleDefault HintStyle = iota
-	//
 	HintStyleNone
-	//
 	HintStyleSlight
-	//
 	HintStyleMedium
-	//
 	HintStyleFull
 )
 
@@ -376,15 +261,11 @@ func marshalHintStyle(p uintptr) (interface{}, error) {
 	return HintStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type HintMetrics int
 
 const (
-	//
 	HintMetricsDefault HintMetrics = iota
-	//
 	HintMetricsOff
-	//
 	HintMetricsOn
 )
 
@@ -392,19 +273,13 @@ func marshalHintMetrics(p uintptr) (interface{}, error) {
 	return HintMetrics(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type FontType int
 
 const (
-	//
 	FontTypeToy FontType = iota
-	//
 	FontTypeFT
-	//
 	FontTypeWin32
-	//
 	FontTypeQuartz
-	//
 	FontTypeUser
 )
 
@@ -412,17 +287,12 @@ func marshalFontType(p uintptr) (interface{}, error) {
 	return FontType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type PathDataType int
 
 const (
-	//
 	PathDataTypeMoveTo PathDataType = iota
-	//
 	PathDataTypeLineTo
-	//
 	PathDataTypeCurveTo
-	//
 	PathDataTypeClosePath
 )
 
@@ -430,27 +300,17 @@ func marshalPathDataType(p uintptr) (interface{}, error) {
 	return PathDataType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type DeviceType int
 
 const (
-	//
-	DeviceTypeDRM DeviceType = 0
-	//
-	DeviceTypeGL DeviceType = 1
-	//
-	DeviceTypeScript DeviceType = 2
-	//
-	DeviceTypeXcb DeviceType = 3
-	//
-	DeviceTypeXlib DeviceType = 4
-	//
-	DeviceTypeXML DeviceType = 5
-	//
-	DeviceTypeCOGL DeviceType = 6
-	//
-	DeviceTypeWin32 DeviceType = 7
-	//
+	DeviceTypeDRM     DeviceType = 0
+	DeviceTypeGL      DeviceType = 1
+	DeviceTypeScript  DeviceType = 2
+	DeviceTypeXcb     DeviceType = 3
+	DeviceTypeXlib    DeviceType = 4
+	DeviceTypeXML     DeviceType = 5
+	DeviceTypeCOGL    DeviceType = 6
+	DeviceTypeWin32   DeviceType = 7
 	DeviceTypeInvalid DeviceType = -1
 )
 
@@ -458,59 +318,33 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type SurfaceType int
 
 const (
-	//
 	SurfaceTypeImage SurfaceType = iota
-	//
 	SurfaceTypePDF
-	//
 	SurfaceTypePS
-	//
 	SurfaceTypeXlib
-	//
 	SurfaceTypeXcb
-	//
 	SurfaceTypeGlitz
-	//
 	SurfaceTypeQuartz
-	//
 	SurfaceTypeWin32
-	//
 	SurfaceTypeBeOS
-	//
 	SurfaceTypeDirectFB
-	//
 	SurfaceTypeSvg
-	//
 	SurfaceTypeOS2
-	//
 	SurfaceTypeWin32Printing
-	//
 	SurfaceTypeQuartzImage
-	//
 	SurfaceTypeScript
-	//
 	SurfaceTypeQt
-	//
 	SurfaceTypeRecording
-	//
 	SurfaceTypeVg
-	//
 	SurfaceTypeGL
-	//
 	SurfaceTypeDRM
-	//
 	SurfaceTypeTee
-	//
 	SurfaceTypeXML
-	//
 	SurfaceTypeSkia
-	//
 	SurfaceTypeSubsurface
-	//
 	SurfaceTypeCOGL
 )
 
@@ -518,45 +352,30 @@ func marshalSurfaceType(p uintptr) (interface{}, error) {
 	return SurfaceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Format int
 
 const (
-	//
-	FormatInvalid Format = -1
-	//
-	FormatARGB32 Format = 0
-	//
-	FormatRGB24 Format = 1
-	//
-	FormatA8 Format = 2
-	//
-	FormatA1 Format = 3
-	//
+	FormatInvalid  Format = -1
+	FormatARGB32   Format = 0
+	FormatRGB24    Format = 1
+	FormatA8       Format = 2
+	FormatA1       Format = 3
 	FormatRGB16565 Format = 4
-	//
-	FormatRGB30 Format = 5
+	FormatRGB30    Format = 5
 )
 
 func marshalFormat(p uintptr) (interface{}, error) {
 	return Format(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type PatternType int
 
 const (
-	//
 	PatternTypeSolid PatternType = iota
-	//
 	PatternTypeSurface
-	//
 	PatternTypeLinear
-	//
 	PatternTypeRadial
-	//
 	PatternTypeMesh
-	//
 	PatternTypeRasterSource
 )
 
@@ -564,17 +383,12 @@ func marshalPatternType(p uintptr) (interface{}, error) {
 	return PatternType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Extend int
 
 const (
-	//
 	ExtendNone Extend = iota
-	//
 	ExtendRepeat
-	//
 	ExtendReflect
-	//
 	ExtendPad
 )
 
@@ -582,21 +396,14 @@ func marshalExtend(p uintptr) (interface{}, error) {
 	return Extend(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Filter int
 
 const (
-	//
 	FilterFast Filter = iota
-	//
 	FilterGood
-	//
 	FilterBest
-	//
 	FilterNearest
-	//
 	FilterBilinear
-	//
 	FilterGaussian
 )
 
@@ -604,15 +411,11 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return Filter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type RegionOverlap int
 
 const (
-	//
 	RegionOverlapIn RegionOverlap = iota
-	//
 	RegionOverlapOut
-	//
 	RegionOverlapPart
 )
 
@@ -620,7 +423,6 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type Context struct {
 	native C.cairo_t
 }
@@ -635,7 +437,6 @@ func (c *Context) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-//
 type Device struct {
 	native C.cairo_device_t
 }
@@ -650,7 +451,6 @@ func (d *Device) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-//
 type Surface struct {
 	native C.cairo_surface_t
 }
@@ -665,7 +465,6 @@ func (s *Surface) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-//
 type Matrix struct {
 	native C.cairo_matrix_t
 }
@@ -675,7 +474,6 @@ func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-//
 type Pattern struct {
 	native C.cairo_pattern_t
 }
@@ -690,7 +488,6 @@ func (p *Pattern) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-//
 type Region struct {
 	native C.cairo_region_t
 }
@@ -705,7 +502,6 @@ func (r *Region) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-//
 type FontOptions struct {
 	native C.cairo_font_options_t
 }
@@ -720,7 +516,6 @@ func (f *FontOptions) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-//
 type FontFace struct {
 	native C.cairo_font_face_t
 }
@@ -735,7 +530,6 @@ func (f *FontFace) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-//
 type ScaledFont struct {
 	native C.cairo_scaled_font_t
 }
@@ -750,7 +544,6 @@ func (s *ScaledFont) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-//
 type Path struct {
 	native C.cairo_path_t
 }
@@ -760,7 +553,6 @@ func (p *Path) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-//
 type Rectangle struct {
 	native C.cairo_rectangle_t
 }
@@ -775,7 +567,6 @@ func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-//
 type RectangleInt struct {
 	native C.cairo_rectangle_int_t
 }

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -188,11 +187,16 @@ type Layouter interface {
 	// MoveCursorVisually computes a new cursor position from an old position
 	// and a count of positions to move visually.
 	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
+	// SetAlignment sets the alignment for the layout: how partial lines are
+	// positioned within the horizontal space available.
+	SetAlignment(alignment Alignment)
 	// SetAttributes sets the text attributes for a layout object.
 	SetAttributes(attrs *AttrList)
 	// SetAutoDir sets whether to calculate the base direction for the layout
 	// according to its contents.
 	SetAutoDir(autoDir bool)
+	// SetEllipsize sets the type of ellipsization being performed for @layout.
+	SetEllipsize(ellipsize EllipsizeMode)
 	// SetFontDescription sets the default font description for the layout.
 	SetFontDescription(desc *FontDescription)
 	// SetHeight sets the height to which the `PangoLayout` should be ellipsized
@@ -222,6 +226,8 @@ type Layouter interface {
 	// SetWidth sets the width to which the lines of the `PangoLayout` should
 	// wrap or ellipsized.
 	SetWidth(width int)
+	// SetWrap sets the wrap mode.
+	SetWrap(wrap WrapMode)
 	// XYToIndex converts from X and Y position within a layout to the byte
 	// index to the character at that logical position.
 	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
@@ -1065,6 +1071,18 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing 
 	return _newIndex, _newTrailing
 }
 
+// SetAlignment sets the alignment for the layout: how partial lines are
+// positioned within the horizontal space available.
+func (layout *Layout) SetAlignment(alignment Alignment) {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoAlignment // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = C.PangoAlignment(alignment)
+
+	C.pango_layout_set_alignment(_arg0, _arg1)
+}
+
 // SetAttributes sets the text attributes for a layout object. References
 // @attrs, so the caller can unref its reference.
 func (layout *Layout) SetAttributes(attrs *AttrList) {
@@ -1103,6 +1121,27 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 	}
 
 	C.pango_layout_set_auto_dir(_arg0, _arg1)
+}
+
+// SetEllipsize sets the type of ellipsization being performed for @layout.
+//
+// Depending on the ellipsization mode @ellipsize text is removed from the
+// start, middle, or end of text so they fit within the width and height of
+// layout set with [method@Pango.Layout.set_width] and
+// [method@Pango.Layout.set_height].
+//
+// If the layout contains characters such as newlines that force it to be layed
+// out in multiple paragraphs, then whether each paragraph is ellipsized
+// separately or the entire layout is ellipsized as a whole depends on the set
+// height of the layout. See [method@Pango.Layout.set_height] for details.
+func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
+	var _arg0 *C.PangoLayout       // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = C.PangoEllipsizeMode(ellipsize)
+
+	C.pango_layout_set_ellipsize(_arg0, _arg1)
 }
 
 // SetFontDescription sets the default font description for the layout.
@@ -1357,6 +1396,20 @@ func (layout *Layout) SetWidth(width int) {
 	_arg1 = C.int(width)
 
 	C.pango_layout_set_width(_arg0, _arg1)
+}
+
+// SetWrap sets the wrap mode.
+//
+// The wrap mode only has effect if a width is set on the layout with
+// [method@Pango.Layout.set_width]. To turn off wrapping, set the width to -1.
+func (layout *Layout) SetWrap(wrap WrapMode) {
+	var _arg0 *C.PangoLayout  // out
+	var _arg1 C.PangoWrapMode // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = C.PangoWrapMode(wrap)
+
+	C.pango_layout_set_wrap(_arg0, _arg1)
 }
 
 // XYToIndex converts from X and Y position within a layout to the byte index to

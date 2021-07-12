@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -150,4 +149,18 @@ func (s *Size) Scale(factor float32) Size {
 	C.graphene_size_scale(_arg0, _arg1, (*C.graphene_size_t)(unsafe.Pointer(&_res)))
 
 	return _res
+}
+
+// SizeZero: constant pointer to a zero #graphene_size_t, useful for equality
+// checks and interpolations.
+func SizeZero() *Size {
+	var _cret *C.graphene_size_t // in
+
+	_cret = C.graphene_size_zero()
+
+	var _size *Size // out
+
+	_size = (*Size)(unsafe.Pointer(_cret))
+
+	return _size
 }

@@ -11,21 +11,20 @@ import (
 
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnimmer},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnimer},
 	})
 }
 
-// PixbufSimpleAnimmer describes PixbufSimpleAnim's methods.
-type PixbufSimpleAnimmer interface {
+// PixbufSimpleAnimer describes PixbufSimpleAnim's methods.
+type PixbufSimpleAnimer interface {
 	// AddFrame adds a new frame to @animation.
-	AddFrame(pixbuf Pixbuffer)
+	AddFrame(pixbuf Pixbufer)
 	// Loop gets whether @animation should loop indefinitely when it reaches the
 	// end.
 	Loop() bool
@@ -40,11 +39,11 @@ type PixbufSimpleAnim struct {
 }
 
 var (
-	_ PixbufSimpleAnimmer = (*PixbufSimpleAnim)(nil)
-	_ gextras.Nativer     = (*PixbufSimpleAnim)(nil)
+	_ PixbufSimpleAnimer = (*PixbufSimpleAnim)(nil)
+	_ gextras.Nativer    = (*PixbufSimpleAnim)(nil)
 )
 
-func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnimmer {
+func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnimer {
 	return &PixbufSimpleAnim{
 		PixbufAnimation: PixbufAnimation{
 			Object: obj,
@@ -52,7 +51,7 @@ func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnimmer {
 	}
 }
 
-func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
+func marshalPixbufSimpleAnimer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPixbufSimpleAnim(obj), nil
@@ -80,7 +79,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim 
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the dimensions
 // specified when the animation was constructed.
-func (animation *PixbufSimpleAnim) AddFrame(pixbuf Pixbuffer) {
+func (animation *PixbufSimpleAnim) AddFrame(pixbuf Pixbufer) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 

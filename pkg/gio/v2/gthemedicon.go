@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,12 +27,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconner},
+		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconer},
 	})
 }
 
-// ThemedIconner describes ThemedIcon's methods.
-type ThemedIconner interface {
+// ThemedIconer describes ThemedIcon's methods.
+type ThemedIconer interface {
 	// AppendName: append a name to the list of icons from within @icon.
 	AppendName(iconname string)
 	// Names gets the names of icons from within @icon.
@@ -55,11 +54,11 @@ type ThemedIcon struct {
 }
 
 var (
-	_ ThemedIconner   = (*ThemedIcon)(nil)
+	_ ThemedIconer    = (*ThemedIcon)(nil)
 	_ gextras.Nativer = (*ThemedIcon)(nil)
 )
 
-func wrapThemedIcon(obj *externglib.Object) ThemedIconner {
+func wrapThemedIcon(obj *externglib.Object) ThemedIconer {
 	return &ThemedIcon{
 		Object: obj,
 		Icon: Icon{
@@ -68,7 +67,7 @@ func wrapThemedIcon(obj *externglib.Object) ThemedIconner {
 	}
 }
 
-func marshalThemedIconner(p uintptr) (interface{}, error) {
+func marshalThemedIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapThemedIcon(obj), nil

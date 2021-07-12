@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -54,7 +53,7 @@ type DropDowner interface {
 	// items in the popup.
 	SetListFactory(factory ListItemFactorier)
 	// SetModel sets the `GListModel` to use.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 	// SetSelected selects the item at the given position.
 	SetSelected(position uint)
 }
@@ -126,7 +125,7 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // You may want to call [method@Gtk.DropDown.set_factory] to set up a way to map
 // its items to widgets.
-func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
+func NewDropDown(model gio.ListModeler, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
@@ -344,7 +343,7 @@ func (self *DropDown) SetListFactory(factory ListItemFactorier) {
 }
 
 // SetModel sets the `GListModel` to use.
-func (self *DropDown) SetModel(model gio.ListModeller) {
+func (self *DropDown) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 

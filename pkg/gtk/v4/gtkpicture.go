@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -54,7 +53,7 @@ type Picturer interface {
 	// SetPaintable makes @self display the given @paintable.
 	SetPaintable(paintable gdk.Paintabler)
 	// SetPixbuf sets a `GtkPicture` to show a `GdkPixbuf`.
-	SetPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	SetPixbuf(pixbuf gdkpixbuf.Pixbufer)
 	// SetResource makes @self load and display the resource at the given
 	// @resource_path.
 	SetResource(resourcePath string)
@@ -222,7 +221,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 // See that function for details.
 //
 // The pixbuf must not be modified after passing it to this function.
-func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Picture {
+func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Picture {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
@@ -457,7 +456,7 @@ func (self *Picture) SetPaintable(paintable gdk.Paintabler) {
 // See [ctor@Gtk.Picture.new_for_pixbuf] for details.
 //
 // This is a utility function that calls [method@Gtk.Picture.set_paintable].
-func (self *Picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (self *Picture) SetPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 *C.GdkPixbuf  // out
 

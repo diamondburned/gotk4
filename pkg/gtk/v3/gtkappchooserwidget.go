@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
+		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgeter},
 	})
 }
 
@@ -31,16 +30,13 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type AppChooserWidgetOverrider interface {
-	//
 	ApplicationActivated(appInfo gio.AppInfor)
-	//
 	ApplicationSelected(appInfo gio.AppInfor)
-	//
 	PopulatePopup(menu Menuer, appInfo gio.AppInfor)
 }
 
-// AppChooserWidgetter describes AppChooserWidget's methods.
-type AppChooserWidgetter interface {
+// AppChooserWidgeter describes AppChooserWidget's methods.
+type AppChooserWidgeter interface {
 	// DefaultText returns the text that is shown if there are not applications
 	// that can handle the content type.
 	DefaultText() string
@@ -105,11 +101,11 @@ type AppChooserWidget struct {
 }
 
 var (
-	_ AppChooserWidgetter = (*AppChooserWidget)(nil)
-	_ gextras.Nativer     = (*AppChooserWidget)(nil)
+	_ AppChooserWidgeter = (*AppChooserWidget)(nil)
+	_ gextras.Nativer    = (*AppChooserWidget)(nil)
 )
 
-func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidgetter {
+func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidgeter {
 	return &AppChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -145,7 +141,7 @@ func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidgetter {
 	}
 }
 
-func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalAppChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserWidget(obj), nil

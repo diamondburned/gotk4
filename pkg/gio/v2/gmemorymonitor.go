@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,12 +27,20 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorrer},
+		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorer},
 	})
 }
 
-// MemoryMonitorrer describes MemoryMonitor's methods.
-type MemoryMonitorrer interface {
+// MemoryMonitorOverrider contains methods that are overridable.
+//
+// As of right now, interface overriding and subclassing is not supported
+// yet, so the interface currently has no use.
+type MemoryMonitorOverrider interface {
+	LowMemoryWarning(level MemoryMonitorWarningLevel)
+}
+
+// MemoryMonitorer describes MemoryMonitor's methods.
+type MemoryMonitorer interface {
 	privateMemoryMonitor()
 }
 
@@ -84,11 +91,11 @@ type MemoryMonitor struct {
 }
 
 var (
-	_ MemoryMonitorrer = (*MemoryMonitor)(nil)
-	_ gextras.Nativer  = (*MemoryMonitor)(nil)
+	_ MemoryMonitorer = (*MemoryMonitor)(nil)
+	_ gextras.Nativer = (*MemoryMonitor)(nil)
 )
 
-func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitorrer {
+func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitorer {
 	return &MemoryMonitor{
 		Initable: Initable{
 			Object: obj,
@@ -96,10 +103,24 @@ func wrapMemoryMonitor(obj *externglib.Object) MemoryMonitorrer {
 	}
 }
 
-func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
+func marshalMemoryMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMemoryMonitor(obj), nil
 }
 
 func (*MemoryMonitor) privateMemoryMonitor() {}
+
+// MemoryMonitorDupDefault gets a reference to the default Monitor for the
+// system.
+func MemoryMonitorDupDefault() *MemoryMonitor {
+	var _cret *C.GMemoryMonitor // in
+
+	_cret = C.g_memory_monitor_dup_default()
+
+	var _memoryMonitor *MemoryMonitor // out
+
+	_memoryMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*MemoryMonitor)
+
+	return _memoryMonitor
+}

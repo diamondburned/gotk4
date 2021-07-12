@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -725,7 +724,6 @@ func (e *EventSelection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-//
 type EventSequence struct {
 	native C.GdkEventSequence
 }

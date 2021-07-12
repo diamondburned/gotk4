@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -11,7 +12,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -456,6 +456,36 @@ func (uri *URI) Userinfo() string {
 	return _utf8
 }
 
+// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
+// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
+// result is not a valid absolute URI, it will be discarded, and an error
+// returned.
+func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
+	var _arg0 *C.GUri     // out
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _cret *C.GUri     // in
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GUri)(unsafe.Pointer(baseUri))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	_cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, &_cerr)
+
+	var _uri *URI    // out
+	var _goerr error // out
+
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
+		C.free(unsafe.Pointer(v))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _uri, _goerr
+}
+
 // String returns a string representing @uri.
 //
 // This is not guaranteed to return a string which is identical to the string
@@ -483,6 +513,687 @@ func (uri *URI) String() string {
 	return _utf8
 }
 
+// ToStringPartial returns a string representing @uri, subject to the options in
+// @flags. See g_uri_to_string() and HideFlags for more details.
+func (uri *URI) ToStringPartial(flags URIHideFlags) string {
+	var _arg0 *C.GUri         // out
+	var _arg1 C.GUriHideFlags // out
+	var _cret *C.char         // in
+
+	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg1 = C.GUriHideFlags(flags)
+
+	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIBuild creates a new #GUri from the given components according to @flags.
+//
+// See also g_uri_build_with_user(), which allows specifying the components of
+// the "userinfo" separately.
+func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI {
+	var _arg1 C.GUriFlags // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _arg4 *C.gchar    // out
+	var _arg5 C.gint      // out
+	var _arg6 *C.gchar    // out
+	var _arg7 *C.gchar    // out
+	var _arg8 *C.gchar    // out
+	var _cret *C.GUri     // in
+
+	_arg1 = C.GUriFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(userinfo)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.gint(port)
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
+	defer C.free(unsafe.Pointer(_arg7))
+	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
+	defer C.free(unsafe.Pointer(_arg8))
+
+	_cret = C.g_uri_build(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+
+	var _uri *URI // out
+
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _uri
+}
+
+// URIBuildWithUser creates a new #GUri from the given components according to
+// @flags (G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must
+// be coherent with the passed values, in particular use `%`-encoded values with
+// G_URI_FLAGS_ENCODED.
+//
+// In contrast to g_uri_build(), this allows specifying the components of the
+// ‘userinfo’ field separately. Note that @user must be non-nil if either
+// @password or @auth_params is non-nil.
+func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
+	var _arg1 C.GUriFlags // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _arg4 *C.gchar    // out
+	var _arg5 *C.gchar    // out
+	var _arg6 *C.gchar    // out
+	var _arg7 C.gint      // out
+	var _arg8 *C.gchar    // out
+	var _arg9 *C.gchar    // out
+	var _arg10 *C.gchar   // out
+	var _cret *C.GUri     // in
+
+	_arg1 = C.GUriFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(user)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(authParams)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = C.gint(port)
+	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg8))
+	_arg9 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
+	defer C.free(unsafe.Pointer(_arg9))
+	_arg10 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
+	defer C.free(unsafe.Pointer(_arg10))
+
+	_cret = C.g_uri_build_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+
+	var _uri *URI // out
+
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _uri
+}
+
+// URIEscapeBytes escapes arbitrary data for use in a URI.
+//
+// Normally all characters that are not ‘unreserved’ (i.e. ASCII alphanumerical
+// characters plus dash, dot, underscore and tilde) are escaped. But if you
+// specify characters in @reserved_chars_allowed they are not escaped. This is
+// useful for the ‘reserved’ characters in the URI specification, since those
+// are allowed unescaped in some portions of a URI.
+//
+// Though technically incorrect, this will also allow escaping nul bytes as
+// `%“00`.
+func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
+	var _arg1 *C.guint8
+	var _arg2 C.gsize
+	var _arg3 *C.char // out
+	var _cret *C.char // in
+
+	_arg2 = C.gsize(len(unescaped))
+	_arg1 = (*C.guint8)(unsafe.Pointer(&unescaped[0]))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(reservedCharsAllowed)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.g_uri_escape_bytes(_arg1, _arg2, _arg3)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIEscapeString escapes a string for use in a URI.
+//
+// Normally all characters that are not "unreserved" (i.e. ASCII alphanumerical
+// characters plus dash, dot, underscore and tilde) are escaped. But if you
+// specify characters in @reserved_chars_allowed they are not escaped. This is
+// useful for the "reserved" characters in the URI specification, since those
+// are allowed unescaped in some portions of a URI.
+func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bool) string {
+	var _arg1 *C.char    // out
+	var _arg2 *C.char    // out
+	var _arg3 C.gboolean // out
+	var _cret *C.char    // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(unescaped)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(reservedCharsAllowed)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if allowUtf8 {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.g_uri_escape_string(_arg1, _arg2, _arg3)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIIsValid parses @uri_string according to @flags, to determine whether it is
+// a valid [absolute URI][relative-absolute-uris], i.e. it does not need to be
+// resolved relative to another URI using g_uri_parse_relative().
+//
+// If it’s not a valid URI, an error is returned explaining how it’s invalid.
+//
+// See g_uri_split(), and the definition of Flags, for more information on the
+// effect of @flags.
+func URIIsValid(uriString string, flags URIFlags) error {
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	C.g_uri_is_valid(_arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// URIJoin joins the given components together according to @flags to create an
+// absolute URI string. @path may not be nil (though it may be the empty
+// string).
+//
+// When @host is present, @path must either be empty or begin with a slash (`/`)
+// character. When @host is not present, @path cannot begin with two slash
+// characters (`//`). See RFC 3986, section 3
+// (https://tools.ietf.org/html/rfc3986#section-3).
+//
+// See also g_uri_join_with_user(), which allows specifying the components of
+// the ‘userinfo’ separately.
+//
+// G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+// in @flags.
+func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
+	var _arg1 C.GUriFlags // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _arg4 *C.gchar    // out
+	var _arg5 C.gint      // out
+	var _arg6 *C.gchar    // out
+	var _arg7 *C.gchar    // out
+	var _arg8 *C.gchar    // out
+	var _cret *C.gchar    // in
+
+	_arg1 = C.GUriFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(userinfo)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.gint(port)
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
+	defer C.free(unsafe.Pointer(_arg7))
+	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
+	defer C.free(unsafe.Pointer(_arg8))
+
+	_cret = C.g_uri_join(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIJoinWithUser joins the given components together according to @flags to
+// create an absolute URI string. @path may not be nil (though it may be the
+// empty string).
+//
+// In contrast to g_uri_join(), this allows specifying the components of the
+// ‘userinfo’ separately. It otherwise behaves the same.
+//
+// G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+// in @flags.
+func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
+	var _arg1 C.GUriFlags // out
+	var _arg2 *C.gchar    // out
+	var _arg3 *C.gchar    // out
+	var _arg4 *C.gchar    // out
+	var _arg5 *C.gchar    // out
+	var _arg6 *C.gchar    // out
+	var _arg7 C.gint      // out
+	var _arg8 *C.gchar    // out
+	var _arg9 *C.gchar    // out
+	var _arg10 *C.gchar   // out
+	var _cret *C.gchar    // in
+
+	_arg1 = C.GUriFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(user)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(authParams)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(host)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = C.gint(port)
+	_arg8 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg8))
+	_arg9 = (*C.gchar)(unsafe.Pointer(C.CString(query)))
+	defer C.free(unsafe.Pointer(_arg9))
+	_arg10 = (*C.gchar)(unsafe.Pointer(C.CString(fragment)))
+	defer C.free(unsafe.Pointer(_arg10))
+
+	_cret = C.g_uri_join_with_user(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIParse parses @uri_string according to @flags. If the result is not a valid
+// [absolute URI][relative-absolute-uris], it will be discarded, and an error
+// returned.
+func URIParse(uriString string, flags URIFlags) (*URI, error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _cret *C.GUri     // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	_cret = C.g_uri_parse(_arg1, _arg2, &_cerr)
+
+	var _uri *URI    // out
+	var _goerr error // out
+
+	_uri = (*URI)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_uri, func(v *URI) {
+		C.free(unsafe.Pointer(v))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _uri, _goerr
+}
+
+// URIParseParams: many URI schemes include one or more attribute/value pairs as
+// part of the URI value. This method can be used to parse them into a hash
+// table. When an attribute has multiple occurrences, the last value is the
+// final returned value. If you need to handle repeated attributes differently,
+// use ParamsIter.
+//
+// The @params string is assumed to still be `%`-encoded, but the returned
+// values will be fully decoded. (Thus it is possible that the returned values
+// may contain `=` or @separators, if the value was encoded in the input.)
+// Invalid `%`-encoding is treated as with the G_URI_FLAGS_PARSE_RELAXED rules
+// for g_uri_parse(). (However, if @params is the path or query string from a
+// #GUri that was parsed without G_URI_FLAGS_PARSE_RELAXED and
+// G_URI_FLAGS_ENCODED, then you already know that it does not contain any
+// invalid encoding.)
+//
+// G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
+//
+// If G_URI_PARAMS_CASE_INSENSITIVE is passed to @flags, attributes will be
+// compared case-insensitively, so a params string `attr=123&Attr=456` will only
+// return a single attribute–value pair, `Attr=456`. Case will be preserved in
+// the returned attributes.
+//
+// If @params cannot be parsed (for example, it contains two @separators
+// characters in a row), then @error is set and nil is returned.
+func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (*HashTable, error) {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gssize          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 C.GUriParamsFlags // out
+	var _cret *C.GHashTable     // in
+	var _cerr *C.GError         // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.GUriParamsFlags(flags)
+
+	_cret = C.g_uri_parse_params(_arg1, _arg2, _arg3, _arg4, &_cerr)
+
+	var _hashTable *HashTable // out
+	var _goerr error          // out
+
+	_hashTable = (*HashTable)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_hashTable, func(v *HashTable) {
+		C.free(unsafe.Pointer(v))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _hashTable, _goerr
+}
+
+// URIParseScheme gets the scheme portion of a URI string. RFC 3986
+// (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
+//
+//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//
+// Common schemes include `file`, `https`, `svn+ssh`, etc.
+func URIParseScheme(uri string) string {
+	var _arg1 *C.char // out
+	var _cret *C.char // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_uri_parse_scheme(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIPeekScheme gets the scheme portion of a URI string. RFC 3986
+// (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
+//
+//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//
+// Common schemes include `file`, `https`, `svn+ssh`, etc.
+//
+// Unlike g_uri_parse_scheme(), the returned scheme is normalized to
+// all-lowercase and does not need to be freed.
+func URIPeekScheme(uri string) string {
+	var _arg1 *C.char // out
+	var _cret *C.char // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_uri_peek_scheme(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// URIResolveRelative parses @uri_ref according to @flags and, if it is a
+// [relative URI][relative-absolute-uris], resolves it relative to
+// @base_uri_string. If the result is not a valid absolute URI, it will be
+// discarded, and an error returned.
+//
+// (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
+// is invalid or not absolute.)
+func URIResolveRelative(baseUriString string, uriRef string, flags URIFlags) (string, error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 *C.gchar    // out
+	var _arg3 C.GUriFlags // out
+	var _cret *C.gchar    // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(baseUriString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GUriFlags(flags)
+
+	_cret = C.g_uri_resolve_relative(_arg1, _arg2, _arg3, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
+}
+
+// URISplit parses @uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
+// Any component that doesn't appear in @uri_ref will be returned as nil (but
+// note that all URIs always have a path component, though it may be the empty
+// string).
+//
+// If @flags contains G_URI_FLAGS_ENCODED, then `%`-encoded characters in
+// @uri_ref will remain encoded in the output strings. (If not, then all such
+// characters will be decoded.) Note that decoding will only work if the URI
+// components are ASCII or UTF-8, so you will need to use G_URI_FLAGS_ENCODED if
+// they are not.
+//
+// Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
+// are ignored by g_uri_split(), since it always returns only the full userinfo;
+// use g_uri_split_with_user() if you want it split up.
+func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, goerr error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _arg3 *C.gchar    // in
+	var _arg4 *C.gchar    // in
+	var _arg5 *C.gchar    // in
+	var _arg6 C.gint      // in
+	var _arg7 *C.gchar    // in
+	var _arg8 *C.gchar    // in
+	var _arg9 *C.gchar    // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	C.g_uri_split(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7, &_arg8, &_arg9, &_cerr)
+
+	var _scheme string   // out
+	var _userinfo string // out
+	var _host string     // out
+	var _port int        // out
+	var _path string     // out
+	var _query string    // out
+	var _fragment string // out
+	var _goerr error     // out
+
+	_scheme = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_userinfo = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_port = int(_arg6)
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
+	defer C.free(unsafe.Pointer(_arg7))
+	_query = C.GoString((*C.gchar)(unsafe.Pointer(_arg8)))
+	defer C.free(unsafe.Pointer(_arg8))
+	_fragment = C.GoString((*C.gchar)(unsafe.Pointer(_arg9)))
+	defer C.free(unsafe.Pointer(_arg9))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _scheme, _userinfo, _host, _port, _path, _query, _fragment, _goerr
+}
+
+// URISplitNetwork parses @uri_string (which must be an [absolute
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces
+// relevant to connecting to a host. See the documentation for g_uri_split() for
+// more details; this is mostly a wrapper around that function with simpler
+// arguments. However, it will return an error if @uri_string is a relative URI,
+// or does not contain a hostname component.
+func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, goerr error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _arg3 *C.gchar    // in
+	var _arg4 *C.gchar    // in
+	var _arg5 C.gint      // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	C.g_uri_split_network(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_cerr)
+
+	var _scheme string // out
+	var _host string   // out
+	var _port int      // out
+	var _goerr error   // out
+
+	_scheme = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_port = int(_arg5)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _scheme, _host, _port, _goerr
+}
+
+// URISplitWithUser parses @uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
+// Any component that doesn't appear in @uri_ref will be returned as nil (but
+// note that all URIs always have a path component, though it may be the empty
+// string).
+//
+// See g_uri_split(), and the definition of Flags, for more information on the
+// effect of @flags. Note that @password will only be parsed out if @flags
+// contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
+// if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
+func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, goerr error) {
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GUriFlags // out
+	var _arg3 *C.gchar    // in
+	var _arg4 *C.gchar    // in
+	var _arg5 *C.gchar    // in
+	var _arg6 *C.gchar    // in
+	var _arg7 *C.gchar    // in
+	var _arg8 C.gint      // in
+	var _arg9 *C.gchar    // in
+	var _arg10 *C.gchar   // in
+	var _arg11 *C.gchar   // in
+	var _cerr *C.GError   // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GUriFlags(flags)
+
+	C.g_uri_split_with_user(_arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7, &_arg8, &_arg9, &_arg10, &_arg11, &_cerr)
+
+	var _scheme string     // out
+	var _user string       // out
+	var _password string   // out
+	var _authParams string // out
+	var _host string       // out
+	var _port int          // out
+	var _path string       // out
+	var _query string      // out
+	var _fragment string   // out
+	var _goerr error       // out
+
+	_scheme = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_user = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_password = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_authParams = C.GoString((*C.gchar)(unsafe.Pointer(_arg6)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
+	defer C.free(unsafe.Pointer(_arg7))
+	_port = int(_arg8)
+	_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg9)))
+	defer C.free(unsafe.Pointer(_arg9))
+	_query = C.GoString((*C.gchar)(unsafe.Pointer(_arg10)))
+	defer C.free(unsafe.Pointer(_arg10))
+	_fragment = C.GoString((*C.gchar)(unsafe.Pointer(_arg11)))
+	defer C.free(unsafe.Pointer(_arg11))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _scheme, _user, _password, _authParams, _host, _port, _path, _query, _fragment, _goerr
+}
+
+// URIUnescapeSegment unescapes a segment of an escaped string.
+//
+// If any of the characters in @illegal_characters or the NUL character appears
+// as an escaped character in @escaped_string, then that is an error and nil
+// will be returned. This is useful if you want to avoid for instance having a
+// slash being expanded in an escaped path element, which might confuse pathname
+// handling.
+//
+// Note: `NUL` byte is not accepted in the output, in contrast to
+// g_uri_unescape_bytes().
+func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string {
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+	var _arg3 *C.char // out
+	var _cret *C.char // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(escapedString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(escapedStringEnd)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(illegalCharacters)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.g_uri_unescape_segment(_arg1, _arg2, _arg3)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// URIUnescapeString unescapes a whole escaped string.
+//
+// If any of the characters in @illegal_characters or the NUL character appears
+// as an escaped character in @escaped_string, then that is an error and nil
+// will be returned. This is useful if you want to avoid for instance having a
+// slash being expanded in an escaped path element, which might confuse pathname
+// handling.
+func URIUnescapeString(escapedString string, illegalCharacters string) string {
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+	var _cret *C.char // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(escapedString)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(illegalCharacters)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_uri_unescape_string(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. For example
 // `scheme://server/path?query=string&is=there` has two attributes –
@@ -500,6 +1211,55 @@ type URIParamsIter struct {
 // Native returns the underlying C source pointer.
 func (u *URIParamsIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&u.native)
+}
+
+// Init initializes an attribute/value pair iterator.
+//
+// The iterator keeps pointers to the @params and @separators arguments, those
+// variables must thus outlive the iterator and not be modified during the
+// iteration.
+//
+// If G_URI_PARAMS_WWW_FORM is passed in @flags, `+` characters in the param
+// string will be replaced with spaces in the output. For example, `foo=bar+baz`
+// will give attribute `foo` with value `bar baz`. This is commonly used on the
+// web (the `https` and `http` schemes only), but is deprecated in favour of the
+// equivalent of encoding spaces as `20`.
+//
+// Unlike with g_uri_parse_params(), G_URI_PARAMS_CASE_INSENSITIVE has no effect
+// if passed to @flags for g_uri_params_iter_init(). The caller is responsible
+// for doing their own case-insensitive comparisons.
+//
+//    GUriParamsIter iter;
+//    GError *error = NULL;
+//    gchar *unowned_attr, *unowned_value;
+//
+//    g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
+//    while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
+//      {
+//        g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
+//        g_autofree gchar *value = g_steal_pointer (&unowned_value);
+//        // do something with attr and value; this code will be called 4 times
+//        // for the params string in this example: once with attr=foo and value=bar,
+//        // then with baz/bar, then Foo/frob, then baz/bar2.
+//      }
+//    if (error)
+//      // handle parsing error
+func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
+	var _arg0 *C.GUriParamsIter // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gssize          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 C.GUriParamsFlags // out
+
+	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.GUriParamsFlags(flags)
+
+	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // Next advances @iter and retrieves the next attribute/value. false is returned

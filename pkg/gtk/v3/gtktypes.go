@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,7 +30,6 @@ func init() {
 	})
 }
 
-//
 type IconSet struct {
 	native C.GtkIconSet
 }
@@ -59,7 +57,7 @@ func NewIconSet() *IconSet {
 }
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
-func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *IconSet {
+func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *IconSet {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GtkIconSet // in
 
@@ -185,6 +183,41 @@ func (iconSet *IconSet) ref() *IconSet {
 	return _iconSet
 }
 
+// RenderIcon renders an icon using gtk_style_render_icon(). In most cases,
+// gtk_widget_render_icon() is better, since it automatically provides most of
+// the arguments from the current widget settings. This function never returns
+// nil; if the icon can’t be rendered (perhaps because an image file fails to
+// load), a default "missing image" icon will be returned instead.
+//
+// Deprecated: Use gtk_icon_set_render_icon_pixbuf() instead.
+func (iconSet *IconSet) RenderIcon(style Styler, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyle        // out
+	var _arg2 C.GtkTextDirection // out
+	var _arg3 C.GtkStateType     // out
+	var _arg4 C.GtkIconSize      // out
+	var _arg5 *C.GtkWidget       // out
+	var _arg6 *C.gchar           // out
+	var _cret *C.GdkPixbuf       // in
+
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg2 = C.GtkTextDirection(direction)
+	_arg3 = C.GtkStateType(state)
+	_arg4 = C.GtkIconSize(size)
+	_arg5 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+	defer C.free(unsafe.Pointer(_arg6))
+
+	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	_pixbuf = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdkpixbuf.Pixbuf)
+
+	return _pixbuf
+}
+
 // RenderIconPixbuf renders an icon using gtk_render_icon_pixbuf(). In most
 // cases, gtk_widget_render_icon_pixbuf() is better, since it automatically
 // provides most of the arguments from the current widget settings. This
@@ -220,7 +253,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context StyleContexter, size int) *gdkp
 // returned instead.
 //
 // Deprecated: Use IconTheme instead.
-func (iconSet *IconSet) RenderIconSurface(context StyleContexter, size int, scale int, forWindow gdk.Windowwer) *cairo.Surface {
+func (iconSet *IconSet) RenderIconSurface(context StyleContexter, size int, scale int, forWindow gdk.Windower) *cairo.Surface {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.GtkIconSize      // out
@@ -258,7 +291,6 @@ func (iconSet *IconSet) unref() {
 	C.gtk_icon_set_unref(_arg0)
 }
 
-//
 type IconSource struct {
 	native C.GtkIconSource
 }
@@ -502,6 +534,25 @@ func (source *IconSource) StateWildcarded() bool {
 	return _ok
 }
 
+// SetDirection sets the text direction this icon source is intended to be used
+// with.
+//
+// Setting the text direction on an icon source makes no difference if the text
+// direction is wildcarded. Therefore, you should usually call
+// gtk_icon_source_set_direction_wildcarded() to un-wildcard it in addition to
+// calling this function.
+//
+// Deprecated: Use IconTheme instead.
+func (source *IconSource) SetDirection(direction TextDirection) {
+	var _arg0 *C.GtkIconSource   // out
+	var _arg1 C.GtkTextDirection // out
+
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
+	_arg1 = C.GtkTextDirection(direction)
+
+	C.gtk_icon_source_set_direction(_arg0, _arg1)
+}
+
 // SetDirectionWildcarded: if the text direction is wildcarded, this source can
 // be used as the base image for an icon in any TextDirection. If the text
 // direction is not wildcarded, then the text direction the icon source applies
@@ -558,7 +609,7 @@ func (source *IconSource) SetIconName(iconName string) {
 // for IconSet.
 //
 // Deprecated: Use IconTheme instead.
-func (source *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (source *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkIconSource // out
 	var _arg1 *C.GdkPixbuf     // out
 
@@ -611,6 +662,24 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 	C.gtk_icon_source_set_size_wildcarded(_arg0, _arg1)
 }
 
+// SetState sets the widget state this icon source is intended to be used with.
+//
+// Setting the widget state on an icon source makes no difference if the state
+// is wildcarded. Therefore, you should usually call
+// gtk_icon_source_set_state_wildcarded() to un-wildcard it in addition to
+// calling this function.
+//
+// Deprecated: Use IconTheme instead.
+func (source *IconSource) SetState(state StateType) {
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.GtkStateType   // out
+
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(source))
+	_arg1 = C.GtkStateType(state)
+
+	C.gtk_icon_source_set_state(_arg0, _arg1)
+}
+
 // SetStateWildcarded: if the widget state is wildcarded, this source can be
 // used as the base image for an icon in any StateType. If the widget state is
 // not wildcarded, then the state the source applies to should be set with
@@ -637,7 +706,6 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
 }
 
-//
 type SelectionData struct {
 	native C.GtkSelectionData
 }
@@ -792,7 +860,7 @@ func (selectionData *SelectionData) Uris() []string {
 
 // SetPixbuf sets the contents of the selection from a Pixbuf The pixbuf is
 // converted to the form determined by @selection_data->target.
-func (selectionData *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuffer) bool {
+func (selectionData *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbufer) bool {
 	var _arg0 *C.GtkSelectionData // out
 	var _arg1 *C.GdkPixbuf        // out
 	var _cret C.gboolean          // in
@@ -1012,7 +1080,7 @@ func (w *WidgetPath) Native() unsafe.Pointer {
 // represented by @path. This function is a shortcut for adding information from
 // @widget to the given @path. This includes setting the name or adding the
 // style classes from @widget.
-func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
+func (path *WidgetPath) AppendForWidget(widget Widgeter) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidget     // out
 	var _cret C.gint           // in
@@ -1176,6 +1244,28 @@ func (path *WidgetPath) IterAddClass(pos int, name string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
+}
+
+// IterAddRegion adds the region @name to the widget at position @pos in the
+// hierarchy defined in @path. See gtk_style_context_add_region().
+//
+// Region names must only contain lowercase letters and “-”, starting always
+// with a lowercase letter.
+//
+// Deprecated: The use of regions is deprecated.
+func (path *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _arg3 C.GtkRegionFlags // out
+
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GtkRegionFlags(flags)
+
+	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
 }
 
 // IterClearClasses removes all classes from the widget at position @pos in the
@@ -1477,6 +1567,27 @@ func (path *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 	_arg2 = C.GType(typ)
 
 	C.gtk_widget_path_iter_set_object_type(_arg0, _arg1, _arg2)
+}
+
+// IterSetState sets the widget name for the widget found at position @pos in
+// the widget hierarchy defined by @path.
+//
+// If you want to update just a single state flag, you need to do this manually,
+// as this function updates all state flags.
+//
+// Setting a flag
+//
+//    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);
+func (path *WidgetPath) IterSetState(pos int, state StateFlags) {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GtkStateFlags  // out
+
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(path))
+	_arg1 = C.gint(pos)
+	_arg2 = C.GtkStateFlags(state)
+
+	C.gtk_widget_path_iter_set_state(_arg0, _arg1, _arg2)
 }
 
 // Length returns the number of Widget #GTypes between the represented widget

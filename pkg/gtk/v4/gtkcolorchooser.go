@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,7 +27,23 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ColorChooserOverrider interface {
+	// AddPalette adds a palette to the color chooser.
 	//
+	// If @orientation is horizontal, the colors are grouped in rows, with
+	// @colors_per_line colors in each row. If @horizontal is false, the colors
+	// are grouped in columns instead.
+	//
+	// The default color palette of [class@Gtk.ColorChooserWidget] has 45
+	// colors, organized in columns of 5 colors (this includes some grays).
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color palette from the color chooser.
+	//
+	// If @colors is nil, removes all previously added palettes.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
@@ -38,6 +53,8 @@ type ColorChooserOverrider interface {
 
 // ColorChooserer describes ColorChooser's methods.
 type ColorChooserer interface {
+	// AddPalette adds a palette to the color chooser.
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
@@ -77,6 +94,38 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooser(obj), nil
+}
+
+// AddPalette adds a palette to the color chooser.
+//
+// If @orientation is horizontal, the colors are grouped in rows, with
+// @colors_per_line colors in each row. If @horizontal is false, the colors are
+// grouped in columns instead.
+//
+// The default color palette of [class@Gtk.ColorChooserWidget] has 45 colors,
+// organized in columns of 5 colors (this includes some grays).
+//
+// The layout of the color chooser widget works best when the palettes have 9-10
+// columns.
+//
+// Calling this function for the first time has the side effect of removing the
+// default color palette from the color chooser.
+//
+// If @colors is nil, removes all previously added palettes.
+func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 C.GtkOrientation   // out
+	var _arg2 C.int              // out
+	var _arg4 *C.GdkRGBA
+	var _arg3 C.int
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(colorsPerLine)
+	_arg3 = C.int(len(colors))
+	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(&colors[0]))
+
+	C.gtk_color_chooser_add_palette(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // RGBA gets the currently-selected color.

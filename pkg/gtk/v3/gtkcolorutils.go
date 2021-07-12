@@ -4,7 +4,6 @@ package gtk
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -37,4 +36,33 @@ func RGBToHSV(r float64, g float64, b float64) (h float64, s float64, v float64)
 	_v = float64(_arg6)
 
 	return _h, _s, _v
+}
+
+// HSVToRGB converts a color from HSV space to RGB.
+//
+// Input values must be in the [0.0, 1.0] range; output values will be in the
+// same range.
+func HSVToRGB(h float64, s float64, v float64) (r float64, g float64, b float64) {
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _arg4 C.gdouble // in
+	var _arg5 C.gdouble // in
+	var _arg6 C.gdouble // in
+
+	_arg1 = C.gdouble(h)
+	_arg2 = C.gdouble(s)
+	_arg3 = C.gdouble(v)
+
+	C.gtk_hsv_to_rgb(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
+
+	var _r float64 // out
+	var _g float64 // out
+	var _b float64 // out
+
+	_r = float64(_arg4)
+	_g = float64(_arg5)
+	_b = float64(_arg6)
+
+	return _r, _g, _b
 }

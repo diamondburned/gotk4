@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -43,6 +42,9 @@ type ConstraintGuider interface {
 	SetName(name string)
 	// SetNatSize sets the natural size of @guide.
 	SetNatSize(width int, height int)
+	// SetStrength sets the strength of the constraint on the natural size of
+	// the given `GtkConstraintGuide`.
+	SetStrength(strength ConstraintStrength)
 }
 
 // ConstraintGuide: `GtkConstraintGuide` is an invisible layout element in a
@@ -227,4 +229,16 @@ func (guide *ConstraintGuide) SetNatSize(width int, height int) {
 	_arg2 = C.int(height)
 
 	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
+}
+
+// SetStrength sets the strength of the constraint on the natural size of the
+// given `GtkConstraintGuide`.
+func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
+	var _arg0 *C.GtkConstraintGuide   // out
+	var _arg1 C.GtkConstraintStrength // out
+
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
+	_arg1 = C.GtkConstraintStrength(strength)
+
+	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
 }

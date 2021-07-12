@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtonner},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtoner},
 	})
 }
 
@@ -35,8 +34,8 @@ type ToggleButtonOverrider interface {
 	Toggled()
 }
 
-// ToggleButtonner describes ToggleButton's methods.
-type ToggleButtonner interface {
+// ToggleButtoner describes ToggleButton's methods.
+type ToggleButtoner interface {
 	// Active queries a ToggleButton and returns its current state.
 	Active() bool
 	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
@@ -122,11 +121,11 @@ type ToggleButton struct {
 }
 
 var (
-	_ ToggleButtonner = (*ToggleButton)(nil)
+	_ ToggleButtoner  = (*ToggleButton)(nil)
 	_ gextras.Nativer = (*ToggleButton)(nil)
 )
 
-func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
+func wrapToggleButton(obj *externglib.Object) ToggleButtoner {
 	return &ToggleButton{
 		Button: Button{
 			Bin: Bin{
@@ -164,7 +163,7 @@ func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
 	}
 }
 
-func marshalToggleButtonner(p uintptr) (interface{}, error) {
+func marshalToggleButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleButton(obj), nil

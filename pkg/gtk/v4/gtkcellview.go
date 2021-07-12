@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -48,7 +47,7 @@ type CellViewer interface {
 	// entire TreeModel.
 	SetFitModel(fitModel bool)
 	// SetModel sets the model for @cell_view.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 }
 
 // CellView: widget displaying a single row of a GtkTreeModel
@@ -335,7 +334,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 // SetModel sets the model for @cell_view. If @cell_view already has a model
 // set, it will remove it before setting the new model. If @model is nil, then
 // it will unset the old model.
-func (cellView *CellView) SetModel(model TreeModeller) {
+func (cellView *CellView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 

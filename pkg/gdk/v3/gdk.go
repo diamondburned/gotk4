@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -24,20 +23,14 @@ func init() {
 	})
 }
 
-//
 type Status int
 
 const (
-	//
-	StatusOk Status = 0
-	//
-	StatusError Status = -1
-	//
+	StatusOk         Status = 0
+	StatusError      Status = -1
 	StatusErrorParam Status = -2
-	//
-	StatusErrorFile Status = -3
-	//
-	StatusErrorMem Status = -4
+	StatusErrorFile  Status = -3
+	StatusErrorMem   Status = -4
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
@@ -55,7 +48,6 @@ type DeviceTooler interface {
 	ToolType() DeviceToolType
 }
 
-//
 type DeviceTool struct {
 	*externglib.Object
 }
@@ -154,6 +146,8 @@ type DragContexter interface {
 	SourceWindow() *Window
 	// SuggestedAction determines the suggested drag action of the context.
 	SuggestedAction() DragAction
+	// ManageDnd requests the drag and drop operation to be managed by @context.
+	ManageDnd(ipcWindow Windower, actions DragAction) bool
 	// SetDevice associates a Device to @context, so all Drag and Drop events
 	// for @context are emitted as if they came from this device.
 	SetDevice(device Devicer)
@@ -162,7 +156,6 @@ type DragContexter interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-//
 type DragContext struct {
 	*externglib.Object
 }
@@ -315,6 +308,41 @@ func (context *DragContext) SuggestedAction() DragAction {
 	_dragAction = DragAction(_cret)
 
 	return _dragAction
+}
+
+// ManageDnd requests the drag and drop operation to be managed by @context.
+// When a drag and drop operation becomes managed, the DragContext will
+// internally handle all input and source-side EventDND events as required by
+// the windowing system.
+//
+// Once the drag and drop operation is managed, the drag context will emit the
+// following signals: - The DragContext::action-changed signal whenever the
+// final action to be performed by the drag and drop operation changes. - The
+// DragContext::drop-performed signal after the user performs the drag and drop
+// gesture (typically by releasing the mouse button). - The
+// DragContext::dnd-finished signal after the drag and drop operation concludes
+// (after all Selection transfers happen). - The DragContext::cancel signal if
+// the drag and drop operation is finished but doesn't happen over an accepting
+// destination, or is cancelled through other means.
+func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
+	var _arg0 *C.GdkDragContext // out
+	var _arg1 *C.GdkWindow      // out
+	var _arg2 C.GdkDragAction   // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((ipcWindow).(gextras.Nativer).Native()))
+	_arg2 = C.GdkDragAction(actions)
+
+	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetDevice associates a Device to @context, so all Drag and Drop events for

@@ -17,19 +17,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshotter},
+		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshoter},
 	})
 }
 
-// Snapshotter describes Snapshot's methods.
-type Snapshotter interface {
+// Snapshoter describes Snapshot's methods.
+type Snapshoter interface {
 	// AppendBorder appends a stroked border rectangle inside the given
 	// @outline.
 	AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
@@ -44,7 +43,6 @@ type Snapshotter interface {
 	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
 	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
-	//
 	AppendLayout(layout pango.Layouter, color *gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.
@@ -75,6 +73,8 @@ type Snapshotter interface {
 	// Pop removes the top element from the stack of render nodes, and appends
 	// it to the node underneath it.
 	Pop()
+	// PushBlend blends together two images with the given blend mode.
+	PushBlend(blendMode gsk.BlendMode)
 	// PushBlur blurs an image.
 	PushBlur(radius float64)
 	// PushClip clips an image to a rectangle.
@@ -105,6 +105,9 @@ type Snapshotter interface {
 	// @context, and appends it to the current node of @snapshot, without
 	// changing the current node.
 	RenderFrame(context StyleContexter, x float64, y float64, width float64, height float64)
+	// RenderInsertionCursor draws a text caret using @snapshot at the specified
+	// index of @layout.
+	RenderInsertionCursor(context StyleContexter, x float64, y float64, layout pango.Layouter, index int, direction pango.Direction)
 	// RenderLayout creates a render node for rendering @layout according to the
 	// style information in @context, and appends it to the current node of
 	// @snapshot, without changing the current node.
@@ -162,11 +165,11 @@ type Snapshot struct {
 }
 
 var (
-	_ Snapshotter     = (*Snapshot)(nil)
+	_ Snapshoter      = (*Snapshot)(nil)
 	_ gextras.Nativer = (*Snapshot)(nil)
 )
 
-func wrapSnapshot(obj *externglib.Object) Snapshotter {
+func wrapSnapshot(obj *externglib.Object) Snapshoter {
 	return &Snapshot{
 		Snapshot: gdk.Snapshot{
 			Object: obj,
@@ -174,7 +177,7 @@ func wrapSnapshot(obj *externglib.Object) Snapshotter {
 	}
 }
 
-func marshalSnapshotter(p uintptr) (interface{}, error) {
+func marshalSnapshoter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSnapshot(obj), nil
@@ -289,7 +292,6 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	C.gtk_snapshot_append_inset_shadow(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-//
 func (snapshot *Snapshot) AppendLayout(layout pango.Layouter, color *gdk.RGBA) {
 	var _arg0 *C.GtkSnapshot // out
 	var _arg1 *C.PangoLayout // out
@@ -481,6 +483,24 @@ func (snapshot *Snapshot) Pop() {
 	C.gtk_snapshot_pop(_arg0)
 }
 
+// PushBlend blends together two images with the given blend mode.
+//
+// Until the first call to [method@Gtk.Snapshot.pop], the bottom image for the
+// blend operation will be recorded. After that call, the top image to be
+// blended will be recorded until the second call to [method@Gtk.Snapshot.pop].
+//
+// Calling this function requires two subsequent calls to
+// [method@Gtk.Snapshot.pop].
+func (snapshot *Snapshot) PushBlend(blendMode gsk.BlendMode) {
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.GskBlendMode // out
+
+	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg1 = C.GskBlendMode(blendMode)
+
+	C.gtk_snapshot_push_blend(_arg0, _arg1)
+}
+
 // PushBlur blurs an image.
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
@@ -659,6 +679,28 @@ func (snapshot *Snapshot) RenderFrame(context StyleContexter, x float64, y float
 	_arg5 = C.double(height)
 
 	C.gtk_snapshot_render_frame(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// RenderInsertionCursor draws a text caret using @snapshot at the specified
+// index of @layout.
+func (snapshot *Snapshot) RenderInsertionCursor(context StyleContexter, x float64, y float64, layout pango.Layouter, index int, direction pango.Direction) {
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 *C.PangoLayout     // out
+	var _arg5 C.int              // out
+	var _arg6 C.PangoDirection   // out
+
+	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = (*C.PangoLayout)(unsafe.Pointer((layout).(gextras.Nativer).Native()))
+	_arg5 = C.int(index)
+	_arg6 = C.PangoDirection(direction)
+
+	C.gtk_snapshot_render_insertion_cursor(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // RenderLayout creates a render node for rendering @layout according to the

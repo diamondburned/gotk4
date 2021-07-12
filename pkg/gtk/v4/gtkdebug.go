@@ -4,7 +4,6 @@ package gtk
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk.h>
 import "C"
 
@@ -22,4 +21,13 @@ func GetDebugFlags() DebugFlags {
 	_debugFlags = DebugFlags(_cret)
 
 	return _debugFlags
+}
+
+// SetDebugFlags sets the GTK debug flags.
+func SetDebugFlags(flags DebugFlags) {
+	var _arg1 C.GtkDebugFlags // out
+
+	_arg1 = C.GtkDebugFlags(flags)
+
+	C.gtk_set_debug_flags(_arg1)
 }

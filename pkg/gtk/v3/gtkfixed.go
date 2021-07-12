@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,16 +20,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixeder},
 	})
 }
 
-// Fixedder describes Fixed's methods.
-type Fixedder interface {
+// Fixeder describes Fixed's methods.
+type Fixeder interface {
 	// Move moves a child of a Fixed container to the given position.
-	Move(widget Widgetter, x int, y int)
+	Move(widget Widgeter, x int, y int)
 	// Put adds a widget to a Fixed container at the given position.
-	Put(widget Widgetter, x int, y int)
+	Put(widget Widgeter, x int, y int)
 }
 
 // Fixed widget is a container which can place child widgets at fixed positions
@@ -75,11 +74,11 @@ type Fixed struct {
 }
 
 var (
-	_ Fixedder        = (*Fixed)(nil)
+	_ Fixeder         = (*Fixed)(nil)
 	_ gextras.Nativer = (*Fixed)(nil)
 )
 
-func wrapFixed(obj *externglib.Object) Fixedder {
+func wrapFixed(obj *externglib.Object) Fixeder {
 	return &Fixed{
 		Container: Container{
 			Widget: Widget{
@@ -97,7 +96,7 @@ func wrapFixed(obj *externglib.Object) Fixedder {
 	}
 }
 
-func marshalFixedder(p uintptr) (interface{}, error) {
+func marshalFixeder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFixed(obj), nil
@@ -117,7 +116,7 @@ func NewFixed() *Fixed {
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
+func (fixed *Fixed) Move(widget Widgeter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -132,7 +131,7 @@ func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
+func (fixed *Fixed) Put(widget Widgeter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -146,7 +145,6 @@ func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
 
-//
 type FixedChild struct {
 	native C.GtkFixedChild
 }

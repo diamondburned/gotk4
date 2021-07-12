@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -42,6 +41,55 @@ const (
 	ChecksumTypeSHA384
 )
 
+// ComputeChecksumForData computes the checksum for a binary @data of @length.
+// This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()
+// and g_checksum_free().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
+	var _arg1 C.GChecksumType // out
+	var _arg2 *C.guchar
+	var _arg3 C.gsize
+	var _cret *C.gchar // in
+
+	_arg1 = C.GChecksumType(checksumType)
+	_arg3 = C.gsize(len(data))
+	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
+
+	_cret = C.g_compute_checksum_for_data(_arg1, _arg2, _arg3)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// ComputeChecksumForString computes the checksum of a string.
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
+	var _arg1 C.GChecksumType // out
+	var _arg2 *C.gchar        // out
+	var _arg3 C.gssize        // out
+	var _cret *C.gchar        // in
+
+	_arg1 = C.GChecksumType(checksumType)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gssize(length)
+
+	_cret = C.g_compute_checksum_for_string(_arg1, _arg2, _arg3)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
 // Checksum: opaque structure representing a checksumming operation. To create a
 // new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
@@ -52,6 +100,25 @@ type Checksum struct {
 func marshalChecksum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*Checksum)(unsafe.Pointer(b)), nil
+}
+
+// NewChecksum constructs a struct Checksum.
+func NewChecksum(checksumType ChecksumType) *Checksum {
+	var _arg1 C.GChecksumType // out
+	var _cret *C.GChecksum    // in
+
+	_arg1 = C.GChecksumType(checksumType)
+
+	_cret = C.g_checksum_new(_arg1)
+
+	var _checksum *Checksum // out
+
+	_checksum = (*Checksum)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_checksum, func(v *Checksum) {
+		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
+	})
+
+	return _checksum
 }
 
 // Native returns the underlying C source pointer.
@@ -132,4 +199,21 @@ func (checksum *Checksum) Update(data []byte) {
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
 	C.g_checksum_update(_arg0, _arg1, _arg2)
+}
+
+// ChecksumTypeGetLength gets the length in bytes of digests of type
+// @checksum_type
+func ChecksumTypeGetLength(checksumType ChecksumType) int {
+	var _arg1 C.GChecksumType // out
+	var _cret C.gssize        // in
+
+	_arg1 = C.GChecksumType(checksumType)
+
+	_cret = C.g_checksum_type_get_length(_arg1)
+
+	var _gssize int // out
+
+	_gssize = int(_cret)
+
+	return _gssize
 }

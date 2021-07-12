@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -162,6 +161,33 @@ func RenderExpander(context StyleContexter, cr *cairo.Context, x float64, y floa
 	C.gtk_render_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
+// RenderExtension renders a extension (as in a Notebook tab) in the rectangle
+// defined by @x, @y, @width, @height. The side where the extension connects to
+// is defined by @gap_side.
+//
+// Typical extension rendering:
+//
+// ! (extensions.png)
+func RenderExtension(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType) {
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.gdouble          // out
+	var _arg4 C.gdouble          // out
+	var _arg5 C.gdouble          // out
+	var _arg6 C.gdouble          // out
+	var _arg7 C.GtkPositionType  // out
+
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+	_arg5 = C.gdouble(width)
+	_arg6 = C.gdouble(height)
+	_arg7 = C.GtkPositionType(gapSide)
+
+	C.gtk_render_extension(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
 // RenderFocus renders a focus indicator on the rectangle determined by @x, @y,
 // @width, @height.
 //
@@ -211,6 +237,41 @@ func RenderFrame(context StyleContexter, cr *cairo.Context, x float64, y float64
 	C.gtk_render_frame(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
+// RenderFrameGap renders a frame around the rectangle defined by (@x, @y,
+// @width, @height), leaving a gap on one side. @xy0_gap and @xy1_gap will mean
+// X coordinates for GTK_POS_TOP and GTK_POS_BOTTOM gap sides, and Y coordinates
+// for GTK_POS_LEFT and GTK_POS_RIGHT.
+//
+// Typical rendering of a frame with a gap:
+//
+// ! (frame-gap.png)
+//
+// Deprecated: Use gtk_render_frame() instead. Themes can create gaps by
+// omitting borders via CSS.
+func RenderFrameGap(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64) {
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.gdouble          // out
+	var _arg4 C.gdouble          // out
+	var _arg5 C.gdouble          // out
+	var _arg6 C.gdouble          // out
+	var _arg7 C.GtkPositionType  // out
+	var _arg8 C.gdouble          // out
+	var _arg9 C.gdouble          // out
+
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+	_arg5 = C.gdouble(width)
+	_arg6 = C.gdouble(height)
+	_arg7 = C.GtkPositionType(gapSide)
+	_arg8 = C.gdouble(xy0Gap)
+	_arg9 = C.gdouble(xy1Gap)
+
+	C.gtk_render_frame_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+}
+
 // RenderHandle renders a handle (as in HandleBox, Paned and Window’s resize
 // grip), in the rectangle determined by @x, @y, @width, @height.
 //
@@ -244,7 +305,7 @@ func RenderHandle(context StyleContexter, cr *cairo.Context, x float64, y float6
 //
 // You probably want to use gtk_render_icon_surface() instead, if you already
 // have a Cairo surface.
-func RenderIcon(context StyleContexter, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, x float64, y float64) {
+func RenderIcon(context StyleContexter, cr *cairo.Context, pixbuf gdkpixbuf.Pixbufer, x float64, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkPixbuf       // out
@@ -360,4 +421,31 @@ func RenderOption(context StyleContexter, cr *cairo.Context, x float64, y float6
 	_arg6 = C.gdouble(height)
 
 	C.gtk_render_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
+// RenderSlider renders a slider (as in Scale) in the rectangle defined by @x,
+// @y, @width, @height. @orientation defines whether the slider is vertical or
+// horizontal.
+//
+// Typical slider rendering:
+//
+// ! (sliders.png)
+func RenderSlider(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation) {
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.gdouble          // out
+	var _arg4 C.gdouble          // out
+	var _arg5 C.gdouble          // out
+	var _arg6 C.gdouble          // out
+	var _arg7 C.GtkOrientation   // out
+
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+	_arg5 = C.gdouble(width)
+	_arg6 = C.gdouble(height)
+	_arg7 = C.GtkOrientation(orientation)
+
+	C.gtk_render_slider(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }

@@ -9,7 +9,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -188,6 +187,24 @@ func (node *Node) NChildren() uint {
 	_arg0 = (*C.GNode)(unsafe.Pointer(node))
 
 	_cret = C.g_node_n_children(_arg0)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// NNodes gets the number of nodes in a tree.
+func (root *Node) NNodes(flags TraverseFlags) uint {
+	var _arg0 *C.GNode         // out
+	var _arg1 C.GTraverseFlags // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GNode)(unsafe.Pointer(root))
+	_arg1 = C.GTraverseFlags(flags)
+
+	_cret = C.g_node_n_nodes(_arg0, _arg1)
 
 	var _guint uint // out
 

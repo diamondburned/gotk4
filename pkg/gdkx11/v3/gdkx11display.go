@@ -12,14 +12,13 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayyer},
+		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayer},
 	})
 }
 
@@ -35,7 +34,7 @@ func init() {
 //
 // This function should only be needed in unusual circumstances, e.g. when
 // filtering XInput extension events on the root window.
-func X11RegisterStandardEventType(display X11Displayyer, eventBase int, nEvents int) {
+func X11RegisterStandardEventType(display X11Displayer, eventBase int, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
@@ -62,8 +61,8 @@ func X11SetSmClientID(smClientId string) {
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
 
-// X11Displayyer describes X11Display's methods.
-type X11Displayyer interface {
+// X11Displayer describes X11Display's methods.
+type X11Displayer interface {
 	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push().
 	ErrorTrapPop() int
@@ -91,17 +90,16 @@ type X11Displayyer interface {
 	Ungrab()
 }
 
-//
 type X11Display struct {
 	gdk.Display
 }
 
 var (
-	_ X11Displayyer   = (*X11Display)(nil)
+	_ X11Displayer    = (*X11Display)(nil)
 	_ gextras.Nativer = (*X11Display)(nil)
 )
 
-func wrapX11Display(obj *externglib.Object) X11Displayyer {
+func wrapX11Display(obj *externglib.Object) X11Displayer {
 	return &X11Display{
 		Display: gdk.Display{
 			Object: obj,
@@ -109,7 +107,7 @@ func wrapX11Display(obj *externglib.Object) X11Displayyer {
 	}
 }
 
-func marshalX11Displayyer(p uintptr) (interface{}, error) {
+func marshalX11Displayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Display(obj), nil

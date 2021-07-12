@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabeller},
+		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabeler},
 	})
 }
 
-// ShortcutLabeller describes ShortcutLabel's methods.
-type ShortcutLabeller interface {
+// ShortcutLabeler describes ShortcutLabel's methods.
+type ShortcutLabeler interface {
 	// Accelerator retrieves the current accelerator of @self.
 	Accelerator() string
 	// DisabledText retrieves the text that is displayed when no accelerator is
@@ -46,11 +45,11 @@ type ShortcutLabel struct {
 }
 
 var (
-	_ ShortcutLabeller = (*ShortcutLabel)(nil)
-	_ gextras.Nativer  = (*ShortcutLabel)(nil)
+	_ ShortcutLabeler = (*ShortcutLabel)(nil)
+	_ gextras.Nativer = (*ShortcutLabel)(nil)
 )
 
-func wrapShortcutLabel(obj *externglib.Object) ShortcutLabeller {
+func wrapShortcutLabel(obj *externglib.Object) ShortcutLabeler {
 	return &ShortcutLabel{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -69,7 +68,7 @@ func wrapShortcutLabel(obj *externglib.Object) ShortcutLabeller {
 	}
 }
 
-func marshalShortcutLabeller(p uintptr) (interface{}, error) {
+func marshalShortcutLabeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutLabel(obj), nil

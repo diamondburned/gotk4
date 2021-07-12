@@ -11,21 +11,20 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxxer},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxer},
 	})
 }
 
-// Boxxer describes Box's methods.
-type Boxxer interface {
+// Boxer describes Box's methods.
+type Boxer interface {
 	// Append adds @child as the last child to @box.
-	Append(child Widgetter)
+	Append(child Widgeter)
 	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the box is homogeneous (all children are the
@@ -35,14 +34,16 @@ type Boxxer interface {
 	Spacing() int
 	// InsertChildAfter inserts @child in the position after @sibling in the
 	// list of @box children.
-	InsertChildAfter(child Widgetter, sibling Widgetter)
+	InsertChildAfter(child Widgeter, sibling Widgeter)
 	// Prepend adds @child as the first child to @box.
-	Prepend(child Widgetter)
+	Prepend(child Widgeter)
 	// Remove removes a child widget from @box.
-	Remove(child Widgetter)
+	Remove(child Widgeter)
 	// ReorderChildAfter moves @child to the position after @sibling in the list
 	// of @box children.
-	ReorderChildAfter(child Widgetter, sibling Widgetter)
+	ReorderChildAfter(child Widgeter, sibling Widgeter)
+	// SetBaselinePosition sets the baseline position of a box.
+	SetBaselinePosition(position BaselinePosition)
 	// SetHomogeneous sets whether or not all children of @box are given equal
 	// space in the box.
 	SetHomogeneous(homogeneous bool)
@@ -91,11 +92,11 @@ type Box struct {
 }
 
 var (
-	_ Boxxer          = (*Box)(nil)
+	_ Boxer           = (*Box)(nil)
 	_ gextras.Nativer = (*Box)(nil)
 )
 
-func wrapBox(obj *externglib.Object) Boxxer {
+func wrapBox(obj *externglib.Object) Boxer {
 	return &Box{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -117,10 +118,28 @@ func wrapBox(obj *externglib.Object) Boxxer {
 	}
 }
 
-func marshalBoxxer(p uintptr) (interface{}, error) {
+func marshalBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBox(obj), nil
+}
+
+// NewBox creates a new `GtkBox`.
+func NewBox(orientation Orientation, spacing int) *Box {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.int            // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(spacing)
+
+	_cret = C.gtk_box_new(_arg1, _arg2)
+
+	var _box *Box // out
+
+	_box = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Box)
+
+	return _box
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject
@@ -130,7 +149,7 @@ func (v *Box) Native() uintptr {
 }
 
 // Append adds @child as the last child to @box.
-func (box *Box) Append(child Widgetter) {
+func (box *Box) Append(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -195,7 +214,7 @@ func (box *Box) Spacing() int {
 // @box children.
 //
 // If @sibling is nil, insert @child at the first position.
-func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) InsertChildAfter(child Widgeter, sibling Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -208,7 +227,7 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 }
 
 // Prepend adds @child as the first child to @box.
-func (box *Box) Prepend(child Widgetter) {
+func (box *Box) Prepend(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -222,7 +241,7 @@ func (box *Box) Prepend(child Widgetter) {
 //
 // The child must have been added before with [method@Gtk.Box.append],
 // [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
-func (box *Box) Remove(child Widgetter) {
+func (box *Box) Remove(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -236,7 +255,7 @@ func (box *Box) Remove(child Widgetter) {
 // @box children.
 //
 // If @sibling is nil, move @child to the first position.
-func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) ReorderChildAfter(child Widgeter, sibling Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -246,6 +265,22 @@ func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
 
 	C.gtk_box_reorder_child_after(_arg0, _arg1, _arg2)
+}
+
+// SetBaselinePosition sets the baseline position of a box.
+//
+// This affects only horizontal boxes with at least one baseline aligned child.
+// If there is more vertical space available than requested, and the baseline is
+// not allocated by the parent then @position is used to allocate the baseline
+// with respect to the extra space available.
+func (box *Box) SetBaselinePosition(position BaselinePosition) {
+	var _arg0 *C.GtkBox             // out
+	var _arg1 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkBox)(unsafe.Pointer(box.Native()))
+	_arg1 = C.GtkBaselinePosition(position)
+
+	C.gtk_box_set_baseline_position(_arg0, _arg1)
 }
 
 // SetHomogeneous sets whether or not all children of @box are given equal space

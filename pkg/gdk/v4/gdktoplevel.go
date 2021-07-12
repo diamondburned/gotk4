@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -21,7 +20,7 @@ func init() {
 		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
 		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
-		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveller},
+		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveler},
 	})
 }
 
@@ -115,10 +114,12 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 	return ToplevelState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Topleveller describes Toplevel's methods.
-type Topleveller interface {
+// Topleveler describes Toplevel's methods.
+type Topleveler interface {
 	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
+	// BeginResize begins an interactive resize operation.
+	BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32)
 	// Focus sets keyboard focus to @surface.
 	Focus(timestamp uint32)
 	// State gets the bitwise or of the currently active surface state flags,
@@ -165,11 +166,11 @@ type Toplevel struct {
 }
 
 var (
-	_ Topleveller     = (*Toplevel)(nil)
+	_ Topleveler      = (*Toplevel)(nil)
 	_ gextras.Nativer = (*Toplevel)(nil)
 )
 
-func wrapToplevel(obj *externglib.Object) Topleveller {
+func wrapToplevel(obj *externglib.Object) Topleveler {
 	return &Toplevel{
 		Surface: Surface{
 			Object: obj,
@@ -177,7 +178,7 @@ func wrapToplevel(obj *externglib.Object) Topleveller {
 	}
 }
 
-func marshalTopleveller(p uintptr) (interface{}, error) {
+func marshalTopleveler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToplevel(obj), nil
@@ -202,6 +203,29 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x float64, y flo
 	_arg5 = C.guint32(timestamp)
 
 	C.gdk_toplevel_begin_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// BeginResize begins an interactive resize operation.
+//
+// You might use this function to implement a “window resize grip.”
+func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32) {
+	var _arg0 *C.GdkToplevel   // out
+	var _arg1 C.GdkSurfaceEdge // out
+	var _arg2 *C.GdkDevice     // out
+	var _arg3 C.int            // out
+	var _arg4 C.double         // out
+	var _arg5 C.double         // out
+	var _arg6 C.guint32        // out
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg1 = C.GdkSurfaceEdge(edge)
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg3 = C.int(button)
+	_arg4 = C.double(x)
+	_arg5 = C.double(y)
+	_arg6 = C.guint32(timestamp)
+
+	C.gdk_toplevel_begin_resize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // Focus sets keyboard focus to @surface.

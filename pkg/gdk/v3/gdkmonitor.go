@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -19,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorrer},
+		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorer},
 	})
 }
 
@@ -46,8 +45,8 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Monitorrer describes Monitor's methods.
-type Monitorrer interface {
+// Monitorer describes Monitor's methods.
+type Monitorer interface {
 	// Display gets the display that this monitor belongs to.
 	Display() *Display
 	// Geometry retrieves the size and position of an individual monitor within
@@ -91,17 +90,17 @@ type Monitor struct {
 }
 
 var (
-	_ Monitorrer      = (*Monitor)(nil)
+	_ Monitorer       = (*Monitor)(nil)
 	_ gextras.Nativer = (*Monitor)(nil)
 )
 
-func wrapMonitor(obj *externglib.Object) Monitorrer {
+func wrapMonitor(obj *externglib.Object) Monitorer {
 	return &Monitor{
 		Object: obj,
 	}
 }
 
-func marshalMonitorrer(p uintptr) (interface{}, error) {
+func marshalMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMonitor(obj), nil

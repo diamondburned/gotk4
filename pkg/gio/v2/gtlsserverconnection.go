@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -65,3 +65,29 @@ func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
 }
 
 func (*TLSServerConnection) privateTLSServerConnection() {}
+
+// NewTLSServerConnection creates a new ServerConnection wrapping
+// @base_io_stream (which must have pollable input and output streams).
+//
+// See the documentation for Connection:base-io-stream for restrictions on when
+// application code can run operations on the @base_io_stream after this
+// function has returned.
+func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
+	var _arg1 *C.GIOStream       // out
+	var _arg2 *C.GTlsCertificate // out
+	var _cret *C.GIOStream       // in
+	var _cerr *C.GError          // in
+
+	_arg1 = (*C.GIOStream)(unsafe.Pointer((baseIoStream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
+
+	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
+
+	var _tlsServerConnection *TLSServerConnection // out
+	var _goerr error                              // out
+
+	_tlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSServerConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsServerConnection, _goerr
+}

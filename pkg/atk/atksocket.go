@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketter},
+		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketer},
 	})
 }
 
@@ -38,8 +37,8 @@ type SocketOverrider interface {
 	Embed(plugId string)
 }
 
-// Socketter describes Socket's methods.
-type Socketter interface {
+// Socketer describes Socket's methods.
+type Socketer interface {
 	// Embed embeds the children of an Plug as the children of the Socket.
 	Embed(plugId string)
 	// IsOccupied determines whether or not the socket has an embedded plug.
@@ -73,11 +72,11 @@ type Socket struct {
 }
 
 var (
-	_ Socketter       = (*Socket)(nil)
+	_ Socketer        = (*Socket)(nil)
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketer {
 	return &Socket{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -88,7 +87,7 @@ func wrapSocket(obj *externglib.Object) Socketter {
 	}
 }
 
-func marshalSocketter(p uintptr) (interface{}, error) {
+func marshalSocketer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil

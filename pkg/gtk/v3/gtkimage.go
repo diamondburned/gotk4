@@ -16,7 +16,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -90,13 +89,13 @@ type Imager interface {
 	// SetFromFile: see gtk_image_new_from_file() for details.
 	SetFromFile(filename string)
 	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
-	SetFromGIcon(icon gio.Iconner, size int)
+	SetFromGIcon(icon gio.Iconer, size int)
 	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	SetFromIconName(iconName string, size int)
 	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 	SetFromIconSet(iconSet *IconSet, size int)
 	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer)
 	// SetFromResource: see gtk_image_new_from_resource() for details.
 	SetFromResource(resourcePath string)
 	// SetFromStock: see gtk_image_new_from_stock() for details.
@@ -267,7 +266,7 @@ func NewImageFromFile(filename string) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
+func NewImageFromGIcon(icon gio.Iconer, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -342,7 +341,7 @@ func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 // Note that this function just creates an Image from the pixbuf. The Image
 // created will not react to state changes. Should you want that, you should use
 // gtk_image_new_from_icon_name().
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Image {
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
@@ -631,7 +630,7 @@ func (image *Image) SetFromFile(filename string) {
 }
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
-func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
+func (image *Image) SetFromGIcon(icon gio.Iconer, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -673,7 +672,7 @@ func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 }
 
 // SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
-func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 

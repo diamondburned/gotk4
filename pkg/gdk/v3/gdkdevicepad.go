@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -19,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePadder},
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePader},
 	})
 }
 
@@ -39,10 +38,15 @@ func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DevicePadder describes DevicePad's methods.
-type DevicePadder interface {
+// DevicePader describes DevicePad's methods.
+type DevicePader interface {
+	// FeatureGroup returns the group the given @feature and @idx belong to, or
+	// -1 if feature/index do not exist in @pad.
+	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that @group may have.
 	GroupNModes(groupIdx int) int
+	// NFeatures returns the number of features a tablet pad has.
+	NFeatures(feature DevicePadFeature) int
 	// NGroups returns the number of groups this pad device has.
 	NGroups() int
 }
@@ -68,11 +72,11 @@ type DevicePad struct {
 }
 
 var (
-	_ DevicePadder    = (*DevicePad)(nil)
+	_ DevicePader     = (*DevicePad)(nil)
 	_ gextras.Nativer = (*DevicePad)(nil)
 )
 
-func wrapDevicePad(obj *externglib.Object) DevicePadder {
+func wrapDevicePad(obj *externglib.Object) DevicePader {
 	return &DevicePad{
 		Device: Device{
 			Object: obj,
@@ -80,10 +84,31 @@ func wrapDevicePad(obj *externglib.Object) DevicePadder {
 	}
 }
 
-func marshalDevicePadder(p uintptr) (interface{}, error) {
+func marshalDevicePader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDevicePad(obj), nil
+}
+
+// FeatureGroup returns the group the given @feature and @idx belong to, or -1
+// if feature/index do not exist in @pad.
+func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
+	var _arg2 C.gint                // out
+	var _cret C.gint                // in
+
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg1 = C.GdkDevicePadFeature(feature)
+	_arg2 = C.gint(featureIdx)
+
+	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // GroupNModes returns the number of modes that @group may have.
@@ -96,6 +121,24 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	_arg1 = C.gint(groupIdx)
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NFeatures returns the number of features a tablet pad has.
+func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
+	var _cret C.gint                // in
+
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(pad.Native()))
+	_arg1 = C.GdkDevicePadFeature(feature)
+
+	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
 	var _gint int // out
 

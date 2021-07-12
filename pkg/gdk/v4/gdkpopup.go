@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopupper},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopuper},
 	})
 }
 
-// Popupper describes Popup's methods.
-type Popupper interface {
+// Popuper describes Popup's methods.
+type Popuper interface {
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
 	// Parent returns the parent surface of a popup.
@@ -52,11 +51,11 @@ type Popup struct {
 }
 
 var (
-	_ Popupper        = (*Popup)(nil)
+	_ Popuper         = (*Popup)(nil)
 	_ gextras.Nativer = (*Popup)(nil)
 )
 
-func wrapPopup(obj *externglib.Object) Popupper {
+func wrapPopup(obj *externglib.Object) Popuper {
 	return &Popup{
 		Surface: Surface{
 			Object: obj,
@@ -64,7 +63,7 @@ func wrapPopup(obj *externglib.Object) Popupper {
 	}
 }
 
-func marshalPopupper(p uintptr) (interface{}, error) {
+func marshalPopuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPopup(obj), nil

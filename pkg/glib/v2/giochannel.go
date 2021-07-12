@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -124,6 +123,41 @@ const (
 	// g_io_channel_set_flags()
 	IOFlagsSetMask IOFlags = 0b11
 )
+
+// IOCreateWatch creates a #GSource that's dispatched when @condition is met for
+// the given @channel. For example, if condition is IO_IN, the source will be
+// dispatched when there's data available for reading.
+//
+// The callback function invoked by the #GSource should be added with
+// g_source_set_callback(), but it has type OFunc (not Func).
+//
+// g_io_add_watch() is a simpler interface to this same functionality, for the
+// case where you want to add the source to the default main loop context at the
+// default priority.
+//
+// On Windows, polling a #GSource created to watch a channel for a socket puts
+// the socket in non-blocking mode. This is a side-effect of the implementation
+// and unavoidable.
+func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
+	var _arg1 *C.GIOChannel  // out
+	var _arg2 C.GIOCondition // out
+	var _cret *C.GSource     // in
+
+	_arg1 = (*C.GIOChannel)(unsafe.Pointer(channel))
+	_arg2 = C.GIOCondition(condition)
+
+	_cret = C.g_io_create_watch(_arg1, _arg2)
+
+	var _source *Source // out
+
+	_source = (*Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
+
+	return _source
+}
 
 // IOChannel: data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
@@ -491,6 +525,52 @@ func (channel *IOChannel) ref() *IOChannel {
 	return _ioChannel
 }
 
+// Seek sets the current position in the OChannel, similar to the standard
+// library function fseek().
+//
+// Deprecated: Use g_io_channel_seek_position() instead.
+func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.gint64      // out
+	var _arg2 C.GSeekType   // out
+	var _cret C.GIOError    // in
+
+	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
+	_arg1 = C.gint64(offset)
+	_arg2 = C.GSeekType(typ)
+
+	_cret = C.g_io_channel_seek(_arg0, _arg1, _arg2)
+
+	var _ioError IOError // out
+
+	_ioError = IOError(_cret)
+
+	return _ioError
+}
+
+// SeekPosition: replacement for g_io_channel_seek() with the new API.
+func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, error) {
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.gint64      // out
+	var _arg2 C.GSeekType   // out
+	var _cret C.GIOStatus   // in
+	var _cerr *C.GError     // in
+
+	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
+	_arg1 = C.gint64(offset)
+	_arg2 = C.GSeekType(typ)
+
+	_cret = C.g_io_channel_seek_position(_arg0, _arg1, _arg2, &_cerr)
+
+	var _ioStatus IOStatus // out
+	var _goerr error       // out
+
+	_ioStatus = IOStatus(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ioStatus, _goerr
+}
+
 // SetBufferSize sets the buffer size.
 func (channel *IOChannel) SetBufferSize(size uint) {
 	var _arg0 *C.GIOChannel // out
@@ -591,6 +671,28 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_io_channel_set_encoding(_arg0, _arg1, &_cerr)
+
+	var _ioStatus IOStatus // out
+	var _goerr error       // out
+
+	_ioStatus = IOStatus(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _ioStatus, _goerr
+}
+
+// SetFlags sets the (writeable) flags in @channel to (@flags &
+// G_IO_FLAG_SET_MASK).
+func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.GIOFlags    // out
+	var _cret C.GIOStatus   // in
+	var _cerr *C.GError     // in
+
+	_arg0 = (*C.GIOChannel)(unsafe.Pointer(channel))
+	_arg1 = C.GIOFlags(flags)
+
+	_cret = C.g_io_channel_set_flags(_arg0, _arg1, &_cerr)
 
 	var _ioStatus IOStatus // out
 	var _goerr error       // out
@@ -745,6 +847,22 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStatus, _goerr
+}
+
+// IOChannelErrorFromErrno converts an `errno` error number to a OChannelError.
+func IOChannelErrorFromErrno(en int) IOChannelError {
+	var _arg1 C.gint            // out
+	var _cret C.GIOChannelError // in
+
+	_arg1 = C.gint(en)
+
+	_cret = C.g_io_channel_error_from_errno(_arg1)
+
+	var _ioChannelError IOChannelError // out
+
+	_ioChannelError = IOChannelError(_cret)
+
+	return _ioChannelError
 }
 
 // IOFuncs: table of functions used to handle different types of OChannel in a

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -73,6 +72,23 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 // Native returns the underlying C source pointer.
 func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
+}
+
+// Add adds a new attribute with @name to the @list, setting its @type and
+// @flags.
+func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
+	var _arg0 *C.GFileAttributeInfoList // out
+	var _arg1 *C.char                   // out
+	var _arg2 C.GFileAttributeType      // out
+	var _arg3 C.GFileAttributeInfoFlags // out
+
+	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = C.GFileAttributeInfoFlags(flags)
+
+	C.g_file_attribute_info_list_add(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Dup makes a duplicate of a file attribute info list.

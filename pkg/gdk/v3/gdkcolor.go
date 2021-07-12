@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -135,4 +134,34 @@ func (color *Color) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// ColorParse parses a textual specification of a color and fill in the @red,
+// @green, and @blue fields of a Color.
+//
+// The string can either one of a large set of standard names (taken from the
+// X11 `rgb.txt` file), or it can be a hexadecimal value in the form “\#rgb”
+// “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
+// digits of the red, green, and blue components of the color, respectively.
+// (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
+// “\#ffffffffffff”).
+//
+// Deprecated: Use RGBA.
+func ColorParse(spec string) (Color, bool) {
+	var _arg1 *C.gchar // out
+	var _color Color
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_color_parse(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _color, _ok
 }

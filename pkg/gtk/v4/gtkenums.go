@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -1006,6 +1005,23 @@ const (
 
 func marshalOrdering(p uintptr) (interface{}, error) {
 	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// OrderingFromCmpfunc converts the result of a `GCompareFunc` like strcmp() to
+// a `GtkOrdering` value.
+func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
+	var _arg1 C.int         // out
+	var _cret C.GtkOrdering // in
+
+	_arg1 = C.int(cmpfuncResult)
+
+	_cret = C.gtk_ordering_from_cmpfunc(_arg1)
+
+	var _ordering Ordering // out
+
+	_ordering = Ordering(_cret)
+
+	return _ordering
 }
 
 // Orientation represents the orientation of widgets and other objects.

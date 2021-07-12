@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -65,7 +64,6 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type RecentSortFunc func(a *RecentInfo, b *RecentInfo, userData cgo.Handle) (gint int)
 
 //export gotk4_RecentSortFunc
@@ -112,7 +110,6 @@ type RecentChooserOverrider interface {
 	AddFilter(filter RecentFilterer)
 	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
-	//
 	ItemActivated()
 	// RemoveFilter removes @filter from the list of RecentFilter objects held
 	// by @chooser.
@@ -122,7 +119,6 @@ type RecentChooserOverrider interface {
 	SelectAll()
 	// SelectURI selects @uri inside @chooser.
 	SelectURI(uri string) error
-	//
 	SelectionChanged()
 	// SetCurrentURI sets @uri as the current URI for @chooser.
 	SetCurrentURI(uri string) error
@@ -200,6 +196,9 @@ type RecentChooserer interface {
 	// SetShowTips sets whether to show a tooltips containing the full path of
 	// each recently used resource in a RecentChooser widget.
 	SetShowTips(showTips bool)
+	// SetSortType changes the sorting order of the recently used resources list
+	// displayed by @chooser.
+	SetSortType(sortType RecentSortType)
 	// UnselectAll unselects all the items inside @chooser.
 	UnselectAll()
 	// UnselectURI unselects @uri inside @chooser.
@@ -613,6 +612,18 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
+}
+
+// SetSortType changes the sorting order of the recently used resources list
+// displayed by @chooser.
+func (chooser *RecentChooser) SetSortType(sortType RecentSortType) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortType // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = C.GtkRecentSortType(sortType)
+
+	C.gtk_recent_chooser_set_sort_type(_arg0, _arg1)
 }
 
 // UnselectAll unselects all the items inside @chooser.

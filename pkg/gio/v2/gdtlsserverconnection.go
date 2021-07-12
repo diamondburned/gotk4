@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -65,3 +65,24 @@ func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 }
 
 func (*DTLSServerConnection) privateDTLSServerConnection() {}
+
+// NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
+func NewDTLSServerConnection(baseSocket DatagramBaseder, certificate TLSCertificater) (*DTLSServerConnection, error) {
+	var _arg1 *C.GDatagramBased  // out
+	var _arg2 *C.GTlsCertificate // out
+	var _cret *C.GDatagramBased  // in
+	var _cerr *C.GError          // in
+
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer((baseSocket).(gextras.Nativer).Native()))
+	_arg2 = (*C.GTlsCertificate)(unsafe.Pointer((certificate).(gextras.Nativer).Native()))
+
+	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
+
+	var _dtlsServerConnection *DTLSServerConnection // out
+	var _goerr error                                // out
+
+	_dtlsServerConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DTLSServerConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dtlsServerConnection, _goerr
+}

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidgetter},
+		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidgeter},
 	})
 }
 
-// RecentChooserWidgetter describes RecentChooserWidget's methods.
-type RecentChooserWidgetter interface {
+// RecentChooserWidgeter describes RecentChooserWidget's methods.
+type RecentChooserWidgeter interface {
 	privateRecentChooserWidget()
 }
 
@@ -46,11 +45,11 @@ type RecentChooserWidget struct {
 }
 
 var (
-	_ RecentChooserWidgetter = (*RecentChooserWidget)(nil)
-	_ gextras.Nativer        = (*RecentChooserWidget)(nil)
+	_ RecentChooserWidgeter = (*RecentChooserWidget)(nil)
+	_ gextras.Nativer       = (*RecentChooserWidget)(nil)
 )
 
-func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidgetter {
+func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidgeter {
 	return &RecentChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -76,7 +75,7 @@ func wrapRecentChooserWidget(obj *externglib.Object) RecentChooserWidgetter {
 	}
 }
 
-func marshalRecentChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalRecentChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRecentChooserWidget(obj), nil

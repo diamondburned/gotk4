@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -20,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDragger},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrager},
 	})
 }
 
@@ -41,8 +40,29 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Dragger describes Drag's methods.
-type Dragger interface {
+// DragActionIsUnique checks if @action represents a single action or includes
+// multiple actions.
+//
+// When @action is 0 - ie no action was given, true is returned.
+func DragActionIsUnique(action DragAction) bool {
+	var _arg1 C.GdkDragAction // out
+	var _cret C.gboolean      // in
+
+	_arg1 = C.GdkDragAction(action)
+
+	_cret = C.gdk_drag_action_is_unique(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Drager describes Drag's methods.
+type Drager interface {
 	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
 	// Actions determines the bitmask of possible actions proposed by the
@@ -84,17 +104,17 @@ type Drag struct {
 }
 
 var (
-	_ Dragger         = (*Drag)(nil)
+	_ Drager          = (*Drag)(nil)
 	_ gextras.Nativer = (*Drag)(nil)
 )
 
-func wrapDrag(obj *externglib.Object) Dragger {
+func wrapDrag(obj *externglib.Object) Drager {
 	return &Drag{
 		Object: obj,
 	}
 }
 
-func marshalDragger(p uintptr) (interface{}, error) {
+func marshalDrager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrag(obj), nil
@@ -274,4 +294,41 @@ func (drag *Drag) SetHotspot(hotX int, hotY int) {
 	_arg2 = C.int(hotY)
 
 	C.gdk_drag_set_hotspot(_arg0, _arg1, _arg2)
+}
+
+// DragBegin starts a drag and creates a new drag context for it.
+//
+// This function is called by the drag source. After this call, you probably
+// want to set up the drag icon using the surface returned by
+// [method@Gdk.Drag.get_drag_surface].
+//
+// This function returns a reference to the [class@Gdk.Drag] object, but GTK
+// keeps its own reference as well, as long as the DND operation is going on.
+//
+// Note: if @actions include GDK_ACTION_MOVE, you need to listen for the
+// [signal@Gdk.Drag::dnd-finished] signal and delete the data at the source if
+// [method@Gdk.Drag.get_selected_action] returns GDK_ACTION_MOVE.
+func DragBegin(surface Surfacer, device Devicer, content ContentProviderer, actions DragAction, dx float64, dy float64) *Drag {
+	var _arg1 *C.GdkSurface         // out
+	var _arg2 *C.GdkDevice          // out
+	var _arg3 *C.GdkContentProvider // out
+	var _arg4 C.GdkDragAction       // out
+	var _arg5 C.double              // out
+	var _arg6 C.double              // out
+	var _cret *C.GdkDrag            // in
+
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkContentProvider)(unsafe.Pointer((content).(gextras.Nativer).Native()))
+	_arg4 = C.GdkDragAction(actions)
+	_arg5 = C.double(dx)
+	_arg6 = C.double(dy)
+
+	_cret = C.gdk_drag_begin(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _drag *Drag // out
+
+	_drag = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Drag)
+
+	return _drag
 }

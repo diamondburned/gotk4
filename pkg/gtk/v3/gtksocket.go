@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketter},
+		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketer},
 	})
 }
 
@@ -31,14 +30,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketOverrider interface {
-	//
 	PlugAdded()
-	//
 	PlugRemoved() bool
 }
 
-// Socketter describes Socket's methods.
-type Socketter interface {
+// Socketer describes Socket's methods.
+type Socketer interface {
 	// PlugWindow retrieves the window of the plug.
 	PlugWindow() *gdk.Window
 }
@@ -94,11 +91,11 @@ type Socket struct {
 }
 
 var (
-	_ Socketter       = (*Socket)(nil)
+	_ Socketer        = (*Socket)(nil)
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketer {
 	return &Socket{
 		Container: Container{
 			Widget: Widget{
@@ -116,7 +113,7 @@ func wrapSocket(obj *externglib.Object) Socketter {
 	}
 }
 
-func marshalSocketter(p uintptr) (interface{}, error) {
+func marshalSocketer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil

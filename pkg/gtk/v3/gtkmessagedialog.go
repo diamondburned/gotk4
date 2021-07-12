@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialogger},
+		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialoger},
 	})
 }
 
@@ -54,14 +53,14 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MessageDialogger describes MessageDialog's methods.
-type MessageDialogger interface {
+// MessageDialoger describes MessageDialog's methods.
+type MessageDialoger interface {
 	// Image gets the dialog’s image.
 	Image() *Widget
 	// MessageArea returns the message area of the dialog.
 	MessageArea() *Widget
 	// SetImage sets the dialog’s image to @image.
-	SetImage(image Widgetter)
+	SetImage(image Widgeter)
 	// SetMarkup sets the text of the message dialog to be @str, which is marked
 	// up with the [Pango text markup language][PangoMarkupFormat].
 	SetMarkup(str string)
@@ -108,11 +107,11 @@ type MessageDialog struct {
 }
 
 var (
-	_ MessageDialogger = (*MessageDialog)(nil)
-	_ gextras.Nativer  = (*MessageDialog)(nil)
+	_ MessageDialoger = (*MessageDialog)(nil)
+	_ gextras.Nativer = (*MessageDialog)(nil)
 )
 
-func wrapMessageDialog(obj *externglib.Object) MessageDialogger {
+func wrapMessageDialog(obj *externglib.Object) MessageDialoger {
 	return &MessageDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -136,7 +135,7 @@ func wrapMessageDialog(obj *externglib.Object) MessageDialogger {
 	}
 }
 
-func marshalMessageDialogger(p uintptr) (interface{}, error) {
+func marshalMessageDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMessageDialog(obj), nil
@@ -183,7 +182,7 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 // SetImage sets the dialog’s image to @image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
-func (dialog *MessageDialog) SetImage(image Widgetter) {
+func (dialog *MessageDialog) SetImage(image Widgeter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 

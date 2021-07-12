@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPanedder},
+		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPaneder},
 	})
 }
 
-// VPanedder describes VPaned's methods.
-type VPanedder interface {
+// VPaneder describes VPaned's methods.
+type VPaneder interface {
 	privateVPaned()
 }
 
@@ -40,11 +39,11 @@ type VPaned struct {
 }
 
 var (
-	_ VPanedder       = (*VPaned)(nil)
+	_ VPaneder        = (*VPaned)(nil)
 	_ gextras.Nativer = (*VPaned)(nil)
 )
 
-func wrapVPaned(obj *externglib.Object) VPanedder {
+func wrapVPaned(obj *externglib.Object) VPaneder {
 	return &VPaned{
 		Paned: Paned{
 			Container: Container{
@@ -67,7 +66,7 @@ func wrapVPaned(obj *externglib.Object) VPanedder {
 	}
 }
 
-func marshalVPanedder(p uintptr) (interface{}, error) {
+func marshalVPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVPaned(obj), nil

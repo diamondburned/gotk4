@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,12 +27,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblemmer},
+		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblemer},
 	})
 }
 
-// Emblemmer describes Emblem's methods.
-type Emblemmer interface {
+// Emblemer describes Emblem's methods.
+type Emblemer interface {
 	// GetIcon gives back the icon from @emblem.
 	GetIcon() *Icon
 	// Origin gets the origin of the emblem.
@@ -52,11 +51,11 @@ type Emblem struct {
 }
 
 var (
-	_ Emblemmer       = (*Emblem)(nil)
+	_ Emblemer        = (*Emblem)(nil)
 	_ gextras.Nativer = (*Emblem)(nil)
 )
 
-func wrapEmblem(obj *externglib.Object) Emblemmer {
+func wrapEmblem(obj *externglib.Object) Emblemer {
 	return &Emblem{
 		Object: obj,
 		Icon: Icon{
@@ -65,20 +64,38 @@ func wrapEmblem(obj *externglib.Object) Emblemmer {
 	}
 }
 
-func marshalEmblemmer(p uintptr) (interface{}, error) {
+func marshalEmblemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEmblem(obj), nil
 }
 
 // NewEmblem creates a new emblem for @icon.
-func NewEmblem(icon Iconner) *Emblem {
+func NewEmblem(icon Iconer) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
 
 	_cret = C.g_emblem_new(_arg1)
+
+	var _emblem *Emblem // out
+
+	_emblem = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Emblem)
+
+	return _emblem
+}
+
+// NewEmblemWithOrigin creates a new emblem for @icon.
+func NewEmblemWithOrigin(icon Iconer, origin EmblemOrigin) *Emblem {
+	var _arg1 *C.GIcon        // out
+	var _arg2 C.GEmblemOrigin // out
+	var _cret *C.GEmblem      // in
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
+	_arg2 = C.GEmblemOrigin(origin)
+
+	_cret = C.g_emblem_new_with_origin(_arg1, _arg2)
 
 	var _emblem *Emblem // out
 

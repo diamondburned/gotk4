@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -27,11 +26,9 @@ func init() {
 
 // PlugAccessibler describes PlugAccessible's methods.
 type PlugAccessibler interface {
-	//
 	ID() string
 }
 
-//
 type PlugAccessible struct {
 	WindowAccessible
 }
@@ -66,7 +63,6 @@ func marshalPlugAccessibler(p uintptr) (interface{}, error) {
 	return wrapPlugAccessible(obj), nil
 }
 
-//
 func (plug *PlugAccessible) ID() string {
 	var _arg0 *C.GtkPlugAccessible // out
 	var _cret *C.gchar             // in

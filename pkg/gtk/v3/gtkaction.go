@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -38,8 +37,7 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-	//
-	ConnectProxy(proxy Widgetter)
+	ConnectProxy(proxy Widgeter)
 	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
@@ -59,8 +57,7 @@ type ActionOverrider interface {
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
 	CreateToolItem() *Widget
-	//
-	DisconnectProxy(proxy Widgetter)
+	DisconnectProxy(proxy Widgeter)
 }
 
 // Actioner describes Action's methods.
@@ -141,7 +138,7 @@ type Actioner interface {
 	// available.
 	SetAlwaysShowImage(alwaysShow bool)
 	// SetGIcon sets the icon of @action.
-	SetGIcon(icon gio.Iconner)
+	SetGIcon(icon gio.Iconer)
 	// SetIconName sets the icon name on @action Deprecated: Use #GAction
 	// instead, and g_menu_item_set_icon() to set an icon on a Item associated
 	// with a #GAction, or gtk_container_add() to add a Image to a Button.
@@ -801,7 +798,7 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
-func (action *Action) SetGIcon(icon gio.Iconner) {
+func (action *Action) SetGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
 

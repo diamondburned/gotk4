@@ -42,6 +42,7 @@ var (
 		"ProXY":    "Proxy",
 		"Zorder":   "ZOrder",
 		"Certdb":   "CertDB",
+		"Gerror":   "GError",
 	}
 
 	pascalRegex        *regexp.Regexp
@@ -291,10 +292,9 @@ func Interfacify(word string) string {
 	case strings.HasSuffix(word, "ct"):
 		return word + "or"
 
-	// CVC form w/ -er is weird, since you'd get words like Builderrer instead
-	// of Builderer.
-	case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
-		return word + string(word[len(word)-1]) + "er"
+	// CVC form is bad. It's ugly.
+	// case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
+	// 	return word + string(word[len(word)-1]) + "er"
 
 	case wordEndsInConsonant(word):
 		fallthrough

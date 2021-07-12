@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -38,7 +37,7 @@ type AspectFramer interface {
 	// of the `GtkAspectFrame`.
 	Yalign() float32
 	// SetChild sets the child widget of @self.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetObeyChild sets whether the aspect ratio of the child's size request
 	// should override the set aspect ratio of the `GtkAspectFrame`.
 	SetObeyChild(obeyChild bool)
@@ -205,7 +204,7 @@ func (self *AspectFrame) Yalign() float32 {
 }
 
 // SetChild sets the child widget of @self.
-func (self *AspectFrame) SetChild(child Widgetter) {
+func (self *AspectFrame) SetChild(child Widgeter) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,12 +19,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorrer},
+		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorer},
 	})
 }
 
-// TextChildAnchorrer describes TextChildAnchor's methods.
-type TextChildAnchorrer interface {
+// TextChildAnchorer describes TextChildAnchor's methods.
+type TextChildAnchorer interface {
 	// Deleted determines whether a child anchor has been deleted from the
 	// buffer.
 	Deleted() bool
@@ -39,17 +38,17 @@ type TextChildAnchor struct {
 }
 
 var (
-	_ TextChildAnchorrer = (*TextChildAnchor)(nil)
-	_ gextras.Nativer    = (*TextChildAnchor)(nil)
+	_ TextChildAnchorer = (*TextChildAnchor)(nil)
+	_ gextras.Nativer   = (*TextChildAnchor)(nil)
 )
 
-func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchorrer {
+func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchorer {
 	return &TextChildAnchor{
 		Object: obj,
 	}
 }
 
-func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
+func marshalTextChildAnchorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextChildAnchor(obj), nil

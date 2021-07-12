@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -50,7 +49,6 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RendererOverrider interface {
-	//
 	Begin()
 	// DrawErrorUnderline: draw a squiggly line that approximately covers the
 	// given rectangle in the style of an underline used to indicate a spelling
@@ -80,10 +78,31 @@ type RendererOverrider interface {
 	// DrawGlyphs draws the glyphs in @glyphs with the specified
 	// `PangoRenderer`.
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y int)
+	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
+	// with the specified `PangoRenderer`.
 	//
+	// This should be called while @renderer is already active. Use
+	// [method@Pango.Renderer.activate] to activate a renderer.
+	DrawRectangle(part RenderPart, x int, y int, width int, height int)
 	DrawShape(attr *AttrShape, x int, y int)
-	//
+	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
+	// X axis using the given `PangoRenderer`; coordinates are in device space.
+	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
 	End()
+	// PartChanged informs Pango that the way that the rendering is done for
+	// @part has changed.
+	//
+	// This should be called if the rendering changes in a way that would
+	// prevent multiple pieces being joined together into one drawing call. For
+	// instance, if a subclass of `PangoRenderer` was to add a stipple option
+	// for drawing underlines, it needs to call
+	//
+	// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
+	//
+	// When the stipple changes or underlines with different stipples might be
+	// joined together. Pango automatically calls this for changes to colors.
+	// (See [method@Pango.Renderer.set_color])
+	PartChanged(part RenderPart)
 }
 
 // Rendererer describes Renderer's methods.
@@ -107,6 +126,16 @@ type Rendererer interface {
 	DrawLayout(layout Layouter, x int, y int)
 	// DrawLayoutLine draws @line with the specified `PangoRenderer`.
 	DrawLayoutLine(line *LayoutLine, x int, y int)
+	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
+	// with the specified `PangoRenderer`.
+	DrawRectangle(part RenderPart, x int, y int, width int, height int)
+	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
+	// X axis using the given `PangoRenderer`; coordinates are in device space.
+	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+	// Alpha gets the current alpha for the specified part.
+	Alpha(part RenderPart) uint16
+	// Color gets the current rendering color for the specified part.
+	Color(part RenderPart) *Color
 	// Layout gets the layout currently being rendered using @renderer.
 	Layout() *Layout
 	// LayoutLine gets the layout line currently being rendered using @renderer.
@@ -114,6 +143,13 @@ type Rendererer interface {
 	// Matrix gets the transformation matrix that will be applied when
 	// rendering.
 	Matrix() *Matrix
+	// PartChanged informs Pango that the way that the rendering is done for
+	// @part has changed.
+	PartChanged(part RenderPart)
+	// SetAlpha sets the alpha for part of the rendering.
+	SetAlpha(part RenderPart, alpha uint16)
+	// SetColor sets the color for part of the rendering.
+	SetColor(part RenderPart, color *Color)
 	// SetMatrix sets the transformation matrix that will be applied when
 	// rendering.
 	SetMatrix(matrix *Matrix)
@@ -273,6 +309,89 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
 	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
 }
 
+// DrawRectangle draws an axis-aligned rectangle in user space coordinates with
+// the specified `PangoRenderer`.
+//
+// This should be called while @renderer is already active. Use
+// [method@Pango.Renderer.activate] to activate a renderer.
+func (renderer *Renderer) DrawRectangle(part RenderPart, x int, y int, width int, height int) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.int             // out
+	var _arg3 C.int             // out
+	var _arg4 C.int             // out
+	var _arg5 C.int             // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
+
+	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
+// axis using the given `PangoRenderer`; coordinates are in device space.
+func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.double          // out
+	var _arg3 C.double          // out
+	var _arg4 C.double          // out
+	var _arg5 C.double          // out
+	var _arg6 C.double          // out
+	var _arg7 C.double          // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.double(y1)
+	_arg3 = C.double(x11)
+	_arg4 = C.double(x21)
+	_arg5 = C.double(y2)
+	_arg6 = C.double(x12)
+	_arg7 = C.double(x22)
+
+	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
+// Alpha gets the current alpha for the specified part.
+func (renderer *Renderer) Alpha(part RenderPart) uint16 {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _cret C.guint16         // in
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
+}
+
+// Color gets the current rendering color for the specified part.
+func (renderer *Renderer) Color(part RenderPart) *Color {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _cret *C.PangoColor     // in
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	_cret = C.pango_renderer_get_color(_arg0, _arg1)
+
+	var _color *Color // out
+
+	_color = (*Color)(unsafe.Pointer(_cret))
+
+	return _color
+}
+
 // Layout gets the layout currently being rendered using @renderer.
 //
 // Calling this function only makes sense from inside a subclass's methods, like
@@ -335,6 +454,60 @@ func (renderer *Renderer) Matrix() *Matrix {
 	_matrix = (*Matrix)(unsafe.Pointer(_cret))
 
 	return _matrix
+}
+
+// PartChanged informs Pango that the way that the rendering is done for @part
+// has changed.
+//
+// This should be called if the rendering changes in a way that would prevent
+// multiple pieces being joined together into one drawing call. For instance, if
+// a subclass of `PangoRenderer` was to add a stipple option for drawing
+// underlines, it needs to call
+//
+// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
+//
+// When the stipple changes or underlines with different stipples might be
+// joined together. Pango automatically calls this for changes to colors. (See
+// [method@Pango.Renderer.set_color])
+func (renderer *Renderer) PartChanged(part RenderPart) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	C.pango_renderer_part_changed(_arg0, _arg1)
+}
+
+// SetAlpha sets the alpha for part of the rendering.
+//
+// Note that the alpha may only be used if a color is specified for @part as
+// well.
+func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.guint16         // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.guint16(alpha)
+
+	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
+}
+
+// SetColor sets the color for part of the rendering.
+//
+// Also see [method@Pango.Renderer.set_alpha].
+func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 *C.PangoColor     // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = (*C.PangoColor)(unsafe.Pointer(color))
+
+	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.

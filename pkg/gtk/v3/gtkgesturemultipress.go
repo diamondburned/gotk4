@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -74,7 +73,7 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
-func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
+func NewGestureMultiPress(widget Widgeter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -10,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -621,4 +621,36 @@ func (a *Rect) Union(b *Rect) Rect {
 	C.graphene_rect_union(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
 	return _res
+}
+
+// RectAlloc allocates a new #graphene_rect_t.
+//
+// The contents of the returned rectangle are undefined.
+func RectAlloc() *Rect {
+	var _cret *C.graphene_rect_t // in
+
+	_cret = C.graphene_rect_alloc()
+
+	var _rect *Rect // out
+
+	_rect = (*Rect)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rect, func(v *Rect) {
+		C.graphene_rect_free((*C.graphene_rect_t)(unsafe.Pointer(v)))
+	})
+
+	return _rect
+}
+
+// RectZero returns a degenerate rectangle with origin fixed at (0, 0) and a
+// size of 0, 0.
+func RectZero() *Rect {
+	var _cret *C.graphene_rect_t // in
+
+	_cret = C.graphene_rect_zero()
+
+	var _rect *Rect // out
+
+	_rect = (*Rect)(unsafe.Pointer(_cret))
+
+	return _rect
 }

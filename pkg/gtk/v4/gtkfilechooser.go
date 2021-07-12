@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -112,6 +111,8 @@ type FileChooserer interface {
 	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
 	// chooser.
 	RemoveShortcutFolder(folder gio.Filer) error
+	// SetAction sets the type of operation that the chooser is performing.
+	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	SetChoice(id string, option string)
@@ -518,6 +519,23 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// SetAction sets the type of operation that the chooser is performing.
+//
+// The user interface is adapted to suit the selected action.
+//
+// For example, an option to create a new folder might be shown if the action is
+// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+// GTK_FILE_CHOOSER_ACTION_OPEN.
+func (chooser *FileChooser) SetAction(action FileChooserAction) {
+	var _arg0 *C.GtkFileChooser      // out
+	var _arg1 C.GtkFileChooserAction // out
+
+	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = C.GtkFileChooserAction(action)
+
+	C.gtk_file_chooser_set_action(_arg0, _arg1)
 }
 
 // SetChoice selects an option in a 'choice' that has been added with

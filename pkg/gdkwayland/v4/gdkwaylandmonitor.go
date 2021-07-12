@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gtk4-wayland gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitorrer},
+		{T: externglib.Type(C.gdk_wayland_monitor_get_type()), F: marshalWaylandMonitorer},
 	})
 }
 
-// WaylandMonitorrer describes WaylandMonitor's methods.
-type WaylandMonitorrer interface {
+// WaylandMonitorer describes WaylandMonitor's methods.
+type WaylandMonitorer interface {
 	privateWaylandMonitor()
 }
 
@@ -38,11 +37,11 @@ type WaylandMonitor struct {
 }
 
 var (
-	_ WaylandMonitorrer = (*WaylandMonitor)(nil)
-	_ gextras.Nativer   = (*WaylandMonitor)(nil)
+	_ WaylandMonitorer = (*WaylandMonitor)(nil)
+	_ gextras.Nativer  = (*WaylandMonitor)(nil)
 )
 
-func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitorrer {
+func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitorer {
 	return &WaylandMonitor{
 		Monitor: gdk.Monitor{
 			Object: obj,
@@ -50,7 +49,7 @@ func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitorrer {
 	}
 }
 
-func marshalWaylandMonitorrer(p uintptr) (interface{}, error) {
+func marshalWaylandMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandMonitor(obj), nil

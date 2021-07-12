@@ -13,14 +13,13 @@ import (
 
 // #cgo pkg-config: gtk4-x11 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayyer},
+		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayer},
 	})
 }
 
@@ -39,8 +38,8 @@ func X11SetSmClientID(smClientId string) {
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
 
-// X11Displayyer describes X11Display's methods.
-type X11Displayyer interface {
+// X11Displayer describes X11Display's methods.
+type X11Displayer interface {
 	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push().
 	ErrorTrapPop() int
@@ -82,17 +81,16 @@ type X11Displayyer interface {
 	UTF8ToCompoundText(str string) (string, int, []byte, bool)
 }
 
-//
 type X11Display struct {
 	gdk.Display
 }
 
 var (
-	_ X11Displayyer   = (*X11Display)(nil)
+	_ X11Displayer    = (*X11Display)(nil)
 	_ gextras.Nativer = (*X11Display)(nil)
 )
 
-func wrapX11Display(obj *externglib.Object) X11Displayyer {
+func wrapX11Display(obj *externglib.Object) X11Displayer {
 	return &X11Display{
 		Display: gdk.Display{
 			Object: obj,
@@ -100,7 +98,7 @@ func wrapX11Display(obj *externglib.Object) X11Displayyer {
 	}
 }
 
-func marshalX11Displayyer(p uintptr) (interface{}, error) {
+func marshalX11Displayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Display(obj), nil
@@ -416,4 +414,37 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	}
 
 	return _encoding, _format, _ctext, _ok
+}
+
+// X11DisplayOpen tries to open a new display to the X server given by
+// @display_name. If opening the display fails, nil is returned.
+func X11DisplayOpen(displayName string) *gdk.Display {
+	var _arg1 *C.char       // out
+	var _cret *C.GdkDisplay // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_x11_display_open(_arg1)
+
+	var _display *gdk.Display // out
+
+	_display = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Display)
+
+	return _display
+}
+
+// X11DisplaySetProgramClass sets the program class.
+//
+// The X11 backend uses the program class to set the class name part of the
+// `WM_CLASS` property on toplevel windows; see the ICCCM.
+func X11DisplaySetProgramClass(display gdk.Displayer, programClass string) {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 *C.char       // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gdk_x11_display_set_program_class(_arg1, _arg2)
 }

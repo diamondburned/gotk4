@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,26 +20,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbutton_box_get_type()), F: marshalVButtonBoxxer},
+		{T: externglib.Type(C.gtk_vbutton_box_get_type()), F: marshalVButtonBoxer},
 	})
 }
 
-// VButtonBoxxer describes VButtonBox's methods.
-type VButtonBoxxer interface {
+// VButtonBoxer describes VButtonBox's methods.
+type VButtonBoxer interface {
 	privateVButtonBox()
 }
 
-//
 type VButtonBox struct {
 	ButtonBox
 }
 
 var (
-	_ VButtonBoxxer   = (*VButtonBox)(nil)
+	_ VButtonBoxer    = (*VButtonBox)(nil)
 	_ gextras.Nativer = (*VButtonBox)(nil)
 )
 
-func wrapVButtonBox(obj *externglib.Object) VButtonBoxxer {
+func wrapVButtonBox(obj *externglib.Object) VButtonBoxer {
 	return &VButtonBox{
 		ButtonBox: ButtonBox{
 			Box: Box{
@@ -65,7 +63,7 @@ func wrapVButtonBox(obj *externglib.Object) VButtonBoxxer {
 	}
 }
 
-func marshalVButtonBoxxer(p uintptr) (interface{}, error) {
+func marshalVButtonBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVButtonBox(obj), nil

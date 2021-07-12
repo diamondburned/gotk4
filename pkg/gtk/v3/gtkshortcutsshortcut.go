@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
-		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcutter},
+		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcuter},
 	})
 }
 
@@ -61,8 +60,8 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutsShortcutter describes ShortcutsShortcut's methods.
-type ShortcutsShortcutter interface {
+// ShortcutsShortcuter describes ShortcutsShortcut's methods.
+type ShortcutsShortcuter interface {
 	privateShortcutsShortcut()
 }
 
@@ -73,11 +72,11 @@ type ShortcutsShortcut struct {
 }
 
 var (
-	_ ShortcutsShortcutter = (*ShortcutsShortcut)(nil)
-	_ gextras.Nativer      = (*ShortcutsShortcut)(nil)
+	_ ShortcutsShortcuter = (*ShortcutsShortcut)(nil)
+	_ gextras.Nativer     = (*ShortcutsShortcut)(nil)
 )
 
-func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcutter {
+func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcuter {
 	return &ShortcutsShortcut{
 		Box: Box{
 			Container: Container{
@@ -100,7 +99,7 @@ func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcutter {
 	}
 }
 
-func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
+func marshalShortcutsShortcuter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutsShortcut(obj), nil

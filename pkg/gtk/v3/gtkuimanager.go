@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -68,14 +67,10 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type UIManagerOverrider interface {
-	//
 	ActionsChanged()
-	//
-	AddWidget(widget Widgetter)
-	//
-	ConnectProxy(action Actioner, proxy Widgetter)
-	//
-	DisconnectProxy(action Actioner, proxy Widgetter)
+	AddWidget(widget Widgeter)
+	ConnectProxy(action Actioner, proxy Widgeter)
+	DisconnectProxy(action Actioner, proxy Widgeter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
 	//
@@ -98,14 +93,14 @@ type UIManagerOverrider interface {
 	//
 	// Deprecated: since version 3.10.
 	Widget(path string) *Widget
-	//
 	PostActivate(action Actioner)
-	//
 	PreActivate(action Actioner)
 }
 
 // UIManagerer describes UIManager's methods.
 type UIManagerer interface {
+	// AddUi adds a UI element to the current contents of @manager.
+	AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool)
 	// AddUiFromFile parses a file containing a [UI definition][XML-UI] and
 	// merges it with the current contents of @manager.
 	AddUiFromFile(filename string) (uint, error)
@@ -403,6 +398,42 @@ func NewUIManager() *UIManager {
 	_uiManager = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*UIManager)
 
 	return _uiManager
+}
+
+// AddUi adds a UI element to the current contents of @manager.
+//
+// If @type is GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or
+// separator if such an element can be inserted at the place determined by
+// @path. Otherwise @type must indicate an element that can be inserted at the
+// place determined by @path.
+//
+// If @path points to a menuitem or toolitem, the new element will be inserted
+// before or after this item, depending on @top.
+//
+// Deprecated: since version 3.10.
+func (manager *UIManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
+	var _arg0 *C.GtkUIManager        // out
+	var _arg1 C.guint                // out
+	var _arg2 *C.gchar               // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.gchar               // out
+	var _arg5 C.GtkUIManagerItemType // out
+	var _arg6 C.gboolean             // out
+
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = C.guint(mergeId)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.GtkUIManagerItemType(typ)
+	if top {
+		_arg6 = C.TRUE
+	}
+
+	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // AddUiFromFile parses a file containing a [UI definition][XML-UI] and merges

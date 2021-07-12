@@ -16,12 +16,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // gboolean gotk4_TextCharPredicate(gunichar, gpointer);
 import "C"
 
@@ -55,7 +53,6 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-//
 type TextCharPredicate func(ch uint32, userData cgo.Handle) (ok bool)
 
 //export gotk4_TextCharPredicate
@@ -271,6 +268,36 @@ func (iter *TextIter) BackwardLines(count int) bool {
 	return _ok
 }
 
+// BackwardSearch: same as gtk_text_iter_forward_search(), but moves backward.
+//
+// @match_end will never be set to a TextIter located after @iter, even if there
+// is a possible @match_start before or at @iter.
+func (iter *TextIter) BackwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+	var _arg0 *C.GtkTextIter       // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.GtkTextSearchFlags // out
+	var _matchStart TextIter
+	var _matchEnd TextIter
+	var _arg5 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkTextSearchFlags(flags)
+	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
+
+	_cret = C.gtk_text_iter_backward_search(_arg0, _arg1, _arg2, (*C.GtkTextIter)(unsafe.Pointer(&_matchStart)), (*C.GtkTextIter)(unsafe.Pointer(&_matchEnd)), _arg5)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _matchStart, _matchEnd, _ok
+}
+
 // BackwardSentenceStart moves backward to the previous sentence start; if @iter
 // is already at the start of a sentence, moves backward to the next one.
 // Sentence boundaries are determined by Pango and should be correct for nearly
@@ -320,7 +347,7 @@ func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 // tag toggles are found, returns false, otherwise true. Does not return toggles
 // located at @iter, only toggles before @iter. Sets @iter to the location of
 // the toggle, or the start of the buffer if no toggle is found.
-func (iter *TextIter) BackwardToTagToggle(tag TextTagger) bool {
+func (iter *TextIter) BackwardToTagToggle(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -524,7 +551,7 @@ func (iter *TextIter) BackwardWordStarts(count int) bool {
 // return true for the same parameters.
 //
 // Deprecated: Use gtk_text_iter_starts_tag() instead.
-func (iter *TextIter) BeginsTag(tag TextTagger) bool {
+func (iter *TextIter) BeginsTag(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -695,7 +722,7 @@ func (iter *TextIter) EndsSentence() bool {
 // tagged range. In other words, unlike gtk_text_iter_starts_tag(), if
 // gtk_text_iter_ends_tag() returns true, gtk_text_iter_has_tag() will return
 // false for the same parameters.
-func (iter *TextIter) EndsTag(tag TextTagger) bool {
+func (iter *TextIter) EndsTag(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -925,6 +952,40 @@ func (iter *TextIter) ForwardLines(count int) bool {
 	return _ok
 }
 
+// ForwardSearch searches forward for @str. Any match is returned by setting
+// @match_start to the first character of the match and @match_end to the first
+// character after the match. The search will not continue past @limit. Note
+// that a search is a linear or O(n) operation, so you may wish to use @limit to
+// avoid locking up your UI on large buffers.
+//
+// @match_start will never be set to a TextIter located before @iter, even if
+// there is a possible @match_end after or at @iter.
+func (iter *TextIter) ForwardSearch(str string, flags TextSearchFlags, limit *TextIter) (matchStart TextIter, matchEnd TextIter, ok bool) {
+	var _arg0 *C.GtkTextIter       // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.GtkTextSearchFlags // out
+	var _matchStart TextIter
+	var _matchEnd TextIter
+	var _arg5 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkTextSearchFlags(flags)
+	_arg5 = (*C.GtkTextIter)(unsafe.Pointer(limit))
+
+	_cret = C.gtk_text_iter_forward_search(_arg0, _arg1, _arg2, (*C.GtkTextIter)(unsafe.Pointer(&_matchStart)), (*C.GtkTextIter)(unsafe.Pointer(&_matchEnd)), _arg5)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _matchStart, _matchEnd, _ok
+}
+
 // ForwardSentenceEnd moves forward to the next sentence end. (If @iter is at
 // the end of a sentence, moves to the next end of sentence.) Sentence
 // boundaries are determined by Pango and should be correct for nearly any
@@ -1009,7 +1070,7 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 // tag toggles are found, returns false, otherwise true. Does not return toggles
 // located at @iter, only toggles after @iter. Sets @iter to the location of the
 // toggle, or to the end of the buffer if no toggle is found.
-func (iter *TextIter) ForwardToTagToggle(tag TextTagger) bool {
+func (iter *TextIter) ForwardToTagToggle(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1562,7 +1623,7 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 // HasTag returns true if @iter points to a character that is part of a range
 // tagged with @tag. See also gtk_text_iter_starts_tag() and
 // gtk_text_iter_ends_tag().
-func (iter *TextIter) HasTag(tag TextTagger) bool {
+func (iter *TextIter) HasTag(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1853,7 +1914,7 @@ func (iter *TextIter) StartsSentence() bool {
 // inside the tagged range. In other words, unlike gtk_text_iter_ends_tag(), if
 // gtk_text_iter_starts_tag() returns true, gtk_text_iter_has_tag() will also
 // return true for the same parameters.
-func (iter *TextIter) StartsTag(tag TextTagger) bool {
+func (iter *TextIter) StartsTag(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in
@@ -1895,7 +1956,7 @@ func (iter *TextIter) StartsWord() bool {
 // TogglesTag: this is equivalent to (gtk_text_iter_starts_tag() ||
 // gtk_text_iter_ends_tag()), i.e. it tells you whether a range with @tag
 // applied to it begins or ends at @iter.
-func (iter *TextIter) TogglesTag(tag TextTagger) bool {
+func (iter *TextIter) TogglesTag(tag TextTager) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextTag  // out
 	var _cret C.gboolean     // in

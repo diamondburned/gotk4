@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <pango/pango.h>
 import "C"
 

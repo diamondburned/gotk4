@@ -7,12 +7,12 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -1879,6 +1879,99 @@ func (value *Variant) unref() {
 	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
 
 	C.g_variant_unref(_arg0)
+}
+
+// VariantIsObjectPath determines if a given string is a valid D-Bus object
+// path. You should ensure that a string is a valid D-Bus object path before
+// passing it to g_variant_new_object_path().
+//
+// A valid object path starts with `/` followed by zero or more sequences of
+// characters separated by `/` characters. Each sequence must contain only the
+// characters `[A-Z][a-z][0-9]_`. No sequence (including the one following the
+// final `/` character) may be empty.
+func VariantIsObjectPath(_string string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_variant_is_object_path(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// VariantIsSignature determines if a given string is a valid D-Bus type
+// signature. You should ensure that a string is a valid D-Bus type signature
+// before passing it to g_variant_new_signature().
+//
+// D-Bus type signatures consist of zero or more definite Type strings in
+// sequence.
+func VariantIsSignature(_string string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_variant_is_signature(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// VariantParseErrorPrintContext pretty-prints a message showing the context of
+// a #GVariant parse error within the string for which parsing was attempted.
+//
+// The resulting string is suitable for output to the console or other monospace
+// media where newlines are treated in the usual way.
+//
+// The message will typically look something like one of the following:
+//
+//    unterminated string constant:
+//      (1, 2, 3, 'abc
+//                ^^^^
+//
+// or
+//
+//    unable to find a common type:
+//      [1, 2, 3, 'str']
+//       ^        ^^^^^
+//
+// The format of the message may change in a future version.
+//
+// @error must have come from a failed attempt to g_variant_parse() and
+// @source_str must be exactly the same string that caused the error. If
+// @source_str was not nul-terminated when you passed it to g_variant_parse()
+// then you must add nul termination before using this function.
+func VariantParseErrorPrintContext(err error, sourceStr string) string {
+	var _arg1 *C.GError // out
+	var _arg2 *C.gchar  // out
+	var _cret *C.gchar  // in
+
+	_arg1 = (*C.GError)(gerror.New(err))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(sourceStr)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_variant_parse_error_print_context(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // VariantBuilder: utility type for constructing container-type #GVariant

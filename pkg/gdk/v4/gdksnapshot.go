@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshotter},
+		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshoter},
 	})
 }
 
-// Snapshotter describes Snapshot's methods.
-type Snapshotter interface {
+// Snapshoter describes Snapshot's methods.
+type Snapshoter interface {
 	privateSnapshot()
 }
 
@@ -35,17 +34,17 @@ type Snapshot struct {
 }
 
 var (
-	_ Snapshotter     = (*Snapshot)(nil)
+	_ Snapshoter      = (*Snapshot)(nil)
 	_ gextras.Nativer = (*Snapshot)(nil)
 )
 
-func wrapSnapshot(obj *externglib.Object) Snapshotter {
+func wrapSnapshot(obj *externglib.Object) Snapshoter {
 	return &Snapshot{
 		Object: obj,
 	}
 }
 
-func marshalSnapshotter(p uintptr) (interface{}, error) {
+func marshalSnapshoter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSnapshot(obj), nil

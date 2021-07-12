@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -163,4 +162,20 @@ func (self *NativeSurface) Unrealize() {
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(self.Native()))
 
 	C.gtk_native_unrealize(_arg0)
+}
+
+// NativeSurfaceGetForSurface finds the `GtkNative` associated with the surface.
+func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
+	var _arg1 *C.GdkSurface // out
+	var _cret *C.GtkNative  // in
+
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_native_get_for_surface(_arg1)
+
+	var _native *NativeSurface // out
+
+	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NativeSurface)
+
+	return _native
 }

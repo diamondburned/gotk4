@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconner},
+		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconer},
 	})
 }
 
@@ -32,24 +31,17 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StatusIconOverrider interface {
-	//
 	Activate()
-	//
 	ButtonPressEvent(event *gdk.EventButton) bool
-	//
 	ButtonReleaseEvent(event *gdk.EventButton) bool
-	//
 	PopupMenu(button uint, activateTime uint32)
-	//
-	QueryTooltip(x int, y int, keyboardMode bool, tooltip Tooltipper) bool
-	//
+	QueryTooltip(x int, y int, keyboardMode bool, tooltip Tooltiper) bool
 	ScrollEvent(event *gdk.EventScroll) bool
-	//
 	SizeChanged(size int) bool
 }
 
-// StatusIconner describes StatusIcon's methods.
-type StatusIconner interface {
+// StatusIconer describes StatusIcon's methods.
+type StatusIconer interface {
 	// Geometry obtains information about the location of the status icon on
 	// screen.
 	Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool)
@@ -87,12 +79,12 @@ type StatusIconner interface {
 	// SetFromFile makes @status_icon display the file @filename.
 	SetFromFile(filename string)
 	// SetFromGIcon makes @status_icon display the #GIcon.
-	SetFromGIcon(icon gio.Iconner)
+	SetFromGIcon(icon gio.Iconer)
 	// SetFromIconName makes @status_icon display the icon named @icon_name from
 	// the current icon theme.
 	SetFromIconName(iconName string)
 	// SetFromPixbuf makes @status_icon display @pixbuf.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer)
 	// SetFromStock makes @status_icon display the stock icon with the id
 	// @stock_id.
 	SetFromStock(stockId string)
@@ -154,17 +146,17 @@ type StatusIcon struct {
 }
 
 var (
-	_ StatusIconner   = (*StatusIcon)(nil)
+	_ StatusIconer    = (*StatusIcon)(nil)
 	_ gextras.Nativer = (*StatusIcon)(nil)
 )
 
-func wrapStatusIcon(obj *externglib.Object) StatusIconner {
+func wrapStatusIcon(obj *externglib.Object) StatusIconer {
 	return &StatusIcon{
 		Object: obj,
 	}
 }
 
-func marshalStatusIconner(p uintptr) (interface{}, error) {
+func marshalStatusIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusIcon(obj), nil
@@ -214,7 +206,7 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
+func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -258,7 +250,7 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *StatusIcon {
+func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -672,7 +664,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 
@@ -705,7 +697,7 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkPixbuf     // out
 

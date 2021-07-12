@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
 	})
 }
 
@@ -30,18 +29,17 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type InfoBarOverrider interface {
-	//
 	Close()
 	// Response emits the “response” signal with the given @response_id.
 	Response(responseId int)
 }
 
-// InfoBarrer describes InfoBar's methods.
-type InfoBarrer interface {
+// InfoBarer describes InfoBar's methods.
+type InfoBarer interface {
 	// AddActionWidget: add an activatable widget to the action area of a
 	// InfoBar, connecting a signal handler that will emit the InfoBar::response
 	// signal on the message area when the widget is activated.
-	AddActionWidget(child Widgetter, responseId int)
+	AddActionWidget(child Widgeter, responseId int)
 	// AddButton adds a button with the given text and sets things up so that
 	// clicking the button will emit the “response” signal with the given
 	// response_id.
@@ -52,7 +50,6 @@ type InfoBarrer interface {
 	ContentArea() *Box
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
-	//
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
@@ -62,6 +59,8 @@ type InfoBarrer interface {
 	// SetDefaultResponse sets the last widget in the info bar’s action area
 	// with the given response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
+	// SetMessageType sets the message type of the message area.
+	SetMessageType(messageType MessageType)
 	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
 	// each widget in the info bars’s action area with the given response_id.
 	SetResponseSensitive(responseId int, setting bool)
@@ -146,11 +145,11 @@ type InfoBar struct {
 }
 
 var (
-	_ InfoBarrer      = (*InfoBar)(nil)
+	_ InfoBarer       = (*InfoBar)(nil)
 	_ gextras.Nativer = (*InfoBar)(nil)
 )
 
-func wrapInfoBar(obj *externglib.Object) InfoBarrer {
+func wrapInfoBar(obj *externglib.Object) InfoBarer {
 	return &InfoBar{
 		Box: Box{
 			Container: Container{
@@ -173,7 +172,7 @@ func wrapInfoBar(obj *externglib.Object) InfoBarrer {
 	}
 }
 
-func marshalInfoBarrer(p uintptr) (interface{}, error) {
+func marshalInfoBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -196,7 +195,7 @@ func NewInfoBar() *InfoBar {
 // connecting a signal handler that will emit the InfoBar::response signal on
 // the message area when the widget is activated. The widget is appended to the
 // end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -280,7 +279,6 @@ func (infoBar *InfoBar) MessageType() MessageType {
 	return _messageType
 }
 
-//
 func (infoBar *InfoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret C.gboolean    // in
@@ -342,6 +340,19 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	_arg1 = C.gint(responseId)
 
 	C.gtk_info_bar_set_default_response(_arg0, _arg1)
+}
+
+// SetMessageType sets the message type of the message area.
+//
+// GTK+ uses this type to determine how the message is displayed.
+func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
+	var _arg0 *C.GtkInfoBar    // out
+	var _arg1 C.GtkMessageType // out
+
+	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(infoBar.Native()))
+	_arg1 = C.GtkMessageType(messageType)
+
+	C.gtk_info_bar_set_message_type(_arg0, _arg1)
 }
 
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for

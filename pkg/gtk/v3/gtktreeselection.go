@@ -13,12 +13,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
@@ -96,7 +94,6 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeSelectionOverrider interface {
-	//
 	Changed()
 }
 
@@ -128,6 +125,8 @@ type TreeSelectioner interface {
 	SelectRange(startPath *TreePath, endPath *TreePath)
 	// SelectedForeach calls a function for each selected node.
 	SelectedForeach(fn TreeSelectionForeachFunc)
+	// SetMode sets the selection mode of the @selection.
+	SetMode(typ SelectionMode)
 	// UnselectAll unselects all the nodes.
 	UnselectAll()
 	// UnselectIter unselects the specified iterator.
@@ -359,6 +358,19 @@ func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 	_arg2 = C.gpointer(gbox.Assign(fn))
 
 	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
+}
+
+// SetMode sets the selection mode of the @selection. If the previous type was
+// K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was previously
+// selected.
+func (selection *TreeSelection) SetMode(typ SelectionMode) {
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 C.GtkSelectionMode  // out
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
+	_arg1 = C.GtkSelectionMode(typ)
+
+	C.gtk_tree_selection_set_mode(_arg0, _arg1)
 }
 
 // UnselectAll unselects all the nodes.

@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -25,7 +24,6 @@ func init() {
 	})
 }
 
-//
 type ScaleFormatValueFunc func(scale *Scale, value float64, userData cgo.Handle) (utf8 string)
 
 //export gotk4_ScaleFormatValueFunc
@@ -69,6 +67,8 @@ type ScaleOverrider interface {
 
 // Scaler describes Scale's methods.
 type Scaler interface {
+	// AddMark adds a mark at @value.
+	AddMark(value float64, position PositionType, markup string)
 	// ClearMarks removes any marks that have been added.
 	ClearMarks()
 	// Digits gets the number of decimal places that are displayed in the value.
@@ -93,6 +93,8 @@ type Scaler interface {
 	SetDrawValue(drawValue bool)
 	// SetHasOrigin sets whether the scale has an origin.
 	SetHasOrigin(hasOrigin bool)
+	// SetValuePos sets the position in which the current value is displayed.
+	SetValuePos(pos PositionType)
 }
 
 // Scale: `GtkScale` is a slider control used to select a numeric value.
@@ -200,6 +202,79 @@ func marshalScaler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScale(obj), nil
+}
+
+// NewScale creates a new `GtkScale`.
+func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_scale_new(_arg1, _arg2)
+
+	var _scale *Scale // out
+
+	_scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scale)
+
+	return _scale
+}
+
+// NewScaleWithRange creates a new scale widget with a range from @min to @max.
+//
+// The returns scale will have the given orientation and will let the user input
+// a number between @min and @max (including @min and @max) with the increment
+// @step. @step must be nonzero; it’s the distance the slider moves when using
+// the arrow keys to adjust the scale value.
+//
+// Note that the way in which the precision is derived works best if @step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// [method@Gtk.Scale.set_digits] to correct it.
+func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) *Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.double         // out
+	var _arg3 C.double         // out
+	var _arg4 C.double         // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.double(min)
+	_arg3 = C.double(max)
+	_arg4 = C.double(step)
+
+	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
+
+	var _scale *Scale // out
+
+	_scale = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Scale)
+
+	return _scale
+}
+
+// AddMark adds a mark at @value.
+//
+// A mark is indicated visually by drawing a tick mark next to the scale, and
+// GTK makes it easy for the user to position the scale exactly at the marks
+// value.
+//
+// If @markup is not nil, text is shown next to the tick mark.
+//
+// To remove marks from a scale, use [method@Gtk.Scale.clear_marks].
+func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.double          // out
+	var _arg2 C.GtkPositionType // out
+	var _arg3 *C.char           // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
+	_arg1 = C.double(value)
+	_arg2 = C.GtkPositionType(position)
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ClearMarks removes any marks that have been added.
@@ -376,4 +451,15 @@ func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	}
 
 	C.gtk_scale_set_has_origin(_arg0, _arg1)
+}
+
+// SetValuePos sets the position in which the current value is displayed.
+func (scale *Scale) SetValuePos(pos PositionType) {
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
+	_arg1 = C.GtkPositionType(pos)
+
+	C.gtk_scale_set_value_pos(_arg0, _arg1)
 }

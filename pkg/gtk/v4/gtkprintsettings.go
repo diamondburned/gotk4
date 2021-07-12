@@ -16,10 +16,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
 // void gotk4_PrintSettingsFunc(char*, char*, gpointer);
 import "C"
 
@@ -29,7 +27,6 @@ func init() {
 	})
 }
 
-//
 type PrintSettingsFunc func(key string, value string, userData cgo.Handle)
 
 //export gotk4_PrintSettingsFunc
@@ -83,6 +80,8 @@ type PrintSettingser interface {
 	// IntWithDefault returns the value of @key, interpreted as an integer, or
 	// the default value.
 	IntWithDefault(key string, def int) int
+	// Length returns the value associated with @key, interpreted as a length.
+	Length(key string, unit Unit) float64
 	// MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	MediaType() string
 	// NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
@@ -98,9 +97,15 @@ type PrintSettingser interface {
 	OutputBin() string
 	// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	PageSet() PageSet
+	// PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
+	// to @unit.
+	PaperHeight(unit Unit) float64
 	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
 	// a `GtkPaperSize`.
 	PaperSize() *PaperSize
+	// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
+	// @unit.
+	PaperWidth(unit Unit) float64
 	// PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
 	PrintPages() PrintPages
 	// Printer: convenience function to obtain the value of
@@ -141,28 +146,46 @@ type PrintSettingser interface {
 	SetDither(dither string)
 	// SetDouble sets @key to a double value.
 	SetDouble(key string, value float64)
+	// SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
+	SetDuplex(duplex PrintDuplex)
 	// SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 	SetFinishings(finishings string)
 	// SetInt sets @key to an integer value.
 	SetInt(key string, value int)
+	// SetLength associates a length in units of @unit with @key.
+	SetLength(key string, value float64, unit Unit)
 	// SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 	SetMediaType(mediaType string)
 	// SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
 	SetNCopies(numCopies int)
 	// SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 	SetNumberUp(numberUp int)
+	// SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
+	SetNumberUpLayout(numberUpLayout NumberUpLayout)
+	// SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
+	SetOrientation(orientation PageOrientation)
 	// SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	SetOutputBin(outputBin string)
 	// SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
 	SetPageRanges(pageRanges []PageRange)
+	// SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
+	SetPageSet(pageSet PageSet)
+	// SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+	SetPaperHeight(height float64, unit Unit)
 	// SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 	// GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
 	SetPaperSize(paperSize *PaperSize)
+	// SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
+	SetPaperWidth(width float64, unit Unit)
+	// SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
+	SetPrintPages(pages PrintPages)
 	// SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
 	// @printer.
 	SetPrinter(printer string)
 	// SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 	SetPrinterLpi(lpi float64)
+	// SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
+	SetQuality(quality PrintQuality)
 	// SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
 	SetResolution(resolution int)
@@ -545,6 +568,29 @@ func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 	return _gint
 }
 
+// Length returns the value associated with @key, interpreted as a length.
+//
+// The returned value is converted to @units.
+func (settings *PrintSettings) Length(key string, unit Unit) float64 {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.char             // out
+	var _arg2 C.GtkUnit           // out
+	var _cret C.double            // in
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkUnit(unit)
+
+	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
@@ -660,6 +706,25 @@ func (settings *PrintSettings) PageSet() PageSet {
 	return _pageSet
 }
 
+// PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted to
+// @unit.
+func (settings *PrintSettings) PaperHeight(unit Unit) float64 {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkUnit           // out
+	var _cret C.double            // in
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to a
 // `GtkPaperSize`.
 func (settings *PrintSettings) PaperSize() *PaperSize {
@@ -678,6 +743,25 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 	})
 
 	return _paperSize
+}
+
+// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
+// @unit.
+func (settings *PrintSettings) PaperWidth(unit Unit) float64 {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkUnit           // out
+	var _cret C.double            // in
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
@@ -996,6 +1080,17 @@ func (settings *PrintSettings) SetDouble(key string, value float64) {
 	C.gtk_print_settings_set_double(_arg0, _arg1, _arg2)
 }
 
+// SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
+func (settings *PrintSettings) SetDuplex(duplex PrintDuplex) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintDuplex    // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkPrintDuplex(duplex)
+
+	C.gtk_print_settings_set_duplex(_arg0, _arg1)
+}
+
 // SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 func (settings *PrintSettings) SetFinishings(finishings string) {
 	var _arg0 *C.GtkPrintSettings // out
@@ -1020,6 +1115,22 @@ func (settings *PrintSettings) SetInt(key string, value int) {
 	_arg2 = C.int(value)
 
 	C.gtk_print_settings_set_int(_arg0, _arg1, _arg2)
+}
+
+// SetLength associates a length in units of @unit with @key.
+func (settings *PrintSettings) SetLength(key string, value float64, unit Unit) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.char             // out
+	var _arg2 C.double            // out
+	var _arg3 C.GtkUnit           // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.double(value)
+	_arg3 = C.GtkUnit(unit)
+
+	C.gtk_print_settings_set_length(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetMediaType sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
@@ -1058,6 +1169,28 @@ func (settings *PrintSettings) SetNumberUp(numberUp int) {
 	C.gtk_print_settings_set_number_up(_arg0, _arg1)
 }
 
+// SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
+func (settings *PrintSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkNumberUpLayout // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkNumberUpLayout(numberUpLayout)
+
+	C.gtk_print_settings_set_number_up_layout(_arg0, _arg1)
+}
+
+// SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
+func (settings *PrintSettings) SetOrientation(orientation PageOrientation) {
+	var _arg0 *C.GtkPrintSettings  // out
+	var _arg1 C.GtkPageOrientation // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkPageOrientation(orientation)
+
+	C.gtk_print_settings_set_orientation(_arg0, _arg1)
+}
+
 // SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 func (settings *PrintSettings) SetOutputBin(outputBin string) {
 	var _arg0 *C.GtkPrintSettings // out
@@ -1083,6 +1216,30 @@ func (settings *PrintSettings) SetPageRanges(pageRanges []PageRange) {
 	C.gtk_print_settings_set_page_ranges(_arg0, _arg1, _arg2)
 }
 
+// SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
+func (settings *PrintSettings) SetPageSet(pageSet PageSet) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPageSet        // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkPageSet(pageSet)
+
+	C.gtk_print_settings_set_page_set(_arg0, _arg1)
+}
+
+// SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+func (settings *PrintSettings) SetPaperHeight(height float64, unit Unit) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.double            // out
+	var _arg2 C.GtkUnit           // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.double(height)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_print_settings_set_paper_height(_arg0, _arg1, _arg2)
+}
+
 // SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 // GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
 func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
@@ -1093,6 +1250,30 @@ func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize))
 
 	C.gtk_print_settings_set_paper_size(_arg0, _arg1)
+}
+
+// SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
+func (settings *PrintSettings) SetPaperWidth(width float64, unit Unit) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.double            // out
+	var _arg2 C.GtkUnit           // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.double(width)
+	_arg2 = C.GtkUnit(unit)
+
+	C.gtk_print_settings_set_paper_width(_arg0, _arg1, _arg2)
+}
+
+// SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
+func (settings *PrintSettings) SetPrintPages(pages PrintPages) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintPages     // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkPrintPages(pages)
+
+	C.gtk_print_settings_set_print_pages(_arg0, _arg1)
 }
 
 // SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
@@ -1117,6 +1298,17 @@ func (settings *PrintSettings) SetPrinterLpi(lpi float64) {
 	_arg1 = C.double(lpi)
 
 	C.gtk_print_settings_set_printer_lpi(_arg0, _arg1)
+}
+
+// SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
+func (settings *PrintSettings) SetQuality(quality PrintQuality) {
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintQuality   // out
+
+	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = C.GtkPrintQuality(quality)
+
+	C.gtk_print_settings_set_quality(_arg0, _arg1)
 }
 
 // SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,

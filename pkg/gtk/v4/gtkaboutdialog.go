@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -20,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialogger},
+		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialoger},
 	})
 }
 
@@ -72,18 +71,16 @@ func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AboutDialogger describes AboutDialog's methods.
-type AboutDialogger interface {
+// AboutDialoger describes AboutDialog's methods.
+type AboutDialoger interface {
 	// AddCreditSection creates a new section in the "Credits" page.
 	AddCreditSection(sectionName string, people []string)
 	// Artists returns the string which are displayed in the "Artists" tab of
 	// the secondary credits dialog.
 	Artists() []string
-	//
 	Authors() []string
 	// Comments returns the comments string.
 	Comments() string
-	//
 	Copyright() string
 	// Documenters returns the string which are displayed in the "Documenters"
 	// tab of the secondary credits dialog.
@@ -129,6 +126,9 @@ type AboutDialogger interface {
 	// SetLicense sets the license information to be displayed in the secondary
 	// license dialog.
 	SetLicense(license string)
+	// SetLicenseType sets the license of the application showing the about
+	// dialog from a list of known licenses.
+	SetLicenseType(licenseType License)
 	// SetLogo sets the logo in the about dialog.
 	SetLogo(logo gdk.Paintabler)
 	// SetLogoIconName sets the icon name to be displayed as logo in the about
@@ -201,11 +201,11 @@ type AboutDialog struct {
 }
 
 var (
-	_ AboutDialogger  = (*AboutDialog)(nil)
+	_ AboutDialoger   = (*AboutDialog)(nil)
 	_ gextras.Nativer = (*AboutDialog)(nil)
 )
 
-func wrapAboutDialog(obj *externglib.Object) AboutDialogger {
+func wrapAboutDialog(obj *externglib.Object) AboutDialoger {
 	return &AboutDialog{
 		Window: Window{
 			Widget: Widget{
@@ -247,7 +247,7 @@ func wrapAboutDialog(obj *externglib.Object) AboutDialogger {
 	}
 }
 
-func marshalAboutDialogger(p uintptr) (interface{}, error) {
+func marshalAboutDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAboutDialog(obj), nil
@@ -689,6 +689,21 @@ func (about *AboutDialog) SetLicense(license string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
+}
+
+// SetLicenseType sets the license of the application showing the about dialog
+// from a list of known licenses.
+//
+// This function overrides the license set using
+// [method@Gtk.AboutDialog.set_license].
+func (about *AboutDialog) SetLicenseType(licenseType License) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 C.GtkLicense      // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
+	_arg1 = C.GtkLicense(licenseType)
+
+	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
 }
 
 // SetLogo sets the logo in the about dialog.

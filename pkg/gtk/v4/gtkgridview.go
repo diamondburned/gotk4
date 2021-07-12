@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -49,7 +48,7 @@ type GridViewer interface {
 	// SetMinColumns sets the minimum number of columns to use.
 	SetMinColumns(minColumns uint)
 	// SetModel sets the imodel to use.
-	SetModel(model SelectionModeller)
+	SetModel(model SelectionModeler)
 	// SetSingleClickActivate sets whether items should be activated on single
 	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
@@ -131,7 +130,7 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 // The function takes ownership of the arguments, so you can write code like “`c
 // grid_view = gtk_grid_view_new (create_model (),
 // gtk_builder_list_item_factory_new_from_resource ("/resource.ui")); “`
-func NewGridView(model SelectionModeller, factory ListItemFactorier) *GridView {
+func NewGridView(model SelectionModeler, factory ListItemFactorier) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -310,7 +309,7 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 // SetModel sets the imodel to use.
 //
 // This must be a [iface@Gtk.SelectionModel].
-func (self *GridView) SetModel(model SelectionModeller) {
+func (self *GridView) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkGridView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

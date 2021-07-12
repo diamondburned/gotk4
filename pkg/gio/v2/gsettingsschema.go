@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -656,4 +655,32 @@ func (source *SettingsSchemaSource) unref() {
 	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
 
 	C.g_settings_schema_source_unref(_arg0)
+}
+
+// SettingsSchemaSourceGetDefault gets the default system schema source.
+//
+// This function is not required for normal uses of #GSettings but it may be
+// useful to authors of plugin management systems or to those who want to
+// introspect the content of schemas.
+//
+// If no schemas are installed, nil will be returned.
+//
+// The returned source may actually consist of multiple schema sources from
+// different directories, depending on which directories were given in
+// `XDG_DATA_DIRS` and `GSETTINGS_SCHEMA_DIR`. For this reason, all lookups
+// performed against the default source should probably be done recursively.
+func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
+	var _cret *C.GSettingsSchemaSource // in
+
+	_cret = C.g_settings_schema_source_get_default()
+
+	var _settingsSchemaSource *SettingsSchemaSource // out
+
+	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	C.g_settings_schema_source_ref(_cret)
+	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
+		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
+	})
+
+	return _settingsSchemaSource
 }

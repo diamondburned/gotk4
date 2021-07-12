@@ -13,19 +13,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcutter},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcuter},
 	})
 }
 
-// Shortcutter describes Shortcut's methods.
-type Shortcutter interface {
+// Shortcuter describes Shortcut's methods.
+type Shortcuter interface {
 	// Action gets the action that is activated by this shortcut.
 	Action() *ShortcutAction
 	// Arguments gets the arguments that are passed when activating the
@@ -60,17 +59,17 @@ type Shortcut struct {
 }
 
 var (
-	_ Shortcutter     = (*Shortcut)(nil)
+	_ Shortcuter      = (*Shortcut)(nil)
 	_ gextras.Nativer = (*Shortcut)(nil)
 )
 
-func wrapShortcut(obj *externglib.Object) Shortcutter {
+func wrapShortcut(obj *externglib.Object) Shortcuter {
 	return &Shortcut{
 		Object: obj,
 	}
 }
 
-func marshalShortcutter(p uintptr) (interface{}, error) {
+func marshalShortcuter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcut(obj), nil

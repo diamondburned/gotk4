@@ -226,9 +226,7 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		cmt = doc.Synopsis(cmt)
 	}
 
-	cmt = ReflowLinesIndent(indentLvl, cmt, opts...)
-
-	return cmt
+	return ReflowLinesIndent(indentLvl, cmt, opts...)
 }
 
 // nthWord returns the nth word, or an empty string if none.
@@ -377,29 +375,36 @@ func format(self, cmt string, opts []Option) string {
 // ReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go comment
 // strings. It is automatically indented.
 func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
+	indent := strings.Repeat("\t", indentLvl)
+
 	// Account for the indentation in the column limit.
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
 
 	cmt = docText(cmt, col)
 	cmt = strings.TrimSpace(cmt)
 
-	ident := strings.Repeat("\t", indentLvl)
-	lines := strings.Split(cmt, "\n")
-
-	for i, line := range lines {
-		lines[i] = ident + "// " + line
+	if cmt == "" {
+		return ""
 	}
 
-	complete := strings.Join(lines, "\n")
+	if cmt != "" {
+		lines := strings.Split(cmt, "\n")
+
+		for i, line := range lines {
+			lines[i] = indent + "// " + line
+		}
+
+		cmt = strings.Join(lines, "\n")
+	}
 
 	for _, opt := range opts {
 		if _, ok := opt.(trailingNewLine); ok {
-			complete += "\n"
+			cmt += "\n"
 			break
 		}
 	}
 
-	return complete
+	return cmt
 }
 
 // tidyParagraphs cleans up new lines without touching codeblocks.

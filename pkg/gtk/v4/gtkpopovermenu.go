@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -41,14 +40,14 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 // PopoverMenuer describes PopoverMenu's methods.
 type PopoverMenuer interface {
 	// AddChild adds a custom widget to a generated menu.
-	AddChild(child Widgetter, id string) bool
+	AddChild(child Widgeter, id string) bool
 	// MenuModel returns the menu model used to populate the popover.
 	MenuModel() *gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_add_child().
-	RemoveChild(child Widgetter) bool
+	RemoveChild(child Widgeter) bool
 	// SetMenuModel sets a new menu model on @popover.
-	SetMenuModel(model gio.MenuModeller)
+	SetMenuModel(model gio.MenuModeler)
 }
 
 // PopoverMenu: `GtkPopoverMenu` is a subclass of `GtkPopover` that implements
@@ -207,7 +206,7 @@ func marshalPopoverMenuer(p uintptr) (interface{}, error) {
 //
 // This function creates menus with sliding submenus. See
 // [ctor@Gtk.PopoverMenu.new_from_model_full] for a way to control this.
-func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
+func NewPopoverMenuFromModel(model gio.MenuModeler) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -222,11 +221,40 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	return _popoverMenu
 }
 
+// NewPopoverMenuFromModelFull creates a `GtkPopoverMenu` and populates it
+// according to @model.
+//
+// The created buttons are connected to actions found in the action groups that
+// are accessible from the parent widget. This includes the
+// `GtkApplicationWindow` to which the popover belongs. Actions can also be
+// added using [method@Gtk.Widget.insert_action_group] on the parent widget or
+// on any of its parent widgets.
+//
+// The only flag that is supported currently is GTK_POPOVER_MENU_NESTED, which
+// makes GTK create traditional, nested submenus instead of the default sliding
+// submenus.
+func NewPopoverMenuFromModelFull(model gio.MenuModeler, flags PopoverMenuFlags) *PopoverMenu {
+	var _arg1 *C.GMenuModel         // out
+	var _arg2 C.GtkPopoverMenuFlags // out
+	var _cret *C.GtkWidget          // in
+
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
+	_arg2 = C.GtkPopoverMenuFlags(flags)
+
+	_cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
+
+	var _popoverMenu *PopoverMenu // out
+
+	_popoverMenu = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PopoverMenu)
+
+	return _popoverMenu
+}
+
 // AddChild adds a custom widget to a generated menu.
 //
 // For this to work, the menu model of @popover must have an item with a
 // `custom` attribute that matches @id.
-func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
+func (popover *PopoverMenu) AddChild(child Widgeter, id string) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.char           // out
@@ -266,7 +294,7 @@ func (popover *PopoverMenu) MenuModel() *gio.MenuModel {
 
 // RemoveChild removes a widget that has previously been added with
 // gtk_popover_menu_add_child().
-func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
+func (popover *PopoverMenu) RemoveChild(child Widgeter) bool {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GtkWidget      // out
 	var _cret C.gboolean        // in
@@ -289,7 +317,7 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 //
 // The existing contents of @popover are removed, and the @popover is populated
 // with new contents according to @model.
-func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
+func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeler) {
 	var _arg0 *C.GtkPopoverMenu // out
 	var _arg1 *C.GMenuModel     // out
 

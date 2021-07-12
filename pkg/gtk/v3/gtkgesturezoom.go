@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -62,7 +61,7 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 
 // NewGestureZoom returns a newly created Gesture that recognizes zoom in/out
 // gestures (usually known as pinch/zoom).
-func NewGestureZoom(widget Widgetter) *GestureZoom {
+func NewGestureZoom(widget Widgeter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlugger},
+		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPluger},
 	})
 }
 
@@ -31,12 +30,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PlugOverrider interface {
-	//
 	Embedded()
 }
 
-// Plugger describes Plug's methods.
-type Plugger interface {
+// Pluger describes Plug's methods.
+type Pluger interface {
 	// Embedded determines whether the plug is embedded in a socket.
 	Embedded() bool
 	// SocketWindow retrieves the socket the plug is embedded in.
@@ -64,11 +62,11 @@ type Plug struct {
 }
 
 var (
-	_ Plugger         = (*Plug)(nil)
+	_ Pluger          = (*Plug)(nil)
 	_ gextras.Nativer = (*Plug)(nil)
 )
 
-func wrapPlug(obj *externglib.Object) Plugger {
+func wrapPlug(obj *externglib.Object) Pluger {
 	return &Plug{
 		Window: Window{
 			Bin: Bin{
@@ -90,7 +88,7 @@ func wrapPlug(obj *externglib.Object) Plugger {
 	}
 }
 
-func marshalPlugger(p uintptr) (interface{}, error) {
+func marshalPluger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlug(obj), nil

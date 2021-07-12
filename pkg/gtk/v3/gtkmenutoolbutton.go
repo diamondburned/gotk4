@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButtonner},
+		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MenuToolButtonOverrider interface {
-	//
 	ShowMenu()
 }
 
-// MenuToolButtonner describes MenuToolButton's methods.
-type MenuToolButtonner interface {
+// MenuToolButtoner describes MenuToolButton's methods.
+type MenuToolButtoner interface {
 	// Menu gets the Menu associated with MenuToolButton.
 	Menu() *Widget
 	// SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
@@ -46,7 +44,7 @@ type MenuToolButtonner interface {
 	SetArrowTooltipText(text string)
 	// SetMenu sets the Menu that is popped up when the user clicks on the
 	// arrow.
-	SetMenu(menu Widgetter)
+	SetMenu(menu Widgeter)
 }
 
 // MenuToolButton is a ToolItem that contains a button and a small additional
@@ -73,11 +71,11 @@ type MenuToolButton struct {
 }
 
 var (
-	_ MenuToolButtonner = (*MenuToolButton)(nil)
-	_ gextras.Nativer   = (*MenuToolButton)(nil)
+	_ MenuToolButtoner = (*MenuToolButton)(nil)
+	_ gextras.Nativer  = (*MenuToolButton)(nil)
 )
 
-func wrapMenuToolButton(obj *externglib.Object) MenuToolButtonner {
+func wrapMenuToolButton(obj *externglib.Object) MenuToolButtoner {
 	return &MenuToolButton{
 		ToolButton: ToolButton{
 			ToolItem: ToolItem{
@@ -117,7 +115,7 @@ func wrapMenuToolButton(obj *externglib.Object) MenuToolButtonner {
 	}
 }
 
-func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
+func marshalMenuToolButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuToolButton(obj), nil
@@ -125,7 +123,7 @@ func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 
 // NewMenuToolButton creates a new MenuToolButton using @icon_widget as icon and
 // @label as label.
-func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
+func NewMenuToolButton(iconWidget Widgeter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -210,7 +208,7 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
 // @menu is NULL, the arrow button becomes insensitive.
-func (button *MenuToolButton) SetMenu(menu Widgetter) {
+func (button *MenuToolButton) SetMenu(menu Widgeter) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out
 

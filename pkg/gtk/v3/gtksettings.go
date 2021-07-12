@@ -6,12 +6,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -175,7 +175,37 @@ func (settings *Settings) SetStringProperty(name string, vString string, origin 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-//
+// SettingsGetDefault gets the Settings object for the default GDK screen,
+// creating it if necessary. See gtk_settings_get_for_screen().
+func SettingsGetDefault() *Settings {
+	var _cret *C.GtkSettings // in
+
+	_cret = C.gtk_settings_get_default()
+
+	var _settings *Settings // out
+
+	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+
+	return _settings
+}
+
+// SettingsGetForScreen gets the Settings object for @screen, creating it if
+// necessary.
+func SettingsGetForScreen(screen gdk.Screener) *Settings {
+	var _arg1 *C.GdkScreen   // out
+	var _cret *C.GtkSettings // in
+
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_settings_get_for_screen(_arg1)
+
+	var _settings *Settings // out
+
+	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+
+	return _settings
+}
+
 type SettingsValue struct {
 	native C.GtkSettingsValue
 }

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -173,4 +172,21 @@ func (tabArray *TabArray) Resize(newSize int) {
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)
+}
+
+// SetTab sets the alignment and location of a tab stop.
+//
+// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
+	var _arg2 C.PangoTabAlign  // out
+	var _arg3 C.gint           // out
+
+	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg1 = C.gint(tabIndex)
+	_arg2 = C.PangoTabAlign(alignment)
+	_arg3 = C.gint(location)
+
+	C.pango_tab_array_set_tab(_arg0, _arg1, _arg2, _arg3)
 }

@@ -16,7 +16,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,7 +28,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -823,4 +821,50 @@ func (task *Task) SetSourceTag(sourceTag cgo.Handle) {
 	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	C.g_task_set_source_tag(_arg0, _arg1)
+}
+
+// TaskIsValid checks that @result is a #GTask, and that @source_object is its
+// source object (or that @source_object is nil and @result has no source
+// object). This can be used in g_return_if_fail() checks.
+func TaskIsValid(result AsyncResulter, sourceObject gextras.Objector) bool {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.gpointer(unsafe.Pointer((result).(gextras.Nativer).Native()))
+	_arg2 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+
+	_cret = C.g_task_is_valid(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TaskReportError creates a #GTask and then immediately calls
+// g_task_return_error() on it. Use this in the wrapper function of an
+// asynchronous method when you want to avoid even calling the virtual method.
+// You can then use g_async_result_is_tagged() in the finish method wrapper to
+// check if the result there is tagged as having been created by the wrapper
+// method, and deal with it appropriately if so.
+//
+// See also g_task_report_new_error().
+func TaskReportError(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag cgo.Handle, err error) {
+	var _arg1 C.gpointer            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 C.gpointer // out
+	var _arg5 *C.GError  // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
+	_arg5 = (*C.GError)(gerror.New(err))
+
+	C.g_task_report_error(_arg1, _arg2, _arg3, _arg4, _arg5)
 }

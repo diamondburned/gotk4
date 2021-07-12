@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -14,7 +15,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -27,6 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -40,17 +41,26 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusProxyOverrider interface {
-	//
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
 // DBusProxier describes DBusProxy's methods.
 type DBusProxier interface {
+	// Call: asynchronously invokes the @method_name method on @proxy.
+	Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// CallFinish finishes an operation started with g_dbus_proxy_call().
 	CallFinish(res AsyncResulter) (*glib.Variant, error)
+	// CallSync: synchronously invokes the @method_name method on @proxy.
+	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellabler) (*glib.Variant, error)
+	// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
+	// object.
+	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDLister, cancellable Cancellabler, callback AsyncReadyCallback)
 	// CallWithUnixFdListFinish finishes an operation started with
 	// g_dbus_proxy_call_with_unix_fd_list().
 	CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error)
+	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
+	// returns FDList objects.
+	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDLister, cancellable Cancellabler) (*UnixFDList, *glib.Variant, error)
 	// CachedProperty looks up the value for a property from the cache.
 	CachedProperty(propertyName string) *glib.Variant
 	// CachedPropertyNames gets the names of all cached properties on @proxy.
@@ -195,6 +205,160 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	return _dBusProxy, _goerr
 }
 
+// NewDBusProxyForBusSync: like g_dbus_proxy_new_sync() but takes a Type instead
+// of a BusConnection.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+func NewDBusProxyForBusSync(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler) (*DBusProxy, error) {
+	var _arg1 C.GBusType            // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg7 *C.GCancellable       // out
+	var _cret *C.GDBusProxy         // in
+	var _cerr *C.GError             // in
+
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusProxyFlags(flags)
+	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_dbus_proxy_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
+
+	var _dBusProxy *DBusProxy // out
+	var _goerr error          // out
+
+	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dBusProxy, _goerr
+}
+
+// NewDBusProxySync creates a proxy for accessing @interface_name on the remote
+// object at @object_path owned by @name at @connection and synchronously loads
+// D-Bus properties unless the G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is
+// used.
+//
+// If the G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets
+// up match rules for signals. Connect to the BusProxy::g-signal signal to
+// handle signals from the remote object.
+//
+// If both G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+// G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+// guaranteed to return immediately without blocking.
+//
+// If @name is a well-known name and the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
+// and G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION flags aren't set and
+// no name owner currently exists, the message bus will be requested to launch a
+// name owner for the name.
+//
+// This is a synchronous failable constructor. See g_dbus_proxy_new() and
+// g_dbus_proxy_new_finish() for the asynchronous version.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+func NewDBusProxySync(connection DBusConnectioner, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler) (*DBusProxy, error) {
+	var _arg1 *C.GDBusConnection    // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg7 *C.GCancellable       // out
+	var _cret *C.GDBusProxy         // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = C.GDBusProxyFlags(flags)
+	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_dbus_proxy_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_cerr)
+
+	var _dBusProxy *DBusProxy // out
+	var _goerr error          // out
+
+	_dBusProxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DBusProxy)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dBusProxy, _goerr
+}
+
+// Call: asynchronously invokes the @method_name method on @proxy.
+//
+// If @method_name contains any dots, then @name is split into interface and
+// method name parts. This allows using @proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with @proxy is closed then the operation will
+// fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will
+// fail with G_IO_ERROR_CANCELLED. If @parameters contains a value not
+// compatible with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_proxy_call (proxy,
+//                       "TwoStrings",
+//                       g_variant_new ("(ss)",
+//                                      "Thing One",
+//                                      "Thing Two"),
+//                       G_DBUS_CALL_FLAGS_NONE,
+//                       -1,
+//                       NULL,
+//                       (GAsyncReadyCallback) two_strings_done,
+//                       &data);
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @method_name is referenced by it, then the return value is checked against
+// the return type.
+//
+// This is an asynchronous method. When the operation is finished, @callback
+// will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_proxy_call_finish() to get the
+// result of the operation. See g_dbus_proxy_call_sync() for the synchronous
+// version of this method.
+//
+// If @callback is nil then the D-Bus method call message will be sent with the
+// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+func (proxy *DBusProxy) Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusProxy         // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 C.GDBusCallFlags      // out
+	var _arg4 C.gint                // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
 // CallFinish finishes an operation started with g_dbus_proxy_call().
 func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
@@ -220,6 +384,98 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	return _variant, _goerr
 }
 
+// CallSync: synchronously invokes the @method_name method on @proxy.
+//
+// If @method_name contains any dots, then @name is split into interface and
+// method name parts. This allows using @proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with @proxy is disconnected then the
+// operation will fail with G_IO_ERROR_CLOSED. If @cancellable is canceled, the
+// operation will fail with G_IO_ERROR_CANCELLED. If @parameters contains a
+// value not compatible with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the @parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//    g_dbus_proxy_call_sync (proxy,
+//                            "TwoStrings",
+//                            g_variant_new ("(ss)",
+//                                           "Thing One",
+//                                           "Thing Two"),
+//                            G_DBUS_CALL_FLAGS_NONE,
+//                            -1,
+//                            NULL,
+//                            &error);
+//
+// The calling thread is blocked until a reply is received. See
+// g_dbus_proxy_call() for the asynchronous version of this method.
+//
+// If @proxy has an expected interface (see BusProxy:g-interface-info) and
+// @method_name is referenced by it, then the return value is checked against
+// the return type.
+func (proxy *DBusProxy) CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable Cancellabler) (*glib.Variant, error) {
+	var _arg0 *C.GDBusProxy    // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariant      // out
+	var _arg3 C.GDBusCallFlags // out
+	var _arg4 C.gint           // out
+	var _arg5 *C.GCancellable  // out
+	var _cret *C.GVariant      // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_dbus_proxy_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _variant, _goerr
+}
+
+// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList object.
+//
+// This method is only available on UNIX.
+func (proxy *DBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDLister, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusProxy         // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 C.GDBusCallFlags      // out
+	var _arg4 C.gint                // out
+	var _arg5 *C.GUnixFDList        // out
+	var _arg6 *C.GCancellable       // out
+	var _arg7 C.GAsyncReadyCallback // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
+	_arg6 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg8 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+}
+
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_proxy_call_with_unix_fd_list().
 func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error) {
@@ -239,6 +495,48 @@ func (proxy *DBusProxy) CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList
 	var _goerr error           // out
 
 	_outFdList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(*UnixFDList)
+	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	C.g_variant_ref(_cret)
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _outFdList, _variant, _goerr
+}
+
+// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
+// returns FDList objects.
+//
+// This method is only available on UNIX.
+func (proxy *DBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDLister, cancellable Cancellabler) (*UnixFDList, *glib.Variant, error) {
+	var _arg0 *C.GDBusProxy    // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariant      // out
+	var _arg3 C.GDBusCallFlags // out
+	var _arg4 C.gint           // out
+	var _arg5 *C.GUnixFDList   // out
+	var _arg6 *C.GUnixFDList   // in
+	var _arg7 *C.GCancellable  // out
+	var _cret *C.GVariant      // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(proxy.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	_arg5 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_dbus_proxy_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
+
+	var _outFdList *UnixFDList // out
+	var _variant *glib.Variant // out
+	var _goerr error           // out
+
+	_outFdList = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6)))).(*UnixFDList)
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
@@ -515,4 +813,89 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	_arg1 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
+}
+
+// NewDBusProxy creates a proxy for accessing @interface_name on the remote
+// object at @object_path owned by @name at @connection and asynchronously loads
+// D-Bus properties unless the G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is
+// used. Connect to the BusProxy::g-properties-changed signal to get notified
+// about property changes.
+//
+// If the G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets
+// up match rules for signals. Connect to the BusProxy::g-signal signal to
+// handle signals from the remote object.
+//
+// If both G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+// G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+// guaranteed to complete immediately without blocking.
+//
+// If @name is a well-known name and the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
+// and G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION flags aren't set and
+// no name owner currently exists, the message bus will be requested to launch a
+// name owner for the name.
+//
+// This is a failable asynchronous constructor - when the proxy is ready,
+// @callback will be invoked and you can use g_dbus_proxy_new_finish() to get
+// the result.
+//
+// See g_dbus_proxy_new_sync() and for a synchronous version of this
+// constructor.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+func NewDBusProxy(connection DBusConnectioner, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 *C.GDBusConnection    // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg7 *C.GCancellable       // out
+	var _arg8 C.GAsyncReadyCallback // out
+	var _arg9 C.gpointer
+
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg2 = C.GDBusProxyFlags(flags)
+	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg9 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_proxy_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+}
+
+// DBusProxyNewForBus: like g_dbus_proxy_new() but takes a Type instead of a
+// BusConnection.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+func DBusProxyNewForBus(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable Cancellabler, callback AsyncReadyCallback) {
+	var _arg1 C.GBusType            // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg7 *C.GCancellable       // out
+	var _arg8 C.GAsyncReadyCallback // out
+	var _arg9 C.gpointer
+
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusProxyFlags(flags)
+	_arg3 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(info))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg9 = C.gpointer(gbox.Assign(callback))
+
+	C.g_dbus_proxy_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }

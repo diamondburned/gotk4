@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgetter},
+		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgeter},
 	})
 }
 
-// FileChooserWidgetter describes FileChooserWidget's methods.
-type FileChooserWidgetter interface {
+// FileChooserWidgeter describes FileChooserWidget's methods.
+type FileChooserWidgeter interface {
 	privateFileChooserWidget()
 }
 
@@ -43,11 +42,11 @@ type FileChooserWidget struct {
 }
 
 var (
-	_ FileChooserWidgetter = (*FileChooserWidget)(nil)
-	_ gextras.Nativer      = (*FileChooserWidget)(nil)
+	_ FileChooserWidgeter = (*FileChooserWidget)(nil)
+	_ gextras.Nativer     = (*FileChooserWidget)(nil)
 )
 
-func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidgetter {
+func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidgeter {
 	return &FileChooserWidget{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -69,10 +68,29 @@ func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidgetter {
 	}
 }
 
-func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFileChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserWidget(obj), nil
+}
+
+// NewFileChooserWidget creates a new `GtkFileChooserWidget`.
+//
+// This is a file chooser widget that can be embedded in custom windows, and it
+// is the same widget that is used by `GtkFileChooserDialog`.
+func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
+	var _arg1 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_widget_new(_arg1)
+
+	var _fileChooserWidget *FileChooserWidget // out
+
+	_fileChooserWidget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*FileChooserWidget)
+
+	return _fileChooserWidget
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject

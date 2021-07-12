@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,22 +22,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltipper},
+		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltiper},
 	})
 }
 
-// Tooltipper describes Tooltip's methods.
-type Tooltipper interface {
+// Tooltiper describes Tooltip's methods.
+type Tooltiper interface {
 	// SetCustom replaces the widget packed into the tooltip with
 	// @custom_widget.
-	SetCustom(customWidget Widgetter)
+	SetCustom(customWidget Widgeter)
 	// SetIcon sets the icon of the tooltip (which is in front of the text) to
 	// be @pixbuf.
-	SetIcon(pixbuf gdkpixbuf.Pixbuffer)
+	SetIcon(pixbuf gdkpixbuf.Pixbufer)
 	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by @gicon with the size indicated by
 	// @size.
-	SetIconFromGIcon(gicon gio.Iconner, size int)
+	SetIconFromGIcon(gicon gio.Iconer, size int)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by @icon_name with the size indicated
 	// by @size.
@@ -97,17 +96,17 @@ type Tooltip struct {
 }
 
 var (
-	_ Tooltipper      = (*Tooltip)(nil)
+	_ Tooltiper       = (*Tooltip)(nil)
 	_ gextras.Nativer = (*Tooltip)(nil)
 )
 
-func wrapTooltip(obj *externglib.Object) Tooltipper {
+func wrapTooltip(obj *externglib.Object) Tooltiper {
 	return &Tooltip{
 		Object: obj,
 	}
 }
 
-func marshalTooltipper(p uintptr) (interface{}, error) {
+func marshalTooltiper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTooltip(obj), nil
@@ -117,7 +116,7 @@ func marshalTooltipper(p uintptr) (interface{}, error) {
 // @custom_widget does not get destroyed when the tooltip goes away. By default
 // a box with a Image and Label is embedded in the tooltip, which can be
 // configured using gtk_tooltip_set_markup() and gtk_tooltip_set_icon().
-func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
+func (tooltip *Tooltip) SetCustom(customWidget Widgeter) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -129,7 +128,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 
 // SetIcon sets the icon of the tooltip (which is in front of the text) to be
 // @pixbuf. If @pixbuf is nil, the image will be hidden.
-func (tooltip *Tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuffer) {
+func (tooltip *Tooltip) SetIcon(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GdkPixbuf  // out
 
@@ -142,7 +141,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuffer) {
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
 // to be the icon indicated by @gicon with the size indicated by @size. If
 // @gicon is nil, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconer, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -230,4 +229,16 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
+}
+
+// TooltipTriggerTooltipQuery triggers a new tooltip query on @display, in order
+// to update the current visible tooltip, or to show/hide the current tooltip.
+// This function is useful to call when, for example, the state of the widget
+// changed by a key press.
+func TooltipTriggerTooltipQuery(display gdk.Displayer) {
+	var _arg1 *C.GdkDisplay // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	C.gtk_tooltip_trigger_tooltip_query(_arg1)
 }

@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPlugger},
+		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPluger},
 	})
 }
 
@@ -27,12 +26,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PlugOverrider interface {
-	//
 	ObjectID() string
 }
 
-// Plugger describes Plug's methods.
-type Plugger interface {
+// Pluger describes Plug's methods.
+type Pluger interface {
 	// ID gets the unique ID of an Plug object, which can be used to embed
 	// inside of an Socket using atk_socket_embed().
 	ID() string
@@ -49,11 +47,11 @@ type Plug struct {
 }
 
 var (
-	_ Plugger         = (*Plug)(nil)
+	_ Pluger          = (*Plug)(nil)
 	_ gextras.Nativer = (*Plug)(nil)
 )
 
-func wrapPlug(obj *externglib.Object) Plugger {
+func wrapPlug(obj *externglib.Object) Pluger {
 	return &Plug{
 		ObjectClass: ObjectClass{
 			Object: obj,
@@ -64,7 +62,7 @@ func wrapPlug(obj *externglib.Object) Plugger {
 	}
 }
 
-func marshalPlugger(p uintptr) (interface{}, error) {
+func marshalPluger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlug(obj), nil

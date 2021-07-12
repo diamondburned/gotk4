@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtoner},
 	})
 }
 
@@ -31,12 +30,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
-	//
 	DrawIndicator(cr *cairo.Context)
 }
 
-// CheckButtonner describes CheckButton's methods.
-type CheckButtonner interface {
+// CheckButtoner describes CheckButton's methods.
+type CheckButtoner interface {
 	privateCheckButton()
 }
 
@@ -61,11 +59,11 @@ type CheckButton struct {
 }
 
 var (
-	_ CheckButtonner  = (*CheckButton)(nil)
+	_ CheckButtoner   = (*CheckButton)(nil)
 	_ gextras.Nativer = (*CheckButton)(nil)
 )
 
-func wrapCheckButton(obj *externglib.Object) CheckButtonner {
+func wrapCheckButton(obj *externglib.Object) CheckButtoner {
 	return &CheckButton{
 		ToggleButton: ToggleButton{
 			Button: Button{
@@ -105,7 +103,7 @@ func wrapCheckButton(obj *externglib.Object) CheckButtonner {
 	}
 }
 
-func marshalCheckButtonner(p uintptr) (interface{}, error) {
+func marshalCheckButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckButton(obj), nil

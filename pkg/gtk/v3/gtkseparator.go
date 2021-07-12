@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparatorrer},
+		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparatorer},
 	})
 }
 
-// Separatorrer describes Separator's methods.
-type Separatorrer interface {
+// Separatorer describes Separator's methods.
+type Separatorer interface {
 	privateSeparator()
 }
 
@@ -47,11 +46,11 @@ type Separator struct {
 }
 
 var (
-	_ Separatorrer    = (*Separator)(nil)
+	_ Separatorer     = (*Separator)(nil)
 	_ gextras.Nativer = (*Separator)(nil)
 )
 
-func wrapSeparator(obj *externglib.Object) Separatorrer {
+func wrapSeparator(obj *externglib.Object) Separatorer {
 	return &Separator{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -70,10 +69,26 @@ func wrapSeparator(obj *externglib.Object) Separatorrer {
 	}
 }
 
-func marshalSeparatorrer(p uintptr) (interface{}, error) {
+func marshalSeparatorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparator(obj), nil
+}
+
+// NewSeparator creates a new Separator with the given orientation.
+func NewSeparator(orientation Orientation) *Separator {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_separator_new(_arg1)
+
+	var _separator *Separator // out
+
+	_separator = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Separator)
+
+	return _separator
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject

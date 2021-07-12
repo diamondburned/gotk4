@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtoner},
 	})
 }
 
-// LockButtonner describes LockButton's methods.
-type LockButtonner interface {
+// LockButtoner describes LockButton's methods.
+type LockButtoner interface {
 	// Permission obtains the `GPermission` object that controls @button.
 	Permission() *gio.Permission
 	// SetPermission sets the `GPermission` object that controls @button.
@@ -73,11 +72,11 @@ type LockButton struct {
 }
 
 var (
-	_ LockButtonner   = (*LockButton)(nil)
+	_ LockButtoner    = (*LockButton)(nil)
 	_ gextras.Nativer = (*LockButton)(nil)
 )
 
-func wrapLockButton(obj *externglib.Object) LockButtonner {
+func wrapLockButton(obj *externglib.Object) LockButtoner {
 	return &LockButton{
 		Button: Button{
 			Widget: Widget{
@@ -114,7 +113,7 @@ func wrapLockButton(obj *externglib.Object) LockButtonner {
 	}
 }
 
-func marshalLockButtonner(p uintptr) (interface{}, error) {
+func marshalLockButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLockButton(obj), nil

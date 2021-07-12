@@ -12,14 +12,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxxer},
+		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxer},
 	})
 }
 
@@ -28,14 +27,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComboBoxOverrider interface {
-	//
 	Changed()
-	//
 	FormatEntryText(path string) string
 }
 
-// ComboBoxxer describes ComboBox's methods.
-type ComboBoxxer interface {
+// ComboBoxer describes ComboBox's methods.
+type ComboBoxer interface {
 	// Active returns the index of the currently active item.
 	Active() int
 	// ActiveID returns the ID of the active row of @combo_box.
@@ -73,8 +70,11 @@ type ComboBoxxer interface {
 	// SetActiveIter sets the current active item to be the one referenced by
 	// @iter.
 	SetActiveIter(iter *TreeIter)
+	// SetButtonSensitivity sets whether the dropdown button of the combo box
+	// should update its sensitivity depending on the model contents.
+	SetButtonSensitivity(sensitivity SensitivityType)
 	// SetChild sets the child widget of @combo_box.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetEntryTextColumn sets the model column which @combo_box should use to
 	// get strings from to be @text_column.
 	SetEntryTextColumn(textColumn int)
@@ -82,7 +82,7 @@ type ComboBoxxer interface {
 	// string IDs for values from.
 	SetIDColumn(idColumn int)
 	// SetModel sets the model used by @combo_box to be @model.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 	// width.
 	SetPopupFixedWidth(fixed bool)
@@ -142,11 +142,11 @@ type ComboBox struct {
 }
 
 var (
-	_ ComboBoxxer     = (*ComboBox)(nil)
+	_ ComboBoxer      = (*ComboBox)(nil)
 	_ gextras.Nativer = (*ComboBox)(nil)
 )
 
-func wrapComboBox(obj *externglib.Object) ComboBoxxer {
+func wrapComboBox(obj *externglib.Object) ComboBoxer {
 	return &ComboBox{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -184,7 +184,7 @@ func wrapComboBox(obj *externglib.Object) ComboBoxxer {
 	}
 }
 
-func marshalComboBoxxer(p uintptr) (interface{}, error) {
+func marshalComboBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapComboBox(obj), nil
@@ -217,7 +217,7 @@ func NewComboBoxWithEntry() *ComboBox {
 }
 
 // NewComboBoxWithModel creates a new `GtkComboBox` with a model.
-func NewComboBoxWithModel(model TreeModeller) *ComboBox {
+func NewComboBoxWithModel(model TreeModeler) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -234,7 +234,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty `GtkComboBox` with an entry
 // and a model.
-func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModeler) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -536,8 +536,20 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }
 
+// SetButtonSensitivity sets whether the dropdown button of the combo box should
+// update its sensitivity depending on the model contents.
+func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
+	var _arg0 *C.GtkComboBox       // out
+	var _arg1 C.GtkSensitivityType // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
+	_arg1 = C.GtkSensitivityType(sensitivity)
+
+	C.gtk_combo_box_set_button_sensitivity(_arg0, _arg1)
+}
+
 // SetChild sets the child widget of @combo_box.
-func (comboBox *ComboBox) SetChild(child Widgetter) {
+func (comboBox *ComboBox) SetChild(child Widgeter) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -588,7 +600,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 // Note that this function does not clear the cell renderers, you have to call
 // [method@Gtk.CellLayout.clear] yourself if you need to set up different cell
 // renderers for the new model.
-func (comboBox *ComboBox) SetModel(model TreeModeller) {
+func (comboBox *ComboBox) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -441,4 +440,97 @@ func (a *Box) Union(b *Box) Box {
 	C.graphene_box_union(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
 
 	return _res
+}
+
+// BoxEmpty: degenerate #graphene_box_t that can only be expanded.
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxEmpty() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_empty()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
+}
+
+// BoxInfinite: degenerate #graphene_box_t that cannot be expanded.
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxInfinite() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_infinite()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
+}
+
+// BoxMinusOne with the minimum vertex set at (-1, -1, -1) and the maximum
+// vertex set at (0, 0, 0).
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxMinusOne() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_minus_one()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
+}
+
+// BoxOne with the minimum vertex set at (0, 0, 0) and the maximum vertex set at
+// (1, 1, 1).
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxOne() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_one()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
+}
+
+// BoxOneMinusOne with the minimum vertex set at (-1, -1, -1) and the maximum
+// vertex set at (1, 1, 1).
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxOneMinusOne() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_one_minus_one()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
+}
+
+// BoxZero with both the minimum and maximum vertices set at (0, 0, 0).
+//
+// The returned value is owned by Graphene and should not be modified or freed.
+func BoxZero() *Box {
+	var _cret *C.graphene_box_t // in
+
+	_cret = C.graphene_box_zero()
+
+	var _box *Box // out
+
+	_box = (*Box)(unsafe.Pointer(_cret))
+
+	return _box
 }

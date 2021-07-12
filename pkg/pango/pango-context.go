@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -61,11 +60,17 @@ type Contexter interface {
 	// LoadFontset: load a set of fonts in the context that can be used to
 	// render a font matching @desc.
 	LoadFontset(desc *FontDescription, language *Language) *Fontset
+	// SetBaseDir sets the base direction for the context.
+	SetBaseDir(direction Direction)
+	// SetBaseGravity sets the base gravity for the context.
+	SetBaseGravity(gravity Gravity)
 	// SetFontDescription: set the default font description for the context
 	SetFontDescription(desc *FontDescription)
 	// SetFontMap sets the font map to be searched when fonts are looked-up in
 	// this context.
-	SetFontMap(fontMap FontMapper)
+	SetFontMap(fontMap FontMaper)
+	// SetGravityHint sets the gravity hint for the context.
+	SetGravityHint(hint GravityHint)
 	// SetLanguage sets the global language tag for the context.
 	SetLanguage(language *Language)
 	// SetMatrix sets the transformation matrix that will be applied when
@@ -430,6 +435,37 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) *
 	return _fontset
 }
 
+// SetBaseDir sets the base direction for the context.
+//
+// The base direction is used in applying the Unicode bidirectional algorithm;
+// if the @direction is PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL, then the
+// value will be used as the paragraph direction in the Unicode bidirectional
+// algorithm. A value of PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is
+// used only for paragraphs that do not contain any strong characters
+// themselves.
+func (context *Context) SetBaseDir(direction Direction) {
+	var _arg0 *C.PangoContext  // out
+	var _arg1 C.PangoDirection // out
+
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = C.PangoDirection(direction)
+
+	C.pango_context_set_base_dir(_arg0, _arg1)
+}
+
+// SetBaseGravity sets the base gravity for the context.
+//
+// The base gravity is used in laying vertical text out.
+func (context *Context) SetBaseGravity(gravity Gravity) {
+	var _arg0 *C.PangoContext // out
+	var _arg1 C.PangoGravity  // out
+
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = C.PangoGravity(gravity)
+
+	C.pango_context_set_base_gravity(_arg0, _arg1)
+}
+
 // SetFontDescription: set the default font description for the context
 func (context *Context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
@@ -446,7 +482,7 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 //
 // This is only for internal use by Pango backends, a `PangoContext` obtained
 // via one of the recommended methods should already have a suitable font map.
-func (context *Context) SetFontMap(fontMap FontMapper) {
+func (context *Context) SetFontMap(fontMap FontMaper) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -454,6 +490,21 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
 
 	C.pango_context_set_font_map(_arg0, _arg1)
+}
+
+// SetGravityHint sets the gravity hint for the context.
+//
+// The gravity hint is used in laying vertical text out, and is only relevant if
+// gravity of the context as returned by [method@Pango.Context.get_gravity] is
+// set to PANGO_GRAVITY_EAST or PANGO_GRAVITY_WEST.
+func (context *Context) SetGravityHint(hint GravityHint) {
+	var _arg0 *C.PangoContext    // out
+	var _arg1 C.PangoGravityHint // out
+
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = C.PangoGravityHint(hint)
+
+	C.pango_context_set_gravity_hint(_arg0, _arg1)
 }
 
 // SetLanguage sets the global language tag for the context.

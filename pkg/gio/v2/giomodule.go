@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -39,4 +38,58 @@ func IOModulesScanAllInDirectory(dirname string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_io_modules_scan_all_in_directory(_arg1)
+}
+
+// IOModuleQuery: optional API for GIO modules to implement.
+//
+// Should return a list of all the extension points that may be implemented in
+// this module.
+//
+// This method will not be called in normal use, however it may be called when
+// probing existing modules and recording which extension points that this model
+// is used for. This means we won't have to load and initialize this module
+// unless its needed.
+//
+// If this function is not implemented by the module the module will always be
+// loaded, initialized and then unloaded on application startup so that it can
+// register its extension points during init.
+//
+// Note that a module need not actually implement all the extension points that
+// g_io_module_query() returns, since the exact list of extension may depend on
+// runtime issues. However all extension points actually implemented must be
+// returned by g_io_module_query() (if defined).
+//
+// When installing a module that implements g_io_module_query() you must run
+// gio-querymodules in order to build the cache files required for lazy loading.
+//
+// Since 2.56, this function should be named `g_io_<modulename>_query`, where
+// `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
+// everything after the first dot removed, and with `-` replaced with `_`
+// throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
+// Using the new symbol names avoids name clashes when building modules
+// statically. The old symbol names continue to be supported, but cannot be used
+// for static builds.
+func IOModuleQuery() []string {
+	var _cret **C.char
+
+	_cret = C.g_io_module_query()
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
 }

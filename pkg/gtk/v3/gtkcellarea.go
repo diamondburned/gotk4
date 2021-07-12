@@ -6,6 +6,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -14,12 +15,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // gboolean gotk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
 // gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer);
 import "C"
@@ -94,11 +93,15 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboole
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellAreaOverrider interface {
+	// Activate activates @area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	Activate(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
 	// Add adds @renderer to @area with the default child cell properties.
 	Add(renderer CellRendererer)
 	// ApplyAttributes applies any connected attributes to the renderers in
 	// @area by pulling the values from @tree_model.
-	ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool)
+	ApplyAttributes(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool)
 	// CopyContext: this is sometimes needed for cases where rows need to share
 	// alignments in one orientation but may be separately grouped in the
 	// opposing orientation.
@@ -116,11 +119,18 @@ type CellAreaOverrider interface {
 	// the same CellAreaContext which was used to request the size of those rows
 	// of data).
 	CreateContext() *CellAreaContext
+	// Focus: this should be called by the @area’s owning layout widget when
+	// focus is to be passed to @area, or moved within @area for a given
+	// @direction and row data.
+	//
+	// Implementing CellArea classes should implement this method to receive and
+	// navigate focus in its own way particular to how it lays out cells.
+	Focus(direction DirectionType) bool
 	// Foreach calls @callback for every CellRenderer in @area.
 	Foreach(callback CellCallback)
 	// ForeachAlloc calls @callback for every CellRenderer in @area with the
 	// allocated rectangle inside @cell_area.
-	ForeachAlloc(context CellAreaContexter, widget Widgetter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	ForeachAlloc(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -129,7 +139,7 @@ type CellAreaOverrider interface {
 	// important to check the @minimum_height and @natural_height of this call
 	// but rather to consult gtk_cell_area_context_get_preferred_height() after
 	// a series of requests.
-	PreferredHeight(context CellAreaContexter, widget Widgetter) (minimumHeight int, naturalHeight int)
+	PreferredHeight(context CellAreaContexter, widget Widgeter) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified @width.
 	//
@@ -144,7 +154,7 @@ type CellAreaOverrider interface {
 	// requested with gtk_cell_area_get_preferred_width() again and then the
 	// full width of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_width().
-	PreferredHeightForWidth(context CellAreaContexter, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	PreferredHeightForWidth(context CellAreaContexter, widget Widgeter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// @area will store some geometrical information in @context along the way;
@@ -152,7 +162,7 @@ type CellAreaOverrider interface {
 	// important to check the @minimum_width and @natural_width of this call but
 	// rather to consult gtk_cell_area_context_get_preferred_width() after a
 	// series of requests.
-	PreferredWidth(context CellAreaContexter, widget Widgetter) (minimumWidth int, naturalWidth int)
+	PreferredWidth(context CellAreaContexter, widget Widgeter) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified @height.
 	//
@@ -167,7 +177,7 @@ type CellAreaOverrider interface {
 	// requested with gtk_cell_area_get_preferred_height() again and then the
 	// full height of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_height().
-	PreferredWidthForHeight(context CellAreaContexter, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	PreferredWidthForHeight(context CellAreaContexter, widget Widgeter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -176,10 +186,17 @@ type CellAreaOverrider interface {
 	IsActivatable() bool
 	// Remove removes @renderer from @area.
 	Remove(renderer CellRendererer)
+	// Render renders @area’s cells according to @area’s layout onto @widget at
+	// the given coordinates.
+	Render(context CellAreaContexter, widget Widgeter, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 }
 
 // CellAreaer describes CellArea's methods.
 type CellAreaer interface {
+	// Activate activates @area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	Activate(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
 	// Add adds @renderer to @area with the default child cell properties.
 	Add(renderer CellRendererer)
 	// AddFocusSibling adds @sibling to @renderer’s focusable area, focus will
@@ -188,7 +205,7 @@ type CellAreaer interface {
 	AddFocusSibling(renderer CellRendererer, sibling CellRendererer)
 	// ApplyAttributes applies any connected attributes to the renderers in
 	// @area by pulling the values from @tree_model.
-	ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool)
+	ApplyAttributes(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool)
 	// AttributeConnect connects an @attribute to apply values from @column for
 	// the TreeModel in use.
 	AttributeConnect(renderer CellRendererer, attribute string, column int)
@@ -209,18 +226,22 @@ type CellAreaer interface {
 	// CreateContext creates a CellAreaContext to be used with @area for all
 	// purposes.
 	CreateContext() *CellAreaContext
+	// Focus: this should be called by the @area’s owning layout widget when
+	// focus is to be passed to @area, or moved within @area for a given
+	// @direction and row data.
+	Focus(direction DirectionType) bool
 	// Foreach calls @callback for every CellRenderer in @area.
 	Foreach(callback CellCallback)
 	// ForeachAlloc calls @callback for every CellRenderer in @area with the
 	// allocated rectangle inside @cell_area.
-	ForeachAlloc(context CellAreaContexter, widget Widgetter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
+	ForeachAlloc(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// CellAllocation derives the allocation of @renderer inside @area if @area
 	// were to be renderered in @cell_area.
-	CellAllocation(context CellAreaContexter, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle
+	CellAllocation(context CellAreaContexter, widget Widgeter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle
 	// CellAtPosition gets the CellRenderer at @x and @y coordinates inside
 	// @area and optionally returns the full cell allocation for it inside
 	// @cell_area.
-	CellAtPosition(context CellAreaContexter, widget Widgetter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, *CellRenderer)
+	CellAtPosition(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, *CellRenderer)
 	// CurrentPathString gets the current TreePath string for the currently
 	// applied TreeIter, this is implicitly updated when
 	// gtk_cell_area_apply_attributes() is called and can be used to interact
@@ -238,15 +259,15 @@ type CellAreaer interface {
 	FocusFromSibling(renderer CellRendererer) *CellRenderer
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
-	PreferredHeight(context CellAreaContexter, widget Widgetter) (minimumHeight int, naturalHeight int)
+	PreferredHeight(context CellAreaContexter, widget Widgeter) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified @width.
-	PreferredHeightForWidth(context CellAreaContexter, widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	PreferredHeightForWidth(context CellAreaContexter, widget Widgeter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
-	PreferredWidth(context CellAreaContexter, widget Widgetter) (minimumWidth int, naturalWidth int)
+	PreferredWidth(context CellAreaContexter, widget Widgeter) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified @height.
-	PreferredWidthForHeight(context CellAreaContexter, widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	PreferredWidthForHeight(context CellAreaContexter, widget Widgeter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -255,7 +276,7 @@ type CellAreaer interface {
 	// InnerCellArea: this is a convenience function for CellArea
 	// implementations to get the inner area where a given CellRenderer will be
 	// rendered.
-	InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) gdk.Rectangle
+	InnerCellArea(widget Widgeter, cellArea *gdk.Rectangle) gdk.Rectangle
 	// IsActivatable returns whether the area can do anything when activated,
 	// after applying new attributes to @area.
 	IsActivatable() bool
@@ -267,6 +288,12 @@ type CellAreaer interface {
 	// RemoveFocusSibling removes @sibling from @renderer’s focus sibling list
 	// (see gtk_cell_area_add_focus_sibling()).
 	RemoveFocusSibling(renderer CellRendererer, sibling CellRendererer)
+	// Render renders @area’s cells according to @area’s layout onto @widget at
+	// the given coordinates.
+	Render(context CellAreaContexter, widget Widgeter, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	// RequestRenderer: this is a convenience function for CellArea
+	// implementations to request size for cell renderers.
+	RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgeter, forSize int) (minimumSize int, naturalSize int)
 	// SetFocusCell: explicitly sets the currently focused cell to @renderer.
 	SetFocusCell(renderer CellRendererer)
 	// StopEditing: explicitly stops the editing of the currently edited cell.
@@ -434,6 +461,38 @@ func (v *CellArea) Native() uintptr {
 	return v.InitiallyUnowned.Object.Native()
 }
 
+// Activate activates @area, usually by activating the currently focused cell,
+// however some subclasses which embed widgets in the area can also activate a
+// widget if it currently has the focus.
+func (area *CellArea) Activate(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 C.GtkCellRendererState // out
+	var _arg5 C.gboolean             // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg4 = C.GtkCellRendererState(flags)
+	if editOnly {
+		_arg5 = C.TRUE
+	}
+
+	_cret = C.gtk_cell_area_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Add adds @renderer to @area with the default child cell properties.
 func (area *CellArea) Add(renderer CellRendererer) {
 	var _arg0 *C.GtkCellArea     // out
@@ -465,7 +524,7 @@ func (area *CellArea) AddFocusSibling(renderer CellRendererer, sibling CellRende
 
 // ApplyAttributes applies any connected attributes to the renderers in @area by
 // pulling the values from @tree_model.
-func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool) {
+func (area *CellArea) ApplyAttributes(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool) {
 	var _arg0 *C.GtkCellArea  // out
 	var _arg1 *C.GtkTreeModel // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -617,6 +676,31 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 	return _cellAreaContext
 }
 
+// Focus: this should be called by the @area’s owning layout widget when focus
+// is to be passed to @area, or moved within @area for a given @direction and
+// row data.
+//
+// Implementing CellArea classes should implement this method to receive and
+// navigate focus in its own way particular to how it lays out cells.
+func (area *CellArea) Focus(direction DirectionType) bool {
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Foreach calls @callback for every CellRenderer in @area.
 func (area *CellArea) Foreach(callback CellCallback) {
 	var _arg0 *C.GtkCellArea    // out
@@ -632,7 +716,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 
 // ForeachAlloc calls @callback for every CellRenderer in @area with the
 // allocated rectangle inside @cell_area.
-func (area *CellArea) ForeachAlloc(context CellAreaContexter, widget Widgetter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
+func (area *CellArea) ForeachAlloc(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
 	var _arg0 *C.GtkCellArea         // out
 	var _arg1 *C.GtkCellAreaContext  // out
 	var _arg2 *C.GtkWidget           // out
@@ -654,7 +738,7 @@ func (area *CellArea) ForeachAlloc(context CellAreaContexter, widget Widgetter, 
 
 // CellAllocation derives the allocation of @renderer inside @area if @area were
 // to be renderered in @cell_area.
-func (area *CellArea) CellAllocation(context CellAreaContexter, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (area *CellArea) CellAllocation(context CellAreaContexter, widget Widgeter, renderer CellRendererer, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -675,7 +759,7 @@ func (area *CellArea) CellAllocation(context CellAreaContexter, widget Widgetter
 
 // CellAtPosition gets the CellRenderer at @x and @y coordinates inside @area
 // and optionally returns the full cell allocation for it inside @cell_area.
-func (area *CellArea) CellAtPosition(context CellAreaContexter, widget Widgetter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, *CellRenderer) {
+func (area *CellArea) CellAtPosition(context CellAreaContexter, widget Widgeter, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, *CellRenderer) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -798,7 +882,7 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) *CellRenderer {
 // check the @minimum_height and @natural_height of this call but rather to
 // consult gtk_cell_area_context_get_preferred_height() after a series of
 // requests.
-func (area *CellArea) PreferredHeight(context CellAreaContexter, widget Widgetter) (minimumHeight int, naturalHeight int) {
+func (area *CellArea) PreferredHeight(context CellAreaContexter, widget Widgeter) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -833,7 +917,7 @@ func (area *CellArea) PreferredHeight(context CellAreaContexter, widget Widgette
 // with gtk_cell_area_get_preferred_width() again and then the full width of the
 // requested rows checked again with
 // gtk_cell_area_context_get_preferred_width().
-func (area *CellArea) PreferredHeightForWidth(context CellAreaContexter, widget Widgetter, width int) (minimumHeight int, naturalHeight int) {
+func (area *CellArea) PreferredHeightForWidth(context CellAreaContexter, widget Widgeter, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -864,7 +948,7 @@ func (area *CellArea) PreferredHeightForWidth(context CellAreaContexter, widget 
 // check the @minimum_width and @natural_width of this call but rather to
 // consult gtk_cell_area_context_get_preferred_width() after a series of
 // requests.
-func (area *CellArea) PreferredWidth(context CellAreaContexter, widget Widgetter) (minimumWidth int, naturalWidth int) {
+func (area *CellArea) PreferredWidth(context CellAreaContexter, widget Widgeter) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -899,7 +983,7 @@ func (area *CellArea) PreferredWidth(context CellAreaContexter, widget Widgetter
 // with gtk_cell_area_get_preferred_height() again and then the full height of
 // the requested rows checked again with
 // gtk_cell_area_context_get_preferred_height().
-func (area *CellArea) PreferredWidthForHeight(context CellAreaContexter, widget Widgetter, height int) (minimumWidth int, naturalWidth int) {
+func (area *CellArea) PreferredWidthForHeight(context CellAreaContexter, widget Widgeter, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -963,7 +1047,7 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 // InnerCellArea: this is a convenience function for CellArea implementations to
 // get the inner area where a given CellRenderer will be rendered. It removes
 // any padding previously added by gtk_cell_area_request_renderer().
-func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (area *CellArea) InnerCellArea(widget Widgeter, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellArea  // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GdkRectangle // out
@@ -1043,6 +1127,62 @@ func (area *CellArea) RemoveFocusSibling(renderer CellRendererer, sibling CellRe
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer((sibling).(gextras.Nativer).Native()))
 
 	C.gtk_cell_area_remove_focus_sibling(_arg0, _arg1, _arg2)
+}
+
+// Render renders @area’s cells according to @area’s layout onto @widget at the
+// given coordinates.
+func (area *CellArea) Render(context CellAreaContexter, widget Widgeter, cr *cairo.Context, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.cairo_t             // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+	var _arg7 C.gboolean             // out
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg3 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
+	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg6 = C.GtkCellRendererState(flags)
+	if paintFocus {
+		_arg7 = C.TRUE
+	}
+
+	C.gtk_cell_area_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+}
+
+// RequestRenderer: this is a convenience function for CellArea implementations
+// to request size for cell renderers. It’s important to use this function to
+// request size and then use gtk_cell_area_inner_cell_area() at render and event
+// time since this function will add padding around the cell for focus painting.
+func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgeter, forSize int) (minimumSize int, naturalSize int) {
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.GtkOrientation   // out
+	var _arg3 *C.GtkWidget       // out
+	var _arg4 C.gint             // out
+	var _arg5 C.gint             // in
+	var _arg6 C.gint             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+	_arg2 = C.GtkOrientation(orientation)
+	_arg3 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg4 = C.gint(forSize)
+
+	C.gtk_cell_area_request_renderer(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+
+	var _minimumSize int // out
+	var _naturalSize int // out
+
+	_minimumSize = int(_arg5)
+	_naturalSize = int(_arg6)
+
+	return _minimumSize, _naturalSize
 }
 
 // SetFocusCell: explicitly sets the currently focused cell to @renderer.

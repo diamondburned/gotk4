@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -105,6 +104,30 @@ type PopupLayout struct {
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return (*PopupLayout)(unsafe.Pointer(b)), nil
+}
+
+// NewPopupLayout constructs a struct PopupLayout.
+func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout {
+	var _arg1 *C.GdkRectangle   // out
+	var _arg2 C.GdkGravity      // out
+	var _arg3 C.GdkGravity      // out
+	var _cret *C.GdkPopupLayout // in
+
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(anchorRect))
+	_arg2 = C.GdkGravity(rectAnchor)
+	_arg3 = C.GdkGravity(surfaceAnchor)
+
+	_cret = C.gdk_popup_layout_new(_arg1, _arg2, _arg3)
+
+	var _popupLayout *PopupLayout // out
+
+	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	C.gdk_popup_layout_ref(_cret)
+	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
+		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
+	})
+
+	return _popupLayout
 }
 
 // Native returns the underlying C source pointer.
@@ -280,6 +303,22 @@ func (layout *PopupLayout) ref() *PopupLayout {
 	return _popupLayout
 }
 
+// SetAnchorHints: set new anchor hints.
+//
+// The set @anchor_hints determines how @surface will be moved if the anchor
+// points cause it to move off-screen. For example, GDK_ANCHOR_FLIP_X will
+// replace GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if
+// @surface extends beyond the left or right edges of the monitor.
+func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
+	var _arg0 *C.GdkPopupLayout // out
+	var _arg1 C.GdkAnchorHints  // out
+
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg1 = C.GdkAnchorHints(anchorHints)
+
+	C.gdk_popup_layout_set_anchor_hints(_arg0, _arg1)
+}
+
 // SetAnchorRect: set the anchor rectangle.
 func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	var _arg0 *C.GdkPopupLayout // out
@@ -304,6 +343,17 @@ func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	C.gdk_popup_layout_set_offset(_arg0, _arg1, _arg2)
 }
 
+// SetRectAnchor: set the anchor on the anchor rectangle.
+func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
+	var _arg0 *C.GdkPopupLayout // out
+	var _arg1 C.GdkGravity      // out
+
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg1 = C.GdkGravity(anchor)
+
+	C.gdk_popup_layout_set_rect_anchor(_arg0, _arg1)
+}
+
 // SetShadowWidth sets the shadow width of the popup.
 //
 // The shadow width corresponds to the part of the computed surface size that
@@ -323,6 +373,17 @@ func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom i
 	_arg4 = C.int(bottom)
 
 	C.gdk_popup_layout_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// SetSurfaceAnchor: set the anchor on the popup surface.
+func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
+	var _arg0 *C.GdkPopupLayout // out
+	var _arg1 C.GdkGravity      // out
+
+	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg1 = C.GdkGravity(anchor)
+
+	C.gdk_popup_layout_set_surface_anchor(_arg0, _arg1)
 }
 
 // Unref decreases the reference count of @value.

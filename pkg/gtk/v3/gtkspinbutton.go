@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,7 +22,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
 		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtonner},
+		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtoner},
 	})
 }
 
@@ -74,18 +73,15 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SpinButtonOverrider interface {
-	//
+	ChangeValue(scroll ScrollType)
 	Input(newValue *float64) int
-	//
 	Output() int
-	//
 	ValueChanged()
-	//
 	Wrapped()
 }
 
-// SpinButtonner describes SpinButton's methods.
-type SpinButtonner interface {
+// SpinButtoner describes SpinButton's methods.
+type SpinButtoner interface {
 	// Configure changes the properties of an existing spin button.
 	Configure(adjustment Adjustmenter, climbRate float64, digits uint)
 	// Adjustment: get the adjustment associated with a SpinButton
@@ -126,12 +122,17 @@ type SpinButtonner interface {
 	// nearest step increment when a spin button is activated after providing an
 	// invalid value.
 	SetSnapToTicks(snapToTicks bool)
+	// SetUpdatePolicy sets the update behavior of a spin button.
+	SetUpdatePolicy(policy SpinButtonUpdatePolicy)
 	// SetValue sets the value of @spin_button.
 	SetValue(value float64)
 	// SetWrap sets the flag that determines if a spin button value wraps around
 	// to the opposite limit when the upper or lower limit of the range is
 	// exceeded.
 	SetWrap(wrap bool)
+	// Spin: increment or decrement a spin button’s value in a specified
+	// direction by a specified amount.
+	Spin(direction SpinType, increment float64)
 	// Update: manually force an update of the spin button.
 	Update()
 }
@@ -186,11 +187,11 @@ type SpinButton struct {
 }
 
 var (
-	_ SpinButtonner   = (*SpinButton)(nil)
+	_ SpinButtoner    = (*SpinButton)(nil)
 	_ gextras.Nativer = (*SpinButton)(nil)
 )
 
-func wrapSpinButton(obj *externglib.Object) SpinButtonner {
+func wrapSpinButton(obj *externglib.Object) SpinButtoner {
 	return &SpinButton{
 		Entry: Entry{
 			Widget: Widget{
@@ -227,7 +228,7 @@ func wrapSpinButton(obj *externglib.Object) SpinButtonner {
 	}
 }
 
-func marshalSpinButtonner(p uintptr) (interface{}, error) {
+func marshalSpinButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSpinButton(obj), nil
@@ -565,6 +566,18 @@ func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 	C.gtk_spin_button_set_snap_to_ticks(_arg0, _arg1)
 }
 
+// SetUpdatePolicy sets the update behavior of a spin button. This determines
+// whether the spin button is always updated or only when a valid value is set.
+func (spinButton *SpinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy) {
+	var _arg0 *C.GtkSpinButton            // out
+	var _arg1 C.GtkSpinButtonUpdatePolicy // out
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
+	_arg1 = C.GtkSpinButtonUpdatePolicy(policy)
+
+	C.gtk_spin_button_set_update_policy(_arg0, _arg1)
+}
+
 // SetValue sets the value of @spin_button.
 func (spinButton *SpinButton) SetValue(value float64) {
 	var _arg0 *C.GtkSpinButton // out
@@ -588,6 +601,20 @@ func (spinButton *SpinButton) SetWrap(wrap bool) {
 	}
 
 	C.gtk_spin_button_set_wrap(_arg0, _arg1)
+}
+
+// Spin: increment or decrement a spin button’s value in a specified direction
+// by a specified amount.
+func (spinButton *SpinButton) Spin(direction SpinType, increment float64) {
+	var _arg0 *C.GtkSpinButton // out
+	var _arg1 C.GtkSpinType    // out
+	var _arg2 C.gdouble        // out
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
+	_arg1 = C.GtkSpinType(direction)
+	_arg2 = C.gdouble(increment)
+
+	C.gtk_spin_button_spin(_arg0, _arg1, _arg2)
 }
 
 // Update: manually force an update of the spin button.

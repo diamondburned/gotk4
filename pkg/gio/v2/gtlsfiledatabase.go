@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -64,3 +64,26 @@ func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
 }
 
 func (*TLSFileDatabase) privateTLSFileDatabase() {}
+
+// NewTLSFileDatabase creates a new FileDatabase which uses anchor certificate
+// authorities in @anchors to verify certificate chains.
+//
+// The certificates in @anchors must be PEM encoded.
+func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
+	var _arg1 *C.gchar        // out
+	var _cret *C.GTlsDatabase // in
+	var _cerr *C.GError       // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(anchors)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
+
+	var _tlsFileDatabase *TLSFileDatabase // out
+	var _goerr error                      // out
+
+	_tlsFileDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSFileDatabase)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsFileDatabase, _goerr
+}

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -41,9 +40,9 @@ type Layouter interface {
 	// been placed in a ScrolledWindow or otherwise configured for scrolling.
 	VAdjustment() *Adjustment
 	// Move moves a current child of @layout to a new position.
-	Move(childWidget Widgetter, x int, y int)
+	Move(childWidget Widgeter, x int, y int)
 	// Put adds @child_widget to @layout, at position (@x,@y).
-	Put(childWidget Widgetter, x int, y int)
+	Put(childWidget Widgeter, x int, y int)
 	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
 	SetHAdjustment(adjustment Adjustmenter)
 	// SetSize sets the size of the scrollable area of the layout.
@@ -211,7 +210,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of @layout to a new position.
-func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -227,7 +226,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 
 // Put adds @child_widget to @layout, at position (@x,@y). @layout becomes the
 // new parent container of @child_widget.
-func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Put(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

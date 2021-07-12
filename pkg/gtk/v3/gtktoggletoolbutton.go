@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtonner},
+		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToggleToolButtonOverrider interface {
-	//
 	Toggled()
 }
 
-// ToggleToolButtonner describes ToggleToolButton's methods.
-type ToggleToolButtonner interface {
+// ToggleToolButtoner describes ToggleToolButton's methods.
+type ToggleToolButtoner interface {
 	// Active queries a ToggleToolButton and returns its current state.
 	Active() bool
 	// SetActive sets the status of the toggle tool button.
@@ -55,11 +53,11 @@ type ToggleToolButton struct {
 }
 
 var (
-	_ ToggleToolButtonner = (*ToggleToolButton)(nil)
-	_ gextras.Nativer     = (*ToggleToolButton)(nil)
+	_ ToggleToolButtoner = (*ToggleToolButton)(nil)
+	_ gextras.Nativer    = (*ToggleToolButton)(nil)
 )
 
-func wrapToggleToolButton(obj *externglib.Object) ToggleToolButtonner {
+func wrapToggleToolButton(obj *externglib.Object) ToggleToolButtoner {
 	return &ToggleToolButton{
 		ToolButton: ToolButton{
 			ToolItem: ToolItem{
@@ -99,7 +97,7 @@ func wrapToggleToolButton(obj *externglib.Object) ToggleToolButtonner {
 	}
 }
 
-func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
+func marshalToggleToolButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleToolButton(obj), nil

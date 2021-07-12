@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -27,7 +26,7 @@ func init() {
 // ShortcutControllerer describes ShortcutController's methods.
 type ShortcutControllerer interface {
 	// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
-	AddShortcut(shortcut Shortcutter)
+	AddShortcut(shortcut Shortcuter)
 	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
 	// activates its shortcuts.
 	MnemonicsModifiers() gdk.ModifierType
@@ -35,7 +34,12 @@ type ShortcutControllerer interface {
 	Scope() ShortcutScope
 	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
 	// @self.
-	RemoveShortcut(shortcut Shortcutter)
+	RemoveShortcut(shortcut Shortcuter)
+	// SetMnemonicsModifiers sets the controller to have the given
+	// @mnemonics_modifiers.
+	SetMnemonicsModifiers(modifiers gdk.ModifierType)
+	// SetScope sets the controller to have the given @scope.
+	SetScope(scope ShortcutScope)
 }
 
 // ShortcutController: `GtkShortcutController` is an event controller that
@@ -122,7 +126,7 @@ func NewShortcutController() *ShortcutController {
 // A controller created by this function does not let you add or remove
 // individual shortcuts using the shortcut controller api, but you can change
 // the contents of the model.
-func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
+func NewShortcutControllerForModel(model gio.ListModeler) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 
@@ -147,7 +151,7 @@ func (v *ShortcutController) Native() uintptr {
 //
 // If this controller uses an external shortcut list, this function does
 // nothing.
-func (self *ShortcutController) AddShortcut(shortcut Shortcutter) {
+func (self *ShortcutController) AddShortcut(shortcut Shortcuter) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
@@ -195,7 +199,7 @@ func (self *ShortcutController) Scope() ShortcutScope {
 //
 // If @shortcut had not been added to @controller or this controller uses an
 // external shortcut list, this function does nothing.
-func (self *ShortcutController) RemoveShortcut(shortcut Shortcutter) {
+func (self *ShortcutController) RemoveShortcut(shortcut Shortcuter) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
@@ -203,4 +207,46 @@ func (self *ShortcutController) RemoveShortcut(shortcut Shortcutter) {
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((shortcut).(gextras.Nativer).Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
+}
+
+// SetMnemonicsModifiers sets the controller to have the given
+// @mnemonics_modifiers.
+//
+// The mnemonics modifiers determines which modifiers need to be pressed to
+// allow activation of shortcuts with mnemonics triggers.
+//
+// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
+// where mnemonics can be triggered without any modifiers. It should be very
+// rarely necessary to change this, and doing so is likely to interfere with
+// other shortcuts.
+//
+// This value is only relevant for local shortcut controllers. Global and
+// managed shortcut controllers will have their shortcuts activated from other
+// places which have their own modifiers for activating mnemonics.
+func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 C.GdkModifierType        // out
+
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GdkModifierType(modifiers)
+
+	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
+}
+
+// SetScope sets the controller to have the given @scope.
+//
+// The scope allows shortcuts to be activated outside of the normal event
+// propagation. In particular, it allows installing global keyboard shortcuts
+// that can be activated even when a widget does not have focus.
+//
+// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
+// widget has focus.
+func (self *ShortcutController) SetScope(scope ShortcutScope) {
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 C.GtkShortcutScope       // out
+
+	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkShortcutScope(scope)
+
+	C.gtk_shortcut_controller_set_scope(_arg0, _arg1)
 }

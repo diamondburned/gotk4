@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -42,9 +41,7 @@ type DBusObjectOverrider interface {
 	Interface(interfaceName string) *DBusInterface
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
-	//
 	InterfaceAdded(interface_ DBusInterfacer)
-	//
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 

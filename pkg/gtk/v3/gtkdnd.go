@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -88,7 +87,7 @@ func DragSetIconDefault(context gdk.DragContexter) {
 // DragSetIconGIcon sets the icon for a given drag from the given @icon. See the
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
-func DragSetIconGIcon(context gdk.DragContexter, icon gio.Iconner, hotX int, hotY int) {
+func DragSetIconGIcon(context gdk.DragContexter, icon gio.Iconer, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out
@@ -122,7 +121,7 @@ func DragSetIconName(context gdk.DragContexter, iconName string, hotX int, hotY 
 }
 
 // DragSetIconPixbuf sets @pixbuf as the icon for a given drag.
-func DragSetIconPixbuf(context gdk.DragContexter, pixbuf gdkpixbuf.Pixbuffer, hotX int, hotY int) {
+func DragSetIconPixbuf(context gdk.DragContexter, pixbuf gdkpixbuf.Pixbufer, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkPixbuf      // out
 	var _arg3 C.gint            // out
@@ -174,7 +173,7 @@ func DragSetIconSurface(context gdk.DragContexter, surface *cairo.Surface) {
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
-func DragSetIconWidget(context gdk.DragContexter, widget Widgetter, hotX int, hotY int) {
+func DragSetIconWidget(context gdk.DragContexter, widget Widgeter, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out

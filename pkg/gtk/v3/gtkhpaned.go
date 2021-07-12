@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hpaned_get_type()), F: marshalHPanedder},
+		{T: externglib.Type(C.gtk_hpaned_get_type()), F: marshalHPaneder},
 	})
 }
 
-// HPanedder describes HPaned's methods.
-type HPanedder interface {
+// HPaneder describes HPaned's methods.
+type HPaneder interface {
 	privateHPaned()
 }
 
@@ -40,11 +39,11 @@ type HPaned struct {
 }
 
 var (
-	_ HPanedder       = (*HPaned)(nil)
+	_ HPaneder        = (*HPaned)(nil)
 	_ gextras.Nativer = (*HPaned)(nil)
 )
 
-func wrapHPaned(obj *externglib.Object) HPanedder {
+func wrapHPaned(obj *externglib.Object) HPaneder {
 	return &HPaned{
 		Paned: Paned{
 			Container: Container{
@@ -67,7 +66,7 @@ func wrapHPaned(obj *externglib.Object) HPanedder {
 	}
 }
 
-func marshalHPanedder(p uintptr) (interface{}, error) {
+func marshalHPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHPaned(obj), nil

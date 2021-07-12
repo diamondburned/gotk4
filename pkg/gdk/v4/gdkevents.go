@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -550,6 +549,9 @@ func (*DeleteEvent) privateDeleteEvent() {}
 type Eventer interface {
 	// Axes extracts all axis values from an event.
 	Axes() ([]float64, bool)
+	// Axis: extract the axis value for a particular axis use from an event
+	// structure.
+	Axis(axisUse AxisUse) (float64, bool)
 	// Device returns the device of an event.
 	Device() *Device
 	// DeviceTool returns a `GdkDeviceTool` representing the tool that caused
@@ -632,6 +634,30 @@ func (event *Event) Axes() ([]float64, bool) {
 	}
 
 	return _axes, _ok
+}
+
+// Axis: extract the axis value for a particular axis use from an event
+// structure.
+func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
+	var _arg0 *C.GdkEvent  // out
+	var _arg1 C.GdkAxisUse // out
+	var _arg2 C.double     // in
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = C.GdkAxisUse(axisUse)
+
+	_cret = C.gdk_event_get_axis(_arg0, _arg1, &_arg2)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = float64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
 }
 
 // Device returns the device of an event.
@@ -1019,6 +1045,8 @@ type KeyEventer interface {
 	Match() (uint, ModifierType, bool)
 	// IsModifier extracts whether the key event is for a modifier key.
 	IsModifier() bool
+	// Matches a key event against a keyval and modifiers.
+	Matches(keyval uint, modifiers ModifierType) KeyMatch
 }
 
 // KeyEvent: event related to a key-based device.
@@ -1167,6 +1195,33 @@ func (event *KeyEvent) IsModifier() bool {
 	}
 
 	return _ok
+}
+
+// Matches a key event against a keyval and modifiers.
+//
+// This is typically used to trigger keyboard shortcuts such as Ctrl-C.
+//
+// Partial matches are possible where the combination matches if the currently
+// active group is ignored.
+//
+// Note that we ignore Caps Lock for matching.
+func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
+	var _arg0 *C.GdkEvent       // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _cret C.GdkKeyMatch     // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+
+	_cret = C.gdk_key_event_matches(_arg0, _arg1, _arg2)
+
+	var _keyMatch KeyMatch // out
+
+	_keyMatch = KeyMatch(_cret)
+
+	return _keyMatch
 }
 
 // MotionEventer describes MotionEvent's methods.

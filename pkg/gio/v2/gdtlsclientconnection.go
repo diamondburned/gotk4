@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -43,6 +43,9 @@ type DTLSClientConnectioner interface {
 	// also to let @conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
+	// SetValidationFlags sets @conn's validation flags, to override the default
+	// set of checks performed when validating a server certificate.
+	SetValidationFlags(flags TLSCertificateFlags)
 }
 
 // DTLSClientConnection is the client-side subclass of Connection, representing
@@ -116,4 +119,40 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((identity).(gextras.Nativer).Native()))
 
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
+}
+
+// SetValidationFlags sets @conn's validation flags, to override the default set
+// of checks performed when validating a server certificate. By default,
+// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
+func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
+	var _arg0 *C.GDtlsClientConnection // out
+	var _arg1 C.GTlsCertificateFlags   // out
+
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(conn.Native()))
+	_arg1 = C.GTlsCertificateFlags(flags)
+
+	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
+}
+
+// NewDTLSClientConnection creates a new ClientConnection wrapping @base_socket
+// which is assumed to communicate with the server identified by
+// @server_identity.
+func NewDTLSClientConnection(baseSocket DatagramBaseder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
+	var _arg1 *C.GDatagramBased     // out
+	var _arg2 *C.GSocketConnectable // out
+	var _cret *C.GDatagramBased     // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.GDatagramBased)(unsafe.Pointer((baseSocket).(gextras.Nativer).Native()))
+	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer((serverIdentity).(gextras.Nativer).Native()))
+
+	_cret = C.g_dtls_client_connection_new(_arg1, _arg2, &_cerr)
+
+	var _dtlsClientConnection *DTLSClientConnection // out
+	var _goerr error                                // out
+
+	_dtlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DTLSClientConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _dtlsClientConnection, _goerr
 }

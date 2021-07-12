@@ -8,7 +8,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -200,6 +199,28 @@ func FormatSizeForDisplay(size int64) string {
 	_arg1 = C.goffset(size)
 
 	_cret = C.g_format_size_for_display(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// FormatSizeFull formats a size.
+//
+// This function is similar to g_format_size() but allows for flags that modify
+// the output. See SizeFlags.
+func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
+	var _arg1 C.guint64          // out
+	var _arg2 C.GFormatSizeFlags // out
+	var _cret *C.gchar           // in
+
+	_arg1 = C.guint64(size)
+	_arg2 = C.GFormatSizeFlags(flags)
+
+	_cret = C.g_format_size_full(_arg1, _arg2)
 
 	var _utf8 string // out
 
@@ -584,6 +605,31 @@ func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_runtime_dir()
+
+	var _filename string // out
+
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _filename
+}
+
+// GetUserSpecialDir returns the full path of a special directory using its
+// logical id.
+//
+// On UNIX this is done using the XDG special user directories. For
+// compatibility with existing practise, G_USER_DIRECTORY_DESKTOP falls back to
+// `$HOME/Desktop` when XDG special user directories have not been set up.
+//
+// Depending on the platform, the user might be able to change the path of the
+// special directory without requiring the session to restart; GLib will not
+// reflect any change once the special directories are loaded.
+func GetUserSpecialDir(directory UserDirectory) string {
+	var _arg1 C.GUserDirectory // out
+	var _cret *C.gchar         // in
+
+	_arg1 = C.GUserDirectory(directory)
+
+	_cret = C.g_get_user_special_dir(_arg1)
 
 	var _filename string // out
 

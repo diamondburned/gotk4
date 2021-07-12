@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -13,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -33,6 +33,9 @@ type Surfacer interface {
 	CreateCairoContext() *CairoContext
 	// CreateGLContext creates a new `GdkGLContext` for the `GdkSurface`.
 	CreateGLContext() (*GLContext, error)
+	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
+	// possible with the given @surface.
+	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
 	// @surface.
 	CreateVulkanContext() (*VulkanContext, error)
@@ -70,10 +73,10 @@ type Surfacer interface {
 	// RequestLayout: request a layout phase from the surface's frame clock.
 	RequestLayout()
 	// SetCursor sets the default mouse pointer for a `GdkSurface`.
-	SetCursor(cursor Cursorrer)
+	SetCursor(cursor Cursorer)
 	// SetDeviceCursor sets a specific `GdkCursor` for a given device when it
 	// gets inside @surface.
-	SetDeviceCursor(device Devicer, cursor Cursorrer)
+	SetDeviceCursor(device Devicer, cursor Cursorer)
 	// SetInputRegion: apply the region to the surface for the purpose of event
 	// handling.
 	SetInputRegion(region *cairo.Region)
@@ -135,7 +138,7 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 }
 
 // NewSurfaceToplevel creates a new toplevel surface.
-func NewSurfaceToplevel(display Displayyer) *Surface {
+func NewSurfaceToplevel(display Displayer) *Surface {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
 
@@ -200,6 +203,44 @@ func (surface *Surface) CreateGLContext() (*GLContext, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
+}
+
+// CreateSimilarSurface: create a new Cairo surface that is as compatible as
+// possible with the given @surface.
+//
+// For example the new surface will have the same fallback resolution and font
+// options as @surface. Generally, the new surface will also use the same
+// backend as @surface, unless that is not possible for some reason. The type of
+// the returned surface may be examined with cairo_surface_get_type().
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+//
+// This function always returns a valid pointer, but it will return a pointer to
+// a “nil” surface if @other is already in an error state or any other error
+// occurs.
+func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface {
+	var _arg0 *C.GdkSurface      // out
+	var _arg1 C.cairo_content_t  // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _cret *C.cairo_surface_t // in
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = C.cairo_content_t(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	_cret = C.gdk_surface_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
+
+	var _ret *cairo.Surface // out
+
+	_ret = (*cairo.Surface)(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v))
+	})
+
+	return _ret
 }
 
 // CreateVulkanContext creates a new `GdkVulkanContext` for rendering on
@@ -497,7 +538,7 @@ func (surface *Surface) RequestLayout() {
 //
 // Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture] to
 // create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-func (surface *Surface) SetCursor(cursor Cursorrer) {
+func (surface *Surface) SetCursor(cursor Cursorer) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkCursor  // out
 
@@ -515,7 +556,7 @@ func (surface *Surface) SetCursor(cursor Cursorrer) {
 //
 // Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture] to
 // create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
-func (surface *Surface) SetDeviceCursor(device Devicer, cursor Cursorrer) {
+func (surface *Surface) SetDeviceCursor(device Devicer, cursor Cursorer) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkDevice  // out
 	var _arg2 *C.GdkCursor  // out

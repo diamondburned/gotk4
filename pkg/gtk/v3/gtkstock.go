@@ -11,13 +11,11 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
 
-//
 type Stock = string
 
 // TranslateFunc: function used to translate messages in e.g. IconFactory and

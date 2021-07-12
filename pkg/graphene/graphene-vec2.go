@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -393,4 +392,56 @@ func (v *Vec2) ToFloat() [2]float32 {
 	_dest = *(*[2]float32)(unsafe.Pointer(&_arg1))
 
 	return _dest
+}
+
+// Vec2One retrieves a constant vector with (1, 1) components.
+func Vec2One() *Vec2 {
+	var _cret *C.graphene_vec2_t // in
+
+	_cret = C.graphene_vec2_one()
+
+	var _vec2 *Vec2 // out
+
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
+
+	return _vec2
+}
+
+// Vec2XAxis retrieves a constant vector with (1, 0) components.
+func Vec2XAxis() *Vec2 {
+	var _cret *C.graphene_vec2_t // in
+
+	_cret = C.graphene_vec2_x_axis()
+
+	var _vec2 *Vec2 // out
+
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
+
+	return _vec2
+}
+
+// Vec2YAxis retrieves a constant vector with (0, 1) components.
+func Vec2YAxis() *Vec2 {
+	var _cret *C.graphene_vec2_t // in
+
+	_cret = C.graphene_vec2_y_axis()
+
+	var _vec2 *Vec2 // out
+
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
+
+	return _vec2
+}
+
+// Vec2Zero retrieves a constant vector with (0, 0) components.
+func Vec2Zero() *Vec2 {
+	var _cret *C.graphene_vec2_t // in
+
+	_cret = C.graphene_vec2_zero()
+
+	var _vec2 *Vec2 // out
+
+	_vec2 = (*Vec2)(unsafe.Pointer(_cret))
+
+	return _vec2
 }

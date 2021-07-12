@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarrer},
+		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarer},
 	})
 }
 
-// HeaderBarrer describes HeaderBar's methods.
-type HeaderBarrer interface {
+// HeaderBarer describes HeaderBar's methods.
+type HeaderBarer interface {
 	// DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 	DecorationLayout() string
 	// ShowTitleButtons returns whether this header bar shows the standard
@@ -33,19 +32,19 @@ type HeaderBarrer interface {
 	TitleWidget() *Widget
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
-	PackEnd(child Widgetter)
+	PackEnd(child Widgeter)
 	// PackStart adds @child to @bar, packed with reference to the start of the
 	// @bar.
-	PackStart(child Widgetter)
+	PackStart(child Widgeter)
 	// Remove removes a child from the `GtkHeaderBar`.
-	Remove(child Widgetter)
+	Remove(child Widgeter)
 	// SetDecorationLayout sets the decoration layout for this header bar.
 	SetDecorationLayout(layout string)
 	// SetShowTitleButtons sets whether this header bar shows the standard
 	// window title buttons.
 	SetShowTitleButtons(setting bool)
 	// SetTitleWidget sets the title for the `GtkHeaderBar`.
-	SetTitleWidget(titleWidget Widgetter)
+	SetTitleWidget(titleWidget Widgeter)
 }
 
 // HeaderBar: `GtkHeaderBar` is a widget for creating custom title bars for
@@ -108,11 +107,11 @@ type HeaderBar struct {
 }
 
 var (
-	_ HeaderBarrer    = (*HeaderBar)(nil)
+	_ HeaderBarer     = (*HeaderBar)(nil)
 	_ gextras.Nativer = (*HeaderBar)(nil)
 )
 
-func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
+func wrapHeaderBar(obj *externglib.Object) HeaderBarer {
 	return &HeaderBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -131,7 +130,7 @@ func wrapHeaderBar(obj *externglib.Object) HeaderBarrer {
 	}
 }
 
-func marshalHeaderBarrer(p uintptr) (interface{}, error) {
+func marshalHeaderBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHeaderBar(obj), nil
@@ -204,7 +203,7 @@ func (bar *HeaderBar) TitleWidget() *Widget {
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the @bar.
-func (bar *HeaderBar) PackEnd(child Widgetter) {
+func (bar *HeaderBar) PackEnd(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -216,7 +215,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 
 // PackStart adds @child to @bar, packed with reference to the start of the
 // @bar.
-func (bar *HeaderBar) PackStart(child Widgetter) {
+func (bar *HeaderBar) PackStart(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -230,7 +229,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // The child must have been added with [method@Gtk.HeaderBar.pack_start],
 // [method@Gtk.HeaderBar.pack_end] or [method@Gtk.HeaderBar.set_title_widget].
-func (bar *HeaderBar) Remove(child Widgetter) {
+func (bar *HeaderBar) Remove(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -292,7 +291,7 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //
 // You should set the title widget to nil, for the window title label to be
 // visible again.
-func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
+func (bar *HeaderBar) SetTitleWidget(titleWidget Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 

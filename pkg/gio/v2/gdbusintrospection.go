@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -84,6 +83,31 @@ func (info *DBusAnnotationInfo) unref() {
 	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(info))
 
 	C.g_dbus_annotation_info_unref(_arg0)
+}
+
+// DBusAnnotationInfoLookup looks up the value of an annotation.
+//
+// The cost of this function is O(n) in number of annotations.
+func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
+	var _arg1 **C.GDBusAnnotationInfo
+	var _arg2 *C.gchar // out
+	var _cret *C.gchar // in
+
+	{
+		var zero *DBusAnnotationInfo
+		annotations = append(annotations, zero)
+	}
+	_arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(&annotations[0]))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // DBusArgInfo: information about an argument for a method or a signal.

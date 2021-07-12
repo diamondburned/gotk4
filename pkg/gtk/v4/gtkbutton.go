@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
 	})
 }
 
@@ -27,14 +26,12 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ButtonOverrider interface {
-	//
 	Activate()
-	//
 	Clicked()
 }
 
-// Buttonner describes Button's methods.
-type Buttonner interface {
+// Buttoner describes Button's methods.
+type Buttoner interface {
 	// Child gets the child widget of @button.
 	Child() *Widget
 	// HasFrame returns whether the button has a frame.
@@ -46,7 +43,7 @@ type Buttonner interface {
 	// UseUnderline gets whether underlines are interpreted as mnemonics.
 	UseUnderline() bool
 	// SetChild sets the child widget of @button.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetHasFrame sets the style of the button.
 	SetHasFrame(hasFrame bool)
 	// SetIconName adds a `GtkImage` with the given icon name as a child.
@@ -96,11 +93,11 @@ type Button struct {
 }
 
 var (
-	_ Buttonner       = (*Button)(nil)
+	_ Buttoner        = (*Button)(nil)
 	_ gextras.Nativer = (*Button)(nil)
 )
 
-func wrapButton(obj *externglib.Object) Buttonner {
+func wrapButton(obj *externglib.Object) Buttoner {
 	return &Button{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -135,7 +132,7 @@ func wrapButton(obj *externglib.Object) Buttonner {
 	}
 }
 
-func marshalButtonner(p uintptr) (interface{}, error) {
+func marshalButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -319,7 +316,7 @@ func (button *Button) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of @button.
-func (button *Button) SetChild(child Widgetter) {
+func (button *Button) SetChild(child Widgeter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 

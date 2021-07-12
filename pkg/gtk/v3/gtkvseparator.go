@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparatorrer},
+		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparatorer},
 	})
 }
 
-// VSeparatorrer describes VSeparator's methods.
-type VSeparatorrer interface {
+// VSeparatorer describes VSeparator's methods.
+type VSeparatorer interface {
 	privateVSeparator()
 }
 
@@ -40,11 +39,11 @@ type VSeparator struct {
 }
 
 var (
-	_ VSeparatorrer   = (*VSeparator)(nil)
+	_ VSeparatorer    = (*VSeparator)(nil)
 	_ gextras.Nativer = (*VSeparator)(nil)
 )
 
-func wrapVSeparator(obj *externglib.Object) VSeparatorrer {
+func wrapVSeparator(obj *externglib.Object) VSeparatorer {
 	return &VSeparator{
 		Separator: Separator{
 			Widget: Widget{
@@ -65,7 +64,7 @@ func wrapVSeparator(obj *externglib.Object) VSeparatorrer {
 	}
 }
 
-func marshalVSeparatorrer(p uintptr) (interface{}, error) {
+func marshalVSeparatorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVSeparator(obj), nil

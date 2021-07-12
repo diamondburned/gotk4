@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -19,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceler},
 	})
 }
 
@@ -40,8 +39,8 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CellRendererAcceller describes CellRendererAccel's methods.
-type CellRendererAcceller interface {
+// CellRendererAcceler describes CellRendererAccel's methods.
+type CellRendererAcceler interface {
 	privateCellRendererAccel()
 }
 
@@ -55,11 +54,11 @@ type CellRendererAccel struct {
 }
 
 var (
-	_ CellRendererAcceller = (*CellRendererAccel)(nil)
-	_ gextras.Nativer      = (*CellRendererAccel)(nil)
+	_ CellRendererAcceler = (*CellRendererAccel)(nil)
+	_ gextras.Nativer     = (*CellRendererAccel)(nil)
 )
 
-func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceller {
+func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceler {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -71,7 +70,7 @@ func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceller {
 	}
 }
 
-func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
+func marshalCellRendererAcceler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererAccel(obj), nil

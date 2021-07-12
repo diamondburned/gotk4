@@ -6,12 +6,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceler},
 	})
 }
 
@@ -47,12 +47,12 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellRendererAccelOverrider interface {
-	//
 	AccelCleared(pathString string)
+	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
-// CellRendererAcceller describes CellRendererAccel's methods.
-type CellRendererAcceller interface {
+// CellRendererAcceler describes CellRendererAccel's methods.
+type CellRendererAcceler interface {
 	privateCellRendererAccel()
 }
 
@@ -66,11 +66,11 @@ type CellRendererAccel struct {
 }
 
 var (
-	_ CellRendererAcceller = (*CellRendererAccel)(nil)
-	_ gextras.Nativer      = (*CellRendererAccel)(nil)
+	_ CellRendererAcceler = (*CellRendererAccel)(nil)
+	_ gextras.Nativer     = (*CellRendererAccel)(nil)
 )
 
-func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceller {
+func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceler {
 	return &CellRendererAccel{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
@@ -82,7 +82,7 @@ func wrapCellRendererAccel(obj *externglib.Object) CellRendererAcceller {
 	}
 }
 
-func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
+func marshalCellRendererAcceler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererAccel(obj), nil

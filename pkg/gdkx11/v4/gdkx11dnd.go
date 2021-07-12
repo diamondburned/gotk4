@@ -12,33 +12,31 @@ import (
 
 // #cgo pkg-config: gtk4-x11 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Dragger},
+		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Drager},
 	})
 }
 
-// X11Dragger describes X11Drag's methods.
-type X11Dragger interface {
+// X11Drager describes X11Drag's methods.
+type X11Drager interface {
 	privateX11Drag()
 }
 
-//
 type X11Drag struct {
 	gdk.Drag
 }
 
 var (
-	_ X11Dragger      = (*X11Drag)(nil)
+	_ X11Drager       = (*X11Drag)(nil)
 	_ gextras.Nativer = (*X11Drag)(nil)
 )
 
-func wrapX11Drag(obj *externglib.Object) X11Dragger {
+func wrapX11Drag(obj *externglib.Object) X11Drager {
 	return &X11Drag{
 		Drag: gdk.Drag{
 			Object: obj,
@@ -46,7 +44,7 @@ func wrapX11Drag(obj *externglib.Object) X11Dragger {
 	}
 }
 
-func marshalX11Dragger(p uintptr) (interface{}, error) {
+func marshalX11Drager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Drag(obj), nil

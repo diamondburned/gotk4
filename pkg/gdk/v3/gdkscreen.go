@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -41,7 +40,7 @@ type Screener interface {
 	MonitorAtPoint(x int, y int) int
 	// MonitorAtWindow returns the number of the monitor in which the largest
 	// area of the bounding rectangle of @window resides.
-	MonitorAtWindow(window Windowwer) int
+	MonitorAtWindow(window Windower) int
 	// MonitorGeometry retrieves the Rectangle representing the size and
 	// position of the individual monitor within the entire screen area.
 	MonitorGeometry(monitorNum int) Rectangle
@@ -257,7 +256,7 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 // of the bounding rectangle of @window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
-func (screen *Screen) MonitorAtWindow(window Windowwer) int {
+func (screen *Screen) MonitorAtWindow(window Windower) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.GdkWindow // out
 	var _cret C.gint       // in
@@ -693,4 +692,18 @@ func (screen *Screen) SetResolution(dpi float64) {
 	_arg1 = C.gdouble(dpi)
 
 	C.gdk_screen_set_resolution(_arg0, _arg1)
+}
+
+// ScreenGetDefault gets the default screen for the default display. (See
+// gdk_display_get_default ()).
+func ScreenGetDefault() *Screen {
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gdk_screen_get_default()
+
+	var _screen *Screen // out
+
+	_screen = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Screen)
+
+	return _screen
 }

@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMapper},
+		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMaper},
 	})
 }
 
@@ -59,8 +58,8 @@ type FontMapOverrider interface {
 	LoadFontset(context Contexter, desc *FontDescription, language *Language) *Fontset
 }
 
-// FontMapper describes FontMap's methods.
-type FontMapper interface {
+// FontMaper describes FontMap's methods.
+type FontMaper interface {
 	// Changed forces a change in the context, which will cause any
 	// `PangoContext` using this fontmap to change.
 	Changed()
@@ -90,17 +89,17 @@ type FontMap struct {
 }
 
 var (
-	_ FontMapper      = (*FontMap)(nil)
+	_ FontMaper       = (*FontMap)(nil)
 	_ gextras.Nativer = (*FontMap)(nil)
 )
 
-func wrapFontMap(obj *externglib.Object) FontMapper {
+func wrapFontMap(obj *externglib.Object) FontMaper {
 	return &FontMap{
 		Object: obj,
 	}
 }
 
-func marshalFontMapper(p uintptr) (interface{}, error) {
+func marshalFontMaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontMap(obj), nil

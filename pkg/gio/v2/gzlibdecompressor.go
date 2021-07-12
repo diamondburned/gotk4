@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,12 +27,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorrer},
+		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorer},
 	})
 }
 
-// ZlibDecompressorrer describes ZlibDecompressor's methods.
-type ZlibDecompressorrer interface {
+// ZlibDecompressorer describes ZlibDecompressor's methods.
+type ZlibDecompressorer interface {
 	// FileInfo retrieves the Info constructed from the GZIP header data of
 	// compressed data processed by @compressor, or nil if @decompressor's
 	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
@@ -50,11 +49,11 @@ type ZlibDecompressor struct {
 }
 
 var (
-	_ ZlibDecompressorrer = (*ZlibDecompressor)(nil)
-	_ gextras.Nativer     = (*ZlibDecompressor)(nil)
+	_ ZlibDecompressorer = (*ZlibDecompressor)(nil)
+	_ gextras.Nativer    = (*ZlibDecompressor)(nil)
 )
 
-func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressorrer {
+func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressorer {
 	return &ZlibDecompressor{
 		Object: obj,
 		Converter: Converter{
@@ -63,10 +62,26 @@ func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressorrer {
 	}
 }
 
-func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
+func marshalZlibDecompressorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapZlibDecompressor(obj), nil
+}
+
+// NewZlibDecompressor creates a new Decompressor.
+func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
+	var _arg1 C.GZlibCompressorFormat // out
+	var _cret *C.GZlibDecompressor    // in
+
+	_arg1 = C.GZlibCompressorFormat(format)
+
+	_cret = C.g_zlib_decompressor_new(_arg1)
+
+	var _zlibDecompressor *ZlibDecompressor // out
+
+	_zlibDecompressor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ZlibDecompressor)
+
+	return _zlibDecompressor
 }
 
 // FileInfo retrieves the Info constructed from the GZIP header data of

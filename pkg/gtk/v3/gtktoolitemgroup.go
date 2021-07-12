@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -37,7 +36,7 @@ type ToolItemGrouper interface {
 	// HeaderRelief gets the relief mode of the header button of @group.
 	HeaderRelief() ReliefStyle
 	// ItemPosition gets the position of @item in @group as index.
-	ItemPosition(item ToolItemmer) int
+	ItemPosition(item ToolItemer) int
 	// Label gets the label of @group.
 	Label() string
 	// LabelWidget gets the label widget of @group.
@@ -47,16 +46,21 @@ type ToolItemGrouper interface {
 	// NthItem gets the tool item at @index in group.
 	NthItem(index uint) *ToolItem
 	// Insert inserts @item at @position in the list of children of @group.
-	Insert(item ToolItemmer, position int)
+	Insert(item ToolItemer, position int)
 	// SetCollapsed sets whether the @group should be collapsed or expanded.
 	SetCollapsed(collapsed bool)
+	// SetEllipsize sets the ellipsization mode which should be used by labels
+	// in @group.
+	SetEllipsize(ellipsize pango.EllipsizeMode)
+	// SetHeaderRelief: set the button relief of the group header.
+	SetHeaderRelief(style ReliefStyle)
 	// SetItemPosition sets the position of @item in the list of children of
 	// @group.
-	SetItemPosition(item ToolItemmer, position int)
+	SetItemPosition(item ToolItemer, position int)
 	// SetLabel sets the label of the tool item group.
 	SetLabel(label string)
 	// SetLabelWidget sets the label of the tool item group.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
 }
 
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
@@ -208,7 +212,7 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 }
 
 // ItemPosition gets the position of @item in @group as index.
-func (group *ToolItemGroup) ItemPosition(item ToolItemmer) int {
+func (group *ToolItemGroup) ItemPosition(item ToolItemer) int {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _cret C.gint              // in
@@ -293,7 +297,7 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 }
 
 // Insert inserts @item at @position in the list of children of @group.
-func (group *ToolItemGroup) Insert(item ToolItemmer, position int) {
+func (group *ToolItemGroup) Insert(item ToolItemer, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
@@ -318,8 +322,32 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	C.gtk_tool_item_group_set_collapsed(_arg0, _arg1)
 }
 
+// SetEllipsize sets the ellipsization mode which should be used by labels in
+// @group.
+func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
+	var _arg0 *C.GtkToolItemGroup  // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = C.PangoEllipsizeMode(ellipsize)
+
+	C.gtk_tool_item_group_set_ellipsize(_arg0, _arg1)
+}
+
+// SetHeaderRelief: set the button relief of the group header. See
+// gtk_button_set_relief() for details.
+func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
+	var _arg0 *C.GtkToolItemGroup // out
+	var _arg1 C.GtkReliefStyle    // out
+
+	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = C.GtkReliefStyle(style)
+
+	C.gtk_tool_item_group_set_header_relief(_arg0, _arg1)
+}
+
 // SetItemPosition sets the position of @item in the list of children of @group.
-func (group *ToolItemGroup) SetItemPosition(item ToolItemmer, position int) {
+func (group *ToolItemGroup) SetItemPosition(item ToolItemer, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
@@ -346,7 +374,7 @@ func (group *ToolItemGroup) SetLabel(label string) {
 
 // SetLabelWidget sets the label of the tool item group. The label widget is
 // displayed in the header of the group, in place of the usual label.
-func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
+func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkWidget        // out
 

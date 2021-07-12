@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButtonner},
+		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RadioButtonOverrider interface {
-	//
 	GroupChanged()
 }
 
-// RadioButtonner describes RadioButton's methods.
-type RadioButtonner interface {
+// RadioButtoner describes RadioButton's methods.
+type RadioButtoner interface {
 	// JoinGroup joins a RadioButton object to the group of another RadioButton
 	// object Use this in language bindings instead of the
 	// gtk_radio_button_get_group() and gtk_radio_button_set_group() methods A
@@ -44,7 +42,7 @@ type RadioButtonner interface {
 	// (some_condition) { radio_button = gtk_radio_button_new (NULL);
 	// gtk_radio_button_join_group (radio_button, last_button); last_button =
 	// radio_button; }
-	JoinGroup(groupSource RadioButtonner)
+	JoinGroup(groupSource RadioButtoner)
 }
 
 // RadioButton: single radio button performs the same basic function as a
@@ -112,11 +110,11 @@ type RadioButton struct {
 }
 
 var (
-	_ RadioButtonner  = (*RadioButton)(nil)
+	_ RadioButtoner   = (*RadioButton)(nil)
 	_ gextras.Nativer = (*RadioButton)(nil)
 )
 
-func wrapRadioButton(obj *externglib.Object) RadioButtonner {
+func wrapRadioButton(obj *externglib.Object) RadioButtoner {
 	return &RadioButton{
 		CheckButton: CheckButton{
 			ToggleButton: ToggleButton{
@@ -158,7 +156,7 @@ func wrapRadioButton(obj *externglib.Object) RadioButtonner {
 	}
 }
 
-func marshalRadioButtonner(p uintptr) (interface{}, error) {
+func marshalRadioButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioButton(obj), nil
@@ -167,7 +165,7 @@ func marshalRadioButtonner(p uintptr) (interface{}, error) {
 // NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
 // group as @radio_group_member. As with gtk_radio_button_new(), a widget should
 // be packed into the radio button.
-func NewRadioButtonFromWidget(radioGroupMember RadioButtonner) *RadioButton {
+func NewRadioButtonFromWidget(radioGroupMember RadioButtoner) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
 
@@ -184,7 +182,7 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButtonner) *RadioButton {
 
 // NewRadioButtonWithLabelFromWidget creates a new RadioButton with a text
 // label, adding it to the same group as @radio_group_member.
-func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtonner, label string) *RadioButton {
+func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtoner, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
@@ -205,7 +203,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtonner, label st
 // NewRadioButtonWithMnemonicFromWidget creates a new RadioButton containing a
 // label. The label will be created using gtk_label_new_with_mnemonic(), so
 // underscores in @label indicate the mnemonic for the button.
-func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtonner, label string) *RadioButton {
+func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtoner, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
@@ -241,7 +239,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtonner, label
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
 //        }
-func (radioButton *RadioButton) JoinGroup(groupSource RadioButtonner) {
+func (radioButton *RadioButton) JoinGroup(groupSource RadioButtoner) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
 

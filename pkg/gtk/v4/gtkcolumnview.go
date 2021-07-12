@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -57,7 +56,7 @@ type ColumnViewer interface {
 	// with the mouse.
 	SetEnableRubberband(enableRubberband bool)
 	// SetModel sets the model to use.
-	SetModel(model SelectionModeller)
+	SetModel(model SelectionModeler)
 	// SetReorderable sets whether columns should be reorderable by dragging.
 	SetReorderable(reorderable bool)
 	// SetShowColumnSeparators sets whether the list should show separators
@@ -69,6 +68,8 @@ type ColumnViewer interface {
 	// SetSingleClickActivate sets whether rows should be activated on single
 	// click and selected on hover.
 	SetSingleClickActivate(singleClickActivate bool)
+	// SortByColumn sets the sorting of the view.
+	SortByColumn(column ColumnViewColumner, direction SortType)
 }
 
 // ColumnView: `GtkColumnView` presents a large dynamic list of items using
@@ -174,7 +175,7 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 //
 // You most likely want to call [method@Gtk.ColumnView.append_column] to add
 // columns next.
-func NewColumnView(model SelectionModeller) *ColumnView {
+func NewColumnView(model SelectionModeler) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
@@ -408,7 +409,7 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 // SetModel sets the model to use.
 //
 // This must be a [iface@Gtk.SelectionModel].
-func (self *ColumnView) SetModel(model SelectionModeller) {
+func (self *ColumnView) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkColumnView     // out
 	var _arg1 *C.GtkSelectionModel // out
 
@@ -471,4 +472,27 @@ func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 	}
 
 	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)
+}
+
+// SortByColumn sets the sorting of the view.
+//
+// This function should be used to set up the initial sorting. At runtime, users
+// can change the sorting of a column view by clicking on the list headers.
+//
+// This call only has an effect if the sorter returned by
+// [method@Gtk.ColumnView.get_sorter] is set on a sort model, and
+// [method@Gtk.ColumnViewColumn.set_sorter] has been called on @column to
+// associate a sorter with the column.
+//
+// If @column is nil, the view will be unsorted.
+func (self *ColumnView) SortByColumn(column ColumnViewColumner, direction SortType) {
+	var _arg0 *C.GtkColumnView       // out
+	var _arg1 *C.GtkColumnViewColumn // out
+	var _arg2 C.GtkSortType          // out
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(self.Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer((column).(gextras.Nativer).Native()))
+	_arg2 = C.GtkSortType(direction)
+
+	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
 }

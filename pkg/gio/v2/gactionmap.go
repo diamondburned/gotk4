@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
+		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMaper},
 	})
 }
 
@@ -56,8 +55,8 @@ type ActionMapOverrider interface {
 	RemoveAction(actionName string)
 }
 
-// ActionMapper describes ActionMap's methods.
-type ActionMapper interface {
+// ActionMaper describes ActionMap's methods.
+type ActionMaper interface {
 	// AddAction adds an action to the @action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
@@ -81,17 +80,17 @@ type ActionMap struct {
 }
 
 var (
-	_ ActionMapper    = (*ActionMap)(nil)
+	_ ActionMaper     = (*ActionMap)(nil)
 	_ gextras.Nativer = (*ActionMap)(nil)
 )
 
-func wrapActionMap(obj *externglib.Object) ActionMapper {
+func wrapActionMap(obj *externglib.Object) ActionMaper {
 	return &ActionMap{
 		Object: obj,
 	}
 }
 
-func marshalActionMapper(p uintptr) (interface{}, error) {
+func marshalActionMaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapActionMap(obj), nil

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBasedder},
+		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBaseder},
 	})
 }
 
@@ -41,8 +40,8 @@ type FileDescriptorBasedOverrider interface {
 	Fd() int
 }
 
-// FileDescriptorBasedder describes FileDescriptorBased's methods.
-type FileDescriptorBasedder interface {
+// FileDescriptorBaseder describes FileDescriptorBased's methods.
+type FileDescriptorBaseder interface {
 	// Fd gets the underlying file descriptor.
 	Fd() int
 }
@@ -58,17 +57,17 @@ type FileDescriptorBased struct {
 }
 
 var (
-	_ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
-	_ gextras.Nativer        = (*FileDescriptorBased)(nil)
+	_ FileDescriptorBaseder = (*FileDescriptorBased)(nil)
+	_ gextras.Nativer       = (*FileDescriptorBased)(nil)
 )
 
-func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBasedder {
+func wrapFileDescriptorBased(obj *externglib.Object) FileDescriptorBaseder {
 	return &FileDescriptorBased{
 		Object: obj,
 	}
 }
 
-func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
+func marshalFileDescriptorBaseder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileDescriptorBased(obj), nil

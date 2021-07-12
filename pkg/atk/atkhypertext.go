@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -34,7 +33,6 @@ type HypertextOverrider interface {
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
-	//
 	LinkSelected(linkIndex int)
 }
 

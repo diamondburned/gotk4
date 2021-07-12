@@ -128,7 +128,7 @@ func InternObject(nativer Nativer) *glib.Object {
 func CastObject(obj *glib.Object) interface{} {
 	var gvalue C.GValue
 
-	C.g_value_init(&gvalue, C.GType(obj.TypeFromInstance()))
+	C.g_value_init_from_instance(&gvalue, C.gpointer(unsafe.Pointer(obj.GObject)))
 	defer C.g_value_unset(&gvalue)
 
 	v, err := glib.ValueFromNative(unsafe.Pointer(&gvalue)).GoValue()

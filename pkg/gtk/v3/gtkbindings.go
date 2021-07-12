@@ -7,15 +7,38 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
+
+// BindingsActivate: find a key binding matching @keyval and @modifiers and
+// activate the binding on @object.
+func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GObject        // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
@@ -60,6 +83,68 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// BindingEntryAddSignalFromString parses a signal description from @signal_desc
+// and incorporates it into @binding_set.
+//
+// Signal descriptions may either bind a key combination to one or more signals:
+//
+//    bind "key" {
+//      "signalname" (param, ...)
+//      ...
+//    }
+//
+// Or they may also unbind a key combination:
+//
+//    unbind "key"
+//
+// Key combinations must be in a format that can be parsed by
+// gtk_accelerator_parse().
+func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
+	var _arg1 *C.GtkBindingSet // out
+	var _arg2 *C.gchar         // out
+	var _cret C.GTokenType     // in
+
+	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
+
+	var _tokenType glib.TokenType // out
+
+	_tokenType = glib.TokenType(_cret)
+
+	return _tokenType
+}
+
+// BindingEntryRemove: remove a binding previously installed via
+// gtk_binding_entry_add_signal() on @binding_set.
+func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	C.gtk_binding_entry_remove(_arg1, _arg2, _arg3)
+}
+
+// BindingEntrySkip: install a binding on @binding_set which causes key lookups
+// to be aborted, to prevent bindings from lower priority sets to be activated.
+func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	C.gtk_binding_entry_skip(_arg1, _arg2, _arg3)
+}
+
 // BindingSet: binding set maintains a list of activatable key bindings. A
 // single binding set can match multiple types of widgets. Similar to style
 // contexts, can be matched by any information contained in a widgets
@@ -72,6 +157,72 @@ type BindingSet struct {
 // Native returns the underlying C source pointer.
 func (b *BindingSet) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
+}
+
+// Activate: find a key binding matching @keyval and @modifiers within
+// @binding_set and activate the binding on @object.
+func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
+	var _arg0 *C.GtkBindingSet  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 *C.GObject        // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
+
+	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AddPath: this function was used internally by the GtkRC parsing mechanism to
+// assign match patterns to BindingSet structures.
+//
+// In GTK+ 3, these match patterns are unused.
+//
+// Deprecated: since version 3.0.
+func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
+	var _arg0 *C.GtkBindingSet      // out
+	var _arg1 C.GtkPathType         // out
+	var _arg2 *C.gchar              // out
+	var _arg3 C.GtkPathPriorityType // out
+
+	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg1 = C.GtkPathType(pathType)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathPattern)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GtkPathPriorityType(priority)
+
+	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
+}
+
+// BindingSetFind: find a binding set by its globally unique name.
+//
+// The @set_name can either be a name used for gtk_binding_set_new() or the type
+// name of a class used in gtk_binding_set_by_class().
+func BindingSetFind(setName string) *BindingSet {
+	var _arg1 *C.gchar         // out
+	var _cret *C.GtkBindingSet // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(setName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_binding_set_find(_arg1)
+
+	var _bindingSet *BindingSet // out
+
+	_bindingSet = (*BindingSet)(unsafe.Pointer(_cret))
+
+	return _bindingSet
 }
 
 // BindingSignal stores the necessary information to activate a widget in

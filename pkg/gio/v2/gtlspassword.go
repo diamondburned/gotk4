@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -37,7 +36,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TLSPasswordOverrider interface {
-	//
 	DefaultWarning() string
 	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
@@ -60,6 +58,8 @@ type TLSPassworder interface {
 	// SetDescription: set a description string about what the password will be
 	// used for.
 	SetDescription(description string)
+	// SetFlags: set flags about the password.
+	SetFlags(flags TLSPasswordFlags)
 	// SetValue: set the value for this password.
 	SetValue(value []byte)
 	// SetWarning: set a user readable translated warning.
@@ -86,6 +86,25 @@ func marshalTLSPassworder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTLSPassword(obj), nil
+}
+
+// NewTLSPassword: create a new Password object.
+func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
+	var _arg1 C.GTlsPasswordFlags // out
+	var _arg2 *C.gchar            // out
+	var _cret *C.GTlsPassword     // in
+
+	_arg1 = C.GTlsPasswordFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_tls_password_new(_arg1, _arg2)
+
+	var _tlsPassword *TLSPassword // out
+
+	_tlsPassword = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*TLSPassword)
+
+	return _tlsPassword
 }
 
 // Description: get a description string about what the password will be used
@@ -171,6 +190,17 @@ func (password *TLSPassword) SetDescription(description string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_tls_password_set_description(_arg0, _arg1)
+}
+
+// SetFlags: set flags about the password.
+func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
+	var _arg0 *C.GTlsPassword     // out
+	var _arg1 C.GTlsPasswordFlags // out
+
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg1 = C.GTlsPasswordFlags(flags)
+
+	C.g_tls_password_set_flags(_arg0, _arg1)
 }
 
 // SetValue: set the value for this password. The @value will be copied by the

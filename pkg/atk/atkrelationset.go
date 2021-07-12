@@ -11,27 +11,39 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSetter},
+		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSeter},
 	})
 }
 
-// RelationSetter describes RelationSet's methods.
-type RelationSetter interface {
+// RelationSeter describes RelationSet's methods.
+type RelationSeter interface {
 	// Add a new relation to the current relation set if it is not already
 	// present.
 	Add(relation Relationer)
+	// AddRelationByType: add a new relation of the specified type with the
+	// specified target to the current relation set if the relation set does not
+	// contain a relation of that type.
+	AddRelationByType(relationship RelationType, target ObjectClasser)
+	// Contains determines whether the relation set contains a relation that
+	// matches the specified type.
+	Contains(relationship RelationType) bool
+	// ContainsTarget determines whether the relation set contains a relation
+	// that matches the specified pair formed by type @relationship and object
+	// @target.
+	ContainsTarget(relationship RelationType, target ObjectClasser) bool
 	// NRelations determines the number of relations in a relation set.
 	NRelations() int
 	// Relation determines the relation at the specified position in the
 	// relation set.
 	Relation(i int) *Relation
+	// RelationByType finds a relation that matches the specified type.
+	RelationByType(relationship RelationType) *Relation
 	// Remove removes a relation from the relation set.
 	Remove(relation Relationer)
 }
@@ -47,17 +59,17 @@ type RelationSet struct {
 }
 
 var (
-	_ RelationSetter  = (*RelationSet)(nil)
+	_ RelationSeter   = (*RelationSet)(nil)
 	_ gextras.Nativer = (*RelationSet)(nil)
 )
 
-func wrapRelationSet(obj *externglib.Object) RelationSetter {
+func wrapRelationSet(obj *externglib.Object) RelationSeter {
 	return &RelationSet{
 		Object: obj,
 	}
 }
 
-func marshalRelationSetter(p uintptr) (interface{}, error) {
+func marshalRelationSeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRelationSet(obj), nil
@@ -90,6 +102,66 @@ func (set *RelationSet) Add(relation Relationer) {
 	C.atk_relation_set_add(_arg0, _arg1)
 }
 
+// AddRelationByType: add a new relation of the specified type with the
+// specified target to the current relation set if the relation set does not
+// contain a relation of that type. If it is does contain a relation of that
+// typea the target is added to the relation.
+func (set *RelationSet) AddRelationByType(relationship RelationType, target ObjectClasser) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+
+	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
+}
+
+// Contains determines whether the relation set contains a relation that matches
+// the specified type.
+func (set *RelationSet) Contains(relationship RelationType) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_contains(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ContainsTarget determines whether the relation set contains a relation that
+// matches the specified pair formed by type @relationship and object @target.
+func (set *RelationSet) ContainsTarget(relationship RelationType, target ObjectClasser) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+
+	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // NRelations determines the number of relations in a relation set.
 func (set *RelationSet) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
@@ -117,6 +189,24 @@ func (set *RelationSet) Relation(i int) *Relation {
 	_arg1 = C.gint(i)
 
 	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
+
+	var _relation *Relation // out
+
+	_relation = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Relation)
+
+	return _relation
+}
+
+// RelationByType finds a relation that matches the specified type.
+func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret *C.AtkRelation    // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
 
 	var _relation *Relation // out
 

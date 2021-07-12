@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,11 +27,10 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RangeOverrider interface {
-	//
 	AdjustBounds(newValue float64)
-	//
+	ChangeValue(scroll ScrollType, newValue float64) bool
 	RangeBorder(border_ *Border)
-	//
+	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
 

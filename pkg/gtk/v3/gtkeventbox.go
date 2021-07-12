@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBoxxer},
+		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBoxer},
 	})
 }
 
-// EventBoxxer describes EventBox's methods.
-type EventBoxxer interface {
+// EventBoxer describes EventBox's methods.
+type EventBoxer interface {
 	// AboveChild returns whether the event box window is above or below the
 	// windows of its child.
 	AboveChild() bool
@@ -48,11 +47,11 @@ type EventBox struct {
 }
 
 var (
-	_ EventBoxxer     = (*EventBox)(nil)
+	_ EventBoxer      = (*EventBox)(nil)
 	_ gextras.Nativer = (*EventBox)(nil)
 )
 
-func wrapEventBox(obj *externglib.Object) EventBoxxer {
+func wrapEventBox(obj *externglib.Object) EventBoxer {
 	return &EventBox{
 		Bin: Bin{
 			Container: Container{
@@ -72,7 +71,7 @@ func wrapEventBox(obj *externglib.Object) EventBoxxer {
 	}
 }
 
-func marshalEventBoxxer(p uintptr) (interface{}, error) {
+func marshalEventBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventBox(obj), nil

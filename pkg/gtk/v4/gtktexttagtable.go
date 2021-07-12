@@ -13,10 +13,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
 // void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
@@ -50,7 +48,7 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // TextTagTabler describes TextTagTable's methods.
 type TextTagTabler interface {
 	// Add a tag to the table.
-	Add(tag TextTagger) bool
+	Add(tag TextTager) bool
 	// Foreach calls @func on each tag in @table, with user data @data.
 	Foreach(fn TextTagTableForeach)
 	// Size returns the size of the table (number of tags)
@@ -58,7 +56,7 @@ type TextTagTabler interface {
 	// Lookup: look up a named tag.
 	Lookup(name string) *TextTag
 	// Remove a tag from the table.
-	Remove(tag TextTagger)
+	Remove(tag TextTager)
 }
 
 // TextTagTable: collection of tags in a `GtkTextBuffer`
@@ -123,7 +121,7 @@ func NewTextTagTable() *TextTagTable {
 //
 // @tag must not be in a tag table already, and may not have the same name as an
 // already-added tag.
-func (table *TextTagTable) Add(tag TextTagger) bool {
+func (table *TextTagTable) Add(tag TextTager) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
@@ -198,7 +196,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 // If a `GtkTextBuffer` has @table as its tag table, the tag is removed from the
 // buffer. The table’s reference to the tag is removed, so the tag will end up
 // destroyed if you don’t have a reference to it.
-func (table *TextTagTable) Remove(tag TextTagger) {
+func (table *TextTagTable) Remove(tag TextTager) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 

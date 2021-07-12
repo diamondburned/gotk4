@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -30,7 +29,7 @@ type Viewporter interface {
 	// child in view.
 	ScrollToFocus() bool
 	// SetChild sets the child widget of @viewport.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetScrollToFocus sets whether the viewport should automatically scroll to
 	// keep the focused child in view.
 	SetScrollToFocus(scrollToFocus bool)
@@ -156,7 +155,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 }
 
 // SetChild sets the child widget of @viewport.
-func (viewport *Viewport) SetChild(child Widgetter) {
+func (viewport *Viewport) SetChild(child Widgeter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 

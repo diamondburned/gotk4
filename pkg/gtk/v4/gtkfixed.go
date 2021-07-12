@@ -13,34 +13,33 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixeder},
 	})
 }
 
-// Fixedder describes Fixed's methods.
-type Fixedder interface {
+// Fixeder describes Fixed's methods.
+type Fixeder interface {
 	// ChildPosition retrieves the translation transformation of the given child
 	// `GtkWidget` in the `GtkFixed`.
-	ChildPosition(widget Widgetter) (x float64, y float64)
+	ChildPosition(widget Widgeter) (x float64, y float64)
 	// ChildTransform retrieves the transformation for @widget set using
 	// gtk_fixed_set_child_transform().
-	ChildTransform(widget Widgetter) *gsk.Transform
+	ChildTransform(widget Widgeter) *gsk.Transform
 	// Move sets a translation transformation to the given @x and @y coordinates
 	// to the child @widget of the `GtkFixed`.
-	Move(widget Widgetter, x float64, y float64)
+	Move(widget Widgeter, x float64, y float64)
 	// Put adds a widget to a `GtkFixed` at the given position.
-	Put(widget Widgetter, x float64, y float64)
+	Put(widget Widgeter, x float64, y float64)
 	// Remove removes a child from @fixed.
-	Remove(widget Widgetter)
+	Remove(widget Widgeter)
 	// SetChildTransform sets the transformation for @widget.
-	SetChildTransform(widget Widgetter, transform *gsk.Transform)
+	SetChildTransform(widget Widgeter, transform *gsk.Transform)
 }
 
 // Fixed: `GtkFixed` places its child widgets at fixed positions and with fixed
@@ -84,11 +83,11 @@ type Fixed struct {
 }
 
 var (
-	_ Fixedder        = (*Fixed)(nil)
+	_ Fixeder         = (*Fixed)(nil)
 	_ gextras.Nativer = (*Fixed)(nil)
 )
 
-func wrapFixed(obj *externglib.Object) Fixedder {
+func wrapFixed(obj *externglib.Object) Fixeder {
 	return &Fixed{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -107,7 +106,7 @@ func wrapFixed(obj *externglib.Object) Fixedder {
 	}
 }
 
-func marshalFixedder(p uintptr) (interface{}, error) {
+func marshalFixeder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFixed(obj), nil
@@ -130,7 +129,7 @@ func NewFixed() *Fixed {
 // `GtkWidget` in the `GtkFixed`.
 //
 // See also: [method@Gtk.Fixed.get_child_transform].
-func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
+func (fixed *Fixed) ChildPosition(widget Widgeter) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // in
@@ -152,7 +151,7 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 
 // ChildTransform retrieves the transformation for @widget set using
 // gtk_fixed_set_child_transform().
-func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
+func (fixed *Fixed) ChildTransform(widget Widgeter) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GskTransform // in
@@ -175,7 +174,7 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 
 // Move sets a translation transformation to the given @x and @y coordinates to
 // the child @widget of the `GtkFixed`.
-func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
+func (fixed *Fixed) Move(widget Widgeter, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -190,7 +189,7 @@ func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
 }
 
 // Put adds a widget to a `GtkFixed` at the given position.
-func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
+func (fixed *Fixed) Put(widget Widgeter, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -205,7 +204,7 @@ func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
 }
 
 // Remove removes a child from @fixed.
-func (fixed *Fixed) Remove(widget Widgetter) {
+func (fixed *Fixed) Remove(widget Widgeter) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -220,7 +219,7 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 // This is a convenience function that retrieves the
 // [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
 // [method@Gtk.FixedLayoutChild.set_transform].
-func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
+func (fixed *Fixed) SetChildTransform(widget Widgeter, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GskTransform // out

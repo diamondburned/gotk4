@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
 	})
 }
 
@@ -31,7 +30,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ButtonOverrider interface {
-	//
 	Activate()
 	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()
@@ -53,8 +51,8 @@ type ButtonOverrider interface {
 	Released()
 }
 
-// Buttonner describes Button's methods.
-type Buttonner interface {
+// Buttoner describes Button's methods.
+type Buttoner interface {
 	// Clicked emits a Button::clicked signal to the given Button.
 	Clicked()
 	// Enter emits a Button::enter signal to the given Button.
@@ -102,9 +100,14 @@ type Buttonner interface {
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
 	// SetImage: set the image of @button to the given widget.
-	SetImage(image Widgetter)
+	SetImage(image Widgeter)
+	// SetImagePosition sets the position of the image relative to the text
+	// inside the button.
+	SetImagePosition(position PositionType)
 	// SetLabel sets the text of the label of the button to @str.
 	SetLabel(label string)
+	// SetRelief sets the relief style of the edges of the given Button widget.
+	SetRelief(relief ReliefStyle)
 	// SetUseStock: if true, the label set on the button is used as a stock id
 	// to select the stock item for the button.
 	SetUseStock(useStock bool)
@@ -144,11 +147,11 @@ type Button struct {
 }
 
 var (
-	_ Buttonner       = (*Button)(nil)
+	_ Buttoner        = (*Button)(nil)
 	_ gextras.Nativer = (*Button)(nil)
 )
 
-func wrapButton(obj *externglib.Object) Buttonner {
+func wrapButton(obj *externglib.Object) Buttoner {
 	return &Button{
 		Bin: Bin{
 			Container: Container{
@@ -184,7 +187,7 @@ func wrapButton(obj *externglib.Object) Buttonner {
 	}
 }
 
-func marshalButtonner(p uintptr) (interface{}, error) {
+func marshalButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -597,7 +600,7 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of @button to the given widget. The image will be
 // displayed if the label text is nil or if Button:always-show-image is true.
 // You don’t have to call gtk_widget_show() on @image yourself.
-func (button *Button) SetImage(image Widgetter) {
+func (button *Button) SetImage(image Widgeter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 
@@ -605,6 +608,18 @@ func (button *Button) SetImage(image Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((image).(gextras.Nativer).Native()))
 
 	C.gtk_button_set_image(_arg0, _arg1)
+}
+
+// SetImagePosition sets the position of the image relative to the text inside
+// the button.
+func (button *Button) SetImagePosition(position PositionType) {
+	var _arg0 *C.GtkButton      // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
+	_arg1 = C.GtkPositionType(position)
+
+	C.gtk_button_set_image_position(_arg0, _arg1)
 }
 
 // SetLabel sets the text of the label of the button to @str. This text is also
@@ -620,6 +635,20 @@ func (button *Button) SetLabel(label string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_button_set_label(_arg0, _arg1)
+}
+
+// SetRelief sets the relief style of the edges of the given Button widget. Two
+// styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default style is, as
+// one can guess, GTK_RELIEF_NORMAL. The deprecated value GTK_RELIEF_HALF
+// behaves the same as GTK_RELIEF_NORMAL.
+func (button *Button) SetRelief(relief ReliefStyle) {
+	var _arg0 *C.GtkButton     // out
+	var _arg1 C.GtkReliefStyle // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(button.Native()))
+	_arg1 = C.GtkReliefStyle(relief)
+
+	C.gtk_button_set_relief(_arg0, _arg1)
 }
 
 // SetUseStock: if true, the label set on the button is used as a stock id to

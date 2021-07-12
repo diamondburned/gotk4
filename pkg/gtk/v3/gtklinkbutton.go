@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtonner},
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type LinkButtonOverrider interface {
-	//
 	ActivateLink() bool
 }
 
-// LinkButtonner describes LinkButton's methods.
-type LinkButtonner interface {
+// LinkButtoner describes LinkButton's methods.
+type LinkButtoner interface {
 	// URI retrieves the URI set using gtk_link_button_set_uri().
 	URI() string
 	// Visited retrieves the “visited” state of the URI where the LinkButton
@@ -73,11 +71,11 @@ type LinkButton struct {
 }
 
 var (
-	_ LinkButtonner   = (*LinkButton)(nil)
+	_ LinkButtoner    = (*LinkButton)(nil)
 	_ gextras.Nativer = (*LinkButton)(nil)
 )
 
-func wrapLinkButton(obj *externglib.Object) LinkButtonner {
+func wrapLinkButton(obj *externglib.Object) LinkButtoner {
 	return &LinkButton{
 		Button: Button{
 			Bin: Bin{
@@ -115,7 +113,7 @@ func wrapLinkButton(obj *externglib.Object) LinkButtonner {
 	}
 }
 
-func marshalLinkButtonner(p uintptr) (interface{}, error) {
+func marshalLinkButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLinkButton(obj), nil

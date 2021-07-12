@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtoner},
 	})
 }
 
@@ -31,12 +30,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ColorButtonOverrider interface {
-	//
 	ColorSet()
 }
 
-// ColorButtonner describes ColorButton's methods.
-type ColorButtonner interface {
+// ColorButtoner describes ColorButton's methods.
+type ColorButtoner interface {
 	// Alpha returns the current alpha value.
 	Alpha() uint16
 	// Color sets @color to be the current color in the ColorButton widget.
@@ -73,11 +71,11 @@ type ColorButton struct {
 }
 
 var (
-	_ ColorButtonner  = (*ColorButton)(nil)
+	_ ColorButtoner   = (*ColorButton)(nil)
 	_ gextras.Nativer = (*ColorButton)(nil)
 )
 
-func wrapColorButton(obj *externglib.Object) ColorButtonner {
+func wrapColorButton(obj *externglib.Object) ColorButtoner {
 	return &ColorButton{
 		Button: Button{
 			Bin: Bin{
@@ -118,7 +116,7 @@ func wrapColorButton(obj *externglib.Object) ColorButtonner {
 	}
 }
 
-func marshalColorButtonner(p uintptr) (interface{}, error) {
+func marshalColorButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorButton(obj), nil

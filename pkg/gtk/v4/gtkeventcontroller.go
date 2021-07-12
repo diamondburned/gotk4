@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -50,6 +49,12 @@ type EventControllerer interface {
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
 	SetName(name string)
+	// SetPropagationLimit sets the event propagation limit on the event
+	// controller.
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	SetPropagationPhase(phase PropagationPhase)
 }
 
 // EventController: `GtkEventController` is the base class for event
@@ -238,4 +243,33 @@ func (controller *EventController) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_event_controller_set_name(_arg0, _arg1)
+}
+
+// SetPropagationLimit sets the event propagation limit on the event controller.
+//
+// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+// events that are targeted at widgets on a different surface, such as popovers.
+func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationLimit // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg1 = C.GtkPropagationLimit(limit)
+
+	C.gtk_event_controller_set_propagation_limit(_arg0, _arg1)
+}
+
+// SetPropagationPhase sets the propagation phase at which a controller handles
+// events.
+//
+// If @phase is GTK_PHASE_NONE, no automatic event handling will be performed,
+// but other additional gesture maintenance will.
+func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationPhase // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg1 = C.GtkPropagationPhase(phase)
+
+	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 }

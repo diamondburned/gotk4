@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -31,7 +30,7 @@ type AppLaunchContexter interface {
 	SetDesktop(desktop int)
 	// SetIcon sets the icon for applications that are launched with this
 	// context.
-	SetIcon(icon gio.Iconner)
+	SetIcon(icon gio.Iconer)
 	// SetIconName sets the icon for applications that are launched with this
 	// context.
 	SetIconName(iconName string)
@@ -123,7 +122,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // notification.
 //
 // See also [method@Gdk.AppLaunchContext.set_icon_name].
-func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
+func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

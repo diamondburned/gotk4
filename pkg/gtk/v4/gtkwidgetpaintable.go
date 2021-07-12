@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,7 +27,7 @@ type WidgetPaintabler interface {
 	// Widget returns the widget that is observed or nil if none.
 	Widget() *Widget
 	// SetWidget sets the widget that should be observed.
-	SetWidget(widget Widgetter)
+	SetWidget(widget Widgeter)
 }
 
 // WidgetPaintable: `GtkWidgetPaintable` is a `GdkPaintable` that displays the
@@ -78,7 +77,7 @@ func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
-func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
+func NewWidgetPaintable(widget Widgeter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
@@ -110,7 +109,7 @@ func (self *WidgetPaintable) Widget() *Widget {
 }
 
 // SetWidget sets the widget that should be observed.
-func (self *WidgetPaintable) SetWidget(widget Widgetter) {
+func (self *WidgetPaintable) SetWidget(widget Widgeter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

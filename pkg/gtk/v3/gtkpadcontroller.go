@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -45,6 +44,8 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 
 // PadControllerer describes PadController's methods.
 type PadControllerer interface {
+	// SetAction adds an individual action to @controller.
+	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
 	// SetActionEntries: this is a convenience function to add a group of action
 	// entries on @controller.
 	SetActionEntries(entries []PadActionEntry)
@@ -122,7 +123,7 @@ func marshalPadControllerer(p uintptr) (interface{}, error) {
 // The PadController is created with no mapped actions. In order to map pad
 // events to actions, use gtk_pad_controller_set_action_entries() or
 // gtk_pad_controller_set_action().
-func NewPadController(window Windowwer, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
+func NewPadController(window Windower, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GActionGroup     // out
 	var _arg3 *C.GdkDevice        // out
@@ -139,6 +140,34 @@ func NewPadController(window Windowwer, group gio.ActionGrouper, pad gdk.Devicer
 	_padController = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*PadController)
 
 	return _padController
+}
+
+// SetAction adds an individual action to @controller. This action will only be
+// activated if the given button/ring/strip number in @index is interacted while
+// the current mode is @mode. -1 may be used for simple cases, so the action is
+// triggered on all modes.
+//
+// The given @label should be considered user-visible, so internationalization
+// rules apply. Some windowing systems may be able to use those for user
+// feedback.
+func (controller *PadController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
+	var _arg0 *C.GtkPadController // out
+	var _arg1 C.GtkPadActionType  // out
+	var _arg2 C.gint              // out
+	var _arg3 C.gint              // out
+	var _arg4 *C.gchar            // out
+	var _arg5 *C.gchar            // out
+
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(controller.Native()))
+	_arg1 = C.GtkPadActionType(typ)
+	_arg2 = C.gint(index)
+	_arg3 = C.gint(mode)
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SetActionEntries: this is a convenience function to add a group of action

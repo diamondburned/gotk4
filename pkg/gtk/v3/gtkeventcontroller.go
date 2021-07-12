@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -33,6 +32,9 @@ type EventControllerer interface {
 	Widget() *Widget
 	// Reset resets the @controller to a clean state.
 	Reset()
+	// SetPropagationPhase sets the propagation phase at which a controller
+	// handles events.
+	SetPropagationPhase(phase PropagationPhase)
 }
 
 // EventController is a base, low-level implementation for event controllers.
@@ -101,4 +103,20 @@ func (controller *EventController) Reset() {
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
 
 	C.gtk_event_controller_reset(_arg0)
+}
+
+// SetPropagationPhase sets the propagation phase at which a controller handles
+// events.
+//
+// If @phase is GTK_PHASE_NONE, no automatic event handling will be performed,
+// but other additional gesture maintenance will. In that phase, the events can
+// be managed by calling gtk_event_controller_handle_event().
+func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationPhase // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(controller.Native()))
+	_arg1 = C.GtkPropagationPhase(phase)
+
+	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 }

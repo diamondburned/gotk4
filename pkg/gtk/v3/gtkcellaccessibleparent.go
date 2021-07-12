@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,49 +30,32 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellAccessibleParentOverrider interface {
-	//
 	Activate(cell CellAccessibler)
-	//
 	Edit(cell CellAccessibler)
-	//
 	ExpandCollapse(cell CellAccessibler)
-	//
 	CellArea(cell CellAccessibler) gdk.Rectangle
-	//
+	CellExtents(cell CellAccessibler, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell CellAccessibler) (row int, column int)
-	//
 	ChildIndex(cell CellAccessibler) int
-	//
 	RendererState(cell CellAccessibler) CellRendererState
-	//
 	GrabFocus(cell CellAccessibler) bool
-	//
-	UpdateRelationset(cell CellAccessibler, relationset atk.RelationSetter)
+	UpdateRelationset(cell CellAccessibler, relationset atk.RelationSeter)
 }
 
 // CellAccessibleParenter describes CellAccessibleParent's methods.
 type CellAccessibleParenter interface {
-	//
 	Activate(cell CellAccessibler)
-	//
 	Edit(cell CellAccessibler)
-	//
 	ExpandCollapse(cell CellAccessibler)
-	//
 	CellArea(cell CellAccessibler) gdk.Rectangle
-	//
+	CellExtents(cell CellAccessibler, coordType atk.CoordType) (x int, y int, width int, height int)
 	CellPosition(cell CellAccessibler) (row int, column int)
-	//
 	ChildIndex(cell CellAccessibler) int
-	//
 	RendererState(cell CellAccessibler) CellRendererState
-	//
 	GrabFocus(cell CellAccessibler) bool
-	//
-	UpdateRelationset(cell CellAccessibler, relationset atk.RelationSetter)
+	UpdateRelationset(cell CellAccessibler, relationset atk.RelationSeter)
 }
 
-//
 type CellAccessibleParent struct {
 	*externglib.Object
 }
@@ -95,7 +77,6 @@ func marshalCellAccessibleParenter(p uintptr) (interface{}, error) {
 	return wrapCellAccessibleParent(obj), nil
 }
 
-//
 func (parent *CellAccessibleParent) Activate(cell CellAccessibler) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -106,7 +87,6 @@ func (parent *CellAccessibleParent) Activate(cell CellAccessibler) {
 	C.gtk_cell_accessible_parent_activate(_arg0, _arg1)
 }
 
-//
 func (parent *CellAccessibleParent) Edit(cell CellAccessibler) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -117,7 +97,6 @@ func (parent *CellAccessibleParent) Edit(cell CellAccessibler) {
 	C.gtk_cell_accessible_parent_edit(_arg0, _arg1)
 }
 
-//
 func (parent *CellAccessibleParent) ExpandCollapse(cell CellAccessibler) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -128,7 +107,6 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell CellAccessibler) {
 	C.gtk_cell_accessible_parent_expand_collapse(_arg0, _arg1)
 }
 
-//
 func (parent *CellAccessibleParent) CellArea(cell CellAccessibler) gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -142,7 +120,34 @@ func (parent *CellAccessibleParent) CellArea(cell CellAccessibler) gdk.Rectangle
 	return _cellRect
 }
 
-//
+func (parent *CellAccessibleParent) CellExtents(cell CellAccessibler, coordType atk.CoordType) (x int, y int, width int, height int) {
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
+	var _arg4 C.gint                     // in
+	var _arg5 C.gint                     // in
+	var _arg6 C.AtkCoordType             // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg6 = C.AtkCoordType(coordType)
+
+	C.gtk_cell_accessible_parent_get_cell_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
+
+	return _x, _y, _width, _height
+}
+
 func (parent *CellAccessibleParent) CellPosition(cell CellAccessibler) (row int, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -163,7 +168,6 @@ func (parent *CellAccessibleParent) CellPosition(cell CellAccessibler) (row int,
 	return _row, _column
 }
 
-//
 func (parent *CellAccessibleParent) ChildIndex(cell CellAccessibler) int {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -181,7 +185,6 @@ func (parent *CellAccessibleParent) ChildIndex(cell CellAccessibler) int {
 	return _gint
 }
 
-//
 func (parent *CellAccessibleParent) RendererState(cell CellAccessibler) CellRendererState {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -199,7 +202,6 @@ func (parent *CellAccessibleParent) RendererState(cell CellAccessibler) CellRend
 	return _cellRendererState
 }
 
-//
 func (parent *CellAccessibleParent) GrabFocus(cell CellAccessibler) bool {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
@@ -219,8 +221,7 @@ func (parent *CellAccessibleParent) GrabFocus(cell CellAccessibler) bool {
 	return _ok
 }
 
-//
-func (parent *CellAccessibleParent) UpdateRelationset(cell CellAccessibler, relationset atk.RelationSetter) {
+func (parent *CellAccessibleParent) UpdateRelationset(cell CellAccessibler, relationset atk.RelationSeter) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 *C.AtkRelationSet          // out

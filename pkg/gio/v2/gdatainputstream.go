@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -84,6 +82,10 @@ type DataInputStreamer interface {
 	// ReadUptoFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_upto_async().
 	ReadUptoFinish(result AsyncResulter) (uint, string, error)
+	// SetByteOrder: this function sets the byte order for the given @stream.
+	SetByteOrder(order DataStreamByteOrder)
+	// SetNewlineType sets the newline type for the @stream.
+	SetNewlineType(typ DataStreamNewlineType)
 }
 
 // DataInputStream: data input stream implements Stream and includes functions
@@ -713,4 +715,31 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _length, _utf8, _goerr
+}
+
+// SetByteOrder: this function sets the byte order for the given @stream. All
+// subsequent reads from the @stream will be read in the given @order.
+func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
+	var _arg0 *C.GDataInputStream    // out
+	var _arg1 C.GDataStreamByteOrder // out
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = C.GDataStreamByteOrder(order)
+
+	C.g_data_input_stream_set_byte_order(_arg0, _arg1)
+}
+
+// SetNewlineType sets the newline type for the @stream.
+//
+// Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
+// chunk ends in "CR" we must read an additional byte to know if this is "CR" or
+// "CR LF", and this might block if there is no more data available.
+func (stream *DataInputStream) SetNewlineType(typ DataStreamNewlineType) {
+	var _arg0 *C.GDataInputStream      // out
+	var _arg1 C.GDataStreamNewlineType // out
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = C.GDataStreamNewlineType(typ)
+
+	C.g_data_input_stream_set_newline_type(_arg0, _arg1)
 }

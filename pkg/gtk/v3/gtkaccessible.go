@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -35,9 +34,7 @@ type AccessibleOverrider interface {
 	//
 	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 	ConnectWidgetDestroyed()
-	//
 	WidgetSet()
-	//
 	WidgetUnset()
 }
 
@@ -49,7 +46,7 @@ type Accessibler interface {
 	// Widget gets the Widget corresponding to the Accessible.
 	Widget() *Widget
 	// SetWidget sets the Widget corresponding to the Accessible.
-	SetWidget(widget Widgetter)
+	SetWidget(widget Widgeter)
 }
 
 // Accessible class is the base class for accessible implementations for Widget
@@ -118,7 +115,7 @@ func (accessible *Accessible) Widget() *Widget {
 // @accessible will not hold a reference to @widget. It is the caller’s
 // responsibility to ensure that when @widget is destroyed, the widget is unset
 // by calling this function again with @widget set to nil.
-func (accessible *Accessible) SetWidget(widget Widgetter) {
+func (accessible *Accessible) SetWidget(widget Widgeter) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 

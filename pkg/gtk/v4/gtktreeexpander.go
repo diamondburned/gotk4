@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -32,9 +31,9 @@ type TreeExpanderer interface {
 	// ListRow gets the list row managed by @self.
 	ListRow() *TreeListRow
 	// SetChild sets the content widget to display.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetListRow sets the tree list row that this expander should manage.
-	SetListRow(listRow TreeListRowwer)
+	SetListRow(listRow TreeListRower)
 }
 
 // TreeExpander: `GtkTreeExpander` is a widget that provides an expander for a
@@ -173,7 +172,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 }
 
 // SetChild sets the content widget to display.
-func (self *TreeExpander) SetChild(child Widgetter) {
+func (self *TreeExpander) SetChild(child Widgeter) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 
@@ -184,7 +183,7 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 }
 
 // SetListRow sets the tree list row that this expander should manage.
-func (self *TreeExpander) SetListRow(listRow TreeListRowwer) {
+func (self *TreeExpander) SetListRow(listRow TreeListRower) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkTreeListRow  // out
 

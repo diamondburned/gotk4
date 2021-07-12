@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -53,6 +52,8 @@ type DataOutputStreamer interface {
 	PutUint32(data uint32, cancellable Cancellabler) error
 	// PutUint64 puts an unsigned 64-bit integer into the stream.
 	PutUint64(data uint64, cancellable Cancellabler) error
+	// SetByteOrder sets the byte order of the data output stream to @order.
+	SetByteOrder(order DataStreamByteOrder)
 }
 
 // DataOutputStream: data output stream implements Stream and includes functions
@@ -278,4 +279,15 @@ func (stream *DataOutputStream) PutUint64(data uint64, cancellable Cancellabler)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// SetByteOrder sets the byte order of the data output stream to @order.
+func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
+	var _arg0 *C.GDataOutputStream   // out
+	var _arg1 C.GDataStreamByteOrder // out
+
+	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = C.GDataStreamByteOrder(order)
+
+	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
 }

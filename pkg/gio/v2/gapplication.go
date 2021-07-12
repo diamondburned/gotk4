@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -46,21 +45,13 @@ type ApplicationOverrider interface {
 	//
 	// The application must be registered before calling this function.
 	Activate()
-	//
 	AddPlatformData(builder *glib.VariantBuilder)
-	//
 	AfterEmit(platformData *glib.Variant)
-	//
 	BeforeEmit(platformData *glib.Variant)
-	//
 	CommandLine(commandLine ApplicationCommandLiner) int
-	//
 	DBusRegister(connection DBusConnectioner, objectPath string) error
-	//
 	DBusUnregister(connection DBusConnectioner, objectPath string)
-	//
 	HandleLocalOptions(options *glib.VariantDict) int
-	//
 	NameLost() bool
 	// Open opens the given files.
 	//
@@ -77,13 +68,9 @@ type ApplicationOverrider interface {
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
 	Open(files []*File, hint string)
-	//
 	QuitMainloop()
-	//
 	RunMainloop()
-	//
 	Shutdown()
-	//
 	Startup()
 }
 
@@ -91,6 +78,8 @@ type ApplicationOverrider interface {
 type Applicationer interface {
 	// Activate activates the application.
 	Activate()
+	// AddMainOption: add an option to be handled by @application.
+	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
 	// AddMainOptionEntries adds main option entries to be handled by
 	// @application.
 	AddMainOptionEntries(entries []glib.OptionEntry)
@@ -146,6 +135,8 @@ type Applicationer interface {
 	// SetDefault sets or unsets the default application for the process, as
 	// returned by g_application_get_default().
 	SetDefault()
+	// SetFlags sets the flags for @application.
+	SetFlags(flags ApplicationFlags)
 	// SetInactivityTimeout sets the current inactivity timeout for the
 	// application.
 	SetInactivityTimeout(inactivityTimeout uint)
@@ -310,6 +301,31 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 	return wrapApplication(obj), nil
 }
 
+// NewApplication creates a new #GApplication instance.
+//
+// If non-nil, the application id must be valid. See
+// g_application_id_is_valid().
+//
+// If no application ID is given then some features of #GApplication (most
+// notably application uniqueness) will be disabled.
+func NewApplication(applicationId string, flags ApplicationFlags) *Application {
+	var _arg1 *C.gchar            // out
+	var _arg2 C.GApplicationFlags // out
+	var _cret *C.GApplication     // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GApplicationFlags(flags)
+
+	_cret = C.g_application_new(_arg1, _arg2)
+
+	var _application *Application // out
+
+	_application = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Application)
+
+	return _application
+}
+
 // Activate activates the application.
 //
 // In essence, this results in the #GApplication::activate signal being emitted
@@ -322,6 +338,41 @@ func (application *Application) Activate() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 
 	C.g_application_activate(_arg0)
+}
+
+// AddMainOption: add an option to be handled by @application.
+//
+// Calling this function is the equivalent of calling
+// g_application_add_main_option_entries() with a single Entry that has its
+// arg_data member set to nil.
+//
+// The parsed arguments will be packed into a Dict which is passed to
+// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
+// set, then it will also be sent to the primary instance. See
+// g_application_add_main_option_entries() for more details.
+//
+// See Entry for more documentation of the arguments.
+func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
+	var _arg0 *C.GApplication // out
+	var _arg1 *C.char         // out
+	var _arg2 C.char          // out
+	var _arg3 C.GOptionFlags  // out
+	var _arg4 C.GOptionArg    // out
+	var _arg5 *C.char         // out
+	var _arg6 *C.char         // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(longName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.char(shortName)
+	_arg3 = C.GOptionFlags(flags)
+	_arg4 = C.GOptionArg(arg)
+	_arg5 = (*C.char)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
+	defer C.free(unsafe.Pointer(_arg6))
+
+	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // AddMainOptionEntries adds main option entries to be handled by @application.
@@ -961,6 +1012,21 @@ func (application *Application) SetDefault() {
 	C.g_application_set_default(_arg0)
 }
 
+// SetFlags sets the flags for @application.
+//
+// The flags can only be modified if @application has not yet been registered.
+//
+// See Flags.
+func (application *Application) SetFlags(flags ApplicationFlags) {
+	var _arg0 *C.GApplication     // out
+	var _arg1 C.GApplicationFlags // out
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = C.GApplicationFlags(flags)
+
+	C.g_application_set_flags(_arg0, _arg1)
+}
+
 // SetInactivityTimeout sets the current inactivity timeout for the application.
 //
 // This is the amount of time (in milliseconds) after the last call to
@@ -1121,4 +1187,88 @@ func (application *Application) WithdrawNotification(id string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.g_application_withdraw_notification(_arg0, _arg1)
+}
+
+// ApplicationGetDefault returns the default #GApplication instance for this
+// process.
+//
+// Normally there is only one #GApplication per process and it becomes the
+// default when it is created. You can exercise more control over this by using
+// g_application_set_default().
+//
+// If there is no default application then nil is returned.
+func ApplicationGetDefault() *Application {
+	var _cret *C.GApplication // in
+
+	_cret = C.g_application_get_default()
+
+	var _application *Application // out
+
+	_application = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Application)
+
+	return _application
+}
+
+// ApplicationIDIsValid checks if @application_id is a valid application
+// identifier.
+//
+// A valid ID is required for calls to g_application_new() and
+// g_application_set_application_id().
+//
+// Application identifiers follow the same format as D-Bus well-known bus names
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
+// For convenience, the restrictions on application identifiers are reproduced
+// here:
+//
+// - Application identifiers are composed of 1 or more elements separated by a
+// period (`.`) character. All elements must contain at least one character.
+//
+// - Each element must only contain the ASCII characters `[A-Z][a-z][0-9]_-`,
+// with `-` discouraged in new application identifiers. Each element must not
+// begin with a digit.
+//
+// - Application identifiers must contain at least one `.` (period) character
+// (and thus at least two elements).
+//
+// - Application identifiers must not begin with a `.` (period) character.
+//
+// - Application identifiers must not exceed 255 characters.
+//
+// Note that the hyphen (`-`) character is allowed in application identifiers,
+// but is problematic or not allowed in various specifications and APIs that
+// refer to D-Bus, such as Flatpak application IDs
+// (http://docs.flatpak.org/en/latest/introduction.html#identifiers), the
+// `DBusActivatable` interface in the Desktop Entry Specification
+// (https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#dbus),
+// and the convention that an application's "main" interface and object path
+// resemble its application identifier and bus name. To avoid situations that
+// require special-case handling, it is recommended that new application
+// identifiers consistently replace hyphens with underscores.
+//
+// Like D-Bus interface names, application identifiers should start with the
+// reversed DNS domain name of the author of the interface (in lower-case), and
+// it is conventional for the rest of the application identifier to consist of
+// words run together, with initial capital letters.
+//
+// As with D-Bus interface names, if the author's DNS domain name contains
+// hyphen/minus characters they should be replaced by underscores, and if it
+// contains leading digits they should be escaped by prepending an underscore.
+// For example, if the owner of 7-zip.org used an application identifier for an
+// archiving application, it might be named `org._7_zip.Archiver`.
+func ApplicationIDIsValid(applicationId string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_application_id_is_valid(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -52,6 +51,107 @@ const (
 
 func marshalGravity(p uintptr) (interface{}, error) {
 	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// GravityGetForMatrix finds the gravity that best matches the rotation
+// component in a `PangoMatrix`.
+func GravityGetForMatrix(matrix *Matrix) Gravity {
+	var _arg1 *C.PangoMatrix // out
+	var _cret C.PangoGravity // in
+
+	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+
+	_cret = C.pango_gravity_get_for_matrix(_arg1)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
+}
+
+// GravityGetForScript returns the gravity to use in laying out a `PangoItem`.
+//
+// The gravity is determined based on the script, base gravity, and hint.
+//
+// If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
+// preferred gravity of @script. To get the preferred gravity of a script, pass
+// PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
+func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
+	var _arg1 C.PangoScript      // out
+	var _arg2 C.PangoGravity     // out
+	var _arg3 C.PangoGravityHint // out
+	var _cret C.PangoGravity     // in
+
+	_arg1 = C.PangoScript(script)
+	_arg2 = C.PangoGravity(baseGravity)
+	_arg3 = C.PangoGravityHint(hint)
+
+	_cret = C.pango_gravity_get_for_script(_arg1, _arg2, _arg3)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
+}
+
+// GravityGetForScriptAndWidth returns the gravity to use in laying out a single
+// character or `PangoItem`.
+//
+// The gravity is determined based on the script, East Asian width, base
+// gravity, and hint,
+//
+// This function is similar to [type_func@Pango.Gravity.get_for_script] except
+// that this function makes a distinction between narrow/half-width and
+// wide/full-width characters also. Wide/full-width characters always stand
+// *upright*, that is, they always take the base gravity, whereas
+// narrow/full-width characters are always rotated in vertical context.
+//
+// If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
+// preferred gravity of @script.
+func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
+	var _arg1 C.PangoScript      // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.PangoGravity     // out
+	var _arg4 C.PangoGravityHint // out
+	var _cret C.PangoGravity     // in
+
+	_arg1 = C.PangoScript(script)
+	if wide {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.PangoGravity(baseGravity)
+	_arg4 = C.PangoGravityHint(hint)
+
+	_cret = C.pango_gravity_get_for_script_and_width(_arg1, _arg2, _arg3, _arg4)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
+}
+
+// GravityToRotation converts a Gravity value to its natural rotation in
+// radians.
+//
+// Note that [method@Pango.Matrix.rotate] takes angle in degrees, not radians.
+// So, to call [method@Pango.Matrix,rotate] with the output of this function you
+// should multiply it by (180. / G_PI).
+func GravityToRotation(gravity Gravity) float64 {
+	var _arg1 C.PangoGravity // out
+	var _cret C.double       // in
+
+	_arg1 = C.PangoGravity(gravity)
+
+	_cret = C.pango_gravity_to_rotation(_arg1)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // GravityHint: `PangoGravityHint` defines how horizontal scripts should behave

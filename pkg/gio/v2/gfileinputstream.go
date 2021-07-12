@@ -8,12 +8,12 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +26,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -41,7 +40,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FileInputStreamOverrider interface {
-	//
 	CanSeek() bool
 	// QueryInfo queries a file input stream the given @attributes. This
 	// function blocks while querying the stream. For the asynchronous
@@ -64,7 +62,7 @@ type FileInputStreamOverrider interface {
 	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-	//
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error
 	Tell() int64
 }
 

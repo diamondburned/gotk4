@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -71,7 +70,7 @@ func marshalTCPWrapperConnectioner(p uintptr) (interface{}, error) {
 
 // NewTCPWrapperConnection wraps @base_io_stream and @socket together as a
 // Connection.
-func NewTCPWrapperConnection(baseIoStream IOStreamer, socket Socketter) *TCPWrapperConnection {
+func NewTCPWrapperConnection(baseIoStream IOStreamer, socket Socketer) *TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in

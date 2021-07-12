@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialogger},
+		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialoger},
 	})
 }
 
-// RecentChooserDialogger describes RecentChooserDialog's methods.
-type RecentChooserDialogger interface {
+// RecentChooserDialoger describes RecentChooserDialog's methods.
+type RecentChooserDialoger interface {
 	privateRecentChooserDialog()
 }
 
@@ -77,11 +76,11 @@ type RecentChooserDialog struct {
 }
 
 var (
-	_ RecentChooserDialogger = (*RecentChooserDialog)(nil)
-	_ gextras.Nativer        = (*RecentChooserDialog)(nil)
+	_ RecentChooserDialoger = (*RecentChooserDialog)(nil)
+	_ gextras.Nativer       = (*RecentChooserDialog)(nil)
 )
 
-func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialogger {
+func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialoger {
 	return &RecentChooserDialog{
 		Dialog: Dialog{
 			Window: Window{
@@ -108,7 +107,7 @@ func wrapRecentChooserDialog(obj *externglib.Object) RecentChooserDialogger {
 	}
 }
 
-func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
+func marshalRecentChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRecentChooserDialog(obj), nil

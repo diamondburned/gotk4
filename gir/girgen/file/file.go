@@ -51,9 +51,14 @@ func (h *Header) Reset() {
 	*h = Header{stop: h.stop}
 }
 
+// ImportCore returns the path to import a core package.
+func ImportCore(core string) string {
+	return CoreImportPath + "/" + core
+}
+
 // ImportCore adds a core import.
 func (h *Header) ImportCore(core string) {
-	h.Import(CoreImportPath + "/" + core)
+	h.Import(ImportCore(core))
 }
 
 func (h *Header) Import(path string) {
@@ -121,14 +126,9 @@ func (h *Header) ImportImpl(resolved *types.Resolved) {
 	}
 }
 
-// DashImportPubl is to be used for go:linkname.
-func (h *Header) DashImportPubl(resolved *types.Resolved) {
-	if h.stop || resolved == nil {
-		return
-	}
-
-	// Wrap doesn't matter. For now.
-	if resolved.PublImport.Path == "" {
+// DashImport imports the given path if it's not already imported.
+func (h *Header) DashImport(path string) {
+	if h.stop {
 		return
 	}
 
@@ -136,11 +136,9 @@ func (h *Header) DashImportPubl(resolved *types.Resolved) {
 		h.Imports = map[string]string{}
 	}
 
-	if _, ok := h.Imports[resolved.PublImport.Path]; ok {
-		return
+	if _, ok := h.Imports[path]; !ok {
+		h.Imports[path] = "_"
 	}
-
-	h.Imports[resolved.PublImport.Path] = "_"
 }
 
 func (h *Header) ImportResolvedType(imports types.ResolvedImport) {

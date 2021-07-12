@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -34,7 +33,6 @@ type TextMarker interface {
 	Name() string
 	// Visible returns true if the mark is visible.
 	Visible() bool
-	//
 	SetVisible(setting bool)
 }
 
@@ -214,7 +212,6 @@ func (mark *TextMark) Visible() bool {
 	return _ok
 }
 
-//
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out

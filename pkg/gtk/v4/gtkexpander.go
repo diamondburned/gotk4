@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -42,13 +41,13 @@ type Expanderer interface {
 	// mnemonic.
 	UseUnderline() bool
 	// SetChild sets the child widget of @expander.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetExpanded sets the state of the expander.
 	SetExpanded(expanded bool)
 	// SetLabel sets the text of the label of the expander to @label.
 	SetLabel(label string)
 	// SetLabelWidget: set the label widget for the expander.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
 	// SetResizeToplevel sets whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	SetResizeToplevel(resizeToplevel bool)
@@ -336,7 +335,7 @@ func (expander *Expander) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of @expander.
-func (expander *Expander) SetChild(child Widgetter) {
+func (expander *Expander) SetChild(child Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -379,7 +378,7 @@ func (expander *Expander) SetLabel(label string) {
 // SetLabelWidget: set the label widget for the expander.
 //
 // This is the widget that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

@@ -7,12 +7,12 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,12 +29,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketter},
+		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketer},
 	})
 }
 
-// Socketter describes Socket's methods.
-type Socketter interface {
+// Socketer describes Socket's methods.
+type Socketer interface {
 	// Accept incoming connections on a connection-based socket.
 	Accept(cancellable Cancellabler) (*Socket, error)
 	// Bind: when a socket is created it is attached to an address family, but
@@ -45,8 +45,15 @@ type Socketter interface {
 	CheckConnectResult() error
 	// Close closes the socket, shutting down any active connection.
 	Close() error
-	// ConnectSocketter: connect the socket to the specified remote address.
-	ConnectSocketter(address SocketAddresser, cancellable Cancellabler) error
+	// ConditionCheck checks on the readiness of @socket to perform operations.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionTimedWait waits for up to @timeout_us microseconds for
+	// @condition to become true on @socket.
+	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellabler) error
+	// ConditionWait waits for @condition to become true on @socket.
+	ConditionWait(condition glib.IOCondition, cancellable Cancellabler) error
+	// ConnectSocketer: connect the socket to the specified remote address.
+	ConnectSocketer(address SocketAddresser, cancellable Cancellabler) error
 	// ConnectionFactoryCreateConnection creates a Connection subclass of the
 	// right type for @socket.
 	ConnectionFactoryCreateConnection() *SocketConnection
@@ -218,11 +225,11 @@ type Socket struct {
 }
 
 var (
-	_ Socketter       = (*Socket)(nil)
+	_ Socketer        = (*Socket)(nil)
 	_ gextras.Nativer = (*Socket)(nil)
 )
 
-func wrapSocket(obj *externglib.Object) Socketter {
+func wrapSocket(obj *externglib.Object) Socketer {
 	return &Socket{
 		Object: obj,
 		DatagramBased: DatagramBased{
@@ -234,10 +241,43 @@ func wrapSocket(obj *externglib.Object) Socketter {
 	}
 }
 
-func marshalSocketter(p uintptr) (interface{}, error) {
+func marshalSocketer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil
+}
+
+// NewSocket creates a new #GSocket with the defined family, type and protocol.
+// If @protocol is 0 (G_SOCKET_PROTOCOL_DEFAULT) the default protocol type for
+// the family and type is used.
+//
+// The @protocol is a family and type specific int that specifies what kind of
+// protocol to use. Protocol lists several common ones. Many families only
+// support one protocol, and use 0 for this, others support several and using 0
+// means to use the default protocol for the family and type.
+//
+// The protocol id is passed directly to the operating system, so you can use
+// protocols not listed in Protocol if you know the protocol number used for it.
+func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*Socket, error) {
+	var _arg1 C.GSocketFamily   // out
+	var _arg2 C.GSocketType     // out
+	var _arg3 C.GSocketProtocol // out
+	var _cret *C.GSocket        // in
+	var _cerr *C.GError         // in
+
+	_arg1 = C.GSocketFamily(family)
+	_arg2 = C.GSocketType(typ)
+	_arg3 = C.GSocketProtocol(protocol)
+
+	_cret = C.g_socket_new(_arg1, _arg2, _arg3, &_cerr)
+
+	var _socket *Socket // out
+	var _goerr error    // out
+
+	_socket = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Socket)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _socket, _goerr
 }
 
 // NewSocketFromFd creates a new #GSocket from a native file descriptor or
@@ -402,7 +442,102 @@ func (socket *Socket) Close() error {
 	return _goerr
 }
 
-// ConnectSocketter: connect the socket to the specified remote address.
+// ConditionCheck checks on the readiness of @socket to perform operations. The
+// operations specified in @condition are checked for and masked against the
+// currently-satisfied conditions on @socket. The result is returned.
+//
+// Note that on Windows, it is possible for an operation to return
+// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check() has
+// claimed that the socket is ready for writing. Rather than calling
+// g_socket_condition_check() and then writing to the socket if it succeeds, it
+// is generally better to simply try writing to the socket right away, and try
+// again later if the initial attempt returns G_IO_ERROR_WOULD_BLOCK.
+//
+// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
+// conditions will always be set in the output if they are true.
+//
+// This call never blocks.
+func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	var _arg0 *C.GSocket     // out
+	var _arg1 C.GIOCondition // out
+	var _cret C.GIOCondition // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = C.GIOCondition(condition)
+
+	_cret = C.g_socket_condition_check(_arg0, _arg1)
+
+	var _ioCondition glib.IOCondition // out
+
+	_ioCondition = glib.IOCondition(_cret)
+
+	return _ioCondition
+}
+
+// ConditionTimedWait waits for up to @timeout_us microseconds for @condition to
+// become true on @socket. If the condition is met, true is returned.
+//
+// If @cancellable is cancelled before the condition is met, or if @timeout_us
+// (or the socket's #GSocket:timeout) is reached before the condition is met,
+// then false is returned and @error, if non-nil, is set to the appropriate
+// value (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// If you don't want a timeout, use g_socket_condition_wait(). (Alternatively,
+// you can pass -1 for @timeout_us.)
+//
+// Note that although @timeout_us is in microseconds for consistency with other
+// GLib APIs, this function actually only has millisecond resolution, and the
+// behavior is undefined if @timeout_us is not an exact number of milliseconds.
+func (socket *Socket) ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable Cancellabler) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 C.GIOCondition  // out
+	var _arg2 C.gint64        // out
+	var _arg3 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeoutUs)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	C.g_socket_condition_timed_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// ConditionWait waits for @condition to become true on @socket. When the
+// condition is met, true is returned.
+//
+// If @cancellable is cancelled before the condition is met, or if the socket
+// has a timeout set and it is reached before the condition is met, then false
+// is returned and @error, if non-nil, is set to the appropriate value
+// (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// See also g_socket_condition_timed_wait().
+func (socket *Socket) ConditionWait(condition glib.IOCondition, cancellable Cancellabler) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 C.GIOCondition  // out
+	var _arg2 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	C.g_socket_condition_wait(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// ConnectSocketer: connect the socket to the specified remote address.
 //
 // For connection oriented socket this generally means we attempt to make a
 // connection to the @address. For a connection-less socket it sets the default
@@ -418,7 +553,7 @@ func (socket *Socket) Close() error {
 // can be notified of the connection finishing by waiting for the G_IO_OUT
 // condition. The result of the connection must then be checked with
 // g_socket_check_connect_result().
-func (socket *Socket) ConnectSocketter(address SocketAddresser, cancellable Cancellabler) error {
+func (socket *Socket) ConnectSocketer(address SocketAddresser, cancellable Cancellabler) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.GCancellable   // out

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -40,6 +39,8 @@ type Viewporter interface {
 	ViewWindow() *gdk.Window
 	// SetHAdjustment sets the horizontal adjustment of the viewport.
 	SetHAdjustment(adjustment Adjustmenter)
+	// SetShadowType sets the shadow type of the viewport.
+	SetShadowType(typ ShadowType)
 	// SetVAdjustment sets the vertical adjustment of the viewport.
 	SetVAdjustment(adjustment Adjustmenter)
 }
@@ -223,6 +224,17 @@ func (viewport *Viewport) SetHAdjustment(adjustment Adjustmenter) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
 
 	C.gtk_viewport_set_hadjustment(_arg0, _arg1)
+}
+
+// SetShadowType sets the shadow type of the viewport.
+func (viewport *Viewport) SetShadowType(typ ShadowType) {
+	var _arg0 *C.GtkViewport  // out
+	var _arg1 C.GtkShadowType // out
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
+	_arg1 = C.GtkShadowType(typ)
+
+	C.gtk_viewport_set_shadow_type(_arg0, _arg1)
 }
 
 // SetVAdjustment sets the vertical adjustment of the viewport.

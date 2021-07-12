@@ -14,19 +14,20 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDroper},
 	})
 }
 
-// Dropper describes Drop's methods.
-type Dropper interface {
+// Droper describes Drop's methods.
+type Droper interface {
+	// Finish ends the drag operation after a drop.
+	Finish(action DragAction)
 	// Actions returns the possible actions for this `GdkDrop`.
 	Actions() DragAction
 	// Device returns the `GdkDevice` performing the drop.
@@ -45,6 +46,9 @@ type Dropper interface {
 	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
 	// ReadValueFinish finishes an async drop read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
+	// Status selects all actions that are potentially supported by the
+	// destination.
+	Status(actions DragAction, preferred DragAction)
 }
 
 // Drop: `GdkDrop` object represents the target of an ongoing DND operation.
@@ -66,20 +70,34 @@ type Drop struct {
 }
 
 var (
-	_ Dropper         = (*Drop)(nil)
+	_ Droper          = (*Drop)(nil)
 	_ gextras.Nativer = (*Drop)(nil)
 )
 
-func wrapDrop(obj *externglib.Object) Dropper {
+func wrapDrop(obj *externglib.Object) Droper {
 	return &Drop{
 		Object: obj,
 	}
 }
 
-func marshalDropper(p uintptr) (interface{}, error) {
+func marshalDroper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrop(obj), nil
+}
+
+// Finish ends the drag operation after a drop.
+//
+// The @action must be a single action selected from the actions available via
+// [method@Gdk.Drop.get_actions].
+func (self *Drop) Finish(action DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GdkDragAction(action)
+
+	C.gdk_drop_finish(_arg0, _arg1)
 }
 
 // Actions returns the possible actions for this `GdkDrop`.
@@ -251,4 +269,29 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _value, _goerr
+}
+
+// Status selects all actions that are potentially supported by the destination.
+//
+// When calling this function, do not restrict the passed in actions to the ones
+// provided by [method@Gdk.Drop.get_actions]. Those actions may change in the
+// future, even depending on the actions you provide here.
+//
+// The @preferred action is a hint to the drag'n'drop mechanism about which
+// action to use when multiple actions are possible.
+//
+// This function should be called by drag destinations in response to
+// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+// know the exact actions it supports, it should set any possible actions first
+// and then later call this function again.
+func (self *Drop) Status(actions DragAction, preferred DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+	var _arg2 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GdkDragAction(actions)
+	_arg2 = C.GdkDragAction(preferred)
+
+	C.gdk_drop_status(_arg0, _arg1, _arg2)
 }

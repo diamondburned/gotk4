@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -102,7 +101,7 @@ type TreeViewColumner interface {
 	CellIsVisible() bool
 	// CellSetCellData sets the cell renderer based on the @tree_model and
 	// @iter.
-	CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool)
+	CellSetCellData(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool)
 	// Clear unsets all the mappings on all renderers on the @tree_column.
 	Clear()
 	// ClearAttributes clears all existing attributes previously set with
@@ -187,12 +186,16 @@ type TreeViewColumner interface {
 	// SetResizable: if @resizable is true, then the user can explicitly resize
 	// the column by grabbing the outer edge of the column button.
 	SetResizable(resizable bool)
+	// SetSizing sets the growth behavior of @tree_column to @type.
+	SetSizing(typ TreeViewColumnSizing)
 	// SetSortColumnID sets the logical @sort_column_id that this column sorts
 	// on when this column is selected for sorting.
 	SetSortColumnID(sortColumnId int)
 	// SetSortIndicator: call this function with a @setting of true to display
 	// an arrow in the header button indicating the column is sorted.
 	SetSortIndicator(setting bool)
+	// SetSortOrder changes the appearance of the sort indicator.
+	SetSortOrder(order SortType)
 	// SetSpacing sets the spacing field of @tree_column, which is the number of
 	// pixels to place between cell renderers packed into it.
 	SetSpacing(spacing int)
@@ -201,7 +204,7 @@ type TreeViewColumner interface {
 	// SetVisible sets the visibility of @tree_column.
 	SetVisible(visible bool)
 	// SetWidget sets the widget in the header to be @widget.
-	SetWidget(widget Widgetter)
+	SetWidget(widget Widgeter)
 }
 
 // TreeViewColumn object represents a visible column in a TreeView widget. It
@@ -380,7 +383,7 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 // That is, for every attribute mapping in @tree_column, it will get a value
 // from the set column on the @iter, and use that value to set the attribute on
 // the cell renderer. This is used primarily by the TreeView.
-func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool) {
+func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkTreeModel      // out
 	var _arg2 *C.GtkTreeIter       // out
@@ -952,6 +955,17 @@ func (treeColumn *TreeViewColumn) SetResizable(resizable bool) {
 	C.gtk_tree_view_column_set_resizable(_arg0, _arg1)
 }
 
+// SetSizing sets the growth behavior of @tree_column to @type.
+func (treeColumn *TreeViewColumn) SetSizing(typ TreeViewColumnSizing) {
+	var _arg0 *C.GtkTreeViewColumn      // out
+	var _arg1 C.GtkTreeViewColumnSizing // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
+	_arg1 = C.GtkTreeViewColumnSizing(typ)
+
+	C.gtk_tree_view_column_set_sizing(_arg0, _arg1)
+}
+
 // SetSortColumnID sets the logical @sort_column_id that this column sorts on
 // when this column is selected for sorting. Doing so makes the column header
 // clickable.
@@ -978,6 +992,27 @@ func (treeColumn *TreeViewColumn) SetSortIndicator(setting bool) {
 	}
 
 	C.gtk_tree_view_column_set_sort_indicator(_arg0, _arg1)
+}
+
+// SetSortOrder changes the appearance of the sort indicator.
+//
+// This does not actually sort the model. Use
+// gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
+// support. This function is primarily for custom sorting behavior, and should
+// be used in conjunction with gtk_tree_sortable_set_sort_column_id() to do
+// that. For custom models, the mechanism will vary.
+//
+// The sort indicator changes direction to indicate normal sort or reverse sort.
+// Note that you must have the sort indicator enabled to see anything when
+// calling this function; see gtk_tree_view_column_set_sort_indicator().
+func (treeColumn *TreeViewColumn) SetSortOrder(order SortType) {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _arg1 C.GtkSortType        // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
+	_arg1 = C.GtkSortType(order)
+
+	C.gtk_tree_view_column_set_sort_order(_arg0, _arg1)
 }
 
 // SetSpacing sets the spacing field of @tree_column, which is the number of
@@ -1020,7 +1055,7 @@ func (treeColumn *TreeViewColumn) SetVisible(visible bool) {
 
 // SetWidget sets the widget in the header to be @widget. If widget is nil, then
 // the header button is set with a Label set to the title of @tree_column.
-func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
+func (treeColumn *TreeViewColumn) SetWidget(widget Widgeter) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkWidget         // out
 

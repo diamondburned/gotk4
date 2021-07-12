@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeller},
+		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeler},
 	})
 }
 
-// EditableLabeller describes EditableLabel's methods.
-type EditableLabeller interface {
+// EditableLabeler describes EditableLabel's methods.
+type EditableLabeler interface {
 	// Editing returns whether the label is currently in “editing mode”.
 	Editing() bool
 	// StartEditing switches the label into “editing mode”.
@@ -61,11 +60,11 @@ type EditableLabel struct {
 }
 
 var (
-	_ EditableLabeller = (*EditableLabel)(nil)
-	_ gextras.Nativer  = (*EditableLabel)(nil)
+	_ EditableLabeler = (*EditableLabel)(nil)
+	_ gextras.Nativer = (*EditableLabel)(nil)
 )
 
-func wrapEditableLabel(obj *externglib.Object) EditableLabeller {
+func wrapEditableLabel(obj *externglib.Object) EditableLabeler {
 	return &EditableLabel{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -100,7 +99,7 @@ func wrapEditableLabel(obj *externglib.Object) EditableLabeller {
 	}
 }
 
-func marshalEditableLabeller(p uintptr) (interface{}, error) {
+func marshalEditableLabeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEditableLabel(obj), nil

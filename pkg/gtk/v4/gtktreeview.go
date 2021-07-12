@@ -14,10 +14,8 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-//
 // void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 import "C"
 
@@ -178,33 +176,21 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.cha
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeViewOverrider interface {
-	//
 	ColumnsChanged()
-	//
 	CursorChanged()
-	//
 	ExpandCollapseCursorRow(logical bool, expand bool, openAll bool) bool
+	MoveCursor(step MovementStep, count int, extend bool, modify bool) bool
 	// RowActivated activates the cell determined by @path and @column.
 	RowActivated(path *TreePath, column TreeViewColumner)
-	//
 	RowCollapsed(iter *TreeIter, path *TreePath)
-	//
 	RowExpanded(iter *TreeIter, path *TreePath)
-	//
 	SelectAll() bool
-	//
 	SelectCursorParent() bool
-	//
 	SelectCursorRow(startEditing bool) bool
-	//
 	StartInteractiveSearch() bool
-	//
 	TestCollapseRow(iter *TreeIter, path *TreePath) bool
-	//
 	TestExpandRow(iter *TreeIter, path *TreePath) bool
-	//
 	ToggleCursorRow() bool
-	//
 	UnselectAll() bool
 }
 
@@ -240,6 +226,12 @@ type TreeViewer interface {
 	// CreateRowDragIcon creates a #cairo_surface_t representation of the row at
 	// @path.
 	CreateRowDragIcon(path *TreePath) *gdk.Paintable
+	// EnableModelDragDest turns @tree_view into a drop destination for
+	// automatic DND.
+	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
+	// EnableModelDragSource turns @tree_view into a drag source for automatic
+	// DND.
+	EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
 	// ExpandAll: recursively expands all nodes in the @tree_view.
 	ExpandAll()
 	// ExpandRow opens the row so its children are visible.
@@ -361,6 +353,8 @@ type TreeViewer interface {
 	// SetCursorOnCell sets the current keyboard focus to be at @path, and
 	// selects it.
 	SetCursorOnCell(path *TreePath, focusColumn TreeViewColumner, focusCell CellRendererer, startEditing bool)
+	// SetDragDestRow sets the row that is highlighted for feedback.
+	SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
 	// SetEnableSearch: if @enable_search is set, then the user can type in text
 	// to search through the tree interactively (this is sometimes called
 	// "typeahead find").
@@ -373,6 +367,8 @@ type TreeViewer interface {
 	// SetFixedHeightMode enables or disables the fixed height mode of
 	// @tree_view.
 	SetFixedHeightMode(enable bool)
+	// SetGridLines sets which grid lines to draw in @tree_view.
+	SetGridLines(gridLines TreeViewGridLines)
 	// SetHeadersClickable: allow the column title buttons to be clicked.
 	SetHeadersClickable(setting bool)
 	// SetHeadersVisible sets the visibility state of the headers.
@@ -387,7 +383,7 @@ type TreeViewer interface {
 	// to use in @tree_view in addition to the default indentation.
 	SetLevelIndentation(indentation int)
 	// SetModel sets the model for a TreeView.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 	// SetReorderable: this function is a convenience function to allow you to
 	// reorder models that support the TreeDragSourceIface and the
 	// TreeDragDestIface.
@@ -405,14 +401,14 @@ type TreeViewer interface {
 	SetShowExpanders(enabled bool)
 	// SetTooltipCell sets the tip area of @tooltip to the area @path, @column
 	// and @cell have in common.
-	SetTooltipCell(tooltip Tooltipper, path *TreePath, column TreeViewColumner, cell CellRendererer)
+	SetTooltipCell(tooltip Tooltiper, path *TreePath, column TreeViewColumner, cell CellRendererer)
 	// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
 	// full rows, you can use this function to have TreeView handle these
 	// automatically for you.
 	SetTooltipColumn(column int)
 	// SetTooltipRow sets the tip area of @tooltip to be the area covered by the
 	// row at @path.
-	SetTooltipRow(tooltip Tooltipper, path *TreePath)
+	SetTooltipRow(tooltip Tooltiper, path *TreePath)
 	// UnsetRowsDragDest undoes the effect of
 	// gtk_tree_view_enable_model_drag_dest().
 	UnsetRowsDragDest()
@@ -545,7 +541,7 @@ func NewTreeView() *TreeView {
 
 // NewTreeViewWithModel creates a new TreeView widget with the model initialized
 // to @model.
-func NewTreeViewWithModel(model TreeModeller) *TreeView {
+func NewTreeViewWithModel(model TreeModeler) *TreeView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -786,6 +782,36 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *gdk.Paintable {
 	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*gdk.Paintable)
 
 	return _paintable
+}
+
+// EnableModelDragDest turns @tree_view into a drop destination for automatic
+// DND. Calling this method sets TreeView:reorderable to false.
+func (treeView *TreeView) EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction) {
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 *C.GdkContentFormats // out
+	var _arg2 C.GdkDragAction      // out
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg2 = C.GdkDragAction(actions)
+
+	C.gtk_tree_view_enable_model_drag_dest(_arg0, _arg1, _arg2)
+}
+
+// EnableModelDragSource turns @tree_view into a drag source for automatic DND.
+// Calling this method sets TreeView:reorderable to false.
+func (treeView *TreeView) EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction) {
+	var _arg0 *C.GtkTreeView       // out
+	var _arg1 C.GdkModifierType    // out
+	var _arg2 *C.GdkContentFormats // out
+	var _arg3 C.GdkDragAction      // out
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = C.GdkModifierType(startButtonMask)
+	_arg2 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg3 = C.GdkDragAction(actions)
+
+	C.gtk_tree_view_enable_model_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ExpandAll: recursively expands all nodes in the @tree_view.
@@ -1746,6 +1772,20 @@ func (treeView *TreeView) SetCursorOnCell(path *TreePath, focusColumn TreeViewCo
 	C.gtk_tree_view_set_cursor_on_cell(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
+// SetDragDestRow sets the row that is highlighted for feedback. If @path is
+// nil, an existing highlight is removed.
+func (treeView *TreeView) SetDragDestRow(path *TreePath, pos TreeViewDropPosition) {
+	var _arg0 *C.GtkTreeView            // out
+	var _arg1 *C.GtkTreePath            // out
+	var _arg2 C.GtkTreeViewDropPosition // out
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+	_arg2 = C.GtkTreeViewDropPosition(pos)
+
+	C.gtk_tree_view_set_drag_dest_row(_arg0, _arg1, _arg2)
+}
+
 // SetEnableSearch: if @enable_search is set, then the user can type in text to
 // search through the tree interactively (this is sometimes called "typeahead
 // find").
@@ -1808,6 +1848,17 @@ func (treeView *TreeView) SetFixedHeightMode(enable bool) {
 	}
 
 	C.gtk_tree_view_set_fixed_height_mode(_arg0, _arg1)
+}
+
+// SetGridLines sets which grid lines to draw in @tree_view.
+func (treeView *TreeView) SetGridLines(gridLines TreeViewGridLines) {
+	var _arg0 *C.GtkTreeView         // out
+	var _arg1 C.GtkTreeViewGridLines // out
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = C.GtkTreeViewGridLines(gridLines)
+
+	C.gtk_tree_view_set_grid_lines(_arg0, _arg1)
 }
 
 // SetHeadersClickable: allow the column title buttons to be clicked.
@@ -1884,7 +1935,7 @@ func (treeView *TreeView) SetLevelIndentation(indentation int) {
 // SetModel sets the model for a TreeView. If the @tree_view already has a model
 // set, it will remove it before setting the new model. If @model is nil, then
 // it will unset the old model.
-func (treeView *TreeView) SetModel(model TreeModeller) {
+func (treeView *TreeView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 *C.GtkTreeModel // out
 
@@ -1996,7 +2047,7 @@ func (treeView *TreeView) SetShowExpanders(enabled bool) {
 // cursor for this function to operate correctly.
 //
 // See also gtk_tree_view_set_tooltip_column() for a simpler alternative.
-func (treeView *TreeView) SetTooltipCell(tooltip Tooltipper, path *TreePath, column TreeViewColumner, cell CellRendererer) {
+func (treeView *TreeView) SetTooltipCell(tooltip Tooltiper, path *TreePath, column TreeViewColumner, cell CellRendererer) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTooltip        // out
 	var _arg2 *C.GtkTreePath       // out
@@ -2035,7 +2086,7 @@ func (treeView *TreeView) SetTooltipColumn(column int) {
 // SetTooltipRow sets the tip area of @tooltip to be the area covered by the row
 // at @path. See also gtk_tree_view_set_tooltip_column() for a simpler
 // alternative. See also gtk_tooltip_set_tip_area().
-func (treeView *TreeView) SetTooltipRow(tooltip Tooltipper, path *TreePath) {
+func (treeView *TreeView) SetTooltipRow(tooltip Tooltiper, path *TreePath) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkTooltip  // out
 	var _arg2 *C.GtkTreePath // out

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,13 +25,12 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconner},
+		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconer},
 	})
 }
 
@@ -53,8 +51,8 @@ type LoadableIconOverrider interface {
 	LoadFinish(res AsyncResulter) (string, *InputStream, error)
 }
 
-// LoadableIconner describes LoadableIcon's methods.
-type LoadableIconner interface {
+// LoadableIconer describes LoadableIcon's methods.
+type LoadableIconer interface {
 	// Load loads a loadable icon.
 	Load(size int, cancellable Cancellabler) (string, *InputStream, error)
 	// LoadAsync loads an icon asynchronously.
@@ -71,11 +69,11 @@ type LoadableIcon struct {
 }
 
 var (
-	_ LoadableIconner = (*LoadableIcon)(nil)
+	_ LoadableIconer  = (*LoadableIcon)(nil)
 	_ gextras.Nativer = (*LoadableIcon)(nil)
 )
 
-func wrapLoadableIcon(obj *externglib.Object) LoadableIconner {
+func wrapLoadableIcon(obj *externglib.Object) LoadableIconer {
 	return &LoadableIcon{
 		Icon: Icon{
 			Object: obj,
@@ -83,7 +81,7 @@ func wrapLoadableIcon(obj *externglib.Object) LoadableIconner {
 	}
 }
 
-func marshalLoadableIconner(p uintptr) (interface{}, error) {
+func marshalLoadableIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLoadableIcon(obj), nil

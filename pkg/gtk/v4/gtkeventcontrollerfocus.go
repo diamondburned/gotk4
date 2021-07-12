@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocusser},
+		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocuser},
 	})
 }
 
-// EventControllerFocusser describes EventControllerFocus's methods.
-type EventControllerFocusser interface {
+// EventControllerFocuser describes EventControllerFocus's methods.
+type EventControllerFocuser interface {
 	// ContainsFocus returns true if focus is within @self or one of its
 	// children.
 	ContainsFocus() bool
@@ -46,11 +45,11 @@ type EventControllerFocus struct {
 }
 
 var (
-	_ EventControllerFocusser = (*EventControllerFocus)(nil)
-	_ gextras.Nativer         = (*EventControllerFocus)(nil)
+	_ EventControllerFocuser = (*EventControllerFocus)(nil)
+	_ gextras.Nativer        = (*EventControllerFocus)(nil)
 )
 
-func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocusser {
+func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocuser {
 	return &EventControllerFocus{
 		EventController: EventController{
 			Object: obj,
@@ -58,7 +57,7 @@ func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocusser {
 	}
 }
 
-func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
+func marshalEventControllerFocuser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerFocus(obj), nil

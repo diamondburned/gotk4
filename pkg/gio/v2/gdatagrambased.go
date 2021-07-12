@@ -3,16 +3,17 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBasedder},
+		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBaseder},
 	})
 }
 
@@ -38,6 +39,67 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DatagramBasedOverrider interface {
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations. The operations specified in @condition are checked for and
+	// masked against the currently-satisfied conditions on @datagram_based. The
+	// result is returned.
+	//
+	// G_IO_IN will be set in the return value if data is available to read with
+	// g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation to return
+	// G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check() and
+	// then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by @condition.
+	//
+	// This call never blocks.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based. If the condition is met, true is
+	// returned.
+	//
+	// If @cancellable is cancelled before the condition is met, or if @timeout
+	// is reached before the condition is met, then false is returned and @error
+	// is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellabler) error
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified @condition on the Based.
+	// The #GSource keeps a reference to the @datagram_based.
+	//
+	// The callback on the source is of the BasedSourceFunc type.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+	// conditions will always be reported in the callback if they are true.
+	//
+	// If non-nil, @cancellable can be used to cancel the source, which will
+	// cause the source to trigger, reporting the current condition (which is
+	// likely 0 unless cancellation happened at the same time as a condition
+	// change). You can check for this in the callback using
+	// g_cancellable_is_cancelled().
+	CreateSource(condition glib.IOCondition, cancellable Cancellabler) *glib.Source
 	// ReceiveMessages: receive one or more data messages from @datagram_based
 	// in one go.
 	//
@@ -136,8 +198,17 @@ type DatagramBasedOverrider interface {
 	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellabler) (int, error)
 }
 
-// DatagramBasedder describes DatagramBased's methods.
-type DatagramBasedder interface {
+// DatagramBaseder describes DatagramBased's methods.
+type DatagramBaseder interface {
+	// ConditionCheck checks on the readiness of @datagram_based to perform
+	// operations.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to @timeout microseconds for condition to
+	// become true on @datagram_based.
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellabler) error
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified @condition on the Based.
+	CreateSource(condition glib.IOCondition, cancellable Cancellabler) *glib.Source
 	// ReceiveMessages: receive one or more data messages from @datagram_based
 	// in one go.
 	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellabler) (int, error)
@@ -196,20 +267,137 @@ type DatagramBased struct {
 }
 
 var (
-	_ DatagramBasedder = (*DatagramBased)(nil)
-	_ gextras.Nativer  = (*DatagramBased)(nil)
+	_ DatagramBaseder = (*DatagramBased)(nil)
+	_ gextras.Nativer = (*DatagramBased)(nil)
 )
 
-func wrapDatagramBased(obj *externglib.Object) DatagramBasedder {
+func wrapDatagramBased(obj *externglib.Object) DatagramBaseder {
 	return &DatagramBased{
 		Object: obj,
 	}
 }
 
-func marshalDatagramBasedder(p uintptr) (interface{}, error) {
+func marshalDatagramBaseder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDatagramBased(obj), nil
+}
+
+// ConditionCheck checks on the readiness of @datagram_based to perform
+// operations. The operations specified in @condition are checked for and masked
+// against the currently-satisfied conditions on @datagram_based. The result is
+// returned.
+//
+// G_IO_IN will be set in the return value if data is available to read with
+// g_datagram_based_receive_messages(), or if the connection is closed remotely
+// (EOS); and if the datagram_based has not been closed locally using some
+// implementation-specific method (such as g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket).
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with @shutdown_read set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// G_IO_OUT will be set if it is expected that at least one byte can be sent
+// using g_datagram_based_send_messages() without blocking. It will not be set
+// if the datagram_based has been closed locally.
+//
+// G_IO_HUP will be set if the connection has been closed locally.
+//
+// G_IO_ERR will be set if there was an asynchronous error in transmitting data
+// previously enqueued using g_datagram_based_send_messages().
+//
+// Note that on Windows, it is possible for an operation to return
+// G_IO_ERROR_WOULD_BLOCK even immediately after
+// g_datagram_based_condition_check() has claimed that the Based is ready for
+// writing. Rather than calling g_datagram_based_condition_check() and then
+// writing to the Based if it succeeds, it is generally better to simply try
+// writing right away, and try again later if the initial attempt returns
+// G_IO_ERROR_WOULD_BLOCK.
+//
+// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+// conditions will always be set in the output if they are true. Apart from
+// these flags, the output is guaranteed to be masked by @condition.
+//
+// This call never blocks.
+func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _cret C.GIOCondition    // in
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg1 = C.GIOCondition(condition)
+
+	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
+
+	var _ioCondition glib.IOCondition // out
+
+	_ioCondition = glib.IOCondition(_cret)
+
+	return _ioCondition
+}
+
+// ConditionWait waits for up to @timeout microseconds for condition to become
+// true on @datagram_based. If the condition is met, true is returned.
+//
+// If @cancellable is cancelled before the condition is met, or if @timeout is
+// reached before the condition is met, then false is returned and @error is set
+// appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+func (datagramBased *DatagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellabler) error {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _arg2 C.gint64          // out
+	var _arg3 *C.GCancellable   // out
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeout)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// CreateSource creates a #GSource that can be attached to a Context to monitor
+// for the availability of the specified @condition on the Based. The #GSource
+// keeps a reference to the @datagram_based.
+//
+// The callback on the source is of the BasedSourceFunc type.
+//
+// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
+// conditions will always be reported in the callback if they are true.
+//
+// If non-nil, @cancellable can be used to cancel the source, which will cause
+// the source to trigger, reporting the current condition (which is likely 0
+// unless cancellation happened at the same time as a condition change). You can
+// check for this in the callback using g_cancellable_is_cancelled().
+func (datagramBased *DatagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellabler) *glib.Source {
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _arg2 *C.GCancellable   // out
+	var _cret *C.GSource        // in
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
+
+	var _source *glib.Source // out
+
+	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	C.g_source_ref(_cret)
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
+		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+	})
+
+	return _source
 }
 
 // ReceiveMessages: receive one or more data messages from @datagram_based in

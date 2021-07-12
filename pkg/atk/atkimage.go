@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -31,6 +30,12 @@ type ImageOverrider interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
+	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of @width and @height are returned as -1 if the values cannot
 	// be obtained (for instance, if the object is not onscreen).
@@ -48,6 +53,9 @@ type Imager interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
 	ImageSize() (width int, height int)
 	// SetImageDescription sets the textual description for this image.
@@ -116,6 +124,31 @@ func (image *Image) ImageLocale() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// ImagePosition gets the position of the image in the form of a point
+// specifying the images top-left corner.
+//
+// If the position can not be obtained (e.g. missing support), x and y are set
+// to -1.
+func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
+	var _arg0 *C.AtkImage    // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _arg3 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(image.Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_image_get_image_position(_arg0, &_arg1, &_arg2, _arg3)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
 }
 
 // ImageSize: get the width and height in pixels for the specified image. The

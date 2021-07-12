@@ -12,9 +12,9 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
+// void gotk4_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
@@ -289,6 +289,99 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 		}
 	}
 	_exitStatus = int(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _standardOutput, _standardError, _exitStatus, _goerr
+}
+
+// SpawnSync executes a child synchronously (waits for the child to exit before
+// returning). All output from the child is stored in @standard_output and
+// @standard_error, if those parameters are non-nil. Note that you must set the
+// G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
+// nil for @standard_output and @standard_error.
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this. Note that it is invalid to pass
+// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
+// restrictions as for g_child_watch_source_new() apply.
+//
+// If an error occurs, no data is returned in @standard_output, @standard_error,
+// or @exit_status.
+//
+// This function calls g_spawn_async_with_pipes() internally; see that function
+// for full details on the other parameters and details on how these functions
+// work on Windows.
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+	var _arg1 *C.gchar // out
+	var _arg2 **C.gchar
+	var _arg3 **C.gchar
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 *C.gchar
+	var _arg8 *C.gchar
+	var _arg9 C.gint    // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice(_arg2, len(argv))
+		for i := range argv {
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice(_arg3, len(envp))
+		for i := range envp {
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg4 = C.GSpawnFlags(flags)
+	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(gbox.Assign(childSetup))
+
+	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
+
+	var _standardOutput []byte
+	var _standardError []byte
+	var _exitStatus int // out
+	var _goerr error    // out
+
+	{
+		var i int
+		var z C.gchar
+		for p := _arg7; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_arg7, i)
+		_standardOutput = make([]byte, i)
+		for i := range src {
+			_standardOutput[i] = byte(src[i])
+		}
+	}
+	{
+		var i int
+		var z C.gchar
+		for p := _arg8; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_arg8, i)
+		_standardError = make([]byte, i)
+		for i := range src {
+			_standardError[i] = byte(src[i])
+		}
+	}
+	_exitStatus = int(_arg9)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _standardOutput, _standardError, _exitStatus, _goerr

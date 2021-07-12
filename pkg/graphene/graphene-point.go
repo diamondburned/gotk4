@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -220,4 +219,17 @@ func (p *Point) ToVec2() Vec2 {
 	C.graphene_point_to_vec2(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_v)))
 
 	return _v
+}
+
+// PointZero returns a point fixed at (0, 0).
+func PointZero() *Point {
+	var _cret *C.graphene_point_t // in
+
+	_cret = C.graphene_point_zero()
+
+	var _point *Point // out
+
+	_point = (*Point)(unsafe.Pointer(_cret))
+
+	return _point
 }

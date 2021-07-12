@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -29,7 +28,7 @@ type DisplayManagerer interface {
 	// OpenDisplay opens a display.
 	OpenDisplay(name string) *Display
 	// SetDefaultDisplay sets @display as the default display.
-	SetDefaultDisplay(display Displayyer)
+	SetDefaultDisplay(display Displayer)
 }
 
 // DisplayManager: purpose of the DisplayManager singleton object is to offer
@@ -124,7 +123,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 }
 
 // SetDefaultDisplay sets @display as the default display.
-func (manager *DisplayManager) SetDefaultDisplay(display Displayyer) {
+func (manager *DisplayManager) SetDefaultDisplay(display Displayer) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 
@@ -132,4 +131,22 @@ func (manager *DisplayManager) SetDefaultDisplay(display Displayyer) {
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
+}
+
+// DisplayManagerGet gets the singleton DisplayManager object.
+//
+// When called for the first time, this function consults the `GDK_BACKEND`
+// environment variable to find out which of the supported GDK backends to use
+// (in case GDK has been compiled with multiple backends). Applications can use
+// gdk_set_allowed_backends() to limit what backends can be used.
+func DisplayManagerGet() *DisplayManager {
+	var _cret *C.GdkDisplayManager // in
+
+	_cret = C.gdk_display_manager_get()
+
+	var _displayManager *DisplayManager // out
+
+	_displayManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*DisplayManager)
+
+	return _displayManager
 }

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -32,7 +31,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_menu_attribute_iter_get_type()), F: marshalMenuAttributeIterer},
 		{T: externglib.Type(C.g_menu_link_iter_get_type()), F: marshalMenuLinkIterer},
-		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModeller},
+		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModeler},
 	})
 }
 
@@ -397,8 +396,8 @@ type MenuModelOverrider interface {
 	IterateItemLinks(itemIndex int) *MenuLinkIter
 }
 
-// MenuModeller describes MenuModel's methods.
-type MenuModeller interface {
+// MenuModeler describes MenuModel's methods.
+type MenuModeler interface {
 	// ItemAttributeValue queries the item at position @item_index in @model for
 	// the attribute specified by @attribute.
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
@@ -535,17 +534,17 @@ type MenuModel struct {
 }
 
 var (
-	_ MenuModeller    = (*MenuModel)(nil)
+	_ MenuModeler     = (*MenuModel)(nil)
 	_ gextras.Nativer = (*MenuModel)(nil)
 )
 
-func wrapMenuModel(obj *externglib.Object) MenuModeller {
+func wrapMenuModel(obj *externglib.Object) MenuModeler {
 	return &MenuModel{
 		Object: obj,
 	}
 }
 
-func marshalMenuModeller(p uintptr) (interface{}, error) {
+func marshalMenuModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuModel(obj), nil

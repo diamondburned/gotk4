@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -44,7 +43,7 @@ type ListViewer interface {
 	// items.
 	SetFactory(factory ListItemFactorier)
 	// SetModel sets the model to use.
-	SetModel(model SelectionModeller)
+	SetModel(model SelectionModeler)
 	// SetShowSeparators sets whether the list box should show separators
 	// between rows.
 	SetShowSeparators(showSeparators bool)
@@ -182,7 +181,7 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 // The function takes ownership of the arguments, so you can write code like “`c
 // list_view = gtk_list_view_new (create_model (),
 // gtk_builder_list_item_factory_new_from_resource ("/resource.ui")); “`
-func NewListView(model SelectionModeller, factory ListItemFactorier) *ListView {
+func NewListView(model SelectionModeler, factory ListItemFactorier) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -316,7 +315,7 @@ func (self *ListView) SetFactory(factory ListItemFactorier) {
 // SetModel sets the model to use.
 //
 // This must be a [iface@Gtk.SelectionModel] to use.
-func (self *ListView) SetModel(model SelectionModeller) {
+func (self *ListView) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

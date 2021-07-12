@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -46,11 +45,13 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 
 // Tabler describes Table's methods.
 type Tabler interface {
+	// Attach adds a widget to a table.
+	Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
 	// AttachDefaults as there are many options associated with
 	// gtk_table_attach(), this convenience function provides the programmer
 	// with a means to add children to a table with identical padding and
 	// expansion options.
-	AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// ColSpacing gets the amount of space between column @col, and column @col
 	// + 1.
 	ColSpacing(column uint) uint
@@ -168,6 +169,51 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 	return _table
 }
 
+// Attach adds a widget to a table. The number of “cells” that a widget will
+// occupy is specified by @left_attach, @right_attach, @top_attach and
+// @bottom_attach. These each represent the leftmost, rightmost, uppermost and
+// lowest column and row numbers of the table. (Columns and rows are indexed
+// from zero).
+//
+// To make a button occupy the lower right cell of a 2x2 table, use
+//
+//    gtk_table_attach (table, button,
+//                      1, 2, // left, right attach
+//                      1, 2, // top, bottom attach
+//                      xoptions, yoptions,
+//                      xpadding, ypadding);
+//
+// If you want to make the button span the entire bottom row, use @left_attach
+// == 0 and @right_attach = 2 instead.
+//
+// Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
+// differ between those two functions.
+func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+	var _arg0 *C.GtkTable        // out
+	var _arg1 *C.GtkWidget       // out
+	var _arg2 C.guint            // out
+	var _arg3 C.guint            // out
+	var _arg4 C.guint            // out
+	var _arg5 C.guint            // out
+	var _arg6 C.GtkAttachOptions // out
+	var _arg7 C.GtkAttachOptions // out
+	var _arg8 C.guint            // out
+	var _arg9 C.guint            // out
+
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(table.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg2 = C.guint(leftAttach)
+	_arg3 = C.guint(rightAttach)
+	_arg4 = C.guint(topAttach)
+	_arg5 = C.guint(bottomAttach)
+	_arg6 = C.GtkAttachOptions(xoptions)
+	_arg7 = C.GtkAttachOptions(yoptions)
+	_arg8 = C.guint(xpadding)
+	_arg9 = C.guint(ypadding)
+
+	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+}
+
 // AttachDefaults as there are many options associated with gtk_table_attach(),
 // this convenience function provides the programmer with a means to add
 // children to a table with identical padding and expansion options. The values
@@ -176,7 +222,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (table *Table) AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -415,7 +461,6 @@ func (table *Table) SetRowSpacings(spacing uint) {
 	C.gtk_table_set_row_spacings(_arg0, _arg1)
 }
 
-//
 type TableChild struct {
 	native C.GtkTableChild
 }
@@ -425,7 +470,6 @@ func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-//
 type TableRowCol struct {
 	native C.GtkTableRowCol
 }

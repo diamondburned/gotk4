@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windowwer},
+		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windower},
 	})
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(window X11Windowwer) uint32 {
+func X11GetServerTime(window X11Windower) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
@@ -39,8 +38,8 @@ func X11GetServerTime(window X11Windowwer) uint32 {
 	return _guint32
 }
 
-// X11Windowwer describes X11Window's methods.
-type X11Windowwer interface {
+// X11Windower describes X11Window's methods.
+type X11Windower interface {
 	// Desktop gets the number of the workspace @window is on.
 	Desktop() uint32
 	// MoveToCurrentDesktop moves the window to the correct workspace when
@@ -73,17 +72,16 @@ type X11Windowwer interface {
 	SetUTF8Property(name string, value string)
 }
 
-//
 type X11Window struct {
 	gdk.Window
 }
 
 var (
-	_ X11Windowwer    = (*X11Window)(nil)
+	_ X11Windower     = (*X11Window)(nil)
 	_ gextras.Nativer = (*X11Window)(nil)
 )
 
-func wrapX11Window(obj *externglib.Object) X11Windowwer {
+func wrapX11Window(obj *externglib.Object) X11Windower {
 	return &X11Window{
 		Window: gdk.Window{
 			Object: obj,
@@ -91,7 +89,7 @@ func wrapX11Window(obj *externglib.Object) X11Windowwer {
 	}
 }
 
-func marshalX11Windowwer(p uintptr) (interface{}, error) {
+func marshalX11Windower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Window(obj), nil

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -210,7 +209,7 @@ func (layout *ToplevelLayout) ref() *ToplevelLayout {
 
 // SetFullscreen sets whether the layout should cause the surface to be
 // fullscreen when presented.
-func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorrer) {
+func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorer) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 	var _arg2 *C.GdkMonitor        // out

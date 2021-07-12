@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgetter},
+		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgeter},
 	})
 }
 
-// FontChooserWidgetter describes FontChooserWidget's methods.
-type FontChooserWidgetter interface {
+// FontChooserWidgeter describes FontChooserWidget's methods.
+type FontChooserWidgeter interface {
 	privateFontChooserWidget()
 }
 
@@ -54,11 +53,11 @@ type FontChooserWidget struct {
 }
 
 var (
-	_ FontChooserWidgetter = (*FontChooserWidget)(nil)
-	_ gextras.Nativer      = (*FontChooserWidget)(nil)
+	_ FontChooserWidgeter = (*FontChooserWidget)(nil)
+	_ gextras.Nativer     = (*FontChooserWidget)(nil)
 )
 
-func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgetter {
+func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgeter {
 	return &FontChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -84,7 +83,7 @@ func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidgetter {
 	}
 }
 
-func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFontChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontChooserWidget(obj), nil

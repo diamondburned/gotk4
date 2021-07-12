@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -28,6 +27,8 @@ func init() {
 type Orientabler interface {
 	// Orientation retrieves the orientation of the @orientable.
 	Orientation() Orientation
+	// SetOrientation sets the orientation of the @orientable.
+	SetOrientation(orientation Orientation)
 }
 
 // Orientable interface is implemented by all widgets that can be oriented
@@ -72,4 +73,15 @@ func (orientable *Orientable) Orientation() Orientation {
 	_orientation = Orientation(_cret)
 
 	return _orientation
+}
+
+// SetOrientation sets the orientation of the @orientable.
+func (orientable *Orientable) SetOrientation(orientation Orientation) {
+	var _arg0 *C.GtkOrientable // out
+	var _arg1 C.GtkOrientation // out
+
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(orientable.Native()))
+	_arg1 = C.GtkOrientation(orientation)
+
+	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }

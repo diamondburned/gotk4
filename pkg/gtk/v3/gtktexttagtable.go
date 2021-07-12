@@ -13,12 +13,10 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
@@ -28,7 +26,6 @@ func init() {
 	})
 }
 
-//
 type TextTagTableForeach func(tag *TextTag, data cgo.Handle)
 
 //export gotk4_TextTagTableForeach
@@ -53,18 +50,15 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TextTagTableOverrider interface {
-	//
-	TagAdded(tag TextTagger)
-	//
-	TagChanged(tag TextTagger, sizeChanged bool)
-	//
-	TagRemoved(tag TextTagger)
+	TagAdded(tag TextTager)
+	TagChanged(tag TextTager, sizeChanged bool)
+	TagRemoved(tag TextTager)
 }
 
 // TextTagTabler describes TextTagTable's methods.
 type TextTagTabler interface {
 	// Add a tag to the table.
-	Add(tag TextTagger) bool
+	Add(tag TextTager) bool
 	// Foreach calls @func on each tag in @table, with user data @data.
 	Foreach(fn TextTagTableForeach)
 	// Size returns the size of the table (number of tags)
@@ -72,7 +66,7 @@ type TextTagTabler interface {
 	// Lookup: look up a named tag.
 	Lookup(name string) *TextTag
 	// Remove a tag from the table.
-	Remove(tag TextTagger)
+	Remove(tag TextTager)
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -137,7 +131,7 @@ func NewTextTagTable() *TextTagTable {
 //
 // @tag must not be in a tag table already, and may not have the same name as an
 // already-added tag.
-func (table *TextTagTable) Add(tag TextTagger) bool {
+func (table *TextTagTable) Add(tag TextTager) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
@@ -209,7 +203,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 // Remove a tag from the table. If a TextBuffer has @table as its tag table, the
 // tag is removed from the buffer. The table’s reference to the tag is removed,
 // so the tag will end up destroyed if you don’t have a reference to it.
-func (table *TextTagTable) Remove(tag TextTagger) {
+func (table *TextTagTable) Remove(tag TextTager) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 

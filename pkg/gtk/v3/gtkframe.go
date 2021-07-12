@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -41,7 +40,9 @@ type Framer interface {
 	// SetLabelAlign sets the alignment of the frame widget’s label.
 	SetLabelAlign(xalign float32, yalign float32)
 	// SetLabelWidget sets the Frame:label-widget for the frame.
-	SetLabelWidget(labelWidget Widgetter)
+	SetLabelWidget(labelWidget Widgeter)
+	// SetShadowType sets the Frame:shadow-type for @frame, i.e.
+	SetShadowType(typ ShadowType)
 }
 
 // Frame: frame widget is a bin that surrounds its child with a decorative frame
@@ -237,7 +238,7 @@ func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
 // that will appear embedded in the top edge of the frame as a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -245,4 +246,19 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((labelWidget).(gextras.Nativer).Native()))
 
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
+}
+
+// SetShadowType sets the Frame:shadow-type for @frame, i.e. whether it is drawn
+// without (GTK_SHADOW_NONE) or with (other values) a visible border. Values
+// other than GTK_SHADOW_NONE are treated identically by GtkFrame. The chosen
+// type is applied by removing or adding the .flat class to the CSS node named
+// border.
+func (frame *Frame) SetShadowType(typ ShadowType) {
+	var _arg0 *C.GtkFrame     // out
+	var _arg1 C.GtkShadowType // out
+
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(frame.Native()))
+	_arg1 = C.GtkShadowType(typ)
+
+	C.gtk_frame_set_shadow_type(_arg0, _arg1)
 }

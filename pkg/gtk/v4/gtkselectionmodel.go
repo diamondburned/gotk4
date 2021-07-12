@@ -13,14 +13,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeller},
+		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeler},
 	})
 }
 
@@ -79,8 +78,8 @@ type SelectionModelOverrider interface {
 	UnselectRange(position uint, nItems uint) bool
 }
 
-// SelectionModeller describes SelectionModel's methods.
-type SelectionModeller interface {
+// SelectionModeler describes SelectionModel's methods.
+type SelectionModeler interface {
 	// Selection gets the set containing all currently selected items in the
 	// model.
 	Selection() *Bitset
@@ -151,11 +150,11 @@ type SelectionModel struct {
 }
 
 var (
-	_ SelectionModeller = (*SelectionModel)(nil)
-	_ gextras.Nativer   = (*SelectionModel)(nil)
+	_ SelectionModeler = (*SelectionModel)(nil)
+	_ gextras.Nativer  = (*SelectionModel)(nil)
 )
 
-func wrapSelectionModel(obj *externglib.Object) SelectionModeller {
+func wrapSelectionModel(obj *externglib.Object) SelectionModeler {
 	return &SelectionModel{
 		ListModel: gio.ListModel{
 			Object: obj,
@@ -163,7 +162,7 @@ func wrapSelectionModel(obj *externglib.Object) SelectionModeller {
 	}
 }
 
-func marshalSelectionModeller(p uintptr) (interface{}, error) {
+func marshalSelectionModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSelectionModel(obj), nil

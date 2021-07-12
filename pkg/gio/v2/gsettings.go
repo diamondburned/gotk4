@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,7 +27,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer);
 import "C"
 
@@ -178,9 +176,7 @@ func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointe
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SettingsOverrider interface {
-	//
 	Changed(key string)
-	//
 	WritableChanged(key string)
 }
 
@@ -188,6 +184,9 @@ type SettingsOverrider interface {
 type Settingser interface {
 	// Apply applies any changes that have been made to the settings.
 	Apply()
+	// Bind: create a binding between the @key in the @settings object and the
+	// property @property of @object.
+	Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
 	// BindWritable: create a binding between the writability of @key in the
 	// @settings object and the property @property of @object.
 	BindWritable(key string, object gextras.Objector, property string, inverted bool)
@@ -639,6 +638,41 @@ func (settings *Settings) Apply() {
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 
 	C.g_settings_apply(_arg0)
+}
+
+// Bind: create a binding between the @key in the @settings object and the
+// property @property of @object.
+//
+// The binding uses the default GIO mapping functions to map between the
+// settings and property values. These functions handle booleans, numeric types
+// and string types in a straightforward way. Use g_settings_bind_with_mapping()
+// if you need a custom mapping, or map between types that are not supported by
+// the default mapping functions.
+//
+// Unless the @flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function also
+// establishes a binding between the writability of @key and the "sensitive"
+// property of @object (if @object has a boolean property by that name). See
+// g_settings_bind_writable() for more details about writable bindings.
+//
+// Note that the lifecycle of the binding is tied to @object, and that you can
+// have only one binding per object property. If you bind the same property
+// twice on the same object, the second binding overrides the first one.
+func (settings *Settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
+	var _arg0 *C.GSettings         // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.gpointer           // out
+	var _arg3 *C.gchar             // out
+	var _arg4 C.GSettingsBindFlags // out
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.GSettingsBindFlags(flags)
+
+	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // BindWritable: create a binding between the writability of @key in the
@@ -1679,4 +1713,89 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	}
 
 	return _ok
+}
+
+// SettingsListRelocatableSchemas: deprecated.
+//
+// Deprecated: Use g_settings_schema_source_list_schemas() instead.
+func SettingsListRelocatableSchemas() []string {
+	var _cret **C.gchar
+
+	_cret = C.g_settings_list_relocatable_schemas()
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// SettingsListSchemas: deprecated.
+//
+// Deprecated: Use g_settings_schema_source_list_schemas() instead. If you used
+// g_settings_list_schemas() to check for the presence of a particular schema,
+// use g_settings_schema_source_lookup() instead of your whole loop.
+func SettingsListSchemas() []string {
+	var _cret **C.gchar
+
+	_cret = C.g_settings_list_schemas()
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// SettingsSync ensures that all pending operations are complete for the default
+// backend.
+//
+// Writes made to a #GSettings are handled asynchronously. For this reason, it
+// is very unlikely that the changes have it to disk by the time
+// g_settings_set() returns.
+//
+// This call will block until all of the writes have made it to the backend.
+// Since the mainloop is not running, no change notifications will be dispatched
+// during this call (but some may be queued by the time the call is done).
+func SettingsSync() {
+	C.g_settings_sync()
+}
+
+// SettingsUnbind removes an existing binding for @property on @object.
+//
+// Note that bindings are automatically removed when the object is finalized, so
+// it is rarely necessary to call this function.
+func SettingsUnbind(object gextras.Objector, property string) {
+	var _arg1 C.gpointer // out
+	var _arg2 *C.gchar   // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_settings_unbind(_arg1, _arg2)
 }

@@ -14,18 +14,16 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxxer},
+		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxer},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChilder},
 	})
 }
@@ -137,23 +135,20 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FlowBoxOverrider interface {
-	//
 	ActivateCursorChild()
-	//
 	ChildActivated(child FlowBoxChilder)
+	MoveCursor(step MovementStep, count int) bool
 	// SelectAll: select all children of @box, if the selection mode allows it.
 	SelectAll()
-	//
 	SelectedChildrenChanged()
-	//
 	ToggleCursorChild()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
 	UnselectAll()
 }
 
-// FlowBoxxer describes FlowBox's methods.
-type FlowBoxxer interface {
+// FlowBoxer describes FlowBox's methods.
+type FlowBoxer interface {
 	// ActivateOnSingleClick returns whether children activate on single clicks.
 	ActivateOnSingleClick() bool
 	// ChildAtIndex gets the nth child in the @box.
@@ -174,7 +169,7 @@ type FlowBoxxer interface {
 	// SelectionMode gets the selection mode of @box.
 	SelectionMode() SelectionMode
 	// Insert inserts the @widget into @box at @position.
-	Insert(widget Widgetter, position int)
+	Insert(widget Widgeter, position int)
 	// InvalidateFilter updates the filtering for all children.
 	InvalidateFilter()
 	// InvalidateSort updates the sorting for all children.
@@ -204,6 +199,8 @@ type FlowBoxxer interface {
 	SetMinChildrenPerLine(nChildren uint)
 	// SetRowSpacing sets the vertical space to add between children.
 	SetRowSpacing(spacing uint)
+	// SetSelectionMode sets how selection works in @box.
+	SetSelectionMode(mode SelectionMode)
 	// SetVAdjustment hooks up an adjustment to focus handling in @box.
 	SetVAdjustment(adjustment Adjustmenter)
 	// UnselectAll: unselect all children of @box, if the selection mode allows
@@ -259,11 +256,11 @@ type FlowBox struct {
 }
 
 var (
-	_ FlowBoxxer      = (*FlowBox)(nil)
+	_ FlowBoxer       = (*FlowBox)(nil)
 	_ gextras.Nativer = (*FlowBox)(nil)
 )
 
-func wrapFlowBox(obj *externglib.Object) FlowBoxxer {
+func wrapFlowBox(obj *externglib.Object) FlowBoxer {
 	return &FlowBox{
 		Container: Container{
 			Widget: Widget{
@@ -284,7 +281,7 @@ func wrapFlowBox(obj *externglib.Object) FlowBoxxer {
 	}
 }
 
-func marshalFlowBoxxer(p uintptr) (interface{}, error) {
+func marshalFlowBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFlowBox(obj), nil
@@ -472,7 +469,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If @position is -1, or larger than the total number of children in the @box,
 // then the @widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgetter, position int) {
+func (box *FlowBox) Insert(widget Widgeter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -643,6 +640,18 @@ func (box *FlowBox) SetRowSpacing(spacing uint) {
 	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
 }
 
+// SetSelectionMode sets how selection works in @box. See SelectionMode for
+// details.
+func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.GtkSelectionMode // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
+	_arg1 = C.GtkSelectionMode(mode)
+
+	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
+}
+
 // SetVAdjustment hooks up an adjustment to focus handling in @box. The
 // adjustment is also used for autoscrolling during rubberband selection. See
 // gtk_scrolled_window_get_vadjustment() for a typical way of obtaining the
@@ -687,7 +696,6 @@ func (box *FlowBox) UnselectChild(child FlowBoxChilder) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FlowBoxChildOverrider interface {
-	//
 	Activate()
 }
 
@@ -703,7 +711,6 @@ type FlowBoxChilder interface {
 	IsSelected() bool
 }
 
-//
 type FlowBoxChild struct {
 	Bin
 }

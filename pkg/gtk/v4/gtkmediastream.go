@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -33,7 +32,6 @@ type MediaStreamOverrider interface {
 	//
 	// If the stream is not playing, do nothing.
 	Pause()
-	//
 	Play() bool
 	// Realize: called by users to attach the media stream to a `GdkSurface`
 	// they manage.
@@ -67,7 +65,6 @@ type MediaStreamOverrider interface {
 	// This causes the stream to release all resources it had allocated from
 	// @surface.
 	Unrealize(surface gdk.Surfacer)
-	//
 	UpdateAudio(muted bool, volume float64)
 }
 
@@ -75,8 +72,8 @@ type MediaStreamOverrider interface {
 type MediaStreamer interface {
 	// Ended pauses the media stream and marks it as ended.
 	Ended()
-	// Gerror sets @self into an error state.
-	Gerror(err error)
+	// GError sets @self into an error state.
+	GError(err error)
 	// Duration gets the duration of the stream.
 	Duration() int64
 	// GetEnded returns whether the streams playback is finished.
@@ -191,7 +188,7 @@ func (self *MediaStream) Ended() {
 	C.gtk_media_stream_ended(_arg0)
 }
 
-// Gerror sets @self into an error state.
+// GError sets @self into an error state.
 //
 // This will pause the stream (you can check for an error via
 // [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
@@ -202,7 +199,7 @@ func (self *MediaStream) Ended() {
 //
 // To unset an error, the stream must be reset via a call to
 // [method@Gtk.MediaStream.unprepared].
-func (self *MediaStream) Gerror(err error) {
+func (self *MediaStream) GError(err error) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GError         // out
 

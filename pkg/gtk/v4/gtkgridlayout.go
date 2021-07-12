@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -51,6 +50,9 @@ type GridLayouter interface {
 	// SetColumnSpacing sets the amount of space to insert between consecutive
 	// columns.
 	SetColumnSpacing(spacing uint)
+	// SetRowBaselinePosition sets how the baseline should be positioned on @row
+	// of the grid, in case that row is assigned more space than is requested.
+	SetRowBaselinePosition(row int, pos BaselinePosition)
 	// SetRowHomogeneous sets whether all rows of @grid should have the same
 	// height.
 	SetRowHomogeneous(homogeneous bool)
@@ -256,6 +258,20 @@ func (grid *GridLayout) SetColumnSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
+}
+
+// SetRowBaselinePosition sets how the baseline should be positioned on @row of
+// the grid, in case that row is assigned more space than is requested.
+func (grid *GridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
+	var _arg0 *C.GtkGridLayout      // out
+	var _arg1 C.int                 // out
+	var _arg2 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(grid.Native()))
+	_arg1 = C.int(row)
+	_arg2 = C.GtkBaselinePosition(pos)
+
+	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
 
 // SetRowHomogeneous sets whether all rows of @grid should have the same height.

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -29,7 +28,7 @@ type SearchEntrier interface {
 	KeyCaptureWidget() *Widget
 	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
 	// key events from.
-	SetKeyCaptureWidget(widget Widgetter)
+	SetKeyCaptureWidget(widget Widgeter)
 }
 
 // SearchEntry: `GtkSearchEntry` is an entry widget that has been tailored for
@@ -176,7 +175,7 @@ func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // [method@Gtk.EventControllerKey.forward].
-func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
+func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgeter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 

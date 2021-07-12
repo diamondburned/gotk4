@@ -13,19 +13,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
 	})
 }
 
-// Displayyer describes Display's methods.
-type Displayyer interface {
+// Displayer describes Display's methods.
+type Displayer interface {
 	// Beep emits a short beep on @display
 	Beep()
 	// Close closes the connection to the windowing system for the given
@@ -82,6 +81,9 @@ type Displayyer interface {
 	// Sync flushes any requests queued for the windowing system and waits until
 	// all requests have been handled.
 	Sync()
+	// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
+	// effective group, and level.
+	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
 // Display: `GdkDisplay` objects are the GDK representation of a workstation.
@@ -104,17 +106,17 @@ type Display struct {
 }
 
 var (
-	_ Displayyer      = (*Display)(nil)
+	_ Displayer       = (*Display)(nil)
 	_ gextras.Nativer = (*Display)(nil)
 )
 
-func wrapDisplay(obj *externglib.Object) Displayyer {
+func wrapDisplay(obj *externglib.Object) Displayer {
 	return &Display{
 		Object: obj,
 	}
 }
 
-func marshalDisplayyer(p uintptr) (interface{}, error) {
+func marshalDisplayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDisplay(obj), nil
@@ -575,4 +577,90 @@ func (display *Display) Sync() {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_sync(_arg0)
+}
+
+// TranslateKey translates the contents of a `GdkEventKey` into a keyval,
+// effective group, and level.
+//
+// Modifiers that affected the translation and are thus unavailable for
+// application use are returned in @consumed_modifiers.
+//
+// The @effective_group is the group that was actually used for the translation;
+// some keys such as Enter are not affected by the active keyboard group. The
+// @level is derived from @state.
+//
+// @consumed_modifiers gives modifiers that should be masked out from @state
+// when comparing this key press to a keyboard shortcut. For instance, on a US
+// keyboard, the `plus` symbol is shifted, so when comparing a key press to a
+// `<Control>plus` accelerator `<Shift>` should be masked out.
+//
+// This function should rarely be needed, since `GdkEventKey` already contains
+// the translated keyval. It is exported for the benefit of virtualized test
+// environments.
+func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool) {
+	var _arg0 *C.GdkDisplay     // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.int             // out
+	var _arg4 C.guint           // in
+	var _arg5 C.int             // in
+	var _arg6 C.int             // in
+	var _arg7 C.GdkModifierType // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = C.guint(keycode)
+	_arg2 = C.GdkModifierType(state)
+	_arg3 = C.int(group)
+
+	_cret = C.gdk_display_translate_key(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+
+	var _keyval uint           // out
+	var _effectiveGroup int    // out
+	var _level int             // out
+	var _consumed ModifierType // out
+	var _ok bool               // out
+
+	_keyval = uint(_arg4)
+	_effectiveGroup = int(_arg5)
+	_level = int(_arg6)
+	_consumed = ModifierType(_arg7)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keyval, _effectiveGroup, _level, _consumed, _ok
+}
+
+// DisplayGetDefault gets the default `GdkDisplay`.
+//
+// This is a convenience function for: `gdk_display_manager_get_default_display
+// (gdk_display_manager_get ())`.
+func DisplayGetDefault() *Display {
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_display_get_default()
+
+	var _display *Display // out
+
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+
+	return _display
+}
+
+// DisplayOpen opens a display.
+func DisplayOpen(displayName string) *Display {
+	var _arg1 *C.char       // out
+	var _cret *C.GdkDisplay // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_display_open(_arg1)
+
+	var _display *Display // out
+
+	_display = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Display)
+
+	return _display
 }

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -23,6 +22,149 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_icon_factory_get_type()), F: marshalIconFactorier},
 	})
+}
+
+// IconSizeFromName looks up the icon size associated with @name.
+//
+// Deprecated: Use IconTheme instead.
+func IconSizeFromName(name string) int {
+	var _arg1 *C.gchar      // out
+	var _cret C.GtkIconSize // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_icon_size_from_name(_arg1)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// IconSizeGetName gets the canonical name of the given icon size. The returned
+// string is statically allocated and should not be freed.
+//
+// Deprecated: Use IconTheme instead.
+func IconSizeGetName(size int) string {
+	var _arg1 C.GtkIconSize // out
+	var _cret *C.gchar      // in
+
+	_arg1 = C.GtkIconSize(size)
+
+	_cret = C.gtk_icon_size_get_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IconSizeLookup obtains the pixel size of a semantic icon size @size:
+// K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t normally
+// needed, gtk_icon_theme_load_icon() is the usual way to get an icon for
+// rendering, then just look at the size of the rendered pixbuf. The rendered
+// pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+func IconSizeLookup(size int) (width int, height int, ok bool) {
+	var _arg1 C.GtkIconSize // out
+	var _arg2 C.gint        // in
+	var _arg3 C.gint        // in
+	var _cret C.gboolean    // in
+
+	_arg1 = C.GtkIconSize(size)
+
+	_cret = C.gtk_icon_size_lookup(_arg1, &_arg2, &_arg3)
+
+	var _width int  // out
+	var _height int // out
+	var _ok bool    // out
+
+	_width = int(_arg2)
+	_height = int(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _width, _height, _ok
+}
+
+// IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
+// possibly modified by user preferences for a particular Settings. Normally
+// @size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
+// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
+// icon for rendering, then just look at the size of the rendered pixbuf. The
+// rendered pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+//
+// Deprecated: Use gtk_icon_size_lookup() instead.
+func IconSizeLookupForSettings(settings Settingser, size int) (width int, height int, ok bool) {
+	var _arg1 *C.GtkSettings // out
+	var _arg2 C.GtkIconSize  // out
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _cret C.gboolean     // in
+
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
+
+	var _width int  // out
+	var _height int // out
+	var _ok bool    // out
+
+	_width = int(_arg3)
+	_height = int(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _width, _height, _ok
+}
+
+// IconSizeRegister registers a new icon size, along the same lines as
+// K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
+//
+// Deprecated: Use IconTheme instead.
+func IconSizeRegister(name string, width int, height int) int {
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gint        // out
+	var _arg3 C.gint        // out
+	var _cret C.GtkIconSize // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(width)
+	_arg3 = C.gint(height)
+
+	_cret = C.gtk_icon_size_register(_arg1, _arg2, _arg3)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// IconSizeRegisterAlias registers @alias as another name for @target. So
+// calling gtk_icon_size_from_name() with @alias as argument will return
+// @target.
+//
+// Deprecated: Use IconTheme instead.
+func IconSizeRegisterAlias(alias string, target int) {
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkIconSize(target)
+
+	C.gtk_icon_size_register_alias(_arg1, _arg2)
 }
 
 // IconFactorier describes IconFactory's methods.
@@ -239,4 +381,31 @@ func (factory *IconFactory) RemoveDefault() {
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_icon_factory_remove_default(_arg0)
+}
+
+// IconFactoryLookupDefault looks for an icon in the list of default icon
+// factories. For display to the user, you should use
+// gtk_style_lookup_icon_set() on the Style for the widget that will display the
+// icon, instead of using this function directly, so that themes are taken into
+// account.
+//
+// Deprecated: Use IconTheme instead.
+func IconFactoryLookupDefault(stockId string) *IconSet {
+	var _arg1 *C.gchar      // out
+	var _cret *C.GtkIconSet // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_icon_factory_lookup_default(_arg1)
+
+	var _iconSet *IconSet // out
+
+	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	C.gtk_icon_set_ref(_cret)
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
+		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+	})
+
+	return _iconSet
 }

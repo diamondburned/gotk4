@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -40,7 +39,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CancellableOverrider interface {
-	//
 	Cancelled()
 }
 
@@ -350,4 +348,17 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	})
 
 	return _source
+}
+
+// CancellableGetCurrent gets the top cancellable from the stack.
+func CancellableGetCurrent() *Cancellable {
+	var _cret *C.GCancellable // in
+
+	_cret = C.g_cancellable_get_current()
+
+	var _cancellable *Cancellable // out
+
+	_cancellable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Cancellable)
+
+	return _cancellable
 }

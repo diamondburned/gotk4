@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -24,7 +23,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
 		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
-		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialogger},
+		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialoger},
 	})
 }
 
@@ -115,7 +114,6 @@ func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DialogOverrider interface {
-	//
 	Close()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;
@@ -124,12 +122,12 @@ type DialogOverrider interface {
 	Response(responseId int)
 }
 
-// Dialogger describes Dialog's methods.
-type Dialogger interface {
+// Dialoger describes Dialog's methods.
+type Dialoger interface {
 	// AddActionWidget adds an activatable widget to the action area of a
 	// Dialog, connecting a signal handler that will emit the Dialog::response
 	// signal on the dialog when the widget is activated.
-	AddActionWidget(child Widgetter, responseId int)
+	AddActionWidget(child Widgeter, responseId int)
 	// AddButton adds a button with the given text and sets things up so that
 	// clicking the button will emit the Dialog::response signal with the given
 	// @response_id.
@@ -142,7 +140,7 @@ type Dialogger interface {
 	HeaderBar() *HeaderBar
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
-	ResponseForWidget(widget Widgetter) int
+	ResponseForWidget(widget Widgeter) int
 	// WidgetForResponse gets the widget button that uses the given response ID
 	// in the action area of a dialog.
 	WidgetForResponse(responseId int) *Widget
@@ -277,11 +275,11 @@ type Dialog struct {
 }
 
 var (
-	_ Dialogger       = (*Dialog)(nil)
+	_ Dialoger        = (*Dialog)(nil)
 	_ gextras.Nativer = (*Dialog)(nil)
 )
 
-func wrapDialog(obj *externglib.Object) Dialogger {
+func wrapDialog(obj *externglib.Object) Dialoger {
 	return &Dialog{
 		Window: Window{
 			Bin: Bin{
@@ -303,7 +301,7 @@ func wrapDialog(obj *externglib.Object) Dialogger {
 	}
 }
 
-func marshalDialogger(p uintptr) (interface{}, error) {
+func marshalDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDialog(obj), nil
@@ -330,7 +328,7 @@ func NewDialog() *Dialog {
 // dialog when the widget is activated. The widget is appended to the end of the
 // dialog’s action area. If you want to add a non-activatable widget, simply
 // pack it into the @action_area field of the Dialog struct.
-func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
+func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -420,7 +418,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
+func (dialog *Dialog) ResponseForWidget(widget Widgeter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gint       // in

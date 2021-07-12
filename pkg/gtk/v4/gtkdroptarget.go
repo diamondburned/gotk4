@@ -13,19 +13,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargetter},
+		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargeter},
 	})
 }
 
-// DropTargetter describes DropTarget's methods.
-type DropTargetter interface {
+// DropTargeter describes DropTarget's methods.
+type DropTargeter interface {
 	// Actions gets the actions that this drop target supports.
 	Actions() gdk.DragAction
 	// Drop gets the currently handled drop operation.
@@ -38,6 +37,8 @@ type DropTargetter interface {
 	Value() *externglib.Value
 	// Reject rejects the ongoing drop operation.
 	Reject()
+	// SetActions sets the actions that this drop target supports.
+	SetActions(actions gdk.DragAction)
 	// SetGTypes sets the supported `GTypes` for this drop target.
 	SetGTypes(types []externglib.Type)
 	// SetPreload sets whether data should be preloaded on hover.
@@ -110,11 +111,11 @@ type DropTarget struct {
 }
 
 var (
-	_ DropTargetter   = (*DropTarget)(nil)
+	_ DropTargeter    = (*DropTarget)(nil)
 	_ gextras.Nativer = (*DropTarget)(nil)
 )
 
-func wrapDropTarget(obj *externglib.Object) DropTargetter {
+func wrapDropTarget(obj *externglib.Object) DropTargeter {
 	return &DropTarget{
 		EventController: EventController{
 			Object: obj,
@@ -122,10 +123,31 @@ func wrapDropTarget(obj *externglib.Object) DropTargetter {
 	}
 }
 
-func marshalDropTargetter(p uintptr) (interface{}, error) {
+func marshalDropTargeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDropTarget(obj), nil
+}
+
+// NewDropTarget creates a new `GtkDropTarget` object.
+//
+// If the drop target should support more than 1 type, pass G_TYPE_INVALID for
+// @type and then call [method@Gtk.DropTarget.set_gtypes].
+func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
+	var _arg1 C.GType          // out
+	var _arg2 C.GdkDragAction  // out
+	var _cret *C.GtkDropTarget // in
+
+	_arg1 = C.GType(typ)
+	_arg2 = C.GdkDragAction(actions)
+
+	_cret = C.gtk_drop_target_new(_arg1, _arg2)
+
+	var _dropTarget *DropTarget // out
+
+	_dropTarget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*DropTarget)
+
+	return _dropTarget
 }
 
 // Actions gets the actions that this drop target supports.
@@ -231,6 +253,17 @@ func (self *DropTarget) Reject() {
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
 
 	C.gtk_drop_target_reject(_arg0)
+}
+
+// SetActions sets the actions that this drop target supports.
+func (self *DropTarget) SetActions(actions gdk.DragAction) {
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 C.GdkDragAction  // out
+
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GdkDragAction(actions)
+
+	C.gtk_drop_target_set_actions(_arg0, _arg1)
 }
 
 // SetGTypes sets the supported `GTypes` for this drop target.

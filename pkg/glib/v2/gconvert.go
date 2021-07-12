@@ -10,7 +10,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib.h>
 import "C"
 
@@ -319,4 +318,36 @@ func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 s
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _bytesRead, _bytesWritten, _utf8, _goerr
+}
+
+// URIListExtractUris splits an URI list conforming to the text/uri-list mime
+// type defined in RFC 2483 into individual URIs, discarding any comments. The
+// URIs are not validated.
+func URIListExtractUris(uriList string) []string {
+	var _arg1 *C.gchar // out
+	var _cret **C.gchar
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriList)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_uri_list_extract_uris(_arg1)
+
+	var _utf8s []string
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
 }

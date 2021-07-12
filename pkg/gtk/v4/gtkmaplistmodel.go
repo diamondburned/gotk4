@@ -14,14 +14,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModeller},
+		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModeler},
 	})
 }
 
@@ -53,14 +52,14 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 	return cret
 }
 
-// MapListModeller describes MapListModel's methods.
-type MapListModeller interface {
+// MapListModeler describes MapListModel's methods.
+type MapListModeler interface {
 	// Model gets the model that is currently being mapped or nil if none.
 	Model() *gio.ListModel
 	// HasMap checks if a map function is currently set on @self.
 	HasMap() bool
 	// SetModel sets the model to be mapped.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 }
 
 // MapListModel: `GtkMapListModel` maps the items in a list model to different
@@ -90,11 +89,11 @@ type MapListModel struct {
 }
 
 var (
-	_ MapListModeller = (*MapListModel)(nil)
+	_ MapListModeler  = (*MapListModel)(nil)
 	_ gextras.Nativer = (*MapListModel)(nil)
 )
 
-func wrapMapListModel(obj *externglib.Object) MapListModeller {
+func wrapMapListModel(obj *externglib.Object) MapListModeler {
 	return &MapListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -103,7 +102,7 @@ func wrapMapListModel(obj *externglib.Object) MapListModeller {
 	}
 }
 
-func marshalMapListModeller(p uintptr) (interface{}, error) {
+func marshalMapListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMapListModel(obj), nil
@@ -148,7 +147,7 @@ func (self *MapListModel) HasMap() bool {
 // GTK makes no effort to ensure that @model conforms to the item type expected
 // by the map function. It assumes that the caller knows what they are doing and
 // have set up an appropriate map function.
-func (self *MapListModel) SetModel(model gio.ListModeller) {
+func (self *MapListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkMapListModel // out
 	var _arg1 *C.GListModel      // out
 

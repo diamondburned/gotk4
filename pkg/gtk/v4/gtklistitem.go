@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemmer},
+		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemer},
 	})
 }
 
-// ListItemmer describes ListItem's methods.
-type ListItemmer interface {
+// ListItemer describes ListItem's methods.
+type ListItemer interface {
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
 	Activatable() bool
@@ -42,7 +41,7 @@ type ListItemmer interface {
 	// SetActivatable sets @self to be activatable.
 	SetActivatable(activatable bool)
 	// SetChild sets the child to be used for this listitem.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetSelectable sets @self to be selectable.
 	SetSelectable(selectable bool)
 }
@@ -67,17 +66,17 @@ type ListItem struct {
 }
 
 var (
-	_ ListItemmer     = (*ListItem)(nil)
+	_ ListItemer      = (*ListItem)(nil)
 	_ gextras.Nativer = (*ListItem)(nil)
 )
 
-func wrapListItem(obj *externglib.Object) ListItemmer {
+func wrapListItem(obj *externglib.Object) ListItemer {
 	return &ListItem{
 		Object: obj,
 	}
 }
 
-func marshalListItemmer(p uintptr) (interface{}, error) {
+func marshalListItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListItem(obj), nil
@@ -221,7 +220,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // This function is typically called by applications when setting up a listitem
 // so that the widget can be reused when binding it multiple times.
-func (self *ListItem) SetChild(child Widgetter) {
+func (self *ListItem) SetChild(child Widgeter) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 

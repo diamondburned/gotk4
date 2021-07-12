@@ -14,19 +14,17 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-//
 // gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_model_flags_get_type()), F: marshalTreeModelFlags},
-		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModeller},
+		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModeler},
 		{T: externglib.Type(C.gtk_tree_iter_get_type()), F: marshalTreeIter},
 		{T: externglib.Type(C.gtk_tree_path_get_type()), F: marshalTreePath},
 		{T: externglib.Type(C.gtk_tree_row_reference_get_type()), F: marshalTreeRowReference},
@@ -199,8 +197,8 @@ type TreeModelOverrider interface {
 	UnrefNode(iter *TreeIter)
 }
 
-// TreeModeller describes TreeModel's methods.
-type TreeModeller interface {
+// TreeModeler describes TreeModel's methods.
+type TreeModeler interface {
 	// NewFilter creates a new TreeModel, with @child_model as the child_model
 	// and @root as the virtual root.
 	NewFilter(root *TreePath) *TreeModel
@@ -412,17 +410,17 @@ type TreeModel struct {
 }
 
 var (
-	_ TreeModeller    = (*TreeModel)(nil)
+	_ TreeModeler     = (*TreeModel)(nil)
 	_ gextras.Nativer = (*TreeModel)(nil)
 )
 
-func wrapTreeModel(obj *externglib.Object) TreeModeller {
+func wrapTreeModel(obj *externglib.Object) TreeModeler {
 	return &TreeModel{
 		Object: obj,
 	}
 }
 
-func marshalTreeModeller(p uintptr) (interface{}, error) {
+func marshalTreeModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeModel(obj), nil
@@ -990,7 +988,6 @@ func (iter *TreeIter) free() {
 	C.gtk_tree_iter_free(_arg0)
 }
 
-//
 type TreePath struct {
 	native C.GtkTreePath
 }
@@ -1297,7 +1294,7 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.
-func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
+func NewTreeRowReference(model TreeModeler, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GtkTreeModel        // out
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
@@ -1318,7 +1315,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 }
 
 // NewTreeRowReferenceProxy constructs a struct TreeRowReference.
-func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModeller, path *TreePath) *TreeRowReference {
+func NewTreeRowReferenceProxy(proxy gextras.Objector, model TreeModeler, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GObject             // out
 	var _arg2 *C.GtkTreeModel        // out
 	var _arg3 *C.GtkTreePath         // out
@@ -1426,4 +1423,30 @@ func (reference *TreeRowReference) Valid() bool {
 	}
 
 	return _ok
+}
+
+// TreeRowReferenceDeleted lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-deleted signal.
+func TreeRowReferenceDeleted(proxy gextras.Objector, path *TreePath) {
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GtkTreePath // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
+	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
+
+	C.gtk_tree_row_reference_deleted(_arg1, _arg2)
+}
+
+// TreeRowReferenceInserted lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-inserted signal.
+func TreeRowReferenceInserted(proxy gextras.Objector, path *TreePath) {
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GtkTreePath // out
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
+	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
+
+	C.gtk_tree_row_reference_inserted(_arg1, _arg2)
 }

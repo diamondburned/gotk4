@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemmer},
+		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemer},
 	})
 }
 
-// SeparatorToolItemmer describes SeparatorToolItem's methods.
-type SeparatorToolItemmer interface {
+// SeparatorToolItemer describes SeparatorToolItem's methods.
+type SeparatorToolItemer interface {
 	// Draw returns whether @item is drawn as a line, or just blank.
 	Draw() bool
 	// SetDraw: whether @item is drawn as a vertical line, or just blank.
@@ -52,11 +51,11 @@ type SeparatorToolItem struct {
 }
 
 var (
-	_ SeparatorToolItemmer = (*SeparatorToolItem)(nil)
-	_ gextras.Nativer      = (*SeparatorToolItem)(nil)
+	_ SeparatorToolItemer = (*SeparatorToolItem)(nil)
+	_ gextras.Nativer     = (*SeparatorToolItem)(nil)
 )
 
-func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItemmer {
+func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItemer {
 	return &SeparatorToolItem{
 		ToolItem: ToolItem{
 			Bin: Bin{
@@ -81,7 +80,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) SeparatorToolItemmer {
 	}
 }
 
-func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
+func marshalSeparatorToolItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparatorToolItem(obj), nil

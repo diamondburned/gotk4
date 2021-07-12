@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,17 +21,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarrer},
+		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarer},
 	})
 }
 
-// MenuBarrer describes MenuBar's methods.
-type MenuBarrer interface {
+// MenuBarer describes MenuBar's methods.
+type MenuBarer interface {
 	// ChildPackDirection retrieves the current child pack direction of the
 	// menubar.
 	ChildPackDirection() PackDirection
 	// PackDirection retrieves the current pack direction of the menubar.
 	PackDirection() PackDirection
+	// SetChildPackDirection sets how widgets should be packed inside the
+	// children of a menubar.
+	SetChildPackDirection(childPackDir PackDirection)
+	// SetPackDirection sets how items should be packed inside a menubar.
+	SetPackDirection(packDir PackDirection)
 }
 
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
@@ -47,11 +51,11 @@ type MenuBar struct {
 }
 
 var (
-	_ MenuBarrer      = (*MenuBar)(nil)
+	_ MenuBarer       = (*MenuBar)(nil)
 	_ gextras.Nativer = (*MenuBar)(nil)
 )
 
-func wrapMenuBar(obj *externglib.Object) MenuBarrer {
+func wrapMenuBar(obj *externglib.Object) MenuBarer {
 	return &MenuBar{
 		MenuShell: MenuShell{
 			Container: Container{
@@ -71,7 +75,7 @@ func wrapMenuBar(obj *externglib.Object) MenuBarrer {
 	}
 }
 
-func marshalMenuBarrer(p uintptr) (interface{}, error) {
+func marshalMenuBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuBar(obj), nil
@@ -96,7 +100,7 @@ func NewMenuBar() *MenuBar {
 // The created menu items are connected to actions found in the
 // ApplicationWindow to which the menu bar belongs - typically by means of being
 // contained within the ApplicationWindows widget hierarchy.
-func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
+func NewMenuBarFromModel(model gio.MenuModeler) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -143,4 +147,27 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 	_packDirection = PackDirection(_cret)
 
 	return _packDirection
+}
+
+// SetChildPackDirection sets how widgets should be packed inside the children
+// of a menubar.
+func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
+	var _arg0 *C.GtkMenuBar      // out
+	var _arg1 C.GtkPackDirection // out
+
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg1 = C.GtkPackDirection(childPackDir)
+
+	C.gtk_menu_bar_set_child_pack_direction(_arg0, _arg1)
+}
+
+// SetPackDirection sets how items should be packed inside a menubar.
+func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
+	var _arg0 *C.GtkMenuBar      // out
+	var _arg1 C.GtkPackDirection // out
+
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(menubar.Native()))
+	_arg1 = C.GtkPackDirection(packDir)
+
+	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)
 }

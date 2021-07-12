@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemmer},
+		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemer},
 	})
 }
 
-// ImageMenuItemmer describes ImageMenuItem's methods.
-type ImageMenuItemmer interface {
+// ImageMenuItemer describes ImageMenuItem's methods.
+type ImageMenuItemer interface {
 	// AlwaysShowImage returns whether the menu item will ignore the
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	AlwaysShowImage() bool
@@ -45,7 +44,7 @@ type ImageMenuItemmer interface {
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	SetAlwaysShowImage(alwaysShow bool)
 	// SetImage sets the image of @image_menu_item to the given widget.
-	SetImage(image Widgetter)
+	SetImage(image Widgeter)
 	// SetUseStock: if true, the label set in the menuitem is used as a stock id
 	// to select the stock item for the item.
 	SetUseStock(useStock bool)
@@ -80,11 +79,11 @@ type ImageMenuItem struct {
 }
 
 var (
-	_ ImageMenuItemmer = (*ImageMenuItem)(nil)
-	_ gextras.Nativer  = (*ImageMenuItem)(nil)
+	_ ImageMenuItemer = (*ImageMenuItem)(nil)
+	_ gextras.Nativer = (*ImageMenuItem)(nil)
 )
 
-func wrapImageMenuItem(obj *externglib.Object) ImageMenuItemmer {
+func wrapImageMenuItem(obj *externglib.Object) ImageMenuItemer {
 	return &ImageMenuItem{
 		MenuItem: MenuItem{
 			Bin: Bin{
@@ -122,7 +121,7 @@ func wrapImageMenuItem(obj *externglib.Object) ImageMenuItemmer {
 	}
 }
 
-func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
+func marshalImageMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapImageMenuItem(obj), nil
@@ -316,7 +315,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 // or not.
 //
 // Deprecated: since version 3.10.
-func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
+func (imageMenuItem *ImageMenuItem) SetImage(image Widgeter) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 

@@ -4,7 +4,6 @@ package atk
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 import "C"
 

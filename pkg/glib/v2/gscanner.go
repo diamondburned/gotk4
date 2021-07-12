@@ -9,7 +9,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib.h>
 import "C"
 
@@ -357,6 +356,36 @@ func (scanner *Scanner) SyncFileOffset() {
 	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
 
 	C.g_scanner_sync_file_offset(_arg0)
+}
+
+// UnexpToken outputs a message through the scanner's msg_handler, resulting
+// from an unexpected token in the input stream. Note that you should not call
+// g_scanner_peek_next_token() followed by g_scanner_unexp_token() without an
+// intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
+// evaluates the scanner's current token (not the peeked token) to construct
+// part of the message.
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+	var _arg0 *C.GScanner  // out
+	var _arg1 C.GTokenType // out
+	var _arg2 *C.gchar     // out
+	var _arg3 *C.gchar     // out
+	var _arg4 *C.gchar     // out
+	var _arg5 *C.gchar     // out
+	var _arg6 C.gint       // out
+
+	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg1 = C.GTokenType(expectedToken)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(identifierSpec)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(symbolSpec)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(symbolName)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = C.gint(isError)
+
+	C.g_scanner_unexp_token(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ScannerConfig specifies the #GScanner parser configuration. Most settings can

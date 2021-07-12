@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -76,7 +75,7 @@ func marshalTexturer(p uintptr) (interface{}, error) {
 
 // NewTextureForPixbuf creates a new texture object representing the
 // `GdkPixbuf`.
-func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Texture {
+func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
 

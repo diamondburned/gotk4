@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeller},
+		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeler},
 	})
 }
 
@@ -57,8 +56,8 @@ type ListModelOverrider interface {
 	NItems() uint
 }
 
-// ListModeller describes ListModel's methods.
-type ListModeller interface {
+// ListModeler describes ListModel's methods.
+type ListModeler interface {
 	// ItemType gets the type of the items in @list.
 	ItemType() externglib.Type
 	// NItems gets the number of items in @list.
@@ -116,17 +115,17 @@ type ListModel struct {
 }
 
 var (
-	_ ListModeller    = (*ListModel)(nil)
+	_ ListModeler     = (*ListModel)(nil)
 	_ gextras.Nativer = (*ListModel)(nil)
 )
 
-func wrapListModel(obj *externglib.Object) ListModeller {
+func wrapListModel(obj *externglib.Object) ListModeler {
 	return &ListModel{
 		Object: obj,
 	}
 }
 
-func marshalListModeller(p uintptr) (interface{}, error) {
+func marshalListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListModel(obj), nil

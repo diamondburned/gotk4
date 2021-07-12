@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemmer},
+		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemer},
 	})
 }
 
@@ -32,7 +31,6 @@ func init() {
 type MenuItemOverrider interface {
 	// Activate emits the MenuItem::activate signal on the given item
 	Activate()
-	//
 	ActivateItem()
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
@@ -47,8 +45,8 @@ type MenuItemOverrider interface {
 	ToggleSizeAllocate(allocation int)
 }
 
-// MenuItemmer describes MenuItem's methods.
-type MenuItemmer interface {
+// MenuItemer describes MenuItem's methods.
+type MenuItemer interface {
 	// Activate emits the MenuItem::activate signal on the given item
 	Activate()
 	// Deselect emits the MenuItem::deselect signal on the given item.
@@ -123,11 +121,11 @@ type MenuItem struct {
 }
 
 var (
-	_ MenuItemmer     = (*MenuItem)(nil)
+	_ MenuItemer      = (*MenuItem)(nil)
 	_ gextras.Nativer = (*MenuItem)(nil)
 )
 
-func wrapMenuItem(obj *externglib.Object) MenuItemmer {
+func wrapMenuItem(obj *externglib.Object) MenuItemer {
 	return &MenuItem{
 		Bin: Bin{
 			Container: Container{
@@ -163,7 +161,7 @@ func wrapMenuItem(obj *externglib.Object) MenuItemmer {
 	}
 }
 
-func marshalMenuItemmer(p uintptr) (interface{}, error) {
+func marshalMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -31,11 +30,8 @@ type TableOverrider interface {
 	AddColumnSelection(column int) bool
 	// AddRowSelection adds the specified @row to the selection.
 	AddRowSelection(row int) bool
-	//
 	ColumnDeleted(column int, numDeleted int)
-	//
 	ColumnInserted(column int, numInserted int)
-	//
 	ColumnReordered()
 	// Caption gets the caption for the @table.
 	Caption() *ObjectClass
@@ -94,7 +90,6 @@ type TableOverrider interface {
 	// IsSelected gets a boolean value indicating whether the accessible object
 	// at the specified @row and @column is selected
 	IsSelected(row int, column int) bool
-	//
 	ModelChanged()
 	// RefAt: get a reference to the table cell at @row, @column. This cell
 	// should implement the interface TableCell
@@ -103,11 +98,8 @@ type TableOverrider interface {
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified @row from the selection.
 	RemoveRowSelection(row int) bool
-	//
 	RowDeleted(row int, numDeleted int)
-	//
 	RowInserted(row int, numInserted int)
-	//
 	RowReordered()
 	// SetCaption sets the caption for the table.
 	SetCaption(caption ObjectClasser)

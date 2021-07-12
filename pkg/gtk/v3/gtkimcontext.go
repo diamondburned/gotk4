@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,7 +30,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type IMContextOverrider interface {
-	//
 	Commit(str string)
 	// DeleteSurrounding asks the widget that the input context is attached to
 	// to delete characters around the cursor position by emitting the
@@ -80,23 +78,19 @@ type IMContextOverrider interface {
 	// widget to respond to the ::retrieve_surrounding signal, so input methods
 	// must be prepared to function without context.
 	Surrounding() (string, int, bool)
-	//
 	PreeditChanged()
-	//
 	PreeditEnd()
-	//
 	PreeditStart()
 	// Reset: notify the input method that a change such as a change in cursor
 	// position has been made. This will typically cause the input method to
 	// clear the preedit state.
 	Reset()
-	//
 	RetrieveSurrounding() bool
 	// SetClientWindow: set the client window for the input context; this is the
 	// Window in which the input appears. This window is used in order to
 	// correctly position status windows, and may also be used for purposes
 	// internal to the input method.
-	SetClientWindow(window gdk.Windowwer)
+	SetClientWindow(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made. The location is relative to the client window.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -137,7 +131,7 @@ type IMContexter interface {
 	Reset()
 	// SetClientWindow: set the client window for the input context; this is the
 	// Window in which the input appears.
-	SetClientWindow(window gdk.Windowwer)
+	SetClientWindow(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -365,7 +359,7 @@ func (context *IMContext) Reset() {
 // Window in which the input appears. This window is used in order to correctly
 // position status windows, and may also be used for purposes internal to the
 // input method.
-func (context *IMContext) SetClientWindow(window gdk.Windowwer) {
+func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
 

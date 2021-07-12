@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -28,9 +27,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type PopoverOverrider interface {
-	//
 	ActivateDefault()
-	//
 	Closed()
 }
 
@@ -66,9 +63,9 @@ type Popoverer interface {
 	// closed when a child modal popover is closed.
 	SetCascadePopdown(cascadePopdown bool)
 	// SetChild sets the child widget of @popover.
-	SetChild(child Widgetter)
+	SetChild(child Widgeter)
 	// SetDefaultWidget sets the default widget of a `GtkPopover`.
-	SetDefaultWidget(widget Widgetter)
+	SetDefaultWidget(widget Widgeter)
 	// SetHasArrow sets whether this popover should draw an arrow pointing at
 	// the widget it is relative to.
 	SetHasArrow(hasArrow bool)
@@ -79,6 +76,8 @@ type Popoverer interface {
 	SetOffset(xOffset int, yOffset int)
 	// SetPointingTo sets the rectangle that @popover points to.
 	SetPointingTo(rect *gdk.Rectangle)
+	// SetPosition sets the preferred position for @popover to appear.
+	SetPosition(position PositionType)
 }
 
 // Popover: `GtkPopover` is a bubble-like context popup.
@@ -438,7 +437,7 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 }
 
 // SetChild sets the child widget of @popover.
-func (popover *Popover) SetChild(child Widgetter) {
+func (popover *Popover) SetChild(child Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -453,7 +452,7 @@ func (popover *Popover) SetChild(child Widgetter) {
 // The default widget is the widget that’s activated when the user presses Enter
 // in a dialog (for example). This function sets or unsets the default widget
 // for a `GtkPopover`.
-func (popover *Popover) SetDefaultWidget(widget Widgetter) {
+func (popover *Popover) SetDefaultWidget(widget Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -518,4 +517,21 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
+}
+
+// SetPosition sets the preferred position for @popover to appear.
+//
+// If the @popover is currently visible, it will be immediately updated.
+//
+// This preference will be respected where possible, although on lack of space
+// (eg. if close to the window edges), the `GtkPopover` may choose to appear on
+// the opposite side.
+func (popover *Popover) SetPosition(position PositionType) {
+	var _arg0 *C.GtkPopover     // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
+	_arg1 = C.GtkPositionType(position)
+
+	C.gtk_popover_set_position(_arg0, _arg1)
 }

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -58,6 +57,11 @@ type Gesturer interface {
 	IsGroupedWith(other Gesturer) bool
 	// IsRecognized returns true if the gesture is currently recognized.
 	IsRecognized() bool
+	// SetSequenceState sets the state of @sequence in @gesture.
+	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
+	// SetState sets the state of all sequences that @gesture is currently
+	// interacting with.
+	SetState(state EventSequenceState) bool
 	// Ungroup separates @gesture into an isolated group.
 	Ungroup()
 }
@@ -431,6 +435,80 @@ func (gesture *Gesture) IsRecognized() bool {
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
 	_cret = C.gtk_gesture_is_recognized(_arg0)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetSequenceState sets the state of @sequence in @gesture.
+//
+// Sequences start in state GTK_EVENT_SEQUENCE_NONE, and whenever they change
+// state, they can never go back to that state. Likewise, sequences in state
+// GTK_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With these
+// rules, the lifetime of an event sequence is constrained to the next four:
+//
+// * None * None → Denied * None → Claimed * None → Claimed → Denied
+//
+// Note: Due to event handling ordering, it may be unsafe to set the state on
+// another gesture within a [signal@Gtk.Gesture::begin] signal handler, as the
+// callback might be executed before the other gesture knows about the sequence.
+// A safe way to perform this could be:
+//
+// “`c static void first_gesture_begin_cb (GtkGesture *first_gesture,
+// GdkEventSequence *sequence, gpointer user_data) {
+// gtk_gesture_set_sequence_state (first_gesture, sequence,
+// GTK_EVENT_SEQUENCE_CLAIMED); gtk_gesture_set_sequence_state (second_gesture,
+// sequence, GTK_EVENT_SEQUENCE_DENIED); }
+//
+// static void second_gesture_begin_cb (GtkGesture *second_gesture,
+// GdkEventSequence *sequence, gpointer user_data) { if
+// (gtk_gesture_get_sequence_state (first_gesture, sequence) ==
+// GTK_EVENT_SEQUENCE_CLAIMED) gtk_gesture_set_sequence_state (second_gesture,
+// sequence, GTK_EVENT_SEQUENCE_DENIED); } “`
+//
+// If both gestures are in the same group, just set the state on the gesture
+// emitting the event, the sequence will be already be initialized to the
+// group's global state when the second gesture processes the event.
+func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
+	var _arg0 *C.GtkGesture           // out
+	var _arg1 *C.GdkEventSequence     // out
+	var _arg2 C.GtkEventSequenceState // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg2 = C.GtkEventSequenceState(state)
+
+	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetState sets the state of all sequences that @gesture is currently
+// interacting with.
+//
+// See [method@Gtk.Gesture.set_sequence_state] for more details on sequence
+// states.
+func (gesture *Gesture) SetState(state EventSequenceState) bool {
+	var _arg0 *C.GtkGesture           // out
+	var _arg1 C.GtkEventSequenceState // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+	_arg1 = C.GtkEventSequenceState(state)
+
+	_cret = C.gtk_gesture_set_state(_arg0, _arg1)
 
 	var _ok bool // out
 

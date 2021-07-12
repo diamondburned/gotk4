@@ -98,7 +98,7 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 
 	for i := range conv.results {
 		// Fill up the results list after transforming the values.
-		conv.results[i] = newValueConverted(&values[i])
+		conv.results[i] = newValueConverted(&conv, &values[i])
 	}
 
 	return &conv
@@ -233,11 +233,11 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 
 	if !result.Optional {
 		if result.In.Type == "" || result.Out.Type == "" {
-			result.logln(conv, logger.Error, "missing CGoType or GoType")
+			result.Logln(logger.Error, "missing CGoType or GoType")
 			panic("see above")
 		}
 		if result.Resolved == nil {
-			result.logln(conv, logger.Error, "missing Resolved type")
+			result.Logln(logger.Error, "missing Resolved type")
 			panic("see above")
 		}
 	}
@@ -280,7 +280,7 @@ func (conv *Converter) convertType(
 	attrs.AnyType = typ
 	attrs.TransferOwnership.TransferOwnership = owner
 
-	result := newValueConverted(&ConversionValue{
+	result := newValueConverted(conv, &ConversionValue{
 		InName:         in,
 		OutName:        out,
 		Direction:      of.Direction,

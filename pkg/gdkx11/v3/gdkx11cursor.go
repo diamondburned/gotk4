@@ -12,33 +12,31 @@ import (
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorrer},
+		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorer},
 	})
 }
 
-// X11Cursorrer describes X11Cursor's methods.
-type X11Cursorrer interface {
+// X11Cursorer describes X11Cursor's methods.
+type X11Cursorer interface {
 	privateX11Cursor()
 }
 
-//
 type X11Cursor struct {
 	gdk.Cursor
 }
 
 var (
-	_ X11Cursorrer    = (*X11Cursor)(nil)
+	_ X11Cursorer     = (*X11Cursor)(nil)
 	_ gextras.Nativer = (*X11Cursor)(nil)
 )
 
-func wrapX11Cursor(obj *externglib.Object) X11Cursorrer {
+func wrapX11Cursor(obj *externglib.Object) X11Cursorer {
 	return &X11Cursor{
 		Cursor: gdk.Cursor{
 			Object: obj,
@@ -46,7 +44,7 @@ func wrapX11Cursor(obj *externglib.Object) X11Cursorrer {
 	}
 }
 
-func marshalX11Cursorrer(p uintptr) (interface{}, error) {
+func marshalX11Cursorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Cursor(obj), nil

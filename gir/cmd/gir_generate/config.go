@@ -116,6 +116,7 @@ var filters = []FilterMatcher{
 	FileFilter("gtkprintunixdialog"),
 	FileFilter("gtkprinter"),
 	FileFilter("gtkprintjob"),
+	FileFilter("gdkprivate"),
 
 	// These are missing on build for some reason.
 	AbsoluteFilter("C.g_array_get_type"),

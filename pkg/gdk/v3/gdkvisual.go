@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -341,4 +340,139 @@ func (visual *Visual) VisualType() VisualType {
 	_visualType = VisualType(_cret)
 
 	return _visualType
+}
+
+// VisualGetBest: get the visual with the most available colors for the default
+// GDK screen. The return value should not be freed.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBest() *Visual {
+	var _cret *C.GdkVisual // in
+
+	_cret = C.gdk_visual_get_best()
+
+	var _visual *Visual // out
+
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+
+	return _visual
+}
+
+// VisualGetBestDepth: get the best available depth for the default GDK screen.
+// “Best” means “largest,” i.e. 32 preferred over 24 preferred over 8 bits per
+// pixel.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBestDepth() int {
+	var _cret C.gint // in
+
+	_cret = C.gdk_visual_get_best_depth()
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// VisualGetBestType: return the best available visual type for the default GDK
+// screen.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBestType() VisualType {
+	var _cret C.GdkVisualType // in
+
+	_cret = C.gdk_visual_get_best_type()
+
+	var _visualType VisualType // out
+
+	_visualType = VisualType(_cret)
+
+	return _visualType
+}
+
+// VisualGetBestWithBoth combines gdk_visual_get_best_with_depth() and
+// gdk_visual_get_best_with_type().
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
+	var _arg1 C.gint          // out
+	var _arg2 C.GdkVisualType // out
+	var _cret *C.GdkVisual    // in
+
+	_arg1 = C.gint(depth)
+	_arg2 = C.GdkVisualType(visualType)
+
+	_cret = C.gdk_visual_get_best_with_both(_arg1, _arg2)
+
+	var _visual *Visual // out
+
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+
+	return _visual
+}
+
+// VisualGetBestWithDepth: get the best visual with depth @depth for the default
+// GDK screen. Color visuals and visuals with mutable colormaps are preferred
+// over grayscale or fixed-colormap visuals. The return value should not be
+// freed. nil may be returned if no visual supports @depth.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBestWithDepth(depth int) *Visual {
+	var _arg1 C.gint       // out
+	var _cret *C.GdkVisual // in
+
+	_arg1 = C.gint(depth)
+
+	_cret = C.gdk_visual_get_best_with_depth(_arg1)
+
+	var _visual *Visual // out
+
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+
+	return _visual
+}
+
+// VisualGetBestWithType: get the best visual of the given @visual_type for the
+// default GDK screen. Visuals with higher color depths are considered better.
+// The return value should not be freed. nil may be returned if no visual has
+// type @visual_type.
+//
+// Deprecated: Visual selection should be done using
+// gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
+func VisualGetBestWithType(visualType VisualType) *Visual {
+	var _arg1 C.GdkVisualType // out
+	var _cret *C.GdkVisual    // in
+
+	_arg1 = C.GdkVisualType(visualType)
+
+	_cret = C.gdk_visual_get_best_with_type(_arg1)
+
+	var _visual *Visual // out
+
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+
+	return _visual
+}
+
+// VisualGetSystem: get the system’s default visual for the default GDK screen.
+// This is the visual for the root window of the display. The return value
+// should not be freed.
+//
+// Deprecated: Use gdk_screen_get_system_visual (gdk_screen_get_default ()).
+func VisualGetSystem() *Visual {
+	var _cret *C.GdkVisual // in
+
+	_cret = C.gdk_visual_get_system()
+
+	var _visual *Visual // out
+
+	_visual = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Visual)
+
+	return _visual
 }

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_box_style_get_type()), F: marshalButtonBoxStyle},
-		{T: externglib.Type(C.gtk_button_box_get_type()), F: marshalButtonBoxxer},
+		{T: externglib.Type(C.gtk_button_box_get_type()), F: marshalButtonBoxer},
 	})
 }
 
@@ -54,36 +53,37 @@ func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ButtonBoxxer describes ButtonBox's methods.
-type ButtonBoxxer interface {
+// ButtonBoxer describes ButtonBox's methods.
+type ButtonBoxer interface {
 	// ChildNonHomogeneous returns whether the child is exempted from homogenous
 	// sizing.
-	ChildNonHomogeneous(child Widgetter) bool
+	ChildNonHomogeneous(child Widgeter) bool
 	// ChildSecondary returns whether @child should appear in a secondary group
 	// of children.
-	ChildSecondary(child Widgetter) bool
+	ChildSecondary(child Widgeter) bool
 	// Layout retrieves the method being used to arrange the buttons in a button
 	// box.
 	Layout() ButtonBoxStyle
 	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
 	// sizing.
-	SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool)
+	SetChildNonHomogeneous(child Widgeter, nonHomogeneous bool)
 	// SetChildSecondary sets whether @child should appear in a secondary group
 	// of children.
-	SetChildSecondary(child Widgetter, isSecondary bool)
+	SetChildSecondary(child Widgeter, isSecondary bool)
+	// SetLayout changes the way buttons are arranged in their container.
+	SetLayout(layoutStyle ButtonBoxStyle)
 }
 
-//
 type ButtonBox struct {
 	Box
 }
 
 var (
-	_ ButtonBoxxer    = (*ButtonBox)(nil)
+	_ ButtonBoxer     = (*ButtonBox)(nil)
 	_ gextras.Nativer = (*ButtonBox)(nil)
 )
 
-func wrapButtonBox(obj *externglib.Object) ButtonBoxxer {
+func wrapButtonBox(obj *externglib.Object) ButtonBoxer {
 	return &ButtonBox{
 		Box: Box{
 			Container: Container{
@@ -106,15 +106,31 @@ func wrapButtonBox(obj *externglib.Object) ButtonBoxxer {
 	}
 }
 
-func marshalButtonBoxxer(p uintptr) (interface{}, error) {
+func marshalButtonBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButtonBox(obj), nil
 }
 
+// NewButtonBox creates a new ButtonBox.
+func NewButtonBox(orientation Orientation) *ButtonBox {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_button_box_new(_arg1)
+
+	var _buttonBox *ButtonBox // out
+
+	_buttonBox = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ButtonBox)
+
+	return _buttonBox
+}
+
 // ChildNonHomogeneous returns whether the child is exempted from homogenous
 // sizing.
-func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
+func (widget *ButtonBox) ChildNonHomogeneous(child Widgeter) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -135,7 +151,7 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 
 // ChildSecondary returns whether @child should appear in a secondary group of
 // children.
-func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
+func (widget *ButtonBox) ChildSecondary(child Widgeter) bool {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -173,7 +189,7 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 
 // SetChildNonHomogeneous sets whether the child is exempted from homogeous
 // sizing.
-func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool) {
+func (widget *ButtonBox) SetChildNonHomogeneous(child Widgeter, nonHomogeneous bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -198,7 +214,7 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 // GTK_BUTTONBOX_END, then the secondary children are aligned at the other end
 // of the button box from the main children. For the other styles, they appear
 // immediately next to the main children.
-func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
+func (widget *ButtonBox) SetChildSecondary(child Widgeter, isSecondary bool) {
 	var _arg0 *C.GtkButtonBox // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -210,4 +226,15 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	}
 
 	C.gtk_button_box_set_child_secondary(_arg0, _arg1, _arg2)
+}
+
+// SetLayout changes the way buttons are arranged in their container.
+func (widget *ButtonBox) SetLayout(layoutStyle ButtonBoxStyle) {
+	var _arg0 *C.GtkButtonBox     // out
+	var _arg1 C.GtkButtonBoxStyle // out
+
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(widget.Native()))
+	_arg1 = C.GtkButtonBoxStyle(layoutStyle)
+
+	C.gtk_button_box_set_layout(_arg0, _arg1)
 }

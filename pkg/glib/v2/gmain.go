@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -713,6 +712,74 @@ func (context *MainContext) Wakeup() {
 	C.g_main_context_wakeup(_arg0)
 }
 
+// MainContextDefault returns the global default main context. This is the main
+// context used for main loop functions when a main loop is not explicitly
+// specified, and corresponds to the "main" main loop. See also
+// g_main_context_get_thread_default().
+func MainContextDefault() *MainContext {
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_context_default()
+
+	var _mainContext *MainContext // out
+
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
+
+	return _mainContext
+}
+
+// MainContextGetThreadDefault gets the thread-default Context for this thread.
+// Asynchronous operations that want to be able to be run in contexts other than
+// the default one should call this method or
+// g_main_context_ref_thread_default() to get a Context to add their #GSources
+// to. (Note that even in single-threaded programs applications may sometimes
+// want to temporarily push a non-default context, so it is not safe to assume
+// that this will always return nil if you are running in the default thread.)
+//
+// If you need to hold a reference on the context, use
+// g_main_context_ref_thread_default() instead.
+func MainContextGetThreadDefault() *MainContext {
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_context_get_thread_default()
+
+	var _mainContext *MainContext // out
+
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
+
+	return _mainContext
+}
+
+// MainContextRefThreadDefault gets the thread-default Context for this thread,
+// as with g_main_context_get_thread_default(), but also adds a reference to it
+// with g_main_context_ref(). In addition, unlike
+// g_main_context_get_thread_default(), if the thread-default context is the
+// global default context, this will return that Context (with a ref added to
+// it) rather than returning nil.
+func MainContextRefThreadDefault() *MainContext {
+	var _cret *C.GMainContext // in
+
+	_cret = C.g_main_context_ref_thread_default()
+
+	var _mainContext *MainContext // out
+
+	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	C.g_main_context_ref(_cret)
+	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
+		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+	})
+
+	return _mainContext
+}
+
 // MainLoop: `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
@@ -928,6 +995,38 @@ func (source *Source) AddPoll(fd *PollFD) {
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd))
 
 	C.g_source_add_poll(_arg0, _arg1)
+}
+
+// AddUnixFd monitors @fd for the IO events in @events.
+//
+// The tag returned by this function can be used to remove or modify the
+// monitoring of the fd using g_source_remove_unix_fd() or
+// g_source_modify_unix_fd().
+//
+// It is not necessary to remove the fd before destroying the source; it will be
+// cleaned up automatically.
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
+	var _arg0 *C.GSource     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GIOCondition // out
+	var _cret C.gpointer     // in
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg1 = C.gint(fd)
+	_arg2 = C.GIOCondition(events)
+
+	_cret = C.g_source_add_unix_fd(_arg0, _arg1, _arg2)
+
+	var _gpointer cgo.Handle // out
+
+	_gpointer = (cgo.Handle)(unsafe.Pointer(_cret))
+
+	return _gpointer
 }
 
 // Attach adds a #GSource to a @context so that it will be executed within that
@@ -1170,6 +1269,29 @@ func (source *Source) IsDestroyed() bool {
 	return _ok
 }
 
+// ModifyUnixFd updates the event mask to watch for the fd identified by @tag.
+//
+// @tag is the tag returned from g_source_add_unix_fd().
+//
+// If you want to remove a fd, don't set its event mask to zero. Instead, call
+// g_source_remove_unix_fd().
+//
+// This API is only intended to be used by implementations of #GSource. Do not
+// call this API on a #GSource that you did not create.
+//
+// As the name suggests, this function is not available on Windows.
+func (source *Source) ModifyUnixFd(tag cgo.Handle, newEvents IOCondition) {
+	var _arg0 *C.GSource     // out
+	var _arg1 C.gpointer     // out
+	var _arg2 C.GIOCondition // out
+
+	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
+	_arg2 = C.GIOCondition(newEvents)
+
+	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
+}
+
 // QueryUnixFd queries the events reported for the fd corresponding to @tag on
 // @source during the last poll.
 //
@@ -1398,6 +1520,108 @@ func (source *Source) unref() {
 	_arg0 = (*C.GSource)(unsafe.Pointer(source))
 
 	C.g_source_unref(_arg0)
+}
+
+// SourceRemove removes the source with the given ID from the default main
+// context. You must use g_source_destroy() for sources added to a non-default
+// main context.
+//
+// The ID of a #GSource is given by g_source_get_id(), or will be returned by
+// the functions g_source_attach(), g_idle_add(), g_idle_add_full(),
+// g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
+// g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().
+//
+// It is a programmer error to attempt to remove a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func SourceRemove(tag uint) bool {
+	var _arg1 C.guint    // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.guint(tag)
+
+	_cret = C.g_source_remove(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SourceRemoveByFuncsUserData removes a source from the default main loop
+// context given the source functions and user data. If multiple sources exist
+// with the same source functions and user data, only one will be destroyed.
+func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
+	var _arg1 *C.GSourceFuncs // out
+	var _arg2 C.gpointer      // out
+	var _cret C.gboolean      // in
+
+	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
+	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
+
+	_cret = C.g_source_remove_by_funcs_user_data(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SourceRemoveByUserData removes a source from the default main loop context
+// given the user data for the callback. If multiple sources exist with the same
+// user data, only one will be destroyed.
+func SourceRemoveByUserData(userData cgo.Handle) bool {
+	var _arg1 C.gpointer // out
+	var _cret C.gboolean // in
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
+
+	_cret = C.g_source_remove_by_user_data(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SourceSetNameByID sets the name of a source using its ID.
+//
+// This is a convenience utility to set source names from the return value of
+// g_idle_add(), g_timeout_add(), etc.
+//
+// It is a programmer error to attempt to set the name of a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func SourceSetNameByID(tag uint, name string) {
+	var _arg1 C.guint // out
+	var _arg2 *C.char // out
+
+	_arg1 = C.guint(tag)
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.g_source_set_name_by_id(_arg1, _arg2)
 }
 
 // SourceCallbackFuncs: `GSourceCallbackFuncs` struct contains functions for

@@ -11,14 +11,13 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtonner},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtoner},
 	})
 }
 
@@ -33,14 +32,14 @@ type ToggleButtonOverrider interface {
 	Toggled()
 }
 
-// ToggleButtonner describes ToggleButton's methods.
-type ToggleButtonner interface {
+// ToggleButtoner describes ToggleButton's methods.
+type ToggleButtoner interface {
 	// Active queries a `GtkToggleButton` and returns its current state.
 	Active() bool
 	// SetActive sets the status of the toggle button.
 	SetActive(isActive bool)
 	// SetGroup adds @self to the group of @group.
-	SetGroup(group ToggleButtonner)
+	SetGroup(group ToggleButtoner)
 	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
 	Toggled()
 }
@@ -113,11 +112,11 @@ type ToggleButton struct {
 }
 
 var (
-	_ ToggleButtonner = (*ToggleButton)(nil)
+	_ ToggleButtoner  = (*ToggleButton)(nil)
 	_ gextras.Nativer = (*ToggleButton)(nil)
 )
 
-func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
+func wrapToggleButton(obj *externglib.Object) ToggleButtoner {
 	return &ToggleButton{
 		Button: Button{
 			Widget: Widget{
@@ -154,7 +153,7 @@ func wrapToggleButton(obj *externglib.Object) ToggleButtonner {
 	}
 }
 
-func marshalToggleButtonner(p uintptr) (interface{}, error) {
+func marshalToggleButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleButton(obj), nil
@@ -262,7 +261,7 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 // Note that the same effect can be achieved via the [interface@Gtk.Actionable]
 // API, by using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
-func (toggleButton *ToggleButton) SetGroup(group ToggleButtonner) {
+func (toggleButton *ToggleButton) SetGroup(group ToggleButtoner) {
 	var _arg0 *C.GtkToggleButton // out
 	var _arg1 *C.GtkToggleButton // out
 

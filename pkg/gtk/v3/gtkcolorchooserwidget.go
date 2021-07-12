@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgetter},
+		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgeter},
 	})
 }
 
-// ColorChooserWidgetter describes ColorChooserWidget's methods.
-type ColorChooserWidgetter interface {
+// ColorChooserWidgeter describes ColorChooserWidget's methods.
+type ColorChooserWidgeter interface {
 	privateColorChooserWidget()
 }
 
@@ -57,11 +56,11 @@ type ColorChooserWidget struct {
 }
 
 var (
-	_ ColorChooserWidgetter = (*ColorChooserWidget)(nil)
-	_ gextras.Nativer       = (*ColorChooserWidget)(nil)
+	_ ColorChooserWidgeter = (*ColorChooserWidget)(nil)
+	_ gextras.Nativer      = (*ColorChooserWidget)(nil)
 )
 
-func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidgetter {
+func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidgeter {
 	return &ColorChooserWidget{
 		Box: Box{
 			Container: Container{
@@ -87,7 +86,7 @@ func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidgetter {
 	}
 }
 
-func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalColorChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooserWidget(obj), nil

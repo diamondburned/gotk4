@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -74,15 +73,17 @@ type Imager interface {
 	// SetFromFile sets a `GtkImage` to show a file.
 	SetFromFile(filename string)
 	// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
-	SetFromGIcon(icon gio.Iconner)
+	SetFromGIcon(icon gio.Iconer)
 	// SetFromIconName sets a `GtkImage` to show a named icon.
 	SetFromIconName(iconName string)
 	// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
 	SetFromPaintable(paintable gdk.Paintabler)
 	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer)
+	SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer)
 	// SetFromResource sets a `GtkImage` to show a resource.
 	SetFromResource(resourcePath string)
+	// SetIconSize suggests an icon size to the theme for named icons.
+	SetIconSize(iconSize IconSize)
 	// SetPixelSize sets the pixel size to use for named icons.
 	SetPixelSize(pixelSize int)
 }
@@ -208,7 +209,7 @@ func NewImageFromFile(filename string) *Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconner) *Image {
+func NewImageFromGIcon(icon gio.Iconer) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -280,7 +281,7 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 // Note that this function just creates an `GtkImage` from the pixbuf. The
 // `GtkImage` created will not react to state changes. Should you want that, you
 // should use [ctor@Gtk.Image.new_from_icon_name].
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) *Image {
+func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
@@ -463,7 +464,7 @@ func (image *Image) SetFromFile(filename string) {
 // SetFromGIcon sets a `GtkImage` to show a `GIcon`.
 //
 // See [ctor@Gtk.Image.new_from_gicon] for details.
-func (image *Image) SetFromGIcon(icon gio.Iconner) {
+func (image *Image) SetFromGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 
@@ -506,7 +507,7 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 //
 // Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
 // can't get back the exact pixbuf once this is called, only a paintable.
-func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuffer) {
+func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
@@ -528,6 +529,17 @@ func (image *Image) SetFromResource(resourcePath string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_image_set_from_resource(_arg0, _arg1)
+}
+
+// SetIconSize suggests an icon size to the theme for named icons.
+func (image *Image) SetIconSize(iconSize IconSize) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
+	_arg1 = C.GtkIconSize(iconSize)
+
+	C.gtk_image_set_icon_size(_arg0, _arg1)
 }
 
 // SetPixelSize sets the pixel size to use for named icons.

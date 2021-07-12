@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,12 +20,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylusser},
+		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStyluser},
 	})
 }
 
-// GestureStylusser describes GestureStylus's methods.
-type GestureStylusser interface {
+// GestureStyluser describes GestureStylus's methods.
+type GestureStyluser interface {
+	// Axis returns the current value for the requested @axis.
+	Axis(axis gdk.AxisUse) (float64, bool)
 	// DeviceTool returns the DeviceTool currently driving input through this
 	// gesture.
 	DeviceTool() *gdk.DeviceTool
@@ -39,11 +40,11 @@ type GestureStylus struct {
 }
 
 var (
-	_ GestureStylusser = (*GestureStylus)(nil)
-	_ gextras.Nativer  = (*GestureStylus)(nil)
+	_ GestureStyluser = (*GestureStylus)(nil)
+	_ gextras.Nativer = (*GestureStylus)(nil)
 )
 
-func wrapGestureStylus(obj *externglib.Object) GestureStylusser {
+func wrapGestureStylus(obj *externglib.Object) GestureStyluser {
 	return &GestureStylus{
 		GestureSingle: GestureSingle{
 			Gesture: Gesture{
@@ -55,14 +56,14 @@ func wrapGestureStylus(obj *externglib.Object) GestureStylusser {
 	}
 }
 
-func marshalGestureStylusser(p uintptr) (interface{}, error) {
+func marshalGestureStyluser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGestureStylus(obj), nil
 }
 
 // NewGestureStylus creates a new GestureStylus.
-func NewGestureStylus(widget Widgetter) *GestureStylus {
+func NewGestureStylus(widget Widgeter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 
@@ -75,6 +76,31 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 	_gestureStylus = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*GestureStylus)
 
 	return _gestureStylus
+}
+
+// Axis returns the current value for the requested @axis. This function must be
+// called from either the GestureStylus:down, GestureStylus:motion,
+// GestureStylus:up or GestureStylus:proximity signals.
+func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
+	var _arg0 *C.GtkGestureStylus // out
+	var _arg1 C.GdkAxisUse        // out
+	var _arg2 C.gdouble           // in
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(gesture.Native()))
+	_arg1 = C.GdkAxisUse(axis)
+
+	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = float64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
 }
 
 // DeviceTool returns the DeviceTool currently driving input through this

@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -88,6 +87,9 @@ type FilterOverrider interface {
 
 // Filterer describes Filter's methods.
 type Filterer interface {
+	// Changed emits the Filter::changed signal to notify all users of the
+	// filter that the filter changed.
+	Changed(change FilterChange)
 	// Strictness gets the known strictness of @filters.
 	Strictness() FilterMatch
 	// Match checks if the given @item is matched by the filter or not.
@@ -131,6 +133,25 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFilter(obj), nil
+}
+
+// Changed emits the Filter::changed signal to notify all users of the filter
+// that the filter changed. Users of the filter should then check items again
+// via gtk_filter_match().
+//
+// Depending on the @change parameter, not all items need to be changed, but
+// only some. Refer to the FilterChange documentation for details.
+//
+// This function is intended for implementors of Filter subclasses and should
+// not be called from other functions.
+func (self *Filter) Changed(change FilterChange) {
+	var _arg0 *C.GtkFilter      // out
+	var _arg1 C.GtkFilterChange // out
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkFilterChange(change)
+
+	C.gtk_filter_changed(_arg0, _arg1)
 }
 
 // Strictness gets the known strictness of @filters. If the strictness is not

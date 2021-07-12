@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -39,16 +38,12 @@ type BuildableOverrider interface {
 	CustomTagEnd(builder Builderer, child gextras.Objector, tagname string, data cgo.Handle)
 	// CustomTagStart: called for each unknown element under `<child>`.
 	CustomTagStart(builder Builderer, child gextras.Objector, tagname string) (BuildableParser, cgo.Handle, bool)
-	//
 	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
 	InternalChild(builder Builderer, childname string) *externglib.Object
-	//
 	ParserFinished(builder Builderer)
-	//
 	SetBuildableProperty(builder Builderer, name string, value *externglib.Value)
-	//
 	SetID(id string)
 }
 

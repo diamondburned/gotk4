@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -31,11 +30,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RangeOverrider interface {
-	//
 	AdjustBounds(newValue float64)
-	//
+	ChangeValue(scroll ScrollType, newValue float64) bool
 	RangeBorder(border_ *Border)
-	//
+	RangeSizeRequest(orientation Orientation, minimum *int, natural *int)
+	MoveSlider(scroll ScrollType)
 	ValueChanged()
 }
 
@@ -88,6 +87,9 @@ type Ranger interface {
 	// SetInverted ranges normally move from lower to higher values as the
 	// slider moves from top to bottom or left to right.
 	SetInverted(setting bool)
+	// SetLowerStepperSensitivity sets the sensitivity policy for the stepper
+	// that points to the 'lower' end of the GtkRange’s adjustment.
+	SetLowerStepperSensitivity(sensitivity SensitivityType)
 	// SetMinSliderSize sets the minimum size of the range’s slider.
 	SetMinSliderSize(minSize int)
 	// SetRange sets the allowable values in the Range, and clamps the range
@@ -105,6 +107,9 @@ type Ranger interface {
 	// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
 	// size that depends on its adjustment’s page size.
 	SetSliderSizeFixed(sizeFixed bool)
+	// SetUpperStepperSensitivity sets the sensitivity policy for the stepper
+	// that points to the 'upper' end of the GtkRange’s adjustment.
+	SetUpperStepperSensitivity(sensitivity SensitivityType)
 	// SetValue sets the current value of the range; if the value is outside the
 	// minimum or maximum range values, it will be clamped to fit inside them.
 	SetValue(value float64)
@@ -498,6 +503,18 @@ func (_range *Range) SetInverted(setting bool) {
 	C.gtk_range_set_inverted(_arg0, _arg1)
 }
 
+// SetLowerStepperSensitivity sets the sensitivity policy for the stepper that
+// points to the 'lower' end of the GtkRange’s adjustment.
+func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
+	var _arg0 *C.GtkRange          // out
+	var _arg1 C.GtkSensitivityType // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
+	_arg1 = C.GtkSensitivityType(sensitivity)
+
+	C.gtk_range_set_lower_stepper_sensitivity(_arg0, _arg1)
+}
+
 // SetMinSliderSize sets the minimum size of the range’s slider.
 //
 // This function is useful mainly for Range subclasses.
@@ -584,6 +601,18 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 	}
 
 	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)
+}
+
+// SetUpperStepperSensitivity sets the sensitivity policy for the stepper that
+// points to the 'upper' end of the GtkRange’s adjustment.
+func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
+	var _arg0 *C.GtkRange          // out
+	var _arg1 C.GtkSensitivityType // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
+	_arg1 = C.GtkSensitivityType(sensitivity)
+
+	C.gtk_range_set_upper_stepper_sensitivity(_arg0, _arg1)
 }
 
 // SetValue sets the current value of the range; if the value is outside the

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -29,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
+		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookuper},
 		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
 }
@@ -52,8 +51,8 @@ type DesktopAppInfoLookupOverrider interface {
 	DefaultForURIScheme(uriScheme string) *AppInfo
 }
 
-// DesktopAppInfoLookupper describes DesktopAppInfoLookup's methods.
-type DesktopAppInfoLookupper interface {
+// DesktopAppInfoLookuper describes DesktopAppInfoLookup's methods.
+type DesktopAppInfoLookuper interface {
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
 	// implementation.
@@ -69,17 +68,17 @@ type DesktopAppInfoLookup struct {
 }
 
 var (
-	_ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
-	_ gextras.Nativer         = (*DesktopAppInfoLookup)(nil)
+	_ DesktopAppInfoLookuper = (*DesktopAppInfoLookup)(nil)
+	_ gextras.Nativer        = (*DesktopAppInfoLookup)(nil)
 )
 
-func wrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookupper {
+func wrapDesktopAppInfoLookup(obj *externglib.Object) DesktopAppInfoLookuper {
 	return &DesktopAppInfoLookup{
 		Object: obj,
 	}
 }
 
-func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
+func marshalDesktopAppInfoLookuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDesktopAppInfoLookup(obj), nil
@@ -579,4 +578,22 @@ func (info *DesktopAppInfo) ListActions() []string {
 	}
 
 	return _utf8s
+}
+
+// DesktopAppInfoSetDesktopEnv sets the name of the desktop that the application
+// is running in. This is used by g_app_info_should_show() and
+// g_desktop_app_info_get_show_in() to evaluate the `OnlyShowIn` and `NotShowIn`
+// desktop entry fields.
+//
+// Should be called only once; subsequent calls are ignored.
+//
+// Deprecated: do not use this API. Since 2.42 the value of the
+// `XDG_CURRENT_DESKTOP` environment variable will be used.
+func DesktopAppInfoSetDesktopEnv(desktopEnv string) {
+	var _arg1 *C.char // out
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(desktopEnv)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_desktop_app_info_set_desktop_env(_arg1)
 }

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemmer},
+		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemer},
 	})
 }
 
@@ -31,7 +30,6 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolItemOverrider interface {
-	//
 	CreateMenuProxy() bool
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// @tool_item. Toolbar and other ToolShell implementations use this function
@@ -39,8 +37,8 @@ type ToolItemOverrider interface {
 	ToolbarReconfigured()
 }
 
-// ToolItemmer describes ToolItem's methods.
-type ToolItemmer interface {
+// ToolItemer describes ToolItem's methods.
+type ToolItemer interface {
 	// EllipsizeMode returns the ellipsize mode used for @tool_item.
 	EllipsizeMode() pango.EllipsizeMode
 	// Expand returns whether @tool_item is allocated extra space.
@@ -90,7 +88,7 @@ type ToolItemmer interface {
 	// SetIsImportant sets whether @tool_item should be considered important.
 	SetIsImportant(isImportant bool)
 	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu.
-	SetProxyMenuItem(menuItemId string, menuItem Widgetter)
+	SetProxyMenuItem(menuItemId string, menuItem Widgeter)
 	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 	// item.
 	SetTooltipMarkup(markup string)
@@ -125,11 +123,11 @@ type ToolItem struct {
 }
 
 var (
-	_ ToolItemmer     = (*ToolItem)(nil)
+	_ ToolItemer      = (*ToolItem)(nil)
 	_ gextras.Nativer = (*ToolItem)(nil)
 )
 
-func wrapToolItem(obj *externglib.Object) ToolItemmer {
+func wrapToolItem(obj *externglib.Object) ToolItemer {
 	return &ToolItem{
 		Bin: Bin{
 			Container: Container{
@@ -152,7 +150,7 @@ func wrapToolItem(obj *externglib.Object) ToolItemmer {
 	}
 }
 
-func marshalToolItemmer(p uintptr) (interface{}, error) {
+func marshalToolItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolItem(obj), nil
@@ -553,7 +551,7 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 // be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
+func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgeter) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out

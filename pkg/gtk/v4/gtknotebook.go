@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -42,27 +41,29 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 // Notebooker describes Notebook's methods.
 type Notebooker interface {
 	// AppendPage appends a page to @notebook.
-	AppendPage(child Widgetter, tabLabel Widgetter) int
+	AppendPage(child Widgeter, tabLabel Widgeter) int
 	// AppendPageMenu appends a page to @notebook, specifying the widget to use
 	// as the label in the popup menu.
-	AppendPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int
+	AppendPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter) int
 	// DetachTab removes the child from the notebook.
-	DetachTab(child Widgetter)
+	DetachTab(child Widgeter)
+	// ActionWidget gets one of the action widgets.
+	ActionWidget(packType PackType) *Widget
 	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
 	// GroupName gets the current group name for @notebook.
 	GroupName() string
 	// MenuLabel retrieves the menu label widget of the page containing @child.
-	MenuLabel(child Widgetter) *Widget
+	MenuLabel(child Widgeter) *Widget
 	// MenuLabelText retrieves the text of the menu label for the page
 	// containing @child.
-	MenuLabelText(child Widgetter) string
+	MenuLabelText(child Widgeter) string
 	// NPages gets the number of pages in a notebook.
 	NPages() int
 	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) *Widget
 	// Page returns the `GtkNotebookPage` for @child.
-	Page(child Widgetter) *NotebookPage
+	Page(child Widgeter) *NotebookPage
 	// Pages returns a `GListModel` that contains the pages of the notebook.
 	Pages() *gio.ListModel
 	// Scrollable returns whether the tab label area has arrows for scrolling.
@@ -74,36 +75,36 @@ type Notebooker interface {
 	ShowTabs() bool
 	// TabDetachable returns whether the tab contents can be detached from
 	// @notebook.
-	TabDetachable(child Widgetter) bool
+	TabDetachable(child Widgeter) bool
 	// TabLabel returns the tab label widget for the page @child.
-	TabLabel(child Widgetter) *Widget
+	TabLabel(child Widgeter) *Widget
 	// TabLabelText retrieves the text of the tab label for the page containing
 	// @child.
-	TabLabelText(child Widgetter) string
+	TabLabelText(child Widgeter) string
 	// TabPos gets the edge at which the tabs are drawn.
 	TabPos() PositionType
 	// TabReorderable gets whether the tab can be reordered via drag and drop or
 	// not.
-	TabReorderable(child Widgetter) bool
+	TabReorderable(child Widgeter) bool
 	// InsertPage: insert a page into @notebook at the given position.
-	InsertPage(child Widgetter, tabLabel Widgetter, position int) int
+	InsertPage(child Widgeter, tabLabel Widgeter, position int) int
 	// InsertPageMenu: insert a page into @notebook at the given position,
 	// specifying the widget to use as the label in the popup menu.
-	InsertPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter, position int) int
+	InsertPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter, position int) int
 	// NextPage switches to the next page.
 	NextPage()
 	// PageNum finds the index of the page which contains the given child
 	// widget.
-	PageNum(child Widgetter) int
+	PageNum(child Widgeter) int
 	// PopupDisable disables the popup menu.
 	PopupDisable()
 	// PopupEnable enables the popup menu.
 	PopupEnable()
 	// PrependPage prepends a page to @notebook.
-	PrependPage(child Widgetter, tabLabel Widgetter) int
+	PrependPage(child Widgeter, tabLabel Widgeter) int
 	// PrependPageMenu prepends a page to @notebook, specifying the widget to
 	// use as the label in the popup menu.
-	PrependPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int
+	PrependPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter) int
 	// PrevPage switches to the previous page.
 	PrevPage()
 	// RemovePage removes a page from the notebook given its index in the
@@ -111,16 +112,18 @@ type Notebooker interface {
 	RemovePage(pageNum int)
 	// ReorderChild reorders the page containing @child, so that it appears in
 	// position @position.
-	ReorderChild(child Widgetter, position int)
+	ReorderChild(child Widgeter, position int)
+	// SetActionWidget sets @widget as one of the action widgets.
+	SetActionWidget(widget Widgeter, packType PackType)
 	// SetCurrentPage switches to the page number @page_num.
 	SetCurrentPage(pageNum int)
 	// SetGroupName sets a group name for @notebook.
 	SetGroupName(groupName string)
 	// SetMenuLabel changes the menu label for the page containing @child.
-	SetMenuLabel(child Widgetter, menuLabel Widgetter)
+	SetMenuLabel(child Widgeter, menuLabel Widgeter)
 	// SetMenuLabelText creates a new label and sets it as the menu label of
 	// @child.
-	SetMenuLabelText(child Widgetter, menuText string)
+	SetMenuLabelText(child Widgeter, menuText string)
 	// SetScrollable sets whether the tab label area will have arrows for
 	// scrolling if there are too many tabs to fit in the area.
 	SetScrollable(scrollable bool)
@@ -131,15 +134,17 @@ type Notebooker interface {
 	SetShowTabs(showTabs bool)
 	// SetTabDetachable sets whether the tab can be detached from @notebook to
 	// another notebook or widget.
-	SetTabDetachable(child Widgetter, detachable bool)
+	SetTabDetachable(child Widgeter, detachable bool)
 	// SetTabLabel changes the tab label for @child.
-	SetTabLabel(child Widgetter, tabLabel Widgetter)
+	SetTabLabel(child Widgeter, tabLabel Widgeter)
 	// SetTabLabelText creates a new label and sets it as the tab label for the
 	// page containing @child.
-	SetTabLabelText(child Widgetter, tabText string)
+	SetTabLabelText(child Widgeter, tabText string)
+	// SetTabPos sets the edge at which the tabs are drawn.
+	SetTabPos(pos PositionType)
 	// SetTabReorderable sets whether the notebook tab can be reordered via drag
 	// and drop or not.
-	SetTabReorderable(child Widgetter, reorderable bool)
+	SetTabReorderable(child Widgeter, reorderable bool)
 }
 
 // Notebook: `GtkNotebook` is a container whose children are pages switched
@@ -259,7 +264,7 @@ func NewNotebook() *Notebook {
 }
 
 // AppendPage appends a page to @notebook.
-func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int {
+func (notebook *Notebook) AppendPage(child Widgeter, tabLabel Widgeter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -280,7 +285,7 @@ func (notebook *Notebook) AppendPage(child Widgetter, tabLabel Widgetter) int {
 
 // AppendPageMenu appends a page to @notebook, specifying the widget to use as
 // the label in the popup menu.
-func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int {
+func (notebook *Notebook) AppendPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -306,7 +311,7 @@ func (notebook *Notebook) AppendPageMenu(child Widgetter, tabLabel Widgetter, me
 // This function is very similar to [method@Gtk.Notebook.remove_page], but
 // additionally informs the notebook that the removal is happening as part of a
 // tab DND operation, which should not be cancelled.
-func (notebook *Notebook) DetachTab(child Widgetter) {
+func (notebook *Notebook) DetachTab(child Widgeter) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -314,6 +319,26 @@ func (notebook *Notebook) DetachTab(child Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	C.gtk_notebook_detach_tab(_arg0, _arg1)
+}
+
+// ActionWidget gets one of the action widgets.
+//
+// See [method@Gtk.Notebook.set_action_widget].
+func (notebook *Notebook) ActionWidget(packType PackType) *Widget {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 C.GtkPackType  // out
+	var _cret *C.GtkWidget   // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
+	_arg1 = C.GtkPackType(packType)
+
+	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
+
+	var _widget *Widget // out
+
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+
+	return _widget
 }
 
 // CurrentPage returns the page number of the current page.
@@ -349,7 +374,7 @@ func (notebook *Notebook) GroupName() string {
 }
 
 // MenuLabel retrieves the menu label widget of the page containing @child.
-func (notebook *Notebook) MenuLabel(child Widgetter) *Widget {
+func (notebook *Notebook) MenuLabel(child Widgeter) *Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret *C.GtkWidget   // in
@@ -368,7 +393,7 @@ func (notebook *Notebook) MenuLabel(child Widgetter) *Widget {
 
 // MenuLabelText retrieves the text of the menu label for the page containing
 // @child.
-func (notebook *Notebook) MenuLabelText(child Widgetter) string {
+func (notebook *Notebook) MenuLabelText(child Widgeter) string {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret *C.char        // in
@@ -420,7 +445,7 @@ func (notebook *Notebook) NthPage(pageNum int) *Widget {
 }
 
 // Page returns the `GtkNotebookPage` for @child.
-func (notebook *Notebook) Page(child Widgetter) *NotebookPage {
+func (notebook *Notebook) Page(child Widgeter) *NotebookPage {
 	var _arg0 *C.GtkNotebook     // out
 	var _arg1 *C.GtkWidget       // out
 	var _cret *C.GtkNotebookPage // in
@@ -513,7 +538,7 @@ func (notebook *Notebook) ShowTabs() bool {
 
 // TabDetachable returns whether the tab contents can be detached from
 // @notebook.
-func (notebook *Notebook) TabDetachable(child Widgetter) bool {
+func (notebook *Notebook) TabDetachable(child Widgeter) bool {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret C.gboolean     // in
@@ -536,7 +561,7 @@ func (notebook *Notebook) TabDetachable(child Widgetter) bool {
 //
 // nil is returned if @child is not in @notebook or if no tab label has
 // specifically been set for @child.
-func (notebook *Notebook) TabLabel(child Widgetter) *Widget {
+func (notebook *Notebook) TabLabel(child Widgeter) *Widget {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret *C.GtkWidget   // in
@@ -555,7 +580,7 @@ func (notebook *Notebook) TabLabel(child Widgetter) *Widget {
 
 // TabLabelText retrieves the text of the tab label for the page containing
 // @child.
-func (notebook *Notebook) TabLabelText(child Widgetter) string {
+func (notebook *Notebook) TabLabelText(child Widgeter) string {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret *C.char        // in
@@ -590,7 +615,7 @@ func (notebook *Notebook) TabPos() PositionType {
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or
 // not.
-func (notebook *Notebook) TabReorderable(child Widgetter) bool {
+func (notebook *Notebook) TabReorderable(child Widgeter) bool {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret C.gboolean     // in
@@ -610,7 +635,7 @@ func (notebook *Notebook) TabReorderable(child Widgetter) bool {
 }
 
 // InsertPage: insert a page into @notebook at the given position.
-func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, position int) int {
+func (notebook *Notebook) InsertPage(child Widgeter, tabLabel Widgeter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -633,7 +658,7 @@ func (notebook *Notebook) InsertPage(child Widgetter, tabLabel Widgetter, positi
 
 // InsertPageMenu: insert a page into @notebook at the given position,
 // specifying the widget to use as the label in the popup menu.
-func (notebook *Notebook) InsertPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter, position int) int {
+func (notebook *Notebook) InsertPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -668,7 +693,7 @@ func (notebook *Notebook) NextPage() {
 }
 
 // PageNum finds the index of the page which contains the given child widget.
-func (notebook *Notebook) PageNum(child Widgetter) int {
+func (notebook *Notebook) PageNum(child Widgeter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret C.int          // in
@@ -707,7 +732,7 @@ func (notebook *Notebook) PopupEnable() {
 }
 
 // PrependPage prepends a page to @notebook.
-func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int {
+func (notebook *Notebook) PrependPage(child Widgeter, tabLabel Widgeter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -728,7 +753,7 @@ func (notebook *Notebook) PrependPage(child Widgetter, tabLabel Widgetter) int {
 
 // PrependPageMenu prepends a page to @notebook, specifying the widget to use as
 // the label in the popup menu.
-func (notebook *Notebook) PrependPageMenu(child Widgetter, tabLabel Widgetter, menuLabel Widgetter) int {
+func (notebook *Notebook) PrependPageMenu(child Widgeter, tabLabel Widgeter, menuLabel Widgeter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -776,7 +801,7 @@ func (notebook *Notebook) RemovePage(pageNum int) {
 //
 // If @position is greater than or equal to the number of children in the list
 // or negative, @child will be moved to the end of the list.
-func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
+func (notebook *Notebook) ReorderChild(child Widgeter, position int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -786,6 +811,23 @@ func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
 	_arg2 = C.int(position)
 
 	C.gtk_notebook_reorder_child(_arg0, _arg1, _arg2)
+}
+
+// SetActionWidget sets @widget as one of the action widgets.
+//
+// Depending on the pack type the widget will be placed before or after the
+// tabs. You can use a `GtkBox` if you need to pack more than one widget on the
+// same side.
+func (notebook *Notebook) SetActionWidget(widget Widgeter, packType PackType) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 C.GtkPackType  // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+	_arg2 = C.GtkPackType(packType)
+
+	C.gtk_notebook_set_action_widget(_arg0, _arg1, _arg2)
 }
 
 // SetCurrentPage switches to the page number @page_num.
@@ -820,7 +862,7 @@ func (notebook *Notebook) SetGroupName(groupName string) {
 }
 
 // SetMenuLabel changes the menu label for the page containing @child.
-func (notebook *Notebook) SetMenuLabel(child Widgetter, menuLabel Widgetter) {
+func (notebook *Notebook) SetMenuLabel(child Widgeter, menuLabel Widgeter) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -833,7 +875,7 @@ func (notebook *Notebook) SetMenuLabel(child Widgetter, menuLabel Widgetter) {
 }
 
 // SetMenuLabelText creates a new label and sets it as the menu label of @child.
-func (notebook *Notebook) SetMenuLabelText(child Widgetter, menuText string) {
+func (notebook *Notebook) SetMenuLabelText(child Widgeter, menuText string) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.char        // out
@@ -922,7 +964,7 @@ func (notebook *Notebook) SetShowTabs(showTabs bool) {
 //
 // If you want a notebook to accept drags from other widgets, you will have to
 // set your own DnD code to do it.
-func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
+func (notebook *Notebook) SetTabDetachable(child Widgeter, detachable bool) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gboolean     // out
@@ -940,7 +982,7 @@ func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
 //
 // If nil is specified for @tab_label, then the page will have the label “page
 // N”.
-func (notebook *Notebook) SetTabLabel(child Widgetter, tabLabel Widgetter) {
+func (notebook *Notebook) SetTabLabel(child Widgeter, tabLabel Widgeter) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -954,7 +996,7 @@ func (notebook *Notebook) SetTabLabel(child Widgetter, tabLabel Widgetter) {
 
 // SetTabLabelText creates a new label and sets it as the tab label for the page
 // containing @child.
-func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
+func (notebook *Notebook) SetTabLabelText(child Widgeter, tabText string) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.char        // out
@@ -967,9 +1009,20 @@ func (notebook *Notebook) SetTabLabelText(child Widgetter, tabText string) {
 	C.gtk_notebook_set_tab_label_text(_arg0, _arg1, _arg2)
 }
 
+// SetTabPos sets the edge at which the tabs are drawn.
+func (notebook *Notebook) SetTabPos(pos PositionType) {
+	var _arg0 *C.GtkNotebook    // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(notebook.Native()))
+	_arg1 = C.GtkPositionType(pos)
+
+	C.gtk_notebook_set_tab_pos(_arg0, _arg1)
+}
+
 // SetTabReorderable sets whether the notebook tab can be reordered via drag and
 // drop or not.
-func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
+func (notebook *Notebook) SetTabReorderable(child Widgeter, reorderable bool) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gboolean     // out

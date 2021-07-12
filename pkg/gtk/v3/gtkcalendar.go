@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -24,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_calendar_display_options_get_type()), F: marshalCalendarDisplayOptions},
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarer},
 	})
 }
 
@@ -92,24 +91,17 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CalendarOverrider interface {
-	//
 	DaySelected()
-	//
 	DaySelectedDoubleClick()
-	//
 	MonthChanged()
-	//
 	NextMonth()
-	//
 	NextYear()
-	//
 	PrevMonth()
-	//
 	PrevYear()
 }
 
-// Calendarrer describes Calendar's methods.
-type Calendarrer interface {
+// Calendarer describes Calendar's methods.
+type Calendarer interface {
 	// ClearMarks: remove all visual markers.
 	ClearMarks()
 	// Date obtains the selected date from a Calendar.
@@ -132,6 +124,9 @@ type Calendarrer interface {
 	SetDetailHeightRows(rows int)
 	// SetDetailWidthChars updates the width of detail cells.
 	SetDetailWidthChars(chars int)
+	// SetDisplayOptions sets display options (whether to display the heading
+	// and the month headings).
+	SetDisplayOptions(flags CalendarDisplayOptions)
 	// UnmarkDay removes the visual marker from a particular day.
 	UnmarkDay(day uint)
 }
@@ -161,11 +156,11 @@ type Calendar struct {
 }
 
 var (
-	_ Calendarrer     = (*Calendar)(nil)
+	_ Calendarer      = (*Calendar)(nil)
 	_ gextras.Nativer = (*Calendar)(nil)
 )
 
-func wrapCalendar(obj *externglib.Object) Calendarrer {
+func wrapCalendar(obj *externglib.Object) Calendarer {
 	return &Calendar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -181,7 +176,7 @@ func wrapCalendar(obj *externglib.Object) Calendarrer {
 	}
 }
 
-func marshalCalendarrer(p uintptr) (interface{}, error) {
+func marshalCalendarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCalendar(obj), nil
@@ -358,6 +353,18 @@ func (calendar *Calendar) SetDetailWidthChars(chars int) {
 	_arg1 = C.gint(chars)
 
 	C.gtk_calendar_set_detail_width_chars(_arg0, _arg1)
+}
+
+// SetDisplayOptions sets display options (whether to display the heading and
+// the month headings).
+func (calendar *Calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
+	var _arg0 *C.GtkCalendar              // out
+	var _arg1 C.GtkCalendarDisplayOptions // out
+
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(calendar.Native()))
+	_arg1 = C.GtkCalendarDisplayOptions(flags)
+
+	C.gtk_calendar_set_display_options(_arg0, _arg1)
 }
 
 // UnmarkDay removes the visual marker from a particular day.

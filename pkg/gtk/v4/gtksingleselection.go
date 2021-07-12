@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -43,7 +42,7 @@ type SingleSelectioner interface {
 	// gtk_selection_model_unselect_item() is supported.
 	SetCanUnselect(canUnselect bool)
 	// SetModel sets the model that @self should wrap.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 	// SetSelected selects the item at the given position.
 	SetSelected(position uint)
 }
@@ -84,7 +83,7 @@ func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewSingleSelection creates a new selection to handle @model.
-func NewSingleSelection(model gio.ListModeller) *SingleSelection {
+func NewSingleSelection(model gio.ListModeler) *SingleSelection {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkSingleSelection // in
 
@@ -227,7 +226,7 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 // SetModel sets the model that @self should wrap.
 //
 // If @model is nil, @self will be empty.
-func (self *SingleSelection) SetModel(model gio.ListModeller) {
+func (self *SingleSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 *C.GListModel         // out
 

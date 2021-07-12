@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -22,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
-		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtonner},
+		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtoner},
 	})
 }
 
@@ -42,8 +41,8 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ModelButtonner describes ModelButton's methods.
-type ModelButtonner interface {
+// ModelButtoner describes ModelButton's methods.
+type ModelButtoner interface {
 	privateModelButton()
 }
 
@@ -121,11 +120,11 @@ type ModelButton struct {
 }
 
 var (
-	_ ModelButtonner  = (*ModelButton)(nil)
+	_ ModelButtoner   = (*ModelButton)(nil)
 	_ gextras.Nativer = (*ModelButton)(nil)
 )
 
-func wrapModelButton(obj *externglib.Object) ModelButtonner {
+func wrapModelButton(obj *externglib.Object) ModelButtoner {
 	return &ModelButton{
 		Button: Button{
 			Bin: Bin{
@@ -163,7 +162,7 @@ func wrapModelButton(obj *externglib.Object) ModelButtonner {
 	}
 }
 
-func marshalModelButtonner(p uintptr) (interface{}, error) {
+func marshalModelButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapModelButton(obj), nil

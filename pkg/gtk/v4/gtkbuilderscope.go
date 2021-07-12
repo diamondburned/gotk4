@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -48,9 +47,7 @@ func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type BuilderScopeOverrider interface {
-	//
 	TypeFromFunction(builder Builderer, functionName string) externglib.Type
-	//
 	TypeFromName(builder Builderer, typeName string) externglib.Type
 }
 

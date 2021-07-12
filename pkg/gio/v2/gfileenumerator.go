@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,13 +25,12 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorrer},
+		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorer},
 	})
 }
 
@@ -61,7 +59,6 @@ type FileEnumeratorOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
 	CloseFinish(result AsyncResulter) error
-	//
 	CloseFn(cancellable Cancellabler) error
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
@@ -96,8 +93,8 @@ type FileEnumeratorOverrider interface {
 	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
 }
 
-// FileEnumeratorrer describes FileEnumerator's methods.
-type FileEnumeratorrer interface {
+// FileEnumeratorer describes FileEnumerator's methods.
+type FileEnumeratorer interface {
 	// Close releases all resources used by this enumerator, making the
 	// enumerator return G_IO_ERROR_CLOSED on all calls.
 	Close(cancellable Cancellabler) error
@@ -155,17 +152,17 @@ type FileEnumerator struct {
 }
 
 var (
-	_ FileEnumeratorrer = (*FileEnumerator)(nil)
-	_ gextras.Nativer   = (*FileEnumerator)(nil)
+	_ FileEnumeratorer = (*FileEnumerator)(nil)
+	_ gextras.Nativer  = (*FileEnumerator)(nil)
 )
 
-func wrapFileEnumerator(obj *externglib.Object) FileEnumeratorrer {
+func wrapFileEnumerator(obj *externglib.Object) FileEnumeratorer {
 	return &FileEnumerator{
 		Object: obj,
 	}
 }
 
-func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalFileEnumeratorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileEnumerator(obj), nil

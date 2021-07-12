@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -25,7 +24,6 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -50,6 +48,33 @@ func DBusAddressEscapeValue(_string string) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
+// well-known message bus instance specified by @bus_type. This may involve
+// using various platform specific mechanisms.
+//
+// The returned address will be in the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+func DBusAddressGetForBusSync(busType BusType, cancellable Cancellabler) (string, error) {
+	var _arg1 C.GBusType      // out
+	var _arg2 *C.GCancellable // out
+	var _cret *C.gchar        // in
+	var _cerr *C.GError       // in
+
+	_arg1 = C.GBusType(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+
+	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
 }
 
 // DBusAddressGetStream: asynchronously connects to an endpoint specified by

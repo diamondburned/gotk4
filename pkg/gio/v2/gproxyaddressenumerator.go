@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,12 +27,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorrer},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorer},
 	})
 }
 
-// ProxyAddressEnumeratorrer describes ProxyAddressEnumerator's methods.
-type ProxyAddressEnumeratorrer interface {
+// ProxyAddressEnumeratorer describes ProxyAddressEnumerator's methods.
+type ProxyAddressEnumeratorer interface {
 	privateProxyAddressEnumerator()
 }
 
@@ -50,11 +49,11 @@ type ProxyAddressEnumerator struct {
 }
 
 var (
-	_ ProxyAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
-	_ gextras.Nativer           = (*ProxyAddressEnumerator)(nil)
+	_ ProxyAddressEnumeratorer = (*ProxyAddressEnumerator)(nil)
+	_ gextras.Nativer          = (*ProxyAddressEnumerator)(nil)
 )
 
-func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumeratorrer {
+func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumeratorer {
 	return &ProxyAddressEnumerator{
 		SocketAddressEnumerator: SocketAddressEnumerator{
 			Object: obj,
@@ -62,7 +61,7 @@ func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumeratorre
 	}
 }
 
-func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumeratorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapProxyAddressEnumerator(obj), nil

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -76,6 +75,16 @@ type TreeSortableOverrider interface {
 	// This is used primarily by GtkTreeViewColumns in order to determine if a
 	// model can go back to the default state, or not.
 	HasDefaultSortFunc() bool
+	// SetSortColumnID sets the current sort column to be @sort_column_id. The
+	// @sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	SetSortColumnID(sortColumnId int, order SortType)
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 	// @sortable.
 	SortColumnChanged()
@@ -88,6 +97,8 @@ type TreeSortabler interface {
 	SortColumnID() (int, SortType, bool)
 	// HasDefaultSortFunc returns true if the model has a default sort function.
 	HasDefaultSortFunc() bool
+	// SetSortColumnID sets the current sort column to be @sort_column_id.
+	SetSortColumnID(sortColumnId int, order SortType)
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 	// @sortable.
 	SortColumnChanged()
@@ -166,6 +177,27 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	}
 
 	return _ok
+}
+
+// SetSortColumnID sets the current sort column to be @sort_column_id. The
+// @sortable will resort itself to reflect this change, after emitting a
+// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+// regular column id, or one of the following special values:
+//
+// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function will be
+// used, if it is set
+//
+// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+func (sortable *TreeSortable) SetSortColumnID(sortColumnId int, order SortType) {
+	var _arg0 *C.GtkTreeSortable // out
+	var _arg1 C.int              // out
+	var _arg2 C.GtkSortType      // out
+
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(sortable.Native()))
+	_arg1 = C.int(sortColumnId)
+	_arg2 = C.GtkSortType(order)
+
+	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)
 }
 
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on

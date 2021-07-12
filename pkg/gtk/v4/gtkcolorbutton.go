@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtoner},
 	})
 }
 
-// ColorButtonner describes ColorButton's methods.
-type ColorButtonner interface {
+// ColorButtoner describes ColorButton's methods.
+type ColorButtoner interface {
 	// Modal gets whether the dialog is modal.
 	Modal() bool
 	// Title gets the title of the color chooser dialog.
@@ -57,11 +56,11 @@ type ColorButton struct {
 }
 
 var (
-	_ ColorButtonner  = (*ColorButton)(nil)
+	_ ColorButtoner   = (*ColorButton)(nil)
 	_ gextras.Nativer = (*ColorButton)(nil)
 )
 
-func wrapColorButton(obj *externglib.Object) ColorButtonner {
+func wrapColorButton(obj *externglib.Object) ColorButtoner {
 	return &ColorButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -83,7 +82,7 @@ func wrapColorButton(obj *externglib.Object) ColorButtonner {
 	}
 }
 
-func marshalColorButtonner(p uintptr) (interface{}, error) {
+func marshalColorButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorButton(obj), nil

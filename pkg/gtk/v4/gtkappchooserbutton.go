@@ -12,22 +12,21 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtonner},
+		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtoner},
 	})
 }
 
-// AppChooserButtonner describes AppChooserButton's methods.
-type AppChooserButtonner interface {
+// AppChooserButtoner describes AppChooserButton's methods.
+type AppChooserButtoner interface {
 	// AppendCustomItem appends a custom item to the list of applications that
 	// is shown in the popup.
-	AppendCustomItem(name string, label string, icon gio.Iconner)
+	AppendCustomItem(name string, label string, icon gio.Iconer)
 	// AppendSeparator appends a separator to the list of applications that is
 	// shown in the popup.
 	AppendSeparator()
@@ -90,11 +89,11 @@ type AppChooserButton struct {
 }
 
 var (
-	_ AppChooserButtonner = (*AppChooserButton)(nil)
-	_ gextras.Nativer     = (*AppChooserButton)(nil)
+	_ AppChooserButtoner = (*AppChooserButton)(nil)
+	_ gextras.Nativer    = (*AppChooserButton)(nil)
 )
 
-func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
+func wrapAppChooserButton(obj *externglib.Object) AppChooserButtoner {
 	return &AppChooserButton{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -129,7 +128,7 @@ func wrapAppChooserButton(obj *externglib.Object) AppChooserButtonner {
 	}
 }
 
-func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
+func marshalAppChooserButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserButton(obj), nil
@@ -167,7 +166,7 @@ func (v *AppChooserButton) Native() uintptr {
 // to add a callback for the activation of a particular custom item in the list.
 //
 // See also [method@Gtk.AppChooserButton.append_separator].
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconer) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 	var _arg2 *C.char                // out

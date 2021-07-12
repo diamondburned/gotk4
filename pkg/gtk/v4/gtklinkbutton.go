@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtonner},
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtoner},
 	})
 }
 
-// LinkButtonner describes LinkButton's methods.
-type LinkButtonner interface {
+// LinkButtoner describes LinkButton's methods.
+type LinkButtoner interface {
 	// URI retrieves the URI of the `GtkLinkButton`.
 	URI() string
 	// Visited retrieves the “visited” state of the `GtkLinkButton`.
@@ -67,11 +66,11 @@ type LinkButton struct {
 }
 
 var (
-	_ LinkButtonner   = (*LinkButton)(nil)
+	_ LinkButtoner    = (*LinkButton)(nil)
 	_ gextras.Nativer = (*LinkButton)(nil)
 )
 
-func wrapLinkButton(obj *externglib.Object) LinkButtonner {
+func wrapLinkButton(obj *externglib.Object) LinkButtoner {
 	return &LinkButton{
 		Button: Button{
 			Widget: Widget{
@@ -108,7 +107,7 @@ func wrapLinkButton(obj *externglib.Object) LinkButtonner {
 	}
 }
 
-func marshalLinkButtonner(p uintptr) (interface{}, error) {
+func marshalLinkButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLinkButton(obj), nil

@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -62,6 +61,8 @@ type Coverager interface {
 	Max(other Coverager)
 	// Ref: increase the reference count on the `PangoCoverage` by one.
 	ref() *Coverage
+	// Set: modify a particular index within @coverage
+	Set(index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 	ToBytes() []byte
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
@@ -173,6 +174,19 @@ func (coverage *Coverage) ref() *Coverage {
 	return _ret
 }
 
+// Set: modify a particular index within @coverage
+func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
+	var _arg0 *C.PangoCoverage     // out
+	var _arg1 C.int                // out
+	var _arg2 C.PangoCoverageLevel // out
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
+	_arg1 = C.int(index_)
+	_arg2 = C.PangoCoverageLevel(level)
+
+	C.pango_coverage_set(_arg0, _arg1, _arg2)
+}
+
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 //
 // Deprecated: This returns nil.
@@ -204,4 +218,25 @@ func (coverage *Coverage) unref() {
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
 
 	C.pango_coverage_unref(_arg0)
+}
+
+// CoverageFromBytes: convert data generated from pango_coverage_to_bytes() back
+// to a `PangoCoverage`.
+//
+// Deprecated: This returns nil.
+func CoverageFromBytes(bytes []byte) *Coverage {
+	var _arg1 *C.guchar
+	var _arg2 C.int
+	var _cret *C.PangoCoverage // in
+
+	_arg2 = C.int(len(bytes))
+	_arg1 = (*C.guchar)(unsafe.Pointer(&bytes[0]))
+
+	_cret = C.pango_coverage_from_bytes(_arg1, _arg2)
+
+	var _coverage *Coverage // out
+
+	_coverage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*Coverage)
+
+	return _coverage
 }

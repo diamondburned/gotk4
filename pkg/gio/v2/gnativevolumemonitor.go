@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -28,26 +27,25 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorrer},
+		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorer},
 	})
 }
 
-// NativeVolumeMonitorrer describes NativeVolumeMonitor's methods.
-type NativeVolumeMonitorrer interface {
+// NativeVolumeMonitorer describes NativeVolumeMonitor's methods.
+type NativeVolumeMonitorer interface {
 	privateNativeVolumeMonitor()
 }
 
-//
 type NativeVolumeMonitor struct {
 	VolumeMonitor
 }
 
 var (
-	_ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
-	_ gextras.Nativer        = (*NativeVolumeMonitor)(nil)
+	_ NativeVolumeMonitorer = (*NativeVolumeMonitor)(nil)
+	_ gextras.Nativer       = (*NativeVolumeMonitor)(nil)
 )
 
-func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitorrer {
+func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitorer {
 	return &NativeVolumeMonitor{
 		VolumeMonitor: VolumeMonitor{
 			Object: obj,
@@ -55,7 +53,7 @@ func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitorrer {
 	}
 }
 
-func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
+func marshalNativeVolumeMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeVolumeMonitor(obj), nil

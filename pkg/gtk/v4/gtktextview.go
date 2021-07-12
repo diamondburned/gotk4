@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -88,21 +87,17 @@ func marshalTextWindowType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TextViewOverrider interface {
-	//
 	Backspace()
-	//
 	CopyClipboard()
-	//
 	CutClipboard()
-	//
+	DeleteFromCursor(typ DeleteType, count int)
+	ExtendSelection(granularity TextExtendSelection, location *TextIter, start *TextIter, end *TextIter) bool
 	InsertAtCursor(str string)
-	//
 	InsertEmoji()
-	//
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	//
 	SetAnchor()
-	//
+	SnapshotLayer(layer TextViewLayer, snapshot Snapshoter)
 	ToggleOverwrite()
 }
 
@@ -110,16 +105,18 @@ type TextViewOverrider interface {
 type TextViewer interface {
 	// AddChildAtAnchor adds a child widget in the text buffer, at the given
 	// @anchor.
-	AddChildAtAnchor(child Widgetter, anchor TextChildAnchorrer)
+	AddChildAtAnchor(child Widgeter, anchor TextChildAnchorer)
 	// AddOverlay adds @child at a fixed coordinate in the `GtkTextView`'s text
 	// window.
-	AddOverlay(child Widgetter, xpos int, ypos int)
+	AddOverlay(child Widgeter, xpos int, ypos int)
 	// BackwardDisplayLine moves the given @iter backward by one display
 	// (wrapped) line.
 	BackwardDisplayLine(iter *TextIter) bool
 	// BackwardDisplayLineStart moves the given @iter backward to the next
 	// display line start.
 	BackwardDisplayLineStart(iter *TextIter) bool
+	// BufferToWindowCoords converts buffer coordinates to window coordinates.
+	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
 	// ForwardDisplayLine moves the given @iter forward by one display (wrapped)
 	// line.
 	ForwardDisplayLine(iter *TextIter) bool
@@ -142,6 +139,8 @@ type TextViewer interface {
 	// ExtraMenu gets the menu model that gets added to the context menu or nil
 	// if none has been set.
 	ExtraMenu() *gio.MenuModel
+	// Gutter gets a `GtkWidget` that has previously been set as gutter.
+	Gutter(win TextWindowType) *Widget
 	// Indent gets the default indentation of paragraphs in @text_view.
 	Indent() int
 	// InputHints gets the `input-hints` of the `GtkTextView`.
@@ -198,7 +197,7 @@ type TextViewer interface {
 	// within the currently-visible text area.
 	MoveMarkOnscreen(mark TextMarker) bool
 	// MoveOverlay updates the position of a child.
-	MoveOverlay(child Widgetter, xpos int, ypos int)
+	MoveOverlay(child Widgeter, xpos int, ypos int)
 	// MoveVisually: move the iterator a given number of characters visually,
 	// treating it as the strong cursor position.
 	MoveVisually(iter *TextIter, count int) bool
@@ -206,7 +205,7 @@ type TextViewer interface {
 	// the buffer.
 	PlaceCursorOnscreen() bool
 	// Remove removes a child widget from @text_view.
-	Remove(child Widgetter)
+	Remove(child Widgeter)
 	// ResetCursorBlink ensures that the cursor is shown.
 	ResetCursorBlink()
 	// ResetImContext: reset the input method context of the text view if
@@ -234,9 +233,17 @@ type TextViewer interface {
 	SetEditable(setting bool)
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @text_view.
-	SetExtraMenu(model gio.MenuModeller)
+	SetExtraMenu(model gio.MenuModeler)
+	// SetGutter places @widget into the gutter specified by @win.
+	SetGutter(win TextWindowType, widget Widgeter)
 	// SetIndent sets the default indentation for paragraphs in @text_view.
 	SetIndent(indent int)
+	// SetInputHints sets the `input-hints` of the `GtkTextView`.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose sets the `input-purpose` of the `GtkTextView`.
+	SetInputPurpose(purpose InputPurpose)
+	// SetJustification sets the default justification of text in @text_view.
+	SetJustification(justification Justification)
 	// SetLeftMargin sets the default left margin for text in @text_view.
 	SetLeftMargin(leftMargin int)
 	// SetMonospace sets whether the `GtkTextView` should display text in
@@ -259,9 +266,14 @@ type TextViewer interface {
 	SetTabs(tabs *pango.TabArray)
 	// SetTopMargin sets the top margin for text in @text_view.
 	SetTopMargin(topMargin int)
+	// SetWrapMode sets the line wrapping for the view.
+	SetWrapMode(wrapMode WrapMode)
 	// StartsDisplayLine determines whether @iter is at the start of a display
 	// line.
 	StartsDisplayLine(iter *TextIter) bool
+	// WindowToBufferCoords converts coordinates on the window identified by
+	// @win to buffer coordinates.
+	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
 // TextView: widget that displays the contents of a [class@Gtk.TextBuffer].
@@ -379,7 +391,7 @@ func (v *TextView) Native() uintptr {
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given
 // @anchor.
-func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor TextChildAnchorrer) {
+func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor TextChildAnchorer) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -401,7 +413,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor TextChildAnch
 //
 // If instead you want a widget that will not move with the `GtkTextView`
 // contents see Overlay.
-func (textView *TextView) AddOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) AddOverlay(child Widgeter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -469,6 +481,31 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 	}
 
 	return _ok
+}
+
+// BufferToWindowCoords converts buffer coordinates to window coordinates.
+func (textView *TextView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int) {
+	var _arg0 *C.GtkTextView      // out
+	var _arg1 C.GtkTextWindowType // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // in
+	var _arg5 C.int               // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkTextWindowType(win)
+	_arg2 = C.int(bufferX)
+	_arg3 = C.int(bufferY)
+
+	C.gtk_text_view_buffer_to_window_coords(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+
+	var _windowX int // out
+	var _windowY int // out
+
+	_windowX = int(_arg4)
+	_windowY = int(_arg5)
+
+	return _windowX, _windowY
 }
 
 // ForwardDisplayLine moves the given @iter forward by one display (wrapped)
@@ -668,6 +705,29 @@ func (textView *TextView) ExtraMenu() *gio.MenuModel {
 	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gio.MenuModel)
 
 	return _menuModel
+}
+
+// Gutter gets a `GtkWidget` that has previously been set as gutter.
+//
+// See [method@Gtk.TextView.set_gutter].
+//
+// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+func (textView *TextView) Gutter(win TextWindowType) *Widget {
+	var _arg0 *C.GtkTextView      // out
+	var _arg1 C.GtkTextWindowType // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkTextWindowType(win)
+
+	_cret = C.gtk_text_view_get_gutter(_arg0, _arg1)
+
+	var _widget *Widget // out
+
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Widget)
+
+	return _widget
 }
 
 // Indent gets the default indentation of paragraphs in @text_view.
@@ -1137,7 +1197,7 @@ func (textView *TextView) MoveMarkOnscreen(mark TextMarker) bool {
 // MoveOverlay updates the position of a child.
 //
 // See [method@Gtk.TextView.add_overlay].
-func (textView *TextView) MoveOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) MoveOverlay(child Widgeter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -1203,7 +1263,7 @@ func (textView *TextView) PlaceCursorOnscreen() bool {
 }
 
 // Remove removes a child widget from @text_view.
-func (textView *TextView) Remove(child Widgetter) {
+func (textView *TextView) Remove(child Widgeter) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -1408,7 +1468,7 @@ func (textView *TextView) SetEditable(setting bool) {
 // @text_view.
 //
 // You can pass nil to remove a previously set extra menu.
-func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
+func (textView *TextView) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GMenuModel  // out
 
@@ -1416,6 +1476,22 @@ func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_text_view_set_extra_menu(_arg0, _arg1)
+}
+
+// SetGutter places @widget into the gutter specified by @win.
+//
+// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+func (textView *TextView) SetGutter(win TextWindowType, widget Widgeter) {
+	var _arg0 *C.GtkTextView      // out
+	var _arg1 C.GtkTextWindowType // out
+	var _arg2 *C.GtkWidget        // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkTextWindowType(win)
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+
+	C.gtk_text_view_set_gutter(_arg0, _arg1, _arg2)
 }
 
 // SetIndent sets the default indentation for paragraphs in @text_view.
@@ -1429,6 +1505,46 @@ func (textView *TextView) SetIndent(indent int) {
 	_arg1 = C.int(indent)
 
 	C.gtk_text_view_set_indent(_arg0, _arg1)
+}
+
+// SetInputHints sets the `input-hints` of the `GtkTextView`.
+//
+// The `input-hints` allow input methods to fine-tune their behaviour.
+func (textView *TextView) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkTextView  // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_text_view_set_input_hints(_arg0, _arg1)
+}
+
+// SetInputPurpose sets the `input-purpose` of the `GtkTextView`.
+//
+// The `input-purpose` can be used by on-screen keyboards and other input
+// methods to adjust their behaviour.
+func (textView *TextView) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkTextView    // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_text_view_set_input_purpose(_arg0, _arg1)
+}
+
+// SetJustification sets the default justification of text in @text_view.
+//
+// Tags in the view’s buffer may override the default.
+func (textView *TextView) SetJustification(justification Justification) {
+	var _arg0 *C.GtkTextView     // out
+	var _arg1 C.GtkJustification // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkJustification(justification)
+
+	C.gtk_text_view_set_justification(_arg0, _arg1)
 }
 
 // SetLeftMargin sets the default left margin for text in @text_view.
@@ -1559,6 +1675,17 @@ func (textView *TextView) SetTopMargin(topMargin int) {
 	C.gtk_text_view_set_top_margin(_arg0, _arg1)
 }
 
+// SetWrapMode sets the line wrapping for the view.
+func (textView *TextView) SetWrapMode(wrapMode WrapMode) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.GtkWrapMode  // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkWrapMode(wrapMode)
+
+	C.gtk_text_view_set_wrap_mode(_arg0, _arg1)
+}
+
 // StartsDisplayLine determines whether @iter is at the start of a display line.
 //
 // See [method@Gtk.TextView.forward_display_line] for an explanation of display
@@ -1580,4 +1707,30 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 	}
 
 	return _ok
+}
+
+// WindowToBufferCoords converts coordinates on the window identified by @win to
+// buffer coordinates.
+func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int) {
+	var _arg0 *C.GtkTextView      // out
+	var _arg1 C.GtkTextWindowType // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // in
+	var _arg5 C.int               // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
+	_arg1 = C.GtkTextWindowType(win)
+	_arg2 = C.int(windowX)
+	_arg3 = C.int(windowY)
+
+	C.gtk_text_view_window_to_buffer_coords(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
+
+	var _bufferX int // out
+	var _bufferY int // out
+
+	_bufferX = int(_arg4)
+	_bufferY = int(_arg5)
+
+	return _bufferX, _bufferY
 }

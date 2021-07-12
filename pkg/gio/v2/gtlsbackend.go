@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -271,4 +270,17 @@ func (backend *TLSBackend) SupportsTLS() bool {
 	}
 
 	return _ok
+}
+
+// TLSBackendGetDefault gets the default Backend for the system.
+func TLSBackendGetDefault() *TLSBackend {
+	var _cret *C.GTlsBackend // in
+
+	_cret = C.g_tls_backend_get_default()
+
+	var _tlsBackend *TLSBackend // out
+
+	_tlsBackend = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*TLSBackend)
+
+	return _tlsBackend
 }

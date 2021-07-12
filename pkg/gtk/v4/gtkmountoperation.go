@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -36,10 +35,10 @@ type MountOperationer interface {
 	IsShowing() bool
 	// SetDisplay sets the display to show windows of the `GtkMountOperation`
 	// on.
-	SetDisplay(display gdk.Displayyer)
+	SetDisplay(display gdk.Displayer)
 	// SetParent sets the transient parent for windows shown by the
 	// `GtkMountOperation`.
-	SetParent(parent Windowwer)
+	SetParent(parent Windower)
 }
 
 // MountOperation: `GtkMountOperation` is an implementation of
@@ -79,7 +78,7 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 }
 
 // NewMountOperation creates a new `GtkMountOperation`.
-func NewMountOperation(parent Windowwer) *MountOperation {
+func NewMountOperation(parent Windower) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
@@ -147,7 +146,7 @@ func (op *MountOperation) IsShowing() bool {
 }
 
 // SetDisplay sets the display to show windows of the `GtkMountOperation` on.
-func (op *MountOperation) SetDisplay(display gdk.Displayyer) {
+func (op *MountOperation) SetDisplay(display gdk.Displayer) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkDisplay        // out
 
@@ -159,7 +158,7 @@ func (op *MountOperation) SetDisplay(display gdk.Displayyer) {
 
 // SetParent sets the transient parent for windows shown by the
 // `GtkMountOperation`.
-func (op *MountOperation) SetParent(parent Windowwer) {
+func (op *MountOperation) SetParent(parent Windower) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 

@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 import "C"
 
@@ -34,7 +33,7 @@ import "C"
 //
 // Deprecated: Use gdk_window_begin_draw_frame() and
 // gdk_drawing_context_get_cairo_context() instead.
-func CairoCreate(window Windowwer) *cairo.Context {
+func CairoCreate(window Windower) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.cairo_t   // in
 
@@ -68,7 +67,7 @@ func CairoCreate(window Windowwer) *cairo.Context {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGL(cr *cairo.Context, window Windowwer, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
+func CairoDrawFromGL(cr *cairo.Context, window Windower, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.int        // out
@@ -192,7 +191,7 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
-func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuffer, pixbufX float64, pixbufY float64) {
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbufer, pixbufX float64, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
 	var _arg3 C.gdouble    // out
@@ -225,7 +224,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 //
 // Note that the contents of @window are undefined outside of the visible part
 // of @window, so use this function with care.
-func CairoSetSourceWindow(cr *cairo.Context, window Windowwer, x float64, y float64) {
+func CairoSetSourceWindow(cr *cairo.Context, window Windower, x float64, y float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.gdouble    // out
@@ -241,7 +240,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windowwer, x float64, y floa
 
 // CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
 // as the pixbuf.
-func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuffer, scale int, forWindow Windowwer) *cairo.Surface {
+func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbufer, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out
 	var _arg2 C.int              // out
 	var _arg3 *C.GdkWindow       // out

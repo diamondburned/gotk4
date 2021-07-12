@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtonner},
+		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ScaleButtonOverrider interface {
-	//
 	ValueChanged(value float64)
 }
 
-// ScaleButtonner describes ScaleButton's methods.
-type ScaleButtonner interface {
+// ScaleButtoner describes ScaleButton's methods.
+type ScaleButtoner interface {
 	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
 	Adjustment() *Adjustment
 	// MinusButton retrieves the minus button of the ScaleButton.
@@ -74,11 +72,11 @@ type ScaleButton struct {
 }
 
 var (
-	_ ScaleButtonner  = (*ScaleButton)(nil)
+	_ ScaleButtoner   = (*ScaleButton)(nil)
 	_ gextras.Nativer = (*ScaleButton)(nil)
 )
 
-func wrapScaleButton(obj *externglib.Object) ScaleButtonner {
+func wrapScaleButton(obj *externglib.Object) ScaleButtoner {
 	return &ScaleButton{
 		Button: Button{
 			Bin: Bin{
@@ -119,7 +117,7 @@ func wrapScaleButton(obj *externglib.Object) ScaleButtonner {
 	}
 }
 
-func marshalScaleButtonner(p uintptr) (interface{}, error) {
+func marshalScaleButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScaleButton(obj), nil

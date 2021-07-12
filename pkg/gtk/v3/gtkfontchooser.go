@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -42,8 +41,7 @@ const (
 	// FontChooserLevelStyle: allow selecting a specific font face
 	FontChooserLevelStyle FontChooserLevel = 0b1
 	// FontChooserLevelSize: allow selecting a specific font size
-	FontChooserLevelSize FontChooserLevel = 0b10
-	//
+	FontChooserLevelSize       FontChooserLevel = 0b10
 	FontChooserLevelVariations FontChooserLevel = 0b100
 	// FontChooserLevelFeatures: allow selecting specific OpenType font features
 	FontChooserLevelFeatures FontChooserLevel = 0b1000
@@ -87,7 +85,6 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontChooserOverrider interface {
-	//
 	FontActivated(fontname string)
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
@@ -124,7 +121,7 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMapper)
+	SetFontMap(fontmap pango.FontMaper)
 }
 
 // FontChooserer describes FontChooser's methods.
@@ -158,9 +155,11 @@ type FontChooserer interface {
 	// SetFontDesc sets the currently-selected font from @font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget.
-	SetFontMap(fontmap pango.FontMapper)
+	SetFontMap(fontmap pango.FontMaper)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
+	// SetLevel sets the desired level of granularity for selecting fonts.
+	SetLevel(level FontChooserLevel)
 	// SetPreviewText sets the text displayed in the preview area.
 	SetPreviewText(text string)
 	// SetShowPreviewEntry shows or hides the editable preview entry.
@@ -443,7 +442,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
+func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMaper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
 
@@ -463,6 +462,17 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_font_chooser_set_language(_arg0, _arg1)
+}
+
+// SetLevel sets the desired level of granularity for selecting fonts.
+func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
+	var _arg0 *C.GtkFontChooser     // out
+	var _arg1 C.GtkFontChooserLevel // out
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg1 = C.GtkFontChooserLevel(level)
+
+	C.gtk_font_chooser_set_level(_arg0, _arg1)
 }
 
 // SetPreviewText sets the text displayed in the preview area. The @text is used

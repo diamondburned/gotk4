@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -158,6 +157,25 @@ func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
 	return wrapKeyvalTrigger(obj), nil
 }
 
+// NewKeyvalTrigger creates a `GtkShortcutTrigger` that will trigger whenever
+// the key with the given @keyval and @modifiers is pressed.
+func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
+	var _arg1 C.guint               // out
+	var _arg2 C.GdkModifierType     // out
+	var _cret *C.GtkShortcutTrigger // in
+
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_keyval_trigger_new(_arg1, _arg2)
+
+	var _keyvalTrigger *KeyvalTrigger // out
+
+	_keyvalTrigger = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*KeyvalTrigger)
+
+	return _keyvalTrigger
+}
+
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
 func (self *KeyvalTrigger) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
@@ -292,6 +310,22 @@ func marshalNeverTriggerer(p uintptr) (interface{}, error) {
 
 func (*NeverTrigger) privateNeverTrigger() {}
 
+// NeverTriggerGet gets the never trigger.
+//
+// This is a singleton for a trigger that never triggers. Use this trigger
+// instead of nil because it implements all virtual functions.
+func NeverTriggerGet() *NeverTrigger {
+	var _cret *C.GtkShortcutTrigger // in
+
+	_cret = C.gtk_never_trigger_get()
+
+	var _neverTrigger *NeverTrigger // out
+
+	_neverTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*NeverTrigger)
+
+	return _neverTrigger
+}
+
 // ShortcutTriggerer describes ShortcutTrigger's methods.
 type ShortcutTriggerer interface {
 	// Compare types of @trigger1 and @trigger2 are #gconstpointer only to allow
@@ -303,7 +337,7 @@ type ShortcutTriggerer interface {
 	// Hash generates a hash value for a `GtkShortcutTrigger`.
 	Hash() uint
 	// ToLabel gets textual representation for the given trigger.
-	ToLabel(display gdk.Displayyer) string
+	ToLabel(display gdk.Displayer) string
 	// String prints the given trigger into a human-readable string.
 	String() string
 	// Trigger checks if the given @event triggers @self.
@@ -453,7 +487,7 @@ func (trigger *ShortcutTrigger) Hash() uint {
 //
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
-func (self *ShortcutTrigger) ToLabel(display gdk.Displayyer) string {
+func (self *ShortcutTrigger) ToLabel(display gdk.Displayer) string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in

@@ -5,13 +5,13 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -174,4 +174,71 @@ func (addr *NetworkAddress) Scheme() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// NetworkAddressParse creates a new Connectable for connecting to the given
+// @hostname and @port. May fail and return nil in case parsing @host_and_port
+// fails.
+//
+// @host_and_port may be in any of a number of recognised formats; an IPv6
+// address, an IPv4 address, or a domain name (in which case a DNS lookup is
+// performed). Quoting with [] is supported for all address types. A port
+// override may be specified in the usual way with a colon.
+//
+// If no port is specified in @host_and_port then @default_port will be used as
+// the port number to connect to.
+//
+// In general, @host_and_port is expected to be provided by the user (allowing
+// them to give the hostname, and a port override if necessary) and
+// @default_port is expected to be provided by the application.
+//
+// (The port component of @host_and_port can also be specified as a service name
+// rather than as a numeric port, but this functionality is deprecated, because
+// it depends on the contents of /etc/services, which is generally quite sparse
+// on platforms other than Linux.)
+func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _cret *C.GSocketConnectable // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+
+	_cret = C.g_network_address_parse(_arg1, _arg2, &_cerr)
+
+	var _networkAddress *NetworkAddress // out
+	var _goerr error                    // out
+
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _networkAddress, _goerr
+}
+
+// NetworkAddressParseURI creates a new Connectable for connecting to the given
+// @uri. May fail and return nil in case parsing @uri fails.
+//
+// Using this rather than g_network_address_new() or g_network_address_parse()
+// allows Client to determine when to use application-specific proxy protocols.
+func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _cret *C.GSocketConnectable // in
+	var _cerr *C.GError             // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+
+	_cret = C.g_network_address_parse_uri(_arg1, _arg2, &_cerr)
+
+	var _networkAddress *NetworkAddress // out
+	var _goerr error                    // out
+
+	_networkAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*NetworkAddress)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _networkAddress, _goerr
 }

@@ -11,19 +11,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarrer},
+		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarer},
 	})
 }
 
-// LevelBarrer describes LevelBar's methods.
-type LevelBarrer interface {
+// LevelBarer describes LevelBar's methods.
+type LevelBarer interface {
 	// AddOffsetValue adds a new offset marker on @self at the position
 	// specified by @value.
 	AddOffsetValue(name string, value float64)
@@ -48,6 +47,8 @@ type LevelBarrer interface {
 	SetMaxValue(value float64)
 	// SetMinValue sets the `min-value` of the `GtkLevelBar`.
 	SetMinValue(value float64)
+	// SetMode sets the `mode` of the `GtkLevelBar`.
+	SetMode(mode LevelBarMode)
 	// SetValue sets the value of the `GtkLevelBar`.
 	SetValue(value float64)
 }
@@ -149,11 +150,11 @@ type LevelBar struct {
 }
 
 var (
-	_ LevelBarrer     = (*LevelBar)(nil)
+	_ LevelBarer      = (*LevelBar)(nil)
 	_ gextras.Nativer = (*LevelBar)(nil)
 )
 
-func wrapLevelBar(obj *externglib.Object) LevelBarrer {
+func wrapLevelBar(obj *externglib.Object) LevelBarer {
 	return &LevelBar{
 		Widget: Widget{
 			InitiallyUnowned: externglib.InitiallyUnowned{
@@ -175,7 +176,7 @@ func wrapLevelBar(obj *externglib.Object) LevelBarrer {
 	}
 }
 
-func marshalLevelBarrer(p uintptr) (interface{}, error) {
+func marshalLevelBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLevelBar(obj), nil
@@ -402,6 +403,17 @@ func (self *LevelBar) SetMinValue(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_level_bar_set_min_value(_arg0, _arg1)
+}
+
+// SetMode sets the `mode` of the `GtkLevelBar`.
+func (self *LevelBar) SetMode(mode LevelBarMode) {
+	var _arg0 *C.GtkLevelBar    // out
+	var _arg1 C.GtkLevelBarMode // out
+
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkLevelBarMode(mode)
+
+	C.gtk_level_bar_set_mode(_arg0, _arg1)
 }
 
 // SetValue sets the value of the `GtkLevelBar`.

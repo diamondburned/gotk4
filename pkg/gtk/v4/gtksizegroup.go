@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -25,11 +24,13 @@ func init() {
 // SizeGrouper describes SizeGroup's methods.
 type SizeGrouper interface {
 	// AddWidget adds a widget to a `GtkSizeGroup`.
-	AddWidget(widget Widgetter)
+	AddWidget(widget Widgeter)
 	// Mode gets the current mode of the size group.
 	Mode() SizeGroupMode
 	// RemoveWidget removes a widget from a `GtkSizeGroup`.
-	RemoveWidget(widget Widgetter)
+	RemoveWidget(widget Widgeter)
+	// SetMode sets the `GtkSizeGroupMode` of the size group.
+	SetMode(mode SizeGroupMode)
 }
 
 // SizeGroup: `GtkSizeGroup` groups widgets together so they all request the
@@ -115,6 +116,22 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 	return wrapSizeGroup(obj), nil
 }
 
+// NewSizeGroup: create a new `GtkSizeGroup`.
+func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
+	var _arg1 C.GtkSizeGroupMode // out
+	var _cret *C.GtkSizeGroup    // in
+
+	_arg1 = C.GtkSizeGroupMode(mode)
+
+	_cret = C.gtk_size_group_new(_arg1)
+
+	var _sizeGroup *SizeGroup // out
+
+	_sizeGroup = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*SizeGroup)
+
+	return _sizeGroup
+}
+
 // AddWidget adds a widget to a `GtkSizeGroup`.
 //
 // In the future, the requisition of the widget will be determined as the
@@ -125,7 +142,7 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
+func (sizeGroup *SizeGroup) AddWidget(widget Widgeter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -152,7 +169,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a `GtkSizeGroup`.
-func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
+func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -160,4 +177,20 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
+}
+
+// SetMode sets the `GtkSizeGroupMode` of the size group.
+//
+// The mode of the size group determines whether the widgets in the size group
+// should all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL)
+// all have the same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should
+// all have the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
+func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
+	var _arg0 *C.GtkSizeGroup    // out
+	var _arg1 C.GtkSizeGroupMode // out
+
+	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(sizeGroup.Native()))
+	_arg1 = C.GtkSizeGroupMode(mode)
+
+	C.gtk_size_group_set_mode(_arg0, _arg1)
 }

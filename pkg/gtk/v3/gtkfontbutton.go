@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -21,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtoner},
 	})
 }
 
@@ -30,12 +29,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontButtonOverrider interface {
-	//
 	FontSet()
 }
 
-// FontButtonner describes FontButton's methods.
-type FontButtonner interface {
+// FontButtoner describes FontButton's methods.
+type FontButtoner interface {
 	// FontName retrieves the name of the currently selected font.
 	FontName() string
 	// ShowSize returns whether the font size will be shown in the label.
@@ -83,11 +81,11 @@ type FontButton struct {
 }
 
 var (
-	_ FontButtonner   = (*FontButton)(nil)
+	_ FontButtoner    = (*FontButton)(nil)
 	_ gextras.Nativer = (*FontButton)(nil)
 )
 
-func wrapFontButton(obj *externglib.Object) FontButtonner {
+func wrapFontButton(obj *externglib.Object) FontButtoner {
 	return &FontButton{
 		Button: Button{
 			Bin: Bin{
@@ -128,7 +126,7 @@ func wrapFontButton(obj *externglib.Object) FontButtonner {
 	}
 }
 
-func marshalFontButtonner(p uintptr) (interface{}, error) {
+func marshalFontButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontButton(obj), nil

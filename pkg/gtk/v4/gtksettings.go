@@ -6,12 +6,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -95,4 +95,37 @@ func (settings *Settings) ResetProperty(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_settings_reset_property(_arg0, _arg1)
+}
+
+// SettingsGetDefault gets the `GtkSettings` object for the default display,
+// creating it if necessary.
+//
+// See [type_func@Gtk.Settings.get_for_display].
+func SettingsGetDefault() *Settings {
+	var _cret *C.GtkSettings // in
+
+	_cret = C.gtk_settings_get_default()
+
+	var _settings *Settings // out
+
+	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+
+	return _settings
+}
+
+// SettingsGetForDisplay gets the `GtkSettings` object for @display, creating it
+// if necessary.
+func SettingsGetForDisplay(display gdk.Displayer) *Settings {
+	var _arg1 *C.GdkDisplay  // out
+	var _cret *C.GtkSettings // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_settings_get_for_display(_arg1)
+
+	var _settings *Settings // out
+
+	_settings = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*Settings)
+
+	return _settings
 }

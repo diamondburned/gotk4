@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -62,17 +61,35 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ComponentOverrider interface {
-	//
 	BoundsChanged(bounds *Rectangle)
+	// Contains checks whether the specified point is within the extent of the
+	// @component.
+	//
+	// Toolkit implementor note: ATK provides a default implementation for this
+	// virtual method. In general there are little reason to re-implement it.
+	Contains(x int, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e. the opacity) for this @component, on
 	// a scale from 0 (fully transparent) to 1.0 (fully opaque).
 	Alpha() float64
+	// Extents gets the rectangle which gives the extent of the @component.
+	//
+	// If the extent can not be obtained (e.g. a non-embedded plug or missing
+	// support), all of x, y, width, height are set to -1.
+	Extents(coordType CoordType) (x int, y int, width int, height int)
 	// Layer gets the layer of the component.
 	Layer() Layer
 	// MDIZOrder gets the zorder of the component. The value G_MININT will be
 	// returned if the layer of the component is not ATK_LAYER_MDI or
 	// ATK_LAYER_WINDOW.
 	MDIZOrder() int
+	// Position gets the position of @component in the form of a point
+	// specifying @component's top-left corner.
+	//
+	// If the position can not be obtained (e.g. a non-embedded plug or missing
+	// support), x and y are set to -1.
+	//
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	Position(coordType CoordType) (x int, y int)
 	// Size gets the size of the @component in terms of width and height.
 	//
 	// If the size can not be obtained (e.g. a non-embedded plug or missing
@@ -82,6 +99,9 @@ type ComponentOverrider interface {
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by @x and @y.
+	RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by @handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -89,26 +109,65 @@ type ComponentOverrider interface {
 	// Deprecated: If you need to track when an object gains or lose the focus,
 	// use the Object::state-change "focused" notification instead.
 	RemoveFocusHandler(handlerId uint)
+	// ScrollTo makes @component visible on the screen by scrolling all
+	// necessary parents.
+	//
+	// Contrary to atk_component_set_position, this does not actually move
+	// @component in its parent, this only makes the parents scroll so that the
+	// object shows up on the screen, given its current position within the
+	// parents.
+	ScrollTo(typ ScrollType) bool
+	// ScrollToPoint: move the top-left of @component to a given position of the
+	// screen by scrolling all necessary parents.
+	ScrollToPoint(coords CoordType, x int, y int) bool
+	// SetExtents sets the extents of @component.
+	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	// SetPosition sets the position of @component.
+	//
+	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+	// this just moves @component in its parent.
+	SetPosition(x int, y int, coordType CoordType) bool
 	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
 }
 
 // Componenter describes Component's methods.
 type Componenter interface {
+	// Contains checks whether the specified point is within the extent of the
+	// @component.
+	Contains(x int, y int, coordType CoordType) bool
 	// Alpha returns the alpha value (i.e.
 	Alpha() float64
+	// Extents gets the rectangle which gives the extent of the @component.
+	Extents(coordType CoordType) (x int, y int, width int, height int)
 	// Layer gets the layer of the component.
 	Layer() Layer
 	// MDIZOrder gets the zorder of the component.
 	MDIZOrder() int
+	// Position gets the position of @component in the form of a point
+	// specifying @component's top-left corner.
+	Position(coordType CoordType) (x int, y int)
 	// Size gets the size of the @component in terms of width and height.
 	Size() (width int, height int)
 	// GrabFocus grabs focus for this @component.
 	GrabFocus() bool
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by @x and @y.
+	RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass
 	// RemoveFocusHandler: remove the handler specified by @handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
 	RemoveFocusHandler(handlerId uint)
+	// ScrollTo makes @component visible on the screen by scrolling all
+	// necessary parents.
+	ScrollTo(typ ScrollType) bool
+	// ScrollToPoint: move the top-left of @component to a given position of the
+	// screen by scrolling all necessary parents.
+	ScrollToPoint(coords CoordType, x int, y int) bool
+	// SetExtents sets the extents of @component.
+	SetExtents(x int, y int, width int, height int, coordType CoordType) bool
+	// SetPosition sets the position of @component.
+	SetPosition(x int, y int, coordType CoordType) bool
 	// SetSize: set the size of the @component in terms of width and height.
 	SetSize(width int, height int) bool
 }
@@ -144,6 +203,34 @@ func marshalComponenter(p uintptr) (interface{}, error) {
 	return wrapComponent(obj), nil
 }
 
+// Contains checks whether the specified point is within the extent of the
+// @component.
+//
+// Toolkit implementor note: ATK provides a default implementation for this
+// virtual method. In general there are little reason to re-implement it.
+func (component *Component) Contains(x int, y int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_contains(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Alpha returns the alpha value (i.e. the opacity) for this @component, on a
 // scale from 0 (fully transparent) to 1.0 (fully opaque).
 func (component *Component) Alpha() float64 {
@@ -159,6 +246,36 @@ func (component *Component) Alpha() float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
+}
+
+// Extents gets the rectangle which gives the extent of the @component.
+//
+// If the extent can not be obtained (e.g. a non-embedded plug or missing
+// support), all of x, y, width, height are set to -1.
+func (component *Component) Extents(coordType CoordType) (x int, y int, width int, height int) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _arg5 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg5 = C.AtkCoordType(coordType)
+
+	C.atk_component_get_extents(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
+
+	return _x, _y, _width, _height
 }
 
 // Layer gets the layer of the component.
@@ -193,6 +310,33 @@ func (component *Component) MDIZOrder() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// Position gets the position of @component in the form of a point specifying
+// @component's top-left corner.
+//
+// If the position can not be obtained (e.g. a non-embedded plug or missing
+// support), x and y are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+func (component *Component) Position(coordType CoordType) (x int, y int) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_component_get_position(_arg0, &_arg1, &_arg2, _arg3)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
 }
 
 // Size gets the size of the @component in terms of width and height.
@@ -237,6 +381,29 @@ func (component *Component) GrabFocus() bool {
 	return _ok
 }
 
+// RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
+// at the coordinate point specified by @x and @y.
+func (component *Component) RefAccessibleAtPoint(x int, y int, coordType CoordType) *ObjectClass {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_ref_accessible_at_point(_arg0, _arg1, _arg2, _arg3)
+
+	var _object *ObjectClass // out
+
+	_object = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*ObjectClass)
+
+	return _object
+}
+
 // RemoveFocusHandler: remove the handler specified by @handler_id from the list
 // of functions to be executed when this object receives focus events (in or
 // out).
@@ -251,6 +418,111 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 	_arg1 = C.guint(handlerId)
 
 	C.atk_component_remove_focus_handler(_arg0, _arg1)
+}
+
+// ScrollTo makes @component visible on the screen by scrolling all necessary
+// parents.
+//
+// Contrary to atk_component_set_position, this does not actually move
+// @component in its parent, this only makes the parents scroll so that the
+// object shows up on the screen, given its current position within the parents.
+func (component *Component) ScrollTo(typ ScrollType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.AtkScrollType(typ)
+
+	_cret = C.atk_component_scroll_to(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollToPoint: move the top-left of @component to a given position of the
+// screen by scrolling all necessary parents.
+func (component *Component) ScrollToPoint(coords CoordType, x int, y int) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkCoordType  // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.AtkCoordType(coords)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+
+	_cret = C.atk_component_scroll_to_point(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetExtents sets the extents of @component.
+func (component *Component) SetExtents(x int, y int, width int, height int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+	_arg5 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_set_extents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetPosition sets the position of @component.
+//
+// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+// this just moves @component in its parent.
+func (component *Component) SetPosition(x int, y int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(component.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_set_position(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetSize: set the size of the @component in terms of width and height.

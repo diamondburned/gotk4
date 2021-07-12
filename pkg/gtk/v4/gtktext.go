@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -82,7 +81,12 @@ type Texter interface {
 	SetEnableEmojiCompletion(enableEmojiCompletion bool)
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @self.
-	SetExtraMenu(model gio.MenuModeller)
+	SetExtraMenu(model gio.MenuModeler)
+	// SetInputHints sets input hints that allow input methods to fine-tune
+	// their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose sets the input purpose of the `GtkText`.
+	SetInputPurpose(purpose InputPurpose)
 	// SetInvisibleChar sets the character to use in place of the actual text
 	// when in “password mode”.
 	SetInvisibleChar(ch uint32)
@@ -624,7 +628,7 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // @self.
-func (self *Text) SetExtraMenu(model gio.MenuModeller) {
+func (self *Text) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkText    // out
 	var _arg1 *C.GMenuModel // out
 
@@ -632,6 +636,32 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((model).(gextras.Nativer).Native()))
 
 	C.gtk_text_set_extra_menu(_arg0, _arg1)
+}
+
+// SetInputHints sets input hints that allow input methods to fine-tune their
+// behaviour.
+func (self *Text) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkText      // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_text_set_input_hints(_arg0, _arg1)
+}
+
+// SetInputPurpose sets the input purpose of the `GtkText`.
+//
+// This can be used by on-screen keyboards and other input methods to adjust
+// their behaviour.
+func (self *Text) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkText        // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_text_set_input_purpose(_arg0, _arg1)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text when

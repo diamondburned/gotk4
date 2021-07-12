@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -26,7 +25,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-//
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
@@ -230,4 +228,17 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _utf8s, _goerr
+}
+
+// ProxyResolverGetDefault gets the default Resolver for the system.
+func ProxyResolverGetDefault() *ProxyResolver {
+	var _cret *C.GProxyResolver // in
+
+	_cret = C.g_proxy_resolver_get_default()
+
+	var _proxyResolver *ProxyResolver // out
+
+	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*ProxyResolver)
+
+	return _proxyResolver
 }

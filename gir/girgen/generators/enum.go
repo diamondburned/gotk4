@@ -26,7 +26,7 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 	)
 	{{ else }}
 	const (
-		{{ range .Members }}
+		{{ range .Members -}}
 		{{- GoDoc . 1 TrailingNewLine -}}
 		{{- $.FormatMember . }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}

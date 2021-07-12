@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
@@ -511,6 +510,129 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	}
 
 	return _ok
+}
+
+// LoadFromData loads a key file from memory into an empty File structure. If
+// the object cannot be created then error is set to a FileError.
+func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) error {
+	var _arg0 *C.GKeyFile     // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gsize         // out
+	var _arg3 C.GKeyFileFlags // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gsize(length)
+	_arg3 = C.GKeyFileFlags(flags)
+
+	C.g_key_file_load_from_data(_arg0, _arg1, _arg2, _arg3, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LoadFromDataDirs: this function looks for a key file named @file in the paths
+// returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
+// file into @key_file and returns the file's full path in @full_path. If the
+// file could not be loaded then an error is set to either a Error or FileError.
+func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
+	var _arg0 *C.GKeyFile     // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.gchar        // in
+	var _arg3 C.GKeyFileFlags // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.GKeyFileFlags(flags)
+
+	C.g_key_file_load_from_data_dirs(_arg0, _arg1, &_arg2, _arg3, &_cerr)
+
+	var _fullPath string // out
+	var _goerr error     // out
+
+	_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fullPath, _goerr
+}
+
+// LoadFromDirs: this function looks for a key file named @file in the paths
+// specified in @search_dirs, loads the file into @key_file and returns the
+// file's full path in @full_path.
+//
+// If the file could not be found in any of the @search_dirs,
+// G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the OS
+// returns an error when opening or reading the file, a G_FILE_ERROR is
+// returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// returned.
+func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (string, error) {
+	var _arg0 *C.GKeyFile // out
+	var _arg1 *C.gchar    // out
+	var _arg2 **C.gchar
+	var _arg3 *C.gchar        // in
+	var _arg4 C.GKeyFileFlags // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(searchDirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice(_arg2, len(searchDirs))
+		for i := range searchDirs {
+			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(searchDirs[i])))
+			defer C.free(unsafe.Pointer(out[i]))
+		}
+	}
+	_arg4 = C.GKeyFileFlags(flags)
+
+	C.g_key_file_load_from_dirs(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
+
+	var _fullPath string // out
+	var _goerr error     // out
+
+	_fullPath = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _fullPath, _goerr
+}
+
+// LoadFromFile loads a key file into an empty File structure.
+//
+// If the OS returns an error when opening or reading the file, a G_FILE_ERROR
+// is returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// returned.
+//
+// This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
+// @file is not found, G_FILE_ERROR_NOENT is returned.
+func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
+	var _arg0 *C.GKeyFile     // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.GKeyFileFlags // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GKeyFileFlags(flags)
+
+	C.g_key_file_load_from_file(_arg0, _arg1, _arg2, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
 }
 
 // RemoveComment removes a comment above @key from @group_name. If @key is nil

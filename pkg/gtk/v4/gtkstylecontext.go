@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -53,7 +52,6 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleContextOverrider interface {
-	//
 	Changed()
 }
 
@@ -94,9 +92,13 @@ type StyleContexter interface {
 	// Save saves the @context state.
 	Save()
 	// SetDisplay attaches @context to the given display.
-	SetDisplay(display gdk.Displayyer)
+	SetDisplay(display gdk.Displayer)
 	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
+	// SetState sets the state to be used for style matching.
+	SetState(flags StateFlags)
+	// String converts the style context into a string representation.
+	String(flags StyleContextPrintFlags) string
 }
 
 // StyleContext: `GtkStyleContext` stores styling information affecting a
@@ -404,7 +406,7 @@ func (context *StyleContext) Save() {
 //
 // If you are using a `GtkStyleContext` returned from
 // [method@Gtk.Widget.get_style_context], you do not need to call this yourself.
-func (context *StyleContext) SetDisplay(display gdk.Displayyer) {
+func (context *StyleContext) SetDisplay(display gdk.Displayer) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkDisplay      // out
 
@@ -423,4 +425,75 @@ func (context *StyleContext) SetScale(scale int) {
 	_arg1 = C.int(scale)
 
 	C.gtk_style_context_set_scale(_arg0, _arg1)
+}
+
+// SetState sets the state to be used for style matching.
+func (context *StyleContext) SetState(flags StateFlags) {
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = C.GtkStateFlags(flags)
+
+	C.gtk_style_context_set_state(_arg0, _arg1)
+}
+
+// String converts the style context into a string representation.
+//
+// The string representation always includes information about the name, state,
+// id, visibility and style classes of the CSS node that is backing @context.
+// Depending on the flags, more information may be included.
+//
+// This function is intended for testing and debugging of the CSS implementation
+// in GTK. There are no guarantees about the format of the returned string, it
+// may change.
+func (context *StyleContext) String(flags StyleContextPrintFlags) string {
+	var _arg0 *C.GtkStyleContext          // out
+	var _arg1 C.GtkStyleContextPrintFlags // out
+	var _cret *C.char                     // in
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg1 = C.GtkStyleContextPrintFlags(flags)
+
+	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// StyleContextAddProviderForDisplay adds a global style provider to @display,
+// which will be used in style construction for all `GtkStyleContexts` under
+// @display.
+//
+// GTK uses this to make styling information from `GtkSettings` available.
+//
+// Note: If both priorities are the same, A `GtkStyleProvider` added through
+// [method@Gtk.StyleContext.add_provider] takes precedence over another added
+// through this function.
+func StyleContextAddProviderForDisplay(display gdk.Displayer, provider StyleProviderer, priority uint) {
+	var _arg1 *C.GdkDisplay       // out
+	var _arg2 *C.GtkStyleProvider // out
+	var _arg3 C.guint             // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg3 = C.guint(priority)
+
+	C.gtk_style_context_add_provider_for_display(_arg1, _arg2, _arg3)
+}
+
+// StyleContextRemoveProviderForDisplay removes @provider from the global style
+// providers list in @display.
+func StyleContextRemoveProviderForDisplay(display gdk.Displayer, provider StyleProviderer) {
+	var _arg1 *C.GdkDisplay       // out
+	var _arg2 *C.GtkStyleProvider // out
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+
+	C.gtk_style_context_remove_provider_for_display(_arg1, _arg2)
 }

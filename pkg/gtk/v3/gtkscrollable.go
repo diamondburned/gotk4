@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -51,8 +50,16 @@ type Scrollabler interface {
 	VscrollPolicy() ScrollablePolicy
 	// SetHAdjustment sets the horizontal adjustment of the Scrollable.
 	SetHAdjustment(hadjustment Adjustmenter)
+	// SetHscrollPolicy sets the ScrollablePolicy to determine whether
+	// horizontal scrolling should start below the minimum width or below the
+	// natural width.
+	SetHscrollPolicy(policy ScrollablePolicy)
 	// SetVAdjustment sets the vertical adjustment of the Scrollable.
 	SetVAdjustment(vadjustment Adjustmenter)
+	// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
+	// scrolling should start below the minimum height or below the natural
+	// height.
+	SetVscrollPolicy(policy ScrollablePolicy)
 }
 
 // Scrollable is an interface that is implemented by widgets with native
@@ -198,6 +205,18 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment Adjustmenter) {
 	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 }
 
+// SetHscrollPolicy sets the ScrollablePolicy to determine whether horizontal
+// scrolling should start below the minimum width or below the natural width.
+func (scrollable *Scrollable) SetHscrollPolicy(policy ScrollablePolicy) {
+	var _arg0 *C.GtkScrollable      // out
+	var _arg1 C.GtkScrollablePolicy // out
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
+	_arg1 = C.GtkScrollablePolicy(policy)
+
+	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
+}
+
 // SetVAdjustment sets the vertical adjustment of the Scrollable.
 func (scrollable *Scrollable) SetVAdjustment(vadjustment Adjustmenter) {
 	var _arg0 *C.GtkScrollable // out
@@ -207,4 +226,16 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment Adjustmenter) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
 
 	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
+}
+
+// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
+// scrolling should start below the minimum height or below the natural height.
+func (scrollable *Scrollable) SetVscrollPolicy(policy ScrollablePolicy) {
+	var _arg0 *C.GtkScrollable      // out
+	var _arg1 C.GtkScrollablePolicy // out
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(scrollable.Native()))
+	_arg1 = C.GtkScrollablePolicy(policy)
+
+	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
 }

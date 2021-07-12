@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -201,6 +200,33 @@ func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserNative(obj), nil
+}
+
+// NewFileChooserNative creates a new `GtkFileChooserNative`.
+func NewFileChooserNative(title string, parent Windower, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative {
+	var _arg1 *C.char                 // out
+	var _arg2 *C.GtkWindow            // out
+	var _arg3 C.GtkFileChooserAction  // out
+	var _arg4 *C.char                 // out
+	var _arg5 *C.char                 // out
+	var _cret *C.GtkFileChooserNative // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg3 = C.GtkFileChooserAction(action)
+	_arg4 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _fileChooserNative *FileChooserNative // out
+
+	_fileChooserNative = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(*FileChooserNative)
+
+	return _fileChooserNative
 }
 
 // Native implements gextras.Nativer. It returns the underlying GObject

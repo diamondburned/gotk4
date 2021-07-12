@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
 import "C"
@@ -113,6 +112,41 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	_arg6 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
 	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
+// ShapeWithFlags: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape_full], except it also takes flags that can
+// influence the shaping process.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_with_flags].
+func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
+	var _arg7 C.PangoShapeFlags   // out
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(itemLength)
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.int(paragraphLength)
+	_arg5 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg6 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg7 = C.PangoShapeFlags(flags)
+
+	C.pango_shape_with_flags(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // GlyphGeometry: `PangoGlyphGeometry` structure contains width and positioning

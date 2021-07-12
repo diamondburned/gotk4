@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4-x11 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
@@ -78,7 +77,6 @@ type X11Surfacer interface {
 	SetUTF8Property(name string, value string)
 }
 
-//
 type X11Surface struct {
 	gdk.Surface
 }

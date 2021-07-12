@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
 import "C"
@@ -492,4 +491,74 @@ func (v *Vec3) ToFloat() [3]float32 {
 	_dest = *(*[3]float32)(unsafe.Pointer(&_arg1))
 
 	return _dest
+}
+
+// Vec3One provides a constant pointer to a vector with three components, all
+// sets to 1.
+func Vec3One() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_one()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// Vec3XAxis provides a constant pointer to a vector with three components with
+// values set to (1, 0, 0).
+func Vec3XAxis() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_x_axis()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// Vec3YAxis provides a constant pointer to a vector with three components with
+// values set to (0, 1, 0).
+func Vec3YAxis() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_y_axis()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// Vec3ZAxis provides a constant pointer to a vector with three components with
+// values set to (0, 0, 1).
+func Vec3ZAxis() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_z_axis()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+
+	return _vec3
+}
+
+// Vec3Zero provides a constant pointer to a vector with three components, all
+// sets to 0.
+func Vec3Zero() *Vec3 {
+	var _cret *C.graphene_vec3_t // in
+
+	_cret = C.graphene_vec3_zero()
+
+	var _vec3 *Vec3 // out
+
+	_vec3 = (*Vec3)(unsafe.Pointer(_cret))
+
+	return _vec3
 }

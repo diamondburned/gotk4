@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
 // #include <gio/gio.h>
@@ -35,15 +34,15 @@ func init() {
 // DBusObjectManagerServerer describes DBusObjectManagerServer's methods.
 type DBusObjectManagerServerer interface {
 	// Export exports @object on @manager.
-	Export(object DBusObjectSkeletonner)
+	Export(object DBusObjectSkeletoner)
 	// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
 	// string of the form _N (with N being a natural number) to @object's object
 	// path if an object with the given path already exists.
-	ExportUniquely(object DBusObjectSkeletonner)
+	ExportUniquely(object DBusObjectSkeletoner)
 	// Connection gets the BusConnection used by @manager.
 	Connection() *DBusConnection
 	// IsExported returns whether @object is currently exported on @manager.
-	IsExported(object DBusObjectSkeletonner) bool
+	IsExported(object DBusObjectSkeletoner) bool
 	// SetConnection exports all objects managed by @manager on @connection.
 	SetConnection(connection DBusConnectioner)
 	// Unexport: if @manager has an object at @path, removes the object.
@@ -129,7 +128,7 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 //
 // Note that @manager will take a reference on @object for as long as it is
 // exported.
-func (manager *DBusObjectManagerServer) Export(object DBusObjectSkeletonner) {
+func (manager *DBusObjectManagerServer) Export(object DBusObjectSkeletoner) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -143,7 +142,7 @@ func (manager *DBusObjectManagerServer) Export(object DBusObjectSkeletonner) {
 // string of the form _N (with N being a natural number) to @object's object
 // path if an object with the given path already exists. As such, the
 // BusObjectProxy:g-object-path property of @object may be modified.
-func (manager *DBusObjectManagerServer) ExportUniquely(object DBusObjectSkeletonner) {
+func (manager *DBusObjectManagerServer) ExportUniquely(object DBusObjectSkeletoner) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 
@@ -170,7 +169,7 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 }
 
 // IsExported returns whether @object is currently exported on @manager.
-func (manager *DBusObjectManagerServer) IsExported(object DBusObjectSkeletonner) bool {
+func (manager *DBusObjectManagerServer) IsExported(object DBusObjectSkeletoner) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
 	var _cret C.gboolean                  // in

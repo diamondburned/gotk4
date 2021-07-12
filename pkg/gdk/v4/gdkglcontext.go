@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -426,4 +425,25 @@ func (context *GLContext) SetUseES(useEs int) {
 	_arg1 = C.int(useEs)
 
 	C.gdk_gl_context_set_use_es(_arg0, _arg1)
+}
+
+// GLContextClearCurrent clears the current `GdkGLContext`.
+//
+// Any OpenGL call after this function returns will be ignored until
+// [method@Gdk.GLContext.make_current] is called.
+func GLContextClearCurrent() {
+	C.gdk_gl_context_clear_current()
+}
+
+// GLContextGetCurrent retrieves the current `GdkGLContext`.
+func GLContextGetCurrent() *GLContext {
+	var _cret *C.GdkGLContext // in
+
+	_cret = C.gdk_gl_context_get_current()
+
+	var _glContext *GLContext // out
+
+	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*GLContext)
+
+	return _glContext
 }

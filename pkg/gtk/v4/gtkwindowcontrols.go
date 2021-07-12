@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -32,6 +31,9 @@ type WindowControlser interface {
 	Side() PackType
 	// SetDecorationLayout sets the decoration layout for the title buttons.
 	SetDecorationLayout(layout string)
+	// SetSide determines which part of decoration layout the
+	// `GtkWindowControls` uses.
+	SetSide(side PackType)
 }
 
 // WindowControls: `GtkWindowControls` shows window frame controls.
@@ -110,6 +112,22 @@ func marshalWindowControlser(p uintptr) (interface{}, error) {
 	return wrapWindowControls(obj), nil
 }
 
+// NewWindowControls creates a new `GtkWindowControls`.
+func NewWindowControls(side PackType) *WindowControls {
+	var _arg1 C.GtkPackType // out
+	var _cret *C.GtkWidget  // in
+
+	_arg1 = C.GtkPackType(side)
+
+	_cret = C.gtk_window_controls_new(_arg1)
+
+	var _windowControls *WindowControls // out
+
+	_windowControls = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*WindowControls)
+
+	return _windowControls
+}
+
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 func (self *WindowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
@@ -183,4 +201,18 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
+}
+
+// SetSide determines which part of decoration layout the `GtkWindowControls`
+// uses.
+//
+// See [property@Gtk.WindowControls:decoration-layout].
+func (self *WindowControls) SetSide(side PackType) {
+	var _arg0 *C.GtkWindowControls // out
+	var _arg1 C.GtkPackType        // out
+
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GtkPackType(side)
+
+	C.gtk_window_controls_set_side(_arg0, _arg1)
 }

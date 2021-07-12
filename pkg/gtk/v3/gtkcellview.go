@@ -15,7 +15,6 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -59,7 +58,7 @@ type CellViewer interface {
 	// entire TreeModel.
 	SetFitModel(fitModel bool)
 	// SetModel sets the model for @cell_view.
-	SetModel(model TreeModeller)
+	SetModel(model TreeModeler)
 }
 
 // CellView displays a single row of a TreeModel using a CellArea and
@@ -176,7 +175,7 @@ func NewCellViewWithMarkup(markup string) *CellView {
 
 // NewCellViewWithPixbuf creates a new CellView widget, adds a
 // CellRendererPixbuf to it, and makes it show @pixbuf.
-func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuffer) *CellView {
+func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbufer) *CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
@@ -392,7 +391,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 // SetModel sets the model for @cell_view. If @cell_view already has a model
 // set, it will remove it before setting the new model. If @model is nil, then
 // it will unset the old model.
-func (cellView *CellView) SetModel(model TreeModeller) {
+func (cellView *CellView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 

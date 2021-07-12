@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -99,9 +98,9 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 // Assistanter describes Assistant's methods.
 type Assistanter interface {
 	// AddActionWidget adds a widget to the action area of a `GtkAssistant`.
-	AddActionWidget(child Widgetter)
+	AddActionWidget(child Widgeter)
 	// AppendPage appends a page to the @assistant.
-	AppendPage(page Widgetter) int
+	AppendPage(page Widgeter) int
 	// Commit erases the visited page history.
 	Commit()
 	// CurrentPage returns the page number of the current page.
@@ -111,34 +110,36 @@ type Assistanter interface {
 	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) *Widget
 	// Page returns the `GtkAssistantPage` object for @child.
-	Page(child Widgetter) *AssistantPage
+	Page(child Widgeter) *AssistantPage
 	// PageComplete gets whether @page is complete.
-	PageComplete(page Widgetter) bool
+	PageComplete(page Widgeter) bool
 	// PageTitle gets the title for @page.
-	PageTitle(page Widgetter) string
+	PageTitle(page Widgeter) string
 	// PageType gets the page type of @page.
-	PageType(page Widgetter) AssistantPageType
+	PageType(page Widgeter) AssistantPageType
 	// Pages gets a list model of the assistant pages.
 	Pages() *gio.ListModel
 	// InsertPage inserts a page in the @assistant at a given position.
-	InsertPage(page Widgetter, position int) int
+	InsertPage(page Widgeter, position int) int
 	// NextPage: navigate to the next page.
 	NextPage()
 	// PrependPage prepends a page to the @assistant.
-	PrependPage(page Widgetter) int
+	PrependPage(page Widgeter) int
 	// PreviousPage: navigate to the previous visited page.
 	PreviousPage()
 	// RemoveActionWidget removes a widget from the action area of a
 	// `GtkAssistant`.
-	RemoveActionWidget(child Widgetter)
+	RemoveActionWidget(child Widgeter)
 	// RemovePage removes the @page_num’s page from @assistant.
 	RemovePage(pageNum int)
 	// SetCurrentPage switches the page to @page_num.
 	SetCurrentPage(pageNum int)
 	// SetPageComplete sets whether @page contents are complete.
-	SetPageComplete(page Widgetter, complete bool)
+	SetPageComplete(page Widgeter, complete bool)
 	// SetPageTitle sets a title for @page.
-	SetPageTitle(page Widgetter, title string)
+	SetPageTitle(page Widgeter, title string)
+	// SetPageType sets the page type for @page.
+	SetPageType(page Widgeter, typ AssistantPageType)
 	// UpdateButtonsState forces @assistant to recompute the buttons state.
 	UpdateButtonsState()
 }
@@ -252,7 +253,7 @@ func NewAssistant() *Assistant {
 }
 
 // AddActionWidget adds a widget to the action area of a `GtkAssistant`.
-func (assistant *Assistant) AddActionWidget(child Widgetter) {
+func (assistant *Assistant) AddActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -263,7 +264,7 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 }
 
 // AppendPage appends a page to the @assistant.
-func (assistant *Assistant) AppendPage(page Widgetter) int {
+func (assistant *Assistant) AppendPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -348,7 +349,7 @@ func (assistant *Assistant) NthPage(pageNum int) *Widget {
 }
 
 // Page returns the `GtkAssistantPage` object for @child.
-func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
+func (assistant *Assistant) Page(child Widgeter) *AssistantPage {
 	var _arg0 *C.GtkAssistant     // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkAssistantPage // in
@@ -366,7 +367,7 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 }
 
 // PageComplete gets whether @page is complete.
-func (assistant *Assistant) PageComplete(page Widgetter) bool {
+func (assistant *Assistant) PageComplete(page Widgeter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -386,7 +387,7 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 }
 
 // PageTitle gets the title for @page.
-func (assistant *Assistant) PageTitle(page Widgetter) string {
+func (assistant *Assistant) PageTitle(page Widgeter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.char         // in
@@ -404,7 +405,7 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 }
 
 // PageType gets the page type of @page.
-func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
+func (assistant *Assistant) PageType(page Widgeter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
@@ -438,7 +439,7 @@ func (assistant *Assistant) Pages() *gio.ListModel {
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
-func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
+func (assistant *Assistant) InsertPage(page Widgeter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.int           // out
@@ -472,7 +473,7 @@ func (assistant *Assistant) NextPage() {
 }
 
 // PrependPage prepends a page to the @assistant.
-func (assistant *Assistant) PrependPage(page Widgetter) int {
+func (assistant *Assistant) PrependPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -505,7 +506,7 @@ func (assistant *Assistant) PreviousPage() {
 }
 
 // RemoveActionWidget removes a widget from the action area of a `GtkAssistant`.
-func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
+func (assistant *Assistant) RemoveActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -544,7 +545,7 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 //
 // This will make @assistant update the buttons state to be able to continue the
 // task.
-func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
+func (assistant *Assistant) SetPageComplete(page Widgeter, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -562,7 +563,7 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 //
 // The title is displayed in the header area of the assistant when @page is the
 // current page.
-func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
+func (assistant *Assistant) SetPageTitle(page Widgeter, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -573,6 +574,21 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
+}
+
+// SetPageType sets the page type for @page.
+//
+// The page type determines the page behavior in the @assistant.
+func (assistant *Assistant) SetPageType(page Widgeter, typ AssistantPageType) {
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 C.GtkAssistantPageType // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((page).(gextras.Nativer).Native()))
+	_arg2 = C.GtkAssistantPageType(typ)
+
+	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
 }
 
 // UpdateButtonsState forces @assistant to recompute the buttons state.

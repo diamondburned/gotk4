@@ -14,7 +14,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -57,7 +56,6 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RecentManagerOverrider interface {
-	//
 	Changed()
 }
 
@@ -349,6 +347,20 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// RecentManagerGetDefault gets a unique instance of `GtkRecentManager` that you
+// can share in your application without caring about memory management.
+func RecentManagerGetDefault() *RecentManager {
+	var _cret *C.GtkRecentManager // in
+
+	_cret = C.gtk_recent_manager_get_default()
+
+	var _recentManager *RecentManager // out
+
+	_recentManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*RecentManager)
+
+	return _recentManager
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when

@@ -13,7 +13,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -485,6 +484,78 @@ func marshalRole(p uintptr) (interface{}, error) {
 	return Role(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RoleForName: get the Role type corresponding to a rolew name.
+func RoleForName(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_for_name(_arg1)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// RoleGetLocalizedName gets the localized description string describing the
+// Role @role.
+func RoleGetLocalizedName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_localized_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleGetName gets the description string describing the Role @role.
+func RoleGetName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleRegister registers the role specified by @name. @name must be a
+// meaningful name. So it should not be empty, or consisting on whitespaces.
+//
+// Deprecated: Since 2.12. If your application/toolkit doesn't find a suitable
+// role for a specific object defined at Role, please submit a bug in order to
+// add a new role to the specification.
+func RoleRegister(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_register(_arg1)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
 // Function is a function definition used for padding which has been added to
 // class and interface structures to allow for expansion in the future.
 type Function func(userData cgo.Handle) (ok bool)
@@ -546,11 +617,8 @@ func (*ImplementorIface) privateImplementorIface() {}
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ObjectClassOverrider interface {
-	//
 	ActiveDescendantChanged(child *cgo.Handle)
-	//
 	ChildrenChanged(changeIndex uint, changedChild cgo.Handle)
-	//
 	FocusEvent(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	Description() string
@@ -566,7 +634,6 @@ type ObjectClassOverrider interface {
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
 	MDIZOrder() int
-	//
 	NChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
@@ -589,7 +656,6 @@ type ObjectClassOverrider interface {
 	// intended that this function should called only in the ..._new() functions
 	// used to create an instance of a subclass of Object
 	Initialize(data cgo.Handle)
-	//
 	PropertyChange(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
 	RefRelationSet() *RelationSet
@@ -613,14 +679,17 @@ type ObjectClassOverrider interface {
 	// SetParent sets the accessible parent of the accessible. @parent can be
 	// NULL.
 	SetParent(parent ObjectClasser)
-	//
+	// SetRole sets the role of the accessible.
+	SetRole(role Role)
 	StateChange(name string, stateSet bool)
-	//
 	VisibleDataChanged()
 }
 
 // ObjectClasser describes ObjectClass's methods.
 type ObjectClasser interface {
+	// AddRelationship adds a relationship of the specified type with the
+	// specified target.
+	AddRelationship(relationship RelationType, target ObjectClasser) bool
 	// AccessibleID gets the accessible id of the accessible.
 	AccessibleID() string
 	// Description gets the accessible description of the accessible.
@@ -660,6 +729,9 @@ type ObjectClasser interface {
 	RefStateSet() *StateSet
 	// RemovePropertyChangeHandler removes a property change handler.
 	RemovePropertyChangeHandler(handlerId uint)
+	// RemoveRelationship removes a relationship of the specified type with the
+	// specified target.
+	RemoveRelationship(relationship RelationType, target ObjectClasser) bool
 	// SetAccessibleID sets the accessible ID of the accessible.
 	SetAccessibleID(name string)
 	// SetDescription sets the accessible description of the accessible.
@@ -668,6 +740,8 @@ type ObjectClasser interface {
 	SetName(name string)
 	// SetParent sets the accessible parent of the accessible.
 	SetParent(parent ObjectClasser)
+	// SetRole sets the role of the accessible.
+	SetRole(role Role)
 }
 
 // ObjectClass: this class is the primary class for accessibility support via
@@ -705,6 +779,29 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapObject(obj), nil
+}
+
+// AddRelationship adds a relationship of the specified type with the specified
+// target.
+func (object *ObjectClass) AddRelationship(relationship RelationType, target ObjectClasser) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+
+	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // AccessibleID gets the accessible id of the accessible.
@@ -983,6 +1080,29 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	C.atk_object_remove_property_change_handler(_arg0, _arg1)
 }
 
+// RemoveRelationship removes a relationship of the specified type with the
+// specified target.
+func (object *ObjectClass) RemoveRelationship(relationship RelationType, target ObjectClasser) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+
+	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // SetAccessibleID sets the accessible ID of the accessible. This is not meant
 // to be presented to the user, but to be an ID which is stable over application
 // development. Typically, this is the gtkbuilder ID. Such an ID will be
@@ -1038,6 +1158,17 @@ func (accessible *ObjectClass) SetParent(parent ObjectClasser) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
 
 	C.atk_object_set_parent(_arg0, _arg1)
+}
+
+// SetRole sets the role of the accessible.
+func (accessible *ObjectClass) SetRole(role Role) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkRole    // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
+	_arg1 = C.AtkRole(role)
+
+	C.atk_object_set_role(_arg0, _arg1)
 }
 
 // Attribute is a string name/value pair representing a generic attribute. This

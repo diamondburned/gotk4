@@ -71,10 +71,6 @@ type ConversionValue struct {
 	// instead of the implementation one. This is useful for function
 	// parameters.
 	PreferPublic bool
-
-	// ManualCast, if true, will make GObject conversions from C to Go use the
-	// return type given instead of using the value wrapper.
-	ManualCast bool
 }
 
 // NewValue creates a new ConversionValue from the given parameter attributes.
@@ -239,6 +235,8 @@ type ValueConverted struct {
 	Resolved       *types.Resolved // only for type conversions
 	NeedsNamespace bool
 
+	log func(lvl logger.Level, v ...interface{})
+
 	// output writers
 	p       *pen.PaperString
 	inDecl  *pen.PaperString
@@ -258,7 +256,7 @@ type ValueName struct {
 	Declare string
 }
 
-func newValueConverted(value *ConversionValue) ValueConverted {
+func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
 	return ValueConverted{
 		ConversionValue: *value,
 		In: ValueName{
@@ -271,6 +269,7 @@ func newValueConverted(value *ConversionValue) ValueConverted {
 			Call: value.OutName,
 			Set:  value.OutName,
 		},
+		log:     conv.Logln,
 		p:       pen.NewPaperStringSize(1024), // 1KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
 		outDecl: pen.NewPaperStringSize(128),  // 0.1KB
@@ -307,8 +306,8 @@ func (value *ValueConverted) flush() {
 	value.Conversion = value.p.String()
 }
 
-func (value *ValueConverted) logln(conv *Converter, lvl logger.Level, v ...interface{}) {
-	conv.Logln(lvl, logger.Prefix(v, value.logPrefix())...)
+func (value *ValueConverted) Logln(lvl logger.Level, v ...interface{}) {
+	value.log(lvl, logger.Prefix(v, value.logPrefix())...)
 }
 
 // resolveType resolves the value type to the resolved field. If inputC is true,
@@ -401,34 +400,6 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	m := gotmpl.M{
 		"Value": value,
 		"Func":  gobjectFunction,
-	}
-
-	if value.ManualCast {
-		if !value.NeedsNamespace {
-			value.p.LineTmpl(m,
-				`<.Value.OutSet> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
-				              (externglib.<f>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))`,
-			)
-			return true
-		}
-
-		if tree := types.NewTree(conv.fgen); tree.ResolveFromType(value.Resolved) {
-			wrap := tree.Wrap("obj", &value.header)
-			if value.OutPtr(1) == "*" {
-				// Dereference the wrapped struct value by removing the &.
-				wrap = strings.TrimPrefix(wrap, "&")
-			}
-			m["Wrap"] = wrap
-
-			value.p.LineTmpl(m, `{
-				obj := externglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
-				<.Value.OutSet> = <.Wrap>
-			}`)
-
-			return true
-		}
-
-		// Fallback.
 	}
 
 	value.header.ImportCore("gextras")
@@ -570,6 +541,7 @@ func (value *ValueConverted) OutPtr(want int) string {
 		// Refuse to reference the value we converted, since that requires a
 		// temporary variable.
 		value.fail = true
+		value.Logln(logger.Debug, "OutPtr refusing to reference, has", has, "want", want)
 		return ""
 	}
 
@@ -579,6 +551,7 @@ func (value *ValueConverted) OutPtr(want int) string {
 func (value *ValueConverted) _ptr(has, want int) string {
 	if difference(has, want) > 1 {
 		value.fail = true
+		value.Logln(logger.Debug, "pointer difference too high, has", has, "want", want)
 		return ""
 	}
 

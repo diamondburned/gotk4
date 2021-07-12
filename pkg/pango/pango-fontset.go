@@ -14,16 +14,14 @@ import (
 
 // #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <pango/pango.h>
-//
 // gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontsetter},
+		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontseter},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimpler},
 	})
 }
@@ -70,14 +68,13 @@ type FontsetOverrider interface {
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
 	Font(wc uint) *Font
-	//
 	Language() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
 }
 
-// Fontsetter describes Fontset's methods.
-type Fontsetter interface {
+// Fontseter describes Fontset's methods.
+type Fontseter interface {
 	// Foreach iterates through all the fonts in a fontset, calling @func for
 	// each one.
 	Foreach(fn FontsetForeachFunc)
@@ -100,17 +97,17 @@ type Fontset struct {
 }
 
 var (
-	_ Fontsetter      = (*Fontset)(nil)
+	_ Fontseter       = (*Fontset)(nil)
 	_ gextras.Nativer = (*Fontset)(nil)
 )
 
-func wrapFontset(obj *externglib.Object) Fontsetter {
+func wrapFontset(obj *externglib.Object) Fontseter {
 	return &Fontset{
 		Object: obj,
 	}
 }
 
-func marshalFontsetter(p uintptr) (interface{}, error) {
+func marshalFontseter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontset(obj), nil

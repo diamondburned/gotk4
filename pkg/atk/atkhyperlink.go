@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
@@ -67,9 +66,7 @@ type HyperlinkOverrider interface {
 	// changed this method returns true if the link is still valid (with respect
 	// to the document it references) and false otherwise.
 	IsValid() bool
-	//
 	LinkActivated()
-	//
 	LinkState() uint
 }
 

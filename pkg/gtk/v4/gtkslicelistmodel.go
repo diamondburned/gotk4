@@ -12,19 +12,18 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeller},
+		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeler},
 	})
 }
 
-// SliceListModeller describes SliceListModel's methods.
-type SliceListModeller interface {
+// SliceListModeler describes SliceListModel's methods.
+type SliceListModeler interface {
 	// Model gets the model that is currently being used or nil if none.
 	Model() *gio.ListModel
 	// Offset gets the offset set via gtk_slice_list_model_set_offset().
@@ -32,7 +31,7 @@ type SliceListModeller interface {
 	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
 	// SetModel sets the model to show a slice of.
-	SetModel(model gio.ListModeller)
+	SetModel(model gio.ListModeler)
 	// SetOffset sets the offset into the original model for this slice.
 	SetOffset(offset uint)
 	// SetSize sets the maximum size.
@@ -52,11 +51,11 @@ type SliceListModel struct {
 }
 
 var (
-	_ SliceListModeller = (*SliceListModel)(nil)
-	_ gextras.Nativer   = (*SliceListModel)(nil)
+	_ SliceListModeler = (*SliceListModel)(nil)
+	_ gextras.Nativer  = (*SliceListModel)(nil)
 )
 
-func wrapSliceListModel(obj *externglib.Object) SliceListModeller {
+func wrapSliceListModel(obj *externglib.Object) SliceListModeler {
 	return &SliceListModel{
 		Object: obj,
 		ListModel: gio.ListModel{
@@ -65,7 +64,7 @@ func wrapSliceListModel(obj *externglib.Object) SliceListModeller {
 	}
 }
 
-func marshalSliceListModeller(p uintptr) (interface{}, error) {
+func marshalSliceListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSliceListModel(obj), nil
@@ -74,7 +73,7 @@ func marshalSliceListModeller(p uintptr) (interface{}, error) {
 // NewSliceListModel creates a new slice model.
 //
 // It presents the slice from @offset to offset + @size of the given @model.
-func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceListModel {
+func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out
@@ -144,7 +143,7 @@ func (self *SliceListModel) Size() uint {
 // SetModel sets the model to show a slice of.
 //
 // The model's item type must conform to @self's item type.
-func (self *SliceListModel) SetModel(model gio.ListModeller) {
+func (self *SliceListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 *C.GListModel        // out
 

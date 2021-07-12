@@ -11,7 +11,6 @@ import (
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
@@ -151,6 +150,17 @@ type Devicer interface {
 	// WindowAtPositionDouble obtains the window underneath @device, returning
 	// the location of the device in @win_x and @win_y in double precision.
 	WindowAtPositionDouble() (winX float64, winY float64, window *Window)
+	// Grab grabs the device so that all events coming from this device are
+	// passed to this application until the device is ungrabbed with
+	// gdk_device_ungrab(), or the window becomes unviewable.
+	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus
+	// SetAxisUse specifies how an axis of a device is used.
+	SetAxisUse(index_ uint, use AxisUse)
+	// SetKey specifies the X key event to generate when a macro button of a
+	// device is pressed.
+	SetKey(index_ uint, keyval uint, modifiers ModifierType)
+	// SetMode sets a the mode of an input device.
+	SetMode(mode InputMode) bool
 	// Ungrab: release any grab on @device.
 	Ungrab(time_ uint32)
 	// Warp warps @device in @display to the point @x,@y on the screen @screen,
@@ -601,6 +611,113 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 	return _winX, _winY, _window
 }
 
+// Grab grabs the device so that all events coming from this device are passed
+// to this application until the device is ungrabbed with gdk_device_ungrab(),
+// or the window becomes unviewable. This overrides any previous grab on the
+// device by this client.
+//
+// Note that @device and @window need to be on the same display.
+//
+// Device grabs are used for operations which need complete control over the
+// given device events (either pointer or keyboard). For example in GTK+ this is
+// used for Drag and Drop operations, popup menus and such.
+//
+// Note that if the event mask of an X window has selected both button press and
+// button release events, then a button press event will cause an automatic
+// pointer grab until the button is released. X does this automatically since
+// most applications expect to receive button press and release events in pairs.
+// It is equivalent to a pointer grab on the window with @owner_events set to
+// true.
+//
+// If you set up anything at the time you take the grab that needs to be cleaned
+// up when the grab ends, you should handle the EventGrabBroken events that are
+// emitted when the grab ends unvoluntarily.
+//
+// Deprecated: Use gdk_seat_grab() instead.
+func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus {
+	var _arg0 *C.GdkDevice       // out
+	var _arg1 *C.GdkWindow       // out
+	var _arg2 C.GdkGrabOwnership // out
+	var _arg3 C.gboolean         // out
+	var _arg4 C.GdkEventMask     // out
+	var _arg5 *C.GdkCursor       // out
+	var _arg6 C.guint32          // out
+	var _cret C.GdkGrabStatus    // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg2 = C.GdkGrabOwnership(grabOwnership)
+	if ownerEvents {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.GdkEventMask(eventMask)
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer((cursor).(gextras.Nativer).Native()))
+	_arg6 = C.guint32(time_)
+
+	_cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _grabStatus GrabStatus // out
+
+	_grabStatus = GrabStatus(_cret)
+
+	return _grabStatus
+}
+
+// SetAxisUse specifies how an axis of a device is used.
+func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
+	var _arg0 *C.GdkDevice // out
+	var _arg1 C.guint      // out
+	var _arg2 C.GdkAxisUse // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = C.GdkAxisUse(use)
+
+	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
+}
+
+// SetKey specifies the X key event to generate when a macro button of a device
+// is pressed.
+func (device *Device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
+	var _arg0 *C.GdkDevice      // out
+	var _arg1 C.guint           // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SetMode sets a the mode of an input device. The mode controls if the device
+// is active and whether the device’s range is mapped to the entire screen or to
+// a single window.
+//
+// Note: This is only meaningful for floating devices, master devices (and
+// slaves connected to these) drive the pointer cursor, which is not limited by
+// the input mode.
+func (device *Device) SetMode(mode InputMode) bool {
+	var _arg0 *C.GdkDevice   // out
+	var _arg1 C.GdkInputMode // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg1 = C.GdkInputMode(mode)
+
+	_cret = C.gdk_device_set_mode(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Ungrab: release any grab on @device.
 //
 // Deprecated: Use gdk_seat_ungrab() instead.
@@ -634,6 +751,37 @@ func (device *Device) Warp(screen Screener, x int, y int) {
 	_arg3 = C.gint(y)
 
 	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
+}
+
+// DeviceGrabInfoLibgtkOnly determines information about the current keyboard
+// grab. This is not public API and must not be used by applications.
+//
+// Deprecated: The symbol was never meant to be used outside of GTK+.
+func DeviceGrabInfoLibgtkOnly(display Displayer, device Devicer) (grabWindow *Window, ownerEvents bool, ok bool) {
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 *C.GdkDevice  // out
+	var _arg3 *C.GdkWindow  // in
+	var _arg4 C.gboolean    // in
+	var _cret C.gboolean    // in
+
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
+
+	_cret = C.gdk_device_grab_info_libgtk_only(_arg1, _arg2, &_arg3, &_arg4)
+
+	var _grabWindow *Window // out
+	var _ownerEvents bool   // out
+	var _ok bool            // out
+
+	_grabWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(*Window)
+	if _arg4 != 0 {
+		_ownerEvents = true
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _grabWindow, _ownerEvents, _ok
 }
 
 // TimeCoord stores a single event in a motion history.

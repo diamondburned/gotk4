@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -55,7 +54,7 @@ type ColumnViewColumner interface {
 	SetFixedWidth(fixedWidth int)
 	// SetHeaderMenu sets the menu model that is used to create the context menu
 	// for the column header.
-	SetHeaderMenu(menu gio.MenuModeller)
+	SetHeaderMenu(menu gio.MenuModeler)
 	// SetResizable sets whether this column should be resizable by dragging.
 	SetResizable(resizable bool)
 	// SetSorter associates a sorter with the column.
@@ -326,7 +325,7 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for
 // the column header.
-func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
+func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeler) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GMenuModel          // out
 

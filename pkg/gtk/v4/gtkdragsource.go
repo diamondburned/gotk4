@@ -12,7 +12,6 @@ import (
 
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
-//
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -33,6 +32,8 @@ type DragSourcer interface {
 	Content() *gdk.ContentProvider
 	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
 	Drag() *gdk.Drag
+	// SetActions sets the actions on the `GtkDragSource`.
+	SetActions(actions gdk.DragAction)
 	// SetContent sets a content provider on a `GtkDragSource`.
 	SetContent(content gdk.ContentProviderer)
 	// SetIcon sets a paintable to use as icon during DND operations.
@@ -189,6 +190,24 @@ func (source *DragSource) Drag() *gdk.Drag {
 	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(*gdk.Drag)
 
 	return _drag
+}
+
+// SetActions sets the actions on the `GtkDragSource`.
+//
+// During a DND operation, the actions are offered to potential drop targets. If
+// @actions include GDK_ACTION_MOVE, you need to listen to the
+// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being true.
+//
+// This function can be called before a drag is started, or in a handler for the
+// [signal@Gtk.DragSource::prepare] signal.
+func (source *DragSource) SetActions(actions gdk.DragAction) {
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 C.GdkDragAction  // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(source.Native()))
+	_arg1 = C.GdkDragAction(actions)
+
+	C.gtk_drag_source_set_actions(_arg0, _arg1)
 }
 
 // SetContent sets a content provider on a `GtkDragSource`.

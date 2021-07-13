@@ -113,7 +113,7 @@ func (color *Color) Hash() uint {
 	return _guint
 }
 
-// String returns a textual specification of @color in the hexadecimal form
+// String returns a textual specification of color in the hexadecimal form
 // “\#rrrrggggbbbb” where “r”, “g” and “b” are hex digits representing the red,
 // green and blue components respectively.
 //
@@ -136,11 +136,11 @@ func (color *Color) String() string {
 	return _utf8
 }
 
-// ColorParse parses a textual specification of a color and fill in the @red,
-// @green, and @blue fields of a Color.
+// ColorParse parses a textual specification of a color and fill in the red,
+// green, and blue fields of a Color.
 //
 // The string can either one of a large set of standard names (taken from the
-// X11 `rgb.txt` file), or it can be a hexadecimal value in the form “\#rgb”
+// X11 rgb.txt file), or it can be a hexadecimal value in the form “\#rgb”
 // “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
 // digits of the red, green, and blue components of the color, respectively.
 // (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and

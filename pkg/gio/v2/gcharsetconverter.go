@@ -34,7 +34,7 @@ func init() {
 
 // CharsetConverterer describes CharsetConverter's methods.
 type CharsetConverterer interface {
-	// NumFallbacks gets the number of fallbacks that @converter has applied so
+	// NumFallbacks gets the number of fallbacks that converter has applied so
 	// far.
 	NumFallbacks() uint
 	// UseFallback gets the Converter:use-fallback property.
@@ -95,7 +95,7 @@ func NewCharsetConverter(toCharset string, fromCharset string) (*CharsetConverte
 	return _charsetConverter, _goerr
 }
 
-// NumFallbacks gets the number of fallbacks that @converter has applied so far.
+// NumFallbacks gets the number of fallbacks that converter has applied so far.
 func (converter *CharsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in

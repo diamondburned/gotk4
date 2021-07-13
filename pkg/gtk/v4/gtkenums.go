@@ -104,7 +104,7 @@ func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
 // accessible state.
 //
 // Note that the GTK_ACCESSIBLE_INVALID_FALSE and GTK_ACCESSIBLE_INVALID_TRUE
-// have the same values as false and true.
+// have the same values as FALSE and TRUE.
 type AccessibleInvalidState int
 
 const (
@@ -122,7 +122,7 @@ func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
 	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleProperty: possible accessible properties of a `GtkAccessible`.
+// AccessibleProperty: possible accessible properties of a GtkAccessible.
 type AccessibleProperty int
 
 const (
@@ -193,7 +193,7 @@ func marshalAccessibleProperty(p uintptr) (interface{}, error) {
 	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRelation: possible accessible relations of a `GtkAccessible`.
+// AccessibleRelation: possible accessible relations of a GtkAccessible.
 //
 // Accessible relations can be references to other widgets, integers or strings.
 type AccessibleRelation int
@@ -266,7 +266,7 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRole: accessible role for a `GtkAccessible` implementation.
+// AccessibleRole: accessible role for a GtkAccessible implementation.
 //
 // Abstract roles are only used as part of the ontology; application developers
 // must not use abstract roles in their code.
@@ -286,8 +286,8 @@ const (
 	AccessibleRoleCaption
 	// Cell: unused
 	AccessibleRoleCell
-	// Checkbox: checkable input element that has three possible values: `true`,
-	// `false`, or `mixed`
+	// Checkbox: checkable input element that has three possible values: true,
+	// false, or mixed
 	AccessibleRoleCheckbox
 	// ColumnHeader: header in a columned list.
 	AccessibleRoleColumnHeader
@@ -471,7 +471,7 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleState: possible accessible states of a `GtkAccessible`.
+// AccessibleState: possible accessible states of a GtkAccessible.
 type AccessibleState int
 
 const (
@@ -511,15 +511,15 @@ func marshalAccessibleState(p uintptr) (interface{}, error) {
 // accessible state.
 //
 // Note that the GTK_ACCESSIBLE_TRISTATE_FALSE and GTK_ACCESSIBLE_TRISTATE_TRUE
-// have the same values as false and true.
+// have the same values as FALSE and TRUE.
 type AccessibleTristate int
 
 const (
-	// False: state is `false`
+	// False: state is false
 	AccessibleTristateFalse AccessibleTristate = iota
-	// True: state is `true`
+	// True: state is true
 	AccessibleTristateTrue
-	// Mixed: state is `mixed`
+	// Mixed: state is mixed
 	AccessibleTristateMixed
 )
 
@@ -530,11 +530,10 @@ func marshalAccessibleTristate(p uintptr) (interface{}, error) {
 // Align controls how a widget deals with extra space in a single dimension.
 //
 // Alignment only matters if the widget receives a “too large” allocation, for
-// example if you packed the widget with the [property@Gtk.Widget:hexpand]
-// property inside a `GtkBox`, then the widget might get extra space. If you
-// have for example a 16x16 icon inside a 32x32 space, the icon could be scaled
-// and stretched, it could be centered, or it could be positioned to one side of
-// the space.
+// example if you packed the widget with the gtk.Widget:hexpand property inside
+// a GtkBox, then the widget might get extra space. If you have for example a
+// 16x16 icon inside a 32x32 space, the icon could be scaled and stretched, it
+// could be centered, or it could be positioned to one side of the space.
 //
 // Note that in horizontal context GTK_ALIGN_START and GTK_ALIGN_END are
 // interpreted relative to text direction.
@@ -587,7 +586,7 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 // Whenever a container has some form of natural row it may align children in
 // that row along a common typographical baseline. If the amount of vertical
 // space in the row is taller than the total requested height of the
-// baseline-aligned children then it can use a `GtkBaselinePosition` to select
+// baseline-aligned children then it can use a GtkBaselinePosition to select
 // where to put the baseline inside the extra available space.
 type BaselinePosition int
 
@@ -635,7 +634,7 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 }
 
 // ConstraintAttribute: widget attributes that can be used when creating a
-// `GtkConstraint`.
+// GtkConstraint.
 type ConstraintAttribute int
 
 const (
@@ -786,8 +785,7 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventSequenceState describes the state of a `GdkEventSequence` in a
-// `GtkGesture`.
+// EventSequenceState describes the state of a GdkEventSequence in a GtkGesture.
 type EventSequenceState int
 
 const (
@@ -808,9 +806,9 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 // Icon sizes default to being inherited. Where they cannot be inherited, text
 // size is the default.
 //
-// All widgets which use `GtkIconSize` set the normal-icons or large-icons style
+// All widgets which use GtkIconSize set the normal-icons or large-icons style
 // classes correspondingly, and let themes determine the actual size to be used
-// with the `-gtk-icon-size` CSS property.
+// with the -gtk-icon-size CSS property.
 type IconSize int
 
 const (
@@ -874,7 +872,7 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Justification: used for justifying the text inside a `GtkLabel` widget.
+// Justification: used for justifying the text inside a GtkLabel widget.
 type Justification int
 
 const (
@@ -892,7 +890,7 @@ func marshalJustification(p uintptr) (interface{}, error) {
 	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// LevelBarMode describes how `GtkLevelBar` contents should be rendered.
+// LevelBarMode describes how GtkLevelBar contents should be rendered.
 //
 // Note that this enumeration could be extended with additional modes in the
 // future.
@@ -909,7 +907,7 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MessageType: type of message being displayed in a `GtkMessageDialog`.
+// MessageType: type of message being displayed in a GtkMessageDialog.
 type MessageType int
 
 const (
@@ -989,9 +987,9 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 
 // Ordering describes the way two values can be compared.
 //
-// These values can be used with a `GCompareFunc`. However, a `GCompareFunc` is
+// These values can be used with a GCompareFunc. However, a GCompareFunc is
 // allowed to return any integer values. For converting such a value to a
-// `GtkOrdering` value, use [func@Gtk.Ordering.from_cmpfunc].
+// GtkOrdering value, use gtk.Ordering().FromCmpfunc.
 type Ordering int
 
 const (
@@ -1007,8 +1005,8 @@ func marshalOrdering(p uintptr) (interface{}, error) {
 	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// OrderingFromCmpfunc converts the result of a `GCompareFunc` like strcmp() to
-// a `GtkOrdering` value.
+// OrderingFromCmpfunc converts the result of a GCompareFunc like strcmp() to a
+// GtkOrdering value.
 func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	var _arg1 C.int         // out
 	var _cret C.GtkOrdering // in
@@ -1026,7 +1024,7 @@ func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 
 // Orientation represents the orientation of widgets and other objects.
 //
-// Typical examples are `GtkBox or `GtkGesturePan`.
+// Typical examples are GtkBox or GtkGesturePan`.
 type Orientation int
 
 const (
@@ -1042,9 +1040,8 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 
 // Overflow defines how content overflowing a given area should be handled.
 //
-// This is used in [method@Gtk.Widget.set_overflow]. The
-// [property@Gtk.Widget:overflow] property is modeled after the CSS overflow
-// property, but implements it only partially.
+// This is used in gtk.Widget.SetOverflow(). The gtk.Widget:overflow property is
+// modeled after the CSS overflow property, but implements it only partially.
 type Overflow int
 
 const (
@@ -1062,7 +1059,7 @@ func marshalOverflow(p uintptr) (interface{}, error) {
 
 // PackType represents the packing location of a children in its parent.
 //
-// See `GtkWindowControls` for example.
+// See GtkWindowControls for example.
 type PackType int
 
 const (
@@ -1110,7 +1107,7 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PanDirection describes the panning direction of a `GtkGesturePan`
+// PanDirection describes the panning direction of a GtkGesturePan
 type PanDirection int
 
 const (
@@ -1131,7 +1128,7 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 // PositionType describes which edge of a widget a certain feature is positioned
 // at.
 //
-// For examples, see the tabs of a `GtkNotebook`, or the label of a `GtkScale`.
+// For examples, see the tabs of a GtkNotebook, or the label of a GtkScale.
 type PositionType int
 
 const (
@@ -1201,8 +1198,8 @@ func marshalPrintQuality(p uintptr) (interface{}, error) {
 	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PropagationLimit describes limits of a `GtkEventController` for handling
-// events targeting other widgets.
+// PropagationLimit describes limits of a GtkEventController for handling events
+// targeting other widgets.
 type PropagationLimit int
 
 const (
@@ -1219,7 +1216,7 @@ func marshalPropagationLimit(p uintptr) (interface{}, error) {
 }
 
 // PropagationPhase describes the stage at which events are fed into a
-// `GtkEventController`.
+// GtkEventController.
 type PropagationPhase int
 
 const (
@@ -1365,8 +1362,8 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutScope describes where `GtkShortcut`s added to a
-// `GtkShortcutController` get handled.
+// ShortcutScope describes where GtkShortcuts added to a GtkShortcutController
+// get handled.
 type ShortcutScope int
 
 const (
@@ -1439,7 +1436,7 @@ func marshalSortType(p uintptr) (interface{}, error) {
 // The values indicate which system setting has changed. Widgets may need to
 // drop caches, or react otherwise.
 //
-// Most of the values correspond to `GtkSettings` properties.
+// Most of the values correspond to GtkSettings properties.
 //
 // More values may be added over time.
 type SystemSetting int
@@ -1542,7 +1539,7 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 // or applications.
 //
 // Note that input methods may already tailor their behaviour according to the
-// `GtkInputPurpose` of the entry.
+// GtkInputPurpose of the entry.
 //
 // Some common sense is expected when using these flags - mixing
 // GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.

@@ -49,7 +49,7 @@ type FileMonitorer interface {
 	EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent)
 	// IsCancelled returns whether the monitor is canceled.
 	IsCancelled() bool
-	// SetRateLimit sets the rate limit to which the @monitor will report
+	// SetRateLimit sets the rate limit to which the monitor will report
 	// consecutive change events to the same file.
 	SetRateLimit(limitMsecs int)
 }
@@ -142,8 +142,8 @@ func (monitor *FileMonitor) IsCancelled() bool {
 	return _ok
 }
 
-// SetRateLimit sets the rate limit to which the @monitor will report
-// consecutive change events to the same file.
+// SetRateLimit sets the rate limit to which the monitor will report consecutive
+// change events to the same file.
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out

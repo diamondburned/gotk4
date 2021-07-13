@@ -113,13 +113,13 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 // DesktopAppInfor describes DesktopAppInfo's methods.
 type DesktopAppInfor interface {
 	// ActionName gets the user-visible display name of the "additional
-	// application action" specified by @action_name.
+	// application action" specified by action_name.
 	ActionName(actionName string) string
-	// Boolean looks up a boolean value in the keyfile backing @info.
+	// Boolean looks up a boolean value in the keyfile backing info.
 	Boolean(key string) bool
 	// Categories gets the categories from the desktop file.
 	Categories() string
-	// Filename: when @info was created from a known filename, return it.
+	// Filename: when info was created from a known filename, return it.
 	Filename() string
 	// GenericName gets the generic name from the desktop file.
 	GenericName() string
@@ -128,24 +128,24 @@ type DesktopAppInfor interface {
 	// Keywords gets the keywords from the desktop file.
 	Keywords() []string
 	// LocaleString looks up a localized string value in the keyfile backing
-	// @info translated to the current locale.
+	// info translated to the current locale.
 	LocaleString(key string) string
 	// Nodisplay gets the value of the NoDisplay key, which helps determine if
 	// the application info should be shown in menus.
 	Nodisplay() bool
 	// ShowIn checks if the application info should be shown in menus that list
 	// available applications for a specific name of the desktop, based on the
-	// `OnlyShowIn` and `NotShowIn` keys.
+	// OnlyShowIn and NotShowIn keys.
 	ShowIn(desktopEnv string) bool
-	// StartupWmClass retrieves the StartupWMClass field from @info.
+	// StartupWmClass retrieves the StartupWMClass field from info.
 	StartupWmClass() string
-	// String looks up a string value in the keyfile backing @info.
+	// String looks up a string value in the keyfile backing info.
 	String(key string) string
-	// HasKey returns whether @key exists in the "Desktop Entry" group of the
-	// keyfile backing @info.
+	// HasKey returns whether key exists in the "Desktop Entry" group of the
+	// keyfile backing info.
 	HasKey(key string) bool
 	// LaunchAction activates the named application action.
-	LaunchAction(actionName string, launchContext AppLaunchContexter)
+	LaunchAction(actionName string, launchContext *AppLaunchContext)
 	// ListActions returns the list of "additional application actions"
 	// supported on the desktop file, as per the desktop file specification.
 	ListActions() []string
@@ -153,8 +153,8 @@ type DesktopAppInfor interface {
 
 // DesktopAppInfo is an implementation of Info based on desktop files.
 //
-// Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// Note that <gio/gdesktopappinfo.h> belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the gio-unix-2.0.pc pkg-config file when
 // using it.
 type DesktopAppInfo struct {
 	*externglib.Object
@@ -186,12 +186,12 @@ func marshalDesktopAppInfor(p uintptr) (interface{}, error) {
 //
 // A desktop file id is the basename of the desktop file, including the .desktop
 // extension. GIO is looking for a desktop file with this name in the
-// `applications` subdirectories of the XDG data directories (i.e. the
-// directories specified in the `XDG_DATA_HOME` and `XDG_DATA_DIRS` environment
-// variables). GIO also supports the prefix-to-subdirectory mapping that is
-// described in the Menu Spec
-// (http://standards.freedesktop.org/menu-spec/latest/) (i.e. a desktop id of
-// kde-foo.desktop will match `/usr/share/applications/kde/foo.desktop`).
+// applications subdirectories of the XDG data directories (i.e. the directories
+// specified in the XDG_DATA_HOME and XDG_DATA_DIRS environment variables). GIO
+// also supports the prefix-to-subdirectory mapping that is described in the
+// Menu Spec (http://standards.freedesktop.org/menu-spec/latest/) (i.e. a
+// desktop id of kde-foo.desktop will match
+// /usr/share/applications/kde/foo.desktop).
 func NewDesktopAppInfo(desktopId string) *DesktopAppInfo {
 	var _arg1 *C.char            // out
 	var _cret *C.GDesktopAppInfo // in
@@ -240,7 +240,7 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) *DesktopAppInfo {
 }
 
 // ActionName gets the user-visible display name of the "additional application
-// action" specified by @action_name.
+// action" specified by action_name.
 //
 // This corresponds to the "Name" key within the keyfile group for the action.
 func (info *DesktopAppInfo) ActionName(actionName string) string {
@@ -261,9 +261,9 @@ func (info *DesktopAppInfo) ActionName(actionName string) string {
 	return _utf8
 }
 
-// Boolean looks up a boolean value in the keyfile backing @info.
+// Boolean looks up a boolean value in the keyfile backing info.
 //
-// The @key is looked up in the "Desktop Entry" group.
+// The key is looked up in the "Desktop Entry" group.
 func (info *DesktopAppInfo) Boolean(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -299,9 +299,9 @@ func (info *DesktopAppInfo) Categories() string {
 	return _utf8
 }
 
-// Filename: when @info was created from a known filename, return it. In some
+// Filename: when info was created from a known filename, return it. In some
 // situations such as the AppInfo returned from
-// g_desktop_app_info_new_from_keyfile(), this function will return nil.
+// g_desktop_app_info_new_from_keyfile(), this function will return NULL.
 func (info *DesktopAppInfo) Filename() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -380,10 +380,10 @@ func (info *DesktopAppInfo) Keywords() []string {
 	return _utf8s
 }
 
-// LocaleString looks up a localized string value in the keyfile backing @info
+// LocaleString looks up a localized string value in the keyfile backing info
 // translated to the current locale.
 //
-// The @key is looked up in the "Desktop Entry" group.
+// The key is looked up in the "Desktop Entry" group.
 func (info *DesktopAppInfo) LocaleString(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -424,15 +424,15 @@ func (info *DesktopAppInfo) Nodisplay() bool {
 
 // ShowIn checks if the application info should be shown in menus that list
 // available applications for a specific name of the desktop, based on the
-// `OnlyShowIn` and `NotShowIn` keys.
+// OnlyShowIn and NotShowIn keys.
 //
-// @desktop_env should typically be given as nil, in which case the
-// `XDG_CURRENT_DESKTOP` environment variable is consulted. If you want to
-// override the default mechanism then you may specify @desktop_env, but this is
+// desktop_env should typically be given as NULL, in which case the
+// XDG_CURRENT_DESKTOP environment variable is consulted. If you want to
+// override the default mechanism then you may specify desktop_env, but this is
 // not recommended.
 //
-// Note that g_app_info_should_show() for @info will include this check (with
-// nil for @desktop_env) as well as additional checks.
+// Note that g_app_info_should_show() for info will include this check (with
+// NULL for desktop_env) as well as additional checks.
 func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.gchar           // out
@@ -452,9 +452,9 @@ func (info *DesktopAppInfo) ShowIn(desktopEnv string) bool {
 	return _ok
 }
 
-// StartupWmClass retrieves the StartupWMClass field from @info. This represents
+// StartupWmClass retrieves the StartupWMClass field from info. This represents
 // the WM_CLASS property of the main window of the application, if launched
-// through @info.
+// through info.
 func (info *DesktopAppInfo) StartupWmClass() string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _cret *C.char            // in
@@ -470,9 +470,9 @@ func (info *DesktopAppInfo) StartupWmClass() string {
 	return _utf8
 }
 
-// String looks up a string value in the keyfile backing @info.
+// String looks up a string value in the keyfile backing info.
 //
-// The @key is looked up in the "Desktop Entry" group.
+// The key is looked up in the "Desktop Entry" group.
 func (info *DesktopAppInfo) String(key string) string {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -491,8 +491,8 @@ func (info *DesktopAppInfo) String(key string) string {
 	return _utf8
 }
 
-// HasKey returns whether @key exists in the "Desktop Entry" group of the
-// keyfile backing @info.
+// HasKey returns whether key exists in the "Desktop Entry" group of the keyfile
+// backing info.
 func (info *DesktopAppInfo) HasKey(key string) bool {
 	var _arg0 *C.GDesktopAppInfo // out
 	var _arg1 *C.char            // out
@@ -518,7 +518,7 @@ func (info *DesktopAppInfo) HasKey(key string) bool {
 // g_desktop_app_info_list_actions().
 //
 // Note that if the main entry of the desktop file indicates that the
-// application supports startup notification, and @launch_context is non-nil,
+// application supports startup notification, and launch_context is non-NULL,
 // then startup notification will be used when activating the action (and as
 // such, invocation of the action on the receiving side must signal the end of
 // startup notification when it is completed). This is the expected behaviour of
@@ -527,14 +527,14 @@ func (info *DesktopAppInfo) HasKey(key string) bool {
 //
 // As with g_app_info_launch() there is no way to detect failures that occur
 // while using this function.
-func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchContexter) {
+func (info *DesktopAppInfo) LaunchAction(actionName string, launchContext *AppLaunchContext) {
 	var _arg0 *C.GDesktopAppInfo   // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.GAppLaunchContext // out
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((launchContext).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
 
 	C.g_desktop_app_info_launch_action(_arg0, _arg1, _arg2)
 }
@@ -574,13 +574,13 @@ func (info *DesktopAppInfo) ListActions() []string {
 
 // DesktopAppInfoSetDesktopEnv sets the name of the desktop that the application
 // is running in. This is used by g_app_info_should_show() and
-// g_desktop_app_info_get_show_in() to evaluate the `OnlyShowIn` and `NotShowIn`
+// g_desktop_app_info_get_show_in() to evaluate the OnlyShowIn and NotShowIn
 // desktop entry fields.
 //
 // Should be called only once; subsequent calls are ignored.
 //
 // Deprecated: do not use this API. Since 2.42 the value of the
-// `XDG_CURRENT_DESKTOP` environment variable will be used.
+// XDG_CURRENT_DESKTOP environment variable will be used.
 func DesktopAppInfoSetDesktopEnv(desktopEnv string) {
 	var _arg1 *C.char // out
 

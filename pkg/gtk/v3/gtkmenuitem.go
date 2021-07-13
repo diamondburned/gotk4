@@ -34,11 +34,11 @@ type MenuItemOverrider interface {
 	ActivateItem()
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
-	// Label sets @text on the @menu_item label
+	// Label sets text on the menu_item label
 	Label() string
 	// Select emits the MenuItem::select signal on the given item.
 	Select()
-	// SetLabel sets @text on the @menu_item label
+	// SetLabel sets text on the menu_item label
 	SetLabel(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
@@ -55,11 +55,11 @@ type MenuItemer interface {
 	// Deselect emits the MenuItem::deselect signal on the given item.
 	Deselect()
 	// AccelPath: retrieve the accelerator path that was previously set on
-	// @menu_item.
+	// menu_item.
 	AccelPath() string
-	// Label sets @text on the @menu_item label
+	// Label sets text on the menu_item label
 	Label() string
-	// ReserveIndicator returns whether the @menu_item reserves space for the
+	// ReserveIndicator returns whether the menu_item reserves space for the
 	// submenu indicator, regardless if it has a submenu or not.
 	ReserveIndicator() bool
 	// RightJustified gets whether the menu item appears justified at the right
@@ -72,22 +72,22 @@ type MenuItemer interface {
 	UseUnderline() bool
 	// Select emits the MenuItem::select signal on the given item.
 	Select()
-	// SetAccelPath: set the accelerator path on @menu_item, through which
+	// SetAccelPath: set the accelerator path on menu_item, through which
 	// runtime changes of the menu item’s accelerator caused by the user can be
 	// identified and saved to persistent storage (see gtk_accel_map_save() on
 	// this).
 	SetAccelPath(accelPath string)
-	// SetLabel sets @text on the @menu_item label
+	// SetLabel sets text on the menu_item label
 	SetLabel(label string)
-	// SetReserveIndicator sets whether the @menu_item should reserve space for
+	// SetReserveIndicator sets whether the menu_item should reserve space for
 	// the submenu indicator, regardless if it actually has a submenu or not.
 	SetReserveIndicator(reserve bool)
 	// SetRightJustified sets whether the menu item appears justified at the
 	// right side of a menu bar.
 	SetRightJustified(rightJustified bool)
 	// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
-	// nil submenu is passed.
-	SetSubmenu(submenu Menuer)
+	// NULL submenu is passed.
+	SetSubmenu(submenu *Menu)
 	// SetUseUnderline: if true, an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
 	SetUseUnderline(setting bool)
@@ -205,7 +205,7 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 // NewMenuItemWithMnemonic creates a new MenuItem containing a label.
 //
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
-// in @label indicate the mnemonic for the menu item.
+// in label indicate the mnemonic for the menu item.
 func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -246,7 +246,7 @@ func (menuItem *MenuItem) Deselect() {
 }
 
 // AccelPath: retrieve the accelerator path that was previously set on
-// @menu_item.
+// menu_item.
 //
 // See gtk_menu_item_set_accel_path() for details.
 func (menuItem *MenuItem) AccelPath() string {
@@ -264,7 +264,7 @@ func (menuItem *MenuItem) AccelPath() string {
 	return _utf8
 }
 
-// Label sets @text on the @menu_item label
+// Label sets text on the menu_item label
 func (menuItem *MenuItem) Label() string {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.gchar       // in
@@ -280,8 +280,8 @@ func (menuItem *MenuItem) Label() string {
 	return _utf8
 }
 
-// ReserveIndicator returns whether the @menu_item reserves space for the
-// submenu indicator, regardless if it has a submenu or not.
+// ReserveIndicator returns whether the menu_item reserves space for the submenu
+// indicator, regardless if it has a submenu or not.
 func (menuItem *MenuItem) ReserveIndicator() bool {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret C.gboolean     // in
@@ -365,11 +365,11 @@ func (menuItem *MenuItem) Select() {
 	C.gtk_menu_item_select(_arg0)
 }
 
-// SetAccelPath: set the accelerator path on @menu_item, through which runtime
+// SetAccelPath: set the accelerator path on menu_item, through which runtime
 // changes of the menu item’s accelerator caused by the user can be identified
 // and saved to persistent storage (see gtk_accel_map_save() on this). To set up
 // a default accelerator for this menu item, call gtk_accel_map_add_entry() with
-// the same @accel_path. See also gtk_accel_map_add_entry() on the specifics of
+// the same accel_path. See also gtk_accel_map_add_entry() on the specifics of
 // accelerator paths, and gtk_menu_set_accel_path() for a more convenient
 // variant of this function.
 //
@@ -380,7 +380,7 @@ func (menuItem *MenuItem) Select() {
 // Note that you do need to set an accelerator on the parent menu with
 // gtk_menu_set_accel_group() for this to work.
 //
-// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
 func (menuItem *MenuItem) SetAccelPath(accelPath string) {
@@ -393,7 +393,7 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
 }
 
-// SetLabel sets @text on the @menu_item label
+// SetLabel sets text on the menu_item label
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.gchar       // out
@@ -404,7 +404,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 	C.gtk_menu_item_set_label(_arg0, _arg1)
 }
 
-// SetReserveIndicator sets whether the @menu_item should reserve space for the
+// SetReserveIndicator sets whether the menu_item should reserve space for the
 // submenu indicator, regardless if it actually has a submenu or not.
 //
 // There should be little need for applications to call this functions.
@@ -440,14 +440,14 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	C.gtk_menu_item_set_right_justified(_arg0, _arg1)
 }
 
-// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a nil
-// submenu is passed.
-func (menuItem *MenuItem) SetSubmenu(submenu Menuer) {
+// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
+// NULL submenu is passed.
+func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	var _arg0 *C.GtkMenuItem // out
 	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(submenu.Native()))
 
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
 }

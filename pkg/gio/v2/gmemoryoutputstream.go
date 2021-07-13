@@ -34,7 +34,7 @@ func init() {
 
 // MemoryOutputStreamer describes MemoryOutputStream's methods.
 type MemoryOutputStreamer interface {
-	// Data gets any loaded data from the @ostream.
+	// Data gets any loaded data from the ostream.
 	Data() cgo.Handle
 	// DataSize returns the number of bytes from the start up to including the
 	// last byte written in the stream that has not been truncated away.
@@ -42,7 +42,7 @@ type MemoryOutputStreamer interface {
 	// Size gets the size of the currently allocated data area (available from
 	// g_memory_output_stream_get_data()).
 	Size() uint
-	// StealData gets any loaded data from the @ostream.
+	// StealData gets any loaded data from the ostream.
 	StealData() cgo.Handle
 }
 
@@ -105,7 +105,7 @@ func (v *MemoryOutputStream) Native() uintptr {
 	return v.OutputStream.Object.Native()
 }
 
-// Data gets any loaded data from the @ostream.
+// Data gets any loaded data from the ostream.
 //
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
@@ -170,11 +170,11 @@ func (ostream *MemoryOutputStream) Size() uint {
 	return _gsize
 }
 
-// StealData gets any loaded data from the @ostream. Ownership of the data is
+// StealData gets any loaded data from the ostream. Ownership of the data is
 // transferred to the caller; when no longer needed it must be freed using the
-// free function set in @ostream's OutputStream:destroy-function property.
+// free function set in ostream's OutputStream:destroy-function property.
 //
-// @ostream must be closed before calling this function.
+// ostream must be closed before calling this function.
 func (ostream *MemoryOutputStream) StealData() cgo.Handle {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in

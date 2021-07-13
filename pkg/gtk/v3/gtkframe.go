@@ -41,7 +41,7 @@ type Framer interface {
 	SetLabelAlign(xalign float32, yalign float32)
 	// SetLabelWidget sets the Frame:label-widget for the frame.
 	SetLabelWidget(labelWidget Widgeter)
-	// SetShadowType sets the Frame:shadow-type for @frame, i.e.
+	// SetShadowType sets the Frame:shadow-type for frame, i.e.
 	SetShadowType(typ ShadowType)
 }
 
@@ -119,7 +119,7 @@ func marshalFramer(p uintptr) (interface{}, error) {
 	return wrapFrame(obj), nil
 }
 
-// NewFrame creates a new Frame, with optional label @label. If @label is nil,
+// NewFrame creates a new Frame, with optional label label. If label is NULL,
 // the label is omitted.
 func NewFrame(label string) *Frame {
 	var _arg1 *C.gchar     // out
@@ -137,7 +137,7 @@ func NewFrame(label string) *Frame {
 }
 
 // Label: if the frame’s label widget is a Label, returns the text in the label
-// widget. (The frame will have a Label for the label widget if a non-nil
+// widget. (The frame will have a Label for the label widget if a non-NULL
 // argument was passed to gtk_frame_new().)
 func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
@@ -208,7 +208,7 @@ func (frame *Frame) ShadowType() ShadowType {
 	return _shadowType
 }
 
-// SetLabel removes the current Frame:label-widget. If @label is not nil,
+// SetLabel removes the current Frame:label-widget. If label is not NULL,
 // creates a new Label with that text and adds it as the Frame:label-widget.
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
@@ -246,7 +246,7 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 }
 
-// SetShadowType sets the Frame:shadow-type for @frame, i.e. whether it is drawn
+// SetShadowType sets the Frame:shadow-type for frame, i.e. whether it is drawn
 // without (GTK_SHADOW_NONE) or with (other values) a visible border. Values
 // other than GTK_SHADOW_NONE are treated identically by GtkFrame. The chosen
 // type is applied by removing or adding the .flat class to the CSS node named

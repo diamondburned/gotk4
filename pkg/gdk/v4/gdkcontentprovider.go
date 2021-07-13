@@ -29,17 +29,17 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ContentProviderOverrider interface {
-	AttachClipboard(clipboard Clipboarder)
+	AttachClipboard(clipboard *Clipboard)
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
-	DetachClipboard(clipboard Clipboarder)
-	// Value gets the contents of @provider stored in @value.
+	DetachClipboard(clipboard *Clipboard)
+	// Value gets the contents of provider stored in value.
 	//
-	// The @value will have been initialized to the `GType` the value should be
-	// provided in. This given `GType` does not need to be listed in the formats
-	// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
-	// given `GType` is not supported, this operation can fail and
-	// IO_ERROR_NOT_SUPPORTED will be reported.
+	// The value will have been initialized to the GType the value should be
+	// provided in. This given GType does not need to be listed in the formats
+	// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
+	// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will
+	// be reported.
 	Value(value *externglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
@@ -49,12 +49,11 @@ type ContentProviderOverrider interface {
 	//
 	// An example of such an application would be a clipboard manager.
 	//
-	// This can be assumed to be a subset of
-	// [method@Gdk.ContentProvider.ref_formats].
+	// This can be assumed to be a subset of gdk.ContentProvider.RefFormats().
 	RefStorableFormats() *ContentFormats
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
-	// See [method@Gdk.ContentProvider.write_mime_type_async].
+	// See gdk.ContentProvider.WriteMIMETypeAsync().
 	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
@@ -62,7 +61,7 @@ type ContentProviderOverrider interface {
 type ContentProviderer interface {
 	// ContentChanged emits the ::content-changed signal.
 	ContentChanged()
-	// Value gets the contents of @provider stored in @value.
+	// Value gets the contents of provider stored in value.
 	Value(value *externglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
@@ -74,16 +73,15 @@ type ContentProviderer interface {
 	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
-// ContentProvider: `GdkContentProvider` is used to provide content for the
+// ContentProvider: GdkContentProvider is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //
-// To create a `GdkContentProvider`, use
-// [ctor@Gdk.ContentProvider.new_for_value] or
-// [ctor@Gdk.ContentProvider.new_for_bytes].
+// To create a GdkContentProvider, use gdk.ContentProvider.NewForValue or
+// gdk.ContentProvider.NewForBytes.
 //
 // GDK knows how to handle common text and image formats out-of-the-box. See
-// [class@Gdk.ContentSerializer] and [class@Gdk.ContentDeserializer] if you want
-// to add support for application-specific data formats.
+// gdk.ContentSerializer and gdk.ContentDeserializer if you want to add support
+// for application-specific data formats.
 type ContentProvider struct {
 	*externglib.Object
 }
@@ -106,7 +104,7 @@ func marshalContentProviderer(p uintptr) (interface{}, error) {
 }
 
 // NewContentProviderForValue: create a content provider that provides the given
-// @value.
+// value.
 func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 	var _arg1 *C.GValue             // out
 	var _cret *C.GdkContentProvider // in
@@ -123,17 +121,20 @@ func NewContentProviderForValue(value *externglib.Value) *ContentProvider {
 }
 
 // NewContentProviderUnion creates a content provider that represents all the
-// given @providers.
+// given providers.
 //
 // Whenever data needs to be written, the union provider will try the given
-// @providers in the given order and the first one supporting a format will be
+// providers in the given order and the first one supporting a format will be
 // chosen to provide it.
 //
 // This allows an easy way to support providing data in different formats. For
 // example, an image may be provided by its file and by the image contents with
-// a call such as “`c gdk_content_provider_new_union ((GdkContentProvider *[2])
-// { gdk_content_provider_new_typed (G_TYPE_FILE, file),
-// gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture) }, 2); “`
+// a call such as
+//
+//    gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+//                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
+//                                      gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
+//                                    }, 2);
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg1 **C.GdkContentProvider
 	var _arg2 C.gsize
@@ -167,13 +168,13 @@ func (provider *ContentProvider) ContentChanged() {
 	C.gdk_content_provider_content_changed(_arg0)
 }
 
-// Value gets the contents of @provider stored in @value.
+// Value gets the contents of provider stored in value.
 //
-// The @value will have been initialized to the `GType` the value should be
-// provided in. This given `GType` does not need to be listed in the formats
-// returned by [method@Gdk.ContentProvider.ref_formats]. However, if the given
-// `GType` is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED
-// will be reported.
+// The value will have been initialized to the GType the value should be
+// provided in. This given GType does not need to be listed in the formats
+// returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
+// not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
+// reported.
 func (provider *ContentProvider) Value(value *externglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GValue             // out
@@ -217,8 +218,7 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 //
 // An example of such an application would be a clipboard manager.
 //
-// This can be assumed to be a subset of
-// [method@Gdk.ContentProvider.ref_formats].
+// This can be assumed to be a subset of gdk.ContentProvider.RefFormats().
 func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
 	var _cret *C.GdkContentFormats  // in
@@ -240,7 +240,7 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 
 // WriteMIMETypeFinish finishes an asynchronous write operation.
 //
-// See [method@Gdk.ContentProvider.write_mime_type_async].
+// See gdk.ContentProvider.WriteMIMETypeAsync().
 func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg1 *C.GAsyncResult       // out

@@ -26,15 +26,15 @@ type FileChooserWidgeter interface {
 	privateFileChooserWidget()
 }
 
-// FileChooserWidget: `GtkFileChooserWidget` is a widget for choosing files.
+// FileChooserWidget: GtkFileChooserWidget is a widget for choosing files.
 //
-// It exposes the [iface@Gtk.FileChooser] interface, and you should use the
-// methods of this interface to interact with the widget.
+// It exposes the gtk.FileChooser interface, and you should use the methods of
+// this interface to interact with the widget.
 //
 //
 // CSS nodes
 //
-// `GtkFileChooserWidget` has a single CSS node with name filechooser.
+// GtkFileChooserWidget has a single CSS node with name filechooser.
 type FileChooserWidget struct {
 	Widget
 
@@ -74,10 +74,10 @@ func marshalFileChooserWidgeter(p uintptr) (interface{}, error) {
 	return wrapFileChooserWidget(obj), nil
 }
 
-// NewFileChooserWidget creates a new `GtkFileChooserWidget`.
+// NewFileChooserWidget creates a new GtkFileChooserWidget.
 //
 // This is a file chooser widget that can be embedded in custom windows, and it
-// is the same widget that is used by `GtkFileChooserDialog`.
+// is the same widget that is used by GtkFileChooserDialog.
 func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out
 	var _cret *C.GtkWidget           // in

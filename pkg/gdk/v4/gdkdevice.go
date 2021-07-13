@@ -56,11 +56,11 @@ type Devicer interface {
 	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 	// locked.
 	CapsLockState() bool
-	// DeviceTool retrieves the current tool for @device.
+	// DeviceTool retrieves the current tool for device.
 	DeviceTool() *DeviceTool
 	// Direction returns the direction of effective layout of the keyboard.
 	Direction() pango.Direction
-	// Display returns the `GdkDisplay` to which @device pertains.
+	// Display returns the GdkDisplay to which device pertains.
 	Display() *Display
 	// HasCursor determines whether the pointer follows device motion.
 	HasCursor() bool
@@ -71,20 +71,20 @@ type Devicer interface {
 	// NumLockState retrieves whether the Num Lock modifier of the keyboard is
 	// locked.
 	NumLockState() bool
-	// NumTouches retrieves the number of touch points associated to @device.
+	// NumTouches retrieves the number of touch points associated to device.
 	NumTouches() uint
 	// ProductID returns the product ID of this device.
 	ProductID() string
 	// ScrollLockState retrieves whether the Scroll Lock modifier of the
 	// keyboard is locked.
 	ScrollLockState() bool
-	// Seat returns the `GdkSeat` the device belongs to.
+	// Seat returns the GdkSeat the device belongs to.
 	Seat() *Seat
 	// Source determines the type of the device.
 	Source() InputSource
-	// SurfaceAtPosition obtains the surface underneath @device, returning the
-	// location of the device in @win_x and @win_y Returns nil if the surface
-	// tree under @device is not known to GDK (for example, belongs to another
+	// SurfaceAtPosition obtains the surface underneath device, returning the
+	// location of the device in win_x and win_y Returns NULL if the surface
+	// tree under device is not known to GDK (for example, belongs to another
 	// application).
 	SurfaceAtPosition() (winX float64, winY float64, surface *Surface)
 	// Timestamp returns the timestamp of the last activity for this device.
@@ -96,11 +96,11 @@ type Devicer interface {
 	HasBidiLayouts() bool
 }
 
-// Device: `GdkDevice` object represents an input device, such as a keyboard, a
+// Device: GdkDevice object represents an input device, such as a keyboard, a
 // mouse, or a touchpad.
 //
-// See the [class@Gdk.Seat] documentation for more information about the various
-// kinds of devices, and their relationships.
+// See the gdk.Seat documentation for more information about the various kinds
+// of devices, and their relationships.
 type Device struct {
 	*externglib.Object
 }
@@ -143,7 +143,7 @@ func (device *Device) CapsLockState() bool {
 	return _ok
 }
 
-// DeviceTool retrieves the current tool for @device.
+// DeviceTool retrieves the current tool for device.
 func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
 	var _cret *C.GdkDeviceTool // in
@@ -164,7 +164,7 @@ func (device *Device) DeviceTool() *DeviceTool {
 // This is only relevant for keyboard devices.
 //
 // The direction of a layout is the direction of the majority of its symbols.
-// See [func@Pango.unichar_direction].
+// See pango.UnicharDirection().
 func (device *Device) Direction() pango.Direction {
 	var _arg0 *C.GdkDevice     // out
 	var _cret C.PangoDirection // in
@@ -180,7 +180,7 @@ func (device *Device) Direction() pango.Direction {
 	return _direction
 }
 
-// Display returns the `GdkDisplay` to which @device pertains.
+// Display returns the GdkDisplay to which device pertains.
 func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
 	var _cret *C.GdkDisplay // in
@@ -271,7 +271,7 @@ func (device *Device) NumLockState() bool {
 	return _ok
 }
 
-// NumTouches retrieves the number of touch points associated to @device.
+// NumTouches retrieves the number of touch points associated to device.
 func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
@@ -290,7 +290,7 @@ func (device *Device) NumTouches() uint {
 // ProductID returns the product ID of this device.
 //
 // This ID is retrieved from the device, and does not change. See
-// [method@Gdk.Device.get_vendor_id] for more information.
+// gdk.Device.GetVendorID() for more information.
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -327,7 +327,7 @@ func (device *Device) ScrollLockState() bool {
 	return _ok
 }
 
-// Seat returns the `GdkSeat` the device belongs to.
+// Seat returns the GdkSeat the device belongs to.
 func (device *Device) Seat() *Seat {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
@@ -359,10 +359,10 @@ func (device *Device) Source() InputSource {
 	return _inputSource
 }
 
-// SurfaceAtPosition obtains the surface underneath @device, returning the
-// location of the device in @win_x and @win_y
+// SurfaceAtPosition obtains the surface underneath device, returning the
+// location of the device in win_x and win_y
 //
-// Returns nil if the surface tree under @device is not known to GDK (for
+// Returns NULL if the surface tree under device is not known to GDK (for
 // example, belongs to another application).
 func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface *Surface) {
 	var _arg0 *C.GdkDevice  // out
@@ -409,23 +409,26 @@ func (device *Device) Timestamp() uint32 {
 //
 // This ID is retrieved from the device, and does not change.
 //
-// This function, together with [method@Gdk.Device.get_product_id], can be used
-// to eg. compose `GSettings` paths to store settings for this device.
+// This function, together with gdk.Device.GetProductID(), can be used to eg.
+// compose GSettings paths to store settings for this device.
 //
-// “`c static GSettings * get_device_settings (GdkDevice *device) { const char
-// *vendor, *product; GSettings *settings; GdkDevice *device; char *path;
+//     static GSettings *
+//     get_device_settings (GdkDevice *device)
+//     {
+//       const char *vendor, *product;
+//       GSettings *settings;
+//       GdkDevice *device;
+//       char *path;
 //
-//      vendor = gdk_device_get_vendor_id (device);
-//      product = gdk_device_get_product_id (device);
+//       vendor = gdk_device_get_vendor_id (device);
+//       product = gdk_device_get_product_id (device);
 //
-//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
-//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
-//      g_free (path);
+//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+//       g_free (path);
 //
-//      return settings;
-//    }
-//
-// “`
+//       return settings;
+//     }
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in

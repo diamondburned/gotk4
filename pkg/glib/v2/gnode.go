@@ -15,10 +15,15 @@ import "C"
 
 // TraverseType specifies the type of traversal performed by g_tree_traverse(),
 // g_node_traverse() and g_node_find(). The different orders are illustrated
-// here: - In order: A, B, C, D, E, F, G, H, I !
-// (Sorted_binary_tree_inorder.svg) - Pre order: F, B, A, D, C, E, G, I, H !
-// (Sorted_binary_tree_preorder.svg) - Post order: A, C, E, D, B, H, I, G, F !
-// (Sorted_binary_tree_postorder.svg) - Level order: F, B, G, A, D, I, C, E, H !
+// here:
+//
+// - In order: A, B, C, D, E, F, G, H, I ! (Sorted_binary_tree_inorder.svg)
+//
+// - Pre order: F, B, A, D, C, E, G, I, H ! (Sorted_binary_tree_preorder.svg)
+//
+// - Post order: A, C, E, D, B, H, I, G, F ! (Sorted_binary_tree_postorder.svg)
+//
+// - Level order: F, B, G, A, D, I, C, E, H !
 // (Sorted_binary_tree_breadth-first_traversal.svg)
 type TraverseType int
 
@@ -89,7 +94,7 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 }
 
 // ChildPosition gets the position of a #GNode with respect to its siblings.
-// @child must be a child of @node. The first child is numbered 0, the second 1,
+// child must be a child of node. The first child is numbered 0, the second 1,
 // and so on.
 func (node *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
@@ -110,7 +115,7 @@ func (node *Node) ChildPosition(child *Node) int {
 
 // Depth gets the depth of a #GNode.
 //
-// If @node is nil the depth is 0. The root node has a depth of 1. For the
+// If node is NULL the depth is 0. The root node has a depth of 1. For the
 // children of the root node the depth is 2. And so on.
 func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
@@ -127,7 +132,7 @@ func (node *Node) Depth() uint {
 	return _guint
 }
 
-// Destroy removes @root and its children from the tree, freeing any memory
+// Destroy removes root and its children from the tree, freeing any memory
 // allocated.
 func (root *Node) Destroy() {
 	var _arg0 *C.GNode // out
@@ -137,9 +142,9 @@ func (root *Node) Destroy() {
 	C.g_node_destroy(_arg0)
 }
 
-// IsAncestor returns true if @node is an ancestor of @descendant. This is true
-// if node is the parent of @descendant, or if node is the grandparent of
-// @descendant etc.
+// IsAncestor returns TRUE if node is an ancestor of descendant. This is true if
+// node is the parent of descendant, or if node is the grandparent of descendant
+// etc.
 func (node *Node) IsAncestor(descendant *Node) bool {
 	var _arg0 *C.GNode   // out
 	var _arg1 *C.GNode   // out
@@ -162,8 +167,8 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 // MaxHeight gets the maximum height of all branches beneath a #GNode. This is
 // the maximum distance from the #GNode to all leaf nodes.
 //
-// If @root is nil, 0 is returned. If @root has no children, 1 is returned. If
-// @root has children, 2 is returned. And so on.
+// If root is NULL, 0 is returned. If root has no children, 1 is returned. If
+// root has children, 2 is returned. And so on.
 func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in

@@ -25,25 +25,24 @@ func init() {
 type StackSidebarer interface {
 	// Stack retrieves the stack.
 	Stack() *Stack
-	// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
-	SetStack(stack Stacker)
+	// SetStack: set the GtkStack associated with this GtkStackSidebar.
+	SetStack(stack *Stack)
 }
 
-// StackSidebar: `GtkStackSidebar` uses a sidebar to switch between `GtkStack`
+// StackSidebar: GtkStackSidebar uses a sidebar to switch between GtkStack
 // pages.
 //
-// In order to use a `GtkStackSidebar`, you simply use a `GtkStack` to organize
-// your UI flow, and add the sidebar to your sidebar area. You can use
-// [method@Gtk.StackSidebar.set_stack] to connect the `GtkStackSidebar` to the
-// `GtkStack`.
+// In order to use a GtkStackSidebar, you simply use a GtkStack to organize your
+// UI flow, and add the sidebar to your sidebar area. You can use
+// gtk.StackSidebar.SetStack() to connect the GtkStackSidebar to the GtkStack.
 //
 //
 // CSS nodes
 //
-// `GtkStackSidebar` has a single CSS node with name stacksidebar and style
-// class .sidebar.
+// GtkStackSidebar has a single CSS node with name stacksidebar and style class
+// .sidebar.
 //
-// When circumstances require it, `GtkStackSidebar` adds the .needs-attention
+// When circumstances require it, GtkStackSidebar adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSidebar struct {
 	Widget
@@ -79,7 +78,7 @@ func marshalStackSidebarer(p uintptr) (interface{}, error) {
 	return wrapStackSidebar(obj), nil
 }
 
-// NewStackSidebar creates a new `GtkStackSidebar`.
+// NewStackSidebar creates a new GtkStackSidebar.
 func NewStackSidebar() *StackSidebar {
 	var _cret *C.GtkWidget // in
 
@@ -108,16 +107,16 @@ func (self *StackSidebar) Stack() *Stack {
 	return _stack
 }
 
-// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
+// SetStack: set the GtkStack associated with this GtkStackSidebar.
 //
 // The sidebar widget will automatically update according to the order and items
-// within the given `GtkStack`.
-func (self *StackSidebar) SetStack(stack Stacker) {
+// within the given GtkStack.
+func (self *StackSidebar) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((stack).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

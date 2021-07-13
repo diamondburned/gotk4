@@ -32,13 +32,13 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
-	GotPageSize(context PrintContexter, pageSetup PageSetuper)
+	GotPageSize(context *PrintContext, pageSetup *PageSetup)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
-	Ready(context PrintContexter)
+	Ready(context *PrintContext)
 	// RenderPage renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
+	// was passed to the PrintOperation::preview handler together with preview.
 	//
 	// A custom iprint preview should use this function in its ::expose handler
 	// to render the currently selected page.
@@ -56,7 +56,7 @@ type PrintOperationPreviewer interface {
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
 	// RenderPage renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
+	// was passed to the PrintOperation::preview handler together with preview.
 	RenderPage(pageNr int)
 }
 
@@ -114,7 +114,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 }
 
 // RenderPage renders a page to the preview, using the print context that was
-// passed to the PrintOperation::preview handler together with @preview.
+// passed to the PrintOperation::preview handler together with preview.
 //
 // A custom iprint preview should use this function in its ::expose handler to
 // render the currently selected page.

@@ -23,23 +23,22 @@ func init() {
 
 // EventControllerFocuser describes EventControllerFocus's methods.
 type EventControllerFocuser interface {
-	// ContainsFocus returns true if focus is within @self or one of its
+	// ContainsFocus returns TRUE if focus is within self or one of its
 	// children.
 	ContainsFocus() bool
-	// IsFocus returns true if focus is within @self, but not one of its
+	// IsFocus returns TRUE if focus is within self, but not one of its
 	// children.
 	IsFocus() bool
 }
 
-// EventControllerFocus: `GtkEventControllerFocus` is an event controller to
-// keep track of keyboard focus.
+// EventControllerFocus: GtkEventControllerFocus is an event controller to keep
+// track of keyboard focus.
 //
-// The event controller offers [signal@Gtk.EventControllerFocus::enter] and
-// [signal@Gtk.EventControllerFocus::leave] signals, as well as
-// [property@Gtk.EventControllerFocus:is-focus] and
-// [property@Gtk.EventControllerFocus:contains-focus] properties which are
-// updated to reflect focus changes inside the widget hierarchy that is rooted
-// at the controllers widget.
+// The event controller offers gtk.EventControllerFocus::enter and
+// gtk.EventControllerFocus::leave signals, as well as
+// gtk.EventControllerFocus:is-focus and gtk.EventControllerFocus:contains-focus
+// properties which are updated to reflect focus changes inside the widget
+// hierarchy that is rooted at the controllers widget.
 type EventControllerFocus struct {
 	EventController
 }
@@ -77,7 +76,7 @@ func NewEventControllerFocus() *EventControllerFocus {
 	return _eventControllerFocus
 }
 
-// ContainsFocus returns true if focus is within @self or one of its children.
+// ContainsFocus returns TRUE if focus is within self or one of its children.
 func (self *EventControllerFocus) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in
@@ -95,7 +94,7 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 	return _ok
 }
 
-// IsFocus returns true if focus is within @self, but not one of its children.
+// IsFocus returns TRUE if focus is within self, but not one of its children.
 func (self *EventControllerFocus) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
 	var _cret C.gboolean                 // in

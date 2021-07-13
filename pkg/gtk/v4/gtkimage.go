@@ -25,8 +25,7 @@ func init() {
 	})
 }
 
-// ImageType describes the image data representation used by a
-// [class@Gtk.Image].
+// ImageType describes the image data representation used by a gtk.Image.
 //
 // If you want to get the image from the widget, you can only get the
 // currently-stored representation; for instance, if the
@@ -34,7 +33,7 @@ func init() {
 // gtk_image_get_paintable().
 //
 // For empty images, you can request any storage type (call any of the "get"
-// functions), but they will all return nil values.
+// functions), but they will all return NULL values.
 type ImageType int
 
 const (
@@ -42,8 +41,8 @@ const (
 	ImageTypeEmpty ImageType = iota
 	// IconName: widget contains a named icon
 	ImageTypeIconName
-	// GIcon: widget contains a #GIcon
-	ImageTypeGIcon
+	// Gicon: widget contains a #GIcon
+	ImageTypeGicon
 	// Paintable: widget contains a Paintable
 	ImageTypePaintable
 )
@@ -56,31 +55,30 @@ func marshalImageType(p uintptr) (interface{}, error) {
 type Imager interface {
 	// Clear resets the image to be empty.
 	Clear()
-	// GIcon gets the `GIcon` being displayed by the `GtkImage`.
-	GIcon() *gio.Icon
-	// IconName gets the icon name and size being displayed by the `GtkImage`.
+	// Gicon gets the GIcon being displayed by the GtkImage.
+	Gicon() *gio.Icon
+	// IconName gets the icon name and size being displayed by the GtkImage.
 	IconName() string
-	// IconSize gets the icon size used by the @image when rendering icons.
+	// IconSize gets the icon size used by the image when rendering icons.
 	IconSize() IconSize
-	// Paintable gets the image `GdkPaintable` being displayed by the
-	// `GtkImage`.
+	// Paintable gets the image GdkPaintable being displayed by the GtkImage.
 	Paintable() *gdk.Paintable
 	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
-	// StorageType gets the type of representation being used by the `GtkImage`
-	// to store image data.
+	// StorageType gets the type of representation being used by the GtkImage to
+	// store image data.
 	StorageType() ImageType
-	// SetFromFile sets a `GtkImage` to show a file.
+	// SetFromFile sets a GtkImage to show a file.
 	SetFromFile(filename string)
-	// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
-	SetFromGIcon(icon gio.Iconer)
-	// SetFromIconName sets a `GtkImage` to show a named icon.
+	// SetFromGicon sets a GtkImage to show a GIcon.
+	SetFromGicon(icon gio.Iconer)
+	// SetFromIconName sets a GtkImage to show a named icon.
 	SetFromIconName(iconName string)
-	// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
+	// SetFromPaintable sets a GtkImage to show a GdkPaintable.
 	SetFromPaintable(paintable gdk.Paintabler)
-	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer)
-	// SetFromResource sets a `GtkImage` to show a resource.
+	// SetFromPixbuf sets a GtkImage to show a GdkPixbuf.
+	SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf)
+	// SetFromResource sets a GtkImage to show a resource.
 	SetFromResource(resourcePath string)
 	// SetIconSize suggests an icon size to the theme for named icons.
 	SetIconSize(iconSize IconSize)
@@ -88,45 +86,44 @@ type Imager interface {
 	SetPixelSize(pixelSize int)
 }
 
-// Image: `GtkImage` widget displays an image.
+// Image: GtkImage widget displays an image.
 //
 // !An example GtkImage (image.png)
 //
 // Various kinds of object can be displayed as an image; most typically, you
-// would load a `GdkTexture` from a file, using the convenience function
-// [ctor@Gtk.Image.new_from_file], for instance:
+// would load a GdkTexture from a file, using the convenience function
+// gtk.Image.NewFromFile, for instance:
 //
-// “`c GtkWidget *image = gtk_image_new_from_file ("myfile.png"); “`
+//    GtkWidget *image = gtk_image_new_from_file ("myfile.png");
+//
 //
 // If the file isn’t loaded successfully, the image will contain a “broken
 // image” icon similar to that used in many web browsers.
 //
 // If you want to handle errors in loading the file yourself, for example by
 // displaying an error message, then load the image with
-// [ctor@Gdk.Texture.new_from_file], then create the `GtkImage` with
-// [ctor@Gtk.Image.new_from_paintable].
+// gdk.Texture.NewFromFile, then create the GtkImage with
+// gtk.Image.NewFromPaintable.
 //
 // Sometimes an application will want to avoid depending on external data files,
-// such as image files. See the documentation of `GResource` inside GIO, for
-// details. In this case, [property@Gtk.Image:resource],
-// [ctor@Gtk.Image.new_from_resource], and [method@Gtk.Image.set_from_resource]
-// should be used.
+// such as image files. See the documentation of GResource inside GIO, for
+// details. In this case, gtk.Image:resource, gtk.Image.NewFromResource, and
+// gtk.Image.SetFromResource() should be used.
 //
-// `GtkImage` displays its image as an icon, with a size that is determined by
-// the application. See [class@Gtk.Picture] if you want to show an image at is
-// actual size.
+// GtkImage displays its image as an icon, with a size that is determined by the
+// application. See gtk.Picture if you want to show an image at is actual size.
 //
 //
 // CSS nodes
 //
-// `GtkImage` has a single CSS node with the name `image`. The style classes
-// `.normal-icons` or `.large-icons` may appear, depending on the
-// [property@Gtk.Image:icon-size] property.
+// GtkImage has a single CSS node with the name image. The style classes
+// .normal-icons or .large-icons may appear, depending on the
+// gtk.Image:icon-size property.
 //
 //
 // Accessibility
 //
-// `GtkImage` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
+// GtkImage uses the GTK_ACCESSIBLE_ROLE_IMG role.
 type Image struct {
 	Widget
 }
@@ -161,7 +158,7 @@ func marshalImager(p uintptr) (interface{}, error) {
 	return wrapImage(obj), nil
 }
 
-// NewImage creates a new empty `GtkImage` widget.
+// NewImage creates a new empty GtkImage widget.
 func NewImage() *Image {
 	var _cret *C.GtkWidget // in
 
@@ -174,19 +171,17 @@ func NewImage() *Image {
 	return _image
 }
 
-// NewImageFromFile creates a new `GtkImage` displaying the file @filename.
+// NewImageFromFile creates a new GtkImage displaying the file filename.
 //
-// If the file isn’t found or can’t be loaded, the resulting `GtkImage` will
-// display a “broken image” icon. This function never returns nil, it always
-// returns a valid `GtkImage` widget.
+// If the file isn’t found or can’t be loaded, the resulting GtkImage will
+// display a “broken image” icon. This function never returns NULL, it always
+// returns a valid GtkImage widget.
 //
-// If you need to detect failures to load the file, use
-// [ctor@Gdk.Texture.new_from_file] to load the file yourself, then create the
-// `GtkImage` from the texture.
+// If you need to detect failures to load the file, use gdk.Texture.NewFromFile
+// to load the file yourself, then create the GtkImage from the texture.
 //
-// The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
-// image is not defined, it will be whatever is appropriate for displaying the
-// file.
+// The storage type (see gtk.Image.GetStorageType()) of the returned image is
+// not defined, it will be whatever is appropriate for displaying the file.
 func NewImageFromFile(filename string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -202,13 +197,13 @@ func NewImageFromFile(filename string) *Image {
 	return _image
 }
 
-// NewImageFromGIcon creates a `GtkImage` displaying an icon from the current
-// icon theme.
+// NewImageFromGicon creates a GtkImage displaying an icon from the current icon
+// theme.
 //
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconer) *Image {
+func NewImageFromGicon(icon gio.Iconer) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -223,7 +218,7 @@ func NewImageFromGIcon(icon gio.Iconer) *Image {
 	return _image
 }
 
-// NewImageFromIconName creates a `GtkImage` displaying an icon from the current
+// NewImageFromIconName creates a GtkImage displaying an icon from the current
 // icon theme.
 //
 // If the icon name isn’t known, a “broken image” icon will be displayed
@@ -244,13 +239,13 @@ func NewImageFromIconName(iconName string) *Image {
 	return _image
 }
 
-// NewImageFromPaintable creates a new `GtkImage` displaying @paintable.
+// NewImageFromPaintable creates a new GtkImage displaying paintable.
 //
-// The `GtkImage` does not assume a reference to the paintable; you still need
-// to unref it if you own references. `GtkImage` will add its own reference
-// rather than adopting yours.
+// The GtkImage does not assume a reference to the paintable; you still need to
+// unref it if you own references. GtkImage will add its own reference rather
+// than adopting yours.
 //
-// The `GtkImage` will track changes to the @paintable and update its size and
+// The GtkImage will track changes to the paintable and update its size and
 // contents in response to it.
 func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	var _arg1 *C.GdkPaintable // out
@@ -267,23 +262,23 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 	return _image
 }
 
-// NewImageFromPixbuf creates a new `GtkImage` displaying @pixbuf.
+// NewImageFromPixbuf creates a new GtkImage displaying pixbuf.
 //
-// The `GtkImage` does not assume a reference to the pixbuf; you still need to
-// unref it if you own references. `GtkImage` will add its own reference rather
+// The GtkImage does not assume a reference to the pixbuf; you still need to
+// unref it if you own references. GtkImage will add its own reference rather
 // than adopting yours.
 //
-// This is a helper for [ctor@Gtk.Image.new_from_paintable], and you can't get
-// back the exact pixbuf once this is called, only a texture.
+// This is a helper for gtk.Image.NewFromPaintable, and you can't get back the
+// exact pixbuf once this is called, only a texture.
 //
-// Note that this function just creates an `GtkImage` from the pixbuf. The
-// `GtkImage` created will not react to state changes. Should you want that, you
-// should use [ctor@Gtk.Image.new_from_icon_name].
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *Image {
+// Note that this function just creates an GtkImage from the pixbuf. The
+// GtkImage created will not react to state changes. Should you want that, you
+// should use gtk.Image.NewFromIconName.
+func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 
@@ -294,20 +289,19 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *Image {
 	return _image
 }
 
-// NewImageFromResource creates a new `GtkImage` displaying the resource file
-// @resource_path.
+// NewImageFromResource creates a new GtkImage displaying the resource file
+// resource_path.
 //
-// If the file isn’t found or can’t be loaded, the resulting `GtkImage` will
-// display a “broken image” icon. This function never returns nil, it always
-// returns a valid `GtkImage` widget.
+// If the file isn’t found or can’t be loaded, the resulting GtkImage will
+// display a “broken image” icon. This function never returns NULL, it always
+// returns a valid GtkImage widget.
 //
 // If you need to detect failures to load the file, use
-// [ctor@GdkPixbuf.Pixbuf.new_from_file] to load the file yourself, then create
-// the `GtkImage` from the pixbuf.
+// gdkpixbuf.Pixbuf.NewFromFile to load the file yourself, then create the
+// GtkImage from the pixbuf.
 //
-// The storage type (see [method@Gtk.Image.get_storage_type]) of the returned
-// image is not defined, it will be whatever is appropriate for displaying the
-// file.
+// The storage type (see gtk.Image.GetStorageType()) of the returned image is
+// not defined, it will be whatever is appropriate for displaying the file.
 func NewImageFromResource(resourcePath string) *Image {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -332,12 +326,12 @@ func (image *Image) Clear() {
 	C.gtk_image_clear(_arg0)
 }
 
-// GIcon gets the `GIcon` being displayed by the `GtkImage`.
+// Gicon gets the GIcon being displayed by the GtkImage.
 //
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
-// [method@Gtk.Image.get_storage_type]). The caller of this function does not
-// own a reference to the returned `GIcon`.
-func (image *Image) GIcon() *gio.Icon {
+// gtk.Image.GetStorageType()). The caller of this function does not own a
+// reference to the returned GIcon.
+func (image *Image) Gicon() *gio.Icon {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
 
@@ -357,11 +351,11 @@ func (image *Image) GIcon() *gio.Icon {
 	return _icon
 }
 
-// IconName gets the icon name and size being displayed by the `GtkImage`.
+// IconName gets the icon name and size being displayed by the GtkImage.
 //
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
-// (see [method@Gtk.Image.get_storage_type]). The returned string is owned by
-// the `GtkImage` and should not be freed.
+// (see gtk.Image.GetStorageType()). The returned string is owned by the
+// GtkImage and should not be freed.
 func (image *Image) IconName() string {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.char     // in
@@ -377,7 +371,7 @@ func (image *Image) IconName() string {
 	return _utf8
 }
 
-// IconSize gets the icon size used by the @image when rendering icons.
+// IconSize gets the icon size used by the image when rendering icons.
 func (image *Image) IconSize() IconSize {
 	var _arg0 *C.GtkImage   // out
 	var _cret C.GtkIconSize // in
@@ -393,11 +387,11 @@ func (image *Image) IconSize() IconSize {
 	return _iconSize
 }
 
-// Paintable gets the image `GdkPaintable` being displayed by the `GtkImage`.
+// Paintable gets the image GdkPaintable being displayed by the GtkImage.
 //
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PAINTABLE
-// (see [method@Gtk.Image.get_storage_type]). The caller of this function does
-// not own a reference to the returned paintable.
+// (see gtk.Image.GetStorageType()). The caller of this function does not own a
+// reference to the returned paintable.
 func (image *Image) Paintable() *gdk.Paintable {
 	var _arg0 *C.GtkImage     // out
 	var _cret *C.GdkPaintable // in
@@ -434,11 +428,10 @@ func (image *Image) PixelSize() int {
 	return _gint
 }
 
-// StorageType gets the type of representation being used by the `GtkImage` to
+// StorageType gets the type of representation being used by the GtkImage to
 // store image data.
 //
-// If the `GtkImage` has no image data, the return value will be
-// GTK_IMAGE_EMPTY.
+// If the GtkImage has no image data, the return value will be GTK_IMAGE_EMPTY.
 func (image *Image) StorageType() ImageType {
 	var _arg0 *C.GtkImage    // out
 	var _cret C.GtkImageType // in
@@ -454,9 +447,9 @@ func (image *Image) StorageType() ImageType {
 	return _imageType
 }
 
-// SetFromFile sets a `GtkImage` to show a file.
+// SetFromFile sets a GtkImage to show a file.
 //
-// See [ctor@Gtk.Image.new_from_file] for details.
+// See gtk.Image.NewFromFile for details.
 func (image *Image) SetFromFile(filename string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -467,10 +460,10 @@ func (image *Image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
+// SetFromGicon sets a GtkImage to show a GIcon.
 //
-// See [ctor@Gtk.Image.new_from_gicon] for details.
-func (image *Image) SetFromGIcon(icon gio.Iconer) {
+// See gtk.Image.NewFromGicon for details.
+func (image *Image) SetFromGicon(icon gio.Iconer) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 
@@ -480,9 +473,9 @@ func (image *Image) SetFromGIcon(icon gio.Iconer) {
 	C.gtk_image_set_from_gicon(_arg0, _arg1)
 }
 
-// SetFromIconName sets a `GtkImage` to show a named icon.
+// SetFromIconName sets a GtkImage to show a named icon.
 //
-// See [ctor@Gtk.Image.new_from_icon_name] for details.
+// See gtk.Image.NewFromIconName for details.
 func (image *Image) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -493,9 +486,9 @@ func (image *Image) SetFromIconName(iconName string) {
 	C.gtk_image_set_from_icon_name(_arg0, _arg1)
 }
 
-// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
+// SetFromPaintable sets a GtkImage to show a GdkPaintable.
 //
-// See [ctor@Gtk.Image.new_from_paintable] for details.
+// See gtk.Image.NewFromPaintable for details.
 func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkImage     // out
 	var _arg1 *C.GdkPaintable // out
@@ -506,25 +499,25 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 	C.gtk_image_set_from_paintable(_arg0, _arg1)
 }
 
-// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
+// SetFromPixbuf sets a GtkImage to show a GdkPixbuf.
 //
-// See [ctor@Gtk.Image.new_from_pixbuf] for details.
+// See gtk.Image.NewFromPixbuf for details.
 //
-// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
-// can't get back the exact pixbuf once this is called, only a paintable.
-func (image *Image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) {
+// Note: This is a helper for gtk.Image.SetFromPaintable(), and you can't get
+// back the exact pixbuf once this is called, only a paintable.
+func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkImage  // out
 	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 }
 
-// SetFromResource sets a `GtkImage` to show a resource.
+// SetFromResource sets a GtkImage to show a resource.
 //
-// See [ctor@Gtk.Image.new_from_resource] for details.
+// See gtk.Image.NewFromResource for details.
 func (image *Image) SetFromResource(resourcePath string) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.char     // out
@@ -549,7 +542,7 @@ func (image *Image) SetIconSize(iconSize IconSize) {
 // SetPixelSize sets the pixel size to use for named icons.
 //
 // If the pixel size is set to a value != -1, it is used instead of the icon
-// size set by [method@Gtk.Image.set_from_icon_name].
+// size set by gtk.Image.SetFromIconName().
 func (image *Image) SetPixelSize(pixelSize int) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 C.int       // out

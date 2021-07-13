@@ -47,14 +47,14 @@ type AsyncInitableOverrider interface {
 	// This method is intended for language bindings. If writing in C,
 	// g_async_initable_new_async() should typically be used instead.
 	//
-	// When the initialization is finished, @callback will be called. You can
+	// When the initialization is finished, callback will be called. You can
 	// then call g_async_initable_init_finish() to get the result of the
 	// initialization.
 	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
+	// Implementations may also support cancellation. If cancellable is not
+	// NULL, then initialization can be cancelled by triggering the cancellable
 	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and
+	// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL, and
 	// the object doesn't support cancellable initialization, the error
 	// G_IO_ERROR_NOT_SUPPORTED will be returned.
 	//
@@ -75,7 +75,7 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
 	InitFinish(res AsyncResulter) error
@@ -85,11 +85,12 @@ type AsyncInitableOverrider interface {
 type AsyncInitabler interface {
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface.
-	InitAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or nil on error.
+	// g_async_initable_new calls, returning the created object or NULL on
+	// error.
 	NewFinish(res AsyncResulter) (*externglib.Object, error)
 }
 
@@ -103,7 +104,7 @@ type AsyncInitabler interface {
 // method directly; instead it will be used automatically in various ways. For C
 // applications you generally just call g_async_initable_new_async() directly,
 // or indirectly via a foo_thing_new_async() wrapper. This will call
-// g_async_initable_init_async() under the cover, calling back with nil and a
+// g_async_initable_init_async() under the cover, calling back with NULL and a
 // set GError on failure.
 //
 // A typical implementation might look something like this:
@@ -219,13 +220,13 @@ func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 // This method is intended for language bindings. If writing in C,
 // g_async_initable_new_async() should typically be used instead.
 //
-// When the initialization is finished, @callback will be called. You can then
+// When the initialization is finished, callback will be called. You can then
 // call g_async_initable_init_finish() to get the result of the initialization.
 //
-// Implementations may also support cancellation. If @cancellable is not nil,
+// Implementations may also support cancellation. If cancellable is not NULL,
 // then initialization can be cancelled by triggering the cancellable object
 // from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil, and the
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL, and the
 // object doesn't support cancellable initialization, the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
@@ -246,7 +247,7 @@ func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 // thread, so if you want to support asynchronous initialization via threads,
 // just implement the Initable interface without overriding any interface
 // methods.
-func (initable *AsyncInitable) InitAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (initable *AsyncInitable) InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -255,7 +256,7 @@ func (initable *AsyncInitable) InitAsync(ioPriority int, cancellable Cancellable
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -282,7 +283,7 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 }
 
 // NewFinish finishes the async construction for the various
-// g_async_initable_new calls, returning the created object or nil on error.
+// g_async_initable_new calls, returning the created object or NULL on error.
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*externglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out

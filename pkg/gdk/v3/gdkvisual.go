@@ -419,10 +419,10 @@ func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	return _visual
 }
 
-// VisualGetBestWithDepth: get the best visual with depth @depth for the default
+// VisualGetBestWithDepth: get the best visual with depth depth for the default
 // GDK screen. Color visuals and visuals with mutable colormaps are preferred
 // over grayscale or fixed-colormap visuals. The return value should not be
-// freed. nil may be returned if no visual supports @depth.
+// freed. NULL may be returned if no visual supports depth.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
@@ -441,10 +441,10 @@ func VisualGetBestWithDepth(depth int) *Visual {
 	return _visual
 }
 
-// VisualGetBestWithType: get the best visual of the given @visual_type for the
+// VisualGetBestWithType: get the best visual of the given visual_type for the
 // default GDK screen. Visuals with higher color depths are considered better.
-// The return value should not be freed. nil may be returned if no visual has
-// type @visual_type.
+// The return value should not be freed. NULL may be returned if no visual has
+// type visual_type.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().

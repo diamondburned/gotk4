@@ -114,7 +114,7 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerScroll creates a new event controller that will handle
-// scroll events for the given @widget.
+// scroll events for the given widget.
 func NewEventControllerScroll(widget Widgeter, flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 *C.GtkWidget                    // out
 	var _arg2 C.GtkEventControllerScrollFlags // out

@@ -38,10 +38,10 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketAddressOverrider interface {
-	// Family gets the socket family type of @address.
+	// Family gets the socket family type of address.
 	Family() SocketFamily
-	// NativeSize gets the size of @address's native struct sockaddr. You can
-	// use this to allocate memory to pass to g_socket_address_to_native().
+	// NativeSize gets the size of address's native struct sockaddr. You can use
+	// this to allocate memory to pass to g_socket_address_to_native().
 	NativeSize() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
@@ -54,9 +54,9 @@ type SocketAddressOverrider interface {
 
 // SocketAddresser describes SocketAddress's methods.
 type SocketAddresser interface {
-	// Family gets the socket family type of @address.
+	// Family gets the socket family type of address.
 	Family() SocketFamily
-	// NativeSize gets the size of @address's native struct sockaddr.
+	// NativeSize gets the size of address's native struct sockaddr.
 	NativeSize() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
@@ -93,7 +93,7 @@ func marshalSocketAddresser(p uintptr) (interface{}, error) {
 }
 
 // NewSocketAddressFromNative creates a Address subclass corresponding to the
-// native struct sockaddr @native.
+// native struct sockaddr native.
 func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
@@ -111,7 +111,7 @@ func NewSocketAddressFromNative(native cgo.Handle, len uint) *SocketAddress {
 	return _socketAddress
 }
 
-// Family gets the socket family type of @address.
+// Family gets the socket family type of address.
 func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
@@ -127,7 +127,7 @@ func (address *SocketAddress) Family() SocketFamily {
 	return _socketFamily
 }
 
-// NativeSize gets the size of @address's native struct sockaddr. You can use
+// NativeSize gets the size of address's native struct sockaddr. You can use
 // this to allocate memory to pass to g_socket_address_to_native().
 func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out

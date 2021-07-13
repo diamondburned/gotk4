@@ -62,20 +62,20 @@ const (
 	// MarkupCollectTypeString: collect the string pointer directly from the
 	// attribute_values[] array. Expects a parameter of type (const char **). If
 	// G_MARKUP_COLLECT_OPTIONAL is specified and the attribute isn't present
-	// then the pointer will be set to nil
+	// then the pointer will be set to NULL
 	MarkupCollectTypeString MarkupCollectType = 0b1
 	// MarkupCollectTypeStrdup as with G_MARKUP_COLLECT_STRING, but expects a
 	// parameter of type (char **) and g_strdup()s the returned pointer. The
 	// pointer must be freed with g_free()
 	MarkupCollectTypeStrdup MarkupCollectType = 0b10
 	// MarkupCollectTypeBoolean expects a parameter of type (gboolean *) and
-	// parses the attribute value as a boolean. Sets false if the attribute
+	// parses the attribute value as a boolean. Sets FALSE if the attribute
 	// isn't present. Valid boolean values consist of (case-insensitive)
 	// "false", "f", "no", "n", "0" and "true", "t", "yes", "y", "1"
 	MarkupCollectTypeBoolean MarkupCollectType = 0b11
 	// MarkupCollectTypeTristate as with G_MARKUP_COLLECT_BOOLEAN, but in the
 	// case of a missing attribute a value is set that compares equal to neither
-	// false nor true G_MARKUP_COLLECT_OPTIONAL is implied
+	// FALSE nor TRUE G_MARKUP_COLLECT_OPTIONAL is implied
 	MarkupCollectTypeTristate MarkupCollectType = 0b100
 	// MarkupCollectTypeOptional: can be bitwise ORed with the other fields. If
 	// present, allows the attribute not to appear. A default value is set
@@ -90,9 +90,9 @@ const (
 	// MarkupParseFlagsDoNotUseThisUnsupportedFlag: flag you should not use
 	MarkupParseFlagsDoNotUseThisUnsupportedFlag MarkupParseFlags = 0b1
 	// MarkupParseFlagsTreatCdataAsText: when this flag is set, CDATA marked
-	// sections are not passed literally to the @passthrough function of the
-	// parser. Instead, the content of the section (without the `<![CDATA[` and
-	// `]]>`) is passed to the @text function. This flag was added in GLib 2.12
+	// sections are not passed literally to the passthrough function of the
+	// parser. Instead, the content of the section (without the <![CDATA[ and
+	// ]]>) is passed to the text function. This flag was added in GLib 2.12
 	MarkupParseFlagsTreatCdataAsText MarkupParseFlags = 0b10
 	// MarkupParseFlagsPrefixErrorPosition: normally errors caught by GMarkup
 	// itself have line/column information prefixed to them to let the caller
@@ -230,7 +230,7 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	return _lineNumber, _charNumber
 }
 
-// UserData returns the user_data associated with @context.
+// UserData returns the user_data associated with context.
 //
 // This will either be the user_data that was provided to
 // g_markup_parse_context_new() or to the most recent call of
@@ -284,8 +284,8 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 // g_markup_parse_context_push(). It must be called in the end_element handler
 // corresponding to the start_element handler during which
 // g_markup_parse_context_push() was called. You must not call this function
-// from the error callback -- the @user_data is provided directly to the
-// callback in that case.
+// from the error callback -- the user_data is provided directly to the callback
+// in that case.
 //
 // This function is not intended to be directly called by users interested in
 // invoking subparsers. Instead, it is intended to be used by the subparsers
@@ -313,17 +313,17 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 // aborts due to an error).
 //
 // All tags, text and other data between the matching tags is redirected to the
-// subparser given by @parser. @user_data is used as the user_data for that
-// parser. @user_data is also passed to the error callback in the event that an
+// subparser given by parser. user_data is used as the user_data for that
+// parser. user_data is also passed to the error callback in the event that an
 // error occurs. This includes errors that occur in subparsers of the subparser.
 //
 // The end tag matching the start tag for which this call was made is handled by
 // the previous parser (which is given its own user_data) which is why
 // g_markup_parse_context_pop() is provided to allow "one last access" to the
-// @user_data provided to this function. In the case of error, the @user_data
+// user_data provided to this function. In the case of error, the user_data
 // provided here is passed directly to the error callback of the subparser and
 // g_markup_parse_context_pop() should not be called. In either case, if
-// @user_data was allocated then it ought to be freed from both of these
+// user_data was allocated then it ought to be freed from both of these
 // locations.
 //
 // This function is not intended to be directly called by users interested in
@@ -360,7 +360,7 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
 }
 
-// Ref increases the reference count of @context.
+// Ref increases the reference count of context.
 func (context *MarkupParseContext) ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
@@ -380,7 +380,7 @@ func (context *MarkupParseContext) ref() *MarkupParseContext {
 	return _markupParseContext
 }
 
-// Unref decreases the reference count of @context. When its reference count
+// Unref decreases the reference count of context. When its reference count
 // drops to 0, it is freed.
 func (context *MarkupParseContext) unref() {
 	var _arg0 *C.GMarkupParseContext // out
@@ -390,9 +390,9 @@ func (context *MarkupParseContext) unref() {
 	C.g_markup_parse_context_unref(_arg0)
 }
 
-// MarkupParser: any of the fields in Parser can be nil, in which case they will
-// be ignored. Except for the @error function, any of these callbacks can set an
-// error; in particular the G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+// MarkupParser: any of the fields in Parser can be NULL, in which case they
+// will be ignored. Except for the error function, any of these callbacks can
+// set an error; in particular the G_MARKUP_ERROR_UNKNOWN_ELEMENT,
 // G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE, and G_MARKUP_ERROR_INVALID_CONTENT errors
 // are intended to be set from these callbacks. If you set an error from a
 // callback, g_markup_parse_context_parse() will report that error back to its

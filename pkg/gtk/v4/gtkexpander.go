@@ -23,7 +23,7 @@ func init() {
 
 // Expanderer describes Expander's methods.
 type Expanderer interface {
-	// Child gets the child widget of @expander.
+	// Child gets the child widget of expander.
 	Child() *Widget
 	// Expanded queries a Expander and returns its current state.
 	Expanded() bool
@@ -40,11 +40,11 @@ type Expanderer interface {
 	// UseUnderline returns whether an underline in the text indicates a
 	// mnemonic.
 	UseUnderline() bool
-	// SetChild sets the child widget of @expander.
+	// SetChild sets the child widget of expander.
 	SetChild(child Widgeter)
 	// SetExpanded sets the state of the expander.
 	SetExpanded(expanded bool)
-	// SetLabel sets the text of the label of the expander to @label.
+	// SetLabel sets the text of the label of the expander to label.
 	SetLabel(label string)
 	// SetLabelWidget: set the label widget for the expander.
 	SetLabelWidget(labelWidget Widgeter)
@@ -57,79 +57,96 @@ type Expanderer interface {
 	SetUseUnderline(useUnderline bool)
 }
 
-// Expander: `GtkExpander` allows the user to reveal its child by clicking on an
+// Expander: GtkExpander allows the user to reveal its child by clicking on an
 // expander triangle.
 //
 // !An example GtkExpander (expander.png)
 //
-// This is similar to the triangles used in a `GtkTreeView`.
+// This is similar to the triangles used in a GtkTreeView.
 //
 // Normally you use an expander as you would use a frame; you create the child
-// widget and use [method@Gtk.Expander.set_child] to add it to the expander.
-// When the expander is toggled, it will take care of showing and hiding the
-// child automatically.
+// widget and use gtk.Expander.SetChild() to add it to the expander. When the
+// expander is toggled, it will take care of showing and hiding the child
+// automatically.
 //
 //
 // Special Usage
 //
 // There are situations in which you may prefer to show and hide the expanded
 // widget yourself, such as when you want to actually create the widget at
-// expansion time. In this case, create a `GtkExpander` but do not add a child
-// to it. The expander widget has an [property@Gtk.Expander:expanded[ property
-// which can be used to monitor its expansion state. You should watch this
-// property with a signal connection as follows:
+// expansion time. In this case, create a GtkExpander but do not add a child to
+// it. The expander widget has an [propertyGtk.Expander:expanded[ property which
+// can be used to monitor its expansion state. You should watch this property
+// with a signal connection as follows:
 //
-// “`c static void expander_callback (GObject *object, GParamSpec *param_spec,
-// gpointer user_data) { GtkExpander *expander;
+//    static void
+//    expander_callback (GObject    *object,
+//                       GParamSpec *param_spec,
+//                       gpointer    user_data)
+//    {
+//      GtkExpander *expander;
 //
-//    expander = GTK_EXPANDER (object);
+//      expander = GTK_EXPANDER (object);
 //
-//    if (gtk_expander_get_expanded (expander))
-//      {
-//        // Show or create widgets
-//      }
-//    else
-//      {
-//        // Hide or destroy widgets
-//      }
+//      if (gtk_expander_get_expanded (expander))
+//        {
+//          // Show or create widgets
+//        }
+//      else
+//        {
+//          // Hide or destroy widgets
+//        }
+//    }
 //
-// }
+//    static void
+//    create_expander (void)
+//    {
+//      GtkWidget *expander = gtk_expander_new_with_mnemonic ("_More Options");
+//      g_signal_connect (expander, "notify::expanded",
+//                        G_CALLBACK (expander_callback), NULL);
 //
-// static void create_expander (void) { GtkWidget *expander =
-// gtk_expander_new_with_mnemonic ("_More Options"); g_signal_connect (expander,
-// "notify::expanded", G_CALLBACK (expander_callback), NULL);
+//      // ...
+//    }
 //
-//    // ...
-//
-// } “`
 //
 //
 // GtkExpander as GtkBuildable
 //
-// The `GtkExpander` implementation of the `GtkBuildable` interface supports
-// placing a child in the label position by specifying “label” as the “type”
-// attribute of a <child> element. A normal content child can be specified
-// without specifying a <child> type attribute.
+// The GtkExpander implementation of the GtkBuildable interface supports placing
+// a child in the label position by specifying “label” as the “type” attribute
+// of a <child> element. A normal content child can be specified without
+// specifying a <child> type attribute.
 //
 // An example of a UI definition fragment with GtkExpander:
 //
-// “`xml <object class="GtkExpander"> <child type="label"> <object
-// class="GtkLabel" id="expander-label"/> </child> <child> <object
-// class="GtkEntry" id="expander-content"/> </child> </object> “`
+//    <object class="GtkExpander">
+//      <child type="label">
+//        <object class="GtkLabel" id="expander-label"/>
+//      </child>
+//      <child>
+//        <object class="GtkEntry" id="expander-content"/>
+//      </child>
+//    </object>
 //
 //
 // CSS nodes
 //
-// “` expander ╰── box ├── title │ ├── arrow │ ╰── <label widget> ╰── <child> “`
+//    expander
+//    ╰── box
+//        ├── title
+//        │   ├── arrow
+//        │   ╰── <label widget>
+//        ╰── <child>
 //
-// `GtkExpander` has three CSS nodes, the main node with the name expander, a
+//
+// GtkExpander has three CSS nodes, the main node with the name expander, a
 // subnode with name title and node below it with name arrow. The arrow of an
 // expander that is showing its child gets the :checked pseudoclass added to it.
 //
 //
 // Accessibility
 //
-// `GtkExpander` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
+// GtkExpander uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Expander struct {
 	Widget
 }
@@ -164,7 +181,7 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 	return wrapExpander(obj), nil
 }
 
-// NewExpander creates a new expander using @label as the text of the label.
+// NewExpander creates a new expander using label as the text of the label.
 func NewExpander(label string) *Expander {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -180,11 +197,11 @@ func NewExpander(label string) *Expander {
 	return _expander
 }
 
-// NewExpanderWithMnemonic creates a new expander using @label as the text of
-// the label.
+// NewExpanderWithMnemonic creates a new expander using label as the text of the
+// label.
 //
-// If characters in @label are preceded by an underscore, they are underlined.
-// If you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic.
 //
@@ -204,7 +221,7 @@ func NewExpanderWithMnemonic(label string) *Expander {
 	return _expander
 }
 
-// Child gets the child widget of @expander.
+// Child gets the child widget of expander.
 func (expander *Expander) Child() *Widget {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
@@ -222,7 +239,7 @@ func (expander *Expander) Child() *Widget {
 
 // Expanded queries a Expander and returns its current state.
 //
-// Returns true if the child widget is revealed.
+// Returns TRUE if the child widget is revealed.
 func (expander *Expander) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -243,9 +260,9 @@ func (expander *Expander) Expanded() bool {
 // Label fetches the text from a label widget.
 //
 // This is including any embedded underlines indicating mnemonics and Pango
-// markup, as set by [method@Gtk.Expander.set_label]. If the label text has not
-// been set the return value will be nil. This will be the case if you create an
-// empty button with gtk_button_new() to use as a container.
+// markup, as set by gtk.Expander.SetLabel(). If the label text has not been set
+// the return value will be NULL. This will be the case if you create an empty
+// button with gtk_button_new() to use as a container.
 func (expander *Expander) Label() string {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.char        // in
@@ -332,7 +349,7 @@ func (expander *Expander) UseUnderline() bool {
 	return _ok
 }
 
-// SetChild sets the child widget of @expander.
+// SetChild sets the child widget of expander.
 func (expander *Expander) SetChild(child Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
@@ -345,7 +362,7 @@ func (expander *Expander) SetChild(child Widgeter) {
 
 // SetExpanded sets the state of the expander.
 //
-// Set to true, if you want the child widget to be revealed, and false if you
+// Set to TRUE, if you want the child widget to be revealed, and FALSE if you
 // want the child widget to be hidden.
 func (expander *Expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
@@ -359,7 +376,7 @@ func (expander *Expander) SetExpanded(expanded bool) {
 	C.gtk_expander_set_expanded(_arg0, _arg1)
 }
 
-// SetLabel sets the text of the label of the expander to @label.
+// SetLabel sets the text of the label of the expander to label.
 //
 // This will also clear any previously set labels.
 func (expander *Expander) SetLabel(label string) {

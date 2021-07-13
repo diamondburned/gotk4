@@ -23,8 +23,8 @@ func init() {
 
 // OptionArg enum values determine which type of extra argument the options
 // expect to find. If an option expects an extra argument, it can be specified
-// in several ways; with a short option: `-x arg`, with a long option: `--name
-// arg` or combined in a single argument: `--name=arg`.
+// in several ways; with a short option: -x arg, with a long option: --name arg
+// or combined in a single argument: --name=arg.
 type OptionArg int
 
 const (
@@ -51,7 +51,7 @@ const (
 	OptionArgDouble
 	// Int64: option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
 	// larger numbers. The number can be in decimal base, or in hexadecimal
-	// (when prefixed with `0x`, for example, `0xffffffff`). Since 2.12
+	// (when prefixed with 0x, for example, 0xffffffff). Since 2.12
 	OptionArgInt64
 )
 
@@ -75,9 +75,9 @@ type OptionFlags int
 const (
 	// OptionFlagsNone: no flags. Since: 2.42.
 	OptionFlagsNone OptionFlags = 0b0
-	// OptionFlagsHidden: option doesn't appear in `--help` output.
+	// OptionFlagsHidden: option doesn't appear in --help output.
 	OptionFlagsHidden OptionFlags = 0b1
-	// OptionFlagsInMain: option appears in the main section of the `--help`
+	// OptionFlagsInMain: option appears in the main section of the --help
 	// output, even if it is defined in a group.
 	OptionFlagsInMain OptionFlags = 0b10
 	// OptionFlagsReverse: for options of the G_OPTION_ARG_NONE kind, this flag
@@ -96,11 +96,11 @@ const (
 	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8
 	OptionFlagsOptionalArg OptionFlags = 0b100000
 	// OptionFlagsNoalias: this flag turns off the automatic conflict resolution
-	// which prefixes long option names with `groupname-` if there is a
-	// conflict. This option should only be used in situations where aliasing is
-	// necessary to model some legacy commandline interface. It is not safe to
-	// use this option, unless all option groups are under your direct control.
-	// Since 2.8.
+	// which prefixes long option names with groupname- if there is a conflict.
+	// This option should only be used in situations where aliasing is necessary
+	// to model some legacy commandline interface. It is not safe to use this
+	// option, unless all option groups are under your direct control. Since
+	// 2.8.
 	OptionFlagsNoalias OptionFlags = 0b1000000
 )
 
@@ -116,13 +116,13 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// OptionGroup: `GOptionGroup` struct defines the options in a single group. The
+// OptionGroup: GOptionGroup struct defines the options in a single group. The
 // struct has only private fields and should not be directly accessed.
 //
 // All options in a group share the same translation function. Libraries which
 // need to parse commandline options are expected to provide a function for
-// getting a `GOptionGroup` holding their options, which the application can
-// then add to its Context.
+// getting a GOptionGroup holding their options, which the application can then
+// add to its Context.
 type OptionGroup struct {
 	native C.GOptionGroup
 }
@@ -137,7 +137,7 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// AddEntries adds the options specified in @entries to @group.
+// AddEntries adds the options specified in entries to group.
 func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry
@@ -146,8 +146,8 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	{
 		var zero OptionEntry
 		entries = append(entries, zero)
+		_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 	}
-	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 
 	C.g_option_group_add_entries(_arg0, _arg1)
 }
@@ -164,7 +164,7 @@ func (group *OptionGroup) free() {
 	C.g_option_group_free(_arg0)
 }
 
-// Ref increments the reference count of @group by one.
+// Ref increments the reference count of group by one.
 func (group *OptionGroup) ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
@@ -196,9 +196,9 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 	C.g_option_group_set_translation_domain(_arg0, _arg1)
 }
 
-// Unref decrements the reference count of @group by one. If the reference count
-// drops to 0, the @group will be freed. and all memory allocated by the @group
-// is released.
+// Unref decrements the reference count of group by one. If the reference count
+// drops to 0, the group will be freed. and all memory allocated by the group is
+// released.
 func (group *OptionGroup) unref() {
 	var _arg0 *C.GOptionGroup // out
 

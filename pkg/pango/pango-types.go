@@ -11,7 +11,7 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// Glyph: `PangoGlyph` represents a single glyph in the output form of a string.
+// Glyph: PangoGlyph represents a single glyph in the output form of a string.
 type Glyph = uint32
 
 // ExtentsToPixels converts extents from Pango units to device units.
@@ -19,18 +19,18 @@ type Glyph = uint32
 // The conversion is done by dividing by the PANGO_SCALE factor and performing
 // rounding.
 //
-// The @inclusive rectangle is converted by flooring the x/y coordinates and
+// The inclusive rectangle is converted by flooring the x/y coordinates and
 // extending width/height, such that the final rectangle completely includes the
 // original rectangle.
 //
-// The @nearest rectangle is converted by rounding the coordinates of the
+// The nearest rectangle is converted by rounding the coordinates of the
 // rectangle to the nearest device unit (pixel).
 //
 // The rule to which argument to use is: if you want the resulting device-space
 // rectangle to completely contain the original rectangle, pass it in as
-// @inclusive. If you want two touching-but-not-overlapping rectangles stay
+// inclusive. If you want two touching-but-not-overlapping rectangles stay
 // touching-but-not-overlapping after rounding to device units, pass them in as
-// @nearest.
+// nearest.
 func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -43,7 +43,7 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 
 // UnitsFromDouble converts a floating-point number to Pango units.
 //
-// The conversion is done by multiplying @d by PANGO_SCALE and rounding the
+// The conversion is done by multiplying d by PANGO_SCALE and rounding the
 // result to nearest integer.
 func UnitsFromDouble(d float64) int {
 	var _arg1 C.double // out
@@ -62,7 +62,7 @@ func UnitsFromDouble(d float64) int {
 
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
-// The conversion is done by dividing @i by PANGO_SCALE.
+// The conversion is done by dividing i by PANGO_SCALE.
 func UnitsToDouble(i int) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in
@@ -78,11 +78,11 @@ func UnitsToDouble(i int) float64 {
 	return _gdouble
 }
 
-// Rectangle: `PangoRectangle` structure represents a rectangle.
+// Rectangle: PangoRectangle structure represents a rectangle.
 //
-// `PangoRectangle` is frequently used to represent the logical or ink extents
-// of a single glyph or section of text. (See, for instance,
-// [method@Pango.Font.get_glyph_extents].)
+// PangoRectangle is frequently used to represent the logical or ink extents of
+// a single glyph or section of text. (See, for instance,
+// pango.Font.GetGlyphExtents().)
 type Rectangle struct {
 	native C.PangoRectangle
 }

@@ -44,77 +44,77 @@ type SocketClientOverrider interface {
 
 // SocketClienter describes SocketClient's methods.
 type SocketClienter interface {
-	// AddApplicationProxy: enable proxy protocols to be handled by the
+	// AddApplicationProXY: enable proxy protocols to be handled by the
 	// application.
-	AddApplicationProxy(protocol string)
-	// ConnectSocketClienter tries to resolve the @connectable and make a
-	// network connection to it.
-	ConnectSocketClienter(connectable SocketConnectabler, cancellable Cancellabler) (*SocketConnection, error)
+	AddApplicationProXY(protocol string)
+	// ConnectSocketClienter tries to resolve the connectable and make a network
+	// connection to it.
+	ConnectSocketClienter(connectable SocketConnectabler, cancellable *Cancellable) (*SocketConnection, error)
 	// ConnectAsync: this is the asynchronous version of
 	// g_socket_client_connect().
-	ConnectAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish finishes an async connect operation.
 	ConnectFinish(result AsyncResulter) (*SocketConnection, error)
 	// ConnectToHost: this is a helper function for g_socket_client_connect().
-	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error)
+	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error)
 	// ConnectToHostAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_host().
-	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectToHostFinish finishes an async connect operation.
 	ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error)
 	// ConnectToService attempts to create a TCP connection to a service.
-	ConnectToService(domain string, service string, cancellable Cancellabler) (*SocketConnection, error)
+	ConnectToService(domain string, service string, cancellable *Cancellable) (*SocketConnection, error)
 	// ConnectToServiceAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_service().
-	ConnectToServiceAsync(domain string, service string, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectToServiceAsync(domain string, service string, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectToServiceFinish finishes an async connect operation.
 	ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error)
 	// ConnectToURI: this is a helper function for g_socket_client_connect().
-	ConnectToURI(uri string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error)
+	ConnectToURI(uri string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error)
 	// ConnectToURIAsync: this is the asynchronous version of
 	// g_socket_client_connect_to_uri().
-	ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectToURIAsync(uri string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectToURIFinish finishes an async connect operation.
 	ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error)
-	// EnableProxy gets the proxy enable state; see
+	// EnableProXY gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
-	EnableProxy() bool
+	EnableProXY() bool
 	// Family gets the socket family of the socket client.
 	Family() SocketFamily
 	// LocalAddress gets the local address of the socket client.
 	LocalAddress() *SocketAddress
 	// Protocol gets the protocol name type of the socket client.
 	Protocol() SocketProtocol
-	// ProxyResolver gets the Resolver being used by @client.
-	ProxyResolver() *ProxyResolver
+	// ProXYResolver gets the Resolver being used by client.
+	ProXYResolver() *ProXYResolver
 	// SocketType gets the socket type of the socket client.
 	SocketType() SocketType
-	// Timeout gets the I/O timeout time for sockets created by @client.
+	// Timeout gets the I/O timeout time for sockets created by client.
 	Timeout() uint
-	// TLS gets whether @client creates TLS connections.
+	// TLS gets whether client creates TLS connections.
 	TLS() bool
 	// TLSValidationFlags gets the TLS validation flags used creating TLS
-	// connections via @client.
+	// connections via client.
 	TLSValidationFlags() TLSCertificateFlags
-	// SetEnableProxy sets whether or not @client attempts to make connections
+	// SetEnableProXY sets whether or not client attempts to make connections
 	// via a proxy server.
-	SetEnableProxy(enable bool)
+	SetEnableProXY(enable bool)
 	// SetFamily sets the socket family of the socket client.
 	SetFamily(family SocketFamily)
 	// SetLocalAddress sets the local address of the socket client.
 	SetLocalAddress(address SocketAddresser)
 	// SetProtocol sets the protocol of the socket client.
 	SetProtocol(protocol SocketProtocol)
-	// SetProxyResolver overrides the Resolver used by @client.
-	SetProxyResolver(proxyResolver ProxyResolverer)
+	// SetProXYResolver overrides the Resolver used by client.
+	SetProXYResolver(proxyResolver ProXYResolverer)
 	// SetSocketType sets the socket type of the socket client.
 	SetSocketType(typ SocketType)
-	// SetTimeout sets the I/O timeout for sockets created by @client.
+	// SetTimeout sets the I/O timeout for sockets created by client.
 	SetTimeout(timeout uint)
-	// SetTLS sets whether @client creates TLS (aka SSL) connections.
+	// SetTLS sets whether client creates TLS (aka SSL) connections.
 	SetTLS(tls bool)
 	// SetTLSValidationFlags sets the TLS validation flags used when creating
-	// TLS connections via @client.
+	// TLS connections via client.
 	SetTLSValidationFlags(flags TLSCertificateFlags)
 }
 
@@ -164,7 +164,7 @@ func NewSocketClient() *SocketClient {
 	return _socketClient
 }
 
-// AddApplicationProxy: enable proxy protocols to be handled by the application.
+// AddApplicationProXY: enable proxy protocols to be handled by the application.
 // When the indicated proxy protocol is returned by the Resolver, Client will
 // consider this protocol as supported but will not try to find a #GProxy
 // instance to handle handshaking. The application must check for this case by
@@ -181,7 +181,7 @@ func NewSocketClient() *SocketClient {
 // When the proxy is detected as being an application proxy, TLS handshake will
 // be skipped. This is required to let the application do the proxy specific
 // handshake.
-func (client *SocketClient) AddApplicationProxy(protocol string) {
+func (client *SocketClient) AddApplicationProXY(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
 
@@ -191,7 +191,7 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 }
 
-// ConnectSocketClienter tries to resolve the @connectable and make a network
+// ConnectSocketClienter tries to resolve the connectable and make a network
 // connection to it.
 //
 // Upon a successful connection, a new Connection is constructed and returned.
@@ -203,14 +203,14 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 // be a Connection.
 //
 // The socket created will be the same family as the address that the
-// @connectable resolves to, unless family is set with
+// connectable resolves to, unless family is set with
 // g_socket_client_set_family() or indirectly via
 // g_socket_client_set_local_address(). The socket type defaults to
 // G_SOCKET_TYPE_STREAM but can be set with g_socket_client_set_socket_type().
 //
 // If a local address is specified with g_socket_client_set_local_address() the
 // socket will be bound to this address before connecting.
-func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler, cancellable Cancellabler) (*SocketConnection, error) {
+func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler, cancellable *Cancellable) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -219,7 +219,7 @@ func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -242,9 +242,9 @@ func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler
 // out, which is not supported by the synchronous call. (This is not an API
 // guarantee, and may change in the future.)
 //
-// When the operation is finished @callback will be called. You can then call
+// When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_finish() to get the result of the operation.
-func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
@@ -253,7 +253,7 @@ func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancell
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -286,19 +286,19 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 //
 // Attempts to create a TCP connection to the named host.
 //
-// @host_and_port may be in any of a number of recognized formats; an IPv6
+// host_and_port may be in any of a number of recognized formats; an IPv6
 // address, an IPv4 address, or a domain name (in which case a DNS lookup is
 // performed). Quoting with [] is supported for all address types. A port
 // override may be specified in the usual way with a colon. Ports may be given
 // as decimal numbers or symbolic names (in which case an /etc/services lookup
 // is performed).
 //
-// If no port override is given in @host_and_port then @default_port will be
-// used as the port number to connect to.
+// If no port override is given in host_and_port then default_port will be used
+// as the port number to connect to.
 //
-// In general, @host_and_port is expected to be provided by the user (allowing
-// them to give the hostname, and a port override if necessary) and
-// @default_port is expected to be provided by the application.
+// In general, host_and_port is expected to be provided by the user (allowing
+// them to give the hostname, and a port override if necessary) and default_port
+// is expected to be provided by the application.
 //
 // In the case that an IP address is given, a single connection attempt is made.
 // In the case that a name is given, multiple connection attempts may be made,
@@ -310,8 +310,8 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 // finished with it.
 //
 // In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error) {
+// connectable) NULL is returned and error (if non-NULL) is set accordingly.
+func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -322,7 +322,7 @@ func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -338,9 +338,9 @@ func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16
 // ConnectToHostAsync: this is the asynchronous version of
 // g_socket_client_connect_to_host().
 //
-// When the operation is finished @callback will be called. You can then call
+// When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_to_host_finish() to get the result of the operation.
-func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -351,7 +351,7 @@ func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort u
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -382,7 +382,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 
 // ConnectToService attempts to create a TCP connection to a service.
 //
-// This call looks up the SRV record for @service at @domain for the "tcp"
+// This call looks up the SRV record for service at domain for the "tcp"
 // protocol. It then attempts to connect, in turn, to each of the hosts
 // providing the service until either a connection succeeds or there are no
 // hosts remaining.
@@ -392,8 +392,8 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 // finished with it.
 //
 // In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client *SocketClient) ConnectToService(domain string, service string, cancellable Cancellabler) (*SocketConnection, error) {
+// connectable) NULL is returned and error (if non-NULL) is set accordingly.
+func (client *SocketClient) ConnectToService(domain string, service string, cancellable *Cancellable) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -404,7 +404,7 @@ func (client *SocketClient) ConnectToService(domain string, service string, canc
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -419,7 +419,7 @@ func (client *SocketClient) ConnectToService(domain string, service string, canc
 
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
-func (client *SocketClient) ConnectToServiceAsync(domain string, service string, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToServiceAsync(domain string, service string, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -430,7 +430,7 @@ func (client *SocketClient) ConnectToServiceAsync(domain string, service string,
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -463,10 +463,10 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 //
 // Attempts to create a TCP connection with a network URI.
 //
-// @uri may be any valid URI containing an "authority" (hostname/port)
-// component. If a port is not specified in the URI, @default_port will be used.
-// TLS will be negotiated if Client:tls is true. (Client does not know to
-// automatically assume TLS for certain URI schemes.)
+// uri may be any valid URI containing an "authority" (hostname/port) component.
+// If a port is not specified in the URI, default_port will be used. TLS will be
+// negotiated if Client:tls is TRUE. (Client does not know to automatically
+// assume TLS for certain URI schemes.)
 //
 // Using this rather than g_socket_client_connect() or
 // g_socket_client_connect_to_host() allows Client to determine when to use
@@ -477,8 +477,8 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 // finished with it.
 //
 // In the event of any failure (DNS error, service not found, no hosts
-// connectable) nil is returned and @error (if non-nil) is set accordingly.
-func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancellable Cancellabler) (*SocketConnection, error) {
+// connectable) NULL is returned and error (if non-NULL) is set accordingly.
+func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
@@ -489,7 +489,7 @@ func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancell
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -505,9 +505,9 @@ func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancell
 // ConnectToURIAsync: this is the asynchronous version of
 // g_socket_client_connect_to_uri().
 //
-// When the operation is finished @callback will be called. You can then call
+// When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_to_uri_finish() to get the result of the operation.
-func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -518,7 +518,7 @@ func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -547,9 +547,9 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	return _socketConnection, _goerr
 }
 
-// EnableProxy gets the proxy enable state; see
+// EnableProXY gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
-func (client *SocketClient) EnableProxy() bool {
+func (client *SocketClient) EnableProXY() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
 
@@ -620,10 +620,10 @@ func (client *SocketClient) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
-// ProxyResolver gets the Resolver being used by @client. Normally, this will be
+// ProXYResolver gets the Resolver being used by client. Normally, this will be
 // the resolver returned by g_proxy_resolver_get_default(), but you can override
 // it with g_socket_client_set_proxy_resolver().
-func (client *SocketClient) ProxyResolver() *ProxyResolver {
+func (client *SocketClient) ProXYResolver() *ProXYResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -631,9 +631,9 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 
-	var _proxyResolver *ProxyResolver // out
+	var _proxyResolver *ProXYResolver // out
 
-	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
+	_proxyResolver = wrapProXYResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }
@@ -656,7 +656,7 @@ func (client *SocketClient) SocketType() SocketType {
 	return _socketType
 }
 
-// Timeout gets the I/O timeout time for sockets created by @client.
+// Timeout gets the I/O timeout time for sockets created by client.
 //
 // See g_socket_client_set_timeout() for details.
 func (client *SocketClient) Timeout() uint {
@@ -674,7 +674,7 @@ func (client *SocketClient) Timeout() uint {
 	return _guint
 }
 
-// TLS gets whether @client creates TLS connections. See
+// TLS gets whether client creates TLS connections. See
 // g_socket_client_set_tls() for details.
 func (client *SocketClient) TLS() bool {
 	var _arg0 *C.GSocketClient // out
@@ -694,7 +694,7 @@ func (client *SocketClient) TLS() bool {
 }
 
 // TLSValidationFlags gets the TLS validation flags used creating TLS
-// connections via @client.
+// connections via client.
 func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GSocketClient       // out
 	var _cret C.GTlsCertificateFlags // in
@@ -710,13 +710,13 @@ func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetEnableProxy sets whether or not @client attempts to make connections via a
+// SetEnableProXY sets whether or not client attempts to make connections via a
 // proxy server. When enabled (the default), Client will use a Resolver to
 // determine if a proxy protocol such as SOCKS is needed, and automatically do
 // the necessary proxy negotiation.
 //
 // See also g_socket_client_set_proxy_resolver().
-func (client *SocketClient) SetEnableProxy(enable bool) {
+func (client *SocketClient) SetEnableProXY(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
@@ -746,7 +746,7 @@ func (client *SocketClient) SetFamily(family SocketFamily) {
 }
 
 // SetLocalAddress sets the local address of the socket client. The sockets
-// created by this object will bound to the specified address (if not nil)
+// created by this object will bound to the specified address (if not NULL)
 // before connecting.
 //
 // This is useful if you want to ensure that the local side of the connection is
@@ -764,7 +764,7 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 // SetProtocol sets the protocol of the socket client. The sockets created by
 // this object will use of the specified protocol.
 //
-// If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
+// If protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
 // protocol for the socket family and type.
 func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	var _arg0 *C.GSocketClient  // out
@@ -776,14 +776,14 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
-// SetProxyResolver overrides the Resolver used by @client. You can call this if
+// SetProXYResolver overrides the Resolver used by client. You can call this if
 // you want to use specific proxies, rather than using the system default proxy
 // settings.
 //
 // Note that whether or not the proxy resolver is actually used depends on the
 // setting of Client:enable-proxy, which is not changed by this function (but
-// which is true by default)
-func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
+// which is TRUE by default)
+func (client *SocketClient) SetProXYResolver(proxyResolver ProXYResolverer) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 
@@ -808,7 +808,7 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
 }
 
-// SetTimeout sets the I/O timeout for sockets created by @client. @timeout is a
+// SetTimeout sets the I/O timeout for sockets created by client. timeout is a
 // time in seconds, or 0 for no timeout (the default).
 //
 // The timeout value affects the initial connection attempt as well, so setting
@@ -824,9 +824,9 @@ func (client *SocketClient) SetTimeout(timeout uint) {
 	C.g_socket_client_set_timeout(_arg0, _arg1)
 }
 
-// SetTLS sets whether @client creates TLS (aka SSL) connections. If @tls is
-// true, @client will wrap its connections in a ClientConnection and perform a
-// TLS handshake when connecting.
+// SetTLS sets whether client creates TLS (aka SSL) connections. If tls is TRUE,
+// client will wrap its connections in a ClientConnection and perform a TLS
+// handshake when connecting.
 //
 // Note that since Client must return a Connection, but ClientConnection is not
 // a Connection, this actually wraps the resulting ClientConnection in a
@@ -836,7 +836,7 @@ func (client *SocketClient) SetTimeout(timeout uint) {
 //
 // If you need to modify the behavior of the TLS handshake (eg, by setting a
 // client-side certificate to use, or connecting to the
-// Connection::accept-certificate signal), you can connect to @client's
+// Connection::accept-certificate signal), you can connect to client's
 // Client::event signal and wait for it to be emitted with
 // G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
 // ClientConnection before the handshake starts.
@@ -853,7 +853,7 @@ func (client *SocketClient) SetTLS(tls bool) {
 }
 
 // SetTLSValidationFlags sets the TLS validation flags used when creating TLS
-// connections via @client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
+// connections via client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
 func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GSocketClient       // out
 	var _arg1 C.GTlsCertificateFlags // out

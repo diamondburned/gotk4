@@ -11,11 +11,11 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// DistributeNaturalAllocation distributes @extra_space to child @sizes by
+// DistributeNaturalAllocation distributes extra_space to child sizes by
 // bringing smaller children up to natural size first.
 //
-// The remaining space will be added to the @minimum_size member of the
-// `GtkRequestedSize` struct. If all sizes reach their natural size then the
+// The remaining space will be added to the minimum_size member of the
+// GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
 func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	var _arg1 C.int // out

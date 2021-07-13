@@ -52,7 +52,7 @@ func marshalValueType(p uintptr) (interface{}, error) {
 }
 
 // ValueTypeGetLocalizedName gets the localized description string describing
-// the ValueType @value_type.
+// the ValueType value_type.
 func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -69,7 +69,7 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 }
 
 // ValueTypeGetName gets the description string describing the ValueType
-// @value_type.
+// value_type.
 func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -117,8 +117,8 @@ type ValueOverrider interface {
 	// Range gets the range of this object.
 	Range() *Range
 	// ValueAndText gets the current value and the human readable text
-	// alternative of @obj. @text is a newly created string, that must be freed
-	// by the caller. Can be NULL if no descriptor is available.
+	// alternative of obj. text is a newly created string, that must be freed by
+	// the caller. Can be NULL if no descriptor is available.
 	ValueAndText() (float64, string)
 	// SetCurrentValue sets the value of this object.
 	//
@@ -157,7 +157,7 @@ type Valueer interface {
 	// Range gets the range of this object.
 	Range() *Range
 	// ValueAndText gets the current value and the human readable text
-	// alternative of @obj.
+	// alternative of obj.
 	ValueAndText() (float64, string)
 	// SetCurrentValue sets the value of this object.
 	SetCurrentValue(value *externglib.Value) bool
@@ -389,8 +389,8 @@ func (obj *Value) Range() *Range {
 }
 
 // ValueAndText gets the current value and the human readable text alternative
-// of @obj. @text is a newly created string, that must be freed by the caller.
-// Can be NULL if no descriptor is available.
+// of obj. text is a newly created string, that must be freed by the caller. Can
+// be NULL if no descriptor is available.
 func (obj *Value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // in

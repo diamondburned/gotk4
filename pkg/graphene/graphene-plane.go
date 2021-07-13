@@ -23,8 +23,8 @@ func init() {
 
 // Plane: 2D plane that extends infinitely in a 3D volume.
 //
-// The contents of the `graphene_plane_t` are private, and should not be
-// modified directly.
+// The contents of the graphene_plane_t are private, and should not be modified
+// directly.
 type Plane struct {
 	native C.graphene_plane_t
 }
@@ -55,7 +55,7 @@ func (p *Plane) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Distance computes the distance of @point from a #graphene_plane_t.
+// Distance computes the distance of point from a #graphene_plane_t.
 func (p *Plane) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_plane_t   // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -132,8 +132,8 @@ func (p *Plane) Normal() Vec3 {
 	return _normal
 }
 
-// Init initializes the given #graphene_plane_t using the given @normal vector
-// and @constant values.
+// Init initializes the given #graphene_plane_t using the given normal vector
+// and constant values.
 func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_vec3_t  // out
@@ -264,13 +264,13 @@ func (p *Plane) Normalize() Plane {
 	return _res
 }
 
-// Transform transforms a #graphene_plane_t @p using the given @matrix and
-// @normal_matrix.
+// Transform transforms a #graphene_plane_t p using the given matrix and
+// normal_matrix.
 //
-// If @normal_matrix is nil, a transformation matrix for the plane normal will
-// be computed from @matrix. If you are transforming multiple planes using the
-// same @matrix it's recommended to compute the normal matrix beforehand to
-// avoid incurring in the cost of recomputing it every time.
+// If normal_matrix is NULL, a transformation matrix for the plane normal will
+// be computed from matrix. If you are transforming multiple planes using the
+// same matrix it's recommended to compute the normal matrix beforehand to avoid
+// incurring in the cost of recomputing it every time.
 func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out

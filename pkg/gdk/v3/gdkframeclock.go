@@ -75,7 +75,7 @@ type FrameClocker interface {
 	// last known presentation time and refresh interval, and assuming that
 	// presentation times are separated by the refresh interval, predicts a
 	// presentation time that is a multiple of the refresh interval after the
-	// last presentation time, and later than @base_time.
+	// last presentation time, and later than base_time.
 	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
 	// Timings retrieves a FrameTimings object holding timing information for
 	// the current frame or a recent frame.
@@ -237,7 +237,7 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 // last known presentation time and refresh interval, and assuming that
 // presentation times are separated by the refresh interval, predicts a
 // presentation time that is a multiple of the refresh interval after the last
-// presentation time, and later than @base_time.
+// presentation time, and later than base_time.
 func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
 	var _arg1 C.gint64         // out

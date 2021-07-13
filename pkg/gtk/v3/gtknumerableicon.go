@@ -26,33 +26,33 @@ func init() {
 
 // NumerableIconer describes NumerableIcon's methods.
 type NumerableIconer interface {
-	// BackgroundGIcon returns the #GIcon that was set as the base background
-	// image, or nil if there’s none.
-	BackgroundGIcon() *gio.Icon
+	// BackgroundGicon returns the #GIcon that was set as the base background
+	// image, or NULL if there’s none.
+	BackgroundGicon() *gio.Icon
 	// BackgroundIconName returns the icon name used as the base background
-	// image, or nil if there’s none.
+	// image, or NULL if there’s none.
 	BackgroundIconName() string
-	// Count returns the value currently displayed by @self.
+	// Count returns the value currently displayed by self.
 	Count() int
-	// Label returns the currently displayed label of the icon, or nil.
+	// Label returns the currently displayed label of the icon, or NULL.
 	Label() string
 	// StyleContext returns the StyleContext used by the icon for theming, or
-	// nil if there’s none.
+	// NULL if there’s none.
 	StyleContext() *StyleContext
-	// SetBackgroundGIcon updates the icon to use @icon as the base background
+	// SetBackgroundGicon updates the icon to use icon as the base background
 	// image.
-	SetBackgroundGIcon(icon gio.Iconer)
-	// SetBackgroundIconName updates the icon to use the icon named @icon_name
+	SetBackgroundGicon(icon gio.Iconer)
+	// SetBackgroundIconName updates the icon to use the icon named icon_name
 	// from the current icon theme as the base background image.
 	SetBackgroundIconName(iconName string)
-	// SetCount sets the currently displayed value of @self to @count.
+	// SetCount sets the currently displayed value of self to count.
 	SetCount(count int)
-	// SetLabel sets the currently displayed value of @self to the string in
-	// @label.
+	// SetLabel sets the currently displayed value of self to the string in
+	// label.
 	SetLabel(label string)
 	// SetStyleContext updates the icon to fetch theme information from the
 	// given StyleContext.
-	SetStyleContext(style StyleContexter)
+	SetStyleContext(style *StyleContext)
 }
 
 // NumerableIcon is a subclass of Icon that can show a number or short string as
@@ -88,12 +88,12 @@ func marshalNumerableIconer(p uintptr) (interface{}, error) {
 	return wrapNumerableIcon(obj), nil
 }
 
-// BackgroundGIcon returns the #GIcon that was set as the base background image,
-// or nil if there’s none. The caller of this function does not own a reference
+// BackgroundGicon returns the #GIcon that was set as the base background image,
+// or NULL if there’s none. The caller of this function does not own a reference
 // to the returned #GIcon.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
+func (self *NumerableIcon) BackgroundGicon() *gio.Icon {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
 
@@ -114,7 +114,7 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 }
 
 // BackgroundIconName returns the icon name used as the base background image,
-// or nil if there’s none.
+// or NULL if there’s none.
 //
 // Deprecated: since version 3.14.
 func (self *NumerableIcon) BackgroundIconName() string {
@@ -132,7 +132,7 @@ func (self *NumerableIcon) BackgroundIconName() string {
 	return _utf8
 }
 
-// Count returns the value currently displayed by @self.
+// Count returns the value currently displayed by self.
 //
 // Deprecated: since version 3.14.
 func (self *NumerableIcon) Count() int {
@@ -150,7 +150,7 @@ func (self *NumerableIcon) Count() int {
 	return _gint
 }
 
-// Label returns the currently displayed label of the icon, or nil.
+// Label returns the currently displayed label of the icon, or NULL.
 //
 // Deprecated: since version 3.14.
 func (self *NumerableIcon) Label() string {
@@ -168,8 +168,8 @@ func (self *NumerableIcon) Label() string {
 	return _utf8
 }
 
-// StyleContext returns the StyleContext used by the icon for theming, or nil if
-// there’s none.
+// StyleContext returns the StyleContext used by the icon for theming, or NULL
+// if there’s none.
 //
 // Deprecated: since version 3.14.
 func (self *NumerableIcon) StyleContext() *StyleContext {
@@ -187,17 +187,17 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	return _styleContext
 }
 
-// SetBackgroundGIcon updates the icon to use @icon as the base background
-// image. If @icon is nil, @self will go back using style information or default
-// theming for its background image.
+// SetBackgroundGicon updates the icon to use icon as the base background image.
+// If icon is NULL, self will go back using style information or default theming
+// for its background image.
 //
 // If this method is called and an icon name was already set as background for
-// the icon, @icon will be used, i.e. the last method called between
+// the icon, icon will be used, i.e. the last method called between
 // gtk_numerable_icon_set_background_gicon() and
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconer) {
+func (self *NumerableIcon) SetBackgroundGicon(icon gio.Iconer) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
 
@@ -207,13 +207,13 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconer) {
 	C.gtk_numerable_icon_set_background_gicon(_arg0, _arg1)
 }
 
-// SetBackgroundIconName updates the icon to use the icon named @icon_name from
-// the current icon theme as the base background image. If @icon_name is nil,
-// @self will go back using style information or default theming for its
+// SetBackgroundIconName updates the icon to use the icon named icon_name from
+// the current icon theme as the base background image. If icon_name is NULL,
+// self will go back using style information or default theming for its
 // background image.
 //
 // If this method is called and a #GIcon was already set as background for the
-// icon, @icon_name will be used, i.e. the last method called between
+// icon, icon_name will be used, i.e. the last method called between
 // gtk_numerable_icon_set_background_icon_name() and
 // gtk_numerable_icon_set_background_gicon() has always priority.
 //
@@ -228,12 +228,12 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	C.gtk_numerable_icon_set_background_icon_name(_arg0, _arg1)
 }
 
-// SetCount sets the currently displayed value of @self to @count.
+// SetCount sets the currently displayed value of self to count.
 //
 // The numeric value is always clamped to make it two digits, i.e. between -99
 // and 99. Setting a count of zero removes the emblem. If this method is called,
 // and a label was already set on the icon, it will automatically be reset to
-// nil before rendering the number, i.e. the last method called between
+// NULL before rendering the number, i.e. the last method called between
 // gtk_numerable_icon_set_count() and gtk_numerable_icon_set_label() has always
 // priority.
 //
@@ -248,7 +248,7 @@ func (self *NumerableIcon) SetCount(count int) {
 	C.gtk_numerable_icon_set_count(_arg0, _arg1)
 }
 
-// SetLabel sets the currently displayed value of @self to the string in @label.
+// SetLabel sets the currently displayed value of self to the string in label.
 // Setting an empty label removes the emblem.
 //
 // Note that this is meant for displaying short labels, such as roman numbers,
@@ -276,12 +276,12 @@ func (self *NumerableIcon) SetLabel(label string) {
 // StyleContext.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) SetStyleContext(style StyleContexter) {
+func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GtkStyleContext  // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))
 
 	C.gtk_numerable_icon_set_style_context(_arg0, _arg1)
 }
@@ -314,13 +314,13 @@ func NumerableIconNew(baseIcon gio.Iconer) *gio.Icon {
 // constructor that calls gtk_numerable_icon_set_style_context() internally.
 //
 // Deprecated: since version 3.14.
-func NumerableIconNewWithStyleContext(baseIcon gio.Iconer, context StyleContexter) *gio.Icon {
+func NumerableIconNewWithStyleContext(baseIcon gio.Iconer, context *StyleContext) *gio.Icon {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer((baseIcon).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)
 

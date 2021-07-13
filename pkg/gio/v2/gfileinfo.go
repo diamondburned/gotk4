@@ -35,12 +35,12 @@ func init() {
 
 // FileInfor describes FileInfo's methods.
 type FileInfor interface {
-	// ClearStatus clears the status information from @info.
+	// ClearStatus clears the status information from info.
 	ClearStatus()
 	// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
-	// @dest_info, and then copies all of the file attributes from @src_info to
-	// @dest_info.
-	CopyInto(destInfo FileInfor)
+	// dest_info, and then copies all of the file attributes from src_info to
+	// dest_info.
+	CopyInto(destInfo *FileInfo)
 	// Dup duplicates a file info structure.
 	Dup() *FileInfo
 	// AttributeAsString gets the value of a attribute, formatted as a string.
@@ -92,8 +92,8 @@ type FileInfor interface {
 	IsHidden() bool
 	// IsSymlink checks if a file is a symlink.
 	IsSymlink() bool
-	// ModificationTime gets the modification time of the current @info and sets
-	// it in @result.
+	// ModificationTime gets the modification time of the current info and sets
+	// it in result.
 	ModificationTime() glib.TimeVal
 	// Name gets the name for a file.
 	Name() string
@@ -106,47 +106,47 @@ type FileInfor interface {
 	// SymlinkTarget gets the symlink target for a given Info.
 	SymlinkTarget() string
 	// HasAttribute checks if a file info structure has an attribute named
-	// @attribute.
+	// attribute.
 	HasAttribute(attribute string) bool
 	// HasNamespace checks if a file info structure has an attribute in the
-	// specified @name_space.
+	// specified name_space.
 	HasNamespace(nameSpace string) bool
 	// ListAttributes lists the file info structure's attributes.
 	ListAttributes(nameSpace string) []string
-	// RemoveAttribute removes all cases of @attribute from @info if it exists.
+	// RemoveAttribute removes all cases of attribute from info if it exists.
 	RemoveAttribute(attribute string)
-	// SetAttribute sets the @attribute to contain the given value, if possible.
+	// SetAttribute sets the attribute to contain the given value, if possible.
 	SetAttribute(attribute string, typ FileAttributeType, valueP cgo.Handle)
-	// SetAttributeBoolean sets the @attribute to contain the given @attr_value,
+	// SetAttributeBoolean sets the attribute to contain the given attr_value,
 	// if possible.
 	SetAttributeBoolean(attribute string, attrValue bool)
-	// SetAttributeByteString sets the @attribute to contain the given
-	// @attr_value, if possible.
+	// SetAttributeByteString sets the attribute to contain the given
+	// attr_value, if possible.
 	SetAttributeByteString(attribute string, attrValue string)
-	// SetAttributeInt32 sets the @attribute to contain the given @attr_value,
-	// if possible.
+	// SetAttributeInt32 sets the attribute to contain the given attr_value, if
+	// possible.
 	SetAttributeInt32(attribute string, attrValue int32)
-	// SetAttributeInt64 sets the @attribute to contain the given @attr_value,
-	// if possible.
+	// SetAttributeInt64 sets the attribute to contain the given attr_value, if
+	// possible.
 	SetAttributeInt64(attribute string, attrValue int64)
-	// SetAttributeMask sets @mask on @info to match specific attribute types.
+	// SetAttributeMask sets mask on info to match specific attribute types.
 	SetAttributeMask(mask *FileAttributeMatcher)
-	// SetAttributeObject sets the @attribute to contain the given @attr_value,
-	// if possible.
-	SetAttributeObject(attribute string, attrValue gextras.Objector)
+	// SetAttributeObject sets the attribute to contain the given attr_value, if
+	// possible.
+	SetAttributeObject(attribute string, attrValue *externglib.Object)
 	// SetAttributeStatus sets the attribute status for an attribute key.
 	SetAttributeStatus(attribute string, status FileAttributeStatus) bool
-	// SetAttributeString sets the @attribute to contain the given @attr_value,
-	// if possible.
+	// SetAttributeString sets the attribute to contain the given attr_value, if
+	// possible.
 	SetAttributeString(attribute string, attrValue string)
-	// SetAttributeStringv sets the @attribute to contain the given @attr_value,
+	// SetAttributeStringv sets the attribute to contain the given attr_value,
 	// if possible.
 	SetAttributeStringv(attribute string, attrValue []string)
-	// SetAttributeUint32 sets the @attribute to contain the given @attr_value,
-	// if possible.
+	// SetAttributeUint32 sets the attribute to contain the given attr_value, if
+	// possible.
 	SetAttributeUint32(attribute string, attrValue uint32)
-	// SetAttributeUint64 sets the @attribute to contain the given @attr_value,
-	// if possible.
+	// SetAttributeUint64 sets the attribute to contain the given attr_value, if
+	// possible.
 	SetAttributeUint64(attribute string, attrValue uint64)
 	// SetContentType sets the content type attribute for a given Info.
 	SetContentType(contentType string)
@@ -154,15 +154,15 @@ type FileInfor interface {
 	SetDisplayName(displayName string)
 	// SetEditName sets the edit name for the current file.
 	SetEditName(editName string)
-	// SetFileType sets the file type in a Info to @type.
+	// SetFileType sets the file type in a Info to type.
 	SetFileType(typ FileType)
 	// SetIcon sets the icon for a given Info.
 	SetIcon(icon Iconer)
 	// SetIsHidden sets the "is_hidden" attribute in a Info according to
-	// @is_hidden.
+	// is_hidden.
 	SetIsHidden(isHidden bool)
 	// SetIsSymlink sets the "is_symlink" attribute in a Info according to
-	// @is_symlink.
+	// is_symlink.
 	SetIsSymlink(isSymlink bool)
 	// SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
 	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
@@ -242,7 +242,7 @@ func NewFileInfo() *FileInfo {
 	return _fileInfo
 }
 
-// ClearStatus clears the status information from @info.
+// ClearStatus clears the status information from info.
 func (info *FileInfo) ClearStatus() {
 	var _arg0 *C.GFileInfo // out
 
@@ -252,14 +252,14 @@ func (info *FileInfo) ClearStatus() {
 }
 
 // CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
-// @dest_info, and then copies all of the file attributes from @src_info to
-// @dest_info.
-func (srcInfo *FileInfo) CopyInto(destInfo FileInfor) {
+// dest_info, and then copies all of the file attributes from src_info to
+// dest_info.
+func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GFileInfo // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(srcInfo.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer((destInfo).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(destInfo.Native()))
 
 	C.g_file_info_copy_into(_arg0, _arg1)
 }
@@ -301,7 +301,7 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 }
 
 // AttributeBoolean gets the value of a boolean attribute. If the attribute does
-// not contain a boolean value, false will be returned.
+// not contain a boolean value, FALSE will be returned.
 func (info *FileInfo) AttributeBoolean(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -322,7 +322,7 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 }
 
 // AttributeByteString gets the value of a byte string attribute. If the
-// attribute does not contain a byte string, nil will be returned.
+// attribute does not contain a byte string, NULL will be returned.
 func (info *FileInfo) AttributeByteString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -410,7 +410,7 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 }
 
 // AttributeObject gets the value of a #GObject attribute. If the attribute does
-// not contain a #GObject, nil will be returned.
+// not contain a #GObject, NULL will be returned.
 func (info *FileInfo) AttributeObject(attribute string) *externglib.Object {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -447,7 +447,7 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 }
 
 // AttributeString gets the value of a string attribute. If the attribute does
-// not contain a string, nil will be returned.
+// not contain a string, NULL will be returned.
 func (info *FileInfo) AttributeString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -466,7 +466,7 @@ func (info *FileInfo) AttributeString(attribute string) string {
 }
 
 // AttributeStringv gets the value of a stringv attribute. If the attribute does
-// not contain a stringv, nil will be returned.
+// not contain a stringv, NULL will be returned.
 func (info *FileInfo) AttributeStringv(attribute string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -709,8 +709,8 @@ func (info *FileInfo) IsSymlink() bool {
 	return _ok
 }
 
-// ModificationTime gets the modification time of the current @info and sets it
-// in @result.
+// ModificationTime gets the modification time of the current info and sets it
+// in result.
 //
 // Deprecated: Use g_file_info_get_modification_date_time() instead, as Val is
 // deprecated due to the year 2038 problem.
@@ -809,7 +809,7 @@ func (info *FileInfo) SymlinkTarget() string {
 }
 
 // HasAttribute checks if a file info structure has an attribute named
-// @attribute.
+// attribute.
 func (info *FileInfo) HasAttribute(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -830,7 +830,7 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 }
 
 // HasNamespace checks if a file info structure has an attribute in the
-// specified @name_space.
+// specified name_space.
 func (info *FileInfo) HasNamespace(nameSpace string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -880,7 +880,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	return _utf8s
 }
 
-// RemoveAttribute removes all cases of @attribute from @info if it exists.
+// RemoveAttribute removes all cases of attribute from info if it exists.
 func (info *FileInfo) RemoveAttribute(attribute string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -891,8 +891,8 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 	C.g_file_info_remove_attribute(_arg0, _arg1)
 }
 
-// SetAttribute sets the @attribute to contain the given value, if possible. To
-// unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for @type.
+// SetAttribute sets the attribute to contain the given value, if possible. To
+// unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for type.
 func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP cgo.Handle) {
 	var _arg0 *C.GFileInfo         // out
 	var _arg1 *C.char              // out
@@ -907,7 +907,7 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 	C.g_file_info_set_attribute(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetAttributeBoolean sets the @attribute to contain the given @attr_value, if
+// SetAttributeBoolean sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	var _arg0 *C.GFileInfo // out
@@ -923,8 +923,8 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	C.g_file_info_set_attribute_boolean(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeByteString sets the @attribute to contain the given @attr_value,
-// if possible.
+// SetAttributeByteString sets the attribute to contain the given attr_value, if
+// possible.
 func (info *FileInfo) SetAttributeByteString(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -937,7 +937,7 @@ func (info *FileInfo) SetAttributeByteString(attribute string, attrValue string)
 	C.g_file_info_set_attribute_byte_string(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeInt32 sets the @attribute to contain the given @attr_value, if
+// SetAttributeInt32 sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	var _arg0 *C.GFileInfo // out
@@ -951,7 +951,7 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	C.g_file_info_set_attribute_int32(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeInt64 sets the @attribute to contain the given @attr_value, if
+// SetAttributeInt64 sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	var _arg0 *C.GFileInfo // out
@@ -965,7 +965,7 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	C.g_file_info_set_attribute_int64(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeMask sets @mask on @info to match specific attribute types.
+// SetAttributeMask sets mask on info to match specific attribute types.
 func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
 	var _arg1 *C.GFileAttributeMatcher // out
@@ -976,9 +976,9 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	C.g_file_info_set_attribute_mask(_arg0, _arg1)
 }
 
-// SetAttributeObject sets the @attribute to contain the given @attr_value, if
+// SetAttributeObject sets the attribute to contain the given attr_value, if
 // possible.
-func (info *FileInfo) SetAttributeObject(attribute string, attrValue gextras.Objector) {
+func (info *FileInfo) SetAttributeObject(attribute string, attrValue *externglib.Object) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
 	var _arg2 *C.GObject   // out
@@ -994,8 +994,8 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue gextras.Obj
 // only needed by external code that implement g_file_set_attributes_from_info()
 // or similar functions.
 //
-// The attribute must exist in @info for this to work. Otherwise false is
-// returned and @info is unchanged.
+// The attribute must exist in info for this to work. Otherwise FALSE is
+// returned and info is unchanged.
 func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -1017,7 +1017,7 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 	return _ok
 }
 
-// SetAttributeString sets the @attribute to contain the given @attr_value, if
+// SetAttributeString sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 	var _arg0 *C.GFileInfo // out
@@ -1031,7 +1031,7 @@ func (info *FileInfo) SetAttributeString(attribute string, attrValue string) {
 	C.g_file_info_set_attribute_string(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeStringv sets the @attribute to contain the given @attr_value, if
+// SetAttributeStringv sets the attribute to contain the given attr_value, if
 // possible.
 //
 // Sinze: 2.22
@@ -1042,18 +1042,22 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	_arg2 = (**C.char)(C.malloc(C.ulong(len(attrValue)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(attrValue))
-		for i := range attrValue {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(attrValue[i])))
+		_arg2 = (**C.char)(C.malloc(C.ulong(len(attrValue)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(attrValue)+1)
+			var zero *C.char
+			out[len(attrValue)] = zero
+			for i := range attrValue {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(attrValue[i])))
+			}
 		}
 	}
 
 	C.g_file_info_set_attribute_stringv(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeUint32 sets the @attribute to contain the given @attr_value, if
+// SetAttributeUint32 sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	var _arg0 *C.GFileInfo // out
@@ -1067,7 +1071,7 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	C.g_file_info_set_attribute_uint32(_arg0, _arg1, _arg2)
 }
 
-// SetAttributeUint64 sets the @attribute to contain the given @attr_value, if
+// SetAttributeUint64 sets the attribute to contain the given attr_value, if
 // possible.
 func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	var _arg0 *C.GFileInfo // out
@@ -1117,7 +1121,7 @@ func (info *FileInfo) SetEditName(editName string) {
 	C.g_file_info_set_edit_name(_arg0, _arg1)
 }
 
-// SetFileType sets the file type in a Info to @type. See
+// SetFileType sets the file type in a Info to type. See
 // G_FILE_ATTRIBUTE_STANDARD_TYPE.
 func (info *FileInfo) SetFileType(typ FileType) {
 	var _arg0 *C.GFileInfo // out
@@ -1140,7 +1144,7 @@ func (info *FileInfo) SetIcon(icon Iconer) {
 	C.g_file_info_set_icon(_arg0, _arg1)
 }
 
-// SetIsHidden sets the "is_hidden" attribute in a Info according to @is_hidden.
+// SetIsHidden sets the "is_hidden" attribute in a Info according to is_hidden.
 // See G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
 func (info *FileInfo) SetIsHidden(isHidden bool) {
 	var _arg0 *C.GFileInfo // out
@@ -1155,7 +1159,7 @@ func (info *FileInfo) SetIsHidden(isHidden bool) {
 }
 
 // SetIsSymlink sets the "is_symlink" attribute in a Info according to
-// @is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
+// is_symlink. See G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK.
 func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out

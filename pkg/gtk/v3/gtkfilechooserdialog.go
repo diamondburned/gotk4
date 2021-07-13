@@ -161,7 +161,13 @@ type FileChooserDialoger interface {
 // FileChooserDialog assumes that its “accept”-type action, e.g. an “Open” or
 // “Save” button, will have one of the following response codes:
 //
-// - K_RESPONSE_ACCEPT - K_RESPONSE_OK - K_RESPONSE_YES - K_RESPONSE_APPLY
+// - K_RESPONSE_ACCEPT
+//
+// - K_RESPONSE_OK
+//
+// - K_RESPONSE_YES
+//
+// - K_RESPONSE_APPLY
 //
 // This is because FileChooserDialog must intercept responses and switch to
 // folders if appropriate, rather than letting the dialog terminate — the

@@ -100,13 +100,13 @@ func marshalAppChooserDialoger(p uintptr) (interface{}, error) {
 
 // NewAppChooserDialog creates a new AppChooserDialog for the provided #GFile,
 // to allow the user to select an application for it.
-func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *AppChooserDialog {
+func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.GFile         // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
@@ -121,13 +121,13 @@ func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *Ap
 
 // NewAppChooserDialogForContentType creates a new AppChooserDialog for the
 // provided content type, to allow the user to select an application for it.
-func NewAppChooserDialogForContentType(parent Windower, flags DialogFlags, contentType string) *AppChooserDialog {
+func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.gchar         // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
 

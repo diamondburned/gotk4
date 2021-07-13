@@ -27,15 +27,15 @@ type VulkanContexter interface {
 	privateVulkanContext()
 }
 
-// VulkanContext: `GdkVulkanContext` is an object representing the
+// VulkanContext: GdkVulkanContext is an object representing the
 // platform-specific Vulkan draw context.
 //
-// `GdkVulkanContext`s are created for a surface using
-// [method@Gdk.Surface.create_vulkan_context], and the context will match the
-// the characteristics of the surface.
+// GdkVulkanContexts are created for a surface using
+// gdk.Surface.CreateVulkanContext(), and the context will match the the
+// characteristics of the surface.
 //
-// Support for `GdkVulkanContext` is platform-specific and context creation can
-// fail, returning nil context.
+// Support for GdkVulkanContext is platform-specific and context creation can
+// fail, returning NULL context.
 type VulkanContext struct {
 	DrawContext
 

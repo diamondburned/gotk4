@@ -23,7 +23,7 @@ import "C"
 // gdk_pixbuf_get_from_window() instead.
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
-// will contain an alpha channel if the @surface contains one.
+// will contain an alpha channel if the surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.gint             // out
@@ -61,9 +61,8 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // efficiently read individual pixels on the client side.
 //
 // This function will create an RGB pixbuf with 8 bits per channel with the size
-// specified by the @width and @height arguments scaled by the scale factor of
-// @window. The pixbuf will contain an alpha channel if the @window contains
-// one.
+// specified by the width and height arguments scaled by the scale factor of
+// window. The pixbuf will contain an alpha channel if the window contains one.
 //
 // If the window is off the screen, then there is no image data in the
 // obscured/offscreen regions to be placed in the pixbuf. The contents of
@@ -74,13 +73,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // regions are undefined.
 //
 // If the window is not mapped (typically because it’s iconified/minimized or
-// not on the current workspace), then nil will be returned.
+// not on the current workspace), then NULL will be returned.
 //
-// If memory can’t be allocated for the return value, nil will be returned
+// If memory can’t be allocated for the return value, NULL will be returned
 // instead.
 //
 // (In short, there are several ways this function can fail, and if it fails it
-// returns nil; so check the return value.)
+// returns NULL; so check the return value.)
 func PixbufGetFromWindow(window Windower, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out

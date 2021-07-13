@@ -44,7 +44,7 @@ type CancellableOverrider interface {
 
 // Cancellabler describes Cancellable's methods.
 type Cancellabler interface {
-	// Cancel: will set @cancellable to cancelled, and will emit the
+	// Cancel: will set cancellable to cancelled, and will emit the
 	// #GCancellable::cancelled signal.
 	Cancel()
 	// Disconnect disconnects a handler from a cancellable instance similar to
@@ -54,23 +54,23 @@ type Cancellabler interface {
 	Fd() int
 	// IsCancelled checks if a cancellable job has been cancelled.
 	IsCancelled() bool
-	// MakePollfd creates a FD corresponding to @cancellable; this can be passed
+	// MakePollfd creates a FD corresponding to cancellable; this can be passed
 	// to g_poll() and used to poll for cancellation.
 	MakePollfd(pollfd *glib.PollFD) bool
-	// PopCurrent pops @cancellable off the cancellable stack (verifying that
-	// @cancellable is on the top of the stack).
+	// PopCurrent pops cancellable off the cancellable stack (verifying that
+	// cancellable is on the top of the stack).
 	PopCurrent()
-	// PushCurrent pushes @cancellable onto the cancellable stack.
+	// PushCurrent pushes cancellable onto the cancellable stack.
 	PushCurrent()
 	// ReleaseFd releases a resources previously allocated by
 	// g_cancellable_get_fd() or g_cancellable_make_pollfd().
 	ReleaseFd()
-	// Reset resets @cancellable to its uncancelled state.
+	// Reset resets cancellable to its uncancelled state.
 	Reset()
-	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
+	// SetErrorIfCancelled: if the cancellable is cancelled, sets the error to
 	// notify that the operation was cancelled.
 	SetErrorIfCancelled() error
-	// NewSource creates a source that triggers if @cancellable is cancelled and
+	// NewSource creates a source that triggers if cancellable is cancelled and
 	// calls its callback of type SourceFunc.
 	NewSource() *glib.Source
 }
@@ -117,16 +117,16 @@ func NewCancellable() *Cancellable {
 	return _cancellable
 }
 
-// Cancel: will set @cancellable to cancelled, and will emit the
+// Cancel: will set cancellable to cancelled, and will emit the
 // #GCancellable::cancelled signal. (However, see the warning about race
 // conditions in the documentation for that signal if you are planning to
 // connect to it.)
 //
 // This function is thread-safe. In other words, you can safely call it from a
 // thread other than the one running the operation that was passed the
-// @cancellable.
+// cancellable.
 //
-// If @cancellable is nil, this function returns immediately for convenience.
+// If cancellable is NULL, this function returns immediately for convenience.
 //
 // The convention within GIO is that cancelling an asynchronous operation causes
 // it to complete asynchronously. That is, if you cancel the operation from the
@@ -150,7 +150,7 @@ func (cancellable *Cancellable) Cancel() {
 // cancellable operation is finished and the signal handler is removed. See
 // #GCancellable::cancelled for details on how to use this.
 //
-// If @cancellable is nil or @handler_id is `0` this function does nothing.
+// If cancellable is NULL or handler_id is 0 this function does nothing.
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
@@ -163,7 +163,7 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 
 // Fd gets the file descriptor for a cancellable job. This can be used to
 // implement cancellable operations on Unix systems. The returned fd will turn
-// readable when @cancellable is cancelled.
+// readable when cancellable is cancelled.
 //
 // You are not supposed to read from the fd yourself, just check for readable
 // status. Reading to unset the readable status is done with
@@ -207,19 +207,19 @@ func (cancellable *Cancellable) IsCancelled() bool {
 	return _ok
 }
 
-// MakePollfd creates a FD corresponding to @cancellable; this can be passed to
+// MakePollfd creates a FD corresponding to cancellable; this can be passed to
 // g_poll() and used to poll for cancellation. This is useful both for unix
 // systems without a native poll and for portability to windows.
 //
-// When this function returns true, you should use g_cancellable_release_fd() to
-// free up resources allocated for the @pollfd. After a false return, do not
-// call g_cancellable_release_fd().
+// When this function returns TRUE, you should use g_cancellable_release_fd() to
+// free up resources allocated for the pollfd. After a FALSE return, do not call
+// g_cancellable_release_fd().
 //
-// If this function returns false, either no @cancellable was given or resource
+// If this function returns FALSE, either no cancellable was given or resource
 // limits prevent this function from allocating the necessary structures for
 // polling. (On Linux, you will likely have reached the maximum number of file
 // descriptors.) The suggested way to handle these cases is to ignore the
-// @cancellable.
+// cancellable.
 //
 // You are not supposed to read from the fd yourself, just check for readable
 // status. Reading to unset the readable status is done with
@@ -243,8 +243,8 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	return _ok
 }
 
-// PopCurrent pops @cancellable off the cancellable stack (verifying that
-// @cancellable is on the top of the stack).
+// PopCurrent pops cancellable off the cancellable stack (verifying that
+// cancellable is on the top of the stack).
 func (cancellable *Cancellable) PopCurrent() {
 	var _arg0 *C.GCancellable // out
 
@@ -253,7 +253,7 @@ func (cancellable *Cancellable) PopCurrent() {
 	C.g_cancellable_pop_current(_arg0)
 }
 
-// PushCurrent pushes @cancellable onto the cancellable stack. The current
+// PushCurrent pushes cancellable onto the cancellable stack. The current
 // cancellable can then be received using g_cancellable_get_current().
 //
 // This is useful when implementing cancellable operations in code that does not
@@ -274,7 +274,7 @@ func (cancellable *Cancellable) PushCurrent() {
 //
 // For compatibility reasons with older releases, calling this function is not
 // strictly required, the resources will be automatically freed when the
-// @cancellable is finalized. However, the @cancellable will block scarce file
+// cancellable is finalized. However, the cancellable will block scarce file
 // descriptors until it is finalized if this function is not called. This can
 // cause the application to run out of file descriptors when many #GCancellables
 // are used at the same time.
@@ -286,7 +286,7 @@ func (cancellable *Cancellable) ReleaseFd() {
 	C.g_cancellable_release_fd(_arg0)
 }
 
-// Reset resets @cancellable to its uncancelled state.
+// Reset resets cancellable to its uncancelled state.
 //
 // If cancellable is currently in use by any cancellable operation then the
 // behavior of this function is undefined.
@@ -305,7 +305,7 @@ func (cancellable *Cancellable) Reset() {
 	C.g_cancellable_reset(_arg0)
 }
 
-// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
+// SetErrorIfCancelled: if the cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
 func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	var _arg0 *C.GCancellable // out
@@ -322,12 +322,12 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	return _goerr
 }
 
-// NewSource creates a source that triggers if @cancellable is cancelled and
+// NewSource creates a source that triggers if cancellable is cancelled and
 // calls its callback of type SourceFunc. This is primarily useful for attaching
 // to another (non-cancellable) source with g_source_add_child_source() to add
 // cancellability to it.
 //
-// For convenience, you can call this with a nil #GCancellable, in which case
+// For convenience, you can call this with a NULL #GCancellable, in which case
 // the source will never trigger.
 //
 // The new #GSource will hold a reference to the #GCancellable.

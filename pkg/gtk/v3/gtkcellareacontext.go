@@ -29,7 +29,7 @@ func init() {
 // yet, so the interface currently has no use.
 type CellAreaContextOverrider interface {
 	// Allocate allocates a width and/or a height for all rows which are to be
-	// rendered with @context.
+	// rendered with context.
 	//
 	// Usually allocation is performed only horizontally or sometimes vertically
 	// since a group of rows are usually rendered side by side vertically or
@@ -40,16 +40,16 @@ type CellAreaContextOverrider interface {
 	//
 	// Since 3.0
 	Allocate(width int, height int)
-	// PreferredHeightForWidth gets the accumulative preferred height for @width
-	// for all rows which have been requested for the same said @width with this
+	// PreferredHeightForWidth gets the accumulative preferred height for width
+	// for all rows which have been requested for the same said width with this
 	// context.
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	// PreferredWidthForHeight gets the accumulative preferred width for @height
-	// for all rows which have been requested for the same said @height with
-	// this context.
+	// PreferredWidthForHeight gets the accumulative preferred width for height
+	// for all rows which have been requested for the same said height with this
+	// context.
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
@@ -79,25 +79,25 @@ type CellAreaContextOverrider interface {
 // CellAreaContexter describes CellAreaContext's methods.
 type CellAreaContexter interface {
 	// Allocate allocates a width and/or a height for all rows which are to be
-	// rendered with @context.
+	// rendered with context.
 	Allocate(width int, height int)
-	// Allocation fetches the current allocation size for @context.
+	// Allocation fetches the current allocation size for context.
 	Allocation() (width int, height int)
-	// Area fetches the CellArea this @context was created by.
+	// Area fetches the CellArea this context was created by.
 	Area() *CellArea
 	// PreferredHeight gets the accumulative preferred height for all rows which
 	// have been requested with this context.
 	PreferredHeight() (minimumHeight int, naturalHeight int)
-	// PreferredHeightForWidth gets the accumulative preferred height for @width
-	// for all rows which have been requested for the same said @width with this
+	// PreferredHeightForWidth gets the accumulative preferred height for width
+	// for all rows which have been requested for the same said width with this
 	// context.
 	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth gets the accumulative preferred width for all rows which
 	// have been requested with this context.
 	PreferredWidth() (minimumWidth int, naturalWidth int)
-	// PreferredWidthForHeight gets the accumulative preferred width for @height
-	// for all rows which have been requested for the same said @height with
-	// this context.
+	// PreferredWidthForHeight gets the accumulative preferred width for height
+	// for all rows which have been requested for the same said height with this
+	// context.
 	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// PushPreferredHeight causes the minimum and/or natural height to grow if
 	// the new proposed sizes exceed the current minimum and natural height.
@@ -141,7 +141,7 @@ func marshalCellAreaContexter(p uintptr) (interface{}, error) {
 }
 
 // Allocate allocates a width and/or a height for all rows which are to be
-// rendered with @context.
+// rendered with context.
 //
 // Usually allocation is performed only horizontally or sometimes vertically
 // since a group of rows are usually rendered side by side vertically or
@@ -163,7 +163,7 @@ func (context *CellAreaContext) Allocate(width int, height int) {
 	C.gtk_cell_area_context_allocate(_arg0, _arg1, _arg2)
 }
 
-// Allocation fetches the current allocation size for @context.
+// Allocation fetches the current allocation size for context.
 //
 // If the context was not allocated in width or height, or if the context was
 // recently reset with gtk_cell_area_context_reset(), the returned value will be
@@ -186,7 +186,7 @@ func (context *CellAreaContext) Allocation() (width int, height int) {
 	return _width, _height
 }
 
-// Area fetches the CellArea this @context was created by.
+// Area fetches the CellArea this context was created by.
 //
 // This is generally unneeded by layouting widgets; however, it is important for
 // the context implementation itself to fetch information about the area it is
@@ -233,9 +233,8 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight int, naturalHei
 	return _minimumHeight, _naturalHeight
 }
 
-// PreferredHeightForWidth gets the accumulative preferred height for @width for
-// all rows which have been requested for the same said @width with this
-// context.
+// PreferredHeightForWidth gets the accumulative preferred height for width for
+// all rows which have been requested for the same said width with this context.
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting
 // the size of a CellArea, the returned values are -1.
@@ -282,8 +281,8 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth
 	return _minimumWidth, _naturalWidth
 }
 
-// PreferredWidthForHeight gets the accumulative preferred width for @height for
-// all rows which have been requested for the same said @height with this
+// PreferredWidthForHeight gets the accumulative preferred width for height for
+// all rows which have been requested for the same said height with this
 // context.
 //
 // After gtk_cell_area_context_reset() is called and/or before ever requesting

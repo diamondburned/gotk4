@@ -41,7 +41,7 @@ const (
 	// actions. If so, GTK+ will call gtk_drag_get_data() on behalf of the
 	// widget. Whether or not the drop is successful, GTK+ will call
 	// gtk_drag_finish(). If the action was a move, then if the drag was
-	// successful, then true will be passed for the @delete parameter to
+	// successful, then TRUE will be passed for the delete parameter to
 	// gtk_drag_finish().
 	DestDefaultsDrop DestDefaults = 0b100
 	// DestDefaultsAll: if set, specifies that all default actions should be

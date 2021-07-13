@@ -213,9 +213,9 @@ type Cursorer interface {
 	// Surface returns a cairo image surface with the image used to display the
 	// cursor.
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
-	// Ref adds a reference to @cursor.
+	// Ref adds a reference to cursor.
 	ref() *Cursor
-	// Unref removes a reference from @cursor, deallocating the cursor if no
+	// Unref removes a reference from cursor, deallocating the cursor if no
 	// references remain.
 	unref()
 }
@@ -264,12 +264,12 @@ func NewCursor(cursorType CursorType) *Cursor {
 }
 
 // NewCursorForDisplay creates a new cursor from the set of builtin cursors.
-func NewCursorForDisplay(display Displayer, cursorType CursorType) *Cursor {
+func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	var _arg1 *C.GdkDisplay   // out
 	var _arg2 C.GdkCursorType // out
 	var _cret *C.GdkCursor    // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.GdkCursorType(cursorType)
 
 	_cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
@@ -281,34 +281,87 @@ func NewCursorForDisplay(display Displayer, cursorType CursorType) *Cursor {
 	return _cursor
 }
 
-// NewCursorFromName creates a new cursor by looking up @name in the current
+// NewCursorFromName creates a new cursor by looking up name in the current
 // cursor theme.
 //
 // A recommended set of cursor names that will work across different platforms
-// can be found in the CSS specification: - "none" - ! (default_cursor.png)
-// "default" - ! (help_cursor.png) "help" - ! (pointer_cursor.png) "pointer" - !
-// (context_menu_cursor.png) "context-menu" - ! (progress_cursor.png) "progress"
-// - ! (wait_cursor.png) "wait" - ! (cell_cursor.png) "cell" - !
-// (crosshair_cursor.png) "crosshair" - ! (text_cursor.png) "text" - !
-// (vertical_text_cursor.png) "vertical-text" - ! (alias_cursor.png) "alias" - !
-// (copy_cursor.png) "copy" - ! (no_drop_cursor.png) "no-drop" - !
-// (move_cursor.png) "move" - ! (not_allowed_cursor.png) "not-allowed" - !
-// (grab_cursor.png) "grab" - ! (grabbing_cursor.png) "grabbing" - !
-// (all_scroll_cursor.png) "all-scroll" - ! (col_resize_cursor.png) "col-resize"
-// - ! (row_resize_cursor.png) "row-resize" - ! (n_resize_cursor.png) "n-resize"
-// - ! (e_resize_cursor.png) "e-resize" - ! (s_resize_cursor.png) "s-resize" - !
-// (w_resize_cursor.png) "w-resize" - ! (ne_resize_cursor.png) "ne-resize" - !
-// (nw_resize_cursor.png) "nw-resize" - ! (sw_resize_cursor.png) "sw-resize" - !
-// (se_resize_cursor.png) "se-resize" - ! (ew_resize_cursor.png) "ew-resize" - !
-// (ns_resize_cursor.png) "ns-resize" - ! (nesw_resize_cursor.png) "nesw-resize"
-// - ! (nwse_resize_cursor.png) "nwse-resize" - ! (zoom_in_cursor.png) "zoom-in"
+// can be found in the CSS specification:
+//
+// - "none"
+//
+// - ! (default_cursor.png) "default"
+//
+// - ! (help_cursor.png) "help"
+//
+// - ! (pointer_cursor.png) "pointer"
+//
+// - ! (context_menu_cursor.png) "context-menu"
+//
+// - ! (progress_cursor.png) "progress"
+//
+// - ! (wait_cursor.png) "wait"
+//
+// - ! (cell_cursor.png) "cell"
+//
+// - ! (crosshair_cursor.png) "crosshair"
+//
+// - ! (text_cursor.png) "text"
+//
+// - ! (vertical_text_cursor.png) "vertical-text"
+//
+// - ! (alias_cursor.png) "alias"
+//
+// - ! (copy_cursor.png) "copy"
+//
+// - ! (no_drop_cursor.png) "no-drop"
+//
+// - ! (move_cursor.png) "move"
+//
+// - ! (not_allowed_cursor.png) "not-allowed"
+//
+// - ! (grab_cursor.png) "grab"
+//
+// - ! (grabbing_cursor.png) "grabbing"
+//
+// - ! (all_scroll_cursor.png) "all-scroll"
+//
+// - ! (col_resize_cursor.png) "col-resize"
+//
+// - ! (row_resize_cursor.png) "row-resize"
+//
+// - ! (n_resize_cursor.png) "n-resize"
+//
+// - ! (e_resize_cursor.png) "e-resize"
+//
+// - ! (s_resize_cursor.png) "s-resize"
+//
+// - ! (w_resize_cursor.png) "w-resize"
+//
+// - ! (ne_resize_cursor.png) "ne-resize"
+//
+// - ! (nw_resize_cursor.png) "nw-resize"
+//
+// - ! (sw_resize_cursor.png) "sw-resize"
+//
+// - ! (se_resize_cursor.png) "se-resize"
+//
+// - ! (ew_resize_cursor.png) "ew-resize"
+//
+// - ! (ns_resize_cursor.png) "ns-resize"
+//
+// - ! (nesw_resize_cursor.png) "nesw-resize"
+//
+// - ! (nwse_resize_cursor.png) "nwse-resize"
+//
+// - ! (zoom_in_cursor.png) "zoom-in"
+//
 // - ! (zoom_out_cursor.png) "zoom-out"
-func NewCursorFromName(display Displayer, name string) *Cursor {
+func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.gchar      // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
@@ -329,21 +382,21 @@ func NewCursorFromName(display Displayer, name string) *Cursor {
 // gdk_display_get_default_cursor_size() and
 // gdk_display_get_maximal_cursor_size() give information about cursor sizes.
 //
-// If @x or @y are `-1`, the pixbuf must have options named “x_hot” and “y_hot”,
-// resp., containing integer values between `0` and the width resp. height of
-// the pixbuf. (Since: 3.0)
+// If x or y are -1, the pixbuf must have options named “x_hot” and “y_hot”,
+// resp., containing integer values between 0 and the width resp. height of the
+// pixbuf. (Since: 3.0)
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromPixbuf(display Displayer, pixbuf gdkpixbuf.Pixbufer, x int, y int) *Cursor {
+func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x int, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out
 	var _arg4 C.gint        // out
 	var _cret *C.GdkCursor  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = C.gint(x)
 	_arg4 = C.gint(y)
 
@@ -367,14 +420,14 @@ func NewCursorFromPixbuf(display Displayer, pixbuf gdkpixbuf.Pixbufer, x int, y 
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
 // of the X Render extension.
-func NewCursorFromSurface(display Displayer, surface *cairo.Surface, x float64, y float64) *Cursor {
+func NewCursorFromSurface(display *Display, surface *cairo.Surface, x float64, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
 	var _arg2 *C.cairo_surface_t // out
 	var _arg3 C.gdouble          // out
 	var _arg4 C.gdouble          // out
 	var _cret *C.GdkCursor       // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
@@ -423,7 +476,7 @@ func (cursor *Cursor) Display() *Display {
 // Image returns a Pixbuf with the image used to display the cursor.
 //
 // Note that depending on the capabilities of the windowing system and on the
-// cursor, GDK may not be able to obtain the image data. In this case, nil is
+// cursor, GDK may not be able to obtain the image data. In this case, NULL is
 // returned.
 func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
@@ -452,7 +505,7 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 // cursor.
 //
 // Note that depending on the capabilities of the windowing system and on the
-// cursor, GDK may not be able to obtain the image data. In this case, nil is
+// cursor, GDK may not be able to obtain the image data. In this case, NULL is
 // returned.
 func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out
@@ -478,7 +531,7 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	return _xHot, _yHot, _surface
 }
 
-// Ref adds a reference to @cursor.
+// Ref adds a reference to cursor.
 //
 // Deprecated: Use g_object_ref() instead.
 func (cursor *Cursor) ref() *Cursor {
@@ -496,7 +549,7 @@ func (cursor *Cursor) ref() *Cursor {
 	return _ret
 }
 
-// Unref removes a reference from @cursor, deallocating the cursor if no
+// Unref removes a reference from cursor, deallocating the cursor if no
 // references remain.
 //
 // Deprecated: Use g_object_unref() instead.

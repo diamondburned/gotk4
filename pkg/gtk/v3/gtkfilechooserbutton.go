@@ -37,18 +37,18 @@ type FileChooserButtoner interface {
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse.
 	FocusOnClick() bool
-	// Title retrieves the title of the browse dialog used by @button.
+	// Title retrieves the title of the browse dialog used by button.
 	Title() string
-	// WidthChars retrieves the width in characters of the @button widget’s
-	// entry and/or label.
+	// WidthChars retrieves the width in characters of the button widget’s entry
+	// and/or label.
 	WidthChars() int
 	// SetFocusOnClick sets whether the button will grab focus when it is
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
-	// SetTitle modifies the @title of the browse dialog used by @button.
+	// SetTitle modifies the title of the browse dialog used by button.
 	SetTitle(title string)
-	// SetWidthChars sets the width (in characters) that @button will use to
-	// @n_chars.
+	// SetWidthChars sets the width (in characters) that button will use to
+	// n_chars.
 	SetWidthChars(nChars int)
 }
 
@@ -56,7 +56,7 @@ type FileChooserButtoner interface {
 // the FileChooser interface. Visually, it is a file name with a button to bring
 // up a FileChooserDialog. The user can then use that dialog to change the file
 // associated with that button. This widget does not support setting the
-// FileChooser:select-multiple property to true.
+// FileChooser:select-multiple property to TRUE.
 //
 // Create a button to let the user select a file in /etc
 //
@@ -145,19 +145,19 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 }
 
 // NewFileChooserButtonWithDialog creates a FileChooserButton widget which uses
-// @dialog as its file-picking window.
+// dialog as its file-picking window.
 //
-// Note that @dialog must be a Dialog (or subclass) which implements the
+// Note that dialog must be a Dialog (or subclass) which implements the
 // FileChooser interface and must not have GTK_DIALOG_DESTROY_WITH_PARENT set.
 //
 // Also note that the dialog needs to have its confirmative button added with
 // response GTK_RESPONSE_ACCEPT or GTK_RESPONSE_OK in order for the button to
 // take over the file selected in the dialog.
-func NewFileChooserButtonWithDialog(dialog Dialoger) *FileChooserButton {
+func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((dialog).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
 
 	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
 
@@ -195,7 +195,7 @@ func (button *FileChooserButton) FocusOnClick() bool {
 	return _ok
 }
 
-// Title retrieves the title of the browse dialog used by @button. The returned
+// Title retrieves the title of the browse dialog used by button. The returned
 // value should not be modified or freed.
 func (button *FileChooserButton) Title() string {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -212,7 +212,7 @@ func (button *FileChooserButton) Title() string {
 	return _utf8
 }
 
-// WidthChars retrieves the width in characters of the @button widget’s entry
+// WidthChars retrieves the width in characters of the button widget’s entry
 // and/or label.
 func (button *FileChooserButton) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -247,7 +247,7 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	C.gtk_file_chooser_button_set_focus_on_click(_arg0, _arg1)
 }
 
-// SetTitle modifies the @title of the browse dialog used by @button.
+// SetTitle modifies the title of the browse dialog used by button.
 func (button *FileChooserButton) SetTitle(title string) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 *C.gchar                // out
@@ -258,8 +258,7 @@ func (button *FileChooserButton) SetTitle(title string) {
 	C.gtk_file_chooser_button_set_title(_arg0, _arg1)
 }
 
-// SetWidthChars sets the width (in characters) that @button will use to
-// @n_chars.
+// SetWidthChars sets the width (in characters) that button will use to n_chars.
 func (button *FileChooserButton) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gint                  // out

@@ -68,8 +68,8 @@ type Socketer interface {
 // is not destroyed until that plug is created. Violating this rule will cause
 // unpredictable consequences, the most likely consequence being that the plug
 // will appear as a separate toplevel window. You can check if the plug has been
-// created by using gtk_socket_get_plug_window(). If it returns a non-nil value,
-// then the plug has been successfully created inside of the socket.
+// created by using gtk_socket_get_plug_window(). If it returns a non-NULL
+// value, then the plug has been successfully created inside of the socket.
 //
 // When GTK+ is notified that the embedded window has been destroyed, then it
 // will destroy the socket as well. You should always, therefore, be prepared
@@ -84,7 +84,7 @@ type Socketer interface {
 //
 // The Plug and Socket widgets are only available when GTK+ is compiled for the
 // X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
-// X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
+// X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
 // header.
 type Socket struct {
 	Container

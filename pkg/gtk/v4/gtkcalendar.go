@@ -25,14 +25,14 @@ func init() {
 type Calendarer interface {
 	// ClearMarks: remove all visual markers.
 	ClearMarks()
-	// DayIsMarked returns if the @day of the @calendar is already marked.
+	// DayIsMarked returns if the day of the calendar is already marked.
 	DayIsMarked(day uint) bool
-	// ShowDayNames returns whether @self is currently showing the names of the
+	// ShowDayNames returns whether self is currently showing the names of the
 	// week days.
 	ShowDayNames() bool
-	// ShowHeading returns whether @self is currently showing the heading.
+	// ShowHeading returns whether self is currently showing the heading.
 	ShowHeading() bool
-	// ShowWeekNumbers returns whether @self is showing week numbers right now.
+	// ShowWeekNumbers returns whether self is showing week numbers right now.
 	ShowWeekNumbers() bool
 	// MarkDay places a visual marker on a particular day.
 	MarkDay(day uint)
@@ -46,37 +46,43 @@ type Calendarer interface {
 	UnmarkDay(day uint)
 }
 
-// Calendar: `GtkCalendar` is a widget that displays a Gregorian calendar, one
+// Calendar: GtkCalendar is a widget that displays a Gregorian calendar, one
 // month at a time.
 //
 // !An example GtkCalendar (calendar.png)
 //
-// A `GtkCalendar` can be created with [ctor@Gtk.Calendar.new].
+// A GtkCalendar can be created with gtk.Calendar.New.
 //
 // The date that is currently displayed can be altered with
-// [method@Gtk.Calendar.select_day].
+// gtk.Calendar.SelectDay().
 //
-// To place a visual marker on a particular day, use
-// [method@Gtk.Calendar.mark_day] and to remove the marker,
-// [method@Gtk.Calendar.unmark_day]. Alternative, all marks can be cleared with
-// [method@Gtk.Calendar.clear_marks].
+// To place a visual marker on a particular day, use gtk.Calendar.MarkDay() and
+// to remove the marker, gtk.Calendar.UnmarkDay(). Alternative, all marks can be
+// cleared with gtk.Calendar.ClearMarks().
 //
-// The selected date can be retrieved from a `GtkCalendar` using
-// [method@Gtk.Calendar.get_date].
+// The selected date can be retrieved from a GtkCalendar using
+// gtk.Calendar.GetDate().
 //
 // Users should be aware that, although the Gregorian calendar is the legal
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
 //
-//
 // CSS nodes
 //
-// “` calendar.view ├── header │ ├── button │ ├── stack.month │ ├── button │ ├──
-// button │ ├── label.year │ ╰── button ╰── grid ╰──
-// label[.day-name][.week-number][.day-number][.other-month][.today] “`
+//    calendar.view
+//    ├── header
+//    │   ├── button
+//    │   ├── stack.month
+//    │   ├── button
+//    │   ├── button
+//    │   ├── label.year
+//    │   ╰── button
+//    ╰── grid
+//        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
 //
-// `GtkCalendar` has a main node with name calendar. It contains a subnode
-// called header containing the widgets for switching between years and months.
+//
+// GtkCalendar has a main node with name calendar. It contains a subnode called
+// header containing the widgets for switching between years and months.
 //
 // The grid subnode contains all day labels, including week numbers on the left
 // (marked with the .week-number css class) and day names on top (marked with
@@ -142,7 +148,7 @@ func (calendar *Calendar) ClearMarks() {
 	C.gtk_calendar_clear_marks(_arg0)
 }
 
-// DayIsMarked returns if the @day of the @calendar is already marked.
+// DayIsMarked returns if the day of the calendar is already marked.
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -162,10 +168,10 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 	return _ok
 }
 
-// ShowDayNames returns whether @self is currently showing the names of the week
+// ShowDayNames returns whether self is currently showing the names of the week
 // days.
 //
-// This is the value of the [property@Gtk.Calendar:show-day-names] property.
+// This is the value of the gtk.Calendar:show-day-names property.
 func (self *Calendar) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
@@ -183,9 +189,9 @@ func (self *Calendar) ShowDayNames() bool {
 	return _ok
 }
 
-// ShowHeading returns whether @self is currently showing the heading.
+// ShowHeading returns whether self is currently showing the heading.
 //
-// This is the value of the [property@Gtk.Calendar:show-heading] property.
+// This is the value of the gtk.Calendar:show-heading property.
 func (self *Calendar) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in
@@ -203,9 +209,9 @@ func (self *Calendar) ShowHeading() bool {
 	return _ok
 }
 
-// ShowWeekNumbers returns whether @self is showing week numbers right now.
+// ShowWeekNumbers returns whether self is showing week numbers right now.
 //
-// This is the value of the [property@Gtk.Calendar:show-week-numbers] property.
+// This is the value of the gtk.Calendar:show-week-numbers property.
 func (self *Calendar) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gboolean     // in

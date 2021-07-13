@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// Script: `PangoScript` enumeration identifies different writing systems.
+// Script: PangoScript enumeration identifies different writing systems.
 //
 // The values correspond to the names as defined in the Unicode standard. See
 // Unicode Standard Annex 24: Script names
@@ -30,8 +30,8 @@ func init() {
 //
 // Note that this enumeration is deprecated and will not be updated to include
 // values in newer versions of the Unicode standard. Applications should use the
-// `GUnicodeScript` enumeration instead, whose values are interchangeable with
-// `PangoScript`.
+// GUnicodeScript enumeration instead, whose values are interchangeable with
+// PangoScript.
 type Script int
 
 const (
@@ -281,13 +281,12 @@ func marshalScript(p uintptr) (interface{}, error) {
 // ScriptForUnichar looks up the script for a particular character.
 //
 // The script of a character is defined by Unicode Standard Annex \#24. No check
-// is made for @ch being a valid Unicode character; if you pass in invalid
+// is made for ch being a valid Unicode character; if you pass in invalid
 // character, the result is undefined.
 //
-// Note that while the return type of this function is declared as
-// `PangoScript`, as of Pango 1.18, this function simply returns the return
-// value of g_unichar_get_script(). Callers must be prepared to handle unknown
-// values.
+// Note that while the return type of this function is declared as PangoScript,
+// as of Pango 1.18, this function simply returns the return value of
+// g_unichar_get_script(). Callers must be prepared to handle unknown values.
 //
 // Deprecated: Use g_unichar_get_script().
 func ScriptForUnichar(ch uint32) Script {
@@ -306,7 +305,7 @@ func ScriptForUnichar(ch uint32) Script {
 }
 
 // ScriptGetSampleLanguage finds a language tag that is reasonably
-// representative of @script.
+// representative of script.
 //
 // The language will usually be the most widely spoken or used language written
 // in that script: for instance, the sample language for PANGO_SCRIPT_CYRILLIC
@@ -319,17 +318,17 @@ func ScriptForUnichar(ch uint32) Script {
 // and forms of shared characters. No sample language can be provided for many
 // historical scripts as well.
 //
-// As of 1.18, this function checks the environment variables `PANGO_LANGUAGE`
-// and `LANGUAGE` (checked in that order) first. If one of them is set, it is
-// parsed as a list of language tags separated by colons or other separators.
-// This function will return the first language in the parsed list that Pango
-// believes may use @script for writing. This last predicate is tested using
-// [method@Pango.Language.includes_script]. This can be used to control Pango's
-// font selection for non-primary languages. For example, a `PANGO_LANGUAGE`
-// enviroment variable set to "en:fa" makes Pango choose fonts suitable for
-// Persian (fa) instead of Arabic (ar) when a segment of Arabic text is found in
-// an otherwise non-Arabic text. The same trick can be used to choose a default
-// language for PANGO_SCRIPT_HAN when setting context language is not feasible.
+// As of 1.18, this function checks the environment variables PANGO_LANGUAGE and
+// LANGUAGE (checked in that order) first. If one of them is set, it is parsed
+// as a list of language tags separated by colons or other separators. This
+// function will return the first language in the parsed list that Pango
+// believes may use script for writing. This last predicate is tested using
+// pango.Language.IncludesScript(). This can be used to control Pango's font
+// selection for non-primary languages. For example, a PANGO_LANGUAGE enviroment
+// variable set to "en:fa" makes Pango choose fonts suitable for Persian (fa)
+// instead of Arabic (ar) when a segment of Arabic text is found in an otherwise
+// non-Arabic text. The same trick can be used to choose a default language for
+// PANGO_SCRIPT_HAN when setting context language is not feasible.
 func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out
 	var _cret *C.PangoLanguage // in
@@ -348,8 +347,8 @@ func ScriptGetSampleLanguage(script Script) *Language {
 	return _language
 }
 
-// ScriptIter: `PangoScriptIter` is used to iterate through a string and
-// identify ranges in different scripts.
+// ScriptIter: PangoScriptIter is used to iterate through a string and identify
+// ranges in different scripts.
 type ScriptIter struct {
 	native C.PangoScriptIter
 }
@@ -394,11 +393,11 @@ func (iter *ScriptIter) free() {
 	C.pango_script_iter_free(_arg0)
 }
 
-// Range gets information about the range to which @iter currently points. The
+// Range gets information about the range to which iter currently points. The
 // range is the set of locations p where *start <= p < *end. (That is, it
 // doesn't include the character stored at *end)
 //
-// Note that while the type of the @script argument is declared as PangoScript,
+// Note that while the type of the script argument is declared as PangoScript,
 // as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
 // must be prepared to handle unknown values.
 func (iter *ScriptIter) Range() (start string, end string, script Script) {
@@ -424,8 +423,8 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	return _start, _end, _script
 }
 
-// Next advances a ScriptIter to the next range. If @iter is already at the end,
-// it is left unchanged and false is returned.
+// Next advances a ScriptIter to the next range. If iter is already at the end,
+// it is left unchanged and FALSE is returned.
 func (iter *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
 	var _cret C.gboolean         // in

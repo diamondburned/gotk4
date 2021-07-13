@@ -46,18 +46,18 @@ type DTLSConnectionOverrider interface {
 	// negotiated during the handshake.
 	//
 	// If the peer did not use the ALPN extension, or did not advertise a
-	// protocol that matched one of @conn's protocols, or the TLS backend does
-	// not support ALPN, then this will be nil. See
+	// protocol that matched one of conn's protocols, or the TLS backend does
+	// not support ALPN, then this will be NULL. See
 	// g_dtls_connection_set_advertised_protocols().
 	NegotiatedProtocol() string
-	// Handshake attempts a TLS handshake on @conn.
+	// Handshake attempts a TLS handshake on conn.
 	//
 	// On the client side, it is never necessary to call this method; although
 	// the connection needs to perform a handshake after connecting, Connection
 	// will handle this for you automatically when you try to send or receive
 	// data on the connection. You can call g_dtls_connection_handshake()
 	// manually if you want to know whether the initial handshake succeeded or
-	// failed (as opposed to just immediately trying to use @conn to read or
+	// failed (as opposed to just immediately trying to use conn to read or
 	// write, in which case, if it fails, it may not be possible to tell if it
 	// failed before or after completing the handshake), but beware that servers
 	// may reject client authentication after the handshake has completed, so a
@@ -74,10 +74,10 @@ type DTLSConnectionOverrider interface {
 	// handshake will no longer do anything.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable Cancellabler) error
-	// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+	Handshake(cancellable *Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 	// g_dtls_connection_handshake() for more information.
-	HandshakeAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_dtls_connection_handshake() for more information.
 	HandshakeFinish(result AsyncResulter) error
@@ -86,8 +86,8 @@ type DTLSConnectionOverrider interface {
 	// Application-Layer Protocol Negotiation (ALPN) extension will be used to
 	// negotiate a compatible protocol with the peer; use
 	// g_dtls_connection_get_negotiated_protocol() to find the negotiated
-	// protocol after the handshake. Specifying nil for the the value of
-	// @protocols will disable ALPN negotiation.
+	// protocol after the handshake. Specifying NULL for the the value of
+	// protocols will disable ALPN negotiation.
 	//
 	// See IANA TLS ALPN Protocol IDs
 	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
@@ -95,24 +95,24 @@ type DTLSConnectionOverrider interface {
 	SetAdvertisedProtocols(protocols []string)
 	// Shutdown: shut down part or all of a DTLS connection.
 	//
-	// If @shutdown_read is true then the receiving side of the connection is
+	// If shutdown_read is TRUE then the receiving side of the connection is
 	// shut down, and further reading is disallowed. Subsequent calls to
 	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
 	//
-	// If @shutdown_write is true then the sending side of the connection is
-	// shut down, and further writing is disallowed. Subsequent calls to
+	// If shutdown_write is TRUE then the sending side of the connection is shut
+	// down, and further writing is disallowed. Subsequent calls to
 	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
 	//
-	// It is allowed for both @shutdown_read and @shutdown_write to be TRUE —
-	// this is equivalent to calling g_dtls_connection_close().
+	// It is allowed for both shutdown_read and shutdown_write to be TRUE — this
+	// is equivalent to calling g_dtls_connection_close().
 	//
-	// If @cancellable is cancelled, the Connection may be left partially-closed
+	// If cancellable is cancelled, the Connection may be left partially-closed
 	// and any pending untransmitted data may be lost. Call
 	// g_dtls_connection_shutdown() again to complete closing the Connection.
-	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellabler) error
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable *Cancellable) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection. See g_dtls_connection_shutdown() for more information.
-	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 	// g_dtls_connection_shutdown() for more information.
 	ShutdownFinish(result AsyncResulter) error
@@ -121,21 +121,21 @@ type DTLSConnectionOverrider interface {
 // DTLSConnectioner describes DTLSConnection's methods.
 type DTLSConnectioner interface {
 	// Close the DTLS connection.
-	Close(cancellable Cancellabler) error
+	Close(cancellable *Cancellable) error
 	// CloseAsync: asynchronously close the DTLS connection.
-	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS close operation.
 	CloseFinish(result AsyncResulter) error
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
 	EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
-	// Certificate gets @conn's certificate, as set by
+	// Certificate gets conn's certificate, as set by
 	// g_dtls_connection_set_certificate().
 	Certificate() *TLSCertificate
 	// ChannelBindingData: query the TLS backend for TLS channel binding data of
-	// @type for @conn.
+	// type for conn.
 	ChannelBindingData(typ TLSChannelBindingType) ([]byte, error)
-	// Database gets the certificate database that @conn uses to verify peer
+	// Database gets the certificate database that conn uses to verify peer
 	// certificates.
 	Database() *TLSDatabase
 	// Interaction: get the object that will be used to interact with the user.
@@ -143,27 +143,27 @@ type DTLSConnectioner interface {
 	// NegotiatedProtocol gets the name of the application-layer protocol
 	// negotiated during the handshake.
 	NegotiatedProtocol() string
-	// PeerCertificate gets @conn's peer's certificate after the handshake has
+	// PeerCertificate gets conn's peer's certificate after the handshake has
 	// completed or failed.
 	PeerCertificate() *TLSCertificate
-	// PeerCertificateErrors gets the errors associated with validating @conn's
+	// PeerCertificateErrors gets the errors associated with validating conn's
 	// peer's certificate, after the handshake has completed or failed.
 	PeerCertificateErrors() TLSCertificateFlags
-	// RehandshakeMode gets @conn rehandshaking mode.
+	// RehandshakeMode gets conn rehandshaking mode.
 	RehandshakeMode() TLSRehandshakeMode
-	// RequireCloseNotify tests whether or not @conn expects a proper TLS close
+	// RequireCloseNotify tests whether or not conn expects a proper TLS close
 	// notification when the connection is closed.
 	RequireCloseNotify() bool
-	// Handshake attempts a TLS handshake on @conn.
-	Handshake(cancellable Cancellabler) error
-	// HandshakeAsync: asynchronously performs a TLS handshake on @conn.
-	HandshakeAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	// Handshake attempts a TLS handshake on conn.
+	Handshake(cancellable *Cancellable) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
+	HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
 	// advertise that the caller is willing to speak on this connection.
 	SetAdvertisedProtocols(protocols []string)
-	// SetCertificate: this sets the certificate that @conn will present to its
+	// SetCertificate: this sets the certificate that conn will present to its
 	// peer during the TLS handshake.
 	SetCertificate(certificate TLSCertificater)
 	// SetDatabase sets the certificate database that is used to verify peer
@@ -171,18 +171,18 @@ type DTLSConnectioner interface {
 	SetDatabase(database TLSDatabaser)
 	// SetInteraction: set the object that will be used to interact with the
 	// user.
-	SetInteraction(interaction TLSInteractioner)
+	SetInteraction(interaction *TLSInteraction)
 	// SetRehandshakeMode: since GLib 2.64, changing the rehandshake mode is no
 	// longer supported and will have no effect.
 	SetRehandshakeMode(mode TLSRehandshakeMode)
-	// SetRequireCloseNotify sets whether or not @conn expects a proper TLS
-	// close notification before the connection is closed.
+	// SetRequireCloseNotify sets whether or not conn expects a proper TLS close
+	// notification before the connection is closed.
 	SetRequireCloseNotify(requireCloseNotify bool)
 	// Shutdown: shut down part or all of a DTLS connection.
-	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellabler) error
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable *Cancellable) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection.
-	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 }
@@ -231,27 +231,27 @@ func marshalDTLSConnectioner(p uintptr) (interface{}, error) {
 // g_dtls_connection_shutdown() to shut down both sides of the connection.
 //
 // Closing a Connection waits for all buffered but untransmitted data to be sent
-// before it completes. It then sends a `close_notify` DTLS alert to the peer
-// and may wait for a `close_notify` to be received from the peer. It does not
-// close the underlying Connection:base-socket; that must be closed separately.
+// before it completes. It then sends a close_notify DTLS alert to the peer and
+// may wait for a close_notify to be received from the peer. It does not close
+// the underlying Connection:base-socket; that must be closed separately.
 //
-// Once @conn is closed, all other operations will return G_IO_ERROR_CLOSED.
+// Once conn is closed, all other operations will return G_IO_ERROR_CLOSED.
 // Closing a Connection multiple times will not return an error.
 //
 // Connections will be automatically closed when the last reference is dropped,
 // but you might want to call this function to make sure resources are released
 // as early as possible.
 //
-// If @cancellable is cancelled, the Connection may be left partially-closed and
+// If cancellable is cancelled, the Connection may be left partially-closed and
 // any pending untransmitted data may be lost. Call g_dtls_connection_close()
 // again to complete closing the Connection.
-func (conn *DTLSConnection) Close(cancellable Cancellabler) error {
+func (conn *DTLSConnection) Close(cancellable *Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_dtls_connection_close(_arg0, _arg1, &_cerr)
 
@@ -264,7 +264,7 @@ func (conn *DTLSConnection) Close(cancellable Cancellabler) error {
 
 // CloseAsync: asynchronously close the DTLS connection. See
 // g_dtls_connection_close() for more information.
-func (conn *DTLSConnection) CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -273,7 +273,7 @@ func (conn *DTLSConnection) CloseAsync(ioPriority int, cancellable Cancellabler,
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -322,7 +322,7 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 	return _ok
 }
 
-// Certificate gets @conn's certificate, as set by
+// Certificate gets conn's certificate, as set by
 // g_dtls_connection_set_certificate().
 func (conn *DTLSConnection) Certificate() *TLSCertificate {
 	var _arg0 *C.GDtlsConnection // out
@@ -340,17 +340,17 @@ func (conn *DTLSConnection) Certificate() *TLSCertificate {
 }
 
 // ChannelBindingData: query the TLS backend for TLS channel binding data of
-// @type for @conn.
+// type for conn.
 //
 // This call retrieves TLS channel binding data as specified in RFC 5056
 // (https://tools.ietf.org/html/rfc5056), RFC 5929
 // (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
-// returned in @data. The @data is resized by the callee using Array buffer
-// management and will be freed when the @data is destroyed by
-// g_byte_array_unref(). If @data is nil, it will only check whether TLS backend
-// is able to fetch the data (e.g. whether @type is supported by the TLS
+// returned in data. The data is resized by the callee using Array buffer
+// management and will be freed when the data is destroyed by
+// g_byte_array_unref(). If data is NULL, it will only check whether TLS backend
+// is able to fetch the data (e.g. whether type is supported by the TLS
 // backend). It does not guarantee that the data will be available though. That
-// could happen if TLS connection does not support @type or the binding data is
+// could happen if TLS connection does not support type or the binding data is
 // not available yet due to additional negotiation or input required.
 func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GDtlsConnection       // out
@@ -379,7 +379,7 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 	return _data, _goerr
 }
 
-// Database gets the certificate database that @conn uses to verify peer
+// Database gets the certificate database that conn uses to verify peer
 // certificates. See g_dtls_connection_set_database().
 func (conn *DTLSConnection) Database() *TLSDatabase {
 	var _arg0 *C.GDtlsConnection // out
@@ -397,7 +397,7 @@ func (conn *DTLSConnection) Database() *TLSDatabase {
 }
 
 // Interaction: get the object that will be used to interact with the user. It
-// will be used for things like prompting the user for passwords. If nil is
+// will be used for things like prompting the user for passwords. If NULL is
 // returned, then no user interaction will occur for this connection.
 func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GDtlsConnection // out
@@ -418,8 +418,8 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 // during the handshake.
 //
 // If the peer did not use the ALPN extension, or did not advertise a protocol
-// that matched one of @conn's protocols, or the TLS backend does not support
-// ALPN, then this will be nil. See
+// that matched one of conn's protocols, or the TLS backend does not support
+// ALPN, then this will be NULL. See
 // g_dtls_connection_set_advertised_protocols().
 func (conn *DTLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GDtlsConnection // out
@@ -436,7 +436,7 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 	return _utf8
 }
 
-// PeerCertificate gets @conn's peer's certificate after the handshake has
+// PeerCertificate gets conn's peer's certificate after the handshake has
 // completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.)
 func (conn *DTLSConnection) PeerCertificate() *TLSCertificate {
@@ -454,7 +454,7 @@ func (conn *DTLSConnection) PeerCertificate() *TLSCertificate {
 	return _tlsCertificate
 }
 
-// PeerCertificateErrors gets the errors associated with validating @conn's
+// PeerCertificateErrors gets the errors associated with validating conn's
 // peer's certificate, after the handshake has completed or failed. (It is not
 // set during the emission of Connection::accept-certificate.)
 func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
@@ -472,7 +472,7 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// RehandshakeMode gets @conn rehandshaking mode. See
+// RehandshakeMode gets conn rehandshaking mode. See
 // g_dtls_connection_set_rehandshake_mode() for details.
 //
 // Deprecated: Changing the rehandshake mode is no longer required for
@@ -493,7 +493,7 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	return _tlsRehandshakeMode
 }
 
-// RequireCloseNotify tests whether or not @conn expects a proper TLS close
+// RequireCloseNotify tests whether or not conn expects a proper TLS close
 // notification when the connection is closed. See
 // g_dtls_connection_set_require_close_notify() for details.
 func (conn *DTLSConnection) RequireCloseNotify() bool {
@@ -513,14 +513,14 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 	return _ok
 }
 
-// Handshake attempts a TLS handshake on @conn.
+// Handshake attempts a TLS handshake on conn.
 //
 // On the client side, it is never necessary to call this method; although the
 // connection needs to perform a handshake after connecting, Connection will
 // handle this for you automatically when you try to send or receive data on the
 // connection. You can call g_dtls_connection_handshake() manually if you want
 // to know whether the initial handshake succeeded or failed (as opposed to just
-// immediately trying to use @conn to read or write, in which case, if it fails,
+// immediately trying to use conn to read or write, in which case, if it fails,
 // it may not be possible to tell if it failed before or after completing the
 // handshake), but beware that servers may reject client authentication after
 // the handshake has completed, so a successful handshake does not indicate the
@@ -537,13 +537,13 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 // do anything.
 //
 // Connection::accept_certificate may be emitted during the handshake.
-func (conn *DTLSConnection) Handshake(cancellable Cancellabler) error {
+func (conn *DTLSConnection) Handshake(cancellable *Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_dtls_connection_handshake(_arg0, _arg1, &_cerr)
 
@@ -554,9 +554,9 @@ func (conn *DTLSConnection) Handshake(cancellable Cancellabler) error {
 	return _goerr
 }
 
-// HandshakeAsync: asynchronously performs a TLS handshake on @conn. See
+// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 // g_dtls_connection_handshake() for more information.
-func (conn *DTLSConnection) HandshakeAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -565,7 +565,7 @@ func (conn *DTLSConnection) HandshakeAsync(ioPriority int, cancellable Cancellab
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -596,7 +596,7 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 // Application-Layer Protocol Negotiation (ALPN) extension will be used to
 // negotiate a compatible protocol with the peer; use
 // g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
-// after the handshake. Specifying nil for the the value of @protocols will
+// after the handshake. Specifying NULL for the the value of protocols will
 // disable ALPN negotiation.
 //
 // See IANA TLS ALPN Protocol IDs
@@ -607,18 +607,22 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(protocols)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(protocols))
-		for i := range protocols {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(protocols)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(protocols)+1)
+			var zero *C.gchar
+			out[len(protocols)] = zero
+			for i := range protocols {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+			}
 		}
 	}
 
 	C.g_dtls_connection_set_advertised_protocols(_arg0, _arg1)
 }
 
-// SetCertificate: this sets the certificate that @conn will present to its peer
+// SetCertificate: this sets the certificate that conn will present to its peer
 // during the TLS handshake. For a ServerConnection, it is mandatory to set
 // this, and that will normally be done at construct time.
 //
@@ -632,7 +636,7 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 // (It is also possible that a server will allow the connection with or without
 // a certificate; in that case, if you don't provide a certificate, you can tell
 // that the server requested one by the fact that
-// g_dtls_client_connection_get_accepted_cas() will return non-nil.)
+// g_dtls_client_connection_get_accepted_cas() will return non-NULL.)
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out
@@ -645,7 +649,7 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 
 // SetDatabase sets the certificate database that is used to verify peer
 // certificates. This is set to the default database by default. See
-// g_tls_backend_get_default_database(). If set to nil, then peer certificate
+// g_tls_backend_get_default_database(). If set to NULL, then peer certificate
 // validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
 // Connection::accept-certificate will always be emitted on client-side
 // connections, unless that bit is not set in
@@ -663,15 +667,15 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 // SetInteraction: set the object that will be used to interact with the user.
 // It will be used for things like prompting the user for passwords.
 //
-// The @interaction argument will normally be a derived subclass of Interaction.
-// nil can also be provided if no user interaction should occur for this
+// The interaction argument will normally be a derived subclass of Interaction.
+// NULL can also be provided if no user interaction should occur for this
 // connection.
-func (conn *DTLSConnection) SetInteraction(interaction TLSInteractioner) {
+func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsInteraction // out
 
 	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GTlsInteraction)(unsafe.Pointer((interaction).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 
 	C.g_dtls_connection_set_interaction(_arg0, _arg1)
 }
@@ -694,9 +698,9 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	C.g_dtls_connection_set_rehandshake_mode(_arg0, _arg1)
 }
 
-// SetRequireCloseNotify sets whether or not @conn expects a proper TLS close
-// notification before the connection is closed. If this is true (the default),
-// then @conn will expect to receive a TLS close notification from its peer
+// SetRequireCloseNotify sets whether or not conn expects a proper TLS close
+// notification before the connection is closed. If this is TRUE (the default),
+// then conn will expect to receive a TLS close notification from its peer
 // before the connection is closed, and will return a G_TLS_ERROR_EOF error if
 // the connection is closed without proper notification (since this may indicate
 // a network error, or man-in-the-middle attack).
@@ -706,15 +710,15 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // application-level data includes a length field, or is somehow
 // self-delimiting); in this case, the close notify is redundant and may be
 // omitted. You can use g_dtls_connection_set_require_close_notify() to tell
-// @conn to allow an "unannounced" connection close, in which case the close
-// will show up as a 0-length read, as in a non-TLS Based, and it is up to the
+// conn to allow an "unannounced" connection close, in which case the close will
+// show up as a 0-length read, as in a non-TLS Based, and it is up to the
 // application to check that the data has been fully received.
 //
 // Note that this only affects the behavior when the peer closes the connection;
-// when the application calls g_dtls_connection_close_async() on @conn itself,
+// when the application calls g_dtls_connection_close_async() on conn itself,
 // this will send a close notification regardless of the setting of this
-// property. If you explicitly want to do an unclean close, you can close
-// @conn's Connection:base-socket rather than closing @conn itself.
+// property. If you explicitly want to do an unclean close, you can close conn's
+// Connection:base-socket rather than closing conn itself.
 func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
@@ -729,21 +733,21 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 
 // Shutdown: shut down part or all of a DTLS connection.
 //
-// If @shutdown_read is true then the receiving side of the connection is shut
+// If shutdown_read is TRUE then the receiving side of the connection is shut
 // down, and further reading is disallowed. Subsequent calls to
 // g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
 //
-// If @shutdown_write is true then the sending side of the connection is shut
+// If shutdown_write is TRUE then the sending side of the connection is shut
 // down, and further writing is disallowed. Subsequent calls to
 // g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
 //
-// It is allowed for both @shutdown_read and @shutdown_write to be TRUE — this
-// is equivalent to calling g_dtls_connection_close().
+// It is allowed for both shutdown_read and shutdown_write to be TRUE — this is
+// equivalent to calling g_dtls_connection_close().
 //
-// If @cancellable is cancelled, the Connection may be left partially-closed and
+// If cancellable is cancelled, the Connection may be left partially-closed and
 // any pending untransmitted data may be lost. Call g_dtls_connection_shutdown()
 // again to complete closing the Connection.
-func (conn *DTLSConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable Cancellabler) error {
+func (conn *DTLSConnection) Shutdown(shutdownRead bool, shutdownWrite bool, cancellable *Cancellable) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
 	var _arg2 C.gboolean         // out
@@ -757,7 +761,7 @@ func (conn *DTLSConnection) Shutdown(shutdownRead bool, shutdownWrite bool, canc
 	if shutdownWrite {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_dtls_connection_shutdown(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -770,7 +774,7 @@ func (conn *DTLSConnection) Shutdown(shutdownRead bool, shutdownWrite bool, canc
 
 // ShutdownAsync: asynchronously shut down part or all of the DTLS connection.
 // See g_dtls_connection_shutdown() for more information.
-func (conn *DTLSConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.gboolean            // out
 	var _arg2 C.gboolean            // out
@@ -787,7 +791,7 @@ func (conn *DTLSConnection) ShutdownAsync(shutdownRead bool, shutdownWrite bool,
 		_arg2 = C.TRUE
 	}
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.Assign(callback))
 

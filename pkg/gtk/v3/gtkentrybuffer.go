@@ -28,11 +28,11 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EntryBufferOverrider interface {
-	// DeleteText deletes a sequence of characters from the buffer. @n_chars
-	// characters are deleted starting at @position. If @n_chars is negative,
-	// then all characters until the end of the text are deleted.
+	// DeleteText deletes a sequence of characters from the buffer. n_chars
+	// characters are deleted starting at position. If n_chars is negative, then
+	// all characters until the end of the text are deleted.
 	//
-	// If @position or @n_chars are out of bounds, then they are coerced to sane
+	// If position or n_chars are out of bounds, then they are coerced to sane
 	// values.
 	//
 	// Note that the positions are specified in characters, not bytes.
@@ -41,13 +41,13 @@ type EntryBufferOverrider interface {
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
 	Text(nBytes *uint) string
-	// InsertText inserts @n_chars characters of @chars into the contents of the
-	// buffer, at position @position.
+	// InsertText inserts n_chars characters of chars into the contents of the
+	// buffer, at position position.
 	//
-	// If @n_chars is negative, then characters from chars will be inserted
-	// until a null-terminator is found. If @position or @n_chars are out of
-	// bounds, or the maximum buffer text length is exceeded, then they are
-	// coerced to sane values.
+	// If n_chars is negative, then characters from chars will be inserted until
+	// a null-terminator is found. If position or n_chars are out of bounds, or
+	// the maximum buffer text length is exceeded, then they are coerced to sane
+	// values.
 	//
 	// Note that the position and length are in characters, not in bytes.
 	InsertText(position uint, chars string, nChars uint) uint
@@ -66,12 +66,12 @@ type EntryBufferer interface {
 	Bytes() uint
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
-	// MaxLength retrieves the maximum allowed length of the text in @buffer.
+	// MaxLength retrieves the maximum allowed length of the text in buffer.
 	MaxLength() int
 	// Text retrieves the contents of the buffer.
 	Text() string
-	// InsertText inserts @n_chars characters of @chars into the contents of the
-	// buffer, at position @position.
+	// InsertText inserts n_chars characters of chars into the contents of the
+	// buffer, at position position.
 	InsertText(position uint, chars string, nChars int) uint
 	// SetMaxLength sets the maximum allowed length of the contents of the
 	// buffer.
@@ -131,11 +131,11 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	return _entryBuffer
 }
 
-// DeleteText deletes a sequence of characters from the buffer. @n_chars
-// characters are deleted starting at @position. If @n_chars is negative, then
-// all characters until the end of the text are deleted.
+// DeleteText deletes a sequence of characters from the buffer. n_chars
+// characters are deleted starting at position. If n_chars is negative, then all
+// characters until the end of the text are deleted.
 //
-// If @position or @n_chars are out of bounds, then they are coerced to sane
+// If position or n_chars are out of bounds, then they are coerced to sane
 // values.
 //
 // Note that the positions are specified in characters, not bytes.
@@ -219,7 +219,7 @@ func (buffer *EntryBuffer) Length() uint {
 	return _guint
 }
 
-// MaxLength retrieves the maximum allowed length of the text in @buffer. See
+// MaxLength retrieves the maximum allowed length of the text in buffer. See
 // gtk_entry_buffer_set_max_length().
 func (buffer *EntryBuffer) MaxLength() int {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -255,11 +255,11 @@ func (buffer *EntryBuffer) Text() string {
 	return _utf8
 }
 
-// InsertText inserts @n_chars characters of @chars into the contents of the
-// buffer, at position @position.
+// InsertText inserts n_chars characters of chars into the contents of the
+// buffer, at position position.
 //
-// If @n_chars is negative, then characters from chars will be inserted until a
-// null-terminator is found. If @position or @n_chars are out of bounds, or the
+// If n_chars is negative, then characters from chars will be inserted until a
+// null-terminator is found. If position or n_chars are out of bounds, or the
 // maximum buffer text length is exceeded, then they are coerced to sane values.
 //
 // Note that the position and length are in characters, not in bytes.
@@ -302,7 +302,7 @@ func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 // This is roughly equivalent to calling gtk_entry_buffer_delete_text() and
 // gtk_entry_buffer_insert_text().
 //
-// Note that @n_chars is in characters, not in bytes.
+// Note that n_chars is in characters, not in bytes.
 func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	var _arg0 *C.GtkEntryBuffer // out
 	var _arg1 *C.gchar          // out

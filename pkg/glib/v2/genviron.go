@@ -11,18 +11,22 @@ import (
 // #include <glib.h>
 import "C"
 
-// EnvironGetenv returns the value of the environment variable @variable in the
-// provided list @envp.
+// EnvironGetenv returns the value of the environment variable variable in the
+// provided list envp.
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
 	var _cret *C.gchar // in
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(envp))
-		for i := range envp {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
@@ -36,8 +40,8 @@ func EnvironGetenv(envp []string, variable string) string {
 	return _filename
 }
 
-// EnvironSetenv sets the environment variable @variable in the provided list
-// @envp to @value.
+// EnvironSetenv sets the environment variable variable in the provided list
+// envp to value.
 func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar   // out
@@ -45,13 +49,17 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	var _arg4 C.gboolean // out
 	var _cret **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(envp))
-		for i := range envp {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
@@ -81,20 +89,24 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	return _filenames
 }
 
-// EnvironUnsetenv removes the environment variable @variable from the provided
-// environment @envp.
+// EnvironUnsetenv removes the environment variable variable from the provided
+// environment envp.
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar
 	var _arg2 *C.gchar // out
 	var _cret **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice(_arg1, len(envp))
-		for i := range envp {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
 		}
 	}
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(variable)))
@@ -122,7 +134,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 
 // GetEnviron gets the list of environment variables for the current process.
 //
-// The list is nil terminated and each item in the list is of the form
+// The list is NULL terminated and each item in the list is of the form
 // 'NAME=VALUE'.
 //
 // This is equivalent to direct access to the 'environ' global variable, except

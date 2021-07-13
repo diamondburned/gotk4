@@ -52,7 +52,7 @@ func (s *Sphere) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// ContainsPoint checks whether the given @point is contained in the volume of a
+// ContainsPoint checks whether the given point is contained in the volume of a
 // #graphene_sphere_t.
 func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_sphere_t  // out
@@ -73,7 +73,7 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	return _ok
 }
 
-// Distance computes the distance of the given @point from the surface of a
+// Distance computes the distance of the given point from the surface of a
 // #graphene_sphere_t.
 func (s *Sphere) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_sphere_t  // out
@@ -162,8 +162,8 @@ func (s *Sphere) Radius() float32 {
 	return _gfloat
 }
 
-// Init initializes the given #graphene_sphere_t with the given @center and
-// @radius.
+// Init initializes the given #graphene_sphere_t with the given center and
+// radius.
 func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -187,7 +187,7 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 // of 3D coordinates so that the sphere includes them.
 //
 // The center of the sphere can either be specified, or will be center of the 3D
-// volume that encompasses all @points.
+// volume that encompasses all points.
 func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_point3d_t
@@ -215,7 +215,7 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 // array of 3D coordinates so that the sphere includes them.
 //
 // The center of the sphere can either be specified, or will be center of the 3D
-// volume that encompasses all @vectors.
+// volume that encompasses all vectors.
 func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_vec3_t
@@ -258,7 +258,7 @@ func (s *Sphere) IsEmpty() bool {
 }
 
 // Translate translates the center of the given #graphene_sphere_t using the
-// @point coordinates as the delta of the translation.
+// point coordinates as the delta of the translation.
 func (s *Sphere) Translate(point *Point3D) Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out

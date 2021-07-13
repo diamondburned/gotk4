@@ -27,9 +27,9 @@ func init() {
 
 // GLShaderer describes GLShader's methods.
 type GLShaderer interface {
-	// Compile tries to compile the @shader for the given @renderer.
+	// Compile tries to compile the shader for the given renderer.
 	Compile(renderer Rendererer) error
-	// FindUniformByName looks for a uniform by the name @name, and returns the
+	// FindUniformByName looks for a uniform by the name name, and returns the
 	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
 	// ArgsSize: get the size of the data block used to specify arguments for
@@ -43,17 +43,17 @@ type GLShaderer interface {
 	// render this shader.
 	Resource() string
 	// UniformName: get the name of the declared uniform for this shader at
-	// index @idx.
+	// index idx.
 	UniformName(idx int) string
 	// UniformOffset: get the offset into the data block where data for this
 	// uniforms is stored.
 	UniformOffset(idx int) int
 	// UniformType: get the type of the declared uniform for this shader at
-	// index @idx.
+	// index idx.
 	UniformType(idx int) GLUniformType
 }
 
-// GLShader: `GskGLShader` is a snippet of GLSL that is meant to run in the
+// GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
 // fragment shader of the rendering pipeline.
 //
 // A fragment shader gets the coordinates being rendered as input and produces
@@ -63,11 +63,11 @@ type GLShaderer interface {
 // receive up to 4 textures that it can use as input when producing the pixel
 // data.
 //
-// `GskGLShader` is usually used with gtk_snapshot_push_gl_shader() to produce a
-// [class@Gsk.GLShaderNode] in the rendering hierarchy, and then its input
-// textures are constructed by rendering the child nodes to textures before
-// rendering the shader node itself. (You can pass texture nodes as children if
-// you want to directly use a texture as input).
+// GskGLShader is usually used with gtk_snapshot_push_gl_shader() to produce a
+// gsk.GLShaderNode in the rendering hierarchy, and then its input textures are
+// constructed by rendering the child nodes to textures before rendering the
+// shader node itself. (You can pass texture nodes as children if you want to
+// directly use a texture as input).
 //
 // The actual shader code is GLSL code that gets combined with some other code
 // into the fragment shader. Since the exact capabilities of the GPU driver
@@ -87,18 +87,21 @@ type GLShaderer interface {
 //
 // The main function the shader must implement is:
 //
-// “`glsl void mainImage(out vec4 fragColor, in vec2 fragCoord, in vec2
-// resolution, in vec2 uv) “`
+//     void mainImage(out vec4 fragColor,
+//                    in vec2 fragCoord,
+//                    in vec2 resolution,
+//                    in vec2 uv)
 //
-// Where the input @fragCoord is the coordinate of the pixel we're currently
+//
+// Where the input fragCoord is the coordinate of the pixel we're currently
 // rendering, relative to the boundary rectangle that was specified in the
-// `GskGLShaderNode`, and @resolution is the width and height of that rectangle.
+// GskGLShaderNode, and resolution is the width and height of that rectangle.
 // This is in the typical GTK coordinate system with the origin in the top left.
-// @uv contains the u and v coordinates that can be used to index a texture at
+// uv contains the u and v coordinates that can be used to index a texture at
 // the corresponding point. These coordinates are in the [0..1]x[0..1] region,
 // with 0, 0 being in the lower left corder (which is typical for OpenGL).
 //
-// The output @fragColor should be a RGBA color (with premultiplied alpha) that
+// The output fragColor should be a RGBA color (with premultiplied alpha) that
 // will be used as the output for the specified pixel location. Note that this
 // output will be automatically clipped to the clip region of the glshader node.
 //
@@ -114,38 +117,44 @@ type GLShaderer interface {
 // Note that GTK parses the uniform declarations, so each uniform has to be on a
 // line by itself with no other code, like so:
 //
-// “`glsl uniform float u_time; uniform vec3 u_color; uniform sampler2D
-// u_texture1; uniform sampler2D u_texture2; “`
+//    uniform float u_time;
+//    uniform vec3 u_color;
+//    uniform sampler2D u_texture1;
+//    uniform sampler2D u_texture2;
+//
 //
 // GTK uses the the "gsk" namespace in the symbols it uses in the shader, so
 // your code should not use any symbols with the prefix gsk or GSK. There are
 // some helper functions declared that you can use:
 //
-// “`glsl vec4 GskTexture(sampler2D sampler, vec2 texCoords); “`
+//    vec4 GskTexture(sampler2D sampler, vec2 texCoords);
+//
 //
 // This samples a texture (e.g. u_texture1) at the specified coordinates, and
 // containes some helper ifdefs to ensure that it works on all OpenGL versions.
 //
-// You can compile the shader yourself using [method@Gsk.GLShader.compile],
-// otherwise the GSK renderer will do it when it handling the glshader node. If
-// errors occurs, the returned @error will include the glsl sources, so you can
-// see what GSK was passing to the compiler. You can also set GSK_DEBUG=shaders
-// in the environment to see the sources and other relevant information about
-// all shaders that GSK is handling.
-//
+// You can compile the shader yourself using gsk.GLShader.Compile(), otherwise
+// the GSK renderer will do it when it handling the glshader node. If errors
+// occurs, the returned error will include the glsl sources, so you can see what
+// GSK was passing to the compiler. You can also set GSK_DEBUG=shaders in the
+// environment to see the sources and other relevant information about all
+// shaders that GSK is handling.
 //
 // An example shader
 //
-// “`glsl uniform float position; uniform sampler2D u_texture1; uniform
-// sampler2D u_texture2;
+//    uniform float position;
+//    uniform sampler2D u_texture1;
+//    uniform sampler2D u_texture2;
 //
-// void mainImage(out vec4 fragColor, in vec2 fragCoord, in vec2 resolution, in
-// vec2 uv) { vec4 source1 = GskTexture(u_texture1, uv); vec4 source2 =
-// GskTexture(u_texture2, uv);
+//    void mainImage(out vec4 fragColor,
+//                   in vec2 fragCoord,
+//                   in vec2 resolution,
+//                   in vec2 uv) {
+//      vec4 source1 = GskTexture(u_texture1, uv);
+//      vec4 source2 = GskTexture(u_texture2, uv);
 //
-//    fragColor = position * source1 + (1.0 - position) * source2;
-//
-// } “`
+//      fragColor = position * source1 + (1.0 - position) * source2;
+//    }
 type GLShader struct {
 	*externglib.Object
 }
@@ -167,7 +176,7 @@ func marshalGLShaderer(p uintptr) (interface{}, error) {
 	return wrapGLShader(obj), nil
 }
 
-// NewGLShaderFromResource creates a `GskGLShader` that will render pixels using
+// NewGLShaderFromResource creates a GskGLShader that will render pixels using
 // the specified code.
 func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _arg1 *C.char        // out
@@ -184,9 +193,9 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 	return _glShader
 }
 
-// Compile tries to compile the @shader for the given @renderer.
+// Compile tries to compile the shader for the given renderer.
 //
-// If there is a problem, this function returns false and reports an error. You
+// If there is a problem, this function returns FALSE and reports an error. You
 // should use this function before relying on the shader for rendering and use a
 // fallback with a simpler shader or without shaders if it fails.
 //
@@ -211,8 +220,8 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	return _goerr
 }
 
-// FindUniformByName looks for a uniform by the name @name, and returns the
-// index of the uniform, or -1 if it was not found.
+// FindUniformByName looks for a uniform by the name name, and returns the index
+// of the uniform, or -1 if it was not found.
 func (shader *GLShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
@@ -301,7 +310,7 @@ func (shader *GLShader) Resource() string {
 }
 
 // UniformName: get the name of the declared uniform for this shader at index
-// @idx.
+// idx.
 func (shader *GLShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -339,7 +348,7 @@ func (shader *GLShader) UniformOffset(idx int) int {
 }
 
 // UniformType: get the type of the declared uniform for this shader at index
-// @idx.
+// idx.
 func (shader *GLShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
@@ -372,7 +381,7 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// Ref increases the reference count of a `GskShaderArgsBuilder` by one.
+// Ref increases the reference count of a GskShaderArgsBuilder by one.
 func (builder *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GskShaderArgsBuilder // in
@@ -392,7 +401,7 @@ func (builder *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 	return _shaderArgsBuilder
 }
 
-// SetBool sets the value of the uniform @idx.
+// SetBool sets the value of the uniform idx.
 //
 // The uniform must be of bool type.
 func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
@@ -409,7 +418,7 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 	C.gsk_shader_args_builder_set_bool(_arg0, _arg1, _arg2)
 }
 
-// SetFloat sets the value of the uniform @idx.
+// SetFloat sets the value of the uniform idx.
 //
 // The uniform must be of float type.
 func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
@@ -424,7 +433,7 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 	C.gsk_shader_args_builder_set_float(_arg0, _arg1, _arg2)
 }
 
-// SetInt sets the value of the uniform @idx.
+// SetInt sets the value of the uniform idx.
 //
 // The uniform must be of int type.
 func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
@@ -439,7 +448,7 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 	C.gsk_shader_args_builder_set_int(_arg0, _arg1, _arg2)
 }
 
-// SetUint sets the value of the uniform @idx.
+// SetUint sets the value of the uniform idx.
 //
 // The uniform must be of uint type.
 func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
@@ -454,7 +463,7 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	C.gsk_shader_args_builder_set_uint(_arg0, _arg1, _arg2)
 }
 
-// SetVec2 sets the value of the uniform @idx.
+// SetVec2 sets the value of the uniform idx.
 //
 // The uniform must be of vec2 type.
 func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
@@ -469,7 +478,7 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	C.gsk_shader_args_builder_set_vec2(_arg0, _arg1, _arg2)
 }
 
-// SetVec3 sets the value of the uniform @idx.
+// SetVec3 sets the value of the uniform idx.
 //
 // The uniform must be of vec3 type.
 func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
@@ -484,7 +493,7 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	C.gsk_shader_args_builder_set_vec3(_arg0, _arg1, _arg2)
 }
 
-// SetVec4 sets the value of the uniform @idx.
+// SetVec4 sets the value of the uniform idx.
 //
 // The uniform must be of vec4 type.
 func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
@@ -499,7 +508,7 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	C.gsk_shader_args_builder_set_vec4(_arg0, _arg1, _arg2)
 }
 
-// Unref decreases the reference count of a `GskShaderArgBuilder` by one.
+// Unref decreases the reference count of a GskShaderArgBuilder by one.
 //
 // If the resulting reference count is zero, frees the builder.
 func (builder *ShaderArgsBuilder) unref() {

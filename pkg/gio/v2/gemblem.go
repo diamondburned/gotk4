@@ -33,7 +33,7 @@ func init() {
 
 // Emblemer describes Emblem's methods.
 type Emblemer interface {
-	// GetIcon gives back the icon from @emblem.
+	// GetIcon gives back the icon from emblem.
 	GetIcon() *Icon
 	// Origin gets the origin of the emblem.
 	Origin() EmblemOrigin
@@ -70,7 +70,7 @@ func marshalEmblemer(p uintptr) (interface{}, error) {
 	return wrapEmblem(obj), nil
 }
 
-// NewEmblem creates a new emblem for @icon.
+// NewEmblem creates a new emblem for icon.
 func NewEmblem(icon Iconer) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
@@ -86,7 +86,7 @@ func NewEmblem(icon Iconer) *Emblem {
 	return _emblem
 }
 
-// NewEmblemWithOrigin creates a new emblem for @icon.
+// NewEmblemWithOrigin creates a new emblem for icon.
 func NewEmblemWithOrigin(icon Iconer, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
@@ -104,7 +104,7 @@ func NewEmblemWithOrigin(icon Iconer, origin EmblemOrigin) *Emblem {
 	return _emblem
 }
 
-// GetIcon gives back the icon from @emblem.
+// GetIcon gives back the icon from emblem.
 func (emblem *Emblem) GetIcon() *Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in

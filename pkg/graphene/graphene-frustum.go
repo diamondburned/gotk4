@@ -23,7 +23,7 @@ func init() {
 
 // Frustum: 3D volume delimited by 2D clip planes.
 //
-// The contents of the `graphene_frustum_t` are private, and should not be
+// The contents of the graphene_frustum_t are private, and should not be
 // modified directly.
 type Frustum struct {
 	native C.graphene_frustum_t
@@ -169,7 +169,7 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	return _frustum
 }
 
-// InitFromMatrix initializes a #graphene_frustum_t using the given @matrix.
+// InitFromMatrix initializes a #graphene_frustum_t using the given matrix.
 func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_matrix_t  // out
@@ -187,7 +187,7 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	return _frustum
 }
 
-// IntersectsBox checks whether the given @box intersects a plane of a
+// IntersectsBox checks whether the given box intersects a plane of a
 // #graphene_frustum_t.
 func (f *Frustum) IntersectsBox(box *Box) bool {
 	var _arg0 *C.graphene_frustum_t // out
@@ -208,7 +208,7 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 	return _ok
 }
 
-// IntersectsSphere checks whether the given @sphere intersects a plane of a
+// IntersectsSphere checks whether the given sphere intersects a plane of a
 // #graphene_frustum_t.
 func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	var _arg0 *C.graphene_frustum_t // out

@@ -40,18 +40,18 @@ type TLSClientConnectionOverrider interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption. This is not normally needed,
 	// but may be used when the same session needs to be used between different
-	// endpoints, as is required by some protocols, such as FTP over TLS.
-	// @source should have already completed a handshake and, since TLS 1.3, it
-	// should have been used to read data at least once. @conn should not have
-	// completed a handshake.
+	// endpoints, as is required by some protocols, such as FTP over TLS. source
+	// should have already completed a handshake and, since TLS 1.3, it should
+	// have been used to read data at least once. conn should not have completed
+	// a handshake.
 	//
 	// It is not possible to know whether a call to this function will actually
 	// do anything. Because session resumption is normally used only for
 	// performance benefit, the TLS backend might not implement this function.
-	// Even if implemented, it may not actually succeed in allowing @conn to
-	// resume @source's TLS session, because the server may not have sent a
-	// session resumption token to @source, or it may refuse to accept the token
-	// from @conn. There is no way to know whether a call to this function is
+	// Even if implemented, it may not actually succeed in allowing conn to
+	// resume source's TLS session, because the server may not have sent a
+	// session resumption token to source, or it may refuse to accept the token
+	// from conn. There is no way to know whether a call to this function is
 	// actually successful.
 	//
 	// Using this function is not required to benefit from session resumption.
@@ -72,20 +72,20 @@ type TLSClientConnectioner interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
-	// ServerIdentity gets @conn's expected server identity
+	// ServerIdentity gets conn's expected server identity
 	ServerIdentity() *SocketConnectable
 	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
-	// ValidationFlags gets @conn's validation flags
+	// ValidationFlags gets conn's validation flags
 	ValidationFlags() TLSCertificateFlags
-	// SetServerIdentity sets @conn's expected server identity, which is used
+	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
-	// also to let @conn know what name to look for in the certificate when
+	// also to let conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
 	// SetUseSSL3: since GLib 2.42.1, SSL 3.0 is no longer supported.
 	SetUseSSL3(useSsl3 bool)
-	// SetValidationFlags sets @conn's validation flags, to override the default
+	// SetValidationFlags sets conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate.
 	SetValidationFlags(flags TLSCertificateFlags)
 }
@@ -120,19 +120,18 @@ func marshalTLSClientConnectioner(p uintptr) (interface{}, error) {
 // CopySessionState: possibly copies session state from one connection to
 // another, for use in TLS session resumption. This is not normally needed, but
 // may be used when the same session needs to be used between different
-// endpoints, as is required by some protocols, such as FTP over TLS. @source
+// endpoints, as is required by some protocols, such as FTP over TLS. source
 // should have already completed a handshake and, since TLS 1.3, it should have
-// been used to read data at least once. @conn should not have completed a
+// been used to read data at least once. conn should not have completed a
 // handshake.
 //
 // It is not possible to know whether a call to this function will actually do
 // anything. Because session resumption is normally used only for performance
 // benefit, the TLS backend might not implement this function. Even if
-// implemented, it may not actually succeed in allowing @conn to resume
-// @source's TLS session, because the server may not have sent a session
-// resumption token to @source, or it may refuse to accept the token from @conn.
-// There is no way to know whether a call to this function is actually
-// successful.
+// implemented, it may not actually succeed in allowing conn to resume source's
+// TLS session, because the server may not have sent a session resumption token
+// to source, or it may refuse to accept the token from conn. There is no way to
+// know whether a call to this function is actually successful.
 //
 // Using this function is not required to benefit from session resumption. If
 // the TLS backend supports session resumption, the session will be resumed
@@ -154,7 +153,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
 
-// ServerIdentity gets @conn's expected server identity
+// ServerIdentity gets conn's expected server identity
 func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
@@ -191,7 +190,7 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 	return _ok
 }
 
-// ValidationFlags gets @conn's validation flags
+// ValidationFlags gets conn's validation flags
 func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
@@ -207,9 +206,9 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetServerIdentity sets @conn's expected server identity, which is used both
-// to tell servers on virtual hosts which certificate to present, and also to
-// let @conn know what name to look for in the certificate when performing
+// SetServerIdentity sets conn's expected server identity, which is used both to
+// tell servers on virtual hosts which certificate to present, and also to let
+// conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GTlsClientConnection // out
@@ -244,7 +243,7 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	C.g_tls_client_connection_set_use_ssl3(_arg0, _arg1)
 }
 
-// SetValidationFlags sets @conn's validation flags, to override the default set
+// SetValidationFlags sets conn's validation flags, to override the default set
 // of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
@@ -257,13 +256,13 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	C.g_tls_client_connection_set_validation_flags(_arg0, _arg1)
 }
 
-// NewTLSClientConnection creates a new ClientConnection wrapping
-// @base_io_stream (which must have pollable input and output streams) which is
-// assumed to communicate with the server identified by @server_identity.
+// NewTLSClientConnection creates a new ClientConnection wrapping base_io_stream
+// (which must have pollable input and output streams) which is assumed to
+// communicate with the server identified by server_identity.
 //
 // See the documentation for Connection:base-io-stream for restrictions on when
-// application code can run operations on the @base_io_stream after this
-// function has returned.
+// application code can run operations on the base_io_stream after this function
+// has returned.
 func TlsClientConnectionNew(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out

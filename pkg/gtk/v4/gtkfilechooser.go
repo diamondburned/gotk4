@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// FileChooserAction describes whether a `GtkFileChooser` is being used to open
+// FileChooserAction describes whether a GtkFileChooser is being used to open
 // existing files or to save to a possibly new file.
 type FileChooserAction int
 
@@ -46,7 +46,7 @@ func marshalFileChooserAction(p uintptr) (interface{}, error) {
 }
 
 // FileChooserError: these identify the various errors that can occur while
-// calling `GtkFileChooser` functions.
+// calling GtkFileChooser functions.
 type FileChooserError int
 
 const (
@@ -69,9 +69,9 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 type FileChooserer interface {
 	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id string, label string, options []string, optionLabels []string)
-	// AddFilter adds @filter to the list of filters that the user can select
+	// AddFilter adds filter to the list of filters that the user can select
 	// between.
-	AddFilter(filter FileFilterer)
+	AddFilter(filter *FileFilter)
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser.
 	AddShortcutFolder(folder gio.Filer) error
@@ -82,16 +82,15 @@ type FileChooserer interface {
 	Choice(id string) string
 	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
-	// CurrentFolder gets the current folder of @chooser as #GFile.
+	// CurrentFolder gets the current folder of chooser as #GFile.
 	CurrentFolder() *gio.File
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user.
 	CurrentName() string
-	// File gets the `GFile` for the currently selected file in the file
-	// selector.
+	// File gets the GFile for the currently selected file in the file selector.
 	File() *gio.File
 	// Files lists all the selected files and subfolders in the current folder
-	// of @chooser as #GFile.
+	// of chooser as #GFile.
 	Files() *gio.ListModel
 	// Filter gets the current filter.
 	Filter() *FileFilter
@@ -105,9 +104,9 @@ type FileChooserer interface {
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
-	// RemoveFilter removes @filter from the list of filters that the user can
+	// RemoveFilter removes filter from the list of filters that the user can
 	// select between.
-	RemoveFilter(filter FileFilterer)
+	RemoveFilter(filter *FileFilter)
 	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
 	// chooser.
 	RemoveShortcutFolder(folder gio.Filer) error
@@ -119,31 +118,31 @@ type FileChooserer interface {
 	// SetCreateFolders sets whether file chooser will offer to create new
 	// folders.
 	SetCreateFolders(createFolders bool)
-	// SetCurrentFolder sets the current folder for @chooser from a #GFile.
+	// SetCurrentFolder sets the current folder for chooser from a #GFile.
 	SetCurrentFolder(file gio.Filer) error
 	// SetCurrentName sets the current name in the file selector, as if entered
 	// by the user.
 	SetCurrentName(name string)
-	// SetFile sets @file as the current filename for the file chooser.
+	// SetFile sets file as the current filename for the file chooser.
 	SetFile(file gio.Filer) error
 	// SetFilter sets the current filter.
-	SetFilter(filter FileFilterer)
+	SetFilter(filter *FileFilter)
 	// SetSelectMultiple sets whether multiple files can be selected in the file
 	// chooser.
 	SetSelectMultiple(selectMultiple bool)
 }
 
-// FileChooser: `GtkFileChooser` is an interface that can be implemented by file
+// FileChooser: GtkFileChooser is an interface that can be implemented by file
 // selection widgets.
 //
 // In GTK, the main objects that implement this interface are
-// [class@Gtk.FileChooserWidget] and [class@Gtk.FileChooserDialog].
+// gtk.FileChooserWidget and gtk.FileChooserDialog.
 //
-// You do not need to write an object that implements the `GtkFileChooser`
+// You do not need to write an object that implements the GtkFileChooser
 // interface unless you are trying to adapt an existing file selector to expose
 // a standard programming interface.
 //
-// `GtkFileChooser` allows for shortcuts to various places in the filesystem. In
+// GtkFileChooser allows for shortcuts to various places in the filesystem. In
 // the default implementation these are displayed in the left pane. It may be a
 // bit confusing at first that these shortcuts come from various sources and in
 // various flavours, so lets explain the terminology here:
@@ -162,18 +161,18 @@ type FileChooserer interface {
 //
 // File Names and Encodings
 //
-// When the user is finished selecting files in a `GtkFileChooser`, your program
-// can get the selected filenames as `GFile`s.
+// When the user is finished selecting files in a GtkFileChooser, your program
+// can get the selected filenames as GFiles.
 //
 //
 // Adding options
 //
 // You can add extra widgets to a file chooser to provide options that are not
-// present in the default design, by using [method@Gtk.FileChooser.add_choice].
-// Each choice has an identifier and a user visible label; additionally, each
-// choice can have multiple options. If a choice has no option, it will be
-// rendered as a check button with the given label; if a choice has options, it
-// will be rendered as a combo box.
+// present in the default design, by using gtk.FileChooser.AddChoice(). Each
+// choice has an identifier and a user visible label; additionally, each choice
+// can have multiple options. If a choice has no option, it will be rendered as
+// a check button with the given label; if a choice has options, it will be
+// rendered as a combo box.
 type FileChooser struct {
 	*externglib.Object
 }
@@ -198,10 +197,9 @@ func marshalFileChooserer(p uintptr) (interface{}, error) {
 // AddChoice adds a 'choice' to the file chooser.
 //
 // This is typically implemented as a combobox or, for boolean choices, as a
-// checkbutton. You can select a value using [method@Gtk.FileChooser.set_choice]
-// before the dialog is shown, and you can obtain the user-selected value in the
-// [signal@Gtk.Dialog::response] signal handler using
-// [method@Gtk.FileChooser.get_choice].
+// checkbutton. You can select a value using gtk.FileChooser.SetChoice() before
+// the dialog is shown, and you can obtain the user-selected value in the
+// gtk.Dialog::response signal handler using gtk.FileChooser.GetChoice().
 func (chooser *FileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -212,38 +210,46 @@ func (chooser *FileChooser) AddChoice(id string, label string, options []string,
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(label)))
-	_arg3 = (**C.char)(C.malloc(C.ulong(len(options)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg3, len(options))
-		for i := range options {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(options[i])))
+		_arg3 = (**C.char)(C.malloc(C.ulong(len(options)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(options)+1)
+			var zero *C.char
+			out[len(options)] = zero
+			for i := range options {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(options[i])))
+			}
 		}
 	}
-	_arg4 = (**C.char)(C.malloc(C.ulong(len(optionLabels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg4, len(optionLabels))
-		for i := range optionLabels {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
+		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionLabels)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg4, len(optionLabels)+1)
+			var zero *C.char
+			out[len(optionLabels)] = zero
+			for i := range optionLabels {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
+			}
 		}
 	}
 
 	C.gtk_file_chooser_add_choice(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// AddFilter adds @filter to the list of filters that the user can select
+// AddFilter adds filter to the list of filters that the user can select
 // between.
 //
 // When a filter is selected, only files that are passed by that filter are
 // displayed.
 //
-// Note that the @chooser takes ownership of the filter if it is floating, so
-// you have to ref and sink it if you want to keep a reference.
-func (chooser *FileChooser) AddFilter(filter FileFilterer) {
+// Note that the chooser takes ownership of the filter if it is floating, so you
+// have to ref and sink it if you want to keep a reference.
+func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_add_filter(_arg0, _arg1)
 }
@@ -319,7 +325,7 @@ func (chooser *FileChooser) CreateFolders() bool {
 	return _ok
 }
 
-// CurrentFolder gets the current folder of @chooser as #GFile.
+// CurrentFolder gets the current folder of chooser as #GFile.
 func (chooser *FileChooser) CurrentFolder() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
@@ -361,7 +367,7 @@ func (chooser *FileChooser) CurrentName() string {
 	return _utf8
 }
 
-// File gets the `GFile` for the currently selected file in the file selector.
+// File gets the GFile for the currently selected file in the file selector.
 //
 // If multiple files are selected, one of the files will be returned at random.
 //
@@ -388,7 +394,7 @@ func (chooser *FileChooser) File() *gio.File {
 }
 
 // Files lists all the selected files and subfolders in the current folder of
-// @chooser as #GFile.
+// chooser as #GFile.
 func (chooser *FileChooser) Files() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
@@ -427,10 +433,10 @@ func (chooser *FileChooser) Filter() *FileFilter {
 
 // Filters gets the current set of user-selectable filters, as a list model.
 //
-// See [method@Gtk.FileChooser.add_filter] and
-// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
+// See gtk.FileChooser.AddFilter() and gtk.FileChooser.RemoveFilter() for
+// changing individual filters.
 //
-// You should not modify the returned list model. Future changes to @chooser may
+// You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
 func (chooser *FileChooser) Filters() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
@@ -473,7 +479,7 @@ func (chooser *FileChooser) SelectMultiple() bool {
 
 // ShortcutFolders queries the list of shortcut folders in the file chooser.
 //
-// You should not modify the returned list model. Future changes to @chooser may
+// You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
 func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 	var _arg0 *C.GtkFileChooser // out
@@ -507,14 +513,14 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 	C.gtk_file_chooser_remove_choice(_arg0, _arg1)
 }
 
-// RemoveFilter removes @filter from the list of filters that the user can
-// select between.
-func (chooser *FileChooser) RemoveFilter(filter FileFilterer) {
+// RemoveFilter removes filter from the list of filters that the user can select
+// between.
+func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_remove_filter(_arg0, _arg1)
 }
@@ -587,7 +593,7 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 	C.gtk_file_chooser_set_create_folders(_arg0, _arg1)
 }
 
-// SetCurrentFolder sets the current folder for @chooser from a #GFile.
+// SetCurrentFolder sets the current folder for chooser from a #GFile.
 func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -611,13 +617,13 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 // Note that the name passed in here is a UTF-8 string rather than a filename.
 // This function is meant for such uses as a suggested name in a “Save As...”
 // dialog. You can pass “Untitled.doc” or a similarly suitable suggestion for
-// the @name.
+// the name.
 //
 // If you want to preselect a particular existing file, you should use
-// [method@Gtk.FileChooser.set_file] instead.
+// gtk.FileChooser.SetFile() instead.
 //
 // Please see the documentation for those functions for an example of using
-// [method@Gtk.FileChooser.set_current_name] as well.
+// gtk.FileChooser.SetCurrentName() as well.
 func (chooser *FileChooser) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.char           // out
@@ -628,14 +634,14 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 	C.gtk_file_chooser_set_current_name(_arg0, _arg1)
 }
 
-// SetFile sets @file as the current filename for the file chooser.
+// SetFile sets file as the current filename for the file chooser.
 //
 // This includes changing to the file’s parent folder and actually selecting the
-// file in list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the
+// file in list. If the chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the
 // file’s base name will also appear in the dialog’s file name entry.
 //
-// If the file name isn’t in the current folder of @chooser, then the current
-// folder of @chooser will be changed to the folder containing @filename.
+// If the file name isn’t in the current folder of chooser, then the current
+// folder of chooser will be changed to the folder containing filename.
 //
 // Note that the file must exist, or nothing will be done except for the
 // directory change.
@@ -648,24 +654,26 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //
 // Instead, use something similar to this:
 //
-// “`c static void prepare_file_chooser (GtkFileChooser *chooser, GFile
-// *existing_file) { gboolean document_is_new = (existing_file == NULL);
+//    static void
+//    prepare_file_chooser (GtkFileChooser *chooser,
+//                          GFile          *existing_file)
+//    {
+//      gboolean document_is_new = (existing_file == NULL);
 //
-//    if (document_is_new)
-//      {
-//        GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
-//        // the user just created a new document
-//        gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
-//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
-//        g_object_unref (default_file_for_saving);
-//      }
-//    else
-//      {
-//        // the user edited an existing document
-//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
-//      }
-//
-// } “`
+//      if (document_is_new)
+//        {
+//          GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+//          // the user just created a new document
+//          gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
+//          gtk_file_chooser_set_current_name (chooser, "Untitled document");
+//          g_object_unref (default_file_for_saving);
+//        }
+//      else
+//        {
+//          // the user edited an existing document
+//          gtk_file_chooser_set_file (chooser, existing_file, NULL);
+//        }
+//    }
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GFile          // out
@@ -692,12 +700,12 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 // Setting the current filter when the list of filters is empty is useful if you
 // want to restrict the displayed set of files without letting the user change
 // it.
-func (chooser *FileChooser) SetFilter(filter FileFilterer) {
+func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_file_chooser_set_filter(_arg0, _arg1)
 }

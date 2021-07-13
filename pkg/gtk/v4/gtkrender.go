@@ -18,7 +18,7 @@ import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
-func RenderActivity(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderActivity(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -26,7 +26,7 @@ func RenderActivity(context StyleContexter, cr *cairo.Context, x float64, y floa
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -36,12 +36,12 @@ func RenderActivity(context StyleContexter, cr *cairo.Context, x float64, y floa
 	C.gtk_render_activity(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// RenderArrow renders an arrow pointing to @angle.
+// RenderArrow renders an arrow pointing to angle.
 //
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
 // ! (arrows.png)
-func RenderArrow(context StyleContexter, cr *cairo.Context, angle float64, x float64, y float64, size float64) {
+func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -49,7 +49,7 @@ func RenderArrow(context StyleContexter, cr *cairo.Context, angle float64, x flo
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(angle)
 	_arg4 = C.double(x)
@@ -61,11 +61,11 @@ func RenderArrow(context StyleContexter, cr *cairo.Context, angle float64, x flo
 
 // RenderBackground renders the background of an element.
 //
-// Typical background rendering, showing the effect of `background-image`,
-// `border-width` and `border-radius`:
+// Typical background rendering, showing the effect of background-image,
+// border-width and border-radius:
 //
 // ! (background.png)
-func RenderBackground(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -73,7 +73,7 @@ func RenderBackground(context StyleContexter, cr *cairo.Context, x float64, y fl
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -92,7 +92,7 @@ func RenderBackground(context StyleContexter, cr *cairo.Context, x float64, y fl
 // Typical checkmark rendering:
 //
 // ! (checks.png)
-func RenderCheck(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -100,7 +100,7 @@ func RenderCheck(context StyleContexter, cr *cairo.Context, x float64, y float64
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -111,13 +111,13 @@ func RenderCheck(context StyleContexter, cr *cairo.Context, x float64, y float64
 }
 
 // RenderExpander renders an expander (as used in TreeView and Expander) in the
-// area defined by @x, @y, @width, @height. The state GTK_STATE_FLAG_CHECKED
+// area defined by x, y, width, height. The state GTK_STATE_FLAG_CHECKED
 // determines whether the expander is collapsed or expanded.
 //
 // Typical expander rendering:
 //
 // ! (expanders.png)
-func RenderExpander(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -125,7 +125,7 @@ func RenderExpander(context StyleContexter, cr *cairo.Context, x float64, y floa
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -135,13 +135,13 @@ func RenderExpander(context StyleContexter, cr *cairo.Context, x float64, y floa
 	C.gtk_render_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// RenderFocus renders a focus indicator on the rectangle determined by @x, @y,
-// @width, @height.
+// RenderFocus renders a focus indicator on the rectangle determined by x, y,
+// width, height.
 //
 // Typical focus rendering:
 //
 // ! (focus.png)
-func RenderFocus(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -149,7 +149,7 @@ func RenderFocus(context StyleContexter, cr *cairo.Context, x float64, y float64
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -159,14 +159,14 @@ func RenderFocus(context StyleContexter, cr *cairo.Context, x float64, y float64
 	C.gtk_render_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// RenderFrame renders a frame around the rectangle defined by @x, @y, @width,
-// @height.
+// RenderFrame renders a frame around the rectangle defined by x, y, width,
+// height.
 //
-// Examples of frame rendering, showing the effect of `border-image`,
-// `border-color`, `border-width`, `border-radius` and junctions:
+// Examples of frame rendering, showing the effect of border-image,
+// border-color, border-width, border-radius and junctions:
 //
 // ! (frames.png)
-func RenderFrame(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -174,7 +174,7 @@ func RenderFrame(context StyleContexter, cr *cairo.Context, x float64, y float64
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -185,12 +185,12 @@ func RenderFrame(context StyleContexter, cr *cairo.Context, x float64, y float64
 }
 
 // RenderHandle renders a handle (as in Paned and Window’s resize grip), in the
-// rectangle determined by @x, @y, @width, @height.
+// rectangle determined by x, y, width, height.
 //
 // Handles rendered for the paned and grip classes:
 //
 // ! (handles.png)
-func RenderHandle(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -198,7 +198,7 @@ func RenderHandle(context StyleContexter, cr *cairo.Context, x float64, y float6
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
@@ -208,20 +208,19 @@ func RenderHandle(context StyleContexter, cr *cairo.Context, x float64, y float6
 	C.gtk_render_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// RenderIcon renders the icon in @texture at the specified @x and @y
-// coordinates.
+// RenderIcon renders the icon in texture at the specified x and y coordinates.
 //
-// This function will render the icon in @texture at exactly its size,
-// regardless of scaling factors, which may not be appropriate when drawing on
-// displays with high pixel densities.
-func RenderIcon(context StyleContexter, cr *cairo.Context, texture gdk.Texturer, x float64, y float64) {
+// This function will render the icon in texture at exactly its size, regardless
+// of scaling factors, which may not be appropriate when drawing on displays
+// with high pixel densities.
+func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, x float64, y float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkTexture      // out
 	var _arg4 C.double           // out
 	var _arg5 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
 	_arg4 = C.double(x)
@@ -230,25 +229,25 @@ func RenderIcon(context StyleContexter, cr *cairo.Context, texture gdk.Texturer,
 	C.gtk_render_icon(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// RenderLayout renders @layout on the coordinates @x, @y
-func RenderLayout(context StyleContexter, cr *cairo.Context, x float64, y float64, layout pango.Layouter) {
+// RenderLayout renders layout on the coordinates x, y
+func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
 	var _arg4 C.double           // out
 	var _arg5 *C.PangoLayout     // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
-	_arg5 = (*C.PangoLayout)(unsafe.Pointer((layout).(gextras.Nativer).Native()))
+	_arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_render_layout(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // RenderLine renders a line from (x0, y0) to (x1, y1).
-func RenderLine(context StyleContexter, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
+func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -256,7 +255,7 @@ func RenderLine(context StyleContexter, cr *cairo.Context, x0 float64, y0 float6
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x0)
 	_arg4 = C.double(y0)
@@ -273,7 +272,7 @@ func RenderLine(context StyleContexter, cr *cairo.Context, x0 float64, y0 float6
 // Typical option mark rendering:
 //
 // ! (options.png)
-func RenderOption(context StyleContexter, cr *cairo.Context, x float64, y float64, width float64, height float64) {
+func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.double           // out
@@ -281,7 +280,7 @@ func RenderOption(context StyleContexter, cr *cairo.Context, x float64, y float6
 	var _arg5 C.double           // out
 	var _arg6 C.double           // out
 
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)

@@ -24,15 +24,14 @@ func init() {
 
 // MultiSorterer describes MultiSorter's methods.
 type MultiSorterer interface {
-	// Append: add @sorter to @self to use for sorting at the end.
-	Append(sorter Sorterer)
-	// Remove removes the sorter at the given @position from the list of sorter
-	// used by @self.
+	// Append: add sorter to self to use for sorting at the end.
+	Append(sorter *Sorter)
+	// Remove removes the sorter at the given position from the list of sorter
+	// used by self.
 	Remove(position uint)
 }
 
-// MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
-// turn.
+// MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
 //
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
@@ -91,24 +90,24 @@ func (v *MultiSorter) Native() uintptr {
 	return v.Sorter.Object.Native()
 }
 
-// Append: add @sorter to @self to use for sorting at the end.
+// Append: add sorter to self to use for sorting at the end.
 //
-// @self will consult all existing sorters before it will sort with the given
-// @sorter.
-func (self *MultiSorter) Append(sorter Sorterer) {
+// self will consult all existing sorters before it will sort with the given
+// sorter.
+func (self *MultiSorter) Append(sorter *Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 *C.GtkSorter      // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((sorter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
 
-// Remove removes the sorter at the given @position from the list of sorter used
-// by @self.
+// Remove removes the sorter at the given position from the list of sorter used
+// by self.
 //
-// If @position is larger than the number of sorters, nothing happens.
+// If position is larger than the number of sorters, nothing happens.
 func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out

@@ -23,13 +23,13 @@ func init() {
 
 // WindowGrouper describes WindowGroup's methods.
 type WindowGrouper interface {
-	// AddWindow adds a window to a `GtkWindowGroup`.
-	AddWindow(window Windower)
-	// RemoveWindow removes a window from a `GtkWindowGroup`.
-	RemoveWindow(window Windower)
+	// AddWindow adds a window to a GtkWindowGroup.
+	AddWindow(window *Window)
+	// RemoveWindow removes a window from a GtkWindowGroup.
+	RemoveWindow(window *Window)
 }
 
-// WindowGroup: `GtkWindowGroup` makes group of windows behave like separate
+// WindowGroup: GtkWindowGroup makes group of windows behave like separate
 // applications.
 //
 // It achieves this by limiting the effect of GTK grabs and modality to windows
@@ -39,8 +39,8 @@ type WindowGrouper interface {
 // have not been explicitly assigned to a group are implicitly treated like
 // windows of the default window group.
 //
-// `GtkWindowGroup` objects are referenced by each window in the group, so once
-// you have added all windows to a `GtkWindowGroup`, you can drop the initial
+// GtkWindowGroup objects are referenced by each window in the group, so once
+// you have added all windows to a GtkWindowGroup, you can drop the initial
 // reference to the window group with g_object_unref(). If the windows in the
 // window group are subsequently destroyed, then they will be removed from the
 // window group and drop their references on the window group; when all window
@@ -66,9 +66,9 @@ func marshalWindowGrouper(p uintptr) (interface{}, error) {
 	return wrapWindowGroup(obj), nil
 }
 
-// NewWindowGroup creates a new `GtkWindowGroup` object.
+// NewWindowGroup creates a new GtkWindowGroup object.
 //
-// Modality of windows only affects windows within the same `GtkWindowGroup`.
+// Modality of windows only affects windows within the same GtkWindowGroup.
 func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
 
@@ -81,24 +81,24 @@ func NewWindowGroup() *WindowGroup {
 	return _windowGroup
 }
 
-// AddWindow adds a window to a `GtkWindowGroup`.
-func (windowGroup *WindowGroup) AddWindow(window Windower) {
+// AddWindow adds a window to a GtkWindowGroup.
+func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
 }
 
-// RemoveWindow removes a window from a `GtkWindowGroup`.
-func (windowGroup *WindowGroup) RemoveWindow(window Windower) {
+// RemoveWindow removes a window from a GtkWindowGroup.
+func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 }

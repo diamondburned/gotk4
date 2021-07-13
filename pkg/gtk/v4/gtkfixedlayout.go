@@ -29,8 +29,8 @@ type FixedLayouter interface {
 	privateFixedLayout()
 }
 
-// FixedLayout: `GtkFixedLayout` is a layout manager which can place child
-// widgets at fixed positions.
+// FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
+// at fixed positions.
 //
 // Most applications should never use this layout manager; fixed positioning and
 // sizing requires constant recalculations on where children need to be
@@ -48,12 +48,12 @@ type FixedLayouter interface {
 // - Translation of text into other languages changes its size. Also, display of
 // non-English text will use a different font in many cases.
 //
-// In addition, `GtkFixedLayout` does not pay attention to text direction and
-// thus may produce unwanted results if your app is run under right-to-left
-// languages such as Hebrew or Arabic. That is: normally GTK will order
-// containers appropriately depending on the text direction, e.g. to put labels
-// to the right of the thing they label when using an RTL language;
-// `GtkFixedLayout` won't be able to do that for you.
+// In addition, GtkFixedLayout does not pay attention to text direction and thus
+// may produce unwanted results if your app is run under right-to-left languages
+// such as Hebrew or Arabic. That is: normally GTK will order containers
+// appropriately depending on the text direction, e.g. to put labels to the
+// right of the thing they label when using an RTL language; GtkFixedLayout
+// won't be able to do that for you.
 //
 // Finally, fixed positioning makes it kind of annoying to add/remove UI
 // elements, since you have to reposition all the other elements. This is a
@@ -81,7 +81,7 @@ func marshalFixedLayouter(p uintptr) (interface{}, error) {
 	return wrapFixedLayout(obj), nil
 }
 
-// NewFixedLayout creates a new `GtkFixedLayout`.
+// NewFixedLayout creates a new GtkFixedLayout.
 func NewFixedLayout() *FixedLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -100,12 +100,11 @@ func (*FixedLayout) privateFixedLayout() {}
 type FixedLayoutChilder interface {
 	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
-	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
+	// SetTransform sets the transformation of the child of a GtkFixedLayout.
 	SetTransform(transform *gsk.Transform)
 }
 
-// FixedLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkFixedLayout`.
+// FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	LayoutChild
 }
@@ -149,7 +148,7 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	return _transform
 }
 
-// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
+// SetTransform sets the transformation of the child of a GtkFixedLayout.
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild // out
 	var _arg1 *C.GskTransform        // out

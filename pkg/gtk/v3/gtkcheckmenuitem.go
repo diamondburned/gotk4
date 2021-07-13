@@ -39,15 +39,14 @@ type CheckMenuItemOverrider interface {
 type CheckMenuItemer interface {
 	// Active returns whether the check menu item is active.
 	Active() bool
-	// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
+	// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem
 	DrawAsRadio() bool
 	// Inconsistent retrieves the value set by
 	// gtk_check_menu_item_set_inconsistent().
 	Inconsistent() bool
 	// SetActive sets the active state of the menu item’s check box.
 	SetActive(isActive bool)
-	// SetDrawAsRadio sets whether @check_menu_item is drawn like a
-	// RadioMenuItem
+	// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem
 	SetDrawAsRadio(drawAsRadio bool)
 	// SetInconsistent: if the user has selected a range of elements (such as
 	// some text or spreadsheet cells) that are affected by a boolean setting,
@@ -156,7 +155,7 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 
 // NewCheckMenuItemWithMnemonic creates a new CheckMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
-// in @label indicate the mnemonic for the menu item.
+// in label indicate the mnemonic for the menu item.
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -191,7 +190,7 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	return _ok
 }
 
-// DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
+// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _cret C.gboolean          // in
@@ -241,7 +240,7 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	C.gtk_check_menu_item_set_active(_arg0, _arg1)
 }
 
-// SetDrawAsRadio sets whether @check_menu_item is drawn like a RadioMenuItem
+// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
 	var _arg1 C.gboolean          // out

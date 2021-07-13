@@ -63,10 +63,10 @@ const (
 // LogFunc specifies the prototype of log handler functions.
 //
 // The default log handler, g_log_default_handler(), automatically appends a
-// new-line character to @message when printing it. It is advised that any
-// custom log handler functions behave similarly, so that logging calls in user
-// code do not need modifying to add a new-line character to the message if the
-// log handler is changed.
+// new-line character to message when printing it. It is advised that any custom
+// log handler functions behave similarly, so that logging calls in user code do
+// not need modifying to add a new-line character to the message if the log
+// handler is changed.
 //
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
@@ -103,9 +103,9 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 // Writer functions must ignore fields which they do not recognise, unless they
 // can write arbitrary binary output, as field values may be arbitrary binary.
 //
-// @log_level is guaranteed to be included in @fields as the `PRIORITY` field,
-// but is provided separately for convenience of deciding whether or where to
-// output the log entry.
+// log_level is guaranteed to be included in fields as the PRIORITY field, but
+// is provided separately for convenience of deciding whether or where to output
+// the log entry.
 //
 // Writer functions should return G_LOG_WRITER_HANDLED if they handled the log
 // message successfully or if they deliberately ignored it. If there was an
@@ -162,16 +162,16 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // domain and log level combination. It outputs the message to stderr or stdout
 // and if the log level is fatal it calls G_BREAKPOINT(). It automatically
 // prints a new-line character after the message, so one does not need to be
-// manually included in @message.
+// manually included in message.
 //
 // The behavior of this log handler can be influenced by a number of environment
 // variables:
 //
-// - `G_MESSAGES_PREFIXED`: A :-separated list of log levels for which messages
+// - G_MESSAGES_PREFIXED: A :-separated list of log levels for which messages
 // should be prefixed by the program name and PID of the application.
 //
-// - `G_MESSAGES_DEBUG`: A space-separated list of log domains for which debug
-// and informational messages are printed. By default these messages are not
+// - G_MESSAGES_DEBUG: A space-separated list of log domains for which debug and
+// informational messages are printed. By default these messages are not
 // printed.
 //
 // stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
@@ -213,9 +213,8 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // terminates. You can only set the levels defined by GLib to be fatal.
 // G_LOG_LEVEL_ERROR is always fatal.
 //
-// You can also make some message levels fatal at runtime by setting the
-// `G_DEBUG` environment variable (see Running GLib Applications
-// (glib-running.html)).
+// You can also make some message levels fatal at runtime by setting the G_DEBUG
+// environment variable (see Running GLib Applications (glib-running.html)).
 //
 // Libraries should not call this function, as it affects all messages logged by
 // a process, including those from other libraries.
@@ -276,8 +275,8 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 //
 // See g_log_structured() for more documentation.
 //
-// This assumes that @log_level is already present in @fields (typically as the
-// `PRIORITY` field).
+// This assumes that log_level is already present in fields (typically as the
+// PRIORITY field).
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField
@@ -296,10 +295,10 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 // #GVariant. This version is especially useful for use in other languages, via
 // introspection.
 //
-// The only mandatory item in the @fields dictionary is the "MESSAGE" which must
+// The only mandatory item in the fields dictionary is the "MESSAGE" which must
 // contain the text shown to the user.
 //
-// The values in the @fields dictionary are likely to be of type String
+// The values in the fields dictionary are likely to be of type String
 // (VARIANT_TYPE_STRING). Array of bytes (VARIANT_TYPE_BYTESTRING) is also
 // supported. In this case the message is handled as binary and will be
 // forwarded to the log writer as such. The size of the array should not be
@@ -323,7 +322,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 
 // LogWriterDefault: format a structured log message and output it to the
 // default log destination for the platform. On Linux, this is typically the
-// systemd journal, falling back to `stdout` or `stderr` if running from the
+// systemd journal, falling back to stdout or stderr if running from the
 // terminal or if output is being redirected to a file.
 //
 // Support for other platform-specific logging mechanisms may be added in
@@ -334,8 +333,8 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // no other is set using g_log_set_writer_func().
 //
 // As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or `all`) is listed in the space-separated
-// `G_MESSAGES_DEBUG` environment variable.
+// messages unless their log domain (or all) is listed in the space-separated
+// G_MESSAGES_DEBUG environment variable.
 //
 // g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
 // determine which messages are fatal. When using a custom writer func instead
@@ -366,11 +365,11 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData cgo.Ha
 // LogWriterDefaultSetUseStderr: configure whether the built-in log functions
 // (g_log_default_handler() for the old-style API, and both
 // g_log_writer_default() and g_log_writer_standard_streams() for the structured
-// API) will output all log messages to `stderr`.
+// API) will output all log messages to stderr.
 //
 // By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG are
-// sent to `stdout`, and other log messages are sent to `stderr`. This is
-// problematic for applications that intend to reserve `stdout` for structured
+// sent to stdout, and other log messages are sent to stderr. This is
+// problematic for applications that intend to reserve stdout for structured
 // output such as JSON or XML.
 //
 // This function sets global state. It is not thread-aware, and should be called
@@ -391,8 +390,8 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 // level.
 //
 // As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or `all`) is listed in the space-separated
-// `G_MESSAGES_DEBUG` environment variable.
+// messages unless their log domain (or all) is listed in the space-separated
+// G_MESSAGES_DEBUG environment variable.
 //
 // This can be used when implementing log writers with the same filtering
 // behaviour as the default, but a different destination or output format:
@@ -425,8 +424,8 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 // LogWriterFormatFields: format a structured log message as a string suitable
 // for outputting to the terminal (or elsewhere). This will include the values
-// of all fields it knows how to interpret, which includes `MESSAGE` and
-// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
+// of all fields it knows how to interpret, which includes MESSAGE and
+// GLIB_DOMAIN (see the documentation for g_log_structured()). It does not
 // include values from unknown fields.
 //
 // The returned string does **not** have a trailing new-line character. It is
@@ -458,11 +457,11 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	return _utf8
 }
 
-// LogWriterIsJournald: check whether the given @output_fd file descriptor is a
+// LogWriterIsJournald: check whether the given output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
-// `stdout` or `stderr`).
+// stdout or stderr).
 //
-// Invalid file descriptors are accepted and return false, which allows for the
+// Invalid file descriptors are accepted and return FALSE, which allows for the
 // following construct without needing any additional error handling:
 //
 //    is_journald = g_log_writer_is_journald (fileno (stderr));
@@ -516,11 +515,11 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData cgo.H
 }
 
 // LogWriterStandardStreams: format a structured log message and print it to
-// either `stdout` or `stderr`, depending on its log level. G_LOG_LEVEL_INFO and
-// G_LOG_LEVEL_DEBUG messages are sent to `stdout`, or to `stderr` if requested
-// by g_log_writer_default_set_use_stderr(); all other log levels are sent to
-// `stderr`. Only fields which are understood by this function are included in
-// the formatted string which is printed.
+// either stdout or stderr, depending on its log level. G_LOG_LEVEL_INFO and
+// G_LOG_LEVEL_DEBUG messages are sent to stdout, or to stderr if requested by
+// g_log_writer_default_set_use_stderr(); all other log levels are sent to
+// stderr. Only fields which are understood by this function are included in the
+// formatted string which is printed.
 //
 // If the output stream supports ANSI color escape sequences, they will be used
 // in the output.
@@ -551,7 +550,7 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 	return _logWriterOutput
 }
 
-// LogWriterSupportsColor: check whether the given @output_fd file descriptor
+// LogWriterSupportsColor: check whether the given output_fd file descriptor
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
 func LogWriterSupportsColor(outputFd int) bool {
@@ -576,7 +575,7 @@ func LogWriterSupportsColor(outputFd int) bool {
 //
 // Log fields may contain arbitrary values, including binary with embedded nul
 // bytes. If the field contains a string, the string must be UTF-8 encoded and
-// have a trailing nul byte. Otherwise, @length must be set to a non-negative
+// have a trailing nul byte. Otherwise, length must be set to a non-negative
 // value.
 type LogField struct {
 	native C.GLogField

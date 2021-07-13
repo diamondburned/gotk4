@@ -73,10 +73,10 @@ func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
 	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PixbufError: error code in the `GDK_PIXBUF_ERROR` domain.
+// PixbufError: error code in the GDK_PIXBUF_ERROR domain.
 //
 // Many gdk-pixbuf operations can cause errors in this domain, or in the
-// `G_FILE_ERROR` domain.
+// G_FILE_ERROR domain.
 type PixbufError int
 
 const (
@@ -101,15 +101,14 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PixbufSaveFunc: save functions used by
-// [method@GdkPixbuf.Pixbuf.save_to_callback].
+// PixbufSaveFunc: save functions used by gdkpixbuf.Pixbuf.SaveToCallback().
 //
 // This function is called once for each block of bytes that is "written" by
-// `gdk_pixbuf_save_to_callback()`.
+// gdk_pixbuf_save_to_callback().
 //
-// If successful it should return `TRUE`; if an error occurs it should set
-// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
-// will fail with the same error.
+// If successful it should return TRUE; if an error occurs it should set error
+// and return FALSE, in which case gdk_pixbuf_save_to_callback() will fail with
+// the same error.
 type PixbufSaveFunc func(buf []byte, data cgo.Handle) (err error, ok bool)
 
 //export gotk4_PixbufSaveFunc
@@ -142,7 +141,7 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 // those values would have.
 //
 // This function is useful for front-ends and backends that want to check image
-// values without needing to create a `GdkPixbuf`.
+// values without needing to create a GdkPixbuf.
 func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) int {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out

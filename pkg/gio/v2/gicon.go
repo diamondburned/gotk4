@@ -59,8 +59,8 @@ type Iconer interface {
 	Equal(icon2 Iconer) bool
 	// Serialize serializes a #GIcon into a #GVariant.
 	Serialize() *glib.Variant
-	// String generates a textual representation of @icon that can be used for
-	// serialization such as when passing @icon to a different process or saving
+	// String generates a textual representation of icon that can be used for
+	// serialization such as when passing icon to a different process or saving
 	// it to persistent storage.
 	String() string
 }
@@ -155,21 +155,21 @@ func (icon *Icon) Serialize() *glib.Variant {
 	return _variant
 }
 
-// String generates a textual representation of @icon that can be used for
-// serialization such as when passing @icon to a different process or saving it
-// to persistent storage. Use g_icon_new_for_string() to get @icon back from the
+// String generates a textual representation of icon that can be used for
+// serialization such as when passing icon to a different process or saving it
+// to persistent storage. Use g_icon_new_for_string() to get icon back from the
 // returned string.
 //
 // The encoding of the returned string is proprietary to #GIcon except in the
 // following two cases
 //
-// - If @icon is a Icon, the returned string is a native path (such as
-// `/path/to/my icon.png`) without escaping if the #GFile for @icon is a native
+// - If icon is a Icon, the returned string is a native path (such as
+// /path/to/my icon.png) without escaping if the #GFile for icon is a native
 // file. If the file is not native, the returned string is the result of
-// g_file_get_uri() (such as `sftp://path/to/my20icon.png`).
+// g_file_get_uri() (such as sftp://path/to/my20icon.png).
 //
-// - If @icon is a Icon with exactly one name and no fallbacks, the encoding is
-// simply the name (such as `network-server`).
+// - If icon is a Icon with exactly one name and no fallbacks, the encoding is
+// simply the name (such as network-server).
 func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
@@ -219,8 +219,8 @@ func IconHash(icon cgo.Handle) uint {
 	return _guint
 }
 
-// IconNewForString: generate a #GIcon instance from @str. This function can
-// fail if @str is not valid - see g_icon_to_string() for discussion.
+// IconNewForString: generate a #GIcon instance from str. This function can fail
+// if str is not valid - see g_icon_to_string() for discussion.
 //
 // If your application or library provides one or more #GIcon implementations
 // you need to ensure that each #GType is registered with the type system prior

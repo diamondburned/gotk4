@@ -152,7 +152,7 @@ func (tree *Tree) Nnodes() int {
 	return _gint
 }
 
-// Ref increments the reference count of @tree by one.
+// Ref increments the reference count of tree by one.
 //
 // It is safe to call this function from any thread.
 func (tree *Tree) ref() *Tree {
@@ -239,9 +239,9 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	return _ok
 }
 
-// Unref decrements the reference count of @tree by one. If the reference count
+// Unref decrements the reference count of tree by one. If the reference count
 // drops to 0, all keys and values will be destroyed (if destroy functions were
-// specified) and all memory allocated by @tree will be released.
+// specified) and all memory allocated by tree will be released.
 //
 // It is safe to call this function from any thread.
 func (tree *Tree) unref() {

@@ -39,7 +39,7 @@ type MenuShellOverrider interface {
 	Deactivate()
 	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
-	// indicated by @position.
+	// indicated by position.
 	Insert(child Widgeter, position int)
 	MoveCurrent(direction MenuDirectionType)
 	MoveSelected(distance int) bool
@@ -53,7 +53,7 @@ type MenuSheller interface {
 	// ActivateItem activates the menu item within the menu shell.
 	ActivateItem(menuItem Widgeter, forceDeactivate bool)
 	// Append adds a new MenuItem to the end of the menu shell's item list.
-	Append(child MenuItemer)
+	Append(child *MenuItem)
 	// BindModel establishes a binding between a MenuShell and a Model.
 	BindModel(model gio.MenuModeler, actionNamespace string, withSeparators bool)
 	// Cancel cancels the selection within the menu shell.
@@ -67,11 +67,11 @@ type MenuSheller interface {
 	ParentShell() *Widget
 	// SelectedItem gets the currently selected item.
 	SelectedItem() *Widget
-	// TakeFocus returns true if the menu shell will take the keyboard focus on
+	// TakeFocus returns TRUE if the menu shell will take the keyboard focus on
 	// popup.
 	TakeFocus() bool
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
-	// indicated by @position.
+	// indicated by position.
 	Insert(child Widgeter, position int)
 	// Prepend adds a new MenuItem to the beginning of the menu shell's item
 	// list.
@@ -81,7 +81,7 @@ type MenuSheller interface {
 	SelectFirst(searchSensitive bool)
 	// SelectItem selects the menu item from the menu shell.
 	SelectItem(menuItem Widgeter)
-	// SetTakeFocus: if @take_focus is true (the default) the menu shell will
+	// SetTakeFocus: if take_focus is TRUE (the default) the menu shell will
 	// take the keyboard focus so that it will receive all keyboard events which
 	// is needed to enable keyboard navigation in menus.
 	SetTakeFocus(takeFocus bool)
@@ -160,31 +160,31 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgeter, forceDeactivate bool
 }
 
 // Append adds a new MenuItem to the end of the menu shell's item list.
-func (menuShell *MenuShell) Append(child MenuItemer) {
+func (menuShell *MenuShell) Append(child *MenuItem) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(menuShell.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_menu_shell_append(_arg0, _arg1)
 }
 
 // BindModel establishes a binding between a MenuShell and a Model.
 //
-// The contents of @shell are removed and then refilled with menu items
-// according to @model. When @model changes, @shell is updated. Calling this
-// function twice on @shell with different @model will cause the first binding
-// to be replaced with a binding to the new model. If @model is nil then any
-// previous binding is undone and all children are removed.
+// The contents of shell are removed and then refilled with menu items according
+// to model. When model changes, shell is updated. Calling this function twice
+// on shell with different model will cause the first binding to be replaced
+// with a binding to the new model. If model is NULL then any previous binding
+// is undone and all children are removed.
 //
-// @with_separators determines if toplevel items (eg: sections) have separators
+// with_separators determines if toplevel items (eg: sections) have separators
 // inserted between them. This is typically desired for menus but doesn’t make
 // sense for menubars.
 //
-// If @action_namespace is non-nil then the effect is as if all actions
-// mentioned in the @model have their names prefixed with the namespace, plus a
-// dot. For example, if the action “quit” is mentioned and @action_namespace is
+// If action_namespace is non-NULL then the effect is as if all actions
+// mentioned in the model have their names prefixed with the namespace, plus a
+// dot. For example, if the action “quit” is mentioned and action_namespace is
 // “app” then the effective action name is “app.quit”.
 //
 // This function uses Actionable to define the action name and target values on
@@ -278,7 +278,7 @@ func (menuShell *MenuShell) SelectedItem() *Widget {
 	return _widget
 }
 
-// TakeFocus returns true if the menu shell will take the keyboard focus on
+// TakeFocus returns TRUE if the menu shell will take the keyboard focus on
 // popup.
 func (menuShell *MenuShell) TakeFocus() bool {
 	var _arg0 *C.GtkMenuShell // out
@@ -298,7 +298,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 }
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position
-// indicated by @position.
+// indicated by position.
 func (menuShell *MenuShell) Insert(child Widgeter, position int) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
@@ -347,26 +347,26 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgeter) {
 	C.gtk_menu_shell_select_item(_arg0, _arg1)
 }
 
-// SetTakeFocus: if @take_focus is true (the default) the menu shell will take
+// SetTakeFocus: if take_focus is TRUE (the default) the menu shell will take
 // the keyboard focus so that it will receive all keyboard events which is
 // needed to enable keyboard navigation in menus.
 //
-// Setting @take_focus to false is useful only for special applications like
+// Setting take_focus to FALSE is useful only for special applications like
 // virtual keyboard implementations which should not take keyboard focus.
 //
-// The @take_focus state of a menu or menu bar is automatically propagated to
+// The take_focus state of a menu or menu bar is automatically propagated to
 // submenus whenever a submenu is popped up, so you don’t have to worry about
 // recursively setting it for your entire menu hierarchy. Only when
-// programmatically picking a submenu and popping it up manually, the
-// @take_focus property of the submenu needs to be set explicitly.
+// programmatically picking a submenu and popping it up manually, the take_focus
+// property of the submenu needs to be set explicitly.
 //
-// Note that setting it to false has side-effects:
+// Note that setting it to FALSE has side-effects:
 //
 // If the focus is in some other app, it keeps the focus and keynav in the menu
 // doesn’t work. Consequently, keynav on the menu will only work if the focus is
 // on some toplevel owned by the onscreen keyboard.
 //
-// To avoid confusing the user, menus with @take_focus set to false should not
+// To avoid confusing the user, menus with take_focus set to FALSE should not
 // display mnemonics or accelerators, since it cannot be guaranteed that they
 // will work.
 //

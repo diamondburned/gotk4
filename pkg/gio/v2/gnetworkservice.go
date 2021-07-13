@@ -33,13 +33,13 @@ func init() {
 
 // NetworkServicer describes NetworkService's methods.
 type NetworkServicer interface {
-	// Domain gets the domain that @srv serves.
+	// Domain gets the domain that srv serves.
 	Domain() string
-	// Protocol gets @srv's protocol name (eg, "tcp").
+	// Protocol gets srv's protocol name (eg, "tcp").
 	Protocol() string
 	// Scheme gets the URI scheme used to resolve proxies.
 	Scheme() string
-	// Service gets @srv's service name (eg, "ldap").
+	// Service gets srv's service name (eg, "ldap").
 	Service() string
 	// SetScheme set's the URI scheme used to resolve proxies.
 	SetScheme(scheme string)
@@ -78,9 +78,9 @@ func marshalNetworkServicer(p uintptr) (interface{}, error) {
 	return wrapNetworkService(obj), nil
 }
 
-// NewNetworkService creates a new Service representing the given @service,
-// @protocol, and @domain. This will initially be unresolved; use the
-// Connectable interface to resolve it.
+// NewNetworkService creates a new Service representing the given service,
+// protocol, and domain. This will initially be unresolved; use the Connectable
+// interface to resolve it.
 func NewNetworkService(service string, protocol string, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -100,8 +100,8 @@ func NewNetworkService(service string, protocol string, domain string) *NetworkS
 	return _networkService
 }
 
-// Domain gets the domain that @srv serves. This might be either UTF-8 or
-// ASCII-encoded, depending on what @srv was created with.
+// Domain gets the domain that srv serves. This might be either UTF-8 or
+// ASCII-encoded, depending on what srv was created with.
 func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -117,7 +117,7 @@ func (srv *NetworkService) Domain() string {
 	return _utf8
 }
 
-// Protocol gets @srv's protocol name (eg, "tcp").
+// Protocol gets srv's protocol name (eg, "tcp").
 func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -150,7 +150,7 @@ func (srv *NetworkService) Scheme() string {
 	return _utf8
 }
 
-// Service gets @srv's service name (eg, "ldap").
+// Service gets srv's service name (eg, "ldap").
 func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in

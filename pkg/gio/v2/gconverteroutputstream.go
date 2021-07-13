@@ -33,7 +33,7 @@ func init() {
 
 // ConverterOutputStreamer describes ConverterOutputStream's methods.
 type ConverterOutputStreamer interface {
-	// Converter gets the #GConverter that is used by @converter_stream.
+	// Converter gets the #GConverter that is used by converter_stream.
 	Converter() *Converter
 }
 
@@ -74,7 +74,7 @@ func marshalConverterOutputStreamer(p uintptr) (interface{}, error) {
 }
 
 // NewConverterOutputStream creates a new converter output stream for the
-// @base_stream.
+// base_stream.
 func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
@@ -98,7 +98,7 @@ func (v *ConverterOutputStream) Native() uintptr {
 	return v.FilterOutputStream.OutputStream.Object.Native()
 }
 
-// Converter gets the #GConverter that is used by @converter_stream.
+// Converter gets the #GConverter that is used by converter_stream.
 func (converterStream *ConverterOutputStream) Converter() *Converter {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in

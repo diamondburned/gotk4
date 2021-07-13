@@ -60,23 +60,23 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 
 // RenderNoder describes RenderNode's methods.
 type RenderNoder interface {
-	// Draw the contents of @node to the given cairo context.
+	// Draw the contents of node to the given cairo context.
 	Draw(cr *cairo.Context)
-	// Bounds retrieves the boundaries of the @node.
+	// Bounds retrieves the boundaries of the node.
 	Bounds() graphene.Rect
-	// NodeType returns the type of the @node.
+	// NodeType returns the type of the node.
 	NodeType() RenderNodeType
-	// Ref acquires a reference on the given `GskRenderNode`.
+	// Ref acquires a reference on the given GskRenderNode.
 	ref() *RenderNode
-	// Unref releases a reference on the given `GskRenderNode`.
+	// Unref releases a reference on the given GskRenderNode.
 	unref()
 	// WriteToFile: this function is equivalent to calling
 	// gsk_render_node_serialize() followed by g_file_set_contents().
 	WriteToFile(filename string) error
 }
 
-// RenderNode: `GskRenderNode` is the basic block in a scene graph to be
-// rendered using `GskRenderer`.
+// RenderNode: GskRenderNode is the basic block in a scene graph to be rendered
+// using GskRenderer.
 //
 // Each node has a parent, except the top-level node; each node may have
 // children nodes.
@@ -85,9 +85,9 @@ type RenderNoder interface {
 // rectangle set when creating it.
 //
 // Render nodes are meant to be transient; once they have been associated to a
-// [class@Gsk.Renderer] it's safe to release any reference you have on them. All
-// [class@Gsk.RenderNode]s are immutable, you can only specify their properties
-// during construction.
+// gsk.Renderer it's safe to release any reference you have on them. All
+// gsk.RenderNodes are immutable, you can only specify their properties during
+// construction.
 type RenderNode struct {
 	*externglib.Object
 }
@@ -109,11 +109,11 @@ func marshalRenderNoder(p uintptr) (interface{}, error) {
 	return wrapRenderNode(obj), nil
 }
 
-// Draw the contents of @node to the given cairo context.
+// Draw the contents of node to the given cairo context.
 //
 // Typically, you'll use this function to implement fallback rendering of
-// `GskRenderNode`s on an intermediate Cairo context, instead of using the
-// drawing context associated to a `GdkSurface`'s rendering buffer.
+// GskRenderNodes on an intermediate Cairo context, instead of using the drawing
+// context associated to a GdkSurface's rendering buffer.
 //
 // For advanced nodes that cannot be supported using Cairo, in particular for
 // nodes doing 3D operations, this function may fail.
@@ -127,7 +127,7 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 	C.gsk_render_node_draw(_arg0, _arg1)
 }
 
-// Bounds retrieves the boundaries of the @node.
+// Bounds retrieves the boundaries of the node.
 //
 // The node will not draw outside of its boundaries.
 func (node *RenderNode) Bounds() graphene.Rect {
@@ -141,7 +141,7 @@ func (node *RenderNode) Bounds() graphene.Rect {
 	return _bounds
 }
 
-// NodeType returns the type of the @node.
+// NodeType returns the type of the node.
 func (node *RenderNode) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
@@ -157,7 +157,7 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	return _renderNodeType
 }
 
-// Ref acquires a reference on the given `GskRenderNode`.
+// Ref acquires a reference on the given GskRenderNode.
 func (node *RenderNode) ref() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -173,9 +173,9 @@ func (node *RenderNode) ref() *RenderNode {
 	return _renderNode
 }
 
-// Unref releases a reference on the given `GskRenderNode`.
+// Unref releases a reference on the given GskRenderNode.
 //
-// If the reference was the last, the resources associated to the @node are
+// If the reference was the last, the resources associated to the node are
 // freed.
 func (node *RenderNode) unref() {
 	var _arg0 *C.GskRenderNode // out

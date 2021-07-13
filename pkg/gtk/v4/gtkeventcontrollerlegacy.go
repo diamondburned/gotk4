@@ -26,7 +26,7 @@ type EventControllerLegacier interface {
 	privateEventControllerLegacy()
 }
 
-// EventControllerLegacy: `GtkEventControllerLegacy` is an event controller that
+// EventControllerLegacy: GtkEventControllerLegacy is an event controller that
 // provides raw access to the event stream.
 //
 // It should only be used as a last resort if none of the other event

@@ -48,9 +48,9 @@ type ApplicationOverrider interface {
 	AddPlatformData(builder *glib.VariantBuilder)
 	AfterEmit(platformData *glib.Variant)
 	BeforeEmit(platformData *glib.Variant)
-	CommandLine(commandLine ApplicationCommandLiner) int
-	DBusRegister(connection DBusConnectioner, objectPath string) error
-	DBusUnregister(connection DBusConnectioner, objectPath string)
+	CommandLine(commandLine *ApplicationCommandLine) int
+	DbusRegister(connection *DBusConnection, objectPath string) error
+	DbusUnregister(connection *DBusConnection, objectPath string)
 	HandleLocalOptions(options *glib.VariantDict) int
 	NameLost() bool
 	// Open opens the given files.
@@ -58,16 +58,16 @@ type ApplicationOverrider interface {
 	// In essence, this results in the #GApplication::open signal being emitted
 	// in the primary instance.
 	//
-	// @n_files must be greater than zero.
+	// n_files must be greater than zero.
 	//
-	// @hint is simply passed through to the ::open signal. It is intended to be
+	// hint is simply passed through to the ::open signal. It is intended to be
 	// used by applications that have multiple modes for opening files (eg:
 	// "view" vs "edit", etc). Unless you have a need for this functionality,
 	// you should use "".
 	//
 	// The application must be registered before calling this function and it
 	// must have the G_APPLICATION_HANDLES_OPEN flag set.
-	Open(files []*File, hint string)
+	Open(files []Filer, hint string)
 	QuitMainloop()
 	RunMainloop()
 	Shutdown()
@@ -78,25 +78,25 @@ type ApplicationOverrider interface {
 type Applicationer interface {
 	// Activate activates the application.
 	Activate()
-	// AddMainOption: add an option to be handled by @application.
+	// AddMainOption: add an option to be handled by application.
 	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
 	// AddMainOptionEntries adds main option entries to be handled by
-	// @application.
+	// application.
 	AddMainOptionEntries(entries []glib.OptionEntry)
-	// AddOptionGroup adds a Group to the commandline handling of @application.
+	// AddOptionGroup adds a Group to the commandline handling of application.
 	AddOptionGroup(group *glib.OptionGroup)
-	// BindBusyProperty marks @application as busy (see
-	// g_application_mark_busy()) while @property on @object is true.
-	BindBusyProperty(object gextras.Objector, property string)
-	// ApplicationID gets the unique identifier for @application.
+	// BindBusyProperty marks application as busy (see
+	// g_application_mark_busy()) while property on object is TRUE.
+	BindBusyProperty(object *externglib.Object, property string)
+	// ApplicationID gets the unique identifier for application.
 	ApplicationID() string
-	// DBusConnection gets the BusConnection being used by the application, or
-	// nil.
-	DBusConnection() *DBusConnection
-	// DBusObjectPath gets the D-Bus object path being used by the application,
-	// or nil.
-	DBusObjectPath() string
-	// Flags gets the flags for @application.
+	// DbusConnection gets the BusConnection being used by the application, or
+	// NULL.
+	DbusConnection() *DBusConnection
+	// DbusObjectPath gets the D-Bus object path being used by the application,
+	// or NULL.
+	DbusObjectPath() string
+	// Flags gets the flags for application.
 	Flags() ApplicationFlags
 	// InactivityTimeout gets the current inactivity timeout for the
 	// application.
@@ -104,59 +104,58 @@ type Applicationer interface {
 	// IsBusy gets the application's current busy state, as set through
 	// g_application_mark_busy() or g_application_bind_busy_property().
 	IsBusy() bool
-	// IsRegistered checks if @application is registered.
+	// IsRegistered checks if application is registered.
 	IsRegistered() bool
-	// IsRemote checks if @application is remote.
+	// IsRemote checks if application is remote.
 	IsRemote() bool
-	// ResourceBasePath gets the resource base path of @application.
+	// ResourceBasePath gets the resource base path of application.
 	ResourceBasePath() string
-	// Hold increases the use count of @application.
+	// Hold increases the use count of application.
 	Hold()
-	// MarkBusy increases the busy count of @application.
+	// MarkBusy increases the busy count of application.
 	MarkBusy()
 	// Open opens the given files.
-	Open(files []*File, hint string)
+	Open(files []Filer, hint string)
 	// Quit: immediately quits the application.
 	Quit()
 	// Register attempts registration of the application.
-	Register(cancellable Cancellabler) error
-	// Release: decrease the use count of @application.
+	Register(cancellable *Cancellable) error
+	// Release: decrease the use count of application.
 	Release()
 	// Run runs the application.
 	Run(argv []string) int
-	// SendNotification sends a notification on behalf of @application to the
+	// SendNotification sends a notification on behalf of application to the
 	// desktop shell.
-	SendNotification(id string, notification Notificationer)
+	SendNotification(id string, notification *Notification)
 	// SetActionGroup: this used to be how actions were associated with a
 	// #GApplication.
 	SetActionGroup(actionGroup ActionGrouper)
-	// SetApplicationID sets the unique identifier for @application.
+	// SetApplicationID sets the unique identifier for application.
 	SetApplicationID(applicationId string)
 	// SetDefault sets or unsets the default application for the process, as
 	// returned by g_application_get_default().
 	SetDefault()
-	// SetFlags sets the flags for @application.
+	// SetFlags sets the flags for application.
 	SetFlags(flags ApplicationFlags)
 	// SetInactivityTimeout sets the current inactivity timeout for the
 	// application.
 	SetInactivityTimeout(inactivityTimeout uint)
-	// SetOptionContextDescription adds a description to the @application option
+	// SetOptionContextDescription adds a description to the application option
 	// context.
 	SetOptionContextDescription(description string)
 	// SetOptionContextParameterString sets the parameter string to be used by
-	// the commandline handling of @application.
+	// the commandline handling of application.
 	SetOptionContextParameterString(parameterString string)
-	// SetOptionContextSummary adds a summary to the @application option
-	// context.
+	// SetOptionContextSummary adds a summary to the application option context.
 	SetOptionContextSummary(summary string)
 	// SetResourceBasePath sets (or unsets) the base resource path of
-	// @application.
+	// application.
 	SetResourceBasePath(resourcePath string)
-	// UnbindBusyProperty destroys a binding between @property and the busy
-	// state of @application that was previously created with
+	// UnbindBusyProperty destroys a binding between property and the busy state
+	// of application that was previously created with
 	// g_application_bind_busy_property().
-	UnbindBusyProperty(object gextras.Objector, property string)
-	// UnmarkBusy decreases the busy count of @application.
+	UnbindBusyProperty(object *externglib.Object, property string)
+	// UnmarkBusy decreases the busy count of application.
 	UnmarkBusy()
 	// WithdrawNotification withdraws a notification that was sent with
 	// g_application_send_notification().
@@ -199,9 +198,9 @@ type Applicationer interface {
 // If used, the expected form of an application identifier is the same as that
 // of of a D-Bus well-known bus name
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
-// Examples include: `com.example.MyApp`,
-// `org.example.internal_apps.Calculator`, `org._7_zip.Archiver`. For details on
-// valid application identifiers, see g_application_id_is_valid().
+// Examples include: com.example.MyApp, org.example.internal_apps.Calculator,
+// org._7_zip.Archiver. For details on valid application identifiers, see
+// g_application_id_is_valid().
 //
 // On Linux, the application identifier is claimed as a well-known bus name on
 // the user's session bus. This means that the uniqueness of your application is
@@ -240,7 +239,7 @@ type Applicationer interface {
 // Regardless of which of these entry points is used to start the application,
 // GApplication passes some ‘platform data’ from the launching instance to the
 // primary instance, in the form of a #GVariant dictionary mapping strings to
-// variants. To use platform data, override the @before_emit or @after_emit
+// variants. To use platform data, override the before_emit or after_emit
 // virtual functions in your #GApplication subclass. When dealing with
 // CommandLine objects, the platform data is directly available via
 // g_application_command_line_get_cwd(),
@@ -253,7 +252,7 @@ type Applicationer interface {
 // values) of the calling process (key "environ"). The environment is only added
 // to the platform data if the G_APPLICATION_SEND_ENVIRONMENT flag is set.
 // #GApplication subclasses can add their own platform data by overriding the
-// @add_platform_data virtual function. For instance, Application adds startup
+// add_platform_data virtual function. For instance, Application adds startup
 // notification data in this way.
 //
 // To parse commandline arguments you may handle the #GApplication::command-line
@@ -303,7 +302,7 @@ func marshalApplicationer(p uintptr) (interface{}, error) {
 
 // NewApplication creates a new #GApplication instance.
 //
-// If non-nil, the application id must be valid. See
+// If non-NULL, the application id must be valid. See
 // g_application_id_is_valid().
 //
 // If no application ID is given then some features of #GApplication (most
@@ -339,11 +338,11 @@ func (application *Application) Activate() {
 	C.g_application_activate(_arg0)
 }
 
-// AddMainOption: add an option to be handled by @application.
+// AddMainOption: add an option to be handled by application.
 //
 // Calling this function is the equivalent of calling
 // g_application_add_main_option_entries() with a single Entry that has its
-// arg_data member set to nil.
+// arg_data member set to NULL.
 //
 // The parsed arguments will be packed into a Dict which is passed to
 // #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
@@ -371,16 +370,16 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 	C.g_application_add_main_option(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// AddMainOptionEntries adds main option entries to be handled by @application.
+// AddMainOptionEntries adds main option entries to be handled by application.
 //
 // This function is comparable to g_option_context_add_main_entries().
 //
 // After the commandline arguments are parsed, the
 // #GApplication::handle-local-options signal will be emitted. At this point,
-// the application can inspect the values pointed to by @arg_data in the given
+// the application can inspect the values pointed to by arg_data in the given
 // Entrys.
 //
-// Unlike Context, #GApplication supports giving a nil @arg_data for a
+// Unlike Context, #GApplication supports giving a NULL arg_data for a
 // non-callback Entry. This results in the argument in question being packed
 // into a Dict which is also passed to #GApplication::handle-local-options,
 // where it can be inspected and modified. If G_APPLICATION_HANDLES_COMMAND_LINE
@@ -394,7 +393,7 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // In general, it is recommended that all commandline arguments are parsed
 // locally. The options dictionary should then be used to transmit the result of
 // the parsing to the primary instance, where g_variant_dict_lookup() can be
-// used. For local options, it is possible to either use @arg_data in the usual
+// used. For local options, it is possible to either use arg_data in the usual
 // way, or to consult (and potentially remove) the option from the options
 // dictionary.
 //
@@ -407,18 +406,30 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // G_APPLICATION_HANDLES_COMMAND_LINE is unset.
 //
 // If #GApplication::handle-local-options needs to see the list of filenames,
-// then the use of G_OPTION_REMAINING is recommended. If @arg_data is nil then
+// then the use of G_OPTION_REMAINING is recommended. If arg_data is NULL then
 // G_OPTION_REMAINING can be used as a key into the options dictionary. If you
 // do use G_OPTION_REMAINING then you need to handle these arguments for
 // yourself because once they are consumed, they will no longer be visible to
 // the default handling (which treats them as filenames to be opened).
 //
 // It is important to use the proper GVariant format when retrieving the options
-// with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` - for
-// G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
-// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
-// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use `^a&s`
-// - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
+// with g_variant_dict_lookup():
+//
+// - for G_OPTION_ARG_NONE, use b
+//
+// - for G_OPTION_ARG_STRING, use &s
+//
+// - for G_OPTION_ARG_INT, use i
+//
+// - for G_OPTION_ARG_INT64, use x
+//
+// - for G_OPTION_ARG_DOUBLE, use d
+//
+// - for G_OPTION_ARG_FILENAME, use ^&ay
+//
+// - for G_OPTION_ARG_STRING_ARRAY, use ^a&s
+//
+// - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry
@@ -427,18 +438,18 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 	{
 		var zero glib.OptionEntry
 		entries = append(entries, zero)
+		_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 	}
-	_arg1 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
 
 	C.g_application_add_main_option_entries(_arg0, _arg1)
 }
 
-// AddOptionGroup adds a Group to the commandline handling of @application.
+// AddOptionGroup adds a Group to the commandline handling of application.
 //
 // This function is comparable to g_option_context_add_group().
 //
 // Unlike g_application_add_main_option_entries(), this function does not deal
-// with nil @arg_data and never transmits options to the primary instance.
+// with NULL arg_data and never transmits options to the primary instance.
 //
 // The reason for that is because, by the time the options arrive at the primary
 // instance, it is typically too late to do anything with them. Taking the GTK
@@ -449,8 +460,8 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 //
 // This means that the options from Group are only really usable in the case
 // that the instance of the application being run is the first instance. Passing
-// options like `--display=` or `--gdk-debug=` on future runs will have no
-// effect on the existing primary instance.
+// options like --display= or --gdk-debug= on future runs will have no effect on
+// the existing primary instance.
 //
 // Calling this function will cause the options in the supplied option group to
 // be parsed, but it does not cause you to be "opted in" to the new
@@ -466,12 +477,12 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	C.g_application_add_option_group(_arg0, _arg1)
 }
 
-// BindBusyProperty marks @application as busy (see g_application_mark_busy())
-// while @property on @object is true.
+// BindBusyProperty marks application as busy (see g_application_mark_busy())
+// while property on object is TRUE.
 //
-// The binding holds a reference to @application while it is active, but not to
-// @object. Instead, the binding is destroyed when @object is finalized.
-func (application *Application) BindBusyProperty(object gextras.Objector, property string) {
+// The binding holds a reference to application while it is active, but not to
+// object. Instead, the binding is destroyed when object is finalized.
+func (application *Application) BindBusyProperty(object *externglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.gchar        // out
@@ -483,7 +494,7 @@ func (application *Application) BindBusyProperty(object gextras.Objector, proper
 	C.g_application_bind_busy_property(_arg0, _arg1, _arg2)
 }
 
-// ApplicationID gets the unique identifier for @application.
+// ApplicationID gets the unique identifier for application.
 func (application *Application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -499,19 +510,19 @@ func (application *Application) ApplicationID() string {
 	return _utf8
 }
 
-// DBusConnection gets the BusConnection being used by the application, or nil.
+// DbusConnection gets the BusConnection being used by the application, or NULL.
 //
 // If #GApplication is using its D-Bus backend then this function will return
 // the BusConnection being used for uniqueness and communication with the
 // desktop environment and other instances of the application.
 //
-// If #GApplication is not using D-Bus then this function will return nil. This
+// If #GApplication is not using D-Bus then this function will return NULL. This
 // includes the situation where the D-Bus backend would normally be in use but
 // we were unable to connect to the bus.
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
-func (application *Application) DBusConnection() *DBusConnection {
+func (application *Application) DbusConnection() *DBusConnection {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
 
@@ -526,8 +537,8 @@ func (application *Application) DBusConnection() *DBusConnection {
 	return _dBusConnection
 }
 
-// DBusObjectPath gets the D-Bus object path being used by the application, or
-// nil.
+// DbusObjectPath gets the D-Bus object path being used by the application, or
+// NULL.
 //
 // If #GApplication is using its D-Bus backend then this function will return
 // the D-Bus object path that #GApplication is using. If the application is the
@@ -535,13 +546,13 @@ func (application *Application) DBusConnection() *DBusConnection {
 // application is not the primary instance then the result of this function is
 // undefined.
 //
-// If #GApplication is not using D-Bus then this function will return nil. This
+// If #GApplication is not using D-Bus then this function will return NULL. This
 // includes the situation where the D-Bus backend would normally be in use but
 // we were unable to connect to the bus.
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
-func (application *Application) DBusObjectPath() string {
+func (application *Application) DbusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
 
@@ -556,7 +567,7 @@ func (application *Application) DBusObjectPath() string {
 	return _utf8
 }
 
-// Flags gets the flags for @application.
+// Flags gets the flags for application.
 //
 // See Flags.
 func (application *Application) Flags() ApplicationFlags {
@@ -612,7 +623,7 @@ func (application *Application) IsBusy() bool {
 	return _ok
 }
 
-// IsRegistered checks if @application is registered.
+// IsRegistered checks if application is registered.
 //
 // An application is registered if g_application_register() has been
 // successfully called.
@@ -633,11 +644,11 @@ func (application *Application) IsRegistered() bool {
 	return _ok
 }
 
-// IsRemote checks if @application is remote.
+// IsRemote checks if application is remote.
 //
-// If @application is remote then it means that another instance of application
+// If application is remote then it means that another instance of application
 // already exists (the 'primary' instance). Calls to perform actions on
-// @application will result in the actions being performed by the primary
+// application will result in the actions being performed by the primary
 // instance.
 //
 // The value of this property cannot be accessed before g_application_register()
@@ -659,7 +670,7 @@ func (application *Application) IsRemote() bool {
 	return _ok
 }
 
-// ResourceBasePath gets the resource base path of @application.
+// ResourceBasePath gets the resource base path of application.
 //
 // See g_application_set_resource_base_path() for more information.
 func (application *Application) ResourceBasePath() string {
@@ -677,7 +688,7 @@ func (application *Application) ResourceBasePath() string {
 	return _utf8
 }
 
-// Hold increases the use count of @application.
+// Hold increases the use count of application.
 //
 // Use this function to indicate that the application has a reason to continue
 // to run. For example, g_application_hold() is called by GTK+ when a toplevel
@@ -692,7 +703,7 @@ func (application *Application) Hold() {
 	C.g_application_hold(_arg0)
 }
 
-// MarkBusy increases the busy count of @application.
+// MarkBusy increases the busy count of application.
 //
 // Use this function to indicate that the application is busy, for instance
 // while a long running operation is pending.
@@ -714,16 +725,16 @@ func (application *Application) MarkBusy() {
 // In essence, this results in the #GApplication::open signal being emitted in
 // the primary instance.
 //
-// @n_files must be greater than zero.
+// n_files must be greater than zero.
 //
-// @hint is simply passed through to the ::open signal. It is intended to be
-// used by applications that have multiple modes for opening files (eg: "view"
-// vs "edit", etc). Unless you have a need for this functionality, you should
-// use "".
+// hint is simply passed through to the ::open signal. It is intended to be used
+// by applications that have multiple modes for opening files (eg: "view" vs
+// "edit", etc). Unless you have a need for this functionality, you should use
+// "".
 //
 // The application must be registered before calling this function and it must
 // have the G_APPLICATION_HANDLES_OPEN flag set.
-func (application *Application) Open(files []*File, hint string) {
+func (application *Application) Open(files []Filer, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile
 	var _arg2 C.gint
@@ -735,7 +746,7 @@ func (application *Application) Open(files []*File, hint string) {
 	{
 		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
 		for i := range files {
-			out[i] = (*C.GFile)(unsafe.Pointer(files[i].Native()))
+			out[i] = (*C.GFile)(unsafe.Pointer((files[i]).(gextras.Nativer).Native()))
 		}
 	}
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
@@ -778,26 +789,26 @@ func (application *Application) Quit() {
 // ensure that any object paths that you wish to register are registered before
 // calling this function.
 //
-// If the application has already been registered then true is returned with no
+// If the application has already been registered then TRUE is returned with no
 // work performed.
 //
 // The #GApplication::startup signal is emitted if registration succeeds and
-// @application is the primary instance (including the non-unique case).
+// application is the primary instance (including the non-unique case).
 //
-// In the event of an error (such as @cancellable being cancelled, or a failure
-// to connect to the session bus), false is returned and @error is set
+// In the event of an error (such as cancellable being cancelled, or a failure
+// to connect to the session bus), FALSE is returned and error is set
 // appropriately.
 //
 // Note: the return value of this function is not an indicator that this
 // instance is or is not the primary instance of the application. See
 // g_application_get_is_remote() for that.
-func (application *Application) Register(cancellable Cancellabler) error {
+func (application *Application) Register(cancellable *Cancellable) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
 
@@ -808,7 +819,7 @@ func (application *Application) Register(cancellable Cancellabler) error {
 	return _goerr
 }
 
-// Release: decrease the use count of @application.
+// Release: decrease the use count of application.
 //
 // When the use count reaches zero, the application will stop running.
 //
@@ -826,10 +837,10 @@ func (application *Application) Release() {
 //
 // This function is intended to be run from main() and its return value is
 // intended to be returned by main(). Although you are expected to pass the
-// @argc, @argv parameters from main() to this function, it is possible to pass
-// nil if @argv is not available or commandline handling is not required. Note
-// that on Windows, @argc and @argv are ignored, and g_win32_get_command_line()
-// is called internally (for proper support of Unicode commandline arguments).
+// argc, argv parameters from main() to this function, it is possible to pass
+// NULL if argv is not available or commandline handling is not required. Note
+// that on Windows, argc and argv are ignored, and g_win32_get_command_line() is
+// called internally (for proper support of Unicode commandline arguments).
 //
 // #GApplication will attempt to parse the commandline arguments. You can add
 // commandline flags to the list of recognised options by way of
@@ -838,7 +849,7 @@ func (application *Application) Release() {
 // application can inspect the values of its Entrys.
 //
 // #GApplication::handle-local-options is a good place to handle options such as
-// `--version`, where an immediate reply from the local process is desired
+// --version, where an immediate reply from the local process is desired
 // (instead of communicating with an already-running instance). A
 // #GApplication::handle-local-options handler can stop further processing by
 // returning a non-negative value, which then becomes the exit status of the
@@ -856,7 +867,7 @@ func (application *Application) Release() {
 // If you are interested in doing more complicated local handling of the
 // commandline then you should implement your own #GApplication subclass and
 // override local_command_line(). In this case, you most likely want to return
-// true from your local_command_line() implementation to suppress the default
+// TRUE from your local_command_line() implementation to suppress the default
 // handling. See
 // [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
 // example.
@@ -917,38 +928,38 @@ func (application *Application) Run(argv []string) int {
 	return _gint
 }
 
-// SendNotification sends a notification on behalf of @application to the
-// desktop shell. There is no guarantee that the notification is displayed
-// immediately, or even at all.
+// SendNotification sends a notification on behalf of application to the desktop
+// shell. There is no guarantee that the notification is displayed immediately,
+// or even at all.
 //
 // Notifications may persist after the application exits. It will be
 // D-Bus-activated when the notification or one of its actions is activated.
 //
-// Modifying @notification after this call has no effect. However, the object
-// can be reused for a later call to this function.
+// Modifying notification after this call has no effect. However, the object can
+// be reused for a later call to this function.
 //
-// @id may be any string that uniquely identifies the event for the application.
+// id may be any string that uniquely identifies the event for the application.
 // It does not need to be in any special format. For example, "new-message"
 // might be appropriate for a notification about new messages.
 //
-// If a previous notification was sent with the same @id, it will be replaced
-// with @notification and shown again as if it was a new notification. This
-// works even for notifications sent from a previous execution of the
-// application, as long as @id is the same string.
+// If a previous notification was sent with the same id, it will be replaced
+// with notification and shown again as if it was a new notification. This works
+// even for notifications sent from a previous execution of the application, as
+// long as id is the same string.
 //
-// @id may be nil, but it is impossible to replace or withdraw notifications
+// id may be NULL, but it is impossible to replace or withdraw notifications
 // without an id.
 //
-// If @notification is no longer relevant, it can be withdrawn with
+// If notification is no longer relevant, it can be withdrawn with
 // g_application_withdraw_notification().
-func (application *Application) SendNotification(id string, notification Notificationer) {
+func (application *Application) SendNotification(id string, notification *Notification) {
 	var _arg0 *C.GApplication  // out
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GNotification // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
-	_arg2 = (*C.GNotification)(unsafe.Pointer((notification).(gextras.Nativer).Native()))
+	_arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
 	C.g_application_send_notification(_arg0, _arg1, _arg2)
 }
@@ -957,7 +968,7 @@ func (application *Application) SendNotification(id string, notification Notific
 // #GApplication. Now there is Map for that.
 //
 // Deprecated: Use the Map interface instead. Never ever mix use of this API
-// with use of Map on the same @application or things will go very badly wrong.
+// with use of Map on the same application or things will go very badly wrong.
 // This function is known to introduce buggy behaviour (ie: signals not emitted
 // on changes to the action group), so you should really use Map instead.
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
@@ -970,12 +981,12 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	C.g_application_set_action_group(_arg0, _arg1)
 }
 
-// SetApplicationID sets the unique identifier for @application.
+// SetApplicationID sets the unique identifier for application.
 //
-// The application id can only be modified if @application has not yet been
+// The application id can only be modified if application has not yet been
 // registered.
 //
-// If non-nil, the application id must be valid. See
+// If non-NULL, the application id must be valid. See
 // g_application_id_is_valid().
 func (application *Application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
@@ -990,9 +1001,8 @@ func (application *Application) SetApplicationID(applicationId string) {
 // SetDefault sets or unsets the default application for the process, as
 // returned by g_application_get_default().
 //
-// This function does not take its own reference on @application. If
-// @application is destroyed then the default application will revert back to
-// nil.
+// This function does not take its own reference on application. If application
+// is destroyed then the default application will revert back to NULL.
 func (application *Application) SetDefault() {
 	var _arg0 *C.GApplication // out
 
@@ -1001,9 +1011,9 @@ func (application *Application) SetDefault() {
 	C.g_application_set_default(_arg0)
 }
 
-// SetFlags sets the flags for @application.
+// SetFlags sets the flags for application.
 //
-// The flags can only be modified if @application has not yet been registered.
+// The flags can only be modified if application has not yet been registered.
 //
 // See Flags.
 func (application *Application) SetFlags(flags ApplicationFlags) {
@@ -1034,7 +1044,7 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	C.g_application_set_inactivity_timeout(_arg0, _arg1)
 }
 
-// SetOptionContextDescription adds a description to the @application option
+// SetOptionContextDescription adds a description to the application option
 // context.
 //
 // See g_option_context_set_description() for more information.
@@ -1049,12 +1059,12 @@ func (application *Application) SetOptionContextDescription(description string) 
 }
 
 // SetOptionContextParameterString sets the parameter string to be used by the
-// commandline handling of @application.
+// commandline handling of application.
 //
 // This function registers the argument to be passed to g_option_context_new()
-// when the internal Context of @application is created.
+// when the internal Context of application is created.
 //
-// See g_option_context_new() for more information about @parameter_string.
+// See g_option_context_new() for more information about parameter_string.
 func (application *Application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -1065,7 +1075,7 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 	C.g_application_set_option_context_parameter_string(_arg0, _arg1)
 }
 
-// SetOptionContextSummary adds a summary to the @application option context.
+// SetOptionContextSummary adds a summary to the application option context.
 //
 // See g_option_context_set_summary() for more information.
 func (application *Application) SetOptionContextSummary(summary string) {
@@ -1078,7 +1088,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 	C.g_application_set_option_context_summary(_arg0, _arg1)
 }
 
-// SetResourceBasePath sets (or unsets) the base resource path of @application.
+// SetResourceBasePath sets (or unsets) the base resource path of application.
 //
 // The path is used to automatically load various [application
 // resources][gresource] such as menu layouts and action descriptions. The
@@ -1099,7 +1109,7 @@ func (application *Application) SetOptionContextSummary(summary string) {
 // application.
 //
 // You can disable automatic resource loading functionality by setting the path
-// to nil.
+// to NULL.
 //
 // Changing the resource base path once the application is running is not
 // recommended. The point at which the resource path is consulted for forming
@@ -1119,10 +1129,10 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 	C.g_application_set_resource_base_path(_arg0, _arg1)
 }
 
-// UnbindBusyProperty destroys a binding between @property and the busy state of
-// @application that was previously created with
+// UnbindBusyProperty destroys a binding between property and the busy state of
+// application that was previously created with
 // g_application_bind_busy_property().
-func (application *Application) UnbindBusyProperty(object gextras.Objector, property string) {
+func (application *Application) UnbindBusyProperty(object *externglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.gchar        // out
@@ -1134,7 +1144,7 @@ func (application *Application) UnbindBusyProperty(object gextras.Objector, prop
 	C.g_application_unbind_busy_property(_arg0, _arg1, _arg2)
 }
 
-// UnmarkBusy decreases the busy count of @application.
+// UnmarkBusy decreases the busy count of application.
 //
 // When the busy count reaches zero, the new state will be propagated to other
 // processes.
@@ -1152,12 +1162,11 @@ func (application *Application) UnmarkBusy() {
 // WithdrawNotification withdraws a notification that was sent with
 // g_application_send_notification().
 //
-// This call does nothing if a notification with @id doesn't exist or the
+// This call does nothing if a notification with id doesn't exist or the
 // notification was never sent.
 //
 // This function works even for notifications sent in previous executions of
-// this application, as long @id is the same as it was for the sent
-// notification.
+// this application, as long id is the same as it was for the sent notification.
 //
 // Note that notifications are dismissed when the user clicks on one of the
 // buttons in a notification or triggers its default action, so there is no need
@@ -1179,7 +1188,7 @@ func (application *Application) WithdrawNotification(id string) {
 // default when it is created. You can exercise more control over this by using
 // g_application_set_default().
 //
-// If there is no default application then nil is returned.
+// If there is no default application then NULL is returned.
 func ApplicationGetDefault() *Application {
 	var _cret *C.GApplication // in
 
@@ -1192,7 +1201,7 @@ func ApplicationGetDefault() *Application {
 	return _application
 }
 
-// ApplicationIDIsValid checks if @application_id is a valid application
+// ApplicationIDIsValid checks if application_id is a valid application
 // identifier.
 //
 // A valid ID is required for calls to g_application_new() and
@@ -1204,24 +1213,24 @@ func ApplicationGetDefault() *Application {
 // here:
 //
 // - Application identifiers are composed of 1 or more elements separated by a
-// period (`.`) character. All elements must contain at least one character.
+// period (.) character. All elements must contain at least one character.
 //
-// - Each element must only contain the ASCII characters `[A-Z][a-z][0-9]_-`,
-// with `-` discouraged in new application identifiers. Each element must not
-// begin with a digit.
+// - Each element must only contain the ASCII characters [A-Z][a-z][0-9]_-, with
+// - discouraged in new application identifiers. Each element must not begin
+// with a digit.
 //
-// - Application identifiers must contain at least one `.` (period) character
-// (and thus at least two elements).
+// - Application identifiers must contain at least one . (period) character (and
+// thus at least two elements).
 //
-// - Application identifiers must not begin with a `.` (period) character.
+// - Application identifiers must not begin with a . (period) character.
 //
 // - Application identifiers must not exceed 255 characters.
 //
-// Note that the hyphen (`-`) character is allowed in application identifiers,
-// but is problematic or not allowed in various specifications and APIs that
-// refer to D-Bus, such as Flatpak application IDs
+// Note that the hyphen (-) character is allowed in application identifiers, but
+// is problematic or not allowed in various specifications and APIs that refer
+// to D-Bus, such as Flatpak application IDs
 // (http://docs.flatpak.org/en/latest/introduction.html#identifiers), the
-// `DBusActivatable` interface in the Desktop Entry Specification
+// DBusActivatable interface in the Desktop Entry Specification
 // (https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#dbus),
 // and the convention that an application's "main" interface and object path
 // resemble its application identifier and bus name. To avoid situations that
@@ -1237,7 +1246,7 @@ func ApplicationGetDefault() *Application {
 // hyphen/minus characters they should be replaced by underscores, and if it
 // contains leading digits they should be escaped by prepending an underscore.
 // For example, if the owner of 7-zip.org used an application identifier for an
-// archiving application, it might be named `org._7_zip.Archiver`.
+// archiving application, it might be named org._7_zip.Archiver.
 func ApplicationIDIsValid(applicationId string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in

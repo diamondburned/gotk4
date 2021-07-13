@@ -35,7 +35,7 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 	C.gtk_test_accessible_assertion_message_role(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
-// TestAccessibleHasProperty checks whether the Accessible has @property set.
+// TestAccessibleHasProperty checks whether the Accessible has property set.
 func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProperty) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleProperty // out
@@ -55,7 +55,7 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 	return _ok
 }
 
-// TestAccessibleHasRelation checks whether the Accessible has @relation set.
+// TestAccessibleHasRelation checks whether the Accessible has relation set.
 func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelation) bool {
 	var _arg1 *C.GtkAccessible        // out
 	var _arg2 C.GtkAccessibleRelation // out
@@ -76,7 +76,7 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 }
 
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
-// accessible is @role.
+// accessible is role.
 func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	var _arg1 *C.GtkAccessible    // out
 	var _arg2 C.GtkAccessibleRole // out
@@ -96,7 +96,7 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	return _ok
 }
 
-// TestAccessibleHasState checks whether the Accessible has @state set.
+// TestAccessibleHasState checks whether the Accessible has state set.
 func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool {
 	var _arg1 *C.GtkAccessible     // out
 	var _arg2 C.GtkAccessibleState // out

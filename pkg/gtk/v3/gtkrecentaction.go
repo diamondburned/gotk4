@@ -29,7 +29,7 @@ type RecentActioner interface {
 	// gtk_recent_chooser_menu_set_show_numbers().
 	ShowNumbers() bool
 	// SetShowNumbers sets whether a number should be added to the items shown
-	// by the widgets representing @action.
+	// by the widgets representing action.
 	SetShowNumbers(showNumbers bool)
 }
 
@@ -102,7 +102,7 @@ func NewRecentAction(name string, label string, tooltip string, stockId string) 
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
-func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManagerer) *RecentAction {
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager *RecentManager) *RecentAction {
 	var _arg1 *C.gchar            // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out
@@ -114,7 +114,7 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
+	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
@@ -153,7 +153,7 @@ func (action *RecentAction) ShowNumbers() bool {
 }
 
 // SetShowNumbers sets whether a number should be added to the items shown by
-// the widgets representing @action. The numbers are shown to provide a unique
+// the widgets representing action. The numbers are shown to provide a unique
 // character for a mnemonic to be used inside the menu item's label. Only the
 // first ten items get a number to avoid clashes.
 //

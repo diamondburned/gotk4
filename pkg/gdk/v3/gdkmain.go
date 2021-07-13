@@ -106,8 +106,8 @@ func Flush() {
 	C.gdk_flush()
 }
 
-// GetDisplay gets the name of the display, which usually comes from the
-// `DISPLAY` environment variable or the `--display` command line option.
+// GetDisplay gets the name of the display, which usually comes from the DISPLAY
+// environment variable or the --display command line option.
 //
 // Deprecated: Call gdk_display_get_name (gdk_display_get_default ())) instead.
 func GetDisplay() string {
@@ -138,7 +138,7 @@ func GetDisplayArgName() string {
 }
 
 // GetProgramClass gets the program class. Unless the program class has
-// explicitly been set with gdk_set_program_class() or with the `--class`
+// explicitly been set with gdk_set_program_class() or with the --class
 // commandline option, the default value is the program name (determined with
 // g_get_prgname()) with the first character converted to uppercase.
 func GetProgramClass() string {
@@ -234,8 +234,8 @@ func NotifyStartupCompleteWithID(startupId string) {
 // button release events, then a button press event will cause an automatic
 // pointer grab until the button is released. X does this automatically since
 // most applications expect to receive button press and release events in pairs.
-// It is equivalent to a pointer grab on the window with @owner_events set to
-// true.
+// It is equivalent to a pointer grab on the window with owner_events set to
+// TRUE.
 //
 // If you set up anything at the time you take the grab that needs to be cleaned
 // up when the grab ends, you should handle the EventGrabBroken events that are
@@ -269,7 +269,7 @@ func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confine
 	return _grabStatus
 }
 
-// PointerIsGrabbed returns true if the pointer on the default display is
+// PointerIsGrabbed returns TRUE if the pointer on the default display is
 // currently grabbed by this application.
 //
 // Note that this does not take the inmplicit pointer grab on button presses
@@ -324,7 +324,7 @@ func PreParseLibgtkOnly() {
 // instructs GDK to try the Wayland backend first, followed by the Quartz
 // backend, and then all others.
 //
-// If the `GDK_BACKEND` environment variable is set, it determines what backends
+// If the GDK_BACKEND environment variable is set, it determines what backends
 // are tried in what order, while still respecting the set of allowed backends
 // that are specified by this function.
 //
@@ -354,7 +354,7 @@ func SetDoubleClickTime(msec uint) {
 }
 
 // SetProgramClass sets the program class. The X11 backend uses the program
-// class to set the class name part of the `WM_CLASS` property on toplevel
+// class to set the class name part of the WM_CLASS property on toplevel
 // windows; see the ICCCM.
 //
 // The program class can still be overridden with the --class command line

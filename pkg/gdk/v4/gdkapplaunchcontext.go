@@ -24,7 +24,7 @@ func init() {
 
 // AppLaunchContexter describes AppLaunchContext's methods.
 type AppLaunchContexter interface {
-	// Display gets the `GdkDisplay` that @context is for.
+	// Display gets the GdkDisplay that context is for.
 	Display() *Display
 	// SetDesktop sets the workspace on which applications will be launched.
 	SetDesktop(desktop int)
@@ -34,31 +34,30 @@ type AppLaunchContexter interface {
 	// SetIconName sets the icon for applications that are launched with this
 	// context.
 	SetIconName(iconName string)
-	// SetTimestamp sets the timestamp of @context.
+	// SetTimestamp sets the timestamp of context.
 	SetTimestamp(timestamp uint32)
 }
 
-// AppLaunchContext: `GdkAppLaunchContext` handles launching an application in a
+// AppLaunchContext: GdkAppLaunchContext handles launching an application in a
 // graphical context.
 //
-// It is an implementation of `GAppLaunchContext` that provides startup
+// It is an implementation of GAppLaunchContext that provides startup
 // notification and allows to launch applications on a specific screen or
 // workspace.
 //
-//
 // Launching an application
 //
-// “`c GdkAppLaunchContext *context;
+//    GdkAppLaunchContext *context;
 //
-// context = gdk_display_get_app_launch_context (display);
+//    context = gdk_display_get_app_launch_context (display);
 //
-// gdk_app_launch_context_set_display (display);
-// gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));
+//    gdk_app_launch_context_set_display (display);
+//    gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));
 //
-// if (!g_app_info_launch_default_for_uri ("http://www.gtk.org", context,
-// &error)) g_warning ("Launching failed: s\n", error->message);
+//    if (!g_app_info_launch_default_for_uri ("http://www.gtk.org", context, &error))
+//      g_warning ("Launching failed: s\n", error->message);
 //
-// g_object_unref (context); “`
+//    g_object_unref (context);
 type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
@@ -82,7 +81,7 @@ func marshalAppLaunchContexter(p uintptr) (interface{}, error) {
 	return wrapAppLaunchContext(obj), nil
 }
 
-// Display gets the `GdkDisplay` that @context is for.
+// Display gets the GdkDisplay that context is for.
 func (context *AppLaunchContext) Display() *Display {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _cret *C.GdkDisplay          // in
@@ -104,7 +103,7 @@ func (context *AppLaunchContext) Display() *Display {
 // workspaces, as described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec).
 //
-// When the workspace is not specified or @desktop is set to -1, it is up to the
+// When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -121,7 +120,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // Window Managers can use this information when displaying startup
 // notification.
 //
-// See also [method@Gdk.AppLaunchContext.set_icon_name].
+// See also gdk.AppLaunchContext.SetIconName().
 func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
@@ -135,13 +134,13 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 // SetIconName sets the icon for applications that are launched with this
 // context.
 //
-// The @icon_name will be interpreted in the same way as the Icon field in
-// desktop files. See also [method@Gdk.AppLaunchContext.set_icon()].
+// The icon_name will be interpreted in the same way as the Icon field in
+// desktop files. See also gdk.AppLaunchContext.SetIcon()().
 //
-// If both @icon and @icon_name are set, the @icon_name takes priority. If
-// neither @icon or @icon_name is set, the icon is taken from either the file
-// that is passed to launched application or from the `GAppInfo` for the
-// launched application itself.
+// If both icon and icon_name are set, the icon_name takes priority. If neither
+// icon or icon_name is set, the icon is taken from either the file that is
+// passed to launched application or from the GAppInfo for the launched
+// application itself.
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
@@ -152,7 +151,7 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
 }
 
-// SetTimestamp sets the timestamp of @context.
+// SetTimestamp sets the timestamp of context.
 //
 // The timestamp should ideally be taken from the event that triggered the
 // launch.

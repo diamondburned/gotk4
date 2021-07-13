@@ -4,6 +4,7 @@
 package strcases
 
 import (
+	"log"
 	"regexp"
 	"strings"
 	"unicode"
@@ -15,39 +16,30 @@ import (
 //go:embed capitalized.txt
 var capitalizedTXT string
 
+//go:embed replaced.txt
+var replacedTXT string
+
 var (
 	snakeRegex     = regexp.MustCompile(`[_0-9]+\w`)
 	pascalSpecials = strings.Split(capitalizedTXT, "\n")
-	pascalWords    = map[string]string{
-		"Tolower":  "ToLower",
-		"Toupper":  "ToUpper",
-		"Totitle":  "ToTitle",
-		"Xdigit":   "XDigit",
-		"Dbus":     "DBus",
-		"Gicon":    "GIcon",
-		"Gtype":    "GType",
-		"Gvalue":   "GValue",
-		"Gvariant": "GVariant",
-		"Hadj":     "HAdj",
-		"Vadj":     "VAdj",
-		"Halign":   "HAlign",
-		"Valign":   "VAlign",
-		"Hexpand":  "HExpand",
-		"Vexpand":  "VExpand",
-		"Nomem":    "NOMEM",
-		"Beos":     "BeOS",
-		"Directfb": "DirectFB",
-		"Ipv4":     "IPv4",
-		"Ipv6":     "IPv6",
-		"ProXY":    "Proxy",
-		"Zorder":   "ZOrder",
-		"Certdb":   "CertDB",
-		"Gerror":   "GError",
-	}
+	pascalWords    = map[string]string{}
 
 	pascalRegex        *regexp.Regexp
 	pascalPostReplacer *strings.Replacer
 )
+
+func initPascalWords() {
+	for _, line := range strings.Split(replacedTXT, "\n") {
+		words := strings.Split(line, "->")
+		if len(words) != 2 {
+			log.Fatalf("invalid replace %q", line)
+		}
+
+		words[0] = strings.TrimSpace(words[0])
+		words[1] = strings.TrimSpace(words[1])
+		pascalWords[words[0]] = words[1]
+	}
+}
 
 func initPascalRegex() {
 	fullRegex := strings.Builder{}
@@ -101,6 +93,20 @@ func Dots(parts ...string) string {
 	}
 
 	return strings.Join(nonEmptyParts, ".")
+}
+
+func isLower(s string) bool {
+	return strings.IndexFunc(s, unicode.IsUpper) == -1
+}
+
+// Go converts either pascal or snake case to the Go name. The original casing
+// is inferred from the given name.
+func Go(name string) string {
+	if strings.Contains(name, "_") || isLower(name) {
+		return SnakeToGo(true, name)
+	} else {
+		return PascalToGo(name)
+	}
 }
 
 // PascalToGo converts regular Pascal case to Go.

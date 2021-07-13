@@ -41,11 +41,10 @@ type HeaderBarer interface {
 	Subtitle() string
 	// Title retrieves the title of the header.
 	Title() string
-	// PackEnd adds @child to @bar, packed with reference to the end of the
-	// @bar.
+	// PackEnd adds child to bar, packed with reference to the end of the bar.
 	PackEnd(child Widgeter)
-	// PackStart adds @child to @bar, packed with reference to the start of the
-	// @bar.
+	// PackStart adds child to bar, packed with reference to the start of the
+	// bar.
 	PackStart(child Widgeter)
 	// SetCustomTitle sets a custom title for the HeaderBar.
 	SetCustomTitle(titleWidget Widgeter)
@@ -229,7 +228,7 @@ func (bar *HeaderBar) Title() string {
 	return _utf8
 }
 
-// PackEnd adds @child to @bar, packed with reference to the end of the @bar.
+// PackEnd adds child to bar, packed with reference to the end of the bar.
 func (bar *HeaderBar) PackEnd(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -240,8 +239,7 @@ func (bar *HeaderBar) PackEnd(child Widgeter) {
 	C.gtk_header_bar_pack_end(_arg0, _arg1)
 }
 
-// PackStart adds @child to @bar, packed with reference to the start of the
-// @bar.
+// PackStart adds child to bar, packed with reference to the start of the bar.
 func (bar *HeaderBar) PackStart(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -259,7 +257,7 @@ func (bar *HeaderBar) PackStart(child Widgeter) {
 // achieve the same style as the builtin title and subtitle, use the “title” and
 // “subtitle” style classes.
 //
-// You should set the custom title to nil, for the header title label to be
+// You should set the custom title to NULL, for the header title label to be
 // visible again.
 func (bar *HeaderBar) SetCustomTitle(titleWidget Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -329,7 +327,7 @@ func (bar *HeaderBar) SetShowCloseButton(setting bool) {
 //
 // Note that GtkHeaderBar by default reserves room for the subtitle, even if
 // none is currently set. If this is not desired, set the HeaderBar:has-subtitle
-// property to false.
+// property to FALSE.
 func (bar *HeaderBar) SetSubtitle(subtitle string) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.gchar        // out

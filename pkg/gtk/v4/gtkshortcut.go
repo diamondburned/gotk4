@@ -30,30 +30,30 @@ type Shortcuter interface {
 	// Arguments gets the arguments that are passed when activating the
 	// shortcut.
 	Arguments() *glib.Variant
-	// Trigger gets the trigger used to trigger @self.
+	// Trigger gets the trigger used to trigger self.
 	Trigger() *ShortcutTrigger
-	// SetAction sets the new action for @self to be @action.
+	// SetAction sets the new action for self to be action.
 	SetAction(action ShortcutActioner)
 	// SetArguments sets the arguments to pass when activating the shortcut.
 	SetArguments(args *glib.Variant)
-	// SetTrigger sets the new trigger for @self to be @trigger.
+	// SetTrigger sets the new trigger for self to be trigger.
 	SetTrigger(trigger ShortcutTriggerer)
 }
 
-// Shortcut: `GtkShortcut` describes a keyboard shortcut.
+// Shortcut: GtkShortcut describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a
-// [class@Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget
-// via a [class@Gtk.ShortcutAction].
+// gtk.ShortcutTrigger and a way to activate the shortcut on a widget via a
+// gtk.ShortcutAction.
 //
-// The actual work is usually done via [class@Gtk.ShortcutController], which
-// decides if and when to activate a shortcut. Using that controller directly
-// however is rarely necessary as various higher level convenience APIs exist on
-// Widgets that make it easier to use shortcuts in GTK.
+// The actual work is usually done via gtk.ShortcutController, which decides if
+// and when to activate a shortcut. Using that controller directly however is
+// rarely necessary as various higher level convenience APIs exist on Widgets
+// that make it easier to use shortcuts in GTK.
 //
-// `GtkShortcut` does provide functionality to make it easy for users to work
-// with shortcuts, either by providing informational strings for display
-// purposes or by allowing shortcuts to be configured.
+// GtkShortcut does provide functionality to make it easy for users to work with
+// shortcuts, either by providing informational strings for display purposes or
+// by allowing shortcuts to be configured.
 type Shortcut struct {
 	*externglib.Object
 }
@@ -75,8 +75,8 @@ func marshalShortcuter(p uintptr) (interface{}, error) {
 	return wrapShortcut(obj), nil
 }
 
-// NewShortcut creates a new `GtkShortcut` that is triggered by @trigger and
-// then activates @action.
+// NewShortcut creates a new GtkShortcut that is triggered by trigger and then
+// activates action.
 func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 	var _arg1 *C.GtkShortcutTrigger // out
 	var _arg2 *C.GtkShortcutAction  // out
@@ -130,7 +130,7 @@ func (self *Shortcut) Arguments() *glib.Variant {
 	return _variant
 }
 
-// Trigger gets the trigger used to trigger @self.
+// Trigger gets the trigger used to trigger self.
 func (self *Shortcut) Trigger() *ShortcutTrigger {
 	var _arg0 *C.GtkShortcut        // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -146,7 +146,7 @@ func (self *Shortcut) Trigger() *ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// SetAction sets the new action for @self to be @action.
+// SetAction sets the new action for self to be action.
 func (self *Shortcut) SetAction(action ShortcutActioner) {
 	var _arg0 *C.GtkShortcut       // out
 	var _arg1 *C.GtkShortcutAction // out
@@ -168,7 +168,7 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }
 
-// SetTrigger sets the new trigger for @self to be @trigger.
+// SetTrigger sets the new trigger for self to be trigger.
 func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	var _arg0 *C.GtkShortcut        // out
 	var _arg1 *C.GtkShortcutTrigger // out

@@ -52,8 +52,8 @@ type Tabler interface {
 	// with a means to add children to a table with identical padding and
 	// expansion options.
 	AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-	// ColSpacing gets the amount of space between column @col, and column @col
-	// + 1.
+	// ColSpacing gets the amount of space between column col, and column col +
+	// 1.
 	ColSpacing(column uint) uint
 	// DefaultColSpacing gets the default column spacing for the table.
 	DefaultColSpacing() uint
@@ -62,7 +62,7 @@ type Tabler interface {
 	// Homogeneous returns whether the table cells are all constrained to the
 	// same width and height.
 	Homogeneous() bool
-	// RowSpacing gets the amount of space between row @row, and row @row + 1.
+	// RowSpacing gets the amount of space between row row, and row row + 1.
 	RowSpacing(row uint) uint
 	// Size gets the number of rows and columns in the table.
 	Size() (rows uint, columns uint)
@@ -72,16 +72,16 @@ type Tabler interface {
 	// SetColSpacing alters the amount of space between a given table column and
 	// the following column.
 	SetColSpacing(column uint, spacing uint)
-	// SetColSpacings sets the space between every column in @table equal to
-	// @spacing.
+	// SetColSpacings sets the space between every column in table equal to
+	// spacing.
 	SetColSpacings(spacing uint)
 	// SetHomogeneous changes the homogenous property of table cells, ie.
 	SetHomogeneous(homogeneous bool)
 	// SetRowSpacing changes the space between a given table row and the
 	// subsequent row.
 	SetRowSpacing(row uint, spacing uint)
-	// SetRowSpacings sets the space between every row in @table equal to
-	// @spacing.
+	// SetRowSpacings sets the space between every row in table equal to
+	// spacing.
 	SetRowSpacings(spacing uint)
 }
 
@@ -143,7 +143,7 @@ func marshalTabler(p uintptr) (interface{}, error) {
 
 // NewTable: used to create a new table widget. An initial size must be given by
 // specifying how many rows and columns the table should have, although this can
-// be changed later with gtk_table_resize(). @rows and @columns must both be in
+// be changed later with gtk_table_resize(). rows and columns must both be in
 // the range 1 .. 65535. For historical reasons, 0 is accepted as well and is
 // silently interpreted as 1.
 //
@@ -170,8 +170,8 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
-// occupy is specified by @left_attach, @right_attach, @top_attach and
-// @bottom_attach. These each represent the leftmost, rightmost, uppermost and
+// occupy is specified by left_attach, right_attach, top_attach and
+// bottom_attach. These each represent the leftmost, rightmost, uppermost and
 // lowest column and row numbers of the table. (Columns and rows are indexed
 // from zero).
 //
@@ -183,8 +183,8 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 //                      xoptions, yoptions,
 //                      xpadding, ypadding);
 //
-// If you want to make the button span the entire bottom row, use @left_attach
-// == 0 and @right_attach = 2 instead.
+// If you want to make the button span the entire bottom row, use left_attach ==
+// 0 and right_attach = 2 instead.
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
@@ -217,8 +217,8 @@ func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, to
 // AttachDefaults as there are many options associated with gtk_table_attach(),
 // this convenience function provides the programmer with a means to add
 // children to a table with identical padding and expansion options. The values
-// used for the AttachOptions are `GTK_EXPAND | GTK_FILL`, and the padding is
-// set to 0.
+// used for the AttachOptions are GTK_EXPAND | GTK_FILL, and the padding is set
+// to 0.
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
@@ -240,7 +240,7 @@ func (table *Table) AttachDefaults(widget Widgeter, leftAttach uint, rightAttach
 	C.gtk_table_attach_defaults(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// ColSpacing gets the amount of space between column @col, and column @col + 1.
+// ColSpacing gets the amount of space between column col, and column col + 1.
 // See gtk_table_set_col_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
@@ -323,7 +323,7 @@ func (table *Table) Homogeneous() bool {
 	return _ok
 }
 
-// RowSpacing gets the amount of space between row @row, and row @row + 1. See
+// RowSpacing gets the amount of space between row row, and row row + 1. See
 // gtk_table_set_row_spacing().
 //
 // Deprecated: Grid does not offer a replacement for this functionality.
@@ -399,8 +399,7 @@ func (table *Table) SetColSpacing(column uint, spacing uint) {
 	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
 }
 
-// SetColSpacings sets the space between every column in @table equal to
-// @spacing.
+// SetColSpacings sets the space between every column in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_column_spacing() with Grid.
 func (table *Table) SetColSpacings(spacing uint) {
@@ -448,7 +447,7 @@ func (table *Table) SetRowSpacing(row uint, spacing uint) {
 	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
 }
 
-// SetRowSpacings sets the space between every row in @table equal to @spacing.
+// SetRowSpacings sets the space between every row in table equal to spacing.
 //
 // Deprecated: Use gtk_grid_set_row_spacing() with Grid.
 func (table *Table) SetRowSpacings(spacing uint) {

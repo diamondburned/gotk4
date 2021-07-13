@@ -29,13 +29,13 @@ type GestureDrager interface {
 	StartPoint() (x float64, y float64, ok bool)
 }
 
-// GestureDrag: `GtkGestureDrag` is a `GtkGesture` implementation for drags.
+// GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.
 //
 // The drag operation itself can be tracked throughout the
-// [signal@Gtk.GestureDrag::drag-begin], [signal@Gtk.GestureDrag::drag-update]
-// and [signal@Gtk.GestureDrag::drag-end] signals, and the relevant coordinates
-// can be extracted through [method@Gtk.GestureDrag.get_offset] and
-// [method@Gtk.GestureDrag.get_start_point].
+// gtk.GestureDrag::drag-begin, gtk.GestureDrag::drag-update and
+// gtk.GestureDrag::drag-end signals, and the relevant coordinates can be
+// extracted through gtk.GestureDrag.GetOffset() and
+// gtk.GestureDrag.GetStartPoint().
 type GestureDrag struct {
 	GestureSingle
 }
@@ -63,7 +63,7 @@ func marshalGestureDrager(p uintptr) (interface{}, error) {
 	return wrapGestureDrag(obj), nil
 }
 
-// NewGestureDrag returns a newly created `GtkGesture` that recognizes drags.
+// NewGestureDrag returns a newly created GtkGesture that recognizes drags.
 func NewGestureDrag() *GestureDrag {
 	var _cret *C.GtkGesture // in
 
@@ -78,7 +78,7 @@ func NewGestureDrag() *GestureDrag {
 
 // Offset gets the offset from the start point.
 //
-// If the @gesture is active, this function returns true and fills in @x and @y
+// If the gesture is active, this function returns TRUE and fills in x and y
 // with the coordinates of the current point, as an offset to the starting drag
 // point.
 func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
@@ -106,7 +106,7 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 
 // StartPoint gets the point where the drag started.
 //
-// If the @gesture is active, this function returns true and fills in @x and @y
+// If the gesture is active, this function returns TRUE and fills in x and y
 // with the drag start coordinates, in surface-relative coordinates.
 func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out

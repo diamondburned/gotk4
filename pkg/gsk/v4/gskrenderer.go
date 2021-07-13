@@ -27,34 +27,32 @@ func init() {
 
 // Rendererer describes Renderer's methods.
 type Rendererer interface {
-	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
 	Surface() *gdk.Surface
-	// IsRealized checks whether the @renderer is realized or not.
+	// IsRealized checks whether the renderer is realized or not.
 	IsRealized() bool
-	// Realize creates the resources needed by the @renderer to render the scene
+	// Realize creates the resources needed by the renderer to render the scene
 	// graph.
 	Realize(surface gdk.Surfacer) error
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
-	// instances, ensuring that the given @region gets redrawn.
+	// Render renders the scene graph, described by a tree of GskRenderNode
+	// instances, ensuring that the given region gets redrawn.
 	Render(root RenderNoder, region *cairo.Region)
 	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
+	// GskRenderNode instances, to a GdkTexture.
 	RenderTexture(root RenderNoder, viewport *graphene.Rect) *gdk.Texture
 	// Unrealize releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
 
-// Renderer: `GskRenderer` is a class that renders a scene graph defined via a
-// tree of [class@Gsk.RenderNode] instances.
+// Renderer: GskRenderer is a class that renders a scene graph defined via a
+// tree of gsk.RenderNode instances.
 //
-// Typically you will use a `GskRenderer` instance to repeatedly call
-// [method@Gsk.Renderer.render] to update the contents of its associated
-// [class@Gdk.Surface].
+// Typically you will use a GskRenderer instance to repeatedly call
+// gsk.Renderer.Render() to update the contents of its associated gdk.Surface.
 //
-// It is necessary to realize a `GskRenderer` instance using
-// [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render], in
-// order to create the appropriate windowing system resources needed to render
-// the scene.
+// It is necessary to realize a GskRenderer instance using
+// gsk.Renderer.Realize() before calling gsk.Renderer.Render(), in order to
+// create the appropriate windowing system resources needed to render the scene.
 type Renderer struct {
 	*externglib.Object
 }
@@ -76,10 +74,10 @@ func marshalRendererer(p uintptr) (interface{}, error) {
 	return wrapRenderer(obj), nil
 }
 
-// NewRendererForSurface creates an appropriate `GskRenderer` instance for the
-// given @surface.
+// NewRendererForSurface creates an appropriate GskRenderer instance for the
+// given surface.
 //
-// If the `GSK_RENDERER` environment variable is set, GSK will try that renderer
+// If the GSK_RENDERER environment variable is set, GSK will try that renderer
 // first, before trying the backend-specific default. The ultimate fallback is
 // the cairo renderer.
 //
@@ -99,9 +97,9 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	return _renderer
 }
 
-// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+// Surface retrieves the GdkSurface set using gsk_enderer_realize().
 //
-// If the renderer has not been realized yet, nil will be returned.
+// If the renderer has not been realized yet, NULL will be returned.
 func (renderer *Renderer) Surface() *gdk.Surface {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
@@ -122,7 +120,7 @@ func (renderer *Renderer) Surface() *gdk.Surface {
 	return _surface
 }
 
-// IsRealized checks whether the @renderer is realized or not.
+// IsRealized checks whether the renderer is realized or not.
 func (renderer *Renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
@@ -140,7 +138,7 @@ func (renderer *Renderer) IsRealized() bool {
 	return _ok
 }
 
-// Realize creates the resources needed by the @renderer to render the scene
+// Realize creates the resources needed by the renderer to render the scene
 // graph.
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg0 *C.GskRenderer // out
@@ -159,15 +157,15 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	return _goerr
 }
 
-// Render renders the scene graph, described by a tree of `GskRenderNode`
-// instances, ensuring that the given @region gets redrawn.
+// Render renders the scene graph, described by a tree of GskRenderNode
+// instances, ensuring that the given region gets redrawn.
 //
-// Renderers must ensure that changes of the contents given by the @root node as
-// well as the area given by @region are redrawn. They are however free to not
-// redraw any pixel outside of @region if they can guarantee that it didn't
+// Renderers must ensure that changes of the contents given by the root node as
+// well as the area given by region are redrawn. They are however free to not
+// redraw any pixel outside of region if they can guarantee that it didn't
 // change.
 //
-// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// The renderer will acquire a reference on the GskRenderNode tree while the
 // rendering is in progress.
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
@@ -181,13 +179,13 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-// RenderTexture renders the scene graph, described by a tree of `GskRenderNode`
-// instances, to a `GdkTexture`.
+// RenderTexture renders the scene graph, described by a tree of GskRenderNode
+// instances, to a GdkTexture.
 //
-// The @renderer will acquire a reference on the `GskRenderNode` tree while the
+// The renderer will acquire a reference on the GskRenderNode tree while the
 // rendering is in progress.
 //
-// If you want to apply any transformations to @root, you should put it into a
+// If you want to apply any transformations to root, you should put it into a
 // transform node and pass that node instead.
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) *gdk.Texture {
 	var _arg0 *C.GskRenderer     // out

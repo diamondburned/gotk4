@@ -42,9 +42,8 @@ func marshalAccelFlags(p uintptr) (interface{}, error) {
 }
 
 // AccelGroupsActivate finds the first accelerator in any AccelGroup attached to
-// @object that matches @accel_key and @accel_mods, and activates that
-// accelerator.
-func AccelGroupsActivate(object gextras.Objector, accelKey uint, accelMods gdk.ModifierType) bool {
+// object that matches accel_key and accel_mods, and activates that accelerator.
+func AccelGroupsActivate(object *externglib.Object, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -107,14 +106,14 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
-func AcceleratorGetLabelWithKeycode(display gdk.Displayer, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
+func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
 	var _arg4 C.GdkModifierType // out
 	var _cret *C.gchar          // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = C.GdkModifierType(acceleratorMods)
@@ -158,14 +157,14 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // gtk_accelerator_name() but handling keycodes. This is only useful for
 // system-level components, applications should use gtk_accelerator_parse()
 // instead.
-func AcceleratorNameWithKeycode(display gdk.Displayer, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
+func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
 	var _arg4 C.GdkModifierType // out
 	var _cret *C.gchar          // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = C.GdkModifierType(acceleratorMods)
@@ -189,7 +188,7 @@ func AcceleratorNameWithKeycode(display gdk.Displayer, acceleratorKey uint, keyc
 // gdk_keyval_from_name(). For character keys the name is not the symbol, but
 // the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
 //
-// If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
+// If the parse fails, accelerator_key and accelerator_mods will be set to 0
 // (zero).
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 	var _arg1 *C.gchar          // out
@@ -214,14 +213,14 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType) {
 // only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 //
-// If @accelerator_codes is given and the result stored in it is non-nil, the
+// If accelerator_codes is given and the result stored in it is non-NULL, the
 // result must be freed with g_free().
 //
-// If a keycode is present in the accelerator and no @accelerator_codes is
-// given, the parse will fail.
+// If a keycode is present in the accelerator and no accelerator_codes is given,
+// the parse will fail.
 //
-// If the parse fails, @accelerator_key, @accelerator_mods and
-// @accelerator_codes will be set to 0 (zero).
+// If the parse fails, accelerator_key, accelerator_mods and accelerator_codes
+// will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.guint  // in
@@ -307,12 +306,12 @@ type AccelGrouper interface {
 	// gtk_accel_group_unlock().
 	IsLocked() bool
 	// ModifierMask gets a ModifierType representing the mask for this
-	// @accel_group.
+	// accel_group.
 	ModifierMask() gdk.ModifierType
 	// Lock locks the given accelerator group.
 	Lock()
 	// Unlock undoes the last call to gtk_accel_group_lock() on this
-	// @accel_group.
+	// accel_group.
 	Unlock()
 }
 
@@ -405,7 +404,7 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 	return _ok
 }
 
-// ModifierMask gets a ModifierType representing the mask for this @accel_group.
+// ModifierMask gets a ModifierType representing the mask for this accel_group.
 // For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
 func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 	var _arg0 *C.GtkAccelGroup  // out
@@ -428,7 +427,7 @@ func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
 // be changed during runtime. Refer to gtk_accel_map_change_entry() about
 // runtime accelerator changes.
 //
-// If called more than once, @accel_group remains locked until
+// If called more than once, accel_group remains locked until
 // gtk_accel_group_unlock() has been called an equivalent number of times.
 func (accelGroup *AccelGroup) Lock() {
 	var _arg0 *C.GtkAccelGroup // out
@@ -438,7 +437,7 @@ func (accelGroup *AccelGroup) Lock() {
 	C.gtk_accel_group_lock(_arg0)
 }
 
-// Unlock undoes the last call to gtk_accel_group_lock() on this @accel_group.
+// Unlock undoes the last call to gtk_accel_group_lock() on this accel_group.
 func (accelGroup *AccelGroup) Unlock() {
 	var _arg0 *C.GtkAccelGroup // out
 

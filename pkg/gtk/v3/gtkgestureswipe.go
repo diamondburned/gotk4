@@ -25,9 +25,9 @@ func init() {
 
 // GestureSwiper describes GestureSwipe's methods.
 type GestureSwiper interface {
-	// Velocity: if the gesture is recognized, this function returns true and
-	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
-	// the last event(s) processed.
+	// Velocity: if the gesture is recognized, this function returns TRUE and
+	// fill in velocity_x and velocity_y with the recorded velocity, as per the
+	// last event(s) processed.
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
@@ -84,8 +84,8 @@ func NewGestureSwipe(widget Widgeter) *GestureSwipe {
 	return _gestureSwipe
 }
 
-// Velocity: if the gesture is recognized, this function returns true and fill
-// in @velocity_x and @velocity_y with the recorded velocity, as per the last
+// Velocity: if the gesture is recognized, this function returns TRUE and fill
+// in velocity_x and velocity_y with the recorded velocity, as per the last
 // event(s) processed.
 func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out

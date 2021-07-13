@@ -41,30 +41,30 @@ type TLSBackendOverrider interface {
 	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
 	// available even if TLS support is available, and vice-versa.
 	SupportsDTLS() bool
-	// SupportsTLS checks if TLS is supported; if this returns false for the
+	// SupportsTLS checks if TLS is supported; if this returns FALSE for the
 	// default Backend, it means no "real" TLS backend is available.
 	SupportsTLS() bool
 }
 
 // TLSBackender describes TLSBackend's methods.
 type TLSBackender interface {
-	// CertificateType gets the #GType of @backend's Certificate implementation.
+	// CertificateType gets the #GType of backend's Certificate implementation.
 	CertificateType() externglib.Type
-	// ClientConnectionType gets the #GType of @backend's ClientConnection
+	// ClientConnectionType gets the #GType of backend's ClientConnection
 	// implementation.
 	ClientConnectionType() externglib.Type
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() *TLSDatabase
-	// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+	// DTLSClientConnectionType gets the #GType of backend’s ClientConnection
 	// implementation.
 	DTLSClientConnectionType() externglib.Type
-	// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+	// DTLSServerConnectionType gets the #GType of backend’s ServerConnection
 	// implementation.
 	DTLSServerConnectionType() externglib.Type
-	// FileDatabaseType gets the #GType of @backend's FileDatabase
+	// FileDatabaseType gets the #GType of backend's FileDatabase
 	// implementation.
 	FileDatabaseType() externglib.Type
-	// ServerConnectionType gets the #GType of @backend's ServerConnection
+	// ServerConnectionType gets the #GType of backend's ServerConnection
 	// implementation.
 	ServerConnectionType() externglib.Type
 	// SetDefaultDatabase: set the default Database used to verify TLS
@@ -73,7 +73,7 @@ type TLSBackender interface {
 	SetDefaultDatabase(database TLSDatabaser)
 	// SupportsDTLS checks if DTLS is supported.
 	SupportsDTLS() bool
-	// SupportsTLS checks if TLS is supported; if this returns false for the
+	// SupportsTLS checks if TLS is supported; if this returns FALSE for the
 	// default Backend, it means no "real" TLS backend is available.
 	SupportsTLS() bool
 }
@@ -100,7 +100,7 @@ func marshalTLSBackender(p uintptr) (interface{}, error) {
 	return wrapTLSBackend(obj), nil
 }
 
-// CertificateType gets the #GType of @backend's Certificate implementation.
+// CertificateType gets the #GType of backend's Certificate implementation.
 func (backend *TLSBackend) CertificateType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -116,7 +116,7 @@ func (backend *TLSBackend) CertificateType() externglib.Type {
 	return _gType
 }
 
-// ClientConnectionType gets the #GType of @backend's ClientConnection
+// ClientConnectionType gets the #GType of backend's ClientConnection
 // implementation.
 func (backend *TLSBackend) ClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -149,7 +149,7 @@ func (backend *TLSBackend) DefaultDatabase() *TLSDatabase {
 	return _tlsDatabase
 }
 
-// DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
+// DTLSClientConnectionType gets the #GType of backend’s ClientConnection
 // implementation.
 func (backend *TLSBackend) DTLSClientConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -166,7 +166,7 @@ func (backend *TLSBackend) DTLSClientConnectionType() externglib.Type {
 	return _gType
 }
 
-// DTLSServerConnectionType gets the #GType of @backend’s ServerConnection
+// DTLSServerConnectionType gets the #GType of backend’s ServerConnection
 // implementation.
 func (backend *TLSBackend) DTLSServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -183,7 +183,7 @@ func (backend *TLSBackend) DTLSServerConnectionType() externglib.Type {
 	return _gType
 }
 
-// FileDatabaseType gets the #GType of @backend's FileDatabase implementation.
+// FileDatabaseType gets the #GType of backend's FileDatabase implementation.
 func (backend *TLSBackend) FileDatabaseType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -199,7 +199,7 @@ func (backend *TLSBackend) FileDatabaseType() externglib.Type {
 	return _gType
 }
 
-// ServerConnectionType gets the #GType of @backend's ServerConnection
+// ServerConnectionType gets the #GType of backend's ServerConnection
 // implementation.
 func (backend *TLSBackend) ServerConnectionType() externglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -222,7 +222,7 @@ func (backend *TLSBackend) ServerConnectionType() externglib.Type {
 // database set in this call. Existing databases and connections are not
 // modified.
 //
-// Setting a nil default database will reset to using the system default
+// Setting a NULL default database will reset to using the system default
 // database as if g_tls_backend_set_default_database() had never been called.
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsBackend  // out
@@ -253,7 +253,7 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 	return _ok
 }
 
-// SupportsTLS checks if TLS is supported; if this returns false for the default
+// SupportsTLS checks if TLS is supported; if this returns FALSE for the default
 // Backend, it means no "real" TLS backend is available.
 func (backend *TLSBackend) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out

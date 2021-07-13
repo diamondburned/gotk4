@@ -36,26 +36,26 @@ type MediaFileOverrider interface {
 type MediaFiler interface {
 	// Clear resets the media file to be empty.
 	Clear()
-	// File returns the file that @self is currently playing from.
+	// File returns the file that self is currently playing from.
 	File() *gio.File
-	// InputStream returns the stream that @self is currently playing from.
+	// InputStream returns the stream that self is currently playing from.
 	InputStream() *gio.InputStream
-	// SetFile sets the `GtkMediaFile` to play the given file.
+	// SetFile sets the GtkMediaFile to play the given file.
 	SetFile(file gio.Filer)
 	// SetFilename sets the `GtkMediaFile to play the given file.
 	SetFilename(filename string)
-	// SetInputStream sets the `GtkMediaFile` to play the given stream.
+	// SetInputStream sets the GtkMediaFile to play the given stream.
 	SetInputStream(stream gio.InputStreamer)
 	// SetResource sets the `GtkMediaFile to play the given resource.
 	SetResource(resourcePath string)
 }
 
-// MediaFile: `GtkMediaFile` implements `GtkMediaStream` for files.
+// MediaFile: GtkMediaFile implements GtkMediaStream for files.
 //
 // This provides a simple way to play back video files with GTK.
 //
-// GTK provides a GIO extension point for `GtkMediaFile` implementations to
-// allow for external implementations using various media frameworks.
+// GTK provides a GIO extension point for GtkMediaFile implementations to allow
+// for external implementations using various media frameworks.
 //
 // GTK itself includes implementations using GStreamer and ffmpeg.
 type MediaFile struct {
@@ -97,7 +97,7 @@ func NewMediaFile() *MediaFile {
 	return _mediaFile
 }
 
-// NewMediaFileForFile creates a new media file to play @file.
+// NewMediaFileForFile creates a new media file to play file.
 func NewMediaFileForFile(file gio.Filer) *MediaFile {
 	var _arg1 *C.GFile          // out
 	var _cret *C.GtkMediaStream // in
@@ -115,8 +115,8 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 
 // NewMediaFileForFilename creates a new media file for the given filename.
 //
-// This is a utility function that converts the given @filename to a `GFile` and
-// calls [ctor@Gtk.MediaFile.new_for_file].
+// This is a utility function that converts the given filename to a GFile and
+// calls gtk.MediaFile.NewForFile.
 func NewMediaFileForFilename(filename string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -132,10 +132,10 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 	return _mediaFile
 }
 
-// NewMediaFileForInputStream creates a new media file to play @stream.
+// NewMediaFileForInputStream creates a new media file to play stream.
 //
 // If you want the resulting media to be seekable, the stream should implement
-// the `GSeekable` interface.
+// the GSeekable interface.
 func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 	var _arg1 *C.GInputStream   // out
 	var _cret *C.GtkMediaStream // in
@@ -153,8 +153,8 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 
 // NewMediaFileForResource creates a new new media file for the given resource.
 //
-// This is a utility function that converts the given @resource to a `GFile` and
-// calls [ctor@Gtk.MediaFile.new_for_file].
+// This is a utility function that converts the given resource to a GFile and
+// calls gtk.MediaFile.NewForFile.
 func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _arg1 *C.char           // out
 	var _cret *C.GtkMediaStream // in
@@ -179,9 +179,9 @@ func (self *MediaFile) Clear() {
 	C.gtk_media_file_clear(_arg0)
 }
 
-// File returns the file that @self is currently playing from.
+// File returns the file that self is currently playing from.
 //
-// When @self is not playing or not playing from a file, nil is returned.
+// When self is not playing or not playing from a file, NULL is returned.
 func (self *MediaFile) File() *gio.File {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GFile        // in
@@ -202,9 +202,9 @@ func (self *MediaFile) File() *gio.File {
 	return _file
 }
 
-// InputStream returns the stream that @self is currently playing from.
+// InputStream returns the stream that self is currently playing from.
 //
-// When @self is not playing or not playing from a stream, nil is returned.
+// When self is not playing or not playing from a stream, NULL is returned.
 func (self *MediaFile) InputStream() *gio.InputStream {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
@@ -225,7 +225,7 @@ func (self *MediaFile) InputStream() *gio.InputStream {
 	return _inputStream
 }
 
-// SetFile sets the `GtkMediaFile` to play the given file.
+// SetFile sets the GtkMediaFile to play the given file.
 //
 // If any file is still playing, stop playing it.
 func (self *MediaFile) SetFile(file gio.Filer) {
@@ -240,8 +240,8 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 
 // SetFilename sets the `GtkMediaFile to play the given file.
 //
-// This is a utility function that converts the given @filename to a `GFile` and
-// calls [method@Gtk.MediaFile.set_file].
+// This is a utility function that converts the given filename to a GFile and
+// calls gtk.MediaFile.SetFile().
 func (self *MediaFile) SetFilename(filename string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out
@@ -252,11 +252,11 @@ func (self *MediaFile) SetFilename(filename string) {
 	C.gtk_media_file_set_filename(_arg0, _arg1)
 }
 
-// SetInputStream sets the `GtkMediaFile` to play the given stream.
+// SetInputStream sets the GtkMediaFile to play the given stream.
 //
 // If anything is still playing, stop playing it.
 //
-// Full control about the @stream is assumed for the duration of playback. The
+// Full control about the stream is assumed for the duration of playback. The
 // stream will not be closed.
 func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 	var _arg0 *C.GtkMediaFile // out
@@ -270,8 +270,8 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 
 // SetResource sets the `GtkMediaFile to play the given resource.
 //
-// This is a utility function that converts the given @resource_path to a
-// `GFile` and calls [method@Gtk.MediaFile.set_file].
+// This is a utility function that converts the given resource_path to a GFile
+// and calls gtk.MediaFile.SetFile().
 func (self *MediaFile) SetResource(resourcePath string) {
 	var _arg0 *C.GtkMediaFile // out
 	var _arg1 *C.char         // out

@@ -39,7 +39,7 @@ type ProgressBarer interface {
 	// ShowText gets the value of the ProgressBar:show-text property.
 	ShowText() bool
 	// Text retrieves the text that is displayed with the progress bar, if any,
-	// otherwise nil.
+	// otherwise NULL.
 	Text() string
 	// Pulse indicates that some progress has been made, but you don’t know how
 	// much.
@@ -58,7 +58,7 @@ type ProgressBarer interface {
 	SetPulseStep(fraction float64)
 	// SetShowText sets whether the progress bar will show text next to the bar.
 	SetShowText(showText bool)
-	// SetText causes the given @text to appear next to the progress bar.
+	// SetText causes the given text to appear next to the progress bar.
 	SetText(text string)
 }
 
@@ -242,8 +242,8 @@ func (pbar *ProgressBar) ShowText() bool {
 }
 
 // Text retrieves the text that is displayed with the progress bar, if any,
-// otherwise nil. The return value is a reference to the text, not a copy of it,
-// so will become invalid if you change the text in the progress bar.
+// otherwise NULL. The return value is a reference to the text, not a copy of
+// it, so will become invalid if you change the text in the progress bar.
 func (pbar *ProgressBar) Text() string {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret *C.gchar          // in
@@ -324,11 +324,11 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 
 // SetShowText sets whether the progress bar will show text next to the bar. The
 // shown text is either the value of the ProgressBar:text property or, if that
-// is nil, the ProgressBar:fraction value, as a percentage.
+// is NULL, the ProgressBar:fraction value, as a percentage.
 //
 // To make a progress bar that is styled and sized suitably for containing text
-// (even if the actual text is blank), set ProgressBar:show-text to true and
-// ProgressBar:text to the empty string (not nil).
+// (even if the actual text is blank), set ProgressBar:show-text to TRUE and
+// ProgressBar:text to the empty string (not NULL).
 func (pbar *ProgressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
@@ -341,15 +341,15 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
 }
 
-// SetText causes the given @text to appear next to the progress bar.
+// SetText causes the given text to appear next to the progress bar.
 //
-// If @text is nil and ProgressBar:show-text is true, the current value of
+// If text is NULL and ProgressBar:show-text is TRUE, the current value of
 // ProgressBar:fraction will be displayed as a percentage.
 //
-// If @text is non-nil and ProgressBar:show-text is true, the text will be
-// displayed. In this case, it will not display the progress percentage. If
-// @text is the empty string, the progress bar will still be styled and sized
-// suitably for containing text, as long as ProgressBar:show-text is true.
+// If text is non-NULL and ProgressBar:show-text is TRUE, the text will be
+// displayed. In this case, it will not display the progress percentage. If text
+// is the empty string, the progress bar will still be styled and sized suitably
+// for containing text, as long as ProgressBar:show-text is TRUE.
 func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.gchar          // out

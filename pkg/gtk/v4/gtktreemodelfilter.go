@@ -25,8 +25,8 @@ func init() {
 }
 
 // TreeModelFilterModifyFunc: function which calculates display values from raw
-// values in the model. It must fill @value with the display value for the
-// column @column in the row indicated by @iter.
+// values in the model. It must fill value with the display value for the column
+// column in the row indicated by iter.
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
@@ -59,7 +59,7 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 }
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
-// by @iter is visible.
+// by iter is visible.
 type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
 
 //export gotk4_TreeModelFilterVisibleFunc
@@ -103,25 +103,24 @@ type TreeModelFilterOverrider interface {
 type TreeModelFilterer interface {
 	// ClearCache: this function should almost never be called.
 	ClearCache()
-	// ConvertChildIterToIter sets @filter_iter to point to the row in @filter
-	// that corresponds to the row pointed at by @child_iter.
+	// ConvertChildIterToIter sets filter_iter to point to the row in filter
+	// that corresponds to the row pointed at by child_iter.
 	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
-	// ConvertChildPathToPath converts @child_path to a path relative to
-	// @filter.
+	// ConvertChildPathToPath converts child_path to a path relative to filter.
 	ConvertChildPathToPath(childPath *TreePath) *TreePath
-	// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
-	// @filter_iter.
+	// ConvertIterToChildIter sets child_iter to point to the row pointed to by
+	// filter_iter.
 	ConvertIterToChildIter(filterIter *TreeIter) TreeIter
-	// ConvertPathToChildPath converts @filter_path to a path on the child model
-	// of @filter.
+	// ConvertPathToChildPath converts filter_path to a path on the child model
+	// of filter.
 	ConvertPathToChildPath(filterPath *TreePath) *TreePath
-	// Model returns a pointer to the child model of @filter.
+	// Model returns a pointer to the child model of filter.
 	Model() *TreeModel
 	// Refilter emits ::row_changed for each row in the child model, which
 	// causes the filter to re-evaluate whether a row is visible or not.
 	Refilter()
-	// SetVisibleColumn sets @column of the child_model to be the column where
-	// @filter should look for visibility information.
+	// SetVisibleColumn sets column of the child_model to be the column where
+	// filter should look for visibility information.
 	SetVisibleColumn(column int)
 }
 
@@ -218,8 +217,8 @@ func marshalTreeModelFilterer(p uintptr) (interface{}, error) {
 	return wrapTreeModelFilter(obj), nil
 }
 
-// ClearCache: this function should almost never be called. It clears the
-// @filter of any cached iterators that haven’t been reffed with
+// ClearCache: this function should almost never be called. It clears the filter
+// of any cached iterators that haven’t been reffed with
 // gtk_tree_model_ref_node(). This might be useful if the child model being
 // filtered is static (and doesn’t change often) and there has been a lot of
 // unreffed access to nodes. As a side effect of this function, all unreffed
@@ -232,9 +231,9 @@ func (filter *TreeModelFilter) ClearCache() {
 	C.gtk_tree_model_filter_clear_cache(_arg0)
 }
 
-// ConvertChildIterToIter sets @filter_iter to point to the row in @filter that
-// corresponds to the row pointed at by @child_iter. If @filter_iter was not
-// set, false is returned.
+// ConvertChildIterToIter sets filter_iter to point to the row in filter that
+// corresponds to the row pointed at by child_iter. If filter_iter was not set,
+// FALSE is returned.
 func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _filterIter TreeIter
@@ -255,11 +254,11 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (Tree
 	return _filterIter, _ok
 }
 
-// ConvertChildPathToPath converts @child_path to a path relative to @filter.
-// That is, @child_path points to a path in the child model. The rerturned path
-// will point to the same row in the filtered model. If @child_path isn’t a
-// valid path on the child model or points to a row which is not visible in
-// @filter, then nil is returned.
+// ConvertChildPathToPath converts child_path to a path relative to filter. That
+// is, child_path points to a path in the child model. The rerturned path will
+// point to the same row in the filtered model. If child_path isn’t a valid path
+// on the child model or points to a row which is not visible in filter, then
+// NULL is returned.
 func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 *C.GtkTreePath        // out
@@ -280,8 +279,8 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 	return _treePath
 }
 
-// ConvertIterToChildIter sets @child_iter to point to the row pointed to by
-// @filter_iter.
+// ConvertIterToChildIter sets child_iter to point to the row pointed to by
+// filter_iter.
 func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _childIter TreeIter
@@ -295,10 +294,10 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) Tree
 	return _childIter
 }
 
-// ConvertPathToChildPath converts @filter_path to a path on the child model of
-// @filter. That is, @filter_path points to a location in @filter. The returned
+// ConvertPathToChildPath converts filter_path to a path on the child model of
+// filter. That is, filter_path points to a location in filter. The returned
 // path will point to the same location in the model not being filtered. If
-// @filter_path does not point to a location in the child model, nil is
+// filter_path does not point to a location in the child model, NULL is
 // returned.
 func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelFilter // out
@@ -320,7 +319,7 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 	return _treePath
 }
 
-// Model returns a pointer to the child model of @filter.
+// Model returns a pointer to the child model of filter.
 func (filter *TreeModelFilter) Model() *TreeModel {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _cret *C.GtkTreeModel       // in
@@ -346,10 +345,9 @@ func (filter *TreeModelFilter) Refilter() {
 	C.gtk_tree_model_filter_refilter(_arg0)
 }
 
-// SetVisibleColumn sets @column of the child_model to be the column where
-// @filter should look for visibility information. @columns should be a column
-// of type G_TYPE_BOOLEAN, where true means that a row is visible, and false if
-// not.
+// SetVisibleColumn sets column of the child_model to be the column where filter
+// should look for visibility information. columns should be a column of type
+// G_TYPE_BOOLEAN, where TRUE means that a row is visible, and FALSE if not.
 //
 // Note that gtk_tree_model_filter_set_visible_func() or
 // gtk_tree_model_filter_set_visible_column() can only be called once for a

@@ -23,7 +23,7 @@ func init() {
 	})
 }
 
-// GlyphUnit: `PangoGlyphUnit` type is used to store dimensions within Pango.
+// GlyphUnit: PangoGlyphUnit type is used to store dimensions within Pango.
 //
 // Dimensions are stored in 1/PANGO_SCALE of a device unit. (A device unit might
 // be a pixel for screen display, or a point on a printer.) PANGO_SCALE is
@@ -34,7 +34,7 @@ type GlyphUnit = int32
 
 // ShapeFlags flags influencing the shaping process.
 //
-// `PangoShapeFlags` can be passed to pango_shape_with_flags().
+// PangoShapeFlags can be passed to pango_shape_with_flags().
 type ShapeFlags int
 
 const (
@@ -50,19 +50,18 @@ func marshalShapeFlags(p uintptr) (interface{}, error) {
 	return ShapeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Shape: convert the characters in @text into glyphs.
+// Shape: convert the characters in text into glyphs.
 //
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
+// Given a segment of text and the corresponding PangoAnalysis structure
+// returned from itemize, convert the characters into glyphs. You may also pass
+// in only a substring of the item from itemize.
 //
-// It is recommended that you use [func@shape_full] instead, since that API
-// allows for shaping interaction happening across text item boundaries.
+// It is recommended that you use shape_full instead, since that API allows for
+// shaping interaction happening across text item boundaries.
 //
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// need to subtract the item offset from their indices before calling
-// [func@shape].
+// Note that the extra attributes in the analyis that is returned from itemize
+// have indices that are relative to the entire paragraph, so you need to
+// subtract the item offset from their indices before calling shape.
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -77,22 +76,22 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	C.pango_shape(_arg1, _arg2, _arg3, _arg4)
 }
 
-// ShapeFull: convert the characters in @text into glyphs.
+// ShapeFull: convert the characters in text into glyphs.
 //
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
+// Given a segment of text and the corresponding PangoAnalysis structure
+// returned from itemize, convert the characters into glyphs. You may also pass
+// in only a substring of the item from itemize.
 //
-// This is similar to [func@shape], except it also can optionally take the full
+// This is similar to shape, except it also can optionally take the full
 // paragraph text as input, which will then be used to perform certain
 // cross-item shaping interactions. If you have access to the broader text of
-// which @item_text is part of, provide the broader text as @paragraph_text. If
-// @paragraph_text is nil, item text is used instead.
+// which item_text is part of, provide the broader text as paragraph_text. If
+// paragraph_text is NULL, item text is used instead.
 //
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// do not pass the full paragraph text as @paragraph_text, you need to subtract
-// the item offset from their indices before calling [func@shape_full].
+// Note that the extra attributes in the analyis that is returned from itemize
+// have indices that are relative to the entire paragraph, so you do not pass
+// the full paragraph text as paragraph_text, you need to subtract the item
+// offset from their indices before calling shape_full.
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -111,19 +110,19 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// ShapeWithFlags: convert the characters in @text into glyphs.
+// ShapeWithFlags: convert the characters in text into glyphs.
 //
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
+// Given a segment of text and the corresponding PangoAnalysis structure
+// returned from itemize, convert the characters into glyphs. You may also pass
+// in only a substring of the item from itemize.
 //
-// This is similar to [func@shape_full], except it also takes flags that can
-// influence the shaping process.
+// This is similar to shape_full, except it also takes flags that can influence
+// the shaping process.
 //
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// do not pass the full paragraph text as @paragraph_text, you need to subtract
-// the item offset from their indices before calling [func@shape_with_flags].
+// Note that the extra attributes in the analyis that is returned from itemize
+// have indices that are relative to the entire paragraph, so you do not pass
+// the full paragraph text as paragraph_text, you need to subtract the item
+// offset from their indices before calling shape_with_flags.
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -144,7 +143,7 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 	C.pango_shape_with_flags(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-// GlyphGeometry: `PangoGlyphGeometry` structure contains width and positioning
+// GlyphGeometry: PangoGlyphGeometry structure contains width and positioning
 // information for a single glyph.
 type GlyphGeometry struct {
 	native C.PangoGlyphGeometry
@@ -155,7 +154,7 @@ func (g *GlyphGeometry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// GlyphInfo: `PangoGlyphInfo` structure represents a single glyph with
+// GlyphInfo: PangoGlyphInfo structure represents a single glyph with
 // positioning information and visual attributes.
 type GlyphInfo struct {
 	native C.PangoGlyphInfo
@@ -166,7 +165,7 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// GlyphString: `PangoGlyphString` is used to store strings of glyphs with
+// GlyphString: PangoGlyphString is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
 // The storage for the glyph information is owned by the structure which
@@ -222,8 +221,8 @@ func (_string *GlyphString) Copy() *GlyphString {
 
 // Extents: compute the logical and ink extents of a glyph string.
 //
-// See the documentation for [method@Pango.Font.get_glyph_extents] for details
-// about the interpretation of the rectangles.
+// See the documentation for pango.Font.GetGlyphExtents() for details about the
+// interpretation of the rectangles.
 //
 // Examples of logical (red) and ink (green) rects:
 //
@@ -276,10 +275,10 @@ func (_string *GlyphString) free() {
 
 // Width computes the logical width of the glyph string.
 //
-// This can also be computed using [method@Pango.GlyphString.extents]. However,
-// since this only computes the width, it's much faster. This is in fact only a
-// convenience function that computes the sum of @geometry.width for each glyph
-// in the @glyphs.
+// This can also be computed using pango.GlyphString.Extents(). However, since
+// this only computes the width, it's much faster. This is in fact only a
+// convenience function that computes the sum of geometry.width for each glyph
+// in the glyphs.
 func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
@@ -370,7 +369,7 @@ func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis,
 	return _index_, _trailing
 }
 
-// GlyphVisAttr: `PangoGlyphVisAttr` structure communicates information between
+// GlyphVisAttr: PangoGlyphVisAttr structure communicates information between
 // the shaping and rendering phases.
 //
 // Currently, it contains only cluster start information. yMore attributes may

@@ -88,13 +88,12 @@ func (k *KeyFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
 }
 
-// Boolean returns the value associated with @key under @group_name as a
-// boolean.
+// Boolean returns the value associated with key under group_name as a boolean.
 //
-// If @key cannot be found then false is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
-// cannot be interpreted as a boolean then false is returned and @error is set
-// to KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then FALSE is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
+// cannot be interpreted as a boolean then FALSE is returned and error is set to
+// KEY_FILE_ERROR_INVALID_VALUE.
 func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -114,9 +113,9 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	return _goerr
 }
 
-// Comment retrieves a comment above @key from @group_name. If @key is nil then
-// @comment will be read from above @group_name. If both @key and @group_name
-// are nil, then @comment will be read from above the first group in the file.
+// Comment retrieves a comment above key from group_name. If key is NULL then
+// comment will be read from above group_name. If both key and group_name are
+// NULL, then comment will be read from above the first group in the file.
 //
 // Note that the returned string does not include the '#' comment markers, but
 // does include any whitespace after them (on each line). It includes the line
@@ -144,12 +143,12 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	return _utf8, _goerr
 }
 
-// Double returns the value associated with @key under @group_name as a double.
-// If @group_name is nil, the start_group is used.
+// Double returns the value associated with key under group_name as a double. If
+// group_name is NULL, the start_group is used.
 //
-// If @key cannot be found then 0.0 is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
-// cannot be interpreted as a double then 0.0 is returned and @error is set to
+// If key cannot be found then 0.0 is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
+// cannot be interpreted as a double then 0.0 is returned and error is set to
 // KEY_FILE_ERROR_INVALID_VALUE.
 func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _arg0 *C.GKeyFile // out
@@ -173,8 +172,8 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	return _gdouble, _goerr
 }
 
-// Groups returns all groups in the key file loaded with @key_file. The array of
-// returned groups will be nil-terminated, so @length may optionally be nil.
+// Groups returns all groups in the key file loaded with key_file. The array of
+// returned groups will be NULL-terminated, so length may optionally be NULL.
 func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -205,7 +204,7 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 	return _length, _utf8s
 }
 
-// Int64 returns the value associated with @key under @group_name as a signed
+// Int64 returns the value associated with key under group_name as a signed
 // 64-bit integer. This is similar to g_key_file_get_integer() but can return
 // 64-bit results without truncation.
 func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
@@ -230,13 +229,12 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	return _gint64, _goerr
 }
 
-// Integer returns the value associated with @key under @group_name as an
-// integer.
+// Integer returns the value associated with key under group_name as an integer.
 //
-// If @key cannot be found then 0 is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with @key
+// If key cannot be found then 0 is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
 // cannot be interpreted as an integer, or is out of range for a #gint, then 0
-// is returned and @error is set to KEY_FILE_ERROR_INVALID_VALUE.
+// is returned and error is set to KEY_FILE_ERROR_INVALID_VALUE.
 func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -259,9 +257,9 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	return _gint, _goerr
 }
 
-// Keys returns all keys for the group name @group_name. The array of returned
-// keys will be nil-terminated, so @length may optionally be nil. In the event
-// that the @group_name cannot be found, nil is returned and @error is set to
+// Keys returns all keys for the group name group_name. The array of returned
+// keys will be NULL-terminated, so length may optionally be NULL. In the event
+// that the group_name cannot be found, NULL is returned and error is set to
 // KEY_FILE_ERROR_GROUP_NOT_FOUND.
 func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -303,8 +301,8 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 // from.
 //
 // If calling g_key_file_get_locale_string() or
-// g_key_file_get_locale_string_list() with exactly the same @key_file,
-// @group_name, @key and @locale, the result of those functions will have
+// g_key_file_get_locale_string_list() with exactly the same key_file,
+// group_name, key and locale, the result of those functions will have
 // originally been tagged with the locale that is the result of this function.
 func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string) string {
 	var _arg0 *C.GKeyFile // out
@@ -328,16 +326,16 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 	return _utf8
 }
 
-// LocaleString returns the value associated with @key under @group_name
-// translated in the given @locale if available. If @locale is nil then the
+// LocaleString returns the value associated with key under group_name
+// translated in the given locale if available. If locale is NULL then the
 // current locale is assumed.
 //
-// If @locale is to be non-nil, or if the current locale will change over the
+// If locale is to be non-NULL, or if the current locale will change over the
 // lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
 // order to load strings for all locales.
 //
-// If @key cannot be found then nil is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with @key cannot be
+// If key cannot be found then NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with key cannot be
 // interpreted or no suitable translation can be found then the untranslated
 // value is returned.
 func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) (string, error) {
@@ -382,13 +380,12 @@ func (keyFile *KeyFile) StartGroup() string {
 	return _utf8
 }
 
-// String returns the string value associated with @key under @group_name.
-// Unlike g_key_file_get_value(), this function handles escape sequences like
-// \s.
+// String returns the string value associated with key under group_name. Unlike
+// g_key_file_get_value(), this function handles escape sequences like \s.
 //
-// In the event the key cannot be found, nil is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
-// found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// In the event the key cannot be found, NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
+// found, NULL is returned and error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
 func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -412,9 +409,9 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	return _utf8, _goerr
 }
 
-// Uint64 returns the value associated with @key under @group_name as an
-// unsigned 64-bit integer. This is similar to g_key_file_get_integer() but can
-// return large positive results without truncation.
+// Uint64 returns the value associated with key under group_name as an unsigned
+// 64-bit integer. This is similar to g_key_file_get_integer() but can return
+// large positive results without truncation.
 func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -437,12 +434,12 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	return _guint64, _goerr
 }
 
-// Value returns the raw value associated with @key under @group_name. Use
+// Value returns the raw value associated with key under group_name. Use
 // g_key_file_get_string() to retrieve an unescaped UTF-8 string.
 //
-// In the event the key cannot be found, nil is returned and @error is set to
-// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the @group_name cannot be
-// found, nil is returned and @error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// In the event the key cannot be found, NULL is returned and error is set to
+// KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
+// found, NULL is returned and error is set to KEY_FILE_ERROR_GROUP_NOT_FOUND.
 func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -466,7 +463,7 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	return _utf8, _goerr
 }
 
-// HasGroup looks whether the key file has the group @group_name.
+// HasGroup looks whether the key file has the group group_name.
 func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -509,10 +506,10 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 	return _goerr
 }
 
-// LoadFromDataDirs: this function looks for a key file named @file in the paths
+// LoadFromDataDirs: this function looks for a key file named file in the paths
 // returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
-// file into @key_file and returns the file's full path in @full_path. If the
-// file could not be loaded then an error is set to either a Error or FileError.
+// file into key_file and returns the file's full path in full_path. If the file
+// could not be loaded then an error is set to either a Error or FileError.
 func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -536,11 +533,11 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 	return _fullPath, _goerr
 }
 
-// LoadFromDirs: this function looks for a key file named @file in the paths
-// specified in @search_dirs, loads the file into @key_file and returns the
-// file's full path in @full_path.
+// LoadFromDirs: this function looks for a key file named file in the paths
+// specified in search_dirs, loads the file into key_file and returns the file's
+// full path in full_path.
 //
-// If the file could not be found in any of the @search_dirs,
+// If the file could not be found in any of the search_dirs,
 // G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the OS
 // returns an error when opening or reading the file, a G_FILE_ERROR is
 // returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
@@ -555,11 +552,15 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(searchDirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(searchDirs))
-		for i := range searchDirs {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(searchDirs[i])))
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(searchDirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(searchDirs)+1)
+			var zero *C.gchar
+			out[len(searchDirs)] = zero
+			for i := range searchDirs {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(searchDirs[i])))
+			}
 		}
 	}
 	_arg4 = C.GKeyFileFlags(flags)
@@ -583,7 +584,7 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 // returned.
 //
 // This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
-// @file is not found, G_FILE_ERROR_NOENT is returned.
+// file is not found, G_FILE_ERROR_NOENT is returned.
 func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -603,9 +604,9 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// RemoveComment removes a comment above @key from @group_name. If @key is nil
-// then @comment will be removed above @group_name. If both @key and @group_name
-// are nil, then @comment will be removed above the first group in the file.
+// RemoveComment removes a comment above key from group_name. If key is NULL
+// then comment will be removed above group_name. If both key and group_name are
+// NULL, then comment will be removed above the first group in the file.
 func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -625,7 +626,7 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	return _goerr
 }
 
-// RemoveGroup removes the specified group, @group_name, from the key file.
+// RemoveGroup removes the specified group, group_name, from the key file.
 func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -643,7 +644,7 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	return _goerr
 }
 
-// RemoveKey removes @key in @group_name from the key file.
+// RemoveKey removes key in group_name from the key file.
 func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -663,7 +664,7 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	return _goerr
 }
 
-// SaveToFile writes the contents of @key_file to @filename using
+// SaveToFile writes the contents of key_file to filename using
 // g_file_set_contents(). If you need stricter guarantees about durability of
 // the written file than are provided by g_file_set_contents(), use
 // g_file_set_contents_full() with the return value of g_key_file_to_data().
@@ -687,8 +688,8 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 	return _goerr
 }
 
-// SetBoolean associates a new boolean value with @key under @group_name. If
-// @key cannot be found then it is created.
+// SetBoolean associates a new boolean value with key under group_name. If key
+// cannot be found then it is created.
 func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -705,9 +706,9 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	C.g_key_file_set_boolean(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetBooleanList associates a list of boolean values with @key under
-// @group_name. If @key cannot be found then it is created. If @group_name is
-// nil, the start_group is used.
+// SetBooleanList associates a list of boolean values with key under group_name.
+// If key cannot be found then it is created. If group_name is NULL, the
+// start_group is used.
 func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -726,14 +727,14 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 	C.g_key_file_set_boolean_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetComment places a comment above @key from @group_name.
+// SetComment places a comment above key from group_name.
 //
-// If @key is nil then @comment will be written above @group_name. If both @key
-// and @group_name are nil, then @comment will be written above the first group
-// in the file.
+// If key is NULL then comment will be written above group_name. If both key and
+// group_name are NULL, then comment will be written above the first group in
+// the file.
 //
 // Note that this function prepends a '#' comment marker to each line of
-// @comment.
+// comment.
 func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -755,7 +756,7 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	return _goerr
 }
 
-// SetDouble associates a new double value with @key under @group_name. If @key
+// SetDouble associates a new double value with key under group_name. If key
 // cannot be found then it is created.
 func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	var _arg0 *C.GKeyFile // out
@@ -771,8 +772,8 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	C.g_key_file_set_double(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetDoubleList associates a list of double values with @key under @group_name.
-// If @key cannot be found then it is created.
+// SetDoubleList associates a list of double values with key under group_name.
+// If key cannot be found then it is created.
 func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -791,7 +792,7 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 	C.g_key_file_set_double_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetInt64 associates a new integer value with @key under @group_name. If @key
+// SetInt64 associates a new integer value with key under group_name. If key
 // cannot be found then it is created.
 func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	var _arg0 *C.GKeyFile // out
@@ -807,8 +808,8 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	C.g_key_file_set_int64(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetInteger associates a new integer value with @key under @group_name. If
-// @key cannot be found then it is created.
+// SetInteger associates a new integer value with key under group_name. If key
+// cannot be found then it is created.
 func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -823,8 +824,8 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	C.g_key_file_set_integer(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetIntegerList associates a list of integer values with @key under
-// @group_name. If @key cannot be found then it is created.
+// SetIntegerList associates a list of integer values with key under group_name.
+// If key cannot be found then it is created.
 func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -856,8 +857,8 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 	C.g_key_file_set_list_separator(_arg0, _arg1)
 }
 
-// SetLocaleString associates a string value for @key and @locale under
-// @group_name. If the translation for @key cannot be found then it is created.
+// SetLocaleString associates a string value for key and locale under
+// group_name. If the translation for key cannot be found then it is created.
 func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, _string string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -874,8 +875,8 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	C.g_key_file_set_locale_string(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetLocaleStringList associates a list of string values for @key and @locale
-// under @group_name. If the translation for @key cannot be found then it is
+// SetLocaleStringList associates a list of string values for key and locale
+// under group_name. If the translation for key cannot be found then it is
 // created.
 func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
 	var _arg0 *C.GKeyFile // out
@@ -901,8 +902,8 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	C.g_key_file_set_locale_string_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// SetString associates a new string value with @key under @group_name. If @key
-// cannot be found then it is created. If @group_name cannot be found then it is
+// SetString associates a new string value with key under group_name. If key
+// cannot be found then it is created. If group_name cannot be found then it is
 // created. Unlike g_key_file_set_value(), this function handles characters that
 // need escaping, such as newlines.
 func (keyFile *KeyFile) SetString(groupName string, key string, _string string) {
@@ -919,9 +920,9 @@ func (keyFile *KeyFile) SetString(groupName string, key string, _string string) 
 	C.g_key_file_set_string(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetStringList associates a list of string values for @key under @group_name.
-// If @key cannot be found then it is created. If @group_name cannot be found
-// then it is created.
+// SetStringList associates a list of string values for key under group_name. If
+// key cannot be found then it is created. If group_name cannot be found then it
+// is created.
 func (keyFile *KeyFile) SetStringList(groupName string, key string, list []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -944,7 +945,7 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	C.g_key_file_set_string_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetUint64 associates a new integer value with @key under @group_name. If @key
+// SetUint64 associates a new integer value with key under group_name. If key
 // cannot be found then it is created.
 func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	var _arg0 *C.GKeyFile // out
@@ -960,11 +961,11 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	C.g_key_file_set_uint64(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetValue associates a new value with @key under @group_name.
+// SetValue associates a new value with key under group_name.
 //
-// If @key cannot be found then it is created. If @group_name cannot be found
-// then it is created. To set an UTF-8 string which may contain characters that
-// need escaping (such as newlines or spaces), use g_key_file_set_string().
+// If key cannot be found then it is created. If group_name cannot be found then
+// it is created. To set an UTF-8 string which may contain characters that need
+// escaping (such as newlines or spaces), use g_key_file_set_string().
 func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -979,10 +980,10 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	C.g_key_file_set_value(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ToData: this function outputs @key_file as a string.
+// ToData: this function outputs key_file as a string.
 //
-// Note that this function never reports an error, so it is safe to pass nil as
-// @error.
+// Note that this function never reports an error, so it is safe to pass NULL as
+// error.
 func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -1005,7 +1006,7 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	return _length, _utf8, _goerr
 }
 
-// Unref decreases the reference count of @key_file by 1. If the reference count
+// Unref decreases the reference count of key_file by 1. If the reference count
 // reaches zero, frees the key file and all its allocated memory.
 func (keyFile *KeyFile) unref() {
 	var _arg0 *C.GKeyFile // out

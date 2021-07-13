@@ -21,9 +21,9 @@ import "C"
 //
 // Compatibility is defined by two things: first the version of the running
 // library is newer than the version
-// @required_major.required_minor.@required_micro. Second the running library
-// must be binary compatible with the version
-// @required_major.required_minor.@required_micro (same major version.)
+// required_major.required_minor.required_micro. Second the running library must
+// be binary compatible with the version
+// required_major.required_minor.required_micro (same major version.)
 //
 // This function is primarily for GTK modules; the module can call this function
 // to check that it wasn’t loaded into an incompatible version of GTK. However,
@@ -50,9 +50,9 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	return _utf8
 }
 
-// GetBinaryAge returns the binary age as passed to `libtool`.
+// GetBinaryAge returns the binary age as passed to libtool.
 //
-// If `libtool` means nothing to you, don't worry about it.
+// If libtool means nothing to you, don't worry about it.
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
@@ -65,9 +65,9 @@ func GetBinaryAge() uint {
 	return _guint
 }
 
-// GetInterfaceAge returns the interface age as passed to `libtool`.
+// GetInterfaceAge returns the interface age as passed to libtool.
 //
-// If `libtool` means nothing to you, don't worry about it.
+// If libtool means nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 

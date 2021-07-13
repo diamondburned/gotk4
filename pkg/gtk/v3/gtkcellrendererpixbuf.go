@@ -33,10 +33,10 @@ type CellRendererPixbufer interface {
 // or a named icon (set via the CellRendererPixbuf:icon-name property).
 //
 // To support the tree view, CellRendererPixbuf also supports rendering two
-// alternative pixbufs, when the CellRenderer:is-expander property is true. If
-// the CellRenderer:is-expanded property is true and the
+// alternative pixbufs, when the CellRenderer:is-expander property is TRUE. If
+// the CellRenderer:is-expanded property is TRUE and the
 // CellRendererPixbuf:pixbuf-expander-open property is set to a pixbuf, it
-// renders that pixbuf, if the CellRenderer:is-expanded property is false and
+// renders that pixbuf, if the CellRenderer:is-expanded property is FALSE and
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
 type CellRendererPixbuf struct {

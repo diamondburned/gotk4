@@ -42,10 +42,10 @@ func GetDefaultRegistry() *Registry {
 // Registrier describes Registry's methods.
 type Registrier interface {
 	// Factory gets an ObjectFactory appropriate for creating Objects
-	// appropriate for @type.
+	// appropriate for type.
 	Factory(typ externglib.Type) *ObjectFactory
 	// FactoryType provides a #GType indicating the ObjectFactory subclass
-	// associated with @type.
+	// associated with type.
 	FactoryType(typ externglib.Type) externglib.Type
 	// SetFactoryType: associate an ObjectFactory subclass with a #GType.
 	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
@@ -78,7 +78,7 @@ func marshalRegistrier(p uintptr) (interface{}, error) {
 }
 
 // Factory gets an ObjectFactory appropriate for creating Objects appropriate
-// for @type.
+// for type.
 func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
@@ -97,7 +97,7 @@ func (registry *Registry) Factory(typ externglib.Type) *ObjectFactory {
 }
 
 // FactoryType provides a #GType indicating the ObjectFactory subclass
-// associated with @type.
+// associated with type.
 func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
@@ -116,8 +116,8 @@ func (registry *Registry) FactoryType(typ externglib.Type) externglib.Type {
 }
 
 // SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
-// associated @factory_type will thereafter be responsible for the creation of
-// new Object implementations for instances appropriate for @type.
+// associated factory_type will thereafter be responsible for the creation of
+// new Object implementations for instances appropriate for type.
 func (registry *Registry) SetFactoryType(typ externglib.Type, factoryType externglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out

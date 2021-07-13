@@ -18,16 +18,16 @@ import "C"
 
 // CairoDrawFromGL: main way to draw GL content in GTK.
 //
-// It takes a render buffer ID (@source_type == RENDERBUFFER) or a texture id
-// (@source_type == TEXTURE) and draws it onto @cr with an OVER operation,
+// It takes a render buffer ID (source_type == RENDERBUFFER) or a texture id
+// (source_type == TEXTURE) and draws it onto cr with an OVER operation,
 // respecting the current clip. The top left corner of the rectangle specified
-// by @x, @y, @width and @height will be drawn at the current (0,0) position of
-// the `cairo_t`.
+// by x, y, width and height will be drawn at the current (0,0) position of the
+// cairo_t.
 //
-// This will work for *all* `cairo_t`, as long as @surface is realized, but the
+// This will work for *all* cairo_t, as long as surface is realized, but the
 // fallback implementation that reads back the pixels from the buffer may be
 // used in the general case. In the case of direct drawing to a surface with no
-// special effects applied to @cr it will however use a more efficient approach.
+// special effects applied to cr it will however use a more efficient approach.
 //
 // For RENDERBUFFER the code will always fall back to software for buffers with
 // alpha components, so make sure you use TEXTURE if using alpha.
@@ -57,7 +57,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source int, sourceType
 	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
-// CairoRectangle adds the given rectangle to the current path of @cr.
+// CairoRectangle adds the given rectangle to the current path of cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
@@ -68,7 +68,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	C.gdk_cairo_rectangle(_arg1, _arg2)
 }
 
-// CairoRegion adds the given region to the current path of @cr.
+// CairoRegion adds the given region to the current path of cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
@@ -80,7 +80,7 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 }
 
 // CairoRegionCreateFromSurface creates region that covers the area where the
-// given @surface is more than 50% opaque.
+// given surface is more than 50% opaque.
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
@@ -102,25 +102,25 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	return _region
 }
 
-// CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.
+// CairoSetSourcePixbuf sets the given pixbuf as the source pattern for cr.
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
-// the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
-func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbufer, pixbufX float64, pixbufY float64) {
+// the origin of pixbuf is pixbuf_x, pixbuf_y.
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkPixbuf // out
 	var _arg3 C.double     // out
 	var _arg4 C.double     // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg3 = C.double(pixbufX)
 	_arg4 = C.double(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
 }
 
-// CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
+// CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out

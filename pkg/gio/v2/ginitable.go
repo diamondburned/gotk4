@@ -45,10 +45,10 @@ type InitableOverrider interface {
 	// The object must be initialized before any real use after initial
 	// construction, either with this function or g_async_initable_init_async().
 	//
-	// Implementations may also support cancellation. If @cancellable is not
-	// nil, then initialization can be cancelled by triggering the cancellable
+	// Implementations may also support cancellation. If cancellable is not
+	// NULL, then initialization can be cancelled by triggering the cancellable
 	// object from another thread. If the operation was cancelled, the error
-	// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+	// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL and the
 	// object doesn't support cancellable initialization the error
 	// G_IO_ERROR_NOT_SUPPORTED will be returned.
 	//
@@ -75,13 +75,13 @@ type InitableOverrider interface {
 	// pattern, a caller would expect to be able to call g_initable_init() on
 	// the result of g_object_new(), regardless of whether it is in fact a new
 	// instance.
-	Init(cancellable Cancellabler) error
+	Init(cancellable *Cancellable) error
 }
 
 // Initabler describes Initable's methods.
 type Initabler interface {
 	// Init initializes the object implementing the interface.
-	Init(cancellable Cancellabler) error
+	Init(cancellable *Cancellable) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -99,7 +99,7 @@ type Initabler interface {
 // method directly, instead it will be used automatically in various ways. For C
 // applications you generally just call g_initable_new() directly, or indirectly
 // via a foo_thing_new() wrapper. This will call g_initable_init() under the
-// cover, returning nil and setting a #GError on failure (at which point the
+// cover, returning NULL and setting a #GError on failure (at which point the
 // instance is unreferenced).
 //
 // For bindings in languages where the native constructor supports exceptions
@@ -135,10 +135,10 @@ func marshalInitabler(p uintptr) (interface{}, error) {
 // The object must be initialized before any real use after initial
 // construction, either with this function or g_async_initable_init_async().
 //
-// Implementations may also support cancellation. If @cancellable is not nil,
+// Implementations may also support cancellation. If cancellable is not NULL,
 // then initialization can be cancelled by triggering the cancellable object
 // from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If @cancellable is not nil and the
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL and the
 // object doesn't support cancellable initialization the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
@@ -164,13 +164,13 @@ func marshalInitabler(p uintptr) (interface{}, error) {
 // that sometimes returns an existing instance. In this pattern, a caller would
 // expect to be able to call g_initable_init() on the result of g_object_new(),
 // regardless of whether it is in fact a new instance.
-func (initable *Initable) Init(cancellable Cancellabler) error {
+func (initable *Initable) Init(cancellable *Cancellable) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)
 

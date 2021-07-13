@@ -67,7 +67,7 @@ type AppChooserButtoner interface {
 //
 // Initially, a AppChooserButton selects the first application in its list,
 // which will either be the most-recently used application or, if
-// AppChooserButton:show-default-item is true, the default application.
+// AppChooserButton:show-default-item is TRUE, the default application.
 //
 // The list of applications shown in a AppChooserButton includes the recommended
 // applications for the given content type. When

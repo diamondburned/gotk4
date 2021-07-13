@@ -34,7 +34,7 @@ type LabelOverrider interface {
 	ActivateLink(uri string) bool
 	CopyClipboard()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
-	PopulatePopup(menu Menuer)
+	PopulatePopup(menu *Menu)
 }
 
 // Labeler describes Label's methods.
@@ -66,7 +66,7 @@ type Labeler interface {
 	// Lines gets the number of lines to which an ellipsized, wrapping label
 	// should be limited.
 	Lines() int
-	// MaxWidthChars retrieves the desired maximum width of @label, in
+	// MaxWidthChars retrieves the desired maximum width of label, in
 	// characters.
 	MaxWidthChars() int
 	// MnemonicKeyval: if the label has been set so that it has an mnemonic key
@@ -78,7 +78,7 @@ type Labeler interface {
 	// Selectable gets the value set by gtk_label_set_selectable().
 	Selectable() bool
 	// SelectionBounds gets the selected range of characters in the label,
-	// returning true if there’s a selection.
+	// returning TRUE if there’s a selection.
 	SelectionBounds() (start int, end int, ok bool)
 	// SingleLineMode returns whether the label is in single line mode.
 	SingleLineMode() bool
@@ -93,11 +93,11 @@ type Labeler interface {
 	// UseUnderline returns whether an embedded underline in the label indicates
 	// a mnemonic.
 	UseUnderline() bool
-	// WidthChars retrieves the desired width of @label, in characters.
+	// WidthChars retrieves the desired width of label, in characters.
 	WidthChars() int
-	// Xalign gets the Label:xalign property for @label.
+	// Xalign gets the Label:xalign property for label.
 	Xalign() float32
-	// Yalign gets the Label:yalign property for @label.
+	// Yalign gets the Label:yalign property for label.
 	Yalign() float32
 	// SelectRegion selects a range of characters in the label, if the label is
 	// selectable.
@@ -123,16 +123,16 @@ type Labeler interface {
 	// SetLines sets the number of lines to which an ellipsized, wrapping label
 	// should be limited.
 	SetLines(lines int)
-	// SetMarkup parses @str which is marked up with the [Pango text markup
+	// SetMarkup parses str which is marked up with the [Pango text markup
 	// language][PangoMarkupFormat], setting the label’s text and attribute list
 	// based on the parse results.
 	SetMarkup(str string)
-	// SetMarkupWithMnemonic parses @str which is marked up with the [Pango text
+	// SetMarkupWithMnemonic parses str which is marked up with the [Pango text
 	// markup language][PangoMarkupFormat], setting the label’s text and
 	// attribute list based on the parse results.
 	SetMarkupWithMnemonic(str string)
-	// SetMaxWidthChars sets the desired maximum width in characters of @label
-	// to @n_chars.
+	// SetMaxWidthChars sets the desired maximum width in characters of label to
+	// n_chars.
 	SetMaxWidthChars(nChars int)
 	// SetMnemonicWidget: if the label has been set so that it has an mnemonic
 	// key (using i.e.
@@ -147,7 +147,7 @@ type Labeler interface {
 	SetSingleLineMode(singleLineMode bool)
 	// SetText sets the text within the Label widget.
 	SetText(str string)
-	// SetTextWithMnemonic sets the label’s text from the string @str.
+	// SetTextWithMnemonic sets the label’s text from the string str.
 	SetTextWithMnemonic(str string)
 	// SetTrackVisitedLinks sets whether the label should keep track of clicked
 	// links (and use a different color for them).
@@ -158,11 +158,11 @@ type Labeler interface {
 	// SetUseUnderline: if true, an underline in the text indicates the next
 	// character should be used for the mnemonic accelerator key.
 	SetUseUnderline(setting bool)
-	// SetWidthChars sets the desired width in characters of @label to @n_chars.
+	// SetWidthChars sets the desired width in characters of label to n_chars.
 	SetWidthChars(nChars int)
-	// SetXalign sets the Label:xalign property for @label.
+	// SetXalign sets the Label:xalign property for label.
 	SetXalign(xalign float32)
-	// SetYalign sets the Label:yalign property for @label.
+	// SetYalign sets the Label:yalign property for label.
 	SetYalign(yalign float32)
 }
 
@@ -214,7 +214,7 @@ func marshalLabeler(p uintptr) (interface{}, error) {
 	return wrapLabel(obj), nil
 }
 
-// NewLabel creates a new label with the given text inside it. You can pass nil
+// NewLabel creates a new label with the given text inside it. You can pass NULL
 // to get an empty label widget.
 func NewLabel(str string) *Label {
 	var _arg1 *C.gchar     // out
@@ -231,9 +231,9 @@ func NewLabel(str string) *Label {
 	return _label
 }
 
-// NewLabelWithMnemonic creates a new Label, containing the text in @str.
+// NewLabelWithMnemonic creates a new Label, containing the text in str.
 //
-// If characters in @str are preceded by an underscore, they are underlined. If
+// If characters in str are preceded by an underscore, they are underlined. If
 // you need a literal underscore character in a label, use '__' (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. The mnemonic key can be used to activate
@@ -372,8 +372,8 @@ func (label *Label) Label() string {
 
 // Layout gets the Layout used to display the label. The layout is useful to
 // e.g. convert text positions to pixel positions, in combination with
-// gtk_label_get_layout_offsets(). The returned layout is owned by the @label so
-// need not be freed by the caller. The @label is free to recreate its layout at
+// gtk_label_get_layout_offsets(). The returned layout is owned by the label so
+// need not be freed by the caller. The label is free to recreate its layout at
 // any time, so it should be considered read-only.
 func (label *Label) Layout() *pango.Layout {
 	var _arg0 *C.GtkLabel    // out
@@ -400,7 +400,7 @@ func (label *Label) Layout() *pango.Layout {
 // coordinates inside the Layout, e.g. to take some action if some part of the
 // label is clicked. Of course you will need to create a EventBox to receive the
 // events, and pack the label inside it, since labels are windowless (they
-// return false from gtk_widget_get_has_window()). Remember when using the
+// return FALSE from gtk_widget_get_has_window()). Remember when using the
 // Layout functions you need to convert to and from pixels using PANGO_PIXELS()
 // or NGO_SCALE.
 func (label *Label) LayoutOffsets() (x int, y int) {
@@ -474,7 +474,7 @@ func (label *Label) Lines() int {
 	return _gint
 }
 
-// MaxWidthChars retrieves the desired maximum width of @label, in characters.
+// MaxWidthChars retrieves the desired maximum width of label, in characters.
 // See gtk_label_set_width_chars().
 func (label *Label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
@@ -545,7 +545,7 @@ func (label *Label) Selectable() bool {
 }
 
 // SelectionBounds gets the selected range of characters in the label, returning
-// true if there’s a selection.
+// TRUE if there’s a selection.
 func (label *Label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // in
@@ -663,7 +663,7 @@ func (label *Label) UseUnderline() bool {
 	return _ok
 }
 
-// WidthChars retrieves the desired width of @label, in characters. See
+// WidthChars retrieves the desired width of label, in characters. See
 // gtk_label_set_width_chars().
 func (label *Label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
@@ -680,7 +680,7 @@ func (label *Label) WidthChars() int {
 	return _gint
 }
 
-// Xalign gets the Label:xalign property for @label.
+// Xalign gets the Label:xalign property for label.
 func (label *Label) Xalign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gfloat    // in
@@ -696,7 +696,7 @@ func (label *Label) Xalign() float32 {
 	return _gfloat
 }
 
-// Yalign gets the Label:yalign property for @label.
+// Yalign gets the Label:yalign property for label.
 func (label *Label) Yalign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gfloat    // in
@@ -714,7 +714,7 @@ func (label *Label) Yalign() float32 {
 
 // SelectRegion selects a range of characters in the label, if the label is
 // selectable. See gtk_label_set_selectable(). If the label is not selectable,
-// this function has no effect. If @start_offset or @end_offset are -1, then the
+// this function has no effect. If start_offset or end_offset are -1, then the
 // end of the label will be substituted.
 func (label *Label) SelectRegion(startOffset int, endOffset int) {
 	var _arg0 *C.GtkLabel // out
@@ -800,11 +800,11 @@ func (label *Label) SetLabel(str string) {
 	C.gtk_label_set_label(_arg0, _arg1)
 }
 
-// SetLineWrap toggles line wrapping within the Label widget. true makes it
-// break lines if text exceeds the widget’s size. false lets the text get cut
+// SetLineWrap toggles line wrapping within the Label widget. TRUE makes it
+// break lines if text exceeds the widget’s size. FALSE lets the text get cut
 // off by the edge of the widget if it exceeds the widget size.
 //
-// Note that setting line wrapping to true does not make the label wrap at its
+// Note that setting line wrapping to TRUE does not make the label wrap at its
 // parent container’s width, because GTK+ widgets conceptually can’t make their
 // requisition depend on the parent container’s size. For a label that wraps at
 // a specific position, set the label’s width using
@@ -847,11 +847,11 @@ func (label *Label) SetLines(lines int) {
 	C.gtk_label_set_lines(_arg0, _arg1)
 }
 
-// SetMarkup parses @str which is marked up with the [Pango text markup
+// SetMarkup parses str which is marked up with the [Pango text markup
 // language][PangoMarkupFormat], setting the label’s text and attribute list
 // based on the parse results.
 //
-// If the @str is external data, you may need to escape it with
+// If the str is external data, you may need to escape it with
 // g_markup_escape_text() or g_markup_printf_escaped():
 //
 //    GtkWidget *label = gtk_label_new (NULL);
@@ -863,7 +863,7 @@ func (label *Label) SetLines(lines int) {
 //    gtk_label_set_markup (GTK_LABEL (label), markup);
 //    g_free (markup);
 //
-// This function will set the Label:use-markup property to true as a side
+// This function will set the Label:use-markup property to TRUE as a side
 // effect.
 //
 // If you set the label contents using the Label:label property you should also
@@ -880,9 +880,9 @@ func (label *Label) SetMarkup(str string) {
 	C.gtk_label_set_markup(_arg0, _arg1)
 }
 
-// SetMarkupWithMnemonic parses @str which is marked up with the [Pango text
+// SetMarkupWithMnemonic parses str which is marked up with the [Pango text
 // markup language][PangoMarkupFormat], setting the label’s text and attribute
-// list based on the parse results. If characters in @str are preceded by an
+// list based on the parse results. If characters in str are preceded by an
 // underscore, they are underlined indicating that they represent a keyboard
 // accelerator called a mnemonic.
 //
@@ -898,8 +898,8 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 	C.gtk_label_set_markup_with_mnemonic(_arg0, _arg1)
 }
 
-// SetMaxWidthChars sets the desired maximum width in characters of @label to
-// @n_chars.
+// SetMaxWidthChars sets the desired maximum width in characters of label to
+// n_chars.
 func (label *Label) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -977,9 +977,9 @@ func (label *Label) SetSingleLineMode(singleLineMode bool) {
 // was there before.
 //
 // This function will clear any previously set mnemonic accelerators, and set
-// the Label:use-underline property to false as a side effect.
+// the Label:use-underline property to FALSE as a side effect.
 //
-// This function will set the Label:use-markup property to false as a side
+// This function will set the Label:use-markup property to FALSE as a side
 // effect.
 //
 // See also: gtk_label_set_markup()
@@ -993,8 +993,8 @@ func (label *Label) SetText(str string) {
 	C.gtk_label_set_text(_arg0, _arg1)
 }
 
-// SetTextWithMnemonic sets the label’s text from the string @str. If characters
-// in @str are preceded by an underscore, they are underlined indicating that
+// SetTextWithMnemonic sets the label’s text from the string str. If characters
+// in str are preceded by an underscore, they are underlined indicating that
 // they represent a keyboard accelerator called a mnemonic. The mnemonic key can
 // be used to activate another widget, chosen automatically, or explicitly using
 // gtk_label_set_mnemonic_widget().
@@ -1050,7 +1050,7 @@ func (label *Label) SetUseUnderline(setting bool) {
 	C.gtk_label_set_use_underline(_arg0, _arg1)
 }
 
-// SetWidthChars sets the desired width in characters of @label to @n_chars.
+// SetWidthChars sets the desired width in characters of label to n_chars.
 func (label *Label) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
@@ -1061,7 +1061,7 @@ func (label *Label) SetWidthChars(nChars int) {
 	C.gtk_label_set_width_chars(_arg0, _arg1)
 }
 
-// SetXalign sets the Label:xalign property for @label.
+// SetXalign sets the Label:xalign property for label.
 func (label *Label) SetXalign(xalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out
@@ -1072,7 +1072,7 @@ func (label *Label) SetXalign(xalign float32) {
 	C.gtk_label_set_xalign(_arg0, _arg1)
 }
 
-// SetYalign sets the Label:yalign property for @label.
+// SetYalign sets the Label:yalign property for label.
 func (label *Label) SetYalign(yalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out

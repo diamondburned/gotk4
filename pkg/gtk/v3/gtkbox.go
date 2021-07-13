@@ -35,16 +35,13 @@ type Boxer interface {
 	Homogeneous() bool
 	// Spacing gets the value set by gtk_box_set_spacing().
 	Spacing() int
-	// PackEnd adds @child to @box, packed with reference to the end of @box.
+	// PackEnd adds child to box, packed with reference to the end of box.
 	PackEnd(child Widgeter, expand bool, fill bool, padding uint)
-	// PackStart adds @child to @box, packed with reference to the start of
-	// @box.
+	// PackStart adds child to box, packed with reference to the start of box.
 	PackStart(child Widgeter, expand bool, fill bool, padding uint)
-	// QueryChildPacking obtains information about how @child is packed into
-	// @box.
+	// QueryChildPacking obtains information about how child is packed into box.
 	QueryChildPacking(child Widgeter) (expand bool, fill bool, padding uint, packType PackType)
-	// ReorderChild moves @child to a new @position in the list of @box
-	// children.
+	// ReorderChild moves child to a new position in the list of box children.
 	ReorderChild(child Widgeter, position int)
 	// SetBaselinePosition sets the baseline position of a box.
 	SetBaselinePosition(position BaselinePosition)
@@ -52,13 +49,13 @@ type Boxer interface {
 	// centered with respect to the full width of the box, even if the children
 	// at either side take up different amounts of space.
 	SetCenterWidget(widget Widgeter)
-	// SetChildPacking sets the way @child is packed into @box.
+	// SetChildPacking sets the way child is packed into box.
 	SetChildPacking(child Widgeter, expand bool, fill bool, padding uint, packType PackType)
-	// SetHomogeneous sets the Box:homogeneous property of @box, controlling
-	// whether or not all children of @box are given equal space in the box.
+	// SetHomogeneous sets the Box:homogeneous property of box, controlling
+	// whether or not all children of box are given equal space in the box.
 	SetHomogeneous(homogeneous bool)
-	// SetSpacing sets the Box:spacing property of @box, which is the number of
-	// pixels to place between children of @box.
+	// SetSpacing sets the Box:spacing property of box, which is the number of
+	// pixels to place between children of box.
 	SetSpacing(spacing int)
 }
 
@@ -236,9 +233,9 @@ func (box *Box) Spacing() int {
 	return _gint
 }
 
-// PackEnd adds @child to @box, packed with reference to the end of @box. The
-// @child is packed after (away from end of) any other child packed with
-// reference to the end of @box.
+// PackEnd adds child to box, packed with reference to the end of box. The child
+// is packed after (away from end of) any other child packed with reference to
+// the end of box.
 func (box *Box) PackEnd(child Widgeter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -259,9 +256,9 @@ func (box *Box) PackEnd(child Widgeter, expand bool, fill bool, padding uint) {
 	C.gtk_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// PackStart adds @child to @box, packed with reference to the start of @box.
-// The @child is packed after any other child packed with reference to the start
-// of @box.
+// PackStart adds child to box, packed with reference to the start of box. The
+// child is packed after any other child packed with reference to the start of
+// box.
 func (box *Box) PackStart(child Widgeter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
@@ -282,7 +279,7 @@ func (box *Box) PackStart(child Widgeter, expand bool, fill bool, padding uint) 
 	C.gtk_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// QueryChildPacking obtains information about how @child is packed into @box.
+// QueryChildPacking obtains information about how child is packed into box.
 func (box *Box) QueryChildPacking(child Widgeter) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
@@ -313,12 +310,12 @@ func (box *Box) QueryChildPacking(child Widgeter) (expand bool, fill bool, paddi
 	return _expand, _fill, _padding, _packType
 }
 
-// ReorderChild moves @child to a new @position in the list of @box children.
-// The list contains widgets packed K_PACK_START as well as widgets packed
-// K_PACK_END, in the order that these widgets were added to @box.
+// ReorderChild moves child to a new position in the list of box children. The
+// list contains widgets packed K_PACK_START as well as widgets packed
+// K_PACK_END, in the order that these widgets were added to box.
 //
-// A widget’s position in the @box children list determines where the widget is
-// packed into @box. A child widget at some position in the list will be packed
+// A widget’s position in the box children list determines where the widget is
+// packed into box. A child widget at some position in the list will be packed
 // just after all other widgets of the same packing type that appear earlier in
 // the list.
 func (box *Box) ReorderChild(child Widgeter, position int) {
@@ -336,8 +333,8 @@ func (box *Box) ReorderChild(child Widgeter, position int) {
 // SetBaselinePosition sets the baseline position of a box. This affects only
 // horizontal boxes with at least one baseline aligned child. If there is more
 // vertical space available than requested, and the baseline is not allocated by
-// the parent then @position is used to allocate the baseline wrt the extra
-// space available.
+// the parent then position is used to allocate the baseline wrt the extra space
+// available.
 func (box *Box) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBox             // out
 	var _arg1 C.GtkBaselinePosition // out
@@ -361,7 +358,7 @@ func (box *Box) SetCenterWidget(widget Widgeter) {
 	C.gtk_box_set_center_widget(_arg0, _arg1)
 }
 
-// SetChildPacking sets the way @child is packed into @box.
+// SetChildPacking sets the way child is packed into box.
 func (box *Box) SetChildPacking(child Widgeter, expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
@@ -384,8 +381,8 @@ func (box *Box) SetChildPacking(child Widgeter, expand bool, fill bool, padding 
 	C.gtk_box_set_child_packing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// SetHomogeneous sets the Box:homogeneous property of @box, controlling whether
-// or not all children of @box are given equal space in the box.
+// SetHomogeneous sets the Box:homogeneous property of box, controlling whether
+// or not all children of box are given equal space in the box.
 func (box *Box) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
 	var _arg1 C.gboolean // out
@@ -398,8 +395,8 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 	C.gtk_box_set_homogeneous(_arg0, _arg1)
 }
 
-// SetSpacing sets the Box:spacing property of @box, which is the number of
-// pixels to place between children of @box.
+// SetSpacing sets the Box:spacing property of box, which is the number of
+// pixels to place between children of box.
 func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.gint    // out

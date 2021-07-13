@@ -32,10 +32,10 @@ type FlattenListModeler interface {
 	SetModel(model gio.ListModeler)
 }
 
-// FlattenListModel: `GtkFlattenListModel` is a list model that concatenates
-// other list models.
+// FlattenListModel: GtkFlattenListModel is a list model that concatenates other
+// list models.
 //
-// `GtkFlattenListModel` takes a list model containing list models, and flattens
+// GtkFlattenListModel takes a list model containing list models, and flattens
 // it into a single model.
 type FlattenListModel struct {
 	*externglib.Object
@@ -63,7 +63,7 @@ func marshalFlattenListModeler(p uintptr) (interface{}, error) {
 	return wrapFlattenListModel(obj), nil
 }
 
-// NewFlattenListModel creates a new `GtkFlattenListModel` that flattens @list.
+// NewFlattenListModel creates a new GtkFlattenListModel that flattens list.
 func NewFlattenListModel(model gio.ListModeler) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in

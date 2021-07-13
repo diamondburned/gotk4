@@ -32,7 +32,7 @@ func init() {
 type AppChooserWidgetOverrider interface {
 	ApplicationActivated(appInfo gio.AppInfor)
 	ApplicationSelected(appInfo gio.AppInfor)
-	PopulatePopup(menu Menuer, appInfo gio.AppInfor)
+	PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 }
 
 // AppChooserWidgeter describes AppChooserWidget's methods.

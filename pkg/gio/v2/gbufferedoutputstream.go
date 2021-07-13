@@ -35,12 +35,12 @@ func init() {
 type BufferedOutputStreamer interface {
 	// AutoGrow checks if the buffer automatically grows as data is added.
 	AutoGrow() bool
-	// BufferSize gets the size of the buffer in the @stream.
+	// BufferSize gets the size of the buffer in the stream.
 	BufferSize() uint
-	// SetAutoGrow sets whether or not the @stream's buffer should automatically
+	// SetAutoGrow sets whether or not the stream's buffer should automatically
 	// grow.
 	SetAutoGrow(autoGrow bool)
-	// SetBufferSize sets the size of the internal buffer to @size.
+	// SetBufferSize sets the size of the internal buffer to size.
 	SetBufferSize(size uint)
 }
 
@@ -142,7 +142,7 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 	return _ok
 }
 
-// BufferSize gets the size of the buffer in the @stream.
+// BufferSize gets the size of the buffer in the stream.
 func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
@@ -158,10 +158,10 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 	return _gsize
 }
 
-// SetAutoGrow sets whether or not the @stream's buffer should automatically
-// grow. If @auto_grow is true, then each write will just make the buffer
-// larger, and you must manually flush the buffer to actually write out the data
-// to the underlying stream.
+// SetAutoGrow sets whether or not the stream's buffer should automatically
+// grow. If auto_grow is true, then each write will just make the buffer larger,
+// and you must manually flush the buffer to actually write out the data to the
+// underlying stream.
 func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
@@ -174,7 +174,7 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	C.g_buffered_output_stream_set_auto_grow(_arg0, _arg1)
 }
 
-// SetBufferSize sets the size of the internal buffer to @size.
+// SetBufferSize sets the size of the internal buffer to size.
 func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out

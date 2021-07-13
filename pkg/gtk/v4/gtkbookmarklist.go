@@ -31,22 +31,22 @@ type BookmarkLister interface {
 	Filename() string
 	// IOPriority gets the IO priority to use while loading file.
 	IOPriority() int
-	// IsLoading returns true if the files are currently being loaded.
+	// IsLoading returns TRUE if the files are currently being loaded.
 	IsLoading() bool
-	// SetAttributes sets the @attributes to be enumerated and starts the
+	// SetAttributes sets the attributes to be enumerated and starts the
 	// enumeration.
 	SetAttributes(attributes string)
 	// SetIOPriority sets the IO priority to use while loading files.
 	SetIOPriority(ioPriority int)
 }
 
-// BookmarkList: `GtkBookmarkList` is a list model that wraps `GBookmarkFile`.
+// BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.
 //
-// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
+// It presents a GListModel and fills it asynchronously with the GFileInfos
 // returned from that function.
 //
-// The `GFileInfo`s in the list have some attributes in the recent namespace
-// added: `recent::private` (boolean) and `recent:applications` (stringv).
+// The GFileInfos in the list have some attributes in the recent namespace
+// added: recent::private (boolean) and recent:applications (stringv).
 type BookmarkList struct {
 	*externglib.Object
 
@@ -73,7 +73,7 @@ func marshalBookmarkLister(p uintptr) (interface{}, error) {
 	return wrapBookmarkList(obj), nil
 }
 
-// NewBookmarkList creates a new `GtkBookmarkList` with the given @attributes.
+// NewBookmarkList creates a new GtkBookmarkList with the given attributes.
 func NewBookmarkList(filename string, attributes string) *BookmarkList {
 	var _arg1 *C.char            // out
 	var _arg2 *C.char            // out
@@ -139,9 +139,9 @@ func (self *BookmarkList) IOPriority() int {
 	return _gint
 }
 
-// IsLoading returns true if the files are currently being loaded.
+// IsLoading returns TRUE if the files are currently being loaded.
 //
-// Files will be added to @self from time to time while loading is going on. The
+// Files will be added to self from time to time while loading is going on. The
 // order in which are added is undefined and may change in between runs.
 func (self *BookmarkList) IsLoading() bool {
 	var _arg0 *C.GtkBookmarkList // out
@@ -160,10 +160,10 @@ func (self *BookmarkList) IsLoading() bool {
 	return _ok
 }
 
-// SetAttributes sets the @attributes to be enumerated and starts the
+// SetAttributes sets the attributes to be enumerated and starts the
 // enumeration.
 //
-// If @attributes is nil, no attributes will be queried, but a list of Infos
+// If attributes is NULL, no attributes will be queried, but a list of Infos
 // will still be created.
 func (self *BookmarkList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkBookmarkList // out

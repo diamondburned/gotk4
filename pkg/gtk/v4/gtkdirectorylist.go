@@ -37,13 +37,13 @@ type DirectoryLister interface {
 	// Monitored returns whether the directory list is monitoring the directory
 	// for changes.
 	Monitored() bool
-	// IsLoading returns true if the children enumeration is currently in
+	// IsLoading returns TRUE if the children enumeration is currently in
 	// progress.
 	IsLoading() bool
-	// SetAttributes sets the @attributes to be enumerated and starts the
+	// SetAttributes sets the attributes to be enumerated and starts the
 	// enumeration.
 	SetAttributes(attributes string)
-	// SetFile sets the @file to be enumerated and starts the enumeration.
+	// SetFile sets the file to be enumerated and starts the enumeration.
 	SetFile(file gio.Filer)
 	// SetIOPriority sets the IO priority to use while loading directories.
 	SetIOPriority(ioPriority int)
@@ -52,29 +52,28 @@ type DirectoryLister interface {
 	SetMonitored(monitored bool)
 }
 
-// DirectoryList: `GtkDirectoryList` is a list model that wraps
+// DirectoryList: GtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async().
 //
-// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
+// It presents a GListModel and fills it asynchronously with the GFileInfos
 // returned from that function.
 //
-// Enumeration will start automatically when a the
-// [property@Gtk.DirectoryList:file] property is set.
+// Enumeration will start automatically when a the gtk.DirectoryList:file
+// property is set.
 //
-// While the `GtkDirectoryList` is being filled, the
-// [property@Gtk.DirectoryList:loading] property will be set to true. You can
-// listen to that property if you want to show information like a `GtkSpinner`
-// or a "Loading..." text.
+// While the GtkDirectoryList is being filled, the gtk.DirectoryList:loading
+// property will be set to TRUE. You can listen to that property if you want to
+// show information like a GtkSpinner or a "Loading..." text.
 //
-// If loading fails at any point, the [property@Gtk.DirectoryList:error]
-// property will be set to give more indication about the failure.
+// If loading fails at any point, the gtk.DirectoryList:error property will be
+// set to give more indication about the failure.
 //
-// The `GFileInfo`s returned from a `GtkDirectoryList` have the "standard::file"
-// attribute set to the `GFile` they refer to. This way you can get at the file
+// The GFileInfos returned from a GtkDirectoryList have the "standard::file"
+// attribute set to the GFile they refer to. This way you can get at the file
 // that is referred to in the same way you would via
 // g_file_enumerator_get_child(). This means you do not need access to the
-// `GtkDirectoryList`, but can access the `GFile` directly from the `GFileInfo`
-// when operating with a `GtkListView` or similar.
+// GtkDirectoryList, but can access the GFile directly from the GFileInfo when
+// operating with a GtkListView or similar.
 type DirectoryList struct {
 	*externglib.Object
 
@@ -101,10 +100,9 @@ func marshalDirectoryLister(p uintptr) (interface{}, error) {
 	return wrapDirectoryList(obj), nil
 }
 
-// NewDirectoryList creates a new `GtkDirectoryList`.
+// NewDirectoryList creates a new GtkDirectoryList.
 //
-// The `GtkDirectoryList` is querying the given @file with the given
-// @attributes.
+// The GtkDirectoryList is querying the given file with the given attributes.
 func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _arg1 *C.char             // out
 	var _arg2 *C.GFile            // out
@@ -217,9 +215,9 @@ func (self *DirectoryList) Monitored() bool {
 	return _ok
 }
 
-// IsLoading returns true if the children enumeration is currently in progress.
+// IsLoading returns TRUE if the children enumeration is currently in progress.
 //
-// Files will be added to @self from time to time while loading is going on. The
+// Files will be added to self from time to time while loading is going on. The
 // order in which are added is undefined and may change in between runs.
 func (self *DirectoryList) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
@@ -238,11 +236,11 @@ func (self *DirectoryList) IsLoading() bool {
 	return _ok
 }
 
-// SetAttributes sets the @attributes to be enumerated and starts the
+// SetAttributes sets the attributes to be enumerated and starts the
 // enumeration.
 //
-// If @attributes is nil, no attributes will be queried, but a list of
-// `GFileInfo`s will still be created.
+// If attributes is NULL, no attributes will be queried, but a list of
+// GFileInfos will still be created.
 func (self *DirectoryList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.char             // out
@@ -253,9 +251,9 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 }
 
-// SetFile sets the @file to be enumerated and starts the enumeration.
+// SetFile sets the file to be enumerated and starts the enumeration.
 //
-// If @file is nil, the result will be an empty list.
+// If file is NULL, the result will be an empty list.
 func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkDirectoryList // out
 	var _arg1 *C.GFile            // out
@@ -268,8 +266,8 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 
 // SetIOPriority sets the IO priority to use while loading directories.
 //
-// Setting the priority while @self is loading will reprioritize the ongoing
-// load as soon as possible.
+// Setting the priority while self is loading will reprioritize the ongoing load
+// as soon as possible.
 //
 // The default IO priority is G_PRIORITY_DEFAULT, which is higher than the GTK
 // redraw priority. If you are loading a lot of directories in parallel,

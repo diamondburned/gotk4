@@ -64,7 +64,7 @@ func marshalNativeSocketAddresser(p uintptr) (interface{}, error) {
 	return wrapNativeSocketAddress(obj), nil
 }
 
-// NewNativeSocketAddress creates a new SocketAddress for @native and @len.
+// NewNativeSocketAddress creates a new SocketAddress for native and len.
 func NewNativeSocketAddress(native cgo.Handle, len uint) *NativeSocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out

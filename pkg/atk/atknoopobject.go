@@ -107,7 +107,7 @@ func marshalNoOpObjector(p uintptr) (interface{}, error) {
 
 // NewNoOpObject provides a default (non-functioning stub) Object. Application
 // maintainers should not use this method.
-func NewNoOpObject(obj gextras.Objector) *NoOpObject {
+func NewNoOpObject(obj *externglib.Object) *NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 

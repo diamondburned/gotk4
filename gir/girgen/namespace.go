@@ -237,6 +237,19 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		generateFunctions(v.Name, v.Functions)
 	}
 
+	// Ensure that all files explicitly import runtime/cgo to not trigger an
+	// error in a compiler complaining about implicitly importing runtime/cgo.
+	// https://sourcegraph.com/github.com/golang/go/-/blob/src/cmd/link/internal/ld/lib.go?L563:3.
+	for _, file := range n.files {
+		if file.header.HasImport("runtime/cgo") {
+			goto importedCgo
+		}
+	}
+
+	// Put the dash import into the root package.
+	n.makeFile("").header.DashImport("runtime/cgo")
+
+importedCgo:
 	files := make(map[string][]byte, len(n.files))
 
 	var firstErr error

@@ -43,7 +43,7 @@ type ApplicationCommandLineOverrider interface {
 	// The Stream can be used to read data passed to the standard input of the
 	// invoking process. This doesn't work on all platforms. Presently, it is
 	// only available on UNIX when using a D-Bus daemon capable of passing file
-	// descriptors. If stdin is not available then nil will be returned. In the
+	// descriptors. If stdin is not available then NULL will be returned. In the
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
@@ -55,23 +55,23 @@ type ApplicationCommandLineOverrider interface {
 // ApplicationCommandLiner describes ApplicationCommandLine's methods.
 type ApplicationCommandLiner interface {
 	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of @cmdline.
+	// given as part of the invocation of cmdline.
 	CreateFileForArg(arg string) *File
 	// Cwd gets the working directory of the command line invocation.
 	Cwd() string
 	// Environ gets the contents of the 'environ' variable of the command line
 	// invocation, as would be returned by g_get_environ(), ie as a
-	// nil-terminated list of strings in the form 'NAME=VALUE'.
+	// NULL-terminated list of strings in the form 'NAME=VALUE'.
 	Environ() []string
-	// ExitStatus gets the exit status of @cmdline.
+	// ExitStatus gets the exit status of cmdline.
 	ExitStatus() int
-	// IsRemote determines if @cmdline represents a remote invocation.
+	// IsRemote determines if cmdline represents a remote invocation.
 	IsRemote() bool
 	// OptionsDict gets the options there were passed to
 	// g_application_command_line().
 	OptionsDict() *glib.VariantDict
 	// PlatformData gets the platform data associated with the invocation of
-	// @cmdline.
+	// cmdline.
 	PlatformData() *glib.Variant
 	// Stdin gets the stdin of the invoking process.
 	Stdin() *InputStream
@@ -92,7 +92,7 @@ type ApplicationCommandLiner interface {
 // current process is running in direct response to the invocation) or remote
 // (ie: some other process forwarded the commandline to this process).
 //
-// The GApplicationCommandLine object can provide the @argc and @argv parameters
+// The GApplicationCommandLine object can provide the argc and argv parameters
 // for use with the Context command-line parsing API, with the
 // g_application_command_line_get_arguments() function. See
 // [gapplication-example-cmdline3.c][gapplication-example-cmdline3] for an
@@ -104,10 +104,10 @@ type ApplicationCommandLiner interface {
 // process exits when the last reference is dropped).
 //
 // The main use for CommandLine (and the #GApplication::command-line signal) is
-// 'Emacs server' like use cases: You can set the `EDITOR` environment variable
-// to have e.g. git use your favourite editor to edit commit messages, and if
-// you already have an instance of the editor running, the editing will happen
-// in the running instance, instead of opening a new one. An important aspect of
+// 'Emacs server' like use cases: You can set the EDITOR environment variable to
+// have e.g. git use your favourite editor to edit commit messages, and if you
+// already have an instance of the editor running, the editing will happen in
+// the running instance, instead of opening a new one. An important aspect of
 // this use case is that the process that gets started by git does not return
 // until the editing is done.
 //
@@ -176,7 +176,7 @@ func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 }
 
 // CreateFileForArg creates a #GFile corresponding to a filename that was given
-// as part of the invocation of @cmdline.
+// as part of the invocation of cmdline.
 //
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
@@ -202,10 +202,10 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 // contain non-utf8 data.
 //
 // It is possible that the remote application did not send a working directory,
-// so this may be nil.
+// so this may be NULL.
 //
 // The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
+// cmdline exists.
 func (cmdline *ApplicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
@@ -222,7 +222,7 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 }
 
 // Environ gets the contents of the 'environ' variable of the command line
-// invocation, as would be returned by g_get_environ(), ie as a nil-terminated
+// invocation, as would be returned by g_get_environ(), ie as a NULL-terminated
 // list of strings in the form 'NAME=VALUE'. The strings may contain non-utf8
 // data.
 //
@@ -232,7 +232,7 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 // messages from other applications).
 //
 // The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
+// cmdline exists.
 //
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
@@ -264,7 +264,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 	return _filenames
 }
 
-// ExitStatus gets the exit status of @cmdline. See
+// ExitStatus gets the exit status of cmdline. See
 // g_application_command_line_set_exit_status() for more information.
 func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -281,7 +281,7 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	return _gint
 }
 
-// IsRemote determines if @cmdline represents a remote invocation.
+// IsRemote determines if cmdline represents a remote invocation.
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
@@ -308,7 +308,7 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 // GApplication::handle-local-options handler.
 //
 // If no options were sent then an empty dictionary is returned so that you
-// don't need to check for nil.
+// don't need to check for NULL.
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
@@ -329,13 +329,13 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 }
 
 // PlatformData gets the platform data associated with the invocation of
-// @cmdline.
+// cmdline.
 //
 // This is a #GVariant dictionary containing information about the context in
 // which the invocation occurred. It typically contains information like the
 // current working directory and the startup notification ID.
 //
-// For local invocation, it will be nil.
+// For local invocation, it will be NULL.
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
@@ -360,7 +360,7 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 // The Stream can be used to read data passed to the standard input of the
 // invoking process. This doesn't work on all platforms. Presently, it is only
 // available on UNIX when using a D-Bus daemon capable of passing file
-// descriptors. If stdin is not available then nil will be returned. In the
+// descriptors. If stdin is not available then NULL will be returned. In the
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
@@ -389,7 +389,7 @@ func (cmdline *ApplicationCommandLine) Stdin() *InputStream {
 // messages from other applications).
 //
 // The return value should not be modified or freed and is valid for as long as
-// @cmdline exists.
+// cmdline exists.
 func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -417,7 +417,7 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 // In the event that you want the remote invocation to continue running and want
 // to decide on the exit status in the future, you can use this call. For the
 // case of a remote invocation, the remote process will typically exit when the
-// last reference is dropped on @cmdline. The exit status of the remote process
+// last reference is dropped on cmdline. The exit status of the remote process
 // will be equal to the last value that was set with this function.
 //
 // In the case that the commandline invocation is local, the situation is

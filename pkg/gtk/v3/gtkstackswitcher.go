@@ -29,7 +29,7 @@ type StackSwitcherer interface {
 	// Stack retrieves the stack.
 	Stack() *Stack
 	// SetStack sets the stack to control.
-	SetStack(stack Stacker)
+	SetStack(stack *Stack)
 }
 
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of
@@ -120,12 +120,12 @@ func (switcher *StackSwitcher) Stack() *Stack {
 }
 
 // SetStack sets the stack to control.
-func (switcher *StackSwitcher) SetStack(stack Stacker) {
+func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out
 	var _arg1 *C.GtkStack         // out
 
 	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(switcher.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((stack).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }

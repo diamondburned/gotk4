@@ -33,13 +33,13 @@ func init() {
 
 // UnixSocketAddresser describes UnixSocketAddress's methods.
 type UnixSocketAddresser interface {
-	// AddressType gets @address's type.
+	// AddressType gets address's type.
 	AddressType() UnixSocketAddressType
-	// IsAbstract tests if @address is abstract.
+	// IsAbstract tests if address is abstract.
 	IsAbstract() bool
-	// Path gets @address's path, or for abstract sockets the "name".
+	// Path gets address's path, or for abstract sockets the "name".
 	Path() string
-	// PathLen gets the length of @address's path.
+	// PathLen gets the length of address's path.
 	PathLen() uint
 }
 
@@ -53,8 +53,8 @@ type UnixSocketAddresser interface {
 // can use g_unix_socket_address_abstract_names_supported() to see if abstract
 // names are supported.
 //
-// Note that `<gio/gunixsocketaddress.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// Note that <gio/gunixsocketaddress.h> belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the gio-unix-2.0.pc pkg-config file when
 // using it.
 type UnixSocketAddress struct {
 	SocketAddress
@@ -82,7 +82,7 @@ func marshalUnixSocketAddresser(p uintptr) (interface{}, error) {
 	return wrapUnixSocketAddress(obj), nil
 }
 
-// NewUnixSocketAddress creates a new SocketAddress for @path.
+// NewUnixSocketAddress creates a new SocketAddress for path.
 //
 // To create abstract socket addresses, on systems that support that, use
 // g_unix_socket_address_new_abstract().
@@ -102,7 +102,7 @@ func NewUnixSocketAddress(path string) *UnixSocketAddress {
 }
 
 // NewUnixSocketAddressAbstract creates a new
-// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for @path.
+// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED SocketAddress for path.
 //
 // Deprecated: Use g_unix_socket_address_new_with_type().
 func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
@@ -124,31 +124,30 @@ func NewUnixSocketAddressAbstract(path []byte) *UnixSocketAddress {
 	return _unixSocketAddress
 }
 
-// NewUnixSocketAddressWithType creates a new SocketAddress of type @type with
-// name @path.
+// NewUnixSocketAddressWithType creates a new SocketAddress of type type with
+// name path.
 //
-// If @type is G_UNIX_SOCKET_ADDRESS_PATH, this is equivalent to calling
+// If type is G_UNIX_SOCKET_ADDRESS_PATH, this is equivalent to calling
 // g_unix_socket_address_new().
 //
-// If @type is G_UNIX_SOCKET_ADDRESS_ANONYMOUS, @path and @path_len will be
+// If type is G_UNIX_SOCKET_ADDRESS_ANONYMOUS, path and path_len will be
 // ignored.
 //
-// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT, then @path_len bytes of
-// @path will be copied to the socket's path, and only those bytes will be
-// considered part of the name. (If @path_len is -1, then @path is assumed to be
-// NUL-terminated.) For example, if @path was "test", then calling
+// If path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT, then path_len bytes of path
+// will be copied to the socket's path, and only those bytes will be considered
+// part of the name. (If path_len is -1, then path is assumed to be
+// NUL-terminated.) For example, if path was "test", then calling
 // g_socket_address_get_native_size() on the returned socket would return 7 (2
 // bytes of overhead, 1 byte for the abstract-socket indicator byte, and 4 bytes
 // for the name "test").
 //
-// If @path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED, then @path_len bytes
-// of @path will be copied to the socket's path, the rest of the path will be
-// padded with 0 bytes, and the entire zero-padded buffer will be considered the
-// name. (As above, if @path_len is -1, then @path is assumed to be
-// NUL-terminated.) In this case, g_socket_address_get_native_size() will always
-// return the full size of a `struct sockaddr_un`, although
-// g_unix_socket_address_get_path_len() will still return just the length of
-// @path.
+// If path_type is G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED, then path_len bytes of
+// path will be copied to the socket's path, the rest of the path will be padded
+// with 0 bytes, and the entire zero-padded buffer will be considered the name.
+// (As above, if path_len is -1, then path is assumed to be NUL-terminated.) In
+// this case, g_socket_address_get_native_size() will always return the full
+// size of a struct sockaddr_un, although g_unix_socket_address_get_path_len()
+// will still return just the length of path.
 //
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT is preferred over
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED for new programs. Of course, when
@@ -176,7 +175,7 @@ func NewUnixSocketAddressWithType(path []byte, typ UnixSocketAddressType) *UnixS
 	return _unixSocketAddress
 }
 
-// AddressType gets @address's type.
+// AddressType gets address's type.
 func (address *UnixSocketAddress) AddressType() UnixSocketAddressType {
 	var _arg0 *C.GUnixSocketAddress    // out
 	var _cret C.GUnixSocketAddressType // in
@@ -192,7 +191,7 @@ func (address *UnixSocketAddress) AddressType() UnixSocketAddressType {
 	return _unixSocketAddressType
 }
 
-// IsAbstract tests if @address is abstract.
+// IsAbstract tests if address is abstract.
 //
 // Deprecated: Use g_unix_socket_address_get_address_type().
 func (address *UnixSocketAddress) IsAbstract() bool {
@@ -212,7 +211,7 @@ func (address *UnixSocketAddress) IsAbstract() bool {
 	return _ok
 }
 
-// Path gets @address's path, or for abstract sockets the "name".
+// Path gets address's path, or for abstract sockets the "name".
 //
 // Guaranteed to be zero-terminated, but an abstract socket may contain embedded
 // zeros, and thus you should use g_unix_socket_address_get_path_len() to get
@@ -232,7 +231,7 @@ func (address *UnixSocketAddress) Path() string {
 	return _utf8
 }
 
-// PathLen gets the length of @address's path.
+// PathLen gets the length of address's path.
 //
 // For details, see g_unix_socket_address_get_path().
 func (address *UnixSocketAddress) PathLen() uint {

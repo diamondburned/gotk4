@@ -26,7 +26,7 @@ type DeviceManagerer interface {
 	// ClientPointer returns the client pointer, that is, the master pointer
 	// that acts as the core pointer for this application.
 	ClientPointer() *Device
-	// Display gets the Display associated to @device_manager.
+	// Display gets the Display associated to device_manager.
 	Display() *Display
 }
 
@@ -78,7 +78,7 @@ type DeviceManagerer interface {
 //
 // Master and slave devices
 //
-//    carlos@sacarino:~$ xinput list
+//    carlossacarino:~$ xinput list
 //    ⎡ Virtual core pointer                          id=2    [master pointer  (3)]
 //    ⎜   ↳ Virtual core XTEST pointer                id=4    [slave  pointer  (2)]
 //    ⎜   ↳ Wacom ISDv4 E6 Pen stylus                 id=10   [slave  pointer  (2)]
@@ -179,7 +179,7 @@ func (deviceManager *DeviceManager) ClientPointer() *Device {
 	return _device
 }
 
-// Display gets the Display associated to @device_manager.
+// Display gets the Display associated to device_manager.
 func (deviceManager *DeviceManager) Display() *Display {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDisplay       // in

@@ -23,13 +23,13 @@ func init() {
 
 // WindowHandler describes WindowHandle's methods.
 type WindowHandler interface {
-	// Child gets the child widget of @self.
+	// Child gets the child widget of self.
 	Child() *Widget
-	// SetChild sets the child widget of @self.
+	// SetChild sets the child widget of self.
 	SetChild(child Widgeter)
 }
 
-// WindowHandle: `GtkWindowHandle` is a titlebar area widget.
+// WindowHandle: GtkWindowHandle is a titlebar area widget.
 //
 // When added into a window, it can be dragged to move the window, and handles
 // right click, double click and middle click as expected of a titlebar.
@@ -37,12 +37,12 @@ type WindowHandler interface {
 //
 // CSS nodes
 //
-// `GtkWindowHandle` has a single CSS node with the name `windowhandle`.
+// GtkWindowHandle has a single CSS node with the name windowhandle.
 //
 //
 // Accessibility
 //
-// `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle struct {
 	Widget
 }
@@ -77,7 +77,7 @@ func marshalWindowHandler(p uintptr) (interface{}, error) {
 	return wrapWindowHandle(obj), nil
 }
 
-// NewWindowHandle creates a new `GtkWindowHandle`.
+// NewWindowHandle creates a new GtkWindowHandle.
 func NewWindowHandle() *WindowHandle {
 	var _cret *C.GtkWidget // in
 
@@ -90,7 +90,7 @@ func NewWindowHandle() *WindowHandle {
 	return _windowHandle
 }
 
-// Child gets the child widget of @self.
+// Child gets the child widget of self.
 func (self *WindowHandle) Child() *Widget {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
@@ -106,7 +106,7 @@ func (self *WindowHandle) Child() *Widget {
 	return _widget
 }
 
-// SetChild sets the child widget of @self.
+// SetChild sets the child widget of self.
 func (self *WindowHandle) SetChild(child Widgeter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out

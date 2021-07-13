@@ -23,22 +23,21 @@ func init() {
 
 // LayoutChilder describes LayoutChild's methods.
 type LayoutChilder interface {
-	// ChildWidget retrieves the `GtkWidget` associated to the given
-	// @layout_child.
+	// ChildWidget retrieves the GtkWidget associated to the given layout_child.
 	ChildWidget() *Widget
-	// LayoutManager retrieves the `GtkLayoutManager` instance that created the
-	// given @layout_child.
+	// LayoutManager retrieves the GtkLayoutManager instance that created the
+	// given layout_child.
 	LayoutManager() *LayoutManager
 }
 
-// LayoutChild: `GtkLayoutChild` is the base class for objects that are meant to
+// LayoutChild: GtkLayoutChild is the base class for objects that are meant to
 // hold layout properties.
 //
-// If a `GtkLayoutManager` has per-child properties, like their packing type, or
+// If a GtkLayoutManager has per-child properties, like their packing type, or
 // the horizontal and vertical span, or the icon name, then the layout manager
-// should use a `GtkLayoutChild` implementation to store those properties.
+// should use a GtkLayoutChild implementation to store those properties.
 //
-// A `GtkLayoutChild` instance is only ever valid while a widget is part of a
+// A GtkLayoutChild instance is only ever valid while a widget is part of a
 // layout.
 type LayoutChild struct {
 	*externglib.Object
@@ -61,7 +60,7 @@ func marshalLayoutChilder(p uintptr) (interface{}, error) {
 	return wrapLayoutChild(obj), nil
 }
 
-// ChildWidget retrieves the `GtkWidget` associated to the given @layout_child.
+// ChildWidget retrieves the GtkWidget associated to the given layout_child.
 func (layoutChild *LayoutChild) ChildWidget() *Widget {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
@@ -77,8 +76,8 @@ func (layoutChild *LayoutChild) ChildWidget() *Widget {
 	return _widget
 }
 
-// LayoutManager retrieves the `GtkLayoutManager` instance that created the
-// given @layout_child.
+// LayoutManager retrieves the GtkLayoutManager instance that created the given
+// layout_child.
 func (layoutChild *LayoutChild) LayoutManager() *LayoutManager {
 	var _arg0 *C.GtkLayoutChild   // out
 	var _cret *C.GtkLayoutManager // in

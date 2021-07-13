@@ -24,17 +24,17 @@ func init() {
 
 // NoSelectioner describes NoSelection's methods.
 type NoSelectioner interface {
-	// Model gets the model that @self is wrapping.
+	// Model gets the model that self is wrapping.
 	Model() *gio.ListModel
-	// SetModel sets the model that @self should wrap.
+	// SetModel sets the model that self should wrap.
 	SetModel(model gio.ListModeler)
 }
 
-// NoSelection: `GtkNoSelection` is a `GtkSelectionModel` that does not allow
+// NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
 // selecting anything.
 //
-// This model is meant to be used as a simple wrapper around a `GListModel` when
-// a `GtkSelectionModel` is required.
+// This model is meant to be used as a simple wrapper around a GListModel when a
+// GtkSelectionModel is required.
 type NoSelection struct {
 	*externglib.Object
 
@@ -63,7 +63,7 @@ func marshalNoSelectioner(p uintptr) (interface{}, error) {
 	return wrapNoSelection(obj), nil
 }
 
-// NewNoSelection creates a new selection to handle @model.
+// NewNoSelection creates a new selection to handle model.
 func NewNoSelection(model gio.ListModeler) *NoSelection {
 	var _arg1 *C.GListModel     // out
 	var _cret *C.GtkNoSelection // in
@@ -79,7 +79,7 @@ func NewNoSelection(model gio.ListModeler) *NoSelection {
 	return _noSelection
 }
 
-// Model gets the model that @self is wrapping.
+// Model gets the model that self is wrapping.
 func (self *NoSelection) Model() *gio.ListModel {
 	var _arg0 *C.GtkNoSelection // out
 	var _cret *C.GListModel     // in
@@ -100,9 +100,9 @@ func (self *NoSelection) Model() *gio.ListModel {
 	return _listModel
 }
 
-// SetModel sets the model that @self should wrap.
+// SetModel sets the model that self should wrap.
 //
-// If @model is nil, this model will be empty.
+// If model is NULL, this model will be empty.
 func (self *NoSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkNoSelection // out
 	var _arg1 *C.GListModel     // out

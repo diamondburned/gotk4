@@ -16,13 +16,13 @@ import "C"
 // RoundedRect: rectangular region with rounded corners.
 //
 // Application code should normalize rectangles using
-// [method@Gsk.RoundedRect.normalize]; this function will ensure that the bounds
-// of the rectangle are normalized and ensure that the corner values are
-// positive and the corners do not overlap.
+// gsk.RoundedRect.Normalize(); this function will ensure that the bounds of the
+// rectangle are normalized and ensure that the corner values are positive and
+// the corners do not overlap.
 //
-// All functions taking a `GskRoundedRect` as an argument will internally
-// operate on a normalized copy; all functions returning a `GskRoundedRect` will
-// always return a normalized one.
+// All functions taking a GskRoundedRect as an argument will internally operate
+// on a normalized copy; all functions returning a GskRoundedRect will always
+// return a normalized one.
 //
 // The algorithm used for normalizing corner sizes is described in the CSS
 // specification (https://drafts.csswg.org/css-backgrounds-3/#border-radius).
@@ -35,7 +35,7 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// ContainsPoint checks if the given @point is inside the rounded rectangle.
+// ContainsPoint checks if the given point is inside the rounded rectangle.
 func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out
 	var _arg1 *C.graphene_point_t // out
@@ -55,7 +55,7 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	return _ok
 }
 
-// ContainsRect checks if the given @rect is contained inside the rounded
+// ContainsRect checks if the given rect is contained inside the rounded
 // rectangle.
 func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
@@ -76,10 +76,9 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	return _ok
 }
 
-// Init initializes the given `GskRoundedRect` with the given values.
+// Init initializes the given GskRoundedRect with the given values.
 //
-// This function will implicitly normalize the `GskRoundedRect` before
-// returning.
+// This function will implicitly normalize the GskRoundedRect before returning.
 func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -105,10 +104,10 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 	return _roundedRect
 }
 
-// InitCopy initializes @self using the given @src rectangle.
+// InitCopy initializes self using the given src rectangle.
 //
-// This function will not normalize the `GskRoundedRect`, so make sure the
-// source is normalized.
+// This function will not normalize the GskRoundedRect, so make sure the source
+// is normalized.
 func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 *C.GskRoundedRect // out
@@ -126,8 +125,8 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	return _roundedRect
 }
 
-// InitFromRect initializes @self to the given @bounds and sets the radius of
-// all four corners to @radius.
+// InitFromRect initializes self to the given bounds and sets the radius of all
+// four corners to radius.
 func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -147,7 +146,7 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 	return _roundedRect
 }
 
-// IntersectsRect checks if part of the given @rect is contained inside the
+// IntersectsRect checks if part of the given rect is contained inside the
 // rounded rectangle.
 func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
@@ -168,11 +167,11 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	return _ok
 }
 
-// IsRectilinear checks if all corners of @self are right angles and the
+// IsRectilinear checks if all corners of self are right angles and the
 // rectangle covers all of its bounds.
 //
-// This information can be used to decide if [ctor@Gsk.ClipNode.new] or
-// [ctor@Gsk.RoundedClipNode.new] should be called.
+// This information can be used to decide if gsk.ClipNode.New or
+// gsk.RoundedClipNode.New should be called.
 func (self *RoundedRect) IsRectilinear() bool {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret C.gboolean        // in
@@ -209,7 +208,7 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 	return _roundedRect
 }
 
-// Offset offsets the bound's origin by @dx and @dy.
+// Offset offsets the bound's origin by dx and dy.
 //
 // The size and corners of the rectangle are unchanged.
 func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
@@ -238,7 +237,7 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 // the corner circle intact. This emulates CSS behavior.
 //
 // This function also works for growing rectangles if you pass negative values
-// for the @top, @right, @bottom or @left.
+// for the top, right, bottom or left.
 func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out

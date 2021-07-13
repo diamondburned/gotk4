@@ -64,26 +64,26 @@ type RecentManagerOverrider interface {
 
 // RecentManagerer describes RecentManager's methods.
 type RecentManagerer interface {
-	// AddFull adds a new resource, pointed by @uri, into the recently used
+	// AddFull adds a new resource, pointed by uri, into the recently used
 	// resources list, using the metadata specified inside the RecentData-struct
-	// passed in @recent_data.
+	// passed in recent_data.
 	AddFull(uri string, recentData *RecentData) bool
-	// AddItem adds a new resource, pointed by @uri, into the recently used
+	// AddItem adds a new resource, pointed by uri, into the recently used
 	// resources list.
 	AddItem(uri string) bool
 	// HasItem checks whether there is a recently used resource registered with
-	// @uri inside the recent manager.
+	// uri inside the recent manager.
 	HasItem(uri string) bool
 	// LookupItem searches for a URI inside the recently used resources list,
 	// and returns a RecentInfo-struct containing informations about the
 	// resource like its MIME type, or its display name.
 	LookupItem(uri string) (*RecentInfo, error)
-	// MoveItem changes the location of a recently used resource from @uri to
-	// @new_uri.
+	// MoveItem changes the location of a recently used resource from uri to
+	// new_uri.
 	MoveItem(uri string, newUri string) error
 	// PurgeItems purges every item from the recently used resources list.
 	PurgeItems() (int, error)
-	// RemoveItem removes a resource pointed by @uri from the recently used
+	// RemoveItem removes a resource pointed by uri from the recently used
 	// resources list handled by a recent manager.
 	RemoveItem(uri string) error
 }
@@ -170,9 +170,9 @@ func NewRecentManager() *RecentManager {
 	return _recentManager
 }
 
-// AddFull adds a new resource, pointed by @uri, into the recently used
-// resources list, using the metadata specified inside the RecentData-struct
-// passed in @recent_data.
+// AddFull adds a new resource, pointed by uri, into the recently used resources
+// list, using the metadata specified inside the RecentData-struct passed in
+// recent_data.
 //
 // The passed URI will be used to identify this resource inside the list.
 //
@@ -207,15 +207,15 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	return _ok
 }
 
-// AddItem adds a new resource, pointed by @uri, into the recently used
-// resources list.
+// AddItem adds a new resource, pointed by uri, into the recently used resources
+// list.
 //
 // This function automatically retrieves some of the needed metadata and setting
 // other metadata to common default values; it then feeds the data to
 // gtk_recent_manager_add_full().
 //
 // See gtk_recent_manager_add_full() if you want to explicitly define the
-// metadata for the resource pointed by @uri.
+// metadata for the resource pointed by uri.
 func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -235,7 +235,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 	return _ok
 }
 
-// HasItem checks whether there is a recently used resource registered with @uri
+// HasItem checks whether there is a recently used resource registered with uri
 // inside the recent manager.
 func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
@@ -283,8 +283,8 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	return _recentInfo, _goerr
 }
 
-// MoveItem changes the location of a recently used resource from @uri to
-// @new_uri.
+// MoveItem changes the location of a recently used resource from uri to
+// new_uri.
 //
 // Please note that this function will not affect the resource pointed by the
 // URIs, but only the URI used in the recently used resources list.
@@ -326,8 +326,8 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	return _gint, _goerr
 }
 
-// RemoveItem removes a resource pointed by @uri from the recently used
-// resources list handled by a recent manager.
+// RemoveItem removes a resource pointed by uri from the recently used resources
+// list handled by a recent manager.
 func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.gchar            // out
@@ -415,7 +415,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	return _appInfo, _goerr
 }
 
-// Exists checks whether the resource pointed by @info still exists. At the
+// Exists checks whether the resource pointed by info still exists. At the
 // moment this check is done only on resources pointing to local files.
 func (info *RecentInfo) Exists() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -452,7 +452,7 @@ func (info *RecentInfo) Added() int32 {
 }
 
 // Age gets the number of days elapsed since the last update of the resource
-// pointed by @info.
+// pointed by info.
 func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.gint           // in
@@ -469,7 +469,7 @@ func (info *RecentInfo) Age() int {
 }
 
 // ApplicationInfo gets the data regarding the application that has registered
-// the resource pointed by @info.
+// the resource pointed by info.
 //
 // If the command line contains any escape characters defined inside the storage
 // specification, they will be expanded.
@@ -534,8 +534,8 @@ func (info *RecentInfo) DisplayName() string {
 	return _utf8
 }
 
-// GIcon retrieves the icon associated to the resource MIME type.
-func (info *RecentInfo) GIcon() *gio.Icon {
+// Gicon retrieves the icon associated to the resource MIME type.
+func (info *RecentInfo) Gicon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
@@ -555,7 +555,7 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 	return _icon
 }
 
-// Icon retrieves the icon of size @size associated to the resource MIME type.
+// Icon retrieves the icon of size size associated to the resource MIME type.
 func (info *RecentInfo) Icon(size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 C.gint           // out
@@ -615,7 +615,7 @@ func (info *RecentInfo) Modified() int32 {
 }
 
 // PrivateHint gets the value of the “private” flag. Resources in the recently
-// used list that have this flag set to true should only be displayed by the
+// used list that have this flag set to TRUE should only be displayed by the
 // applications that have registered them.
 func (info *RecentInfo) PrivateHint() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -706,7 +706,7 @@ func (info *RecentInfo) Visited() int32 {
 }
 
 // HasApplication checks whether an application registered this resource using
-// @app_name.
+// app_name.
 func (info *RecentInfo) HasApplication(appName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.gchar         // out
@@ -726,8 +726,8 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 	return _ok
 }
 
-// HasGroup checks whether @group_name appears inside the groups registered for
-// the recently used item @info.
+// HasGroup checks whether group_name appears inside the groups registered for
+// the recently used item info.
 func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.gchar         // out
@@ -767,7 +767,7 @@ func (info *RecentInfo) IsLocal() bool {
 }
 
 // LastApplication gets the name of the last application that have registered
-// the recently used resource represented by @info.
+// the recently used resource represented by info.
 func (info *RecentInfo) LastApplication() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.gchar         // in
@@ -804,7 +804,7 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	return _ok
 }
 
-// Ref increases the reference count of @recent_info by one.
+// Ref increases the reference count of recent_info by one.
 func (info *RecentInfo) ref() *RecentInfo {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GtkRecentInfo // in
@@ -824,8 +824,8 @@ func (info *RecentInfo) ref() *RecentInfo {
 	return _recentInfo
 }
 
-// Unref decreases the reference count of @info by one. If the reference count
-// reaches zero, @info is deallocated, and the memory freed.
+// Unref decreases the reference count of info by one. If the reference count
+// reaches zero, info is deallocated, and the memory freed.
 func (info *RecentInfo) unref() {
 	var _arg0 *C.GtkRecentInfo // out
 

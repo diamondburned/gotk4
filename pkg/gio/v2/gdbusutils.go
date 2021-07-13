@@ -26,9 +26,9 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// DBusEscapeObjectPath: this is a language binding friendly version of
+// DbusEscapeObjectPath: this is a language binding friendly version of
 // g_dbus_escape_object_path_bytestring().
-func DBusEscapeObjectPath(s string) string {
+func DbusEscapeObjectPath(s string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
@@ -44,13 +44,13 @@ func DBusEscapeObjectPath(s string) string {
 	return _utf8
 }
 
-// DBusEscapeObjectPathBytestring escapes @bytes for use in a D-Bus object path
-// component. @bytes is an array of zero or more nonzero bytes in an unspecified
+// DbusEscapeObjectPathBytestring escapes bytes for use in a D-Bus object path
+// component. bytes is an array of zero or more nonzero bytes in an unspecified
 // encoding, followed by a single zero byte.
 //
 // The escaping method consists of replacing all non-alphanumeric characters
 // (see g_ascii_isalnum()) with their hexadecimal value preceded by an
-// underscore (`_`). For example: `foo.bar.baz` will become `foo_2ebar_2ebaz`.
+// underscore (_). For example: foo.bar.baz will become foo_2ebar_2ebaz.
 //
 // This method is appropriate to use when the input is nearly a valid object
 // path component but is not when your input is far from being a valid object
@@ -58,15 +58,15 @@ func DBusEscapeObjectPath(s string) string {
 // object paths.
 //
 // This can be reversed with g_dbus_unescape_object_path().
-func DBusEscapeObjectPathBytestring(bytes []byte) string {
+func DbusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8
 	var _cret *C.gchar // in
 
 	{
 		var zero byte
 		bytes = append(bytes, zero)
+		_arg1 = (*C.guint8)(unsafe.Pointer(&bytes[0]))
 	}
-	_arg1 = (*C.guint8)(unsafe.Pointer(&bytes[0]))
 
 	_cret = C.g_dbus_escape_object_path_bytestring(_arg1)
 
@@ -78,12 +78,12 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	return _utf8
 }
 
-// DBusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
+// DbusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
 // g_dbus_connection_new().
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusGenerateGuid() string {
+func DbusGenerateGuid() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_generate_guid()
@@ -96,28 +96,43 @@ func DBusGenerateGuid() string {
 	return _utf8
 }
 
-// DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
-// by the @type parameter.
+// DbusGvalueToGvariant converts a #GValue to a #GVariant of the type indicated
+// by the type parameter.
 //
 // The conversion is using the following rules:
 //
-// - TYPE_STRING: 's', 'o', 'g' or 'ay' - TYPE_STRV: 'as', 'ao' or 'aay' -
-// TYPE_BOOLEAN: 'b' - TYPE_UCHAR: 'y' - TYPE_INT: 'i', 'n' - TYPE_UINT: 'u',
-// 'q' - TYPE_INT64 'x' - TYPE_UINT64: 't' - TYPE_DOUBLE: 'd' - TYPE_VARIANT:
-// Any Type
+// - TYPE_STRING: 's', 'o', 'g' or 'ay'
 //
-// This can fail if e.g. @gvalue is of type TYPE_STRING and @type is
+// - TYPE_STRV: 'as', 'ao' or 'aay'
+//
+// - TYPE_BOOLEAN: 'b'
+//
+// - TYPE_UCHAR: 'y'
+//
+// - TYPE_INT: 'i', 'n'
+//
+// - TYPE_UINT: 'u', 'q'
+//
+// - TYPE_INT64 'x'
+//
+// - TYPE_UINT64: 't'
+//
+// - TYPE_DOUBLE: 'd'
+//
+// - TYPE_VARIANT: Any Type
+//
+// This can fail if e.g. gvalue is of type TYPE_STRING and type is
 // ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType (including
 // e.g. TYPE_OBJECT and TYPE_BOXED derived-types) not in the table above.
 //
-// Note that if @gvalue is of type TYPE_VARIANT and its value is nil, the empty
-// #GVariant instance (never nil) for @type is returned (e.g. 0 for scalar
+// Note that if gvalue is of type TYPE_VARIANT and its value is NULL, the empty
+// #GVariant instance (never NULL) for type is returned (e.g. 0 for scalar
 // types, the empty string for string types, '/' for object path types, the
 // empty array for any array type and so on).
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DbusGvalueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
@@ -138,8 +153,8 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	return _variant
 }
 
-// DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
-// floating, it is consumed.
+// DbusGvariantToGvalue converts a #GVariant to a #GValue. If value is floating,
+// it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
 // this function is essentially its reverse form. So, a #GVariant containing any
@@ -148,8 +163,8 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 // entry) will be converted to a #GValue containing that #GVariant.
 //
 // The conversion never fails - a valid #GValue is always returned in
-// @out_gvalue.
-func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
+// out_gvalue.
+func DbusGvariantToGvalue(value *glib.Variant) externglib.Value {
 	var _arg1 *C.GVariant // out
 	var _arg2 C.GValue    // in
 
@@ -164,11 +179,11 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	return _outGvalue
 }
 
-// DBusIsGuid checks if @string is a D-Bus GUID.
+// DbusIsGuid checks if string is a D-Bus GUID.
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DBusIsGuid(_string string) bool {
+func DbusIsGuid(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -185,8 +200,8 @@ func DBusIsGuid(_string string) bool {
 	return _ok
 }
 
-// DBusIsInterfaceName checks if @string is a valid D-Bus interface name.
-func DBusIsInterfaceName(_string string) bool {
+// DbusIsInterfaceName checks if string is a valid D-Bus interface name.
+func DbusIsInterfaceName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -203,9 +218,9 @@ func DBusIsInterfaceName(_string string) bool {
 	return _ok
 }
 
-// DBusIsMemberName checks if @string is a valid D-Bus member (e.g. signal or
+// DbusIsMemberName checks if string is a valid D-Bus member (e.g. signal or
 // method) name.
-func DBusIsMemberName(_string string) bool {
+func DbusIsMemberName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -222,9 +237,9 @@ func DBusIsMemberName(_string string) bool {
 	return _ok
 }
 
-// DBusIsName checks if @string is a valid D-Bus bus name (either unique or
+// DbusIsName checks if string is a valid D-Bus bus name (either unique or
 // well-known).
-func DBusIsName(_string string) bool {
+func DbusIsName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -241,8 +256,8 @@ func DBusIsName(_string string) bool {
 	return _ok
 }
 
-// DBusIsUniqueName checks if @string is a valid D-Bus unique bus name.
-func DBusIsUniqueName(_string string) bool {
+// DbusIsUniqueName checks if string is a valid D-Bus unique bus name.
+func DbusIsUniqueName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -259,13 +274,13 @@ func DBusIsUniqueName(_string string) bool {
 	return _ok
 }
 
-// DBusUnescapeObjectPath unescapes an string that was previously escaped with
+// DbusUnescapeObjectPath unescapes an string that was previously escaped with
 // g_dbus_escape_object_path(). If the string is in a format that could not have
-// been returned by g_dbus_escape_object_path(), this function returns nil.
+// been returned by g_dbus_escape_object_path(), this function returns NULL.
 //
 // Encoding alphanumeric characters which do not need to be encoded is not
-// allowed (e.g `_63` is not valid, the string should contain `c` instead).
-func DBusUnescapeObjectPath(s string) []byte {
+// allowed (e.g _63 is not valid, the string should contain c instead).
+func DbusUnescapeObjectPath(s string) []byte {
 	var _arg1 *C.gchar // out
 	var _cret *C.guint8
 

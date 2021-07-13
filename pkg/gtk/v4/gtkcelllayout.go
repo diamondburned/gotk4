@@ -24,8 +24,8 @@ func init() {
 	})
 }
 
-// CellLayoutDataFunc: function which should set the value of @cell_layout’s
-// cell renderer(s) as appropriate.
+// CellLayoutDataFunc: function which should set the value of cell_layout’s cell
+// renderer(s) as appropriate.
 type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
 
 //export gotk4_CellLayoutDataFunc
@@ -59,61 +59,59 @@ func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, ar
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type CellLayoutOverrider interface {
-	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
 	//
-	// The @column is the column of the model to get a value from, and the
-	// @attribute is the parameter on @cell to be set from the value. So for
+	// The column is the column of the model to get a value from, and the
+	// attribute is the parameter on cell to be set from the value. So for
 	// example if column 2 of the model contains strings, you could have the
 	// “text” attribute of a CellRendererText get its values from column 2.
 	AddAttribute(cell CellRendererer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on @cell_layout and
-	// removes all renderers from @cell_layout.
+	// Clear unsets all the mappings on all renderers on cell_layout and removes
+	// all renderers from cell_layout.
 	Clear()
 	// ClearAttributes clears all existing attributes previously set with
 	// gtk_cell_layout_set_attributes().
 	ClearAttributes(cell CellRendererer)
-	// Area returns the underlying CellArea which might be @cell_layout if
-	// called on a CellArea or might be nil if no CellArea is used by
-	// @cell_layout.
+	// Area returns the underlying CellArea which might be cell_layout if called
+	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() *CellArea
-	// PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
-	// then the @cell is allocated no more space than it needs. Any unused space
-	// is divided evenly between cells for which @expand is true.
+	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
+	// the cell is allocated no more space than it needs. Any unused space is
+	// divided evenly between cells for which expand is TRUE.
 	//
 	// Note that reusing the same cell renderer is not supported.
 	PackEnd(cell CellRendererer, expand bool)
-	// PackStart packs the @cell into the beginning of @cell_layout. If @expand
-	// is false, then the @cell is allocated no more space than it needs. Any
-	// unused space is divided evenly between cells for which @expand is true.
+	// PackStart packs the cell into the beginning of cell_layout. If expand is
+	// FALSE, then the cell is allocated no more space than it needs. Any unused
+	// space is divided evenly between cells for which expand is TRUE.
 	//
 	// Note that reusing the same cell renderer is not supported.
 	PackStart(cell CellRendererer, expand bool)
-	// Reorder re-inserts @cell at @position.
+	// Reorder re-inserts cell at position.
 	//
-	// Note that @cell has already to be packed into @cell_layout for this to
+	// Note that cell has already to be packed into cell_layout for this to
 	// function properly.
 	Reorder(cell CellRendererer, position int)
 }
 
 // CellLayouter describes CellLayout's methods.
 type CellLayouter interface {
-	// AddAttribute adds an attribute mapping to the list in @cell_layout.
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
 	AddAttribute(cell CellRendererer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on @cell_layout and
-	// removes all renderers from @cell_layout.
+	// Clear unsets all the mappings on all renderers on cell_layout and removes
+	// all renderers from cell_layout.
 	Clear()
 	// ClearAttributes clears all existing attributes previously set with
 	// gtk_cell_layout_set_attributes().
 	ClearAttributes(cell CellRendererer)
-	// Area returns the underlying CellArea which might be @cell_layout if
-	// called on a CellArea or might be nil if no CellArea is used by
-	// @cell_layout.
+	// Area returns the underlying CellArea which might be cell_layout if called
+	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() *CellArea
-	// PackEnd adds the @cell to the end of @cell_layout.
+	// PackEnd adds the cell to the end of cell_layout.
 	PackEnd(cell CellRendererer, expand bool)
-	// PackStart packs the @cell into the beginning of @cell_layout.
+	// PackStart packs the cell into the beginning of cell_layout.
 	PackStart(cell CellRendererer, expand bool)
-	// Reorder re-inserts @cell at @position.
+	// Reorder re-inserts cell at position.
 	Reorder(cell CellRendererer, position int)
 }
 
@@ -226,12 +224,12 @@ func marshalCellLayouter(p uintptr) (interface{}, error) {
 	return wrapCellLayout(obj), nil
 }
 
-// AddAttribute adds an attribute mapping to the list in @cell_layout.
+// AddAttribute adds an attribute mapping to the list in cell_layout.
 //
-// The @column is the column of the model to get a value from, and the
-// @attribute is the parameter on @cell to be set from the value. So for example
-// if column 2 of the model contains strings, you could have the “text”
-// attribute of a CellRendererText get its values from column 2.
+// The column is the column of the model to get a value from, and the attribute
+// is the parameter on cell to be set from the value. So for example if column 2
+// of the model contains strings, you could have the “text” attribute of a
+// CellRendererText get its values from column 2.
 func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -246,8 +244,8 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Clear unsets all the mappings on all renderers on @cell_layout and removes
-// all renderers from @cell_layout.
+// Clear unsets all the mappings on all renderers on cell_layout and removes all
+// renderers from cell_layout.
 func (cellLayout *CellLayout) Clear() {
 	var _arg0 *C.GtkCellLayout // out
 
@@ -268,8 +266,8 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
 }
 
-// Area returns the underlying CellArea which might be @cell_layout if called on
-// a CellArea or might be nil if no CellArea is used by @cell_layout.
+// Area returns the underlying CellArea which might be cell_layout if called on
+// a CellArea or might be NULL if no CellArea is used by cell_layout.
 func (cellLayout *CellLayout) Area() *CellArea {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GtkCellArea   // in
@@ -285,9 +283,9 @@ func (cellLayout *CellLayout) Area() *CellArea {
 	return _cellArea
 }
 
-// PackEnd adds the @cell to the end of @cell_layout. If @expand is false, then
-// the @cell is allocated no more space than it needs. Any unused space is
-// divided evenly between cells for which @expand is true.
+// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then the
+// cell is allocated no more space than it needs. Any unused space is divided
+// evenly between cells for which expand is TRUE.
 //
 // Note that reusing the same cell renderer is not supported.
 func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
@@ -304,9 +302,9 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	C.gtk_cell_layout_pack_end(_arg0, _arg1, _arg2)
 }
 
-// PackStart packs the @cell into the beginning of @cell_layout. If @expand is
-// false, then the @cell is allocated no more space than it needs. Any unused
-// space is divided evenly between cells for which @expand is true.
+// PackStart packs the cell into the beginning of cell_layout. If expand is
+// FALSE, then the cell is allocated no more space than it needs. Any unused
+// space is divided evenly between cells for which expand is TRUE.
 //
 // Note that reusing the same cell renderer is not supported.
 func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
@@ -323,10 +321,10 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	C.gtk_cell_layout_pack_start(_arg0, _arg1, _arg2)
 }
 
-// Reorder re-inserts @cell at @position.
+// Reorder re-inserts cell at position.
 //
-// Note that @cell has already to be packed into @cell_layout for this to
-// function properly.
+// Note that cell has already to be packed into cell_layout for this to function
+// properly.
 func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out

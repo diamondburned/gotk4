@@ -153,49 +153,53 @@ type AboutDialoger interface {
 	SetWrapLicense(wrapLicense bool)
 }
 
-// AboutDialog: `GtkAboutDialog` offers a simple way to display information
-// about a program.
+// AboutDialog: GtkAboutDialog offers a simple way to display information about
+// a program.
 //
 // The shown information includes the programs' logo, name, copyright, website
 // and license. It is also possible to give credits to the authors, documenters,
 // translators and artists who have worked on the program.
 //
-// An about dialog is typically opened when the user selects the `About` option
-// from the `Help` menu. All parts of the dialog are optional.
+// An about dialog is typically opened when the user selects the About option
+// from the Help menu. All parts of the dialog are optional.
 //
 // !An example GtkAboutDialog (aboutdialog.png)
 //
-// About dialogs often contain links and email addresses. `GtkAboutDialog`
-// displays these as clickable links. By default, it calls [func@Gtk.show_uri]
-// when a user clicks one. The behaviour can be overridden with the
-// [signal@Gtk.AboutDialog::activate-link] signal.
+// About dialogs often contain links and email addresses. GtkAboutDialog
+// displays these as clickable links. By default, it calls gtk.ShowURI() when a
+// user clicks one. The behaviour can be overridden with the
+// gtk.AboutDialog::activate-link signal.
 //
-// To specify a person with an email address, use a string like `Edgar Allan Poe
-// <edgar@poe.com>`. To specify a website with a title, use a string like `GTK
-// team https://www.gtk.org`.
+// To specify a person with an email address, use a string like Edgar Allan Poe
+// <edgarpoe.com>. To specify a website with a title, use a string like GTK team
+// https://www.gtk.org.
 //
-// To make constructing a `GtkAboutDialog` as convenient as possible, you can
-// use the function [func@Gtk.show_about_dialog] which constructs and shows a
-// dialog and keeps it around so that it can be shown again.
+// To make constructing a GtkAboutDialog as convenient as possible, you can use
+// the function gtk.ShowAboutDialog() which constructs and shows a dialog and
+// keeps it around so that it can be shown again.
 //
-// Note that GTK sets a default title of `_("About s")` on the dialog window
-// (where `s` is replaced by the name of the application, but in order to ensure
+// Note that GTK sets a default title of _("About s") on the dialog window
+// (where s is replaced by the name of the application, but in order to ensure
 // proper translation of the title, applications should set the title property
-// explicitly when constructing a `GtkAboutDialog`, as shown in the following
+// explicitly when constructing a GtkAboutDialog, as shown in the following
 // example:
 //
-// “`c GFile *logo_file = g_file_new_for_path ("./logo.png"); GdkTexture
-// *example_logo = gdk_texture_new_from_file (logo_file, NULL); g_object_unref
-// (logo_file);
+//    GFile *logo_file = g_file_new_for_path ("./logo.png");
+//    GdkTexture *example_logo = gdk_texture_new_from_file (logo_file, NULL);
+//    g_object_unref (logo_file);
 //
-// gtk_show_about_dialog (NULL, "program-name", "ExampleCode", "logo",
-// example_logo, "title", _("About ExampleCode"), NULL); “`
+//    gtk_show_about_dialog (NULL,
+//                           "program-name", "ExampleCode",
+//                           "logo", example_logo,
+//                           "title", _("About ExampleCode"),
+//                           NULL);
+//
 //
 //
 // CSS nodes
 //
-// `GtkAboutDialog` has a single CSS node with the name `window` and style class
-// `.aboutdialog`.
+// GtkAboutDialog has a single CSS node with the name window and style class
+// .aboutdialog.
 type AboutDialog struct {
 	Window
 }
@@ -253,7 +257,7 @@ func marshalAboutDialoger(p uintptr) (interface{}, error) {
 	return wrapAboutDialog(obj), nil
 }
 
-// NewAboutDialog creates a new `GtkAboutDialog`.
+// NewAboutDialog creates a new GtkAboutDialog.
 func NewAboutDialog() *AboutDialog {
 	var _cret *C.GtkWidget // in
 
@@ -274,11 +278,15 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(sectionName)))
-	_arg2 = (**C.char)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(people))
-		for i := range people {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(people[i])))
+		_arg2 = (**C.char)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(people)+1)
+			var zero *C.char
+			out[len(people)] = zero
+			for i := range people {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(people[i])))
+			}
 		}
 	}
 
@@ -600,11 +608,15 @@ func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg1 **C.char
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.char)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(artists))
-		for i := range artists {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(artists[i])))
+		_arg1 = (**C.char)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(artists)+1)
+			var zero *C.char
+			out[len(artists)] = zero
+			for i := range artists {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(artists[i])))
+			}
 		}
 	}
 
@@ -618,11 +630,15 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg1 **C.char
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.char)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(authors))
-		for i := range authors {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(authors[i])))
+		_arg1 = (**C.char)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(authors)+1)
+			var zero *C.char
+			out[len(authors)] = zero
+			for i := range authors {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(authors[i])))
+			}
 		}
 	}
 
@@ -662,11 +678,15 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg1 **C.char
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.char)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(documenters))
-		for i := range documenters {
-			out[i] = (*C.char)(unsafe.Pointer(C.CString(documenters[i])))
+		_arg1 = (**C.char)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(documenters)+1)
+			var zero *C.char
+			out[len(documenters)] = zero
+			for i := range documenters {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(documenters[i])))
+			}
 		}
 	}
 
@@ -676,7 +696,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 // SetLicense sets the license information to be displayed in the secondary
 // license dialog.
 //
-// If `license` is `NULL`, the license button is hidden.
+// If license is NULL, the license button is hidden.
 func (about *AboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -690,8 +710,7 @@ func (about *AboutDialog) SetLicense(license string) {
 // SetLicenseType sets the license of the application showing the about dialog
 // from a list of known licenses.
 //
-// This function overrides the license set using
-// [method@Gtk.AboutDialog.set_license].
+// This function overrides the license set using gtk.AboutDialog.SetLicense().
 func (about *AboutDialog) SetLicenseType(licenseType License) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 C.GtkLicense      // out
@@ -727,7 +746,7 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 
 // SetProgramName sets the name to display in the about dialog.
 //
-// If `name` is not set, it defaults to `g_get_application_name()`.
+// If name is not set, it defaults to g_get_application_name().
 func (about *AboutDialog) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -741,9 +760,9 @@ func (about *AboutDialog) SetProgramName(name string) {
 // SetSystemInformation sets the system information to be displayed in the about
 // dialog.
 //
-// If `system_information` is `NULL`, the system information tab is hidden.
+// If system_information is NULL, the system information tab is hidden.
 //
-// See [property@Gtk.AboutDialog:system-information].
+// See gtk.AboutDialog:system-information.
 func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out
@@ -758,17 +777,18 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 // the translators tab of the secondary credits dialog.
 //
 // The intended use for this string is to display the translator of the language
-// which is currently used in the user interface. Using `gettext()`, a simple
-// way to achieve that is to mark the string for translation:
+// which is currently used in the user interface. Using gettext(), a simple way
+// to achieve that is to mark the string for translation:
 //
-// “`c GtkWidget *about = gtk_about_dialog_new ();
-// gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-// _("translator-credits")); “`
+//    GtkWidget *about = gtk_about_dialog_new ();
+//     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+//                                              _("translator-credits"));
 //
-// It is a good idea to use the customary `msgid` “translator-credits” for this
-// purpose, since translators will already know the purpose of that `msgid`, and
-// since `GtkAboutDialog` will detect if “translator-credits” is untranslated
-// and hide the tab.
+//
+// It is a good idea to use the customary msgid “translator-credits” for this
+// purpose, since translators will already know the purpose of that msgid, and
+// since GtkAboutDialog will detect if “translator-credits” is untranslated and
+// hide the tab.
 func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.char           // out

@@ -25,7 +25,7 @@ func init() {
 	})
 }
 
-// DrawingAreaDrawFunc: whenever @drawing_area needs to redraw, this function
+// DrawingAreaDrawFunc: whenever drawing_area needs to redraw, this function
 // will be called.
 //
 // This function should exclusively redraw the contents of the drawing area and
@@ -68,9 +68,9 @@ type DrawingAreaOverrider interface {
 
 // DrawingAreaer describes DrawingArea's methods.
 type DrawingAreaer interface {
-	// ContentHeight retrieves the content height of the `GtkDrawingArea`.
+	// ContentHeight retrieves the content height of the GtkDrawingArea.
 	ContentHeight() int
-	// ContentWidth retrieves the content width of the `GtkDrawingArea`.
+	// ContentWidth retrieves the content width of the GtkDrawingArea.
 	ContentWidth() int
 	// SetContentHeight sets the desired height of the contents of the drawing
 	// area.
@@ -80,64 +80,72 @@ type DrawingAreaer interface {
 	SetContentWidth(width int)
 }
 
-// DrawingArea: `GtkDrawingArea` is a widget that allows drawing with cairo.
+// DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
 //
 // !An example GtkDrawingArea (drawingarea.png)
 //
 // It’s essentially a blank widget; you can draw on it. After creating a drawing
 // area, the application may want to connect to:
 //
-// - The [signal@Gtk.Widget::realize] signal to take any necessary actions when
-// the widget is instantiated on a particular display. (Create GDK resources in
+// - The gtk.Widget::realize signal to take any necessary actions when the
+// widget is instantiated on a particular display. (Create GDK resources in
 // response to this signal.)
 //
-// - The [signal@Gtk.DrawingArea::resize] signal to take any necessary actions
-// when the widget changes size.
+// - The gtk.DrawingArea::resize signal to take any necessary actions when the
+// widget changes size.
 //
-// - Call [method@Gtk.DrawingArea.set_draw_func] to handle redrawing the
-// contents of the widget.
+// - Call gtk.DrawingArea.SetDrawFunc() to handle redrawing the contents of the
+// widget.
 //
 // The following code portion demonstrates using a drawing area to display a
 // circle in the normal widget foreground color.
 //
-//
 // Simple GtkDrawingArea usage
 //
-// “`c static void draw_function (GtkDrawingArea *area, cairo_t *cr, int width,
-// int height, gpointer data) { GdkRGBA color; GtkStyleContext *context;
+//    static void
+//    draw_function (GtkDrawingArea *area,
+//                   cairo_t        *cr,
+//                   int             width,
+//                   int             height,
+//                   gpointer        data)
+//    {
+//      GdkRGBA color;
+//      GtkStyleContext *context;
 //
-//    context = gtk_widget_get_style_context (GTK_WIDGET (area));
+//      context = gtk_widget_get_style_context (GTK_WIDGET (area));
 //
-//    cairo_arc (cr,
-//               width / 2.0, height / 2.0,
-//               MIN (width, height) / 2.0,
-//               0, 2 * G_PI);
+//      cairo_arc (cr,
+//                 width / 2.0, height / 2.0,
+//                 MIN (width, height) / 2.0,
+//                 0, 2 * G_PI);
 //
-//    gtk_style_context_get_color (context,
-//                                 &color);
-//    gdk_cairo_set_source_rgba (cr, &color);
+//      gtk_style_context_get_color (context,
+//                                   &color);
+//      gdk_cairo_set_source_rgba (cr, &color);
 //
-//    cairo_fill (cr);
+//      cairo_fill (cr);
+//    }
 //
-// }
+//    int
+//    main (int argc, char **argv)
+//    {
+//      gtk_init ();
 //
-// int main (int argc, char **argv) { gtk_init ();
+//      GtkWidget *area = gtk_drawing_area_new ();
+//      gtk_drawing_area_set_content_width (GTK_DRAWING_AREA (area), 100);
+//      gtk_drawing_area_set_content_height (GTK_DRAWING_AREA (area), 100);
+//      gtk_drawing_area_set_draw_func (GTK_DRAWING_AREA (area),
+//                                      draw_function,
+//                                      NULL, NULL);
+//      return 0;
+//    }
 //
-//    GtkWidget *area = gtk_drawing_area_new ();
-//    gtk_drawing_area_set_content_width (GTK_DRAWING_AREA (area), 100);
-//    gtk_drawing_area_set_content_height (GTK_DRAWING_AREA (area), 100);
-//    gtk_drawing_area_set_draw_func (GTK_DRAWING_AREA (area),
-//                                    draw_function,
-//                                    NULL, NULL);
-//    return 0;
-//
-// } “`
 //
 // The draw function is normally called when a drawing area first comes
 // onscreen, or when it’s covered by another window and then uncovered. You can
 // also force a redraw by adding to the “damage region” of the drawing area’s
-// window using [method@Gtk.Widget.queue_draw]. This will cause the drawing area
-// to call the draw function again.
+// window using gtk.Widget.QueueDraw(). This will cause the drawing area to call
+// the draw function again.
 //
 // The available routines for drawing are documented on the [GDK Drawing
 // Primitives][gdk4-Cairo-Interaction] page and the cairo documentation.
@@ -148,7 +156,7 @@ type DrawingAreaer interface {
 // indication that the drawing area is focused.
 //
 // If you need more complex control over your widget, you should consider
-// creating your own `GtkWidget` subclass.
+// creating your own GtkWidget subclass.
 type DrawingArea struct {
 	Widget
 }
@@ -196,7 +204,7 @@ func NewDrawingArea() *DrawingArea {
 	return _drawingArea
 }
 
-// ContentHeight retrieves the content height of the `GtkDrawingArea`.
+// ContentHeight retrieves the content height of the GtkDrawingArea.
 func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
@@ -212,7 +220,7 @@ func (self *DrawingArea) ContentHeight() int {
 	return _gint
 }
 
-// ContentWidth retrieves the content width of the `GtkDrawingArea`.
+// ContentWidth retrieves the content width of the GtkDrawingArea.
 func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
@@ -232,8 +240,7 @@ func (self *DrawingArea) ContentWidth() int {
 //
 // Note that because widgets may be allocated larger sizes than they requested,
 // it is possible that the actual height passed to your draw function is larger
-// than the height set here. You can use [method@Gtk.Widget.set_valign] to avoid
-// that.
+// than the height set here. You can use gtk.Widget.SetValign() to avoid that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
 func (self *DrawingArea) SetContentHeight(height int) {
@@ -250,8 +257,7 @@ func (self *DrawingArea) SetContentHeight(height int) {
 //
 // Note that because widgets may be allocated larger sizes than they requested,
 // it is possible that the actual width passed to your draw function is larger
-// than the width set here. You can use [method@Gtk.Widget.set_halign] to avoid
-// that.
+// than the width set here. You can use gtk.Widget.SetHalign() to avoid that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
 func (self *DrawingArea) SetContentWidth(width int) {

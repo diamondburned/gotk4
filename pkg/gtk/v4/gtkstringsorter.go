@@ -35,14 +35,13 @@ type StringSorterer interface {
 	SetIgnoreCase(ignoreCase bool)
 }
 
-// StringSorter: `GtkStringSorter` is a `GtkSorter` that compares strings.
+// StringSorter: GtkStringSorter is a GtkSorter that compares strings.
 //
 // It does the comparison in a linguistically correct way using the current
 // locale by normalizing Unicode strings and possibly case-folding them before
 // performing the comparison.
 //
-// To obtain the strings to compare, this sorter evaluates a
-// [class@Gtk.Expression].
+// To obtain the strings to compare, this sorter evaluates a gtk.Expression.
 type StringSorter struct {
 	Sorter
 }
@@ -67,7 +66,7 @@ func marshalStringSorterer(p uintptr) (interface{}, error) {
 }
 
 // NewStringSorter creates a new string sorter that compares items using the
-// given @expression.
+// given expression.
 //
 // Unless an expression is set on it, this sorter will always compare items as
 // invalid.

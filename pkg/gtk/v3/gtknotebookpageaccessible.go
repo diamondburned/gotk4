@@ -57,12 +57,12 @@ func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(obj), nil
 }
 
-func NewNotebookPageAccessible(notebook NotebookAccessibler, child Widgeter) *NotebookPageAccessible {
+func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgeter) *NotebookPageAccessible {
 	var _arg1 *C.GtkNotebookAccessible // out
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in
 
-	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer((notebook).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(notebook.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)

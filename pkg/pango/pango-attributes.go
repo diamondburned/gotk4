@@ -33,84 +33,77 @@ func init() {
 	})
 }
 
-// AttrType: `PangoAttrType` distinguishes between different types of
-// attributes.
+// AttrType: PangoAttrType distinguishes between different types of attributes.
 //
 // Along with the predefined values, it is possible to allocate additional
-// values for custom attributes using [type_func@attr_type_register]. The
-// predefined values are given below. The type of structure used to store the
-// attribute is listed in parentheses after the description.
+// values for custom attributes using attr_type_register. The predefined values
+// are given below. The type of structure used to store the attribute is listed
+// in parentheses after the description.
 type AttrType int
 
 const (
 	// Invalid does not happen
 	AttrTypeInvalid AttrType = iota
-	// Language ([struct@Pango.AttrLanguage])
+	// Language (pango.AttrLanguage)
 	AttrTypeLanguage
-	// Family: font family name list ([struct@Pango.AttrString])
+	// Family: font family name list (pango.AttrString)
 	AttrTypeFamily
-	// Style: font slant style ([struct@Pango.AttrInt])
+	// Style: font slant style (pango.AttrInt)
 	AttrTypeStyle
-	// Weight: font weight ([struct@Pango.AttrInt])
+	// Weight: font weight (pango.AttrInt)
 	AttrTypeWeight
-	// Variant: font variant (normal or small caps) ([struct@Pango.AttrInt])
+	// Variant: font variant (normal or small caps) (pango.AttrInt)
 	AttrTypeVariant
-	// Stretch: font stretch ([struct@Pango.AttrInt])
+	// Stretch: font stretch (pango.AttrInt)
 	AttrTypeStretch
-	// Size: font size in points scaled by PANGO_SCALE ([struct@Pango.AttrInt])
+	// Size: font size in points scaled by PANGO_SCALE (pango.AttrInt)
 	AttrTypeSize
-	// FontDesc: font description ([struct@Pango.AttrFontDesc])
+	// FontDesc: font description (pango.AttrFontDesc)
 	AttrTypeFontDesc
-	// Foreground color ([struct@Pango.AttrColor])
+	// Foreground color (pango.AttrColor)
 	AttrTypeForeground
-	// Background color ([struct@Pango.AttrColor])
+	// Background color (pango.AttrColor)
 	AttrTypeBackground
-	// Underline: whether the text has an underline ([struct@Pango.AttrInt])
+	// Underline: whether the text has an underline (pango.AttrInt)
 	AttrTypeUnderline
-	// Strikethrough: whether the text is struck-through
-	// ([struct@Pango.AttrInt])
+	// Strikethrough: whether the text is struck-through (pango.AttrInt)
 	AttrTypeStrikethrough
-	// Rise: baseline displacement ([struct@Pango.AttrInt])
+	// Rise: baseline displacement (pango.AttrInt)
 	AttrTypeRise
-	// Shape ([struct@Pango.AttrShape])
+	// Shape (pango.AttrShape)
 	AttrTypeShape
-	// Scale: font size scale factor ([struct@Pango.AttrFloat])
+	// Scale: font size scale factor (pango.AttrFloat)
 	AttrTypeScale
-	// Fallback: whether fallback is enabled ([struct@Pango.AttrInt])
+	// Fallback: whether fallback is enabled (pango.AttrInt)
 	AttrTypeFallback
-	// LetterSpacing: letter spacing ([struct@PangoAttrInt])
+	// LetterSpacing: letter spacing (pangoattrint)
 	AttrTypeLetterSpacing
-	// UnderlineColor: underline color ([struct@Pango.AttrColor])
+	// UnderlineColor: underline color (pango.AttrColor)
 	AttrTypeUnderlineColor
-	// StrikethroughColor: strikethrough color ([struct@Pango.AttrColor])
+	// StrikethroughColor: strikethrough color (pango.AttrColor)
 	AttrTypeStrikethroughColor
-	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE
-	// ([struct@Pango.AttrInt])
+	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE (pango.AttrInt)
 	AttrTypeAbsoluteSize
-	// Gravity: base text gravity ([struct@Pango.AttrInt])
+	// Gravity: base text gravity (pango.AttrInt)
 	AttrTypeGravity
-	// GravityHint: gravity hint ([struct@Pango.AttrInt])
+	// GravityHint: gravity hint (pango.AttrInt)
 	AttrTypeGravityHint
-	// FontFeatures: openType font features ([struct@Pango.AttrString]). Since
-	// 1.38
+	// FontFeatures: openType font features (pango.AttrString). Since 1.38
 	AttrTypeFontFeatures
-	// ForegroundAlpha: foreground alpha ([struct@Pango.AttrInt]). Since 1.38
+	// ForegroundAlpha: foreground alpha (pango.AttrInt). Since 1.38
 	AttrTypeForegroundAlpha
-	// BackgroundAlpha: background alpha ([struct@Pango.AttrInt]). Since 1.38
+	// BackgroundAlpha: background alpha (pango.AttrInt). Since 1.38
 	AttrTypeBackgroundAlpha
-	// AllowBreaks: whether breaks are allowed ([struct@Pango.AttrInt]). Since
-	// 1.44
+	// AllowBreaks: whether breaks are allowed (pango.AttrInt). Since 1.44
 	AttrTypeAllowBreaks
-	// Show: how to render invisible characters ([struct@Pango.AttrInt]). Since
-	// 1.44
+	// Show: how to render invisible characters (pango.AttrInt). Since 1.44
 	AttrTypeShow
 	// InsertHyphens: whether to insert hyphens at intra-word line breaks
-	// ([struct@Pango.AttrInt]). Since 1.44
+	// (pango.AttrInt). Since 1.44
 	AttrTypeInsertHyphens
-	// Overline: whether the text has an overline ([struct@Pango.AttrInt]).
-	// Since 1.46
+	// Overline: whether the text has an overline (pango.AttrInt). Since 1.46
 	AttrTypeOverline
-	// OverlineColor: overline color ([struct@Pango.AttrColor]). Since 1.46
+	// OverlineColor: overline color (pango.AttrColor). Since 1.46
 	AttrTypeOverlineColor
 )
 
@@ -121,7 +114,7 @@ func marshalAttrType(p uintptr) (interface{}, error) {
 // AttrTypeGetName fetches the attribute type name.
 //
 // The attribute type name is the string passed in when registering the type
-// using [type_func@attr_type_register].
+// using attr_type_register.
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
@@ -143,7 +136,7 @@ func AttrTypeGetName(typ AttrType) string {
 // AttrTypeRegister: allocate a new attribute type ID.
 //
 // The attribute type name can be accessed later by using
-// [type_func@Pango.AttrType.get_name].
+// pango.AttrType.GetName.
 func AttrTypeRegister(name string) AttrType {
 	var _arg1 *C.gchar        // out
 	var _cret C.PangoAttrType // in
@@ -159,8 +152,8 @@ func AttrTypeRegister(name string) AttrType {
 	return _attrType
 }
 
-// Overline: `PangoOverline` enumeration is used to specify whether text should
-// be overlined, and if so, the type of line.
+// Overline: PangoOverline enumeration is used to specify whether text should be
+// overlined, and if so, the type of line.
 type Overline int
 
 const (
@@ -175,8 +168,8 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Underline: `PangoUnderline` enumeration is used to specify whether text
-// should be underlined, and if so, the type of underlining.
+// Underline: PangoUnderline enumeration is used to specify whether text should
+// be underlined, and if so, the type of underlining.
 type Underline int
 
 const (
@@ -196,13 +189,13 @@ const (
 	// contrasting color may automatically be used. This type of underlining is
 	// available since Pango 1.4.
 	UnderlineError
-	// SingleLine: like @PANGO_UNDERLINE_SINGLE, but drawn continuously across
+	// SingleLine: like PANGO_UNDERLINE_SINGLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
 	UnderlineSingleLine
-	// DoubleLine: like @PANGO_UNDERLINE_DOUBLE, but drawn continuously across
+	// DoubleLine: like PANGO_UNDERLINE_DOUBLE, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
 	UnderlineDoubleLine
-	// ErrorLine: like @PANGO_UNDERLINE_ERROR, but drawn continuously across
+	// ErrorLine: like PANGO_UNDERLINE_ERROR, but drawn continuously across
 	// multiple runs. This type of underlining is available since Pango 1.46.
 	UnderlineErrorLine
 )
@@ -582,7 +575,7 @@ func NewAttrRise(rise int) *Attribute {
 // NewAttrScale: create a new font size scale attribute.
 //
 // The base font for the affected text will have its size multiplied by
-// @scale_factor.
+// scale_factor.
 func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
 	var _cret *C.PangoAttribute // in
@@ -793,7 +786,7 @@ func NewAttrWeight(weight Weight) *Attribute {
 //
 // After feeding a Pango markup parser some data with
 // g_markup_parse_context_parse(), use this function to get the list of
-// attributes and text out of the markup. This function will not free @context,
+// attributes and text out of the markup. This function will not free context,
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
@@ -824,22 +817,22 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 // See the Pango Markup (pango_markup.html) docs for details about the supported
 // markup.
 //
-// If @accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, @accel_marker might be an
+// If accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, accel_marker might be an
 // ampersand or underscore. All characters marked as an accelerator will receive
 // a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in @accel_char, when calling [func@markup_parser_finish]. Two
-// @accel_marker characters following each other produce a single literal
-// @accel_marker character.
+// returned in accel_char, when calling markup_parser_finish. Two accel_marker
+// characters following each other produce a single literal accel_marker
+// character.
 //
 // To feed markup to the parser, use g_markup_parse_context_parse() on the
-// returned `GMarkupParseContext`. When done with feeding markup to the parser,
-// use [func@markup_parser_finish] to get the data out of it, and then use
+// returned GMarkupParseContext. When done with feeding markup to the parser,
+// use markup_parser_finish to get the data out of it, and then use
 // g_markup_parse_context_free() to free it.
 //
 // This function is designed for applications that read Pango markup from
-// streams. To simply parse a string containing Pango markup, the
-// [func@parse_markup] API is recommended instead.
+// streams. To simply parse a string containing Pango markup, the parse_markup
+// API is recommended instead.
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out
 	var _cret *C.GMarkupParseContext // in
@@ -865,18 +858,17 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 // See the Pango Markup (pango_markup.html) docs for details about the supported
 // markup.
 //
-// If @accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, @accel_marker might be an
+// If accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, accel_marker might be an
 // ampersand or underscore. All characters marked as an accelerator will receive
 // a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in @accel_char. Two @accel_marker characters following each other
-// produce a single literal @accel_marker character.
+// returned in accel_char. Two accel_marker characters following each other
+// produce a single literal accel_marker character.
 //
-// To parse a stream of pango markup incrementally, use
-// [func@markup_parser_new].
+// To parse a stream of pango markup incrementally, use markup_parser_new.
 //
 // If any error happens, none of the output arguments are touched except for
-// @error.
+// error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
 	var _arg1 *C.char    // out
 	var _arg2 C.int      // out
@@ -904,8 +896,8 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	return _attrList, _text, _accelChar, _goerr
 }
 
-// AttrColor: `PangoAttrColor` structure is used to represent attributes that
-// are colors.
+// AttrColor: PangoAttrColor structure is used to represent attributes that are
+// colors.
 type AttrColor struct {
 	native C.PangoAttrColor
 }
@@ -915,7 +907,7 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrFloat: `PangoAttrFloat` structure is used to represent attributes with a
+// AttrFloat: PangoAttrFloat structure is used to represent attributes with a
 // float or double value.
 type AttrFloat struct {
 	native C.PangoAttrFloat
@@ -926,8 +918,8 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrFontDesc: `PangoAttrFontDesc` structure is used to store an attribute
-// that sets all aspects of the font description at once.
+// AttrFontDesc: PangoAttrFontDesc structure is used to store an attribute that
+// sets all aspects of the font description at once.
 type AttrFontDesc struct {
 	native C.PangoAttrFontDesc
 }
@@ -959,7 +951,7 @@ func AttrFontDescNew(desc *FontDescription) *Attribute {
 	return _attribute
 }
 
-// AttrFontFeatures: `PangoAttrFontFeatures` structure is used to represent
+// AttrFontFeatures: PangoAttrFontFeatures structure is used to represent
 // OpenType font features as an attribute.
 type AttrFontFeatures struct {
 	native C.PangoAttrFontFeatures
@@ -989,7 +981,7 @@ func AttrFontFeaturesNew(features string) *Attribute {
 	return _attribute
 }
 
-// AttrInt: `PangoAttrInt` structure is used to represent attributes with an
+// AttrInt: PangoAttrInt structure is used to represent attributes with an
 // integer or enumeration value.
 type AttrInt struct {
 	native C.PangoAttrInt
@@ -1000,14 +992,12 @@ func (a *AttrInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// AttrIterator: `PangoAttrIterator` is used to iterate through a
-// `PangoAttrList`.
+// AttrIterator: PangoAttrIterator is used to iterate through a PangoAttrList.
 //
-// A new iterator is created with [method@Pango.AttrList.get_iterator]. Once the
+// A new iterator is created with pango.AttrList.GetIterator(). Once the
 // iterator is created, it can be advanced through the style changes in the text
-// using [method@Pango.AttrIterator.next]. At each style change, the range of
-// the current style segment and the attributes currently in effect can be
-// queried.
+// using pango.AttrIterator.Next(). At each style change, the range of the
+// current style segment and the attributes currently in effect can be queried.
 type AttrIterator struct {
 	native C.PangoAttrIterator
 }
@@ -1022,7 +1012,7 @@ func (a *AttrIterator) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Copy a `PangoAttrIterator`.
+// Copy a PangoAttrIterator.
 func (iterator *AttrIterator) Copy() *AttrIterator {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.PangoAttrIterator // in
@@ -1041,7 +1031,7 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	return _attrIterator
 }
 
-// Destroy a `PangoAttrIterator` and free all associated memory.
+// Destroy a PangoAttrIterator and free all associated memory.
 func (iterator *AttrIterator) Destroy() {
 	var _arg0 *C.PangoAttrIterator // out
 
@@ -1089,7 +1079,7 @@ func (iterator *AttrIterator) Next() bool {
 }
 
 // Range: get the range of the current segment. Note that the stored return
-// values are signed, not unsigned like the values in `PangoAttribute`. To deal
+// values are signed, not unsigned like the values in PangoAttribute. To deal
 // with this API oversight, stored return values that wouldn't fit into a signed
 // integer are clamped to G_MAXINT.
 func (iterator *AttrIterator) Range() (start int, end int) {
@@ -1110,7 +1100,7 @@ func (iterator *AttrIterator) Range() (start int, end int) {
 	return _start, _end
 }
 
-// AttrLanguage: `PangoAttrLanguage` structure is used to represent attributes
+// AttrLanguage: PangoAttrLanguage structure is used to represent attributes
 // that are languages.
 type AttrLanguage struct {
 	native C.PangoAttrLanguage
@@ -1140,17 +1130,17 @@ func AttrLanguageNew(language *Language) *Attribute {
 	return _attribute
 }
 
-// AttrList: `PangoAttrList` represents a list of attributes that apply to a
+// AttrList: PangoAttrList represents a list of attributes that apply to a
 // section of text.
 //
-// The attributes in a `PangoAttrList` are, in general, allowed to overlap in an
+// The attributes in a PangoAttrList are, in general, allowed to overlap in an
 // arbitrary fashion. However, if the attributes are manipulated only through
-// [method@Pango.AttrList.change], the overlap between properties will meet
-// stricter criteria.
+// pango.AttrList.Change(), the overlap between properties will meet stricter
+// criteria.
 //
-// Since the `PangoAttrList` structure is stored as a linear list, it is not
+// Since the PangoAttrList structure is stored as a linear list, it is not
 // suitable for storing attributes for large amounts of text. In general, you
-// should not use a single `PangoAttrList` for more than one paragraph of text.
+// should not use a single PangoAttrList for more than one paragraph of text.
 type AttrList struct {
 	native C.PangoAttrList
 }
@@ -1182,15 +1172,15 @@ func (a *AttrList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Change: insert the given attribute into the `PangoAttrList`.
+// Change: insert the given attribute into the PangoAttrList.
 //
 // It will replace any attributes of the same type on that segment and be merged
 // with any adjoining attributes that are identical.
 //
-// This function is slower than [method@Pango.AttrList.insert] for creating an
+// This function is slower than pango.AttrList.Insert() for creating an
 // attribute list in order (potentially much slower for large lists). However,
-// [method@Pango.AttrList.insert] is not suitable for continually changing a set
-// of attributes since it never removes or combines existing attributes.
+// pango.AttrList.Insert() is not suitable for continually changing a set of
+// attributes since it never removes or combines existing attributes.
 func (list *AttrList) Change(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -1201,7 +1191,7 @@ func (list *AttrList) Change(attr *Attribute) {
 	C.pango_attr_list_change(_arg0, _arg1)
 }
 
-// Copy @list and return an identical new list.
+// Copy list and return an identical new list.
 func (list *AttrList) Copy() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
@@ -1221,7 +1211,7 @@ func (list *AttrList) Copy() *AttrList {
 	return _attrList
 }
 
-// Equal checks whether @list and @other_list contain the same attributes and
+// Equal checks whether list and other_list contain the same attributes and
 // whether those attributes apply to the same ranges. Beware that this will
 // return wrong values if any list contains duplicates.
 func (list *AttrList) Equal(otherList *AttrList) bool {
@@ -1243,8 +1233,8 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 	return _ok
 }
 
-// Filter: given a `PangoAttrList` and callback function, removes any elements
-// of @list for which @func returns true and inserts them into a new list.
+// Filter: given a PangoAttrList and callback function, removes any elements of
+// list for which func returns TRUE and inserts them into a new list.
 func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _arg0 *C.PangoAttrList      // out
 	var _arg1 C.PangoAttrFilterFunc // out
@@ -1268,7 +1258,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	return _attrList
 }
 
-// Iterator: create a iterator initialized to the beginning of the list. @list
+// Iterator: create a iterator initialized to the beginning of the list. list
 // must not be modified until this iterator is freed.
 func (list *AttrList) Iterator() *AttrIterator {
 	var _arg0 *C.PangoAttrList     // out
@@ -1288,9 +1278,9 @@ func (list *AttrList) Iterator() *AttrIterator {
 	return _attrIterator
 }
 
-// Insert the given attribute into the `PangoAttrList`.
+// Insert the given attribute into the PangoAttrList.
 //
-// It will be inserted after all other attributes with a matching @start_index.
+// It will be inserted after all other attributes with a matching start_index.
 func (list *AttrList) Insert(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -1301,9 +1291,9 @@ func (list *AttrList) Insert(attr *Attribute) {
 	C.pango_attr_list_insert(_arg0, _arg1)
 }
 
-// InsertBefore: insert the given attribute into the `PangoAttrList`.
+// InsertBefore: insert the given attribute into the PangoAttrList.
 //
-// It will be inserted before all other attributes with a matching @start_index.
+// It will be inserted before all other attributes with a matching start_index.
 func (list *AttrList) InsertBefore(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -1334,13 +1324,13 @@ func (list *AttrList) ref() *AttrList {
 	return _attrList
 }
 
-// Splice: this function opens up a hole in @list, fills it in with attributes
-// from the left, and then merges @other on top of the hole.
+// Splice: this function opens up a hole in list, fills it in with attributes
+// from the left, and then merges other on top of the hole.
 //
 // This operation is equivalent to stretching every attribute that applies at
-// position @pos in @list by an amount @len, and then calling
-// [method@Pango.AttrList.change] with a copy of each attribute in @other in
-// sequence (offset in position by @pos).
+// position pos in list by an amount len, and then calling
+// pango.AttrList.Change() with a copy of each attribute in other in sequence
+// (offset in position by pos).
 //
 // This operation proves useful for, for instance, inserting a pre-edit string
 // in the middle of an edit buffer.
@@ -1368,19 +1358,18 @@ func (list *AttrList) unref() {
 	C.pango_attr_list_unref(_arg0)
 }
 
-// Update indices of attributes in @list for a change in the text they refer to.
+// Update indices of attributes in list for a change in the text they refer to.
 //
-// The change that this function applies is removing @remove bytes at position
-// @pos and inserting @add bytes instead.
+// The change that this function applies is removing remove bytes at position
+// pos and inserting add bytes instead.
 //
-// Attributes that fall entirely in the (@pos, @pos + @remove) range are
-// removed.
+// Attributes that fall entirely in the (pos, pos + remove) range are removed.
 //
-// Attributes that start or end inside the (@pos, @pos + @remove) range are
+// Attributes that start or end inside the (pos, pos + remove) range are
 // shortened to reflect the removal.
 //
-// Attributes start and end positions are updated if they are behind @pos +
-// @remove.
+// Attributes start and end positions are updated if they are behind pos +
+// remove.
 func (list *AttrList) Update(pos int, remove int, add int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 C.int            // out
@@ -1395,7 +1384,7 @@ func (list *AttrList) Update(pos int, remove int, add int) {
 	C.pango_attr_list_update(_arg0, _arg1, _arg2, _arg3)
 }
 
-// AttrShape: `PangoAttrShape` structure is used to represent attributes which
+// AttrShape: PangoAttrShape structure is used to represent attributes which
 // impose shape restrictions.
 type AttrShape struct {
 	native C.PangoAttrShape
@@ -1410,7 +1399,7 @@ func (a *AttrShape) Native() unsafe.Pointer {
 //
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
-// embedding a picture or a widget inside a `PangoLayout`.
+// embedding a picture or a widget inside a PangoLayout.
 func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -1431,7 +1420,7 @@ func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	return _attribute
 }
 
-// AttrSize: `PangoAttrSize` structure is used to represent attributes which set
+// AttrSize: PangoAttrSize structure is used to represent attributes which set
 // font size.
 type AttrSize struct {
 	native C.PangoAttrSize
@@ -1480,8 +1469,8 @@ func AttrSizeNewAbsolute(size int) *Attribute {
 	return _attribute
 }
 
-// AttrString: `PangoAttrString` structure is used to represent attributes with
-// a string value.
+// AttrString: PangoAttrString structure is used to represent attributes with a
+// string value.
 type AttrString struct {
 	native C.PangoAttrString
 }
@@ -1491,14 +1480,14 @@ func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Attribute: `PangoAttribute` structure represents the common portions of all
+// Attribute: PangoAttribute structure represents the common portions of all
 // attributes.
 //
 // Particular types of attributes include this structure as their initial
 // portion. The common portion of the attribute holds the range to which the
 // value in the type-specific part of the attribute applies and should be
-// initialized using [method@Pango.Attribute.init]. By default, an attribute
-// will have an all-inclusive range of [0,G_MAXUINT].
+// initialized using pango.Attribute.Init(). By default, an attribute will have
+// an all-inclusive range of [0,G_MAXUINT].
 type Attribute struct {
 	native C.PangoAttribute
 }
@@ -1532,7 +1521,7 @@ func (attr *Attribute) Copy() *Attribute {
 	return _attribute
 }
 
-// Destroy a `PangoAttribute` and free all associated memory.
+// Destroy a PangoAttribute and free all associated memory.
 func (attr *Attribute) Destroy() {
 	var _arg0 *C.PangoAttribute // out
 
@@ -1562,7 +1551,7 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	return _ok
 }
 
-// Color: `PangoColor` structure is used to represent a color in an uncalibrated
+// Color: PangoColor structure is used to represent a color in an uncalibrated
 // RGB color-space.
 type Color struct {
 	native C.PangoColor
@@ -1578,7 +1567,7 @@ func (c *Color) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// Copy creates a copy of @src.
+// Copy creates a copy of src.
 //
 // The copy should be freed with pango_color_free(). Primarily used by language
 // bindings, not that useful otherwise (since colors can just be copied by
@@ -1614,10 +1603,10 @@ func (color *Color) free() {
 //
 // The string can either one of a large set of standard names. (Taken from the
 // CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
-// it can be a value in the form `#rgb`, `#rrggbb`, `#rrrgggbbb` or
-// `#rrrrggggbbbb`, where `r`, `g` and `b` are hex digits of the red, green, and
-// blue components of the color, respectively. (White in the four forms is
-// `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
+// it can be a value in the form #rgb, #rrggbb, #rrrgggbbb or #rrrrggggbbbb,
+// where r, g and b are hex digits of the red, green, and blue components of the
+// color, respectively. (White in the four forms is #fff, #ffffff, #fffffffff
+// and #ffffffffffff.)
 func (color *Color) Parse(spec string) bool {
 	var _arg0 *C.PangoColor // out
 	var _arg1 *C.char       // out
@@ -1641,15 +1630,15 @@ func (color *Color) Parse(spec string) bool {
 //
 // The string can either one of a large set of standard names. (Taken from the
 // CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
-// it can be a hexadecimal value in the form `#rgb`, `#rrggbb`, `#rrrgggbbb` or
-// `#rrrrggggbbbb` where `r`, `g` and `b` are hex digits of the red, green, and
-// blue components of the color, respectively. (White in the four forms is
-// `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
+// it can be a hexadecimal value in the form #rgb, #rrggbb, #rrrgggbbb or
+// #rrrrggggbbbb where r, g and b are hex digits of the red, green, and blue
+// components of the color, respectively. (White in the four forms is #fff,
+// #ffffff, #fffffffff and #ffffffffffff.)
 //
-// Additionally, parse strings of the form `#rgba`, `#rrggbbaa`,
-// `#rrrrggggbbbbaaaa`, if @alpha is not nil, and set @alpha to the value
-// specified by the hex digits for `a`. If no alpha component is found in @spec,
-// @alpha is set to 0xffff (for a solid color).
+// Additionally, parse strings of the form #rgba, #rrggbbaa, #rrrrggggbbbbaaaa,
+// if alpha is not NULL, and set alpha to the value specified by the hex digits
+// for a. If no alpha component is found in spec, alpha is set to 0xffff (for a
+// solid color).
 func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _arg0 *C.PangoColor // out
 	var _arg1 C.guint16     // in
@@ -1672,10 +1661,10 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	return _alpha, _ok
 }
 
-// String returns a textual specification of @color.
+// String returns a textual specification of color.
 //
-// The string is in the hexadecimal form `#rrrrggggbbbb`, where `r`, `g` and `b`
-// are hex digits representing the red, green, and blue components respectively.
+// The string is in the hexadecimal form #rrrrggggbbbb, where r, g and b are hex
+// digits representing the red, green, and blue components respectively.
 func (color *Color) String() string {
 	var _arg0 *C.PangoColor // out
 	var _cret *C.gchar      // in

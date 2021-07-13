@@ -36,10 +36,10 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectOverrider interface {
-	// Interface gets the D-Bus interface with name @interface_name associated
-	// with @object, if any.
+	// Interface gets the D-Bus interface with name interface_name associated
+	// with object, if any.
 	Interface(interfaceName string) *DBusInterface
-	// ObjectPath gets the object path for @object.
+	// ObjectPath gets the object path for object.
 	ObjectPath() string
 	InterfaceAdded(interface_ DBusInterfacer)
 	InterfaceRemoved(interface_ DBusInterfacer)
@@ -47,10 +47,10 @@ type DBusObjectOverrider interface {
 
 // DBusObjector describes DBusObject's methods.
 type DBusObjector interface {
-	// Interface gets the D-Bus interface with name @interface_name associated
-	// with @object, if any.
+	// Interface gets the D-Bus interface with name interface_name associated
+	// with object, if any.
 	Interface(interfaceName string) *DBusInterface
-	// ObjectPath gets the object path for @object.
+	// ObjectPath gets the object path for object.
 	ObjectPath() string
 }
 
@@ -78,8 +78,8 @@ func marshalDBusObjector(p uintptr) (interface{}, error) {
 	return wrapDBusObject(obj), nil
 }
 
-// Interface gets the D-Bus interface with name @interface_name associated with
-// @object, if any.
+// Interface gets the D-Bus interface with name interface_name associated with
+// object, if any.
 func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
@@ -97,7 +97,7 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	return _dBusInterface
 }
 
-// ObjectPath gets the object path for @object.
+// ObjectPath gets the object path for object.
 func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in

@@ -36,7 +36,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketServiceOverrider interface {
-	Incoming(connection SocketConnectioner, sourceObject gextras.Objector) bool
+	Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
 // SocketServicer describes SocketService's methods.

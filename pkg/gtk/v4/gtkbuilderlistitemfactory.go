@@ -30,17 +30,28 @@ type BuilderListItemFactorier interface {
 	Scope() *BuilderScope
 }
 
-// BuilderListItemFactory: `GtkBuilderListItemFactory` is a `GtkListItemFactory`
-// that creates widgets by instantiating `GtkBuilder` UI templates.
+// BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
+// that creates widgets by instantiating GtkBuilder UI templates.
 //
-// The templates must be extending `GtkListItem`, and typically use
-// `GtkExpression`s to obtain data from the items in the model.
+// The templates must be extending GtkListItem, and typically use GtkExpressions
+// to obtain data from the items in the model.
 //
-// Example: “`xml <interface> <template class="GtkListItem"> <property
-// name="child"> <object class="GtkLabel"> <property name="xalign">0</property>
-// <binding name="label"> <lookup name="name" type="SettingsKey"> <lookup
-// name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
-// </template> </interface> “`
+// Example:
+//
+//      <interface>
+//        <template class="GtkListItem">
+//          <property name="child">
+//            <object class="GtkLabel">
+//              <property name="xalign">0</property>
+//              <binding name="label">
+//                <lookup name="name" type="SettingsKey">
+//                  <lookup name="item">GtkListItem</lookup>
+//                </lookup>
+//              </binding>
+//            </object>
+//          </property>
+//        </template>
+//      </interface>
 type BuilderListItemFactory struct {
 	ListItemFactory
 }
@@ -64,9 +75,9 @@ func marshalBuilderListItemFactorier(p uintptr) (interface{}, error) {
 	return wrapBuilderListItemFactory(obj), nil
 }
 
-// NewBuilderListItemFactoryFromResource creates a new
-// `GtkBuilderListItemFactory` that instantiates widgets using data read from
-// the given @resource_path to pass to `GtkBuilder`.
+// NewBuilderListItemFactoryFromResource creates a new GtkBuilderListItemFactory
+// that instantiates widgets using data read from the given resource_path to
+// pass to GtkBuilder.
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
 	var _arg2 *C.char               // out

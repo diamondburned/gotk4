@@ -47,7 +47,7 @@ type SocketControlMessageOverrider interface {
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
-	// @data is guaranteed to have enough space to fit the size returned by
+	// data is guaranteed to have enough space to fit the size returned by
 	// g_socket_control_message_get_size() on this object.
 	Serialize(data cgo.Handle)
 }
@@ -158,7 +158,7 @@ func (message *SocketControlMessage) Size() uint {
 
 // Serialize converts the data in the message to bytes placed in the message.
 //
-// @data is guaranteed to have enough space to fit the size returned by
+// data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
 func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 	var _arg0 *C.GSocketControlMessage // out
@@ -171,11 +171,11 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 }
 
 // SocketControlMessageDeserialize tries to deserialize a socket control message
-// of a given @level and @type. This will ask all known (to GType) subclasses of
+// of a given level and type. This will ask all known (to GType) subclasses of
 // ControlMessage if they can understand this kind of message and if so
 // deserialize it into a ControlMessage.
 //
-// If there is no implementation for this kind of control message, nil will be
+// If there is no implementation for this kind of control message, NULL will be
 // returned.
 func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketControlMessage {
 	var _arg1 C.int // out

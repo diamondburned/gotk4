@@ -61,7 +61,7 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 // to filter whether or not a row may be selected. It is called whenever a row's
 // state might change.
 //
-// A return value of true indicates to @selection that it is okay to change the
+// A return value of TRUE indicates to selection that it is okay to change the
 // selection.
 type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool, data cgo.Handle) (ok bool)
 
@@ -102,41 +102,41 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 // TreeSelectioner describes TreeSelection's methods.
 type TreeSelectioner interface {
 	// CountSelectedRows returns the number of rows that have been selected in
-	// @tree.
+	// tree.
 	CountSelectedRows() int
-	// Mode gets the selection mode for @selection.
+	// Mode gets the selection mode for selection.
 	Mode() SelectionMode
-	// Selected sets @iter to the currently selected node if @selection is set
-	// to K_SELECTION_SINGLE or K_SELECTION_BROWSE.
+	// Selected sets iter to the currently selected node if selection is set to
+	// K_SELECTION_SINGLE or K_SELECTION_BROWSE.
 	Selected() (*TreeModel, TreeIter, bool)
-	// TreeView returns the tree view associated with @selection.
+	// TreeView returns the tree view associated with selection.
 	TreeView() *TreeView
-	// IterIsSelected returns true if the row at @iter is currently selected.
+	// IterIsSelected returns TRUE if the row at iter is currently selected.
 	IterIsSelected(iter *TreeIter) bool
-	// PathIsSelected returns true if the row pointed to by @path is currently
+	// PathIsSelected returns TRUE if the row pointed to by path is currently
 	// selected.
 	PathIsSelected(path *TreePath) bool
 	// SelectAll selects all the nodes.
 	SelectAll()
 	// SelectIter selects the specified iterator.
 	SelectIter(iter *TreeIter)
-	// SelectPath: select the row at @path.
+	// SelectPath: select the row at path.
 	SelectPath(path *TreePath)
-	// SelectRange selects a range of nodes, determined by @start_path and
-	// @end_path inclusive.
+	// SelectRange selects a range of nodes, determined by start_path and
+	// end_path inclusive.
 	SelectRange(startPath *TreePath, endPath *TreePath)
 	// SelectedForeach calls a function for each selected node.
 	SelectedForeach(fn TreeSelectionForeachFunc)
-	// SetMode sets the selection mode of the @selection.
+	// SetMode sets the selection mode of the selection.
 	SetMode(typ SelectionMode)
 	// UnselectAll unselects all the nodes.
 	UnselectAll()
 	// UnselectIter unselects the specified iterator.
 	UnselectIter(iter *TreeIter)
-	// UnselectPath unselects the row at @path.
+	// UnselectPath unselects the row at path.
 	UnselectPath(path *TreePath)
-	// UnselectRange unselects a range of nodes, determined by @start_path and
-	// @end_path inclusive.
+	// UnselectRange unselects a range of nodes, determined by start_path and
+	// end_path inclusive.
 	UnselectRange(startPath *TreePath, endPath *TreePath)
 }
 
@@ -184,8 +184,7 @@ func marshalTreeSelectioner(p uintptr) (interface{}, error) {
 	return wrapTreeSelection(obj), nil
 }
 
-// CountSelectedRows returns the number of rows that have been selected in
-// @tree.
+// CountSelectedRows returns the number of rows that have been selected in tree.
 func (selection *TreeSelection) CountSelectedRows() int {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret C.int               // in
@@ -201,7 +200,7 @@ func (selection *TreeSelection) CountSelectedRows() int {
 	return _gint
 }
 
-// Mode gets the selection mode for @selection. See
+// Mode gets the selection mode for selection. See
 // gtk_tree_selection_set_mode().
 func (selection *TreeSelection) Mode() SelectionMode {
 	var _arg0 *C.GtkTreeSelection // out
@@ -218,11 +217,11 @@ func (selection *TreeSelection) Mode() SelectionMode {
 	return _selectionMode
 }
 
-// Selected sets @iter to the currently selected node if @selection is set to
-// K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you just want
-// to test if @selection has any selected nodes. @model is filled with the
-// current model as a convenience. This function will not work if you use
-// @selection is K_SELECTION_MULTIPLE.
+// Selected sets iter to the currently selected node if selection is set to
+// K_SELECTION_SINGLE or K_SELECTION_BROWSE. iter may be NULL if you just want
+// to test if selection has any selected nodes. model is filled with the current
+// model as a convenience. This function will not work if you use selection is
+// K_SELECTION_MULTIPLE.
 func (selection *TreeSelection) Selected() (*TreeModel, TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
@@ -246,7 +245,7 @@ func (selection *TreeSelection) Selected() (*TreeModel, TreeIter, bool) {
 	return _model, _iter, _ok
 }
 
-// TreeView returns the tree view associated with @selection.
+// TreeView returns the tree view associated with selection.
 func (selection *TreeSelection) TreeView() *TreeView {
 	var _arg0 *C.GtkTreeSelection // out
 	var _cret *C.GtkTreeView      // in
@@ -262,7 +261,7 @@ func (selection *TreeSelection) TreeView() *TreeView {
 	return _treeView
 }
 
-// IterIsSelected returns true if the row at @iter is currently selected.
+// IterIsSelected returns TRUE if the row at iter is currently selected.
 func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeIter      // out
@@ -282,8 +281,8 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 	return _ok
 }
 
-// PathIsSelected returns true if the row pointed to by @path is currently
-// selected. If @path does not point to a valid location, false is returned
+// PathIsSelected returns TRUE if the row pointed to by path is currently
+// selected. If path does not point to a valid location, FALSE is returned
 func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
@@ -303,7 +302,7 @@ func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	return _ok
 }
 
-// SelectAll selects all the nodes. @selection must be set to
+// SelectAll selects all the nodes. selection must be set to
 // K_SELECTION_MULTIPLE mode.
 func (selection *TreeSelection) SelectAll() {
 	var _arg0 *C.GtkTreeSelection // out
@@ -324,7 +323,7 @@ func (selection *TreeSelection) SelectIter(iter *TreeIter) {
 	C.gtk_tree_selection_select_iter(_arg0, _arg1)
 }
 
-// SelectPath: select the row at @path.
+// SelectPath: select the row at path.
 func (selection *TreeSelection) SelectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
@@ -335,8 +334,8 @@ func (selection *TreeSelection) SelectPath(path *TreePath) {
 	C.gtk_tree_selection_select_path(_arg0, _arg1)
 }
 
-// SelectRange selects a range of nodes, determined by @start_path and @end_path
-// inclusive. @selection must be set to K_SELECTION_MULTIPLE mode.
+// SelectRange selects a range of nodes, determined by start_path and end_path
+// inclusive. selection must be set to K_SELECTION_MULTIPLE mode.
 func (selection *TreeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
@@ -364,7 +363,7 @@ func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }
 
-// SetMode sets the selection mode of the @selection. If the previous type was
+// SetMode sets the selection mode of the selection. If the previous type was
 // K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was previously
 // selected.
 func (selection *TreeSelection) SetMode(typ SelectionMode) {
@@ -397,7 +396,7 @@ func (selection *TreeSelection) UnselectIter(iter *TreeIter) {
 	C.gtk_tree_selection_unselect_iter(_arg0, _arg1)
 }
 
-// UnselectPath unselects the row at @path.
+// UnselectPath unselects the row at path.
 func (selection *TreeSelection) UnselectPath(path *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out
@@ -408,8 +407,8 @@ func (selection *TreeSelection) UnselectPath(path *TreePath) {
 	C.gtk_tree_selection_unselect_path(_arg0, _arg1)
 }
 
-// UnselectRange unselects a range of nodes, determined by @start_path and
-// @end_path inclusive.
+// UnselectRange unselects a range of nodes, determined by start_path and
+// end_path inclusive.
 func (selection *TreeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreePath      // out

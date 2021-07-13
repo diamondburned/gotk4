@@ -31,7 +31,7 @@ type HScrollbarer interface {
 
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
 // Scrollbar for details on scrollbars. Adjustment pointers may be added to
-// handle the adjustment of the scrollbar or it may be left nil in which case
+// handle the adjustment of the scrollbar or it may be left NULL in which case
 // one will be created for you. See Scrollbar for a description of what the
 // fields in an adjustment represent for a scrollbar.
 //
@@ -77,11 +77,11 @@ func marshalHScrollbarer(p uintptr) (interface{}, error) {
 // NewHScrollbar creates a new horizontal scrollbar.
 //
 // Deprecated: Use gtk_scrollbar_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHScrollbar(adjustment Adjustmenter) *HScrollbar {
+func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_hscrollbar_new(_arg1)
 

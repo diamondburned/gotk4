@@ -24,18 +24,18 @@ func init() {
 
 // ATContexter describes ATContext's methods.
 type ATContexter interface {
-	// Accessible retrieves the `GtkAccessible` using this context.
+	// Accessible retrieves the GtkAccessible using this context.
 	Accessible() *Accessible
 	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
 
-// ATContext: `GtkATContext` is an abstract class provided by GTK to communicate
+// ATContext: GtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
-// Each platform supported by GTK implements a `GtkATContext` subclass, and is
+// Each platform supported by GTK implements a GtkATContext subclass, and is
 // responsible for updating the accessible state in response to state changes in
-// `GtkAccessible`.
+// GtkAccessible.
 type ATContext struct {
 	*externglib.Object
 }
@@ -57,12 +57,12 @@ func marshalATContexter(p uintptr) (interface{}, error) {
 	return wrapATContext(obj), nil
 }
 
-// NewATContextCreate creates a new `GtkATContext` instance for the given
+// NewATContextCreate creates a new GtkATContext instance for the given
 // accessible role, accessible instance, and display connection.
 //
-// The `GtkATContext` implementation being instantiated will depend on the
+// The GtkATContext implementation being instantiated will depend on the
 // platform.
-func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display gdk.Displayer) *ATContext {
+func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
 	var _arg1 C.GtkAccessibleRole // out
 	var _arg2 *C.GtkAccessible    // out
 	var _arg3 *C.GdkDisplay       // out
@@ -70,7 +70,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 
 	_arg1 = C.GtkAccessibleRole(accessibleRole)
 	_arg2 = (*C.GtkAccessible)(unsafe.Pointer((accessible).(gextras.Nativer).Native()))
-	_arg3 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
 
@@ -81,7 +81,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 	return _atContext
 }
 
-// Accessible retrieves the `GtkAccessible` using this context.
+// Accessible retrieves the GtkAccessible using this context.
 func (self *ATContext) Accessible() *Accessible {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in

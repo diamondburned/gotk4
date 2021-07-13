@@ -24,14 +24,14 @@ func init() {
 
 // SelectionFilterModeler describes SelectionFilterModel's methods.
 type SelectionFilterModeler interface {
-	// Model gets the model currently filtered or nil if none.
+	// Model gets the model currently filtered or NULL if none.
 	Model() *SelectionModel
 	// SetModel sets the model to be filtered.
 	SetModel(model SelectionModeler)
 }
 
-// SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
-// the selection from a `GtkSelectionModel`.
+// SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
+// the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {
 	*externglib.Object
 
@@ -58,7 +58,7 @@ func marshalSelectionFilterModeler(p uintptr) (interface{}, error) {
 	return wrapSelectionFilterModel(obj), nil
 }
 
-// NewSelectionFilterModel creates a new `GtkSelectionFilterModel` that will
+// NewSelectionFilterModel creates a new GtkSelectionFilterModel that will
 // include the selected items from the underlying selection model.
 func NewSelectionFilterModel(model SelectionModeler) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
@@ -75,7 +75,7 @@ func NewSelectionFilterModel(model SelectionModeler) *SelectionFilterModel {
 	return _selectionFilterModel
 }
 
-// Model gets the model currently filtered or nil if none.
+// Model gets the model currently filtered or NULL if none.
 func (self *SelectionFilterModel) Model() *SelectionModel {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _cret *C.GtkSelectionModel       // in
@@ -93,9 +93,9 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 
 // SetModel sets the model to be filtered.
 //
-// Note that GTK makes no effort to ensure that @model conforms to the item type
-// of @self. It assumes that the caller knows what they are doing and have set
-// up an appropriate filter to ensure that item types match.
+// Note that GTK makes no effort to ensure that model conforms to the item type
+// of self. It assumes that the caller knows what they are doing and have set up
+// an appropriate filter to ensure that item types match.
 func (self *SelectionFilterModel) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkSelectionFilterModel // out
 	var _arg1 *C.GtkSelectionModel       // out

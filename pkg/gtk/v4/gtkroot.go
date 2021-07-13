@@ -24,29 +24,28 @@ func init() {
 
 // Rooter describes Root's methods.
 type Rooter interface {
-	// Display returns the display that this `GtkRoot` is on.
+	// Display returns the display that this GtkRoot is on.
 	Display() *gdk.Display
 	// Focus retrieves the current focused widget within the root.
 	Focus() *Widget
-	// SetFocus: if @focus is not the current focus widget, and is focusable,
+	// SetFocus: if focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the root.
 	SetFocus(focus Widgeter)
 }
 
-// Root: `GtkRoot` is the interface implemented by all widgets that can act as a
+// Root: GtkRoot is the interface implemented by all widgets that can act as a
 // toplevel widget.
 //
 // The root widget takes care of providing the connection to the windowing
 // system and manages layout, drawing and event delivery for its widget
 // hierarchy.
 //
-// The obvious example of a `GtkRoot` is `GtkWindow`.
+// The obvious example of a GtkRoot is GtkWindow.
 //
-// To get the display to which a `GtkRoot` belongs, use
-// [method@Gtk.Root.get_display].
+// To get the display to which a GtkRoot belongs, use gtk.Root.GetDisplay().
 //
-// `GtkRoot` also maintains the location of keyboard focus inside its widget
-// hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
+// GtkRoot also maintains the location of keyboard focus inside its widget
+// hierarchy, with gtk.Root.SetFocus() and gtk.Root.GetFocus().
 type Root struct {
 	NativeSurface
 }
@@ -83,7 +82,7 @@ func marshalRooter(p uintptr) (interface{}, error) {
 	return wrapRoot(obj), nil
 }
 
-// Display returns the display that this `GtkRoot` is on.
+// Display returns the display that this GtkRoot is on.
 func (self *Root) Display() *gdk.Display {
 	var _arg0 *C.GtkRoot    // out
 	var _cret *C.GdkDisplay // in
@@ -107,7 +106,7 @@ func (self *Root) Display() *gdk.Display {
 // Focus retrieves the current focused widget within the root.
 //
 // Note that this is the widget that would have the focus if the root is active;
-// if the root is not focused then `gtk_widget_has_focus (widget)` will be false
+// if the root is not focused then gtk_widget_has_focus (widget) will be FALSE
 // for the widget.
 func (self *Root) Focus() *Widget {
 	var _arg0 *C.GtkRoot   // out
@@ -124,13 +123,13 @@ func (self *Root) Focus() *Widget {
 	return _widget
 }
 
-// SetFocus: if @focus is not the current focus widget, and is focusable, sets
-// it as the focus widget for the root.
+// SetFocus: if focus is not the current focus widget, and is focusable, sets it
+// as the focus widget for the root.
 //
-// If @focus is nil, unsets the focus widget for the root.
+// If focus is NULL, unsets the focus widget for the root.
 //
 // To set the focus to a particular widget in the root, it is usually more
-// convenient to use [method@Gtk.Widget.grab_focus] instead of this function.
+// convenient to use gtk.Widget.GrabFocus() instead of this function.
 func (self *Root) SetFocus(focus Widgeter) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out

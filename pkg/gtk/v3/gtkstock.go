@@ -46,10 +46,10 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 	return cret
 }
 
-// StockAdd registers each of the stock items in @items. If an item already
-// exists with the same stock ID as one of the @items, the old item gets
+// StockAdd registers each of the stock items in items. If an item already
+// exists with the same stock ID as one of the items, the old item gets
 // replaced. The stock items are copied, so GTK+ does not hold any pointer into
-// @items and @items can be freed. Use gtk_stock_add_static() if @items is
+// items and items can be freed. Use gtk_stock_add_static() if items is
 // persistent and GTK+ need not copy the array.
 //
 // Deprecated: since version 3.10.
@@ -65,7 +65,7 @@ func StockAdd(items []StockItem) {
 	C.gtk_stock_add(_arg1, _arg2)
 }
 
-// StockAddStatic: same as gtk_stock_add(), but doesn’t copy @items, so @items
+// StockAddStatic: same as gtk_stock_add(), but doesn’t copy items, so items
 // must persist until application exit.
 //
 // Deprecated: since version 3.10.
@@ -81,8 +81,8 @@ func StockAddStatic(items []StockItem) {
 	C.gtk_stock_add_static(_arg1, _arg2)
 }
 
-// StockLookup fills @item with the registered values for @stock_id, returning
-// true if @stock_id was known.
+// StockLookup fills item with the registered values for stock_id, returning
+// TRUE if stock_id was known.
 //
 // Deprecated: since version 3.10.
 func StockLookup(stockId string) (StockItem, bool) {
@@ -115,7 +115,7 @@ func (s *StockItem) Native() unsafe.Pointer {
 
 // Free frees a stock item allocated on the heap, such as one returned by
 // gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
-// are not nil.
+// are not NULL.
 //
 // Deprecated: since version 3.10.
 func (item *StockItem) free() {

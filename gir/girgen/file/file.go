@@ -51,6 +51,12 @@ func (h *Header) Reset() {
 	*h = Header{stop: h.stop}
 }
 
+// HasImport returns true if the header imports the given path.
+func (h *Header) HasImport(path string) bool {
+	_, ok := h.Imports[path]
+	return ok
+}
+
 // ImportCore returns the path to import a core package.
 func ImportCore(core string) string {
 	return CoreImportPath + "/" + core

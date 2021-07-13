@@ -39,7 +39,7 @@ type Switcher interface {
 	Active() bool
 	// State gets the underlying state of the Switch.
 	State() bool
-	// SetActive changes the state of @sw to the desired one.
+	// SetActive changes the state of sw to the desired one.
 	SetActive(isActive bool)
 	// SetState sets the underlying state of the Switch.
 	SetState(state bool)
@@ -163,7 +163,7 @@ func (sw *Switch) State() bool {
 	return _ok
 }
 
-// SetActive changes the state of @sw to the desired one.
+// SetActive changes the state of sw to the desired one.
 func (sw *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out

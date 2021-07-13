@@ -11,11 +11,11 @@ import (
 // #include <glib.h>
 import "C"
 
-// UUIDStringIsValid parses the string @str and verify if it is a UUID.
+// UUIDStringIsValid parses the string str and verify if it is a UUID.
 //
 // The function accepts the following syntax:
 //
-// - simple forms (e.g. `f81d4fae-7dec-11d0-a765-00a0c91e6bf6`)
+// - simple forms (e.g. f81d4fae-7dec-11d0-a765-00a0c91e6bf6)
 //
 // Note that hyphens are required within the UUID string itself, as per the
 // aforementioned RFC.

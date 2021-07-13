@@ -66,9 +66,9 @@ func marshalTLSFileDatabaser(p uintptr) (interface{}, error) {
 func (*TLSFileDatabase) privateTLSFileDatabase() {}
 
 // NewTLSFileDatabase creates a new FileDatabase which uses anchor certificate
-// authorities in @anchors to verify certificate chains.
+// authorities in anchors to verify certificate chains.
 //
-// The certificates in @anchors must be PEM encoded.
+// The certificates in anchors must be PEM encoded.
 func TlsFileDatabaseNew(anchors string) (*TLSFileDatabase, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in

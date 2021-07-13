@@ -44,25 +44,23 @@ type TLSInteractionOverrider interface {
 	// instead of this function.
 	//
 	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The @password value
-	// will be filled in and then @callback will be called. Alternatively the
-	// user may abort this password request, which will usually abort the TLS
-	// connection.
+	// also choose to provide a password from elsewhere. The password value will
+	// be filled in and then callback will be called. Alternatively the user may
+	// abort this password request, which will usually abort the TLS connection.
 	//
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	AskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error)
 	// AskPasswordAsync: run asynchronous interaction to ask the user for a
 	// password. In general, g_tls_interaction_invoke_ask_password() should be
 	// used instead of this function.
 	//
 	// Derived subclasses usually implement a password prompt, although they may
-	// also choose to provide a password from elsewhere. The @password value
-	// will be filled in and then @callback will be called. Alternatively the
-	// user may abort this password request, which will usually abort the TLS
-	// connection.
+	// also choose to provide a password from elsewhere. The password value will
+	// be filled in and then callback will be called. Alternatively the user may
+	// abort this password request, which will usually abort the TLS connection.
 	//
 	// If the interaction is cancelled by the cancellation object, or by the
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
@@ -70,7 +68,7 @@ type TLSInteractionOverrider interface {
 	// not support immediate cancellation.
 	//
 	// Certain implementations may not support immediate cancellation.
-	AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback)
+	AskPasswordAsync(password *TLSPassword, cancellable *Cancellable, callback AsyncReadyCallback)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
 	// callback is called.
@@ -100,18 +98,18 @@ type TLSInteractionOverrider interface {
 	// user then G_TLS_INTERACTION_FAILED will be returned with an error that
 	// contains a G_IO_ERROR_CANCELLED error code. Certain implementations may
 	// not support immediate cancellation.
-	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error)
 	// RequestCertificateAsync: run asynchronous interaction to ask the user for
 	// a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
 	// this function.
 	//
 	// Derived subclasses usually implement a certificate selector, although
-	// they may also choose to provide a certificate from elsewhere. @callback
+	// they may also choose to provide a certificate from elsewhere. callback
 	// will be called when the operation completes. Alternatively the user may
 	// abort this certificate request, which will usually abort the TLS
 	// connection.
-	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -130,23 +128,23 @@ type TLSInteractionOverrider interface {
 // TLSInteractioner describes TLSInteraction's methods.
 type TLSInteractioner interface {
 	// AskPassword: run synchronous interaction to ask the user for a password.
-	AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	AskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error)
 	// AskPasswordAsync: run asynchronous interaction to ask the user for a
 	// password.
-	AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback)
+	AskPasswordAsync(password *TLSPassword, cancellable *Cancellable, callback AsyncReadyCallback)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	// InvokeAskPassword: invoke the interaction to ask the user for a password.
-	InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error)
+	InvokeAskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error)
 	// InvokeRequestCertificate: invoke the interaction to ask the user to
 	// choose a certificate to use with the connection.
-	InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error)
 	// RequestCertificate: run synchronous interaction to ask the user to choose
 	// a certificate to use with the connection.
-	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error)
+	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error)
 	// RequestCertificateAsync: run asynchronous interaction to ask the user for
 	// a certificate to use with the connection.
-	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// RequestCertificateFinish: complete a request certificate user interaction
 	// request.
 	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
@@ -197,15 +195,15 @@ func marshalTLSInteractioner(p uintptr) (interface{}, error) {
 // this function.
 //
 // Derived subclasses usually implement a password prompt, although they may
-// also choose to provide a password from elsewhere. The @password value will be
-// filled in and then @callback will be called. Alternatively the user may abort
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
 // this password request, which will usually abort the TLS connection.
 //
 // If the interaction is cancelled by the cancellation object, or by the user
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) AskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -213,8 +211,8 @@ func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellab
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -232,8 +230,8 @@ func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellab
 // instead of this function.
 //
 // Derived subclasses usually implement a password prompt, although they may
-// also choose to provide a password from elsewhere. The @password value will be
-// filled in and then @callback will be called. Alternatively the user may abort
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
 // this password request, which will usually abort the TLS connection.
 //
 // If the interaction is cancelled by the cancellation object, or by the user
@@ -242,7 +240,7 @@ func (interaction *TLSInteraction) AskPassword(password TLSPassworder, cancellab
 // immediate cancellation.
 //
 // Certain implementations may not support immediate cancellation.
-func (interaction *TLSInteraction) AskPasswordAsync(password TLSPassworder, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (interaction *TLSInteraction) AskPasswordAsync(password *TLSPassword, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction    // out
 	var _arg1 *C.GTlsPassword       // out
 	var _arg2 *C.GCancellable       // out
@@ -250,8 +248,8 @@ func (interaction *TLSInteraction) AskPasswordAsync(password TLSPassworder, canc
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -294,8 +292,8 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 // is called by called by Connection or Database to ask the user for a password.
 //
 // Derived subclasses usually implement a password prompt, although they may
-// also choose to provide a password from elsewhere. The @password value will be
-// filled in and then @callback will be called. Alternatively the user may abort
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
 // this password request, which will usually abort the TLS connection.
 //
 // The implementation can either be a synchronous (eg: modal dialog) or an
@@ -306,7 +304,7 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, cancellable Cancellabler) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) InvokeAskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GTlsPassword         // out
 	var _arg2 *C.GCancellable         // out
@@ -314,8 +312,8 @@ func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, can
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	_arg1 = (*C.GTlsPassword)(unsafe.Pointer((password).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_invoke_ask_password(_arg0, _arg1, _arg2, &_cerr)
 
@@ -348,7 +346,7 @@ func (interaction *TLSInteraction) InvokeAskPassword(password TLSPassworder, can
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteraction) InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
@@ -359,7 +357,7 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(connection TLSConnec
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_invoke_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -390,7 +388,7 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(connection TLSConnec
 // then G_TLS_INTERACTION_FAILED will be returned with an error that contains a
 // G_IO_ERROR_CANCELLED error code. Certain implementations may not support
 // immediate cancellation.
-func (interaction *TLSInteraction) RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler) (TLSInteractionResult, error) {
+func (interaction *TLSInteraction) RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
@@ -401,7 +399,7 @@ func (interaction *TLSInteraction) RequestCertificate(connection TLSConnectioner
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_tls_interaction_request_certificate(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -420,10 +418,10 @@ func (interaction *TLSInteraction) RequestCertificate(connection TLSConnectioner
 // function.
 //
 // Derived subclasses usually implement a certificate selector, although they
-// may also choose to provide a certificate from elsewhere. @callback will be
+// may also choose to provide a certificate from elsewhere. callback will be
 // called when the operation completes. Alternatively the user may abort this
 // certificate request, which will usually abort the TLS connection.
-func (interaction *TLSInteraction) RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (interaction *TLSInteraction) RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg1 *C.GTlsConnection             // out
 	var _arg2 C.GTlsCertificateRequestFlags // out
@@ -434,7 +432,7 @@ func (interaction *TLSInteraction) RequestCertificateAsync(connection TLSConnect
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 

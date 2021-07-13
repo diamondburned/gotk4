@@ -27,12 +27,10 @@ type GestureZoomer interface {
 	ScaleDelta() float64
 }
 
-// GestureZoom: `GtkGestureZoom` is a `GtkGesture` for 2-finger pinch/zoom
-// gestures.
+// GestureZoom: GtkGestureZoom is a GtkGesture for 2-finger pinch/zoom gestures.
 //
 // Whenever the distance between both tracked sequences changes, the
-// [signal@Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-// factor.
+// gtk.GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom struct {
 	Gesture
 }
@@ -58,8 +56,8 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 	return wrapGestureZoom(obj), nil
 }
 
-// NewGestureZoom returns a newly created `GtkGesture` that recognizes
-// pinch/zoom gestures.
+// NewGestureZoom returns a newly created GtkGesture that recognizes pinch/zoom
+// gestures.
 func NewGestureZoom() *GestureZoom {
 	var _cret *C.GtkGesture // in
 
@@ -74,9 +72,9 @@ func NewGestureZoom() *GestureZoom {
 
 // ScaleDelta gets the scale delta.
 //
-// If @gesture is active, this function returns the zooming difference since the
+// If gesture is active, this function returns the zooming difference since the
 // gesture was recognized (hence the starting point is considered 1:1). If
-// @gesture is not active, 1 is returned.
+// gesture is not active, 1 is returned.
 func (gesture *GestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.double          // in

@@ -47,37 +47,37 @@ type Popoverer interface {
 	// see the implications of this.
 	Modal() bool
 	// PointingTo: if a rectangle to point to has been set, this function will
-	// return true and fill in @rect with such rectangle, otherwise it will
-	// return false and fill in @rect with the attached widget coordinates.
+	// return TRUE and fill in rect with such rectangle, otherwise it will
+	// return FALSE and fill in rect with the attached widget coordinates.
 	PointingTo() (gdk.Rectangle, bool)
-	// Position returns the preferred position of @popover.
+	// Position returns the preferred position of popover.
 	Position() PositionType
-	// RelativeTo returns the widget @popover is currently attached to
+	// RelativeTo returns the widget popover is currently attached to
 	RelativeTo() *Widget
 	// TransitionsEnabled returns whether show/hide transitions are enabled on
 	// this popover.
 	TransitionsEnabled() bool
-	// Popdown pops @popover down.This is different than a gtk_widget_hide()
-	// call in that it shows the popover with a transition.
+	// Popdown pops popover down.This is different than a gtk_widget_hide() call
+	// in that it shows the popover with a transition.
 	Popdown()
-	// Popup pops @popover up.
+	// Popup pops popover up.
 	Popup()
 	// SetConstrainTo sets a constraint for positioning this popover.
 	SetConstrainTo(constraint PopoverConstraint)
 	// SetDefaultWidget sets the widget that should be set as default widget
 	// while the popover is shown (see gtk_window_set_default()).
 	SetDefaultWidget(widget Widgeter)
-	// SetModal sets whether @popover is modal, a modal popover will grab all
+	// SetModal sets whether popover is modal, a modal popover will grab all
 	// input within the toplevel and grab the keyboard focus on it when being
 	// displayed.
 	SetModal(modal bool)
-	// SetPointingTo sets the rectangle that @popover will point to, in the
-	// coordinate space of the widget @popover is attached to, see
+	// SetPointingTo sets the rectangle that popover will point to, in the
+	// coordinate space of the widget popover is attached to, see
 	// gtk_popover_set_relative_to().
 	SetPointingTo(rect *gdk.Rectangle)
-	// SetPosition sets the preferred position for @popover to appear.
+	// SetPosition sets the preferred position for popover to appear.
 	SetPosition(position PositionType)
-	// SetRelativeTo sets a new widget to be attached to @popover.
+	// SetRelativeTo sets a new widget to be attached to popover.
 	SetRelativeTo(relativeTo Widgeter)
 	// SetTransitionsEnabled sets whether show/hide transitions are enabled on
 	// this popover Deprecated: You can show or hide the popover without
@@ -179,7 +179,7 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(obj), nil
 }
 
-// NewPopover creates a new popover to point to @relative_to
+// NewPopover creates a new popover to point to relative_to
 func NewPopover(relativeTo Widgeter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
@@ -195,8 +195,8 @@ func NewPopover(relativeTo Widgeter) *Popover {
 	return _popover
 }
 
-// NewPopoverFromModel creates a Popover and populates it according to @model.
-// The popover is pointed to the @relative_to widget.
+// NewPopoverFromModel creates a Popover and populates it according to model.
+// The popover is pointed to the relative_to widget.
 //
 // The created buttons are connected to actions found in the ApplicationWindow
 // to which the popover belongs - typically by means of being attached to a
@@ -223,15 +223,15 @@ func NewPopoverFromModel(relativeTo Widgeter, model gio.MenuModeler) *Popover {
 
 // BindModel establishes a binding between a Popover and a Model.
 //
-// The contents of @popover are removed and then refilled with menu items
-// according to @model. When @model changes, @popover is updated. Calling this
-// function twice on @popover with different @model will cause the first binding
-// to be replaced with a binding to the new model. If @model is nil then any
+// The contents of popover are removed and then refilled with menu items
+// according to model. When model changes, popover is updated. Calling this
+// function twice on popover with different model will cause the first binding
+// to be replaced with a binding to the new model. If model is NULL then any
 // previous binding is undone and all children are removed.
 //
-// If @action_namespace is non-nil then the effect is as if all actions
-// mentioned in the @model have their names prefixed with the namespace, plus a
-// dot. For example, if the action “quit” is mentioned and @action_namespace is
+// If action_namespace is non-NULL then the effect is as if all actions
+// mentioned in the model have their names prefixed with the namespace, plus a
+// dot. For example, if the action “quit” is mentioned and action_namespace is
 // “app” then the effective action name is “app.quit”.
 //
 // This function uses Actionable to define the action name and target values on
@@ -307,8 +307,8 @@ func (popover *Popover) Modal() bool {
 }
 
 // PointingTo: if a rectangle to point to has been set, this function will
-// return true and fill in @rect with such rectangle, otherwise it will return
-// false and fill in @rect with the attached widget coordinates.
+// return TRUE and fill in rect with such rectangle, otherwise it will return
+// FALSE and fill in rect with the attached widget coordinates.
 func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover // out
 	var _rect gdk.Rectangle
@@ -327,7 +327,7 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	return _rect, _ok
 }
 
-// Position returns the preferred position of @popover.
+// Position returns the preferred position of popover.
 func (popover *Popover) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
@@ -343,7 +343,7 @@ func (popover *Popover) Position() PositionType {
 	return _positionType
 }
 
-// RelativeTo returns the widget @popover is currently attached to
+// RelativeTo returns the widget popover is currently attached to
 func (popover *Popover) RelativeTo() *Widget {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
@@ -382,7 +382,7 @@ func (popover *Popover) TransitionsEnabled() bool {
 	return _ok
 }
 
-// Popdown pops @popover down.This is different than a gtk_widget_hide() call in
+// Popdown pops popover down.This is different than a gtk_widget_hide() call in
 // that it shows the popover with a transition. If you want to hide the popover
 // without a transition, use gtk_widget_hide().
 func (popover *Popover) Popdown() {
@@ -393,7 +393,7 @@ func (popover *Popover) Popdown() {
 	C.gtk_popover_popdown(_arg0)
 }
 
-// Popup pops @popover up. This is different than a gtk_widget_show() call in
+// Popup pops popover up. This is different than a gtk_widget_show() call in
 // that it shows the popover with a transition. If you want to show the popover
 // without a transition, use gtk_widget_show().
 func (popover *Popover) Popup() {
@@ -431,7 +431,7 @@ func (popover *Popover) SetDefaultWidget(widget Widgeter) {
 	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
 
-// SetModal sets whether @popover is modal, a modal popover will grab all input
+// SetModal sets whether popover is modal, a modal popover will grab all input
 // within the toplevel and grab the keyboard focus on it when being displayed.
 // Clicking outside the popover area or pressing Esc will dismiss the popover
 // and ungrab input.
@@ -447,8 +447,8 @@ func (popover *Popover) SetModal(modal bool) {
 	C.gtk_popover_set_modal(_arg0, _arg1)
 }
 
-// SetPointingTo sets the rectangle that @popover will point to, in the
-// coordinate space of the widget @popover is attached to, see
+// SetPointingTo sets the rectangle that popover will point to, in the
+// coordinate space of the widget popover is attached to, see
 // gtk_popover_set_relative_to().
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
@@ -460,8 +460,8 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
-// SetPosition sets the preferred position for @popover to appear. If the
-// @popover is currently visible, it will be immediately updated.
+// SetPosition sets the preferred position for popover to appear. If the popover
+// is currently visible, it will be immediately updated.
 //
 // This preference will be respected where possible, although on lack of space
 // (eg. if close to the window edges), the Popover may choose to appear on the
@@ -476,11 +476,11 @@ func (popover *Popover) SetPosition(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 }
 
-// SetRelativeTo sets a new widget to be attached to @popover. If @popover is
+// SetRelativeTo sets a new widget to be attached to popover. If popover is
 // visible, the position will be updated.
 //
-// Note: the ownership of popovers is always given to their @relative_to widget,
-// so if @relative_to is set to nil on an attached @popover, it will be detached
+// Note: the ownership of popovers is always given to their relative_to widget,
+// so if relative_to is set to NULL on an attached popover, it will be detached
 // from its previous widget, and consequently destroyed unless extra references
 // are kept.
 func (popover *Popover) SetRelativeTo(relativeTo Widgeter) {

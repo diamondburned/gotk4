@@ -23,7 +23,7 @@ func init() {
 
 // Framer describes Frame's methods.
 type Framer interface {
-	// Child gets the child widget of @frame.
+	// Child gets the child widget of frame.
 	Child() *Widget
 	// Label returns the frame labels text.
 	Label() string
@@ -31,10 +31,10 @@ type Framer interface {
 	LabelAlign() float32
 	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
-	// SetChild sets the child widget of @frame.
+	// SetChild sets the child widget of frame.
 	SetChild(child Widgeter)
-	// SetLabel creates a new `GtkLabel` with the @label and sets it as the
-	// frame's label widget.
+	// SetLabel creates a new GtkLabel with the label and sets it as the frame's
+	// label widget.
 	SetLabel(label string)
 	// SetLabelAlign sets the X alignment of the frame widget’s label.
 	SetLabelAlign(xalign float32)
@@ -42,37 +42,46 @@ type Framer interface {
 	SetLabelWidget(labelWidget Widgeter)
 }
 
-// Frame: `GtkFrame` is a widget that surrounds its child with a decorative
-// frame and an optional label.
+// Frame: GtkFrame is a widget that surrounds its child with a decorative frame
+// and an optional label.
 //
 // !An example GtkFrame (frame.png)
 //
 // If present, the label is drawn inside the top edge of the frame. The
 // horizontal position of the label can be controlled with
-// [method@Gtk.Frame.set_label_align].
+// gtk.Frame.SetLabelAlign().
 //
-// `GtkFrame` clips its child. You can use this to add rounded corners to
-// widgets, but be aware that it also cuts off shadows.
+// GtkFrame clips its child. You can use this to add rounded corners to widgets,
+// but be aware that it also cuts off shadows.
 //
 //
 // GtkFrame as GtkBuildable
 //
-// The `GtkFrame` implementation of the `GtkBuildable` interface supports
-// placing a child in the label position by specifying “label” as the “type”
-// attribute of a <child> element. A normal content child can be specified
-// without specifying a <child> type attribute.
+// The GtkFrame implementation of the GtkBuildable interface supports placing a
+// child in the label position by specifying “label” as the “type” attribute of
+// a <child> element. A normal content child can be specified without specifying
+// a <child> type attribute.
 //
-// An example of a UI definition fragment with GtkFrame: “`xml <object
-// class="GtkFrame"> <child type="label"> <object class="GtkLabel"
-// id="frame_label"/> </child> <child> <object class="GtkEntry"
-// id="frame_content"/> </child> </object> “`
+// An example of a UI definition fragment with GtkFrame:
+//
+//    <object class="GtkFrame">
+//      <child type="label">
+//        <object class="GtkLabel" id="frame_label"/>
+//      </child>
+//      <child>
+//        <object class="GtkEntry" id="frame_content"/>
+//      </child>
+//    </object>
 //
 //
 // CSS nodes
 //
-// “` frame ├── <label widget> ╰── <child> “`
+//    frame
+//    ├── <label widget>
+//    ╰── <child>
 //
-// `GtkFrame` has a main CSS node with name “frame”, which is used to draw the
+//
+// GtkFrame has a main CSS node with name “frame”, which is used to draw the
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
 type Frame struct {
@@ -109,9 +118,9 @@ func marshalFramer(p uintptr) (interface{}, error) {
 	return wrapFrame(obj), nil
 }
 
-// NewFrame creates a new `GtkFrame`, with optional label @label.
+// NewFrame creates a new GtkFrame, with optional label label.
 //
-// If @label is nil, the label is omitted.
+// If label is NULL, the label is omitted.
 func NewFrame(label string) *Frame {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -127,7 +136,7 @@ func NewFrame(label string) *Frame {
 	return _frame
 }
 
-// Child gets the child widget of @frame.
+// Child gets the child widget of frame.
 func (frame *Frame) Child() *Widget {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
@@ -145,7 +154,7 @@ func (frame *Frame) Child() *Widget {
 
 // Label returns the frame labels text.
 //
-// If the frame's label widget is not a `GtkLabel`, nil is returned.
+// If the frame's label widget is not a GtkLabel, NULL is returned.
 func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
 	var _cret *C.char     // in
@@ -193,7 +202,7 @@ func (frame *Frame) LabelWidget() *Widget {
 	return _widget
 }
 
-// SetChild sets the child widget of @frame.
+// SetChild sets the child widget of frame.
 func (frame *Frame) SetChild(child Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
@@ -204,7 +213,7 @@ func (frame *Frame) SetChild(child Widgeter) {
 	C.gtk_frame_set_child(_arg0, _arg1)
 }
 
-// SetLabel creates a new `GtkLabel` with the @label and sets it as the frame's
+// SetLabel creates a new GtkLabel with the label and sets it as the frame's
 // label widget.
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out

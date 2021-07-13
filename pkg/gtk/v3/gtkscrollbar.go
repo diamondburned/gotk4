@@ -104,13 +104,13 @@ func marshalScrollbarer(p uintptr) (interface{}, error) {
 }
 
 // NewScrollbar creates a new scrollbar with the given orientation.
-func NewScrollbar(orientation Orientation, adjustment Adjustmenter) *Scrollbar {
+func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
 

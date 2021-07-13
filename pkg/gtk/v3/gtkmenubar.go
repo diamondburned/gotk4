@@ -95,7 +95,7 @@ func NewMenuBar() *MenuBar {
 }
 
 // NewMenuBarFromModel creates a new MenuBar and populates it with menu items
-// and submenus according to @model.
+// and submenus according to model.
 //
 // The created menu items are connected to actions found in the
 // ApplicationWindow to which the menu bar belongs - typically by means of being

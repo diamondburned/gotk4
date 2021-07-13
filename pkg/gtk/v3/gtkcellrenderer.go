@@ -78,69 +78,68 @@ func marshalCellRendererState(p uintptr) (interface{}, error) {
 type CellRendererOverrider interface {
 	EditingCanceled()
 	EditingStarted(editable CellEditabler, path string)
-	// AlignedArea gets the aligned area used by @cell inside @cell_area. Used
-	// for finding the appropriate edit and focus rectangle.
+	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
+	// finding the appropriate edit and focus rectangle.
 	AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// PreferredHeight retreives a renderer’s natural size when rendered to
-	// @widget.
+	// widget.
 	PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int)
 	// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
-	// height if it were rendered to @widget with the specified @width.
+	// height if it were rendered to widget with the specified width.
 	PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retreives a renderer’s natural size when rendered to
-	// @widget.
+	// widget.
 	PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int)
 	// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
-	// width if it were rendered to @widget with the specified @height.
+	// width if it were rendered to widget with the specified height.
 	PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	RequestMode() SizeRequestMode
 	// Size obtains the width and height needed to render the cell. Used by view
 	// widgets to determine the appropriate size for the cell_area passed to
-	// gtk_cell_renderer_render(). If @cell_area is not nil, fills in the x and
+	// gtk_cell_renderer_render(). If cell_area is not NULL, fills in the x and
 	// y offsets (if set) of the cell relative to this location.
 	//
-	// Please note that the values set in @width and @height, as well as those
-	// in @x_offset and @y_offset are inclusive of the xpad and ypad properties.
+	// Please note that the values set in width and height, as well as those in
+	// x_offset and y_offset are inclusive of the xpad and ypad properties.
 	//
 	// Deprecated: Use gtk_cell_renderer_get_preferred_size() instead.
 	Size(widget Widgeter, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
 	// Render invokes the virtual render function of the CellRenderer. The three
-	// passed-in rectangles are areas in @cr. Most renderers will draw within
-	// @cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
-	// should be honored with respect to @cell_area. @background_area includes
-	// the blank space around the cell, and also the area containing the tree
-	// expander; so the @background_area rectangles for all cells tile to cover
-	// the entire @window.
+	// passed-in rectangles are areas in cr. Most renderers will draw within
+	// cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
+	// should be honored with respect to cell_area. background_area includes the
+	// blank space around the cell, and also the area containing the tree
+	// expander; so the background_area rectangles for all cells tile to cover
+	// the entire window.
 	Render(cr *cairo.Context, widget Widgeter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
 }
 
 // CellRendererer describes CellRenderer's methods.
 type CellRendererer interface {
-	// AlignedArea gets the aligned area used by @cell inside @cell_area.
+	// AlignedArea gets the aligned area used by cell inside cell_area.
 	AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
-	// Alignment fills in @xalign and @yalign with the appropriate values of
-	// @cell.
+	// Alignment fills in xalign and yalign with the appropriate values of cell.
 	Alignment() (xalign float32, yalign float32)
-	// FixedSize fills in @width and @height with the appropriate size of @cell.
+	// FixedSize fills in width and height with the appropriate size of cell.
 	FixedSize() (width int, height int)
-	// Padding fills in @xpad and @ypad with the appropriate values of @cell.
+	// Padding fills in xpad and ypad with the appropriate values of cell.
 	Padding() (xpad int, ypad int)
 	// PreferredHeight retreives a renderer’s natural size when rendered to
-	// @widget.
+	// widget.
 	PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int)
 	// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
-	// height if it were rendered to @widget with the specified @width.
+	// height if it were rendered to widget with the specified width.
 	PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredSize retrieves the minimum and natural size of a cell taking
 	// into account the widget’s preference for height-for-width management.
 	PreferredSize(widget Widgeter) (minimumSize Requisition, naturalSize Requisition)
 	// PreferredWidth retreives a renderer’s natural size when rendered to
-	// @widget.
+	// widget.
 	PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int)
 	// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
-	// width if it were rendered to @widget with the specified @height.
+	// width if it were rendered to widget with the specified height.
 	PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
@@ -229,7 +228,7 @@ func marshalCellRendererer(p uintptr) (interface{}, error) {
 	return wrapCellRenderer(obj), nil
 }
 
-// AlignedArea gets the aligned area used by @cell inside @cell_area. Used for
+// AlignedArea gets the aligned area used by cell inside cell_area. Used for
 // finding the appropriate edit and focus rectangle.
 func (cell *CellRenderer) AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellRenderer     // out
@@ -248,7 +247,7 @@ func (cell *CellRenderer) AlignedArea(widget Widgeter, flags CellRendererState, 
 	return _alignedArea
 }
 
-// Alignment fills in @xalign and @yalign with the appropriate values of @cell.
+// Alignment fills in xalign and yalign with the appropriate values of cell.
 func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gfloat           // in
@@ -267,7 +266,7 @@ func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
 	return _xalign, _yalign
 }
 
-// FixedSize fills in @width and @height with the appropriate size of @cell.
+// FixedSize fills in width and height with the appropriate size of cell.
 func (cell *CellRenderer) FixedSize() (width int, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // in
@@ -286,7 +285,7 @@ func (cell *CellRenderer) FixedSize() (width int, height int) {
 	return _width, _height
 }
 
-// Padding fills in @xpad and @ypad with the appropriate values of @cell.
+// Padding fills in xpad and ypad with the appropriate values of cell.
 func (cell *CellRenderer) Padding() (xpad int, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.gint             // in
@@ -305,7 +304,7 @@ func (cell *CellRenderer) Padding() (xpad int, ypad int) {
 	return _xpad, _ypad
 }
 
-// PreferredHeight retreives a renderer’s natural size when rendered to @widget.
+// PreferredHeight retreives a renderer’s natural size when rendered to widget.
 func (cell *CellRenderer) PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -327,7 +326,7 @@ func (cell *CellRenderer) PreferredHeight(widget Widgeter) (minimumSize int, nat
 }
 
 // PreferredHeightForWidth retreives a cell renderers’s minimum and natural
-// height if it were rendered to @widget with the specified @width.
+// height if it were rendered to widget with the specified width.
 func (cell *CellRenderer) PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -366,7 +365,7 @@ func (cell *CellRenderer) PreferredSize(widget Widgeter) (minimumSize Requisitio
 	return _minimumSize, _naturalSize
 }
 
-// PreferredWidth retreives a renderer’s natural size when rendered to @widget.
+// PreferredWidth retreives a renderer’s natural size when rendered to widget.
 func (cell *CellRenderer) PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -388,7 +387,7 @@ func (cell *CellRenderer) PreferredWidth(widget Widgeter) (minimumSize int, natu
 }
 
 // PreferredWidthForHeight retreives a cell renderers’s minimum and natural
-// width if it were rendered to @widget with the specified @height.
+// width if it were rendered to widget with the specified height.
 func (cell *CellRenderer) PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
@@ -448,11 +447,11 @@ func (cell *CellRenderer) Sensitive() bool {
 
 // Size obtains the width and height needed to render the cell. Used by view
 // widgets to determine the appropriate size for the cell_area passed to
-// gtk_cell_renderer_render(). If @cell_area is not nil, fills in the x and y
+// gtk_cell_renderer_render(). If cell_area is not NULL, fills in the x and y
 // offsets (if set) of the cell relative to this location.
 //
-// Please note that the values set in @width and @height, as well as those in
-// @x_offset and @y_offset are inclusive of the xpad and ypad properties.
+// Please note that the values set in width and height, as well as those in
+// x_offset and y_offset are inclusive of the xpad and ypad properties.
 //
 // Deprecated: Use gtk_cell_renderer_get_preferred_size() instead.
 func (cell *CellRenderer) Size(widget Widgeter, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int) {
@@ -542,12 +541,12 @@ func (cell *CellRenderer) IsActivatable() bool {
 }
 
 // Render invokes the virtual render function of the CellRenderer. The three
-// passed-in rectangles are areas in @cr. Most renderers will draw within
-// @cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
-// should be honored with respect to @cell_area. @background_area includes the
+// passed-in rectangles are areas in cr. Most renderers will draw within
+// cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
+// should be honored with respect to cell_area. background_area includes the
 // blank space around the cell, and also the area containing the tree expander;
-// so the @background_area rectangles for all cells tile to cover the entire
-// @window.
+// so the background_area rectangles for all cells tile to cover the entire
+// window.
 func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgeter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.cairo_t             // out
@@ -633,7 +632,7 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 }
 
 // StopEditing informs the cell renderer that the editing is stopped. If
-// @canceled is true, the cell renderer will emit the
+// canceled is TRUE, the cell renderer will emit the
 // CellRenderer::editing-canceled signal.
 //
 // This function should be called by cell renderer implementations in response

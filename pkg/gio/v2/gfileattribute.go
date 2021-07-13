@@ -74,8 +74,7 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// Add adds a new attribute with @name to the @list, setting its @type and
-// @flags.
+// Add adds a new attribute with name to the list, setting its type and flags.
 func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
@@ -110,7 +109,7 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	return _fileAttributeInfoList
 }
 
-// Lookup gets the file attribute with the name @name from @list.
+// Lookup gets the file attribute with the name name from list.
 func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
@@ -148,8 +147,8 @@ func (list *FileAttributeInfoList) ref() *FileAttributeInfoList {
 	return _fileAttributeInfoList
 }
 
-// Unref removes a reference from the given @list. If the reference count falls
-// to zero, the @list is deleted.
+// Unref removes a reference from the given list. If the reference count falls
+// to zero, the list is deleted.
 func (list *FileAttributeInfoList) unref() {
 	var _arg0 *C.GFileAttributeInfoList // out
 

@@ -23,28 +23,28 @@ func init() {
 
 // TextTager describes TextTag's methods.
 type TextTager interface {
-	// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
-	// `GtkTextTagTable` where the tag is included.
+	// Changed emits the gtk.TextTagTable::tag-changed signal on the
+	// GtkTextTagTable where the tag is included.
 	Changed(sizeChanged bool)
 	// Priority: get the tag priority.
 	Priority() int
-	// SetPriority sets the priority of a `GtkTextTag`.
+	// SetPriority sets the priority of a GtkTextTag.
 	SetPriority(priority int)
 }
 
-// TextTag: tag that can be applied to text contained in a `GtkTextBuffer`.
+// TextTag: tag that can be applied to text contained in a GtkTextBuffer.
 //
 // You may wish to begin by reading the text widget conceptual overview
 // (section-text-widget.html), which gives an overview of all the objects and
 // data types related to the text widget and how they work together.
 //
-// Tags should be in the [class@Gtk.TextTagTable] for a given `GtkTextBuffer`
-// before using them with that buffer.
+// Tags should be in the gtk.TextTagTable for a given GtkTextBuffer before using
+// them with that buffer.
 //
-// [method@Gtk.TextBuffer.create_tag] is the best way to create tags. See
-// “gtk4-demo” for numerous examples.
+// gtk.TextBuffer.CreateTag() is the best way to create tags. See “gtk4-demo”
+// for numerous examples.
 //
-// For each property of `GtkTextTag`, there is a “set” property, e.g. “font-set”
+// For each property of GtkTextTag, there is a “set” property, e.g. “font-set”
 // corresponds to “font”. These “set” properties reflect whether a property has
 // been set or not.
 //
@@ -70,7 +70,7 @@ func marshalTextTager(p uintptr) (interface{}, error) {
 	return wrapTextTag(obj), nil
 }
 
-// NewTextTag creates a `GtkTextTag`.
+// NewTextTag creates a GtkTextTag.
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.char       // out
 	var _cret *C.GtkTextTag // in
@@ -86,11 +86,11 @@ func NewTextTag(name string) *TextTag {
 	return _textTag
 }
 
-// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
-// `GtkTextTagTable` where the tag is included.
+// Changed emits the gtk.TextTagTable::tag-changed signal on the GtkTextTagTable
+// where the tag is included.
 //
-// The signal is already emitted when setting a `GtkTextTag` property. This
-// function is useful for a `GtkTextTag` subclass.
+// The signal is already emitted when setting a GtkTextTag property. This
+// function is useful for a GtkTextTag subclass.
 func (tag *TextTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
 	var _arg1 C.gboolean    // out
@@ -119,18 +119,18 @@ func (tag *TextTag) Priority() int {
 	return _gint
 }
 
-// SetPriority sets the priority of a `GtkTextTag`.
+// SetPriority sets the priority of a GtkTextTag.
 //
 // Valid priorities start at 0 and go to one less than
-// [method@Gtk.TextTagTable.get_size]. Each tag in a table has a unique
-// priority; setting the priority of one tag shifts the priorities of all the
-// other tags in the table to maintain a unique priority for each tag.
+// gtk.TextTagTable.GetSize(). Each tag in a table has a unique priority;
+// setting the priority of one tag shifts the priorities of all the other tags
+// in the table to maintain a unique priority for each tag.
 //
 // Higher priority tags “win” if two tags both set the same text attribute. When
 // adding a tag to a tag table, it will be assigned the highest priority in the
 // table by default; so normally the precedence of a set of tags is the order in
 // which they were added to the table, or created with
-// [method@Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s table
+// gtk.TextBuffer.CreateTag(), which adds the tag to the buffer’s table
 // automatically.
 func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out

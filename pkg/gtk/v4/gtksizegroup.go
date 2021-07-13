@@ -23,35 +23,35 @@ func init() {
 
 // SizeGrouper describes SizeGroup's methods.
 type SizeGrouper interface {
-	// AddWidget adds a widget to a `GtkSizeGroup`.
+	// AddWidget adds a widget to a GtkSizeGroup.
 	AddWidget(widget Widgeter)
 	// Mode gets the current mode of the size group.
 	Mode() SizeGroupMode
-	// RemoveWidget removes a widget from a `GtkSizeGroup`.
+	// RemoveWidget removes a widget from a GtkSizeGroup.
 	RemoveWidget(widget Widgeter)
-	// SetMode sets the `GtkSizeGroupMode` of the size group.
+	// SetMode sets the GtkSizeGroupMode of the size group.
 	SetMode(mode SizeGroupMode)
 }
 
-// SizeGroup: `GtkSizeGroup` groups widgets together so they all request the
-// same size.
+// SizeGroup: GtkSizeGroup groups widgets together so they all request the same
+// size.
 //
 // This is typically useful when you want a column of widgets to have the same
-// size, but you can’t use a `GtkGrid`.
+// size, but you can’t use a GtkGrid.
 //
-// In detail, the size requested for each widget in a `GtkSizeGroup` is the
+// In detail, the size requested for each widget in a GtkSizeGroup is the
 // maximum of the sizes that would have been requested for each widget in the
 // size group if they were not in the size group. The mode of the size group
-// (see [method@Gtk.SizeGroup.set_mode]) determines whether this applies to the
+// (see gtk.SizeGroup.SetMode()) determines whether this applies to the
 // horizontal size, the vertical size, or both sizes.
 //
 // Note that size groups only affect the amount of space requested, not the size
-// that the widgets finally receive. If you want the widgets in a `GtkSizeGroup`
+// that the widgets finally receive. If you want the widgets in a GtkSizeGroup
 // to actually be the same size, you need to pack them in such a way that they
 // get the size they request and not more.
 //
-// `GtkSizeGroup` objects are referenced by each widget in the size group, so
-// once you have added all widgets to a `GtkSizeGroup`, you can drop the initial
+// GtkSizeGroup objects are referenced by each widget in the size group, so once
+// you have added all widgets to a GtkSizeGroup, you can drop the initial
 // reference to the size group with g_object_unref(). If the widgets in the size
 // group are subsequently destroyed, then they will be removed from the size
 // group and drop their references on the size group; when all widgets have been
@@ -74,22 +74,28 @@ type SizeGrouper interface {
 // same is of course true when horizontally grouping width for height widgets.
 //
 // Widgets that trade height-for-width should set a reasonably large minimum
-// width by way of [property@Gtk.Label:width-chars] for instance. Widgets with
-// static sizes as well as widgets that grow (such as ellipsizing text) need no
-// such considerations.
+// width by way of gtk.Label:width-chars for instance. Widgets with static sizes
+// as well as widgets that grow (such as ellipsizing text) need no such
+// considerations.
 //
 //
 // GtkSizeGroup as GtkBuildable
 //
 // Size groups can be specified in a UI definition by placing an <object>
-// element with `class="GtkSizeGroup"` somewhere in the UI definition. The
-// widgets that belong to the size group are specified by a <widgets> element
-// that may contain multiple <widget> elements, one for each member of the size
-// group. The ”name” attribute gives the id of the widget.
+// element with class="GtkSizeGroup" somewhere in the UI definition. The widgets
+// that belong to the size group are specified by a <widgets> element that may
+// contain multiple <widget> elements, one for each member of the size group.
+// The ”name” attribute gives the id of the widget.
 //
-// An example of a UI definition fragment with `GtkSizeGroup`: “`xml <object
-// class="GtkSizeGroup"> <property name="mode">horizontal</property> <widgets>
-// <widget name="radio1"/> <widget name="radio2"/> </widgets> </object> “`
+// An example of a UI definition fragment with GtkSizeGroup:
+//
+//    <object class="GtkSizeGroup">
+//      <property name="mode">horizontal</property>
+//      <widgets>
+//        <widget name="radio1"/>
+//        <widget name="radio2"/>
+//      </widgets>
+//    </object>
 type SizeGroup struct {
 	*externglib.Object
 
@@ -116,7 +122,7 @@ func marshalSizeGrouper(p uintptr) (interface{}, error) {
 	return wrapSizeGroup(obj), nil
 }
 
-// NewSizeGroup: create a new `GtkSizeGroup`.
+// NewSizeGroup: create a new GtkSizeGroup.
 func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	var _arg1 C.GtkSizeGroupMode // out
 	var _cret *C.GtkSizeGroup    // in
@@ -132,13 +138,13 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 	return _sizeGroup
 }
 
-// AddWidget adds a widget to a `GtkSizeGroup`.
+// AddWidget adds a widget to a GtkSizeGroup.
 //
 // In the future, the requisition of the widget will be determined as the
 // maximum of its requisition and the requisition of the other widgets in the
 // size group. Whether this applies horizontally, vertically, or in both
 // directions depends on the mode of the size group. See
-// [method@Gtk.SizeGroup.set_mode].
+// gtk.SizeGroup.SetMode().
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
@@ -168,7 +174,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	return _sizeGroupMode
 }
 
-// RemoveWidget removes a widget from a `GtkSizeGroup`.
+// RemoveWidget removes a widget from a GtkSizeGroup.
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
@@ -179,7 +185,7 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 }
 
-// SetMode sets the `GtkSizeGroupMode` of the size group.
+// SetMode sets the GtkSizeGroupMode of the size group.
 //
 // The mode of the size group determines whether the widgets in the size group
 // should all have the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL)

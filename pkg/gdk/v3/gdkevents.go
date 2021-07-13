@@ -76,7 +76,7 @@ func marshalCrossingMode(p uintptr) (interface{}, error) {
 //
 // In some language bindings, the values GDK_2BUTTON_PRESS and GDK_3BUTTON_PRESS
 // would translate into something syntactically invalid (eg
-// `Gdk.EventType.2ButtonPress`, where a symbol is not allowed to start with a
+// Gdk.EventType.2ButtonPress, where a symbol is not allowed to start with a
 // number). In that case, the aliases GDK_DOUBLE_BUTTON_PRESS and
 // GDK_TRIPLE_BUTTON_PRESS can be used instead.
 type EventType int
@@ -222,7 +222,7 @@ const (
 	// Continue: event not handled, continue processing.
 	FilterReturnContinue FilterReturn = iota
 	// Translate: native event translated into a GDK event and stored in the
-	// `event` structure that was passed in.
+	// event structure that was passed in.
 	FilterReturnTranslate
 	// Remove: event handled, terminate processing.
 	FilterReturnRemove
@@ -461,7 +461,7 @@ func GetShowEvents() bool {
 
 // SetShowEvents sets whether a trace of received events is output. Note that
 // GTK+ must be compiled with debugging (that is, configured using the
-// `--enable-debug` option) to use this option.
+// --enable-debug option) to use this option.
 func SetShowEvents(showEvents bool) {
 	var _arg1 C.gboolean // out
 
@@ -504,15 +504,22 @@ func (e *EventAny) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// EventButton: used for button press and button release events. The @type field
+// EventButton: used for button press and button release events. The type field
 // will be one of GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_3BUTTON_PRESS or
 // GDK_BUTTON_RELEASE,
 //
 // Double and triple-clicks result in a sequence of events being received. For
 // double-clicks the order of events will be:
 //
-// - GDK_BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS -
-// GDK_2BUTTON_PRESS - GDK_BUTTON_RELEASE
+// - GDK_BUTTON_PRESS
+//
+// - GDK_BUTTON_RELEASE
+//
+// - GDK_BUTTON_PRESS
+//
+// - GDK_2BUTTON_PRESS
+//
+// - GDK_BUTTON_RELEASE
 //
 // Note that the first click is received just like a normal button press, while
 // the second click results in a GDK_2BUTTON_PRESS being received just after the
@@ -522,8 +529,20 @@ func (e *EventAny) Native() unsafe.Pointer {
 // GDK_3BUTTON_PRESS is inserted after the third click. The order of the events
 // is:
 //
-// - GDK_BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS -
-// GDK_2BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS - GDK_3BUTTON_PRESS
+// - GDK_BUTTON_PRESS
+//
+// - GDK_BUTTON_RELEASE
+//
+// - GDK_BUTTON_PRESS
+//
+// - GDK_2BUTTON_PRESS
+//
+// - GDK_BUTTON_RELEASE
+//
+// - GDK_BUTTON_PRESS
+//
+// - GDK_3BUTTON_PRESS
+//
 // - GDK_BUTTON_RELEASE
 //
 // For a double click to occur, the second button press must occur within 1/4 of
@@ -747,11 +766,11 @@ func (e *EventSetting) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// EventTouch: used for touch events. @type field will be one of
-// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE, GDK_TOUCH_END or GDK_TOUCH_CANCEL.
+// EventTouch: used for touch events. type field will be one of GDK_TOUCH_BEGIN,
+// GDK_TOUCH_UPDATE, GDK_TOUCH_END or GDK_TOUCH_CANCEL.
 //
-// Touch events are grouped into sequences by means of the @sequence field,
-// which can also be obtained with gdk_event_get_event_sequence(). Each sequence
+// Touch events are grouped into sequences by means of the sequence field, which
+// can also be obtained with gdk_event_get_event_sequence(). Each sequence
 // begins with a GDK_TOUCH_BEGIN event, followed by any number of
 // GDK_TOUCH_UPDATE events, and ends with a GDK_TOUCH_END (or GDK_TOUCH_CANCEL)
 // event. With multitouch devices, there may be several active sequences at the

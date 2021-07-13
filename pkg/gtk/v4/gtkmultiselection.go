@@ -24,13 +24,13 @@ func init() {
 
 // MultiSelectioner describes MultiSelection's methods.
 type MultiSelectioner interface {
-	// Model returns the underlying model of @self.
+	// Model returns the underlying model of self.
 	Model() *gio.ListModel
-	// SetModel sets the model that @self should wrap.
+	// SetModel sets the model that self should wrap.
 	SetModel(model gio.ListModeler)
 }
 
-// MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
+// MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
 // selecting multiple elements.
 type MultiSelection struct {
 	*externglib.Object
@@ -60,7 +60,7 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 	return wrapMultiSelection(obj), nil
 }
 
-// NewMultiSelection creates a new selection to handle @model.
+// NewMultiSelection creates a new selection to handle model.
 func NewMultiSelection(model gio.ListModeler) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
@@ -76,7 +76,7 @@ func NewMultiSelection(model gio.ListModeler) *MultiSelection {
 	return _multiSelection
 }
 
-// Model returns the underlying model of @self.
+// Model returns the underlying model of self.
 func (self *MultiSelection) Model() *gio.ListModel {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
@@ -97,9 +97,9 @@ func (self *MultiSelection) Model() *gio.ListModel {
 	return _listModel
 }
 
-// SetModel sets the model that @self should wrap.
+// SetModel sets the model that self should wrap.
 //
-// If @model is nil, @self will be empty.
+// If model is NULL, self will be empty.
 func (self *MultiSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out

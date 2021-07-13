@@ -26,7 +26,7 @@ func init() {
 
 // PopoverMenuer describes PopoverMenu's methods.
 type PopoverMenuer interface {
-	// OpenSubmenu opens a submenu of the @popover.
+	// OpenSubmenu opens a submenu of the popover.
 	OpenSubmenu(name string)
 }
 
@@ -148,9 +148,9 @@ func NewPopoverMenu() *PopoverMenu {
 	return _popoverMenu
 }
 
-// OpenSubmenu opens a submenu of the @popover. The @name must be one of the
-// names given to the submenus of @popover with PopoverMenu:submenu, or "main"
-// to switch back to the main menu.
+// OpenSubmenu opens a submenu of the popover. The name must be one of the names
+// given to the submenus of popover with PopoverMenu:submenu, or "main" to
+// switch back to the main menu.
 //
 // ModelButton will open submenus automatically when the ModelButton:menu-name
 // property is set, so this function is only needed when you are using other

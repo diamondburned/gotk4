@@ -53,8 +53,8 @@ func (b *Box) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// ContainsBox checks whether the #graphene_box_t @a contains the given
-// #graphene_box_t @b.
+// ContainsBox checks whether the #graphene_box_t a contains the given
+// #graphene_box_t b.
 func (a *Box) ContainsBox(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -74,7 +74,7 @@ func (a *Box) ContainsBox(b *Box) bool {
 	return _ok
 }
 
-// ContainsPoint checks whether @box contains the given @point.
+// ContainsPoint checks whether box contains the given point.
 func (box *Box) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -114,7 +114,7 @@ func (a *Box) Equal(b *Box) bool {
 	return _ok
 }
 
-// Expand expands the dimensions of @box to include the coordinates at @point.
+// Expand expands the dimensions of box to include the coordinates at point.
 func (box *Box) Expand(point *Point3D) Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -128,10 +128,10 @@ func (box *Box) Expand(point *Point3D) Box {
 	return _res
 }
 
-// ExpandScalar expands the dimensions of @box by the given @scalar value.
+// ExpandScalar expands the dimensions of box by the given scalar value.
 //
-// If @scalar is positive, the #graphene_box_t will grow; if @scalar is
-// negative, the #graphene_box_t will shrink.
+// If scalar is positive, the #graphene_box_t will grow; if scalar is negative,
+// the #graphene_box_t will shrink.
 func (box *Box) ExpandScalar(scalar float32) Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 C.float           // out
@@ -145,7 +145,7 @@ func (box *Box) ExpandScalar(scalar float32) Box {
 	return _res
 }
 
-// ExpandVec3 expands the dimensions of @box to include the coordinates of the
+// ExpandVec3 expands the dimensions of box to include the coordinates of the
 // given vector.
 func (box *Box) ExpandVec3(vec *Vec3) Box {
 	var _arg0 *C.graphene_box_t  // out
@@ -194,7 +194,7 @@ func (box *Box) Center() Point3D {
 	return _center
 }
 
-// Depth retrieves the size of the @box on the Z axis.
+// Depth retrieves the size of the box on the Z axis.
 func (box *Box) Depth() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -210,7 +210,7 @@ func (box *Box) Depth() float32 {
 	return _gfloat
 }
 
-// Height retrieves the size of the @box on the Y axis.
+// Height retrieves the size of the box on the Y axis.
 func (box *Box) Height() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -253,7 +253,7 @@ func (box *Box) Min() Point3D {
 }
 
 // Size retrieves the size of the box on all three axes, and stores it into the
-// given @size vector.
+// given size vector.
 func (box *Box) Size() Vec3 {
 	var _arg0 *C.graphene_box_t // out
 	var _size Vec3
@@ -281,7 +281,7 @@ func (box *Box) Vertices() [8]Vec3 {
 	return _vertices
 }
 
-// Width retrieves the size of the @box on the X axis.
+// Width retrieves the size of the box on the X axis.
 func (box *Box) Width() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -339,7 +339,7 @@ func (box *Box) InitFromBox(src *Box) *Box {
 // InitFromPoints initializes the given #graphene_box_t with the given array of
 // vertices.
 //
-// If @n_points is 0, the returned box is initialized with graphene_box_empty().
+// If n_points is 0, the returned box is initialized with graphene_box_empty().
 func (box *Box) InitFromPoints(points []Point3D) *Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg2 *C.graphene_point3d_t
@@ -385,8 +385,7 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 // InitFromVectors initializes the given #graphene_box_t with the given array of
 // vertices.
 //
-// If @n_vectors is 0, the returned box is initialized with
-// graphene_box_empty().
+// If n_vectors is 0, the returned box is initialized with graphene_box_empty().
 func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg2 *C.graphene_vec3_t
@@ -410,7 +409,7 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 
 // Intersection intersects the two given #graphene_box_t.
 //
-// If the two boxes do not intersect, @res will contain a degenerate box
+// If the two boxes do not intersect, res will contain a degenerate box
 // initialized with graphene_box_empty().
 func (a *Box) Intersection(b *Box) (Box, bool) {
 	var _arg0 *C.graphene_box_t // out

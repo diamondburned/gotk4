@@ -25,102 +25,102 @@ func init() {
 
 // PrintContexter describes PrintContext's methods.
 type PrintContexter interface {
-	// CreatePangoContext creates a new `PangoContext` that can be used with the
-	// `GtkPrintContext`.
+	// CreatePangoContext creates a new PangoContext that can be used with the
+	// GtkPrintContext.
 	CreatePangoContext() *pango.Context
-	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-	// with the `GtkPrintContext`.
+	// CreatePangoLayout creates a new PangoLayout that is suitable for use with
+	// the GtkPrintContext.
 	CreatePangoLayout() *pango.Layout
 	// CairoContext obtains the cairo context that is associated with the
-	// `GtkPrintContext`.
+	// GtkPrintContext.
 	CairoContext() *cairo.Context
-	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
+	// DPIX obtains the horizontal resolution of the GtkPrintContext, in dots
 	// per inch.
 	DPIX() float64
-	// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots
-	// per inch.
+	// DPIY obtains the vertical resolution of the GtkPrintContext, in dots per
+	// inch.
 	DPIY() float64
-	// HardMargins obtains the hardware printer margins of the
-	// `GtkPrintContext`, in units.
+	// HardMargins obtains the hardware printer margins of the GtkPrintContext,
+	// in units.
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// Height obtains the height of the `GtkPrintContext`, in pixels.
+	// Height obtains the height of the GtkPrintContext, in pixels.
 	Height() float64
-	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-	// of the `GtkPrintContext`.
+	// PageSetup obtains the GtkPageSetup that determines the page dimensions of
+	// the GtkPrintContext.
 	PageSetup() *PageSetup
-	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-	// `GtkPrintContext`.
+	// PangoFontmap returns a PangoFontMap that is suitable for use with the
+	// GtkPrintContext.
 	PangoFontmap() *pango.FontMap
-	// Width obtains the width of the `GtkPrintContext`, in pixels.
+	// Width obtains the width of the GtkPrintContext, in pixels.
 	Width() float64
 	// SetCairoContext sets a new cairo context on a print context.
 	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 }
 
-// PrintContext: `GtkPrintContext` encapsulates context information that is
+// PrintContext: GtkPrintContext encapsulates context information that is
 // required when drawing pages for printing.
 //
 // This includes the cairo context and important parameters like page size and
-// resolution. It also lets you easily create [class@Pango.Layout] and
-// [class@Pango.Context] objects that match the font metrics of the cairo
-// surface.
+// resolution. It also lets you easily create pango.Layout and pango.Context
+// objects that match the font metrics of the cairo surface.
 //
-// `GtkPrintContext` objects get passed to the
-// [signal@Gtk.PrintOperation::begin-print],
-// [signal@Gtk.PrintOperation::end-print],
-// [signal@Gtk.PrintOperation::request-page-setup] and
-// [signal@Gtk.PrintOperation::draw-page] signals on the
-// [class@Gtk.PrintOperation] object.
+// GtkPrintContext objects get passed to the gtk.PrintOperation::begin-print,
+// gtk.PrintOperation::end-print, gtk.PrintOperation::request-page-setup and
+// gtk.PrintOperation::draw-page signals on the gtk.PrintOperation object.
 //
 // Using GtkPrintContext in a ::draw-page callback
 //
-// “`c static void draw_page (GtkPrintOperation *operation, GtkPrintContext
-// *context, int page_nr) { cairo_t *cr; PangoLayout *layout;
-// PangoFontDescription *desc;
+//    static void
+//    draw_page (GtkPrintOperation *operation,
+//               GtkPrintContext   *context,
+//               int                page_nr)
+//    {
+//      cairo_t *cr;
+//      PangoLayout *layout;
+//      PangoFontDescription *desc;
 //
-//    cr = gtk_print_context_get_cairo_context (context);
+//      cr = gtk_print_context_get_cairo_context (context);
 //
-//    // Draw a red rectangle, as wide as the paper (inside the margins)
-//    cairo_set_source_rgb (cr, 1.0, 0, 0);
-//    cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
+//      // Draw a red rectangle, as wide as the paper (inside the margins)
+//      cairo_set_source_rgb (cr, 1.0, 0, 0);
+//      cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
 //
-//    cairo_fill (cr);
+//      cairo_fill (cr);
 //
-//    // Draw some lines
-//    cairo_move_to (cr, 20, 10);
-//    cairo_line_to (cr, 40, 20);
-//    cairo_arc (cr, 60, 60, 20, 0, M_PI);
-//    cairo_line_to (cr, 80, 20);
+//      // Draw some lines
+//      cairo_move_to (cr, 20, 10);
+//      cairo_line_to (cr, 40, 20);
+//      cairo_arc (cr, 60, 60, 20, 0, M_PI);
+//      cairo_line_to (cr, 80, 20);
 //
-//    cairo_set_source_rgb (cr, 0, 0, 0);
-//    cairo_set_line_width (cr, 5);
-//    cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
-//    cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+//      cairo_set_source_rgb (cr, 0, 0, 0);
+//      cairo_set_line_width (cr, 5);
+//      cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+//      cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
 //
-//    cairo_stroke (cr);
+//      cairo_stroke (cr);
 //
-//    // Draw some text
-//    layout = gtk_print_context_create_pango_layout (context);
-//    pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
-//    desc = pango_font_description_from_string ("sans 28");
-//    pango_layout_set_font_description (layout, desc);
-//    pango_font_description_free (desc);
+//      // Draw some text
+//      layout = gtk_print_context_create_pango_layout (context);
+//      pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
+//      desc = pango_font_description_from_string ("sans 28");
+//      pango_layout_set_font_description (layout, desc);
+//      pango_font_description_free (desc);
 //
-//    cairo_move_to (cr, 30, 20);
-//    pango_cairo_layout_path (cr, layout);
+//      cairo_move_to (cr, 30, 20);
+//      pango_cairo_layout_path (cr, layout);
 //
-//    // Font Outline
-//    cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
-//    cairo_set_line_width (cr, 0.5);
-//    cairo_stroke_preserve (cr);
+//      // Font Outline
+//      cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
+//      cairo_set_line_width (cr, 0.5);
+//      cairo_stroke_preserve (cr);
 //
-//    // Font Fill
-//    cairo_set_source_rgb (cr, 0, 0.0, 1.0);
-//    cairo_fill (cr);
+//      // Font Fill
+//      cairo_set_source_rgb (cr, 0, 0.0, 1.0);
+//      cairo_fill (cr);
 //
-//    g_object_unref (layout);
-//
-// } “`
+//      g_object_unref (layout);
+//    }
 type PrintContext struct {
 	*externglib.Object
 }
@@ -142,8 +142,8 @@ func marshalPrintContexter(p uintptr) (interface{}, error) {
 	return wrapPrintContext(obj), nil
 }
 
-// CreatePangoContext creates a new `PangoContext` that can be used with the
-// `GtkPrintContext`.
+// CreatePangoContext creates a new PangoContext that can be used with the
+// GtkPrintContext.
 func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoContext    // in
@@ -164,8 +164,8 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 	return _ret
 }
 
-// CreatePangoLayout creates a new `PangoLayout` that is suitable for use with
-// the `GtkPrintContext`.
+// CreatePangoLayout creates a new PangoLayout that is suitable for use with the
+// GtkPrintContext.
 func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoLayout     // in
@@ -187,7 +187,7 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 }
 
 // CairoContext obtains the cairo context that is associated with the
-// `GtkPrintContext`.
+// GtkPrintContext.
 func (context *PrintContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.cairo_t         // in
@@ -203,7 +203,7 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 	return _ret
 }
 
-// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots per
+// DPIX obtains the horizontal resolution of the GtkPrintContext, in dots per
 // inch.
 func (context *PrintContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -220,7 +220,7 @@ func (context *PrintContext) DPIX() float64 {
 	return _gdouble
 }
 
-// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots per
+// DPIY obtains the vertical resolution of the GtkPrintContext, in dots per
 // inch.
 func (context *PrintContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -237,7 +237,7 @@ func (context *PrintContext) DPIY() float64 {
 	return _gdouble
 }
 
-// HardMargins obtains the hardware printer margins of the `GtkPrintContext`, in
+// HardMargins obtains the hardware printer margins of the GtkPrintContext, in
 // units.
 func (context *PrintContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
@@ -268,7 +268,7 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 	return _top, _bottom, _left, _right, _ok
 }
 
-// Height obtains the height of the `GtkPrintContext`, in pixels.
+// Height obtains the height of the GtkPrintContext, in pixels.
 func (context *PrintContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in
@@ -284,8 +284,8 @@ func (context *PrintContext) Height() float64 {
 	return _gdouble
 }
 
-// PageSetup obtains the `GtkPageSetup` that determines the page dimensions of
-// the `GtkPrintContext`.
+// PageSetup obtains the GtkPageSetup that determines the page dimensions of the
+// GtkPrintContext.
 func (context *PrintContext) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.GtkPageSetup    // in
@@ -301,8 +301,8 @@ func (context *PrintContext) PageSetup() *PageSetup {
 	return _pageSetup
 }
 
-// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-// `GtkPrintContext`.
+// PangoFontmap returns a PangoFontMap that is suitable for use with the
+// GtkPrintContext.
 func (context *PrintContext) PangoFontmap() *pango.FontMap {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
@@ -323,7 +323,7 @@ func (context *PrintContext) PangoFontmap() *pango.FontMap {
 	return _fontMap
 }
 
-// Width obtains the width of the `GtkPrintContext`, in pixels.
+// Width obtains the width of the GtkPrintContext, in pixels.
 func (context *PrintContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret C.double           // in

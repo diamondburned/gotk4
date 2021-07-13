@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// MapListModelMapFunc: user function that is called to map an @item of the
+// MapListModelMapFunc: user function that is called to map an item of the
 // original model to an item expected by the map model.
 //
 // The returned items must conform to the item type of the model they are used
@@ -54,33 +54,42 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointe
 
 // MapListModeler describes MapListModel's methods.
 type MapListModeler interface {
-	// Model gets the model that is currently being mapped or nil if none.
+	// Model gets the model that is currently being mapped or NULL if none.
 	Model() *gio.ListModel
-	// HasMap checks if a map function is currently set on @self.
+	// HasMap checks if a map function is currently set on self.
 	HasMap() bool
 	// SetModel sets the model to be mapped.
 	SetModel(model gio.ListModeler)
 }
 
-// MapListModel: `GtkMapListModel` maps the items in a list model to different
+// MapListModel: GtkMapListModel maps the items in a list model to different
 // items.
 //
-// `GtkMapListModel` uses a [callback@Gtk.MapListModelMapFunc].
+// GtkMapListModel uses a gtk.MapListModelMapFunc.
 //
-// Example: Create a list of `GtkEventControllers` “`c static gpointer
-// map_to_controllers (gpointer widget, gpointer data) { gpointer result =
-// gtk_widget_observe_controllers (widget); g_object_unref (widget); return
-// result; }
+// Example: Create a list of GtkEventControllers
 //
-// widgets = gtk_widget_observe_children (widget);
+//    static gpointer
+//    map_to_controllers (gpointer widget,
+//                        gpointer data)
+//    {
+//      gpointer result = gtk_widget_observe_controllers (widget);
+//      g_object_unref (widget);
+//      return result;
+//    }
 //
-// controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL, widgets,
-// map_to_controllers, NULL, NULL);
+//    widgets = gtk_widget_observe_children (widget);
 //
-// model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER, controllers);
-// “`
+//    controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL,
+//                                          widgets,
+//                                          map_to_controllers,
+//                                          NULL, NULL);
 //
-// `GtkMapListModel` will attempt to discard the mapped objects as soon as they
+//    model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
+//                                        controllers);
+//
+//
+// GtkMapListModel will attempt to discard the mapped objects as soon as they
 // are no longer needed and recreate them if necessary.
 type MapListModel struct {
 	*externglib.Object
@@ -108,7 +117,7 @@ func marshalMapListModeler(p uintptr) (interface{}, error) {
 	return wrapMapListModel(obj), nil
 }
 
-// Model gets the model that is currently being mapped or nil if none.
+// Model gets the model that is currently being mapped or NULL if none.
 func (self *MapListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret *C.GListModel      // in
@@ -129,7 +138,7 @@ func (self *MapListModel) Model() *gio.ListModel {
 	return _listModel
 }
 
-// HasMap checks if a map function is currently set on @self.
+// HasMap checks if a map function is currently set on self.
 func (self *MapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel // out
 	var _cret C.gboolean         // in
@@ -149,7 +158,7 @@ func (self *MapListModel) HasMap() bool {
 
 // SetModel sets the model to be mapped.
 //
-// GTK makes no effort to ensure that @model conforms to the item type expected
+// GTK makes no effort to ensure that model conforms to the item type expected
 // by the map function. It assumes that the caller knows what they are doing and
 // have set up an appropriate map function.
 func (self *MapListModel) SetModel(model gio.ListModeler) {

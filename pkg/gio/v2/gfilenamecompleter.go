@@ -41,12 +41,12 @@ type FilenameCompleterOverrider interface {
 
 // FilenameCompleterer describes FilenameCompleter's methods.
 type FilenameCompleterer interface {
-	// CompletionSuffix obtains a completion for @initial_text from @completer.
+	// CompletionSuffix obtains a completion for initial_text from completer.
 	CompletionSuffix(initialText string) string
 	// Completions gets an array of completion strings for a given initial text.
 	Completions(initialText string) []string
-	// SetDirsOnly: if @dirs_only is true, @completer will only complete
-	// directory names, and not file names.
+	// SetDirsOnly: if dirs_only is TRUE, completer will only complete directory
+	// names, and not file names.
 	SetDirsOnly(dirsOnly bool)
 }
 
@@ -87,7 +87,7 @@ func NewFilenameCompleter() *FilenameCompleter {
 	return _filenameCompleter
 }
 
-// CompletionSuffix obtains a completion for @initial_text from @completer.
+// CompletionSuffix obtains a completion for initial_text from completer.
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -136,7 +136,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 	return _utf8s
 }
 
-// SetDirsOnly: if @dirs_only is true, @completer will only complete directory
+// SetDirsOnly: if dirs_only is TRUE, completer will only complete directory
 // names, and not file names.
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out

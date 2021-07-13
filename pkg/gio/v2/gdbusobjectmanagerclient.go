@@ -38,19 +38,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
-	InterfaceProxySignal(objectProxy DBusObjectProxier, interfaceProxy DBusProxier, senderName string, signalName string, parameters *glib.Variant)
+	InterfaceProXYSignal(objectProxy *DBusObjectProXY, interfaceProxy *DBusProXY, senderName string, signalName string, parameters *glib.Variant)
 }
 
 // DBusObjectManagerClienter describes DBusObjectManagerClient's methods.
 type DBusObjectManagerClienter interface {
-	// Connection gets the BusConnection used by @manager.
+	// Connection gets the BusConnection used by manager.
 	Connection() *DBusConnection
-	// Flags gets the flags that @manager was constructed with.
+	// Flags gets the flags that manager was constructed with.
 	Flags() DBusObjectManagerClientFlags
-	// Name gets the name that @manager is for, or nil if not a message bus
+	// Name gets the name that manager is for, or NULL if not a message bus
 	// connection.
 	Name() string
-	// NameOwner: unique name that owns the name that @manager is for or nil if
+	// NameOwner: unique name that owns the name that manager is for or NULL if
 	// no-one currently owns that name.
 	NameOwner() string
 }
@@ -75,26 +75,26 @@ type DBusObjectManagerClienter interface {
 // requested name. In this case, BusObjectManagerClient object construction
 // still succeeds but there will be no object proxies (e.g.
 // g_dbus_object_manager_get_objects() returns the empty list) and the
-// BusObjectManagerClient:name-owner property is nil.
+// BusObjectManagerClient:name-owner property is NULL.
 //
 // The owner of the requested name can come and go (for example consider a
 // system service being restarted) – BusObjectManagerClient handles this case
 // too; simply connect to the #GObject::notify signal to watch for changes on
 // the BusObjectManagerClient:name-owner property. When the name owner vanishes,
-// the behavior is that BusObjectManagerClient:name-owner is set to nil (this
+// the behavior is that BusObjectManagerClient:name-owner is set to NULL (this
 // includes emission of the #GObject::notify signal) and then
 // BusObjectManager::object-removed signals are synthesized for all currently
-// existing object proxies. Since BusObjectManagerClient:name-owner is nil when
+// existing object proxies. Since BusObjectManagerClient:name-owner is NULL when
 // this happens, you can use this information to disambiguate a synthesized
 // signal from a genuine signal caused by object removal on the remote
 // BusObjectManager. Similarly, when a new name owner appears,
 // BusObjectManager::object-added signals are synthesized while
-// BusObjectManagerClient:name-owner is still nil. Only when all object proxies
+// BusObjectManagerClient:name-owner is still NULL. Only when all object proxies
 // have been added, the BusObjectManagerClient:name-owner is set to the new name
 // owner (this includes emission of the #GObject::notify signal). Furthermore,
 // you are guaranteed that BusObjectManagerClient:name-owner will alternate
-// between a name owner (e.g. `:1.42`) and nil even in the case where the name
-// of interest is atomically replaced
+// between a name owner (e.g. :1.42) and NULL even in the case where the name of
+// interest is atomically replaced
 //
 // Ultimately, BusObjectManagerClient is used to obtain BusProxy instances. All
 // signals (including the org.freedesktop.DBus.Properties::PropertiesChanged
@@ -192,7 +192,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	return _dBusObjectManagerClient, _goerr
 }
 
-// Connection gets the BusConnection used by @manager.
+// Connection gets the BusConnection used by manager.
 func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
@@ -208,7 +208,7 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	return _dBusConnection
 }
 
-// Flags gets the flags that @manager was constructed with.
+// Flags gets the flags that manager was constructed with.
 func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
@@ -224,7 +224,7 @@ func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	return _dBusObjectManagerClientFlags
 }
 
-// Name gets the name that @manager is for, or nil if not a message bus
+// Name gets the name that manager is for, or NULL if not a message bus
 // connection.
 func (manager *DBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
@@ -241,7 +241,7 @@ func (manager *DBusObjectManagerClient) Name() string {
 	return _utf8
 }
 
-// NameOwner: unique name that owns the name that @manager is for or nil if
+// NameOwner: unique name that owns the name that manager is for or NULL if
 // no-one currently owns that name. You can connect to the #GObject::notify
 // signal to track changes to the BusObjectManagerClient:name-owner property.
 func (manager *DBusObjectManagerClient) NameOwner() string {

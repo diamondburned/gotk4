@@ -26,24 +26,24 @@ func init() {
 
 // ComboBoxTexter describes ComboBoxText's methods.
 type ComboBoxTexter interface {
-	// Append appends @text to the list of strings stored in @combo_box.
+	// Append appends text to the list of strings stored in combo_box.
 	Append(id string, text string)
-	// AppendText appends @text to the list of strings stored in @combo_box.
+	// AppendText appends text to the list of strings stored in combo_box.
 	AppendText(text string)
-	// ActiveText returns the currently active string in @combo_box, or nil if
+	// ActiveText returns the currently active string in combo_box, or NULL if
 	// none is selected.
 	ActiveText() string
-	// Insert inserts @text at @position in the list of strings stored in
-	// @combo_box.
+	// Insert inserts text at position in the list of strings stored in
+	// combo_box.
 	Insert(position int, id string, text string)
-	// InsertText inserts @text at @position in the list of strings stored in
-	// @combo_box.
+	// InsertText inserts text at position in the list of strings stored in
+	// combo_box.
 	InsertText(position int, text string)
-	// Prepend prepends @text to the list of strings stored in @combo_box.
+	// Prepend prepends text to the list of strings stored in combo_box.
 	Prepend(id string, text string)
-	// PrependText prepends @text to the list of strings stored in @combo_box.
+	// PrependText prepends text to the list of strings stored in combo_box.
 	PrependText(text string)
-	// Remove removes the string at @position from @combo_box.
+	// Remove removes the string at position from combo_box.
 	Remove(position int)
 	// RemoveAll removes all the text entries from the combo box.
 	RemoveAll()
@@ -177,8 +177,8 @@ func NewComboBoxTextWithEntry() *ComboBoxText {
 	return _comboBoxText
 }
 
-// Append appends @text to the list of strings stored in @combo_box. If @id is
-// non-nil then it is used as the ID of the row.
+// Append appends text to the list of strings stored in combo_box. If id is
+// non-NULL then it is used as the ID of the row.
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position of
 // -1.
@@ -194,7 +194,7 @@ func (comboBox *ComboBoxText) Append(id string, text string) {
 	C.gtk_combo_box_text_append(_arg0, _arg1, _arg2)
 }
 
-// AppendText appends @text to the list of strings stored in @combo_box.
+// AppendText appends text to the list of strings stored in combo_box.
 //
 // This is the same as calling gtk_combo_box_text_insert_text() with a position
 // of -1.
@@ -208,8 +208,8 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 	C.gtk_combo_box_text_append_text(_arg0, _arg1)
 }
 
-// ActiveText returns the currently active string in @combo_box, or nil if none
-// is selected. If @combo_box contains an entry, this function will return its
+// ActiveText returns the currently active string in combo_box, or NULL if none
+// is selected. If combo_box contains an entry, this function will return its
 // contents (which will not necessarily be an item from the list).
 func (comboBox *ComboBoxText) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
@@ -227,11 +227,11 @@ func (comboBox *ComboBoxText) ActiveText() string {
 	return _utf8
 }
 
-// Insert inserts @text at @position in the list of strings stored in
-// @combo_box. If @id is non-nil then it is used as the ID of the row. See
+// Insert inserts text at position in the list of strings stored in combo_box.
+// If id is non-NULL then it is used as the ID of the row. See
 // ComboBox:id-column.
 //
-// If @position is negative then @text is appended.
+// If position is negative then text is appended.
 func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
@@ -246,12 +246,13 @@ func (comboBox *ComboBoxText) Insert(position int, id string, text string) {
 	C.gtk_combo_box_text_insert(_arg0, _arg1, _arg2, _arg3)
 }
 
-// InsertText inserts @text at @position in the list of strings stored in
-// @combo_box.
+// InsertText inserts text at position in the list of strings stored in
+// combo_box.
 //
-// If @position is negative then @text is appended.
+// If position is negative then text is appended.
 //
-// This is the same as calling gtk_combo_box_text_insert() with a nil ID string.
+// This is the same as calling gtk_combo_box_text_insert() with a NULL ID
+// string.
 func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out
@@ -264,8 +265,8 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	C.gtk_combo_box_text_insert_text(_arg0, _arg1, _arg2)
 }
 
-// Prepend prepends @text to the list of strings stored in @combo_box. If @id is
-// non-nil then it is used as the ID of the row.
+// Prepend prepends text to the list of strings stored in combo_box. If id is
+// non-NULL then it is used as the ID of the row.
 //
 // This is the same as calling gtk_combo_box_text_insert() with a position of 0.
 func (comboBox *ComboBoxText) Prepend(id string, text string) {
@@ -280,7 +281,7 @@ func (comboBox *ComboBoxText) Prepend(id string, text string) {
 	C.gtk_combo_box_text_prepend(_arg0, _arg1, _arg2)
 }
 
-// PrependText prepends @text to the list of strings stored in @combo_box.
+// PrependText prepends text to the list of strings stored in combo_box.
 //
 // This is the same as calling gtk_combo_box_text_insert_text() with a position
 // of 0.
@@ -294,7 +295,7 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 	C.gtk_combo_box_text_prepend_text(_arg0, _arg1)
 }
 
-// Remove removes the string at @position from @combo_box.
+// Remove removes the string at position from combo_box.
 func (comboBox *ComboBoxText) Remove(position int) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.gint             // out

@@ -41,25 +41,25 @@ func init() {
 type FileEnumeratorOverrider interface {
 	// CloseAsync: asynchronously closes the file enumerator.
 	//
-	// If @cancellable is not nil, then the operation can be cancelled by
+	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
 	// g_file_enumerator_close_finish().
-	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a file enumerator, started from
 	// g_file_enumerator_close_async().
 	//
 	// If the file enumerator was already closed when
 	// g_file_enumerator_close_async() was called, then this function will
-	// report G_IO_ERROR_CLOSED in @error, and return false. If the file
+	// report G_IO_ERROR_CLOSED in error, and return FALSE. If the file
 	// enumerator had pending operation when the close operation was started,
-	// then this function will report G_IO_ERROR_PENDING, and return false. If
-	// @cancellable was not nil, then the operation may have been cancelled by
+	// then this function will report G_IO_ERROR_PENDING, and return FALSE. If
+	// cancellable was not NULL, then the operation may have been cancelled by
 	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and FALSE will
 	// be returned.
 	CloseFinish(result AsyncResulter) error
-	CloseFn(cancellable Cancellabler) error
+	CloseFn(cancellable *Cancellable) error
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -68,17 +68,17 @@ type FileEnumeratorOverrider interface {
 	// See the documentation of Enumerator for information about the order of
 	// returned files.
 	//
-	// On error, returns nil and sets @error to the error. If the enumerator is
-	// at the end, nil will be returned and @error will be unset.
-	NextFile(cancellable Cancellabler) (*FileInfo, error)
+	// On error, returns NULL and sets error to the error. If the enumerator is
+	// at the end, NULL will be returned and error will be unset.
+	NextFile(cancellable *Cancellable) (*FileInfo, error)
 	// NextFilesAsync: request information for a number of files from the
 	// enumerator asynchronously. When all i/o for the operation is finished the
-	// @callback will be called with the requested information.
+	// callback will be called with the requested information.
 	//
 	// See the documentation of Enumerator for information about the order of
 	// returned files.
 	//
-	// The callback can be called with less than @num_files files in case of
+	// The callback can be called with less than num_files files in case of
 	// error or at the end of the enumerator. In case of a partial error the
 	// callback will be called with any succeeding items and no error, and on
 	// the next request the error will be reported. If a request is cancelled
@@ -90,22 +90,22 @@ type FileEnumeratorOverrider interface {
 	// Any outstanding i/o request with higher priority (lower numerical value)
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
-	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 }
 
 // FileEnumeratorer describes FileEnumerator's methods.
 type FileEnumeratorer interface {
 	// Close releases all resources used by this enumerator, making the
 	// enumerator return G_IO_ERROR_CLOSED on all calls.
-	Close(cancellable Cancellabler) error
+	Close(cancellable *Cancellable) error
 	// CloseAsync: asynchronously closes the file enumerator.
-	CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a file enumerator, started from
 	// g_file_enumerator_close_async().
 	CloseFinish(result AsyncResulter) error
-	// Child: return a new #GFile which refers to the file named by @info in the
-	// source directory of @enumerator.
-	Child(info FileInfor) *File
+	// Child: return a new #GFile which refers to the file named by info in the
+	// source directory of enumerator.
+	Child(info *FileInfo) *File
 	// Container: get the #GFile container which is being enumerated.
 	Container() *File
 	// HasPending checks if the file enumerator has pending operations.
@@ -114,12 +114,12 @@ type FileEnumeratorer interface {
 	IsClosed() bool
 	// Iterate: this is a version of g_file_enumerator_next_file() that's easier
 	// to use correctly from C programs.
-	Iterate(cancellable Cancellabler) (*FileInfo, *File, error)
+	Iterate(cancellable *Cancellable) (*FileInfo, *File, error)
 	// NextFile returns information for the next file in the enumerated object.
-	NextFile(cancellable Cancellabler) (*FileInfo, error)
+	NextFile(cancellable *Cancellable) (*FileInfo, error)
 	// NextFilesAsync: request information for a number of files from the
 	// enumerator asynchronously.
-	NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// SetPending sets the file enumerator as having pending operations.
 	SetPending(pending bool)
 }
@@ -174,13 +174,13 @@ func marshalFileEnumeratorer(p uintptr) (interface{}, error) {
 // This will be automatically called when the last reference is dropped, but you
 // might want to call this function to make sure resources are released as early
 // as possible.
-func (enumerator *FileEnumerator) Close(cancellable Cancellabler) error {
+func (enumerator *FileEnumerator) Close(cancellable *Cancellable) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
 
@@ -193,11 +193,11 @@ func (enumerator *FileEnumerator) Close(cancellable Cancellabler) error {
 
 // CloseAsync: asynchronously closes the file enumerator.
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned in
 // g_file_enumerator_close_finish().
-func (enumerator *FileEnumerator) CloseAsync(ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
@@ -206,7 +206,7 @@ func (enumerator *FileEnumerator) CloseAsync(ioPriority int, cancellable Cancell
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -218,12 +218,12 @@ func (enumerator *FileEnumerator) CloseAsync(ioPriority int, cancellable Cancell
 //
 // If the file enumerator was already closed when
 // g_file_enumerator_close_async() was called, then this function will report
-// G_IO_ERROR_CLOSED in @error, and return false. If the file enumerator had
+// G_IO_ERROR_CLOSED in error, and return FALSE. If the file enumerator had
 // pending operation when the close operation was started, then this function
-// will report G_IO_ERROR_PENDING, and return false. If @cancellable was not
-// nil, then the operation may have been cancelled by triggering the cancellable
-// object from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be set, and false will be returned.
+// will report G_IO_ERROR_PENDING, and return FALSE. If cancellable was not
+// NULL, then the operation may have been cancelled by triggering the
+// cancellable object from another thread. If the operation was cancelled, the
+// error G_IO_ERROR_CANCELLED will be set, and FALSE will be returned.
 func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
@@ -241,8 +241,8 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// Child: return a new #GFile which refers to the file named by @info in the
-// source directory of @enumerator. This function is primarily intended to be
+// Child: return a new #GFile which refers to the file named by info in the
+// source directory of enumerator. This function is primarily intended to be
 // used inside loops with g_file_enumerator_next_file().
 //
 // This is a convenience method that's equivalent to:
@@ -250,13 +250,13 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //    gchar *name = g_file_info_get_name (info);
 //    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
 //                                     name);
-func (enumerator *FileEnumerator) Child(info FileInfor) *File {
+func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
 	var _cret *C.GFile           // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer((info).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
 	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 
@@ -324,18 +324,18 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 // gboolean return value signifies "end of iteration or error", which requires
 // allocation of a temporary #GError.
 //
-// In contrast, with this function, a false return from
+// In contrast, with this function, a FALSE return from
 // g_file_enumerator_iterate() *always* means "error". End of iteration is
-// signaled by @out_info or @out_child being nil.
+// signaled by out_info or out_child being NULL.
 //
-// Another crucial difference is that the references for @out_info and
-// @out_child are owned by @direnum (they are cached as hidden properties). You
-// must not unref them in your own code. This makes memory management
-// significantly easier for C code in combination with loops.
+// Another crucial difference is that the references for out_info and out_child
+// are owned by direnum (they are cached as hidden properties). You must not
+// unref them in your own code. This makes memory management significantly
+// easier for C code in combination with loops.
 //
 // Finally, this function optionally allows retrieving a #GFile as well.
 //
-// You must specify at least one of @out_info or @out_child.
+// You must specify at least one of out_info or out_child.
 //
 // The code pattern for correctly using g_file_enumerator_iterate() from C is:
 //
@@ -351,8 +351,8 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //      }
 //
 //    out:
-//      g_object_unref (direnum); // Note: frees the last @info
-func (direnum *FileEnumerator) Iterate(cancellable Cancellabler) (*FileInfo, *File, error) {
+//      g_object_unref (direnum); // Note: frees the last info
+func (direnum *FileEnumerator) Iterate(cancellable *Cancellable) (*FileInfo, *File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // in
 	var _arg2 *C.GFile           // in
@@ -360,7 +360,7 @@ func (direnum *FileEnumerator) Iterate(cancellable Cancellabler) (*FileInfo, *Fi
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(direnum.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 
@@ -383,16 +383,16 @@ func (direnum *FileEnumerator) Iterate(cancellable Cancellabler) (*FileInfo, *Fi
 // See the documentation of Enumerator for information about the order of
 // returned files.
 //
-// On error, returns nil and sets @error to the error. If the enumerator is at
-// the end, nil will be returned and @error will be unset.
-func (enumerator *FileEnumerator) NextFile(cancellable Cancellabler) (*FileInfo, error) {
+// On error, returns NULL and sets error to the error. If the enumerator is at
+// the end, NULL will be returned and error will be unset.
+func (enumerator *FileEnumerator) NextFile(cancellable *Cancellable) (*FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GFileInfo       // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
 
@@ -406,15 +406,15 @@ func (enumerator *FileEnumerator) NextFile(cancellable Cancellabler) (*FileInfo,
 }
 
 // NextFilesAsync: request information for a number of files from the enumerator
-// asynchronously. When all i/o for the operation is finished the @callback will
+// asynchronously. When all i/o for the operation is finished the callback will
 // be called with the requested information.
 //
 // See the documentation of Enumerator for information about the order of
 // returned files.
 //
-// The callback can be called with less than @num_files files in case of error
-// or at the end of the enumerator. In case of a partial error the callback will
-// be called with any succeeding items and no error, and on the next request the
+// The callback can be called with less than num_files files in case of error or
+// at the end of the enumerator. In case of a partial error the callback will be
+// called with any succeeding items and no error, and on the next request the
 // error will be reported. If a request is cancelled the callback will be called
 // with G_IO_ERROR_CANCELLED.
 //
@@ -424,7 +424,7 @@ func (enumerator *FileEnumerator) NextFile(cancellable Cancellabler) (*FileInfo,
 // Any outstanding i/o request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (enumerator *FileEnumerator) NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -435,7 +435,7 @@ func (enumerator *FileEnumerator) NextFilesAsync(numFiles int, ioPriority int, c
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = C.int(numFiles)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 

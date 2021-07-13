@@ -112,9 +112,9 @@ func (accessible *Accessible) Widget() *Widget {
 
 // SetWidget sets the Widget corresponding to the Accessible.
 //
-// @accessible will not hold a reference to @widget. It is the caller’s
-// responsibility to ensure that when @widget is destroyed, the widget is unset
-// by calling this function again with @widget set to nil.
+// accessible will not hold a reference to widget. It is the caller’s
+// responsibility to ensure that when widget is destroyed, the widget is unset
+// by calling this function again with widget set to NULL.
 func (accessible *Accessible) SetWidget(widget Widgeter) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out

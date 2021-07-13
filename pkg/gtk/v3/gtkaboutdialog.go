@@ -121,7 +121,7 @@ type AboutDialoger interface {
 	Website() string
 	// WebsiteLabel returns the label used for the website link.
 	WebsiteLabel() string
-	// WrapLicense returns whether the license text in @about is automatically
+	// WrapLicense returns whether the license text in about is automatically
 	// wrapped.
 	WrapLicense() bool
 	// SetArtists sets the strings which are displayed in the artists tab of the
@@ -140,11 +140,11 @@ type AboutDialoger interface {
 	// SetLicense sets the license information to be displayed in the secondary
 	// license dialog.
 	SetLicense(license string)
-	// SetLicenseType sets the license of the application showing the @about
+	// SetLicenseType sets the license of the application showing the about
 	// dialog from a list of known licenses.
 	SetLicenseType(licenseType License)
 	// SetLogo sets the pixbuf to be displayed as logo in the about dialog.
-	SetLogo(logo gdkpixbuf.Pixbufer)
+	SetLogo(logo *gdkpixbuf.Pixbuf)
 	// SetLogoIconName sets the pixbuf to be displayed as logo in the about
 	// dialog.
 	SetLogoIconName(iconName string)
@@ -159,7 +159,7 @@ type AboutDialoger interface {
 	SetWebsite(website string)
 	// SetWebsiteLabel sets the label to be used for the website link.
 	SetWebsiteLabel(websiteLabel string)
-	// SetWrapLicense sets whether the license text in @about is automatically
+	// SetWrapLicense sets whether the license text in about is automatically
 	// wrapped.
 	SetWrapLicense(wrapLicense bool)
 }
@@ -168,7 +168,7 @@ type AboutDialoger interface {
 // its logo, name, copyright, website and license. It is also possible to give
 // credits to the authors, documenters, translators and artists who have worked
 // on the program. An about dialog is typically opened when the user selects the
-// `About` option from the `Help` menu. All parts of the dialog are optional.
+// About option from the Help menu. All parts of the dialog are optional.
 //
 // About dialogs often contain links and email addresses. GtkAboutDialog
 // displays these as clickable links. By default, it calls
@@ -176,14 +176,14 @@ type AboutDialoger interface {
 // overridden with the AboutDialog::activate-link signal.
 //
 // To specify a person with an email address, use a string like "Edgar Allan Poe
-// <edgar\@poe.com>". To specify a website with a title, use a string like "GTK+
+// <edgar\poe.com>". To specify a website with a title, use a string like "GTK+
 // team http://www.gtk.org".
 //
 // To make constructing a GtkAboutDialog as convenient as possible, you can use
 // the function gtk_show_about_dialog() which constructs and shows a dialog and
 // keeps it around so that it can be shown again.
 //
-// Note that GTK+ sets a default title of `_("About s")` on the dialog window
+// Note that GTK+ sets a default title of _("About s") on the dialog window
 // (where \s is replaced by the name of the application, but in order to ensure
 // proper translation of the title, applications should set the title property
 // explicitly when constructing a GtkAboutDialog, as shown in the following
@@ -259,11 +259,15 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sectionName)))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(people))
-		for i := range people {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(people[i])))
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(people)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(people)+1)
+			var zero *C.gchar
+			out[len(people)] = zero
+			for i := range people {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(people[i])))
+			}
 		}
 	}
 
@@ -546,7 +550,7 @@ func (about *AboutDialog) WebsiteLabel() string {
 	return _utf8
 }
 
-// WrapLicense returns whether the license text in @about is automatically
+// WrapLicense returns whether the license text in about is automatically
 // wrapped.
 func (about *AboutDialog) WrapLicense() bool {
 	var _arg0 *C.GtkAboutDialog // out
@@ -572,11 +576,15 @@ func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(artists))
-		for i := range artists {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(artists[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(artists)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(artists)+1)
+			var zero *C.gchar
+			out[len(artists)] = zero
+			for i := range artists {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(artists[i])))
+			}
 		}
 	}
 
@@ -590,11 +598,15 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(authors))
-		for i := range authors {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(authors[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(authors)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(authors)+1)
+			var zero *C.gchar
+			out[len(authors)] = zero
+			for i := range authors {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(authors[i])))
+			}
 		}
 	}
 
@@ -632,11 +644,15 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(documenters))
-		for i := range documenters {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(documenters[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(documenters)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(documenters)+1)
+			var zero *C.gchar
+			out[len(documenters)] = zero
+			for i := range documenters {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(documenters[i])))
+			}
 		}
 	}
 
@@ -644,7 +660,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 }
 
 // SetLicense sets the license information to be displayed in the secondary
-// license dialog. If @license is nil, the license button is hidden.
+// license dialog. If license is NULL, the license button is hidden.
 func (about *AboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.gchar          // out
@@ -655,7 +671,7 @@ func (about *AboutDialog) SetLicense(license string) {
 	C.gtk_about_dialog_set_license(_arg0, _arg1)
 }
 
-// SetLicenseType sets the license of the application showing the @about dialog
+// SetLicenseType sets the license of the application showing the about dialog
 // from a list of known licenses.
 //
 // This function overrides the license set using gtk_about_dialog_set_license().
@@ -670,20 +686,20 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 }
 
 // SetLogo sets the pixbuf to be displayed as logo in the about dialog. If it is
-// nil, the default window icon set with gtk_window_set_default_icon() will be
+// NULL, the default window icon set with gtk_window_set_default_icon() will be
 // used.
-func (about *AboutDialog) SetLogo(logo gdkpixbuf.Pixbufer) {
+func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkAboutDialog // out
 	var _arg1 *C.GdkPixbuf      // out
 
 	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(about.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((logo).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(logo.Native()))
 
 	C.gtk_about_dialog_set_logo(_arg0, _arg1)
 }
 
 // SetLogoIconName sets the pixbuf to be displayed as logo in the about dialog.
-// If it is nil, the default window icon set with gtk_window_set_default_icon()
+// If it is NULL, the default window icon set with gtk_window_set_default_icon()
 // will be used.
 func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -765,7 +781,7 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	C.gtk_about_dialog_set_website_label(_arg0, _arg1)
 }
 
-// SetWrapLicense sets whether the license text in @about is automatically
+// SetWrapLicense sets whether the license text in about is automatically
 // wrapped.
 func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out

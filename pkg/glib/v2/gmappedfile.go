@@ -109,7 +109,7 @@ func (file *MappedFile) free() {
 // Note that the contents may not be zero-terminated, even if the File is backed
 // by a text file.
 //
-// If the file is empty then nil is returned.
+// If the file is empty then NULL is returned.
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
@@ -142,7 +142,7 @@ func (file *MappedFile) Length() uint {
 	return _gsize
 }
 
-// Ref increments the reference count of @file by one. It is safe to call this
+// Ref increments the reference count of file by one. It is safe to call this
 // function from any thread.
 func (file *MappedFile) ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
@@ -163,8 +163,8 @@ func (file *MappedFile) ref() *MappedFile {
 	return _mappedFile
 }
 
-// Unref decrements the reference count of @file by one. If the reference count
-// drops to 0, unmaps the buffer of @file and frees it.
+// Unref decrements the reference count of file by one. If the reference count
+// drops to 0, unmaps the buffer of file and frees it.
 //
 // It is safe to call this function from any thread.
 //

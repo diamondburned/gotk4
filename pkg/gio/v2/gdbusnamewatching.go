@@ -56,7 +56,7 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // have to have an owner.
 //
 // This is also invoked when the BusConnection on which the watch was
-// established has been closed. In that case, @connection will be nil.
+// established has been closed. In that case, connection will be NULL.
 type BusNameVanishedCallback func(connection *DBusConnection, name string, userData cgo.Handle)
 
 //export gotk4_BusNameVanishedCallback

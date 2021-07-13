@@ -67,7 +67,7 @@ func (t *TextAttributes) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Copy copies @src and returns a new TextAttributes.
+// Copy copies src and returns a new TextAttributes.
 func (src *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
@@ -87,8 +87,8 @@ func (src *TextAttributes) Copy() *TextAttributes {
 	return _textAttributes
 }
 
-// CopyValues copies the values from @src to @dest so that @dest has the same
-// values as @src. Frees existing values in @dest.
+// CopyValues copies the values from src to dest so that dest has the same
+// values as src. Frees existing values in dest.
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out
@@ -99,7 +99,7 @@ func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
 
-// Ref increments the reference count on @values.
+// Ref increments the reference count on values.
 func (values *TextAttributes) ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
@@ -119,7 +119,7 @@ func (values *TextAttributes) ref() *TextAttributes {
 	return _textAttributes
 }
 
-// Unref decrements the reference count on @values, freeing the structure if the
+// Unref decrements the reference count on values, freeing the structure if the
 // reference count reaches 0.
 func (values *TextAttributes) unref() {
 	var _arg0 *C.GtkTextAttributes // out

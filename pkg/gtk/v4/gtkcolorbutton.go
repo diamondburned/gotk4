@@ -34,20 +34,22 @@ type ColorButtoner interface {
 	SetTitle(title string)
 }
 
-// ColorButton: `GtkColorButton` allows to open a color chooser dialog to change
+// ColorButton: GtkColorButton allows to open a color chooser dialog to change
 // the color.
 //
 // !An example GtkColorButton (color-button.png)
 //
 // It is suitable widget for selecting a color in a preference dialog.
 //
-//
 // CSS nodes
 //
-// “` colorbutton ╰── button.color ╰── [content] “`
+//    colorbutton
+//    ╰── button.color
+//        ╰── [content]
 //
-// `GtkColorButton` has a single CSS node with name colorbutton which contains a
-// button node. To differentiate it from a plain `GtkButton`, it gets the .color
+//
+// GtkColorButton has a single CSS node with name colorbutton which contains a
+// button node. To differentiate it from a plain GtkButton, it gets the .color
 // style class.
 type ColorButton struct {
 	Widget

@@ -33,29 +33,29 @@ type MediaStreamOverrider interface {
 	// If the stream is not playing, do nothing.
 	Pause()
 	Play() bool
-	// Realize: called by users to attach the media stream to a `GdkSurface`
-	// they manage.
+	// Realize: called by users to attach the media stream to a GdkSurface they
+	// manage.
 	//
-	// The stream can then access the resources of @surface for its rendering
+	// The stream can then access the resources of surface for its rendering
 	// purposes. In particular, media streams might want to create a
-	// `GdkGLContext` or sync to the `GdkFrameClock`.
+	// GdkGLContext or sync to the GdkFrameClock.
 	//
 	// Whoever calls this function is responsible for calling
-	// [method@Gtk.MediaStream.unrealize] before either the stream or @surface
-	// get destroyed.
+	// gtk.MediaStream.Unrealize() before either the stream or surface get
+	// destroyed.
 	//
 	// Multiple calls to this function may happen from different users of the
-	// video, even with the same @surface. Each of these calls must be followed
-	// by its own call to [method@Gtk.MediaStream.unrealize].
+	// video, even with the same surface. Each of these calls must be followed
+	// by its own call to gtk.MediaStream.Unrealize().
 	//
 	// It is not required to call this function to make a media stream work.
 	Realize(surface gdk.Surfacer)
-	// Seek: start a seek operation on @self to @timestamp.
+	// Seek: start a seek operation on self to timestamp.
 	//
-	// If @timestamp is out of range, it will be clamped.
+	// If timestamp is out of range, it will be clamped.
 	//
 	// Seek operations may not finish instantly. While a seek operation is in
-	// process, the [property@Gtk.MediaStream:seeking] property will be set.
+	// process, the gtk.MediaStream:seeking property will be set.
 	//
 	// When calling gtk_media_stream_seek() during an ongoing seek operation,
 	// the new seek will override any pending seek.
@@ -63,7 +63,7 @@ type MediaStreamOverrider interface {
 	// Unrealize undoes a previous call to gtk_media_stream_realize().
 	//
 	// This causes the stream to release all resources it had allocated from
-	// @surface.
+	// surface.
 	Unrealize(surface gdk.Surfacer)
 	UpdateAudio(muted bool, volume float64)
 }
@@ -72,14 +72,14 @@ type MediaStreamOverrider interface {
 type MediaStreamer interface {
 	// Ended pauses the media stream and marks it as ended.
 	Ended()
-	// GError sets @self into an error state.
-	GError(err error)
+	// Gerror sets self into an error state.
+	Gerror(err error)
 	// Duration gets the duration of the stream.
 	Duration() int64
 	// GetEnded returns whether the streams playback is finished.
 	GetEnded() bool
-	// Error: if the stream is in an error state, returns the `GError`
-	// explaining that state.
+	// Error: if the stream is in an error state, returns the GError explaining
+	// that state.
 	Error() error
 	// Loop returns whether the stream is set to loop.
 	Loop() bool
@@ -105,13 +105,13 @@ type MediaStreamer interface {
 	Pause()
 	// Play starts playing the stream.
 	Play()
-	// Prepared: called by `GtkMediaStream` implementations to advertise the
+	// Prepared: called by GtkMediaStream implementations to advertise the
 	// stream being ready to play and providing details about the stream.
 	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
-	// Realize: called by users to attach the media stream to a `GdkSurface`
-	// they manage.
+	// Realize: called by users to attach the media stream to a GdkSurface they
+	// manage.
 	Realize(surface gdk.Surfacer)
-	// Seek: start a seek operation on @self to @timestamp.
+	// Seek: start a seek operation on self to timestamp.
 	Seek(timestamp int64)
 	// SeekFailed ends a seek operation started via GtkMediaStream.seek() as a
 	// failure.
@@ -136,19 +136,19 @@ type MediaStreamer interface {
 	Update(timestamp int64)
 }
 
-// MediaStream: `GtkMediaStream` is the integration point for media playback
+// MediaStream: GtkMediaStream is the integration point for media playback
 // inside GTK.
 //
-// GTK provides an implementation of the `GtkMediaStream` interface that is
-// called [class@Gtk.MediaFile].
+// GTK provides an implementation of the GtkMediaStream interface that is called
+// gtk.MediaFile.
 //
-// Apart from application-facing API for stream playback, `GtkMediaStream` has a
+// Apart from application-facing API for stream playback, GtkMediaStream has a
 // number of APIs that are only useful for implementations and should not be
-// used in applications: [method@Gtk.MediaStream.prepared],
-// [method@Gtk.MediaStream.unprepared], [method@Gtk.MediaStream.update],
-// [method@Gtk.MediaStream.ended], [method@Gtk.MediaStream.seek_success],
-// [method@Gtk.MediaStream.seek_failed], [method@Gtk.MediaStream.gerror],
-// [method@Gtk.MediaStream.error], [method@Gtk.MediaStream.error_valist].
+// used in applications: gtk.MediaStream.Prepared(),
+// gtk.MediaStream.Unprepared(), gtk.MediaStream.Update(),
+// gtk.MediaStream.Ended(), gtk.MediaStream.SeekSuccess(),
+// gtk.MediaStream.SeekFailed(), gtk.MediaStream.Gerror(),
+// gtk.MediaStream.Error(), gtk.MediaStream.ErrorValist().
 type MediaStream struct {
 	*externglib.Object
 
@@ -188,18 +188,18 @@ func (self *MediaStream) Ended() {
 	C.gtk_media_stream_ended(_arg0)
 }
 
-// GError sets @self into an error state.
+// Gerror sets self into an error state.
 //
 // This will pause the stream (you can check for an error via
-// [method@Gtk.MediaStream.get_error] in your GtkMediaStream.pause()
-// implementation), abort pending seeks and mark the stream as prepared.
+// gtk.MediaStream.GetError() in your GtkMediaStream.pause() implementation),
+// abort pending seeks and mark the stream as prepared.
 //
 // if the stream is already in an error state, this call will be ignored and the
 // existing error will be retained.
 //
 // To unset an error, the stream must be reset via a call to
-// [method@Gtk.MediaStream.unprepared].
-func (self *MediaStream) GError(err error) {
+// gtk.MediaStream.Unprepared().
+func (self *MediaStream) Gerror(err error) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GError         // out
 
@@ -245,20 +245,18 @@ func (self *MediaStream) GetEnded() bool {
 	return _ok
 }
 
-// Error: if the stream is in an error state, returns the `GError` explaining
-// that state.
+// Error: if the stream is in an error state, returns the GError explaining that
+// state.
 //
 // Any type of error can be reported here depending on the implementation of the
 // media stream.
 //
 // A media stream in an error cannot be operated on, calls like
-// [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not have
-// any effect.
+// gtk.MediaStream.Play() or gtk.MediaStream.Seek() will not have any effect.
 //
-// `GtkMediaStream` itself does not provide a way to unset an error, but
-// implementations may provide options. For example, a [class@Gtk.MediaFile]
-// will unset errors when a new source is set, e.g. with
-// [method@Gtk.MediaFile.set_file].
+// GtkMediaStream itself does not provide a way to unset an error, but
+// implementations may provide options. For example, a gtk.MediaFile will unset
+// errors when a new source is set, e.g. with gtk.MediaFile.SetFile().
 func (self *MediaStream) Error() error {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret *C.GError         // in
@@ -276,7 +274,7 @@ func (self *MediaStream) Error() error {
 
 // Loop returns whether the stream is set to loop.
 //
-// See [method@Gtk.MediaStream.set_loop] for details.
+// See gtk.MediaStream.SetLoop() for details.
 func (self *MediaStream) Loop() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
@@ -296,7 +294,7 @@ func (self *MediaStream) Loop() bool {
 
 // Muted returns whether the audio for the stream is muted.
 //
-// See [method@Gtk.MediaStream.set_muted] for details.
+// See gtk.MediaStream.SetMuted() for details.
 func (self *MediaStream) Muted() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
@@ -350,7 +348,7 @@ func (self *MediaStream) Timestamp() int64 {
 
 // Volume returns the volume of the audio for the stream.
 //
-// See [method@Gtk.MediaStream.set_volume] for details.
+// See gtk.MediaStream.SetVolume() for details.
 func (self *MediaStream) Volume() float64 {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.double          // in
@@ -425,12 +423,12 @@ func (self *MediaStream) IsPrepared() bool {
 // IsSeekable checks if a stream may be seekable.
 //
 // This is meant to be a hint. Streams may not allow seeking even if this
-// function returns true. However, if this function returns false, streams are
+// function returns TRUE. However, if this function returns FALSE, streams are
 // guaranteed to not be seekable and user interfaces may hide controls that
 // allow seeking.
 //
-// It is allowed to call [method@Gtk.MediaStream.seek] on a non-seekable stream,
-// though it will not do anything.
+// It is allowed to call gtk.MediaStream.Seek() on a non-seekable stream, though
+// it will not do anything.
 func (self *MediaStream) IsSeekable() bool {
 	var _arg0 *C.GtkMediaStream // out
 	var _cret C.gboolean        // in
@@ -488,16 +486,16 @@ func (self *MediaStream) Play() {
 	C.gtk_media_stream_play(_arg0)
 }
 
-// Prepared: called by `GtkMediaStream` implementations to advertise the stream
+// Prepared: called by GtkMediaStream implementations to advertise the stream
 // being ready to play and providing details about the stream.
 //
 // Note that the arguments are hints. If the stream implementation cannot
 // determine the correct values, it is better to err on the side of caution and
-// return true. User interfaces will use those values to determine what controls
+// return TRUE. User interfaces will use those values to determine what controls
 // to show.
 //
 // This function may not be called again until the stream has been reset via
-// [method@Gtk.MediaStream.unprepared].
+// gtk.MediaStream.Unprepared().
 func (self *MediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 C.gboolean        // out
@@ -520,20 +518,20 @@ func (self *MediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, d
 	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// Realize: called by users to attach the media stream to a `GdkSurface` they
+// Realize: called by users to attach the media stream to a GdkSurface they
 // manage.
 //
-// The stream can then access the resources of @surface for its rendering
-// purposes. In particular, media streams might want to create a `GdkGLContext`
-// or sync to the `GdkFrameClock`.
+// The stream can then access the resources of surface for its rendering
+// purposes. In particular, media streams might want to create a GdkGLContext or
+// sync to the GdkFrameClock.
 //
 // Whoever calls this function is responsible for calling
-// [method@Gtk.MediaStream.unrealize] before either the stream or @surface get
+// gtk.MediaStream.Unrealize() before either the stream or surface get
 // destroyed.
 //
 // Multiple calls to this function may happen from different users of the video,
-// even with the same @surface. Each of these calls must be followed by its own
-// call to [method@Gtk.MediaStream.unrealize].
+// even with the same surface. Each of these calls must be followed by its own
+// call to gtk.MediaStream.Unrealize().
 //
 // It is not required to call this function to make a media stream work.
 func (self *MediaStream) Realize(surface gdk.Surfacer) {
@@ -546,12 +544,12 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	C.gtk_media_stream_realize(_arg0, _arg1)
 }
 
-// Seek: start a seek operation on @self to @timestamp.
+// Seek: start a seek operation on self to timestamp.
 //
-// If @timestamp is out of range, it will be clamped.
+// If timestamp is out of range, it will be clamped.
 //
 // Seek operations may not finish instantly. While a seek operation is in
-// process, the [property@Gtk.MediaStream:seeking] property will be set.
+// process, the gtk.MediaStream:seeking property will be set.
 //
 // When calling gtk_media_stream_seek() during an ongoing seek operation, the
 // new seek will override any pending seek.
@@ -571,7 +569,7 @@ func (self *MediaStream) Seek(timestamp int64) {
 // This will not cause an error on the stream and will assume that playback
 // continues as if no seek had happened.
 //
-// See [method@Gtk.MediaStream.seek_success] for the other way of ending a seek.
+// See gtk.MediaStream.SeekSuccess() for the other way of ending a seek.
 func (self *MediaStream) SeekFailed() {
 	var _arg0 *C.GtkMediaStream // out
 
@@ -585,7 +583,7 @@ func (self *MediaStream) SeekFailed() {
 //
 // This function will unset the GtkMediaStream:ended property if it was set.
 //
-// See [method@Gtk.MediaStream.seek_failed] for the other way of ending a seek.
+// See gtk.MediaStream.SeekFailed() for the other way of ending a seek.
 func (self *MediaStream) SeekSuccess() {
 	var _arg0 *C.GtkMediaStream // out
 
@@ -650,7 +648,7 @@ func (self *MediaStream) SetPlaying(playing bool) {
 //
 // This function call will work even if the stream is muted.
 //
-// The given @volume should range from 0.0 for silence to 1.0 for as loud as
+// The given volume should range from 0.0 for silence to 1.0 for as loud as
 // possible. Values outside of this range will be clamped to the nearest value.
 //
 // If the stream has no audio or is muted, calling this function will still work
@@ -668,7 +666,7 @@ func (self *MediaStream) SetVolume(volume float64) {
 
 // Unprepared resets a given media stream implementation.
 //
-// [method@Gtk.MediaStream.prepared] can then be called again.
+// gtk.MediaStream.Prepared() can then be called again.
 //
 // This function will also reset any error state the stream was in.
 func (self *MediaStream) Unprepared() {
@@ -682,7 +680,7 @@ func (self *MediaStream) Unprepared() {
 // Unrealize undoes a previous call to gtk_media_stream_realize().
 //
 // This causes the stream to release all resources it had allocated from
-// @surface.
+// surface.
 func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GdkSurface     // out

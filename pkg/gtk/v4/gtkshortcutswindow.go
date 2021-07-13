@@ -26,7 +26,7 @@ type ShortcutsWindower interface {
 	privateShortcutsWindow()
 }
 
-// ShortcutsWindow: `GtkShortcutsWindow` shows information about the keyboard
+// ShortcutsWindow: GtkShortcutsWindow shows information about the keyboard
 // shortcuts and gestures of an application.
 //
 // The shortcuts can be grouped, and you can have multiple sections in this
@@ -35,10 +35,10 @@ type ShortcutsWindower interface {
 // Additionally, the shortcuts can be filtered by the current view, to avoid
 // showing information that is not relevant in the current application context.
 //
-// The recommended way to construct a `GtkShortcutsWindow` is with
-// [class@Gtk.Builder], by populating a `GtkShortcutsWindow` with one or more
-// `GtkShortcutsSection` objects, which contain `GtkShortcutsGroups` that in
-// turn contain objects of class `GtkShortcutsShortcut`.
+// The recommended way to construct a GtkShortcutsWindow is with gtk.Builder, by
+// populating a GtkShortcutsWindow with one or more GtkShortcutsSection objects,
+// which contain GtkShortcutsGroups that in turn contain objects of class
+// GtkShortcutsShortcut.
 //
 // A simple example:
 //
@@ -55,8 +55,8 @@ type ShortcutsWindower interface {
 //
 // ! (clocks-shortcuts.png)
 //
-// This example shows a `GtkShortcutsWindow` that has been configured to show
-// only the shortcuts relevant to the "stopwatch" view.
+// This example shows a GtkShortcutsWindow that has been configured to show only
+// the shortcuts relevant to the "stopwatch" view.
 //
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
@@ -65,8 +65,8 @@ type ShortcutsWindower interface {
 //
 // ! (builder-shortcuts.png)
 //
-// This example shows a `GtkShortcutsWindow` with two sections, "Editor
-// Shortcuts" and "Terminal Shortcuts".
+// This example shows a GtkShortcutsWindow with two sections, "Editor Shortcuts"
+// and "Terminal Shortcuts".
 //
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).

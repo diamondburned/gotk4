@@ -63,13 +63,13 @@ type Buttoner interface {
 	// Settings:gtk-button-images setting and always show the image, if
 	// available.
 	AlwaysShowImage() bool
-	// EventWindow returns the button’s event window if it is realized, nil
+	// EventWindow returns the button’s event window if it is realized, NULL
 	// otherwise.
 	EventWindow() *gdk.Window
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse.
 	FocusOnClick() bool
-	// Image gets the widget that is currenty set as the image of @button.
+	// Image gets the widget that is currenty set as the image of button.
 	Image() *Widget
 	// ImagePosition gets the position of the image relative to the text inside
 	// the button.
@@ -92,23 +92,23 @@ type Buttoner interface {
 	Released()
 	// SetAlignment sets the alignment of the child.
 	SetAlignment(xalign float32, yalign float32)
-	// SetAlwaysShowImage: if true, the button will ignore the
+	// SetAlwaysShowImage: if TRUE, the button will ignore the
 	// Settings:gtk-button-images setting and always show the image, if
 	// available.
 	SetAlwaysShowImage(alwaysShow bool)
 	// SetFocusOnClick sets whether the button will grab focus when it is
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
-	// SetImage: set the image of @button to the given widget.
+	// SetImage: set the image of button to the given widget.
 	SetImage(image Widgeter)
 	// SetImagePosition sets the position of the image relative to the text
 	// inside the button.
 	SetImagePosition(position PositionType)
-	// SetLabel sets the text of the label of the button to @str.
+	// SetLabel sets the text of the label of the button to str.
 	SetLabel(label string)
 	// SetRelief sets the relief style of the edges of the given Button widget.
 	SetRelief(relief ReliefStyle)
-	// SetUseStock: if true, the label set on the button is used as a stock id
+	// SetUseStock: if TRUE, the label set on the button is used as a stock id
 	// to select the stock item for the button.
 	SetUseStock(useStock bool)
 	// SetUseUnderline: if true, an underline in the text of the button label
@@ -237,7 +237,7 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 // [stock item][gtkstock]. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.
 //
-// If @stock_id is unknown, then it will be treated as a mnemonic label (as for
+// If stock_id is unknown, then it will be treated as a mnemonic label (as for
 // gtk_button_new_with_mnemonic()).
 //
 // Deprecated: Stock items are deprecated. Use gtk_button_new_with_label()
@@ -275,7 +275,7 @@ func NewButtonWithLabel(label string) *Button {
 }
 
 // NewButtonWithMnemonic creates a new Button containing a label. If characters
-// in @label are preceded by an underscore, they are underlined. If you need a
+// in label are preceded by an underscore, they are underlined. If you need a
 // literal underscore character in a label, use “__” (two underscores). The
 // first underlined character represents a keyboard accelerator called a
 // mnemonic. Pressing Alt and that key activates the button.
@@ -361,7 +361,7 @@ func (button *Button) AlwaysShowImage() bool {
 	return _ok
 }
 
-// EventWindow returns the button’s event window if it is realized, nil
+// EventWindow returns the button’s event window if it is realized, NULL
 // otherwise. This function should be rarely needed.
 func (button *Button) EventWindow() *gdk.Window {
 	var _arg0 *C.GtkButton // out
@@ -404,7 +404,7 @@ func (button *Button) FocusOnClick() bool {
 	return _ok
 }
 
-// Image gets the widget that is currenty set as the image of @button. This may
+// Image gets the widget that is currenty set as the image of button. This may
 // have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
 func (button *Button) Image() *Widget {
@@ -441,7 +441,7 @@ func (button *Button) ImagePosition() PositionType {
 
 // Label fetches the text from the label of the button, as set by
 // gtk_button_set_label(). If the label text has not been set the return value
-// will be nil. This will be the case if you create an empty button with
+// will be NULL. This will be the case if you create an empty button with
 // gtk_button_new() to use as a container.
 func (button *Button) Label() string {
 	var _arg0 *C.GtkButton // out
@@ -563,7 +563,7 @@ func (button *Button) SetAlignment(xalign float32, yalign float32) {
 	C.gtk_button_set_alignment(_arg0, _arg1, _arg2)
 }
 
-// SetAlwaysShowImage: if true, the button will ignore the
+// SetAlwaysShowImage: if TRUE, the button will ignore the
 // Settings:gtk-button-images setting and always show the image, if available.
 //
 // Use this property if the button would be useless or hard to use without the
@@ -598,9 +598,9 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	C.gtk_button_set_focus_on_click(_arg0, _arg1)
 }
 
-// SetImage: set the image of @button to the given widget. The image will be
-// displayed if the label text is nil or if Button:always-show-image is true.
-// You don’t have to call gtk_widget_show() on @image yourself.
+// SetImage: set the image of button to the given widget. The image will be
+// displayed if the label text is NULL or if Button:always-show-image is TRUE.
+// You don’t have to call gtk_widget_show() on image yourself.
 func (button *Button) SetImage(image Widgeter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
@@ -623,7 +623,7 @@ func (button *Button) SetImagePosition(position PositionType) {
 	C.gtk_button_set_image_position(_arg0, _arg1)
 }
 
-// SetLabel sets the text of the label of the button to @str. This text is also
+// SetLabel sets the text of the label of the button to str. This text is also
 // used to select the stock item if gtk_button_set_use_stock() is used.
 //
 // This will also clear any previously set labels.
@@ -651,7 +651,7 @@ func (button *Button) SetRelief(relief ReliefStyle) {
 	C.gtk_button_set_relief(_arg0, _arg1)
 }
 
-// SetUseStock: if true, the label set on the button is used as a stock id to
+// SetUseStock: if TRUE, the label set on the button is used as a stock id to
 // select the stock item for the button.
 //
 // Deprecated: since version 3.10.

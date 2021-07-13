@@ -26,7 +26,7 @@ func init() {
 
 // GestureStyluser describes GestureStylus's methods.
 type GestureStyluser interface {
-	// Axis returns the current value for the requested @axis.
+	// Axis returns the current value for the requested axis.
 	Axis(axis gdk.AxisUse) (float64, bool)
 	// DeviceTool returns the DeviceTool currently driving input through this
 	// gesture.
@@ -78,7 +78,7 @@ func NewGestureStylus(widget Widgeter) *GestureStylus {
 	return _gestureStylus
 }
 
-// Axis returns the current value for the requested @axis. This function must be
+// Axis returns the current value for the requested axis. This function must be
 // called from either the GestureStylus:down, GestureStylus:motion,
 // GestureStylus:up or GestureStylus:proximity signals.
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {

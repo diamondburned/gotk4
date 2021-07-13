@@ -21,11 +21,11 @@ func init() {
 	})
 }
 
-// RGBA: `GdkRGBA` is used to represent a color, in a way that is compatible
-// with cairo’s notion of color.
+// RGBA: GdkRGBA is used to represent a color, in a way that is compatible with
+// cairo’s notion of color.
 //
-// `GdkRGBA` is a convenient way to pass colors around. It’s based on cairo’s
-// way to deal with colors and mirrors its behavior. All values are in the range
+// GdkRGBA is a convenient way to pass colors around. It’s based on cairo’s way
+// to deal with colors and mirrors its behavior. All values are in the range
 // from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0) represents
 // transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will
 // be clamped to this range when drawing.
@@ -43,9 +43,9 @@ func (r *RGBA) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Copy makes a copy of a `GdkRGBA`.
+// Copy makes a copy of a GdkRGBA.
 //
-// The result must be freed through [method@Gdk.RGBA.free].
+// The result must be freed through gdk.RGBA.Free().
 func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
@@ -64,7 +64,7 @@ func (rgba *RGBA) Copy() *RGBA {
 	return _rgbA
 }
 
-// Equal compares two `GdkRGBA` colors.
+// Equal compares two GdkRGBA colors.
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -84,7 +84,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	return _ok
 }
 
-// Free frees a `GdkRGBA`.
+// Free frees a GdkRGBA.
 func (rgba *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
@@ -93,8 +93,7 @@ func (rgba *RGBA) free() {
 	C.gdk_rgba_free(_arg0)
 }
 
-// Hash: hash function suitable for using for a hash table that stores
-// `GdkRGBA`s.
+// Hash: hash function suitable for using for a hash table that stores GdkRGBAs.
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -110,7 +109,7 @@ func (p *RGBA) Hash() uint {
 	return _guint
 }
 
-// IsClear checks if an @rgba value is transparent.
+// IsClear checks if an rgba value is transparent.
 //
 // That is, drawing with the value would not produce any change.
 func (rgba *RGBA) IsClear() bool {
@@ -130,7 +129,7 @@ func (rgba *RGBA) IsClear() bool {
 	return _ok
 }
 
-// IsOpaque checks if an @rgba value is opaque.
+// IsOpaque checks if an rgba value is opaque.
 //
 // That is, drawing with the value will not retain any results from previous
 // contents.
@@ -155,11 +154,18 @@ func (rgba *RGBA) IsOpaque() bool {
 //
 // The string can be either one of:
 //
-// - A standard name (Taken from the X11 rgb.txt file). - A hexadecimal value in
-// the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or ”\#rrrrggggbbbb” - A
-// hexadecimal value in the form “\#rgba”, “\#rrggbbaa”, or ”\#rrrrggggbbbbaaaa”
+// - A standard name (Taken from the X11 rgb.txt file).
+//
+// - A hexadecimal value in the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or
+// ”\#rrrrggggbbbb”
+//
+// - A hexadecimal value in the form “\#rgba”, “\#rrggbbaa”, or
+// ”\#rrrrggggbbbbaaaa”
+//
 // - A RGB color in the form “rgb(r,g,b)” (In this case the color will have full
-// opacity) - A RGBA color in the form “rgba(r,g,b,a)”
+// opacity)
+//
+// - A RGBA color in the form “rgba(r,g,b,a)”
 //
 // Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
@@ -184,14 +190,14 @@ func (rgba *RGBA) Parse(spec string) bool {
 	return _ok
 }
 
-// String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r,g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
+// String returns a textual specification of rgba in the form rgb(r,g,b) or
+// rgba(r,g,b,a), where “r”, “g”, “b” and “a” represent the red, green, blue and
+// alpha values respectively. “r”, “g”, and “b” are represented as integers in
+// the range 0 to 255, and “a” is represented as a floating point value in the
+// range 0 to 1.
 //
 // These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by [method@Gdk.RGBA.parse].
+// module, and can be parsed by gdk.RGBA.Parse().
 //
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should

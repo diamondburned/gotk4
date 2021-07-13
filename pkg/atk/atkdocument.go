@@ -27,18 +27,18 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DocumentOverrider interface {
-	// CurrentPageNumber retrieves the current page number inside @document.
+	// CurrentPageNumber retrieves the current page number inside document.
 	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM. It is up
 	// to the caller to check atk_document_get_type to determine how to cast
 	// this pointer.
 	//
-	// Deprecated: Since 2.12. @document is already a representation of the
+	// Deprecated: Since 2.12. document is already a representation of the
 	// document. Use it directly, or one of its children, as an instance of the
 	// DOM.
 	Document() cgo.Handle
-	// DocumentAttributeValue retrieves the value of the given @attribute_name
-	// inside @document.
+	// DocumentAttributeValue retrieves the value of the given attribute_name
+	// inside document.
 	DocumentAttributeValue(attributeName string) string
 	// DocumentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 	// locale of the content of this document instance. Individual text
@@ -52,19 +52,19 @@ type DocumentOverrider interface {
 	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
 	// for the document type if it applies.
 	DocumentType() string
-	// PageCount retrieves the total number of pages inside @document.
+	// PageCount retrieves the total number of pages inside document.
 	PageCount() int
-	// SetDocumentAttribute sets the value for the given @attribute_name inside
-	// @document.
+	// SetDocumentAttribute sets the value for the given attribute_name inside
+	// document.
 	SetDocumentAttribute(attributeName string, attributeValue string) bool
 }
 
 // Documenter describes Document's methods.
 type Documenter interface {
-	// AttributeValue retrieves the value of the given @attribute_name inside
-	// @document.
+	// AttributeValue retrieves the value of the given attribute_name inside
+	// document.
 	AttributeValue(attributeName string) string
-	// CurrentPageNumber retrieves the current page number inside @document.
+	// CurrentPageNumber retrieves the current page number inside document.
 	CurrentPageNumber() int
 	// Document gets a gpointer that points to an instance of the DOM.
 	Document() cgo.Handle
@@ -73,10 +73,10 @@ type Documenter interface {
 	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
 	// of the content of this document instance.
 	Locale() string
-	// PageCount retrieves the total number of pages inside @document.
+	// PageCount retrieves the total number of pages inside document.
 	PageCount() int
-	// SetAttributeValue sets the value for the given @attribute_name inside
-	// @document.
+	// SetAttributeValue sets the value for the given attribute_name inside
+	// document.
 	SetAttributeValue(attributeName string, attributeValue string) bool
 }
 
@@ -107,8 +107,8 @@ func marshalDocumenter(p uintptr) (interface{}, error) {
 	return wrapDocument(obj), nil
 }
 
-// AttributeValue retrieves the value of the given @attribute_name inside
-// @document.
+// AttributeValue retrieves the value of the given attribute_name inside
+// document.
 func (document *Document) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
@@ -126,7 +126,7 @@ func (document *Document) AttributeValue(attributeName string) string {
 	return _utf8
 }
 
-// CurrentPageNumber retrieves the current page number inside @document.
+// CurrentPageNumber retrieves the current page number inside document.
 func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
@@ -146,8 +146,8 @@ func (document *Document) CurrentPageNumber() int {
 // the caller to check atk_document_get_type to determine how to cast this
 // pointer.
 //
-// Deprecated: Since 2.12. @document is already a representation of the
-// document. Use it directly, or one of its children, as an instance of the DOM.
+// Deprecated: Since 2.12. document is already a representation of the document.
+// Use it directly, or one of its children, as an instance of the DOM.
 func (document *Document) Document() cgo.Handle {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
@@ -203,7 +203,7 @@ func (document *Document) Locale() string {
 	return _utf8
 }
 
-// PageCount retrieves the total number of pages inside @document.
+// PageCount retrieves the total number of pages inside document.
 func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
@@ -219,8 +219,8 @@ func (document *Document) PageCount() int {
 	return _gint
 }
 
-// SetAttributeValue sets the value for the given @attribute_name inside
-// @document.
+// SetAttributeValue sets the value for the given attribute_name inside
+// document.
 func (document *Document) SetAttributeValue(attributeName string, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out

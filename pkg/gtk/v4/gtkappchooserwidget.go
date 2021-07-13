@@ -61,30 +61,27 @@ type AppChooserWidgeter interface {
 	SetShowRecommended(setting bool)
 }
 
-// AppChooserWidget: `GtkAppChooserWidget` is a widget for selecting
-// applications.
+// AppChooserWidget: GtkAppChooserWidget is a widget for selecting applications.
 //
-// It is the main building block for [class@Gtk.AppChooserDialog]. Most
-// applications only need to use the latter; but you can use this widget as part
-// of a larger widget if you have special needs.
+// It is the main building block for gtk.AppChooserDialog. Most applications
+// only need to use the latter; but you can use this widget as part of a larger
+// widget if you have special needs.
 //
-// `GtkAppChooserWidget` offers detailed control over what applications are
-// shown, using the [property@Gtk.AppChooserWidget:show-default],
-// [property@Gtk.AppChooserWidget:show-recommended],
-// [property@Gtk.AppChooserWidget:show-fallback],
-// [property@Gtk.AppChooserWidget:show-other] and
-// [property@Gtk.AppChooserWidget:show-all] properties. See the
-// [iface@Gtk.AppChooser] documentation for more information about these groups
+// GtkAppChooserWidget offers detailed control over what applications are shown,
+// using the gtk.AppChooserWidget:show-default,
+// gtk.AppChooserWidget:show-recommended, gtk.AppChooserWidget:show-fallback,
+// gtk.AppChooserWidget:show-other and gtk.AppChooserWidget:show-all properties.
+// See the gtk.AppChooser documentation for more information about these groups
 // of applications.
 //
 // To keep track of the selected application, use the
-// [signal@Gtk.AppChooserWidget::application-selected] and
-// [signal@Gtk.AppChooserWidget::application-activated] signals.
+// gtk.AppChooserWidget::application-selected and
+// gtk.AppChooserWidget::application-activated signals.
 //
 //
 // CSS nodes
 //
-// `GtkAppChooserWidget` has a single CSS node with name appchooser.
+// GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget struct {
 	Widget
 
@@ -137,7 +134,7 @@ func marshalAppChooserWidgeter(p uintptr) (interface{}, error) {
 	return wrapAppChooserWidget(obj), nil
 }
 
-// NewAppChooserWidget creates a new `GtkAppChooserWidget` for applications that
+// NewAppChooserWidget creates a new GtkAppChooserWidget for applications that
 // can handle content of the given type.
 func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.char      // out

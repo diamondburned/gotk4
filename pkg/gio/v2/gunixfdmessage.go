@@ -34,9 +34,9 @@ func init() {
 
 // UnixFDMessager describes UnixFDMessage's methods.
 type UnixFDMessager interface {
-	// AppendFd adds a file descriptor to @message.
+	// AppendFd adds a file descriptor to message.
 	AppendFd(fd int) error
-	// FdList gets the FDList contained in @message.
+	// FdList gets the FDList contained in message.
 	FdList() *UnixFDList
 }
 
@@ -49,9 +49,8 @@ type UnixFDMessager interface {
 // UNIX sockets, see g_unix_connection_send_fd() and
 // g_unix_connection_receive_fd().
 //
-// Note that `<gio/gunixfdmessage.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
-// using it.
+// Note that <gio/gunixfdmessage.h> belongs to the UNIX-specific GIO interfaces,
+// thus you have to use the gio-unix-2.0.pc pkg-config file when using it.
 type UnixFDMessage struct {
 	SocketControlMessage
 }
@@ -89,12 +88,12 @@ func NewUnixFDMessage() *UnixFDMessage {
 	return _unixFDMessage
 }
 
-// NewUnixFDMessageWithFdList creates a new FDMessage containing @list.
-func NewUnixFDMessageWithFdList(fdList UnixFDLister) *UnixFDMessage {
+// NewUnixFDMessageWithFdList creates a new FDMessage containing list.
+func NewUnixFDMessageWithFdList(fdList *UnixFDList) *UnixFDMessage {
 	var _arg1 *C.GUnixFDList           // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer((fdList).(gextras.Nativer).Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
 	_cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
@@ -105,10 +104,10 @@ func NewUnixFDMessageWithFdList(fdList UnixFDLister) *UnixFDMessage {
 	return _unixFDMessage
 }
 
-// AppendFd adds a file descriptor to @message.
+// AppendFd adds a file descriptor to message.
 //
 // The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @message will be closed when @message is
+// descriptor and the copy contained in message will be closed when message is
 // finalized.
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
@@ -130,9 +129,9 @@ func (message *UnixFDMessage) AppendFd(fd int) error {
 	return _goerr
 }
 
-// FdList gets the FDList contained in @message. This function does not return a
+// FdList gets the FDList contained in message. This function does not return a
 // reference to the caller, but the returned list is valid for the lifetime of
-// @message.
+// message.
 func (message *UnixFDMessage) FdList() *UnixFDList {
 	var _arg0 *C.GUnixFDMessage // out
 	var _cret *C.GUnixFDList    // in

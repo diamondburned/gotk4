@@ -100,11 +100,11 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object.
-func NewRecentChooserWidgetForManager(manager RecentManagerer) *RecentChooserWidget {
+func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 

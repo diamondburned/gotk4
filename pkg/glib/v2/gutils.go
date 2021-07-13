@@ -62,10 +62,10 @@ const (
 	FormatSizeFlagsBits FormatSizeFlags = 0b100
 )
 
-// BitNthLSF: find the position of the first bit set in @mask, searching from
-// (but not including) @nth_bit upwards. Bits are numbered from 0 (least
+// BitNthLSF: find the position of the first bit set in mask, searching from
+// (but not including) nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
-// searching from the 0th bit, set @nth_bit to -1.
+// searching from the 0th bit, set nth_bit to -1.
 func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -83,10 +83,10 @@ func BitNthLSF(mask uint32, nthBit int) int {
 	return _gint
 }
 
-// BitNthMSF: find the position of the first bit set in @mask, searching from
-// (but not including) @nth_bit downwards. Bits are numbered from 0 (least
+// BitNthMSF: find the position of the first bit set in mask, searching from
+// (but not including) nth_bit downwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
-// searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
+// searching from the last bit, set nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
 func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -104,8 +104,8 @@ func BitNthMSF(mask uint32, nthBit int) int {
 	return _gint
 }
 
-// BitStorage gets the number of bits used to hold @number, e.g. if @number is
-// 4, 3 bits are needed.
+// BitStorage gets the number of bits used to hold number, e.g. if number is 4,
+// 3 bits are needed.
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
 	var _cret C.guint  // in
@@ -121,19 +121,19 @@ func BitStorage(number uint32) uint {
 	return _guint
 }
 
-// FindProgramInPath locates the first executable named @program in the user's
+// FindProgramInPath locates the first executable named program in the user's
 // path, in the same way that execvp() would locate it. Returns an allocated
-// string with the absolute path name, or nil if the program is not found in the
-// path. If @program is already an absolute path, returns a copy of @program if
-// @program exists and is executable, and nil otherwise. On Windows, if @program
-// does not have a file type suffix, tries with the suffixes .exe, .cmd, .bat
-// and .com, and the suffixes in the `PATHEXT` environment variable.
+// string with the absolute path name, or NULL if the program is not found in
+// the path. If program is already an absolute path, returns a copy of program
+// if program exists and is executable, and NULL otherwise. On Windows, if
+// program does not have a file type suffix, tries with the suffixes .exe, .cmd,
+// .bat and .com, and the suffixes in the PATHEXT environment variable.
 //
 // On Windows, it looks for the file in the same way as CreateProcess() would.
 // This means first in the directory where the executing program was loaded
 // from, then in the current directory, then in the Windows 32-bit system
 // directory, then in the Windows directory, and finally in the directories in
-// the `PATH` environment variable. If the program is found, the return value
+// the PATH environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
@@ -233,7 +233,7 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // g_set_application_name(). This name should be localized if possible, and is
 // intended for display to the user. Contrast with g_get_prgname(), which gets a
 // non-localized name. If g_set_application_name() has not been called, returns
-// the result of g_get_prgname() (which may be nil if g_set_prgname() has also
+// the result of g_get_prgname() (which may be NULL if g_set_prgname() has also
 // not been called).
 func GetApplicationName() string {
 	var _cret *C.gchar // in
@@ -249,23 +249,23 @@ func GetApplicationName() string {
 
 // GetHomeDir gets the current user's home directory.
 //
-// As with most UNIX tools, this function will return the value of the `HOME`
+// As with most UNIX tools, this function will return the value of the HOME
 // environment variable if it is set to an existing absolute path name, falling
-// back to the `passwd` file in the case that it is unset.
+// back to the passwd file in the case that it is unset.
 //
-// If the path given in `HOME` is non-absolute, does not exist, or is not a
+// If the path given in HOME is non-absolute, does not exist, or is not a
 // directory, the result is undefined.
 //
-// Before version 2.36 this function would ignore the `HOME` environment
-// variable, taking the value from the `passwd` database instead. This was
-// changed to increase the compatibility of GLib with other programs (and the
-// XDG basedir specification) and to increase testability of programs based on
-// GLib (by making it easier to run them from test frameworks).
+// Before version 2.36 this function would ignore the HOME environment variable,
+// taking the value from the passwd database instead. This was changed to
+// increase the compatibility of GLib with other programs (and the XDG basedir
+// specification) and to increase testability of programs based on GLib (by
+// making it easier to run them from test frameworks).
 //
 // If your program has a strong requirement for either the new or the old
 // behaviour (and if you don't wish to increase your GLib dependency to ensure
 // that the new behaviour is in effect) then you should either directly check
-// the `HOME` environment variable yourself or unset it before calling any
+// the HOME environment variable yourself or unset it before calling any
 // functions in GLib.
 func GetHomeDir() string {
 	var _cret *C.gchar // in
@@ -305,12 +305,12 @@ func GetHostName() string {
 
 // GetOsInfo: get information about the operating system.
 //
-// On Linux this comes from the `/etc/os-release` file. On other systems, it may
+// On Linux this comes from the /etc/os-release file. On other systems, it may
 // come from a variety of sources. You can either use the standard key names
 // like G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
-// `/etc/os-release` provides a number of other less commonly used values that
-// may be useful. No key is guaranteed to be provided, so the caller should
-// always check if the result is nil.
+// /etc/os-release provides a number of other less commonly used values that may
+// be useful. No key is guaranteed to be provided, so the caller should always
+// check if the result is NULL.
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -333,7 +333,7 @@ func GetOsInfo(keyName string) string {
 // If you are using #GApplication the program name is set in
 // g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
 // called by gtk_init() and the Application::startup handler. The program name
-// is found by taking the last component of @argv[0].
+// is found by taking the last component of argv[0].
 func GetPrgname() string {
 	var _cret *C.gchar // in
 
@@ -347,7 +347,7 @@ func GetPrgname() string {
 }
 
 // GetRealName gets the real name of the user. This usually comes from the
-// user's entry in the `passwd` file. The encoding of the returned string is
+// user's entry in the passwd file. The encoding of the returned string is
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
 func GetRealName() string {
@@ -368,16 +368,16 @@ func GetRealName() string {
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
 // (http://www.freedesktop.org/Standards/basedir-spec). In this case the list of
-// directories retrieved will be `XDG_CONFIG_DIRS`.
+// directories retrieved will be XDG_CONFIG_DIRS.
 //
-// On Windows it follows XDG Base Directory Specification if `XDG_CONFIG_DIRS`
-// is defined. If `XDG_CONFIG_DIRS` is undefined, the directory that contains
+// On Windows it follows XDG Base Directory Specification if XDG_CONFIG_DIRS is
+// defined. If XDG_CONFIG_DIRS is undefined, the directory that contains
 // application data for all users is used instead. A typical path is
-// `C:\Documents and Settings\All Users\Application Data`. This folder is used
-// for application data that is not user specific. For example, an application
-// can store a spell-check dictionary, a database of clip art, or a log file in
-// the CSIDL_COMMON_APPDATA folder. This information will not roam and is
-// available to anyone using the computer.
+// C:\Documents and Settings\All Users\Application Data. This folder is used for
+// application data that is not user specific. For example, an application can
+// store a spell-check dictionary, a database of clip art, or a log file in the
+// CSIDL_COMMON_APPDATA folder. This information will not roam and is available
+// to anyone using the computer.
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
@@ -412,10 +412,10 @@ func GetSystemConfigDirs() []string {
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
 // (http://www.freedesktop.org/Standards/basedir-spec) In this case the list of
-// directories retrieved will be `XDG_DATA_DIRS`.
+// directories retrieved will be XDG_DATA_DIRS.
 //
-// On Windows it follows XDG Base Directory Specification if `XDG_DATA_DIRS` is
-// defined. If `XDG_DATA_DIRS` is undefined, the first elements in the list are
+// On Windows it follows XDG Base Directory Specification if XDG_DATA_DIRS is
+// defined. If XDG_DATA_DIRS is undefined, the first elements in the list are
 // the Application Data and Documents folders for All Users. (These can be
 // determined only on Windows 2000 or later and are not present in the list on
 // other Windows versions.) See documentation for CSIDL_COMMON_APPDATA and
@@ -464,15 +464,15 @@ func GetSystemDataDirs() []string {
 
 // GetTmpDir gets the directory to use for temporary files.
 //
-// On UNIX, this is taken from the `TMPDIR` environment variable. If the
-// variable is not set, `P_tmpdir` is used, as defined by the system C library.
-// Failing that, a hard-coded default of "/tmp" is returned.
+// On UNIX, this is taken from the TMPDIR environment variable. If the variable
+// is not set, P_tmpdir is used, as defined by the system C library. Failing
+// that, a hard-coded default of "/tmp" is returned.
 //
-// On Windows, the `TEMP` environment variable is used, with the root directory
-// of the Windows installation (eg: "C:\") used as a default.
+// On Windows, the TEMP environment variable is used, with the root directory of
+// the Windows installation (eg: "C:\") used as a default.
 //
 // The encoding of the returned string is system-defined. On Windows, it is
-// always UTF-8. The return value is never nil or the empty string.
+// always UTF-8. The return value is never NULL or the empty string.
 func GetTmpDir() string {
 	var _cret *C.gchar // in
 
@@ -491,13 +491,13 @@ func GetTmpDir() string {
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
 // (http://www.freedesktop.org/Standards/basedir-spec). In this case the
-// directory retrieved will be `XDG_CACHE_HOME`.
+// directory retrieved will be XDG_CACHE_HOME.
 //
-// On Windows it follows XDG Base Directory Specification if `XDG_CACHE_HOME` is
-// defined. If `XDG_CACHE_HOME` is undefined, the directory that serves as a
+// On Windows it follows XDG Base Directory Specification if XDG_CACHE_HOME is
+// defined. If XDG_CACHE_HOME is undefined, the directory that serves as a
 // common repository for temporary Internet files is used instead. A typical
-// path is `C:\Documents and Settings\username\Local Settings\Temporary Internet
-// Files`. See the documentation for `CSIDL_INTERNET_CACHE`
+// path is C:\Documents and Settings\username\Local Settings\Temporary Internet
+// Files. See the documentation for CSIDL_INTERNET_CACHE
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
 //
 // The return value is cached and modifying it at runtime is not supported, as
@@ -520,12 +520,12 @@ func GetUserCacheDir() string {
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
 // (http://www.freedesktop.org/Standards/basedir-spec). In this case the
-// directory retrieved will be `XDG_CONFIG_HOME`.
+// directory retrieved will be XDG_CONFIG_HOME.
 //
-// On Windows it follows XDG Base Directory Specification if `XDG_CONFIG_HOME`
-// is defined. If `XDG_CONFIG_HOME` is undefined, the folder to use for local
-// (as opposed to roaming) application data is used instead. See the
-// documentation for `CSIDL_LOCAL_APPDATA`
+// On Windows it follows XDG Base Directory Specification if XDG_CONFIG_HOME is
+// defined. If XDG_CONFIG_HOME is undefined, the folder to use for local (as
+// opposed to roaming) application data is used instead. See the documentation
+// for CSIDL_LOCAL_APPDATA
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_data_dir() returns.
@@ -550,12 +550,12 @@ func GetUserConfigDir() string {
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
 // (http://www.freedesktop.org/Standards/basedir-spec). In this case the
-// directory retrieved will be `XDG_DATA_HOME`.
+// directory retrieved will be XDG_DATA_HOME.
 //
-// On Windows it follows XDG Base Directory Specification if `XDG_DATA_HOME` is
-// defined. If `XDG_DATA_HOME` is undefined, the folder to use for local (as
+// On Windows it follows XDG Base Directory Specification if XDG_DATA_HOME is
+// defined. If XDG_DATA_HOME is undefined, the folder to use for local (as
 // opposed to roaming) application data is used instead. See the documentation
-// for `CSIDL_LOCAL_APPDATA`
+// for CSIDL_LOCAL_APPDATA
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_config_dir() returns.
@@ -595,7 +595,7 @@ func GetUserName() string {
 //
 // This is determined using the mechanisms described in the XDG Base Directory
 // Specification (http://www.freedesktop.org/Standards/basedir-spec). This is
-// the directory specified in the `XDG_RUNTIME_DIR` environment variable. In the
+// the directory specified in the XDG_RUNTIME_DIR environment variable. In the
 // case that this variable is not set, we return the value of
 // g_get_user_cache_dir(), after verifying that it exists.
 //
@@ -618,7 +618,7 @@ func GetUserRuntimeDir() string {
 //
 // On UNIX this is done using the XDG special user directories. For
 // compatibility with existing practise, G_USER_DIRECTORY_DESKTOP falls back to
-// `$HOME/Desktop` when XDG special user directories have not been set up.
+// $HOME/Desktop when XDG special user directories have not been set up.
 //
 // Depending on the platform, the user might be able to change the path of the
 // special directory without requiring the session to restart; GLib will not
@@ -642,12 +642,12 @@ func GetUserSpecialDir(directory UserDirectory) string {
 // containing bit flags. This is used within GDK and GTK+ to parse the debug
 // options passed on the command line or through environment variables.
 //
-// If @string is equal to "all", all flags are set. Any flags specified along
-// with "all" in @string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
+// If string is equal to "all", all flags are set. Any flags specified along
+// with "all" in string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
 // all flags except those corresponding to "foo" and "bar".
 //
-// If @string is equal to "help", all the available keys in @keys are printed
-// out to standard error.
+// If string is equal to "help", all the available keys in keys are printed out
+// to standard error.
 func ParseDebugString(_string string, keys []DebugKey) uint {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.GDebugKey
@@ -705,7 +705,7 @@ func SetApplicationName(applicationName string) {
 // If you are using #GApplication the program name is set in
 // g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
 // called by gtk_init() and the Application::startup handler. The program name
-// is found by taking the last component of @argv[0].
+// is found by taking the last component of argv[0].
 //
 // Note that for thread-safety reasons this function can only be called once.
 func SetPrgname(prgname string) {

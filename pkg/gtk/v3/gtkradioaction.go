@@ -28,19 +28,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RadioActionOverrider interface {
-	Changed(current RadioActioner)
+	Changed(current *RadioAction)
 }
 
 // RadioActioner describes RadioAction's methods.
 type RadioActioner interface {
 	// CurrentValue obtains the value property of the currently active member of
-	// the group to which @action belongs.
+	// the group to which action belongs.
 	CurrentValue() int
 	// JoinGroup joins a radio action object to the group of another radio
 	// action object.
-	JoinGroup(groupSource RadioActioner)
+	JoinGroup(groupSource *RadioAction)
 	// SetCurrentValue sets the currently active group member to the member with
-	// value property @current_value.
+	// value property current_value.
 	SetCurrentValue(currentValue int)
 }
 
@@ -103,7 +103,7 @@ func NewRadioAction(name string, label string, tooltip string, stockId string, v
 }
 
 // CurrentValue obtains the value property of the currently active member of the
-// group to which @action belongs.
+// group to which action belongs.
 //
 // Deprecated: since version 3.10.
 func (action *RadioAction) CurrentValue() int {
@@ -141,18 +141,18 @@ func (action *RadioAction) CurrentValue() int {
 //       }
 //
 // Deprecated: since version 3.10.
-func (action *RadioAction) JoinGroup(groupSource RadioActioner) {
+func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(action.Native()))
-	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_action_join_group(_arg0, _arg1)
 }
 
 // SetCurrentValue sets the currently active group member to the member with
-// value property @current_value.
+// value property current_value.
 //
 // Deprecated: since version 3.10.
 func (action *RadioAction) SetCurrentValue(currentValue int) {

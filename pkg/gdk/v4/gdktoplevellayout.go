@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,11 +21,10 @@ func init() {
 	})
 }
 
-// ToplevelLayout: `GdkToplevelLayout` struct contains information that is
+// ToplevelLayout: GdkToplevelLayout struct contains information that is
 // necessary to present a sovereign window on screen.
 //
-// The `GdkToplevelLayout` struct is necessary for using
-// [method@Gdk.Toplevel.present].
+// The GdkToplevelLayout struct is necessary for using gdk.Toplevel.Present().
 //
 // Toplevel surfaces are sovereign windows that can be presented to the user in
 // various states (maximized, on all workspaces, etc).
@@ -61,7 +59,7 @@ func (t *ToplevelLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Copy: create a new ToplevelLayout and copy the contents of @layout into it.
+// Copy: create a new ToplevelLayout and copy the contents of layout into it.
 func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
@@ -81,7 +79,7 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	return _toplevelLayout
 }
 
-// Equal: check whether @layout and @other has identical layout properties.
+// Equal: check whether layout and other has identical layout properties.
 func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 *C.GdkToplevelLayout // out
@@ -102,8 +100,8 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 }
 
 // Fullscreen: if the layout specifies whether to the toplevel should go
-// fullscreen, the value pointed to by @fullscreen is set to true if it should
-// go fullscreen, or false, if it should go unfullscreen.
+// fullscreen, the value pointed to by fullscreen is set to TRUE if it should go
+// fullscreen, or FALSE, if it should go unfullscreen.
 func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // in
@@ -144,8 +142,8 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 }
 
 // Maximized: if the layout specifies whether to the toplevel should go
-// maximized, the value pointed to by @maximized is set to true if it should go
-// fullscreen, or false, if it should go unmaximized.
+// maximized, the value pointed to by maximized is set to TRUE if it should go
+// fullscreen, or FALSE, if it should go unmaximized.
 func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // in
@@ -187,7 +185,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 	return _ok
 }
 
-// Ref increases the reference count of @layout.
+// Ref increases the reference count of layout.
 func (layout *ToplevelLayout) ref() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
@@ -209,7 +207,7 @@ func (layout *ToplevelLayout) ref() *ToplevelLayout {
 
 // SetFullscreen sets whether the layout should cause the surface to be
 // fullscreen when presented.
-func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorer) {
+func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 	var _arg2 *C.GdkMonitor        // out
@@ -218,7 +216,7 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor Monitorer) 
 	if fullscreen {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkMonitor)(unsafe.Pointer((monitor).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
 	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
 }
@@ -251,7 +249,7 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	C.gdk_toplevel_layout_set_resizable(_arg0, _arg1)
 }
 
-// Unref decreases the reference count of @layout.
+// Unref decreases the reference count of layout.
 func (layout *ToplevelLayout) unref() {
 	var _arg0 *C.GdkToplevelLayout // out
 

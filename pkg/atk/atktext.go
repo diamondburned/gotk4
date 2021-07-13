@@ -166,7 +166,7 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	return _utf8
 }
 
-// TextAttributeRegister: associate @name with a new TextAttribute
+// TextAttributeRegister: associate name with a new TextAttribute
 func TextAttributeRegister(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in
@@ -283,9 +283,9 @@ type TextOverrider interface {
 	CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
 	// NSelections gets the number of selected regions.
 	NSelections() int
-	// OffsetAtPoint gets the offset of the character located at coordinates @x
-	// and @y. @x and @y are interpreted as being relative to the screen or this
-	// widget's window depending on @coords.
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y. x and y are interpreted as being relative to the screen or this
+	// widget's window depending on coords.
 	OffsetAtPoint(x int, y int, coords CoordType) int
 	// RangeExtents: get the bounding box for text within the specified range.
 	//
@@ -295,13 +295,13 @@ type TextOverrider interface {
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
-	// according to a given @offset and a specific @granularity, along with the
+	// according to a given offset and a specific granularity, along with the
 	// start and end offsets defining the boundaries of such a portion of text.
 	//
-	// If @granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
+	// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
 	// is returned.
 	//
-	// If @granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from
+	// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from
 	// the word start at or before the offset to the word start after the
 	// offset.
 	//
@@ -309,7 +309,7 @@ type TextOverrider interface {
 	// inside a word and will contain the word before the offset if the offset
 	// is not inside a word.
 	//
-	// If @granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
+	// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
 	// from the sentence start at or before the offset to the sentence start
 	// after the offset.
 	//
@@ -317,11 +317,11 @@ type TextOverrider interface {
 	// is inside a sentence and will contain the sentence before the offset if
 	// the offset is not inside a sentence.
 	//
-	// If @granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from
+	// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from
 	// the line start at or before the offset to the line start after the
 	// offset.
 	//
-	// If @granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+	// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
 	// from the start of the paragraph at or before the offset to the start of
 	// the following paragraph after the offset.
 	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
@@ -365,13 +365,13 @@ type TextOverrider interface {
 	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
 	// RemoveSelection removes the specified selection.
 	RemoveSelection(selectionNum int) bool
-	// ScrollSubstringTo makes a substring of @text visible on the screen by
+	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
 	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
-	// ScrollSubstringToPoint: move the top-left of a substring of @text to a
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
 	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
-	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
+	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	//
 	// In the case of rich-text content, this method should either grab focus or
 	// move the sequential focus navigation starting point (if the application
@@ -414,15 +414,15 @@ type Texter interface {
 	CharacterExtents(offset int, coords CoordType) (x int, y int, width int, height int)
 	// NSelections gets the number of selected regions.
 	NSelections() int
-	// OffsetAtPoint gets the offset of the character located at coordinates @x
-	// and @y.
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y.
 	OffsetAtPoint(x int, y int, coords CoordType) int
 	// RangeExtents: get the bounding box for text within the specified range.
 	RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int) (startOffset int, endOffset int, utf8 string)
 	// StringAtOffset gets a portion of the text exposed through an Text
-	// according to a given @offset and a specific @granularity, along with the
+	// according to a given offset and a specific granularity, along with the
 	// start and end offsets defining the boundaries of such a portion of text.
 	StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string)
 	// Text gets the specified text.
@@ -435,13 +435,13 @@ type Texter interface {
 	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset int, endOffset int, utf8 string)
 	// RemoveSelection removes the specified selection.
 	RemoveSelection(selectionNum int) bool
-	// ScrollSubstringTo makes a substring of @text visible on the screen by
+	// ScrollSubstringTo makes a substring of text visible on the screen by
 	// scrolling all necessary parents.
 	ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool
-	// ScrollSubstringToPoint: move the top-left of a substring of @text to a
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
 	// given position of the screen by scrolling all necessary parents.
 	ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool
-	// SetCaretOffset sets the caret (cursor) position to the specified @offset.
+	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	SetCaretOffset(offset int) bool
 	// SetSelection changes the start and end offset of the specified selection.
 	SetSelection(selectionNum int, startOffset int, endOffset int) bool
@@ -642,9 +642,9 @@ func (text *Text) NSelections() int {
 	return _gint
 }
 
-// OffsetAtPoint gets the offset of the character located at coordinates @x and
-// @y. @x and @y are interpreted as being relative to the screen or this
-// widget's window depending on @coords.
+// OffsetAtPoint gets the offset of the character located at coordinates x and
+// y. x and y are interpreted as being relative to the screen or this widget's
+// window depending on coords.
 func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -713,20 +713,20 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 }
 
 // StringAtOffset gets a portion of the text exposed through an Text according
-// to a given @offset and a specific @granularity, along with the start and end
+// to a given offset and a specific granularity, along with the start and end
 // offsets defining the boundaries of such a portion of text.
 //
-// If @granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset is
+// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset is
 // returned.
 //
-// If @granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from the
+// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from the
 // word start at or before the offset to the word start after the offset.
 //
 // The returned string will contain the word at the offset if the offset is
 // inside a word and will contain the word before the offset if the offset is
 // not inside a word.
 //
-// If @granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is from
+// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is from
 // the sentence start at or before the offset to the sentence start after the
 // offset.
 //
@@ -734,10 +734,10 @@ func (text *Text) Selection(selectionNum int) (startOffset int, endOffset int, u
 // inside a sentence and will contain the sentence before the offset if the
 // offset is not inside a sentence.
 //
-// If @granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from the
+// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from the
 // line start at or before the offset to the line start after the offset.
 //
-// If @granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is from
+// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is from
 // the start of the paragraph at or before the offset to the start of the
 // following paragraph after the offset.
 func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (startOffset int, endOffset int, utf8 string) {
@@ -918,7 +918,7 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 	return _ok
 }
 
-// ScrollSubstringTo makes a substring of @text visible on the screen by
+// ScrollSubstringTo makes a substring of text visible on the screen by
 // scrolling all necessary parents.
 func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollType) bool {
 	var _arg0 *C.AtkText      // out
@@ -943,7 +943,7 @@ func (text *Text) ScrollSubstringTo(startOffset int, endOffset int, typ ScrollTy
 	return _ok
 }
 
-// ScrollSubstringToPoint: move the top-left of a substring of @text to a given
+// ScrollSubstringToPoint: move the top-left of a substring of text to a given
 // position of the screen by scrolling all necessary parents.
 func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords CoordType, x int, y int) bool {
 	var _arg0 *C.AtkText     // out
@@ -972,7 +972,7 @@ func (text *Text) ScrollSubstringToPoint(startOffset int, endOffset int, coords 
 	return _ok
 }
 
-// SetCaretOffset sets the caret (cursor) position to the specified @offset.
+// SetCaretOffset sets the caret (cursor) position to the specified offset.
 //
 // In the case of rich-text content, this method should either grab focus or
 // move the sequential focus navigation starting point (if the application

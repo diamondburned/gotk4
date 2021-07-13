@@ -23,19 +23,19 @@ func init() {
 
 // X11Screener describes X11Screen's methods.
 type X11Screener interface {
-	// CurrentDesktop returns the current workspace for @screen when running
+	// CurrentDesktop returns the current workspace for screen when running
 	// under a window manager that supports multiple workspaces, as described in
 	// the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-	// NumberOfDesktops returns the number of workspaces for @screen when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
+	// NumberOfDesktops returns the number of workspaces for screen when running
+	// under a window manager that supports multiple workspaces, as described in
+	// the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
 	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
-	// WindowManagerName returns the name of the window manager for @screen.
+	// WindowManagerName returns the name of the window manager for screen.
 	WindowManagerName() string
 	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 	// and indicates whether the window manager supports a certain hint from the
@@ -65,7 +65,7 @@ func marshalX11Screener(p uintptr) (interface{}, error) {
 	return wrapX11Screen(obj), nil
 }
 
-// CurrentDesktop returns the current workspace for @screen when running under a
+// CurrentDesktop returns the current workspace for screen when running under a
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
@@ -84,7 +84,7 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 	return _guint32
 }
 
-// NumberOfDesktops returns the number of workspaces for @screen when running
+// NumberOfDesktops returns the number of workspaces for screen when running
 // under a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
@@ -119,7 +119,7 @@ func (screen *X11Screen) ScreenNumber() int {
 	return _gint
 }
 
-// WindowManagerName returns the name of the window manager for @screen.
+// WindowManagerName returns the name of the window manager for screen.
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkX11Screen // out
 	var _cret *C.char         // in
@@ -144,7 +144,7 @@ func (screen *X11Screen) WindowManagerName() string {
 // over time; so you shouldn’t use this function in a way that impacts
 // persistent application state. A common bug is that your application can start
 // up before the window manager does when the user logs in, and before the
-// window manager starts gdk_x11_screen_supports_net_wm_hint() will return false
+// window manager starts gdk_x11_screen_supports_net_wm_hint() will return FALSE
 // for every property. You can monitor the window_manager_changed signal on
 // X11Screen to detect a window manager change.
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {

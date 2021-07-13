@@ -25,7 +25,7 @@ func init() {
 
 // FileFilterer describes FileFilter's methods.
 type FileFilterer interface {
-	// AddMIMEType adds a rule allowing a given mime type to @filter.
+	// AddMIMEType adds a rule allowing a given mime type to filter.
 	AddMIMEType(mimeType string)
 	// AddPattern adds a rule allowing a shell style glob to a filter.
 	AddPattern(pattern string)
@@ -33,49 +33,54 @@ type FileFilterer interface {
 	// supported by GdkPixbuf.
 	AddPixbufFormats()
 	// Attributes gets the attributes that need to be filled in for the
-	// `GFileInfo` passed to this filter.
+	// GFileInfo passed to this filter.
 	Attributes() []string
 	// Name gets the human-readable name for the filter.
 	Name() string
 	// SetName sets a human-readable name of the filter.
 	SetName(name string)
-	// ToGVariant: serialize a file filter to an `a{sv}` variant.
-	ToGVariant() *glib.Variant
+	// ToGvariant: serialize a file filter to an a{sv} variant.
+	ToGvariant() *glib.Variant
 }
 
-// FileFilter: `GtkFileFilter` filters files by name or mime type.
+// FileFilter: GtkFileFilter filters files by name or mime type.
 //
-// `GtkFileFilter` can be used to restrict the files being shown in a
-// `GtkFileChooser`. Files can be filtered based on their name (with
-// [method@Gtk.FileFilter.add_pattern]) or on their mime type (with
-// [method@Gtk.FileFilter.add_mime_type]).
+// GtkFileFilter can be used to restrict the files being shown in a
+// GtkFileChooser. Files can be filtered based on their name (with
+// gtk.FileFilter.AddPattern()) or on their mime type (with
+// gtk.FileFilter.AddMIMEType()).
 //
 // Filtering by mime types handles aliasing and subclassing of mime types; e.g.
 // a filter for text/plain also matches a file with mime type application/rtf,
-// since application/rtf is a subclass of text/plain. Note that `GtkFileFilter`
+// since application/rtf is a subclass of text/plain. Note that GtkFileFilter
 // allows wildcards for the subtype of a mime type, so you can e.g. filter for
 // image/\*.
 //
-// Normally, file filters are used by adding them to a `GtkFileChooser` (see
-// [method@Gtk.FileChooser.add_filter]), but it is also possible to manually use
-// a file filter on any [class@Gtk.FilterListModel] containing `GFileInfo`
-// objects.
+// Normally, file filters are used by adding them to a GtkFileChooser (see
+// gtk.FileChooser.AddFilter()), but it is also possible to manually use a file
+// filter on any gtk.FilterListModel containing GFileInfo objects.
 //
 //
 // GtkFileFilter as GtkBuildable
 //
-// The `GtkFileFilter` implementation of the `GtkBuildable` interface supports
+// The GtkFileFilter implementation of the GtkBuildable interface supports
 // adding rules using the <mime-types> and <patterns> elements and listing the
 // rules within. Specifying a <mime-type> or <pattern> has the same effect as as
-// calling [method@Gtk.FileFilter.add_mime_type] or
-// [method@Gtk.FileFilter.add_pattern].
+// calling gtk.FileFilter.AddMIMEType() or gtk.FileFilter.AddPattern().
 //
-// An example of a UI definition fragment specifying `GtkFileFilter` rules:
-// “`xml <object class="GtkFileFilter"> <property name="name"
-// translatable="yes">Text and Images</property> <mime-types>
-// <mime-type>text/plain</mime-type> <mime-type>image/ *</mime-type>
-// </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
-// </patterns> </object> “`
+// An example of a UI definition fragment specifying GtkFileFilter rules:
+//
+//    <object class="GtkFileFilter">
+//      <property name="name" translatable="yes">Text and Images</property>
+//      <mime-types>
+//        <mime-type>text/plain</mime-type>
+//        <mime-type>image/ *</mime-type>
+//      </mime-types>
+//      <patterns>
+//        <pattern>*.txt</pattern>
+//        <pattern>*.png</pattern>
+//      </patterns>
+//    </object>
 type FileFilter struct {
 	Filter
 
@@ -104,15 +109,16 @@ func marshalFileFilterer(p uintptr) (interface{}, error) {
 	return wrapFileFilter(obj), nil
 }
 
-// NewFileFilter creates a new `GtkFileFilter` with no rules added to it.
+// NewFileFilter creates a new GtkFileFilter with no rules added to it.
 //
 // Such a filter doesn’t accept any files, so is not particularly useful until
-// you add rules with [method@Gtk.FileFilter.add_mime_type],
-// [method@Gtk.FileFilter.add_pattern], or
-// [method@Gtk.FileFilter.add_pixbuf_formats].
+// you add rules with gtk.FileFilter.AddMIMEType(), gtk.FileFilter.AddPattern(),
+// or gtk.FileFilter.AddPixbufFormats().
 //
-// To create a filter that accepts any file, use: “`c GtkFileFilter *filter =
-// gtk_file_filter_new (); gtk_file_filter_add_pattern (filter, "*"); “`
+// To create a filter that accepts any file, use:
+//
+//    GtkFileFilter *filter = gtk_file_filter_new ();
+//    gtk_file_filter_add_pattern (filter, "*");
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
 
@@ -125,11 +131,10 @@ func NewFileFilter() *FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGVariant: deserialize a file filter from a `GVariant`.
+// NewFileFilterFromGvariant: deserialize a file filter from a GVariant.
 //
-// The variant must be in the format produced by
-// [method@Gtk.FileFilter.to_gvariant].
-func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
+// The variant must be in the format produced by gtk.FileFilter.ToGvariant().
+func NewFileFilterFromGvariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -150,7 +155,7 @@ func (v *FileFilter) Native() uintptr {
 	return v.Filter.Object.Native()
 }
 
-// AddMIMEType adds a rule allowing a given mime type to @filter.
+// AddMIMEType adds a rule allowing a given mime type to filter.
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.char          // out
@@ -175,8 +180,8 @@ func (filter *FileFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats supported by
 // GdkPixbuf.
 //
-// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for all
-// the supported mime types.
+// This is equivalent to calling gtk.FileFilter.AddMIMEType() for all the
+// supported mime types.
 func (filter *FileFilter) AddPixbufFormats() {
 	var _arg0 *C.GtkFileFilter // out
 
@@ -185,11 +190,11 @@ func (filter *FileFilter) AddPixbufFormats() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-// Attributes gets the attributes that need to be filled in for the `GFileInfo`
+// Attributes gets the attributes that need to be filled in for the GFileInfo
 // passed to this filter.
 //
 // This function will not typically be used by applications; it is intended
-// principally for use in the implementation of `GtkFileChooser`.
+// principally for use in the implementation of GtkFileChooser.
 func (filter *FileFilter) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret **C.char
@@ -220,7 +225,7 @@ func (filter *FileFilter) Attributes() []string {
 
 // Name gets the human-readable name for the filter.
 //
-// See [method@Gtk.FileFilter.set_name].
+// See gtk.FileFilter.SetName().
 func (filter *FileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.char          // in
@@ -250,8 +255,8 @@ func (filter *FileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-// ToGVariant: serialize a file filter to an `a{sv}` variant.
-func (filter *FileFilter) ToGVariant() *glib.Variant {
+// ToGvariant: serialize a file filter to an a{sv} variant.
+func (filter *FileFilter) ToGvariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

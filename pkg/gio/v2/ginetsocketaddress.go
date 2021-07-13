@@ -33,15 +33,15 @@ func init() {
 
 // InetSocketAddresser describes InetSocketAddress's methods.
 type InetSocketAddresser interface {
-	// Address gets @address's Address.
+	// Address gets address's Address.
 	Address() *InetAddress
-	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
-	// IPv6 address.
+	// Flowinfo gets the sin6_flowinfo field from address, which must be an IPv6
+	// address.
 	Flowinfo() uint32
-	// Port gets @address's port.
+	// Port gets address's port.
 	Port() uint16
-	// ScopeID gets the `sin6_scope_id` field from @address, which must be an
-	// IPv6 address.
+	// ScopeID gets the sin6_scope_id field from address, which must be an IPv6
+	// address.
 	ScopeID() uint32
 }
 
@@ -73,13 +73,13 @@ func marshalInetSocketAddresser(p uintptr) (interface{}, error) {
 	return wrapInetSocketAddress(obj), nil
 }
 
-// NewInetSocketAddress creates a new SocketAddress for @address and @port.
-func NewInetSocketAddress(address InetAddresser, port uint16) *InetSocketAddress {
+// NewInetSocketAddress creates a new SocketAddress for address and port.
+func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _cret *C.GSocketAddress // in
 
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = C.guint16(port)
 
 	_cret = C.g_inet_socket_address_new(_arg1, _arg2)
@@ -91,11 +91,11 @@ func NewInetSocketAddress(address InetAddresser, port uint16) *InetSocketAddress
 	return _inetSocketAddress
 }
 
-// NewInetSocketAddressFromString creates a new SocketAddress for @address and
-// @port.
+// NewInetSocketAddressFromString creates a new SocketAddress for address and
+// port.
 //
-// If @address is an IPv6 address, it can also contain a scope ID (separated
-// from the address by a `%`).
+// If address is an IPv6 address, it can also contain a scope ID (separated from
+// the address by a %).
 func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
@@ -113,7 +113,7 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 	return _inetSocketAddress
 }
 
-// Address gets @address's Address.
+// Address gets address's Address.
 func (address *InetSocketAddress) Address() *InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
@@ -129,7 +129,7 @@ func (address *InetSocketAddress) Address() *InetAddress {
 	return _inetAddress
 }
 
-// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an IPv6
+// Flowinfo gets the sin6_flowinfo field from address, which must be an IPv6
 // address.
 func (address *InetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
@@ -146,7 +146,7 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 	return _guint32
 }
 
-// Port gets @address's port.
+// Port gets address's port.
 func (address *InetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
@@ -162,7 +162,7 @@ func (address *InetSocketAddress) Port() uint16 {
 	return _guint16
 }
 
-// ScopeID gets the `sin6_scope_id` field from @address, which must be an IPv6
+// ScopeID gets the sin6_scope_id field from address, which must be an IPv6
 // address.
 func (address *InetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out

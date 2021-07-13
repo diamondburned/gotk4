@@ -23,17 +23,17 @@ func init() {
 
 // MediaControlser describes MediaControls's methods.
 type MediaControlser interface {
-	// MediaStream gets the media stream managed by @controls or nil if none.
+	// MediaStream gets the media stream managed by controls or NULL if none.
 	MediaStream() *MediaStream
-	// SetMediaStream sets the stream that is controlled by @controls.
+	// SetMediaStream sets the stream that is controlled by controls.
 	SetMediaStream(stream MediaStreamer)
 }
 
-// MediaControls: `GtkMediaControls` is a widget to show controls for a video.
+// MediaControls: GtkMediaControls is a widget to show controls for a video.
 //
 // !An example GtkMediaControls (media-controls.png)
 //
-// Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
+// Usually, GtkMediaControls is used as part of gtk.Video.
 type MediaControls struct {
 	Widget
 }
@@ -68,8 +68,8 @@ func marshalMediaControlser(p uintptr) (interface{}, error) {
 	return wrapMediaControls(obj), nil
 }
 
-// NewMediaControls creates a new `GtkMediaControls` managing the @stream passed
-// to it.
+// NewMediaControls creates a new GtkMediaControls managing the stream passed to
+// it.
 func NewMediaControls(stream MediaStreamer) *MediaControls {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -85,7 +85,7 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 	return _mediaControls
 }
 
-// MediaStream gets the media stream managed by @controls or nil if none.
+// MediaStream gets the media stream managed by controls or NULL if none.
 func (controls *MediaControls) MediaStream() *MediaStream {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
@@ -101,7 +101,7 @@ func (controls *MediaControls) MediaStream() *MediaStream {
 	return _mediaStream
 }
 
-// SetMediaStream sets the stream that is controlled by @controls.
+// SetMediaStream sets the stream that is controlled by controls.
 func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkMediaControls // out
 	var _arg1 *C.GtkMediaStream   // out

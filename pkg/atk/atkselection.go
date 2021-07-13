@@ -33,20 +33,20 @@ type SelectionOverrider interface {
 	// the object are selected.
 	ClearSelection() bool
 	// SelectionCount gets the number of accessible children currently selected.
-	// Note: callers should not rely on nil or on a zero value for indication of
-	// whether AtkSelectionIface is implemented, they should use type
+	// Note: callers should not rely on NULL or on a zero value for indication
+	// of whether AtkSelectionIface is implemented, they should use type
 	// checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
 	SelectionCount() int
 	// IsChildSelected determines if the current child of this object is
-	// selected Note: callers should not rely on nil or on a zero value for
+	// selected Note: callers should not rely on NULL or on a zero value for
 	// indication of whether AtkSelectionIface is implemented, they should use
 	// type checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
 	IsChildSelected(i int) bool
 	// RefSelection gets a reference to the accessible object representing the
 	// specified selected child of the object. Note: callers should not rely on
-	// nil or on a zero value for indication of whether AtkSelectionIface is
+	// NULL or on a zero value for indication of whether AtkSelectionIface is
 	// implemented, they should use type checking/interface checking macros or
 	// the atk_get_accessible_value() convenience method.
 	RefSelection(i int) *ObjectClass
@@ -70,7 +70,7 @@ type Selectioner interface {
 	// SelectionCount gets the number of accessible children currently selected.
 	SelectionCount() int
 	// IsChildSelected determines if the current child of this object is
-	// selected Note: callers should not rely on nil or on a zero value for
+	// selected Note: callers should not rely on NULL or on a zero value for
 	// indication of whether AtkSelectionIface is implemented, they should use
 	// type checking/interface checking macros or the atk_get_accessible_value()
 	// convenience method.
@@ -157,7 +157,7 @@ func (selection *Selection) ClearSelection() bool {
 }
 
 // SelectionCount gets the number of accessible children currently selected.
-// Note: callers should not rely on nil or on a zero value for indication of
+// Note: callers should not rely on NULL or on a zero value for indication of
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
@@ -177,7 +177,7 @@ func (selection *Selection) SelectionCount() int {
 }
 
 // IsChildSelected determines if the current child of this object is selected
-// Note: callers should not rely on nil or on a zero value for indication of
+// Note: callers should not rely on NULL or on a zero value for indication of
 // whether AtkSelectionIface is implemented, they should use type
 // checking/interface checking macros or the atk_get_accessible_value()
 // convenience method.
@@ -201,7 +201,7 @@ func (selection *Selection) IsChildSelected(i int) bool {
 }
 
 // RefSelection gets a reference to the accessible object representing the
-// specified selected child of the object. Note: callers should not rely on nil
+// specified selected child of the object. Note: callers should not rely on NULL
 // or on a zero value for indication of whether AtkSelectionIface is
 // implemented, they should use type checking/interface checking macros or the
 // atk_get_accessible_value() convenience method.

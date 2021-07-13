@@ -18,9 +18,9 @@ import "C"
 // WaylandToplevelExported: callback that gets called when the handle for a
 // surface has been obtained from the Wayland compositor.
 //
-// This callback is used in [method@GdkWayland.WaylandToplevel.export_handle].
+// This callback is used in gdkwayland.WaylandToplevel.ExportHandle().
 //
-// The @handle can be passed to other processes, for the purpose of marking
+// The handle can be passed to other processes, for the purpose of marking
 // surfaces as transient for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string, userData cgo.Handle)
 

@@ -41,7 +41,7 @@ type Expanderer interface {
 	// gtk_expander_set_label().
 	Label() string
 	// LabelFill returns whether the label widget will fill all available
-	// horizontal space allocated to @expander.
+	// horizontal space allocated to expander.
 	LabelFill() bool
 	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() *Widget
@@ -58,17 +58,17 @@ type Expanderer interface {
 	UseUnderline() bool
 	// SetExpanded sets the state of the expander.
 	SetExpanded(expanded bool)
-	// SetLabel sets the text of the label of the expander to @label.
+	// SetLabel sets the text of the label of the expander to label.
 	SetLabel(label string)
 	// SetLabelFill sets whether the label widget should fill all available
-	// horizontal space allocated to @expander.
+	// horizontal space allocated to expander.
 	SetLabelFill(labelFill bool)
 	// SetLabelWidget: set the label widget for the expander.
 	SetLabelWidget(labelWidget Widgeter)
 	// SetResizeToplevel sets whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	SetResizeToplevel(resizeToplevel bool)
-	// SetSpacing sets the spacing field of @expander, which is the number of
+	// SetSpacing sets the spacing field of expander, which is the number of
 	// pixels to place between expander and the child.
 	SetSpacing(spacing int)
 	// SetUseMarkup sets whether the text of the label contains markup in
@@ -142,7 +142,7 @@ func marshalExpanderer(p uintptr) (interface{}, error) {
 	return wrapExpander(obj), nil
 }
 
-// NewExpander creates a new expander using @label as the text of the label.
+// NewExpander creates a new expander using label as the text of the label.
 func NewExpander(label string) *Expander {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -158,8 +158,8 @@ func NewExpander(label string) *Expander {
 	return _expander
 }
 
-// NewExpanderWithMnemonic creates a new expander using @label as the text of
-// the label. If characters in @label are preceded by an underscore, they are
+// NewExpanderWithMnemonic creates a new expander using label as the text of the
+// label. If characters in label are preceded by an underscore, they are
 // underlined. If you need a literal underscore character in a label, use “__”
 // (two underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
@@ -179,7 +179,7 @@ func NewExpanderWithMnemonic(label string) *Expander {
 	return _expander
 }
 
-// Expanded queries a Expander and returns its current state. Returns true if
+// Expanded queries a Expander and returns its current state. Returns TRUE if
 // the child widget is revealed.
 //
 // See gtk_expander_set_expanded().
@@ -202,7 +202,7 @@ func (expander *Expander) Expanded() bool {
 
 // Label fetches the text from a label widget including any embedded underlines
 // indicating mnemonics and Pango markup, as set by gtk_expander_set_label(). If
-// the label text has not been set the return value will be nil. This will be
+// the label text has not been set the return value will be NULL. This will be
 // the case if you create an empty button with gtk_button_new() to use as a
 // container.
 //
@@ -226,7 +226,7 @@ func (expander *Expander) Label() string {
 }
 
 // LabelFill returns whether the label widget will fill all available horizontal
-// space allocated to @expander.
+// space allocated to expander.
 func (expander *Expander) LabelFill() bool {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gboolean     // in
@@ -337,8 +337,8 @@ func (expander *Expander) UseUnderline() bool {
 	return _ok
 }
 
-// SetExpanded sets the state of the expander. Set to true, if you want the
-// child widget to be revealed, and false if you want the child widget to be
+// SetExpanded sets the state of the expander. Set to TRUE, if you want the
+// child widget to be revealed, and FALSE if you want the child widget to be
 // hidden.
 func (expander *Expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
@@ -352,7 +352,7 @@ func (expander *Expander) SetExpanded(expanded bool) {
 	C.gtk_expander_set_expanded(_arg0, _arg1)
 }
 
-// SetLabel sets the text of the label of the expander to @label.
+// SetLabel sets the text of the label of the expander to label.
 //
 // This will also clear any previously set labels.
 func (expander *Expander) SetLabel(label string) {
@@ -366,7 +366,7 @@ func (expander *Expander) SetLabel(label string) {
 }
 
 // SetLabelFill sets whether the label widget should fill all available
-// horizontal space allocated to @expander.
+// horizontal space allocated to expander.
 //
 // Note that this function has no effect since 3.20.
 func (expander *Expander) SetLabelFill(labelFill bool) {
@@ -407,7 +407,7 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 	C.gtk_expander_set_resize_toplevel(_arg0, _arg1)
 }
 
-// SetSpacing sets the spacing field of @expander, which is the number of pixels
+// SetSpacing sets the spacing field of expander, which is the number of pixels
 // to place between expander and the child.
 //
 // Deprecated: Use margins on the child instead.

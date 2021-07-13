@@ -29,20 +29,20 @@ type GestureLongPresser interface {
 	SetDelayFactor(delayFactor float64)
 }
 
-// GestureLongPress: `GtkGestureLongPress` is a `GtkGesture` for long presses.
+// GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.
 //
 // This gesture is also known as “Press and Hold”.
 //
 // When the timeout is exceeded, the gesture is triggering the
-// [signal@Gtk.GestureLongPress::pressed] signal.
+// gtk.GestureLongPress::pressed signal.
 //
 // If the touchpoint is lifted before the timeout passes, or if it drifts too
-// far of the initial press point, the [signal@Gtk.GestureLongPress::cancelled]
-// signal will be emitted.
+// far of the initial press point, the gtk.GestureLongPress::cancelled signal
+// will be emitted.
 //
 // How long the timeout is before the ::pressed signal gets emitted is
-// determined by the [property@Gtk.Settings:gtk-long-press-time] setting. It can
-// be modified by the [property@Gtk.GestureLongPress:delay-factor] property.
+// determined by the gtk.Settings:gtk-long-press-time setting. It can be
+// modified by the gtk.GestureLongPress:delay-factor property.
 type GestureLongPress struct {
 	GestureSingle
 }
@@ -70,7 +70,7 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(obj), nil
 }
 
-// NewGestureLongPress returns a newly created `GtkGesture` that recognizes long
+// NewGestureLongPress returns a newly created GtkGesture that recognizes long
 // presses.
 func NewGestureLongPress() *GestureLongPress {
 	var _cret *C.GtkGesture // in

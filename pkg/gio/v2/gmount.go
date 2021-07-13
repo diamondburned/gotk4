@@ -39,57 +39,57 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MountOverrider interface {
-	// CanEject checks if @mount can be ejected.
+	// CanEject checks if mount can be ejected.
 	CanEject() bool
-	// CanUnmount checks if @mount can be unmounted.
+	// CanUnmount checks if mount can be unmounted.
 	CanUnmount() bool
 	Changed()
 	// Eject ejects a mount. This is an asynchronous operation, and is finished
-	// by calling g_mount_eject_finish() with the @mount and Result data
-	// returned in the @callback.
+	// by calling g_mount_eject_finish() with the mount and Result data returned
+	// in the callback.
 	//
 	// Deprecated: Use g_mount_eject_with_operation() instead.
-	Eject(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount. If any errors occurred during the
-	// operation, @error will be set to contain the errors and false will be
+	// operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	//
 	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
 	EjectFinish(result AsyncResulter) error
 	// EjectWithOperation ejects a mount. This is an asynchronous operation, and
 	// is finished by calling g_mount_eject_with_operation_finish() with the
-	// @mount and Result data returned in the @callback.
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	// mount and Result data returned in the callback.
+	EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
 	EjectWithOperationFinish(result AsyncResulter) error
-	// DefaultLocation gets the default location of @mount. The default location
-	// of the given @mount is a path that reflects the main entry point for the
+	// DefaultLocation gets the default location of mount. The default location
+	// of the given mount is a path that reflects the main entry point for the
 	// user (e.g. the home directory, or the root of the volume).
 	DefaultLocation() *File
-	// Drive gets the drive for the @mount.
+	// Drive gets the drive for the mount.
 	//
 	// This is a convenience method for getting the #GVolume and then using that
 	// object to get the #GDrive.
 	Drive() *Drive
-	// Icon gets the icon for @mount.
+	// Icon gets the icon for mount.
 	Icon() *Icon
-	// Name gets the name of @mount.
+	// Name gets the name of mount.
 	Name() string
-	// Root gets the root directory on @mount.
+	// Root gets the root directory on mount.
 	Root() *File
-	// SortKey gets the sort key for @mount, if any.
+	// SortKey gets the sort key for mount, if any.
 	SortKey() string
-	// SymbolicIcon gets the symbolic icon for @mount.
+	// SymbolicIcon gets the symbolic icon for mount.
 	SymbolicIcon() *Icon
-	// UUID gets the UUID for the @mount. The reference is typically based on
-	// the file system UUID for the mount in question and should be considered
-	// an opaque string. Returns nil if there is no UUID available.
+	// UUID gets the UUID for the mount. The reference is typically based on the
+	// file system UUID for the mount in question and should be considered an
+	// opaque string. Returns NULL if there is no UUID available.
 	UUID() string
-	// Volume gets the volume for the @mount.
+	// Volume gets the volume for the mount.
 	Volume() *Volume
-	// GuessContentType tries to guess the type of content stored on @mount.
+	// GuessContentType tries to guess the type of content stored on mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
 	// camera memory cards. See the shared-mime-info
@@ -98,15 +98,15 @@ type MountOverrider interface {
 	//
 	// This is an asynchronous operation (see g_mount_guess_content_type_sync()
 	// for the synchronous version), and is finished by calling
-	// g_mount_guess_content_type_finish() with the @mount and Result data
-	// returned in the @callback.
-	GuessContentType(forceRescan bool, cancellable Cancellabler, callback AsyncReadyCallback)
-	// GuessContentTypeFinish finishes guessing content types of @mount. If any
-	// errors occurred during the operation, @error will be set to contain the
-	// errors and false will be returned. In particular, you may get an
+	// g_mount_guess_content_type_finish() with the mount and Result data
+	// returned in the callback.
+	GuessContentType(forceRescan bool, cancellable *Cancellable, callback AsyncReadyCallback)
+	// GuessContentTypeFinish finishes guessing content types of mount. If any
+	// errors occurred during the operation, error will be set to contain the
+	// errors and FALSE will be returned. In particular, you may get an
 	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
 	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
-	// GuessContentTypeSync tries to guess the type of content stored on @mount.
+	// GuessContentTypeSync tries to guess the type of content stored on mount.
 	// Returns one or more textual identifiers of well-known content types
 	// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for
 	// camera memory cards. See the shared-mime-info
@@ -115,99 +115,99 @@ type MountOverrider interface {
 	//
 	// This is a synchronous operation and as such may block doing IO; see
 	// g_mount_guess_content_type() for the asynchronous version.
-	GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error)
+	GuessContentTypeSync(forceRescan bool, cancellable *Cancellable) ([]string, error)
 	PreUnmount()
 	// Remount remounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_remount_finish() with the @mount and Results
-	// data returned in the @callback.
+	// finished by calling g_mount_remount_finish() with the mount and Results
+	// data returned in the callback.
 	//
 	// Remounting is useful when some setting affecting the operation of the
 	// volume has been changed, as these may need a remount to take affect.
 	// While this is semantically equivalent with unmounting and then remounting
 	// not all backends might need to actually be unmounted.
-	Remount(flags MountMountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	Remount(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount. If any errors occurred during
-	// the operation, @error will be set to contain the errors and false will be
+	// the operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	RemountFinish(result AsyncResulter) error
 	// Unmount unmounts a mount. This is an asynchronous operation, and is
-	// finished by calling g_mount_unmount_finish() with the @mount and Result
-	// data returned in the @callback.
+	// finished by calling g_mount_unmount_finish() with the mount and Result
+	// data returned in the callback.
 	//
 	// Deprecated: Use g_mount_unmount_with_operation() instead.
-	Unmount(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	Unmount(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount. If any errors occurred during
-	// the operation, @error will be set to contain the errors and false will be
+	// the operation, error will be set to contain the errors and FALSE will be
 	// returned.
 	//
 	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
 	UnmountFinish(result AsyncResulter) error
 	// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
 	// and is finished by calling g_mount_unmount_with_operation_finish() with
-	// the @mount and Result data returned in the @callback.
-	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	// the mount and Result data returned in the callback.
+	UnmountWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
-	// occurred during the operation, @error will be set to contain the errors
-	// and false will be returned.
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
 	UnmountWithOperationFinish(result AsyncResulter) error
 	Unmounted()
 }
 
 // Mounter describes Mount's methods.
 type Mounter interface {
-	// CanEject checks if @mount can be ejected.
+	// CanEject checks if mount can be ejected.
 	CanEject() bool
-	// CanUnmount checks if @mount can be unmounted.
+	// CanUnmount checks if mount can be unmounted.
 	CanUnmount() bool
 	// Eject ejects a mount.
-	Eject(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount.
 	EjectFinish(result AsyncResulter) error
 	// EjectWithOperation ejects a mount.
-	EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount.
 	EjectWithOperationFinish(result AsyncResulter) error
-	// DefaultLocation gets the default location of @mount.
+	// DefaultLocation gets the default location of mount.
 	DefaultLocation() *File
-	// Drive gets the drive for the @mount.
+	// Drive gets the drive for the mount.
 	Drive() *Drive
-	// Icon gets the icon for @mount.
+	// Icon gets the icon for mount.
 	Icon() *Icon
-	// Name gets the name of @mount.
+	// Name gets the name of mount.
 	Name() string
-	// Root gets the root directory on @mount.
+	// Root gets the root directory on mount.
 	Root() *File
-	// SortKey gets the sort key for @mount, if any.
+	// SortKey gets the sort key for mount, if any.
 	SortKey() string
-	// SymbolicIcon gets the symbolic icon for @mount.
+	// SymbolicIcon gets the symbolic icon for mount.
 	SymbolicIcon() *Icon
-	// UUID gets the UUID for the @mount.
+	// UUID gets the UUID for the mount.
 	UUID() string
-	// Volume gets the volume for the @mount.
+	// Volume gets the volume for the mount.
 	Volume() *Volume
-	// GuessContentType tries to guess the type of content stored on @mount.
-	GuessContentType(forceRescan bool, cancellable Cancellabler, callback AsyncReadyCallback)
-	// GuessContentTypeFinish finishes guessing content types of @mount.
+	// GuessContentType tries to guess the type of content stored on mount.
+	GuessContentType(forceRescan bool, cancellable *Cancellable, callback AsyncReadyCallback)
+	// GuessContentTypeFinish finishes guessing content types of mount.
 	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
-	// GuessContentTypeSync tries to guess the type of content stored on @mount.
-	GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error)
-	// IsShadowed determines if @mount is shadowed.
+	// GuessContentTypeSync tries to guess the type of content stored on mount.
+	GuessContentTypeSync(forceRescan bool, cancellable *Cancellable) ([]string, error)
+	// IsShadowed determines if mount is shadowed.
 	IsShadowed() bool
 	// Remount remounts a mount.
-	Remount(flags MountMountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	Remount(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount.
 	RemountFinish(result AsyncResulter) error
-	// Shadow increments the shadow count on @mount.
+	// Shadow increments the shadow count on mount.
 	Shadow()
 	// Unmount unmounts a mount.
-	Unmount(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback)
+	Unmount(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount.
 	UnmountFinish(result AsyncResulter) error
 	// UnmountWithOperation unmounts a mount.
-	UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback)
+	UnmountWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount.
 	UnmountWithOperationFinish(result AsyncResulter) error
-	// Unshadow decrements the shadow count on @mount.
+	// Unshadow decrements the shadow count on mount.
 	Unshadow()
 }
 
@@ -226,7 +226,7 @@ type Mounter interface {
 // when the operation has resolved (either with success or failure), and a
 // Result structure will be passed to the callback. That callback should then
 // call g_mount_unmount_with_operation_finish() with the #GMount and the Result
-// data to see if the operation was completed successfully. If an @error is
+// data to see if the operation was completed successfully. If an error is
 // present when g_mount_unmount_with_operation_finish() is called, then it will
 // be filled with any error information.
 type Mount struct {
@@ -250,7 +250,7 @@ func marshalMounter(p uintptr) (interface{}, error) {
 	return wrapMount(obj), nil
 }
 
-// CanEject checks if @mount can be ejected.
+// CanEject checks if mount can be ejected.
 func (mount *Mount) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -268,7 +268,7 @@ func (mount *Mount) CanEject() bool {
 	return _ok
 }
 
-// CanUnmount checks if @mount can be unmounted.
+// CanUnmount checks if mount can be unmounted.
 func (mount *Mount) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -287,11 +287,11 @@ func (mount *Mount) CanUnmount() bool {
 }
 
 // Eject ejects a mount. This is an asynchronous operation, and is finished by
-// calling g_mount_eject_finish() with the @mount and Result data returned in
-// the @callback.
+// calling g_mount_eject_finish() with the mount and Result data returned in the
+// callback.
 //
 // Deprecated: Use g_mount_eject_with_operation() instead.
-func (mount *Mount) Eject(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (mount *Mount) Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GCancellable       // out
@@ -300,7 +300,7 @@ func (mount *Mount) Eject(flags MountUnmountFlags, cancellable Cancellabler, cal
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -308,7 +308,7 @@ func (mount *Mount) Eject(flags MountUnmountFlags, cancellable Cancellabler, cal
 }
 
 // EjectFinish finishes ejecting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
+// operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // Deprecated: Use g_mount_eject_with_operation_finish() instead.
@@ -330,9 +330,9 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 }
 
 // EjectWithOperation ejects a mount. This is an asynchronous operation, and is
-// finished by calling g_mount_eject_with_operation_finish() with the @mount and
-// Result data returned in the @callback.
-func (mount *Mount) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback) {
+// finished by calling g_mount_eject_with_operation_finish() with the mount and
+// Result data returned in the callback.
+func (mount *Mount) EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GMountOperation    // out
@@ -342,8 +342,8 @@ func (mount *Mount) EjectWithOperation(flags MountUnmountFlags, mountOperation M
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer((mountOperation).(gextras.Nativer).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -351,7 +351,7 @@ func (mount *Mount) EjectWithOperation(flags MountUnmountFlags, mountOperation M
 }
 
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
-// during the operation, @error will be set to contain the errors and false will
+// during the operation, error will be set to contain the errors and FALSE will
 // be returned.
 func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
@@ -370,8 +370,8 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// DefaultLocation gets the default location of @mount. The default location of
-// the given @mount is a path that reflects the main entry point for the user
+// DefaultLocation gets the default location of mount. The default location of
+// the given mount is a path that reflects the main entry point for the user
 // (e.g. the home directory, or the root of the volume).
 func (mount *Mount) DefaultLocation() *File {
 	var _arg0 *C.GMount // out
@@ -388,7 +388,7 @@ func (mount *Mount) DefaultLocation() *File {
 	return _file
 }
 
-// Drive gets the drive for the @mount.
+// Drive gets the drive for the mount.
 //
 // This is a convenience method for getting the #GVolume and then using that
 // object to get the #GDrive.
@@ -407,7 +407,7 @@ func (mount *Mount) Drive() *Drive {
 	return _drive
 }
 
-// Icon gets the icon for @mount.
+// Icon gets the icon for mount.
 func (mount *Mount) Icon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -423,7 +423,7 @@ func (mount *Mount) Icon() *Icon {
 	return _icon
 }
 
-// Name gets the name of @mount.
+// Name gets the name of mount.
 func (mount *Mount) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -440,7 +440,7 @@ func (mount *Mount) Name() string {
 	return _utf8
 }
 
-// Root gets the root directory on @mount.
+// Root gets the root directory on mount.
 func (mount *Mount) Root() *File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -456,7 +456,7 @@ func (mount *Mount) Root() *File {
 	return _file
 }
 
-// SortKey gets the sort key for @mount, if any.
+// SortKey gets the sort key for mount, if any.
 func (mount *Mount) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
@@ -472,7 +472,7 @@ func (mount *Mount) SortKey() string {
 	return _utf8
 }
 
-// SymbolicIcon gets the symbolic icon for @mount.
+// SymbolicIcon gets the symbolic icon for mount.
 func (mount *Mount) SymbolicIcon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -488,9 +488,9 @@ func (mount *Mount) SymbolicIcon() *Icon {
 	return _icon
 }
 
-// UUID gets the UUID for the @mount. The reference is typically based on the
+// UUID gets the UUID for the mount. The reference is typically based on the
 // file system UUID for the mount in question and should be considered an opaque
-// string. Returns nil if there is no UUID available.
+// string. Returns NULL if there is no UUID available.
 func (mount *Mount) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -507,7 +507,7 @@ func (mount *Mount) UUID() string {
 	return _utf8
 }
 
-// Volume gets the volume for the @mount.
+// Volume gets the volume for the mount.
 func (mount *Mount) Volume() *Volume {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
@@ -523,7 +523,7 @@ func (mount *Mount) Volume() *Volume {
 	return _volume
 }
 
-// GuessContentType tries to guess the type of content stored on @mount. Returns
+// GuessContentType tries to guess the type of content stored on mount. Returns
 // one or more textual identifiers of well-known content types (typically
 // prefixed with "x-content/"), e.g. x-content/image-dcf for camera memory
 // cards. See the shared-mime-info
@@ -532,9 +532,9 @@ func (mount *Mount) Volume() *Volume {
 //
 // This is an asynchronous operation (see g_mount_guess_content_type_sync() for
 // the synchronous version), and is finished by calling
-// g_mount_guess_content_type_finish() with the @mount and Result data returned
-// in the @callback.
-func (mount *Mount) GuessContentType(forceRescan bool, cancellable Cancellabler, callback AsyncReadyCallback) {
+// g_mount_guess_content_type_finish() with the mount and Result data returned
+// in the callback.
+func (mount *Mount) GuessContentType(forceRescan bool, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.gboolean            // out
 	var _arg2 *C.GCancellable       // out
@@ -545,16 +545,16 @@ func (mount *Mount) GuessContentType(forceRescan bool, cancellable Cancellabler,
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
 	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// GuessContentTypeFinish finishes guessing content types of @mount. If any
-// errors occurred during the operation, @error will be set to contain the
-// errors and false will be returned. In particular, you may get an
+// GuessContentTypeFinish finishes guessing content types of mount. If any
+// errors occurred during the operation, error will be set to contain the errors
+// and FALSE will be returned. In particular, you may get an
 // G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
 func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GMount       // out
@@ -588,7 +588,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	return _utf8s, _goerr
 }
 
-// GuessContentTypeSync tries to guess the type of content stored on @mount.
+// GuessContentTypeSync tries to guess the type of content stored on mount.
 // Returns one or more textual identifiers of well-known content types
 // (typically prefixed with "x-content/"), e.g. x-content/image-dcf for camera
 // memory cards. See the shared-mime-info
@@ -597,7 +597,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 //
 // This is a synchronous operation and as such may block doing IO; see
 // g_mount_guess_content_type() for the asynchronous version.
-func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellabler) ([]string, error) {
+func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable *Cancellable) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 C.gboolean      // out
 	var _arg2 *C.GCancellable // out
@@ -608,7 +608,7 @@ func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellab
 	if forceRescan {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
 
@@ -633,20 +633,20 @@ func (mount *Mount) GuessContentTypeSync(forceRescan bool, cancellable Cancellab
 	return _utf8s, _goerr
 }
 
-// IsShadowed determines if @mount is shadowed. Applications or libraries should
-// avoid displaying @mount in the user interface if it is shadowed.
+// IsShadowed determines if mount is shadowed. Applications or libraries should
+// avoid displaying mount in the user interface if it is shadowed.
 //
 // A mount is said to be shadowed if there exists one or more user visible
 // objects (currently #GMount objects) with a root that is inside the root of
-// @mount.
+// mount.
 //
 // One application of shadow mounts is when exposing a single file system that
 // is used to address several logical volumes. In this situation, a Monitor
 // implementation would create two #GVolume objects (for example, one for the
 // camera functionality of the device and one for a SD card reader on the
-// device) with activation URIs `gphoto2://[usb:001,002]/store1/` and
-// `gphoto2://[usb:001,002]/store2/`. When the underlying mount (with root
-// `gphoto2://[usb:001,002]/`) is mounted, said Monitor implementation would
+// device) with activation URIs gphoto2://[usb:001,002]/store1/ and
+// gphoto2://[usb:001,002]/store2/. When the underlying mount (with root
+// gphoto2://[usb:001,002]/) is mounted, said Monitor implementation would
 // create two #GMount objects (each with their root matching the corresponding
 // volume activation root) that would shadow the original mount.
 //
@@ -671,14 +671,14 @@ func (mount *Mount) IsShadowed() bool {
 }
 
 // Remount remounts a mount. This is an asynchronous operation, and is finished
-// by calling g_mount_remount_finish() with the @mount and Results data returned
-// in the @callback.
+// by calling g_mount_remount_finish() with the mount and Results data returned
+// in the callback.
 //
 // Remounting is useful when some setting affecting the operation of the volume
 // has been changed, as these may need a remount to take affect. While this is
 // semantically equivalent with unmounting and then remounting not all backends
 // might need to actually be unmounted.
-func (mount *Mount) Remount(flags MountMountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (mount *Mount) Remount(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.GMountMountFlags    // out
 	var _arg2 *C.GMountOperation    // out
@@ -688,8 +688,8 @@ func (mount *Mount) Remount(flags MountMountFlags, mountOperation MountOperation
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = C.GMountMountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer((mountOperation).(gextras.Nativer).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -697,7 +697,7 @@ func (mount *Mount) Remount(flags MountMountFlags, mountOperation MountOperation
 }
 
 // RemountFinish finishes remounting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
+// operation, error will be set to contain the errors and FALSE will be
 // returned.
 func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
@@ -716,10 +716,10 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// Shadow increments the shadow count on @mount. Usually used by Monitor
-// implementations when creating a shadow mount for @mount, see
+// Shadow increments the shadow count on mount. Usually used by Monitor
+// implementations when creating a shadow mount for mount, see
 // g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on @mount manually.
+// #GMount::changed signal on mount manually.
 func (mount *Mount) Shadow() {
 	var _arg0 *C.GMount // out
 
@@ -729,11 +729,11 @@ func (mount *Mount) Shadow() {
 }
 
 // Unmount unmounts a mount. This is an asynchronous operation, and is finished
-// by calling g_mount_unmount_finish() with the @mount and Result data returned
-// in the @callback.
+// by calling g_mount_unmount_finish() with the mount and Result data returned
+// in the callback.
 //
 // Deprecated: Use g_mount_unmount_with_operation() instead.
-func (mount *Mount) Unmount(flags MountUnmountFlags, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (mount *Mount) Unmount(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GCancellable       // out
@@ -742,7 +742,7 @@ func (mount *Mount) Unmount(flags MountUnmountFlags, cancellable Cancellabler, c
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -750,7 +750,7 @@ func (mount *Mount) Unmount(flags MountUnmountFlags, cancellable Cancellabler, c
 }
 
 // UnmountFinish finishes unmounting a mount. If any errors occurred during the
-// operation, @error will be set to contain the errors and false will be
+// operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // Deprecated: Use g_mount_unmount_with_operation_finish() instead.
@@ -772,9 +772,9 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 }
 
 // UnmountWithOperation unmounts a mount. This is an asynchronous operation, and
-// is finished by calling g_mount_unmount_with_operation_finish() with the
-// @mount and Result data returned in the @callback.
-func (mount *Mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation MountOperationer, cancellable Cancellabler, callback AsyncReadyCallback) {
+// is finished by calling g_mount_unmount_with_operation_finish() with the mount
+// and Result data returned in the callback.
+func (mount *Mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg1 C.GMountUnmountFlags  // out
 	var _arg2 *C.GMountOperation    // out
@@ -784,8 +784,8 @@ func (mount *Mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(mount.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
-	_arg2 = (*C.GMountOperation)(unsafe.Pointer((mountOperation).(gextras.Nativer).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -793,8 +793,8 @@ func (mount *Mount) UnmountWithOperation(flags MountUnmountFlags, mountOperation
 }
 
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
-// occurred during the operation, @error will be set to contain the errors and
-// false will be returned.
+// occurred during the operation, error will be set to contain the errors and
+// FALSE will be returned.
 func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -812,10 +812,10 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// Unshadow decrements the shadow count on @mount. Usually used by Monitor
-// implementations when destroying a shadow mount for @mount, see
+// Unshadow decrements the shadow count on mount. Usually used by Monitor
+// implementations when destroying a shadow mount for mount, see
 // g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on @mount manually.
+// #GMount::changed signal on mount manually.
 func (mount *Mount) Unshadow() {
 	var _arg0 *C.GMount // out
 

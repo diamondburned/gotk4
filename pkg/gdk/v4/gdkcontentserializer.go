@@ -44,8 +44,8 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 type ContentSerializerer interface {
 	// Cancellable gets the cancellable for the current operation.
 	Cancellable() *gio.Cancellable
-	// GType gets the `GType` to of the object to serialize.
-	GType() externglib.Type
+	// Gtype gets the GType to of the object to serialize.
+	Gtype() externglib.Type
 	// MIMEType gets the mime type to serialize to.
 	MIMEType() string
 	// OutputStream gets the output stream for the current operation.
@@ -57,7 +57,7 @@ type ContentSerializerer interface {
 	// UserData gets the user data that was passed when the serializer was
 	// registered.
 	UserData() cgo.Handle
-	// Value gets the `GValue` to read the object to serialize from.
+	// Value gets the GValue to read the object to serialize from.
 	Value() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
 	ReturnError(err error)
@@ -66,18 +66,18 @@ type ContentSerializerer interface {
 	ReturnSuccess()
 }
 
-// ContentSerializer: `GdkContentSerializer` is used to serialize content for
+// ContentSerializer: GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
 //
-// The `GdkContentSerializer` transforms an object that is identified by a GType
+// The GdkContentSerializer transforms an object that is identified by a GType
 // into a serialized form (i.e. a byte stream) that is identified by a mime
 // type.
 //
 // GTK provides serializers and deserializers for common data types such as
 // text, colors, images or file lists. To register your own serialization
-// functions, use [func@content_register_serializer].
+// functions, use content_register_serializer.
 //
-// Also see [class@Gdk.ContentDeserializer].
+// Also see gdk.ContentDeserializer.
 type ContentSerializer struct {
 	*externglib.Object
 
@@ -106,7 +106,7 @@ func marshalContentSerializerer(p uintptr) (interface{}, error) {
 
 // Cancellable gets the cancellable for the current operation.
 //
-// This is the `GCancellable` that was passed to [content_serialize_async].
+// This is the GCancellable that was passed to [content_serialize_async].
 func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GCancellable         // in
@@ -127,8 +127,8 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	return _cancellable
 }
 
-// GType gets the `GType` to of the object to serialize.
-func (serializer *ContentSerializer) GType() externglib.Type {
+// Gtype gets the GType to of the object to serialize.
+func (serializer *ContentSerializer) Gtype() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.GType                 // in
 
@@ -161,7 +161,7 @@ func (serializer *ContentSerializer) MIMEType() string {
 
 // OutputStream gets the output stream for the current operation.
 //
-// This is the stream that was passed to [func@content_serialize_async].
+// This is the stream that was passed to content_serialize_async.
 func (serializer *ContentSerializer) OutputStream() *gio.OutputStream {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GOutputStream        // in
@@ -184,7 +184,7 @@ func (serializer *ContentSerializer) OutputStream() *gio.OutputStream {
 
 // Priority gets the I/O priority for the current operation.
 //
-// This is the priority that was passed to [func@content_serialize_async].
+// This is the priority that was passed to content_serialize_async.
 func (serializer *ContentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
@@ -202,7 +202,7 @@ func (serializer *ContentSerializer) Priority() int {
 
 // TaskData gets the data that was associated with the current operation.
 //
-// See [method@Gdk.ContentSerializer.set_task_data].
+// See gdk.ContentSerializer.SetTaskData().
 func (serializer *ContentSerializer) TaskData() cgo.Handle {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.gpointer              // in
@@ -235,7 +235,7 @@ func (serializer *ContentSerializer) UserData() cgo.Handle {
 	return _gpointer
 }
 
-// Value gets the `GValue` to read the object to serialize from.
+// Value gets the GValue to read the object to serialize from.
 func (serializer *ContentSerializer) Value() *externglib.Value {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GValue               // in
@@ -253,7 +253,7 @@ func (serializer *ContentSerializer) Value() *externglib.Value {
 
 // ReturnError: indicate that the serialization has ended with an error.
 //
-// This function consumes @error.
+// This function consumes error.
 func (serializer *ContentSerializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentSerializer // out
 	var _arg1 *C.GError               // out

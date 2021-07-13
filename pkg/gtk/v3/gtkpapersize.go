@@ -91,8 +91,8 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	return _paperSize
 }
 
-// NewPaperSizeFromGVariant constructs a struct PaperSize.
-func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
+// NewPaperSizeFromGvariant constructs a struct PaperSize.
+func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPaperSize // in
 
@@ -303,7 +303,7 @@ func (size *PaperSize) DisplayName() string {
 	return _utf8
 }
 
-// Height gets the paper height of the PaperSize, in units of @unit.
+// Height gets the paper height of the PaperSize, in units of unit.
 func (size *PaperSize) Height(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize // out
 	var _arg1 C.GtkUnit       // out
@@ -337,7 +337,7 @@ func (size *PaperSize) Name() string {
 	return _utf8
 }
 
-// PPDName gets the PPD name of the PaperSize, which may be nil.
+// PPDName gets the PPD name of the PaperSize, which may be NULL.
 func (size *PaperSize) PPDName() string {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.gchar        // in
@@ -353,7 +353,7 @@ func (size *PaperSize) PPDName() string {
 	return _utf8
 }
 
-// Width gets the paper width of the PaperSize, in units of @unit.
+// Width gets the paper width of the PaperSize, in units of unit.
 func (size *PaperSize) Width(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize // out
 	var _arg1 C.GtkUnit       // out
@@ -371,7 +371,7 @@ func (size *PaperSize) Width(unit Unit) float64 {
 	return _gdouble
 }
 
-// IsCustom returns true if @size is not a standard paper size.
+// IsCustom returns TRUE if size is not a standard paper size.
 func (size *PaperSize) IsCustom() bool {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
@@ -409,7 +409,7 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 	return _ok
 }
 
-// IsIPP returns true if @size is an IPP standard paper size.
+// IsIPP returns TRUE if size is an IPP standard paper size.
 func (size *PaperSize) IsIPP() bool {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret C.gboolean      // in
@@ -427,7 +427,7 @@ func (size *PaperSize) IsIPP() bool {
 	return _ok
 }
 
-// SetSize changes the dimensions of a @size to @width x @height.
+// SetSize changes the dimensions of a size to width x height.
 func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	var _arg0 *C.GtkPaperSize // out
 	var _arg1 C.gdouble       // out
@@ -442,8 +442,8 @@ func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ToGVariant: serialize a paper size to an a{sv} variant.
-func (paperSize *PaperSize) ToGVariant() *glib.Variant {
+// ToGvariant: serialize a paper size to an a{sv} variant.
+func (paperSize *PaperSize) ToGvariant() *glib.Variant {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.GVariant     // in
 
@@ -462,7 +462,7 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	return _variant
 }
 
-// ToKeyFile: this function adds the paper size from @size to @key_file.
+// ToKeyFile: this function adds the paper size from size to key_file.
 func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPaperSize // out
 	var _arg1 *C.GKeyFile     // out

@@ -36,12 +36,12 @@ func init() {
 
 // SocketConnectioner describes SocketConnection's methods.
 type SocketConnectioner interface {
-	// ConnectSocketConnectioner: connect @connection to the specified remote
+	// ConnectSocketConnectioner: connect connection to the specified remote
 	// address.
-	ConnectSocketConnectioner(address SocketAddresser, cancellable Cancellabler) error
-	// ConnectAsync: asynchronously connect @connection to the specified remote
+	ConnectSocketConnectioner(address SocketAddresser, cancellable *Cancellable) error
+	// ConnectAsync: asynchronously connect connection to the specified remote
 	// address.
-	ConnectAsync(address SocketAddresser, cancellable Cancellabler, callback AsyncReadyCallback)
+	ConnectAsync(address SocketAddresser, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish gets the result of a g_socket_connection_connect_async()
 	// call.
 	ConnectFinish(result AsyncResulter) error
@@ -51,7 +51,7 @@ type SocketConnectioner interface {
 	RemoteAddress() (*SocketAddress, error)
 	// Socket gets the underlying #GSocket object of the connection.
 	Socket() *Socket
-	// IsConnected checks if @connection is connected.
+	// IsConnected checks if connection is connected.
 	IsConnected() bool
 }
 
@@ -93,9 +93,9 @@ func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 	return wrapSocketConnection(obj), nil
 }
 
-// ConnectSocketConnectioner: connect @connection to the specified remote
+// ConnectSocketConnectioner: connect connection to the specified remote
 // address.
-func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddresser, cancellable Cancellabler) error {
+func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddresser, cancellable *Cancellable) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
@@ -103,7 +103,7 @@ func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddr
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -114,14 +114,14 @@ func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddr
 	return _goerr
 }
 
-// ConnectAsync: asynchronously connect @connection to the specified remote
+// ConnectAsync: asynchronously connect connection to the specified remote
 // address.
 //
-// This clears the #GSocket:blocking flag on @connection's underlying socket if
+// This clears the #GSocket:blocking flag on connection's underlying socket if
 // it is currently set.
 //
 // Use g_socket_connection_connect_finish() to retrieve the result.
-func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
 	var _arg1 *C.GSocketAddress     // out
 	var _arg2 *C.GCancellable       // out
@@ -130,7 +130,7 @@ func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancel
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.Assign(callback))
 
@@ -217,8 +217,8 @@ func (connection *SocketConnection) Socket() *Socket {
 	return _socket
 }
 
-// IsConnected checks if @connection is connected. This is equivalent to calling
-// g_socket_is_connected() on @connection's underlying #GSocket.
+// IsConnected checks if connection is connected. This is equivalent to calling
+// g_socket_is_connected() on connection's underlying #GSocket.
 func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
@@ -237,8 +237,8 @@ func (connection *SocketConnection) IsConnected() bool {
 }
 
 // SocketConnectionFactoryLookupType looks up the #GType to be used when
-// creating socket connections on sockets with the specified @family, @type and
-// @protocol_id.
+// creating socket connections on sockets with the specified family, type and
+// protocol_id.
 //
 // If no type is registered, the Connection base type is returned.
 func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) externglib.Type {
@@ -261,8 +261,8 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 }
 
 // SocketConnectionFactoryRegisterType looks up the #GType to be used when
-// creating socket connections on sockets with the specified @family, @type and
-// @protocol.
+// creating socket connections on sockets with the specified family, type and
+// protocol.
 //
 // If no type is registered, the Connection base type is returned.
 func SocketConnectionFactoryRegisterType(gType externglib.Type, family SocketFamily, typ SocketType, protocol int) {

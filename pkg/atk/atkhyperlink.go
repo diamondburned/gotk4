@@ -45,15 +45,15 @@ type HyperlinkOverrider interface {
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	NAnchors() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
-	// For instance, the returned Object will implement Text if @link_ is a text
-	// hyperlink, Image if @link_ is an image hyperlink etc.
+	// For instance, the returned Object will implement Text if link_ is a text
+	// hyperlink, Image if link_ is an image hyperlink etc.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
 	GetObject(i int) *ObjectClass
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
-	// URI: get a the URI associated with the anchor specified by @i of @link_.
+	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
 	URI(i int) string
@@ -63,8 +63,8 @@ type HyperlinkOverrider interface {
 	// ATK_STATE_FOCUSED for focused links.
 	IsSelectedLink() bool
 	// IsValid: since the document that a link is associated with may have
-	// changed this method returns true if the link is still valid (with respect
-	// to the document it references) and false otherwise.
+	// changed this method returns TRUE if the link is still valid (with respect
+	// to the document it references) and FALSE otherwise.
 	IsValid() bool
 	LinkActivated()
 	LinkState() uint
@@ -82,7 +82,7 @@ type Hyperlinker interface {
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	StartIndex() int
-	// URI: get a the URI associated with the anchor specified by @i of @link_.
+	// URI: get a the URI associated with the anchor specified by i of link_.
 	URI(i int) string
 	// IsInline indicates whether the link currently displays some or all of its
 	// content inline.
@@ -92,8 +92,8 @@ type Hyperlinker interface {
 	// ATK_STATE_FOCUSED for focused links.
 	IsSelectedLink() bool
 	// IsValid: since the document that a link is associated with may have
-	// changed this method returns true if the link is still valid (with respect
-	// to the document it references) and false otherwise.
+	// changed this method returns TRUE if the link is still valid (with respect
+	// to the document it references) and FALSE otherwise.
 	IsValid() bool
 }
 
@@ -161,8 +161,8 @@ func (link_ *Hyperlink) NAnchors() int {
 }
 
 // GetObject returns the item associated with this hyperlinks nth anchor. For
-// instance, the returned Object will implement Text if @link_ is a text
-// hyperlink, Image if @link_ is an image hyperlink etc.
+// instance, the returned Object will implement Text if link_ is a text
+// hyperlink, Image if link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
 func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
@@ -199,7 +199,7 @@ func (link_ *Hyperlink) StartIndex() int {
 	return _gint
 }
 
-// URI: get a the URI associated with the anchor specified by @i of @link_.
+// URI: get a the URI associated with the anchor specified by i of link_.
 //
 // Multiple anchors are primarily used by client-side image maps.
 func (link_ *Hyperlink) URI(i int) string {
@@ -221,8 +221,8 @@ func (link_ *Hyperlink) URI(i int) string {
 }
 
 // IsInline indicates whether the link currently displays some or all of its
-// content inline. Ordinary HTML links will usually return false, but an inline
-// &lt;src&gt; HTML element will return true.
+// content inline. Ordinary HTML links will usually return FALSE, but an inline
+// &lt;src&gt; HTML element will return TRUE.
 func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -262,8 +262,8 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 }
 
 // IsValid: since the document that a link is associated with may have changed
-// this method returns true if the link is still valid (with respect to the
-// document it references) and false otherwise.
+// this method returns TRUE if the link is still valid (with respect to the
+// document it references) and FALSE otherwise.
 func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in

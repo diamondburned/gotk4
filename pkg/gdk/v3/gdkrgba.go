@@ -103,14 +103,20 @@ func (p *RGBA) Hash() uint {
 	return _guint
 }
 
-// Parse parses a textual representation of a color, filling in the @red,
-// @green, @blue and @alpha fields of the @rgba RGBA.
+// Parse parses a textual representation of a color, filling in the red, green,
+// blue and alpha fields of the rgba RGBA.
 //
-// The string can be either one of: - A standard name (Taken from the X11
-// rgb.txt file). - A hexadecimal value in the form “\#rgb”, “\#rrggbb”,
-// “\#rrrgggbbb” or ”\#rrrrggggbbbb” - A RGB color in the form “rgb(r,g,b)” (In
-// this case the color will have full opacity) - A RGBA color in the form
-// “rgba(r,g,b,a)”
+// The string can be either one of:
+//
+// - A standard name (Taken from the X11 rgb.txt file).
+//
+// - A hexadecimal value in the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or
+// ”\#rrrrggggbbbb”
+//
+// - A RGB color in the form “rgb(r,g,b)” (In this case the color will have full
+// opacity)
+//
+// - A RGBA color in the form “rgba(r,g,b,a)”
 //
 // Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
@@ -135,11 +141,11 @@ func (rgba *RGBA) Parse(spec string) bool {
 	return _ok
 }
 
-// String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
-// `rgba(r g,b,a)`, where “r”, “g”, “b” and “a” represent the red, green, blue
-// and alpha values respectively. “r”, “g”, and “b” are represented as integers
-// in the range 0 to 255, and “a” is represented as a floating point value in
-// the range 0 to 1.
+// String returns a textual specification of rgba in the form rgb(r,g,b) or
+// rgba(r g,b,a), where “r”, “g”, “b” and “a” represent the red, green, blue and
+// alpha values respectively. “r”, “g”, and “b” are represented as integers in
+// the range 0 to 255, and “a” is represented as a floating point value in the
+// range 0 to 1.
 //
 // These string forms are string forms that are supported by the CSS3 colors
 // module, and can be parsed by gdk_rgba_parse().

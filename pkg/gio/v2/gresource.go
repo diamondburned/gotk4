@@ -26,10 +26,10 @@ import (
 import "C"
 
 // ResourcesEnumerateChildren returns all the names of children at the specified
-// @path in the set of globally registered resources. The return result is a nil
+// path in the set of globally registered resources. The return result is a NULL
 // terminated list of strings which should be released with g_strfreev().
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -62,10 +62,10 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 	return _utf8s, _goerr
 }
 
-// ResourcesGetInfo looks for a file at the specified @path in the set of
+// ResourcesGetInfo looks for a file at the specified path in the set of
 // globally registered resources and if found returns information about it.
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -89,11 +89,11 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 	return _size, _flags, _goerr
 }
 
-// ResourcesOpenStream looks for a file at the specified @path in the set of
+// ResourcesOpenStream looks for a file at the specified path in the set of
 // globally registered resources and returns a Stream that lets you read the
 // data.
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputStream, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -141,8 +141,8 @@ func ResourcesUnregister(resource *Resource) {
 // If you want to use this resource in the global resource namespace you need to
 // register it with g_resources_register().
 //
-// If @filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
-// will be returned. If @filename doesn’t exist, or there is an error in reading
+// If filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
+// will be returned. If filename doesn’t exist, or there is an error in reading
 // it, an error from g_mapped_file_new() will be returned.
 func ResourceLoad(filename string) (*Resource, error) {
 	var _arg1 *C.gchar     // out

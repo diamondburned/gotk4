@@ -25,12 +25,12 @@ func init() {
 type CellAreaBoxer interface {
 	// Spacing gets the spacing added between cell renderers.
 	Spacing() int
-	// PackEnd adds @renderer to @box, packed with reference to the end of @box.
+	// PackEnd adds renderer to box, packed with reference to the end of box.
 	PackEnd(renderer CellRendererer, expand bool, align bool, fixed bool)
-	// PackStart adds @renderer to @box, packed with reference to the start of
-	// @box.
+	// PackStart adds renderer to box, packed with reference to the start of
+	// box.
 	PackStart(renderer CellRendererer, expand bool, align bool, fixed bool)
-	// SetSpacing sets the spacing to add between cell renderers in @box.
+	// SetSpacing sets the spacing to add between cell renderers in box.
 	SetSpacing(spacing int)
 }
 
@@ -122,10 +122,10 @@ func (box *CellAreaBox) Spacing() int {
 	return _gint
 }
 
-// PackEnd adds @renderer to @box, packed with reference to the end of @box.
+// PackEnd adds renderer to box, packed with reference to the end of box.
 //
-// The @renderer is packed after (away from end of) any other CellRenderer
-// packed with reference to the end of @box.
+// The renderer is packed after (away from end of) any other CellRenderer packed
+// with reference to the end of box.
 func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -148,10 +148,10 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand bool, align bool
 	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// PackStart adds @renderer to @box, packed with reference to the start of @box.
+// PackStart adds renderer to box, packed with reference to the start of box.
 //
-// The @renderer is packed after any other CellRenderer packed with reference to
-// the start of @box.
+// The renderer is packed after any other CellRenderer packed with reference to
+// the start of box.
 func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bool, fixed bool) {
 	var _arg0 *C.GtkCellAreaBox  // out
 	var _arg1 *C.GtkCellRenderer // out
@@ -174,7 +174,7 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand bool, align bo
 	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetSpacing sets the spacing to add between cell renderers in @box.
+// SetSpacing sets the spacing to add between cell renderers in box.
 func (box *CellAreaBox) SetSpacing(spacing int) {
 	var _arg0 *C.GtkCellAreaBox // out
 	var _arg1 C.int             // out

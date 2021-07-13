@@ -23,43 +23,42 @@ func init() {
 
 // Overlayer describes Overlay's methods.
 type Overlayer interface {
-	// AddOverlay adds @widget to @overlay.
+	// AddOverlay adds widget to overlay.
 	AddOverlay(widget Widgeter)
-	// Child gets the child widget of @overlay.
+	// Child gets the child widget of overlay.
 	Child() *Widget
-	// ClipOverlay gets whether @widget should be clipped within the parent.
+	// ClipOverlay gets whether widget should be clipped within the parent.
 	ClipOverlay(widget Widgeter) bool
-	// MeasureOverlay gets whether @widget's size is included in the measurement
-	// of @overlay.
+	// MeasureOverlay gets whether widget's size is included in the measurement
+	// of overlay.
 	MeasureOverlay(widget Widgeter) bool
 	// RemoveOverlay removes an overlay that was added with
 	// gtk_overlay_add_overlay().
 	RemoveOverlay(widget Widgeter)
-	// SetChild sets the child widget of @overlay.
+	// SetChild sets the child widget of overlay.
 	SetChild(child Widgeter)
-	// SetClipOverlay sets whether @widget should be clipped within the parent.
+	// SetClipOverlay sets whether widget should be clipped within the parent.
 	SetClipOverlay(widget Widgeter, clipOverlay bool)
-	// SetMeasureOverlay sets whether @widget is included in the measured size
-	// of @overlay.
+	// SetMeasureOverlay sets whether widget is included in the measured size of
+	// overlay.
 	SetMeasureOverlay(widget Widgeter, measure bool)
 }
 
-// Overlay: `GtkOverlay` is a container which contains a single main child, on
-// top of which it can place “overlay” widgets.
+// Overlay: GtkOverlay is a container which contains a single main child, on top
+// of which it can place “overlay” widgets.
 //
 // !An example GtkOverlay (overlay.png)
 //
-// The position of each overlay widget is determined by its
-// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
-// E.g. a widget with both alignments set to GTK_ALIGN_START will be placed at
-// the top left corner of the `GtkOverlay` container, whereas an overlay with
-// halign set to GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed
-// a the bottom edge of the `GtkOverlay`, horizontally centered. The position
-// can be adjusted by setting the margin properties of the child to non-zero
-// values.
+// The position of each overlay widget is determined by its gtk.Widget:halign
+// and gtk.Widget:valign properties. E.g. a widget with both alignments set to
+// GTK_ALIGN_START will be placed at the top left corner of the GtkOverlay
+// container, whereas an overlay with halign set to GTK_ALIGN_CENTER and valign
+// set to GTK_ALIGN_END will be placed a the bottom edge of the GtkOverlay,
+// horizontally centered. The position can be adjusted by setting the margin
+// properties of the child to non-zero values.
 //
 // More complicated placement of overlays is possible by connecting to the
-// [signal@Gtk.Overlay::get-child-position] signal.
+// gtk.Overlay::get-child-position signal.
 //
 // An overlay’s minimum and natural sizes are those of its main child. The sizes
 // of overlay children are not considered when measuring these preferred sizes.
@@ -67,14 +66,14 @@ type Overlayer interface {
 //
 // GtkOverlay as GtkBuildable
 //
-// The `GtkOverlay` implementation of the `GtkBuildable` interface supports
-// placing a child as an overlay by specifying “overlay” as the “type” attribute
-// of a `<child>` element.
+// The GtkOverlay implementation of the GtkBuildable interface supports placing
+// a child as an overlay by specifying “overlay” as the “type” attribute of a
+// <child> element.
 //
 //
 // CSS nodes
 //
-// `GtkOverlay` has a single CSS node with the name “overlay”. Overlay children
+// GtkOverlay has a single CSS node with the name “overlay”. Overlay children
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay struct {
@@ -111,7 +110,7 @@ func marshalOverlayer(p uintptr) (interface{}, error) {
 	return wrapOverlay(obj), nil
 }
 
-// NewOverlay creates a new `GtkOverlay`.
+// NewOverlay creates a new GtkOverlay.
 func NewOverlay() *Overlay {
 	var _cret *C.GtkWidget // in
 
@@ -124,13 +123,13 @@ func NewOverlay() *Overlay {
 	return _overlay
 }
 
-// AddOverlay adds @widget to @overlay.
+// AddOverlay adds widget to overlay.
 //
 // The widget will be stacked on top of the main widget added with
-// [method@Gtk.Overlay.set_child].
+// gtk.Overlay.SetChild().
 //
-// The position at which @widget is placed is determined from its
-// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
+// The position at which widget is placed is determined from its
+// gtk.Widget:halign and gtk.Widget:valign properties.
 func (overlay *Overlay) AddOverlay(widget Widgeter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -141,7 +140,7 @@ func (overlay *Overlay) AddOverlay(widget Widgeter) {
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
 
-// Child gets the child widget of @overlay.
+// Child gets the child widget of overlay.
 func (overlay *Overlay) Child() *Widget {
 	var _arg0 *C.GtkOverlay // out
 	var _cret *C.GtkWidget  // in
@@ -157,7 +156,7 @@ func (overlay *Overlay) Child() *Widget {
 	return _widget
 }
 
-// ClipOverlay gets whether @widget should be clipped within the parent.
+// ClipOverlay gets whether widget should be clipped within the parent.
 func (overlay *Overlay) ClipOverlay(widget Widgeter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -177,8 +176,8 @@ func (overlay *Overlay) ClipOverlay(widget Widgeter) bool {
 	return _ok
 }
 
-// MeasureOverlay gets whether @widget's size is included in the measurement of
-// @overlay.
+// MeasureOverlay gets whether widget's size is included in the measurement of
+// overlay.
 func (overlay *Overlay) MeasureOverlay(widget Widgeter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -210,7 +209,7 @@ func (overlay *Overlay) RemoveOverlay(widget Widgeter) {
 	C.gtk_overlay_remove_overlay(_arg0, _arg1)
 }
 
-// SetChild sets the child widget of @overlay.
+// SetChild sets the child widget of overlay.
 func (overlay *Overlay) SetChild(child Widgeter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -221,7 +220,7 @@ func (overlay *Overlay) SetChild(child Widgeter) {
 	C.gtk_overlay_set_child(_arg0, _arg1)
 }
 
-// SetClipOverlay sets whether @widget should be clipped within the parent.
+// SetClipOverlay sets whether widget should be clipped within the parent.
 func (overlay *Overlay) SetClipOverlay(widget Widgeter, clipOverlay bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
@@ -236,11 +235,11 @@ func (overlay *Overlay) SetClipOverlay(widget Widgeter, clipOverlay bool) {
 	C.gtk_overlay_set_clip_overlay(_arg0, _arg1, _arg2)
 }
 
-// SetMeasureOverlay sets whether @widget is included in the measured size of
-// @overlay.
+// SetMeasureOverlay sets whether widget is included in the measured size of
+// overlay.
 //
 // The overlay will request the size of the largest child that has this property
-// set to true. Children who are not included may be drawn outside of @overlay's
+// set to TRUE. Children who are not included may be drawn outside of overlay's
 // allocation if they are too large.
 func (overlay *Overlay) SetMeasureOverlay(widget Widgeter, measure bool) {
 	var _arg0 *C.GtkOverlay // out

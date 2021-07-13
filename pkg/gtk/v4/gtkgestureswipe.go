@@ -27,15 +27,15 @@ type GestureSwiper interface {
 	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
-// GestureSwipe: `GtkGestureSwipe` is a `GtkGesture` for swipe gestures.
+// GestureSwipe: GtkGestureSwipe is a GtkGesture for swipe gestures.
 //
 // After a press/move/.../move/release sequence happens, the
-// [signal@Gtk.GestureSwipe::swipe] signal will be emitted, providing the
-// velocity and directionality of the sequence at the time it was lifted.
+// gtk.GestureSwipe::swipe signal will be emitted, providing the velocity and
+// directionality of the sequence at the time it was lifted.
 //
 // If the velocity is desired in intermediate points,
-// [method@Gtk.GestureSwipe.get_velocity] can be called in a
-// [signal@Gtk.Gesture::update] handler.
+// gtk.GestureSwipe.GetVelocity() can be called in a gtk.Gesture::update
+// handler.
 //
 // All velocities are reported in pixels/sec units.
 type GestureSwipe struct {
@@ -65,7 +65,7 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 	return wrapGestureSwipe(obj), nil
 }
 
-// NewGestureSwipe returns a newly created `GtkGesture` that recognizes swipes.
+// NewGestureSwipe returns a newly created GtkGesture that recognizes swipes.
 func NewGestureSwipe() *GestureSwipe {
 	var _cret *C.GtkGesture // in
 
@@ -80,9 +80,9 @@ func NewGestureSwipe() *GestureSwipe {
 
 // Velocity gets the current velocity.
 //
-// If the gesture is recognized, this function returns true and fills in
-// @velocity_x and @velocity_y with the recorded velocity, as per the last
-// events processed.
+// If the gesture is recognized, this function returns TRUE and fills in
+// velocity_x and velocity_y with the recorded velocity, as per the last events
+// processed.
 func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out
 	var _arg1 C.double           // in

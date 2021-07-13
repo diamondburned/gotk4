@@ -45,11 +45,11 @@ type Settingser interface {
 // (http://www.freedesktop.org/wiki/Specifications/xsettings-spec) manager that
 // is usually part of the desktop environment, along with utilities that let the
 // user change these settings. In the absence of an Xsettings manager, GTK+
-// reads default values for settings from `settings.ini` files in
-// `/etc/gtk-3.0`, `$XDG_CONFIG_DIRS/gtk-3.0` and `$XDG_CONFIG_HOME/gtk-3.0`.
-// These files must be valid key files (see File), and have a section called
-// Settings. Themes can also provide default values for settings by installing a
-// `settings.ini` file next to their `gtk.css` file.
+// reads default values for settings from settings.ini files in /etc/gtk-3.0,
+// $XDG_CONFIG_DIRS/gtk-3.0 and $XDG_CONFIG_HOME/gtk-3.0. These files must be
+// valid key files (see File), and have a section called Settings. Themes can
+// also provide default values for settings by installing a settings.ini file
+// next to their gtk.css file.
 //
 // Applications can override system-wide settings by setting the property of the
 // GtkSettings object with g_object_set(). This should be restricted to special
@@ -180,13 +180,13 @@ func SettingsGetDefault() *Settings {
 	return _settings
 }
 
-// SettingsGetForScreen gets the Settings object for @screen, creating it if
+// SettingsGetForScreen gets the Settings object for screen, creating it if
 // necessary.
-func SettingsGetForScreen(screen gdk.Screener) *Settings {
+func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out
 	var _cret *C.GtkSettings // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_settings_get_for_screen(_arg1)
 

@@ -33,7 +33,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ContainerOverrider interface {
-	// Add adds @widget to @container. Typically used for simple containers such
+	// Add adds widget to container. Typically used for simple containers such
 	// as Window, Frame, or Button; for more complicated layout containers such
 	// as Box or Grid, this function will pick default packing parameters that
 	// may not be correct. So consider functions such as gtk_box_pack_start()
@@ -51,7 +51,7 @@ type ContainerOverrider interface {
 	// can be added, e.g. for a Paned which already has two children.
 	ChildType() externglib.Type
 	CompositeName(child Widgeter) string
-	// Forall invokes @callback on each direct child of @container, including
+	// Forall invokes callback on each direct child of container, including
 	// children that are considered “internal” (implementation details of the
 	// container). “Internal” children generally weren’t added by the user of
 	// the container, but were added by the container implementation itself.
@@ -60,23 +60,23 @@ type ContainerOverrider interface {
 	// gtk_container_forall().
 	Forall(includeInternals bool, callback Callback)
 	// PathForChild returns a newly created widget path representing all the
-	// widget hierarchy from the toplevel down to and including @child.
+	// widget hierarchy from the toplevel down to and including child.
 	PathForChild(child Widgeter) *WidgetPath
-	// Remove removes @widget from @container. @widget must be inside
-	// @container. Note that @container will own a reference to @widget, and
-	// that this may be the last reference held; so removing a widget from its
-	// container can destroy that widget. If you want to use @widget again, you
-	// need to add a reference to it before removing it from a container, using
-	// g_object_ref(). If you don’t want to use @widget again it’s usually more
+	// Remove removes widget from container. widget must be inside container.
+	// Note that container will own a reference to widget, and that this may be
+	// the last reference held; so removing a widget from its container can
+	// destroy that widget. If you want to use widget again, you need to add a
+	// reference to it before removing it from a container, using
+	// g_object_ref(). If you don’t want to use widget again it’s usually more
 	// efficient to simply destroy it directly using gtk_widget_destroy() since
 	// this will remove it from the container and help break any circular
 	// reference count cycles.
 	Remove(widget Widgeter)
-	// SetFocusChild: sets, or unsets if @child is nil, the focused child of
-	// @container.
+	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
+	// container.
 	//
 	// This function emits the GtkContainer::set_focus_child signal of
-	// @container. Implementations of Container can override the default
+	// container. Implementations of Container can override the default
 	// behaviour by overriding the class closure of this signal.
 	//
 	// This is function is mostly meant to be used by widgets. Applications can
@@ -87,37 +87,37 @@ type ContainerOverrider interface {
 
 // Containerer describes Container's methods.
 type Containerer interface {
-	// Add adds @widget to @container.
+	// Add adds widget to container.
 	Add(widget Widgeter)
 	CheckResize()
-	// ChildGetProperty gets the value of a child property for @child and
-	// @container.
+	// ChildGetProperty gets the value of a child property for child and
+	// container.
 	ChildGetProperty(child Widgeter, propertyName string, value *externglib.Value)
 	// ChildNotify emits a Widget::child-notify signal for the [child
-	// property][child-properties] @child_property on the child.
+	// property][child-properties] child_property on the child.
 	ChildNotify(child Widgeter, childProperty string)
-	// ChildSetProperty sets a child property for @child and @container.
+	// ChildSetProperty sets a child property for child and container.
 	ChildSetProperty(child Widgeter, propertyName string, value *externglib.Value)
 	// ChildType returns the type of the children supported by the container.
 	ChildType() externglib.Type
-	// Forall invokes @callback on each direct child of @container, including
+	// Forall invokes callback on each direct child of container, including
 	// children that are considered “internal” (implementation details of the
 	// container).
 	Forall(callback Callback)
-	// Foreach invokes @callback on each non-internal child of @container.
+	// Foreach invokes callback on each non-internal child of container.
 	Foreach(callback Callback)
 	// BorderWidth retrieves the border width of the container.
 	BorderWidth() uint
-	// FocusChild returns the current focus child widget inside @container.
+	// FocusChild returns the current focus child widget inside container.
 	FocusChild() *Widget
-	// FocusHAdjustment retrieves the horizontal focus adjustment for the
+	// FocusHadjustment retrieves the horizontal focus adjustment for the
 	// container.
-	FocusHAdjustment() *Adjustment
-	// FocusVAdjustment retrieves the vertical focus adjustment for the
+	FocusHadjustment() *Adjustment
+	// FocusVadjustment retrieves the vertical focus adjustment for the
 	// container.
-	FocusVAdjustment() *Adjustment
+	FocusVadjustment() *Adjustment
 	// PathForChild returns a newly created widget path representing all the
-	// widget hierarchy from the toplevel down to and including @child.
+	// widget hierarchy from the toplevel down to and including child.
 	PathForChild(child Widgeter) *WidgetPath
 	// ResizeMode returns the resize mode for the container.
 	ResizeMode() ResizeMode
@@ -125,25 +125,25 @@ type Containerer interface {
 	// must send synthetic Widget::draw calls to all children that don’t have
 	// their own Windows.
 	PropagateDraw(child Widgeter, cr *cairo.Context)
-	// Remove removes @widget from @container.
+	// Remove removes widget from container.
 	Remove(widget Widgeter)
 	// ResizeChildren: deprecated: since version 3.10.
 	ResizeChildren()
 	// SetBorderWidth sets the border width of the container.
 	SetBorderWidth(borderWidth uint)
-	// SetFocusChild: sets, or unsets if @child is nil, the focused child of
-	// @container.
+	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
+	// container.
 	SetFocusChild(child Widgeter)
-	// SetFocusHAdjustment hooks up an adjustment to focus handling in a
+	// SetFocusHadjustment hooks up an adjustment to focus handling in a
 	// container, so when a child of the container is focused, the adjustment is
 	// scrolled to show that widget.
-	SetFocusHAdjustment(adjustment Adjustmenter)
-	// SetFocusVAdjustment hooks up an adjustment to focus handling in a
+	SetFocusHadjustment(adjustment *Adjustment)
+	// SetFocusVadjustment hooks up an adjustment to focus handling in a
 	// container, so when a child of the container is focused, the adjustment is
 	// scrolled to show that widget.
-	SetFocusVAdjustment(adjustment Adjustmenter)
-	// SetReallocateRedraws sets the @reallocate_redraws flag of the container
-	// to the given value.
+	SetFocusVadjustment(adjustment *Adjustment)
+	// SetReallocateRedraws sets the reallocate_redraws flag of the container to
+	// the given value.
 	SetReallocateRedraws(needsRedraws bool)
 	// SetResizeMode sets the resize mode for the container.
 	SetResizeMode(resizeMode ResizeMode)
@@ -244,7 +244,7 @@ type Containerer interface {
 // For each potential group of children that are lined up horizontally, the
 // values returned by gtk_widget_get_preferred_width() should be collected in an
 // array of RequestedSize structures. Any child spacing should be removed from
-// the input @for_width and then the collective size should be allocated using
+// the input for_width and then the collective size should be allocated using
 // the gtk_distribute_natural_allocation() convenience function.
 //
 // The container will then move on to request the preferred height for each
@@ -355,7 +355,7 @@ func marshalContainerer(p uintptr) (interface{}, error) {
 	return wrapContainer(obj), nil
 }
 
-// Add adds @widget to @container. Typically used for simple containers such as
+// Add adds widget to container. Typically used for simple containers such as
 // Window, Frame, or Button; for more complicated layout containers such as Box
 // or Grid, this function will pick default packing parameters that may not be
 // correct. So consider functions such as gtk_box_pack_start() and
@@ -383,8 +383,7 @@ func (container *Container) CheckResize() {
 	C.gtk_container_check_resize(_arg0)
 }
 
-// ChildGetProperty gets the value of a child property for @child and
-// @container.
+// ChildGetProperty gets the value of a child property for child and container.
 func (container *Container) ChildGetProperty(child Widgeter, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -400,7 +399,7 @@ func (container *Container) ChildGetProperty(child Widgeter, propertyName string
 }
 
 // ChildNotify emits a Widget::child-notify signal for the [child
-// property][child-properties] @child_property on the child.
+// property][child-properties] child_property on the child.
 //
 // This is an analogue of g_object_notify() for child properties.
 //
@@ -417,7 +416,7 @@ func (container *Container) ChildNotify(child Widgeter, childProperty string) {
 	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
 }
 
-// ChildSetProperty sets a child property for @child and @container.
+// ChildSetProperty sets a child property for child and container.
 func (container *Container) ChildSetProperty(child Widgeter, propertyName string, value *externglib.Value) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -451,10 +450,10 @@ func (container *Container) ChildType() externglib.Type {
 	return _gType
 }
 
-// Forall invokes @callback on each direct child of @container, including
-// children that are considered “internal” (implementation details of the
-// container). “Internal” children generally weren’t added by the user of the
-// container, but were added by the container implementation itself.
+// Forall invokes callback on each direct child of container, including children
+// that are considered “internal” (implementation details of the container).
+// “Internal” children generally weren’t added by the user of the container, but
+// were added by the container implementation itself.
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
@@ -470,13 +469,13 @@ func (container *Container) Forall(callback Callback) {
 	C.gtk_container_forall(_arg0, _arg1, _arg2)
 }
 
-// Foreach invokes @callback on each non-internal child of @container. See
+// Foreach invokes callback on each non-internal child of container. See
 // gtk_container_forall() for details on what constitutes an “internal” child.
 // For all practical purposes, this function should iterate over precisely those
 // child widgets that were added to the container by the application with
 // explicit add() calls.
 //
-// It is permissible to remove the child from the @callback handler.
+// It is permissible to remove the child from the callback handler.
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
@@ -509,7 +508,7 @@ func (container *Container) BorderWidth() uint {
 	return _guint
 }
 
-// FocusChild returns the current focus child widget inside @container. This is
+// FocusChild returns the current focus child widget inside container. This is
 // not the currently focused widget. That can be obtained by calling
 // gtk_window_get_focus().
 func (container *Container) FocusChild() *Widget {
@@ -527,9 +526,9 @@ func (container *Container) FocusChild() *Widget {
 	return _widget
 }
 
-// FocusHAdjustment retrieves the horizontal focus adjustment for the container.
+// FocusHadjustment retrieves the horizontal focus adjustment for the container.
 // See gtk_container_set_focus_hadjustment ().
-func (container *Container) FocusHAdjustment() *Adjustment {
+func (container *Container) FocusHadjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
@@ -544,9 +543,9 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 	return _adjustment
 }
 
-// FocusVAdjustment retrieves the vertical focus adjustment for the container.
+// FocusVadjustment retrieves the vertical focus adjustment for the container.
 // See gtk_container_set_focus_vadjustment().
-func (container *Container) FocusVAdjustment() *Adjustment {
+func (container *Container) FocusVadjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
@@ -562,7 +561,7 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 }
 
 // PathForChild returns a newly created widget path representing all the widget
-// hierarchy from the toplevel down to and including @child.
+// hierarchy from the toplevel down to and including child.
 func (container *Container) PathForChild(child Widgeter) *WidgetPath {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkWidget     // out
@@ -608,10 +607,10 @@ func (container *Container) ResizeMode() ResizeMode {
 // send synthetic Widget::draw calls to all children that don’t have their own
 // Windows. This function provides a convenient way of doing this. A container,
 // when it receives a call to its Widget::draw function, calls
-// gtk_container_propagate_draw() once for each child, passing in the @cr the
+// gtk_container_propagate_draw() once for each child, passing in the cr the
 // container received.
 //
-// gtk_container_propagate_draw() takes care of translating the origin of @cr,
+// gtk_container_propagate_draw() takes care of translating the origin of cr,
 // and deciding whether the draw needs to be sent to the child. It is a
 // convenient and optimized way of getting the same effect as calling
 // gtk_widget_draw() on the child directly.
@@ -631,14 +630,14 @@ func (container *Container) PropagateDraw(child Widgeter, cr *cairo.Context) {
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
 }
 
-// Remove removes @widget from @container. @widget must be inside @container.
-// Note that @container will own a reference to @widget, and that this may be
-// the last reference held; so removing a widget from its container can destroy
-// that widget. If you want to use @widget again, you need to add a reference to
-// it before removing it from a container, using g_object_ref(). If you don’t
-// want to use @widget again it’s usually more efficient to simply destroy it
-// directly using gtk_widget_destroy() since this will remove it from the
-// container and help break any circular reference count cycles.
+// Remove removes widget from container. widget must be inside container. Note
+// that container will own a reference to widget, and that this may be the last
+// reference held; so removing a widget from its container can destroy that
+// widget. If you want to use widget again, you need to add a reference to it
+// before removing it from a container, using g_object_ref(). If you don’t want
+// to use widget again it’s usually more efficient to simply destroy it directly
+// using gtk_widget_destroy() since this will remove it from the container and
+// help break any circular reference count cycles.
 func (container *Container) Remove(widget Widgeter) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 *C.GtkWidget    // out
@@ -676,10 +675,10 @@ func (container *Container) SetBorderWidth(borderWidth uint) {
 	C.gtk_container_set_border_width(_arg0, _arg1)
 }
 
-// SetFocusChild: sets, or unsets if @child is nil, the focused child of
-// @container.
+// SetFocusChild: sets, or unsets if child is NULL, the focused child of
+// container.
 //
-// This function emits the GtkContainer::set_focus_child signal of @container.
+// This function emits the GtkContainer::set_focus_child signal of container.
 // Implementations of Container can override the default behaviour by overriding
 // the class closure of this signal.
 //
@@ -695,7 +694,7 @@ func (container *Container) SetFocusChild(child Widgeter) {
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }
 
-// SetFocusHAdjustment hooks up an adjustment to focus handling in a container,
+// SetFocusHadjustment hooks up an adjustment to focus handling in a container,
 // so when a child of the container is focused, the adjustment is scrolled to
 // show that widget. This function sets the horizontal alignment. See
 // gtk_scrolled_window_get_hadjustment() for a typical way of obtaining the
@@ -704,17 +703,17 @@ func (container *Container) SetFocusChild(child Widgeter) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
-func (container *Container) SetFocusHAdjustment(adjustment Adjustmenter) {
+func (container *Container) SetFocusHadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_hadjustment(_arg0, _arg1)
 }
 
-// SetFocusVAdjustment hooks up an adjustment to focus handling in a container,
+// SetFocusVadjustment hooks up an adjustment to focus handling in a container,
 // so when a child of the container is focused, the adjustment is scrolled to
 // show that widget. This function sets the vertical alignment. See
 // gtk_scrolled_window_get_vadjustment() for a typical way of obtaining the
@@ -723,18 +722,18 @@ func (container *Container) SetFocusHAdjustment(adjustment Adjustmenter) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
-func (container *Container) SetFocusVAdjustment(adjustment Adjustmenter) {
+func (container *Container) SetFocusVadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_container_set_focus_vadjustment(_arg0, _arg1)
 }
 
-// SetReallocateRedraws sets the @reallocate_redraws flag of the container to
-// the given value.
+// SetReallocateRedraws sets the reallocate_redraws flag of the container to the
+// given value.
 //
 // Containers requesting reallocation redraws get automatically redrawn if any
 // of their children changed allocation.

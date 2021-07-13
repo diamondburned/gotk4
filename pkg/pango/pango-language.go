@@ -20,9 +20,9 @@ func init() {
 	})
 }
 
-// Language: `PangoLanguage` structure is used to represent a language.
+// Language: PangoLanguage structure is used to represent a language.
 //
-// `PangoLanguage` pointers can be efficiently copied and compared with each
+// PangoLanguage pointers can be efficiently copied and compared with each
 // other.
 type Language struct {
 	native C.PangoLanguage
@@ -46,15 +46,15 @@ func (l *Language) Native() unsafe.Pointer {
 // feature requirements unique to the language. It is suitable for use as sample
 // text in a font selection dialog.
 //
-// If @language is nil, the default language as found by
-// [type_func@Pango.Language.get_default] is used.
+// If language is NULL, the default language as found by
+// pango.Language.GetDefault is used.
 //
-// If Pango does not have a sample string for @language, the classic "The quick
+// If Pango does not have a sample string for language, the classic "The quick
 // brown fox..." is returned. This can be detected by comparing the returned
 // pointer value to that returned for (non-existent) language code "xx". That
 // is, compare to:
 //
-// “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
+//    pango_language_get_sample_string (pango_language_from_string ("xx"))
 func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
@@ -70,16 +70,16 @@ func (language *Language) SampleString() string {
 	return _utf8
 }
 
-// IncludesScript determines if @script is one of the scripts used to write
-// @language. The returned value is conservative; if nothing is known about the
-// language tag @language, true will be returned, since, as far as Pango knows,
-// @script might be used to write @language.
+// IncludesScript determines if script is one of the scripts used to write
+// language. The returned value is conservative; if nothing is known about the
+// language tag language, TRUE will be returned, since, as far as Pango knows,
+// script might be used to write language.
 //
 // This routine is used in Pango's itemization process when determining if a
 // supplied language tag is relevant to a particular section of text. It
 // probably is not useful for applications in most circumstances.
 //
-// This function uses [method@Pango.Language.get_scripts] internally.
+// This function uses pango.Language.GetScripts() internally.
 func (language *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 C.PangoScript    // out
@@ -140,17 +140,17 @@ func (language *Language) String() string {
 	return _utf8
 }
 
-// LanguageFromString: convert a language tag to a `PangoLanguage`.
+// LanguageFromString: convert a language tag to a PangoLanguage.
 //
-// The language tag must be in a RFC-3066 format. `PangoLanguage` pointers can
-// be efficiently copied (copy the pointer) and compared with other language
-// tags (compare the pointer.)
+// The language tag must be in a RFC-3066 format. PangoLanguage pointers can be
+// efficiently copied (copy the pointer) and compared with other language tags
+// (compare the pointer.)
 //
 // This function first canonicalizes the string by converting it to lowercase,
 // mapping '_' to '-', and stripping all characters other than letters and '-'.
 //
-// Use [type_func@Pango.Language.get_default] if you want to get the
-// `PangoLanguage` for the current locale of the process.
+// Use pango.Language.GetDefault if you want to get the PangoLanguage for the
+// current locale of the process.
 func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out
 	var _cret *C.PangoLanguage // in
@@ -166,11 +166,11 @@ func LanguageFromString(language string) *Language {
 	return _ret
 }
 
-// LanguageGetDefault returns the `PangoLanguage` for the current locale of the
+// LanguageGetDefault returns the PangoLanguage for the current locale of the
 // process.
 //
-// On Unix systems, this is the return value is derived from `setlocale
-// (LC_CTYPE, NULL)`, and the user can affect this through the environment
+// On Unix systems, this is the return value is derived from setlocale
+// (LC_CTYPE, NULL), and the user can affect this through the environment
 // variables LC_ALL, LC_CTYPE or LANG (checked in that order). The locale string
 // typically is in the form lang_COUNTRY, where lang is an ISO-639 language
 // code, and COUNTRY is an ISO-3166 country code. For instance, sv_FI for
@@ -185,7 +185,7 @@ func LanguageFromString(language string) *Language {
 // Unix-style locale string based on either said environment variables or the
 // thread's current locale.
 //
-// Your application should call `setlocale(LC_ALL, "")` for the user settings to
+// Your application should call setlocale(LC_ALL, "") for the user settings to
 // take effect. GTK does this in its initialization functions automatically (by
 // calling gtk_set_locale()). See the setlocale() manpage for more details.
 //

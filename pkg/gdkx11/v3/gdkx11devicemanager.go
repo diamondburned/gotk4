@@ -5,7 +5,6 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -15,12 +14,12 @@ import (
 import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
-func X11DeviceManagerLookup(deviceManager X11DeviceManagerCorer, deviceId int) *X11DeviceCore {
+func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *X11DeviceCore {
 	var _arg1 *C.GdkDeviceManager // out
 	var _arg2 C.gint              // out
 	var _cret *C.GdkDevice        // in
 
-	_arg1 = (*C.GdkDeviceManager)(unsafe.Pointer((deviceManager).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
 	_arg2 = C.gint(deviceId)
 
 	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)

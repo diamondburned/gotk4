@@ -38,11 +38,14 @@ type ActionOverrider interface {
 	// - The mnemonic key activates the object if it is presently enabled
 	// onscreen. This typically corresponds to the underlined letter within the
 	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
-	// "Apply" for a button. - The sequence is the full list of keys which
-	// invoke the action even if the relevant element is not currently shown on
-	// screen. For instance, for a menu item the sequence is the keybindings
-	// used to open the parent menus before invoking. The sequence string is
-	// colon-delimited. Example: "Alt+F:N" in a traditional "New..." menu item.
+	// "Apply" for a button.
+	//
+	// - The sequence is the full list of keys which invoke the action even if
+	// the relevant element is not currently shown on screen. For instance, for
+	// a menu item the sequence is the keybindings used to open the parent menus
+	// before invoking. The sequence string is colon-delimited. Example:
+	// "Alt+F:N" in a traditional "New..." menu item.
+	//
 	// - The shortcut, if it exists, will invoke the same action without showing
 	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
 	// traditional "New..." menu item.
@@ -179,13 +182,17 @@ func (action *Action) Description(i int) string {
 // - The mnemonic key activates the object if it is presently enabled onscreen.
 // This typically corresponds to the underlined letter within the widget.
 // Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for a
-// button. - The sequence is the full list of keys which invoke the action even
-// if the relevant element is not currently shown on screen. For instance, for a
-// menu item the sequence is the keybindings used to open the parent menus
-// before invoking. The sequence string is colon-delimited. Example: "Alt+F:N"
-// in a traditional "New..." menu item. - The shortcut, if it exists, will
-// invoke the same action without showing the component or its enclosing menus
-// or dialogs. Example: "Ctrl+N" in a traditional "New..." menu item.
+// button.
+//
+// - The sequence is the full list of keys which invoke the action even if the
+// relevant element is not currently shown on screen. For instance, for a menu
+// item the sequence is the keybindings used to open the parent menus before
+// invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
+// traditional "New..." menu item.
+//
+// - The shortcut, if it exists, will invoke the same action without showing the
+// component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// traditional "New..." menu item.
 //
 // Example: For a traditional "New..." menu item, the expected return value
 // would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"

@@ -44,7 +44,7 @@ type RemoteActionGroupOverrider interface {
 	// activation request. This typically contains details such as the user
 	// interaction timestamp or startup notification information.
 	//
-	// @platform_data must be non-nil and must have the type
+	// platform_data must be non-NULL and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
 	// ChangeActionStateFull changes the state of a remote action.
@@ -54,7 +54,7 @@ type RemoteActionGroupOverrider interface {
 	// change request. This typically contains details such as the user
 	// interaction timestamp or startup notification information.
 	//
-	// @platform_data must be non-nil and must have the type
+	// platform_data must be non-NULL and must have the type
 	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
 }
@@ -71,8 +71,8 @@ type RemoteActionGrouper interface {
 // transmit action invocations to other processes or receive action invocations
 // in the local process from other processes.
 //
-// The interface has `_full` variants of the two methods on Group used to
-// activate actions: g_action_group_activate_action() and
+// The interface has _full variants of the two methods on Group used to activate
+// actions: g_action_group_activate_action() and
 // g_action_group_change_action_state(). These variants allow a "platform data"
 // #GVariant to be specified: a dictionary providing context for the action
 // invocation (for example: timestamps, startup notification IDs, etc).
@@ -81,9 +81,9 @@ type RemoteActionGrouper interface {
 // platform data for action invocations over D-Bus.
 //
 // Additionally, g_dbus_connection_export_action_group() will check if the
-// exported Group implements ActionGroup and use the `_full` variants of the
-// calls if available. This provides a mechanism by which to receive platform
-// data for action invocations that arrive by way of D-Bus.
+// exported Group implements ActionGroup and use the _full variants of the calls
+// if available. This provides a mechanism by which to receive platform data for
+// action invocations that arrive by way of D-Bus.
 type RemoteActionGroup struct {
 	ActionGroup
 }
@@ -114,7 +114,7 @@ func marshalRemoteActionGrouper(p uintptr) (interface{}, error) {
 // request. This typically contains details such as the user interaction
 // timestamp or startup notification information.
 //
-// @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
+// platform_data must be non-NULL and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
@@ -137,7 +137,7 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 // change request. This typically contains details such as the user interaction
 // timestamp or startup notification information.
 //
-// @platform_data must be non-nil and must have the type G_VARIANT_TYPE_VARDICT.
+// platform_data must be non-NULL and must have the type G_VARIANT_TYPE_VARDICT.
 // If it is floating, it will be consumed.
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out

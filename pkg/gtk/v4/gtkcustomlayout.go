@@ -26,9 +26,9 @@ type CustomLayouter interface {
 	privateCustomLayout()
 }
 
-// CustomLayout: `GtkCustomLayout` uses closures for size negotiation.
+// CustomLayout: GtkCustomLayout uses closures for size negotiation.
 //
-// A `GtkCustomLayout `uses closures matching to the old `GtkWidget` virtual
+// A GtkCustomLayout uses closures matching to the old GtkWidget virtual
 // functions for size negotiation, as a convenience API to ease the porting
 // towards the corresponding `GtkLayoutManager virtual functions.
 type CustomLayout struct {

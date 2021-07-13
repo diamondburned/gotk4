@@ -78,12 +78,12 @@ type Paneder interface {
 // a Frame with the shadow type set to GTK_SHADOW_IN so that the gutter appears
 // as a ridge. No separator is drawn if one of the children is missing.
 //
-// Each child has two options that can be set, @resize and @shrink. If @resize
-// is true, then when the Paned is resized, that child will expand or shrink
-// along with the paned widget. If @shrink is true, then that child can be made
-// smaller than its requisition by the user. Setting @shrink to false allows the
-// application to set a minimum size. If @resize is false for both children,
-// then this is treated as if @resize is true for both children.
+// Each child has two options that can be set, resize and shrink. If resize is
+// true, then when the Paned is resized, that child will expand or shrink along
+// with the paned widget. If shrink is true, then that child can be made smaller
+// than its requisition by the user. Setting shrink to FALSE allows the
+// application to set a minimum size. If resize is false for both children, then
+// this is treated as if resize is true for both children.
 //
 // The application can set the position of the slider as if it were set by the
 // user, by calling gtk_paned_set_position().
@@ -164,7 +164,7 @@ func (v *Paned) Native() uintptr {
 }
 
 // Add1 adds a child to the top or left pane with default parameters. This is
-// equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
+// equivalent to gtk_paned_pack1 (paned, child, FALSE, TRUE).
 func (paned *Paned) Add1(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
@@ -176,7 +176,7 @@ func (paned *Paned) Add1(child Widgeter) {
 }
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
-// is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
+// is equivalent to gtk_paned_pack2 (paned, child, TRUE, TRUE).
 func (paned *Paned) Add2(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out

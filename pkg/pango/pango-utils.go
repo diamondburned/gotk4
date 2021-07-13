@@ -36,14 +36,14 @@ func IsZeroWidth(ch uint32) bool {
 	return _ok
 }
 
-// ParseEnum parses an enum type and stores the result in @value.
+// ParseEnum parses an enum type and stores the result in value.
 //
-// If @str does not match the nick name of any of the possible values for the
-// enum and is not an integer, false is returned, a warning is issued if @warn
-// is true, and a string representing the list of possible values is stored in
-// @possible_values. The list is slash-separated, eg. "none/start/middle/end".
-// If failed and @possible_values is not nil, returned string should be freed
-// using g_free().
+// If str does not match the nick name of any of the possible values for the
+// enum and is not an integer, FALSE is returned, a warning is issued if warn is
+// TRUE, and a string representing the list of possible values is stored in
+// possible_values. The list is slash-separated, eg. "none/start/middle/end". If
+// failed and possible_values is not NULL, returned string should be freed using
+// g_free().
 //
 // Deprecated: since version 1.38.
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
@@ -196,9 +196,8 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 // This is typically used for underline or strikethrough. The purpose of this
 // function is to avoid such lines looking blurry.
 //
-// Care is taken to make sure @thickness is at least one pixel when this
-// function returns, but returned @position may become zero as a result of
-// rounding.
+// Care is taken to make sure thickness is at least one pixel when this function
+// returns, but returned position may become zero as a result of rounding.
 func QuantizeLineGeometry(thickness *int, position *int) {
 	var _arg1 *C.int // out
 	var _arg2 *C.int // out
@@ -287,9 +286,9 @@ func Version() int {
 //
 // Compatibility is defined by two things: first the version of the running
 // library is newer than the version
-// @required_major.required_minor.@required_micro. Second the running library
-// must be binary compatible with the version
-// @required_major.required_minor.@required_micro (same major version.)
+// required_major.required_minor.required_micro. Second the running library must
+// be binary compatible with the version
+// required_major.required_minor.required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
 func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {

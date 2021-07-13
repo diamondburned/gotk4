@@ -82,13 +82,13 @@ func marshalFontChooserDialoger(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserDialog creates a new FontChooserDialog.
-func NewFontChooserDialog(title string, parent Windower) *FontChooserDialog {
+func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 

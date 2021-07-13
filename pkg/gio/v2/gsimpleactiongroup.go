@@ -39,7 +39,7 @@ type SimpleActionGrouper interface {
 	AddEntries(entries []ActionEntry, userData cgo.Handle)
 	// Insert adds an action to the action group.
 	Insert(action Actioner)
-	// Lookup looks up the action with the name @action_name in the group.
+	// Lookup looks up the action with the name action_name in the group.
 	Lookup(actionName string) *Action
 	// Remove removes the named action from the action group.
 	Remove(actionName string)
@@ -112,10 +112,10 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData cgo.
 
 // Insert adds an action to the action group.
 //
-// If the action group already contains an action with the same name as @action
+// If the action group already contains an action with the same name as action
 // then the old action is dropped from the group.
 //
-// The action group takes its own reference on @action.
+// The action group takes its own reference on action.
 //
 // Deprecated: Use g_action_map_add_action().
 func (simple *SimpleActionGroup) Insert(action Actioner) {
@@ -128,9 +128,9 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	C.g_simple_action_group_insert(_arg0, _arg1)
 }
 
-// Lookup looks up the action with the name @action_name in the group.
+// Lookup looks up the action with the name action_name in the group.
 //
-// If no such action exists, returns nil.
+// If no such action exists, returns NULL.
 //
 // Deprecated: Use g_action_map_lookup_action().
 func (simple *SimpleActionGroup) Lookup(actionName string) *Action {

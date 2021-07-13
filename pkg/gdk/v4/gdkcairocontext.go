@@ -26,16 +26,16 @@ func init() {
 // CairoContexter describes CairoContext's methods.
 type CairoContexter interface {
 	// CairoCreate retrieves a Cairo context to be used to draw on the
-	// `GdkSurface` of @context.
+	// GdkSurface of context.
 	CairoCreate() *cairo.Context
 }
 
-// CairoContext: `GdkCairoContext` is an object representing the
-// platform-specific draw context.
+// CairoContext: GdkCairoContext is an object representing the platform-specific
+// draw context.
 //
-// `GdkCairoContext`s are created for a surface using
-// [method@Gdk.Surface.create_cairo_context], and the context can then be used
-// to draw on that surface.
+// GdkCairoContexts are created for a surface using
+// gdk.Surface.CreateCairoContext(), and the context can then be used to draw on
+// that surface.
 type CairoContext struct {
 	DrawContext
 }
@@ -59,14 +59,14 @@ func marshalCairoContexter(p uintptr) (interface{}, error) {
 	return wrapCairoContext(obj), nil
 }
 
-// CairoCreate retrieves a Cairo context to be used to draw on the `GdkSurface`
-// of @context.
+// CairoCreate retrieves a Cairo context to be used to draw on the GdkSurface of
+// context.
 //
-// A call to [method@Gdk.DrawContext.begin_frame] with this @context must have
-// been done or this function will return nil.
+// A call to gdk.DrawContext.BeginFrame() with this context must have been done
+// or this function will return NULL.
 //
 // The returned context is guaranteed to be valid until
-// [method@Gdk.DrawContext.end_frame] is called.
+// gdk.DrawContext.EndFrame() is called.
 func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in

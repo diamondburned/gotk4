@@ -46,7 +46,7 @@ type ScaleButtoner interface {
 	Value() float64
 	// SetAdjustment sets the Adjustment to be used as a model for the
 	// ScaleButton’s scale.
-	SetAdjustment(adjustment Adjustmenter)
+	SetAdjustment(adjustment *Adjustment)
 	// SetIcons sets the icons to be used by the scale button.
 	SetIcons(icons []string)
 	// SetValue sets the current value of the scale; if the value is outside the
@@ -123,8 +123,8 @@ func marshalScaleButtoner(p uintptr) (interface{}, error) {
 	return wrapScaleButton(obj), nil
 }
 
-// NewScaleButton creates a ScaleButton, with a range between @min and @max,
-// with a stepping of @step.
+// NewScaleButton creates a ScaleButton, with a range between min and max, with
+// a stepping of step.
 func NewScaleButton(size int, min float64, max float64, step float64, icons []string) *ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
@@ -137,11 +137,15 @@ func NewScaleButton(size int, min float64, max float64, step float64, icons []st
 	_arg2 = C.gdouble(min)
 	_arg3 = C.gdouble(max)
 	_arg4 = C.gdouble(step)
-	_arg5 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg5, len(icons))
-		for i := range icons {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+		_arg5 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg5, len(icons)+1)
+			var zero *C.gchar
+			out[len(icons)] = zero
+			for i := range icons {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+			}
 		}
 	}
 
@@ -243,12 +247,12 @@ func (button *ScaleButton) Value() float64 {
 
 // SetAdjustment sets the Adjustment to be used as a model for the ScaleButton’s
 // scale. See gtk_range_set_adjustment() for details.
-func (button *ScaleButton) SetAdjustment(adjustment Adjustmenter) {
+func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
 	var _arg1 *C.GtkAdjustment  // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scale_button_set_adjustment(_arg0, _arg1)
 }
@@ -260,11 +264,15 @@ func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg1 **C.gchar
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(icons))
-		for i := range icons {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(icons)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(icons)+1)
+			var zero *C.gchar
+			out[len(icons)] = zero
+			for i := range icons {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+			}
 		}
 	}
 

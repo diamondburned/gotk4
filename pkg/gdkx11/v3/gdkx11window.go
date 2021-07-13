@@ -23,11 +23,11 @@ func init() {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(window X11Windower) uint32 {
+func X11GetServerTime(window *X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
 
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -40,7 +40,7 @@ func X11GetServerTime(window X11Windower) uint32 {
 
 // X11Windower describes X11Window's methods.
 type X11Windower interface {
-	// Desktop gets the number of the workspace @window is on.
+	// Desktop gets the number of the workspace window is on.
 	Desktop() uint32
 	// MoveToCurrentDesktop moves the window to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
@@ -95,7 +95,7 @@ func marshalX11Windower(p uintptr) (interface{}, error) {
 	return wrapX11Window(obj), nil
 }
 
-// Desktop gets the number of the workspace @window is on.
+// Desktop gets the number of the workspace window is on.
 func (window *X11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
@@ -233,7 +233,7 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 }
 
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
-// property of type UTF8_STRING. If the given @window is not a toplevel window,
+// property of type UTF8_STRING. If the given window is not a toplevel window,
 // it is ignored.
 func (window *X11Window) SetUTF8Property(name string, value string) {
 	var _arg0 *C.GdkWindow // out

@@ -35,7 +35,7 @@ type CSSSectionType int
 
 const (
 	// Document: section describes a complete document. This section time is the
-	// only one where gtk_css_section_get_parent() might return nil.
+	// only one where gtk_css_section_get_parent() might return NULL.
 	CSSSectionTypeDocument CSSSectionType = iota
 	// Import: section defines an import rule.
 	CSSSectionTypeImport
@@ -81,8 +81,8 @@ func (c *CSSSection) Native() unsafe.Pointer {
 
 // EndLine returns the line in the CSS document where this section end. The line
 // number is 0-indexed, so the first line of the document will return 0. This
-// value may change in future invocations of this function if @section is not
-// yet parsed completely. This will for example happen in the
+// value may change in future invocations of this function if section is not yet
+// parsed completely. This will for example happen in the
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
@@ -103,7 +103,7 @@ func (section *CSSSection) EndLine() uint {
 
 // EndPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_end_line(). This value may change in future
-// invocations of this function if @section is not yet parsed completely. This
+// invocations of this function if section is not yet parsed completely. This
 // will for example happen in the GtkCssProvider::parsing-error signal. The end
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
@@ -122,9 +122,9 @@ func (section *CSSSection) EndPosition() uint {
 	return _guint
 }
 
-// File gets the file that @section was parsed from. If no such file exists, for
-// example because the CSS was loaded via @gtk_css_provider_load_from_data(),
-// then nil is returned.
+// File gets the file that section was parsed from. If no such file exists, for
+// example because the CSS was loaded via gtk_css_provider_load_from_data(),
+// then NULL is returned.
 func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
@@ -145,9 +145,9 @@ func (section *CSSSection) File() *gio.File {
 	return _file
 }
 
-// Parent gets the parent section for the given @section. The parent section is
-// the section that contains this @section. A special case are sections of type
-// K_CSS_SECTION_DOCUMENT. Their parent will either be nil if they are the
+// Parent gets the parent section for the given section. The parent section is
+// the section that contains this section. A special case are sections of type
+// K_CSS_SECTION_DOCUMENT. Their parent will either be NULL if they are the
 // original CSS document that was loaded by gtk_css_provider_load_from_file() or
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
@@ -170,7 +170,7 @@ func (section *CSSSection) Parent() *CSSSection {
 	return _cssSection
 }
 
-// SectionType gets the type of information that @section describes.
+// SectionType gets the type of information that section describes.
 func (section *CSSSection) SectionType() CSSSectionType {
 	var _arg0 *C.GtkCssSection    // out
 	var _cret C.GtkCssSectionType // in
@@ -220,7 +220,7 @@ func (section *CSSSection) StartPosition() uint {
 	return _guint
 }
 
-// Ref increments the reference count on @section.
+// Ref increments the reference count on section.
 func (section *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
@@ -240,8 +240,8 @@ func (section *CSSSection) ref() *CSSSection {
 	return _cssSection
 }
 
-// Unref decrements the reference count on @section, freeing the structure if
-// the reference count reaches 0.
+// Unref decrements the reference count on section, freeing the structure if the
+// reference count reaches 0.
 func (section *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 

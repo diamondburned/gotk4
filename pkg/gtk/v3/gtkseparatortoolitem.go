@@ -26,9 +26,9 @@ func init() {
 
 // SeparatorToolItemer describes SeparatorToolItem's methods.
 type SeparatorToolItemer interface {
-	// Draw returns whether @item is drawn as a line, or just blank.
+	// Draw returns whether item is drawn as a line, or just blank.
 	Draw() bool
-	// SetDraw: whether @item is drawn as a vertical line, or just blank.
+	// SetDraw: whether item is drawn as a vertical line, or just blank.
 	SetDraw(draw bool)
 }
 
@@ -36,8 +36,8 @@ type SeparatorToolItemer interface {
 // Depending on the theme, a SeparatorToolItem will often look like a vertical
 // line on horizontally docked toolbars.
 //
-// If the Toolbar child property “expand” is true and the property
-// SeparatorToolItem:draw is false, a SeparatorToolItem will act as a “spring”
+// If the Toolbar child property “expand” is TRUE and the property
+// SeparatorToolItem:draw is FALSE, a SeparatorToolItem will act as a “spring”
 // that forces other items to the ends of the toolbar.
 //
 // Use gtk_separator_tool_item_new() to create a new SeparatorToolItem.
@@ -99,7 +99,7 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 	return _separatorToolItem
 }
 
-// Draw returns whether @item is drawn as a line, or just blank. See
+// Draw returns whether item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
 func (item *SeparatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
@@ -118,8 +118,8 @@ func (item *SeparatorToolItem) Draw() bool {
 	return _ok
 }
 
-// SetDraw: whether @item is drawn as a vertical line, or just blank. Setting
-// this to false along with gtk_tool_item_set_expand() is useful to create an
+// SetDraw: whether item is drawn as a vertical line, or just blank. Setting
+// this to FALSE along with gtk_tool_item_set_expand() is useful to create an
 // item that forces following items to the end of the toolbar.
 func (item *SeparatorToolItem) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out

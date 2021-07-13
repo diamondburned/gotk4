@@ -66,12 +66,12 @@ func marshalTLSServerConnectioner(p uintptr) (interface{}, error) {
 
 func (*TLSServerConnection) privateTLSServerConnection() {}
 
-// NewTLSServerConnection creates a new ServerConnection wrapping
-// @base_io_stream (which must have pollable input and output streams).
+// NewTLSServerConnection creates a new ServerConnection wrapping base_io_stream
+// (which must have pollable input and output streams).
 //
 // See the documentation for Connection:base-io-stream for restrictions on when
-// application code can run operations on the @base_io_stream after this
-// function has returned.
+// application code can run operations on the base_io_stream after this function
+// has returned.
 func TlsServerConnectionNew(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
 	var _arg1 *C.GIOStream       // out
 	var _arg2 *C.GTlsCertificate // out

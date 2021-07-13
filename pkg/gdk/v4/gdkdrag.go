@@ -23,8 +23,7 @@ func init() {
 	})
 }
 
-// DragCancelReason: used in `GdkDrag` to the reason of a cancelled DND
-// operation.
+// DragCancelReason: used in GdkDrag to the reason of a cancelled DND operation.
 type DragCancelReason int
 
 const (
@@ -40,10 +39,10 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DragActionIsUnique checks if @action represents a single action or includes
+// DragActionIsUnique checks if action represents a single action or includes
 // multiple actions.
 //
-// When @action is 0 - ie no action was given, true is returned.
+// When action is 0 - ie no action was given, TRUE is returned.
 func DragActionIsUnique(action DragAction) bool {
 	var _arg1 C.GdkDragAction // out
 	var _cret C.gboolean      // in
@@ -68,33 +67,32 @@ type Drager interface {
 	// Actions determines the bitmask of possible actions proposed by the
 	// source.
 	Actions() DragAction
-	// Content returns the `GdkContentProvider` associated to the `GdkDrag`
-	// object.
+	// Content returns the GdkContentProvider associated to the GdkDrag object.
 	Content() *ContentProvider
-	// Device returns the `GdkDevice` associated to the `GdkDrag` object.
+	// Device returns the GdkDevice associated to the GdkDrag object.
 	Device() *Device
-	// Display gets the `GdkDisplay` that the drag object was created for.
+	// Display gets the GdkDisplay that the drag object was created for.
 	Display() *Display
 	// DragSurface returns the surface on which the drag icon should be rendered
 	// during the drag operation.
 	DragSurface() *Surface
-	// Formats retrieves the formats supported by this `GdkDrag` object.
+	// Formats retrieves the formats supported by this GdkDrag object.
 	Formats() *ContentFormats
 	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
-	// Surface returns the `GdkSurface` where the drag originates.
+	// Surface returns the GdkSurface where the drag originates.
 	Surface() *Surface
 	// SetHotspot sets the position of the drag surface that will be kept under
 	// the cursor hotspot.
 	SetHotspot(hotX int, hotY int)
 }
 
-// Drag: `GdkDrag` object represents the source of an ongoing DND operation.
+// Drag: GdkDrag object represents the source of an ongoing DND operation.
 //
-// A `GdkDrag` is created when a drag is started, and stays alive for duration
-// of the DND operation. After a drag has been started with
-// [func@Gdk.Drag.begin], the caller gets informed about the status of the
-// ongoing drag operation with signals on the `GdkDrag` object.
+// A GdkDrag is created when a drag is started, and stays alive for duration of
+// the DND operation. After a drag has been started with gdk.Drag().Begin, the
+// caller gets informed about the status of the ongoing drag operation with
+// signals on the GdkDrag object.
 //
 // GTK provides a higher level abstraction based on top of these functions, and
 // so they are not normally needed in GTK applications. See the "Drag and Drop"
@@ -122,14 +120,14 @@ func marshalDrager(p uintptr) (interface{}, error) {
 
 // DropDone informs GDK that the drop ended.
 //
-// Passing false for @success may trigger a drag cancellation animation.
+// Passing FALSE for success may trigger a drag cancellation animation.
 //
 // This function is called by the drag source, and should be the last call
-// before dropping the reference to the @drag.
+// before dropping the reference to the drag.
 //
-// The `GdkDrag` will only take the first [method@Gdk.Drag.drop_done] call as
-// effective, if this function is called multiple times, all subsequent calls
-// will be ignored.
+// The GdkDrag will only take the first gdk.Drag.DropDone() call as effective,
+// if this function is called multiple times, all subsequent calls will be
+// ignored.
 func (drag *Drag) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.gboolean // out
@@ -158,7 +156,7 @@ func (drag *Drag) Actions() DragAction {
 	return _dragAction
 }
 
-// Content returns the `GdkContentProvider` associated to the `GdkDrag` object.
+// Content returns the GdkContentProvider associated to the GdkDrag object.
 func (drag *Drag) Content() *ContentProvider {
 	var _arg0 *C.GdkDrag            // out
 	var _cret *C.GdkContentProvider // in
@@ -174,7 +172,7 @@ func (drag *Drag) Content() *ContentProvider {
 	return _contentProvider
 }
 
-// Device returns the `GdkDevice` associated to the `GdkDrag` object.
+// Device returns the GdkDevice associated to the GdkDrag object.
 func (drag *Drag) Device() *Device {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
@@ -190,7 +188,7 @@ func (drag *Drag) Device() *Device {
 	return _device
 }
 
-// Display gets the `GdkDisplay` that the drag object was created for.
+// Display gets the GdkDisplay that the drag object was created for.
 func (drag *Drag) Display() *Display {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkDisplay // in
@@ -211,7 +209,7 @@ func (drag *Drag) Display() *Display {
 //
 // Note that the surface may not be available until the drag operation has
 // begun. GDK will move the surface in accordance with the ongoing drag
-// operation. The surface is owned by @drag and will be destroyed when the drag
+// operation. The surface is owned by drag and will be destroyed when the drag
 // operation is over.
 func (drag *Drag) DragSurface() *Surface {
 	var _arg0 *C.GdkDrag    // out
@@ -228,7 +226,7 @@ func (drag *Drag) DragSurface() *Surface {
 	return _surface
 }
 
-// Formats retrieves the formats supported by this `GdkDrag` object.
+// Formats retrieves the formats supported by this GdkDrag object.
 func (drag *Drag) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
 	var _cret *C.GdkContentFormats // in
@@ -264,7 +262,7 @@ func (drag *Drag) SelectedAction() DragAction {
 	return _dragAction
 }
 
-// Surface returns the `GdkSurface` where the drag originates.
+// Surface returns the GdkSurface where the drag originates.
 func (drag *Drag) Surface() *Surface {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
@@ -300,15 +298,15 @@ func (drag *Drag) SetHotspot(hotX int, hotY int) {
 //
 // This function is called by the drag source. After this call, you probably
 // want to set up the drag icon using the surface returned by
-// [method@Gdk.Drag.get_drag_surface].
+// gdk.Drag.GetDragSurface().
 //
-// This function returns a reference to the [class@Gdk.Drag] object, but GTK
-// keeps its own reference as well, as long as the DND operation is going on.
+// This function returns a reference to the gdk.Drag object, but GTK keeps its
+// own reference as well, as long as the DND operation is going on.
 //
-// Note: if @actions include GDK_ACTION_MOVE, you need to listen for the
-// [signal@Gdk.Drag::dnd-finished] signal and delete the data at the source if
-// [method@Gdk.Drag.get_selected_action] returns GDK_ACTION_MOVE.
-func DragBegin(surface Surfacer, device Devicer, content ContentProviderer, actions DragAction, dx float64, dy float64) *Drag {
+// Note: if actions include GDK_ACTION_MOVE, you need to listen for the
+// gdk.Drag::dnd-finished signal and delete the data at the source if
+// gdk.Drag.GetSelectedAction() returns GDK_ACTION_MOVE.
+func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx float64, dy float64) *Drag {
 	var _arg1 *C.GdkSurface         // out
 	var _arg2 *C.GdkDevice          // out
 	var _arg3 *C.GdkContentProvider // out
@@ -319,7 +317,7 @@ func DragBegin(surface Surfacer, device Devicer, content ContentProviderer, acti
 
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer((device).(gextras.Nativer).Native()))
-	_arg3 = (*C.GdkContentProvider)(unsafe.Pointer((content).(gextras.Nativer).Native()))
+	_arg3 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
 	_arg4 = C.GdkDragAction(actions)
 	_arg5 = C.double(dx)
 	_arg6 = C.double(dy)

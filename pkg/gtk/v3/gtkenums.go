@@ -78,12 +78,12 @@ func init() {
 // inside a 32x32 space, the icon could be scaled and stretched, it could be
 // centered, or it could be positioned to one side of the space.
 //
-// Note that in horizontal context @GTK_ALIGN_START and @GTK_ALIGN_END are
+// Note that in horizontal context GTK_ALIGN_START and GTK_ALIGN_END are
 // interpreted relative to text direction.
 //
 // GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and
 // it is only supported for vertical alignment. When its not supported by a
-// child or a container it is treated as @GTK_ALIGN_FILL.
+// child or a container it is treated as GTK_ALIGN_FILL.
 type Align int
 
 const (
@@ -156,7 +156,7 @@ const (
 	BorderStyleInset
 	// Outset looks as if the content is coming out of the canvas
 	BorderStyleOutset
-	// Hidden: same as @GTK_BORDER_STYLE_NONE
+	// Hidden: same as GTK_BORDER_STYLE_NONE
 	BorderStyleHidden
 	// Dotted series of round dots
 	BorderStyleDotted
@@ -339,10 +339,9 @@ func marshalIconSize(p uintptr) (interface{}, error) {
 // that is expressed by the purpose. The application is expected to validate the
 // entry contents, even if it specified a purpose.
 //
-// The difference between @GTK_INPUT_PURPOSE_DIGITS and
-// @GTK_INPUT_PURPOSE_NUMBER is that the former accepts only digits while the
-// latter also some punctuation (like commas or points, plus, minus) and “e” or
-// “E” as in 3.14E+000.
+// The difference between GTK_INPUT_PURPOSE_DIGITS and GTK_INPUT_PURPOSE_NUMBER
+// is that the former accepts only digits while the latter also some punctuation
+// (like commas or points, plus, minus) and “e” or “E” as in 3.14E+000.
 //
 // This enumeration may be extended in the future; input methods should
 // interpret unknown values as “free form”.
@@ -365,9 +364,9 @@ const (
 	InputPurposeEmail
 	// Name: edited field expects the name of a person
 	InputPurposeName
-	// Password: like @GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
+	// Password: like GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
 	InputPurposePassword
-	// Pin: like @GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// Pin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
 	InputPurposePin
 	// Terminal: allow any character, in addition to control codes
 	InputPurposeTerminal
@@ -703,7 +702,7 @@ type ReliefStyle int
 const (
 	// Normal: draw a normal relief.
 	ReliefStyleNormal ReliefStyle = iota
-	// Half relief. Deprecated in 3.14, does the same as @GTK_RELIEF_NORMAL
+	// Half relief. Deprecated in 3.14, does the same as GTK_RELIEF_NORMAL
 	ReliefStyleHalf
 	// None: no relief.
 	ReliefStyleNone
@@ -816,7 +815,7 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 // a Frame.
 //
 // Note that many themes do not differentiate the appearance of the various
-// shadow types: Either their is no visible shadow (@GTK_SHADOW_NONE), or there
+// shadow types: Either their is no visible shadow (GTK_SHADOW_NONE), or there
 // is (any other value).
 type ShadowType int
 
@@ -910,7 +909,7 @@ const (
 	// actions.
 	StateTypeInsensitive
 	// Inconsistent: widget is inconsistent, such as checkbuttons or
-	// radiobuttons that aren’t either set to true nor false, or buttons
+	// radiobuttons that aren’t either set to TRUE nor FALSE, or buttons
 	// requiring the user attention.
 	StateTypeInconsistent
 	// Focused: widget has the keyboard focus.
@@ -1021,7 +1020,7 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 // according to the InputPurpose of the entry.
 //
 // Some common sense is expected when using these flags - mixing
-// @GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.
+// GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.
 //
 // This enumeration may be extended in the future; input methods should ignore
 // unknown values.

@@ -37,8 +37,8 @@ type ImageOverrider interface {
 	// set to -1.
 	ImagePosition(coordType CoordType) (x int, y int)
 	// ImageSize: get the width and height in pixels for the specified image.
-	// The values of @width and @height are returned as -1 if the values cannot
-	// be obtained (for instance, if the object is not onscreen).
+	// The values of width and height are returned as -1 if the values cannot be
+	// obtained (for instance, if the object is not onscreen).
 	//
 	// If the size can not be obtained (e.g. missing support), x and y are set
 	// to -1.
@@ -152,7 +152,7 @@ func (image *Image) ImagePosition(coordType CoordType) (x int, y int) {
 }
 
 // ImageSize: get the width and height in pixels for the specified image. The
-// values of @width and @height are returned as -1 if the values cannot be
+// values of width and height are returned as -1 if the values cannot be
 // obtained (for instance, if the object is not onscreen).
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to

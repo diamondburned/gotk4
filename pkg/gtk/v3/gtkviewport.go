@@ -29,20 +29,20 @@ func init() {
 type Viewporter interface {
 	// BinWindow gets the bin window of the Viewport.
 	BinWindow() *gdk.Window
-	// HAdjustment returns the horizontal adjustment of the viewport.
-	HAdjustment() *Adjustment
+	// Hadjustment returns the horizontal adjustment of the viewport.
+	Hadjustment() *Adjustment
 	// ShadowType gets the shadow type of the Viewport.
 	ShadowType() ShadowType
-	// VAdjustment returns the vertical adjustment of the viewport.
-	VAdjustment() *Adjustment
+	// Vadjustment returns the vertical adjustment of the viewport.
+	Vadjustment() *Adjustment
 	// ViewWindow gets the view window of the Viewport.
 	ViewWindow() *gdk.Window
-	// SetHAdjustment sets the horizontal adjustment of the viewport.
-	SetHAdjustment(adjustment Adjustmenter)
+	// SetHadjustment sets the horizontal adjustment of the viewport.
+	SetHadjustment(adjustment *Adjustment)
 	// SetShadowType sets the shadow type of the viewport.
 	SetShadowType(typ ShadowType)
-	// SetVAdjustment sets the vertical adjustment of the viewport.
-	SetVAdjustment(adjustment Adjustmenter)
+	// SetVadjustment sets the vertical adjustment of the viewport.
+	SetVadjustment(adjustment *Adjustment)
 }
 
 // Viewport widget acts as an adaptor class, implementing scrollability for
@@ -105,13 +105,13 @@ func marshalViewporter(p uintptr) (interface{}, error) {
 
 // NewViewport creates a new Viewport with the given adjustments, or with
 // default adjustments if none are given.
-func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
+func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -149,10 +149,10 @@ func (viewport *Viewport) BinWindow() *gdk.Window {
 	return _window
 }
 
-// HAdjustment returns the horizontal adjustment of the viewport.
+// Hadjustment returns the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (viewport *Viewport) HAdjustment() *Adjustment {
+func (viewport *Viewport) Hadjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -184,10 +184,10 @@ func (viewport *Viewport) ShadowType() ShadowType {
 	return _shadowType
 }
 
-// VAdjustment returns the vertical adjustment of the viewport.
+// Vadjustment returns the vertical adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (viewport *Viewport) VAdjustment() *Adjustment {
+func (viewport *Viewport) Vadjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -223,15 +223,15 @@ func (viewport *Viewport) ViewWindow() *gdk.Window {
 	return _window
 }
 
-// SetHAdjustment sets the horizontal adjustment of the viewport.
+// SetHadjustment sets the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
-func (viewport *Viewport) SetHAdjustment(adjustment Adjustmenter) {
+func (viewport *Viewport) SetHadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_viewport_set_hadjustment(_arg0, _arg1)
 }
@@ -247,15 +247,15 @@ func (viewport *Viewport) SetShadowType(typ ShadowType) {
 	C.gtk_viewport_set_shadow_type(_arg0, _arg1)
 }
 
-// SetVAdjustment sets the vertical adjustment of the viewport.
+// SetVadjustment sets the vertical adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
-func (viewport *Viewport) SetVAdjustment(adjustment Adjustmenter) {
+func (viewport *Viewport) SetVadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(viewport.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
 }

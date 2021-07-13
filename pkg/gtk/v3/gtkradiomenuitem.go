@@ -36,7 +36,7 @@ type RadioMenuItemOverrider interface {
 type RadioMenuItemer interface {
 	// JoinGroup joins a RadioMenuItem object to the group of another
 	// RadioMenuItem object.
-	JoinGroup(groupSource RadioMenuItemer)
+	JoinGroup(groupSource *RadioMenuItem)
 }
 
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
@@ -112,12 +112,12 @@ func marshalRadioMenuItemer(p uintptr) (interface{}, error) {
 }
 
 // NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
-// group as @group.
-func NewRadioMenuItemFromWidget(group RadioMenuItemer) *RadioMenuItem {
+// group as group.
+func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
@@ -130,13 +130,13 @@ func NewRadioMenuItemFromWidget(group RadioMenuItemer) *RadioMenuItem {
 
 // NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
 // child is a simple GtkLabel. The new RadioMenuItem is added to the same group
-// as @group.
-func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemer, label string) *RadioMenuItem {
+// as group.
+func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 
 	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
@@ -153,13 +153,13 @@ func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItemer, label string) *R
 // gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
 // for the menu item.
 //
-// The new RadioMenuItem is added to the same group as @group.
-func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemer, label string) *RadioMenuItem {
+// The new RadioMenuItem is added to the same group as group.
+func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 
 	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
@@ -191,12 +191,12 @@ func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItemer, label string)
 //          gtk_radio_menu_item_join_group (radio_item, last_item);
 //          last_item = radio_item;
 //        }
-func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource RadioMenuItemer) {
+func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
 	var _arg1 *C.GtkRadioMenuItem // out
 
 	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(radioMenuItem.Native()))
-	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }

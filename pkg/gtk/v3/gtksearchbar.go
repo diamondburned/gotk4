@@ -28,7 +28,7 @@ func init() {
 type SearchBarer interface {
 	// ConnectEntry connects the Entry widget passed as the one to be used in
 	// this search bar.
-	ConnectEntry(entry Entrier)
+	ConnectEntry(entry *Entry)
 	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
 	// ShowCloseButton returns whether the close button is shown.
@@ -116,12 +116,12 @@ func NewSearchBar() *SearchBar {
 // search bar. The entry should be a descendant of the search bar. This is only
 // required if the entry isn’t the direct child of the search bar (as in our
 // main example).
-func (bar *SearchBar) ConnectEntry(entry Entrier) {
+func (bar *SearchBar) ConnectEntry(entry *Entry) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEntry     // out
 
 	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(bar.Native()))
-	_arg1 = (*C.GtkEntry)(unsafe.Pointer((entry).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }

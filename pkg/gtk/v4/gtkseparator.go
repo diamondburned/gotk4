@@ -26,23 +26,23 @@ type Separatorer interface {
 	privateSeparator()
 }
 
-// Separator: `GtkSeparator` is a horizontal or vertical separator widget.
+// Separator: GtkSeparator is a horizontal or vertical separator widget.
 //
 // !An example GtkSeparator (separators.png)
 //
-// A `GtkSeparator` can be used to group the widgets within a window. It
-// displays a line with a shadow to make it appear sunken into the interface.
+// A GtkSeparator can be used to group the widgets within a window. It displays
+// a line with a shadow to make it appear sunken into the interface.
 //
 //
 // CSS nodes
 //
-// `GtkSeparator` has a single CSS node with name separator. The node gets one
-// of the .horizontal or .vertical style classes.
+// GtkSeparator has a single CSS node with name separator. The node gets one of
+// the .horizontal or .vertical style classes.
 //
 //
 // Accessibility
 //
-// `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
+// GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator struct {
 	Widget
 
@@ -82,7 +82,7 @@ func marshalSeparatorer(p uintptr) (interface{}, error) {
 	return wrapSeparator(obj), nil
 }
 
-// NewSeparator creates a new `GtkSeparator` with the given orientation.
+// NewSeparator creates a new GtkSeparator with the given orientation.
 func NewSeparator(orientation Orientation) *Separator {
 	var _arg1 C.GtkOrientation // out
 	var _cret *C.GtkWidget     // in

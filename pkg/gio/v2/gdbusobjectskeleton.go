@@ -36,22 +36,22 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectSkeletonOverrider interface {
-	AuthorizeMethod(interface_ DBusInterfaceSkeletoner, invocation DBusMethodInvocationer) bool
+	AuthorizeMethod(interface_ DBusInterfaceSkeletoner, invocation *DBusMethodInvocation) bool
 }
 
 // DBusObjectSkeletoner describes DBusObjectSkeleton's methods.
 type DBusObjectSkeletoner interface {
-	// AddInterface adds @interface_ to @object.
+	// AddInterface adds interface_ to object.
 	AddInterface(interface_ DBusInterfaceSkeletoner)
 	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
-	// interfaces belonging to @object.
+	// interfaces belonging to object.
 	Flush()
-	// RemoveInterface removes @interface_ from @object.
+	// RemoveInterface removes interface_ from object.
 	RemoveInterface(interface_ DBusInterfaceSkeletoner)
-	// RemoveInterfaceByName removes the BusInterface with @interface_name from
-	// @object.
+	// RemoveInterfaceByName removes the BusInterface with interface_name from
+	// object.
 	RemoveInterfaceByName(interfaceName string)
-	// SetObjectPath sets the object path for @object.
+	// SetObjectPath sets the object path for object.
 	SetObjectPath(objectPath string)
 }
 
@@ -102,12 +102,12 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	return _dBusObjectSkeleton
 }
 
-// AddInterface adds @interface_ to @object.
+// AddInterface adds interface_ to object.
 //
-// If @object already contains a BusInterfaceSkeleton with the same interface
-// name, it is removed before @interface_ is added.
+// If object already contains a BusInterfaceSkeleton with the same interface
+// name, it is removed before interface_ is added.
 //
-// Note that @object takes its own reference on @interface_ and holds it until
+// Note that object takes its own reference on interface_ and holds it until
 // removed.
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletoner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
@@ -120,7 +120,7 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletone
 }
 
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
-// interfaces belonging to @object. See that method for when flushing is useful.
+// interfaces belonging to object. See that method for when flushing is useful.
 func (object *DBusObjectSkeleton) Flush() {
 	var _arg0 *C.GDBusObjectSkeleton // out
 
@@ -129,7 +129,7 @@ func (object *DBusObjectSkeleton) Flush() {
 	C.g_dbus_object_skeleton_flush(_arg0)
 }
 
-// RemoveInterface removes @interface_ from @object.
+// RemoveInterface removes interface_ from object.
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletoner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -140,8 +140,8 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
 
-// RemoveInterfaceByName removes the BusInterface with @interface_name from
-// @object.
+// RemoveInterfaceByName removes the BusInterface with interface_name from
+// object.
 //
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
@@ -155,7 +155,7 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
 }
 
-// SetObjectPath sets the object path for @object.
+// SetObjectPath sets the object path for object.
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out

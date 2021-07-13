@@ -23,11 +23,11 @@ func init() {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface X11Surfacer) uint32 {
+func X11GetServerTime(surface *X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
 	var _cret C.guint32     // in
 
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer((surface).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
@@ -40,7 +40,7 @@ func X11GetServerTime(surface X11Surfacer) uint32 {
 
 // X11Surfacer describes X11Surface's methods.
 type X11Surfacer interface {
-	// Desktop gets the number of the workspace @surface is on.
+	// Desktop gets the number of the workspace surface is on.
 	Desktop() uint32
 	// Group returns the group this surface belongs to.
 	Group() *gdk.Surface
@@ -57,17 +57,17 @@ type X11Surfacer interface {
 	// SetFrameSyncEnabled: this function can be used to disable frame
 	// synchronization for a surface.
 	SetFrameSyncEnabled(frameSyncEnabled bool)
-	// SetGroup sets the group leader of @surface to be @leader.
+	// SetGroup sets the group leader of surface to be leader.
 	SetGroup(leader gdk.Surfacer)
-	// SetSkipPagerHint sets a hint on @surface that pagers should not display
+	// SetSkipPagerHint sets a hint on surface that pagers should not display
 	// it.
 	SetSkipPagerHint(skipsPager bool)
-	// SetSkipTaskbarHint sets a hint on @surface that taskbars should not
+	// SetSkipTaskbarHint sets a hint on surface that taskbars should not
 	// display it.
 	SetSkipTaskbarHint(skipsTaskbar bool)
 	// SetThemeVariant: GTK applications can request a dark theme variant.
 	SetThemeVariant(variant string)
-	// SetUrgencyHint sets a hint on @surface that it needs user attention.
+	// SetUrgencyHint sets a hint on surface that it needs user attention.
 	SetUrgencyHint(urgent bool)
 	// SetUserTime: application can use this call to update the
 	// _NET_WM_USER_TIME property on a toplevel surface.
@@ -100,7 +100,7 @@ func marshalX11Surfacer(p uintptr) (interface{}, error) {
 	return wrapX11Surface(obj), nil
 }
 
-// Desktop gets the number of the workspace @surface is on.
+// Desktop gets the number of the workspace surface is on.
 func (surface *X11Surface) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.guint32     // in
@@ -182,7 +182,7 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	C.gdk_x11_surface_set_frame_sync_enabled(_arg0, _arg1)
 }
 
-// SetGroup sets the group leader of @surface to be @leader. See the ICCCM for
+// SetGroup sets the group leader of surface to be leader. See the ICCCM for
 // details.
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg0 *C.GdkSurface // out
@@ -194,7 +194,7 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	C.gdk_x11_surface_set_group(_arg0, _arg1)
 }
 
-// SetSkipPagerHint sets a hint on @surface that pagers should not display it.
+// SetSkipPagerHint sets a hint on surface that pagers should not display it.
 // See the EWMH for details.
 func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
@@ -208,7 +208,7 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	C.gdk_x11_surface_set_skip_pager_hint(_arg0, _arg1)
 }
 
-// SetSkipTaskbarHint sets a hint on @surface that taskbars should not display
+// SetSkipTaskbarHint sets a hint on surface that taskbars should not display
 // it. See the EWMH for details.
 func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
@@ -240,7 +240,7 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
 }
 
-// SetUrgencyHint sets a hint on @surface that it needs user attention. See the
+// SetUrgencyHint sets a hint on surface that it needs user attention. See the
 // ICCCM for details.
 func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
@@ -275,8 +275,8 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 }
 
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
-// property of type UTF8_STRING. If the given @surface is not a toplevel
-// surface, it is ignored.
+// property of type UTF8_STRING. If the given surface is not a toplevel surface,
+// it is ignored.
 func (surface *X11Surface) SetUTF8Property(name string, value string) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.char       // out

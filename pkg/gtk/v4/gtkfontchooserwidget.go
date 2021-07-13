@@ -26,24 +26,24 @@ type FontChooserWidgeter interface {
 	privateFontChooserWidget()
 }
 
-// FontChooserWidget: `GtkFontChooserWidget` widget lets the user select a font.
+// FontChooserWidget: GtkFontChooserWidget widget lets the user select a font.
 //
-// It is used in the `GtkFontChooserDialog` widget to provide a dialog for
+// It is used in the GtkFontChooserDialog widget to provide a dialog for
 // selecting fonts.
 //
-// To set the font which is initially selected, use
-// [method@Gtk.FontChooser.set_font] or [method@Gtk.FontChooser.set_font_desc].
+// To set the font which is initially selected, use gtk.FontChooser.SetFont() or
+// gtk.FontChooser.SetFontDesc().
 //
-// To get the selected font use [method@Gtk.FontChooser.get_font] or
-// [method@Gtk.FontChooser.get_font_desc].
+// To get the selected font use gtk.FontChooser.GetFont() or
+// gtk.FontChooser.GetFontDesc().
 //
 // To change the text which is shown in the preview area, use
-// [method@Gtk.FontChooser.set_preview_text].
+// gtk.FontChooser.SetPreviewText().
 //
 //
 // CSS nodes
 //
-// `GtkFontChooserWidget` has a single CSS node with name fontchooser.
+// GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
 	Widget
 
@@ -83,7 +83,7 @@ func marshalFontChooserWidgeter(p uintptr) (interface{}, error) {
 	return wrapFontChooserWidget(obj), nil
 }
 
-// NewFontChooserWidget creates a new `GtkFontChooserWidget`.
+// NewFontChooserWidget creates a new GtkFontChooserWidget.
 func NewFontChooserWidget() *FontChooserWidget {
 	var _cret *C.GtkWidget // in
 

@@ -57,11 +57,11 @@ type DeviceTooler interface {
 	HardwareID() uint64
 	// Serial gets the serial number of this tool.
 	Serial() uint64
-	// ToolType gets the `GdkDeviceToolType` of the tool.
+	// ToolType gets the GdkDeviceToolType of the tool.
 	ToolType() DeviceToolType
 }
 
-// DeviceTool: physical tool associated to a `GdkDevice`.
+// DeviceTool: physical tool associated to a GdkDevice.
 type DeviceTool struct {
 	*externglib.Object
 }
@@ -102,13 +102,13 @@ func (tool *DeviceTool) Axes() AxisFlags {
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 //
 // When non-zero, the identificator is unique for the given tool model, meaning
-// that two identical tools will share the same @hardware_id, but will have
-// different serial numbers (see [method@Gdk.DeviceTool.get_serial]).
+// that two identical tools will share the same hardware_id, but will have
+// different serial numbers (see gdk.DeviceTool.GetSerial()).
 //
 // This is a more concrete (and device specific) method to identify a
-// `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type], as a tablet may
-// support multiple devices with the same `GdkDeviceToolType`, but different
-// hardware identificators.
+// GdkDeviceTool than gdk.DeviceTool.GetToolType(), as a tablet may support
+// multiple devices with the same GdkDeviceToolType, but different hardware
+// identificators.
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
@@ -143,7 +143,7 @@ func (tool *DeviceTool) Serial() uint64 {
 	return _guint64
 }
 
-// ToolType gets the `GdkDeviceToolType` of the tool.
+// ToolType gets the GdkDeviceToolType of the tool.
 func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
 	var _cret C.GdkDeviceToolType // in

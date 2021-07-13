@@ -26,13 +26,12 @@ type GestureClicker interface {
 	privateGestureClick()
 }
 
-// GestureClick: `GtkGestureClick` is a `GtkGesture` implementation for clicks.
+// GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.
 //
 // It is able to recognize multiple clicks on a nearby zone, which can be
-// listened for through the [signal@Gtk.GestureClick::pressed] signal. Whenever
-// time or distance between clicks exceed the GTK defaults,
-// [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
-// reset.
+// listened for through the gtk.GestureClick::pressed signal. Whenever time or
+// distance between clicks exceed the GTK defaults, gtk.GestureClick::stopped is
+// emitted, and the click counter is reset.
 type GestureClick struct {
 	GestureSingle
 }
@@ -60,8 +59,8 @@ func marshalGestureClicker(p uintptr) (interface{}, error) {
 	return wrapGestureClick(obj), nil
 }
 
-// NewGestureClick returns a newly created `GtkGesture` that recognizes single
-// and multiple presses.
+// NewGestureClick returns a newly created GtkGesture that recognizes single and
+// multiple presses.
 func NewGestureClick() *GestureClick {
 	var _cret *C.GtkGesture // in
 

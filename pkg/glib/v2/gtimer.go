@@ -25,14 +25,14 @@ func Usleep(microseconds uint32) {
 }
 
 // TimeValFromISO8601 converts a string containing an ISO 8601 encoded date and
-// time to a Val and puts it into @time_.
+// time to a Val and puts it into time_.
 //
-// @iso_date must include year, month, day, hours, minutes, and seconds. It can
+// iso_date must include year, month, day, hours, minutes, and seconds. It can
 // optionally include fractions of a second and a time zone indicator. (In the
 // absence of any time zone indication, the timestamp is assumed to be in local
 // time.)
 //
-// Any leading or trailing space in @iso_date is ignored.
+// Any leading or trailing space in iso_date is ignored.
 //
 // This function was deprecated, along with Val itself, in GLib 2.62. Equivalent
 // functionality is available using code like:

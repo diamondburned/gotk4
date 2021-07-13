@@ -35,10 +35,9 @@ type NumericSorterer interface {
 	SetSortOrder(sortOrder SortType)
 }
 
-// NumericSorter: `GtkNumericSorter` is a `GtkSorter` that compares numbers.
+// NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.
 //
-// To obtain the numbers to compare, this sorter evaluates a
-// [class@Gtk.Expression].
+// To obtain the numbers to compare, this sorter evaluates a gtk.Expression.
 type NumericSorter struct {
 	Sorter
 }
@@ -62,10 +61,10 @@ func marshalNumericSorterer(p uintptr) (interface{}, error) {
 	return wrapNumericSorter(obj), nil
 }
 
-// NewNumericSorter creates a new numeric sorter using the given @expression.
+// NewNumericSorter creates a new numeric sorter using the given expression.
 //
 // Smaller numbers will be sorted first. You can call
-// [method@Gtk.NumericSorter.set_sort_order] to change this.
+// gtk.NumericSorter.SetSortOrder() to change this.
 func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
 	var _cret *C.GtkNumericSorter // in
@@ -117,7 +116,7 @@ func (self *NumericSorter) SortOrder() SortType {
 // SetExpression sets the expression that is evaluated to obtain numbers from
 // items.
 //
-// Unless an expression is set on @self, the sorter will always compare items as
+// Unless an expression is set on self, the sorter will always compare items as
 // invalid.
 //
 // The expression must have a return type that can be compared numerically, such

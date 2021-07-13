@@ -28,9 +28,9 @@ type DrawingContexter interface {
 	// CairoContext retrieves a Cairo context to be used to draw on the Window
 	// that created the DrawingContext.
 	CairoContext() *cairo.Context
-	// Clip retrieves a copy of the clip region used when creating the @context.
+	// Clip retrieves a copy of the clip region used when creating the context.
 	Clip() *cairo.Region
-	// Window retrieves the window that created the drawing @context.
+	// Window retrieves the window that created the drawing context.
 	Window() *Window
 	// IsValid checks whether the given DrawingContext is valid.
 	IsValid() bool
@@ -88,7 +88,7 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 	return _ret
 }
 
-// Clip retrieves a copy of the clip region used when creating the @context.
+// Clip retrieves a copy of the clip region used when creating the context.
 func (context *DrawingContext) Clip() *cairo.Region {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.cairo_region_t    // in
@@ -107,7 +107,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 	return _region
 }
 
-// Window retrieves the window that created the drawing @context.
+// Window retrieves the window that created the drawing context.
 func (context *DrawingContext) Window() *Window {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in

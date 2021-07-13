@@ -33,11 +33,11 @@ func init() {
 
 // EmblemedIconer describes EmblemedIcon's methods.
 type EmblemedIconer interface {
-	// AddEmblem adds @emblem to the #GList of #GEmblems.
-	AddEmblem(emblem Emblemer)
-	// ClearEmblems removes all the emblems from @icon.
+	// AddEmblem adds emblem to the #GList of #GEmblems.
+	AddEmblem(emblem *Emblem)
+	// ClearEmblems removes all the emblems from icon.
 	ClearEmblems()
-	// GetIcon gets the main icon for @emblemed.
+	// GetIcon gets the main icon for emblemed.
 	GetIcon() *Icon
 }
 
@@ -73,15 +73,14 @@ func marshalEmblemedIconer(p uintptr) (interface{}, error) {
 	return wrapEmblemedIcon(obj), nil
 }
 
-// NewEmblemedIcon creates a new emblemed icon for @icon with the emblem
-// @emblem.
-func NewEmblemedIcon(icon Iconer, emblem Emblemer) *EmblemedIcon {
+// NewEmblemedIcon creates a new emblemed icon for icon with the emblem emblem.
+func NewEmblemedIcon(icon Iconer, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
 
 	_arg1 = (*C.GIcon)(unsafe.Pointer((icon).(gextras.Nativer).Native()))
-	_arg2 = (*C.GEmblem)(unsafe.Pointer((emblem).(gextras.Nativer).Native()))
+	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
@@ -92,18 +91,18 @@ func NewEmblemedIcon(icon Iconer, emblem Emblemer) *EmblemedIcon {
 	return _emblemedIcon
 }
 
-// AddEmblem adds @emblem to the #GList of #GEmblems.
-func (emblemed *EmblemedIcon) AddEmblem(emblem Emblemer) {
+// AddEmblem adds emblem to the #GList of #GEmblems.
+func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
-	_arg1 = (*C.GEmblem)(unsafe.Pointer((emblem).(gextras.Nativer).Native()))
+	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
 	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
-// ClearEmblems removes all the emblems from @icon.
+// ClearEmblems removes all the emblems from icon.
 func (emblemed *EmblemedIcon) ClearEmblems() {
 	var _arg0 *C.GEmblemedIcon // out
 
@@ -112,7 +111,7 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
-// GetIcon gets the main icon for @emblemed.
+// GetIcon gets the main icon for emblemed.
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in

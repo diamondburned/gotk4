@@ -26,8 +26,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ShortcutManagerOverrider interface {
-	AddController(controller ShortcutControllerer)
-	RemoveController(controller ShortcutControllerer)
+	AddController(controller *ShortcutController)
+	RemoveController(controller *ShortcutController)
 }
 
 // ShortcutManagerer describes ShortcutManager's methods.
@@ -35,17 +35,17 @@ type ShortcutManagerer interface {
 	privateShortcutManager()
 }
 
-// ShortcutManager: `GtkShortcutManager` interface is used to implement shortcut
+// ShortcutManager: GtkShortcutManager interface is used to implement shortcut
 // scopes.
 //
-// This is important for [iface@Gtk.Native] widgets that have their own surface,
-// since the event controllers that are used to implement managed and global
-// scopes are limited to the same native.
+// This is important for gtk.Native widgets that have their own surface, since
+// the event controllers that are used to implement managed and global scopes
+// are limited to the same native.
 //
-// Examples for widgets implementing `GtkShortcutManager` are [class@Gtk.Window]
-// and [class@Gtk.Popover].
+// Examples for widgets implementing GtkShortcutManager are gtk.Window and
+// gtk.Popover.
 //
-// Every widget that implements `GtkShortcutManager` will be used as a
+// Every widget that implements GtkShortcutManager will be used as a
 // GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager struct {
 	*externglib.Object

@@ -29,9 +29,9 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ColorChooserOverrider interface {
-	// AddPalette adds a palette to the color chooser. If @orientation is
-	// horizontal, the colors are grouped in rows, with @colors_per_line colors
-	// in each row. If @horizontal is false, the colors are grouped in columns
+	// AddPalette adds a palette to the color chooser. If orientation is
+	// horizontal, the colors are grouped in rows, with colors_per_line colors
+	// in each row. If horizontal is FALSE, the colors are grouped in columns
 	// instead.
 	//
 	// The default color palette of ColorChooserWidget has 27 colors, organized
@@ -44,7 +44,7 @@ type ColorChooserOverrider interface {
 	// Calling this function for the first time has the side effect of removing
 	// the default color and gray palettes from the color chooser.
 	//
-	// If @colors is nil, removes all previously added palettes.
+	// If colors is NULL, removes all previously added palettes.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
@@ -95,9 +95,9 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 	return wrapColorChooser(obj), nil
 }
 
-// AddPalette adds a palette to the color chooser. If @orientation is
-// horizontal, the colors are grouped in rows, with @colors_per_line colors in
-// each row. If @horizontal is false, the colors are grouped in columns instead.
+// AddPalette adds a palette to the color chooser. If orientation is horizontal,
+// the colors are grouped in rows, with colors_per_line colors in each row. If
+// horizontal is FALSE, the colors are grouped in columns instead.
 //
 // The default color palette of ColorChooserWidget has 27 colors, organized in
 // columns of 3 colors. The default gray palette has 9 grays in a single row.
@@ -108,7 +108,7 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // Calling this function for the first time has the side effect of removing the
 // default color and gray palettes from the color chooser.
 //
-// If @colors is nil, removes all previously added palettes.
+// If colors is NULL, removes all previously added palettes.
 func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GtkOrientation   // out

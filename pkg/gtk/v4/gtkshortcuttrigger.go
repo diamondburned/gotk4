@@ -29,16 +29,16 @@ func init() {
 // AlternativeTriggerer describes AlternativeTrigger's methods.
 type AlternativeTriggerer interface {
 	// First gets the first of the two alternative triggers that may trigger
-	// @self.
+	// self.
 	First() *ShortcutTrigger
 	// Second gets the second of the two alternative triggers that may trigger
-	// @self.
+	// self.
 	Second() *ShortcutTrigger
 }
 
-// AlternativeTrigger: `GtkShortcutTrigger` that combines two triggers.
+// AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
 //
-// The `GtkAlternativeTrigger` triggers when either of two trigger.
+// The GtkAlternativeTrigger triggers when either of two trigger.
 //
 // This can be cascaded to combine more than two triggers.
 type AlternativeTrigger struct {
@@ -64,8 +64,8 @@ func marshalAlternativeTriggerer(p uintptr) (interface{}, error) {
 	return wrapAlternativeTrigger(obj), nil
 }
 
-// NewAlternativeTrigger creates a `GtkShortcutTrigger` that will trigger
-// whenever either of the two given triggers gets triggered.
+// NewAlternativeTrigger creates a GtkShortcutTrigger that will trigger whenever
+// either of the two given triggers gets triggered.
 //
 // Note that nesting is allowed, so if you want more than two alternative,
 // create a new alternative trigger for each option.
@@ -86,9 +86,9 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 	return _alternativeTrigger
 }
 
-// First gets the first of the two alternative triggers that may trigger @self.
+// First gets the first of the two alternative triggers that may trigger self.
 //
-// [method@Gtk.AlternativeTrigger.get_second] will return the other one.
+// gtk.AlternativeTrigger.GetSecond() will return the other one.
 func (self *AlternativeTrigger) First() *ShortcutTrigger {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
@@ -104,10 +104,9 @@ func (self *AlternativeTrigger) First() *ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// Second gets the second of the two alternative triggers that may trigger
-// @self.
+// Second gets the second of the two alternative triggers that may trigger self.
 //
-// [method@Gtk.AlternativeTrigger.get_first] will return the other one.
+// gtk.AlternativeTrigger.GetFirst() will return the other one.
 func (self *AlternativeTrigger) Second() *ShortcutTrigger {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
@@ -125,14 +124,14 @@ func (self *AlternativeTrigger) Second() *ShortcutTrigger {
 
 // KeyvalTriggerer describes KeyvalTrigger's methods.
 type KeyvalTriggerer interface {
-	// Keyval gets the keyval that must be pressed to succeed triggering @self.
+	// Keyval gets the keyval that must be pressed to succeed triggering self.
 	Keyval() uint
 	// Modifiers gets the modifiers that must be present to succeed triggering
-	// @self.
+	// self.
 	Modifiers() gdk.ModifierType
 }
 
-// KeyvalTrigger: `GtkShortcutTrigger` that triggers when a specific keyval and
+// KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
 	ShortcutTrigger
@@ -157,8 +156,8 @@ func marshalKeyvalTriggerer(p uintptr) (interface{}, error) {
 	return wrapKeyvalTrigger(obj), nil
 }
 
-// NewKeyvalTrigger creates a `GtkShortcutTrigger` that will trigger whenever
-// the key with the given @keyval and @modifiers is pressed.
+// NewKeyvalTrigger creates a GtkShortcutTrigger that will trigger whenever the
+// key with the given keyval and modifiers is pressed.
 func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
@@ -176,7 +175,7 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 	return _keyvalTrigger
 }
 
-// Keyval gets the keyval that must be pressed to succeed triggering @self.
+// Keyval gets the keyval that must be pressed to succeed triggering self.
 func (self *KeyvalTrigger) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
@@ -192,8 +191,7 @@ func (self *KeyvalTrigger) Keyval() uint {
 	return _guint
 }
 
-// Modifiers gets the modifiers that must be present to succeed triggering
-// @self.
+// Modifiers gets the modifiers that must be present to succeed triggering self.
 func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.GdkModifierType   // in
@@ -211,12 +209,12 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 
 // MnemonicTriggerer describes MnemonicTrigger's methods.
 type MnemonicTriggerer interface {
-	// Keyval gets the keyval that must be pressed to succeed triggering @self.
+	// Keyval gets the keyval that must be pressed to succeed triggering self.
 	Keyval() uint
 }
 
-// MnemonicTrigger: `GtkShortcutTrigger` that triggers when a specific mnemonic
-// is pressed.
+// MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
+// pressed.
 //
 // Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
 // pressed together with the mnemonic key.
@@ -243,8 +241,8 @@ func marshalMnemonicTriggerer(p uintptr) (interface{}, error) {
 	return wrapMnemonicTrigger(obj), nil
 }
 
-// NewMnemonicTrigger creates a `GtkShortcutTrigger` that will trigger whenever
-// the key with the given @keyval is pressed and mnemonics have been activated.
+// NewMnemonicTrigger creates a GtkShortcutTrigger that will trigger whenever
+// the key with the given keyval is pressed and mnemonics have been activated.
 //
 // Mnemonics are activated by calling code when a key event with the right
 // modifiers is detected.
@@ -263,7 +261,7 @@ func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 	return _mnemonicTrigger
 }
 
-// Keyval gets the keyval that must be pressed to succeed triggering @self.
+// Keyval gets the keyval that must be pressed to succeed triggering self.
 func (self *MnemonicTrigger) Keyval() uint {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
@@ -284,7 +282,7 @@ type NeverTriggerer interface {
 	privateNeverTrigger()
 }
 
-// NeverTrigger: `GtkShortcutTrigger` that never triggers.
+// NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	ShortcutTrigger
 }
@@ -313,7 +311,7 @@ func (*NeverTrigger) privateNeverTrigger() {}
 // NeverTriggerGet gets the never trigger.
 //
 // This is a singleton for a trigger that never triggers. Use this trigger
-// instead of nil because it implements all virtual functions.
+// instead of NULL because it implements all virtual functions.
 func NeverTriggerGet() *NeverTrigger {
 	var _cret *C.GtkShortcutTrigger // in
 
@@ -328,34 +326,33 @@ func NeverTriggerGet() *NeverTrigger {
 
 // ShortcutTriggerer describes ShortcutTrigger's methods.
 type ShortcutTriggerer interface {
-	// Compare types of @trigger1 and @trigger2 are #gconstpointer only to allow
+	// Compare types of trigger1 and trigger2 are #gconstpointer only to allow
 	// use of this function as a Func.
 	Compare(trigger2 ShortcutTriggerer) int
-	// Equal checks if @trigger1 and @trigger2 trigger under the same
-	// conditions.
+	// Equal checks if trigger1 and trigger2 trigger under the same conditions.
 	Equal(trigger2 ShortcutTriggerer) bool
-	// Hash generates a hash value for a `GtkShortcutTrigger`.
+	// Hash generates a hash value for a GtkShortcutTrigger.
 	Hash() uint
 	// ToLabel gets textual representation for the given trigger.
-	ToLabel(display gdk.Displayer) string
+	ToLabel(display *gdk.Display) string
 	// String prints the given trigger into a human-readable string.
 	String() string
-	// Trigger checks if the given @event triggers @self.
+	// Trigger checks if the given event triggers self.
 	Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch
 }
 
-// ShortcutTrigger: `GtkShortcutTrigger` tracks how a `GtkShortcut` should be
+// ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be
 // activated.
 //
-// To find out if a `GtkShortcutTrigger` triggers, you can call
-// [method@Gtk.ShortcutTrigger.trigger] on a `GdkEvent`.
+// To find out if a GtkShortcutTrigger triggers, you can call
+// gtk.ShortcutTrigger.Trigger() on a GdkEvent.
 //
-// `GtkShortcutTriggers` contain functions that allow easy presentation to end
+// GtkShortcutTriggers contain functions that allow easy presentation to end
 // users as well as being printed for debugging.
 //
-// All `GtkShortcutTriggers` are immutable, you can only specify their
-// properties during construction. If you want to change a trigger, you have to
-// replace it with a new one.
+// All GtkShortcutTriggers are immutable, you can only specify their properties
+// during construction. If you want to change a trigger, you have to replace it
+// with a new one.
 type ShortcutTrigger struct {
 	*externglib.Object
 }
@@ -379,20 +376,20 @@ func marshalShortcutTriggerer(p uintptr) (interface{}, error) {
 
 // NewShortcutTriggerParseString tries to parse the given string into a trigger.
 //
-// On success, the parsed trigger is returned. When parsing failed, nil is
+// On success, the parsed trigger is returned. When parsing failed, NULL is
 // returned.
 //
 // The accepted strings are:
 //
-//    - `never`, for `GtkNeverTrigger`
-//    - a string parsed by gtk_accelerator_parse(), for a `GtkKeyvalTrigger`, e.g. `<Control>C`
-//    - underscore, followed by a single character, for `GtkMnemonicTrigger`, e.g. `_l`
-//    - two valid trigger strings, separated by a `|` character, for a
-//      `GtkAlternativeTrigger`: `<Control>q|<Control>w`
+//    - never, for GtkNeverTrigger
+//    - a string parsed by gtk_accelerator_parse(), for a GtkKeyvalTrigger, e.g. <Control>C
+//    - underscore, followed by a single character, for GtkMnemonicTrigger, e.g. _l
+//    - two valid trigger strings, separated by a | character, for a
+//      GtkAlternativeTrigger: <Control>q|<Control>w
 //
-// Note that you will have to escape the `<` and `>` characters when specifying
-// triggers in XML files, such as GtkBuilder ui files. Use `&lt;` instead of `<`
-// and `&gt;` instead of `>`.
+// Note that you will have to escape the < and > characters when specifying
+// triggers in XML files, such as GtkBuilder ui files. Use &lt; instead of < and
+// &gt; instead of >.
 func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	var _arg1 *C.char               // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -408,10 +405,10 @@ func NewShortcutTriggerParseString(_string string) *ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// Compare types of @trigger1 and @trigger2 are #gconstpointer only to allow use
+// Compare types of trigger1 and trigger2 are #gconstpointer only to allow use
 // of this function as a Func.
 //
-// They must each be a `GtkShortcutTrigger`.
+// They must each be a GtkShortcutTrigger.
 func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -429,10 +426,10 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	return _gint
 }
 
-// Equal checks if @trigger1 and @trigger2 trigger under the same conditions.
+// Equal checks if trigger1 and trigger2 trigger under the same conditions.
 //
-// The types of @one and @two are #gconstpointer only to allow use of this
-// function with Table. They must each be a `GtkShortcutTrigger`.
+// The types of one and two are #gconstpointer only to allow use of this
+// function with Table. They must each be a GtkShortcutTrigger.
 func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -452,15 +449,15 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	return _ok
 }
 
-// Hash generates a hash value for a `GtkShortcutTrigger`.
+// Hash generates a hash value for a GtkShortcutTrigger.
 //
 // The output of this function is guaranteed to be the same for a given value
 // only per-process. It may change between different processor architectures or
 // even different versions of GTK. Do not use this function as a basis for
 // building protocols or file formats.
 //
-// The types of @trigger is #gconstpointer only to allow use of this function
-// with Table. They must each be a `GtkShortcutTrigger`.
+// The types of trigger is #gconstpointer only to allow use of this function
+// with Table. They must each be a GtkShortcutTrigger.
 func (trigger *ShortcutTrigger) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -481,18 +478,18 @@ func (trigger *ShortcutTrigger) Hash() uint {
 // This function is returning a translated string for presentation to end users
 // for example in menu items or in help texts.
 //
-// The @display in use may influence the resulting string in various forms, such
+// The display in use may influence the resulting string in various forms, such
 // as resolving hardware keycodes or by causing display-specific modifier names.
 //
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
-func (self *ShortcutTrigger) ToLabel(display gdk.Displayer) string {
+func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkDisplay         // out
 	var _cret *C.char               // in
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 
@@ -506,8 +503,8 @@ func (self *ShortcutTrigger) ToLabel(display gdk.Displayer) string {
 
 // String prints the given trigger into a human-readable string.
 //
-// This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
-// when debugging.
+// This is a small wrapper around gtk.ShortcutTrigger.Print() to help when
+// debugging.
 func (self *ShortcutTrigger) String() string {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _cret *C.char               // in
@@ -524,7 +521,7 @@ func (self *ShortcutTrigger) String() string {
 	return _utf8
 }
 
-// Trigger checks if the given @event triggers @self.
+// Trigger checks if the given event triggers self.
 func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch {
 	var _arg0 *C.GtkShortcutTrigger // out
 	var _arg1 *C.GdkEvent           // out

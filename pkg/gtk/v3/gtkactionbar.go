@@ -28,11 +28,11 @@ func init() {
 type ActionBarer interface {
 	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() *Widget
-	// PackEnd adds @child to @action_bar, packed with reference to the end of
-	// the @action_bar.
+	// PackEnd adds child to action_bar, packed with reference to the end of the
+	// action_bar.
 	PackEnd(child Widgeter)
-	// PackStart adds @child to @action_bar, packed with reference to the start
-	// of the @action_bar.
+	// PackStart adds child to action_bar, packed with reference to the start of
+	// the action_bar.
 	PackStart(child Widgeter)
 	// SetCenterWidget sets the center widget for the ActionBar.
 	SetCenterWidget(centerWidget Widgeter)
@@ -114,8 +114,8 @@ func (actionBar *ActionBar) CenterWidget() *Widget {
 	return _widget
 }
 
-// PackEnd adds @child to @action_bar, packed with reference to the end of the
-// @action_bar.
+// PackEnd adds child to action_bar, packed with reference to the end of the
+// action_bar.
 func (actionBar *ActionBar) PackEnd(child Widgeter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
@@ -126,8 +126,8 @@ func (actionBar *ActionBar) PackEnd(child Widgeter) {
 	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
 
-// PackStart adds @child to @action_bar, packed with reference to the start of
-// the @action_bar.
+// PackStart adds child to action_bar, packed with reference to the start of the
+// action_bar.
 func (actionBar *ActionBar) PackStart(child Widgeter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out

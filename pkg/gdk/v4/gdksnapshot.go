@@ -28,7 +28,7 @@ type Snapshoter interface {
 
 // Snapshot: base type for snapshot operations.
 //
-// The subclass of `GdkSnapshot` used by GTK is [class@Gtk.Snapshot].
+// The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
 type Snapshot struct {
 	*externglib.Object
 }

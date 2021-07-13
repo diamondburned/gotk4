@@ -48,7 +48,7 @@ type Statusbarer interface {
 	// Remove forces the removal of a message from a statusbar’s stack.
 	Remove(contextId uint, messageId uint)
 	// RemoveAll forces the removal of all messages from a statusbar's stack
-	// with the exact @context_id.
+	// with the exact context_id.
 	RemoveAll(contextId uint)
 }
 
@@ -206,7 +206,7 @@ func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The exact
-// @context_id and @message_id must be specified.
+// context_id and message_id must be specified.
 func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
@@ -220,7 +220,7 @@ func (statusbar *Statusbar) Remove(contextId uint, messageId uint) {
 }
 
 // RemoveAll forces the removal of all messages from a statusbar's stack with
-// the exact @context_id.
+// the exact context_id.
 func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out

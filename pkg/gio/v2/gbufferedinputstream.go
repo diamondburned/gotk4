@@ -39,62 +39,62 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type BufferedInputStreamOverrider interface {
-	// Fill tries to read @count bytes from the stream into the buffer. Will
+	// Fill tries to read count bytes from the stream into the buffer. Will
 	// block during this read.
 	//
-	// If @count is zero, returns zero and does nothing. A value of @count
-	// larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	// If count is zero, returns zero and does nothing. A value of count larger
+	// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
 	//
 	// On success, the number of bytes read into the buffer is returned. It is
 	// not an error if this is not the same as the requested size, as it can
 	// happen e.g. near the end of a file. Zero is returned on end of file (or
-	// if @count is zero), but never otherwise.
+	// if count is zero), but never otherwise.
 	//
-	// If @count is -1 then the attempted read size is equal to the number of
+	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
 	//
-	// If @cancellable is not nil, then the operation can be cancelled by
+	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
 	//
-	// On error -1 is returned and @error is set accordingly.
+	// On error -1 is returned and error is set accordingly.
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
-	Fill(count int, cancellable Cancellabler) (int, error)
-	// FillAsync reads data into @stream's buffer asynchronously, up to @count
-	// size. @io_priority can be used to prioritize reads. For the synchronous
+	Fill(count int, cancellable *Cancellable) (int, error)
+	// FillAsync reads data into stream's buffer asynchronously, up to count
+	// size. io_priority can be used to prioritize reads. For the synchronous
 	// version of this function, see g_buffered_input_stream_fill().
 	//
-	// If @count is -1 then the attempted read size is equal to the number of
+	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
-	FillAsync(count int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
 }
 
 // BufferedInputStreamer describes BufferedInputStream's methods.
 type BufferedInputStreamer interface {
-	// Fill tries to read @count bytes from the stream into the buffer.
-	Fill(count int, cancellable Cancellabler) (int, error)
-	// FillAsync reads data into @stream's buffer asynchronously, up to @count
+	// Fill tries to read count bytes from the stream into the buffer.
+	Fill(count int, cancellable *Cancellable) (int, error)
+	// FillAsync reads data into stream's buffer asynchronously, up to count
 	// size.
-	FillAsync(count int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
 	// Available gets the size of the available data within the stream.
 	Available() uint
 	// BufferSize gets the size of the input buffer.
 	BufferSize() uint
-	// Peek peeks in the buffer, copying data of size @count into @buffer,
-	// offset @offset bytes.
+	// Peek peeks in the buffer, copying data of size count into buffer, offset
+	// offset bytes.
 	Peek(buffer []byte, offset uint) uint
 	// ReadByte tries to read a single byte from the stream or the buffer.
-	ReadByte(cancellable Cancellabler) (int, error)
-	// SetBufferSize sets the size of the internal buffer of @stream to @size,
-	// or to the size of the contents of the buffer.
+	ReadByte(cancellable *Cancellable) (int, error)
+	// SetBufferSize sets the size of the internal buffer of stream to size, or
+	// to the size of the contents of the buffer.
 	SetBufferSize(size uint)
 }
 
@@ -142,7 +142,7 @@ func marshalBufferedInputStreamer(p uintptr) (interface{}, error) {
 	return wrapBufferedInputStream(obj), nil
 }
 
-// NewBufferedInputStream creates a new Stream from the given @base_stream, with
+// NewBufferedInputStream creates a new Stream from the given base_stream, with
 // a buffer set to the default size (4 kilobytes).
 func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
@@ -160,7 +160,7 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 }
 
 // NewBufferedInputStreamSized creates a new InputStream from the given
-// @base_stream, with a buffer set to @size.
+// base_stream, with a buffer set to size.
 func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gsize         // out
@@ -178,31 +178,31 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	return _bufferedInputStream
 }
 
-// Fill tries to read @count bytes from the stream into the buffer. Will block
+// Fill tries to read count bytes from the stream into the buffer. Will block
 // during this read.
 //
-// If @count is zero, returns zero and does nothing. A value of @count larger
-// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+// If count is zero, returns zero and does nothing. A value of count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
 //
 // On success, the number of bytes read into the buffer is returned. It is not
 // an error if this is not the same as the requested size, as it can happen e.g.
-// near the end of a file. Zero is returned on end of file (or if @count is
+// near the end of a file. Zero is returned on end of file (or if count is
 // zero), but never otherwise.
 //
-// If @count is -1 then the attempted read size is equal to the number of bytes
+// If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
 //
-// On error -1 is returned and @error is set accordingly.
+// On error -1 is returned and error is set accordingly.
 //
 // For the asynchronous, non-blocking, version of this function, see
 // g_buffered_input_stream_fill_async().
-func (stream *BufferedInputStream) Fill(count int, cancellable Cancellabler) (int, error) {
+func (stream *BufferedInputStream) Fill(count int, cancellable *Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gssize                // out
 	var _arg2 *C.GCancellable         // out
@@ -211,7 +211,7 @@ func (stream *BufferedInputStream) Fill(count int, cancellable Cancellabler) (in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gssize(count)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 
@@ -224,13 +224,13 @@ func (stream *BufferedInputStream) Fill(count int, cancellable Cancellabler) (in
 	return _gssize, _goerr
 }
 
-// FillAsync reads data into @stream's buffer asynchronously, up to @count size.
-// @io_priority can be used to prioritize reads. For the synchronous version of
+// FillAsync reads data into stream's buffer asynchronously, up to count size.
+// io_priority can be used to prioritize reads. For the synchronous version of
 // this function, see g_buffered_input_stream_fill().
 //
-// If @count is -1 then the attempted read size is equal to the number of bytes
+// If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
-func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gssize                // out
 	var _arg2 C.int                   // out
@@ -241,7 +241,7 @@ func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancella
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.gssize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -301,8 +301,8 @@ func (stream *BufferedInputStream) BufferSize() uint {
 	return _gsize
 }
 
-// Peek peeks in the buffer, copying data of size @count into @buffer, offset
-// @offset bytes.
+// Peek peeks in the buffer, copying data of size count into buffer, offset
+// offset bytes.
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.void
@@ -330,23 +330,23 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 // block during this read.
 //
 // On success, the byte read from the stream is returned. On end of stream -1 is
-// returned but it's not an exceptional error and @error is not set.
+// returned but it's not an exceptional error and error is not set.
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
 //
-// On error -1 is returned and @error is set accordingly.
-func (stream *BufferedInputStream) ReadByte(cancellable Cancellabler) (int, error) {
+// On error -1 is returned and error is set accordingly.
+func (stream *BufferedInputStream) ReadByte(cancellable *Cancellable) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 
@@ -359,7 +359,7 @@ func (stream *BufferedInputStream) ReadByte(cancellable Cancellabler) (int, erro
 	return _gint, _goerr
 }
 
-// SetBufferSize sets the size of the internal buffer of @stream to @size, or to
+// SetBufferSize sets the size of the internal buffer of stream to size, or to
 // the size of the contents of the buffer. The buffer can never be resized
 // smaller than its current contents.
 func (stream *BufferedInputStream) SetBufferSize(size uint) {

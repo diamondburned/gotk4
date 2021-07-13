@@ -12,7 +12,7 @@ import (
 import "C"
 
 // Dcgettext: this is a variant of g_dgettext() that allows specifying a locale
-// category instead of always using `LC_MESSAGES`. See g_dgettext() for more
+// category instead of always using LC_MESSAGES. See g_dgettext() for more
 // information about how this functions differs from calling dcgettext()
 // directly.
 func Dcgettext(domain string, msgid string, category int) string {
@@ -49,7 +49,7 @@ func Dcgettext(domain string, msgid string, category int) string {
 // This function disables translations if and only if upon its first call all
 // the following conditions hold:
 //
-// - @domain is not nil
+// - domain is not NULL
 //
 // - textdomain() has been called to set a default text domain
 //
@@ -110,8 +110,8 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 
 // Dpgettext: this function is a variant of g_dgettext() which supports a
 // disambiguating message context. GNU gettext uses the '\004' character to
-// separate the message context and message id in @msgctxtid. If 0 is passed as
-// @msgidoffset, this function will fall back to trying to use the deprecated
+// separate the message context and message id in msgctxtid. If 0 is passed as
+// msgidoffset, this function will fall back to trying to use the deprecated
 // convention of using "|" as a separation character.
 //
 // This uses g_dgettext() internally. See that functions for differences with
@@ -140,7 +140,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 
 // Dpgettext2: this function is a variant of g_dgettext() which supports a
 // disambiguating message context. GNU gettext uses the '\004' character to
-// separate the message context and message id in @msgctxtid.
+// separate the message context and message id in msgctxtid.
 //
 // This uses g_dgettext() internally. See that functions for differences with
 // dgettext() proper.

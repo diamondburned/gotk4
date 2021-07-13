@@ -26,48 +26,49 @@ type Scrollbarer interface {
 	// Adjustment returns the scrollbar's adjustment.
 	Adjustment() *Adjustment
 	// SetAdjustment makes the scrollbar use the given adjustment.
-	SetAdjustment(adjustment Adjustmenter)
+	SetAdjustment(adjustment *Adjustment)
 }
 
-// Scrollbar: `GtkScrollbar` widget is a horizontal or vertical scrollbar.
+// Scrollbar: GtkScrollbar widget is a horizontal or vertical scrollbar.
 //
 // !An example GtkScrollbar (scrollbar.png)
 //
 // Its position and movement are controlled by the adjustment that is passed to
-// or created by [ctor@Gtk.Scrollbar.new]. See [class.Gtk.Adjustment] for more
-// details. The [property@Gtk.Adjustment:value] field sets the position of the
-// thumb and must be between [property@Gtk.Adjustment:lower] and
-// [property@Gtk.Adjustment:upper] - [property@Gtk.Adjustment:page-size]. The
-// [property@Gtk.Adjustment:page-size] represents the size of the visible
-// scrollable area.
+// or created by gtk.Scrollbar.New. See [class.Gtk.Adjustment] for more details.
+// The gtk.Adjustment:value field sets the position of the thumb and must be
+// between gtk.Adjustment:lower and gtk.Adjustment:upper -
+// gtk.Adjustment:page-size. The gtk.Adjustment:page-size represents the size of
+// the visible scrollable area.
 //
-// The fields [property@Gtk.Adjustment:step-increment] and
-// [property@Gtk.Adjustment:page-increment] fields are added to or subtracted
-// from the [property@Gtk.Adjustment:value] when the user asks to move by a step
-// (using e.g. the cursor arrow keys) or by a page (using e.g. the Page Down/Up
-// keys).
-//
+// The fields gtk.Adjustment:step-increment and gtk.Adjustment:page-increment
+// fields are added to or subtracted from the gtk.Adjustment:value when the user
+// asks to move by a step (using e.g. the cursor arrow keys) or by a page (using
+// e.g. the Page Down/Up keys).
 //
 // CSS nodes
 //
-// “` scrollbar ╰── range[.fine-tune] ╰── trough ╰── slider “`
+//    scrollbar
+//    ╰── range[.fine-tune]
+//        ╰── trough
+//            ╰── slider
 //
-// `GtkScrollbar` has a main CSS node with name scrollbar and a subnode for its
+//
+// GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
 // contents. The main node gets the .horizontal or .vertical style classes
 // applied, depending on the scrollbar's orientation.
 //
 // The range node gets the style class .fine-tune added when the scrollbar is in
 // 'fine-tuning' mode.
 //
-// Other style classes that may be added to scrollbars inside
-// [class@Gtk.ScrolledWindow] include the positional classes (.left, .right,
-// .top, .bottom) and style classes related to overlay scrolling
-// (.overlay-indicator, .dragging, .hovering).
+// Other style classes that may be added to scrollbars inside gtk.ScrolledWindow
+// include the positional classes (.left, .right, .top, .bottom) and style
+// classes related to overlay scrolling (.overlay-indicator, .dragging,
+// .hovering).
 //
 //
 // Accessibility
 //
-// `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
+// GtkScrollbar uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar struct {
 	Widget
 
@@ -108,13 +109,13 @@ func marshalScrollbarer(p uintptr) (interface{}, error) {
 }
 
 // NewScrollbar creates a new scrollbar with the given orientation.
-func NewScrollbar(orientation Orientation, adjustment Adjustmenter) *Scrollbar {
+func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
 
@@ -148,12 +149,12 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
-func (self *Scrollbar) SetAdjustment(adjustment Adjustmenter) {
+func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 }

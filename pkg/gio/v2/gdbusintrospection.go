@@ -53,7 +53,7 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
 	var _arg0 *C.GDBusAnnotationInfo // out
@@ -74,9 +74,9 @@ func (info *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
 	return _dBusAnnotationInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusAnnotationInfo) unref() {
 	var _arg0 *C.GDBusAnnotationInfo // out
 
@@ -96,8 +96,8 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	{
 		var zero *DBusAnnotationInfo
 		annotations = append(annotations, zero)
+		_arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(&annotations[0]))
 	}
-	_arg1 = (**C.GDBusAnnotationInfo)(unsafe.Pointer(&annotations[0]))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
@@ -124,7 +124,7 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusArgInfo) ref() *DBusArgInfo {
 	var _arg0 *C.GDBusArgInfo // out
@@ -145,9 +145,9 @@ func (info *DBusArgInfo) ref() *DBusArgInfo {
 	return _dBusArgInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusArgInfo) unref() {
 	var _arg0 *C.GDBusArgInfo // out
 
@@ -175,11 +175,11 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 // g_dbus_interface_info_lookup_method(), g_dbus_interface_info_lookup_signal()
 // and g_dbus_interface_info_lookup_property().
 //
-// If this has already been called with @info, the existing cache is used and
-// its use count is increased.
+// If this has already been called with info, the existing cache is used and its
+// use count is increased.
 //
-// Note that @info cannot be modified until
-// g_dbus_interface_info_cache_release() is called.
+// Note that info cannot be modified until g_dbus_interface_info_cache_release()
+// is called.
 func (info *DBusInterfaceInfo) CacheBuild() {
 	var _arg0 *C.GDBusInterfaceInfo // out
 
@@ -188,7 +188,7 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 	C.g_dbus_interface_info_cache_build(_arg0)
 }
 
-// CacheRelease decrements the usage count for the cache for @info built by
+// CacheRelease decrements the usage count for the cache for info built by
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
 func (info *DBusInterfaceInfo) CacheRelease() {
@@ -202,7 +202,7 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 // LookupMethod looks up information about a method.
 //
 // The cost of this function is O(n) in number of methods unless
-// g_dbus_interface_info_cache_build() has been used on @info.
+// g_dbus_interface_info_cache_build() has been used on info.
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -227,7 +227,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 // LookupProperty looks up information about a property.
 //
 // The cost of this function is O(n) in number of properties unless
-// g_dbus_interface_info_cache_build() has been used on @info.
+// g_dbus_interface_info_cache_build() has been used on info.
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -252,7 +252,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 // LookupSignal looks up information about a signal.
 //
 // The cost of this function is O(n) in number of signals unless
-// g_dbus_interface_info_cache_build() has been used on @info.
+// g_dbus_interface_info_cache_build() has been used on info.
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -274,7 +274,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	return _dBusSignalInfo
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
@@ -295,9 +295,9 @@ func (info *DBusInterfaceInfo) ref() *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusInterfaceInfo) unref() {
 	var _arg0 *C.GDBusInterfaceInfo // out
 
@@ -321,7 +321,7 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusMethodInfo) ref() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInfo // out
@@ -342,9 +342,9 @@ func (info *DBusMethodInfo) ref() *DBusMethodInfo {
 	return _dBusMethodInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusMethodInfo) unref() {
 	var _arg0 *C.GDBusMethodInfo // out
 
@@ -415,7 +415,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	return _dBusInterfaceInfo
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusNodeInfo) ref() *DBusNodeInfo {
 	var _arg0 *C.GDBusNodeInfo // out
@@ -436,9 +436,9 @@ func (info *DBusNodeInfo) ref() *DBusNodeInfo {
 	return _dBusNodeInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusNodeInfo) unref() {
 	var _arg0 *C.GDBusNodeInfo // out
 
@@ -462,7 +462,7 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusPropertyInfo) ref() *DBusPropertyInfo {
 	var _arg0 *C.GDBusPropertyInfo // out
@@ -483,9 +483,9 @@ func (info *DBusPropertyInfo) ref() *DBusPropertyInfo {
 	return _dBusPropertyInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusPropertyInfo) unref() {
 	var _arg0 *C.GDBusPropertyInfo // out
 
@@ -509,7 +509,7 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
-// Ref: if @info is statically allocated does nothing. Otherwise increases the
+// Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusSignalInfo) ref() *DBusSignalInfo {
 	var _arg0 *C.GDBusSignalInfo // out
@@ -530,9 +530,9 @@ func (info *DBusSignalInfo) ref() *DBusSignalInfo {
 	return _dBusSignalInfo
 }
 
-// Unref: if @info is statically allocated, does nothing. Otherwise decreases
-// the reference count of @info. When its reference count drops to 0, the memory
-// used is freed.
+// Unref: if info is statically allocated, does nothing. Otherwise decreases the
+// reference count of info. When its reference count drops to 0, the memory used
+// is freed.
 func (info *DBusSignalInfo) unref() {
 	var _arg0 *C.GDBusSignalInfo // out
 

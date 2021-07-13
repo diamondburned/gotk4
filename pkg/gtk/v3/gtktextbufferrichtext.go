@@ -20,7 +20,7 @@ import "C"
 
 // TextBufferDeserializeFunc: function that is called to deserialize rich text
 // that has been serialized with gtk_text_buffer_serialize(), and insert it at
-// @iter.
+// iter.
 type TextBufferDeserializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool, userData cgo.Handle) (ok bool)
 
 //export gotk4_TextBufferDeserializeFunc

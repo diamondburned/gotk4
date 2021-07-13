@@ -218,16 +218,16 @@ func RCFindModuleInPath(moduleFile string) string {
 
 // RCFindPixmapInPath looks up a file in pixmap path for the specified Settings.
 // If the file is not found, it outputs a warning message using g_warning() and
-// returns nil.
+// returns NULL.
 //
 // Deprecated: Use CssProvider instead.
-func RCFindPixmapInPath(settings Settingser, scanner *glib.Scanner, pixmapFile string) string {
+func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.GScanner    // out
 	var _arg3 *C.gchar       // out
 	var _cret *C.gchar       // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(pixmapFile)))
 
@@ -271,7 +271,7 @@ func RCGetDefaultFiles() []string {
 }
 
 // RCGetImModuleFile obtains the path to the IM modules file. See the
-// documentation of the `GTK_IM_MODULE_FILE` environment variable for more
+// documentation of the GTK_IM_MODULE_FILE environment variable for more
 // details.
 //
 // Deprecated: Use CssProvider instead.
@@ -289,7 +289,7 @@ func RCGetImModuleFile() string {
 }
 
 // RCGetImModulePath obtains the path in which to look for IM modules. See the
-// documentation of the `GTK_PATH` environment variable for more details about
+// documentation of the GTK_PATH environment variable for more details about
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
 //
@@ -309,7 +309,7 @@ func RCGetImModulePath() string {
 
 // RCGetModuleDir returns a directory in which GTK+ looks for theme engines. For
 // full information about the search for theme engines, see the docs for
-// `GTK_PATH` in [Running GTK+ Applications][gtk-running].
+// GTK_PATH in [Running GTK+ Applications][gtk-running].
 //
 // Deprecated: Use CssProvider instead.
 func RCGetModuleDir() string {
@@ -361,14 +361,14 @@ func RCGetStyle(widget Widgeter) *Style {
 //                               G_OBJECT_TYPE (widget));
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyleByPaths(settings Settingser, widgetPath string, classPath string, typ externglib.Type) *Style {
+func RCGetStyleByPaths(settings *Settings, widgetPath string, classPath string, typ externglib.Type) *Style {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 *C.char        // out
 	var _arg3 *C.char        // out
 	var _arg4 C.GType        // out
 	var _cret *C.GtkStyle    // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(classPath)))
 	_arg4 = C.GType(typ)
@@ -432,19 +432,18 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	return _color, _guint
 }
 
-// RCParseColorFull parses a color in the format expected in a RC file. If
-// @style is not nil, it will be consulted to resolve references to symbolic
-// colors.
+// RCParseColorFull parses a color in the format expected in a RC file. If style
+// is not NULL, it will be consulted to resolve references to symbolic colors.
 //
 // Deprecated: Use CssProvider instead.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyler) (gdk.Color, uint) {
+func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
 	var _color gdk.Color
 	var _cret C.guint // in
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
-	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
@@ -512,12 +511,12 @@ func RCReparseAll() bool {
 // reread all previously read RC files.
 //
 // Deprecated: Use CssProvider instead.
-func RCReparseAllForSettings(settings Settingser, forceLoad bool) bool {
+func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.gboolean     // out
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	if forceLoad {
 		_arg2 = C.TRUE
 	}
@@ -543,10 +542,10 @@ func RCReparseAllForSettings(settings Settingser, forceLoad bool) bool {
 // widgets that have a style set explicitly on them with gtk_widget_set_style().
 //
 // Deprecated: Use CssProvider instead.
-func RCResetStyles(settings Settingser) {
+func RCResetStyles(settings *Settings) {
 	var _arg1 *C.GtkSettings // out
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 
 	C.gtk_rc_reset_styles(_arg1)
 }
@@ -558,11 +557,15 @@ func RCResetStyles(settings Settingser) {
 func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(filenames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(filenames))
-		for i := range filenames {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(filenames[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(filenames)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(filenames)+1)
+			var zero *C.gchar
+			out[len(filenames)] = zero
+			for i := range filenames {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(filenames[i])))
+			}
 		}
 	}
 
@@ -574,8 +577,8 @@ func RCSetDefaultFiles(filenames []string) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type RCStyleOverrider interface {
-	Merge(src RCStyler)
-	Parse(settings Settingser, scanner *glib.Scanner) uint
+	Merge(src *RCStyle)
+	Parse(settings *Settings, scanner *glib.Scanner) uint
 }
 
 // RCStyler describes RCStyle's methods.

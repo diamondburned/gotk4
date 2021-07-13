@@ -34,7 +34,7 @@ func init() {
 	})
 }
 
-// UnixIsMountPathSystemInternal determines if @mount_path is considered an
+// UnixIsMountPathSystemInternal determines if mount_path is considered an
 // implementation of the OS. This is primarily used for hiding mountable and
 // mounted volumes that only are used in the OS and has little to no relevance
 // to the casual user.
@@ -55,12 +55,11 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 	return _ok
 }
 
-// UnixIsSystemDevicePath determines if @device_path is considered a block
-// device path which is only used in implementation of the OS. This is primarily
-// used for hiding mounted volumes that are intended as APIs for programs to
-// read, and system administrators at a shell; rather than something that
-// should, for example, appear in a GUI. For example, the Linux `/proc`
-// filesystem.
+// UnixIsSystemDevicePath determines if device_path is considered a block device
+// path which is only used in implementation of the OS. This is primarily used
+// for hiding mounted volumes that are intended as APIs for programs to read,
+// and system administrators at a shell; rather than something that should, for
+// example, appear in a GUI. For example, the Linux /proc filesystem.
 //
 // The list of device paths considered ‘system’ ones may change over time.
 func UnixIsSystemDevicePath(devicePath string) bool {
@@ -80,11 +79,11 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 	return _ok
 }
 
-// UnixIsSystemFSType determines if @fs_type is considered a type of file system
+// UnixIsSystemFSType determines if fs_type is considered a type of file system
 // which is only used in implementation of the OS. This is primarily used for
 // hiding mounted volumes that are intended as APIs for programs to read, and
 // system administrators at a shell; rather than something that should, for
-// example, appear in a GUI. For example, the Linux `/proc` filesystem.
+// example, appear in a GUI. For example, the Linux /proc filesystem.
 //
 // The list of file system types considered ‘system’ ones may change over time.
 func UnixIsSystemFSType(fsType string) bool {
@@ -104,9 +103,9 @@ func UnixIsSystemFSType(fsType string) bool {
 	return _ok
 }
 
-// UnixMountAt gets a MountEntry for a given mount path. If @time_read is set,
-// it will be filled with a unix timestamp for checking if the mounts have
-// changed since with g_unix_mounts_changed_since().
+// UnixMountAt gets a MountEntry for a given mount path. If time_read is set, it
+// will be filled with a unix timestamp for checking if the mounts have changed
+// since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
@@ -148,7 +147,7 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 	return _gint
 }
 
-// UnixMountCopy makes a copy of @mount_entry.
+// UnixMountCopy makes a copy of mount_entry.
 func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GUnixMountEntry // in
@@ -167,9 +166,9 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	return _unixMountEntry
 }
 
-// UnixMountFor gets a MountEntry for a given file path. If @time_read is set,
-// it will be filled with a unix timestamp for checking if the mounts have
-// changed since with g_unix_mounts_changed_since().
+// UnixMountFor gets a MountEntry for a given file path. If time_read is set, it
+// will be filled with a unix timestamp for checking if the mounts have changed
+// since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
@@ -251,7 +250,7 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 }
 
 // UnixMountGetOptions gets a comma-separated list of mount options for the unix
-// mount. For example, `rw,relatime,seclabel,data=ordered`.
+// mount. For example, rw,relatime,seclabel,data=ordered.
 //
 // This is similar to g_unix_mount_point_get_options(), but it takes a
 // MountEntry as an argument.
@@ -397,7 +396,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 
 // UnixMountIsSystemInternal checks if a Unix mount is a system mount. This is
 // the Boolean OR of g_unix_is_system_fs_type(), g_unix_is_system_device_path()
-// and g_unix_is_mount_path_system_internal() on @mount_entry’s properties.
+// and g_unix_is_mount_path_system_internal() on mount_entry’s properties.
 //
 // The definition of what a ‘system’ mount entry is may change over time as new
 // file system types and device paths are ignored.
@@ -505,7 +504,7 @@ func NewUnixMountMonitor() *UnixMountMonitor {
 //
 // Before 2.44, this was a partially-effective way of controlling the rate at
 // which events would be reported under some uncommon circumstances. Since
-// @mount_monitor is a singleton, it also meant that calling this function would
+// mount_monitor is a singleton, it also meant that calling this function would
 // have side effects for other users of the monitor.
 //
 // Deprecated: This function does nothing. Don't call it.
@@ -589,7 +588,7 @@ func (mount1 *UnixMountPoint) Compare(mount2 *UnixMountPoint) int {
 	return _gint
 }
 
-// Copy makes a copy of @mount_point.
+// Copy makes a copy of mount_point.
 func (mountPoint *UnixMountPoint) Copy() *UnixMountPoint {
 	var _arg0 *C.GUnixMountPoint // out
 	var _cret *C.GUnixMountPoint // in
@@ -803,7 +802,7 @@ func (mountPoint *UnixMountPoint) IsUserMountable() bool {
 	return _ok
 }
 
-// UnixMountPointAt gets a MountPoint for a given mount path. If @time_read is
+// UnixMountPointAt gets a MountPoint for a given mount path. If time_read is
 // set, it will be filled with a unix timestamp for checking if the mount points
 // have changed since with g_unix_mount_points_changed_since().
 //

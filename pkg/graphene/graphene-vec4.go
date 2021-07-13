@@ -70,9 +70,9 @@ func (a *Vec4) Add(b *Vec4) Vec4 {
 	return _res
 }
 
-// Divide divides each component of the first operand @a by the corresponding
-// component of the second operand @b, and places the results into the vector
-// @res.
+// Divide divides each component of the first operand a by the corresponding
+// component of the second operand b, and places the results into the vector
+// res.
 func (a *Vec4) Divide(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -124,7 +124,7 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by @v
+// Free frees the resources allocated by v
 func (v *Vec4) free() {
 	var _arg0 *C.graphene_vec4_t // out
 
@@ -269,7 +269,7 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 }
 
 // InitFromVec2 initializes a #graphene_vec4_t using the components of a
-// #graphene_vec2_t and the values of @z and @w.
+// #graphene_vec2_t and the values of z and w.
 func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -292,7 +292,7 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 }
 
 // InitFromVec3 initializes a #graphene_vec4_t using the components of a
-// #graphene_vec3_t and the value of @w.
+// #graphene_vec3_t and the value of w.
 func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -331,7 +331,7 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 	return _vec4
 }
 
-// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+// Interpolate: linearly interpolates v1 and v2 using the given factor.
 func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -408,7 +408,7 @@ func (a *Vec4) Multiply(b *Vec4) Vec4 {
 }
 
 // Near compares the two given #graphene_vec4_t vectors and checks whether their
-// values are within the given @epsilon.
+// values are within the given epsilon.
 func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -455,7 +455,7 @@ func (v *Vec4) Normalize() Vec4 {
 }
 
 // Scale multiplies all components of the given vector with the given scalar
-// @factor.
+// factor.
 func (v *Vec4) Scale(factor float32) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.float            // out
@@ -469,9 +469,9 @@ func (v *Vec4) Scale(factor float32) Vec4 {
 	return _res
 }
 
-// Subtract subtracts from each component of the first operand @a the
-// corresponding component of the second operand @b and places each result into
-// the components of @res.
+// Subtract subtracts from each component of the first operand a the
+// corresponding component of the second operand b and places each result into
+// the components of res.
 func (a *Vec4) Subtract(b *Vec4) Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out

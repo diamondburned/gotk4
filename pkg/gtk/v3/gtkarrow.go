@@ -26,7 +26,7 @@ func init() {
 
 // Arrower describes Arrow's methods.
 type Arrower interface {
-	// Set sets the direction and style of the Arrow, @arrow.
+	// Set sets the direction and style of the Arrow, arrow.
 	Set(arrowType ArrowType, shadowType ShadowType)
 }
 
@@ -101,7 +101,7 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 	return _arrow
 }
 
-// Set sets the direction and style of the Arrow, @arrow.
+// Set sets the direction and style of the Arrow, arrow.
 //
 // Deprecated: Use a Image with a suitable icon.
 func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {

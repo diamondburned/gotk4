@@ -192,8 +192,8 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	return _point3D
 }
 
-// Interpolate: linearly interpolates each component of @a and @b using the
-// provided @factor, and places the result in @res.
+// Interpolate: linearly interpolates each component of a and b using the
+// provided factor, and places the result in res.
 func (a *Point3D) Interpolate(b *Point3D, factor float64) Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -226,7 +226,7 @@ func (p *Point3D) Length() float32 {
 	return _gfloat
 }
 
-// Near checks whether the two points are near each other, within an @epsilon
+// Near checks whether the two points are near each other, within an epsilon
 // factor.
 func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	var _arg0 *C.graphene_point3d_t // out
@@ -285,7 +285,7 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 }
 
 // Scale scales the coordinates of the given #graphene_point3d_t by the given
-// @factor.
+// factor.
 func (p *Point3D) Scale(factor float32) Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out

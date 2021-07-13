@@ -36,8 +36,13 @@ type AccelMaper interface {
 // “low-level”. You’ll want to use them if you’re manually creating menus that
 // should have user-configurable accelerators.
 //
-// An accelerator is uniquely defined by: - accelerator path - accelerator key -
-// accelerator modifiers
+// An accelerator is uniquely defined by:
+//
+// - accelerator path
+//
+// - accelerator key
+//
+// - accelerator modifiers
 //
 // The accelerator path must consist of
 // “<WINDOWTYPE>/Category1/Category2/.../Action”, where WINDOWTYPE should be a
@@ -104,13 +109,13 @@ func marshalAccelMaper(p uintptr) (interface{}, error) {
 func (*AccelMap) privateAccelMap() {}
 
 // AccelMapAddEntry registers a new accelerator with the global accelerator map.
-// This function should only be called once per @accel_path with the canonical
-// @accel_key and @accel_mods for this path. To change the accelerator during
+// This function should only be called once per accel_path with the canonical
+// accel_key and accel_mods for this path. To change the accelerator during
 // runtime programatically, use gtk_accel_map_change_entry().
 //
-// Set @accel_key and @accel_mods to 0 to request a removal of the accelerator.
+// Set accel_key and accel_mods to 0 to request a removal of the accelerator.
 //
-// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
 func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType) {
@@ -140,15 +145,14 @@ func AccelMapAddFilter(filterPattern string) {
 	C.gtk_accel_map_add_filter(_arg1)
 }
 
-// AccelMapChangeEntry changes the @accel_key and @accel_mods currently
-// associated with @accel_path. Due to conflicts with other accelerators, a
-// change may not always be possible, @replace indicates whether other
-// accelerators may be deleted to resolve such conflicts. A change will only
-// occur if all conflicts could be resolved (which might not be the case if
-// conflicting accelerators are locked). Successful changes are indicated by a
-// true return value.
+// AccelMapChangeEntry changes the accel_key and accel_mods currently associated
+// with accel_path. Due to conflicts with other accelerators, a change may not
+// always be possible, replace indicates whether other accelerators may be
+// deleted to resolve such conflicts. A change will only occur if all conflicts
+// could be resolved (which might not be the case if conflicting accelerators
+// are locked). Successful changes are indicated by a TRUE return value.
 //
-// Note that @accel_path string will be stored in a #GQuark. Therefore, if you
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
 // pass a static string, you can save some memory by interning it first with
 // g_intern_static_string().
 func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType, replace bool) bool {
@@ -222,14 +226,14 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 }
 
 // AccelMapLockPath locks the given accelerator path. If the accelerator map
-// doesn’t yet contain an entry for @accel_path, a new one is created.
+// doesn’t yet contain an entry for accel_path, a new one is created.
 //
 // Locking an accelerator path prevents its accelerator from being changed
 // during runtime. A locked accelerator path can be unlocked by
 // gtk_accel_map_unlock_path(). Refer to gtk_accel_map_change_entry() for
 // information about runtime accelerator changes.
 //
-// If called more than once, @accel_path remains locked until
+// If called more than once, accel_path remains locked until
 // gtk_accel_map_unlock_path() has been called an equivalent number of times.
 //
 // Note that locking of individual accelerator paths is independent from locking
@@ -243,8 +247,8 @@ func AccelMapLockPath(accelPath string) {
 	C.gtk_accel_map_lock_path(_arg1)
 }
 
-// AccelMapLookupEntry looks up the accelerator entry for @accel_path and fills
-// in @key.
+// AccelMapLookupEntry looks up the accelerator entry for accel_path and fills
+// in key.
 func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 	var _arg1 *C.gchar // out
 	var _key AccelKey
@@ -264,7 +268,7 @@ func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
 }
 
 // AccelMapSave saves current accelerator specifications (accelerator path, key
-// and modifiers) to @file_name. The file is written in a format suitable to be
+// and modifiers) to file_name. The file is written in a format suitable to be
 // read back in by gtk_accel_map_load().
 func AccelMapSave(fileName string) {
 	var _arg1 *C.gchar // out
@@ -286,7 +290,7 @@ func AccelMapSaveFd(fd int) {
 }
 
 // AccelMapUnlockPath undoes the last call to gtk_accel_map_lock_path() on this
-// @accel_path. Refer to gtk_accel_map_lock_path() for information about
+// accel_path. Refer to gtk_accel_map_lock_path() for information about
 // accelerator path locking.
 func AccelMapUnlockPath(accelPath string) {
 	var _arg1 *C.gchar // out

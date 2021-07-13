@@ -26,24 +26,24 @@ func init() {
 type AppChooserDialoger interface {
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-	// Widget returns the `GtkAppChooserWidget` of this dialog.
+	// Widget returns the GtkAppChooserWidget of this dialog.
 	Widget() *Widget
 	// SetHeading sets the text to display at the top of the dialog.
 	SetHeading(heading string)
 }
 
-// AppChooserDialog: `GtkAppChooserDialog` shows a `GtkAppChooserWidget` inside
-// a `GtkDialog`.
+// AppChooserDialog: GtkAppChooserDialog shows a GtkAppChooserWidget inside a
+// GtkDialog.
 //
 // !An example GtkAppChooserDialog (appchooserdialog.png)
 //
-// Note that `GtkAppChooserDialog` does not have any interesting methods of its
-// own. Instead, you should get the embedded `GtkAppChooserWidget` using
-// [method@Gtk.AppChooserDialog.get_widget] and call its methods if the generic
-// [iface@Gtk.AppChooser] interface is not sufficient for your needs.
+// Note that GtkAppChooserDialog does not have any interesting methods of its
+// own. Instead, you should get the embedded GtkAppChooserWidget using
+// gtk.AppChooserDialog.GetWidget() and call its methods if the generic
+// gtk.AppChooser interface is not sufficient for your needs.
 //
-// To set the heading that is shown above the `GtkAppChooserWidget`, use
-// [method@Gtk.AppChooserDialog.set_heading].
+// To set the heading that is shown above the GtkAppChooserWidget, use
+// gtk.AppChooserDialog.SetHeading().
 type AppChooserDialog struct {
 	Dialog
 
@@ -121,17 +121,16 @@ func marshalAppChooserDialoger(p uintptr) (interface{}, error) {
 	return wrapAppChooserDialog(obj), nil
 }
 
-// NewAppChooserDialog creates a new `GtkAppChooserDialog` for the provided
-// `GFile`.
+// NewAppChooserDialog creates a new GtkAppChooserDialog for the provided GFile.
 //
 // The dialog will show applications that can open the file.
-func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *AppChooserDialog {
+func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.GFile         // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
@@ -144,17 +143,17 @@ func NewAppChooserDialog(parent Windower, flags DialogFlags, file gio.Filer) *Ap
 	return _appChooserDialog
 }
 
-// NewAppChooserDialogForContentType creates a new `GtkAppChooserDialog` for the
+// NewAppChooserDialogForContentType creates a new GtkAppChooserDialog for the
 // provided content type.
 //
 // The dialog will show applications that can open the content type.
-func NewAppChooserDialogForContentType(parent Windower, flags DialogFlags, contentType string) *AppChooserDialog {
+func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
 	var _arg2 C.GtkDialogFlags // out
 	var _arg3 *C.char          // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = C.GtkDialogFlags(flags)
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
 
@@ -189,7 +188,7 @@ func (self *AppChooserDialog) Heading() string {
 	return _utf8
 }
 
-// Widget returns the `GtkAppChooserWidget` of this dialog.
+// Widget returns the GtkAppChooserWidget of this dialog.
 func (self *AppChooserDialog) Widget() *Widget {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in

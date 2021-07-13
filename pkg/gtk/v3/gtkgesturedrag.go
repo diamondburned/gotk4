@@ -25,12 +25,12 @@ func init() {
 
 // GestureDrager describes GestureDrag's methods.
 type GestureDrager interface {
-	// Offset: if the @gesture is active, this function returns true and fills
-	// in @x and @y with the coordinates of the current point, as an offset to
-	// the starting drag point.
+	// Offset: if the gesture is active, this function returns TRUE and fills in
+	// x and y with the coordinates of the current point, as an offset to the
+	// starting drag point.
 	Offset() (x float64, y float64, ok bool)
-	// StartPoint: if the @gesture is active, this function returns true and
-	// fills in @x and @y with the drag start coordinates, in window-relative
+	// StartPoint: if the gesture is active, this function returns TRUE and
+	// fills in x and y with the drag start coordinates, in window-relative
 	// coordinates.
 	StartPoint() (x float64, y float64, ok bool)
 }
@@ -83,9 +83,9 @@ func NewGestureDrag(widget Widgeter) *GestureDrag {
 	return _gestureDrag
 }
 
-// Offset: if the @gesture is active, this function returns true and fills in @x
-// and @y with the coordinates of the current point, as an offset to the
-// starting drag point.
+// Offset: if the gesture is active, this function returns TRUE and fills in x
+// and y with the coordinates of the current point, as an offset to the starting
+// drag point.
 func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in
@@ -109,8 +109,8 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	return _x, _y, _ok
 }
 
-// StartPoint: if the @gesture is active, this function returns true and fills
-// in @x and @y with the drag start coordinates, in window-relative coordinates.
+// StartPoint: if the gesture is active, this function returns TRUE and fills in
+// x and y with the drag start coordinates, in window-relative coordinates.
 func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
 	var _arg1 C.gdouble         // in

@@ -25,8 +25,8 @@ func init() {
 
 // GesturePaner describes GesturePan's methods.
 type GesturePaner interface {
-	// Orientation returns the orientation of the pan gestures that this
-	// @gesture expects.
+	// Orientation returns the orientation of the pan gestures that this gesture
+	// expects.
 	Orientation() Orientation
 	// SetOrientation sets the orientation to be expected on pan gestures.
 	SetOrientation(orientation Orientation)
@@ -91,7 +91,7 @@ func NewGesturePan(widget Widgeter, orientation Orientation) *GesturePan {
 	return _gesturePan
 }
 
-// Orientation returns the orientation of the pan gestures that this @gesture
+// Orientation returns the orientation of the pan gestures that this gesture
 // expects.
 func (gesture *GesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out

@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// IconSizeFromName looks up the icon size associated with @name.
+// IconSizeFromName looks up the icon size associated with name.
 //
 // Deprecated: Use IconTheme instead.
 func IconSizeFromName(name string) int {
@@ -61,7 +61,7 @@ func IconSizeGetName(size int) string {
 	return _utf8
 }
 
-// IconSizeLookup obtains the pixel size of a semantic icon size @size:
+// IconSizeLookup obtains the pixel size of a semantic icon size size:
 // K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t normally
 // needed, gtk_icon_theme_load_icon() is the usual way to get an icon for
 // rendering, then just look at the size of the rendered pixbuf. The rendered
@@ -93,7 +93,7 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 
 // IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
 // possibly modified by user preferences for a particular Settings. Normally
-// @size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
+// size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
 // normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
 // icon for rendering, then just look at the size of the rendered pixbuf. The
 // rendered pixbuf may not even correspond to the width/height returned by
@@ -101,14 +101,14 @@ func IconSizeLookup(size int) (width int, height int, ok bool) {
 // they like, including changing the usual size.
 //
 // Deprecated: Use gtk_icon_size_lookup() instead.
-func IconSizeLookupForSettings(settings Settingser, size int) (width int, height int, ok bool) {
+func IconSizeLookupForSettings(settings *Settings, size int) (width int, height int, ok bool) {
 	var _arg1 *C.GtkSettings // out
 	var _arg2 C.GtkIconSize  // out
 	var _arg3 C.gint         // in
 	var _arg4 C.gint         // in
 	var _cret C.gboolean     // in
 
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer((settings).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
@@ -149,9 +149,8 @@ func IconSizeRegister(name string, width int, height int) int {
 	return _gint
 }
 
-// IconSizeRegisterAlias registers @alias as another name for @target. So
-// calling gtk_icon_size_from_name() with @alias as argument will return
-// @target.
+// IconSizeRegisterAlias registers alias as another name for target. So calling
+// gtk_icon_size_from_name() with alias as argument will return target.
 //
 // Deprecated: Use IconTheme instead.
 func IconSizeRegisterAlias(alias string, target int) {
@@ -166,14 +165,13 @@ func IconSizeRegisterAlias(alias string, target int) {
 
 // IconFactorier describes IconFactory's methods.
 type IconFactorier interface {
-	// Add adds the given @icon_set to the icon factory, under the name
-	// @stock_id.
+	// Add adds the given icon_set to the icon factory, under the name stock_id.
 	Add(stockId string, iconSet *IconSet)
 	// AddDefault adds an icon factory to the list of icon factories searched by
 	// gtk_style_lookup_icon_set().
 	AddDefault()
-	// Lookup looks up @stock_id in the icon factory, returning an icon set if
-	// found, otherwise nil.
+	// Lookup looks up stock_id in the icon factory, returning an icon set if
+	// found, otherwise NULL.
 	Lookup(stockId string) *IconSet
 	// RemoveDefault removes an icon factory from the list of default icon
 	// factories.
@@ -299,15 +297,14 @@ func NewIconFactory() *IconFactory {
 	return _iconFactory
 }
 
-// Add adds the given @icon_set to the icon factory, under the name @stock_id.
-// @stock_id should be namespaced for your application, e.g.
+// Add adds the given icon_set to the icon factory, under the name stock_id.
+// stock_id should be namespaced for your application, e.g.
 // “myapp-whatever-icon”. Normally applications create a IconFactory, then add
 // it to the list of default factories with gtk_icon_factory_add_default(). Then
-// they pass the @stock_id to widgets such as Image to display the icon. Themes
+// they pass the stock_id to widgets such as Image to display the icon. Themes
 // can provide an icon with the same name (such as "myapp-whatever-icon") to
 // override your application’s default icons. If an icon already existed in
-// @factory for @stock_id, it is unreferenced and replaced with the new
-// @icon_set.
+// factory for stock_id, it is unreferenced and replaced with the new icon_set.
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
@@ -324,7 +321,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 
 // AddDefault adds an icon factory to the list of icon factories searched by
 // gtk_style_lookup_icon_set(). This means that, for example,
-// gtk_image_new_from_stock() will be able to find icons in @factory. There will
+// gtk_image_new_from_stock() will be able to find icons in factory. There will
 // normally be an icon factory added for each library or application that comes
 // with icons. The default icon factories can be overridden by themes.
 //
@@ -337,8 +334,8 @@ func (factory *IconFactory) AddDefault() {
 	C.gtk_icon_factory_add_default(_arg0)
 }
 
-// Lookup looks up @stock_id in the icon factory, returning an icon set if
-// found, otherwise nil. For display to the user, you should use
+// Lookup looks up stock_id in the icon factory, returning an icon set if found,
+// otherwise NULL. For display to the user, you should use
 // gtk_style_lookup_icon_set() on the Style for the widget that will display the
 // icon, instead of using this function directly, so that themes are taken into
 // account.

@@ -44,10 +44,10 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 
 // PadControllerer describes PadController's methods.
 type PadControllerer interface {
-	// SetAction adds an individual action to @controller.
+	// SetAction adds an individual action to controller.
 	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
 	// SetActionEntries: this is a convenience function to add a group of action
-	// entries on @controller.
+	// entries on controller.
 	SetActionEntries(entries []PadActionEntry)
 }
 
@@ -115,21 +115,21 @@ func marshalPadControllerer(p uintptr) (interface{}, error) {
 }
 
 // NewPadController creates a new PadController that will associate events from
-// @pad to actions. A nil pad may be provided so the controller manages all pad
-// devices generically, it is discouraged to mix PadController objects with nil
-// and non-nil @pad argument on the same @window, as execution order is not
+// pad to actions. A NULL pad may be provided so the controller manages all pad
+// devices generically, it is discouraged to mix PadController objects with NULL
+// and non-NULL pad argument on the same window, as execution order is not
 // guaranteed.
 //
 // The PadController is created with no mapped actions. In order to map pad
 // events to actions, use gtk_pad_controller_set_action_entries() or
 // gtk_pad_controller_set_action().
-func NewPadController(window Windower, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
+func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GtkWindow        // out
 	var _arg2 *C.GActionGroup     // out
 	var _arg3 *C.GdkDevice        // out
 	var _cret *C.GtkPadController // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (*C.GActionGroup)(unsafe.Pointer((group).(gextras.Nativer).Native()))
 	_arg3 = (*C.GdkDevice)(unsafe.Pointer((pad).(gextras.Nativer).Native()))
 
@@ -142,12 +142,12 @@ func NewPadController(window Windower, group gio.ActionGrouper, pad gdk.Devicer)
 	return _padController
 }
 
-// SetAction adds an individual action to @controller. This action will only be
-// activated if the given button/ring/strip number in @index is interacted while
-// the current mode is @mode. -1 may be used for simple cases, so the action is
+// SetAction adds an individual action to controller. This action will only be
+// activated if the given button/ring/strip number in index is interacted while
+// the current mode is mode. -1 may be used for simple cases, so the action is
 // triggered on all modes.
 //
-// The given @label should be considered user-visible, so internationalization
+// The given label should be considered user-visible, so internationalization
 // rules apply. Some windowing systems may be able to use those for user
 // feedback.
 func (controller *PadController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
@@ -169,7 +169,7 @@ func (controller *PadController) SetAction(typ PadActionType, index int, mode in
 }
 
 // SetActionEntries: this is a convenience function to add a group of action
-// entries on @controller. See PadActionEntry and
+// entries on controller. See PadActionEntry and
 // gtk_pad_controller_set_action().
 func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController // out

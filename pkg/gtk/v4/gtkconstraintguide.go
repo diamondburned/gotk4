@@ -23,41 +23,41 @@ func init() {
 
 // ConstraintGuider describes ConstraintGuide's methods.
 type ConstraintGuider interface {
-	// MaxSize gets the maximum size of @guide.
+	// MaxSize gets the maximum size of guide.
 	MaxSize(width *int, height *int)
-	// MinSize gets the minimum size of @guide.
+	// MinSize gets the minimum size of guide.
 	MinSize(width *int, height *int)
 	// Name retrieves the name set using gtk_constraint_guide_set_name().
 	Name() string
-	// NatSize gets the natural size of @guide.
+	// NatSize gets the natural size of guide.
 	NatSize(width *int, height *int)
 	// Strength retrieves the strength set using
 	// gtk_constraint_guide_set_strength().
 	Strength() ConstraintStrength
-	// SetMaxSize sets the maximum size of @guide.
+	// SetMaxSize sets the maximum size of guide.
 	SetMaxSize(width int, height int)
-	// SetMinSize sets the minimum size of @guide.
+	// SetMinSize sets the minimum size of guide.
 	SetMinSize(width int, height int)
-	// SetName sets a name for the given `GtkConstraintGuide`.
+	// SetName sets a name for the given GtkConstraintGuide.
 	SetName(name string)
-	// SetNatSize sets the natural size of @guide.
+	// SetNatSize sets the natural size of guide.
 	SetNatSize(width int, height int)
 	// SetStrength sets the strength of the constraint on the natural size of
-	// the given `GtkConstraintGuide`.
+	// the given GtkConstraintGuide.
 	SetStrength(strength ConstraintStrength)
 }
 
-// ConstraintGuide: `GtkConstraintGuide` is an invisible layout element in a
-// `GtkConstraintLayout`.
+// ConstraintGuide: GtkConstraintGuide is an invisible layout element in a
+// GtkConstraintLayout.
 //
-// The `GtkConstraintLayout` treats guides like widgets. They can be used as the
-// source or target of a `GtkConstraint`.
+// The GtkConstraintLayout treats guides like widgets. They can be used as the
+// source or target of a GtkConstraint.
 //
 // Guides have a minimum, maximum and natural size. Depending on the constraints
 // that are applied, they can act like a guideline that widgets can be aligned
 // to, or like *flexible space*.
 //
-// Unlike a `GtkWidget`, a `GtkConstraintGuide` will not be drawn.
+// Unlike a GtkWidget, a GtkConstraintGuide will not be drawn.
 type ConstraintGuide struct {
 	*externglib.Object
 
@@ -84,7 +84,7 @@ func marshalConstraintGuider(p uintptr) (interface{}, error) {
 	return wrapConstraintGuide(obj), nil
 }
 
-// NewConstraintGuide creates a new `GtkConstraintGuide` object.
+// NewConstraintGuide creates a new GtkConstraintGuide object.
 func NewConstraintGuide() *ConstraintGuide {
 	var _cret *C.GtkConstraintGuide // in
 
@@ -97,7 +97,7 @@ func NewConstraintGuide() *ConstraintGuide {
 	return _constraintGuide
 }
 
-// MaxSize gets the maximum size of @guide.
+// MaxSize gets the maximum size of guide.
 func (guide *ConstraintGuide) MaxSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
@@ -110,7 +110,7 @@ func (guide *ConstraintGuide) MaxSize(width *int, height *int) {
 	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 }
 
-// MinSize gets the minimum size of @guide.
+// MinSize gets the minimum size of guide.
 func (guide *ConstraintGuide) MinSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
@@ -139,7 +139,7 @@ func (guide *ConstraintGuide) Name() string {
 	return _utf8
 }
 
-// NatSize gets the natural size of @guide.
+// NatSize gets the natural size of guide.
 func (guide *ConstraintGuide) NatSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
@@ -169,9 +169,9 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 	return _constraintStrength
 }
 
-// SetMaxSize sets the maximum size of @guide.
+// SetMaxSize sets the maximum size of guide.
 //
-// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
+// If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (guide *ConstraintGuide) SetMaxSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -185,9 +185,9 @@ func (guide *ConstraintGuide) SetMaxSize(width int, height int) {
 	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
 }
 
-// SetMinSize sets the minimum size of @guide.
+// SetMinSize sets the minimum size of guide.
 //
-// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
+// If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (guide *ConstraintGuide) SetMinSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -201,7 +201,7 @@ func (guide *ConstraintGuide) SetMinSize(width int, height int) {
 	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 }
 
-// SetName sets a name for the given `GtkConstraintGuide`.
+// SetName sets a name for the given GtkConstraintGuide.
 //
 // The name is useful for debugging purposes.
 func (guide *ConstraintGuide) SetName(name string) {
@@ -214,9 +214,9 @@ func (guide *ConstraintGuide) SetName(name string) {
 	C.gtk_constraint_guide_set_name(_arg0, _arg1)
 }
 
-// SetNatSize sets the natural size of @guide.
+// SetNatSize sets the natural size of guide.
 //
-// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
+// If guide is attached to a GtkConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (guide *ConstraintGuide) SetNatSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
@@ -231,7 +231,7 @@ func (guide *ConstraintGuide) SetNatSize(width int, height int) {
 }
 
 // SetStrength sets the strength of the constraint on the natural size of the
-// given `GtkConstraintGuide`.
+// given GtkConstraintGuide.
 func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
 	var _arg0 *C.GtkConstraintGuide   // out
 	var _arg1 C.GtkConstraintStrength // out

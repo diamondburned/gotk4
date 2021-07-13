@@ -43,26 +43,25 @@ type CheckButtoner interface {
 	UseUnderline() bool
 	// SetActive changes the check buttons active state.
 	SetActive(setting bool)
-	// SetGroup adds @self to the group of @group.
-	SetGroup(group CheckButtoner)
-	// SetInconsistent sets the `GtkCheckButton` to inconsistent state.
+	// SetGroup adds self to the group of group.
+	SetGroup(group *CheckButton)
+	// SetInconsistent sets the GtkCheckButton to inconsistent state.
 	SetInconsistent(inconsistent bool)
-	// SetLabel sets the text of @self.
+	// SetLabel sets the text of self.
 	SetLabel(label string)
 	// SetUseUnderline sets whether underlines in the label indicate mnemonics.
 	SetUseUnderline(setting bool)
 }
 
-// CheckButton: `GtkCheckButton` places a label next to an indicator.
+// CheckButton: GtkCheckButton places a label next to an indicator.
 //
 // !Example GtkCheckButtons (check-button.png)
 //
-// A `GtkCheckButton` is created by calling either [ctor@Gtk.CheckButton.new] or
-// [ctor@Gtk.CheckButton.new_with_label].
+// A GtkCheckButton is created by calling either gtk.CheckButton.New or
+// gtk.CheckButton.NewWithLabel.
 //
-// The state of a `GtkCheckButton` can be set specifically using
-// [method@Gtk.CheckButton.set_active], and retrieved using
-// [method@Gtk.CheckButton.get_active].
+// The state of a GtkCheckButton can be set specifically using
+// gtk.CheckButton.SetActive(), and retrieved using gtk.CheckButton.GetActive().
 //
 //
 // Inconsistent state
@@ -73,8 +72,8 @@ type CheckButtoner interface {
 // affected by a check button, and the current values in that range are
 // inconsistent.
 //
-// To set a `GtkCheckButton` to inconsistent state, use
-// [method@Gtk.CheckButton.set_inconsistent].
+// To set a GtkCheckButton to inconsistent state, use
+// gtk.CheckButton.SetInconsistent().
 //
 //
 // Grouping
@@ -88,22 +87,24 @@ type CheckButtoner interface {
 //
 // !Example GtkCheckButtons (radio-button.png)
 //
-// To add a `GtkCheckButton` to a group, use [method@Gtk.CheckButton.set_group].
-//
+// To add a GtkCheckButton to a group, use gtk.CheckButton.SetGroup().
 //
 // CSS nodes
 //
-// “` checkbutton[.text-button] ├── check ╰── [label] “`
+//    checkbutton[.text-button]
+//    ├── check
+//    ╰── [label]
 //
-// A `GtkCheckButton` has a main node with name checkbutton. If the
-// [property@Gtk.CheckButton:label] property is set, it contains a label child.
-// The indicator node is named check when no group is set, and radio if the
+//
+// A GtkCheckButton has a main node with name checkbutton. If the
+// gtk.CheckButton:label property is set, it contains a label child. The
+// indicator node is named check when no group is set, and radio if the
 // checkbutton is grouped together with other checkbuttons.
 //
 //
 // Accessibility
 //
-// `GtkCheckButton` uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
+// GtkCheckButton uses the GTK_ACCESSIBLE_ROLE_CHECKBOX role.
 type CheckButton struct {
 	Widget
 
@@ -156,7 +157,7 @@ func marshalCheckButtoner(p uintptr) (interface{}, error) {
 	return wrapCheckButton(obj), nil
 }
 
-// NewCheckButton creates a new `GtkCheckButton`.
+// NewCheckButton creates a new GtkCheckButton.
 func NewCheckButton() *CheckButton {
 	var _cret *C.GtkWidget // in
 
@@ -169,7 +170,7 @@ func NewCheckButton() *CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithLabel creates a new `GtkCheckButton` with the given text.
+// NewCheckButtonWithLabel creates a new GtkCheckButton with the given text.
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -185,7 +186,7 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithMnemonic creates a new `GtkCheckButton` with the given text
+// NewCheckButtonWithMnemonic creates a new GtkCheckButton with the given text
 // and a mnemonic.
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.char      // out
@@ -291,7 +292,7 @@ func (self *CheckButton) SetActive(setting bool) {
 	C.gtk_check_button_set_active(_arg0, _arg1)
 }
 
-// SetGroup adds @self to the group of @group.
+// SetGroup adds self to the group of group.
 //
 // In a group of multiple check buttons, only one button can be active at a
 // time. The behavior of a checkbutton in a group is also commonly known as a
@@ -302,20 +303,20 @@ func (self *CheckButton) SetActive(setting bool) {
 //
 // Setting up groups in a cycle leads to undefined behavior.
 //
-// Note that the same effect can be achieved via the [interface@Gtk.Actionable]
-// API, by using the same action with parameter type and state type 's' for all
-// buttons in the group, and giving each button its own target value.
-func (self *CheckButton) SetGroup(group CheckButtoner) {
+// Note that the same effect can be achieved via the gtk.Actionable API, by
+// using the same action with parameter type and state type 's' for all buttons
+// in the group, and giving each button its own target value.
+func (self *CheckButton) SetGroup(group *CheckButton) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
 
 	C.gtk_check_button_set_group(_arg0, _arg1)
 }
 
-// SetInconsistent sets the `GtkCheckButton` to inconsistent state.
+// SetInconsistent sets the GtkCheckButton to inconsistent state.
 //
 // You shoud turn off the inconsistent state again if the user checks the check
 // button. This has to be done manually.
@@ -331,11 +332,11 @@ func (checkButton *CheckButton) SetInconsistent(inconsistent bool) {
 	C.gtk_check_button_set_inconsistent(_arg0, _arg1)
 }
 
-// SetLabel sets the text of @self.
+// SetLabel sets the text of self.
 //
-// If [property@Gtk.CheckButton:use-underline] is true, an underscore in @label
-// is interpreted as mnemonic indicator, see
-// [method@Gtk.CheckButton.set_use_underline] for details on this behavior.
+// If gtk.CheckButton:use-underline is TRUE, an underscore in label is
+// interpreted as mnemonic indicator, see gtk.CheckButton.SetUseUnderline() for
+// details on this behavior.
 func (self *CheckButton) SetLabel(label string) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 *C.char           // out
@@ -348,9 +349,9 @@ func (self *CheckButton) SetLabel(label string) {
 
 // SetUseUnderline sets whether underlines in the label indicate mnemonics.
 //
-// If @setting is true, an underscore character in @self's label indicates a
+// If setting is TRUE, an underscore character in self's label indicates a
 // mnemonic accelerator key. This behavior is similar to
-// [property@Gtk.Label:use-underline].
+// gtk.Label:use-underline.
 func (self *CheckButton) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkCheckButton // out
 	var _arg1 C.gboolean        // out

@@ -81,22 +81,22 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AlternativeDialogButtonOrder returns true if dialogs are expected to use an
-// alternative button order on the screen @screen. See
+// AlternativeDialogButtonOrder returns TRUE if dialogs are expected to use an
+// alternative button order on the screen screen. See
 // gtk_dialog_set_alternative_button_order() for more details about alternative
 // button order.
 //
 // If you need to use this function, you should probably connect to the
 // ::notify:gtk-alternative-button-order signal on the Settings object
-// associated to @screen, in order to be notified if the button order setting
+// associated to screen, in order to be notified if the button order setting
 // changes.
 //
 // Deprecated: Deprecated.
-func AlternativeDialogButtonOrder(screen gdk.Screener) bool {
+func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	var _arg1 *C.GdkScreen // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
 
@@ -130,13 +130,13 @@ type Dialoger interface {
 	AddActionWidget(child Widgeter, responseId int)
 	// AddButton adds a button with the given text and sets things up so that
 	// clicking the button will emit the Dialog::response signal with the given
-	// @response_id.
+	// response_id.
 	AddButton(buttonText string, responseId int) *Widget
-	// ActionArea returns the action area of @dialog.
+	// ActionArea returns the action area of dialog.
 	ActionArea() *Box
-	// ContentArea returns the content area of @dialog.
+	// ContentArea returns the content area of dialog.
 	ContentArea() *Box
-	// HeaderBar returns the header bar of @dialog.
+	// HeaderBar returns the header bar of dialog.
 	HeaderBar() *HeaderBar
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
@@ -146,16 +146,16 @@ type Dialoger interface {
 	WidgetForResponse(responseId int) *Widget
 	// Response emits the Dialog::response signal with the given response ID.
 	Response(responseId int)
-	// Run blocks in a recursive main loop until the @dialog either emits the
+	// Run blocks in a recursive main loop until the dialog either emits the
 	// Dialog::response signal, or is destroyed.
 	Run() int
 	// SetAlternativeButtonOrderFromArray sets an alternative button order.
 	SetAlternativeButtonOrderFromArray(newOrder []int)
 	// SetDefaultResponse sets the last widget in the dialog’s action area with
-	// the given @response_id as the default widget for the dialog.
+	// the given response_id as the default widget for the dialog.
 	SetDefaultResponse(responseId int)
-	// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
-	// for each widget in the dialog’s action area with the given @response_id.
+	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+	// each widget in the dialog’s action area with the given response_id.
 	SetResponseSensitive(responseId int, setting bool)
 }
 
@@ -239,14 +239,14 @@ type Dialoger interface {
 //
 // GtkDialog as GtkBuildable
 //
-// The GtkDialog implementation of the Buildable interface exposes the @vbox and
-// @action_area as internal children with the names “vbox” and “action_area”.
+// The GtkDialog implementation of the Buildable interface exposes the vbox and
+// action_area as internal children with the names “vbox” and “action_area”.
 //
 // GtkDialog supports a custom <action-widgets> element, which can contain
 // multiple <action-widget> elements. The “response” attribute specifies a
 // numeric response, and the content of the element is the id of widget (which
-// should be a child of the dialogs @action_area). To mark a response as
-// default, set the “default“ attribute of the <action-widget> element to true.
+// should be a child of the dialogs action_area). To mark a response as default,
+// set the “default“ attribute of the <action-widget> element to true.
 //
 // GtkDialog supports adding action widgets by specifying “action“ as the “type“
 // attribute of a <child> element. The widget will be added either to the action
@@ -309,8 +309,8 @@ func marshalDialoger(p uintptr) (interface{}, error) {
 
 // NewDialog creates a new dialog box.
 //
-// Widgets should not be packed into this Window directly, but into the @vbox
-// and @action_area, as described above.
+// Widgets should not be packed into this Window directly, but into the vbox and
+// action_area, as described above.
 func NewDialog() *Dialog {
 	var _cret *C.GtkWidget // in
 
@@ -327,7 +327,7 @@ func NewDialog() *Dialog {
 // connecting a signal handler that will emit the Dialog::response signal on the
 // dialog when the widget is activated. The widget is appended to the end of the
 // dialog’s action area. If you want to add a non-activatable widget, simply
-// pack it into the @action_area field of the Dialog struct.
+// pack it into the action_area field of the Dialog struct.
 func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
@@ -342,7 +342,7 @@ func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
 
 // AddButton adds a button with the given text and sets things up so that
 // clicking the button will emit the Dialog::response signal with the given
-// @response_id. The button is appended to the end of the dialog’s action area.
+// response_id. The button is appended to the end of the dialog’s action area.
 // The button widget is returned, but usually you don’t need it.
 func (dialog *Dialog) AddButton(buttonText string, responseId int) *Widget {
 	var _arg0 *C.GtkDialog // out
@@ -363,7 +363,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) *Widget {
 	return _widget
 }
 
-// ActionArea returns the action area of @dialog.
+// ActionArea returns the action area of dialog.
 //
 // Deprecated: Direct access to the action area is discouraged; use
 // gtk_dialog_add_button(), etc.
@@ -382,7 +382,7 @@ func (dialog *Dialog) ActionArea() *Box {
 	return _box
 }
 
-// ContentArea returns the content area of @dialog.
+// ContentArea returns the content area of dialog.
 func (dialog *Dialog) ContentArea() *Box {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
@@ -398,8 +398,8 @@ func (dialog *Dialog) ContentArea() *Box {
 	return _box
 }
 
-// HeaderBar returns the header bar of @dialog. Note that the headerbar is only
-// used by the dialog if the Dialog:use-header-bar property is true.
+// HeaderBar returns the header bar of dialog. Note that the headerbar is only
+// used by the dialog if the Dialog:use-header-bar property is TRUE.
 func (dialog *Dialog) HeaderBar() *HeaderBar {
 	var _arg0 *C.GtkDialog // out
 	var _cret *C.GtkWidget // in
@@ -467,7 +467,7 @@ func (dialog *Dialog) Response(responseId int) {
 	C.gtk_dialog_response(_arg0, _arg1)
 }
 
-// Run blocks in a recursive main loop until the @dialog either emits the
+// Run blocks in a recursive main loop until the dialog either emits the
 // Dialog::response signal, or is destroyed. If the dialog is destroyed during
 // the call to gtk_dialog_run(), gtk_dialog_run() returns K_RESPONSE_NONE.
 // Otherwise, it returns the response ID from the ::response signal emission.
@@ -525,9 +525,9 @@ func (dialog *Dialog) Run() int {
 }
 
 // SetAlternativeButtonOrderFromArray sets an alternative button order. If the
-// Settings:gtk-alternative-button-order setting is set to true, the dialog
+// Settings:gtk-alternative-button-order setting is set to TRUE, the dialog
 // buttons are reordered according to the order of the response ids in
-// @new_order.
+// new_order.
 //
 // See gtk_dialog_set_alternative_button_order() for more information.
 //
@@ -549,7 +549,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 }
 
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
-// given @response_id as the default widget for the dialog. Pressing “Enter”
+// given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
 func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -561,8 +561,8 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	C.gtk_dialog_set_default_response(_arg0, _arg1)
 }
 
-// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)` for
-// each widget in the dialog’s action area with the given @response_id. A
+// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+// each widget in the dialog’s action area with the given response_id. A
 // convenient way to sensitize/desensitize dialog buttons.
 func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out

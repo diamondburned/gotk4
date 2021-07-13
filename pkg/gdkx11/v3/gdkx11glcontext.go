@@ -23,13 +23,13 @@ func init() {
 }
 
 // X11DisplayGetGlxVersion retrieves the version of the GLX implementation.
-func X11DisplayGetGlxVersion(display gdk.Displayer) (major int, minor int, ok bool) {
+func X11DisplayGetGlxVersion(display *gdk.Display) (major int, minor int, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // in
 	var _arg3 C.gint        // in
 	var _cret C.gboolean    // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_x11_display_get_glx_version(_arg1, &_arg2, &_arg3)
 

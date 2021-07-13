@@ -30,14 +30,13 @@ type ColorChooserDialoger interface {
 //
 // !An example GtkColorChooserDialog (colorchooser.png)
 //
-// `GtkColorChooserDialog` implements the [iface@Gtk.ColorChooser] interface and
-// does not provide much API of its own.
+// GtkColorChooserDialog implements the gtk.ColorChooser interface and does not
+// provide much API of its own.
 //
-// To create a `GtkColorChooserDialog`, use [ctor@Gtk.ColorChooserDialog.new].
+// To create a GtkColorChooserDialog, use gtk.ColorChooserDialog.New.
 //
-// To change the initially selected color, use
-// [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
-// [method@Gtk.ColorChooser.get_rgba].
+// To change the initially selected color, use gtk.ColorChooser.SetRGBA(). To
+// get the selected color use gtk.ColorChooser.GetRGBA().
 type ColorChooserDialog struct {
 	Dialog
 
@@ -102,14 +101,14 @@ func marshalColorChooserDialoger(p uintptr) (interface{}, error) {
 	return wrapColorChooserDialog(obj), nil
 }
 
-// NewColorChooserDialog creates a new `GtkColorChooserDialog`.
-func NewColorChooserDialog(title string, parent Windower) *ColorChooserDialog {
+// NewColorChooserDialog creates a new GtkColorChooserDialog.
+func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 

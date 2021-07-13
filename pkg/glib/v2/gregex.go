@@ -355,22 +355,22 @@ func (m *MatchInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// ExpandReferences returns a new string containing the text in
-// @string_to_expand with references and escape sequences expanded. References
-// refer to the last match done with @string against @regex and have the same
-// syntax used by g_regex_replace().
+// ExpandReferences returns a new string containing the text in string_to_expand
+// with references and escape sequences expanded. References refer to the last
+// match done with string against regex and have the same syntax used by
+// g_regex_replace().
 //
-// The @string_to_expand must be UTF-8 encoded even if REGEX_RAW was passed to
+// The string_to_expand must be UTF-8 encoded even if REGEX_RAW was passed to
 // g_regex_new().
 //
 // The backreferences are extracted from the string passed to the match
 // function, so you cannot call this function after freeing the string.
 //
-// @match_info may be nil in which case @string_to_expand must not contain
+// match_info may be NULL in which case string_to_expand must not contain
 // references. For instance "foo\n" does not refer to an actual pattern and '\n'
 // merely will be replaced with \n character, while to expand "\0" (whole match)
 // one needs the result of a match. Use g_regex_check_replacement() to find out
-// whether @string_to_expand contains references.
+// whether string_to_expand contains references.
 func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, error) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
@@ -392,11 +392,11 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	return _utf8, _goerr
 }
 
-// Fetch retrieves the text matching the @match_num'th capturing parentheses. 0
+// Fetch retrieves the text matching the match_num'th capturing parentheses. 0
 // is the full text of the match, 1 is the first paren set, 2 the second, and so
 // on.
 //
-// If @match_num is a valid sub pattern but it didn't match anything (e.g. sub
+// If match_num is a valid sub pattern but it didn't match anything (e.g. sub
 // pattern 1, matching "b" against "(a)?b") then an empty string is returned.
 //
 // If the match was obtained using the DFA algorithm, that is using
@@ -466,9 +466,9 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 	return _utf8s
 }
 
-// FetchNamed retrieves the text matching the capturing parentheses named @name.
+// FetchNamed retrieves the text matching the capturing parentheses named name.
 //
-// If @name is a valid sub pattern name but it didn't match anything (e.g. sub
+// If name is a valid sub pattern name but it didn't match anything (e.g. sub
 // pattern "X", matching "b" against "(?P<X>a)?b") then an empty string is
 // returned.
 //
@@ -493,11 +493,11 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 }
 
 // FetchNamedPos retrieves the position in bytes of the capturing parentheses
-// named @name.
+// named name.
 //
-// If @name is a valid sub pattern name but it didn't match anything (e.g. sub
-// pattern "X", matching "b" against "(?P<X>a)?b") then @start_pos and @end_pos
-// are set to -1 and true is returned.
+// If name is a valid sub pattern name but it didn't match anything (e.g. sub
+// pattern "X", matching "b" against "(?P<X>a)?b") then start_pos and end_pos
+// are set to -1 and TRUE is returned.
 func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
@@ -523,13 +523,13 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	return _startPos, _endPos, _ok
 }
 
-// FetchPos retrieves the position in bytes of the @match_num'th capturing
+// FetchPos retrieves the position in bytes of the match_num'th capturing
 // parentheses. 0 is the full text of the match, 1 is the first paren set, 2 the
 // second, and so on.
 //
-// If @match_num is a valid sub pattern but it didn't match anything (e.g. sub
-// pattern 1, matching "b" against "(a)?b") then @start_pos and @end_pos are set
-// to -1 and true is returned.
+// If match_num is a valid sub pattern but it didn't match anything (e.g. sub
+// pattern 1, matching "b" against "(a)?b") then start_pos and end_pos are set
+// to -1 and TRUE is returned.
 //
 // If the match was obtained using the DFA algorithm, that is using
 // g_regex_match_all() or g_regex_match_all_full(), the retrieved position is
@@ -560,7 +560,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 	return _startPos, _endPos, _ok
 }
 
-// Free: if @match_info is not nil, calls g_match_info_unref(); otherwise does
+// Free: if match_info is not NULL, calls g_match_info_unref(); otherwise does
 // nothing.
 func (matchInfo *MatchInfo) free() {
 	var _arg0 *C.GMatchInfo // out
@@ -593,9 +593,9 @@ func (matchInfo *MatchInfo) MatchCount() int {
 	return _gint
 }
 
-// Regex returns #GRegex object used in @match_info. It belongs to Glib and must
+// Regex returns #GRegex object used in match_info. It belongs to Glib and must
 // not be freed. Use g_regex_ref() if you need to keep it after you free
-// @match_info object.
+// match_info object.
 func (matchInfo *MatchInfo) Regex() *Regex {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GRegex     // in
@@ -615,9 +615,9 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	return _regex
 }
 
-// String returns the string searched with @match_info. This is the string
-// passed to g_regex_match() or g_regex_replace() so you may not free it before
-// calling this function.
+// String returns the string searched with match_info. This is the string passed
+// to g_regex_match() or g_regex_replace() so you may not free it before calling
+// this function.
 func (matchInfo *MatchInfo) String() string {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.gchar      // in
@@ -634,7 +634,7 @@ func (matchInfo *MatchInfo) String() string {
 }
 
 // IsPartialMatch: usually if the string passed to g_regex_match*() matches as
-// far as it goes, but is too short to match the entire pattern, false is
+// far as it goes, but is too short to match the entire pattern, FALSE is
 // returned. There are circumstances where it might be helpful to distinguish
 // this case from other cases in which there is no match.
 //
@@ -649,8 +649,8 @@ func (matchInfo *MatchInfo) String() string {
 // GRegex supports the concept of partial matching by means of the
 // REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD flags. When they are
 // used, the return code for g_regex_match() or g_regex_match_full() is, as
-// usual, true for a complete match, false otherwise. But, when these functions
-// return false, you can check if the match was partial calling
+// usual, TRUE for a complete match, FALSE otherwise. But, when these functions
+// return FALSE, you can check if the match was partial calling
 // g_match_info_is_partial_match().
 //
 // The difference between REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD
@@ -700,7 +700,7 @@ func (matchInfo *MatchInfo) Matches() bool {
 }
 
 // Next scans for the next match using the same parameters of the previous call
-// to g_regex_match_full() or g_regex_match() that returned @match_info.
+// to g_regex_match_full() or g_regex_match() that returned match_info.
 //
 // The match is done on the string passed to the match function, so you cannot
 // free it before calling this function.
@@ -719,7 +719,7 @@ func (matchInfo *MatchInfo) Next() error {
 	return _goerr
 }
 
-// Ref increases reference count of @match_info by 1.
+// Ref increases reference count of match_info by 1.
 func (matchInfo *MatchInfo) ref() *MatchInfo {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GMatchInfo // in
@@ -739,7 +739,7 @@ func (matchInfo *MatchInfo) ref() *MatchInfo {
 	return _matchInfo
 }
 
-// Unref decreases reference count of @match_info by 1. When reference count
+// Unref decreases reference count of match_info by 1. When reference count
 // drops to zero, it frees all the memory associated with the match_info
 // structure.
 func (matchInfo *MatchInfo) unref() {
@@ -753,17 +753,17 @@ func (matchInfo *MatchInfo) unref() {
 // Regex: g_regex_*() functions implement regular expression pattern matching
 // using syntax and semantics similar to Perl regular expression.
 //
-// Some functions accept a @start_position argument, setting it differs from
-// just passing over a shortened string and setting REGEX_MATCH_NOTBOL in the
-// case of a pattern that begins with any kind of lookbehind assertion. For
-// example, consider the pattern "\Biss\B" which finds occurrences of "iss" in
-// the middle of words. ("\B" matches only if the current position in the
-// subject is not a word boundary.) When applied to the string "Mississipi" from
-// the fourth byte, namely "issipi", it does not match, because "\B" is always
-// false at the start of the subject, which is deemed to be a word boundary.
-// However, if the entire string is passed , but with @start_position set to 4,
-// it finds the second occurrence of "iss" because it is able to look behind the
-// starting point to discover that it is preceded by a letter.
+// Some functions accept a start_position argument, setting it differs from just
+// passing over a shortened string and setting REGEX_MATCH_NOTBOL in the case of
+// a pattern that begins with any kind of lookbehind assertion. For example,
+// consider the pattern "\Biss\B" which finds occurrences of "iss" in the middle
+// of words. ("\B" matches only if the current position in the subject is not a
+// word boundary.) When applied to the string "Mississipi" from the fourth byte,
+// namely "issipi", it does not match, because "\B" is always false at the start
+// of the subject, which is deemed to be a word boundary. However, if the entire
+// string is passed , but with start_position set to 4, it finds the second
+// occurrence of "iss" because it is able to look behind the starting point to
+// discover that it is preceded by a letter.
 //
 // Note that, unless you set the REGEX_RAW flag, all the strings passed to these
 // functions must be encoded in UTF-8. The lengths and the positions inside the
@@ -865,10 +865,10 @@ func (regex *Regex) CaptureCount() int {
 	return _gint
 }
 
-// CompileFlags returns the compile options that @regex was created with.
+// CompileFlags returns the compile options that regex was created with.
 //
 // Depending on the version of PCRE that is used, this may or may not include
-// flags set by option expressions such as `(?i)` found at the top-level within
+// flags set by option expressions such as (?i) found at the top-level within
 // the compiled pattern.
 func (regex *Regex) CompileFlags() RegexCompileFlags {
 	var _arg0 *C.GRegex            // out
@@ -903,7 +903,7 @@ func (regex *Regex) HasCrOrLf() bool {
 	return _ok
 }
 
-// MatchFlags returns the match options that @regex was created with.
+// MatchFlags returns the match options that regex was created with.
 func (regex *Regex) MatchFlags() RegexMatchFlags {
 	var _arg0 *C.GRegex          // out
 	var _cret C.GRegexMatchFlags // in
@@ -954,7 +954,7 @@ func (regex *Regex) MaxLookbehind() int {
 	return _gint
 }
 
-// Pattern gets the pattern string associated with @regex, i.e. a copy of the
+// Pattern gets the pattern string associated with regex, i.e. a copy of the
 // string passed to g_regex_new().
 func (regex *Regex) Pattern() string {
 	var _arg0 *C.GRegex // out
@@ -971,7 +971,7 @@ func (regex *Regex) Pattern() string {
 	return _utf8
 }
 
-// StringNumber retrieves the number of the subexpression named @name.
+// StringNumber retrieves the number of the subexpression named name.
 func (regex *Regex) StringNumber(name string) int {
 	var _arg0 *C.GRegex // out
 	var _arg1 *C.gchar  // out
@@ -989,16 +989,15 @@ func (regex *Regex) StringNumber(name string) int {
 	return _gint
 }
 
-// Match scans for a match in @string for the pattern in @regex. The
-// @match_options are combined with the match options specified when the @regex
-// structure was created, letting you have more flexibility in reusing #GRegex
-// structures.
+// Match scans for a match in string for the pattern in regex. The match_options
+// are combined with the match options specified when the regex structure was
+// created, letting you have more flexibility in reusing #GRegex structures.
 //
-// Unless G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
+// Unless G_REGEX_RAW is specified in the options, string must be valid UTF-8.
 //
 // A Info structure, used to get information on the match, is stored in
-// @match_info if not nil. Note that if @match_info is not nil then it is
-// created even if the function returns false, i.e. you must free it regardless
+// match_info if not NULL. Note that if match_info is not NULL then it is
+// created even if the function returns FALSE, i.e. you must free it regardless
 // if regular expression actually matched.
 //
 // To retrieve all the non-overlapping matches of the pattern in string you can
@@ -1024,8 +1023,8 @@ func (regex *Regex) StringNumber(name string) int {
 //      g_regex_unref (regex);
 //    }
 //
-// @string is not copied and is used in Info internally. If you use any Info
-// method (except g_match_info_free()) after freeing or modifying @string then
+// string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying string then
 // the behaviour is undefined.
 func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
@@ -1055,12 +1054,12 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 // see g_regex_match_all_full().
 //
 // A Info structure, used to get information on the match, is stored in
-// @match_info if not nil. Note that if @match_info is not nil then it is
-// created even if the function returns false, i.e. you must free it regardless
+// match_info if not NULL. Note that if match_info is not NULL then it is
+// created even if the function returns FALSE, i.e. you must free it regardless
 // if regular expression actually matched.
 //
-// @string is not copied and is used in Info internally. If you use any Info
-// method (except g_match_info_free()) after freeing or modifying @string then
+// string is not copied and is used in Info internally. If you use any Info
+// method (except g_match_info_free()) after freeing or modifying string then
 // the behaviour is undefined.
 func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
@@ -1084,7 +1083,7 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 	return _matchInfo, _ok
 }
 
-// Ref increases reference count of @regex by 1.
+// Ref increases reference count of regex by 1.
 func (regex *Regex) ref() *Regex {
 	var _arg0 *C.GRegex // out
 	var _cret *C.GRegex // in
@@ -1116,10 +1115,9 @@ func (regex *Regex) ref() *Regex {
 // elements, you'll need to check for the empty string before calling this
 // function.
 //
-// A pattern that can match empty strings splits @string into separate
-// characters wherever it matches the empty string between characters. For
-// example splitting "ab c" using as a separator "\s*", you will get "a", "b"
-// and "c".
+// A pattern that can match empty strings splits string into separate characters
+// wherever it matches the empty string between characters. For example
+// splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
 func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
@@ -1151,7 +1149,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 	return _utf8s
 }
 
-// Unref decreases reference count of @regex by 1. When reference count drops to
+// Unref decreases reference count of regex by 1. When reference count drops to
 // zero, it frees all the memory associated with the regex structure.
 func (regex *Regex) unref() {
 	var _arg0 *C.GRegex // out
@@ -1161,11 +1159,11 @@ func (regex *Regex) unref() {
 	C.g_regex_unref(_arg0)
 }
 
-// RegexCheckReplacement checks whether @replacement is a valid replacement
+// RegexCheckReplacement checks whether replacement is a valid replacement
 // string (see g_regex_replace()), i.e. that all escape sequences in it are
 // valid.
 //
-// If @has_references is not nil then @replacement is checked for pattern
+// If has_references is not NULL then replacement is checked for pattern
 // references. For instance, replacement text 'foo\n' does not contain
 // references and may be evaluated without information about actual match, but
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
@@ -1189,11 +1187,11 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 	return _hasReferences, _goerr
 }
 
-// RegexEscapeNUL escapes the nul characters in @string to "\x00". It can be
-// used to compile a regex with embedded nul characters.
+// RegexEscapeNUL escapes the nul characters in string to "\x00". It can be used
+// to compile a regex with embedded nul characters.
 //
-// For completeness, @length can be -1 for a nul-terminated string. In this case
-// the output string will be of course equal to @string.
+// For completeness, length can be -1 for a nul-terminated string. In this case
+// the output string will be of course equal to string.
 func RegexEscapeNUL(_string string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -1212,14 +1210,14 @@ func RegexEscapeNUL(_string string, length int) string {
 	return _utf8
 }
 
-// RegexMatchSimple scans for a match in @string for @pattern.
+// RegexMatchSimple scans for a match in string for pattern.
 //
 // This function is equivalent to g_regex_match() but it does not require to
 // compile the pattern with g_regex_new(), avoiding some lines of code when you
 // need just to do a match without extracting substrings, capture counts, and so
 // on.
 //
-// If this function is to be called on the same @pattern more than once, it's
+// If this function is to be called on the same pattern more than once, it's
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_match().
 func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
@@ -1255,7 +1253,7 @@ func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompil
 // need just to do a split without extracting substrings, capture counts, and so
 // on.
 //
-// If this function is to be called on the same @pattern more than once, it's
+// If this function is to be called on the same pattern more than once, it's
 // more efficient to compile the pattern once with g_regex_new() and then use
 // g_regex_split().
 //
@@ -1266,10 +1264,9 @@ func RegexMatchSimple(pattern string, _string string, compileOptions RegexCompil
 // elements, you'll need to check for the empty string before calling this
 // function.
 //
-// A pattern that can match empty strings splits @string into separate
-// characters wherever it matches the empty string between characters. For
-// example splitting "ab c" using as a separator "\s*", you will get "a", "b"
-// and "c".
+// A pattern that can match empty strings splits string into separate characters
+// wherever it matches the empty string between characters. For example
+// splitting "ab c" using as a separator "\s*", you will get "a", "b" and "c".
 func RegexSplitSimple(pattern string, _string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out

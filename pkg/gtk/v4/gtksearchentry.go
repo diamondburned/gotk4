@@ -23,19 +23,18 @@ func init() {
 
 // SearchEntrier describes SearchEntry's methods.
 type SearchEntrier interface {
-	// KeyCaptureWidget gets the widget that @entry is capturing key events
-	// from.
+	// KeyCaptureWidget gets the widget that entry is capturing key events from.
 	KeyCaptureWidget() *Widget
-	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
-	// key events from.
+	// SetKeyCaptureWidget sets widget as the widget that entry will capture key
+	// events from.
 	SetKeyCaptureWidget(widget Widgeter)
 }
 
-// SearchEntry: `GtkSearchEntry` is an entry widget that has been tailored for
-// use as a search entry.
+// SearchEntry: GtkSearchEntry is an entry widget that has been tailored for use
+// as a search entry.
 //
-// The main API for interacting with a `GtkSearchEntry` as entry is the
-// `GtkEditable` interface.
+// The main API for interacting with a GtkSearchEntry as entry is the
+// GtkEditable interface.
 //
 // !An example GtkSearchEntry (search-entry.png)
 //
@@ -45,35 +44,34 @@ type SearchEntrier interface {
 //
 // To make filtering appear more reactive, it is a good idea to not react to
 // every change in the entry text immediately, but only after a short delay. To
-// support this, `GtkSearchEntry` emits the
-// [signal@Gtk.SearchEntry::search-changed] signal which can be used instead of
-// the [signal@Gtk.Editable::changed] signal.
+// support this, GtkSearchEntry emits the gtk.SearchEntry::search-changed signal
+// which can be used instead of the gtk.Editable::changed signal.
 //
-// The [signal@Gtk.SearchEntry::previous-match],
-// [signal@Gtk.SearchEntry::next-match] and
-// [signal@Gtk.SearchEntry::stop-search] signals can be used to implement moving
-// between search results and ending the search.
+// The gtk.SearchEntry::previous-match, gtk.SearchEntry::next-match and
+// gtk.SearchEntry::stop-search signals can be used to implement moving between
+// search results and ending the search.
 //
-// Often, `GtkSearchEntry` will be fed events by means of being placed inside a
-// [class@Gtk.SearchBar]. If that is not the case, you can use
-// [method@Gtk.SearchEntry.set_key_capture_widget] to let it capture key input
-// from another widget.
+// Often, GtkSearchEntry will be fed events by means of being placed inside a
+// gtk.SearchBar. If that is not the case, you can use
+// gtk.SearchEntry.SetKeyCaptureWidget() to let it capture key input from
+// another widget.
 //
-// `GtkSearchEntry` provides only minimal API and should be used with the
-// [iface@Gtk.Editable] API.
-//
+// GtkSearchEntry provides only minimal API and should be used with the
+// gtk.Editable API.
 //
 // CSS Nodes
 //
-// “` entry.search ╰── text “`
+//    entry.search
+//    ╰── text
 //
-// `GtkSearchEntry` has a single CSS node with name entry that carries a
-// `.search` style class, and the text node is a child of that.
+//
+// GtkSearchEntry has a single CSS node with name entry that carries a .search
+// style class, and the text node is a child of that.
 //
 //
 // Accessibility
 //
-// `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
+// GtkSearchEntry uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry struct {
 	Widget
 
@@ -126,7 +124,7 @@ func marshalSearchEntrier(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(obj), nil
 }
 
-// NewSearchEntry creates a `GtkSearchEntry`.
+// NewSearchEntry creates a GtkSearchEntry.
 func NewSearchEntry() *SearchEntry {
 	var _cret *C.GtkWidget // in
 
@@ -145,7 +143,7 @@ func (v *SearchEntry) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// KeyCaptureWidget gets the widget that @entry is capturing key events from.
+// KeyCaptureWidget gets the widget that entry is capturing key events from.
 func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
@@ -161,20 +159,20 @@ func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 	return _widget
 }
 
-// SetKeyCaptureWidget sets @widget as the widget that @entry will capture key
+// SetKeyCaptureWidget sets widget as the widget that entry will capture key
 // events from.
 //
 // Key events are consumed by the search entry to start or continue a search.
 //
-// If the entry is part of a `GtkSearchBar`, it is preferable to call
-// [method@Gtk.SearchBar.set_key_capture_widget] instead, which will reveal the
-// entry in addition to triggering the search entry.
+// If the entry is part of a GtkSearchBar, it is preferable to call
+// gtk.SearchBar.SetKeyCaptureWidget() instead, which will reveal the entry in
+// addition to triggering the search entry.
 //
 // Note that despite the name of this function, the events are only 'captured'
-// in the bubble phase, which means that editable child widgets of @widget will
+// in the bubble phase, which means that editable child widgets of widget will
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
-// [method@Gtk.EventControllerKey.forward].
+// gtk.EventControllerKey.Forward().
 func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgeter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out

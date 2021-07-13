@@ -120,19 +120,19 @@ type Topleveler interface {
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
 	BeginResize(edge SurfaceEdge, device Devicer, button int, x float64, y float64, timestamp uint32)
-	// Focus sets keyboard focus to @surface.
+	// Focus sets keyboard focus to surface.
 	Focus(timestamp uint32)
 	// State gets the bitwise or of the currently active surface state flags,
-	// from the `GdkToplevelState` enumeration.
+	// from the GdkToplevelState enumeration.
 	State() ToplevelState
-	// InhibitSystemShortcuts requests that the @toplevel inhibit the system
+	// InhibitSystemShortcuts requests that the toplevel inhibit the system
 	// shortcuts.
 	InhibitSystemShortcuts(event Eventer)
-	// Lower asks to lower the @toplevel below other windows.
+	// Lower asks to lower the toplevel below other windows.
 	Lower() bool
-	// Minimize asks to minimize the @toplevel.
+	// Minimize asks to minimize the toplevel.
 	Minimize() bool
-	// Present @toplevel after having processed the `GdkToplevelLayout` rules.
+	// Present toplevel after having processed the GdkToplevelLayout rules.
 	Present(layout *ToplevelLayout)
 	// RestoreSystemShortcuts: restore default system keyboard shortcuts which
 	// were previously inhibited.
@@ -156,9 +156,9 @@ type Topleveler interface {
 	SupportsEdgeConstraints() bool
 }
 
-// Toplevel: `GdkToplevel` is a freestanding toplevel surface.
+// Toplevel: GdkToplevel is a freestanding toplevel surface.
 //
-// The `GdkToplevel` interface provides useful APIs for interacting with the
+// The GdkToplevel interface provides useful APIs for interacting with the
 // windowing system, such as controlling maximization and size of the surface,
 // setting icons and transient parents for dialogs.
 type Toplevel struct {
@@ -228,10 +228,10 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 	C.gdk_toplevel_begin_resize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
-// Focus sets keyboard focus to @surface.
+// Focus sets keyboard focus to surface.
 //
-// In most cases, [method@Gtk.Window.present_with_time] should be used on a
-// [class@Gtk.Window], rather than calling this function.
+// In most cases, gtk.Window.PresentWithTime() should be used on a gtk.Window,
+// rather than calling this function.
 func (toplevel *Toplevel) Focus(timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.guint32      // out
@@ -243,7 +243,7 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 }
 
 // State gets the bitwise or of the currently active surface state flags, from
-// the `GdkToplevelState` enumeration.
+// the GdkToplevelState enumeration.
 func (toplevel *Toplevel) State() ToplevelState {
 	var _arg0 *C.GdkToplevel     // out
 	var _cret C.GdkToplevelState // in
@@ -259,7 +259,7 @@ func (toplevel *Toplevel) State() ToplevelState {
 	return _toplevelState
 }
 
-// InhibitSystemShortcuts requests that the @toplevel inhibit the system
+// InhibitSystemShortcuts requests that the toplevel inhibit the system
 // shortcuts.
 //
 // This is asking the desktop environment/windowing system to let all keyboard
@@ -267,9 +267,8 @@ func (toplevel *Toplevel) State() ToplevelState {
 // system actions.
 //
 // If granted, the rerouting remains active until the default shortcuts
-// processing is restored with [method@Gdk.Toplevel.restore_system_shortcuts],
-// or the request is revoked by the desktop environment, windowing system or the
-// user.
+// processing is restored with gdk.Toplevel.RestoreSystemShortcuts(), or the
+// request is revoked by the desktop environment, windowing system or the user.
 //
 // A typical use case for this API is remote desktop or virtual machine viewers
 // which need to inhibit the default system keyboard shortcuts so that the
@@ -279,7 +278,7 @@ func (toplevel *Toplevel) State() ToplevelState {
 // the request or even choose to ignore the request entirely.
 //
 // The caller can be notified whenever the request is granted or revoked by
-// listening to the [property@Gdk.Toplevel:shortcuts-inhibited] property.
+// listening to the gdk.Toplevel:shortcuts-inhibited property.
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkEvent    // out
@@ -290,7 +289,7 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	C.gdk_toplevel_inhibit_system_shortcuts(_arg0, _arg1)
 }
 
-// Lower asks to lower the @toplevel below other windows.
+// Lower asks to lower the toplevel below other windows.
 //
 // The windowing system may choose to ignore the request.
 func (toplevel *Toplevel) Lower() bool {
@@ -310,7 +309,7 @@ func (toplevel *Toplevel) Lower() bool {
 	return _ok
 }
 
-// Minimize asks to minimize the @toplevel.
+// Minimize asks to minimize the toplevel.
 //
 // The windowing system may choose to ignore the request.
 func (toplevel *Toplevel) Minimize() bool {
@@ -330,13 +329,13 @@ func (toplevel *Toplevel) Minimize() bool {
 	return _ok
 }
 
-// Present @toplevel after having processed the `GdkToplevelLayout` rules.
+// Present toplevel after having processed the GdkToplevelLayout rules.
 //
 // If the toplevel was previously not showing, it will be showed, otherwise it
-// will change layout according to @layout.
+// will change layout according to layout.
 //
-// GDK may emit the [signal@Gdk.Toplevel::compute-size] signal to let the user
-// of this toplevel compute the preferred size of the toplevel surface.
+// GDK may emit the gdk.Toplevel::compute-size signal to let the user of this
+// toplevel compute the preferred size of the toplevel surface.
 //
 // Presenting is asynchronous and the specified layout parameters are not
 // guaranteed to be respected.
@@ -353,7 +352,7 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 // RestoreSystemShortcuts: restore default system keyboard shortcuts which were
 // previously inhibited.
 //
-// This undoes the effect of [method@Gdk.Toplevel.inhibit_system_shortcuts].
+// This undoes the effect of gdk.Toplevel.InhibitSystemShortcuts().
 func (toplevel *Toplevel) RestoreSystemShortcuts() {
 	var _arg0 *C.GdkToplevel // out
 
@@ -364,9 +363,9 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 
 // SetDecorated sets the toplevel to be decorated.
 //
-// Setting @decorated to false hints the desktop environment that the surface
-// has its own, client-side decorations and does not need to have window
-// decorations added.
+// Setting decorated to FALSE hints the desktop environment that the surface has
+// its own, client-side decorations and does not need to have window decorations
+// added.
 func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
@@ -381,7 +380,7 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 
 // SetDeletable sets the toplevel to be deletable.
 //
-// Setting @deletable to true hints the desktop environment that it should offer
+// Setting deletable to TRUE hints the desktop environment that it should offer
 // the user a way to close the surface.
 func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	var _arg0 *C.GdkToplevel // out
@@ -402,7 +401,7 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 // handle modal surfaces in a special way.
 //
 // You should only use this on surfaces for which you have previously called
-// [method@Gdk.Toplevel.set_transient_for].
+// gdk.Toplevel.SetTransientFor().
 func (toplevel *Toplevel) SetModal(modal bool) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 C.gboolean     // out
@@ -417,8 +416,8 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 
 // SetStartupID sets the startup notification ID.
 //
-// When using GTK, typically you should use [method@Gtk.Window.set_startup_id]
-// instead of this low-level function.
+// When using GTK, typically you should use gtk.Window.SetStartupID() instead of
+// this low-level function.
 func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -444,13 +443,11 @@ func (toplevel *Toplevel) SetTitle(title string) {
 
 // SetTransientFor sets a transient-for parent.
 //
-// Indicates to the window manager that @surface is a transient dialog
-// associated with the application surface @parent. This allows the window
-// manager to do things like center @surface on @parent and keep @surface above
-// @parent.
+// Indicates to the window manager that surface is a transient dialog associated
+// with the application surface parent. This allows the window manager to do
+// things like center surface on parent and keep surface above parent.
 //
-// See [method@Gtk.Window.set_transient_for] if you’re using [class@Gtk.Window]
-// or [class@Gtk.Dialog].
+// See gtk.Window.SetTransientFor() if you’re using gtk.Window or gtk.Dialog.
 func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkSurface  // out

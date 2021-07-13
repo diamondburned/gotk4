@@ -36,35 +36,35 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ListModelOverrider interface {
-	// Item: get the item at @position. If @position is greater than the number
-	// of items in @list, nil is returned.
+	// Item: get the item at position. If position is greater than the number of
+	// items in list, NULL is returned.
 	//
-	// nil is never returned for an index that is smaller than the length of the
-	// list. See g_list_model_get_n_items().
+	// NULL is never returned for an index that is smaller than the length of
+	// the list. See g_list_model_get_n_items().
 	Item(position uint) *externglib.Object
-	// ItemType gets the type of the items in @list. All items returned from
+	// ItemType gets the type of the items in list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
 	//
 	// The item type of a Model can not change during the life of the model.
 	ItemType() externglib.Type
-	// NItems gets the number of items in @list.
+	// NItems gets the number of items in list.
 	//
 	// Depending on the model implementation, calling this function may be less
-	// efficient than iterating the list with increasing values for @position
-	// until g_list_model_get_item() returns nil.
+	// efficient than iterating the list with increasing values for position
+	// until g_list_model_get_item() returns NULL.
 	NItems() uint
 }
 
 // ListModeler describes ListModel's methods.
 type ListModeler interface {
-	// ItemType gets the type of the items in @list.
+	// ItemType gets the type of the items in list.
 	ItemType() externglib.Type
-	// NItems gets the number of items in @list.
+	// NItems gets the number of items in list.
 	NItems() uint
-	// GetObject: get the item at @position.
+	// GetObject: get the item at position.
 	GetObject(position uint) *externglib.Object
-	// ItemsChanged emits the Model::items-changed signal on @list.
+	// ItemsChanged emits the Model::items-changed signal on list.
 	ItemsChanged(position uint, removed uint, added uint)
 }
 
@@ -95,7 +95,7 @@ type ListModeler interface {
 // returns the number of items in the list and g_list_model_get_item() returns
 // an item at a (0-based) position. In order to allow implementations to
 // calculate the list length lazily, you can also iterate over items: starting
-// from 0, repeatedly call g_list_model_get_item() until it returns nil.
+// from 0, repeatedly call g_list_model_get_item() until it returns NULL.
 //
 // An implementation may create objects lazily, but must take care to return the
 // same object for a given position until all references to it are gone.
@@ -131,7 +131,7 @@ func marshalListModeler(p uintptr) (interface{}, error) {
 	return wrapListModel(obj), nil
 }
 
-// ItemType gets the type of the items in @list. All items returned from
+// ItemType gets the type of the items in list. All items returned from
 // g_list_model_get_type() are of that type or a subtype, or are an
 // implementation of that interface.
 //
@@ -151,11 +151,11 @@ func (list *ListModel) ItemType() externglib.Type {
 	return _gType
 }
 
-// NItems gets the number of items in @list.
+// NItems gets the number of items in list.
 //
 // Depending on the model implementation, calling this function may be less
-// efficient than iterating the list with increasing values for @position until
-// g_list_model_get_item() returns nil.
+// efficient than iterating the list with increasing values for position until
+// g_list_model_get_item() returns NULL.
 func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
@@ -171,10 +171,10 @@ func (list *ListModel) NItems() uint {
 	return _guint
 }
 
-// GetObject: get the item at @position. If @position is greater than the number
-// of items in @list, nil is returned.
+// GetObject: get the item at position. If position is greater than the number
+// of items in list, NULL is returned.
 //
-// nil is never returned for an index that is smaller than the length of the
+// NULL is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
 func (list *ListModel) GetObject(position uint) *externglib.Object {
 	var _arg0 *C.GListModel // out
@@ -193,12 +193,11 @@ func (list *ListModel) GetObject(position uint) *externglib.Object {
 	return _object
 }
 
-// ItemsChanged emits the Model::items-changed signal on @list.
+// ItemsChanged emits the Model::items-changed signal on list.
 //
 // This function should only be called by classes implementing Model. It has to
-// be called after the internal representation of @list has been updated,
-// because handlers connected to this signal might query the new state of the
-// list.
+// be called after the internal representation of list has been updated, because
+// handlers connected to this signal might query the new state of the list.
 //
 // Implementations must only make changes to the model (as visible to its
 // consumer) in places that will not cause problems for that consumer. For

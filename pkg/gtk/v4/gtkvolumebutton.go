@@ -26,7 +26,7 @@ type VolumeButtoner interface {
 	privateVolumeButton()
 }
 
-// VolumeButton: `GtkVolumeButton` is a `GtkScaleButton` subclass tailored for
+// VolumeButton: GtkVolumeButton is a GtkScaleButton subclass tailored for
 // volume control.
 //
 // !An example GtkVolumeButton (volumebutton.png)
@@ -69,11 +69,10 @@ func marshalVolumeButtoner(p uintptr) (interface{}, error) {
 	return wrapVolumeButton(obj), nil
 }
 
-// NewVolumeButton creates a `GtkVolumeButton`.
+// NewVolumeButton creates a GtkVolumeButton.
 //
 // The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
-// values can be obtained and modified using the functions from
-// [class@Gtk.ScaleButton].
+// values can be obtained and modified using the functions from gtk.ScaleButton.
 func NewVolumeButton() *VolumeButton {
 	var _cret *C.GtkWidget // in
 

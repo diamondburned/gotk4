@@ -23,39 +23,42 @@ func init() {
 
 // Switcher describes Switch's methods.
 type Switcher interface {
-	// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
+	// Active gets whether the GtkSwitch is in its “on” or “off” state.
 	Active() bool
-	// State gets the underlying state of the `GtkSwitch`.
+	// State gets the underlying state of the GtkSwitch.
 	State() bool
-	// SetActive changes the state of @self to the desired one.
+	// SetActive changes the state of self to the desired one.
 	SetActive(isActive bool)
-	// SetState sets the underlying state of the `GtkSwitch`.
+	// SetState sets the underlying state of the GtkSwitch.
 	SetState(state bool)
 }
 
-// Switch: `GtkSwitch` is a "light switch" that has two states: on or off.
+// Switch: GtkSwitch is a "light switch" that has two states: on or off.
 //
 // !An example GtkSwitch (switch.png)
 //
 // The user can control which state should be active by clicking the empty area,
 // or by dragging the handle.
 //
-// `GtkSwitch` can also handle situations where the underlying state changes
-// with a delay. See [signal@GtkSwitch::state-set] for details.
-//
+// GtkSwitch can also handle situations where the underlying state changes with
+// a delay. See gtkswitch::state-set for details.
 //
 // CSS nodes
 //
-// “` switch ├── label ├── label ╰── slider “`
+//    switch
+//    ├── label
+//    ├── label
+//    ╰── slider
 //
-// `GtkSwitch` has four css nodes, the main node with the name switch and
-// subnodes for the slider and the on and off labels. Neither of them is using
-// any style classes.
+//
+// GtkSwitch has four css nodes, the main node with the name switch and subnodes
+// for the slider and the on and off labels. Neither of them is using any style
+// classes.
 //
 //
 // Accessibility
 //
-// `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
+// GtkSwitch uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
 	Widget
 
@@ -108,7 +111,7 @@ func marshalSwitcher(p uintptr) (interface{}, error) {
 	return wrapSwitch(obj), nil
 }
 
-// NewSwitch creates a new `GtkSwitch` widget.
+// NewSwitch creates a new GtkSwitch widget.
 func NewSwitch() *Switch {
 	var _cret *C.GtkWidget // in
 
@@ -127,7 +130,7 @@ func (v *Switch) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
+// Active gets whether the GtkSwitch is in its “on” or “off” state.
 func (self *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
@@ -145,7 +148,7 @@ func (self *Switch) Active() bool {
 	return _ok
 }
 
-// State gets the underlying state of the `GtkSwitch`.
+// State gets the underlying state of the GtkSwitch.
 func (self *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
 	var _cret C.gboolean   // in
@@ -163,7 +166,7 @@ func (self *Switch) State() bool {
 	return _ok
 }
 
-// SetActive changes the state of @self to the desired one.
+// SetActive changes the state of self to the desired one.
 func (self *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
@@ -176,13 +179,13 @@ func (self *Switch) SetActive(isActive bool) {
 	C.gtk_switch_set_active(_arg0, _arg1)
 }
 
-// SetState sets the underlying state of the `GtkSwitch`.
+// SetState sets the underlying state of the GtkSwitch.
 //
-// Normally, this is the same as [property@Gtk.Switch:active], unless the switch
-// is set up for delayed state changes. This function is typically called from a
-// [signal@Gtk.Switch`::state-set] signal handler.
+// Normally, this is the same as gtk.Switch:active, unless the switch is set up
+// for delayed state changes. This function is typically called from a
+// gtk.Switch`::state-set signal handler.
 //
-// See [signal@Gtk.Switch::state-set] for details.
+// See gtk.Switch::state-set for details.
 func (self *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out

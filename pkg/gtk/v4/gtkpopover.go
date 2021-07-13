@@ -38,7 +38,7 @@ type Popoverer interface {
 	// CascadePopdown returns whether the popover will close after a modal child
 	// is closed.
 	CascadePopdown() bool
-	// Child gets the child widget of @popover.
+	// Child gets the child widget of popover.
 	Child() *Widget
 	// HasArrow gets whether this popover is showing an arrow pointing at the
 	// widget that it is relative to.
@@ -49,22 +49,22 @@ type Popoverer interface {
 	Offset() (xOffset int, yOffset int)
 	// PointingTo gets the rectangle that the popover points to.
 	PointingTo() (gdk.Rectangle, bool)
-	// Position returns the preferred position of @popover.
+	// Position returns the preferred position of popover.
 	Position() PositionType
-	// Popdown pops @popover down.
+	// Popdown pops popover down.
 	Popdown()
-	// Popup pops @popover up.
+	// Popup pops popover up.
 	Popup()
 	// Present presents the popover to the user.
 	Present()
-	// SetAutohide sets whether @popover is modal.
+	// SetAutohide sets whether popover is modal.
 	SetAutohide(autohide bool)
-	// SetCascadePopdown: if @cascade_popdown is true, the popover will be
-	// closed when a child modal popover is closed.
+	// SetCascadePopdown: if cascade_popdown is TRUE, the popover will be closed
+	// when a child modal popover is closed.
 	SetCascadePopdown(cascadePopdown bool)
-	// SetChild sets the child widget of @popover.
+	// SetChild sets the child widget of popover.
 	SetChild(child Widgeter)
-	// SetDefaultWidget sets the default widget of a `GtkPopover`.
+	// SetDefaultWidget sets the default widget of a GtkPopover.
 	SetDefaultWidget(widget Widgeter)
 	// SetHasArrow sets whether this popover should draw an arrow pointing at
 	// the widget it is relative to.
@@ -74,73 +74,85 @@ type Popoverer interface {
 	// SetOffset sets the offset to use when calculating the position of the
 	// popover.
 	SetOffset(xOffset int, yOffset int)
-	// SetPointingTo sets the rectangle that @popover points to.
+	// SetPointingTo sets the rectangle that popover points to.
 	SetPointingTo(rect *gdk.Rectangle)
-	// SetPosition sets the preferred position for @popover to appear.
+	// SetPosition sets the preferred position for popover to appear.
 	SetPosition(position PositionType)
 }
 
-// Popover: `GtkPopover` is a bubble-like context popup.
+// Popover: GtkPopover is a bubble-like context popup.
 //
 // !An example GtkPopover (popover.png)
 //
 // It is primarily meant to provide context-dependent information or options.
 // Popovers are attached to a parent widget. By default, they point to the whole
 // widget area, although this behavior can be changed with
-// [method@Gtk.Popover.set_pointing_to].
+// gtk.Popover.SetPointingTo().
 //
 // The position of a popover relative to the widget it is attached to can also
-// be changed with [method@Gtk.Popover.set_position]
+// be changed with gtk.Popover.SetPosition()
 //
-// By default, `GtkPopover` performs a grab, in order to ensure input events get
+// By default, GtkPopover performs a grab, in order to ensure input events get
 // redirected to it while it is shown, and also so the popover is dismissed in
 // the expected situations (clicks outside the popover, or the Escape key being
 // pressed). If no such modal behavior is desired on a popover,
-// [method@Gtk.Popover.set_autohide] may be called on it to tweak its behavior.
+// gtk.Popover.SetAutohide() may be called on it to tweak its behavior.
 //
 //
 // GtkPopover as menu replacement
 //
-// `GtkPopover` is often used to replace menus. The best was to do this is to
-// use the [class@Gtk.PopoverMenu] subclass which supports being populated from
-// a `GMenuModel` with [ctor@Gtk.PopoverMenu.new_from_model].
+// GtkPopover is often used to replace menus. The best was to do this is to use
+// the gtk.PopoverMenu subclass which supports being populated from a GMenuModel
+// with gtk.PopoverMenu.NewFromModel.
 //
-// “`xml <section> <attribute name="display-hint">horizontal-buttons</attribute>
-// <item> <attribute name="label">Cut</attribute> <attribute
-// name="action">app.cut</attribute> <attribute
-// name="verb-icon">edit-cut-symbolic</attribute> </item> <item> <attribute
-// name="label">Copy</attribute> <attribute name="action">app.copy</attribute>
-// <attribute name="verb-icon">edit-copy-symbolic</attribute> </item> <item>
-// <attribute name="label">Paste</attribute> <attribute
-// name="action">app.paste</attribute> <attribute
-// name="verb-icon">edit-paste-symbolic</attribute> </item> </section> “`
+//    <section>
+//      <attribute name="display-hint">horizontal-buttons</attribute>
+//      <item>
+//        <attribute name="label">Cut</attribute>
+//        <attribute name="action">app.cut</attribute>
+//        <attribute name="verb-icon">edit-cut-symbolic</attribute>
+//      </item>
+//      <item>
+//        <attribute name="label">Copy</attribute>
+//        <attribute name="action">app.copy</attribute>
+//        <attribute name="verb-icon">edit-copy-symbolic</attribute>
+//      </item>
+//      <item>
+//        <attribute name="label">Paste</attribute>
+//        <attribute name="action">app.paste</attribute>
+//        <attribute name="verb-icon">edit-paste-symbolic</attribute>
+//      </item>
+//    </section>
 //
 //
 // CSS nodes
 //
-// “` popover[.menu] ├── arrow ╰── contents.background ╰── <child> “`
+//    popover[.menu]
+//    ├── arrow
+//    ╰── contents.background
+//        ╰── <child>
+//
 //
 // The contents child node always gets the .background style class and the
 // popover itself gets the .menu style class if the popover is menu-like (i.e.
-// `GtkPopoverMenu`).
+// GtkPopoverMenu).
 //
-// Particular uses of `GtkPopover`, such as touch selection popups or magnifiers
-// in `GtkEntry` or `GtkTextView` get style classes like .touch-selection or
+// Particular uses of GtkPopover, such as touch selection popups or magnifiers
+// in GtkEntry or GtkTextView get style classes like .touch-selection or
 // .magnifier to differentiate from plain popovers.
 //
 // When styling a popover directly, the popover node should usually not have any
 // background. The visible part of the popover can have a shadow. To specify it
 // in CSS, set the box-shadow of the contents node.
 //
-// Note that, in order to accomplish appropriate arrow visuals, `GtkPopover`
-// uses custom drawing for the arrow node. This makes it possible for the arrow
-// to change its shape dynamically, but it also limits the possibilities of
-// styling it using CSS. In particular, the arrow gets drawn over the content
-// node's border and shadow, so they look like one shape, which means that the
-// border width of the content node and the arrow node should be the same. The
-// arrow also does not support any border shape other than solid, no
-// border-radius, only one border width (border-bottom-width is used) and no
-// box-shadow.
+// Note that, in order to accomplish appropriate arrow visuals, GtkPopover uses
+// custom drawing for the arrow node. This makes it possible for the arrow to
+// change its shape dynamically, but it also limits the possibilities of styling
+// it using CSS. In particular, the arrow gets drawn over the content node's
+// border and shadow, so they look like one shape, which means that the border
+// width of the content node and the arrow node should be the same. The arrow
+// also does not support any border shape other than solid, no border-radius,
+// only one border width (border-bottom-width is used) and no box-shadow.
 type Popover struct {
 	Widget
 
@@ -197,7 +209,7 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 	return wrapPopover(obj), nil
 }
 
-// NewPopover creates a new `GtkPopover`.
+// NewPopover creates a new GtkPopover.
 func NewPopover() *Popover {
 	var _cret *C.GtkWidget // in
 
@@ -218,7 +230,7 @@ func (v *Popover) Native() uintptr {
 
 // Autohide returns whether the popover is modal.
 //
-// See [method@Gtk.Popover.set_autohide] for the implications of this.
+// See gtk.Popover.SetAutohide() for the implications of this.
 func (popover *Popover) Autohide() bool {
 	var _arg0 *C.GtkPopover // out
 	var _cret C.gboolean    // in
@@ -255,7 +267,7 @@ func (popover *Popover) CascadePopdown() bool {
 	return _ok
 }
 
-// Child gets the child widget of @popover.
+// Child gets the child widget of popover.
 func (popover *Popover) Child() *Widget {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
@@ -329,9 +341,9 @@ func (popover *Popover) Offset() (xOffset int, yOffset int) {
 
 // PointingTo gets the rectangle that the popover points to.
 //
-// If a rectangle to point to has been set, this function will return true and
-// fill in @rect with such rectangle, otherwise it will return false and fill in
-// @rect with the parent widget coordinates.
+// If a rectangle to point to has been set, this function will return TRUE and
+// fill in rect with such rectangle, otherwise it will return FALSE and fill in
+// rect with the parent widget coordinates.
 func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover // out
 	var _rect gdk.Rectangle
@@ -350,7 +362,7 @@ func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
 	return _rect, _ok
 }
 
-// Position returns the preferred position of @popover.
+// Position returns the preferred position of popover.
 func (popover *Popover) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
 	var _cret C.GtkPositionType // in
@@ -366,11 +378,11 @@ func (popover *Popover) Position() PositionType {
 	return _positionType
 }
 
-// Popdown pops @popover down.
+// Popdown pops popover down.
 //
-// This is different from a [method@Gtk.Widget.hide] call in that it may show
-// the popover with a transition. If you want to hide the popover without a
-// transition, just use [method@Gtk.Widget.hide].
+// This is different from a gtk.Widget.Hide() call in that it may show the
+// popover with a transition. If you want to hide the popover without a
+// transition, just use gtk.Widget.Hide().
 func (popover *Popover) Popdown() {
 	var _arg0 *C.GtkPopover // out
 
@@ -379,11 +391,11 @@ func (popover *Popover) Popdown() {
 	C.gtk_popover_popdown(_arg0)
 }
 
-// Popup pops @popover up.
+// Popup pops popover up.
 //
-// This is different from a [method@Gtk.Widget.show() call in that it may show
-// the popover with a transition. If you want to show the popover without a
-// transition, just use [method@Gtk.Widget.show].
+// This is different from a gtk.Widget.Show() call in that it may show the
+// popover with a transition(). If you want to show the popover without a
+// transition, just use [methodGtk.Widget.show.
 func (popover *Popover) Popup() {
 	var _arg0 *C.GtkPopover // out
 
@@ -401,7 +413,7 @@ func (popover *Popover) Present() {
 	C.gtk_popover_present(_arg0)
 }
 
-// SetAutohide sets whether @popover is modal.
+// SetAutohide sets whether popover is modal.
 //
 // A modal popover will grab the keyboard focus on it when being displayed.
 // Clicking outside the popover area or pressing Esc will dismiss the popover.
@@ -420,10 +432,10 @@ func (popover *Popover) SetAutohide(autohide bool) {
 	C.gtk_popover_set_autohide(_arg0, _arg1)
 }
 
-// SetCascadePopdown: if @cascade_popdown is true, the popover will be closed
+// SetCascadePopdown: if cascade_popdown is TRUE, the popover will be closed
 // when a child modal popover is closed.
 //
-// If false, @popover will stay visible.
+// If FALSE, popover will stay visible.
 func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.gboolean    // out
@@ -436,7 +448,7 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
 }
 
-// SetChild sets the child widget of @popover.
+// SetChild sets the child widget of popover.
 func (popover *Popover) SetChild(child Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -447,11 +459,11 @@ func (popover *Popover) SetChild(child Widgeter) {
 	C.gtk_popover_set_child(_arg0, _arg1)
 }
 
-// SetDefaultWidget sets the default widget of a `GtkPopover`.
+// SetDefaultWidget sets the default widget of a GtkPopover.
 //
 // The default widget is the widget that’s activated when the user presses Enter
 // in a dialog (for example). This function sets or unsets the default widget
-// for a `GtkPopover`.
+// for a GtkPopover.
 func (popover *Popover) SetDefaultWidget(widget Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
@@ -492,8 +504,8 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 // SetOffset sets the offset to use when calculating the position of the
 // popover.
 //
-// These values are used when preparing the [struct@Gdk.PopupLayout] for
-// positioning the popover.
+// These values are used when preparing the gdk.PopupLayout for positioning the
+// popover.
 func (popover *Popover) SetOffset(xOffset int, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
@@ -506,9 +518,9 @@ func (popover *Popover) SetOffset(xOffset int, yOffset int) {
 	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
 
-// SetPointingTo sets the rectangle that @popover points to.
+// SetPointingTo sets the rectangle that popover points to.
 //
-// This is in the coordinate space of the @popover parent.
+// This is in the coordinate space of the popover parent.
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
 	var _arg1 *C.GdkRectangle // out
@@ -519,12 +531,12 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
-// SetPosition sets the preferred position for @popover to appear.
+// SetPosition sets the preferred position for popover to appear.
 //
-// If the @popover is currently visible, it will be immediately updated.
+// If the popover is currently visible, it will be immediately updated.
 //
 // This preference will be respected where possible, although on lack of space
-// (eg. if close to the window edges), the `GtkPopover` may choose to appear on
+// (eg. if close to the window edges), the GtkPopover may choose to appear on
 // the opposite side.
 func (popover *Popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out

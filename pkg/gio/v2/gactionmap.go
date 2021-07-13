@@ -37,17 +37,16 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ActionMapOverrider interface {
-	// AddAction adds an action to the @action_map.
+	// AddAction adds an action to the action_map.
 	//
-	// If the action map already contains an action with the same name as
-	// @action then the old action is dropped from the action map.
+	// If the action map already contains an action with the same name as action
+	// then the old action is dropped from the action map.
 	//
-	// The action map takes its own reference on @action.
+	// The action map takes its own reference on action.
 	AddAction(action Actioner)
-	// LookupAction looks up the action with the name @action_name in
-	// @action_map.
+	// LookupAction looks up the action with the name action_name in action_map.
 	//
-	// If no such action exists, returns nil.
+	// If no such action exists, returns NULL.
 	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
 	//
@@ -57,13 +56,12 @@ type ActionMapOverrider interface {
 
 // ActionMaper describes ActionMap's methods.
 type ActionMaper interface {
-	// AddAction adds an action to the @action_map.
+	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
 	// instances and adding them to a Map.
 	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
-	// LookupAction looks up the action with the name @action_name in
-	// @action_map.
+	// LookupAction looks up the action with the name action_name in action_map.
 	LookupAction(actionName string) *Action
 	// RemoveAction removes the named action from the action map.
 	RemoveAction(actionName string)
@@ -96,12 +94,12 @@ func marshalActionMaper(p uintptr) (interface{}, error) {
 	return wrapActionMap(obj), nil
 }
 
-// AddAction adds an action to the @action_map.
+// AddAction adds an action to the action_map.
 //
-// If the action map already contains an action with the same name as @action
+// If the action map already contains an action with the same name as action
 // then the old action is dropped from the action map.
 //
-// The action map takes its own reference on @action.
+// The action map takes its own reference on action.
 func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
@@ -163,9 +161,9 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 	C.g_action_map_add_action_entries(_arg0, _arg1, _arg2, _arg3)
 }
 
-// LookupAction looks up the action with the name @action_name in @action_map.
+// LookupAction looks up the action with the name action_name in action_map.
 //
-// If no such action exists, returns nil.
+// If no such action exists, returns NULL.
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -201,7 +199,7 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 //
 // The order of the items in the structure are intended to reflect frequency of
 // use. It is permissible to use an incomplete initialiser in order to leave
-// some of the later values as nil. All values after @name are optional.
+// some of the later values as NULL. All values after name are optional.
 // Additional optional fields may be added in the future.
 //
 // See g_action_map_add_action_entries() for an example.

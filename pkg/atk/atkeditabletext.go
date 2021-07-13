@@ -26,37 +26,37 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type EditableTextOverrider interface {
-	// CopyText: copy text from @start_pos up to, but not including @end_pos to
+	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
 	CopyText(startPos int, endPos int)
-	// CutText: copy text from @start_pos up to, but not including @end_pos to
-	// the clipboard and then delete from the widget.
+	// CutText: copy text from start_pos up to, but not including end_pos to the
+	// clipboard and then delete from the widget.
 	CutText(startPos int, endPos int)
-	// DeleteText: delete text @start_pos up to, but not including @end_pos.
+	// DeleteText: delete text start_pos up to, but not including end_pos.
 	DeleteText(startPos int, endPos int)
 	// InsertText: insert text at a given position.
 	InsertText(_string string, length int, position *int)
-	// PasteText: paste text from clipboard to specified @position.
+	// PasteText: paste text from clipboard to specified position.
 	PasteText(position int)
-	// SetTextContents: set text contents of @text.
+	// SetTextContents: set text contents of text.
 	SetTextContents(_string string)
 }
 
 // EditableTexter describes EditableText's methods.
 type EditableTexter interface {
-	// CopyText: copy text from @start_pos up to, but not including @end_pos to
+	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
 	CopyText(startPos int, endPos int)
-	// CutText: copy text from @start_pos up to, but not including @end_pos to
-	// the clipboard and then delete from the widget.
+	// CutText: copy text from start_pos up to, but not including end_pos to the
+	// clipboard and then delete from the widget.
 	CutText(startPos int, endPos int)
-	// DeleteText: delete text @start_pos up to, but not including @end_pos.
+	// DeleteText: delete text start_pos up to, but not including end_pos.
 	DeleteText(startPos int, endPos int)
 	// InsertText: insert text at a given position.
 	InsertText(_string string, length int, position *int)
-	// PasteText: paste text from clipboard to specified @position.
+	// PasteText: paste text from clipboard to specified position.
 	PasteText(position int)
-	// SetTextContents: set text contents of @text.
+	// SetTextContents: set text contents of text.
 	SetTextContents(_string string)
 }
 
@@ -89,7 +89,7 @@ func marshalEditableTexter(p uintptr) (interface{}, error) {
 	return wrapEditableText(obj), nil
 }
 
-// CopyText: copy text from @start_pos up to, but not including @end_pos to the
+// CopyText: copy text from start_pos up to, but not including end_pos to the
 // clipboard.
 func (text *EditableText) CopyText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
@@ -103,7 +103,7 @@ func (text *EditableText) CopyText(startPos int, endPos int) {
 	C.atk_editable_text_copy_text(_arg0, _arg1, _arg2)
 }
 
-// CutText: copy text from @start_pos up to, but not including @end_pos to the
+// CutText: copy text from start_pos up to, but not including end_pos to the
 // clipboard and then delete from the widget.
 func (text *EditableText) CutText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
@@ -117,7 +117,7 @@ func (text *EditableText) CutText(startPos int, endPos int) {
 	C.atk_editable_text_cut_text(_arg0, _arg1, _arg2)
 }
 
-// DeleteText: delete text @start_pos up to, but not including @end_pos.
+// DeleteText: delete text start_pos up to, but not including end_pos.
 func (text *EditableText) DeleteText(startPos int, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -145,7 +145,7 @@ func (text *EditableText) InsertText(_string string, length int, position *int) 
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
-// PasteText: paste text from clipboard to specified @position.
+// PasteText: paste text from clipboard to specified position.
 func (text *EditableText) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -156,7 +156,7 @@ func (text *EditableText) PasteText(position int) {
 	C.atk_editable_text_paste_text(_arg0, _arg1)
 }
 
-// SetTextContents: set text contents of @text.
+// SetTextContents: set text contents of text.
 func (text *EditableText) SetTextContents(_string string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out

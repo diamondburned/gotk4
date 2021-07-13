@@ -26,7 +26,7 @@ type ListBaser interface {
 	privateListBase()
 }
 
-// ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
+// ListBase: GtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	Widget
 

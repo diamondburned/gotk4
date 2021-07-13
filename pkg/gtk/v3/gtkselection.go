@@ -182,7 +182,7 @@ func (t *TargetList) Native() unsafe.Pointer {
 }
 
 // AddImageTargets appends the image targets supported by SelectionData to the
-// target list. All targets are added with the same @info.
+// target list. All targets are added with the same info.
 func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
@@ -200,8 +200,8 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 // AddRichTextTargets appends the rich text targets registered with
 // gtk_text_buffer_register_serialize_format() or
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
-// are added with the same @info.
-func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBufferer) {
+// are added with the same info.
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -212,7 +212,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	if deserializable {
 		_arg2 = C.TRUE
 	}
-	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
+	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 }
@@ -233,7 +233,7 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 }
 
 // AddTextTargets appends the text targets supported by SelectionData to the
-// target list. All targets are added with the same @info.
+// target list. All targets are added with the same info.
 func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
@@ -245,7 +245,7 @@ func (list *TargetList) AddTextTargets(info uint) {
 }
 
 // AddURITargets appends the URI targets supported by SelectionData to the
-// target list. All targets are added with the same @info.
+// target list. All targets are added with the same info.
 func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out

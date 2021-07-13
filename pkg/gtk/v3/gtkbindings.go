@@ -5,9 +5,9 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -17,9 +17,9 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// BindingsActivate: find a key binding matching @keyval and @modifiers and
-// activate the binding on @object.
-func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
+// BindingsActivate: find a key binding matching keyval and modifiers and
+// activate the binding on object.
+func BindingsActivate(object *externglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -40,9 +40,9 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 	return _ok
 }
 
-// BindingsActivateEvent looks up key bindings for @object to find one matching
-// @event, and if one was found, activate it.
-func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
+// BindingsActivateEvent looks up key bindings for object to find one matching
+// event, and if one was found, activate it.
+func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out
 	var _arg2 *C.GdkEventKey // out
 	var _cret C.gboolean     // in
@@ -83,8 +83,8 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// BindingEntryAddSignalFromString parses a signal description from @signal_desc
-// and incorporates it into @binding_set.
+// BindingEntryAddSignalFromString parses a signal description from signal_desc
+// and incorporates it into binding_set.
 //
 // Signal descriptions may either bind a key combination to one or more signals:
 //
@@ -117,7 +117,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 }
 
 // BindingEntryRemove: remove a binding previously installed via
-// gtk_binding_entry_add_signal() on @binding_set.
+// gtk_binding_entry_add_signal() on binding_set.
 func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
@@ -130,7 +130,7 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	C.gtk_binding_entry_remove(_arg1, _arg2, _arg3)
 }
 
-// BindingEntrySkip: install a binding on @binding_set which causes key lookups
+// BindingEntrySkip: install a binding on binding_set which causes key lookups
 // to be aborted, to prevent bindings from lower priority sets to be activated.
 func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
@@ -158,9 +158,9 @@ func (b *BindingSet) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
-// Activate: find a key binding matching @keyval and @modifiers within
-// @binding_set and activate the binding on @object.
-func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
+// Activate: find a key binding matching keyval and modifiers within binding_set
+// and activate the binding on object.
+func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *externglib.Object) bool {
 	var _arg0 *C.GtkBindingSet  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -205,7 +205,7 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 
 // BindingSetFind: find a binding set by its globally unique name.
 //
-// The @set_name can either be a name used for gtk_binding_set_new() or the type
+// The set_name can either be a name used for gtk_binding_set_new() or the type
 // name of a class used in gtk_binding_set_by_class().
 func BindingSetFind(setName string) *BindingSet {
 	var _arg1 *C.gchar         // out

@@ -37,7 +37,7 @@ type ApplicationWindower interface {
 	ShowMenubar() bool
 	// SetHelpOverlay associates a shortcuts window with the application window,
 	// and sets up an action with the name win.show-help-overlay to present it.
-	SetHelpOverlay(helpOverlay ShortcutsWindower)
+	SetHelpOverlay(helpOverlay *ShortcutsWindow)
 	// SetShowMenubar sets whether the window will display a menubar for the app
 	// menu and menubar as needed.
 	SetShowMenubar(showMenubar bool)
@@ -105,37 +105,51 @@ type ApplicationWindower interface {
 //
 // A simple example (https://git.gnome.org/browse/gtk+/tree/examples/sunny.c)
 //
-// The XML format understood by Builder for Model consists of a toplevel
-// `<menu>` element, which contains one or more `<item>` elements. Each `<item>`
-// element contains `<attribute>` and `<link>` elements with a mandatory name
-// attribute. `<link>` elements have the same content model as `<menu>`. Instead
-// of `<link name="submenu>` or `<link name="section">`, you can use `<submenu>`
-// or `<section>` elements.
+// The XML format understood by Builder for Model consists of a toplevel <menu>
+// element, which contains one or more <item> elements. Each <item> element
+// contains <attribute> and <link> elements with a mandatory name attribute.
+// <link> elements have the same content model as <menu>. Instead of <link
+// name="submenu> or <link name="section">, you can use <submenu> or <section>
+// elements.
 //
 // Attribute values can be translated using gettext, like other Builder content.
-// `<attribute>` elements can be marked for translation with a
-// `translatable="yes"` attribute. It is also possible to specify message
-// context and translator comments, using the context and comments attributes.
-// To make use of this, the Builder must have been given the gettext domain to
-// use.
+// <attribute> elements can be marked for translation with a translatable="yes"
+// attribute. It is also possible to specify message context and translator
+// comments, using the context and comments attributes. To make use of this, the
+// Builder must have been given the gettext domain to use.
 //
-// The following attributes are used when constructing menu items: - "label": a
-// user-visible string to display - "action": the prefixed name of the action to
-// trigger - "target": the parameter to use when activating the action - "icon"
-// and "verb-icon": names of icons that may be displayed - "submenu-action":
-// name of an action that may be used to determine if a submenu can be opened -
-// "hidden-when": a string used to determine when the item will be hidden.
+// The following attributes are used when constructing menu items:
+//
+// - "label": a user-visible string to display
+//
+// - "action": the prefixed name of the action to trigger
+//
+// - "target": the parameter to use when activating the action
+//
+// - "icon" and "verb-icon": names of icons that may be displayed
+//
+// - "submenu-action": name of an action that may be used to determine if a
+// submenu can be opened
+//
+// - "hidden-when": a string used to determine when the item will be hidden.
 // Possible values include "action-disabled", "action-missing", "macos-menubar".
 //
-// The following attributes are used when constructing sections: - "label": a
-// user-visible string to use as section heading - "display-hint": a string used
-// to determine special formatting for the section. Possible values include
-// "horizontal-buttons". - "text-direction": a string used to determine the
-// TextDirection to use when "display-hint" is set to "horizontal-buttons".
-// Possible values include "rtl", "ltr", and "none".
+// The following attributes are used when constructing sections:
 //
-// The following attributes are used when constructing submenus: - "label": a
-// user-visible string to display - "icon": icon name to display
+// - "label": a user-visible string to use as section heading
+//
+// - "display-hint": a string used to determine special formatting for the
+// section. Possible values include "horizontal-buttons".
+//
+// - "text-direction": a string used to determine the TextDirection to use when
+// "display-hint" is set to "horizontal-buttons". Possible values include "rtl",
+// "ltr", and "none".
+//
+// The following attributes are used when constructing submenus:
+//
+// - "label": a user-visible string to display
+//
+// - "icon": icon name to display
 type ApplicationWindow struct {
 	Window
 
@@ -183,11 +197,11 @@ func marshalApplicationWindower(p uintptr) (interface{}, error) {
 }
 
 // NewApplicationWindow creates a new ApplicationWindow.
-func NewApplicationWindow(application Applicationer) *ApplicationWindow {
+func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	_cret = C.gtk_application_window_new(_arg1)
 
@@ -222,7 +236,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 }
 
 // ID returns the unique ID of the window. If the window has not yet been added
-// to a Application, returns `0`.
+// to a Application, returns 0.
 func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _cret C.guint                 // in
@@ -260,13 +274,13 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 // SetHelpOverlay associates a shortcuts window with the application window, and
 // sets up an action with the name win.show-help-overlay to present it.
 //
-// @window takes resposibility for destroying @help_overlay.
-func (window *ApplicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindower) {
+// window takes resposibility for destroying help_overlay.
+func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
 	var _arg1 *C.GtkShortcutsWindow   // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer((helpOverlay).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
 
 	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 }

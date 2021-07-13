@@ -71,26 +71,26 @@ type MountOperationer interface {
 	// Reply emits the Operation::reply signal.
 	Reply(result MountOperationResult)
 	// SetAnonymous sets the mount operation to use an anonymous user if
-	// @anonymous is true.
+	// anonymous is TRUE.
 	SetAnonymous(anonymous bool)
 	// SetChoice sets a default choice for the mount operation.
 	SetChoice(choice int)
 	// SetDomain sets the mount operation's domain.
 	SetDomain(domain string)
 	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
-	// if @hidden_volume is true.
+	// if hidden_volume is TRUE.
 	SetIsTcryptHiddenVolume(hiddenVolume bool)
 	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
-	// if @system_volume is true.
+	// if system_volume is TRUE.
 	SetIsTcryptSystemVolume(systemVolume bool)
-	// SetPassword sets the mount operation's password to @password.
+	// SetPassword sets the mount operation's password to password.
 	SetPassword(password string)
 	// SetPasswordSave sets the state of saving passwords for the mount
 	// operation.
 	SetPasswordSave(save PasswordSave)
-	// SetPim sets the mount operation's PIM to @pim.
+	// SetPim sets the mount operation's PIM to pim.
 	SetPim(pim uint)
-	// SetUsername sets the user name within @op to @username.
+	// SetUsername sets the user name within op to username.
 	SetUsername(username string)
 }
 
@@ -106,7 +106,7 @@ type MountOperationer interface {
 // Users should instantiate a subclass of this that implements all the various
 // callbacks to show the required dialogs, such as MountOperation. If no user
 // interaction is desired (for example when automounting filesystems at login
-// time), usually nil can be passed, see each method taking a Operation for
+// time), usually NULL can be passed, see each method taking a Operation for
 // details.
 //
 // The term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
@@ -312,8 +312,8 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 	C.g_mount_operation_reply(_arg0, _arg1)
 }
 
-// SetAnonymous sets the mount operation to use an anonymous user if @anonymous
-// is true.
+// SetAnonymous sets the mount operation to use an anonymous user if anonymous
+// is TRUE.
 func (op *MountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -349,7 +349,7 @@ func (op *MountOperation) SetDomain(domain string) {
 }
 
 // SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume if
-// @hidden_volume is true.
+// hidden_volume is TRUE.
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -363,7 +363,7 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 }
 
 // SetIsTcryptSystemVolume sets the mount operation to use a system volume if
-// @system_volume is true.
+// system_volume is TRUE.
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -376,7 +376,7 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
 }
 
-// SetPassword sets the mount operation's password to @password.
+// SetPassword sets the mount operation's password to password.
 func (op *MountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -398,7 +398,7 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
-// SetPim sets the mount operation's PIM to @pim.
+// SetPim sets the mount operation's PIM to pim.
 func (op *MountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
@@ -409,7 +409,7 @@ func (op *MountOperation) SetPim(pim uint) {
 	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
 
-// SetUsername sets the user name within @op to @username.
+// SetUsername sets the user name within op to username.
 func (op *MountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out

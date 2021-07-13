@@ -61,7 +61,7 @@ func init() {
 // its type, but values can exist that have types that are subtypes of
 // indefinite types. That is to say, g_variant_get_type() will never return an
 // indefinite type, but calling g_variant_is_of_type() with an indefinite type
-// may return true. For example, you cannot have a value that represents "an
+// may return TRUE. For example, you cannot have a value that represents "an
 // array of no particular type", but you can have an "array of integers" which
 // certainly matches the type of "an array of no particular type", since "array
 // of integers" is a subtype of "array of no particular type".
@@ -99,48 +99,73 @@ func init() {
 // depth of 65 nested containers. This is the limit in the D-Bus specification
 // (64) plus one to allow a BusMessage to be nested in a top-level tuple.
 //
-// The meaning of each of the characters is as follows: - `b`: the type string
-// of G_VARIANT_TYPE_BOOLEAN; a boolean value. - `y`: the type string of
-// G_VARIANT_TYPE_BYTE; a byte. - `n`: the type string of G_VARIANT_TYPE_INT16;
-// a signed 16 bit integer. - `q`: the type string of G_VARIANT_TYPE_UINT16; an
-// unsigned 16 bit integer. - `i`: the type string of G_VARIANT_TYPE_INT32; a
-// signed 32 bit integer. - `u`: the type string of G_VARIANT_TYPE_UINT32; an
-// unsigned 32 bit integer. - `x`: the type string of G_VARIANT_TYPE_INT64; a
-// signed 64 bit integer. - `t`: the type string of G_VARIANT_TYPE_UINT64; an
-// unsigned 64 bit integer. - `h`: the type string of G_VARIANT_TYPE_HANDLE; a
-// signed 32 bit value that, by convention, is used as an index into an array of
-// file descriptors that are sent alongside a D-Bus message. - `d`: the type
-// string of G_VARIANT_TYPE_DOUBLE; a double precision floating point value. -
-// `s`: the type string of G_VARIANT_TYPE_STRING; a string. - `o`: the type
-// string of G_VARIANT_TYPE_OBJECT_PATH; a string in the form of a D-Bus object
-// path. - `g`: the type string of G_VARIANT_TYPE_SIGNATURE; a string in the
-// form of a D-Bus type signature. - `?`: the type string of
-// G_VARIANT_TYPE_BASIC; an indefinite type that is a supertype of any of the
-// basic types. - `v`: the type string of G_VARIANT_TYPE_VARIANT; a container
-// type that contain any other type of value. - `a`: used as a prefix on another
-// type string to mean an array of that type; the type string "ai", for example,
-// is the type of an array of signed 32-bit integers. - `m`: used as a prefix on
-// another type string to mean a "maybe", or "nullable", version of that type;
-// the type string "ms", for example, is the type of a value that maybe contains
-// a string, or maybe contains nothing. - `()`: used to enclose zero or more
-// other concatenated type strings to create a tuple type; the type string
-// "(is)", for example, is the type of a pair of an integer and a string. - `r`:
-// the type string of G_VARIANT_TYPE_TUPLE; an indefinite type that is a
-// supertype of any tuple type, regardless of the number of items. - `{}`: used
-// to enclose a basic type string concatenated with another type string to
-// create a dictionary entry type, which usually appears inside of an array to
-// form a dictionary; the type string "a{sd}", for example, is the type of a
-// dictionary that maps strings to double precision floating point values.
+// The meaning of each of the characters is as follows:
+//
+// - b: the type string of G_VARIANT_TYPE_BOOLEAN; a boolean value.
+//
+// - y: the type string of G_VARIANT_TYPE_BYTE; a byte.
+//
+// - n: the type string of G_VARIANT_TYPE_INT16; a signed 16 bit integer.
+//
+// - q: the type string of G_VARIANT_TYPE_UINT16; an unsigned 16 bit integer.
+//
+// - i: the type string of G_VARIANT_TYPE_INT32; a signed 32 bit integer.
+//
+// - u: the type string of G_VARIANT_TYPE_UINT32; an unsigned 32 bit integer.
+//
+// - x: the type string of G_VARIANT_TYPE_INT64; a signed 64 bit integer.
+//
+// - t: the type string of G_VARIANT_TYPE_UINT64; an unsigned 64 bit integer.
+//
+// - h: the type string of G_VARIANT_TYPE_HANDLE; a signed 32 bit value that, by
+// convention, is used as an index into an array of file descriptors that are
+// sent alongside a D-Bus message.
+//
+// - d: the type string of G_VARIANT_TYPE_DOUBLE; a double precision floating
+// point value.
+//
+// - s: the type string of G_VARIANT_TYPE_STRING; a string.
+//
+// - o: the type string of G_VARIANT_TYPE_OBJECT_PATH; a string in the form of a
+// D-Bus object path.
+//
+// - g: the type string of G_VARIANT_TYPE_SIGNATURE; a string in the form of a
+// D-Bus type signature.
+//
+// - ?: the type string of G_VARIANT_TYPE_BASIC; an indefinite type that is a
+// supertype of any of the basic types.
+//
+// - v: the type string of G_VARIANT_TYPE_VARIANT; a container type that contain
+// any other type of value.
+//
+// - a: used as a prefix on another type string to mean an array of that type;
+// the type string "ai", for example, is the type of an array of signed 32-bit
+// integers.
+//
+// - m: used as a prefix on another type string to mean a "maybe", or
+// "nullable", version of that type; the type string "ms", for example, is the
+// type of a value that maybe contains a string, or maybe contains nothing.
+//
+// - (): used to enclose zero or more other concatenated type strings to create
+// a tuple type; the type string "(is)", for example, is the type of a pair of
+// an integer and a string.
+//
+// - r: the type string of G_VARIANT_TYPE_TUPLE; an indefinite type that is a
+// supertype of any tuple type, regardless of the number of items.
+//
+// - {}: used to enclose a basic type string concatenated with another type
+// string to create a dictionary entry type, which usually appears inside of an
+// array to form a dictionary; the type string "a{sd}", for example, is the type
+// of a dictionary that maps strings to double precision floating point values.
 //
 //    The first type (the basic type) is the key type and the second type is
 //    the value type. The reason that the first type is restricted to being a
 //    basic type is so that it can easily be hashed.
 //
-// - `*`: the type string of G_VARIANT_TYPE_ANY; the indefinite type that is
-//
-//    a supertype of all types.  Note that, as with all type strings, this
-//    character represents exactly one type. It cannot be used inside of tuples
-//    to mean "any number of items".
+// - *: the type string of G_VARIANT_TYPE_ANY; the indefinite type that is a
+// supertype of all types. Note that, as with all type strings, this character
+// represents exactly one type. It cannot be used inside of tuples to mean "any
+// number of items".
 //
 // Any type string of a container that contains an indefinite type is, itself,
 // an indefinite type. For example, the type string "a*" (corresponding to
@@ -270,7 +295,7 @@ func (v *VariantType) Native() unsafe.Pointer {
 }
 
 // Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
-// on the return value. @type may not be nil.
+// on the return value. type may not be NULL.
 func (typ *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -290,7 +315,7 @@ func (typ *VariantType) Copy() *VariantType {
 }
 
 // DupString returns a newly-allocated copy of the type string corresponding to
-// @type. The returned string is nul-terminated. It is appropriate to call
+// type. The returned string is nul-terminated. It is appropriate to call
 // g_free() on the return value.
 func (typ *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
@@ -326,14 +351,14 @@ func (typ *VariantType) Element() *VariantType {
 	return _variantType
 }
 
-// Equal compares @type1 and @type2 for equality.
+// Equal compares type1 and type2 for equality.
 //
-// Only returns true if the types are exactly equal. Even if one type is an
-// indefinite type and the other is a subtype of it, false will be returned if
+// Only returns TRUE if the types are exactly equal. Even if one type is an
+// indefinite type and the other is a subtype of it, FALSE will be returned if
 // they are not exactly equal. If you want to check for subtypes, use
 // g_variant_type_is_subtype_of().
 //
-// The argument types of @type1 and @type2 are only #gconstpointer to allow use
+// The argument types of type1 and type2 are only #gconstpointer to allow use
 // with Table without function pointer casting. For both arguments, a valid Type
 // must be provided.
 func (type1 *VariantType) Equal(type2 *VariantType) bool {
@@ -362,7 +387,7 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 //
 // In the case of a dictionary entry type, this returns the type of the key.
 //
-// nil is returned in case of @type being G_VARIANT_TYPE_UNIT.
+// NULL is returned in case of type being G_VARIANT_TYPE_UNIT.
 //
 // This call, together with g_variant_type_next() provides an iterator interface
 // over tuple and dictionary entry types.
@@ -384,7 +409,7 @@ func (typ *VariantType) First() *VariantType {
 // Free frees a Type that was allocated with g_variant_type_copy(),
 // g_variant_type_new() or one of the container type constructor functions.
 //
-// In the case that @type is nil, this function does nothing.
+// In the case that type is NULL, this function does nothing.
 //
 // Since 2.24
 func (typ *VariantType) free() {
@@ -396,7 +421,7 @@ func (typ *VariantType) free() {
 }
 
 // StringLength returns the length of the type string corresponding to the given
-// @type. This function must be used to determine the valid extent of the memory
+// type. This function must be used to determine the valid extent of the memory
 // region returned by g_variant_type_peek_string().
 func (typ *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
@@ -413,9 +438,9 @@ func (typ *VariantType) StringLength() uint {
 	return _gsize
 }
 
-// Hash hashes @type.
+// Hash hashes type.
 //
-// The argument type of @type is only #gconstpointer to allow use with Table
+// The argument type of type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
 func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -432,10 +457,10 @@ func (typ *VariantType) Hash() uint {
 	return _guint
 }
 
-// IsArray determines if the given @type is an array type. This is true if the
-// type string for @type starts with an 'a'.
+// IsArray determines if the given type is an array type. This is true if the
+// type string for type starts with an 'a'.
 //
-// This function returns true for any indefinite type for which every definite
+// This function returns TRUE for any indefinite type for which every definite
 // subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
 func (typ *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
@@ -454,14 +479,14 @@ func (typ *VariantType) IsArray() bool {
 	return _ok
 }
 
-// IsBasic determines if the given @type is a basic type.
+// IsBasic determines if the given type is a basic type.
 //
 // Basic types are booleans, bytes, integers, doubles, strings, object paths and
 // signatures.
 //
 // Only a basic type may be used as the key of a dictionary entry.
 //
-// This function returns false for all indefinite types except
+// This function returns FALSE for all indefinite types except
 // G_VARIANT_TYPE_BASIC.
 func (typ *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
@@ -480,12 +505,12 @@ func (typ *VariantType) IsBasic() bool {
 	return _ok
 }
 
-// IsContainer determines if the given @type is a container type.
+// IsContainer determines if the given type is a container type.
 //
 // Container types are any array, maybe, tuple, or dictionary entry types plus
 // the variant type.
 //
-// This function returns true for any indefinite type for which every definite
+// This function returns TRUE for any indefinite type for which every definite
 // subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
 func (typ *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
@@ -504,15 +529,15 @@ func (typ *VariantType) IsContainer() bool {
 	return _ok
 }
 
-// IsDefinite determines if the given @type is definite (ie: not indefinite).
+// IsDefinite determines if the given type is definite (ie: not indefinite).
 //
 // A type is definite if its type string does not contain any indefinite type
 // characters ('*', '?', or 'r').
 //
 // A #GVariant instance may not have an indefinite type, so calling this
-// function on the result of g_variant_get_type() will always result in true
+// function on the result of g_variant_get_type() will always result in TRUE
 // being returned. Calling this function on an indefinite type like
-// G_VARIANT_TYPE_ARRAY, however, will result in false being returned.
+// G_VARIANT_TYPE_ARRAY, however, will result in FALSE being returned.
 func (typ *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -530,10 +555,10 @@ func (typ *VariantType) IsDefinite() bool {
 	return _ok
 }
 
-// IsDictEntry determines if the given @type is a dictionary entry type. This is
-// true if the type string for @type starts with a '{'.
+// IsDictEntry determines if the given type is a dictionary entry type. This is
+// true if the type string for type starts with a '{'.
 //
-// This function returns true for any indefinite type for which every definite
+// This function returns TRUE for any indefinite type for which every definite
 // subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
 func (typ *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
@@ -552,10 +577,10 @@ func (typ *VariantType) IsDictEntry() bool {
 	return _ok
 }
 
-// IsMaybe determines if the given @type is a maybe type. This is true if the
-// type string for @type starts with an 'm'.
+// IsMaybe determines if the given type is a maybe type. This is true if the
+// type string for type starts with an 'm'.
 //
-// This function returns true for any indefinite type for which every definite
+// This function returns TRUE for any indefinite type for which every definite
 // subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
 func (typ *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
@@ -574,9 +599,9 @@ func (typ *VariantType) IsMaybe() bool {
 	return _ok
 }
 
-// IsSubtypeOf checks if @type is a subtype of @supertype.
+// IsSubtypeOf checks if type is a subtype of supertype.
 //
-// This function returns true if @type is a subtype of @supertype. All types are
+// This function returns TRUE if type is a subtype of supertype. All types are
 // considered to be subtypes of themselves. Aside from that, only indefinite
 // types can have subtypes.
 func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
@@ -598,10 +623,10 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	return _ok
 }
 
-// IsTuple determines if the given @type is a tuple type. This is true if the
-// type string for @type starts with a '(' or if @type is G_VARIANT_TYPE_TUPLE.
+// IsTuple determines if the given type is a tuple type. This is true if the
+// type string for type starts with a '(' or if type is G_VARIANT_TYPE_TUPLE.
 //
-// This function returns true for any indefinite type for which every definite
+// This function returns TRUE for any indefinite type for which every definite
 // subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
 func (typ *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
@@ -620,7 +645,7 @@ func (typ *VariantType) IsTuple() bool {
 	return _ok
 }
 
-// IsVariant determines if the given @type is the variant type.
+// IsVariant determines if the given type is the variant type.
 func (typ *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -681,14 +706,14 @@ func (typ *VariantType) NItems() uint {
 
 // Next determines the next item type of a tuple or dictionary entry type.
 //
-// @type must be the result of a previous call to g_variant_type_first() or
+// type must be the result of a previous call to g_variant_type_first() or
 // g_variant_type_next().
 //
 // If called on the key type of a dictionary entry then this call returns the
 // value type. If called on the value type of a dictionary entry then this call
-// returns nil.
+// returns NULL.
 //
-// For tuples, nil is returned when @type is the last item in a tuple.
+// For tuples, NULL is returned when type is the last item in a tuple.
 func (typ *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -752,7 +777,7 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 	return _gsize
 }
 
-// VariantTypeStringIsValid checks if @type_string is a valid GVariant type
+// VariantTypeStringIsValid checks if type_string is a valid GVariant type
 // string. This call is equivalent to calling g_variant_type_string_scan() and
 // confirming that the following character is a nul terminator.
 func VariantTypeStringIsValid(typeString string) bool {
@@ -773,14 +798,14 @@ func VariantTypeStringIsValid(typeString string) bool {
 }
 
 // VariantTypeStringScan: scan for a single complete and valid GVariant type
-// string in @string. The memory pointed to by @limit (or bytes beyond it) is
+// string in string. The memory pointed to by limit (or bytes beyond it) is
 // never accessed.
 //
-// If a valid type string is found, @endptr is updated to point to the first
-// character past the end of the string that was found and true is returned.
+// If a valid type string is found, endptr is updated to point to the first
+// character past the end of the string that was found and TRUE is returned.
 //
-// If there is no valid type string starting at @string, or if the type string
-// does not end before @limit then false is returned.
+// If there is no valid type string starting at string, or if the type string
+// does not end before limit then FALSE is returned.
 //
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().

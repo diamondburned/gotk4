@@ -41,7 +41,7 @@ const (
 	ChecksumTypeSHA384
 )
 
-// ComputeChecksumForData computes the checksum for a binary @data of @length.
+// ComputeChecksumForData computes the checksum for a binary data of length.
 // This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()
 // and g_checksum_free().
 //
@@ -127,7 +127,7 @@ func (c *Checksum) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// Copy copies a #GChecksum. If @checksum has been closed, by calling
+// Copy copies a #GChecksum. If checksum has been closed, by calling
 // g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
 // be closed as well.
 func (checksum *Checksum) Copy() *Checksum {
@@ -148,7 +148,7 @@ func (checksum *Checksum) Copy() *Checksum {
 	return _ret
 }
 
-// Free frees the memory allocated for @checksum.
+// Free frees the memory allocated for checksum.
 func (checksum *Checksum) free() {
 	var _arg0 *C.GChecksum // out
 
@@ -178,7 +178,7 @@ func (checksum *Checksum) String() string {
 	return _utf8
 }
 
-// Reset resets the state of the @checksum back to its initial state.
+// Reset resets the state of the checksum back to its initial state.
 func (checksum *Checksum) Reset() {
 	var _arg0 *C.GChecksum // out
 
@@ -187,9 +187,9 @@ func (checksum *Checksum) Reset() {
 	C.g_checksum_reset(_arg0)
 }
 
-// Update feeds @data into an existing #GChecksum. The checksum must still be
+// Update feeds data into an existing #GChecksum. The checksum must still be
 // open, that is g_checksum_get_string() or g_checksum_get_digest() must not
-// have been called on @checksum.
+// have been called on checksum.
 func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
 	var _arg1 *C.guchar
@@ -205,7 +205,7 @@ func (checksum *Checksum) Update(data []byte) {
 }
 
 // ChecksumTypeGetLength gets the length in bytes of digests of type
-// @checksum_type
+// checksum_type
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out
 	var _cret C.gssize        // in

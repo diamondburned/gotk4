@@ -56,7 +56,7 @@ func (v *Vec2) Native() unsafe.Pointer {
 }
 
 // Add adds each component of the two passed vectors and places each result into
-// the components of @res.
+// the components of res.
 func (a *Vec2) Add(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -70,9 +70,9 @@ func (a *Vec2) Add(b *Vec2) Vec2 {
 	return _res
 }
 
-// Divide divides each component of the first operand @a by the corresponding
-// component of the second operand @b, and places the results into the vector
-// @res.
+// Divide divides each component of the first operand a by the corresponding
+// component of the second operand b, and places the results into the vector
+// res.
 func (a *Vec2) Divide(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -124,7 +124,7 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by @v
+// Free frees the resources allocated by v
 func (v *Vec2) free() {
 	var _arg0 *C.graphene_vec2_t // out
 
@@ -187,7 +187,7 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	return _vec2
 }
 
-// InitFromFloat initializes @v with the contents of the given array.
+// InitFromFloat initializes v with the contents of the given array.
 func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.float
@@ -205,7 +205,7 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	return _vec2
 }
 
-// InitFromVec2 copies the contents of @src into @v.
+// InitFromVec2 copies the contents of src into v.
 func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -223,7 +223,7 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	return _vec2
 }
 
-// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+// Interpolate: linearly interpolates v1 and v2 using the given factor.
 func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -256,7 +256,7 @@ func (v *Vec2) Length() float32 {
 }
 
 // Max compares the two given vectors and places the maximum values of each
-// component into @res.
+// component into res.
 func (a *Vec2) Max(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -271,7 +271,7 @@ func (a *Vec2) Max(b *Vec2) Vec2 {
 }
 
 // Min compares the two given vectors and places the minimum values of each
-// component into @res.
+// component into res.
 func (a *Vec2) Min(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -286,7 +286,7 @@ func (a *Vec2) Min(b *Vec2) Vec2 {
 }
 
 // Multiply multiplies each component of the two passed vectors and places each
-// result into the components of @res.
+// result into the components of res.
 func (a *Vec2) Multiply(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -301,7 +301,7 @@ func (a *Vec2) Multiply(b *Vec2) Vec2 {
 }
 
 // Near compares the two given #graphene_vec2_t vectors and checks whether their
-// values are within the given @epsilon.
+// values are within the given epsilon.
 func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -335,7 +335,7 @@ func (v *Vec2) Negate() Vec2 {
 	return _res
 }
 
-// Normalize computes the normalized vector for the given vector @v.
+// Normalize computes the normalized vector for the given vector v.
 func (v *Vec2) Normalize() Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _res Vec2
@@ -348,7 +348,7 @@ func (v *Vec2) Normalize() Vec2 {
 }
 
 // Scale multiplies all components of the given vector with the given scalar
-// @factor.
+// factor.
 func (v *Vec2) Scale(factor float32) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
@@ -362,9 +362,9 @@ func (v *Vec2) Scale(factor float32) Vec2 {
 	return _res
 }
 
-// Subtract subtracts from each component of the first operand @a the
-// corresponding component of the second operand @b and places each result into
-// the components of @res.
+// Subtract subtracts from each component of the first operand a the
+// corresponding component of the second operand b and places each result into
+// the components of res.
 func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -378,7 +378,7 @@ func (a *Vec2) Subtract(b *Vec2) Vec2 {
 	return _res
 }
 
-// ToFloat stores the components of @v into an array.
+// ToFloat stores the components of v into an array.
 func (v *Vec2) ToFloat() [2]float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 [2]C.float

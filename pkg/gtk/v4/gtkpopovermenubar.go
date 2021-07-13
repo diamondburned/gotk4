@@ -26,29 +26,32 @@ func init() {
 type PopoverMenuBarer interface {
 	// AddChild adds a custom widget to a generated menubar.
 	AddChild(child Widgeter, id string) bool
-	// MenuModel returns the model from which the contents of @bar are taken.
+	// MenuModel returns the model from which the contents of bar are taken.
 	MenuModel() *gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_bar_add_child().
 	RemoveChild(child Widgeter) bool
-	// SetMenuModel sets a menu model from which @bar should take its contents.
+	// SetMenuModel sets a menu model from which bar should take its contents.
 	SetMenuModel(model gio.MenuModeler)
 }
 
-// PopoverMenuBar: `GtkPopoverMenuBar` presents a horizontal bar of items that
-// pop up popover menus when clicked.
+// PopoverMenuBar: GtkPopoverMenuBar presents a horizontal bar of items that pop
+// up popover menus when clicked.
 //
 // !An example GtkPopoverMenuBar (menubar.png)
 //
-// The only way to create instances of `GtkPopoverMenuBar` is from a
-// `GMenuModel`.
-//
+// The only way to create instances of GtkPopoverMenuBar is from a GMenuModel.
 //
 // CSS nodes
 //
-// “` menubar ├── item[.active] ┊ ╰── popover ╰── item ╰── popover “`
+//    menubar
+//    ├── item[.active]
+//    ┊   ╰── popover
+//    ╰── item
+//        ╰── popover
 //
-// `GtkPopoverMenuBar` has a single CSS node with name menubar, below which each
+//
+// GtkPopoverMenuBar has a single CSS node with name menubar, below which each
 // item has its CSS node, and below that the corresponding popover.
 //
 // The item whose popover is currently open gets the .active style class.
@@ -56,8 +59,8 @@ type PopoverMenuBarer interface {
 //
 // Accessibility
 //
-// `GtkPopoverMenuBar` uses the GTK_ACCESSIBLE_ROLE_MENU_BAR role, the menu
-// items use the GTK_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
+// GtkPopoverMenuBar uses the GTK_ACCESSIBLE_ROLE_MENU_BAR role, the menu items
+// use the GTK_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
 // GTK_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar struct {
 	Widget
@@ -93,7 +96,7 @@ func marshalPopoverMenuBarer(p uintptr) (interface{}, error) {
 	return wrapPopoverMenuBar(obj), nil
 }
 
-// NewPopoverMenuBarFromModel creates a `GtkPopoverMenuBar` from a `GMenuModel`.
+// NewPopoverMenuBarFromModel creates a GtkPopoverMenuBar from a GMenuModel.
 func NewPopoverMenuBarFromModel(model gio.MenuModeler) *PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -111,8 +114,8 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeler) *PopoverMenuBar {
 
 // AddChild adds a custom widget to a generated menubar.
 //
-// For this to work, the menu model of @bar must have an item with a `custom`
-// attribute that matches @id.
+// For this to work, the menu model of bar must have an item with a custom
+// attribute that matches id.
 func (bar *PopoverMenuBar) AddChild(child Widgeter, id string) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
@@ -134,7 +137,7 @@ func (bar *PopoverMenuBar) AddChild(child Widgeter, id string) bool {
 	return _ok
 }
 
-// MenuModel returns the model from which the contents of @bar are taken.
+// MenuModel returns the model from which the contents of bar are taken.
 func (bar *PopoverMenuBar) MenuModel() *gio.MenuModel {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _cret *C.GMenuModel        // in
@@ -176,7 +179,7 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgeter) bool {
 	return _ok
 }
 
-// SetMenuModel sets a menu model from which @bar should take its contents.
+// SetMenuModel sets a menu model from which bar should take its contents.
 func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeler) {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GMenuModel        // out

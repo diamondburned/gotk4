@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -45,7 +44,7 @@ func PangoContextGet() *pango.Context {
 	return _context
 }
 
-// PangoContextGetForDisplay creates a Context for @display.
+// PangoContextGetForDisplay creates a Context for display.
 //
 // The context must be freed when you’re finished with it.
 //
@@ -58,11 +57,11 @@ func PangoContextGet() *pango.Context {
 // be updated. Using gtk_widget_get_pango_context() is more convenient if you
 // want to keep a context around and track changes to the font rendering
 // settings.
-func PangoContextGetForDisplay(display Displayer) *pango.Context {
+func PangoContextGetForDisplay(display *Display) *pango.Context {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_pango_context_get_for_display(_arg1)
 
@@ -78,7 +77,7 @@ func PangoContextGetForDisplay(display Displayer) *pango.Context {
 	return _context
 }
 
-// PangoContextGetForScreen creates a Context for @screen.
+// PangoContextGetForScreen creates a Context for screen.
 //
 // The context must be freed when you’re finished with it.
 //
@@ -91,11 +90,11 @@ func PangoContextGetForDisplay(display Displayer) *pango.Context {
 // updated. Using gtk_widget_get_pango_context() is more convenient if you want
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
-func PangoContextGetForScreen(screen Screener) *pango.Context {
+func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gdk_pango_context_get_for_screen(_arg1)
 

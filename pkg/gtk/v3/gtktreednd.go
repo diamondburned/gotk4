@@ -24,10 +24,10 @@ func init() {
 	})
 }
 
-// TreeGetRowDragData obtains a @tree_model and @path from selection data of
+// TreeGetRowDragData obtains a tree_model and path from selection data of
 // target type GTK_TREE_MODEL_ROW. Normally called from a drag_data_received
-// handler. This function can only be used if @selection_data originates from
-// the same process that’s calling this function, because a pointer to the tree
+// handler. This function can only be used if selection_data originates from the
+// same process that’s calling this function, because a pointer to the tree
 // model is being passed around. If you aren’t in the same process, then you'll
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
@@ -84,27 +84,27 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeler, pat
 // yet, so the interface currently has no use.
 type TreeDragDestOverrider interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
-	// @dest, deriving the contents of the row from @selection_data. If @dest is
-	// outside the tree so that inserting before it is impossible, false will be
-	// returned. Also, false may be returned if the new row is not created for
-	// some model-specific reason. Should robustly handle a @dest no longer
-	// found in the model!
+	// dest, deriving the contents of the row from selection_data. If dest is
+	// outside the tree so that inserting before it is impossible, FALSE will be
+	// returned. Also, FALSE may be returned if the new row is not created for
+	// some model-specific reason. Should robustly handle a dest no longer found
+	// in the model!
 	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
 	// RowDropPossible determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
-	// in @selection_data at that location. @dest_path does not have to exist;
-	// the return value will almost certainly be false if the parent of
-	// @dest_path doesn’t exist, though.
+	// dest_path, at the same depth as dest_path. i.e., can we drop the data in
+	// selection_data at that location. dest_path does not have to exist; the
+	// return value will almost certainly be FALSE if the parent of dest_path
+	// doesn’t exist, though.
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
 // TreeDragDester describes TreeDragDest's methods.
 type TreeDragDester interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
-	// @dest, deriving the contents of the row from @selection_data.
+	// dest, deriving the contents of the row from selection_data.
 	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
 	// RowDropPossible determines whether a drop is possible before the given
-	// @dest_path, at the same depth as @dest_path.
+	// dest_path, at the same depth as dest_path.
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
@@ -129,12 +129,11 @@ func marshalTreeDragDester(p uintptr) (interface{}, error) {
 	return wrapTreeDragDest(obj), nil
 }
 
-// DragDataReceived asks the TreeDragDest to insert a row before the path @dest,
-// deriving the contents of the row from @selection_data. If @dest is outside
-// the tree so that inserting before it is impossible, false will be returned.
-// Also, false may be returned if the new row is not created for some
-// model-specific reason. Should robustly handle a @dest no longer found in the
-// model!
+// DragDataReceived asks the TreeDragDest to insert a row before the path dest,
+// deriving the contents of the row from selection_data. If dest is outside the
+// tree so that inserting before it is impossible, FALSE will be returned. Also,
+// FALSE may be returned if the new row is not created for some model-specific
+// reason. Should robustly handle a dest no longer found in the model!
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
@@ -157,10 +156,10 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, selectionData *Se
 }
 
 // RowDropPossible determines whether a drop is possible before the given
-// @dest_path, at the same depth as @dest_path. i.e., can we drop the data in
-// @selection_data at that location. @dest_path does not have to exist; the
-// return value will almost certainly be false if the parent of @dest_path
-// doesn’t exist, though.
+// dest_path, at the same depth as dest_path. i.e., can we drop the data in
+// selection_data at that location. dest_path does not have to exist; the return
+// value will almost certainly be FALSE if the parent of dest_path doesn’t
+// exist, though.
 func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragDest  // out
 	var _arg1 *C.GtkTreePath      // out
@@ -187,15 +186,14 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, selectionData 
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeDragSourceOverrider interface {
-	// DragDataDelete asks the TreeDragSource to delete the row at @path,
-	// because it was moved somewhere else via drag-and-drop. Returns false if
-	// the deletion fails because @path no longer exists, or for some
-	// model-specific reason. Should robustly handle a @path no longer found in
-	// the model!
+	// DragDataDelete asks the TreeDragSource to delete the row at path, because
+	// it was moved somewhere else via drag-and-drop. Returns FALSE if the
+	// deletion fails because path no longer exists, or for some model-specific
+	// reason. Should robustly handle a path no longer found in the model!
 	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
-	// representation of the row at @path. @selection_data->target gives the
-	// required type of the data. Should robustly handle a @path no longer found
+	// DragDataGet asks the TreeDragSource to fill in selection_data with a
+	// representation of the row at path. selection_data->target gives the
+	// required type of the data. Should robustly handle a path no longer found
 	// in the model!
 	DragDataGet(path *TreePath, selectionData *SelectionData) bool
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
@@ -206,11 +204,11 @@ type TreeDragSourceOverrider interface {
 
 // TreeDragSourcer describes TreeDragSource's methods.
 type TreeDragSourcer interface {
-	// DragDataDelete asks the TreeDragSource to delete the row at @path,
-	// because it was moved somewhere else via drag-and-drop.
+	// DragDataDelete asks the TreeDragSource to delete the row at path, because
+	// it was moved somewhere else via drag-and-drop.
 	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
-	// representation of the row at @path.
+	// DragDataGet asks the TreeDragSource to fill in selection_data with a
+	// representation of the row at path.
 	DragDataGet(path *TreePath, selectionData *SelectionData) bool
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation.
@@ -238,10 +236,10 @@ func marshalTreeDragSourcer(p uintptr) (interface{}, error) {
 	return wrapTreeDragSource(obj), nil
 }
 
-// DragDataDelete asks the TreeDragSource to delete the row at @path, because it
-// was moved somewhere else via drag-and-drop. Returns false if the deletion
-// fails because @path no longer exists, or for some model-specific reason.
-// Should robustly handle a @path no longer found in the model!
+// DragDataDelete asks the TreeDragSource to delete the row at path, because it
+// was moved somewhere else via drag-and-drop. Returns FALSE if the deletion
+// fails because path no longer exists, or for some model-specific reason.
+// Should robustly handle a path no longer found in the model!
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out
@@ -261,10 +259,9 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	return _ok
 }
 
-// DragDataGet asks the TreeDragSource to fill in @selection_data with a
-// representation of the row at @path. @selection_data->target gives the
-// required type of the data. Should robustly handle a @path no longer found in
-// the model!
+// DragDataGet asks the TreeDragSource to fill in selection_data with a
+// representation of the row at path. selection_data->target gives the required
+// type of the data. Should robustly handle a path no longer found in the model!
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var _arg0 *C.GtkTreeDragSource // out
 	var _arg1 *C.GtkTreePath       // out

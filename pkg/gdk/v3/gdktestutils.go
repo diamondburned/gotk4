@@ -13,8 +13,8 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// TestRenderSync retrieves a pixel from @window to force the windowing system
-// to carry out any pending rendering commands.
+// TestRenderSync retrieves a pixel from window to force the windowing system to
+// carry out any pending rendering commands.
 //
 // This function is intended to be used to synchronize with rendering pipelines,
 // to benchmark windowing system rendering operations.
@@ -27,9 +27,9 @@ func TestRenderSync(window Windower) {
 }
 
 // TestSimulateButton: this function is intended to be used in GTK+ test
-// programs. It will warp the mouse pointer to the given (@x,@y) coordinates
-// within @window and simulate a button press or release event. Because the
-// mouse pointer needs to be warped to the target location, use of this function
+// programs. It will warp the mouse pointer to the given (x,y) coordinates
+// within window and simulate a button press or release event. Because the mouse
+// pointer needs to be warped to the target location, use of this function
 // outside of test programs that run in their own virtual windowing system (e.g.
 // Xvfb) is not recommended.
 //
@@ -65,13 +65,13 @@ func TestSimulateButton(window Windower, x int, y int, button uint, modifiers Mo
 }
 
 // TestSimulateKey: this function is intended to be used in GTK+ test programs.
-// If (@x,@y) are > (-1,-1), it will warp the mouse pointer to the given (@x,@y)
-// coordinates within @window and simulate a key press or release event.
+// If (x,y) are > (-1,-1), it will warp the mouse pointer to the given (x,y)
+// coordinates within window and simulate a key press or release event.
 //
 // When the mouse pointer is warped to the target location, use of this function
 // outside of test programs that run in their own virtual windowing system (e.g.
-// Xvfb) is not recommended. If (@x,@y) are passed as (-1,-1), the mouse pointer
-// will not be warped and @window origin will be used as mouse pointer location
+// Xvfb) is not recommended. If (x,y) are passed as (-1,-1), the mouse pointer
+// will not be warped and window origin will be used as mouse pointer location
 // for the event.
 //
 // Also, gdk_test_simulate_key() is a fairly low level function, for most

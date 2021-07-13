@@ -32,7 +32,7 @@ type ProgressBarer interface {
 	Inverted() bool
 	// PulseStep retrieves the pulse step.
 	PulseStep() float64
-	// ShowText returns whether the `GtkProgressBar` shows text.
+	// ShowText returns whether the GtkProgressBar shows text.
 	ShowText() bool
 	// Text retrieves the text that is displayed with the progress bar.
 	Text() string
@@ -51,44 +51,45 @@ type ProgressBarer interface {
 	SetPulseStep(fraction float64)
 	// SetShowText sets whether the progress bar will show text next to the bar.
 	SetShowText(showText bool)
-	// SetText causes the given @text to appear next to the progress bar.
+	// SetText causes the given text to appear next to the progress bar.
 	SetText(text string)
 }
 
-// ProgressBar: `GtkProgressBar` is typically used to display the progress of a
+// ProgressBar: GtkProgressBar is typically used to display the progress of a
 // long running operation.
 //
-// It provides a visual clue that processing is underway. `GtkProgressBar` can
-// be used in two different modes: percentage mode and activity mode.
+// It provides a visual clue that processing is underway. GtkProgressBar can be
+// used in two different modes: percentage mode and activity mode.
 //
 // !An example GtkProgressBar (progressbar.png)
 //
 // When an application can determine how much work needs to take place (e.g.
 // read a fixed number of bytes from a file) and can monitor its progress, it
-// can use the `GtkProgressBar` in percentage mode and the user sees a growing
-// bar indicating the percentage of the work that has been completed. In this
-// mode, the application is required to call
-// [method@Gtk.ProgressBar.set_fraction] periodically to update the progress
-// bar.
+// can use the GtkProgressBar in percentage mode and the user sees a growing bar
+// indicating the percentage of the work that has been completed. In this mode,
+// the application is required to call gtk.ProgressBar.SetFraction()
+// periodically to update the progress bar.
 //
 // When an application has no accurate way of knowing the amount of work to do,
-// it can use the `GtkProgressBar` in activity mode, which shows activity by a
+// it can use the GtkProgressBar in activity mode, which shows activity by a
 // block moving back and forth within the progress area. In this mode, the
-// application is required to call [method@Gtk.ProgressBar.pulse] periodically
-// to update the progress bar.
+// application is required to call gtk.ProgressBar.Pulse() periodically to
+// update the progress bar.
 //
 // There is quite a bit of flexibility provided to control the appearance of the
-// `GtkProgressBar`. Functions are provided to control the orientation of the
-// bar, optional text can be displayed along with the bar, and the step size
-// used in activity mode can be set.
-//
+// GtkProgressBar. Functions are provided to control the orientation of the bar,
+// optional text can be displayed along with the bar, and the step size used in
+// activity mode can be set.
 //
 // CSS nodes
 //
-// “` progressbar[.osd] ├── [text] ╰── trough[.empty][.full] ╰──
-// progress[.pulse] “`
+//    progressbar[.osd]
+//    ├── [text]
+//    ╰── trough[.empty][.full]
+//        ╰── progress[.pulse]
 //
-// `GtkProgressBar` has a main CSS node with name progressbar and subnodes with
+//
+// GtkProgressBar has a main CSS node with name progressbar and subnodes with
 // names text and trough, of which the latter has a subnode named progress. The
 // text subnode is only present if text is shown. The progress subnode has the
 // style class .pulse when in activity mode. It gets the style classes .left,
@@ -99,7 +100,7 @@ type ProgressBarer interface {
 //
 // Accessibility
 //
-// `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
+// GtkProgressBar uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar struct {
 	Widget
 
@@ -139,7 +140,7 @@ func marshalProgressBarer(p uintptr) (interface{}, error) {
 	return wrapProgressBar(obj), nil
 }
 
-// NewProgressBar creates a new `GtkProgressBar`.
+// NewProgressBar creates a new GtkProgressBar.
 func NewProgressBar() *ProgressBar {
 	var _cret *C.GtkWidget // in
 
@@ -160,7 +161,7 @@ func (v *ProgressBar) Native() uintptr {
 
 // Ellipsize returns the ellipsizing position of the progress bar.
 //
-// See [method@Gtk.ProgressBar.set_ellipsize].
+// See gtk.ProgressBar.SetEllipsize().
 func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkProgressBar    // out
 	var _cret C.PangoEllipsizeMode // in
@@ -212,7 +213,7 @@ func (pbar *ProgressBar) Inverted() bool {
 
 // PulseStep retrieves the pulse step.
 //
-// See [method@Gtk.ProgressBar.set_pulse_step].
+// See gtk.ProgressBar.SetPulseStep().
 func (pbar *ProgressBar) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.double          // in
@@ -228,9 +229,9 @@ func (pbar *ProgressBar) PulseStep() float64 {
 	return _gdouble
 }
 
-// ShowText returns whether the `GtkProgressBar` shows text.
+// ShowText returns whether the GtkProgressBar shows text.
 //
-// See [method@Gtk.ProgressBar.set_show_text].
+// See gtk.ProgressBar.SetShowText().
 func (pbar *ProgressBar) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
 	var _cret C.gboolean        // in
@@ -271,9 +272,9 @@ func (pbar *ProgressBar) Text() string {
 // much.
 //
 // Causes the progress bar to enter “activity mode,” where a block bounces back
-// and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the block to
-// move by a little bit (the amount of movement per pulse is determined by
-// [method@Gtk.ProgressBar.set_pulse_step]).
+// and forth. Each call to gtk.ProgressBar.Pulse() causes the block to move by a
+// little bit (the amount of movement per pulse is determined by
+// gtk.ProgressBar.SetPulseStep()).
 func (pbar *ProgressBar) Pulse() {
 	var _arg0 *C.GtkProgressBar // out
 
@@ -329,7 +330,7 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 // SetPulseStep sets the fraction of total progress bar length to move the
 // bouncing block.
 //
-// The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is called.
+// The bouncing block is moved when gtk.ProgressBar.Pulse() is called.
 func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.double          // out
@@ -342,13 +343,12 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 
 // SetShowText sets whether the progress bar will show text next to the bar.
 //
-// The shown text is either the value of the [property@Gtk.ProgressBar:text]
-// property or, if that is nil, the [property@Gtk.ProgressBar:fraction] value,
-// as a percentage.
+// The shown text is either the value of the gtk.ProgressBar:text property or,
+// if that is NULL, the gtk.ProgressBar:fraction value, as a percentage.
 //
 // To make a progress bar that is styled and sized suitably for containing text
-// (even if the actual text is blank), set [property@Gtk.ProgressBar:show-text]
-// to true and [property@Gtk.ProgressBar:text] to the empty string (not nil).
+// (even if the actual text is blank), set gtk.ProgressBar:show-text to TRUE and
+// gtk.ProgressBar:text to the empty string (not NULL).
 func (pbar *ProgressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 C.gboolean        // out
@@ -361,17 +361,15 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
 }
 
-// SetText causes the given @text to appear next to the progress bar.
+// SetText causes the given text to appear next to the progress bar.
 //
-// If @text is nil and [property@Gtk.ProgressBar:show-text] is true, the current
-// value of [property@Gtk.ProgressBar:fraction] will be displayed as a
-// percentage.
+// If text is NULL and gtk.ProgressBar:show-text is TRUE, the current value of
+// gtk.ProgressBar:fraction will be displayed as a percentage.
 //
-// If @text is non-nil and [property@Gtk.ProgressBar:show-text] is true, the
-// text will be displayed. In this case, it will not display the progress
-// percentage. If @text is the empty string, the progress bar will still be
-// styled and sized suitably for containing text, as long as
-// [property@Gtk.ProgressBar:show-text] is true.
+// If text is non-NULL and gtk.ProgressBar:show-text is TRUE, the text will be
+// displayed. In this case, it will not display the progress percentage. If text
+// is the empty string, the progress bar will still be styled and sized suitably
+// for containing text, as long as gtk.ProgressBar:show-text is TRUE.
 func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out
 	var _arg1 *C.char           // out

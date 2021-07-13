@@ -20,7 +20,7 @@ func init() {
 	})
 }
 
-// BidiType: `PangoBidiType` represents the bidirectional character type of a
+// BidiType: PangoBidiType represents the bidirectional character type of a
 // Unicode character as specified by the <ulink
 // url="http://www.unicode.org/reports/tr9/">Unicode bidirectional
 // algorithm</ulink>.
@@ -77,8 +77,7 @@ func marshalBidiType(p uintptr) (interface{}, error) {
 //
 // The bidirectional type is specified in the Unicode Character Database.
 //
-// A simplified version of this function is available as
-// [func@unichar_direction].
+// A simplified version of this function is available as unichar_direction.
 func BidiTypeForUnichar(ch uint32) BidiType {
 	var _arg1 C.gunichar      // out
 	var _cret C.PangoBidiType // in
@@ -145,8 +144,7 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 //
 // This function is useful to categorize characters into left-to-right letters,
 // right-to-left letters, and everything else. If full Unicode bidirectional
-// type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
-// used instead.
+// type of a character is needed, pango.BidiType.ForUnichar can be used instead.
 func UnicharDirection(ch uint32) Direction {
 	var _arg1 C.gunichar       // out
 	var _cret C.PangoDirection // in

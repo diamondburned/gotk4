@@ -29,9 +29,9 @@ type IMMulticontexter interface {
 	// menu; the menuitems, when selected, will switch the input method for the
 	// context and the global default input method.
 	AppendMenuitems(menushell MenuSheller)
-	// ContextID gets the id of the currently active slave of the @context.
+	// ContextID gets the id of the currently active slave of the context.
 	ContextID() string
-	// SetContextID sets the context id for @context.
+	// SetContextID sets the context id for context.
 	SetContextID(contextId string)
 }
 
@@ -88,7 +88,7 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 }
 
-// ContextID gets the id of the currently active slave of the @context.
+// ContextID gets the id of the currently active slave of the context.
 func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
@@ -104,10 +104,10 @@ func (context *IMMulticontext) ContextID() string {
 	return _utf8
 }
 
-// SetContextID sets the context id for @context.
+// SetContextID sets the context id for context.
 //
-// This causes the currently active slave of @context to be replaced by the
-// slave corresponding to the new context id.
+// This causes the currently active slave of context to be replaced by the slave
+// corresponding to the new context id.
 func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _arg1 *C.char              // out

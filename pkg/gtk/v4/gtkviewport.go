@@ -23,36 +23,35 @@ func init() {
 
 // Viewporter describes Viewport's methods.
 type Viewporter interface {
-	// Child gets the child widget of @viewport.
+	// Child gets the child widget of viewport.
 	Child() *Widget
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
 	// child in view.
 	ScrollToFocus() bool
-	// SetChild sets the child widget of @viewport.
+	// SetChild sets the child widget of viewport.
 	SetChild(child Widgeter)
 	// SetScrollToFocus sets whether the viewport should automatically scroll to
 	// keep the focused child in view.
 	SetScrollToFocus(scrollToFocus bool)
 }
 
-// Viewport: `GtkViewport` implements scrollability for widgets that lack their
+// Viewport: GtkViewport implements scrollability for widgets that lack their
 // own scrolling capabilities.
 //
-// Use `GtkViewport` to scroll child widgets such as `GtkGrid`, `GtkBox`, and so
-// on.
+// Use GtkViewport to scroll child widgets such as GtkGrid, GtkBox, and so on.
 //
-// The `GtkViewport` will start scrolling content only if allocated less than
-// the child widget’s minimum size in a given orientation.
+// The GtkViewport will start scrolling content only if allocated less than the
+// child widget’s minimum size in a given orientation.
 //
 //
 // CSS nodes
 //
-// `GtkViewport` has a single CSS node with name `viewport`.
+// GtkViewport has a single CSS node with name viewport.
 //
 //
 // Accessibility
 //
-// `GtkViewport` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkViewport uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport struct {
 	Widget
 
@@ -92,17 +91,17 @@ func marshalViewporter(p uintptr) (interface{}, error) {
 	return wrapViewport(obj), nil
 }
 
-// NewViewport creates a new `GtkViewport`.
+// NewViewport creates a new GtkViewport.
 //
 // The new viewport uses the given adjustments, or default adjustments if none
 // are given.
-func NewViewport(hadjustment Adjustmenter, vadjustment Adjustmenter) *Viewport {
+func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	_cret = C.gtk_viewport_new(_arg1, _arg2)
 
@@ -119,7 +118,7 @@ func (v *Viewport) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// Child gets the child widget of @viewport.
+// Child gets the child widget of viewport.
 func (viewport *Viewport) Child() *Widget {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
@@ -154,7 +153,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 	return _ok
 }
 
-// SetChild sets the child widget of @viewport.
+// SetChild sets the child widget of viewport.
 func (viewport *Viewport) SetChild(child Widgeter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out

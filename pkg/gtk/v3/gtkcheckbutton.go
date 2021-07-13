@@ -141,7 +141,7 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 // NewCheckButtonWithMnemonic creates a new CheckButton containing a label. The
 // label will be created using gtk_label_new_with_mnemonic(), so underscores in
-// @label indicate the mnemonic for the check button.
+// label indicate the mnemonic for the check button.
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in

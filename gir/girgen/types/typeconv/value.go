@@ -67,10 +67,8 @@ type ConversionValue struct {
 	// or length.
 	ParameterIndex ConversionValueIndex
 
-	// PreferPublic, if true, will resolve the Go type into a public type
-	// instead of the implementation one. This is useful for function
-	// parameters.
-	PreferPublic bool
+	// KeepType overrides the abstract type if true.
+	KeepType bool
 }
 
 // NewValue creates a new ConversionValue from the given parameter attributes.
@@ -83,7 +81,6 @@ func NewValue(
 		Direction:      dir,
 		ParameterIndex: UnknownValueIndex,
 		ParameterAttrs: param.ParameterAttrs,
-		PreferPublic:   true,
 	}
 	if i > -1 {
 		value.ParameterIndex = ConversionValueIndex(i)
@@ -103,6 +100,7 @@ func NewReceiverValue(
 		Direction:      dir,
 		ParameterIndex: UnknownValueIndex,
 		ParameterAttrs: param.ParameterAttrs,
+		KeepType:       true, // concrete method receivers
 	}
 }
 
@@ -402,8 +400,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		value.Out.Type = value.Resolved.ImplType(value.NeedsNamespace)
 	} else {
 		value.Out.Type = cgoType
-		// Go input should always be the public (interface) type.
-		if value.PreferPublic {
+		if !value.KeepType && value.Resolved.IsAbstract() {
 			value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
 			value.IsPublic = true
 		} else {

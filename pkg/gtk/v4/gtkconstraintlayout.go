@@ -26,44 +26,44 @@ func init() {
 // ConstraintLayouter describes ConstraintLayout's methods.
 type ConstraintLayouter interface {
 	// AddConstraint adds a constraint to the layout manager.
-	AddConstraint(constraint Constrainter)
-	// AddGuide adds a guide to `layout`.
-	AddGuide(guide ConstraintGuider)
-	// ObserveConstraints returns a `GListModel` to track the constraints that
-	// are part of the layout.
+	AddConstraint(constraint *Constraint)
+	// AddGuide adds a guide to layout.
+	AddGuide(guide *ConstraintGuide)
+	// ObserveConstraints returns a GListModel to track the constraints that are
+	// part of the layout.
 	ObserveConstraints() *gio.ListModel
-	// ObserveGuides returns a `GListModel` to track the guides that are part of
+	// ObserveGuides returns a GListModel to track the guides that are part of
 	// the layout.
 	ObserveGuides() *gio.ListModel
 	// RemoveAllConstraints removes all constraints from the layout manager.
 	RemoveAllConstraints()
-	// RemoveConstraint removes `constraint` from the layout manager, so that it
+	// RemoveConstraint removes constraint from the layout manager, so that it
 	// no longer influences the layout.
-	RemoveConstraint(constraint Constrainter)
-	// RemoveGuide removes `guide` from the layout manager, so that it no longer
+	RemoveConstraint(constraint *Constraint)
+	// RemoveGuide removes guide from the layout manager, so that it no longer
 	// influences the layout.
-	RemoveGuide(guide ConstraintGuider)
+	RemoveGuide(guide *ConstraintGuide)
 }
 
 // ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
-// `GtkConstraintLayout` is a layout manager that uses relations between widget
-// attributes, expressed via [class@Gtk.Constraint] instances, to measure and
-// allocate widgets.
+// GtkConstraintLayout is a layout manager that uses relations between widget
+// attributes, expressed via gtk.Constraint instances, to measure and allocate
+// widgets.
 //
 //
 // How do constraints work
 //
 // Constraints are objects defining the relationship between attributes of a
-// widget; you can read the description of the [class@Gtk.Constraint] class to
-// have a more in depth definition.
+// widget; you can read the description of the gtk.Constraint class to have a
+// more in depth definition.
 //
 // By taking multiple constraints and applying them to the children of a widget
-// using `GtkConstraintLayout`, it's possible to describe complex layout
-// policies; each constraint applied to a child or to the parent widgets
-// contributes to the full description of the layout, in terms of parameters for
-// resolving the value of each attribute.
+// using GtkConstraintLayout, it's possible to describe complex layout policies;
+// each constraint applied to a child or to the parent widgets contributes to
+// the full description of the layout, in terms of parameters for resolving the
+// value of each attribute.
 //
 // It is important to note that a layout is defined by the totality of
 // constraints; removing a child, or a constraint, from an existing layout
@@ -80,24 +80,32 @@ type ConstraintLayouter interface {
 // undefined.
 //
 // A constraint-based layout with conflicting constraints may be unsolvable, and
-// lead to an unstable layout. You can use the
-// [property@Gtk.Constraint:strength] property of [class@Gtk.Constraint] to
-// "nudge" the layout towards a solution.
+// lead to an unstable layout. You can use the gtk.Constraint:strength property
+// of gtk.Constraint to "nudge" the layout towards a solution.
 //
 //
 // GtkConstraintLayout as GtkBuildable
 //
-// `GtkConstraintLayout` implements the [iface@Gtk.Buildable] interface and has
-// a custom "constraints" element which allows describing constraints in a
-// [class@Gtk.Builder] UI file.
+// GtkConstraintLayout implements the gtk.Buildable interface and has a custom
+// "constraints" element which allows describing constraints in a gtk.Builder UI
+// file.
 //
 // An example of a UI definition fragment specifying a constraint:
 //
-// “`xml <object class="GtkConstraintLayout"> <constraints> <constraint
-// target="button" target-attribute="start" relation="eq" source="super"
-// source-attribute="start" constant="12" strength="required" /> <constraint
-// target="button" target-attribute="width" relation="ge" constant="250"
-// strength="strong" /> </constraints> </object> “`
+//      <object class="GtkConstraintLayout">
+//        <constraints>
+//          <constraint target="button" target-attribute="start"
+//                      relation="eq"
+//                      source="super" source-attribute="start"
+//                      constant="12"
+//                      strength="required" />
+//          <constraint target="button" target-attribute="width"
+//                      relation="ge"
+//                      constant="250"
+//                      strength="strong" />
+//        </constraints>
+//      </object>
+//
 //
 // The definition above will add two constraints to the GtkConstraintLayout:
 //
@@ -127,9 +135,11 @@ type ConstraintLayouter interface {
 // Additionally, the "constraints" element can also contain a description of the
 // ConstraintGuides used by the layout:
 //
-// “`xml <constraints> <guide min-width="100" max-width="500" name="hspace"/>
-// <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
-// </constraints> “`
+//      <constraints>
+//        <guide min-width="100" max-width="500" name="hspace"/>
+//        <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
+//      </constraints>
+//
 //
 // The "guide" element has the following optional attributes:
 //
@@ -151,11 +161,12 @@ type ConstraintLayouter interface {
 // The Visual Format Language describes all the constraints on a row or column,
 // typically starting from the leading edge towards the trailing one. Each
 // element of the layout is composed by "views", which identify a
-// [iface@Gtk.ConstraintTarget].
+// gtk.ConstraintTarget.
 //
 // For instance:
 //
-// “` [button]-[textField] “`
+//      [button]-[textField]
+//
 //
 // Describes a constraint that binds the trailing edge of "button" to the
 // leading edge of "textField", leaving a default space between the two.
@@ -163,32 +174,35 @@ type ConstraintLayouter interface {
 // Using VFL is also possible to specify predicates that describe constraints on
 // attributes like width and height:
 //
-// “` // Width must be greater than, or equal to 50 [button(>=50)]
+//      // Width must be greater than, or equal to 50
+//      [button(>=50)]
 //
-//    // Width of button1 must be equal to width of button2
-//    [button1(==button2)]
+//      // Width of button1 must be equal to width of button2
+//      [button1(==button2)]
 //
-// “`
 //
 // The default orientation for a VFL description is horizontal, unless otherwise
 // specified:
 //
-// “` // horizontal orientation, default attribute: width H:[button(>=150)]
+//      // horizontal orientation, default attribute: width
+//      H:[button(>=150)]
 //
-//    // vertical orientation, default attribute: height
-//    V:[button1(==button2)]
+//      // vertical orientation, default attribute: height
+//      V:[button1(==button2)]
 //
-// “`
 //
 // It's also possible to specify multiple predicates, as well as their strength:
 //
-// “` // minimum width of button must be 150 // natural width of button can be
-// 250 [button(>=150@required, ==250@medium)] “`
+//      // minimum width of button must be 150
+//      // natural width of button can be 250
+//      [button(>=150required, ==250medium)]
+//
 //
 // Finally, it's also possible to use simple arithmetic operators:
 //
-// “` // width of button1 must be equal to width of button2 // divided by 2 plus
-// 12 [button1(button2 / 2 + 12)] “`
+//      // width of button1 must be equal to width of button2
+//      // divided by 2 plus 12
+//      [button1(button2 / 2 + 12)]
 type ConstraintLayout struct {
 	LayoutManager
 
@@ -217,7 +231,7 @@ func marshalConstraintLayouter(p uintptr) (interface{}, error) {
 	return wrapConstraintLayout(obj), nil
 }
 
-// NewConstraintLayout creates a new `GtkConstraintLayout` layout manager.
+// NewConstraintLayout creates a new GtkConstraintLayout layout manager.
 func NewConstraintLayout() *ConstraintLayout {
 	var _cret *C.GtkLayoutManager // in
 
@@ -238,44 +252,43 @@ func (v *ConstraintLayout) Native() uintptr {
 
 // AddConstraint adds a constraint to the layout manager.
 //
-// The [property@Gtk.Constraint:source] and [property@Gtk.Constraint:target]
-// properties of `constraint` can be:
+// The gtk.Constraint:source and gtk.Constraint:target properties of constraint
+// can be:
 //
-//    - set to `NULL` to indicate that the constraint refers to the
-//      widget using `layout`
-//    - set to the [class@Gtk.Widget] using `layout`
-//    - set to a child of the [class@Gtk.Widget] using `layout`
-//    - set to a [class@Gtk.ConstraintGuide] that is part of `layout`
+//    - set to NULL to indicate that the constraint refers to the
+//      widget using layout
+//    - set to the gtk.Widget using layout
+//    - set to a child of the gtk.Widget using layout
+//    - set to a gtk.ConstraintGuide that is part of layout
 //
-// The @layout acquires the ownership of @constraint after calling this
-// function.
-func (layout *ConstraintLayout) AddConstraint(constraint Constrainter) {
+// The layout acquires the ownership of constraint after calling this function.
+func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer((constraint).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 }
 
-// AddGuide adds a guide to `layout`.
+// AddGuide adds a guide to layout.
 //
 // A guide can be used as the source or target of constraints, like a widget,
 // but it is not visible.
 //
-// The `layout` acquires the ownership of `guide` after calling this function.
-func (layout *ConstraintLayout) AddGuide(guide ConstraintGuider) {
+// The layout acquires the ownership of guide after calling this function.
+func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer((guide).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 }
 
-// ObserveConstraints returns a `GListModel` to track the constraints that are
+// ObserveConstraints returns a GListModel to track the constraints that are
 // part of the layout.
 //
 // Calling this function will enable extra internal bookkeeping to track
@@ -304,7 +317,7 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 	return _listModel
 }
 
-// ObserveGuides returns a `GListModel` to track the guides that are part of the
+// ObserveGuides returns a GListModel to track the guides that are part of the
 // layout.
 //
 // Calling this function will enable extra internal bookkeeping to track guides
@@ -342,26 +355,26 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 	C.gtk_constraint_layout_remove_all_constraints(_arg0)
 }
 
-// RemoveConstraint removes `constraint` from the layout manager, so that it no
+// RemoveConstraint removes constraint from the layout manager, so that it no
 // longer influences the layout.
-func (layout *ConstraintLayout) RemoveConstraint(constraint Constrainter) {
+func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraint)(unsafe.Pointer((constraint).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
 
 	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 }
 
-// RemoveGuide removes `guide` from the layout manager, so that it no longer
+// RemoveGuide removes guide from the layout manager, so that it no longer
 // influences the layout.
-func (layout *ConstraintLayout) RemoveGuide(guide ConstraintGuider) {
+func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer((guide).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 }
@@ -371,8 +384,8 @@ type ConstraintLayoutChilder interface {
 	privateConstraintLayoutChild()
 }
 
-// ConstraintLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkConstraintLayout`.
+// ConstraintLayoutChild: GtkLayoutChild subclass for children in a
+// GtkConstraintLayout.
 type ConstraintLayoutChild struct {
 	LayoutChild
 }

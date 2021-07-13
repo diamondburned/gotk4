@@ -36,16 +36,15 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type SocketConnectableOverrider interface {
-	// Enumerate creates a AddressEnumerator for @connectable.
+	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() *SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// ProXYEnumerate creates a AddressEnumerator for connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
 	//
-	// If @connectable does not implement
-	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
-	// g_socket_connectable_enumerate().
-	ProxyEnumerate() *SocketAddressEnumerator
+	// If connectable does not implement g_socket_connectable_proxy_enumerate(),
+	// this will fall back to calling g_socket_connectable_enumerate().
+	ProXYEnumerate() *SocketAddressEnumerator
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -58,12 +57,12 @@ type SocketConnectableOverrider interface {
 
 // SocketConnectabler describes SocketConnectable's methods.
 type SocketConnectabler interface {
-	// Enumerate creates a AddressEnumerator for @connectable.
+	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() *SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
+	// ProXYEnumerate creates a AddressEnumerator for connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
-	ProxyEnumerate() *SocketAddressEnumerator
+	ProXYEnumerate() *SocketAddressEnumerator
 	// String: format a Connectable as a string.
 	String() string
 }
@@ -143,7 +142,7 @@ func marshalSocketConnectabler(p uintptr) (interface{}, error) {
 	return wrapSocketConnectable(obj), nil
 }
 
-// Enumerate creates a AddressEnumerator for @connectable.
+// Enumerate creates a AddressEnumerator for connectable.
 func (connectable *SocketConnectable) Enumerate() *SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -159,12 +158,12 @@ func (connectable *SocketConnectable) Enumerate() *SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-// ProxyEnumerate creates a AddressEnumerator for @connectable that will return
-// a Address for each of its addresses that you must connect to via a proxy.
+// ProXYEnumerate creates a AddressEnumerator for connectable that will return a
+// Address for each of its addresses that you must connect to via a proxy.
 //
-// If @connectable does not implement g_socket_connectable_proxy_enumerate(),
+// If connectable does not implement g_socket_connectable_proxy_enumerate(),
 // this will fall back to calling g_socket_connectable_enumerate().
-func (connectable *SocketConnectable) ProxyEnumerate() *SocketAddressEnumerator {
+func (connectable *SocketConnectable) ProXYEnumerate() *SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 

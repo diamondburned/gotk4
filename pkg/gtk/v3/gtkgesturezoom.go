@@ -25,7 +25,7 @@ func init() {
 
 // GestureZoomer describes GestureZoom's methods.
 type GestureZoomer interface {
-	// ScaleDelta: if @gesture is active, this function returns the zooming
+	// ScaleDelta: if gesture is active, this function returns the zooming
 	// difference since the gesture was recognized (hence the starting point is
 	// considered 1:1).
 	ScaleDelta() float64
@@ -76,9 +76,9 @@ func NewGestureZoom(widget Widgeter) *GestureZoom {
 	return _gestureZoom
 }
 
-// ScaleDelta: if @gesture is active, this function returns the zooming
+// ScaleDelta: if gesture is active, this function returns the zooming
 // difference since the gesture was recognized (hence the starting point is
-// considered 1:1). If @gesture is not active, 1 is returned.
+// considered 1:1). If gesture is not active, 1 is returned.
 func (gesture *GestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out
 	var _cret C.gdouble         // in

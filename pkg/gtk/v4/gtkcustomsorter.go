@@ -26,8 +26,8 @@ type CustomSorterer interface {
 	privateCustomSorter()
 }
 
-// CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
-// via a callback function.
+// CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
+// callback function.
 type CustomSorter struct {
 	Sorter
 }

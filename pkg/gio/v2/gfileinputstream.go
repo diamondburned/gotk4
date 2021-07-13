@@ -41,37 +41,37 @@ func init() {
 // yet, so the interface currently has no use.
 type FileInputStreamOverrider interface {
 	CanSeek() bool
-	// QueryInfo queries a file input stream the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous
-	// (non-blocking) version of this function, see
-	// g_file_input_stream_query_info_async(). While the stream is blocked, the
-	// stream will set the pending flag internally, and any other operations on
-	// the stream will fail with G_IO_ERROR_PENDING.
-	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	// QueryInfo queries a file input stream the given attributes. This function
+	// blocks while querying the stream. For the asynchronous (non-blocking)
+	// version of this function, see g_file_input_stream_query_info_async().
+	// While the stream is blocked, the stream will set the pending flag
+	// internally, and any other operations on the stream will fail with
+	// G_IO_ERROR_PENDING.
+	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
 	// QueryInfoAsync queries the stream information asynchronously. When the
-	// operation is finished @callback will be called. You can then call
+	// operation is finished callback will be called. You can then call
 	// g_file_input_stream_query_info_finish() to get the result of the
 	// operation.
 	//
 	// For the synchronous version of this function, see
 	// g_file_input_stream_query_info().
 	//
-	// If @cancellable is not nil, then the operation can be cancelled by
+	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error
+	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
 	Tell() int64
 }
 
 // FileInputStreamer describes FileInputStream's methods.
 type FileInputStreamer interface {
-	// QueryInfo queries a file input stream the given @attributes.
-	QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error)
+	// QueryInfo queries a file input stream the given attributes.
+	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
 	// QueryInfoAsync queries the stream information asynchronously.
-	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 }
@@ -118,12 +118,12 @@ func (v *FileInputStream) Native() uintptr {
 	return v.InputStream.Object.Native()
 }
 
-// QueryInfo queries a file input stream the given @attributes. This function
+// QueryInfo queries a file input stream the given attributes. This function
 // blocks while querying the stream. For the asynchronous (non-blocking) version
 // of this function, see g_file_input_stream_query_info_async(). While the
 // stream is blocked, the stream will set the pending flag internally, and any
 // other operations on the stream will fail with G_IO_ERROR_PENDING.
-func (stream *FileInputStream) QueryInfo(attributes string, cancellable Cancellabler) (*FileInfo, error) {
+func (stream *FileInputStream) QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
@@ -132,7 +132,7 @@ func (stream *FileInputStream) QueryInfo(attributes string, cancellable Cancella
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -146,16 +146,16 @@ func (stream *FileInputStream) QueryInfo(attributes string, cancellable Cancella
 }
 
 // QueryInfoAsync queries the stream information asynchronously. When the
-// operation is finished @callback will be called. You can then call
+// operation is finished callback will be called. You can then call
 // g_file_input_stream_query_info_finish() to get the result of the operation.
 //
 // For the synchronous version of this function, see
 // g_file_input_stream_query_info().
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set
-func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellabler, callback AsyncReadyCallback) {
+func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
@@ -166,7 +166,7 @@ func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int,
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 

@@ -25,19 +25,19 @@ func init() {
 
 // TextMarker describes TextMark's methods.
 type TextMarker interface {
-	// Buffer gets the buffer this mark is located inside, or nil if the mark is
-	// deleted.
+	// Buffer gets the buffer this mark is located inside, or NULL if the mark
+	// is deleted.
 	Buffer() *TextBuffer
-	// Deleted returns true if the mark has been removed from its buffer with
+	// Deleted returns TRUE if the mark has been removed from its buffer with
 	// gtk_text_buffer_delete_mark().
 	Deleted() bool
 	// LeftGravity determines whether the mark has left gravity.
 	LeftGravity() bool
 	// Name returns the mark name; returns NULL for anonymous marks.
 	Name() string
-	// Visible returns true if the mark is visible (i.e.
+	// Visible returns TRUE if the mark is visible (i.e.
 	Visible() bool
-	// SetVisible sets the visibility of @mark; the insertion point is normally
+	// SetVisible sets the visibility of mark; the insertion point is normally
 	// visible, i.e.
 	SetVisible(setting bool)
 }
@@ -91,11 +91,11 @@ func marshalTextMarker(p uintptr) (interface{}, error) {
 }
 
 // NewTextMark creates a text mark. Add it to a buffer using
-// gtk_text_buffer_add_mark(). If @name is nil, the mark is anonymous;
+// gtk_text_buffer_add_mark(). If name is NULL, the mark is anonymous;
 // otherwise, the mark can be retrieved by name using
 // gtk_text_buffer_get_mark(). If a mark has left gravity, and text is inserted
 // at the mark’s current location, the mark will be moved to the left of the
-// newly-inserted text. If the mark has right gravity (@left_gravity = false),
+// newly-inserted text. If the mark has right gravity (left_gravity = FALSE),
 // the mark will end up on the right of newly-inserted text. The standard
 // left-to-right cursor is a mark with right gravity (when you type, the cursor
 // stays on the right side of the text you’re typing).
@@ -118,7 +118,7 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	return _textMark
 }
 
-// Buffer gets the buffer this mark is located inside, or nil if the mark is
+// Buffer gets the buffer this mark is located inside, or NULL if the mark is
 // deleted.
 func (mark *TextMark) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextMark   // out
@@ -135,7 +135,7 @@ func (mark *TextMark) Buffer() *TextBuffer {
 	return _textBuffer
 }
 
-// Deleted returns true if the mark has been removed from its buffer with
+// Deleted returns TRUE if the mark has been removed from its buffer with
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way to
 // add it to a buffer again.
 func (mark *TextMark) Deleted() bool {
@@ -189,7 +189,7 @@ func (mark *TextMark) Name() string {
 	return _utf8
 }
 
-// Visible returns true if the mark is visible (i.e. a cursor is displayed for
+// Visible returns TRUE if the mark is visible (i.e. a cursor is displayed for
 // it).
 func (mark *TextMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
@@ -208,7 +208,7 @@ func (mark *TextMark) Visible() bool {
 	return _ok
 }
 
-// SetVisible sets the visibility of @mark; the insertion point is normally
+// SetVisible sets the visibility of mark; the insertion point is normally
 // visible, i.e. you can see it as a vertical bar. Also, the text widget uses a
 // visible mark to indicate where a drop will occur when dragging-and-dropping
 // text. Most other marks are not visible. Marks are not visible by default.

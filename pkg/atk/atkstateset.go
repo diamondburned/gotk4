@@ -28,9 +28,9 @@ type StateSeter interface {
 	AddState(typ StateType) bool
 	// AddStates adds the states of the specified types to the state set.
 	AddStates(types []StateType)
-	// AndSets constructs the intersection of the two sets, returning nil if the
-	// intersection is empty.
-	AndSets(compareSet StateSeter) *StateSet
+	// AndSets constructs the intersection of the two sets, returning NULL if
+	// the intersection is empty.
+	AndSets(compareSet *StateSet) *StateSet
 	// ClearStates removes all states from the state set.
 	ClearStates()
 	// ContainsState checks whether the state for the specified type is in the
@@ -42,12 +42,12 @@ type StateSeter interface {
 	// IsEmpty checks whether the state set is empty, i.e.
 	IsEmpty() bool
 	// OrSets constructs the union of the two sets.
-	OrSets(compareSet StateSeter) *StateSet
+	OrSets(compareSet *StateSet) *StateSet
 	// RemoveState removes the state for the specified type from the state set.
 	RemoveState(typ StateType) bool
-	// XorSets constructs the exclusive-or of the two sets, returning nil is
+	// XorSets constructs the exclusive-or of the two sets, returning NULL is
 	// empty.
-	XorSets(compareSet StateSeter) *StateSet
+	XorSets(compareSet *StateSet) *StateSet
 }
 
 // StateSet is a read-only representation of the full set of States that apply
@@ -137,15 +137,15 @@ func (set *StateSet) AddStates(types []StateType) {
 	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
 }
 
-// AndSets constructs the intersection of the two sets, returning nil if the
+// AndSets constructs the intersection of the two sets, returning NULL if the
 // intersection is empty.
-func (set *StateSet) AndSets(compareSet StateSeter) *StateSet {
+func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
 
@@ -234,13 +234,13 @@ func (set *StateSet) IsEmpty() bool {
 }
 
 // OrSets constructs the union of the two sets.
-func (set *StateSet) OrSets(compareSet StateSeter) *StateSet {
+func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
 
@@ -276,16 +276,16 @@ func (set *StateSet) RemoveState(typ StateType) bool {
 	return _ok
 }
 
-// XorSets constructs the exclusive-or of the two sets, returning nil is empty.
+// XorSets constructs the exclusive-or of the two sets, returning NULL is empty.
 // The set returned by this operation contains the states in exactly one of the
 // two sets.
-func (set *StateSet) XorSets(compareSet StateSeter) *StateSet {
+func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
 	var _cret *C.AtkStateSet // in
 
 	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkStateSet)(unsafe.Pointer((compareSet).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(compareSet.Native()))
 
 	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
 

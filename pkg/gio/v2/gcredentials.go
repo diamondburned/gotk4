@@ -35,19 +35,18 @@ func init() {
 
 // Credentialser describes Credentials's methods.
 type Credentialser interface {
-	// UnixPid tries to get the UNIX process identifier from @credentials.
+	// UnixPid tries to get the UNIX process identifier from credentials.
 	UnixPid() (int, error)
-	// UnixUser tries to get the UNIX user identifier from @credentials.
+	// UnixUser tries to get the UNIX user identifier from credentials.
 	UnixUser() (uint, error)
-	// IsSameUser checks if @credentials and @other_credentials is the same
-	// user.
-	IsSameUser(otherCredentials Credentialser) error
-	// SetNative copies the native credentials of type @native_type from @native
-	// into @credentials.
+	// IsSameUser checks if credentials and other_credentials is the same user.
+	IsSameUser(otherCredentials *Credentials) error
+	// SetNative copies the native credentials of type native_type from native
+	// into credentials.
 	SetNative(nativeType CredentialsType, native cgo.Handle)
-	// SetUnixUser tries to set the UNIX user identifier on @credentials.
+	// SetUnixUser tries to set the UNIX user identifier on credentials.
 	SetUnixUser(uid uint) error
-	// String creates a human-readable textual representation of @credentials
+	// String creates a human-readable textual representation of credentials
 	// that can be used in logging and debug messages.
 	String() string
 }
@@ -64,24 +63,24 @@ type Credentialser interface {
 // g_unix_connection_send_credentials() and
 // g_unix_connection_receive_credentials() for details.
 //
-// On Linux, the native credential type is a `struct ucred` - see the unix(7)
-// man page for details. This corresponds to G_CREDENTIALS_TYPE_LINUX_UCRED.
+// On Linux, the native credential type is a struct ucred - see the unix(7) man
+// page for details. This corresponds to G_CREDENTIALS_TYPE_LINUX_UCRED.
 //
 // On Apple operating systems (including iOS, tvOS, and macOS), the native
-// credential type is a `struct xucred`. This corresponds to
+// credential type is a struct xucred. This corresponds to
 // G_CREDENTIALS_TYPE_APPLE_XUCRED.
 //
 // On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native credential type is
-// a `struct cmsgcred`. This corresponds to G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
+// a struct cmsgcred. This corresponds to G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
 //
-// On NetBSD, the native credential type is a `struct unpcbid`. This corresponds
+// On NetBSD, the native credential type is a struct unpcbid. This corresponds
 // to G_CREDENTIALS_TYPE_NETBSD_UNPCBID.
 //
-// On OpenBSD, the native credential type is a `struct sockpeercred`. This
+// On OpenBSD, the native credential type is a struct sockpeercred. This
 // corresponds to G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED.
 //
 // On Solaris (including OpenSolaris and its derivatives), the native credential
-// type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
+// type is a ucred_t. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials struct {
 	*externglib.Object
 }
@@ -117,7 +116,7 @@ func NewCredentials() *Credentials {
 	return _credentials
 }
 
-// UnixPid tries to get the UNIX process identifier from @credentials. This
+// UnixPid tries to get the UNIX process identifier from credentials. This
 // method is only available on UNIX platforms.
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
@@ -141,7 +140,7 @@ func (credentials *Credentials) UnixPid() (int, error) {
 	return _gint, _goerr
 }
 
-// UnixUser tries to get the UNIX user identifier from @credentials. This method
+// UnixUser tries to get the UNIX user identifier from credentials. This method
 // is only available on UNIX platforms.
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
@@ -164,16 +163,16 @@ func (credentials *Credentials) UnixUser() (uint, error) {
 	return _guint, _goerr
 }
 
-// IsSameUser checks if @credentials and @other_credentials is the same user.
+// IsSameUser checks if credentials and other_credentials is the same user.
 //
 // This operation can fail if #GCredentials is not supported on the the OS.
-func (credentials *Credentials) IsSameUser(otherCredentials Credentialser) error {
+func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
-	_arg1 = (*C.GCredentials)(unsafe.Pointer((otherCredentials).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
 	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 
@@ -184,12 +183,12 @@ func (credentials *Credentials) IsSameUser(otherCredentials Credentialser) error
 	return _goerr
 }
 
-// SetNative copies the native credentials of type @native_type from @native
-// into @credentials.
+// SetNative copies the native credentials of type native_type from native into
+// credentials.
 //
 // It is a programming error (which will cause a warning to be logged) to use
-// this method if there is no #GCredentials support for the OS or if
-// @native_type isn't supported by the OS.
+// this method if there is no #GCredentials support for the OS or if native_type
+// isn't supported by the OS.
 func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo.Handle) {
 	var _arg0 *C.GCredentials    // out
 	var _arg1 C.GCredentialsType // out
@@ -202,8 +201,8 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native cgo
 	C.g_credentials_set_native(_arg0, _arg1, _arg2)
 }
 
-// SetUnixUser tries to set the UNIX user identifier on @credentials. This
-// method is only available on UNIX platforms.
+// SetUnixUser tries to set the UNIX user identifier on credentials. This method
+// is only available on UNIX platforms.
 //
 // This operation can fail if #GCredentials is not supported on the OS or if the
 // native credentials type does not contain information about the UNIX user. It
@@ -225,7 +224,7 @@ func (credentials *Credentials) SetUnixUser(uid uint) error {
 	return _goerr
 }
 
-// String creates a human-readable textual representation of @credentials that
+// String creates a human-readable textual representation of credentials that
 // can be used in logging and debug messages. The format of the returned string
 // may change in future GLib release.
 func (credentials *Credentials) String() string {

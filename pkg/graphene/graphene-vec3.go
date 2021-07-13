@@ -84,9 +84,9 @@ func (a *Vec3) Cross(b *Vec3) Vec3 {
 	return _res
 }
 
-// Divide divides each component of the first operand @a by the corresponding
-// component of the second operand @b, and places the results into the vector
-// @res.
+// Divide divides each component of the first operand a by the corresponding
+// component of the second operand b, and places the results into the vector
+// res.
 func (a *Vec3) Divide(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -138,7 +138,7 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	return _ok
 }
 
-// Free frees the resources allocated by @v
+// Free frees the resources allocated by v
 func (v *Vec3) free() {
 	var _arg0 *C.graphene_vec3_t // out
 
@@ -147,7 +147,7 @@ func (v *Vec3) free() {
 	C.graphene_vec3_free(_arg0)
 }
 
-// X retrieves the first component of the given vector @v.
+// X retrieves the first component of the given vector v.
 func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -215,7 +215,7 @@ func (v *Vec3) XYZ1() Vec4 {
 	return _res
 }
 
-// Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using @w as the value
+// Xyzw converts a #graphene_vec3_t in a #graphene_vec4_t using w as the value
 // of the fourth component of the resulting vector.
 func (v *Vec3) Xyzw(w float32) Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -230,7 +230,7 @@ func (v *Vec3) Xyzw(w float32) Vec4 {
 	return _res
 }
 
-// Y retrieves the second component of the given vector @v.
+// Y retrieves the second component of the given vector v.
 func (v *Vec3) Y() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -246,7 +246,7 @@ func (v *Vec3) Y() float32 {
 	return _gfloat
 }
 
-// Z retrieves the third component of the given vector @v.
+// Z retrieves the third component of the given vector v.
 func (v *Vec3) Z() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -323,7 +323,7 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	return _vec3
 }
 
-// Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
+// Interpolate: linearly interpolates v1 and v2 using the given factor.
 func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -339,7 +339,7 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) Vec3 {
 	return _res
 }
 
-// Length retrieves the length of the given vector @v.
+// Length retrieves the length of the given vector v.
 func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -400,7 +400,7 @@ func (a *Vec3) Multiply(b *Vec3) Vec3 {
 }
 
 // Near compares the two given #graphene_vec3_t vectors and checks whether their
-// values are within the given @epsilon.
+// values are within the given epsilon.
 func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -447,7 +447,7 @@ func (v *Vec3) Normalize() Vec3 {
 }
 
 // Scale multiplies all components of the given vector with the given scalar
-// @factor.
+// factor.
 func (v *Vec3) Scale(factor float32) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -461,9 +461,9 @@ func (v *Vec3) Scale(factor float32) Vec3 {
 	return _res
 }
 
-// Subtract subtracts from each component of the first operand @a the
-// corresponding component of the second operand @b and places each result into
-// the components of @res.
+// Subtract subtracts from each component of the first operand a the
+// corresponding component of the second operand b and places each result into
+// the components of res.
 func (a *Vec3) Subtract(b *Vec3) Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out

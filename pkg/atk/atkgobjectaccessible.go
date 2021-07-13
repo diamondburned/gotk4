@@ -23,7 +23,7 @@ func init() {
 
 // GObjectAccessibler describes GObjectAccessible's methods.
 type GObjectAccessibler interface {
-	// Object gets the GObject for which @obj is the accessible object.
+	// Object gets the GObject for which obj is the accessible object.
 	Object() *externglib.Object
 }
 
@@ -54,7 +54,7 @@ func marshalGObjectAccessibler(p uintptr) (interface{}, error) {
 	return wrapGObjectAccessible(obj), nil
 }
 
-// Object gets the GObject for which @obj is the accessible object.
+// Object gets the GObject for which obj is the accessible object.
 func (obj *GObjectAccessible) Object() *externglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
@@ -70,8 +70,8 @@ func (obj *GObjectAccessible) Object() *externglib.Object {
 	return _object
 }
 
-// GObjectAccessibleForObject gets the accessible object for the specified @obj.
-func GObjectAccessibleForObject(obj gextras.Objector) *ObjectClass {
+// GObjectAccessibleForObject gets the accessible object for the specified obj.
+func GObjectAccessibleForObject(obj *externglib.Object) *ObjectClass {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 

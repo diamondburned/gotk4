@@ -26,15 +26,13 @@ type StyleProviderer interface {
 	privateStyleProvider()
 }
 
-// StyleProvider: `GtkStyleProvider` is an interface for style information used
-// by `GtkStyleContext`.
+// StyleProvider: GtkStyleProvider is an interface for style information used by
+// GtkStyleContext.
 //
-// See [method@Gtk.StyleContext.add_provider] and
-// [func@Gtk.StyleContext.add_provider_for_display] for adding
-// `GtkStyleProviders`.
+// See gtk.StyleContext.AddProvider() and
+// gtk.StyleContext().AddProviderForDisplay for adding GtkStyleProviders.
 //
-// GTK uses the `GtkStyleProvider` implementation for CSS in
-// [iface@Gtk.CssProvider].
+// GTK uses the GtkStyleProvider implementation for CSS in gtk.CSSProvider.
 type StyleProvider struct {
 	*externglib.Object
 }

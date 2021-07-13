@@ -30,7 +30,7 @@ func init() {
 // yet, so the interface currently has no use.
 type InfoBarOverrider interface {
 	Close()
-	// Response emits the “response” signal with the given @response_id.
+	// Response emits the “response” signal with the given response_id.
 	Response(responseId int)
 }
 
@@ -44,9 +44,9 @@ type InfoBarer interface {
 	// clicking the button will emit the “response” signal with the given
 	// response_id.
 	AddButton(buttonText string, responseId int) *Button
-	// ActionArea returns the action area of @info_bar.
+	// ActionArea returns the action area of info_bar.
 	ActionArea() *Box
-	// ContentArea returns the content area of @info_bar.
+	// ContentArea returns the content area of info_bar.
 	ContentArea() *Box
 	// MessageType returns the message type of the message area.
 	MessageType() MessageType
@@ -54,7 +54,7 @@ type InfoBarer interface {
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
 	ShowCloseButton() bool
-	// Response emits the “response” signal with the given @response_id.
+	// Response emits the “response” signal with the given response_id.
 	Response(responseId int)
 	// SetDefaultResponse sets the last widget in the info bar’s action area
 	// with the given response_id as the default widget for the dialog.
@@ -64,7 +64,7 @@ type InfoBarer interface {
 	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
 	// each widget in the info bars’s action area with the given response_id.
 	SetResponseSensitive(responseId int, setting bool)
-	// SetRevealed sets the GtkInfoBar:revealed property to @revealed.
+	// SetRevealed sets the GtkInfoBar:revealed property to revealed.
 	SetRevealed(revealed bool)
 	// SetShowCloseButton: if true, a standard close button is shown.
 	SetShowCloseButton(setting bool)
@@ -132,7 +132,7 @@ type InfoBarer interface {
 // GtkInfoBar supports a custom <action-widgets> element, which can contain
 // multiple <action-widget> elements. The “response” attribute specifies a
 // numeric response, and the content of the element is the id of widget (which
-// should be a child of the dialogs @action_area).
+// should be a child of the dialogs action_area).
 //
 //
 // CSS nodes
@@ -230,7 +230,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	return _button
 }
 
-// ActionArea returns the action area of @info_bar.
+// ActionArea returns the action area of info_bar.
 func (infoBar *InfoBar) ActionArea() *Box {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret *C.GtkWidget  // in
@@ -246,7 +246,7 @@ func (infoBar *InfoBar) ActionArea() *Box {
 	return _box
 }
 
-// ContentArea returns the content area of @info_bar.
+// ContentArea returns the content area of info_bar.
 func (infoBar *InfoBar) ContentArea() *Box {
 	var _arg0 *C.GtkInfoBar // out
 	var _cret *C.GtkWidget  // in
@@ -314,7 +314,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 	return _ok
 }
 
-// Response emits the “response” signal with the given @response_id.
+// Response emits the “response” signal with the given response_id.
 func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
@@ -329,7 +329,7 @@ func (infoBar *InfoBar) Response(responseId int) {
 // the given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
 //
-// Note that this function currently requires @info_bar to be added to a widget
+// Note that this function currently requires info_bar to be added to a widget
 // hierarchy.
 func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
@@ -371,10 +371,10 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	C.gtk_info_bar_set_response_sensitive(_arg0, _arg1, _arg2)
 }
 
-// SetRevealed sets the GtkInfoBar:revealed property to @revealed. This will
-// cause @info_bar to show up with a slide-in transition.
+// SetRevealed sets the GtkInfoBar:revealed property to revealed. This will
+// cause info_bar to show up with a slide-in transition.
 //
-// Note that this property does not automatically show @info_bar and thus won’t
+// Note that this property does not automatically show info_bar and thus won’t
 // have any effect if it is invisible.
 func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkInfoBar // out

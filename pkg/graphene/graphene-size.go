@@ -81,7 +81,7 @@ func (s *Size) free() {
 	C.graphene_size_free(_arg0)
 }
 
-// Init initializes a #graphene_size_t using the given @width and @height.
+// Init initializes a #graphene_size_t using the given width and height.
 func (s *Size) Init(width float32, height float32) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
@@ -102,7 +102,7 @@ func (s *Size) Init(width float32, height float32) *Size {
 }
 
 // InitFromSize initializes a #graphene_size_t using the width and height of the
-// given @src.
+// given src.
 func (s *Size) InitFromSize(src *Size) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
@@ -121,7 +121,7 @@ func (s *Size) InitFromSize(src *Size) *Size {
 }
 
 // Interpolate: linearly interpolates the two given #graphene_size_t using the
-// given interpolation @factor.
+// given interpolation factor.
 func (a *Size) Interpolate(b *Size, factor float64) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
@@ -137,7 +137,7 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 	return _res
 }
 
-// Scale scales the components of a #graphene_size_t using the given @factor.
+// Scale scales the components of a #graphene_size_t using the given factor.
 func (s *Size) Scale(factor float32) Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out

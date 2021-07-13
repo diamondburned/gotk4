@@ -38,8 +38,8 @@ func init() {
 // #GFile implementation.
 //
 // The client should return a reference to the new file that has been created
-// for @uri, or nil to continue with the default implementation.
-type VFSFileLookupFunc func(vfs *VFS, identifier string, userData cgo.Handle) (file *File)
+// for uri, or NULL to continue with the default implementation.
+type VFSFileLookupFunc func(vfs *VFS, identifier string, userData cgo.Handle) (file Filer)
 
 //export gotk4_VFSFileLookupFunc
 func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
@@ -60,7 +60,7 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 	fn := v.(VFSFileLookupFunc)
 	file := fn(vfs, identifier, userData)
 
-	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
+	cret = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
 
 	return cret
 }
@@ -71,42 +71,42 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret 
 // yet, so the interface currently has no use.
 type VFSOverrider interface {
 	AddWritableNamespaces(list *FileAttributeInfoList)
-	// FileForPath gets a #GFile for @path.
+	// FileForPath gets a #GFile for path.
 	FileForPath(path string) *File
-	// FileForURI gets a #GFile for @uri.
+	// FileForURI gets a #GFile for uri.
 	//
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
 	FileForURI(uri string) *File
-	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
+	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
 	LocalFileMoved(source string, dest string)
 	LocalFileRemoved(filename string)
-	LocalFileSetAttributes(filename string, info FileInfor, flags FileQueryInfoFlags, cancellable Cancellabler) error
+	LocalFileSetAttributes(filename string, info *FileInfo, flags FileQueryInfoFlags, cancellable *Cancellable) error
 	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the @parse_name cannot be parsed by the
+	// support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
 	ParseName(parseName string) *File
 }
 
 // VFSer describes VFS's methods.
 type VFSer interface {
-	// FileForPath gets a #GFile for @path.
+	// FileForPath gets a #GFile for path.
 	FileForPath(path string) *File
-	// FileForURI gets a #GFile for @uri.
+	// FileForURI gets a #GFile for uri.
 	FileForURI(uri string) *File
-	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
+	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
 	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the @parse_name cannot be parsed by the
+	// support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
 	ParseName(parseName string) *File
-	// UnregisterURIScheme unregisters the URI handler for @scheme previously
+	// UnregisterURIScheme unregisters the URI handler for scheme previously
 	// registered with g_vfs_register_uri_scheme().
 	UnregisterURIScheme(scheme string) bool
 }
@@ -133,7 +133,7 @@ func marshalVFSer(p uintptr) (interface{}, error) {
 	return wrapVFS(obj), nil
 }
 
-// FileForPath gets a #GFile for @path.
+// FileForPath gets a #GFile for path.
 func (vfs *VFS) FileForPath(path string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -151,7 +151,7 @@ func (vfs *VFS) FileForPath(path string) *File {
 	return _file
 }
 
-// FileForURI gets a #GFile for @uri.
+// FileForURI gets a #GFile for uri.
 //
 // This operation never fails, but the returned object might not support any I/O
 // operation if the URI is malformed or if the URI scheme is not supported.
@@ -172,7 +172,7 @@ func (vfs *VFS) FileForURI(uri string) *File {
 	return _file
 }
 
-// SupportedURISchemes gets a list of URI schemes supported by @vfs.
+// SupportedURISchemes gets a list of URI schemes supported by vfs.
 func (vfs *VFS) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs // out
 	var _cret **C.gchar
@@ -220,7 +220,7 @@ func (vfs *VFS) IsActive() bool {
 }
 
 // ParseName: this operation never fails, but the returned object might not
-// support any I/O operations if the @parse_name cannot be parsed by the #GVfs
+// support any I/O operations if the parse_name cannot be parsed by the #GVfs
 // module.
 func (vfs *VFS) ParseName(parseName string) *File {
 	var _arg0 *C.GVfs  // out
@@ -239,7 +239,7 @@ func (vfs *VFS) ParseName(parseName string) *File {
 	return _file
 }
 
-// UnregisterURIScheme unregisters the URI handler for @scheme previously
+// UnregisterURIScheme unregisters the URI handler for scheme previously
 // registered with g_vfs_register_uri_scheme().
 func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out

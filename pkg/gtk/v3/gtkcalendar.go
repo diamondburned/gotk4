@@ -56,7 +56,7 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
-// appointments. The function returns nil when no information is available.
+// appointments. The function returns NULL when no information is available.
 type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint, userData cgo.Handle) (utf8 string)
 
 //export gotk4_CalendarDetailFunc
@@ -106,13 +106,13 @@ type Calendarer interface {
 	ClearMarks()
 	// Date obtains the selected date from a Calendar.
 	Date() (year uint, month uint, day uint)
-	// DayIsMarked returns if the @day of the @calendar is already marked.
+	// DayIsMarked returns if the day of the calendar is already marked.
 	DayIsMarked(day uint) bool
 	// DetailHeightRows queries the height of detail cells, in rows.
 	DetailHeightRows() int
 	// DetailWidthChars queries the width of detail cells, in characters.
 	DetailWidthChars() int
-	// DisplayOptions returns the current display options of @calendar.
+	// DisplayOptions returns the current display options of calendar.
 	DisplayOptions() CalendarDisplayOptions
 	// MarkDay places a visual marker on a particular day.
 	MarkDay(day uint)
@@ -226,7 +226,7 @@ func (calendar *Calendar) Date() (year uint, month uint, day uint) {
 	return _year, _month, _day
 }
 
-// DayIsMarked returns if the @day of the @calendar is already marked.
+// DayIsMarked returns if the day of the calendar is already marked.
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
@@ -280,7 +280,7 @@ func (calendar *Calendar) DetailWidthChars() int {
 	return _gint
 }
 
-// DisplayOptions returns the current display options of @calendar.
+// DisplayOptions returns the current display options of calendar.
 func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 	var _arg0 *C.GtkCalendar              // out
 	var _cret C.GtkCalendarDisplayOptions // in

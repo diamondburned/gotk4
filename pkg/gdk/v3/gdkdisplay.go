@@ -23,13 +23,13 @@ func init() {
 
 // Displayer describes Display's methods.
 type Displayer interface {
-	// Beep emits a short beep on @display
+	// Beep emits a short beep on display
 	Beep()
 	// Close closes the connection to the windowing system for the given
 	// display, and cleans up associated resources.
 	Close()
-	// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
-	// @display.
+	// DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
+	// display.
 	DeviceIsGrabbed(device Devicer) bool
 	// Flush flushes any requests queued for the windowing system; this happens
 	// automatically when the main loop blocks waiting for new events, but if
@@ -39,31 +39,30 @@ type Displayer interface {
 	// AppLaunchContext returns a AppLaunchContext suitable for launching
 	// applications on the given display.
 	AppLaunchContext() *AppLaunchContext
-	// DefaultCursorSize returns the default size to use for cursors on
-	// @display.
+	// DefaultCursorSize returns the default size to use for cursors on display.
 	DefaultCursorSize() uint
 	// DefaultGroup returns the default group leader window for all toplevel
-	// windows on @display.
+	// windows on display.
 	DefaultGroup() *Window
-	// DefaultScreen: get the default Screen for @display.
+	// DefaultScreen: get the default Screen for display.
 	DefaultScreen() *Screen
 	// DefaultSeat returns the default Seat for this display.
 	DefaultSeat() *Seat
-	// DeviceManager returns the DeviceManager associated to @display.
+	// DeviceManager returns the DeviceManager associated to display.
 	DeviceManager() *DeviceManager
-	// MaximalCursorSize gets the maximal size to use for cursors on @display.
+	// MaximalCursorSize gets the maximal size to use for cursors on display.
 	MaximalCursorSize() (width uint, height uint)
 	// Monitor gets a monitor associated with this display.
 	Monitor(monitorNum int) *Monitor
-	// MonitorAtPoint gets the monitor in which the point (@x, @y) is located,
-	// or a nearby monitor if the point is not in any monitor.
+	// MonitorAtPoint gets the monitor in which the point (x, y) is located, or
+	// a nearby monitor if the point is not in any monitor.
 	MonitorAtPoint(x int, y int) *Monitor
-	// MonitorAtWindow gets the monitor in which the largest area of @window
-	// resides, or a monitor close to @window if it is outside of all monitors.
+	// MonitorAtWindow gets the monitor in which the largest area of window
+	// resides, or a monitor close to window if it is outside of all monitors.
 	MonitorAtWindow(window Windower) *Monitor
-	// NMonitors gets the number of monitors that belong to @display.
+	// NMonitors gets the number of monitors that belong to display.
 	NMonitors() int
-	// NScreens gets the number of screen managed by the @display.
+	// NScreens gets the number of screen managed by the display.
 	NScreens() int
 	// Name gets the name of the display.
 	Name() string
@@ -75,8 +74,8 @@ type Displayer interface {
 	// Screen returns a screen object for one of the screens of the display.
 	Screen(screenNum int) *Screen
 	// WindowAtPointer obtains the window underneath the mouse pointer,
-	// returning the location of the pointer in that window in @win_x, @win_y
-	// for @screen.
+	// returning the location of the pointer in that window in win_x, win_y for
+	// screen.
 	WindowAtPointer() (winX int, winY int, window *Window)
 	// HasPending returns whether the display has events that are waiting to be
 	// processed.
@@ -104,31 +103,31 @@ type Displayer interface {
 	// SupportsClipboardPersistence returns whether the speicifed display
 	// supports clipboard persistance; i.e.
 	SupportsClipboardPersistence() bool
-	// SupportsComposite returns true if gdk_window_set_composited() can be used
+	// SupportsComposite returns TRUE if gdk_window_set_composited() can be used
 	// to redirect drawing on the window using compositing.
 	SupportsComposite() bool
-	// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
-	// on @display.
+	// SupportsCursorAlpha returns TRUE if cursors can use an 8bit alpha channel
+	// on display.
 	SupportsCursorAlpha() bool
-	// SupportsCursorColor returns true if multicolored cursors are supported on
-	// @display.
+	// SupportsCursorColor returns TRUE if multicolored cursors are supported on
+	// display.
 	SupportsCursorColor() bool
-	// SupportsInputShapes returns true if gdk_window_input_shape_combine_mask()
-	// can be used to modify the input shape of windows on @display.
+	// SupportsInputShapes returns TRUE if gdk_window_input_shape_combine_mask()
+	// can be used to modify the input shape of windows on display.
 	SupportsInputShapes() bool
 	// SupportsSelectionNotification returns whether EventOwnerChange events
 	// will be sent when the owner of a selection changes.
 	SupportsSelectionNotification() bool
-	// SupportsShapes returns true if gdk_window_shape_combine_mask() can be
-	// used to create shaped windows on @display.
+	// SupportsShapes returns TRUE if gdk_window_shape_combine_mask() can be
+	// used to create shaped windows on display.
 	SupportsShapes() bool
 	// Sync flushes any requests queued for the windowing system and waits until
 	// all requests have been handled.
 	Sync()
-	// WarpPointer warps the pointer of @display to the point @x,@y on the
-	// screen @screen, unless the pointer is confined to a window by a grab, in
-	// which case it will be moved as far as allowed by the grab.
-	WarpPointer(screen Screener, x int, y int)
+	// WarpPointer warps the pointer of display to the point x,y on the screen
+	// screen, unless the pointer is confined to a window by a grab, in which
+	// case it will be moved as far as allowed by the grab.
+	WarpPointer(screen *Screen, x int, y int)
 }
 
 // Display objects purpose are two fold:
@@ -168,7 +167,7 @@ func marshalDisplayer(p uintptr) (interface{}, error) {
 	return wrapDisplay(obj), nil
 }
 
-// Beep emits a short beep on @display
+// Beep emits a short beep on display
 func (display *Display) Beep() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -187,8 +186,8 @@ func (display *Display) Close() {
 	C.gdk_display_close(_arg0)
 }
 
-// DeviceIsGrabbed returns true if there is an ongoing grab on @device for
-// @display.
+// DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
+// display.
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkDevice  // out
@@ -242,7 +241,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 	return _appLaunchContext
 }
 
-// DefaultCursorSize returns the default size to use for cursors on @display.
+// DefaultCursorSize returns the default size to use for cursors on display.
 func (display *Display) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint       // in
@@ -259,7 +258,7 @@ func (display *Display) DefaultCursorSize() uint {
 }
 
 // DefaultGroup returns the default group leader window for all toplevel windows
-// on @display. This window is implicitly created by GDK. See
+// on display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
 func (display *Display) DefaultGroup() *Window {
 	var _arg0 *C.GdkDisplay // out
@@ -276,7 +275,7 @@ func (display *Display) DefaultGroup() *Window {
 	return _window
 }
 
-// DefaultScreen: get the default Screen for @display.
+// DefaultScreen: get the default Screen for display.
 func (display *Display) DefaultScreen() *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkScreen  // in
@@ -308,7 +307,7 @@ func (display *Display) DefaultSeat() *Seat {
 	return _seat
 }
 
-// DeviceManager returns the DeviceManager associated to @display.
+// DeviceManager returns the DeviceManager associated to display.
 //
 // Deprecated: Use gdk_display_get_default_seat() and Seat operations.
 func (display *Display) DeviceManager() *DeviceManager {
@@ -326,7 +325,7 @@ func (display *Display) DeviceManager() *DeviceManager {
 	return _deviceManager
 }
 
-// MaximalCursorSize gets the maximal size to use for cursors on @display.
+// MaximalCursorSize gets the maximal size to use for cursors on display.
 func (display *Display) MaximalCursorSize() (width uint, height uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // in
@@ -363,7 +362,7 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 	return _monitor
 }
 
-// MonitorAtPoint gets the monitor in which the point (@x, @y) is located, or a
+// MonitorAtPoint gets the monitor in which the point (x, y) is located, or a
 // nearby monitor if the point is not in any monitor.
 func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -384,8 +383,8 @@ func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 	return _monitor
 }
 
-// MonitorAtWindow gets the monitor in which the largest area of @window
-// resides, or a monitor close to @window if it is outside of all monitors.
+// MonitorAtWindow gets the monitor in which the largest area of window resides,
+// or a monitor close to window if it is outside of all monitors.
 func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
@@ -403,7 +402,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	return _monitor
 }
 
-// NMonitors gets the number of monitors that belong to @display.
+// NMonitors gets the number of monitors that belong to display.
 //
 // The returned number is valid until the next emission of the
 // Display::monitor-added or Display::monitor-removed signal.
@@ -422,7 +421,7 @@ func (display *Display) NMonitors() int {
 	return _gint
 }
 
-// NScreens gets the number of screen managed by the @display.
+// NScreens gets the number of screen managed by the display.
 //
 // Deprecated: The number of screens is always 1.
 func (display *Display) NScreens() int {
@@ -527,8 +526,8 @@ func (display *Display) Screen(screenNum int) *Screen {
 }
 
 // WindowAtPointer obtains the window underneath the mouse pointer, returning
-// the location of the pointer in that window in @win_x, @win_y for @screen.
-// Returns nil if the window under the mouse pointer is not known to GDK (for
+// the location of the pointer in that window in win_x, win_y for screen.
+// Returns NULL if the window under the mouse pointer is not known to GDK (for
 // example, belongs to another application).
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
@@ -700,7 +699,7 @@ func (display *Display) SupportsClipboardPersistence() bool {
 	return _ok
 }
 
-// SupportsComposite returns true if gdk_window_set_composited() can be used to
+// SupportsComposite returns TRUE if gdk_window_set_composited() can be used to
 // redirect drawing on the window using compositing.
 //
 // Currently this only works on X11 with XComposite and XDamage extensions
@@ -725,8 +724,8 @@ func (display *Display) SupportsComposite() bool {
 	return _ok
 }
 
-// SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel on
-// @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a mask).
+// SupportsCursorAlpha returns TRUE if cursors can use an 8bit alpha channel on
+// display. Otherwise, cursors are restricted to bilevel alpha (i.e. a mask).
 func (display *Display) SupportsCursorAlpha() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -744,8 +743,8 @@ func (display *Display) SupportsCursorAlpha() bool {
 	return _ok
 }
 
-// SupportsCursorColor returns true if multicolored cursors are supported on
-// @display. Otherwise, cursors have only a forground and a background color.
+// SupportsCursorColor returns TRUE if multicolored cursors are supported on
+// display. Otherwise, cursors have only a forground and a background color.
 func (display *Display) SupportsCursorColor() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -763,8 +762,8 @@ func (display *Display) SupportsCursorColor() bool {
 	return _ok
 }
 
-// SupportsInputShapes returns true if gdk_window_input_shape_combine_mask() can
-// be used to modify the input shape of windows on @display.
+// SupportsInputShapes returns TRUE if gdk_window_input_shape_combine_mask() can
+// be used to modify the input shape of windows on display.
 func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -801,8 +800,8 @@ func (display *Display) SupportsSelectionNotification() bool {
 	return _ok
 }
 
-// SupportsShapes returns true if gdk_window_shape_combine_mask() can be used to
-// create shaped windows on @display.
+// SupportsShapes returns TRUE if gdk_window_shape_combine_mask() can be used to
+// create shaped windows on display.
 func (display *Display) SupportsShapes() bool {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gboolean    // in
@@ -836,8 +835,8 @@ func (display *Display) Sync() {
 	C.gdk_display_sync(_arg0)
 }
 
-// WarpPointer warps the pointer of @display to the point @x,@y on the screen
-// @screen, unless the pointer is confined to a window by a grab, in which case
+// WarpPointer warps the pointer of display to the point x,y on the screen
+// screen, unless the pointer is confined to a window by a grab, in which case
 // it will be moved as far as allowed by the grab. Warping the pointer creates
 // events as if the user had moved the mouse instantaneously to the destination.
 //
@@ -846,14 +845,14 @@ func (display *Display) Sync() {
 // support for the color picker in the ColorSelectionDialog.
 //
 // Deprecated: Use gdk_device_warp() instead.
-func (display *Display) WarpPointer(screen Screener, x int, y int) {
+func (display *Display) WarpPointer(screen *Screen, x int, y int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkScreen  // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
@@ -861,7 +860,7 @@ func (display *Display) WarpPointer(screen Screener, x int, y int) {
 }
 
 // DisplayGetDefault gets the default Display. This is a convenience function
-// for: `gdk_display_manager_get_default_display (gdk_display_manager_get ())`.
+// for: gdk_display_manager_get_default_display (gdk_display_manager_get ()).
 func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
 

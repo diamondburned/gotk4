@@ -90,22 +90,22 @@ const (
 	// container of that information desirable. For less verbose information
 	// suitable for announcement only, see ATK_RELATION_DESCRIBED_BY. If the
 	// detailed information describes an error condition, ATK_RELATION_ERROR_FOR
-	// should be used instead. @Since: ATK-2.26.
+	// should be used instead. Since: ATK-2.26.
 	RelationTypeDetails
 	// DetailsFor: reciprocal of ATK_RELATION_DETAILS. Indicates that this
 	// object provides a detailed or extended description about the target
 	// object(s). See also ATK_RELATION_DESCRIPTION_FOR and
-	// ATK_RELATION_ERROR_FOR. @Since: ATK-2.26.
+	// ATK_RELATION_ERROR_FOR. Since: ATK-2.26.
 	RelationTypeDetailsFor
 	// ErrorMessage: reciprocal of ATK_RELATION_ERROR_FOR. Indicates that this
 	// object has one or more errors, the nature of which is described in the
 	// contents of the target object(s). Objects that have this relation type
-	// should also contain ATK_STATE_INVALID_ENTRY in their StateSet. @Since:
+	// should also contain ATK_STATE_INVALID_ENTRY in their StateSet. Since:
 	// ATK-2.26.
 	RelationTypeErrorMessage
 	// ErrorFor: reciprocal of ATK_RELATION_ERROR_MESSAGE. Indicates that this
 	// object contains an error message describing an invalid condition in the
-	// target object(s). @Since: ATK_2.26.
+	// target object(s). Since: ATK_2.26.
 	RelationTypeErrorFor
 	// LastDefined: not used, this value indicates the end of the enumeration.
 	RelationTypeLastDefined

@@ -29,7 +29,7 @@ type WaylandPopuper interface {
 	privateWaylandPopup()
 }
 
-// WaylandPopup: wayland implementation of `GdkPopup`.
+// WaylandPopup: wayland implementation of GdkPopup.
 type WaylandPopup struct {
 	WaylandSurface
 }
@@ -62,11 +62,10 @@ type WaylandSurfacer interface {
 	privateWaylandSurface()
 }
 
-// WaylandSurface: wayland implementation of `GdkSurface`.
+// WaylandSurface: wayland implementation of GdkSurface.
 //
-// Beyond the [class@Gdk.Surface] API, the Wayland implementation offers access
-// to the Wayland `wl_surface` object with
-// [method@GdkWayland.WaylandSurface.get_wl_surface].
+// Beyond the gdk.Surface API, the Wayland implementation offers access to the
+// Wayland wl_surface object with gdkwayland.WaylandSurface.GetWlSurface().
 type WaylandSurface struct {
 	gdk.Surface
 }
@@ -94,22 +93,22 @@ func (*WaylandSurface) privateWaylandSurface() {}
 
 // WaylandTopleveler describes WaylandToplevel's methods.
 type WaylandTopleveler interface {
-	// SetApplicationID sets the application id on a `GdkToplevel`.
+	// SetApplicationID sets the application id on a GdkToplevel.
 	SetApplicationID(applicationId string)
-	// SetTransientForExported marks @toplevel as transient for the surface to
-	// which the given @parent_handle_str refers.
+	// SetTransientForExported marks toplevel as transient for the surface to
+	// which the given parent_handle_str refers.
 	SetTransientForExported(parentHandleStr string) bool
 	// UnexportHandle destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	UnexportHandle()
 }
 
-// WaylandToplevel: wayland implementation of `GdkToplevel`.
+// WaylandToplevel: wayland implementation of GdkToplevel.
 //
-// Beyond the [interface@Gdk.Toplevel] API, the Wayland implementation has API
-// to set up cross-process parent-child relationships between surfaces with
-// [method@GdkWayland.WaylandToplevel.export_handle] and
-// [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
+// Beyond the gdk.Toplevel API, the Wayland implementation has API to set up
+// cross-process parent-child relationships between surfaces with
+// gdkwayland.WaylandToplevel.ExportHandle() and
+// gdkwayland.WaylandToplevel.SetTransientForExported().
 type WaylandToplevel struct {
 	WaylandSurface
 }
@@ -135,7 +134,7 @@ func marshalWaylandTopleveler(p uintptr) (interface{}, error) {
 	return wrapWaylandToplevel(obj), nil
 }
 
-// SetApplicationID sets the application id on a `GdkToplevel`.
+// SetApplicationID sets the application id on a GdkToplevel.
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -146,11 +145,11 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
 
-// SetTransientForExported marks @toplevel as transient for the surface to which
-// the given @parent_handle_str refers.
+// SetTransientForExported marks toplevel as transient for the surface to which
+// the given parent_handle_str refers.
 //
 // Typically, the handle will originate from a
-// [method@GdkWayland.WaylandToplevel.export_handle] call in another process.
+// gdkwayland.WaylandToplevel.ExportHandle() call in another process.
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.

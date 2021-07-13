@@ -33,7 +33,7 @@ func init() {
 
 // FileIconer describes FileIcon's methods.
 type FileIconer interface {
-	// File gets the #GFile associated with the given @icon.
+	// File gets the #GFile associated with the given icon.
 	File() *File
 }
 
@@ -82,7 +82,7 @@ func NewFileIcon(file Filer) *FileIcon {
 	return _fileIcon
 }
 
-// File gets the #GFile associated with the given @icon.
+// File gets the #GFile associated with the given icon.
 func (icon *FileIcon) File() *File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in

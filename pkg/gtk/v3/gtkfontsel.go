@@ -315,8 +315,8 @@ func (fontsel *FontSelection) SizeList() *Widget {
 
 // SetFontName sets the currently-selected font.
 //
-// Note that the @fontsel needs to know the screen in which it will appear for
-// this to work; this can be guaranteed by simply making sure that the @fontsel
+// Note that the fontsel needs to know the screen in which it will appear for
+// this to work; this can be guaranteed by simply making sure that the fontsel
 // is inserted in a toplevel window before you call this function.
 //
 // Deprecated: Use FontChooser.
@@ -339,7 +339,7 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 	return _ok
 }
 
-// SetPreviewText sets the text displayed in the preview area. The @text is used
+// SetPreviewText sets the text displayed in the preview area. The text is used
 // to show how the selected font looks.
 //
 // Deprecated: Use FontChooser.

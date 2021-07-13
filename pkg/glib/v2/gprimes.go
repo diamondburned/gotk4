@@ -8,7 +8,7 @@ package glib
 import "C"
 
 // SpacedPrimesClosest gets the smallest prime number from a built-in array of
-// primes which is larger than @num. This is used within GLib to calculate the
+// primes which is larger than num. This is used within GLib to calculate the
 // optimum size of a Table.
 //
 // The built-in array of primes ranges from 11 to 13845163 such that each prime

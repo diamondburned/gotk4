@@ -26,31 +26,30 @@ func init() {
 type AppChooserer interface {
 	// AppInfo returns the currently selected application.
 	AppInfo() *gio.AppInfo
-	// ContentType returns the content type for which the `GtkAppChooser` shows
+	// ContentType returns the content type for which the GtkAppChooser shows
 	// applications.
 	ContentType() string
 	// Refresh reloads the list of applications.
 	Refresh()
 }
 
-// AppChooser: `GtkAppChooser` is an interface for widgets which allow the user
-// to choose an application.
+// AppChooser: GtkAppChooser is an interface for widgets which allow the user to
+// choose an application.
 //
-// The main objects that implement this interface are
-// [class@Gtk.AppChooserWidget], [class@Gtk.AppChooserDialog] and
-// [class@Gtk.AppChooserButton].
+// The main objects that implement this interface are gtk.AppChooserWidget,
+// gtk.AppChooserDialog and gtk.AppChooserButton.
 //
-// Applications are represented by GIO `GAppInfo` objects here. GIO has a
-// concept of recommended and fallback applications for a given content type.
+// Applications are represented by GIO GAppInfo objects here. GIO has a concept
+// of recommended and fallback applications for a given content type.
 // Recommended applications are those that claim to handle the content type
 // itself, while fallback also includes applications that handle a more generic
 // content type. GIO also knows the default and last-used application for a
-// given content type. The `GtkAppChooserWidget` provides detailed control over
+// given content type. The GtkAppChooserWidget provides detailed control over
 // whether the shown list of applications should include default, recommended or
 // fallback applications.
 //
-// To obtain the application that has been selected in a `GtkAppChooser`, use
-// [method@Gtk.AppChooser.get_app_info].
+// To obtain the application that has been selected in a GtkAppChooser, use
+// gtk.AppChooser.GetAppInfo().
 type AppChooser struct {
 	Widget
 }
@@ -106,7 +105,7 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 	return _appInfo
 }
 
-// ContentType returns the content type for which the `GtkAppChooser` shows
+// ContentType returns the content type for which the GtkAppChooser shows
 // applications.
 func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out

@@ -121,8 +121,8 @@ func marshalMenuToolButtoner(p uintptr) (interface{}, error) {
 	return wrapMenuToolButton(obj), nil
 }
 
-// NewMenuToolButton creates a new MenuToolButton using @icon_widget as icon and
-// @label as label.
+// NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and
+// label as label.
 func NewMenuToolButton(iconWidget Widgeter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -142,7 +142,7 @@ func NewMenuToolButton(iconWidget Widgeter, label string) *MenuToolButton {
 
 // NewMenuToolButtonFromStock creates a new MenuToolButton. The new
 // MenuToolButton will contain an icon and label from the stock item indicated
-// by @stock_id.
+// by stock_id.
 //
 // Deprecated: Use gtk_menu_tool_button_new() instead.
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
@@ -203,7 +203,7 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 }
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
-// @menu is NULL, the arrow button becomes insensitive.
+// menu is NULL, the arrow button becomes insensitive.
 func (button *MenuToolButton) SetMenu(menu Widgeter) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out

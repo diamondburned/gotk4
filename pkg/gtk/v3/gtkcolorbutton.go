@@ -37,16 +37,16 @@ type ColorButtonOverrider interface {
 type ColorButtoner interface {
 	// Alpha returns the current alpha value.
 	Alpha() uint16
-	// Color sets @color to be the current color in the ColorButton widget.
+	// Color sets color to be the current color in the ColorButton widget.
 	Color() gdk.Color
 	// Title gets the title of the color selection dialog.
 	Title() string
 	// UseAlpha does the color selection dialog use the alpha channel ?
 	// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
 	UseAlpha() bool
-	// SetAlpha sets the current opacity to be @alpha.
+	// SetAlpha sets the current opacity to be alpha.
 	SetAlpha(alpha uint16)
-	// SetColor sets the current color to be @color.
+	// SetColor sets the current color to be color.
 	SetColor(color *gdk.Color)
 	// SetTitle sets the title for the color selection dialog.
 	SetTitle(title string)
@@ -198,7 +198,7 @@ func (button *ColorButton) Alpha() uint16 {
 	return _guint16
 }
 
-// Color sets @color to be the current color in the ColorButton widget.
+// Color sets color to be the current color in the ColorButton widget.
 //
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
 func (button *ColorButton) Color() gdk.Color {
@@ -248,7 +248,7 @@ func (button *ColorButton) UseAlpha() bool {
 	return _ok
 }
 
-// SetAlpha sets the current opacity to be @alpha.
+// SetAlpha sets the current opacity to be alpha.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
 func (button *ColorButton) SetAlpha(alpha uint16) {
@@ -261,7 +261,7 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 	C.gtk_color_button_set_alpha(_arg0, _arg1)
 }
 
-// SetColor sets the current color to be @color.
+// SetColor sets the current color to be color.
 //
 // Deprecated: Use gtk_color_chooser_set_rgba() instead.
 func (button *ColorButton) SetColor(color *gdk.Color) {

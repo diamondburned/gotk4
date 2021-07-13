@@ -26,20 +26,20 @@ func init() {
 type Screener interface {
 	// ActiveWindow returns the screen’s currently active window.
 	ActiveWindow() *Window
-	// Display gets the display to which the @screen belongs.
+	// Display gets the display to which the screen belongs.
 	Display() *Display
 	// FontOptions gets any options previously set with
 	// gdk_screen_set_font_options().
 	FontOptions() *cairo.FontOptions
-	// Height gets the height of @screen in pixels.
+	// Height gets the height of screen in pixels.
 	Height() int
-	// HeightMm returns the height of @screen in millimeters.
+	// HeightMm returns the height of screen in millimeters.
 	HeightMm() int
-	// MonitorAtPoint returns the monitor number in which the point (@x,@y) is
+	// MonitorAtPoint returns the monitor number in which the point (x,y) is
 	// located.
 	MonitorAtPoint(x int, y int) int
 	// MonitorAtWindow returns the number of the monitor in which the largest
-	// area of the bounding rectangle of @window resides.
+	// area of the bounding rectangle of window resides.
 	MonitorAtWindow(window Windower) int
 	// MonitorGeometry retrieves the Rectangle representing the size and
 	// position of the individual monitor within the entire screen area.
@@ -57,12 +57,12 @@ type Screener interface {
 	// MonitorWorkarea retrieves the Rectangle representing the size and
 	// position of the “work area” on a monitor within the entire screen area.
 	MonitorWorkarea(monitorNum int) Rectangle
-	// NMonitors returns the number of monitors which @screen consists of.
+	// NMonitors returns the number of monitors which screen consists of.
 	NMonitors() int
-	// Number gets the index of @screen among the screens in the display to
-	// which it belongs.
+	// Number gets the index of screen among the screens in the display to which
+	// it belongs.
 	Number() int
-	// PrimaryMonitor gets the primary monitor for @screen.
+	// PrimaryMonitor gets the primary monitor for screen.
 	PrimaryMonitor() int
 	// Resolution gets the resolution for font handling on the screen; see
 	// gdk_screen_set_resolution() for full details.
@@ -70,16 +70,16 @@ type Screener interface {
 	// RGBAVisual gets a visual to use for creating windows with an alpha
 	// channel.
 	RGBAVisual() *Visual
-	// RootWindow gets the root window of @screen.
+	// RootWindow gets the root window of screen.
 	RootWindow() *Window
 	// Setting retrieves a desktop-wide setting such as double-click time for
-	// the Screen @screen.
+	// the Screen screen.
 	Setting(name string, value *externglib.Value) bool
-	// SystemVisual: get the system’s default visual for @screen.
+	// SystemVisual: get the system’s default visual for screen.
 	SystemVisual() *Visual
-	// Width gets the width of @screen in pixels.
+	// Width gets the width of screen in pixels.
 	Width() int
-	// WidthMm gets the width of @screen in millimeters.
+	// WidthMm gets the width of screen in millimeters.
 	WidthMm() int
 	// IsComposited returns whether windows with an RGBA visual can reasonably
 	// be expected to have their alpha channel drawn correctly on the screen.
@@ -130,9 +130,9 @@ func marshalScreener(p uintptr) (interface{}, error) {
 // root window, as described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec). If there is no currently
 // currently active window, or the window manager does not support the
-// _NET_ACTIVE_WINDOW hint, this function returns nil.
+// _NET_ACTIVE_WINDOW hint, this function returns NULL.
 //
-// On other platforms, this function may return nil, depending on whether it is
+// On other platforms, this function may return NULL, depending on whether it is
 // implementable on that platform.
 //
 // The returned window should be unrefed using g_object_unref() when no longer
@@ -154,7 +154,7 @@ func (screen *Screen) ActiveWindow() *Window {
 	return _window
 }
 
-// Display gets the display to which the @screen belongs.
+// Display gets the display to which the screen belongs.
 func (screen *Screen) Display() *Display {
 	var _arg0 *C.GdkScreen  // out
 	var _cret *C.GdkDisplay // in
@@ -187,7 +187,7 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 	return _fontOptions
 }
 
-// Height gets the height of @screen in pixels. The returned size is in
+// Height gets the height of screen in pixels. The returned size is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
 //
@@ -207,7 +207,7 @@ func (screen *Screen) Height() int {
 	return _gint
 }
 
-// HeightMm returns the height of @screen in millimeters.
+// HeightMm returns the height of screen in millimeters.
 //
 // Note that this value is somewhat ill-defined when the screen has multiple
 // monitors of different resolution. It is recommended to use the monitor
@@ -229,7 +229,7 @@ func (screen *Screen) HeightMm() int {
 	return _gint
 }
 
-// MonitorAtPoint returns the monitor number in which the point (@x,@y) is
+// MonitorAtPoint returns the monitor number in which the point (x,y) is
 // located.
 //
 // Deprecated: Use gdk_display_get_monitor_at_point() instead.
@@ -253,7 +253,7 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 }
 
 // MonitorAtWindow returns the number of the monitor in which the largest area
-// of the bounding rectangle of @window resides.
+// of the bounding rectangle of window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
 func (screen *Screen) MonitorAtWindow(window Windower) int {
@@ -278,7 +278,7 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 // is in ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
 //
-// Monitor numbers start at 0. To obtain the number of monitors of @screen, use
+// Monitor numbers start at 0. To obtain the number of monitors of screen, use
 // gdk_screen_get_n_monitors().
 //
 // Note that the size of the entire screen area can be retrieved via
@@ -400,7 +400,7 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 // return the monitor geometry if a workarea is not available, or does not
 // apply.
 //
-// Monitor numbers start at 0. To obtain the number of monitors of @screen, use
+// Monitor numbers start at 0. To obtain the number of monitors of screen, use
 // gdk_screen_get_n_monitors().
 //
 // Deprecated: Use gdk_monitor_get_workarea() instead.
@@ -417,7 +417,7 @@ func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
 	return _dest
 }
 
-// NMonitors returns the number of monitors which @screen consists of.
+// NMonitors returns the number of monitors which screen consists of.
 //
 // Deprecated: Use gdk_display_get_n_monitors() instead.
 func (screen *Screen) NMonitors() int {
@@ -435,7 +435,7 @@ func (screen *Screen) NMonitors() int {
 	return _gint
 }
 
-// Number gets the index of @screen among the screens in the display to which it
+// Number gets the index of screen among the screens in the display to which it
 // belongs. (See gdk_screen_get_display())
 //
 // Deprecated: since version 3.22.
@@ -454,7 +454,7 @@ func (screen *Screen) Number() int {
 	return _gint
 }
 
-// PrimaryMonitor gets the primary monitor for @screen. The primary monitor is
+// PrimaryMonitor gets the primary monitor for screen. The primary monitor is
 // considered the monitor where the “main desktop” lives. While normal
 // application windows typically allow the window manager to place the windows,
 // specialized desktop applications such as panels should place themselves on
@@ -498,7 +498,7 @@ func (screen *Screen) Resolution() float64 {
 
 // RGBAVisual gets a visual to use for creating windows with an alpha channel.
 // The windowing system on which GTK+ is running may not support this
-// capability, in which case nil will be returned. Even if a non-nil value is
+// capability, in which case NULL will be returned. Even if a non-NULL value is
 // returned, its possible that the window’s alpha channel won’t be honored when
 // displaying the window on the screen: in particular, for X an appropriate
 // windowing manager and compositing manager must be running to provide
@@ -523,7 +523,7 @@ func (screen *Screen) RGBAVisual() *Visual {
 	return _visual
 }
 
-// RootWindow gets the root window of @screen.
+// RootWindow gets the root window of screen.
 func (screen *Screen) RootWindow() *Window {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
@@ -540,7 +540,7 @@ func (screen *Screen) RootWindow() *Window {
 }
 
 // Setting retrieves a desktop-wide setting such as double-click time for the
-// Screen @screen.
+// Screen screen.
 //
 // FIXME needs a list of valid settings here, or a link to more information.
 func (screen *Screen) Setting(name string, value *externglib.Value) bool {
@@ -564,7 +564,7 @@ func (screen *Screen) Setting(name string, value *externglib.Value) bool {
 	return _ok
 }
 
-// SystemVisual: get the system’s default visual for @screen. This is the visual
+// SystemVisual: get the system’s default visual for screen. This is the visual
 // for the root window of the display. The return value should not be freed.
 func (screen *Screen) SystemVisual() *Visual {
 	var _arg0 *C.GdkScreen // out
@@ -581,7 +581,7 @@ func (screen *Screen) SystemVisual() *Visual {
 	return _visual
 }
 
-// Width gets the width of @screen in pixels. The returned size is in
+// Width gets the width of screen in pixels. The returned size is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
 //
@@ -601,7 +601,7 @@ func (screen *Screen) Width() int {
 	return _gint
 }
 
-// WidthMm gets the width of @screen in millimeters.
+// WidthMm gets the width of screen in millimeters.
 //
 // Note that this value is somewhat ill-defined when the screen has multiple
 // monitors of different resolution. It is recommended to use the monitor
@@ -627,7 +627,7 @@ func (screen *Screen) WidthMm() int {
 // expected to have their alpha channel drawn correctly on the screen.
 //
 // On X11 this function returns whether a compositing manager is compositing
-// @screen.
+// screen.
 func (screen *Screen) IsComposited() bool {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.gboolean   // in

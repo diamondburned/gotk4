@@ -31,33 +31,33 @@ func init() {
 type CellViewer interface {
 	// DisplayedRow returns a TreePath referring to the currently displayed row.
 	DisplayedRow() *TreePath
-	// DrawSensitive gets whether @cell_view is configured to draw all of its
+	// DrawSensitive gets whether cell_view is configured to draw all of its
 	// cells in a sensitive state.
 	DrawSensitive() bool
-	// FitModel gets whether @cell_view is configured to request space to fit
-	// the entire TreeModel.
+	// FitModel gets whether cell_view is configured to request space to fit the
+	// entire TreeModel.
 	FitModel() bool
-	// Model returns the model for @cell_view.
+	// Model returns the model for cell_view.
 	Model() *TreeModel
-	// SizeOfRow sets @requisition to the size needed by @cell_view to display
-	// the model row pointed to by @path.
+	// SizeOfRow sets requisition to the size needed by cell_view to display the
+	// model row pointed to by path.
 	SizeOfRow(path *TreePath) (Requisition, bool)
-	// SetBackgroundColor sets the background color of @view.
+	// SetBackgroundColor sets the background color of view.
 	SetBackgroundColor(color *gdk.Color)
-	// SetBackgroundRGBA sets the background color of @cell_view.
+	// SetBackgroundRGBA sets the background color of cell_view.
 	SetBackgroundRGBA(rgba *gdk.RGBA)
 	// SetDisplayedRow sets the row of the model that is currently displayed by
 	// the CellView.
 	SetDisplayedRow(path *TreePath)
-	// SetDrawSensitive sets whether @cell_view should draw all of its cells in
-	// a sensitive state, this is used by ComboBox menus to ensure that rows
-	// with insensitive cells that contain children appear sensitive in the
-	// parent menu item.
+	// SetDrawSensitive sets whether cell_view should draw all of its cells in a
+	// sensitive state, this is used by ComboBox menus to ensure that rows with
+	// insensitive cells that contain children appear sensitive in the parent
+	// menu item.
 	SetDrawSensitive(drawSensitive bool)
-	// SetFitModel sets whether @cell_view should request space to fit the
-	// entire TreeModel.
+	// SetFitModel sets whether cell_view should request space to fit the entire
+	// TreeModel.
 	SetFitModel(fitModel bool)
-	// SetModel sets the model for @cell_view.
+	// SetModel sets the model for cell_view.
 	SetModel(model TreeModeler)
 }
 
@@ -137,13 +137,13 @@ func NewCellView() *CellView {
 // Specifying the same context for a handfull of cells lets the underlying area
 // synchronize the geometry for those cells, in this way alignments with
 // cellviews for other rows are possible.
-func NewCellViewWithContext(area CellAreaer, context CellAreaContexter) *CellView {
+func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView {
 	var _arg1 *C.GtkCellArea        // out
 	var _arg2 *C.GtkCellAreaContext // out
 	var _cret *C.GtkWidget          // in
 
 	_arg1 = (*C.GtkCellArea)(unsafe.Pointer((area).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
 
@@ -155,7 +155,7 @@ func NewCellViewWithContext(area CellAreaer, context CellAreaContexter) *CellVie
 }
 
 // NewCellViewWithMarkup creates a new CellView widget, adds a CellRendererText
-// to it, and makes it show @markup. The text can be marked up with the [Pango
+// to it, and makes it show markup. The text can be marked up with the [Pango
 // text markup language][PangoMarkupFormat].
 func NewCellViewWithMarkup(markup string) *CellView {
 	var _arg1 *C.gchar     // out
@@ -173,12 +173,12 @@ func NewCellViewWithMarkup(markup string) *CellView {
 }
 
 // NewCellViewWithPixbuf creates a new CellView widget, adds a
-// CellRendererPixbuf to it, and makes it show @pixbuf.
-func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbufer) *CellView {
+// CellRendererPixbuf to it, and makes it show pixbuf.
+func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _arg1 *C.GdkPixbuf // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_cell_view_new_with_pixbuf(_arg1)
 
@@ -190,7 +190,7 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbufer) *CellView {
 }
 
 // NewCellViewWithText creates a new CellView widget, adds a CellRendererText to
-// it, and makes it show @text.
+// it, and makes it show text.
 func NewCellViewWithText(text string) *CellView {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -213,7 +213,7 @@ func (v *CellView) Native() uintptr {
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row. If
-// no row is currently displayed, nil is returned.
+// no row is currently displayed, NULL is returned.
 func (cellView *CellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
 	var _cret *C.GtkTreePath // in
@@ -232,7 +232,7 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 	return _treePath
 }
 
-// DrawSensitive gets whether @cell_view is configured to draw all of its cells
+// DrawSensitive gets whether cell_view is configured to draw all of its cells
 // in a sensitive state.
 func (cellView *CellView) DrawSensitive() bool {
 	var _arg0 *C.GtkCellView // out
@@ -251,7 +251,7 @@ func (cellView *CellView) DrawSensitive() bool {
 	return _ok
 }
 
-// FitModel gets whether @cell_view is configured to request space to fit the
+// FitModel gets whether cell_view is configured to request space to fit the
 // entire TreeModel.
 func (cellView *CellView) FitModel() bool {
 	var _arg0 *C.GtkCellView // out
@@ -270,7 +270,7 @@ func (cellView *CellView) FitModel() bool {
 	return _ok
 }
 
-// Model returns the model for @cell_view. If no model is used nil is returned.
+// Model returns the model for cell_view. If no model is used NULL is returned.
 func (cellView *CellView) Model() *TreeModel {
 	var _arg0 *C.GtkCellView  // out
 	var _cret *C.GtkTreeModel // in
@@ -286,8 +286,8 @@ func (cellView *CellView) Model() *TreeModel {
 	return _treeModel
 }
 
-// SizeOfRow sets @requisition to the size needed by @cell_view to display the
-// model row pointed to by @path.
+// SizeOfRow sets requisition to the size needed by cell_view to display the
+// model row pointed to by path.
 //
 // Deprecated: Combo box formerly used this to calculate the sizes for
 // cellviews, now you can achieve this by either using the CellView:fit-model
@@ -313,7 +313,7 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 	return _requisition, _ok
 }
 
-// SetBackgroundColor sets the background color of @view.
+// SetBackgroundColor sets the background color of view.
 //
 // Deprecated: Use gtk_cell_view_set_background_rgba() instead.
 func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
@@ -326,7 +326,7 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 	C.gtk_cell_view_set_background_color(_arg0, _arg1)
 }
 
-// SetBackgroundRGBA sets the background color of @cell_view.
+// SetBackgroundRGBA sets the background color of cell_view.
 func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkCellView // out
 	var _arg1 *C.GdkRGBA     // out
@@ -352,7 +352,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }
 
-// SetDrawSensitive sets whether @cell_view should draw all of its cells in a
+// SetDrawSensitive sets whether cell_view should draw all of its cells in a
 // sensitive state, this is used by ComboBox menus to ensure that rows with
 // insensitive cells that contain children appear sensitive in the parent menu
 // item.
@@ -368,7 +368,7 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	C.gtk_cell_view_set_draw_sensitive(_arg0, _arg1)
 }
 
-// SetFitModel sets whether @cell_view should request space to fit the entire
+// SetFitModel sets whether cell_view should request space to fit the entire
 // TreeModel.
 //
 // This is used by ComboBox to ensure that the cell view displayed on the combo
@@ -386,9 +386,9 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 	C.gtk_cell_view_set_fit_model(_arg0, _arg1)
 }
 
-// SetModel sets the model for @cell_view. If @cell_view already has a model
-// set, it will remove it before setting the new model. If @model is nil, then
-// it will unset the old model.
+// SetModel sets the model for cell_view. If cell_view already has a model set,
+// it will remove it before setting the new model. If model is NULL, then it
+// will unset the old model.
 func (cellView *CellView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out

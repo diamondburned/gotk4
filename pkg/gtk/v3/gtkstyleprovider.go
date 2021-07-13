@@ -28,26 +28,26 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleProviderOverrider interface {
-	// IconFactory returns the IconFactory defined to be in use for @path, or
-	// nil if none is defined.
+	// IconFactory returns the IconFactory defined to be in use for path, or
+	// NULL if none is defined.
 	//
-	// Deprecated: Will always return nil for all GTK-provided style providers.
+	// Deprecated: Will always return NULL for all GTK-provided style providers.
 	IconFactory(path *WidgetPath) *IconFactory
-	// Style returns the style settings affecting a widget defined by @path, or
-	// nil if @provider doesn’t contemplate styling @path.
+	// Style returns the style settings affecting a widget defined by path, or
+	// NULL if provider doesn’t contemplate styling path.
 	//
-	// Deprecated: Will always return nil for all GTK-provided style providers
+	// Deprecated: Will always return NULL for all GTK-provided style providers
 	// as the interface cannot correctly work the way CSS is specified.
 	Style(path *WidgetPath) *StyleProperties
 }
 
 // StyleProviderer describes StyleProvider's methods.
 type StyleProviderer interface {
-	// IconFactory returns the IconFactory defined to be in use for @path, or
-	// nil if none is defined.
+	// IconFactory returns the IconFactory defined to be in use for path, or
+	// NULL if none is defined.
 	IconFactory(path *WidgetPath) *IconFactory
-	// Style returns the style settings affecting a widget defined by @path, or
-	// nil if @provider doesn’t contemplate styling @path.
+	// Style returns the style settings affecting a widget defined by path, or
+	// NULL if provider doesn’t contemplate styling path.
 	Style(path *WidgetPath) *StyleProperties
 }
 
@@ -75,10 +75,10 @@ func marshalStyleProviderer(p uintptr) (interface{}, error) {
 	return wrapStyleProvider(obj), nil
 }
 
-// IconFactory returns the IconFactory defined to be in use for @path, or nil if
+// IconFactory returns the IconFactory defined to be in use for path, or NULL if
 // none is defined.
 //
-// Deprecated: Will always return nil for all GTK-provided style providers.
+// Deprecated: Will always return NULL for all GTK-provided style providers.
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
 	var _arg1 *C.GtkWidgetPath    // out
@@ -96,10 +96,10 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	return _iconFactory
 }
 
-// Style returns the style settings affecting a widget defined by @path, or nil
-// if @provider doesn’t contemplate styling @path.
+// Style returns the style settings affecting a widget defined by path, or NULL
+// if provider doesn’t contemplate styling path.
 //
-// Deprecated: Will always return nil for all GTK-provided style providers as
+// Deprecated: Will always return NULL for all GTK-provided style providers as
 // the interface cannot correctly work the way CSS is specified.
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out

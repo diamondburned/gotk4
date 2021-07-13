@@ -26,10 +26,10 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HypertextOverrider interface {
-	// Link gets the link in this hypertext document at index @link_index
+	// Link gets the link in this hypertext document at index link_index
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
-	// with the character specified by @char_index.
+	// with the character specified by char_index.
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
@@ -38,10 +38,10 @@ type HypertextOverrider interface {
 
 // Hypertexter describes Hypertext's methods.
 type Hypertexter interface {
-	// Link gets the link in this hypertext document at index @link_index
+	// Link gets the link in this hypertext document at index link_index
 	Link(linkIndex int) *Hyperlink
 	// LinkIndex gets the index into the array of hyperlinks that is associated
-	// with the character specified by @char_index.
+	// with the character specified by char_index.
 	LinkIndex(charIndex int) int
 	// NLinks gets the number of links within this hypertext document.
 	NLinks() int
@@ -75,7 +75,7 @@ func marshalHypertexter(p uintptr) (interface{}, error) {
 	return wrapHypertext(obj), nil
 }
 
-// Link gets the link in this hypertext document at index @link_index
+// Link gets the link in this hypertext document at index link_index
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
@@ -94,7 +94,7 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 }
 
 // LinkIndex gets the index into the array of hyperlinks that is associated with
-// the character specified by @char_index.
+// the character specified by char_index.
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out

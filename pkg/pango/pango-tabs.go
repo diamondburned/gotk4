@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// TabAlign: `PangoTabAlign` specifies where a tab stop appears relative to the
+// TabAlign: PangoTabAlign specifies where a tab stop appears relative to the
 // text.
 type TabAlign int
 
@@ -35,10 +35,10 @@ func marshalTabAlign(p uintptr) (interface{}, error) {
 	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TabArray: `PangoTabArray` contains an array of tab stops.
+// TabArray: PangoTabArray contains an array of tab stops.
 //
-// `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
-// stop has an alignment and a position.
+// PangoTabArray can be used to set tab stops in a PangoLayout. Each tab stop
+// has an alignment and a position.
 type TabArray struct {
 	native C.PangoTabArray
 }
@@ -76,7 +76,7 @@ func (t *TabArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Copy copies a `PangoTabArray`.
+// Copy copies a PangoTabArray.
 func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
@@ -104,7 +104,7 @@ func (tabArray *TabArray) free() {
 	C.pango_tab_array_free(_arg0)
 }
 
-// PositionsInPixels returns true if the tab positions are in pixels, false if
+// PositionsInPixels returns TRUE if the tab positions are in pixels, FALSE if
 // they are in Pango units.
 func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
@@ -123,7 +123,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 	return _ok
 }
 
-// Size gets the number of tab stops in @tab_array.
+// Size gets the number of tab stops in tab_array.
 func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
@@ -176,7 +176,7 @@ func (tabArray *TabArray) Resize(newSize int) {
 
 // SetTab sets the alignment and location of a tab stop.
 //
-// @alignment must always be PANGO_TAB_LEFT in the current implementation.
+// alignment must always be PANGO_TAB_LEFT in the current implementation.
 func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out

@@ -52,7 +52,7 @@ func (t *Triangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// ContainsPoint checks whether the given triangle @t contains the point @p.
+// ContainsPoint checks whether the given triangle t contains the point p.
 func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -119,21 +119,21 @@ func (t *Triangle) Area() float32 {
 
 // Barycoords computes the barycentric coordinates
 // (http://en.wikipedia.org/wiki/Barycentric_coordinate_system) of the given
-// point @p.
+// point p.
 //
-// The point @p must lie on the same plane as the triangle @t; if the point is
-// not coplanar, the result of this function is undefined.
+// The point p must lie on the same plane as the triangle t; if the point is not
+// coplanar, the result of this function is undefined.
 //
 // If we place the origin in the coordinates of the triangle's A point, the
-// barycentric coordinates are `u`, which is on the AC vector; and `v` which is
-// on the AB vector:
+// barycentric coordinates are u, which is on the AC vector; and v which is on
+// the AB vector:
 //
 // ! (triangle-barycentric.png)
 //
 // The returned #graphene_vec2_t contains the following values, in order:
 //
-//    - `res.x = u`
-//    - `res.y = v`
+//    - res.x = u
+//    - res.y = v
 func (t *Triangle) Barycoords(p *Point3D) (Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -223,16 +223,16 @@ func (t *Triangle) Points() (a Point3D, b Point3D, c Point3D) {
 	return _a, _b, _c
 }
 
-// Uv computes the UV coordinates of the given point @p.
+// Uv computes the UV coordinates of the given point p.
 //
-// The point @p must lie on the same plane as the triangle @t; if the point is
-// not coplanar, the result of this function is undefined. If @p is nil, the
-// point will be set in (0, 0, 0).
+// The point p must lie on the same plane as the triangle t; if the point is not
+// coplanar, the result of this function is undefined. If p is NULL, the point
+// will be set in (0, 0, 0).
 //
-// The UV coordinates will be placed in the @res vector:
+// The UV coordinates will be placed in the res vector:
 //
-//    - `res.x = u`
-//    - `res.y = v`
+//    - res.x = u
+//    - res.y = v
 //
 // See also: graphene_triangle_get_barycoords()
 func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (Vec2, bool) {

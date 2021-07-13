@@ -58,20 +58,20 @@ type CSSProviderOverrider interface {
 
 // CSSProviderer describes CSSProvider's methods.
 type CSSProviderer interface {
-	// LoadFromData loads @data into @css_provider, and by doing so clears any
+	// LoadFromData loads data into css_provider, and by doing so clears any
 	// previously loaded information.
 	LoadFromData(data []byte) error
-	// LoadFromFile loads the data contained in @file into @css_provider, making
+	// LoadFromFile loads the data contained in file into css_provider, making
 	// it clear any previously loaded information.
 	LoadFromFile(file gio.Filer) error
-	// LoadFromPath loads the data contained in @path into @css_provider, making
+	// LoadFromPath loads the data contained in path into css_provider, making
 	// it clear any previously loaded information.
 	LoadFromPath(path string) error
 	// LoadFromResource loads the data contained in the resource at
-	// @resource_path into the CssProvider, clearing any previously loaded
+	// resource_path into the CssProvider, clearing any previously loaded
 	// information.
 	LoadFromResource(resourcePath string)
-	// String converts the @provider into a string representation in CSS format.
+	// String converts the provider into a string representation in CSS format.
 	String() string
 }
 
@@ -84,15 +84,15 @@ type CSSProviderer interface {
 // gtk_style_context_add_provider_for_screen().
 //
 // In addition, certain files will be read when GTK+ is initialized. First, the
-// file `$XDG_CONFIG_HOME/gtk-3.0/gtk.css` is loaded if it exists. Then, GTK+
+// file $XDG_CONFIG_HOME/gtk-3.0/gtk.css is loaded if it exists. Then, GTK+
 // loads the first existing file among
-// `XDG_DATA_HOME/themes/THEME/gtk-VERSION/gtk.css`,
-// `$HOME/.themes/THEME/gtk-VERSION/gtk.css`,
-// `$XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk.css` and
-// `DATADIR/share/themes/THEME/gtk-VERSION/gtk.css`, where `THEME` is the name
-// of the current theme (see the Settings:gtk-theme-name setting), `DATADIR` is
-// the prefix configured when GTK+ was compiled (unless overridden by the
-// `GTK_DATA_PREFIX` environment variable), and `VERSION` is the GTK+ version
+// XDG_DATA_HOME/themes/THEME/gtk-VERSION/gtk.css,
+// $HOME/.themes/THEME/gtk-VERSION/gtk.css,
+// $XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk.css and
+// DATADIR/share/themes/THEME/gtk-VERSION/gtk.css, where THEME is the name of
+// the current theme (see the Settings:gtk-theme-name setting), DATADIR is the
+// prefix configured when GTK+ was compiled (unless overridden by the
+// GTK_DATA_PREFIX environment variable), and VERSION is the GTK+ version
 // number. If no file is found for the current version, GTK+ tries older
 // versions all the way back to 3.0.
 //
@@ -137,7 +137,7 @@ func NewCSSProvider() *CSSProvider {
 	return _cssProvider
 }
 
-// LoadFromData loads @data into @css_provider, and by doing so clears any
+// LoadFromData loads data into css_provider, and by doing so clears any
 // previously loaded information.
 func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider // out
@@ -160,7 +160,7 @@ func (cssProvider *CSSProvider) LoadFromData(data []byte) error {
 	return _goerr
 }
 
-// LoadFromFile loads the data contained in @file into @css_provider, making it
+// LoadFromFile loads the data contained in file into css_provider, making it
 // clear any previously loaded information.
 func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	var _arg0 *C.GtkCssProvider // out
@@ -179,7 +179,7 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	return _goerr
 }
 
-// LoadFromPath loads the data contained in @path into @css_provider, making it
+// LoadFromPath loads the data contained in path into css_provider, making it
 // clear any previously loaded information.
 func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	var _arg0 *C.GtkCssProvider // out
@@ -198,7 +198,7 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	return _goerr
 }
 
-// LoadFromResource loads the data contained in the resource at @resource_path
+// LoadFromResource loads the data contained in the resource at resource_path
 // into the CssProvider, clearing any previously loaded information.
 //
 // To track errors while loading CSS, connect to the CssProvider::parsing-error
@@ -213,11 +213,11 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
 
-// String converts the @provider into a string representation in CSS format.
+// String converts the provider into a string representation in CSS format.
 //
 // Using gtk_css_provider_load_from_data() with the return value from this
 // function on a new provider created with gtk_css_provider_new() will basically
-// create a duplicate of this @provider.
+// create a duplicate of this provider.
 func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out
 	var _cret *C.char           // in

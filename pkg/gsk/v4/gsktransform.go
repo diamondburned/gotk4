@@ -11,14 +11,14 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// TransformParse parses the given @string into a transform and puts it in
-// @out_transform.
+// TransformParse parses the given string into a transform and puts it in
+// out_transform.
 //
-// Strings printed via [method@Gsk.Transform.to_string] can be read in again
+// Strings printed via gsk.Transform.ToString() can be read in again
 // successfully using this function.
 //
-// If @string does not describe a valid transform, false is returned and nil is
-// put in @out_transform.
+// If string does not describe a valid transform, FALSE is returned and NULL is
+// put in out_transform.
 func TransformParse(_string string) (*Transform, bool) {
 	var _arg1 *C.char // out
 	var _outTransform *Transform

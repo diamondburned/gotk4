@@ -30,7 +30,7 @@ type RecentChooserMenuer interface {
 	// gtk_recent_chooser_menu_set_show_numbers().
 	ShowNumbers() bool
 	// SetShowNumbers sets whether a number should be added to the items of
-	// @menu.
+	// menu.
 	SetShowNumbers(showNumbers bool)
 }
 
@@ -122,16 +122,16 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 }
 
 // NewRecentChooserMenuForManager creates a new RecentChooserMenu widget using
-// @manager as the underlying recently used resources manager.
+// manager as the underlying recently used resources manager.
 //
 // This is useful if you have implemented your own recent manager, or if you
 // have a customized instance of a RecentManager object or if you wish to share
 // a common RecentManager object among multiple RecentChooser widgets.
-func NewRecentChooserMenuForManager(manager RecentManagerer) *RecentChooserMenu {
+func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
 	var _cret *C.GtkWidget        // in
 
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer((manager).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
 	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
@@ -167,7 +167,7 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 	return _ok
 }
 
-// SetShowNumbers sets whether a number should be added to the items of @menu.
+// SetShowNumbers sets whether a number should be added to the items of menu.
 // The numbers are shown to provide a unique character for a mnemonic to be used
 // inside ten menu item’s label. Only the first the items get a number to avoid
 // clashes.

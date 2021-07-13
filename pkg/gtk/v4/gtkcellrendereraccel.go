@@ -47,7 +47,7 @@ type CellRendererAcceler interface {
 // CellRendererAccel renders a keyboard accelerator in a cell
 //
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
-// like `Control + a`). If the cell renderer is editable, the accelerator can be
+// like Control + a). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
 type CellRendererAccel struct {
 	CellRendererText

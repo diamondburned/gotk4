@@ -43,9 +43,9 @@ type ThemingEngineOverrider interface {
 	RenderFrame(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderFrameGap(cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64)
 	RenderHandle(cr *cairo.Context, x float64, y float64, width float64, height float64)
-	RenderIcon(cr *cairo.Context, pixbuf gdkpixbuf.Pixbufer, x float64, y float64)
+	RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x float64, y float64)
 	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
-	RenderLayout(cr *cairo.Context, x float64, y float64, layout pango.Layouter)
+	RenderLayout(cr *cairo.Context, x float64, y float64, layout *pango.Layout)
 	RenderLine(cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
 	RenderOption(cr *cairo.Context, x float64, y float64, width float64, height float64)
 	RenderSlider(cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation)
@@ -76,22 +76,22 @@ type ThemingEnginer interface {
 	// Property gets a property value as retrieved from the style settings that
 	// apply to the currently rendered element.
 	Property(property string, state StateFlags) externglib.Value
-	// Screen returns the Screen to which @engine currently rendering to.
+	// Screen returns the Screen to which engine currently rendering to.
 	Screen() *gdk.Screen
 	// State returns the state used when rendering.
 	State() StateFlags
 	// StyleProperty gets the value for a widget style property.
 	StyleProperty(propertyName string) externglib.Value
-	// HasClass returns true if the currently rendered contents have defined the
+	// HasClass returns TRUE if the currently rendered contents have defined the
 	// given class name.
 	HasClass(styleClass string) bool
-	// HasRegion returns true if the currently rendered contents have the region
+	// HasRegion returns TRUE if the currently rendered contents have the region
 	// defined.
 	HasRegion(styleRegion string) (RegionFlags, bool)
 	// LookupColor looks up and resolves a color name in the current style’s
 	// color map.
 	LookupColor(colorName string) (gdk.RGBA, bool)
-	// StateIsRunning returns true if there is a transition animation running
+	// StateIsRunning returns TRUE if there is a transition animation running
 	// for the current region (see gtk_style_context_push_animatable_region()).
 	StateIsRunning(state StateType) (float64, bool)
 }
@@ -325,7 +325,7 @@ func (engine *ThemingEngine) Property(property string, state StateFlags) externg
 	return _value
 }
 
-// Screen returns the Screen to which @engine currently rendering to.
+// Screen returns the Screen to which engine currently rendering to.
 //
 // Deprecated: since version 3.14.
 func (engine *ThemingEngine) Screen() *gdk.Screen {
@@ -386,7 +386,7 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) externglib.Value
 	return _value
 }
 
-// HasClass returns true if the currently rendered contents have defined the
+// HasClass returns TRUE if the currently rendered contents have defined the
 // given class name.
 //
 // Deprecated: since version 3.14.
@@ -409,8 +409,8 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	return _ok
 }
 
-// HasRegion returns true if the currently rendered contents have the region
-// defined. If @flags_return is not nil, it is set to the flags affecting the
+// HasRegion returns TRUE if the currently rendered contents have the region
+// defined. If flags_return is not NULL, it is set to the flags affecting the
 // region.
 //
 // Deprecated: since version 3.14.
@@ -460,15 +460,15 @@ func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	return _color, _ok
 }
 
-// StateIsRunning returns true if there is a transition animation running for
+// StateIsRunning returns TRUE if there is a transition animation running for
 // the current region (see gtk_style_context_push_animatable_region()).
 //
-// If @progress is not nil, the animation progress will be returned there, 0.0
-// means the state is closest to being false, while 1.0 means it’s closest to
-// being true. This means transition animations will run from 0 to 1 when @state
-// is being set to true and from 1 to 0 when it’s being set to false.
+// If progress is not NULL, the animation progress will be returned there, 0.0
+// means the state is closest to being FALSE, while 1.0 means it’s closest to
+// being TRUE. This means transition animations will run from 0 to 1 when state
+// is being set to TRUE and from 1 to 0 when it’s being set to FALSE.
 //
-// Deprecated: Always returns false.
+// Deprecated: Always returns FALSE.
 func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateType      // out

@@ -38,25 +38,25 @@ func init() {
 type UnixConnectioner interface {
 	// ReceiveCredentials receives credentials from the sending end of the
 	// connection.
-	ReceiveCredentials(cancellable Cancellabler) (*Credentials, error)
+	ReceiveCredentials(cancellable *Cancellable) (*Credentials, error)
 	// ReceiveCredentialsAsync: asynchronously receive credentials.
-	ReceiveCredentialsAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	ReceiveCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback)
 	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
 	// operation started with g_unix_connection_receive_credentials_async().
 	ReceiveCredentialsFinish(result AsyncResulter) (*Credentials, error)
 	// ReceiveFd receives a file descriptor from the sending end of the
 	// connection.
-	ReceiveFd(cancellable Cancellabler) (int, error)
+	ReceiveFd(cancellable *Cancellable) (int, error)
 	// SendCredentials passes the credentials of the current user the receiving
 	// side of the connection.
-	SendCredentials(cancellable Cancellabler) error
+	SendCredentials(cancellable *Cancellable) error
 	// SendCredentialsAsync: asynchronously send credentials.
-	SendCredentialsAsync(cancellable Cancellabler, callback AsyncReadyCallback)
+	SendCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback)
 	// SendCredentialsFinish finishes an asynchronous send credentials operation
 	// started with g_unix_connection_send_credentials_async().
 	SendCredentialsFinish(result AsyncResulter) error
 	// SendFd passes a file descriptor to the receiving side of the connection.
-	SendFd(fd int, cancellable Cancellabler) error
+	SendFd(fd int, cancellable *Cancellable) error
 }
 
 // UnixConnection: this is the subclass of Connection that is created for UNIX
@@ -65,8 +65,8 @@ type UnixConnectioner interface {
 // It contains functions to do some of the UNIX socket specific functionality
 // like passing file descriptors.
 //
-// Note that `<gio/gunixconnection.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// Note that <gio/gunixconnection.h> belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the gio-unix-2.0.pc pkg-config file when
 // using it.
 type UnixConnection struct {
 	SocketConnection
@@ -103,20 +103,26 @@ func marshalUnixConnectioner(p uintptr) (interface{}, error) {
 //
 // This method can be expected to be available on the following platforms:
 //
-// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since GLib
-// 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd since GLib
-// 2.40
+// - Linux since GLib 2.26
+//
+// - FreeBSD since GLib 2.26
+//
+// - GNU/kFreeBSD since GLib 2.36
+//
+// - Solaris, Illumos and OpenSolaris since GLib 2.40
+//
+// - GNU/Hurd since GLib 2.40
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection *UnixConnection) ReceiveCredentials(cancellable Cancellabler) (*Credentials, error) {
+func (connection *UnixConnection) ReceiveCredentials(cancellable *Cancellable) (*Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GCredentials    // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
 
@@ -134,17 +140,17 @@ func (connection *UnixConnection) ReceiveCredentials(cancellable Cancellabler) (
 // For more details, see g_unix_connection_receive_credentials() which is the
 // synchronous version of this call.
 //
-// When the operation is finished, @callback will be called. You can then call
+// When the operation is finished, callback will be called. You can then call
 // g_unix_connection_receive_credentials_finish() to get the result of the
 // operation.
-func (connection *UnixConnection) ReceiveCredentialsAsync(cancellable Cancellabler, callback AsyncReadyCallback) {
+func (connection *UnixConnection) ReceiveCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.Assign(callback))
 
@@ -178,14 +184,14 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 //
 // As well as reading the fd this also reads a single byte from the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) ReceiveFd(cancellable Cancellabler) (int, error) {
+func (connection *UnixConnection) ReceiveFd(cancellable *Cancellable) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret C.gint             // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
 
@@ -209,19 +215,25 @@ func (connection *UnixConnection) ReceiveFd(cancellable Cancellabler) (int, erro
 //
 // This method can be expected to be available on the following platforms:
 //
-// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since GLib
-// 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd since GLib
-// 2.40
+// - Linux since GLib 2.26
+//
+// - FreeBSD since GLib 2.26
+//
+// - GNU/kFreeBSD since GLib 2.36
+//
+// - Solaris, Illumos and OpenSolaris since GLib 2.40
+//
+// - GNU/Hurd since GLib 2.40
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection *UnixConnection) SendCredentials(cancellable Cancellabler) error {
+func (connection *UnixConnection) SendCredentials(cancellable *Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_unix_connection_send_credentials(_arg0, _arg1, &_cerr)
 
@@ -237,17 +249,17 @@ func (connection *UnixConnection) SendCredentials(cancellable Cancellabler) erro
 // For more details, see g_unix_connection_send_credentials() which is the
 // synchronous version of this call.
 //
-// When the operation is finished, @callback will be called. You can then call
+// When the operation is finished, callback will be called. You can then call
 // g_unix_connection_send_credentials_finish() to get the result of the
 // operation.
-func (connection *UnixConnection) SendCredentialsAsync(cancellable Cancellabler, callback AsyncReadyCallback) {
+func (connection *UnixConnection) SendCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.Assign(callback))
 
@@ -279,7 +291,7 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 //
 // As well as sending the fd this also writes a single byte to the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) SendFd(fd int, cancellable Cancellabler) error {
+func (connection *UnixConnection) SendFd(fd int, cancellable *Cancellable) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 C.gint             // out
 	var _arg2 *C.GCancellable    // out
@@ -287,7 +299,7 @@ func (connection *UnixConnection) SendFd(fd int, cancellable Cancellabler) error
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = C.gint(fd)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
 

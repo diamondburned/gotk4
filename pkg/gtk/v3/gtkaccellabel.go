@@ -37,7 +37,7 @@ type AccelLabeler interface {
 	// Refetch recreates the string representing the accelerator keys.
 	Refetch() bool
 	// SetAccel: manually sets a keyval and modifier mask as the accelerator
-	// rendered by @accel_label.
+	// rendered by accel_label.
 	SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
 	// SetAccelWidget sets the widget to be monitored by this accelerator label.
 	SetAccelWidget(accelWidget Widgeter)
@@ -201,12 +201,12 @@ func (accelLabel *AccelLabel) Refetch() bool {
 }
 
 // SetAccel: manually sets a keyval and modifier mask as the accelerator
-// rendered by @accel_label.
+// rendered by accel_label.
 //
 // If a keyval and modifier are explicitly set then these values are used
 // regardless of any associated accel closure or widget.
 //
-// Providing an @accelerator_key of 0 removes the manual setting.
+// Providing an accelerator_key of 0 removes the manual setting.
 func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // out
@@ -220,7 +220,7 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 }
 
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
-// Passing nil for @accel_widget will dissociate @accel_label from its current
+// Passing NULL for accel_widget will dissociate accel_label from its current
 // widget, if any.
 func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgeter) {
 	var _arg0 *C.GtkAccelLabel // out

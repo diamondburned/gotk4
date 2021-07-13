@@ -3,6 +3,7 @@
 package cairo
 
 import (
+	_ "runtime/cgo"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -329,8 +330,8 @@ const (
 	SurfaceTypeGlitz
 	SurfaceTypeQuartz
 	SurfaceTypeWin32
-	SurfaceTypeBeOS
-	SurfaceTypeDirectFB
+	SurfaceTypeBeos
+	SurfaceTypeDirectfb
 	SurfaceTypeSvg
 	SurfaceTypeOS2
 	SurfaceTypeWin32Printing

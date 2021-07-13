@@ -27,10 +27,10 @@ type ConstraintTargeter interface {
 	privateConstraintTarget()
 }
 
-// ConstraintTarget: `GtkConstraintTarget` interface is implemented by objects
-// that can be used as source or target in `GtkConstraint`s.
+// ConstraintTarget: GtkConstraintTarget interface is implemented by objects
+// that can be used as source or target in GtkConstraints.
 //
-// Besides `GtkWidget`, it is also implemented by `GtkConstraintGuide`.
+// Besides GtkWidget, it is also implemented by GtkConstraintGuide.
 type ConstraintTarget struct {
 	*externglib.Object
 }
@@ -64,43 +64,44 @@ type Constrainter interface {
 	Multiplier() float64
 	// Relation: order relation between the terms of the constraint.
 	Relation() ConstraintRelation
-	// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
-	// the constraint.
+	// Source retrieves the gtk.ConstraintTarget used as the source for the
+	// constraint.
 	Source() *ConstraintTarget
 	// SourceAttribute retrieves the attribute of the source to be read by the
 	// constraint.
 	SourceAttribute() ConstraintAttribute
 	// Strength retrieves the strength of the constraint.
 	Strength() int
-	// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
-	// the constraint.
+	// Target retrieves the gtk.ConstraintTarget used as the target for the
+	// constraint.
 	Target() *ConstraintTarget
 	// TargetAttribute retrieves the attribute of the target to be set by the
 	// constraint.
 	TargetAttribute() ConstraintAttribute
 	// IsAttached checks whether the constraint is attached to a
-	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
+	// gtk.ConstraintLayout, and it is contributing to the layout.
 	IsAttached() bool
 	// IsConstant checks whether the constraint describes a relation between an
-	// attribute on the [property@Gtk.Constraint:target] and a constant value.
+	// attribute on the gtk.Constraint:target and a constant value.
 	IsConstant() bool
 	// IsRequired checks whether the constraint is a required relation for
 	// solving the constraint layout.
 	IsRequired() bool
 }
 
-// Constraint: `GtkConstraint` describes a constraint between attributes of two
+// Constraint: GtkConstraint describes a constraint between attributes of two
 // widgets, expressed as a linear equation.
 //
 // The typical equation for a constraint is:
 //
-// “` target.target_attr = source.source_attr × multiplier + constant “`
+//      target.target_attr = source.source_attr × multiplier + constant
 //
-// Each `GtkConstraint` is part of a system that will be solved by a
-// [class@Gtk.ConstraintLayout] in order to allocate and position each child
-// widget or guide.
 //
-// The source and target, as well as their attributes, of a `GtkConstraint`
+// Each GtkConstraint is part of a system that will be solved by a
+// gtk.ConstraintLayout in order to allocate and position each child widget or
+// guide.
+//
+// The source and target, as well as their attributes, of a GtkConstraint
 // instance are immutable after creation.
 type Constraint struct {
 	*externglib.Object
@@ -228,11 +229,11 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 	return _constraintRelation
 }
 
-// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for the
+// Source retrieves the gtk.ConstraintTarget used as the source for the
 // constraint.
 //
-// If the source is set to `NULL` at creation, the constraint will use the
-// widget using the [class@Gtk.ConstraintLayout] as the source.
+// If the source is set to NULL at creation, the constraint will use the widget
+// using the gtk.ConstraintLayout as the source.
 func (constraint *Constraint) Source() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
@@ -281,11 +282,11 @@ func (constraint *Constraint) Strength() int {
 	return _gint
 }
 
-// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for the
+// Target retrieves the gtk.ConstraintTarget used as the target for the
 // constraint.
 //
-// If the targe is set to `NULL` at creation, the constraint will use the widget
-// using the [class@Gtk.ConstraintLayout] as the target.
+// If the targe is set to NULL at creation, the constraint will use the widget
+// using the gtk.ConstraintLayout as the target.
 func (constraint *Constraint) Target() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
@@ -319,7 +320,7 @@ func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 }
 
 // IsAttached checks whether the constraint is attached to a
-// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
+// gtk.ConstraintLayout, and it is contributing to the layout.
 func (constraint *Constraint) IsAttached() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in
@@ -338,7 +339,7 @@ func (constraint *Constraint) IsAttached() bool {
 }
 
 // IsConstant checks whether the constraint describes a relation between an
-// attribute on the [property@Gtk.Constraint:target] and a constant value.
+// attribute on the gtk.Constraint:target and a constant value.
 func (constraint *Constraint) IsConstant() bool {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.gboolean       // in

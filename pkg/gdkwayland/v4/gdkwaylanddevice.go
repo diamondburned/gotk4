@@ -24,17 +24,17 @@ func init() {
 
 // WaylandDevicer describes WaylandDevice's methods.
 type WaylandDevicer interface {
-	// NodePath returns the `/dev/input/event*` path of this device.
+	// NodePath returns the /dev/input/event* path of this device.
 	NodePath() string
 }
 
-// WaylandDevice: wayland implementation of `GdkDevice`.
+// WaylandDevice: wayland implementation of GdkDevice.
 //
-// Beyond the regular [class@Gdk.Device] API, the Wayland implementation
-// provides access to Wayland objects such as the `wl_seat` with
-// [method@GdkWayland.WaylandDevice.get_wl_seat], the `wl_keyboard` with
-// [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
-// [method@GdkWayland.WaylandDevice.get_wl_pointer].
+// Beyond the regular gdk.Device API, the Wayland implementation provides access
+// to Wayland objects such as the wl_seat with
+// gdkwayland.WaylandDevice.GetWlSeat(), the wl_keyboard with
+// gdkwayland.WaylandDevice.GetWlKeyboard() and the wl_pointer with
+// gdkwayland.WaylandDevice.GetWlPointer().
 type WaylandDevice struct {
 	gdk.Device
 }
@@ -58,10 +58,10 @@ func marshalWaylandDevicer(p uintptr) (interface{}, error) {
 	return wrapWaylandDevice(obj), nil
 }
 
-// NodePath returns the `/dev/input/event*` path of this device.
+// NodePath returns the /dev/input/event* path of this device.
 //
-// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg. mouse,
-// keyboard, touch,...), this function will return nil.
+// For GdkDevices that possibly coalesce multiple hardware devices (eg. mouse,
+// keyboard, touch,...), this function will return NULL.
 //
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.

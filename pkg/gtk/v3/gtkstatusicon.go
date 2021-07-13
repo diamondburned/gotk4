@@ -35,7 +35,7 @@ type StatusIconOverrider interface {
 	ButtonPressEvent(event *gdk.EventButton) bool
 	ButtonReleaseEvent(event *gdk.EventButton) bool
 	PopupMenu(button uint, activateTime uint32)
-	QueryTooltip(x int, y int, keyboardMode bool, tooltip Tooltiper) bool
+	QueryTooltip(x int, y int, keyboardMode bool, tooltip *Tooltip) bool
 	ScrollEvent(event *gdk.EventScroll) bool
 	SizeChanged(size int) bool
 }
@@ -45,15 +45,15 @@ type StatusIconer interface {
 	// Geometry obtains information about the location of the status icon on
 	// screen.
 	Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool)
-	// GIcon retrieves the #GIcon being displayed by the StatusIcon.
-	GIcon() *gio.Icon
+	// Gicon retrieves the #GIcon being displayed by the StatusIcon.
+	Gicon() *gio.Icon
 	// HasTooltip returns the current value of the has-tooltip property.
 	HasTooltip() bool
 	// IconName gets the name of the icon being displayed by the StatusIcon.
 	IconName() string
 	// Pixbuf gets the Pixbuf being displayed by the StatusIcon.
 	Pixbuf() *gdkpixbuf.Pixbuf
-	// Screen returns the Screen associated with @status_icon.
+	// Screen returns the Screen associated with status_icon.
 	Screen() *gdk.Screen
 	// Size gets the size in pixels that is available for the image.
 	Size() int
@@ -64,9 +64,9 @@ type StatusIconer interface {
 	StorageType() ImageType
 	// Title gets the title of this tray icon.
 	Title() string
-	// TooltipMarkup gets the contents of the tooltip for @status_icon.
+	// TooltipMarkup gets the contents of the tooltip for status_icon.
 	TooltipMarkup() string
-	// TooltipText gets the contents of the tooltip for @status_icon.
+	// TooltipText gets the contents of the tooltip for status_icon.
 	TooltipText() string
 	// Visible returns whether the status icon is visible or not.
 	Visible() bool
@@ -76,32 +76,32 @@ type StatusIconer interface {
 	// IsEmbedded returns whether the status icon is embedded in a notification
 	// area.
 	IsEmbedded() bool
-	// SetFromFile makes @status_icon display the file @filename.
+	// SetFromFile makes status_icon display the file filename.
 	SetFromFile(filename string)
-	// SetFromGIcon makes @status_icon display the #GIcon.
-	SetFromGIcon(icon gio.Iconer)
-	// SetFromIconName makes @status_icon display the icon named @icon_name from
+	// SetFromGicon makes status_icon display the #GIcon.
+	SetFromGicon(icon gio.Iconer)
+	// SetFromIconName makes status_icon display the icon named icon_name from
 	// the current icon theme.
 	SetFromIconName(iconName string)
-	// SetFromPixbuf makes @status_icon display @pixbuf.
-	SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer)
-	// SetFromStock makes @status_icon display the stock icon with the id
-	// @stock_id.
+	// SetFromPixbuf makes status_icon display pixbuf.
+	SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf)
+	// SetFromStock makes status_icon display the stock icon with the id
+	// stock_id.
 	SetFromStock(stockId string)
-	// SetHasTooltip sets the has-tooltip property on @status_icon to
-	// @has_tooltip.
+	// SetHasTooltip sets the has-tooltip property on status_icon to
+	// has_tooltip.
 	SetHasTooltip(hasTooltip bool)
 	// SetName sets the name of this tray icon.
 	SetName(name string)
-	// SetScreen sets the Screen where @status_icon is displayed; if the icon is
+	// SetScreen sets the Screen where status_icon is displayed; if the icon is
 	// already mapped, it will be unmapped, and then remapped on the new screen.
-	SetScreen(screen gdk.Screener)
+	SetScreen(screen *gdk.Screen)
 	// SetTitle sets the title of this tray icon.
 	SetTitle(title string)
-	// SetTooltipMarkup sets @markup as the contents of the tooltip, which is
+	// SetTooltipMarkup sets markup as the contents of the tooltip, which is
 	// marked up with the [Pango text markup language][PangoMarkupFormat].
 	SetTooltipMarkup(markup string)
-	// SetTooltipText sets @text as the contents of the tooltip.
+	// SetTooltipText sets text as the contents of the tooltip.
 	SetTooltipText(text string)
 	// SetVisible shows or hides a status icon.
 	SetVisible(visible bool)
@@ -124,7 +124,7 @@ type StatusIconer interface {
 // environment, or may have been removed. You should always check that a status
 // icon has been embedded into a notification area by using
 // gtk_status_icon_is_embedded(), and gracefully recover if the function returns
-// false.
+// FALSE.
 //
 // On X11, the implementation follows the FreeDesktop System Tray Specification
 // (http://www.freedesktop.org/wiki/Specifications/systemtray-spec).
@@ -178,7 +178,7 @@ func NewStatusIcon() *StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromFile creates a status icon displaying the file @filename.
+// NewStatusIconFromFile creates a status icon displaying the file filename.
 //
 // The image will be scaled down to fit in the available space in the
 // notification area, if necessary.
@@ -200,12 +200,12 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromGIcon creates a status icon displaying a #GIcon. If the icon
+// NewStatusIconFromGicon creates a status icon displaying a #GIcon. If the icon
 // is a themed icon, it will be updated when the theme changes.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
+func NewStatusIconFromGicon(icon gio.Iconer) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -241,18 +241,18 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromPixbuf creates a status icon displaying @pixbuf.
+// NewStatusIconFromPixbuf creates a status icon displaying pixbuf.
 //
 // The image will be scaled down to fit in the available space in the
 // notification area, if necessary.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbufer) *StatusIcon {
+func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
 	var _cret *C.GtkStatusIcon // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gtk_status_icon_new_from_pixbuf(_arg1)
 
@@ -331,16 +331,16 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	return _screen, _area, _orientation, _ok
 }
 
-// GIcon retrieves the #GIcon being displayed by the StatusIcon. The storage
+// Gicon retrieves the #GIcon being displayed by the StatusIcon. The storage
 // type of the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_status_icon_get_storage_type()). The caller of this function does not own
 // a reference to the returned #GIcon.
 //
-// If this function fails, @icon is left unchanged;
+// If this function fails, icon is left unchanged;
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
-func (statusIcon *StatusIcon) GIcon() *gio.Icon {
+func (statusIcon *StatusIcon) Gicon() *gio.Icon {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GIcon         // in
 
@@ -434,7 +434,7 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 	return _pixbuf
 }
 
-// Screen returns the Screen associated with @status_icon.
+// Screen returns the Screen associated with status_icon.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as
@@ -547,7 +547,7 @@ func (statusIcon *StatusIcon) Title() string {
 	return _utf8
 }
 
-// TooltipMarkup gets the contents of the tooltip for @status_icon.
+// TooltipMarkup gets the contents of the tooltip for status_icon.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
@@ -567,7 +567,7 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 	return _utf8
 }
 
-// TooltipText gets the contents of the tooltip for @status_icon.
+// TooltipText gets the contents of the tooltip for status_icon.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
@@ -661,7 +661,7 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 	return _ok
 }
 
-// SetFromFile makes @status_icon display the file @filename. See
+// SetFromFile makes status_icon display the file filename. See
 // gtk_status_icon_new_from_file() for details.
 //
 // Deprecated: Use #GNotification and Application to provide status
@@ -677,13 +677,13 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGIcon makes @status_icon display the #GIcon. See
+// SetFromGicon makes status_icon display the #GIcon. See
 // gtk_status_icon_new_from_gicon() for details.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
+func (statusIcon *StatusIcon) SetFromGicon(icon gio.Iconer) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 
@@ -693,7 +693,7 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
 	C.gtk_status_icon_set_from_gicon(_arg0, _arg1)
 }
 
-// SetFromIconName makes @status_icon display the icon named @icon_name from the
+// SetFromIconName makes status_icon display the icon named icon_name from the
 // current icon theme. See gtk_status_icon_new_from_icon_name() for details.
 //
 // Deprecated: Use #GNotification and Application to provide status
@@ -709,23 +709,23 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 	C.gtk_status_icon_set_from_icon_name(_arg0, _arg1)
 }
 
-// SetFromPixbuf makes @status_icon display @pixbuf. See
+// SetFromPixbuf makes status_icon display pixbuf. See
 // gtk_status_icon_new_from_pixbuf() for details.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbufer) {
+func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkPixbuf     // out
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_status_icon_set_from_pixbuf(_arg0, _arg1)
 }
 
-// SetFromStock makes @status_icon display the stock icon with the id @stock_id.
+// SetFromStock makes status_icon display the stock icon with the id stock_id.
 // See gtk_status_icon_new_from_stock() for details.
 //
 // Deprecated: Use gtk_status_icon_set_from_icon_name() instead.
@@ -739,7 +739,7 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 	C.gtk_status_icon_set_from_stock(_arg0, _arg1)
 }
 
-// SetHasTooltip sets the has-tooltip property on @status_icon to @has_tooltip.
+// SetHasTooltip sets the has-tooltip property on status_icon to has_tooltip.
 // See StatusIcon:has-tooltip for more information.
 //
 // Deprecated: Use #GNotification and Application to provide status
@@ -776,18 +776,18 @@ func (statusIcon *StatusIcon) SetName(name string) {
 	C.gtk_status_icon_set_name(_arg0, _arg1)
 }
 
-// SetScreen sets the Screen where @status_icon is displayed; if the icon is
+// SetScreen sets the Screen where status_icon is displayed; if the icon is
 // already mapped, it will be unmapped, and then remapped on the new screen.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as GTK
 // typically only has one Screen and notifications are managed by the platform.
-func (statusIcon *StatusIcon) SetScreen(screen gdk.Screener) {
+func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // out
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_status_icon_set_screen(_arg0, _arg1)
 }
@@ -809,10 +809,10 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 	C.gtk_status_icon_set_title(_arg0, _arg1)
 }
 
-// SetTooltipMarkup sets @markup as the contents of the tooltip, which is marked
+// SetTooltipMarkup sets markup as the contents of the tooltip, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
 //
-// This function will take care of setting StatusIcon:has-tooltip to true and of
+// This function will take care of setting StatusIcon:has-tooltip to TRUE and of
 // the default handler for the StatusIcon::query-tooltip signal.
 //
 // See also the StatusIcon:tooltip-markup property and gtk_tooltip_set_markup().
@@ -829,9 +829,9 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	C.gtk_status_icon_set_tooltip_markup(_arg0, _arg1)
 }
 
-// SetTooltipText sets @text as the contents of the tooltip.
+// SetTooltipText sets text as the contents of the tooltip.
 //
-// This function will take care of setting StatusIcon:has-tooltip to true and of
+// This function will take care of setting StatusIcon:has-tooltip to TRUE and of
 // the default handler for the StatusIcon::query-tooltip signal.
 //
 // See also the StatusIcon:tooltip-text property and gtk_tooltip_set_text().
@@ -866,22 +866,22 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 }
 
 // StatusIconPositionMenu: menu positioning function to use with
-// gtk_menu_popup() to position @menu aligned to the status icon @user_data.
+// gtk_menu_popup() to position menu aligned to the status icon user_data.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; notifications do not have menus, but can have buttons, and
 // actions associated with each button.
-func StatusIconPositionMenu(menu Menuer, x *int, y *int, userData StatusIconer) bool {
+func StatusIconPositionMenu(menu *Menu, x *int, y *int, userData *StatusIcon) bool {
 	var _arg1 *C.GtkMenu // out
 	var _arg2 *C.gint    // out
 	var _arg3 *C.gint    // out
 	var _arg4 C.gboolean // in
 	var _arg5 C.gpointer // out
 
-	_arg1 = (*C.GtkMenu)(unsafe.Pointer((menu).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg2 = (*C.gint)(unsafe.Pointer(x))
 	_arg3 = (*C.gint)(unsafe.Pointer(y))
-	_arg5 = C.gpointer(unsafe.Pointer((userData).(gextras.Nativer).Native()))
+	_arg5 = C.gpointer(unsafe.Pointer(userData.Native()))
 
 	C.gtk_status_icon_position_menu(_arg1, _arg2, _arg3, &_arg4, _arg5)
 

@@ -83,49 +83,49 @@ type BuilderOverrider interface {
 type Builderer interface {
 	// AddFromFile parses a file containing a [GtkBuilder UI
 	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
+	// builder.
 	AddFromFile(filename string) (uint, error)
 	// AddFromResource parses a resource file containing a [GtkBuilder UI
 	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
+	// builder.
 	AddFromResource(resourcePath string) (uint, error)
 	// AddFromString parses a string containing a [GtkBuilder UI
 	// definition][BUILDER-UI] and merges it with the current contents of
-	// @builder.
+	// builder.
 	AddFromString(buffer string, length uint) (uint, error)
 	// AddObjectsFromFile parses a file containing a [GtkBuilder UI
 	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
+	// them with the current contents of builder.
 	AddObjectsFromFile(filename string, objectIds []string) (uint, error)
 	// AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
 	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
+	// them with the current contents of builder.
 	AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error)
 	// AddObjectsFromString parses a string containing a [GtkBuilder UI
 	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of @builder.
+	// them with the current contents of builder.
 	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
 	// ConnectSignals: this method is a simpler variation of
 	// gtk_builder_connect_signals_full().
 	ConnectSignals(userData cgo.Handle)
-	// ExposeObject: add @object to the @builder object pool so it can be
+	// ExposeObject: add object to the builder object pool so it can be
 	// referenced just like any other object built by builder.
-	ExposeObject(name string, object gextras.Objector)
+	ExposeObject(name string, object *externglib.Object)
 	// ExtendWithTemplate: main private entry point for building composite
 	// container components from template XML.
 	ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error)
 	// Application gets the Application associated with the builder.
 	Application() *Application
-	// GetObject gets the object named @name.
+	// GetObject gets the object named name.
 	GetObject(name string) *externglib.Object
-	// TranslationDomain gets the translation domain of @builder.
+	// TranslationDomain gets the translation domain of builder.
 	TranslationDomain() string
 	// TypeFromName looks up a type by name, using the virtual function that
 	// Builder has for that purpose.
 	TypeFromName(typeName string) externglib.Type
-	// SetApplication sets the application associated with @builder.
-	SetApplication(application Applicationer)
-	// SetTranslationDomain sets the translation domain of @builder.
+	// SetApplication sets the application associated with builder.
+	SetApplication(application *Application)
+	// SetTranslationDomain sets the translation domain of builder.
 	SetTranslationDomain(domain string)
 	// ValueFromStringType: like gtk_builder_value_from_string(), this function
 	// demarshals a value from a string, but takes a #GType instead of Spec.
@@ -171,8 +171,8 @@ type Builderer interface {
 // We refer to these descriptions as “GtkBuilder UI definitions” or just “UI
 // definitions” if the context is clear. Do not confuse GtkBuilder UI
 // Definitions with [GtkUIManager UI Definitions][XML-UI], which are more
-// limited in scope. It is common to use `.ui` as the filename extension for
-// files containing GtkBuilder UI definitions.
+// limited in scope. It is common to use .ui as the filename extension for files
+// containing GtkBuilder UI definitions.
 //
 // RELAX NG Compact Syntax
 // (https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/gtkbuilder.rnc)
@@ -220,8 +220,8 @@ type Builderer interface {
 //
 // GtkBuilder can parse textual representations for the most common property
 // types: characters, strings, integers, floating-point numbers, booleans
-// (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted as true, strings
-// like “FALSE”, “f”, “no”, “n”, “0” are interpreted as false), enumerations
+// (strings like “TRUE”, “t”, “yes”, “y”, “1” are interpreted as TRUE, strings
+// like “FALSE”, “f”, “no”, “n”, “0” are interpreted as FALSE), enumerations
 // (can be specified by their name, nick or integer value), flags (can be
 // specified by their name, nick, integer value, optionally combined with “|”,
 // e.g. “GTK_VISIBLE|GTK_REALIZED”) and colors (in a format understood by
@@ -256,7 +256,7 @@ type Builderer interface {
 //
 // Sometimes it is necessary to refer to widgets which have implicitly been
 // constructed by GTK+ as part of a composite widget, to set properties on them
-// or to add further children (e.g. the @vbox of a Dialog). This can be achieved
+// or to add further children (e.g. the vbox of a Dialog). This can be achieved
 // by setting the “internal-child” property of the <child> element to a true
 // value. Note that GtkBuilder still requires an <object> element for the
 // internal child, even if it has already been constructed.
@@ -346,7 +346,7 @@ func NewBuilder() *Builder {
 }
 
 // NewBuilderFromFile builds the [GtkBuilder UI definition][BUILDER-UI] in the
-// file @filename.
+// file filename.
 //
 // If there is an error opening the file or parsing the description then the
 // program will be aborted. You should only ever attempt to parse user interface
@@ -367,7 +367,7 @@ func NewBuilderFromFile(filename string) *Builder {
 }
 
 // NewBuilderFromResource builds the [GtkBuilder UI definition][BUILDER-UI] at
-// @resource_path.
+// resource_path.
 //
 // If there is an error locating the resource or parsing the description, then
 // the program will be aborted.
@@ -386,13 +386,13 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 	return _builder
 }
 
-// NewBuilderFromString builds the user interface described by @string (in the
+// NewBuilderFromString builds the user interface described by string (in the
 // [GtkBuilder UI definition][BUILDER-UI] format).
 //
-// If @string is nil-terminated, then @length should be -1. If @length is not
-// -1, then it is the length of @string.
+// If string is NULL-terminated, then length should be -1. If length is not -1,
+// then it is the length of string.
 //
-// If there is an error parsing @string then the program will be aborted. You
+// If there is an error parsing string then the program will be aborted. You
 // should not attempt to parse user interface description from untrusted
 // sources.
 func NewBuilderFromString(_string string, length int) *Builder {
@@ -413,11 +413,11 @@ func NewBuilderFromString(_string string, length int) *Builder {
 }
 
 // AddFromFile parses a file containing a [GtkBuilder UI definition][BUILDER-UI]
-// and merges it with the current contents of @builder.
+// and merges it with the current contents of builder.
 //
 // Most users will probably want to use gtk_builder_new_from_file().
 //
-// If an error occurs, 0 will be returned and @error will be assigned a #GError
+// If an error occurs, 0 will be returned and error will be assigned a #GError
 // from the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
 //
 // It’s not really reasonable to attempt to handle failures of this call. You
@@ -447,11 +447,11 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 }
 
 // AddFromResource parses a resource file containing a [GtkBuilder UI
-// definition][BUILDER-UI] and merges it with the current contents of @builder.
+// definition][BUILDER-UI] and merges it with the current contents of builder.
 //
 // Most users will probably want to use gtk_builder_new_from_resource().
 //
-// If an error occurs, 0 will be returned and @error will be assigned a #GError
+// If an error occurs, 0 will be returned and error will be assigned a #GError
 // from the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
@@ -477,11 +477,11 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 }
 
 // AddFromString parses a string containing a [GtkBuilder UI
-// definition][BUILDER-UI] and merges it with the current contents of @builder.
+// definition][BUILDER-UI] and merges it with the current contents of builder.
 //
 // Most users will probably want to use gtk_builder_new_from_string().
 //
-// Upon errors 0 will be returned and @error will be assigned a #GError from the
+// Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR, MARKUP_ERROR or VARIANT_PARSE_ERROR domain.
 //
 // It’s not really reasonable to attempt to handle failures of this call. The
@@ -510,14 +510,14 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 
 // AddObjectsFromFile parses a file containing a [GtkBuilder UI
 // definition][BUILDER-UI] building only the requested objects and merges them
-// with the current contents of @builder.
+// with the current contents of builder.
 //
-// Upon errors 0 will be returned and @error will be assigned a #GError from the
+// Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
 //
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
-// explicitly list all of them in @object_ids.
+// explicitly list all of them in object_ids.
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -527,11 +527,15 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(objectIds))
-		for i := range objectIds {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(objectIds)+1)
+			var zero *C.gchar
+			out[len(objectIds)] = zero
+			for i := range objectIds {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+			}
 		}
 	}
 
@@ -548,14 +552,14 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 
 // AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
 // definition][BUILDER-UI] building only the requested objects and merges them
-// with the current contents of @builder.
+// with the current contents of builder.
 //
-// Upon errors 0 will be returned and @error will be assigned a #GError from the
+// Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
 //
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
-// explicitly list all of them in @object_ids.
+// explicitly list all of them in object_ids.
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -565,11 +569,15 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(objectIds))
-		for i := range objectIds {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(objectIds)+1)
+			var zero *C.gchar
+			out[len(objectIds)] = zero
+			for i := range objectIds {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+			}
 		}
 	}
 
@@ -586,14 +594,14 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 
 // AddObjectsFromString parses a string containing a [GtkBuilder UI
 // definition][BUILDER-UI] building only the requested objects and merges them
-// with the current contents of @builder.
+// with the current contents of builder.
 //
-// Upon errors 0 will be returned and @error will be assigned a #GError from the
+// Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR or MARKUP_ERROR domain.
 //
 // If you are adding an object that depends on an object that is not its child
 // (for instance a TreeView that depends on its TreeModel), you have to
-// explicitly list all of them in @object_ids.
+// explicitly list all of them in object_ids.
 func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
@@ -605,11 +613,15 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
 	_arg2 = C.gsize(length)
-	_arg3 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg3, len(objectIds))
-		for i := range objectIds {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(objectIds)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(objectIds)+1)
+			var zero *C.gchar
+			out[len(objectIds)] = zero
+			for i := range objectIds {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(objectIds[i])))
+			}
 		}
 	}
 
@@ -626,9 +638,9 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 
 // ConnectSignals: this method is a simpler variation of
 // gtk_builder_connect_signals_full(). It uses symbols explicitly added to
-// @builder with prior calls to gtk_builder_add_callback_symbol(). In the case
+// builder with prior calls to gtk_builder_add_callback_symbol(). In the case
 // that symbols are not explicitly added; it uses #GModule’s introspective
-// features (by opening the module nil) to look at the application’s symbol
+// features (by opening the module NULL) to look at the application’s symbol
 // table. From here it tries to match the signal handler names given in the
 // interface description with symbols in the application and connects the
 // signals. Note that this function can only be called once, subsequent calls
@@ -655,9 +667,9 @@ func (builder *Builder) ConnectSignals(userData cgo.Handle) {
 	C.gtk_builder_connect_signals(_arg0, _arg1)
 }
 
-// ExposeObject: add @object to the @builder object pool so it can be referenced
+// ExposeObject: add object to the builder object pool so it can be referenced
 // just like any other object built by builder.
-func (builder *Builder) ExposeObject(name string, object gextras.Objector) {
+func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GObject    // out
@@ -723,7 +735,7 @@ func (builder *Builder) Application() *Application {
 	return _application
 }
 
-// GetObject gets the object named @name. Note that this function does not
+// GetObject gets the object named name. Note that this function does not
 // increment the reference count of the returned object.
 func (builder *Builder) GetObject(name string) *externglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -742,7 +754,7 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 	return _object
 }
 
-// TranslationDomain gets the translation domain of @builder.
+// TranslationDomain gets the translation domain of builder.
 func (builder *Builder) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
 	var _cret *C.gchar      // in
@@ -778,21 +790,21 @@ func (builder *Builder) TypeFromName(typeName string) externglib.Type {
 	return _gType
 }
 
-// SetApplication sets the application associated with @builder.
+// SetApplication sets the application associated with builder.
 //
 // You only need this function if there is more than one #GApplication in your
-// process. @application cannot be nil.
-func (builder *Builder) SetApplication(application Applicationer) {
+// process. application cannot be NULL.
+func (builder *Builder) SetApplication(application *Application) {
 	var _arg0 *C.GtkBuilder     // out
 	var _arg1 *C.GtkApplication // out
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer((application).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	C.gtk_builder_set_application(_arg0, _arg1)
 }
 
-// SetTranslationDomain sets the translation domain of @builder. See
+// SetTranslationDomain sets the translation domain of builder. See
 // Builder:translation-domain.
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
@@ -806,10 +818,10 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 
 // ValueFromStringType: like gtk_builder_value_from_string(), this function
 // demarshals a value from a string, but takes a #GType instead of Spec. This
-// function calls g_value_init() on the @value argument, so it need not be
+// function calls g_value_init() on the value argument, so it need not be
 // initialised beforehand.
 //
-// Upon errors false will be returned and @error will be assigned a #GError from
+// Upon errors FALSE will be returned and error will be assigned a #GError from
 // the K_BUILDER_ERROR domain.
 func (builder *Builder) ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out

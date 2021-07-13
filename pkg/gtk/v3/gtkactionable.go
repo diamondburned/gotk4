@@ -31,16 +31,16 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ActionableOverrider interface {
-	// ActionName gets the action name for @actionable.
+	// ActionName gets the action name for actionable.
 	//
 	// See gtk_actionable_set_action_name() for more information.
 	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
+	// ActionTargetValue gets the current target value of actionable.
 	//
 	// See gtk_actionable_set_action_target_value() for more information.
 	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
-	// should be associated. If @action_name is nil then the widget will be
+	// should be associated. If action_name is NULL then the widget will be
 	// unassociated from any previous action.
 	//
 	// Usually this function is used when the widget is located (or will be
@@ -53,7 +53,7 @@ type ActionableOverrider interface {
 	SetActionName(actionName string)
 	// SetActionTargetValue sets the target value of an actionable widget.
 	//
-	// If @target_value is nil then the target value is unset.
+	// If target_value is NULL then the target value is unset.
 	//
 	// The target value has two purposes. First, it is used as the parameter to
 	// activation of the action associated with the Actionable widget. Second,
@@ -73,9 +73,9 @@ type ActionableOverrider interface {
 
 // Actionabler describes Actionable's methods.
 type Actionabler interface {
-	// ActionName gets the action name for @actionable.
+	// ActionName gets the action name for actionable.
 	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
+	// ActionTargetValue gets the current target value of actionable.
 	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
 	// should be associated.
@@ -130,7 +130,7 @@ func marshalActionabler(p uintptr) (interface{}, error) {
 	return wrapActionable(obj), nil
 }
 
-// ActionName gets the action name for @actionable.
+// ActionName gets the action name for actionable.
 //
 // See gtk_actionable_set_action_name() for more information.
 func (actionable *Actionable) ActionName() string {
@@ -148,7 +148,7 @@ func (actionable *Actionable) ActionName() string {
 	return _utf8
 }
 
-// ActionTargetValue gets the current target value of @actionable.
+// ActionTargetValue gets the current target value of actionable.
 //
 // See gtk_actionable_set_action_target_value() for more information.
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
@@ -171,7 +171,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 }
 
 // SetActionName specifies the name of the action with which this widget should
-// be associated. If @action_name is nil then the widget will be unassociated
+// be associated. If action_name is NULL then the widget will be unassociated
 // from any previous action.
 //
 // Usually this function is used when the widget is located (or will be located)
@@ -192,7 +192,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 
 // SetActionTargetValue sets the target value of an actionable widget.
 //
-// If @target_value is nil then the target value is unset.
+// If target_value is NULL then the target value is unset.
 //
 // The target value has two purposes. First, it is used as the parameter to
 // activation of the action associated with the Actionable widget. Second, it is
@@ -220,13 +220,13 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 // SetDetailedActionName sets the action-name and associated string target value
 // of an actionable widget.
 //
-// @detailed_action_name is a string in the format accepted by
+// detailed_action_name is a string in the format accepted by
 // g_action_parse_detailed_name().
 //
 // (Note that prior to version 3.22.25, this function is only usable for actions
-// with a simple "s" target, and @detailed_action_name must be of the form
-// `"action::target"` where `action` is the action name and `target` is the
-// string to use as the target.)
+// with a simple "s" target, and detailed_action_name must be of the form
+// "action::target" where action is the action name and target is the string to
+// use as the target.)
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
 	var _arg1 *C.gchar         // out

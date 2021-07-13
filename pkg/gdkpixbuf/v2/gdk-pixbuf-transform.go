@@ -23,8 +23,8 @@ func init() {
 
 // InterpType: interpolation modes for scaling functions.
 //
-// The `GDK_INTERP_NEAREST` mode is the fastest scaling method, but has horrible
-// quality when scaling down; `GDK_INTERP_BILINEAR` is the best choice if you
+// The GDK_INTERP_NEAREST mode is the fastest scaling method, but has horrible
+// quality when scaling down; GDK_INTERP_BILINEAR is the best choice if you
 // aren't sure what to choose, it has a good speed/quality balance.
 //
 // **Note**: Cubic filtering is missing from the list; hyperbolic interpolation
@@ -53,7 +53,7 @@ const (
 	// ideal hyperbolic-filter interpolated image (the filter is designed to be
 	// idempotent for 1:1 pixel mapping). **Deprecated**: this interpolation
 	// filter is deprecated, as in reality it has a lower quality than the
-	// @GDK_INTERP_BILINEAR filter (Since: 2.38)
+	// GDK_INTERP_BILINEAR filter (Since: 2.38)
 	InterpTypeHyper
 )
 

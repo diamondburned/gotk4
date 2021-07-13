@@ -23,18 +23,18 @@ import (
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
-// DBusErrorEncodeGError creates a D-Bus error name to use for @error. If @error
+// DBusErrorEncodeGerror creates a D-Bus error name to use for error. If error
 // matches a registered error (cf. g_dbus_error_register_error()), the
 // corresponding D-Bus error name will be returned.
 //
 // Otherwise the a name of the form
-// `org.gtk.GDBus.UnmappedGError.Quark._ESCAPED_QUARK_NAME.Code_ERROR_CODE` will
+// org.gtk.GDBus.UnmappedGError.Quark._ESCAPED_QUARK_NAME.Code_ERROR_CODE will
 // be used. This allows other GDBus applications to map the error on the wire
 // back to a #GError using g_dbus_error_new_for_dbus_error().
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DBusErrorEncodeGError(err error) string {
+func DBusErrorEncodeGerror(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 
@@ -50,12 +50,12 @@ func DBusErrorEncodeGError(err error) string {
 	return _utf8
 }
 
-// DBusErrorGetRemoteError gets the D-Bus error name used for @error, if any.
+// DBusErrorGetRemoteError gets the D-Bus error name used for error, if any.
 //
 // This function is guaranteed to return a D-Bus error name for all #GErrors
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
-// been used on @error.
+// been used on error.
 func DBusErrorGetRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
@@ -72,9 +72,9 @@ func DBusErrorGetRemoteError(err error) string {
 	return _utf8
 }
 
-// DBusErrorIsRemoteError checks if @error represents an error received via
-// D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
-// the name of the error.
+// DBusErrorIsRemoteError checks if error represents an error received via D-Bus
+// from a remote peer. If so, use g_dbus_error_get_remote_error() to get the
+// name of the error.
 func DBusErrorIsRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
@@ -92,32 +92,32 @@ func DBusErrorIsRemoteError(err error) bool {
 	return _ok
 }
 
-// DBusErrorNewForDBusError creates a #GError based on the contents of
-// @dbus_error_name and @dbus_error_message.
+// DBusErrorNewForDbusError creates a #GError based on the contents of
+// dbus_error_name and dbus_error_message.
 //
 // Errors registered with g_dbus_error_register_error() will be looked up using
-// @dbus_error_name and if a match is found, the error domain and code is used.
+// dbus_error_name and if a match is found, the error domain and code is used.
 // Applications can use g_dbus_error_get_remote_error() to recover
-// @dbus_error_name.
+// dbus_error_name.
 //
 // If a match against a registered error is not found and the D-Bus error name
 // is in a form as returned by g_dbus_error_encode_gerror() the error domain and
-// code encoded in the name is used to create the #GError. Also,
-// @dbus_error_name is added to the error message such that it can be recovered
-// with g_dbus_error_get_remote_error().
+// code encoded in the name is used to create the #GError. Also, dbus_error_name
+// is added to the error message such that it can be recovered with
+// g_dbus_error_get_remote_error().
 //
 // Otherwise, a #GError with the error code G_IO_ERROR_DBUS_ERROR in the
-// IO_ERROR error domain is returned. Also, @dbus_error_name is added to the
+// IO_ERROR error domain is returned. Also, dbus_error_name is added to the
 // error message such that it can be recovered with
 // g_dbus_error_get_remote_error().
 //
-// In all three cases, @dbus_error_name can always be recovered from the
-// returned #GError using the g_dbus_error_get_remote_error() function (unless
+// In all three cases, dbus_error_name can always be recovered from the returned
+// #GError using the g_dbus_error_get_remote_error() function (unless
 // g_dbus_error_strip_remote_error() hasn't been used on the returned error).
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) error {
+func DBusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
 	var _cret *C.GError // in
@@ -137,8 +137,8 @@ func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) err
 // DBusErrorRegisterErrorDomain: helper function for associating a #GError error
 // domain with D-Bus error names.
 //
-// While @quark_volatile has a `volatile` qualifier, this is a historical
-// artifact and the argument passed to it should not be `volatile`.
+// While quark_volatile has a volatile qualifier, this is a historical artifact
+// and the argument passed to it should not be volatile.
 func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gsize // out
@@ -157,7 +157,7 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 
 // DBusErrorStripRemoteError looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
-// message field in @error will correspond exactly to what was received on the
+// message field in error will correspond exactly to what was received on the
 // wire.
 //
 // This is typically used when presenting errors to the end user.

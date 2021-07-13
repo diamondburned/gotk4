@@ -98,10 +98,10 @@ func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint
 // ATK itself. As Object::focus-event was deprecated in favor of a
 // Object::state-change signal, in order to notify a focus change on your
 // implementation, you can use atk_object_notify_state_change() instead.
-func FocusTrackerNotify(object ObjectClasser) {
+func FocusTrackerNotify(object *ObjectClass) {
 	var _arg1 *C.AtkObject // out
 
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((object).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
 
 	C.atk_focus_tracker_notify(_arg1)
 }
@@ -187,7 +187,7 @@ func RemoveFocusTracker(trackerId uint) {
 	C.atk_remove_focus_tracker(_arg1)
 }
 
-// RemoveGlobalEventListener: @listener_id is the value returned by
+// RemoveGlobalEventListener: listener_id is the value returned by
 // #atk_add_global_event_listener when you registered that event listener.
 //
 // Toolkit implementor note: ATK provides a default implementation for this
@@ -206,7 +206,7 @@ func RemoveGlobalEventListener(listenerId uint) {
 	C.atk_remove_global_event_listener(_arg1)
 }
 
-// RemoveKeyEventListener: @listener_id is the value returned by
+// RemoveKeyEventListener: listener_id is the value returned by
 // #atk_add_key_event_listener when you registered that event listener.
 //
 // Removes the specified event listener.

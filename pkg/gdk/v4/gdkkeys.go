@@ -12,7 +12,7 @@ import (
 import "C"
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
-// @symbol.
+// symbol.
 //
 // Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
@@ -35,7 +35,7 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 
 // KeyvalFromName converts a key name to a key value.
 //
-// The names are the same as those in the `gdk/gdkkeysyms.h` header file but
+// The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.char // out
@@ -52,7 +52,7 @@ func KeyvalFromName(keyvalName string) uint {
 	return _guint
 }
 
-// KeyvalIsLower returns true if the given key value is in lower case.
+// KeyvalIsLower returns TRUE if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -70,7 +70,7 @@ func KeyvalIsLower(keyval uint) bool {
 	return _ok
 }
 
-// KeyvalIsUpper returns true if the given key value is in upper case.
+// KeyvalIsUpper returns TRUE if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -90,7 +90,7 @@ func KeyvalIsUpper(keyval uint) bool {
 
 // KeyvalName converts a key value into a symbolic name.
 //
-// The names are the same as those in the `gdk/gdkkeysyms.h` header file but
+// The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint // out

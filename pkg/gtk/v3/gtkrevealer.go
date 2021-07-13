@@ -59,14 +59,14 @@ type Revealerer interface {
 	// transitions will take.
 	TransitionDuration() uint
 	// TransitionType gets the type of animation that will be used for
-	// transitions in @revealer.
+	// transitions in revealer.
 	TransitionType() RevealerTransitionType
 	// SetRevealChild tells the Revealer to reveal or conceal its child.
 	SetRevealChild(revealChild bool)
 	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
 	// SetTransitionType sets the type of animation that will be used for
-	// transitions in @revealer.
+	// transitions in revealer.
 	SetTransitionType(transition RevealerTransitionType)
 }
 
@@ -154,7 +154,7 @@ func (revealer *Revealer) ChildRevealed() bool {
 // RevealChild returns whether the child is currently revealed. See
 // gtk_revealer_set_reveal_child().
 //
-// This function returns true as soon as the transition is to the revealed state
+// This function returns TRUE as soon as the transition is to the revealed state
 // is started. To learn whether the child is fully revealed (ie the transition
 // is completed), use gtk_revealer_get_child_revealed().
 func (revealer *Revealer) RevealChild() bool {
@@ -192,7 +192,7 @@ func (revealer *Revealer) TransitionDuration() uint {
 }
 
 // TransitionType gets the type of animation that will be used for transitions
-// in @revealer.
+// in revealer.
 func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
@@ -210,8 +210,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 
 // SetRevealChild tells the Revealer to reveal or conceal its child.
 //
-// The transition will be animated with the current transition type of
-// @revealer.
+// The transition will be animated with the current transition type of revealer.
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
@@ -236,7 +235,7 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 }
 
 // SetTransitionType sets the type of animation that will be used for
-// transitions in @revealer. Available types include various kinds of fades and
+// transitions in revealer. Available types include various kinds of fades and
 // slides.
 func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	var _arg0 *C.GtkRevealer              // out

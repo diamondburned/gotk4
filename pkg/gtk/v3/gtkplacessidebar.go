@@ -58,7 +58,7 @@ const (
 	// selects that a location be opened in a new tab instead of in the standard
 	// fashion.
 	PlacesOpenFlagsNewTab PlacesOpenFlags = 0b10
-	// PlacesOpenFlagsNewWindow: similar to @GTK_PLACES_OPEN_NEW_TAB, but
+	// PlacesOpenFlagsNewWindow: similar to GTK_PLACES_OPEN_NEW_TAB, but
 	// indicates that the application can open folders in new windows.
 	PlacesOpenFlagsNewWindow PlacesOpenFlags = 0b100
 )
@@ -75,7 +75,7 @@ type PlacesSidebarer interface {
 	// LocalOnly returns the value previously set with
 	// gtk_places_sidebar_set_local_only().
 	LocalOnly() bool
-	// Location gets the currently selected location in the @sidebar.
+	// Location gets the currently selected location in the sidebar.
 	Location() *gio.File
 	// NthBookmark: this function queries the bookmarks added by the user to the
 	// places sidebar, and returns one of them.
@@ -110,35 +110,34 @@ type PlacesSidebarer interface {
 	RemoveShortcut(location gio.Filer)
 	// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
 	// can show the available drop targets and a "new bookmark" row.
-	SetDropTargetsVisible(visible bool, context gdk.DragContexter)
-	// SetLocalOnly sets whether the @sidebar should only show local files.
+	SetDropTargetsVisible(visible bool, context *gdk.DragContext)
+	// SetLocalOnly sets whether the sidebar should only show local files.
 	SetLocalOnly(localOnly bool)
 	// SetLocation sets the location that is being shown in the widgets
-	// surrounding the @sidebar, for example, in a folder view in a file
-	// manager.
+	// surrounding the sidebar, for example, in a folder view in a file manager.
 	SetLocation(location gio.Filer)
 	// SetOpenFlags sets the way in which the calling application can open new
 	// locations from the places sidebar.
 	SetOpenFlags(flags PlacesOpenFlags)
-	// SetShowConnectToServer sets whether the @sidebar should show an item for
+	// SetShowConnectToServer sets whether the sidebar should show an item for
 	// connecting to a network server; this is off by default.
 	SetShowConnectToServer(showConnectToServer bool)
-	// SetShowDesktop sets whether the @sidebar should show an item for the
+	// SetShowDesktop sets whether the sidebar should show an item for the
 	// Desktop folder.
 	SetShowDesktop(showDesktop bool)
-	// SetShowEnterLocation sets whether the @sidebar should show an item for
+	// SetShowEnterLocation sets whether the sidebar should show an item for
 	// entering a location; this is off by default.
 	SetShowEnterLocation(showEnterLocation bool)
-	// SetShowOtherLocations sets whether the @sidebar should show an item for
+	// SetShowOtherLocations sets whether the sidebar should show an item for
 	// the application to show an Other Locations view; this is off by default.
 	SetShowOtherLocations(showOtherLocations bool)
-	// SetShowRecent sets whether the @sidebar should show an item for recent
+	// SetShowRecent sets whether the sidebar should show an item for recent
 	// files.
 	SetShowRecent(showRecent bool)
 	// SetShowStarredLocation: if you enable this, you should connect to the
 	// PlacesSidebar::show-starred-location signal.
 	SetShowStarredLocation(showStarredLocation bool)
-	// SetShowTrash sets whether the @sidebar should show an item for the Trash
+	// SetShowTrash sets whether the sidebar should show an item for the Trash
 	// location.
 	SetShowTrash(showTrash bool)
 }
@@ -174,9 +173,13 @@ type PlacesSidebarer interface {
 // class .sidebar.
 //
 // Among the children of the places sidebar, the following style classes can be
-// used: - .sidebar-new-bookmark-row for the 'Add new bookmark' row -
-// .sidebar-placeholder-row for a row that is a placeholder - .has-open-popup
-// when a popup is open for a row
+// used:
+//
+// - .sidebar-new-bookmark-row for the 'Add new bookmark' row
+//
+// - .sidebar-placeholder-row for a row that is a placeholder
+//
+// - .has-open-popup when a popup is open for a row
 type PlacesSidebar struct {
 	ScrolledWindow
 }
@@ -235,7 +238,7 @@ func NewPlacesSidebar() *PlacesSidebar {
 // program could add a “/usr/share/clipart” location when the sidebar is being
 // used in an “Insert Clipart” dialog box.
 //
-// This function adds the specified @location to a special place for immutable
+// This function adds the specified location to a special place for immutable
 // shortcuts. The shortcuts are application-specific; they are not shared across
 // applications, and they are not persistent. If this function is called
 // multiple times with different locations, then they are added to the sidebar’s
@@ -269,12 +272,12 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 	return _ok
 }
 
-// Location gets the currently selected location in the @sidebar. This can be
-// nil when nothing is selected, for example, when
+// Location gets the currently selected location in the sidebar. This can be
+// NULL when nothing is selected, for example, when
 // gtk_places_sidebar_set_location() has been called with a location that is not
 // among the sidebar’s list of places to show.
 //
-// You can use this function to get the selection in the @sidebar. Also, if you
+// You can use this function to get the selection in the sidebar. Also, if you
 // connect to the PlacesSidebar::populate-popup signal, you can use this
 // function to get the location that is being referred to during the callbacks
 // for your menu items.
@@ -478,7 +481,7 @@ func (sidebar *PlacesSidebar) ShowTrash() bool {
 
 // RemoveShortcut removes an application-specific shortcut that has been
 // previously been inserted with gtk_places_sidebar_add_shortcut(). If the
-// @location is not a shortcut in the sidebar, then nothing is done.
+// location is not a shortcut in the sidebar, then nothing is done.
 func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 *C.GFile            // out
@@ -498,7 +501,7 @@ func (sidebar *PlacesSidebar) RemoveShortcut(location gio.Filer) {
 // might target the sidebar. The drop-targets-visible state will be unset
 // automatically if the drag finishes in the GtkPlacesSidebar. You only need to
 // unset the state when the drag ends on some other widget on your application.
-func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context gdk.DragContexter) {
+func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context *gdk.DragContext) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
 	var _arg2 *C.GdkDragContext   // out
@@ -507,12 +510,12 @@ func (sidebar *PlacesSidebar) SetDropTargetsVisible(visible bool, context gdk.Dr
 	if visible {
 		_arg1 = C.TRUE
 	}
-	_arg2 = (*C.GdkDragContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	C.gtk_places_sidebar_set_drop_targets_visible(_arg0, _arg1, _arg2)
 }
 
-// SetLocalOnly sets whether the @sidebar should only show local files.
+// SetLocalOnly sets whether the sidebar should only show local files.
 func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gboolean          // out
@@ -526,9 +529,9 @@ func (sidebar *PlacesSidebar) SetLocalOnly(localOnly bool) {
 }
 
 // SetLocation sets the location that is being shown in the widgets surrounding
-// the @sidebar, for example, in a folder view in a file manager. In turn, the
-// @sidebar will highlight that location if it is being shown in the list of
-// places, or it will unhighlight everything if the @location is not among the
+// the sidebar, for example, in a folder view in a file manager. In turn, the
+// sidebar will highlight that location if it is being shown in the list of
+// places, or it will unhighlight everything if the location is not among the
 // places in the list.
 func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 	var _arg0 *C.GtkPlacesSidebar // out
@@ -545,15 +548,15 @@ func (sidebar *PlacesSidebar) SetLocation(location gio.Filer) {
 // locations “directly” into their main view, while others may support opening
 // locations in a new notebook tab or a new window.
 //
-// This function is used to tell the places @sidebar about the ways in which the
+// This function is used to tell the places sidebar about the ways in which the
 // application can open new locations, so that the sidebar can display (or not)
 // the “Open in new tab” and “Open in new window” menu items as appropriate.
 //
 // When the PlacesSidebar::open-location signal is emitted, its flags argument
-// will be set to one of the @flags that was passed in
+// will be set to one of the flags that was passed in
 // gtk_places_sidebar_set_open_flags().
 //
-// Passing 0 for @flags will cause K_PLACES_OPEN_NORMAL to always be sent to
+// Passing 0 for flags will cause K_PLACES_OPEN_NORMAL to always be sent to
 // callbacks for the “open-location” signal.
 func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
 	var _arg0 *C.GtkPlacesSidebar  // out
@@ -565,7 +568,7 @@ func (sidebar *PlacesSidebar) SetOpenFlags(flags PlacesOpenFlags) {
 	C.gtk_places_sidebar_set_open_flags(_arg0, _arg1)
 }
 
-// SetShowConnectToServer sets whether the @sidebar should show an item for
+// SetShowConnectToServer sets whether the sidebar should show an item for
 // connecting to a network server; this is off by default. An application may
 // want to turn this on if it implements a way for the user to connect to
 // network servers directly.
@@ -587,7 +590,7 @@ func (sidebar *PlacesSidebar) SetShowConnectToServer(showConnectToServer bool) {
 	C.gtk_places_sidebar_set_show_connect_to_server(_arg0, _arg1)
 }
 
-// SetShowDesktop sets whether the @sidebar should show an item for the Desktop
+// SetShowDesktop sets whether the sidebar should show an item for the Desktop
 // folder. The default value for this option is determined by the desktop
 // environment and the user’s configuration, but this function can be used to
 // override it on a per-application basis.
@@ -603,7 +606,7 @@ func (sidebar *PlacesSidebar) SetShowDesktop(showDesktop bool) {
 	C.gtk_places_sidebar_set_show_desktop(_arg0, _arg1)
 }
 
-// SetShowEnterLocation sets whether the @sidebar should show an item for
+// SetShowEnterLocation sets whether the sidebar should show an item for
 // entering a location; this is off by default. An application may want to turn
 // this on if manually entering URLs is an expected user action.
 //
@@ -621,9 +624,9 @@ func (sidebar *PlacesSidebar) SetShowEnterLocation(showEnterLocation bool) {
 	C.gtk_places_sidebar_set_show_enter_location(_arg0, _arg1)
 }
 
-// SetShowOtherLocations sets whether the @sidebar should show an item for the
+// SetShowOtherLocations sets whether the sidebar should show an item for the
 // application to show an Other Locations view; this is off by default. When set
-// to true, persistent devices such as hard drives are hidden, otherwise they
+// to TRUE, persistent devices such as hard drives are hidden, otherwise they
 // are shown in the sidebar. An application may want to turn this on if it
 // implements a way for the user to see and interact with drives and network
 // servers directly.
@@ -642,7 +645,7 @@ func (sidebar *PlacesSidebar) SetShowOtherLocations(showOtherLocations bool) {
 	C.gtk_places_sidebar_set_show_other_locations(_arg0, _arg1)
 }
 
-// SetShowRecent sets whether the @sidebar should show an item for recent files.
+// SetShowRecent sets whether the sidebar should show an item for recent files.
 // The default value for this option is determined by the desktop environment,
 // but this function can be used to override it on a per-application basis.
 func (sidebar *PlacesSidebar) SetShowRecent(showRecent bool) {
@@ -671,7 +674,7 @@ func (sidebar *PlacesSidebar) SetShowStarredLocation(showStarredLocation bool) {
 	C.gtk_places_sidebar_set_show_starred_location(_arg0, _arg1)
 }
 
-// SetShowTrash sets whether the @sidebar should show an item for the Trash
+// SetShowTrash sets whether the sidebar should show an item for the Trash
 // location.
 func (sidebar *PlacesSidebar) SetShowTrash(showTrash bool) {
 	var _arg0 *C.GtkPlacesSidebar // out

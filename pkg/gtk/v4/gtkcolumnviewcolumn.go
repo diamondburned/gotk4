@@ -46,11 +46,11 @@ type ColumnViewColumner interface {
 	Visible() bool
 	// SetExpand sets the column to take available extra space.
 	SetExpand(expand bool)
-	// SetFactory sets the `GtkListItemFactory` to use for populating list items
+	// SetFactory sets the GtkListItemFactory to use for populating list items
 	// for this column.
-	SetFactory(factory ListItemFactorier)
-	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
-	// @column; otherwise unsets it.
+	SetFactory(factory *ListItemFactory)
+	// SetFixedWidth: if fixed_width is not -1, sets the fixed width of column;
+	// otherwise unsets it.
 	SetFixedWidth(fixedWidth int)
 	// SetHeaderMenu sets the menu model that is used to create the context menu
 	// for the column header.
@@ -58,26 +58,26 @@ type ColumnViewColumner interface {
 	// SetResizable sets whether this column should be resizable by dragging.
 	SetResizable(resizable bool)
 	// SetSorter associates a sorter with the column.
-	SetSorter(sorter Sorterer)
+	SetSorter(sorter *Sorter)
 	// SetTitle sets the title of this column.
 	SetTitle(title string)
 	// SetVisible sets whether this column should be visible in views.
 	SetVisible(visible bool)
 }
 
-// ColumnViewColumn: `GtkColumnViewColumn` represents the columns being added to
-// `GtkColumnView`.
+// ColumnViewColumn: GtkColumnViewColumn represents the columns being added to
+// GtkColumnView.
 //
-// The main ingredient for a `GtkColumnViewColumn` is the `GtkListItemFactory`
-// that tells the columnview how to create cells for this column from items in
-// the model.
+// The main ingredient for a GtkColumnViewColumn is the GtkListItemFactory that
+// tells the columnview how to create cells for this column from items in the
+// model.
 //
 // Columns have a title, and can optionally have a header menu set with
-// [method@Gtk.ColumnViewColumn.set_header_menu].
+// gtk.ColumnViewColumn.SetHeaderMenu().
 //
 // A sorter can be associated with a column using
-// [method@Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
-// clicking on the column header.
+// gtk.ColumnViewColumn.SetSorter(), to let users influence sorting by clicking
+// on the column header.
 type ColumnViewColumn struct {
 	*externglib.Object
 }
@@ -99,22 +99,22 @@ func marshalColumnViewColumner(p uintptr) (interface{}, error) {
 	return wrapColumnViewColumn(obj), nil
 }
 
-// NewColumnViewColumn creates a new `GtkColumnViewColumn` that uses the given
-// @factory for mapping items to widgets.
+// NewColumnViewColumn creates a new GtkColumnViewColumn that uses the given
+// factory for mapping items to widgets.
 //
-// You most likely want to call [method@Gtk.ColumnView.append_column] next.
+// You most likely want to call gtk.ColumnView.AppendColumn() next.
 //
 // The function takes ownership of the argument, so you can write code like:
 //
-// “`c column = gtk_column_view_column_new (_("Name"),
-// gtk_builder_list_item_factory_new_from_resource ("/name.ui")); “`
-func NewColumnViewColumn(title string, factory ListItemFactorier) *ColumnViewColumn {
+//    column = gtk_column_view_column_new (_("Name"),
+//      gtk_builder_list_item_factory_new_from_resource ("/name.ui"));
+func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColumn {
 	var _arg1 *C.char                // out
 	var _arg2 *C.GtkListItemFactory  // out
 	var _cret *C.GtkColumnViewColumn // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 
@@ -127,7 +127,7 @@ func NewColumnViewColumn(title string, factory ListItemFactorier) *ColumnViewCol
 
 // ColumnView gets the column view that's currently displaying this column.
 //
-// If @self has not been added to a column view yet, nil is returned.
+// If self has not been added to a column view yet, NULL is returned.
 func (self *ColumnViewColumn) ColumnView() *ColumnView {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GtkColumnView       // in
@@ -287,7 +287,7 @@ func (self *ColumnViewColumn) Visible() bool {
 // SetExpand sets the column to take available extra space.
 //
 // The extra space is shared equally amongst all columns that have the expand
-// set to true.
+// set to TRUE.
 func (self *ColumnViewColumn) SetExpand(expand bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.gboolean             // out
@@ -300,19 +300,19 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 	C.gtk_column_view_column_set_expand(_arg0, _arg1)
 }
 
-// SetFactory sets the `GtkListItemFactory` to use for populating list items for
+// SetFactory sets the GtkListItemFactory to use for populating list items for
 // this column.
-func (self *ColumnViewColumn) SetFactory(factory ListItemFactorier) {
+func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkListItemFactory  // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer((factory).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
 	C.gtk_column_view_column_set_factory(_arg0, _arg1)
 }
 
-// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of @column;
+// SetFixedWidth: if fixed_width is not -1, sets the fixed width of column;
 // otherwise unsets it.
 //
 // Setting a fixed width overrides the automatically calculated width.
@@ -354,27 +354,27 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 
 // SetSorter associates a sorter with the column.
 //
-// If @sorter is nil, the column will not let users change the sorting by
+// If sorter is NULL, the column will not let users change the sorting by
 // clicking on its header.
 //
 // This sorter can be made active by clicking on the column header, or by
-// calling [method@Gtk.ColumnView.sort_by_column].
+// calling gtk.ColumnView.SortByColumn().
 //
-// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for setting up
-// customizable sorting for [class@Gtk.ColumnView].
-func (self *ColumnViewColumn) SetSorter(sorter Sorterer) {
+// See gtk.ColumnView.GetSorter() for the necessary steps for setting up
+// customizable sorting for gtk.ColumnView.
+func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GtkSorter           // out
 
 	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer((sorter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
 	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
 }
 
 // SetTitle sets the title of this column.
 //
-// The title is displayed in the header of a `GtkColumnView` for this column and
+// The title is displayed in the header of a GtkColumnView for this column and
 // is therefore user-facing text that should be translated.
 func (self *ColumnViewColumn) SetTitle(title string) {
 	var _arg0 *C.GtkColumnViewColumn // out

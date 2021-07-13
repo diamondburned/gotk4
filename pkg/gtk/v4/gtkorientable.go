@@ -23,16 +23,16 @@ func init() {
 
 // Orientabler describes Orientable's methods.
 type Orientabler interface {
-	// Orientation retrieves the orientation of the @orientable.
+	// Orientation retrieves the orientation of the orientable.
 	Orientation() Orientation
-	// SetOrientation sets the orientation of the @orientable.
+	// SetOrientation sets the orientation of the orientable.
 	SetOrientation(orientation Orientation)
 }
 
-// Orientable: `GtkOrientable` interface is implemented by all widgets that can
-// be oriented horizontally or vertically.
+// Orientable: GtkOrientable interface is implemented by all widgets that can be
+// oriented horizontally or vertically.
 //
-// `GtkOrientable` is more flexible in that it allows the orientation to be
+// GtkOrientable is more flexible in that it allows the orientation to be
 // changed at runtime, allowing the widgets to “flip”.
 type Orientable struct {
 	*externglib.Object
@@ -55,7 +55,7 @@ func marshalOrientabler(p uintptr) (interface{}, error) {
 	return wrapOrientable(obj), nil
 }
 
-// Orientation retrieves the orientation of the @orientable.
+// Orientation retrieves the orientation of the orientable.
 func (orientable *Orientable) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
 	var _cret C.GtkOrientation // in
@@ -71,7 +71,7 @@ func (orientable *Orientable) Orientation() Orientation {
 	return _orientation
 }
 
-// SetOrientation sets the orientation of the @orientable.
+// SetOrientation sets the orientation of the orientable.
 func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkOrientable // out
 	var _arg1 C.GtkOrientation // out

@@ -29,12 +29,12 @@ func init() {
 type ColorChooserOverrider interface {
 	// AddPalette adds a palette to the color chooser.
 	//
-	// If @orientation is horizontal, the colors are grouped in rows, with
-	// @colors_per_line colors in each row. If @horizontal is false, the colors
+	// If orientation is horizontal, the colors are grouped in rows, with
+	// colors_per_line colors in each row. If horizontal is FALSE, the colors
 	// are grouped in columns instead.
 	//
-	// The default color palette of [class@Gtk.ColorChooserWidget] has 45
-	// colors, organized in columns of 5 colors (this includes some grays).
+	// The default color palette of gtk.ColorChooserWidget has 45 colors,
+	// organized in columns of 5 colors (this includes some grays).
 	//
 	// The layout of the color chooser widget works best when the palettes have
 	// 9-10 columns.
@@ -42,7 +42,7 @@ type ColorChooserOverrider interface {
 	// Calling this function for the first time has the side effect of removing
 	// the default color palette from the color chooser.
 	//
-	// If @colors is nil, removes all previously added palettes.
+	// If colors is NULL, removes all previously added palettes.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
@@ -66,15 +66,14 @@ type ColorChooserer interface {
 	SetUseAlpha(useAlpha bool)
 }
 
-// ColorChooser: `GtkColorChooser` is an interface that is implemented by
-// widgets for choosing colors.
+// ColorChooser: GtkColorChooser is an interface that is implemented by widgets
+// for choosing colors.
 //
 // Depending on the situation, colors may be allowed to have alpha
 // (translucency).
 //
 // In GTK, the main widgets that implement this interface are
-// [class@Gtk.ColorChooserWidget], [class@Gtk.ColorChooserDialog] and
-// [class@Gtk.ColorButton].
+// gtk.ColorChooserWidget, gtk.ColorChooserDialog and gtk.ColorButton.
 type ColorChooser struct {
 	*externglib.Object
 }
@@ -98,12 +97,12 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 
 // AddPalette adds a palette to the color chooser.
 //
-// If @orientation is horizontal, the colors are grouped in rows, with
-// @colors_per_line colors in each row. If @horizontal is false, the colors are
+// If orientation is horizontal, the colors are grouped in rows, with
+// colors_per_line colors in each row. If horizontal is FALSE, the colors are
 // grouped in columns instead.
 //
-// The default color palette of [class@Gtk.ColorChooserWidget] has 45 colors,
-// organized in columns of 5 colors (this includes some grays).
+// The default color palette of gtk.ColorChooserWidget has 45 colors, organized
+// in columns of 5 colors (this includes some grays).
 //
 // The layout of the color chooser widget works best when the palettes have 9-10
 // columns.
@@ -111,7 +110,7 @@ func marshalColorChooserer(p uintptr) (interface{}, error) {
 // Calling this function for the first time has the side effect of removing the
 // default color palette from the color chooser.
 //
-// If @colors is nil, removes all previously added palettes.
+// If colors is NULL, removes all previously added palettes.
 func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GtkOrientation   // out

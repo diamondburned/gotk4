@@ -19,10 +19,10 @@ import "C"
 
 // PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource() to
 // determine the form of C source to be generated. The three values
-// @GDK_PIXDATA_DUMP_PIXDATA_STREAM, @GDK_PIXDATA_DUMP_PIXDATA_STRUCT and
-// @GDK_PIXDATA_DUMP_MACROS are mutually exclusive, as are
-// @GDK_PIXBUF_DUMP_GTYPES and @GDK_PIXBUF_DUMP_CTYPES. The remaining elements
-// are optional flags that can be freely added.
+// GDK_PIXDATA_DUMP_PIXDATA_STREAM, GDK_PIXDATA_DUMP_PIXDATA_STRUCT and
+// GDK_PIXDATA_DUMP_MACROS are mutually exclusive, as are GDK_PIXBUF_DUMP_GTYPES
+// and GDK_PIXBUF_DUMP_CTYPES. The remaining elements are optional flags that
+// can be freely added.
 //
 // Deprecated: since version 2.32.
 type PixdataDumpType int
@@ -40,9 +40,9 @@ const (
 	// <function>*_RLE_PIXEL_DATA</function> or
 	// <function>*_PIXEL_DATA</function> macro definitions for the image.
 	PixdataDumpTypeMacros PixdataDumpType = 0b10
-	// PixdataDumpTypeGTypes: generate GLib data types instead of standard C
+	// PixdataDumpTypeGtypes: generate GLib data types instead of standard C
 	// data types.
-	PixdataDumpTypeGTypes PixdataDumpType = 0b0
+	PixdataDumpTypeGtypes PixdataDumpType = 0b0
 	// PixdataDumpTypeCtypes: generate standard C data types instead of GLib
 	// data types.
 	PixdataDumpTypeCtypes PixdataDumpType = 0b100000000
@@ -87,12 +87,12 @@ const (
 	PixdataTypeEncodingMask PixdataType = 0b1111000000000000000000000000
 )
 
-// PixbufFromPixdata converts a `GdkPixdata` to a `GdkPixbuf`.
+// PixbufFromPixdata converts a GdkPixdata to a GdkPixbuf.
 //
-// If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
-// pixel data is copied into newly-allocated memory; otherwise it is reused.
+// If copy_pixels is TRUE or if the pixel data is run-length-encoded, the pixel
+// data is copied into newly-allocated memory; otherwise it is reused.
 //
-// Deprecated: Use `GResource` instead.
+// Deprecated: Use GResource instead.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
@@ -125,16 +125,16 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 
 // Pixdata: pixel buffer suitable for serialization and streaming.
 //
-// Using `GdkPixdata`, images can be compiled into an application, making it
+// Using GdkPixdata, images can be compiled into an application, making it
 // unnecessary to refer to external image files at runtime.
 //
-// `GdkPixbuf` includes a utility named `gdk-pixbuf-csource`, which can be used
-// to convert image files into `GdkPixdata` structures suitable for inclusion in
-// C sources. To convert the `GdkPixdata` structures back into a `GdkPixbuf`,
-// use `gdk_pixbuf_from_pixdata()`.
+// GdkPixbuf includes a utility named gdk-pixbuf-csource, which can be used to
+// convert image files into GdkPixdata structures suitable for inclusion in C
+// sources. To convert the GdkPixdata structures back into a GdkPixbuf, use
+// gdk_pixbuf_from_pixdata().
 //
-// Deprecated: `GdkPixdata` should not be used any more. `GResource` should be
-// used to save the original compressed images inside the program's binary.
+// Deprecated: GdkPixdata should not be used any more. GResource should be used
+// to save the original compressed images inside the program's binary.
 type Pixdata struct {
 	native C.GdkPixdata
 }
@@ -147,17 +147,17 @@ func (p *Pixdata) Native() unsafe.Pointer {
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte
 // stream.
 //
-// The byte stream consists of a straightforward writeout of the `GdkPixdata`
-// fields in network byte order, plus the `pixel_data` bytes the structure
-// points to.
+// The byte stream consists of a straightforward writeout of the GdkPixdata
+// fields in network byte order, plus the pixel_data bytes the structure points
+// to.
 //
-// The `pixdata` contents are reconstructed byte by byte and are checked for
+// The pixdata contents are reconstructed byte by byte and are checked for
 // validity.
 //
-// This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
-// `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
+// This function may fail with GDK_PIXBUF_ERROR_CORRUPT_IMAGE or
+// GDK_PIXBUF_ERROR_UNKNOWN_TYPE.
 //
-// Deprecated: Use `GResource` instead.
+// Deprecated: Use GResource instead.
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8

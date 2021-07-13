@@ -27,8 +27,8 @@ type DisplayManagerer interface {
 	DefaultDisplay() *Display
 	// OpenDisplay opens a display.
 	OpenDisplay(name string) *Display
-	// SetDefaultDisplay sets @display as the default display.
-	SetDefaultDisplay(display Displayer)
+	// SetDefaultDisplay sets display as the default display.
+	SetDefaultDisplay(display *Display)
 }
 
 // DisplayManager: purpose of the DisplayManager singleton object is to offer
@@ -121,20 +121,20 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	return _display
 }
 
-// SetDefaultDisplay sets @display as the default display.
-func (manager *DisplayManager) SetDefaultDisplay(display Displayer) {
+// SetDefaultDisplay sets display as the default display.
+func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _arg0 *C.GdkDisplayManager // out
 	var _arg1 *C.GdkDisplay        // out
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(manager.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }
 
 // DisplayManagerGet gets the singleton DisplayManager object.
 //
-// When called for the first time, this function consults the `GDK_BACKEND`
+// When called for the first time, this function consults the GDK_BACKEND
 // environment variable to find out which of the supported GDK backends to use
 // (in case GDK has been compiled with multiple backends). Applications can use
 // gdk_set_allowed_backends() to limit what backends can be used.

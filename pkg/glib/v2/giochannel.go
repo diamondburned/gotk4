@@ -106,7 +106,7 @@ const (
 	// IOFlagsIsWritable indicates that the io channel is writable. This flag
 	// cannot be changed.
 	IOFlagsIsWritable IOFlags = 0b1000
-	// IOFlagsIsWriteable: misspelled version of @G_IO_FLAG_IS_WRITABLE that
+	// IOFlagsIsWriteable: misspelled version of G_IO_FLAG_IS_WRITABLE that
 	// existed before the spelling was fixed in GLib 2.30. It is kept here for
 	// compatibility reasons. Deprecated since 2.30
 	IOFlagsIsWriteable IOFlags = 0b1000
@@ -124,8 +124,8 @@ const (
 	IOFlagsSetMask IOFlags = 0b11
 )
 
-// IOCreateWatch creates a #GSource that's dispatched when @condition is met for
-// the given @channel. For example, if condition is IO_IN, the source will be
+// IOCreateWatch creates a #GSource that's dispatched when condition is met for
+// the given channel. For example, if condition is IO_IN, the source will be
 // dispatched when there's data available for reading.
 //
 // The callback function invoked by the #GSource should be added with
@@ -286,7 +286,7 @@ func (channel *IOChannel) BufferSize() uint {
 	return _gsize
 }
 
-// Buffered returns whether @channel is buffered.
+// Buffered returns whether channel is buffered.
 func (channel *IOChannel) Buffered() bool {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gboolean    // in
@@ -304,10 +304,10 @@ func (channel *IOChannel) Buffered() bool {
 	return _ok
 }
 
-// CloseOnUnref returns whether the file/socket/whatever associated with
-// @channel will be closed when @channel receives its final unref and is
-// destroyed. The default value of this is true for channels created by
-// g_io_channel_new_file (), and false for all other channels.
+// CloseOnUnref returns whether the file/socket/whatever associated with channel
+// will be closed when channel receives its final unref and is destroyed. The
+// default value of this is TRUE for channels created by g_io_channel_new_file
+// (), and FALSE for all other channels.
 func (channel *IOChannel) CloseOnUnref() bool {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gboolean    // in
@@ -326,7 +326,7 @@ func (channel *IOChannel) CloseOnUnref() bool {
 }
 
 // Encoding gets the encoding for the input/output of the channel. The internal
-// encoding is always UTF-8. The encoding nil makes the channel safe for binary
+// encoding is always UTF-8. The encoding NULL makes the channel safe for binary
 // data.
 func (channel *IOChannel) Encoding() string {
 	var _arg0 *C.GIOChannel // out
@@ -367,7 +367,7 @@ func (channel *IOChannel) Flags() IOFlags {
 }
 
 // LineTerm: this returns the string that OChannel uses to determine where in
-// the file a line break occurs. A value of nil indicates autodetection.
+// the file a line break occurs. A value of NULL indicates autodetection.
 func (channel *IOChannel) LineTerm(length *int) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
@@ -423,7 +423,7 @@ func (channel *IOChannel) Read(buf string, count uint, bytesRead *uint) IOError 
 }
 
 // ReadLine reads a line, including the terminating character(s), from a
-// OChannel into a newly-allocated string. @str_return will contain allocated
+// OChannel into a newly-allocated string. str_return will contain allocated
 // memory if the return is G_IO_STATUS_NORMAL.
 func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus, goerr error) {
 	var _arg0 *C.GIOChannel // out
@@ -478,8 +478,8 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	return _strReturn, _ioStatus, _goerr
 }
 
-// ReadUnichar reads a Unicode character from @channel. This function cannot be
-// called on a channel with nil encoding.
+// ReadUnichar reads a Unicode character from channel. This function cannot be
+// called on a channel with NULL encoding.
 func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // in
@@ -579,7 +579,7 @@ func (channel *IOChannel) SetBufferSize(size uint) {
 }
 
 // SetBuffered: buffering state can only be set if the channel's encoding is
-// nil. For any other encoding, the channel must be buffered.
+// NULL. For any other encoding, the channel must be buffered.
 //
 // A buffered channel can only be set unbuffered if the channel's internal
 // buffers have been flushed. Newly created channels or channels which have
@@ -607,10 +607,10 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 }
 
 // SetCloseOnUnref: whether to close the channel on the final unref of the
-// OChannel data structure. The default value of this is true for channels
-// created by g_io_channel_new_file (), and false for all other channels.
+// OChannel data structure. The default value of this is TRUE for channels
+// created by g_io_channel_new_file (), and FALSE for all other channels.
 //
-// Setting this flag to true for a channel you have already closed can cause
+// Setting this flag to TRUE for a channel you have already closed can cause
 // problems when the final reference to the OChannel is dropped.
 func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
 	var _arg0 *C.GIOChannel // out
@@ -628,7 +628,7 @@ func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
 // internal encoding is always UTF-8. The default encoding for the external file
 // is UTF-8.
 //
-// The encoding nil is safe to use with binary data.
+// The encoding NULL is safe to use with binary data.
 //
 // The encoding can only be set if one of the following conditions is true:
 //
@@ -639,7 +639,7 @@ func (channel *IOChannel) SetCloseOnUnref(doClose bool) {
 // - The channel is a file, and the file pointer was just repositioned by a call
 // to g_io_channel_seek_position(). (This flushes all the internal buffers.)
 //
-// - The current encoding is nil or UTF-8.
+// - The current encoding is NULL or UTF-8.
 //
 // - One of the (new API) read functions has just returned G_IO_STATUS_EOF (or,
 // in the case of g_io_channel_read_to_end(), G_IO_STATUS_NORMAL).
@@ -676,7 +676,7 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	return _ioStatus, _goerr
 }
 
-// SetFlags sets the (writeable) flags in @channel to (@flags &
+// SetFlags sets the (writeable) flags in channel to (flags &
 // G_IO_FLAG_SET_MASK).
 func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
@@ -713,7 +713,7 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 }
 
 // Shutdown: close an IO channel. Any pending data to be written will be flushed
-// if @flush is true. The channel will not be freed until the last reference is
+// if flush is TRUE. The channel will not be freed until the last reference is
 // dropped using g_io_channel_unref().
 func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
@@ -791,7 +791,7 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 
 // WriteChars: replacement for g_io_channel_write() with the new API.
 //
-// On seekable channels with encodings other than nil or UTF-8, generic mixing
+// On seekable channels with encodings other than NULL or UTF-8, generic mixing
 // of reading and writing is not allowed. A call to g_io_channel_write_chars ()
 // may only be made on a channel from which data has been read in the cases
 // described in the documentation for g_io_channel_set_encoding ().
@@ -822,8 +822,8 @@ func (channel *IOChannel) WriteChars(buf []byte, count int) (uint, IOStatus, err
 	return _bytesWritten, _ioStatus, _goerr
 }
 
-// WriteUnichar writes a Unicode character to @channel. This function cannot be
-// called on a channel with nil encoding.
+// WriteUnichar writes a Unicode character to channel. This function cannot be
+// called on a channel with NULL encoding.
 func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // out
@@ -844,7 +844,7 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	return _ioStatus, _goerr
 }
 
-// IOChannelErrorFromErrno converts an `errno` error number to a OChannelError.
+// IOChannelErrorFromErrno converts an errno error number to a OChannelError.
 func IOChannelErrorFromErrno(en int) IOChannelError {
 	var _arg1 C.gint            // out
 	var _cret C.GIOChannelError // in

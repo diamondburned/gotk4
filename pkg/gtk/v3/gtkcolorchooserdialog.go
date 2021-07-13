@@ -76,13 +76,13 @@ func marshalColorChooserDialoger(p uintptr) (interface{}, error) {
 }
 
 // NewColorChooserDialog creates a new ColorChooserDialog.
-func NewColorChooserDialog(title string, parent Windower) *ColorChooserDialog {
+func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 

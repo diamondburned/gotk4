@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -26,13 +25,13 @@ import "C"
 // sandboxed applications for example.
 //
 // Deprecated: Use gtk_show_uri_on_window() instead.
-func ShowURI(screen gdk.Screener, uri string, timestamp uint32) error {
+func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	var _arg1 *C.GdkScreen // out
 	var _arg2 *C.gchar     // out
 	var _arg3 C.guint32    // out
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg3 = C.guint32(timestamp)
 
@@ -49,21 +48,26 @@ func ShowURI(screen gdk.Screener, uri string, timestamp uint32) error {
 // application to show the uri. The uri must be of a form understood by GIO
 // (i.e. you need to install gvfs to get support for uri schemes such as http://
 // or ftp://, as only local files are handled by GIO itself). Typical examples
-// are - `file:///home/gnome/pict.jpg` - `http://www.gnome.org` -
-// `mailto:me@gnome.org`
+// are
+//
+// - file:///home/gnome/pict.jpg
+//
+// - http://www.gnome.org
+//
+// - mailto:megnome.org
 //
 // Ideally the timestamp is taken from the event triggering the gtk_show_uri()
 // call. If timestamp is not known you can take GDK_CURRENT_TIME.
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIOnWindow(parent Windower, uri string, timestamp uint32) error {
+func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	var _arg1 *C.GtkWindow // out
 	var _arg2 *C.char      // out
 	var _arg3 C.guint32    // out
 	var _cerr *C.GError    // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	_arg3 = C.guint32(timestamp)
 

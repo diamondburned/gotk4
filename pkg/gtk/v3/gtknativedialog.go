@@ -58,7 +58,7 @@ type NativeDialoger interface {
 	Visible() bool
 	// Hide hides the dialog if it is visilbe, aborting any interaction.
 	Hide()
-	// Run blocks in a recursive main loop until @self emits the
+	// Run blocks in a recursive main loop until self emits the
 	// NativeDialog::response signal.
 	Run() int
 	// SetModal sets a dialog modal or non-modal.
@@ -67,7 +67,7 @@ type NativeDialoger interface {
 	SetTitle(title string)
 	// SetTransientFor: dialog windows should be set transient for the main
 	// application window they were spawned from.
-	SetTransientFor(parent Windower)
+	SetTransientFor(parent *Window)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it.
 	Show()
@@ -207,7 +207,7 @@ func (self *NativeDialog) Hide() {
 	C.gtk_native_dialog_hide(_arg0)
 }
 
-// Run blocks in a recursive main loop until @self emits the
+// Run blocks in a recursive main loop until self emits the
 // NativeDialog::response signal. It then returns the response ID from the
 // ::response signal emission.
 //
@@ -283,13 +283,13 @@ func (self *NativeDialog) SetTitle(title string) {
 // managers][gtk-X11-arch] to e.g. keep the dialog on top of the main window, or
 // center the dialog over the main window.
 //
-// Passing nil for @parent unsets the current transient window.
-func (self *NativeDialog) SetTransientFor(parent Windower) {
+// Passing NULL for parent unsets the current transient window.
+func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out
 	var _arg1 *C.GtkWindow       // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
 }

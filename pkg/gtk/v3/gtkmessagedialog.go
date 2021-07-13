@@ -59,9 +59,9 @@ type MessageDialoger interface {
 	Image() *Widget
 	// MessageArea returns the message area of the dialog.
 	MessageArea() *Widget
-	// SetImage sets the dialog’s image to @image.
+	// SetImage sets the dialog’s image to image.
 	SetImage(image Widgeter)
-	// SetMarkup sets the text of the message dialog to be @str, which is marked
+	// SetMarkup sets the text of the message dialog to be str, which is marked
 	// up with the [Pango text markup language][PangoMarkupFormat].
 	SetMarkup(str string)
 }
@@ -71,7 +71,7 @@ type MessageDialoger interface {
 // Dialog without too much effort, but MessageDialog saves typing.
 //
 // One difference from Dialog is that MessageDialog sets the
-// Window:skip-taskbar-hint property to true, so that the dialog is hidden from
+// Window:skip-taskbar-hint property to TRUE, so that the dialog is hidden from
 // the taskbar by default.
 //
 // The easiest way to do a modal message dialog is to use gtk_dialog_run(),
@@ -179,7 +179,7 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 	return _widget
 }
 
-// SetImage sets the dialog’s image to @image.
+// SetImage sets the dialog’s image to image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
 func (dialog *MessageDialog) SetImage(image Widgeter) {
@@ -192,7 +192,7 @@ func (dialog *MessageDialog) SetImage(image Widgeter) {
 	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }
 
-// SetMarkup sets the text of the message dialog to be @str, which is marked up
+// SetMarkup sets the text of the message dialog to be str, which is marked up
 // with the [Pango text markup language][PangoMarkupFormat].
 func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out

@@ -42,8 +42,8 @@ type AsyncResultOverrider interface {
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
 	UserData() cgo.Handle
-	// IsTagged checks if @res has the given @source_tag (generally a function
-	// pointer indicating the function @res was created by).
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
 	IsTagged(sourceTag cgo.Handle) bool
 }
 
@@ -53,10 +53,10 @@ type AsyncResulter interface {
 	SourceObject() *externglib.Object
 	// UserData gets the user data from a Result.
 	UserData() cgo.Handle
-	// IsTagged checks if @res has the given @source_tag (generally a function
-	// pointer indicating the function @res was created by).
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
 	IsTagged(sourceTag cgo.Handle) bool
-	// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
+	// LegacyPropagateError: if res is a AsyncResult, this is equivalent to
 	// g_simple_async_result_propagate_error().
 	LegacyPropagateError() error
 }
@@ -75,14 +75,14 @@ type AsyncResulter interface {
 // started for and any error codes returned. The asynchronous callback function
 // is then expected to call the corresponding "_finish()" function, passing the
 // object the function was called for, the Result instance, and (optionally) an
-// @error to grab any error conditions that may have occurred.
+// error to grab any error conditions that may have occurred.
 //
 // The "_finish()" function for an operation takes the generic result (of type
 // Result) and returns the specific result that the operation in question yields
 // (e.g. a Enumerator for a "enumerate children" operation). If the result or
 // error status of the operation is not needed, there is no need to call the
 // "_finish()" function; GIO will take care of cleaning up the result and error
-// information after the ReadyCallback returns. You can pass nil for the
+// information after the ReadyCallback returns. You can pass NULL for the
 // ReadyCallback if you don't need to take any action at all after the operation
 // completes. Applications may also take a reference to the Result and call
 // "_finish()" later; however, the "_finish()" function may be called at most
@@ -194,8 +194,8 @@ func (res *AsyncResult) UserData() cgo.Handle {
 	return _gpointer
 }
 
-// IsTagged checks if @res has the given @source_tag (generally a function
-// pointer indicating the function @res was created by).
+// IsTagged checks if res has the given source_tag (generally a function pointer
+// indicating the function res was created by).
 func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out
@@ -215,8 +215,8 @@ func (res *AsyncResult) IsTagged(sourceTag cgo.Handle) bool {
 	return _ok
 }
 
-// LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
-// g_simple_async_result_propagate_error(). Otherwise it returns false.
+// LegacyPropagateError: if res is a AsyncResult, this is equivalent to
+// g_simple_async_result_propagate_error(). Otherwise it returns FALSE.
 //
 // This can be used for legacy error handling in async *_finish() wrapper
 // functions that traditionally handled AsyncResult error returns themselves

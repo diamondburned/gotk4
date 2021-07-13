@@ -49,40 +49,40 @@ type PixbufLoaderer interface {
 	Pixbuf() *Pixbuf
 	// SetSize causes the image to be scaled while it is loaded.
 	SetSize(width int, height int)
-	// Write parses the next `count` bytes in the given image buffer.
+	// Write parses the next count bytes in the given image buffer.
 	Write(buf []byte) error
 }
 
 // PixbufLoader: incremental image loader.
 //
-// `GdkPixbufLoader` provides a way for applications to drive the process of
+// GdkPixbufLoader provides a way for applications to drive the process of
 // loading an image, by letting them send the image data directly to the loader
 // instead of having the loader read the data from a file. Applications can use
-// this functionality instead of `gdk_pixbuf_new_from_file()` or
-// `gdk_pixbuf_animation_new_from_file()` when they need to parse image data in
+// this functionality instead of gdk_pixbuf_new_from_file() or
+// gdk_pixbuf_animation_new_from_file() when they need to parse image data in
 // small chunks. For example, it should be used when reading an image from a
 // (potentially) slow network connection, or when loading an extremely large
 // file.
 //
-// To use `GdkPixbufLoader` to load an image, create a new instance, and call
-// [method@GdkPixbuf.PixbufLoader.write] to send the data to it. When done,
-// [method@GdkPixbuf.PixbufLoader.close] should be called to end the stream and
+// To use GdkPixbufLoader to load an image, create a new instance, and call
+// gdkpixbuf.PixbufLoader.Write() to send the data to it. When done,
+// gdkpixbuf.PixbufLoader.Close() should be called to end the stream and
 // finalize everything.
 //
 // The loader will emit three important signals throughout the process:
 //
-//    - [signal@GdkPixbuf.PixbufLoader::size-prepared] will be emitted as
+//    - gdkpixbuf.PixbufLoader::size-prepared will be emitted as
 //      soon as the image has enough information to determine the size of
 //      the image to be used. If you want to scale the image while loading
-//      it, you can call [method@GdkPixbuf.PixbufLoader.set_size] in
+//      it, you can call gdkpixbuf.PixbufLoader.SetSize() in
 //      response to this signal.
-//    - [signal@GdkPixbuf.PixbufLoader::area-prepared] will be emitted as
+//    - gdkpixbuf.PixbufLoader::area-prepared will be emitted as
 //      soon as the pixbuf of the desired has been allocated. You can obtain
-//      the `GdkPixbuf` instance by calling [method@GdkPixbuf.PixbufLoader.get_pixbuf].
+//      the GdkPixbuf instance by calling gdkpixbuf.PixbufLoader.GetPixbuf().
 //      If you want to use it, simply acquire a reference to it. You can
-//      also call `gdk_pixbuf_loader_get_pixbuf()` later to get the same
+//      also call gdk_pixbuf_loader_get_pixbuf() later to get the same
 //      pixbuf.
-//    - [signal@GdkPixbuf.PixbufLoader::area-updated] will be emitted every
+//    - gdkpixbuf.PixbufLoader::area-updated will be emitted every
 //      time a region is updated. This way you can update a partially
 //      completed image. Note that you do not know anything about the
 //      completeness of an image from the updated area. For example, in an
@@ -93,12 +93,11 @@ type PixbufLoaderer interface {
 // Loading an animation
 //
 // Loading an animation is almost as easy as loading an image. Once the first
-// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted, you
-// can call [method@GdkPixbuf.PixbufLoader.get_animation] to get the
-// [class@GdkPixbuf.PixbufAnimation] instance, and then call and
-// [method@GdkPixbuf.PixbufAnimation.get_iter] to get a
-// [class@GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired
-// time stamp.
+// gdkpixbuf.PixbufLoader::area-prepared signal has been emitted, you can call
+// gdkpixbuf.PixbufLoader.GetAnimation() to get the gdkpixbuf.PixbufAnimation
+// instance, and then call and gdkpixbuf.PixbufAnimation.GetIter() to get a
+// gdkpixbuf.PixbufAnimationIter to retrieve the pixbuf for the desired time
+// stamp.
 type PixbufLoader struct {
 	*externglib.Object
 }
@@ -134,7 +133,7 @@ func NewPixbufLoader() *PixbufLoader {
 }
 
 // NewPixbufLoaderWithMIMEType creates a new pixbuf loader object that always
-// attempts to parse image data as if it were an image of MIME type @mime_type,
+// attempts to parse image data as if it were an image of MIME type mime_type,
 // instead of identifying the type automatically.
 //
 // This function is useful if you want an error if the image isn't the expected
@@ -165,7 +164,7 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 }
 
 // NewPixbufLoaderWithType creates a new pixbuf loader object that always
-// attempts to parse image data as if it were an image of type @image_type,
+// attempts to parse image data as if it were an image of type image_type,
 // instead of identifying the type automatically.
 //
 // This function is useful if you want an error if the image isn't the expected
@@ -202,11 +201,11 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 // This function also tries to parse any data that hasn't yet been parsed; if
 // the remaining data is partial or corrupt, an error will be returned.
 //
-// If `FALSE` is returned, `error` will be set to an error from the
-// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
+// If FALSE is returned, error will be set to an error from the GDK_PIXBUF_ERROR
+// or G_FILE_ERROR domains.
 //
 // If you're just cancelling a load rather than expecting it to be finished,
-// passing `NULL` for `error` to ignore it is reasonable.
+// passing NULL for error to ignore it is reasonable.
 //
 // Remember that this function does not release a reference on the loader, so
 // you will need to explicitly release any reference you hold.
@@ -229,11 +228,10 @@ func (loader *PixbufLoader) Close() error {
 // creating.
 //
 // In general it only makes sense to call this function after the
-// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by the
-// loader.
+// gdkpixbuf.PixbufLoader::area-prepared signal has been emitted by the loader.
 //
 // If the loader doesn't have enough bytes yet, and hasn't emitted the
-// `area-prepared` signal, this function will return `NULL`.
+// area-prepared signal, this function will return NULL.
 func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -269,12 +267,12 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 // Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
 //
 // In general it only makes sense to call this function after the
-// [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by the
-// loader; this means that enough data has been read to know the size of the
-// image that will be allocated.
+// gdkpixbuf.PixbufLoader::area-prepared signal has been emitted by the loader;
+// this means that enough data has been read to know the size of the image that
+// will be allocated.
 //
 // If the loader has not received enough data via gdk_pixbuf_loader_write(),
-// then this function returns `NULL`.
+// then this function returns NULL.
 //
 // The returned pixbuf will be the same in all future calls to the loader, so if
 // you want to keep using it, you should acquire a reference to it.
@@ -316,7 +314,7 @@ func (loader *PixbufLoader) SetSize(width int, height int) {
 	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
 }
 
-// Write parses the next `count` bytes in the given image buffer.
+// Write parses the next count bytes in the given image buffer.
 func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar

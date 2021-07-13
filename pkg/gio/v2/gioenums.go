@@ -81,7 +81,7 @@ func init() {
 		{T: externglib.Type(C.g_dbus_message_flags_get_type()), F: marshalDBusMessageFlags},
 		{T: externglib.Type(C.g_dbus_object_manager_client_flags_get_type()), F: marshalDBusObjectManagerClientFlags},
 		{T: externglib.Type(C.g_dbus_property_info_flags_get_type()), F: marshalDBusPropertyInfoFlags},
-		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProxyFlags},
+		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProXYFlags},
 		{T: externglib.Type(C.g_dbus_send_message_flags_get_type()), F: marshalDBusSendMessageFlags},
 		{T: externglib.Type(C.g_dbus_server_flags_get_type()), F: marshalDBusServerFlags},
 		{T: externglib.Type(C.g_dbus_signal_flags_get_type()), F: marshalDBusSignalFlags},
@@ -151,19 +151,19 @@ type CredentialsType int
 const (
 	// Invalid indicates an invalid native credential type.
 	CredentialsTypeInvalid CredentialsType = iota
-	// LinuxUcred: native credentials type is a `struct ucred`.
+	// LinuxUcred: native credentials type is a struct ucred.
 	CredentialsTypeLinuxUcred
-	// FreebsdCmsgcred: native credentials type is a `struct cmsgcred`.
+	// FreebsdCmsgcred: native credentials type is a struct cmsgcred.
 	CredentialsTypeFreebsdCmsgcred
-	// OpenbsdSockpeercred: native credentials type is a `struct sockpeercred`.
+	// OpenbsdSockpeercred: native credentials type is a struct sockpeercred.
 	// Added in 2.30.
 	CredentialsTypeOpenbsdSockpeercred
-	// SolarisUcred: native credentials type is a `ucred_t`. Added in 2.40.
+	// SolarisUcred: native credentials type is a ucred_t. Added in 2.40.
 	CredentialsTypeSolarisUcred
-	// NetbsdUnpcbid: native credentials type is a `struct unpcbid`. Added in
+	// NetbsdUnpcbid: native credentials type is a struct unpcbid. Added in
 	// 2.42.
 	CredentialsTypeNetbsdUnpcbid
-	// AppleXucred: native credentials type is a `struct xucred`. Added in 2.66.
+	// AppleXucred: native credentials type is a struct xucred. Added in 2.66.
 	CredentialsTypeAppleXucred
 )
 
@@ -479,7 +479,7 @@ const (
 	FileAttributeTypeInt64
 	// Object: #GObject.
 	FileAttributeTypeObject
-	// Stringv: nil terminated char **. Since 2.22
+	// Stringv: NULL terminated char **. Since 2.22
 	FileAttributeTypeStringv
 )
 
@@ -674,26 +674,26 @@ const (
 	IOErrorEnumPartialInput IOErrorEnum = 34
 	// InvalidData: input data was invalid. Since 2.24
 	IOErrorEnumInvalidData IOErrorEnum = 35
-	// DBusError: remote object generated an error that doesn't correspond to a
+	// DbusError: remote object generated an error that doesn't correspond to a
 	// locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	IOErrorEnumDBusError IOErrorEnum = 36
+	IOErrorEnumDbusError IOErrorEnum = 36
 	// HostUnreachable: host unreachable. Since 2.26
 	IOErrorEnumHostUnreachable IOErrorEnum = 37
 	// NetworkUnreachable: network unreachable. Since 2.26
 	IOErrorEnumNetworkUnreachable IOErrorEnum = 38
 	// ConnectionRefused: connection refused. Since 2.26
 	IOErrorEnumConnectionRefused IOErrorEnum = 39
-	// ProxyFailed: connection to proxy server failed. Since 2.26
-	IOErrorEnumProxyFailed IOErrorEnum = 40
-	// ProxyAuthFailed: proxy authentication failed. Since 2.26
-	IOErrorEnumProxyAuthFailed IOErrorEnum = 41
-	// ProxyNeedAuth: proxy server needs authentication. Since 2.26
-	IOErrorEnumProxyNeedAuth IOErrorEnum = 42
-	// ProxyNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
-	IOErrorEnumProxyNotAllowed IOErrorEnum = 43
+	// ProXYFailed: connection to proxy server failed. Since 2.26
+	IOErrorEnumProXYFailed IOErrorEnum = 40
+	// ProXYAuthFailed: proxy authentication failed. Since 2.26
+	IOErrorEnumProXYAuthFailed IOErrorEnum = 41
+	// ProXYNeedAuth: proxy server needs authentication. Since 2.26
+	IOErrorEnumProXYNeedAuth IOErrorEnum = 42
+	// ProXYNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
+	IOErrorEnumProXYNotAllowed IOErrorEnum = 43
 	// BrokenPipe: broken pipe. Since 2.36
 	IOErrorEnumBrokenPipe IOErrorEnum = 44
 	// ConnectionClosed: connection closed by peer. Note that this is the same
@@ -741,7 +741,7 @@ const (
 	// Low: memory on the device is low, processes should free up unneeded
 	// resources (for example, in-memory caches) so they can be used elsewhere.
 	MemoryMonitorWarningLevelLow MemoryMonitorWarningLevel = 50
-	// Medium: same as @G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has
+	// Medium: same as G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has
 	// even less free memory, so processes should try harder to free up unneeded
 	// resources. If your process does not need to stay running, it is a good
 	// time for it to quit.
@@ -888,16 +888,16 @@ func marshalResolverError(p uintptr) (interface{}, error) {
 // variant tuples returned.
 //
 // G_RESOLVER_RECORD_SRV records are returned as variants with the signature
-// `(qqqs)`, containing a `guint16` with the priority, a `guint16` with the
-// weight, a `guint16` with the port, and a string of the hostname.
+// (qqqs), containing a guint16 with the priority, a guint16 with the weight, a
+// guint16 with the port, and a string of the hostname.
 //
 // G_RESOLVER_RECORD_MX records are returned as variants with the signature
-// `(qs)`, representing a `guint16` with the preference, and a string containing
-// the mail exchanger hostname.
+// (qs), representing a guint16 with the preference, and a string containing the
+// mail exchanger hostname.
 //
 // G_RESOLVER_RECORD_TXT records are returned as variants with the signature
-// `(as)`, representing an array of the strings in the text record. Note: Most
-// TXT records only contain a single string, but RFC 1035
+// (as), representing an array of the strings in the text record. Note: Most TXT
+// records only contain a single string, but RFC 1035
 // (https://tools.ietf.org/html/rfc1035#section-3.3.14) does allow a record to
 // contain multiple strings. The RFC which defines the interpretation of a
 // specific TXT record will likely require concatenation of multiple strings if
@@ -905,13 +905,13 @@ func marshalResolverError(p uintptr) (interface{}, error) {
 // (https://tools.ietf.org/html/rfc7208#section-3.3).
 //
 // G_RESOLVER_RECORD_SOA records are returned as variants with the signature
-// `(ssuuuuu)`, representing a string containing the primary name server, a
-// string containing the administrator, the serial as a `guint32`, the refresh
-// interval as a `guint32`, the retry interval as a `guint32`, the expire
-// timeout as a `guint32`, and the TTL as a `guint32`.
+// (ssuuuuu), representing a string containing the primary name server, a string
+// containing the administrator, the serial as a guint32, the refresh interval
+// as a guint32, the retry interval as a guint32, the expire timeout as a
+// guint32, and the TTL as a guint32.
 //
-// G_RESOLVER_RECORD_NS records are returned as variants with the signature
-// `(s)`, representing a string of the hostname of the name server.
+// G_RESOLVER_RECORD_NS records are returned as variants with the signature (s),
+// representing a string of the hostname of the name server.
 type ResolverRecordType int
 
 const (
@@ -962,11 +962,11 @@ const (
 	SocketClientEventConnecting
 	// Connected: client has connected to a remote host.
 	SocketClientEventConnected
-	// ProxyNegotiating: client is negotiating with a proxy to connect to the
+	// ProXYNegotiating: client is negotiating with a proxy to connect to the
 	// destination server.
-	SocketClientEventProxyNegotiating
-	// ProxyNegotiated: client has negotiated with the proxy server.
-	SocketClientEventProxyNegotiated
+	SocketClientEventProXYNegotiating
+	// ProXYNegotiated: client has negotiated with the proxy server.
+	SocketClientEventProXYNegotiated
 	// TLSHandshaking: client is performing a TLS handshake.
 	SocketClientEventTLSHandshaking
 	// TLSHandshaked: client has performed a TLS handshake.
@@ -988,10 +988,10 @@ const (
 	SocketFamilyInvalid SocketFamily = 0
 	// Unix: UNIX domain family
 	SocketFamilyUnix SocketFamily = 1
-	// IPv4: IPv4 family
-	SocketFamilyIPv4 SocketFamily = 2
-	// IPv6: IPv6 family
-	SocketFamilyIPv6 SocketFamily = 10
+	// Ipv4: IPv4 family
+	SocketFamilyIpv4 SocketFamily = 2
+	// Ipv6: IPv6 family
+	SocketFamilyIpv6 SocketFamily = 10
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
@@ -1112,7 +1112,7 @@ const (
 	// certificate for resumed connections.
 	TLSChannelBindingErrorNotAvailable
 	// NotSupported: binding type is not supported on the current connection.
-	// This error could be triggered when requesting `tls-server-end-point`
+	// This error could be triggered when requesting tls-server-end-point
 	// binding data for a certificate which has no hash function or uses
 	// multiple hash functions.
 	TLSChannelBindingErrorNotSupported
@@ -1126,15 +1126,15 @@ func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
 
 // TLSChannelBindingType: type of TLS channel binding data to retrieve from
 // Connection or Connection, as documented by RFC 5929. The
-// `tls-unique-for-telnet` (https://tools.ietf.org/html/rfc5929#section-5)
-// binding type is not currently implemented.
+// tls-unique-for-telnet (https://tools.ietf.org/html/rfc5929#section-5) binding
+// type is not currently implemented.
 type TLSChannelBindingType int
 
 const (
-	// Unique: `tls-unique` (https://tools.ietf.org/html/rfc5929#section-3)
+	// Unique: tls-unique (https://tools.ietf.org/html/rfc5929#section-3)
 	// binding type
 	TLSChannelBindingTypeUnique TLSChannelBindingType = iota
-	// ServerEndPoint: `tls-server-end-point`
+	// ServerEndPoint: tls-server-end-point
 	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
 	TLSChannelBindingTypeServerEndPoint
 )
@@ -1240,7 +1240,7 @@ func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
 // socketpair()).
 //
 // For abstract sockets, there are two incompatible ways of naming them; the man
-// pages suggest using the entire `struct sockaddr_un` as the name, padding the
+// pages suggest using the entire struct sockaddr_un as the name, padding the
 // unused parts of the sun_path field with zeroes; this corresponds to
 // G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED. However, many programs instead just
 // use a portion of sun_path, and pass an appropriate smaller length to bind()
@@ -1329,7 +1329,7 @@ const (
 	// process to the primary instance. Set this flag if your application is
 	// expected to behave differently depending on certain environment
 	// variables. For instance, an editor might be expected to use the
-	// `GIT_COMMITTER_NAME` environment variable when editing a git commit
+	// GIT_COMMITTER_NAME environment variable when editing a git commit
 	// message. The environment is available to the #GApplication::command-line
 	// signal handler, via g_application_command_line_getenv().
 	ApplicationFlagsSendEnvironment ApplicationFlags = 0b10000
@@ -1340,14 +1340,14 @@ const (
 	// Everything occurs in the local process. Since: 2.30.
 	ApplicationFlagsNonUnique ApplicationFlags = 0b100000
 	// ApplicationFlagsCanOverrideAppID: allow users to override the application
-	// ID from the command line with `--gapplication-app-id`. Since: 2.48
+	// ID from the command line with --gapplication-app-id. Since: 2.48
 	ApplicationFlagsCanOverrideAppID ApplicationFlags = 0b1000000
 	// ApplicationFlagsAllowReplacement: allow another instance to take over the
 	// bus name. Since: 2.60
 	ApplicationFlagsAllowReplacement ApplicationFlags = 0b10000000
 	// ApplicationFlagsReplace: take over from another instance. This flag is
-	// usually set by passing `--gapplication-replace` on the commandline.
-	// Since: 2.60
+	// usually set by passing --gapplication-replace on the commandline. Since:
+	// 2.60
 	ApplicationFlagsReplace ApplicationFlags = 0b100000000
 )
 
@@ -1573,42 +1573,42 @@ func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
 	return DBusPropertyInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DBusProxyFlags flags used when constructing an instance of a BusProxy derived
+// DBusProXYFlags flags used when constructing an instance of a BusProxy derived
 // class.
-type DBusProxyFlags int
+type DBusProXYFlags int
 
 const (
-	// DBusProxyFlagsNone: no flags set.
-	DBusProxyFlagsNone DBusProxyFlags = 0b0
-	// DBusProxyFlagsDoNotLoadProperties: don't load properties.
-	DBusProxyFlagsDoNotLoadProperties DBusProxyFlags = 0b1
-	// DBusProxyFlagsDoNotConnectSignals: don't connect to signals on the remote
+	// DBusProXYFlagsNone: no flags set.
+	DBusProXYFlagsNone DBusProXYFlags = 0b0
+	// DBusProXYFlagsDoNotLoadProperties: don't load properties.
+	DBusProXYFlagsDoNotLoadProperties DBusProXYFlags = 0b1
+	// DBusProXYFlagsDoNotConnectSignals: don't connect to signals on the remote
 	// object.
-	DBusProxyFlagsDoNotConnectSignals DBusProxyFlags = 0b10
-	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name, do
+	DBusProXYFlagsDoNotConnectSignals DBusProXYFlags = 0b10
+	// DBusProXYFlagsDoNotAutoStart: if the proxy is for a well-known name, do
 	// not ask the bus to launch an owner during proxy initialization or a
 	// method call. This flag is only meaningful in proxies for well-known
 	// names.
-	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 0b100
-	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
+	DBusProXYFlagsDoNotAutoStart DBusProXYFlags = 0b100
+	// DBusProXYFlagsGetInvalidatedProperties: if set, the property value for
 	// any __invalidated property__ will be (asynchronously) retrieved upon
-	// receiving the `PropertiesChanged`
+	// receiving the PropertiesChanged
 	// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
 	// D-Bus signal and the property will not cause emission of the
 	// BusProxy::g-properties-changed signal. When the value is received the
 	// BusProxy::g-properties-changed signal is emitted for the property along
 	// with the retrieved value. Since 2.32.
-	DBusProxyFlagsGetInvalidatedProperties DBusProxyFlags = 0b1000
-	// DBusProxyFlagsDoNotAutoStartAtConstruction: if the proxy is for a
+	DBusProXYFlagsGetInvalidatedProperties DBusProXYFlags = 0b1000
+	// DBusProXYFlagsDoNotAutoStartAtConstruction: if the proxy is for a
 	// well-known name, do not ask the bus to launch an owner during proxy
 	// initialization, but allow it to be autostarted by a method call. This
 	// flag is only meaningful in proxies for well-known names, and only if
 	// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
-	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 0b10000
+	DBusProXYFlagsDoNotAutoStartAtConstruction DBusProXYFlags = 0b10000
 )
 
-func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
-	return DBusProxyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalDBusProXYFlags(p uintptr) (interface{}, error) {
+	return DBusProXYFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.
@@ -1781,11 +1781,11 @@ const (
 	FileMeasureFlagsReportAnyError FileMeasureFlags = 0b10
 	// FileMeasureFlagsApparentSize: tally usage based on apparent file sizes.
 	// Normally, the block-size is used, if available, as this is a more
-	// accurate representation of disk space used. Compare with `du
-	// --apparent-size`.
+	// accurate representation of disk space used. Compare with du
+	// --apparent-size.
 	FileMeasureFlagsApparentSize FileMeasureFlags = 0b100
 	// FileMeasureFlagsNoXdev: do not cross mount point boundaries. Compare with
-	// `du -x`.
+	// du -x.
 	FileMeasureFlagsNoXdev FileMeasureFlags = 0b1000
 )
 
@@ -1953,9 +1953,9 @@ func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
 
 // SubprocessFlags flags to define the behaviour of a #GSubprocess.
 //
-// Note that the default for stdin is to redirect from `/dev/null`. For stdout
-// and stderr the default are for them to inherit the corresponding descriptor
-// from the calling process.
+// Note that the default for stdin is to redirect from /dev/null. For stdout and
+// stderr the default are for them to inherit the corresponding descriptor from
+// the calling process.
 //
 // Note that it is a programmer error to mix 'incompatible' flags. For example,
 // you may not request both G_SUBPROCESS_FLAGS_STDOUT_PIPE and
@@ -1974,13 +1974,13 @@ const (
 	// process that can be accessed with g_subprocess_get_stdout_pipe().
 	SubprocessFlagsStdoutPipe SubprocessFlags = 0b100
 	// SubprocessFlagsStdoutSilence: silence the stdout of the spawned process
-	// (ie: redirect to `/dev/null`).
+	// (ie: redirect to /dev/null).
 	SubprocessFlagsStdoutSilence SubprocessFlags = 0b1000
 	// SubprocessFlagsStderrPipe: create a pipe for the stderr of the spawned
 	// process that can be accessed with g_subprocess_get_stderr_pipe().
 	SubprocessFlagsStderrPipe SubprocessFlags = 0b10000
 	// SubprocessFlagsStderrSilence: silence the stderr of the spawned process
-	// (ie: redirect to `/dev/null`).
+	// (ie: redirect to /dev/null).
 	SubprocessFlagsStderrSilence SubprocessFlags = 0b100000
 	// SubprocessFlagsStderrMerge: merge the stderr of the spawned process with
 	// whatever the stdout happens to be. This is a good way of directing both

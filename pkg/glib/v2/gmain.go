@@ -292,8 +292,8 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	return _source
 }
 
-// MainContext: `GMainContext` struct is an opaque data type representing a set
-// of sources to be handled in a main loop.
+// MainContext: GMainContext struct is an opaque data type representing a set of
+// sources to be handled in a main loop.
 type MainContext struct {
 	native C.GMainContext
 }
@@ -326,7 +326,7 @@ func (m *MainContext) Native() unsafe.Pointer {
 }
 
 // Acquire tries to become the owner of the specified context. If some other
-// thread is the owner of the context, returns false immediately. Ownership is
+// thread is the owner of the context, returns FALSE immediately. Ownership is
 // properly recursive: the owner can require ownership again and will release
 // ownership when g_main_context_release() is called as many times as
 // g_main_context_acquire().
@@ -367,9 +367,9 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 }
 
 // Check passes the results of polling back to the main loop. You should be
-// careful to pass @fds and its length @n_fds as received from
-// g_main_context_query(), as this functions relies on assumptions on how @fds
-// is filled.
+// careful to pass fds and its length n_fds as received from
+// g_main_context_query(), as this functions relies on assumptions on how fds is
+// filled.
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
@@ -494,7 +494,7 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
 // this Context. This is useful to know before waiting on another thread that
-// may be blocking to get ownership of @context.
+// may be blocking to get ownership of context.
 func (context *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -514,14 +514,14 @@ func (context *MainContext) IsOwner() bool {
 
 // Iteration runs a single iteration for the given main loop. This involves
 // checking to see if any event sources are ready to be processed, then if no
-// events sources are ready and @may_block is true, waiting for a source to
+// events sources are ready and may_block is TRUE, waiting for a source to
 // become ready, then dispatching the highest priority events sources that are
-// ready. Otherwise, if @may_block is false sources are not waited to become
+// ready. Otherwise, if may_block is FALSE sources are not waited to become
 // ready, only those highest priority events sources will be dispatched (if
 // any), that are ready at this given moment without further waiting.
 //
-// Note that even when @may_block is true, it is still possible for
-// g_main_context_iteration() to return false, since the wait may be interrupted
+// Note that even when may_block is TRUE, it is still possible for
+// g_main_context_iteration() to return FALSE, since the wait may be interrupted
 // for other reasons than an event source becoming ready.
 func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg0 *C.GMainContext // out
@@ -562,8 +562,8 @@ func (context *MainContext) Pending() bool {
 	return _ok
 }
 
-// PopThreadDefault pops @context off the thread-default context stack
-// (verifying that it was on the top of the stack).
+// PopThreadDefault pops context off the thread-default context stack (verifying
+// that it was on the top of the stack).
 func (context *MainContext) PopThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
@@ -597,11 +597,11 @@ func (context *MainContext) Prepare() (int, bool) {
 	return _priority, _ok
 }
 
-// PushThreadDefault acquires @context and sets it as the thread-default context
+// PushThreadDefault acquires context and sets it as the thread-default context
 // for the current thread. This will cause certain asynchronous operations (such
 // as most [gio][gio]-based I/O) which are started in this thread to run under
-// @context and deliver their results to its main loop, rather than running
-// under the global default context in the main thread. Note that calling this
+// context and deliver their results to its main loop, rather than running under
+// the global default context in the main thread. Note that calling this
 // function changes the context returned by g_main_context_get_thread_default(),
 // not the one returned by g_main_context_default(), so it does not affect the
 // context used by functions like g_idle_add().
@@ -691,7 +691,7 @@ func (context *MainContext) unref() {
 	C.g_main_context_unref(_arg0)
 }
 
-// Wakeup: if @context is currently blocking in g_main_context_iteration()
+// Wakeup: if context is currently blocking in g_main_context_iteration()
 // waiting for a source to become ready, cause it to stop blocking and return.
 // Otherwise, cause the next invocation of g_main_context_iteration() to return
 // without blocking.
@@ -740,7 +740,7 @@ func MainContextDefault() *MainContext {
 // g_main_context_ref_thread_default() to get a Context to add their #GSources
 // to. (Note that even in single-threaded programs applications may sometimes
 // want to temporarily push a non-default context, so it is not safe to assume
-// that this will always return nil if you are running in the default thread.)
+// that this will always return NULL if you are running in the default thread.)
 //
 // If you need to hold a reference on the context, use
 // g_main_context_ref_thread_default() instead.
@@ -765,7 +765,7 @@ func MainContextGetThreadDefault() *MainContext {
 // with g_main_context_ref(). In addition, unlike
 // g_main_context_get_thread_default(), if the thread-default context is the
 // global default context, this will return that Context (with a ref added to
-// it) rather than returning nil.
+// it) rather than returning NULL.
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -782,8 +782,8 @@ func MainContextRefThreadDefault() *MainContext {
 	return _mainContext
 }
 
-// MainLoop: `GMainLoop` struct is an opaque data type representing the main
-// event loop of a GLib or GTK+ application.
+// MainLoop: GMainLoop struct is an opaque data type representing the main event
+// loop of a GLib or GTK+ application.
 type MainLoop struct {
 	native C.GMainLoop
 }
@@ -822,7 +822,7 @@ func (m *MainLoop) Native() unsafe.Pointer {
 	return unsafe.Pointer(&m.native)
 }
 
-// Context returns the Context of @loop.
+// Context returns the Context of loop.
 func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
@@ -915,7 +915,7 @@ func (loop *MainLoop) unref() {
 	C.g_main_loop_unref(_arg0)
 }
 
-// Source: `GSource` struct is an opaque data type representing an event source.
+// Source: GSource struct is an opaque data type representing an event source.
 type Source struct {
 	native C.GSource
 }
@@ -952,19 +952,19 @@ func (s *Source) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// AddChildSource adds @child_source to @source as a "polled" source; when
-// @source is added to a Context, @child_source will be automatically added with
-// the same priority, when @child_source is triggered, it will cause @source to
-// dispatch (in addition to calling its own callback), and when @source is
-// destroyed, it will destroy @child_source as well. (@source will also still be
-// dispatched if its own prepare/check functions indicate that it is ready.)
+// AddChildSource adds child_source to source as a "polled" source; when source
+// is added to a Context, child_source will be automatically added with the same
+// priority, when child_source is triggered, it will cause source to dispatch
+// (in addition to calling its own callback), and when source is destroyed, it
+// will destroy child_source as well. (source will also still be dispatched if
+// its own prepare/check functions indicate that it is ready.)
 //
-// If you don't need @child_source to do anything on its own when it triggers,
+// If you don't need child_source to do anything on its own when it triggers,
 // you can call g_source_set_dummy_callback() on it to set a callback that does
-// nothing (except return true if appropriate).
+// nothing (except return TRUE if appropriate).
 //
-// @source will hold a reference on @child_source while @child_source is
-// attached to it.
+// source will hold a reference on child_source while child_source is attached
+// to it.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
@@ -980,8 +980,8 @@ func (source *Source) AddChildSource(childSource *Source) {
 
 // AddPoll adds a file descriptor to the set of file descriptors polled for this
 // source. This is usually combined with g_source_new() to add an event source.
-// The event source's check function will typically test the @revents field in
-// the FD struct and return true if events need to be processed.
+// The event source's check function will typically test the revents field in
+// the FD struct and return TRUE if events need to be processed.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
@@ -999,7 +999,7 @@ func (source *Source) AddPoll(fd *PollFD) {
 	C.g_source_add_poll(_arg0, _arg1)
 }
 
-// AddUnixFd monitors @fd for the IO events in @events.
+// AddUnixFd monitors fd for the IO events in events.
 //
 // The tag returned by this function can be used to remove or modify the
 // monitoring of the fd using g_source_remove_unix_fd() or
@@ -1031,11 +1031,11 @@ func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
 	return _gpointer
 }
 
-// Attach adds a #GSource to a @context so that it will be executed within that
+// Attach adds a #GSource to a context so that it will be executed within that
 // context. Remove it by calling g_source_destroy().
 //
 // This function is safe to call from any thread, regardless of which thread the
-// @context is running in.
+// context is running in.
 func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
@@ -1115,7 +1115,7 @@ func (source *Source) Context() *MainContext {
 	return _mainContext
 }
 
-// CurrentTime: this function ignores @source and is otherwise the same as
+// CurrentTime: this function ignores source and is otherwise the same as
 // g_get_current_time().
 //
 // Deprecated: use g_source_get_time() instead.
@@ -1186,7 +1186,7 @@ func (source *Source) Priority() int {
 	return _gint
 }
 
-// ReadyTime gets the "ready time" of @source, as set by
+// ReadyTime gets the "ready time" of source, as set by
 // g_source_set_ready_time().
 //
 // Any time before the current monotonic time (including 0) is an indication
@@ -1228,7 +1228,7 @@ func (source *Source) Time() int64 {
 	return _gint64
 }
 
-// IsDestroyed returns whether @source has been destroyed.
+// IsDestroyed returns whether source has been destroyed.
 //
 // This is important when you operate upon your objects from within idle
 // handlers, but may have freed the object before the dispatch of your idle
@@ -1271,9 +1271,9 @@ func (source *Source) IsDestroyed() bool {
 	return _ok
 }
 
-// ModifyUnixFd updates the event mask to watch for the fd identified by @tag.
+// ModifyUnixFd updates the event mask to watch for the fd identified by tag.
 //
-// @tag is the tag returned from g_source_add_unix_fd().
+// tag is the tag returned from g_source_add_unix_fd().
 //
 // If you want to remove a fd, don't set its event mask to zero. Instead, call
 // g_source_remove_unix_fd().
@@ -1294,11 +1294,11 @@ func (source *Source) ModifyUnixFd(tag cgo.Handle, newEvents IOCondition) {
 	C.g_source_modify_unix_fd(_arg0, _arg1, _arg2)
 }
 
-// QueryUnixFd queries the events reported for the fd corresponding to @tag on
-// @source during the last poll.
+// QueryUnixFd queries the events reported for the fd corresponding to tag on
+// source during the last poll.
 //
 // The return value of this function is only defined when the function is called
-// from the check or dispatch functions for @source.
+// from the check or dispatch functions for source.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
@@ -1341,7 +1341,7 @@ func (source *Source) ref() *Source {
 	return _ret
 }
 
-// RemoveChildSource detaches @child_source from @source and destroys it.
+// RemoveChildSource detaches child_source from source and destroys it.
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
@@ -1394,8 +1394,8 @@ func (source *Source) RemoveUnixFd(tag cgo.Handle) {
 // SetCallbackIndirect sets the callback function storing the data as a
 // refcounted callback "object". This is used internally. Note that calling
 // g_source_set_callback_indirect() assumes an initial reference count on
-// @callback_data, and thus @callback_funcs->unref will eventually be called
-// once more than @callback_funcs->ref.
+// callback_data, and thus callback_funcs->unref will eventually be called once
+// more than callback_funcs->ref.
 //
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
@@ -1412,10 +1412,10 @@ func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
 }
 
-// SetCanRecurse sets whether a source can be called recursively. If
-// @can_recurse is true, then while the source is being dispatched then this
-// source will be processed normally. Otherwise, all processing of this source
-// is blocked until the dispatch function returns.
+// SetCanRecurse sets whether a source can be called recursively. If can_recurse
+// is TRUE, then while the source is being dispatched then this source will be
+// processed normally. Otherwise, all processing of this source is blocked until
+// the dispatch function returns.
 func (source *Source) SetCanRecurse(canRecurse bool) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gboolean // out
@@ -1484,9 +1484,9 @@ func (source *Source) SetPriority(priority int) {
 
 // SetReadyTime sets a #GSource to be dispatched when the given monotonic time
 // is reached (or passed). If the monotonic time is in the past (as it always
-// will be if @ready_time is 0) then the source will be dispatched immediately.
+// will be if ready_time is 0) then the source will be dispatched immediately.
 //
-// If @ready_time is -1 then the source is never woken up on the basis of the
+// If ready_time is -1 then the source is never woken up on the basis of the
 // passage of time.
 //
 // Dispatching the source does not reset the ready time. You should do so
@@ -1624,7 +1624,7 @@ func SourceSetNameByID(tag uint, name string) {
 	C.g_source_set_name_by_id(_arg1, _arg2)
 }
 
-// SourceCallbackFuncs: `GSourceCallbackFuncs` struct contains functions for
+// SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
 	native C.GSourceCallbackFuncs
@@ -1635,26 +1635,26 @@ func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// SourceFuncs: `GSourceFuncs` struct contains a table of functions used to
-// handle event sources in a generic manner.
+// SourceFuncs: GSourceFuncs struct contains a table of functions used to handle
+// event sources in a generic manner.
 //
-// For idle sources, the prepare and check functions always return true to
+// For idle sources, the prepare and check functions always return TRUE to
 // indicate that the source is always ready to be processed. The prepare
 // function also returns a timeout value of 0 to ensure that the poll() call
 // doesn't block (since that would be time wasted which could have been spent
 // running the idle function).
 //
-// For timeout sources, the prepare and check functions both return true if the
+// For timeout sources, the prepare and check functions both return TRUE if the
 // timeout interval has expired. The prepare function also returns a timeout
 // value to ensure that the poll() call doesn't block too long and miss the next
 // timeout.
 //
-// For file descriptor sources, the prepare function typically returns false,
+// For file descriptor sources, the prepare function typically returns FALSE,
 // since it must wait until poll() has been called before it knows whether any
 // events need to be processed. It sets the returned timeout to -1 to indicate
 // that it doesn't mind how long the poll() call blocks. In the check function,
 // it tests the results of the poll() call to see if the required condition has
-// been met, and returns true if so.
+// been met, and returns TRUE if so.
 type SourceFuncs struct {
 	native C.GSourceFuncs
 }

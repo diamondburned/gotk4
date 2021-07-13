@@ -24,7 +24,7 @@ func init() {
 
 // SliceListModeler describes SliceListModel's methods.
 type SliceListModeler interface {
-	// Model gets the model that is currently being used or nil if none.
+	// Model gets the model that is currently being used or NULL if none.
 	Model() *gio.ListModel
 	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
@@ -38,7 +38,7 @@ type SliceListModeler interface {
 	SetSize(size uint)
 }
 
-// SliceListModel: `GtkSliceListModel` is a list model that presents a slice of
+// SliceListModel: GtkSliceListModel is a list model that presents a slice of
 // another model.
 //
 // This is useful when implementing paging by setting the size to the number of
@@ -72,7 +72,7 @@ func marshalSliceListModeler(p uintptr) (interface{}, error) {
 
 // NewSliceListModel creates a new slice model.
 //
-// It presents the slice from @offset to offset + @size of the given @model.
+// It presents the slice from offset to offset + size of the given model.
 func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
@@ -92,7 +92,7 @@ func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceList
 	return _sliceListModel
 }
 
-// Model gets the model that is currently being used or nil if none.
+// Model gets the model that is currently being used or NULL if none.
 func (self *SliceListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret *C.GListModel        // in
@@ -147,7 +147,7 @@ func (self *SliceListModel) Size() uint {
 
 // SetModel sets the model to show a slice of.
 //
-// The model's item type must conform to @self's item type.
+// The model's item type must conform to self's item type.
 func (self *SliceListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 *C.GListModel        // out
@@ -160,7 +160,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeler) {
 
 // SetOffset sets the offset into the original model for this slice.
 //
-// If the offset is too large for the sliced model, @self will end up empty.
+// If the offset is too large for the sliced model, self will end up empty.
 func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
@@ -171,7 +171,7 @@ func (self *SliceListModel) SetOffset(offset uint) {
 	C.gtk_slice_list_model_set_offset(_arg0, _arg1)
 }
 
-// SetSize sets the maximum size. @self will never have more items than @size.
+// SetSize sets the maximum size. self will never have more items than size.
 //
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.

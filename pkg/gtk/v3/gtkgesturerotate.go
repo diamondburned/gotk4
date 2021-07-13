@@ -25,7 +25,7 @@ func init() {
 
 // GestureRotater describes GestureRotate's methods.
 type GestureRotater interface {
-	// AngleDelta: if @gesture is active, this function returns the angle
+	// AngleDelta: if gesture is active, this function returns the angle
 	// difference in radians since the gesture was first recognized.
 	AngleDelta() float64
 }
@@ -75,8 +75,8 @@ func NewGestureRotate(widget Widgeter) *GestureRotate {
 	return _gestureRotate
 }
 
-// AngleDelta: if @gesture is active, this function returns the angle difference
-// in radians since the gesture was first recognized. If @gesture is not active,
+// AngleDelta: if gesture is active, this function returns the angle difference
+// in radians since the gesture was first recognized. If gesture is not active,
 // 0 is returned.
 func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out

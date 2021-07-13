@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// Analysis: `PangoAnalysis` structure stores information about the properties
-// of a segment of text.
+// Analysis: PangoAnalysis structure stores information about the properties of
+// a segment of text.
 type Analysis struct {
 	native C.PangoAnalysis
 }
@@ -32,10 +32,9 @@ func (a *Analysis) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// Item: `PangoItem` structure stores information about a segment of text.
+// Item: PangoItem structure stores information about a segment of text.
 //
-// You typically obtain `PangoItems` by itemizing a piece of text with
-// [func@itemize].
+// You typically obtain PangoItems by itemizing a piece of text with itemize.
 type Item struct {
 	native C.PangoItem
 }
@@ -66,14 +65,14 @@ func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
-// ApplyAttrs: add attributes to a `PangoItem`.
+// ApplyAttrs: add attributes to a PangoItem.
 //
 // The idea is that you have attributes that don't affect itemization, such as
-// font features, so you filter them out using [method@Pango.AttrList.filter],
-// itemize your text, then reapply the attributes to the resulting items using
-// this function.
+// font features, so you filter them out using pango.AttrList.Filter(), itemize
+// your text, then reapply the attributes to the resulting items using this
+// function.
 //
-// The @iter should be positioned before the range of the item, and will be
+// The iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
 func (item *Item) ApplyAttrs(iter *AttrIterator) {
@@ -86,7 +85,7 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
-// Copy an existing `PangoItem` structure.
+// Copy an existing PangoItem structure.
 func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
@@ -105,7 +104,7 @@ func (item *Item) Copy() *Item {
 	return _ret
 }
 
-// Free: free a `PangoItem` and all associated memory.
+// Free: free a PangoItem and all associated memory.
 func (item *Item) free() {
 	var _arg0 *C.PangoItem // out
 
@@ -114,16 +113,16 @@ func (item *Item) free() {
 	C.pango_item_free(_arg0)
 }
 
-// Split modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
+// Split modifies orig to cover only the text after split_index, and returns a
+// new item that covers the text before split_index that used to be in orig.
 //
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item). @split_offset is the length of
-// the first item in chars, and must be provided because the text used to
-// generate the item isn't available, so `pango_item_split()` can't count the
-// char length of the split items itself.
+// You can think of split_index as the length of the returned item. split_index
+// may not be 0, and it may not be greater than or equal to the length of orig
+// (that is, there must be at least one byte assigned to each item, you can't
+// create a zero-length item). split_offset is the length of the first item in
+// chars, and must be provided because the text used to generate the item isn't
+// available, so pango_item_split() can't count the char length of the split
+// items itself.
 func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out

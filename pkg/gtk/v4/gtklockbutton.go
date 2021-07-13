@@ -24,23 +24,23 @@ func init() {
 
 // LockButtoner describes LockButton's methods.
 type LockButtoner interface {
-	// Permission obtains the `GPermission` object that controls @button.
+	// Permission obtains the GPermission object that controls button.
 	Permission() *gio.Permission
-	// SetPermission sets the `GPermission` object that controls @button.
+	// SetPermission sets the GPermission object that controls button.
 	SetPermission(permission gio.Permissioner)
 }
 
-// LockButton: `GtkLockButton` is a widget to obtain and revoke authorizations
+// LockButton: GtkLockButton is a widget to obtain and revoke authorizations
 // needed to operate the controls.
 //
 // !An example GtkLockButton (lock-button.png)
 //
 // It is typically used in preference dialogs or control panels.
 //
-// The required authorization is represented by a `GPermission` object. Concrete
-// implementations of `GPermission` may use PolicyKit or some other
-// authorization framework. To obtain a PolicyKit-based `GPermission`, use
-// `polkit_permission_new()`.
+// The required authorization is represented by a GPermission object. Concrete
+// implementations of GPermission may use PolicyKit or some other authorization
+// framework. To obtain a PolicyKit-based GPermission, use
+// polkit_permission_new().
 //
 // If the user is not currently allowed to perform the action, but can obtain
 // the permission, the widget looks like this:
@@ -62,11 +62,9 @@ type LockButtoner interface {
 // If the user has the permission and cannot drop it, the button is hidden.
 //
 // The text (and tooltips) that are shown in the various cases can be adjusted
-// with the [property@Gtk.LockButton:text-lock],
-// [property@Gtk.LockButton:text-unlock],
-// [property@Gtk.LockButton:tooltip-lock],
-// [property@Gtk.LockButton:tooltip-unlock] and
-// [property@Gtk.LockButton:tooltip-not-authorized] properties.
+// with the gtk.LockButton:text-lock, gtk.LockButton:text-unlock,
+// gtk.LockButton:tooltip-lock, gtk.LockButton:tooltip-unlock and
+// gtk.LockButton:tooltip-not-authorized properties.
 type LockButton struct {
 	Button
 }
@@ -119,7 +117,7 @@ func marshalLockButtoner(p uintptr) (interface{}, error) {
 	return wrapLockButton(obj), nil
 }
 
-// NewLockButton creates a new lock button which reflects the @permission.
+// NewLockButton creates a new lock button which reflects the permission.
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
@@ -135,7 +133,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 	return _lockButton
 }
 
-// Permission obtains the `GPermission` object that controls @button.
+// Permission obtains the GPermission object that controls button.
 func (button *LockButton) Permission() *gio.Permission {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
@@ -156,7 +154,7 @@ func (button *LockButton) Permission() *gio.Permission {
 	return _permission
 }
 
-// SetPermission sets the `GPermission` object that controls @button.
+// SetPermission sets the GPermission object that controls button.
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out

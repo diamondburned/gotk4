@@ -169,7 +169,7 @@ func (m *Matrix) free() {
 	C.graphene_matrix_free(_arg0)
 }
 
-// Row retrieves the given row vector at @index_ inside a matrix.
+// Row retrieves the given row vector at index_ inside a matrix.
 func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
@@ -183,7 +183,7 @@ func (m *Matrix) Row(index_ uint) Vec4 {
 	return _res
 }
 
-// Value retrieves the value at the given @row and @col index.
+// Value retrieves the value at the given row and col index.
 func (m *Matrix) Value(row uint, col uint) float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
@@ -203,7 +203,7 @@ func (m *Matrix) Value(row uint, col uint) float32 {
 	return _gfloat
 }
 
-// XScale retrieves the scaling factor on the X axis in @m.
+// XScale retrieves the scaling factor on the X axis in m.
 func (m *Matrix) XScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -219,7 +219,7 @@ func (m *Matrix) XScale() float32 {
 	return _gfloat
 }
 
-// XTranslation retrieves the translation component on the X axis from @m.
+// XTranslation retrieves the translation component on the X axis from m.
 func (m *Matrix) XTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -235,7 +235,7 @@ func (m *Matrix) XTranslation() float32 {
 	return _gfloat
 }
 
-// YScale retrieves the scaling factor on the Y axis in @m.
+// YScale retrieves the scaling factor on the Y axis in m.
 func (m *Matrix) YScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -251,7 +251,7 @@ func (m *Matrix) YScale() float32 {
 	return _gfloat
 }
 
-// YTranslation retrieves the translation component on the Y axis from @m.
+// YTranslation retrieves the translation component on the Y axis from m.
 func (m *Matrix) YTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -267,7 +267,7 @@ func (m *Matrix) YTranslation() float32 {
 	return _gfloat
 }
 
-// ZScale retrieves the scaling factor on the Z axis in @m.
+// ZScale retrieves the scaling factor on the Z axis in m.
 func (m *Matrix) ZScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -283,7 +283,7 @@ func (m *Matrix) ZScale() float32 {
 	return _gfloat
 }
 
-// ZTranslation retrieves the translation component on the Z axis from @m.
+// ZTranslation retrieves the translation component on the Z axis from m.
 func (m *Matrix) ZTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -448,16 +448,16 @@ func (m *Matrix) InitIdentity() *Matrix {
 }
 
 // InitLookAt initializes a #graphene_matrix_t so that it positions the "camera"
-// at the given @eye coordinates towards an object at the @center coordinates.
-// The top of the camera is aligned to the direction of the @up vector.
+// at the given eye coordinates towards an object at the center coordinates. The
+// top of the camera is aligned to the direction of the up vector.
 //
 // Before the transform, the camera is assumed to be placed at the origin,
 // looking towards the negative Z axis, with the top side of the camera facing
 // in the direction of the Y axis and the right side in the direction of the X
 // axis.
 //
-// In theory, one could use @m to transform a model of such a camera into
-// world-space. However, it is more common to use the inverse of @m to transform
+// In theory, one could use m to transform a model of such a camera into
+// world-space. However, it is more common to use the inverse of m to transform
 // another object from world coordinates to the view coordinates of the camera.
 // Typically you would then apply the camera projection transform to get from
 // view to screen coordinates.
@@ -535,8 +535,8 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 	return _matrix
 }
 
-// InitRotate initializes @m to represent a rotation of @angle degrees on the
-// axis represented by the @axis vector.
+// InitRotate initializes m to represent a rotation of angle degrees on the axis
+// represented by the axis vector.
 func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -736,7 +736,7 @@ func (m *Matrix) IsSingular() bool {
 // Multiply multiplies two #graphene_matrix_t.
 //
 // Matrix multiplication is not commutative in general; the order of the factors
-// matters. The product of this multiplication is (@a × @b)
+// matters. The product of this multiplication is (a × b)
 func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -751,7 +751,7 @@ func (a *Matrix) Multiply(b *Matrix) Matrix {
 }
 
 // Near compares the two given #graphene_matrix_t matrices and checks whether
-// their values are within the given @epsilon of each other.
+// their values are within the given epsilon of each other.
 func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -785,7 +785,7 @@ func (m *Matrix) Normalize() Matrix {
 	return _res
 }
 
-// Perspective applies a perspective of @depth to the matrix.
+// Perspective applies a perspective of depth to the matrix.
 func (m *Matrix) Perspective(depth float32) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -811,7 +811,7 @@ func (m *Matrix) Print() {
 	C.graphene_matrix_print(_arg0)
 }
 
-// ProjectPoint projects a #graphene_point_t using the matrix @m.
+// ProjectPoint projects a #graphene_point_t using the matrix m.
 func (m *Matrix) ProjectPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
@@ -859,11 +859,11 @@ func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	return _res
 }
 
-// Rotate adds a rotation transformation to @m, using the given @angle and @axis
+// Rotate adds a rotation transformation to m, using the given angle and axis
 // vector.
 //
 // This is the equivalent of calling graphene_matrix_init_rotate() and then
-// multiplying the matrix @m with the rotation matrix.
+// multiplying the matrix m with the rotation matrix.
 func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -876,7 +876,7 @@ func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 	C.graphene_matrix_rotate(_arg0, _arg1, _arg2)
 }
 
-// RotateEuler adds a rotation transformation to @m, using the given
+// RotateEuler adds a rotation transformation to m, using the given
 // #graphene_euler_t.
 func (m *Matrix) RotateEuler(e *Euler) {
 	var _arg0 *C.graphene_matrix_t // out
@@ -888,11 +888,11 @@ func (m *Matrix) RotateEuler(e *Euler) {
 	C.graphene_matrix_rotate_euler(_arg0, _arg1)
 }
 
-// RotateQuaternion adds a rotation transformation to @m, using the given
+// RotateQuaternion adds a rotation transformation to m, using the given
 // #graphene_quaternion_t.
 //
 // This is the equivalent of calling graphene_quaternion_to_matrix() and then
-// multiplying @m with the rotation matrix.
+// multiplying m with the rotation matrix.
 func (m *Matrix) RotateQuaternion(q *Quaternion) {
 	var _arg0 *C.graphene_matrix_t     // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -903,8 +903,8 @@ func (m *Matrix) RotateQuaternion(q *Quaternion) {
 	C.graphene_matrix_rotate_quaternion(_arg0, _arg1)
 }
 
-// RotateX adds a rotation transformation around the X axis to @m, using the
-// given @angle.
+// RotateX adds a rotation transformation around the X axis to m, using the
+// given angle.
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateX(angle float32) {
@@ -917,8 +917,8 @@ func (m *Matrix) RotateX(angle float32) {
 	C.graphene_matrix_rotate_x(_arg0, _arg1)
 }
 
-// RotateY adds a rotation transformation around the Y axis to @m, using the
-// given @angle.
+// RotateY adds a rotation transformation around the Y axis to m, using the
+// given angle.
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateY(angle float32) {
@@ -931,8 +931,8 @@ func (m *Matrix) RotateY(angle float32) {
 	C.graphene_matrix_rotate_y(_arg0, _arg1)
 }
 
-// RotateZ adds a rotation transformation around the Z axis to @m, using the
-// given @angle.
+// RotateZ adds a rotation transformation around the Z axis to m, using the
+// given angle.
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateZ(angle float32) {
@@ -945,10 +945,10 @@ func (m *Matrix) RotateZ(angle float32) {
 	C.graphene_matrix_rotate_z(_arg0, _arg1)
 }
 
-// Scale adds a scaling transformation to @m, using the three given factors.
+// Scale adds a scaling transformation to m, using the three given factors.
 //
 // This is the equivalent of calling graphene_matrix_init_scale() and then
-// multiplying the matrix @m with the scale matrix.
+// multiplying the matrix m with the scale matrix.
 func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -963,7 +963,7 @@ func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 	C.graphene_matrix_scale(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SkewXY adds a skew of @factor on the X and Y axis to the given matrix.
+// SkewXY adds a skew of factor on the X and Y axis to the given matrix.
 func (m *Matrix) SkewXY(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -974,7 +974,7 @@ func (m *Matrix) SkewXY(factor float32) {
 	C.graphene_matrix_skew_xy(_arg0, _arg1)
 }
 
-// SkewXZ adds a skew of @factor on the X and Z axis to the given matrix.
+// SkewXZ adds a skew of factor on the X and Z axis to the given matrix.
 func (m *Matrix) SkewXZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -985,7 +985,7 @@ func (m *Matrix) SkewXZ(factor float32) {
 	C.graphene_matrix_skew_xz(_arg0, _arg1)
 }
 
-// SkewYZ adds a skew of @factor on the Y and Z axis to the given matrix.
+// SkewYZ adds a skew of factor on the Y and Z axis to the given matrix.
 func (m *Matrix) SkewYZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -1059,7 +1059,7 @@ func (m *Matrix) ToFloat() [16]float32 {
 }
 
 // TransformBounds transforms each corner of a #graphene_rect_t using the given
-// matrix @m.
+// matrix m.
 //
 // The result is the axis aligned bounding rectangle containing the coplanar
 // quadrilateral.
@@ -1079,7 +1079,7 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 }
 
 // TransformBox transforms the vertices of a #graphene_box_t using the given
-// matrix @m.
+// matrix m.
 //
 // The result is the axis aligned bounding box containing the transformed
 // vertices.
@@ -1096,7 +1096,7 @@ func (m *Matrix) TransformBox(b *Box) Box {
 	return _res
 }
 
-// TransformPoint transforms the given #graphene_point_t using the matrix @m.
+// TransformPoint transforms the given #graphene_point_t using the matrix m.
 //
 // Unlike graphene_matrix_transform_vec3(), this function will take into account
 // the fourth row vector of the #graphene_matrix_t when computing the dot
@@ -1116,8 +1116,7 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 	return _res
 }
 
-// TransformPoint3D transforms the given #graphene_point3d_t using the matrix
-// @m.
+// TransformPoint3D transforms the given #graphene_point3d_t using the matrix m.
 //
 // Unlike graphene_matrix_transform_vec3(), this function will take into account
 // the fourth row vector of the #graphene_matrix_t when computing the dot
@@ -1137,7 +1136,7 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	return _res
 }
 
-// TransformRay: transform a #graphene_ray_t using the given matrix @m.
+// TransformRay: transform a #graphene_ray_t using the given matrix m.
 func (m *Matrix) TransformRay(r *Ray) Ray {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_ray_t    // out
@@ -1152,7 +1151,7 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 }
 
 // TransformRect transforms each corner of a #graphene_rect_t using the given
-// matrix @m.
+// matrix m.
 //
 // The result is a coplanar quadrilateral.
 //
@@ -1170,8 +1169,8 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 	return _res
 }
 
-// TransformSphere transforms a #graphene_sphere_t using the given matrix @m.
-// The result is the bounding sphere containing the transformed sphere.
+// TransformSphere transforms a #graphene_sphere_t using the given matrix m. The
+// result is the bounding sphere containing the transformed sphere.
 func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -1185,10 +1184,10 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	return _res
 }
 
-// TransformVec3 transforms the given #graphene_vec3_t using the matrix @m.
+// TransformVec3 transforms the given #graphene_vec3_t using the matrix m.
 //
-// This function will multiply the X, Y, and Z row vectors of the matrix @m with
-// the corresponding components of the vector @v. The W row vector will be
+// This function will multiply the X, Y, and Z row vectors of the matrix m with
+// the corresponding components of the vector v. The W row vector will be
 // ignored.
 //
 // See also: graphene_simd4x4f_vec3_mul()
@@ -1205,7 +1204,7 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	return _res
 }
 
-// TransformVec4 transforms the given #graphene_vec4_t using the matrix @m.
+// TransformVec4 transforms the given #graphene_vec4_t using the matrix m.
 //
 // See also: graphene_simd4x4f_vec4_mul()
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
@@ -1221,11 +1220,11 @@ func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	return _res
 }
 
-// Translate adds a translation transformation to @m using the coordinates of
-// the given #graphene_point3d_t.
+// Translate adds a translation transformation to m using the coordinates of the
+// given #graphene_point3d_t.
 //
 // This is the equivalent of calling graphene_matrix_init_translate() and then
-// multiplying @m with the translation matrix.
+// multiplying m with the translation matrix.
 func (m *Matrix) Translate(pos *Point3D) {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -1248,8 +1247,8 @@ func (m *Matrix) Transpose() Matrix {
 	return _res
 }
 
-// UnprojectPoint3D unprojects the given @point using the @projection matrix and
-// a @modelview matrix.
+// UnprojectPoint3D unprojects the given point using the projection matrix and a
+// modelview matrix.
 func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
@@ -1267,7 +1266,7 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Po
 
 // UntransformBounds undoes the transformation on the corners of a
 // #graphene_rect_t using the given matrix, within the given axis aligned
-// rectangular @bounds.
+// rectangular bounds.
 func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -1284,7 +1283,7 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 }
 
 // UntransformPoint undoes the transformation of a #graphene_point_t using the
-// given matrix, within the given axis aligned rectangular @bounds.
+// given matrix, within the given axis aligned rectangular bounds.
 func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out

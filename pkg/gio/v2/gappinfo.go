@@ -83,14 +83,14 @@ type AppInfoOverrider interface {
 	// instance, on Unix this is the desktop file id from the xdg menu
 	// specification.
 	//
-	// Note that the returned ID may be nil, depending on how the @appinfo has
+	// Note that the returned ID may be NULL, depending on how the appinfo has
 	// been constructed.
 	ID() string
 	// Name gets the installed name of the application.
 	Name() string
-	// SupportedTypes retrieves the list of content types that @app_info claims
+	// SupportedTypes retrieves the list of content types that app_info claims
 	// to support. If this information is not provided by the environment, this
-	// function will return nil. This function does not take in consideration
+	// function will return NULL. This function does not take in consideration
 	// associations added with g_app_info_add_supports_type(), but only those
 	// exported directly by the application.
 	SupportedTypes() []string
@@ -153,7 +153,7 @@ type AppInfor interface {
 	ID() string
 	// Name gets the installed name of the application.
 	Name() string
-	// SupportedTypes retrieves the list of content types that @app_info claims
+	// SupportedTypes retrieves the list of content types that app_info claims
 	// to support.
 	SupportedTypes() []string
 	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
@@ -186,12 +186,12 @@ type AppInfor interface {
 // As of GLib 2.20, URIs will always be converted to POSIX paths (using
 // g_file_get_path()) when using g_app_info_launch() even if the application
 // requested an URI and not a POSIX path. For example for a desktop-file based
-// application with Exec key `totem U` and a single URI, `sftp://foo/file.avi`,
-// then `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will only
-// work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with
-// FUSE support), is available and operational; if this is not the case, the URI
-// will be passed unmodified to the application. Some URIs, such as `mailto:`,
-// of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
+// application with Exec key totem U and a single URI, sftp://foo/file.avi, then
+// /home/user/.gvfs/sftp on foo/file.avi will be passed. This will only work if
+// a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE
+// support), is available and operational; if this is not the case, the URI will
+// be passed unmodified to the application. Some URIs, such as mailto:, of
+// course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
 // it); such URIs will be passed unmodified to the application.
 //
 // Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
@@ -217,8 +217,8 @@ type AppInfor interface {
 //      }
 //    g_object_unref (file);
 //
-// This code will work when both `cdda://sr0/Track 1.wav` and
-// `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the application. It
+// This code will work when both cdda://sr0/Track 1.wav and
+// /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application. It
 // should be noted that it's generally not safe for applications to rely on the
 // format of a particular URIs. Different launcher applications (e.g. file
 // managers) may have different ideas of what a given URI means.
@@ -448,7 +448,7 @@ func (appinfo *AppInfo) Icon() *Icon {
 // application. The exact format of the id is platform dependent. For instance,
 // on Unix this is the desktop file id from the xdg menu specification.
 //
-// Note that the returned ID may be nil, depending on how the @appinfo has been
+// Note that the returned ID may be NULL, depending on how the appinfo has been
 // constructed.
 func (appinfo *AppInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
@@ -481,9 +481,9 @@ func (appinfo *AppInfo) Name() string {
 	return _utf8
 }
 
-// SupportedTypes retrieves the list of content types that @app_info claims to
+// SupportedTypes retrieves the list of content types that app_info claims to
 // support. If this information is not provided by the environment, this
-// function will return nil. This function does not take in consideration
+// function will return NULL. This function does not take in consideration
 // associations added with g_app_info_add_supports_type(), but only those
 // exported directly by the application.
 func (appinfo *AppInfo) SupportedTypes() []string {
@@ -667,10 +667,10 @@ func (appinfo *AppInfo) SupportsUris() bool {
 
 // AppInfoCreateFromCommandline creates a new Info from the given information.
 //
-// Note that for @commandline, the quoting rules of the Exec key of the
+// Note that for commandline, the quoting rules of the Exec key of the
 // freedesktop.org Desktop Entry Specification
 // (http://freedesktop.org/Standards/desktop-entry-spec) are applied. For
-// example, if the @commandline contains percent-encoded URIs, the
+// example, if the commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
 func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
@@ -740,13 +740,13 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 // The D-Bus–activated applications don't have to be started if your application
 // terminates too soon after this function. To prevent this, use
 // g_app_info_launch_default_for_uri_async() instead.
-func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContexter) error {
+func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	var _arg1 *C.char              // out
 	var _arg2 *C.GAppLaunchContext // out
 	var _cerr *C.GError            // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	C.g_app_info_launch_default_for_uri(_arg1, _arg2, &_cerr)
 
@@ -767,7 +767,7 @@ func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContexter) error {
 // This is also useful if you want to be sure that the D-Bus–activated
 // applications are really started before termination and if you are interested
 // in receiving error information from their activation.
-func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContexter, cancellable Cancellabler, callback AsyncReadyCallback) {
+func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.GAppLaunchContext  // out
 	var _arg3 *C.GCancellable       // out
@@ -775,8 +775,8 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContexter, can
 	var _arg5 C.gpointer
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.Assign(callback))
 
@@ -848,17 +848,17 @@ type AppLaunchContextOverrider interface {
 // AppLaunchContexter describes AppLaunchContext's methods.
 type AppLaunchContexter interface {
 	// Environment gets the complete environment variable list to be passed to
-	// the child process when @context is used to launch an application.
+	// the child process when context is used to launch an application.
 	Environment() []string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	LaunchFailed(startupNotifyId string)
-	// Setenv arranges for @variable to be set to @value in the child's
-	// environment when @context is used to launch an application.
+	// Setenv arranges for variable to be set to value in the child's
+	// environment when context is used to launch an application.
 	Setenv(variable string, value string)
-	// Unsetenv arranges for @variable to be unset in the child's environment
-	// when @context is used to launch an application.
+	// Unsetenv arranges for variable to be unset in the child's environment
+	// when context is used to launch an application.
 	Unsetenv(variable string)
 }
 
@@ -902,8 +902,8 @@ func NewAppLaunchContext() *AppLaunchContext {
 }
 
 // Environment gets the complete environment variable list to be passed to the
-// child process when @context is used to launch an application. This is a
-// nil-terminated array of strings, where each string has the form `KEY=VALUE`.
+// child process when context is used to launch an application. This is a
+// NULL-terminated array of strings, where each string has the form KEY=VALUE.
 func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char
@@ -944,8 +944,8 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	C.g_app_launch_context_launch_failed(_arg0, _arg1)
 }
 
-// Setenv arranges for @variable to be set to @value in the child's environment
-// when @context is used to launch an application.
+// Setenv arranges for variable to be set to value in the child's environment
+// when context is used to launch an application.
 func (context *AppLaunchContext) Setenv(variable string, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -958,8 +958,8 @@ func (context *AppLaunchContext) Setenv(variable string, value string) {
 	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
 }
 
-// Unsetenv arranges for @variable to be unset in the child's environment when
-// @context is used to launch an application.
+// Unsetenv arranges for variable to be unset in the child's environment when
+// context is used to launch an application.
 func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out

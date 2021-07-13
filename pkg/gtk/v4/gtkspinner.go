@@ -33,21 +33,21 @@ type Spinnerer interface {
 	Stop()
 }
 
-// Spinner: `GtkSpinner` widget displays an icon-size spinning animation.
+// Spinner: GtkSpinner widget displays an icon-size spinning animation.
 //
-// It is often used as an alternative to a [class@Gtk.ProgressBar] for
-// displaying indefinite activity, instead of actual progress.
+// It is often used as an alternative to a gtk.ProgressBar for displaying
+// indefinite activity, instead of actual progress.
 //
 // !An example GtkSpinner (spinner.png)
 //
-// To start the animation, use [method@Gtk.Spinner.start], to stop it use
-// [method@Gtk.Spinner.stop].
+// To start the animation, use gtk.Spinner.Start(), to stop it use
+// gtk.Spinner.Stop().
 //
 //
 // CSS nodes
 //
-// `GtkSpinner` has a single CSS node with the name spinner. When the animation
-// is active, the :checked pseudoclass is added to this node.
+// GtkSpinner has a single CSS node with the name spinner. When the animation is
+// active, the :checked pseudoclass is added to this node.
 type Spinner struct {
 	Widget
 }

@@ -26,8 +26,8 @@ func init() {
 
 // ContainerCellAccessibler describes ContainerCellAccessible's methods.
 type ContainerCellAccessibler interface {
-	AddChild(child CellAccessibler)
-	RemoveChild(child CellAccessibler)
+	AddChild(child *CellAccessible)
+	RemoveChild(child *CellAccessible)
 }
 
 type ContainerCellAccessible struct {
@@ -75,22 +75,22 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 	return _containerCellAccessible
 }
 
-func (container *ContainerCellAccessible) AddChild(child CellAccessibler) {
+func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
 
-func (container *ContainerCellAccessible) RemoveChild(child CellAccessibler) {
+func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible // out
 	var _arg1 *C.GtkCellAccessible          // out
 
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }

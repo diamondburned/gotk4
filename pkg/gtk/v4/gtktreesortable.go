@@ -25,16 +25,15 @@ func init() {
 }
 
 // TreeIterCompareFunc should return a negative integer, zero, or a positive
-// integer if @a sorts before @b, @a sorts with @b, or @a sorts after @b
-// respectively.
+// integer if a sorts before b, a sorts with b, or a sorts after b respectively.
 //
 // If two iters compare as equal, their order in the sorted model is undefined.
 // In order to ensure that the TreeSortable behaves as expected, the
 // GtkTreeIterCompareFunc must define a partial order on the model, i.e. it must
 // be reflexive, antisymmetric and transitive.
 //
-// For example, if @model is a product catalogue, then a compare function for
-// the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
+// For example, if model is a product catalogue, then a compare function for the
+// “price” column could be one which returns price_of(a) - price_of(b).
 type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter, userData cgo.Handle) (gint int)
 
 //export gotk4_TreeIterCompareFunc
@@ -73,18 +72,18 @@ func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeSortableOverrider interface {
-	// SortColumnID fills in @sort_column_id and @order with the current sort
-	// column and the order. It returns true unless the @sort_column_id is
+	// SortColumnID fills in sort_column_id and order with the current sort
+	// column and the order. It returns TRUE unless the sort_column_id is
 	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
 	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// HasDefaultSortFunc returns TRUE if the model has a default sort function.
 	// This is used primarily by GtkTreeViewColumns in order to determine if a
 	// model can go back to the default state, or not.
 	HasDefaultSortFunc() bool
-	// SetSortColumnID sets the current sort column to be @sort_column_id. The
-	// @sortable will resort itself to reflect this change, after emitting a
-	// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+	// SetSortColumnID sets the current sort column to be sort_column_id. The
+	// sortable will resort itself to reflect this change, after emitting a
+	// TreeSortable::sort-column-changed signal. sort_column_id may either be a
 	// regular column id, or one of the following special values:
 	//
 	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
@@ -93,21 +92,21 @@ type TreeSortableOverrider interface {
 	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
 	SetSortColumnID(sortColumnId int, order SortType)
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
+	// sortable.
 	SortColumnChanged()
 }
 
 // TreeSortabler describes TreeSortable's methods.
 type TreeSortabler interface {
-	// SortColumnID fills in @sort_column_id and @order with the current sort
+	// SortColumnID fills in sort_column_id and order with the current sort
 	// column and the order.
 	SortColumnID() (int, SortType, bool)
-	// HasDefaultSortFunc returns true if the model has a default sort function.
+	// HasDefaultSortFunc returns TRUE if the model has a default sort function.
 	HasDefaultSortFunc() bool
-	// SetSortColumnID sets the current sort column to be @sort_column_id.
+	// SetSortColumnID sets the current sort column to be sort_column_id.
 	SetSortColumnID(sortColumnId int, order SortType)
 	// SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-	// @sortable.
+	// sortable.
 	SortColumnChanged()
 }
 
@@ -139,8 +138,8 @@ func marshalTreeSortabler(p uintptr) (interface{}, error) {
 	return wrapTreeSortable(obj), nil
 }
 
-// SortColumnID fills in @sort_column_id and @order with the current sort column
-// and the order. It returns true unless the @sort_column_id is
+// SortColumnID fills in sort_column_id and order with the current sort column
+// and the order. It returns TRUE unless the sort_column_id is
 // GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 // GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
 func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
@@ -166,7 +165,7 @@ func (sortable *TreeSortable) SortColumnID() (int, SortType, bool) {
 	return _sortColumnId, _order, _ok
 }
 
-// HasDefaultSortFunc returns true if the model has a default sort function.
+// HasDefaultSortFunc returns TRUE if the model has a default sort function.
 // This is used primarily by GtkTreeViewColumns in order to determine if a model
 // can go back to the default state, or not.
 func (sortable *TreeSortable) HasDefaultSortFunc() bool {
@@ -186,9 +185,9 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	return _ok
 }
 
-// SetSortColumnID sets the current sort column to be @sort_column_id. The
-// @sortable will resort itself to reflect this change, after emitting a
-// TreeSortable::sort-column-changed signal. @sort_column_id may either be a
+// SetSortColumnID sets the current sort column to be sort_column_id. The
+// sortable will resort itself to reflect this change, after emitting a
+// TreeSortable::sort-column-changed signal. sort_column_id may either be a
 // regular column id, or one of the following special values:
 //
 // - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function will be
@@ -208,7 +207,7 @@ func (sortable *TreeSortable) SetSortColumnID(sortColumnId int, order SortType) 
 }
 
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
-// @sortable.
+// sortable.
 func (sortable *TreeSortable) SortColumnChanged() {
 	var _arg0 *C.GtkTreeSortable // out
 

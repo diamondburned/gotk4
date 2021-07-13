@@ -34,9 +34,9 @@ type Pluger interface {
 	// ID gets the unique ID of an Plug object, which can be used to embed
 	// inside of an Socket using atk_socket_embed().
 	ID() string
-	// SetChild sets @child as accessible child of @plug and @plug as accessible
-	// parent of @child.
-	SetChild(child ObjectClasser)
+	// SetChild sets child as accessible child of plug and plug as accessible
+	// parent of child.
+	SetChild(child *ObjectClass)
 }
 
 // Plug: see Socket
@@ -110,8 +110,8 @@ func (plug *Plug) ID() string {
 	return _utf8
 }
 
-// SetChild sets @child as accessible child of @plug and @plug as accessible
-// parent of @child. @child can be NULL.
+// SetChild sets child as accessible child of plug and plug as accessible parent
+// of child. child can be NULL.
 //
 // In some cases, one can not use the AtkPlug type directly as accessible object
 // for the toplevel widget of the application. For instance in the gtk case,
@@ -119,12 +119,12 @@ func (plug *Plug) ID() string {
 // AtkPlug. In such a case, one can create, in addition to the standard
 // accessible object for the toplevel widget, an AtkPlug object, and make the
 // former the child of the latter by calling atk_plug_set_child().
-func (plug *Plug) SetChild(child ObjectClasser) {
+func (plug *Plug) SetChild(child *ObjectClass) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkPlug)(unsafe.Pointer(plug.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((child).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(child.Native()))
 
 	C.atk_plug_set_child(_arg0, _arg1)
 }

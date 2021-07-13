@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,20 +24,20 @@ import (
 import "C"
 
 // DBusMenuModelGet obtains a BusMenuModel for the menu model which is exported
-// at the given @bus_name and @object_path.
+// at the given bus_name and object_path.
 //
 // The thread default main context is taken at the time of this call. All
 // signals on the menu model (and any linked models) are reported with respect
 // to this context. All calls on the returned menu model (and linked models)
 // must also originate from this same context, with the thread default main
 // context unchanged.
-func DBusMenuModelGet(connection DBusConnectioner, busName string, objectPath string) *DBusMenuModel {
+func DBusMenuModelGet(connection *DBusConnection, busName string, objectPath string) *DBusMenuModel {
 	var _arg1 *C.GDBusConnection // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out
 	var _cret *C.GDBusMenuModel  // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 

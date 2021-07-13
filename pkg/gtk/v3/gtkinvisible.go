@@ -27,10 +27,10 @@ func init() {
 
 // Invisibler describes Invisible's methods.
 type Invisibler interface {
-	// Screen returns the Screen object associated with @invisible
+	// Screen returns the Screen object associated with invisible
 	Screen() *gdk.Screen
 	// SetScreen sets the Screen where the Invisible object will be displayed.
-	SetScreen(screen gdk.Screener)
+	SetScreen(screen *gdk.Screen)
 }
 
 // Invisible widget is used internally in GTK+, and is probably not very useful
@@ -83,11 +83,11 @@ func NewInvisible() *Invisible {
 }
 
 // NewInvisibleForScreen creates a new Invisible object for a specified screen
-func NewInvisibleForScreen(screen gdk.Screener) *Invisible {
+func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _arg1 *C.GdkScreen // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	_cret = C.gtk_invisible_new_for_screen(_arg1)
 
@@ -98,7 +98,7 @@ func NewInvisibleForScreen(screen gdk.Screener) *Invisible {
 	return _invisible
 }
 
-// Screen returns the Screen object associated with @invisible
+// Screen returns the Screen object associated with invisible
 func (invisible *Invisible) Screen() *gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
 	var _cret *C.GdkScreen    // in
@@ -120,12 +120,12 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 }
 
 // SetScreen sets the Screen where the Invisible object will be displayed.
-func (invisible *Invisible) SetScreen(screen gdk.Screener) {
+func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out
 	var _arg1 *C.GdkScreen    // out
 
 	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(invisible.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_invisible_set_screen(_arg0, _arg1)
 }

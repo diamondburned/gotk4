@@ -130,7 +130,7 @@ const (
 	GrabStatusAlreadyGrabbed
 	// InvalidTime: resource was grabbed more recently than the specified time.
 	GrabStatusInvalidTime
-	// NotViewable: grab window or the @confine_to window are not viewable.
+	// NotViewable: grab window or the confine_to window are not viewable.
 	GrabStatusNotViewable
 	// Frozen: resource is frozen by an active grab of another client.
 	GrabStatusFrozen
@@ -157,8 +157,8 @@ const (
 	// button 3 always triggers context menus. When this modifier is not 0, it
 	// additionally triggers context menus when used with mouse button 1.
 	ModifierIntentContextMenu
-	// ExtendSelection: modifier used to extend selections using
-	// `modifier`-click or `modifier`-cursor-key
+	// ExtendSelection: modifier used to extend selections using modifier-click
+	// or modifier-cursor-key
 	ModifierIntentExtendSelection
 	// ModifySelection: modifier used to modify selections, which in most cases
 	// means toggling the clicked item into or out of the selection.
@@ -266,7 +266,7 @@ func marshalAxisFlags(p uintptr) (interface{}, error) {
 // GDK_POINTER_MOTION_HINT_MASK is deprecated. It is a special mask to reduce
 // the number of GDK_MOTION_NOTIFY events received. When using
 // GDK_POINTER_MOTION_HINT_MASK, fewer GDK_MOTION_NOTIFY events will be sent,
-// some of which are marked as a hint (the is_hint member is true). To receive
+// some of which are marked as a hint (the is_hint member is TRUE). To receive
 // more motion events after a motion hint event, the application needs to asks
 // for more, by calling gdk_event_request_motions().
 //
@@ -507,10 +507,10 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 }
 
 // Intersect calculates the intersection of two rectangles. It is allowed for
-// @dest to be the same as either @src1 or @src2. If the rectangles do not
-// intersect, @dest’s width and height is set to 0 and its x and y values are
+// dest to be the same as either src1 or src2. If the rectangles do not
+// intersect, dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
-// but not in the intersecting area itself, pass nil for @dest.
+// but not in the intersecting area itself, pass NULL for dest.
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
@@ -531,9 +531,9 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	return _dest, _ok
 }
 
-// Union calculates the union of two rectangles. The union of rectangles @src1
-// and @src2 is the smallest rectangle which includes both @src1 and @src2
-// within it. It is allowed for @dest to be the same as either @src1 or @src2.
+// Union calculates the union of two rectangles. The union of rectangles src1
+// and src2 is the smallest rectangle which includes both src1 and src2 within
+// it. It is allowed for dest to be the same as either src1 or src2.
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).

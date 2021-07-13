@@ -26,26 +26,26 @@ func init() {
 
 // Texturer describes Texture's methods.
 type Texturer interface {
-	// Height returns the height of the @texture, in pixels.
+	// Height returns the height of the texture, in pixels.
 	Height() int
-	// Width returns the width of @texture, in pixels.
+	// Width returns the width of texture, in pixels.
 	Width() int
-	// SaveToPng: store the given @texture to the @filename as a PNG file.
+	// SaveToPng: store the given texture to the filename as a PNG file.
 	SaveToPng(filename string) bool
 }
 
-// Texture: `GdkTexture` is the basic element used to refer to pixel data.
+// Texture: GdkTexture is the basic element used to refer to pixel data.
 //
 // It is primarily meant for pixel data that will not change over multiple
 // frames, and will be used for a long time.
 //
-// There are various ways to create `GdkTexture` objects from a `GdkPixbuf`, or
-// a Cairo surface, or other pixel data.
+// There are various ways to create GdkTexture objects from a GdkPixbuf, or a
+// Cairo surface, or other pixel data.
 //
-// The ownership of the pixel data is transferred to the `GdkTexture` instance;
-// you can only make a copy of it, via [method@Gdk.Texture.download].
+// The ownership of the pixel data is transferred to the GdkTexture instance;
+// you can only make a copy of it, via gdk.Texture.Download().
 //
-// `GdkTexture` is an immutable object: That means you cannot change anything
+// GdkTexture is an immutable object: That means you cannot change anything
 // about it other than increasing the reference count via g_object_ref().
 type Texture struct {
 	*externglib.Object
@@ -73,13 +73,12 @@ func marshalTexturer(p uintptr) (interface{}, error) {
 	return wrapTexture(obj), nil
 }
 
-// NewTextureForPixbuf creates a new texture object representing the
-// `GdkPixbuf`.
-func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Texture {
+// NewTextureForPixbuf creates a new texture object representing the GdkPixbuf.
+func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
 	var _cret *C.GdkTexture // in
 
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
@@ -95,7 +94,7 @@ func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbufer) *Texture {
 // The file format is detected automatically. The supported formats are PNG and
 // JPEG, though more formats might be available.
 //
-// If nil is returned, then @error will be set.
+// If NULL is returned, then error will be set.
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _arg1 *C.GFile      // out
 	var _cret *C.GdkTexture // in
@@ -120,9 +119,9 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 // The file format is detected automatically. The supported formats are PNG and
 // JPEG, though more formats might be available.
 //
-// It is a fatal error if @resource_path does not specify a valid image resource
+// It is a fatal error if resource_path does not specify a valid image resource
 // and the program will abort if that happens. If you are unsure about the
-// validity of a resource, use [ctor@Gdk.Texture.new_from_file] to load it.
+// validity of a resource, use gdk.Texture.NewFromFile to load it.
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkTexture // in
@@ -138,7 +137,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	return _texture
 }
 
-// Height returns the height of the @texture, in pixels.
+// Height returns the height of the texture, in pixels.
 func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
@@ -154,7 +153,7 @@ func (texture *Texture) Height() int {
 	return _gint
 }
 
-// Width returns the width of @texture, in pixels.
+// Width returns the width of texture, in pixels.
 func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
@@ -170,12 +169,11 @@ func (texture *Texture) Width() int {
 	return _gint
 }
 
-// SaveToPng: store the given @texture to the @filename as a PNG file.
+// SaveToPng: store the given texture to the filename as a PNG file.
 //
 // This is a utility function intended for debugging and testing. If you want
-// more control over formats, proper error handling or want to store to a
-// `GFile` or other location, you might want to look into using the gdk-pixbuf
-// library.
+// more control over formats, proper error handling or want to store to a GFile
+// or other location, you might want to look into using the gdk-pixbuf library.
 func (texture *Texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture // out
 	var _arg1 *C.char       // out

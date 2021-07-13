@@ -120,7 +120,7 @@ func NewToggleToolButton() *ToggleToolButton {
 // image and text from a stock item. Some stock ids have preprocessor macros
 // like K_STOCK_OK and K_STOCK_APPLY.
 //
-// It is an error if @stock_id is not a name of a stock item.
+// It is an error if stock_id is not a name of a stock item.
 //
 // Deprecated: Use gtk_toggle_tool_button_new() instead.
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
@@ -138,8 +138,8 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	return _toggleToolButton
 }
 
-// Active queries a ToggleToolButton and returns its current state. Returns true
-// if the toggle button is pressed in and false if it is raised.
+// Active queries a ToggleToolButton and returns its current state. Returns TRUE
+// if the toggle button is pressed in and FALSE if it is raised.
 func (button *ToggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
 	var _cret C.gboolean             // in
@@ -157,8 +157,8 @@ func (button *ToggleToolButton) Active() bool {
 	return _ok
 }
 
-// SetActive sets the status of the toggle tool button. Set to true if you want
-// the GtkToggleButton to be “pressed in”, and false to raise it. This action
+// SetActive sets the status of the toggle tool button. Set to TRUE if you want
+// the GtkToggleButton to be “pressed in”, and FALSE to raise it. This action
 // causes the toggled signal to be emitted.
 func (button *ToggleToolButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out

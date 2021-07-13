@@ -151,7 +151,7 @@ func marshalEventType(p uintptr) (interface{}, error) {
 
 // KeyMatch describes how well an event matches a given keyval and modifiers.
 //
-// `GdkKeyMatch` values are returned by [method@Gdk.KeyEvent.matches].
+// GdkKeyMatch values are returned by gdk.KeyEvent.Matches().
 type KeyMatch int
 
 const (
@@ -254,14 +254,14 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventsGetAngle returns the relative angle from @event1 to @event2.
+// EventsGetAngle returns the relative angle from event1 to event2.
 //
 // The relative angle is the angle between the X axis and the line through both
 // events' positions. The rotation direction for positive angles is from the
 // positive X axis towards the positive Y axis.
 //
 // This assumes that both events have X/Y information. If not, this function
-// returns false.
+// returns FALSE.
 func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -287,7 +287,7 @@ func EventsGetAngle(event1 Eventer, event2 Eventer) (float64, bool) {
 // EventsGetCenter returns the point halfway between the events' positions.
 //
 // This assumes that both events have X/Y information. If not, this function
-// returns false.
+// returns FALSE.
 func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -316,7 +316,7 @@ func EventsGetCenter(event1 Eventer, event2 Eventer) (x float64, y float64, ok b
 // EventsGetDistance returns the distance between the event locations.
 //
 // This assumes that both events have X/Y information. If not, this function
-// returns false.
+// returns FALSE.
 func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
 	var _arg2 *C.GdkEvent // out
@@ -389,7 +389,7 @@ func (event *ButtonEvent) Button() uint {
 type CrossingEventer interface {
 	// Detail extracts the notify detail from a crossing event.
 	Detail() NotifyType
-	// Focus checks if the @event surface is the focus surface.
+	// Focus checks if the event surface is the focus surface.
 	Focus() bool
 	// Mode extracts the crossing mode from a crossing event.
 	Mode() CrossingMode
@@ -435,7 +435,7 @@ func (event *CrossingEvent) Detail() NotifyType {
 	return _notifyType
 }
 
-// Focus checks if the @event surface is the focus surface.
+// Focus checks if the event surface is the focus surface.
 func (event *CrossingEvent) Focus() bool {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.gboolean  // in
@@ -471,7 +471,7 @@ func (event *CrossingEvent) Mode() CrossingMode {
 
 // DNDEventer describes DNDEvent's methods.
 type DNDEventer interface {
-	// Drop gets the `GdkDrop` object from a DND event.
+	// Drop gets the GdkDrop object from a DND event.
 	Drop() *Drop
 }
 
@@ -499,7 +499,7 @@ func marshalDNDEventer(p uintptr) (interface{}, error) {
 	return wrapDNDEvent(obj), nil
 }
 
-// Drop gets the `GdkDrop` object from a DND event.
+// Drop gets the GdkDrop object from a DND event.
 func (event *DNDEvent) Drop() *Drop {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
@@ -555,10 +555,10 @@ type Eventer interface {
 	Axis(axisUse AxisUse) (float64, bool)
 	// Device returns the device of an event.
 	Device() *Device
-	// DeviceTool returns a `GdkDeviceTool` representing the tool that caused
-	// the event.
+	// DeviceTool returns a GdkDeviceTool representing the tool that caused the
+	// event.
 	DeviceTool() *DeviceTool
-	// Display retrieves the display associated to the @event.
+	// Display retrieves the display associated to the event.
 	Display() *Display
 	// EventSequence retuns the event sequence to which the event belongs.
 	EventSequence() *EventSequence
@@ -576,23 +576,23 @@ type Eventer interface {
 	Seat() *Seat
 	// Surface extracts the surface associated with an event.
 	Surface() *Surface
-	// Time returns the timestamp of @event.
+	// Time returns the timestamp of event.
 	Time() uint32
-	// Ref: increase the ref count of @event.
+	// Ref: increase the ref count of event.
 	ref() *Event
-	// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
+	// TriggersContextMenu returns whether a GdkEvent should trigger a context
 	// menu, according to platform conventions.
 	TriggersContextMenu() bool
-	// Unref: decrease the ref count of @event.
+	// Unref: decrease the ref count of event.
 	unref()
 }
 
-// Event `GdkEvent`s are immutable data structures, created by GDK to represent
+// Event GdkEvents are immutable data structures, created by GDK to represent
 // windowing system events.
 //
 // In GTK applications the events are handled automatically by toplevel widgets
 // and passed on to the event controllers of appropriate widgets, so using
-// `GdkEvent` and its related API is rarely needed.
+// GdkEvent and its related API is rarely needed.
 type Event struct {
 	*externglib.Object
 }
@@ -679,15 +679,15 @@ func (event *Event) Device() *Device {
 	return _device
 }
 
-// DeviceTool returns a `GdkDeviceTool` representing the tool that caused the
+// DeviceTool returns a GdkDeviceTool representing the tool that caused the
 // event.
 //
 // If the was not generated by a device that supports different tools (such as a
-// tablet), this function will return nil.
+// tablet), this function will return NULL.
 //
-// Note: the `GdkDeviceTool` will be constant during the application lifetime,
-// if settings must be stored persistently across runs, see
-// [method@Gdk.DeviceTool.get_serial].
+// Note: the GdkDeviceTool will be constant during the application lifetime, if
+// settings must be stored persistently across runs, see
+// gdk.DeviceTool.GetSerial().
 func (event *Event) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
@@ -703,7 +703,7 @@ func (event *Event) DeviceTool() *DeviceTool {
 	return _deviceTool
 }
 
-// Display retrieves the display associated to the @event.
+// Display retrieves the display associated to the event.
 func (event *Event) Display() *Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
@@ -846,7 +846,7 @@ func (event *Event) Surface() *Surface {
 	return _surface
 }
 
-// Time returns the timestamp of @event.
+// Time returns the timestamp of event.
 //
 // Not all events have timestamps. In that case, this function returns
 // GDK_CURRENT_TIME.
@@ -865,7 +865,7 @@ func (event *Event) Time() uint32 {
 	return _guint32
 }
 
-// Ref: increase the ref count of @event.
+// Ref: increase the ref count of event.
 func (event *Event) ref() *Event {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
@@ -881,8 +881,8 @@ func (event *Event) ref() *Event {
 	return _ret
 }
 
-// TriggersContextMenu returns whether a `GdkEvent` should trigger a context
-// menu, according to platform conventions.
+// TriggersContextMenu returns whether a GdkEvent should trigger a context menu,
+// according to platform conventions.
 //
 // The right mouse button typically triggers context menus.
 //
@@ -905,7 +905,7 @@ func (event *Event) TriggersContextMenu() bool {
 	return _ok
 }
 
-// Unref: decrease the ref count of @event.
+// Unref: decrease the ref count of event.
 //
 // If the last reference is dropped, the structure is freed.
 func (event *Event) unref() {
@@ -1158,7 +1158,7 @@ func (event *KeyEvent) Level() uint {
 
 // Match gets a keyval and modifier combination that will match the event.
 //
-// See [method@Gdk.KeyEvent.matches].
+// See gdk.KeyEvent.Matches().
 func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
@@ -1648,8 +1648,8 @@ func (event *TouchpadEvent) PinchScale() float64 {
 	return _gdouble
 }
 
-// EventSequence: `GdkEventSequence` is an opaque type representing a sequence
-// of related touch events.
+// EventSequence: GdkEventSequence is an opaque type representing a sequence of
+// related touch events.
 type EventSequence struct {
 	native C.GdkEventSequence
 }

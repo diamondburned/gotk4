@@ -23,7 +23,7 @@ func init() {
 
 // GLTexturer describes GLTexture's methods.
 type GLTexturer interface {
-	// Release releases the GL resources held by a `GdkGLTexture`.
+	// Release releases the GL resources held by a GdkGLTexture.
 	Release()
 }
 
@@ -54,10 +54,10 @@ func marshalGLTexturer(p uintptr) (interface{}, error) {
 	return wrapGLTexture(obj), nil
 }
 
-// Release releases the GL resources held by a `GdkGLTexture`.
+// Release releases the GL resources held by a GdkGLTexture.
 //
-// The texture contents are still available via the
-// [method@Gdk.Texture.download] function, after this function has been called.
+// The texture contents are still available via the gdk.Texture.Download()
+// function, after this function has been called.
 func (self *GLTexture) Release() {
 	var _arg0 *C.GdkGLTexture // out
 

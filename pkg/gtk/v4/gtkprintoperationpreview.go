@@ -30,15 +30,15 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// This function must be called to finish a custom print preview.
 	EndPreview()
-	GotPageSize(context PrintContexter, pageSetup PageSetuper)
+	GotPageSize(context *PrintContext, pageSetup *PageSetup)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
 	IsSelected(pageNr int) bool
-	Ready(context PrintContexter)
+	Ready(context *PrintContext)
 	// RenderPage renders a page to the preview.
 	//
 	// This is using the print context that was passed to the
-	// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+	// gtk.PrintOperation::preview handler together with preview.
 	//
 	// A custom print preview should use this function to render the currently
 	// selected page.
@@ -59,11 +59,11 @@ type PrintOperationPreviewer interface {
 	RenderPage(pageNr int)
 }
 
-// PrintOperationPreview: `GtkPrintOperationPreview` is the interface that is
-// used to implement print preview.
+// PrintOperationPreview: GtkPrintOperationPreview is the interface that is used
+// to implement print preview.
 //
-// A `GtkPrintOperationPreview` object is passed to the
-// [signal@Gtk.PrintOperation::preview] signal by [class@Gtk.PrintOperation].
+// A GtkPrintOperationPreview object is passed to the
+// gtk.PrintOperation::preview signal by gtk.PrintOperation.
 type PrintOperationPreview struct {
 	*externglib.Object
 }
@@ -120,7 +120,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 // RenderPage renders a page to the preview.
 //
 // This is using the print context that was passed to the
-// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+// gtk.PrintOperation::preview handler together with preview.
 //
 // A custom print preview should use this function to render the currently
 // selected page.

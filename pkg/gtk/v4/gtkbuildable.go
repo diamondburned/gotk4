@@ -27,45 +27,45 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type BuildableOverrider interface {
-	// AddChild adds a child to @buildable. @type is an optional string
-	// describing how the child should be added.
-	AddChild(builder Builderer, child gextras.Objector, typ string)
+	// AddChild adds a child to buildable. type is an optional string describing
+	// how the child should be added.
+	AddChild(builder *Builder, child *externglib.Object, typ string)
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
-	// once for each custom tag handled by the @buildable.
-	CustomFinished(builder Builderer, child gextras.Objector, tagname string, data cgo.Handle)
+	// once for each custom tag handled by the buildable.
+	CustomFinished(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
-	CustomTagEnd(builder Builderer, child gextras.Objector, tagname string, data cgo.Handle)
-	// CustomTagStart: called for each unknown element under `<child>`.
-	CustomTagStart(builder Builderer, child gextras.Objector, tagname string) (BuildableParser, cgo.Handle, bool)
+	CustomTagEnd(builder *Builder, child *externglib.Object, tagname string, data cgo.Handle)
+	// CustomTagStart: called for each unknown element under <child>.
+	CustomTagStart(builder *Builder, child *externglib.Object, tagname string) (BuildableParser, cgo.Handle, bool)
 	ID() string
-	// InternalChild retrieves the internal child called @childname of the
-	// @buildable object.
-	InternalChild(builder Builderer, childname string) *externglib.Object
-	ParserFinished(builder Builderer)
-	SetBuildableProperty(builder Builderer, name string, value *externglib.Value)
+	// InternalChild retrieves the internal child called childname of the
+	// buildable object.
+	InternalChild(builder *Builder, childname string) *externglib.Object
+	ParserFinished(builder *Builder)
+	SetBuildableProperty(builder *Builder, name string, value *externglib.Value)
 	SetID(id string)
 }
 
 // Buildabler describes Buildable's methods.
 type Buildabler interface {
-	// BuildableID gets the ID of the @buildable object.
+	// BuildableID gets the ID of the buildable object.
 	BuildableID() string
 }
 
-// Buildable: `GtkBuildable` allows objects to extend and customize their
+// Buildable: GtkBuildable allows objects to extend and customize their
 // deserialization from ui files.
 //
 // The interface includes methods for setting names and properties of objects,
 // parsing custom tags and constructing child objects.
 //
-// The `GtkBuildable` interface is implemented by all widgets and many of the
+// The GtkBuildable interface is implemented by all widgets and many of the
 // non-widget objects that are provided by GTK. The main user of this interface
-// is [class@Gtk.Builder]. There should be very little need for applications to
-// call any of these functions directly.
+// is gtk.Builder. There should be very little need for applications to call any
+// of these functions directly.
 //
 // An object only needs to implement this interface if it needs to extend the
-// `GtkBuilder` XML format or run any extra routines at deserialization time.
+// GtkBuilder XML format or run any extra routines at deserialization time.
 type Buildable struct {
 	*externglib.Object
 }
@@ -87,10 +87,10 @@ func marshalBuildabler(p uintptr) (interface{}, error) {
 	return wrapBuildable(obj), nil
 }
 
-// BuildableID gets the ID of the @buildable object.
+// BuildableID gets the ID of the buildable object.
 //
-// `GtkBuilder` sets the name based on the ID attribute of the <object> tag used
-// to construct the @buildable.
+// GtkBuilder sets the name based on the ID attribute of the <object> tag used
+// to construct the buildable.
 func (buildable *Buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable // out
 	var _cret *C.char         // in
@@ -106,7 +106,7 @@ func (buildable *Buildable) BuildableID() string {
 	return _utf8
 }
 
-// BuildableParser: sub-parser for `GtkBuildable` implementations.
+// BuildableParser: sub-parser for GtkBuildable implementations.
 type BuildableParser struct {
 	native C.GtkBuildableParser
 }

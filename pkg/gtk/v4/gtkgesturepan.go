@@ -23,26 +23,26 @@ func init() {
 
 // GesturePaner describes GesturePan's methods.
 type GesturePaner interface {
-	// Orientation returns the orientation of the pan gestures that this
-	// @gesture expects.
+	// Orientation returns the orientation of the pan gestures that this gesture
+	// expects.
 	Orientation() Orientation
 	// SetOrientation sets the orientation to be expected on pan gestures.
 	SetOrientation(orientation Orientation)
 }
 
-// GesturePan: `GtkGesturePan` is a `GtkGesture` for pan gestures.
+// GesturePan: GtkGesturePan is a GtkGesture for pan gestures.
 //
 // These are drags that are locked to happen along one axis. The axis that a
-// `GtkGesturePan` handles is defined at construct time, and can be changed
-// through [method@Gtk.GesturePan.set_orientation].
+// GtkGesturePan handles is defined at construct time, and can be changed
+// through gtk.GesturePan.SetOrientation().
 //
-// When the gesture starts to be recognized, `GtkGesturePan` will attempt to
+// When the gesture starts to be recognized, GtkGesturePan will attempt to
 // determine as early as possible whether the sequence is moving in the expected
 // direction, and denying the sequence if this does not happen.
 //
 // Once a panning gesture along the expected axis is recognized, the
-// [signal@Gtk.GesturePan::pan] signal will be emitted as input events are
-// received, containing the offset in the given axis.
+// gtk.GesturePan::pan signal will be emitted as input events are received,
+// containing the offset in the given axis.
 type GesturePan struct {
 	GestureDrag
 }
@@ -72,7 +72,7 @@ func marshalGesturePaner(p uintptr) (interface{}, error) {
 	return wrapGesturePan(obj), nil
 }
 
-// NewGesturePan returns a newly created `GtkGesture` that recognizes pan
+// NewGesturePan returns a newly created GtkGesture that recognizes pan
 // gestures.
 func NewGesturePan(orientation Orientation) *GesturePan {
 	var _arg1 C.GtkOrientation // out
@@ -89,7 +89,7 @@ func NewGesturePan(orientation Orientation) *GesturePan {
 	return _gesturePan
 }
 
-// Orientation returns the orientation of the pan gestures that this @gesture
+// Orientation returns the orientation of the pan gestures that this gesture
 // expects.
 func (gesture *GesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out

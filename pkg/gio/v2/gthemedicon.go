@@ -33,11 +33,11 @@ func init() {
 
 // ThemedIconer describes ThemedIcon's methods.
 type ThemedIconer interface {
-	// AppendName: append a name to the list of icons from within @icon.
+	// AppendName: append a name to the list of icons from within icon.
 	AppendName(iconname string)
-	// Names gets the names of icons from within @icon.
+	// Names gets the names of icons from within icon.
 	Names() []string
-	// PrependName: prepend a name to the list of icons from within @icon.
+	// PrependName: prepend a name to the list of icons from within icon.
 	PrependName(iconname string)
 }
 
@@ -73,7 +73,7 @@ func marshalThemedIconer(p uintptr) (interface{}, error) {
 	return wrapThemedIcon(obj), nil
 }
 
-// NewThemedIcon creates a new themed icon for @iconname.
+// NewThemedIcon creates a new themed icon for iconname.
 func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -89,7 +89,7 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 	return _themedIcon
 }
 
-// NewThemedIconFromNames creates a new themed icon for @iconnames.
+// NewThemedIconFromNames creates a new themed icon for iconnames.
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char
 	var _arg2 C.int
@@ -113,11 +113,10 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	return _themedIcon
 }
 
-// NewThemedIconWithDefaultFallbacks creates a new themed icon for @iconname,
-// and all the names that can be created by shortening @iconname at '-'
-// characters.
+// NewThemedIconWithDefaultFallbacks creates a new themed icon for iconname, and
+// all the names that can be created by shortening iconname at '-' characters.
 //
-// In the following example, @icon1 and @icon2 are equivalent:
+// In the following example, icon1 and icon2 are equivalent:
 //
 //    const char *names[] = {
 //      "gnome-dev-cdrom-audio",
@@ -143,7 +142,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	return _themedIcon
 }
 
-// AppendName: append a name to the list of icons from within @icon.
+// AppendName: append a name to the list of icons from within icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
@@ -157,7 +156,7 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 	C.g_themed_icon_append_name(_arg0, _arg1)
 }
 
-// Names gets the names of icons from within @icon.
+// Names gets the names of icons from within icon.
 func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar
@@ -186,7 +185,7 @@ func (icon *ThemedIcon) Names() []string {
 	return _utf8s
 }
 
-// PrependName: prepend a name to the list of icons from within @icon.
+// PrependName: prepend a name to the list of icons from within icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().

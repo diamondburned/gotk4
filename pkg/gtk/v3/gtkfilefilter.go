@@ -80,14 +80,14 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gb
 
 // FileFilterer describes FileFilter's methods.
 type FileFilterer interface {
-	// AddMIMEType adds a rule allowing a given mime type to @filter.
+	// AddMIMEType adds a rule allowing a given mime type to filter.
 	AddMIMEType(mimeType string)
 	// AddPattern adds a rule allowing a shell style glob to a filter.
 	AddPattern(pattern string)
 	// AddPixbufFormats adds a rule allowing image files in the formats
 	// supported by GdkPixbuf.
 	AddPixbufFormats()
-	// Filter tests whether a file should be displayed according to @filter.
+	// Filter tests whether a file should be displayed according to filter.
 	Filter(filterInfo *FileFilterInfo) bool
 	// Name gets the human-readable name for the filter.
 	Name() string
@@ -100,8 +100,8 @@ type FileFilterer interface {
 	// that will be displayed in the file selector user interface if there is a
 	// selectable list of filters.
 	SetName(name string)
-	// ToGVariant: serialize a file filter to an a{sv} variant.
-	ToGVariant() *glib.Variant
+	// ToGvariant: serialize a file filter to an a{sv} variant.
+	ToGvariant() *glib.Variant
 }
 
 // FileFilter can be used to restrict the files being shown in a FileChooser.
@@ -188,9 +188,9 @@ func NewFileFilter() *FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGVariant: deserialize a file filter from an a{sv} variant in
+// NewFileFilterFromGvariant: deserialize a file filter from an a{sv} variant in
 // the format produced by gtk_file_filter_to_gvariant().
-func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
+func NewFileFilterFromGvariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -211,7 +211,7 @@ func (v *FileFilter) Native() uintptr {
 	return v.InitiallyUnowned.Object.Native()
 }
 
-// AddMIMEType adds a rule allowing a given mime type to @filter.
+// AddMIMEType adds a rule allowing a given mime type to filter.
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
 	var _arg1 *C.gchar         // out
@@ -243,8 +243,8 @@ func (filter *FileFilter) AddPixbufFormats() {
 	C.gtk_file_filter_add_pixbuf_formats(_arg0)
 }
 
-// Filter tests whether a file should be displayed according to @filter. The
-// FileFilterInfo @filter_info should include the fields returned from
+// Filter tests whether a file should be displayed according to filter. The
+// FileFilterInfo filter_info should include the fields returned from
 // gtk_file_filter_get_needed().
 //
 // This function will not typically be used by applications; it is intended
@@ -318,8 +318,8 @@ func (filter *FileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-// ToGVariant: serialize a file filter to an a{sv} variant.
-func (filter *FileFilter) ToGVariant() *glib.Variant {
+// ToGvariant: serialize a file filter to an a{sv} variant.
+func (filter *FileFilter) ToGvariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

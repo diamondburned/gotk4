@@ -25,13 +25,13 @@ func init() {
 }
 
 // EntryCompletionMatchFunc: function which decides whether the row indicated by
-// @iter matches a given @key, and should be displayed as a possible completion
-// for @key.
+// iter matches a given key, and should be displayed as a possible completion
+// for key.
 //
-// Note that @key is normalized and case-folded (see g_utf8_normalize() and
+// Note that key is normalized and case-folded (see g_utf8_normalize() and
 // g_utf8_casefold()). If this is not appropriate, match functions have access
-// to the unmodified key via `gtk_editable_get_text (GTK_EDITABLE
-// (gtk_entry_completion_get_entry ()))`.
+// to the unmodified key via gtk_editable_get_text (GTK_EDITABLE
+// (gtk_entry_completion_get_entry ())).
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData cgo.Handle) (ok bool)
 
 //export gotk4_EntryCompletionMatchFunc
@@ -71,21 +71,21 @@ type EntryCompletioner interface {
 	// of the current list with completions, using the current key.
 	Complete()
 	// ComputePrefix computes the common prefix that is shared by all rows in
-	// @completion that start with @key.
+	// completion that start with key.
 	ComputePrefix(key string) string
 	// CompletionPrefix: get the original text entered by the user that
-	// triggered the completion or nil if there’s no completion ongoing.
+	// triggered the completion or NULL if there’s no completion ongoing.
 	CompletionPrefix() string
-	// Entry gets the entry @completion has been attached to.
+	// Entry gets the entry completion has been attached to.
 	Entry() *Widget
 	// InlineCompletion returns whether the common prefix of the possible
 	// completions should be automatically inserted in the entry.
 	InlineCompletion() bool
-	// InlineSelection returns true if inline-selection mode is turned on.
+	// InlineSelection returns TRUE if inline-selection mode is turned on.
 	InlineSelection() bool
-	// MinimumKeyLength returns the minimum key length as set for @completion.
+	// MinimumKeyLength returns the minimum key length as set for completion.
 	MinimumKeyLength() int
-	// Model returns the model the `GtkEntryCompletion` is using as data source.
+	// Model returns the model the GtkEntryCompletion is using as data source.
 	Model() *TreeModel
 	// PopupCompletion returns whether the completions should be presented in a
 	// popup window.
@@ -96,7 +96,7 @@ type EntryCompletioner interface {
 	// PopupSingleMatch returns whether the completion popup window will appear
 	// even if there is only a single match.
 	PopupSingleMatch() bool
-	// TextColumn returns the column in the model of @completion to get strings
+	// TextColumn returns the column in the model of completion to get strings
 	// from.
 	TextColumn() int
 	// InsertPrefix requests a prefix insertion.
@@ -107,10 +107,10 @@ type EntryCompletioner interface {
 	// SetInlineSelection sets whether it is possible to cycle through the
 	// possible completions inside the entry.
 	SetInlineSelection(inlineSelection bool)
-	// SetMinimumKeyLength requires the length of the search key for @completion
-	// to be at least @length.
+	// SetMinimumKeyLength requires the length of the search key for completion
+	// to be at least length.
 	SetMinimumKeyLength(length int)
-	// SetModel sets the model for a `GtkEntryCompletion`.
+	// SetModel sets the model for a GtkEntryCompletion.
 	SetModel(model TreeModeler)
 	// SetPopupCompletion sets whether the completions should be presented in a
 	// popup window.
@@ -126,41 +126,39 @@ type EntryCompletioner interface {
 	SetTextColumn(column int)
 }
 
-// EntryCompletion: `GtkEntryCompletion` is an auxiliary object to provide
-// completion functionality for `GtkEntry`.
+// EntryCompletion: GtkEntryCompletion is an auxiliary object to provide
+// completion functionality for GtkEntry.
 //
-// It implements the [iface@Gtk.CellLayout] interface, to allow the user to add
-// extra cells to the `GtkTreeView` with completion matches.
+// It implements the gtk.CellLayout interface, to allow the user to add extra
+// cells to the GtkTreeView with completion matches.
 //
 // “Completion functionality” means that when the user modifies the text in the
-// entry, `GtkEntryCompletion` checks which rows in the model match the current
+// entry, GtkEntryCompletion checks which rows in the model match the current
 // content of the entry, and displays a list of matches. By default, the
 // matching is done by comparing the entry text case-insensitively against the
-// text column of the model (see [method@Gtk.EntryCompletion.set_text_column]),
-// but this can be overridden with a custom match function (see
-// [method@Gtk.EntryCompletion.set_match_func]).
+// text column of the model (see gtk.EntryCompletion.SetTextColumn()), but this
+// can be overridden with a custom match function (see
+// gtk.EntryCompletion.SetMatchFunc()).
 //
 // When the user selects a completion, the content of the entry is updated. By
 // default, the content of the entry is replaced by the text column of the
 // model, but this can be overridden by connecting to the
-// [signal@Gtk.EntryCompletion::match-selected] signal and updating the entry in
-// the signal handler. Note that you should return true from the signal handler
-// to suppress the default behaviour.
+// gtk.EntryCompletion::match-selected signal and updating the entry in the
+// signal handler. Note that you should return TRUE from the signal handler to
+// suppress the default behaviour.
 //
-// To add completion functionality to an entry, use
-// [method@Gtk.Entry.set_completion].
+// To add completion functionality to an entry, use gtk.Entry.SetCompletion().
 //
-// `GtkEntryCompletion` uses a [class@Gtk.TreeModelFilter] model to represent
-// the subset of the entire model that is currently matching. While the
-// `GtkEntryCompletion` signals [signal@Gtk.EntryCompletion::match-selected] and
-// [signal@Gtk.EntryCompletion::cursor-on-match] take the original model and an
-// iter pointing to that model as arguments, other callbacks and signals (such
-// as `GtkCellLayoutDataFunc` or [signal@Gtk.CellArea::apply-attributes)] will
-// generally take the filter model as argument. As long as you are only calling
-// [method@Gtk.TreeModel.get], this will make no difference to you. If for some
-// reason, you need the original model, use
-// [method@Gtk.TreeModelFilter.get_model]. Don’t forget to use
-// [method@Gtk.TreeModelFilter.convert_iter_to_child_iter] to obtain a matching
+// GtkEntryCompletion uses a gtk.TreeModelFilter model to represent the subset
+// of the entire model that is currently matching. While the GtkEntryCompletion
+// signals gtk.EntryCompletion::match-selected and
+// gtk.EntryCompletion::cursor-on-match take the original model and an iter
+// pointing to that model as arguments, other callbacks and signals (such as
+// GtkCellLayoutDataFunc or gtk.CellArea::apply-attributes) will generally take
+// the filter model as argument. As long as you are only calling
+// gtk.TreeModel.Get(), this will make no difference to you. If for some reason,
+// you need the original model, use gtk.TreeModelFilter.GetModel(). Don’t forget
+// to use gtk.TreeModelFilter.ConvertIterToChildIter() to obtain a matching
 // iter.
 type EntryCompletion struct {
 	*externglib.Object
@@ -192,7 +190,7 @@ func marshalEntryCompletioner(p uintptr) (interface{}, error) {
 	return wrapEntryCompletion(obj), nil
 }
 
-// NewEntryCompletion creates a new `GtkEntryCompletion` object.
+// NewEntryCompletion creates a new GtkEntryCompletion object.
 func NewEntryCompletion() *EntryCompletion {
 	var _cret *C.GtkEntryCompletion // in
 
@@ -205,11 +203,11 @@ func NewEntryCompletion() *EntryCompletion {
 	return _entryCompletion
 }
 
-// NewEntryCompletionWithArea creates a new `GtkEntryCompletion` object using
-// the specified @area.
+// NewEntryCompletionWithArea creates a new GtkEntryCompletion object using the
+// specified area.
 //
-// The `GtkCellArea` is used to layout cells in the underlying
-// `GtkTreeViewColumn` for the drop-down menu.
+// The GtkCellArea is used to layout cells in the underlying GtkTreeViewColumn
+// for the drop-down menu.
 func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
 	var _cret *C.GtkEntryCompletion // in
@@ -238,11 +236,11 @@ func (completion *EntryCompletion) Complete() {
 }
 
 // ComputePrefix computes the common prefix that is shared by all rows in
-// @completion that start with @key.
+// completion that start with key.
 //
-// If no row matches @key, nil will be returned. Note that a text column must
+// If no row matches key, NULL will be returned. Note that a text column must
 // have been set for this function to work, see
-// [method@Gtk.EntryCompletion.set_text_column] for details.
+// gtk.EntryCompletion.SetTextColumn() for details.
 func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.char               // out
@@ -262,7 +260,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 }
 
 // CompletionPrefix: get the original text entered by the user that triggered
-// the completion or nil if there’s no completion ongoing.
+// the completion or NULL if there’s no completion ongoing.
 func (completion *EntryCompletion) CompletionPrefix() string {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.char               // in
@@ -278,7 +276,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 	return _utf8
 }
 
-// Entry gets the entry @completion has been attached to.
+// Entry gets the entry completion has been attached to.
 func (completion *EntryCompletion) Entry() *Widget {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkWidget          // in
@@ -313,7 +311,7 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 	return _ok
 }
 
-// InlineSelection returns true if inline-selection mode is turned on.
+// InlineSelection returns TRUE if inline-selection mode is turned on.
 func (completion *EntryCompletion) InlineSelection() bool {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gboolean            // in
@@ -331,7 +329,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 	return _ok
 }
 
-// MinimumKeyLength returns the minimum key length as set for @completion.
+// MinimumKeyLength returns the minimum key length as set for completion.
 func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
@@ -347,9 +345,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 	return _gint
 }
 
-// Model returns the model the `GtkEntryCompletion` is using as data source.
+// Model returns the model the GtkEntryCompletion is using as data source.
 //
-// Returns nil if the model is unset.
+// Returns NULL if the model is unset.
 func (completion *EntryCompletion) Model() *TreeModel {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
@@ -422,8 +420,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 	return _ok
 }
 
-// TextColumn returns the column in the model of @completion to get strings
-// from.
+// TextColumn returns the column in the model of completion to get strings from.
 func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
@@ -476,8 +473,8 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
 }
 
-// SetMinimumKeyLength requires the length of the search key for @completion to
-// be at least @length.
+// SetMinimumKeyLength requires the length of the search key for completion to
+// be at least length.
 //
 // This is useful for long lists, where completing using a small key takes a lot
 // of time and will come up with meaningless results anyway (ie, a too large
@@ -492,10 +489,10 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	C.gtk_entry_completion_set_minimum_key_length(_arg0, _arg1)
 }
 
-// SetModel sets the model for a `GtkEntryCompletion`.
+// SetModel sets the model for a GtkEntryCompletion.
 //
-// If @completion already has a model set, it will remove it before setting the
-// new model. If model is nil, then it will unset the model.
+// If completion already has a model set, it will remove it before setting the
+// new model. If model is NULL, then it will unset the model.
 func (completion *EntryCompletion) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
@@ -537,8 +534,8 @@ func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 // SetPopupSingleMatch sets whether the completion popup window will appear even
 // if there is only a single match.
 //
-// You may want to set this to false if you are using
-// [property@Gtk.EntryCompletion:inline-completion].
+// You may want to set this to FALSE if you are using
+// gtk.EntryCompletion:inline-completion.
 func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gboolean            // out
@@ -554,14 +551,14 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 // SetTextColumn: convenience function for setting up the most used case of this
 // code: a completion list with just strings.
 //
-// This function will set up @completion to have a list displaying all (and
-// just) strings in the completion list, and to get those strings from @column
-// in the model of @completion.
+// This function will set up completion to have a list displaying all (and just)
+// strings in the completion list, and to get those strings from column in the
+// model of completion.
 //
-// This functions creates and adds a `GtkCellRendererText` for the selected
+// This functions creates and adds a GtkCellRendererText for the selected
 // column. If you need to set the text column, but don't want the cell renderer,
-// use g_object_set() to set the [property@Gtk.EntryCompletion:text-column]
-// property directly.
+// use g_object_set() to set the gtk.EntryCompletion:text-column property
+// directly.
 func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out

@@ -28,7 +28,7 @@ type BoxLayouter interface {
 	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the layout is set to be homogeneous.
 	Homogeneous() bool
-	// Spacing returns the space that @box_layout puts between children.
+	// Spacing returns the space that box_layout puts between children.
 	Spacing() uint
 	// SetBaselinePosition sets the baseline position of a box layout.
 	SetBaselinePosition(position BaselinePosition)
@@ -39,20 +39,19 @@ type BoxLayouter interface {
 	SetSpacing(spacing uint)
 }
 
-// BoxLayout: `GtkBoxLayout` is a layout manager that arranges children in a
+// BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
 // single row or column.
 //
 // Whether it is a row or column depends on the value of its
-// [property@Gtk.Orientable:orientation] property. Within the other dimension
-// all children all allocated the same size. The `GtkBoxLayout` will respect the
-// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties of
-// each child widget.
+// gtk.Orientable:orientation property. Within the other dimension all children
+// all allocated the same size. The GtkBoxLayout will respect the
+// gtk.Widget:halign and gtk.Widget:valign properties of each child widget.
 //
 // If you want all children to be assigned the same size, you can use the
-// [property@Gtk.BoxLayout:homogeneous] property.
+// gtk.BoxLayout:homogeneous property.
 //
 // If you want to specify the amount of space placed between each child, you can
-// use the [property@Gtk.BoxLayout:spacing] property.
+// use the gtk.BoxLayout:spacing property.
 type BoxLayout struct {
 	LayoutManager
 
@@ -81,7 +80,7 @@ func marshalBoxLayouter(p uintptr) (interface{}, error) {
 	return wrapBoxLayout(obj), nil
 }
 
-// NewBoxLayout creates a new `GtkBoxLayout`.
+// NewBoxLayout creates a new GtkBoxLayout.
 func NewBoxLayout(orientation Orientation) *BoxLayout {
 	var _arg1 C.GtkOrientation    // out
 	var _cret *C.GtkLayoutManager // in
@@ -138,7 +137,7 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 	return _ok
 }
 
-// Spacing returns the space that @box_layout puts between children.
+// Spacing returns the space that box_layout puts between children.
 func (boxLayout *BoxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
@@ -159,7 +158,7 @@ func (boxLayout *BoxLayout) Spacing() uint {
 // The baseline position affects only horizontal boxes with at least one
 // baseline aligned child. If there is more vertical space available than
 // requested, and the baseline is not allocated by the parent then the given
-// @position is used to allocate the baseline within the extra space available.
+// position is used to allocate the baseline within the extra space available.
 func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
 	var _arg1 C.GtkBaselinePosition // out

@@ -30,22 +30,22 @@ type ImageMenuItemer interface {
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	AlwaysShowImage() bool
 	// Image gets the widget that is currently set as the image of
-	// @image_menu_item.
+	// image_menu_item.
 	Image() *Widget
 	// UseStock checks whether the label set in the menuitem is used as a stock
 	// id to select the stock item for the item.
 	UseStock() bool
-	// SetAccelGroup specifies an @accel_group to add the menu items accelerator
+	// SetAccelGroup specifies an accel_group to add the menu items accelerator
 	// to (this only applies to stock items so a stock item must already be set,
 	// make sure to call gtk_image_menu_item_set_use_stock() and
 	// gtk_menu_item_set_label() with a valid stock item first).
-	SetAccelGroup(accelGroup AccelGrouper)
-	// SetAlwaysShowImage: if true, the menu item will ignore the
+	SetAccelGroup(accelGroup *AccelGroup)
+	// SetAlwaysShowImage: if TRUE, the menu item will ignore the
 	// Settings:gtk-menu-images setting and always show the image, if available.
 	SetAlwaysShowImage(alwaysShow bool)
-	// SetImage sets the image of @image_menu_item to the given widget.
+	// SetImage sets the image of image_menu_item to the given widget.
 	SetImage(image Widgeter)
-	// SetUseStock: if true, the label set in the menuitem is used as a stock id
+	// SetUseStock: if TRUE, the label set in the menuitem is used as a stock id
 	// to select the stock item for the item.
 	SetUseStock(useStock bool)
 }
@@ -146,20 +146,20 @@ func NewImageMenuItem() *ImageMenuItem {
 // and text from a stock item. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.
 //
-// If you want this menu item to have changeable accelerators, then pass in nil
+// If you want this menu item to have changeable accelerators, then pass in NULL
 // for accel_group. Next call gtk_menu_item_set_accel_path() with an appropriate
 // path for the menu item, use gtk_stock_lookup() to look up the standard
 // accelerator for the stock item, and if one is found, call
 // gtk_accel_map_add_entry() to register it.
 //
 // Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
-func NewImageMenuItemFromStock(stockId string, accelGroup AccelGrouper) *ImageMenuItem {
+func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GtkAccelGroup // out
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	_cret = C.gtk_image_menu_item_new_from_stock(_arg1, _arg2)
 
@@ -190,7 +190,7 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 
 // NewImageMenuItemWithMnemonic creates a new ImageMenuItem containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
-// in @label indicate the mnemonic for the menu item.
+// in label indicate the mnemonic for the menu item.
 //
 // Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
@@ -229,7 +229,7 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 	return _ok
 }
 
-// Image gets the widget that is currently set as the image of @image_menu_item.
+// Image gets the widget that is currently set as the image of image_menu_item.
 // See gtk_image_menu_item_set_image().
 //
 // Deprecated: since version 3.10.
@@ -269,7 +269,7 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	return _ok
 }
 
-// SetAccelGroup specifies an @accel_group to add the menu items accelerator to
+// SetAccelGroup specifies an accel_group to add the menu items accelerator to
 // (this only applies to stock items so a stock item must already be set, make
 // sure to call gtk_image_menu_item_set_use_stock() and
 // gtk_menu_item_set_label() with a valid stock item first).
@@ -278,17 +278,17 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 // need this (see gtk_image_menu_item_new_from_stock()).
 //
 // Deprecated: since version 3.10.
-func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup AccelGrouper) {
+func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkAccelGroup    // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(imageMenuItem.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
 }
 
-// SetAlwaysShowImage: if true, the menu item will ignore the
+// SetAlwaysShowImage: if TRUE, the menu item will ignore the
 // Settings:gtk-menu-images setting and always show the image, if available.
 //
 // Use this property if the menuitem would be useless or hard to use without the
@@ -307,7 +307,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
 }
 
-// SetImage sets the image of @image_menu_item to the given widget. Note that it
+// SetImage sets the image of image_menu_item to the given widget. Note that it
 // depends on the show-menu-images setting whether the image will be displayed
 // or not.
 //
@@ -322,7 +322,7 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgeter) {
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 }
 
-// SetUseStock: if true, the label set in the menuitem is used as a stock id to
+// SetUseStock: if TRUE, the label set in the menuitem is used as a stock id to
 // select the stock item for the item.
 //
 // Deprecated: since version 3.10.

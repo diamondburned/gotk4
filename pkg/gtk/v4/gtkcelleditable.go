@@ -31,16 +31,16 @@ type CellEditableOverrider interface {
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
 	RemoveWidget()
-	// StartEditing begins editing on a @cell_editable.
+	// StartEditing begins editing on a cell_editable.
 	//
 	// The CellRenderer for the cell creates and returns a CellEditable from
 	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
 	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
+	// gtk_cell_editable_start_editing() can then set up cell_editable suitably
 	// for editing a cell, e.g. making the Esc key emit
 	// CellEditable::editing-done.
 	//
-	// Note that the @cell_editable is created on-demand for the current edit;
+	// Note that the cell_editable is created on-demand for the current edit;
 	// its lifetime is temporary and does not persist across other edits and/or
 	// cells.
 	StartEditing(event gdk.Eventer)
@@ -52,7 +52,7 @@ type CellEditabler interface {
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
 	RemoveWidget()
-	// StartEditing begins editing on a @cell_editable.
+	// StartEditing begins editing on a cell_editable.
 	StartEditing(event gdk.Eventer)
 }
 
@@ -113,15 +113,15 @@ func (cellEditable *CellEditable) RemoveWidget() {
 	C.gtk_cell_editable_remove_widget(_arg0)
 }
 
-// StartEditing begins editing on a @cell_editable.
+// StartEditing begins editing on a cell_editable.
 //
 // The CellRenderer for the cell creates and returns a CellEditable from
 // gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
 //
-// gtk_cell_editable_start_editing() can then set up @cell_editable suitably for
+// gtk_cell_editable_start_editing() can then set up cell_editable suitably for
 // editing a cell, e.g. making the Esc key emit CellEditable::editing-done.
 //
-// Note that the @cell_editable is created on-demand for the current edit; its
+// Note that the cell_editable is created on-demand for the current edit; its
 // lifetime is temporary and does not persist across other edits and/or cells.
 func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	var _arg0 *C.GtkCellEditable // out

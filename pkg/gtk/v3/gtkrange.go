@@ -76,7 +76,7 @@ type Ranger interface {
 	Value() float64
 	// SetAdjustment sets the adjustment to be used as the “model” object for
 	// this range widget.
-	SetAdjustment(adjustment Adjustmenter)
+	SetAdjustment(adjustment *Adjustment)
 	// SetFillLevel: set the new position of the fill level indicator.
 	SetFillLevel(fillLevel float64)
 	// SetFlippable: if a range is flippable, it will switch its direction if it
@@ -93,7 +93,7 @@ type Ranger interface {
 	// SetMinSliderSize sets the minimum size of the range’s slider.
 	SetMinSliderSize(minSize int)
 	// SetRange sets the allowable values in the Range, and clamps the range
-	// value to be between @min and @max.
+	// value to be between min and max.
 	SetRange(min float64, max float64)
 	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
 	// level.
@@ -421,12 +421,12 @@ func (_range *Range) Value() float64 {
 // nonzero for Scrollbar, and indicates the size of the visible area of the
 // widget being scrolled. The page size affects the size of the scrollbar
 // slider.
-func (_range *Range) SetAdjustment(adjustment Adjustmenter) {
+func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkRange      // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_range_set_adjustment(_arg0, _arg1)
 }
@@ -531,8 +531,8 @@ func (_range *Range) SetMinSliderSize(minSize int) {
 }
 
 // SetRange sets the allowable values in the Range, and clamps the range value
-// to be between @min and @max. (If the range has a non-zero page size, it is
-// clamped between @min and @max - page-size.)
+// to be between min and max. (If the range has a non-zero page size, it is
+// clamped between min and max - page-size.)
 func (_range *Range) SetRange(min float64, max float64) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gdouble   // out

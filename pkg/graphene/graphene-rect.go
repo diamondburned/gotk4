@@ -319,7 +319,7 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	return _rect
 }
 
-// InitFromRect initializes @r using the given @src rectangle.
+// InitFromRect initializes r using the given src rectangle.
 //
 // This function will implicitly normalize the #graphene_rect_t before
 // returning.
@@ -343,13 +343,13 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 // Inset changes the given rectangle to be smaller, or larger depending on the
 // given inset parameters.
 //
-// To create an inset rectangle, use positive @d_x or @d_y values; to create a
-// larger, encompassing rectangle, use negative @d_x or @d_y values.
+// To create an inset rectangle, use positive d_x or d_y values; to create a
+// larger, encompassing rectangle, use negative d_x or d_y values.
 //
-// The origin of the rectangle is offset by @d_x and @d_y, while the size is
-// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
-// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
-// size of the rectangle is increased.
+// The origin of the rectangle is offset by d_x and d_y, while the size is
+// adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values, the size
+// of the rectangle is decreased; if d_x and d_y are negative values, the size
+// of the rectangle is increased.
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
@@ -375,13 +375,13 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 // InsetR changes the given rectangle to be smaller, or larger depending on the
 // given inset parameters.
 //
-// To create an inset rectangle, use positive @d_x or @d_y values; to create a
-// larger, encompassing rectangle, use negative @d_x or @d_y values.
+// To create an inset rectangle, use positive d_x or d_y values; to create a
+// larger, encompassing rectangle, use negative d_x or d_y values.
 //
-// The origin of the rectangle is offset by @d_x and @d_y, while the size is
-// adjusted by `(2 * @d_x, 2 * @d_y)`. If @d_x and @d_y are positive values, the
-// size of the rectangle is decreased; if @d_x and @d_y are negative values, the
-// size of the rectangle is increased.
+// The origin of the rectangle is offset by d_x and d_y, while the size is
+// adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values, the size
+// of the rectangle is decreased; if d_x and d_y are negative values, the size
+// of the rectangle is increased.
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
@@ -423,7 +423,7 @@ func (a *Rect) Interpolate(b *Rect, factor float64) Rect {
 //
 // The intersection in the image above is the blue outline.
 //
-// If the two rectangles do not intersect, @res will contain a degenerate
+// If the two rectangles do not intersect, res will contain a degenerate
 // rectangle with origin in (0, 0) and a size of 0.
 func (a *Rect) Intersection(b *Rect) (Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
@@ -479,7 +479,7 @@ func (r *Rect) NormalizeR() Rect {
 	return _res
 }
 
-// Offset offsets the origin by @d_x and @d_y.
+// Offset offsets the origin by d_x and d_y.
 //
 // The size of the rectangle is unchanged.
 func (r *Rect) Offset(dX float32, dY float32) *Rect {
@@ -501,7 +501,7 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	return _rect
 }
 
-// OffsetR offsets the origin of the given rectangle by @d_x and @d_y.
+// OffsetR offsets the origin of the given rectangle by d_x and d_y.
 //
 // The size of the rectangle is left unchanged.
 func (r *Rect) OffsetR(dX float32, dY float32) Rect {
@@ -525,8 +525,8 @@ func (r *Rect) OffsetR(dX float32, dY float32) Rect {
 // extents. Use graphene_rect_round_extents() in case you need to round to a
 // rectangle that covers fully the original one.
 //
-// This function is the equivalent of calling `floor` on the coordinates of the
-// origin, and `ceil` on the size.
+// This function is the equivalent of calling floor on the coordinates of the
+// origin, and ceil on the size.
 //
 // Deprecated: Use graphene_rect_round_extents() instead.
 func (r *Rect) Round() Rect {
@@ -544,8 +544,8 @@ func (r *Rect) Round() Rect {
 // value and and recompute the size so that the rectangle is large enough to
 // contain all the conrners of the original rectangle.
 //
-// This function is the equivalent of calling `floor` on the coordinates of the
-// origin, and recomputing the size calling `ceil` on the bottom-right
+// This function is the equivalent of calling floor on the coordinates of the
+// origin, and recomputing the size calling ceil on the bottom-right
 // coordinates.
 //
 // If you want to be sure that the rounded rectangle completely covers the area
@@ -588,8 +588,8 @@ func (r *Rect) RoundToPixel() *Rect {
 	return _rect
 }
 
-// Scale scales the size and origin of a rectangle horizontaly by @s_h, and
-// vertically by @s_v. The result @res is normalized.
+// Scale scales the size and origin of a rectangle horizontaly by s_h, and
+// vertically by s_v. The result res is normalized.
 func (r *Rect) Scale(sH float32, sV float32) Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out

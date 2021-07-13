@@ -37,19 +37,19 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TLSCertificateOverrider interface {
-	// Verify: this verifies @cert and returns a set of CertificateFlags
+	// Verify: this verifies cert and returns a set of CertificateFlags
 	// indicating any problems found with it. This can be used to verify a
 	// certificate outside the context of making a connection, or to check a
 	// certificate against a CA that is not part of the system CA database.
 	//
-	// If @identity is not nil, @cert's name(s) will be compared against it, and
+	// If identity is not NULL, cert's name(s) will be compared against it, and
 	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does
-	// not match. If @identity is nil, that bit will never be set in the return
+	// not match. If identity is NULL, that bit will never be set in the return
 	// value.
 	//
-	// If @trusted_ca is not nil, then @cert (or one of the certificates in its
+	// If trusted_ca is not NULL, then cert (or one of the certificates in its
 	// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be
-	// set in the return value. If @trusted_ca is nil, that bit will never be
+	// set in the return value. If trusted_ca is NULL, that bit will never be
 	// set in the return value.
 	//
 	// (All other CertificateFlags values will always be set or unset as
@@ -59,11 +59,11 @@ type TLSCertificateOverrider interface {
 
 // TLSCertificater describes TLSCertificate's methods.
 type TLSCertificater interface {
-	// Issuer gets the Certificate representing @cert's issuer, if known
+	// Issuer gets the Certificate representing cert's issuer, if known
 	Issuer() *TLSCertificate
 	// IsSame: check if two Certificate objects represent the same certificate.
 	IsSame(certTwo TLSCertificater) bool
-	// Verify: this verifies @cert and returns a set of CertificateFlags
+	// Verify: this verifies cert and returns a set of CertificateFlags
 	// indicating any problems found with it.
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
@@ -94,16 +94,16 @@ func marshalTLSCertificater(p uintptr) (interface{}, error) {
 }
 
 // NewTLSCertificateFromFile creates a Certificate from the PEM-encoded data in
-// @file. The returned certificate will be the first certificate found in @file.
-// As of GLib 2.44, if @file contains more certificates it will try to load a
+// file. The returned certificate will be the first certificate found in file.
+// As of GLib 2.44, if file contains more certificates it will try to load a
 // certificate chain. All certificates will be verified in the order found
 // (top-level certificate should be the last one in the file) and the
 // Certificate:issuer property of each certificate will be set accordingly if
 // the verification succeeds. If any certificate in the chain cannot be
 // verified, the first certificate in the file will still be returned.
 //
-// If @file cannot be read or parsed, the function will return nil and set
-// @error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
+// If file cannot be read or parsed, the function will return NULL and set
+// error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -123,16 +123,16 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 }
 
 // NewTLSCertificateFromFiles creates a Certificate from the PEM-encoded data in
-// @cert_file and @key_file. The returned certificate will be the first
-// certificate found in @cert_file. As of GLib 2.44, if @cert_file contains more
+// cert_file and key_file. The returned certificate will be the first
+// certificate found in cert_file. As of GLib 2.44, if cert_file contains more
 // certificates it will try to load a certificate chain. All certificates will
 // be verified in the order found (top-level certificate should be the last one
 // in the file) and the Certificate:issuer property of each certificate will be
 // set accordingly if the verification succeeds. If any certificate in the chain
 // cannot be verified, the first certificate in the file will still be returned.
 //
-// If either file cannot be read or parsed, the function will return nil and set
-// @error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
+// If either file cannot be read or parsed, the function will return NULL and
+// set error. Otherwise, this behaves like g_tls_certificate_new_from_pem().
 func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -154,13 +154,13 @@ func NewTLSCertificateFromFiles(certFile string, keyFile string) (*TLSCertificat
 }
 
 // NewTLSCertificateFromPem creates a Certificate from the PEM-encoded data in
-// @data. If @data includes both a certificate and a private key, then the
+// data. If data includes both a certificate and a private key, then the
 // returned certificate will include the private key data as well. (See the
 // Certificate:private-key-pem property for information about supported
 // formats.)
 //
-// The returned certificate will be the first certificate found in @data. As of
-// GLib 2.44, if @data contains more certificates it will try to load a
+// The returned certificate will be the first certificate found in data. As of
+// GLib 2.44, if data contains more certificates it will try to load a
 // certificate chain. All certificates will be verified in the order found
 // (top-level certificate should be the last one in the file) and the
 // Certificate:issuer property of each certificate will be set accordingly if
@@ -188,23 +188,26 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 
 // NewTLSCertificateFromPkcs11Uris creates a Certificate from a PKCS \#11 URI.
 //
-// An example @pkcs11_uri would be
-// `pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01`
+// An example pkcs11_uri would be
+// pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01
 //
 // Where the token’s layout is:
 //
-// “` Object 0: URL:
-// pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=private20key;type=private
-// Type: Private key (RSA-2048) ID: 01
+//    Object 0:
+//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=private20key;type=private
+//      Type: Private key (RSA-2048)
+//      ID: 01
 //
-// Object 1: URL:
-// pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=Certificate20for20Authentication;type=cert
-// Type: X.509 Certificate (RSA-2048) ID: 01 “`
+//    Object 1:
+//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=Certificate20for20Authentication;type=cert
+//      Type: X.509 Certificate (RSA-2048)
+//      ID: 01
+//
 //
 // In this case the certificate and private key would both be detected and used
-// as expected. @pkcs_uri may also just reference an X.509 certificate object
-// and then optionally @private_key_pkcs11_uri allows using a private key
-// exposed under a different URI.
+// as expected. pkcs_uri may also just reference an X.509 certificate object and
+// then optionally private_key_pkcs11_uri allows using a private key exposed
+// under a different URI.
 //
 // Note that the private key is not accessed until usage and may fail or require
 // a PIN later.
@@ -228,7 +231,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 	return _tlsCertificate, _goerr
 }
 
-// Issuer gets the Certificate representing @cert's issuer, if known
+// Issuer gets the Certificate representing cert's issuer, if known
 func (cert *TLSCertificate) Issuer() *TLSCertificate {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
@@ -268,18 +271,18 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	return _ok
 }
 
-// Verify: this verifies @cert and returns a set of CertificateFlags indicating
+// Verify: this verifies cert and returns a set of CertificateFlags indicating
 // any problems found with it. This can be used to verify a certificate outside
 // the context of making a connection, or to check a certificate against a CA
 // that is not part of the system CA database.
 //
-// If @identity is not nil, @cert's name(s) will be compared against it, and
+// If identity is not NULL, cert's name(s) will be compared against it, and
 // G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does not
-// match. If @identity is nil, that bit will never be set in the return value.
+// match. If identity is NULL, that bit will never be set in the return value.
 //
-// If @trusted_ca is not nil, then @cert (or one of the certificates in its
+// If trusted_ca is not NULL, then cert (or one of the certificates in its
 // chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be set
-// in the return value. If @trusted_ca is nil, that bit will never be set in the
+// in the return value. If trusted_ca is NULL, that bit will never be set in the
 // return value.
 //
 // (All other CertificateFlags values will always be set or unset as

@@ -276,10 +276,9 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.p.Descend()
 		defer value.p.Ascend()
 
-		value.p.Linef("var zero %s", inner.In.Type)
-
 		// See if we can possibly reuse the Go slice in a shorter way.
 		if !value.MustRealloc() && inner.Resolved.CanCast() {
+			value.p.Linef("var zero %s", inner.In.Type)
 			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
@@ -301,6 +300,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.p.Linef("out := unsafe.Slice(%s, len(%s)+1)", value.OutName, value.InName)
 		// malloc does not zero out the memory, so we have to zero it out
 		// ourselves.
+		value.p.Linef("var zero %s", inner.Out.Type)
 		value.p.Linef("out[len(%s)] = zero", value.InName)
 		value.p.Linef("for i := range %s {", value.InName)
 		value.p.Linef(inner.Conversion)

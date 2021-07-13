@@ -199,9 +199,9 @@ func ContentTypeGetSymbolicIcon(typ string) *Icon {
 }
 
 // ContentTypeGuess guesses the content type based on example data. If the
-// function is uncertain, @result_uncertain will be set to true. Either
-// @filename or @data may be nil, in which case the guess will be based solely
-// on the other argument.
+// function is uncertain, result_uncertain will be set to TRUE. Either filename
+// or data may be NULL, in which case the guess will be based solely on the
+// other argument.
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.guchar
@@ -229,7 +229,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	return _resultUncertain, _utf8
 }
 
-// ContentTypeGuessForTree tries to guess the type of the tree with root @root,
+// ContentTypeGuessForTree tries to guess the type of the tree with root root,
 // by looking at the files it contains. The result is an array of content types,
 // with the best guess coming first.
 //
@@ -268,7 +268,7 @@ func ContentTypeGuessForTree(root Filer) []string {
 	return _utf8s
 }
 
-// ContentTypeIsA determines if @type is a subset of @supertype.
+// ContentTypeIsA determines if type is a subset of supertype.
 func ContentTypeIsA(typ string, supertype string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -288,7 +288,7 @@ func ContentTypeIsA(typ string, supertype string) bool {
 	return _ok
 }
 
-// ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
+// ContentTypeIsMIMEType determines if type is a subset of mime_type.
 // Convenience wrapper around g_content_type_is_a().
 func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	var _arg1 *C.gchar   // out
@@ -330,17 +330,17 @@ func ContentTypeIsUnknown(typ string) bool {
 }
 
 // ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
-// MIME database. If @dirs is nil, the directories used are the default:
+// MIME database. If dirs is NULL, the directories used are the default:
 //
-//    - the `mime` subdirectory of the directory in `$XDG_DATA_HOME`
-//    - the `mime` subdirectory of every directory in `$XDG_DATA_DIRS`
+//    - the mime subdirectory of the directory in $XDG_DATA_HOME
+//    - the mime subdirectory of every directory in $XDG_DATA_DIRS
 //
 // This function is intended to be used when writing tests that depend on
 // information stored in the MIME database, in order to control the data.
 //
 // Typically, in case your tests use G_TEST_OPTION_ISOLATE_DIRS, but they depend
-// on the system’s MIME database, you should call this function with @dirs set
-// to nil before calling g_test_init(), for instance:
+// on the system’s MIME database, you should call this function with dirs set to
+// NULL before calling g_test_init(), for instance:
 //
 //      // Load MIME data from the system
 //      g_content_type_set_mime_dirs (NULL);
@@ -353,11 +353,15 @@ func ContentTypeIsUnknown(typ string) bool {
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar
 
-	_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg1, len(dirs))
-		for i := range dirs {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
+		_arg1 = (**C.gchar)(C.malloc(C.ulong(len(dirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(dirs)+1)
+			var zero *C.gchar
+			out[len(dirs)] = zero
+			for i := range dirs {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
+			}
 		}
 	}
 

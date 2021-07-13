@@ -25,18 +25,18 @@ func init() {
 type RelationSeter interface {
 	// Add a new relation to the current relation set if it is not already
 	// present.
-	Add(relation Relationer)
+	Add(relation *Relation)
 	// AddRelationByType: add a new relation of the specified type with the
 	// specified target to the current relation set if the relation set does not
 	// contain a relation of that type.
-	AddRelationByType(relationship RelationType, target ObjectClasser)
+	AddRelationByType(relationship RelationType, target *ObjectClass)
 	// Contains determines whether the relation set contains a relation that
 	// matches the specified type.
 	Contains(relationship RelationType) bool
 	// ContainsTarget determines whether the relation set contains a relation
-	// that matches the specified pair formed by type @relationship and object
-	// @target.
-	ContainsTarget(relationship RelationType, target ObjectClasser) bool
+	// that matches the specified pair formed by type relationship and object
+	// target.
+	ContainsTarget(relationship RelationType, target *ObjectClass) bool
 	// NRelations determines the number of relations in a relation set.
 	NRelations() int
 	// Relation determines the relation at the specified position in the
@@ -45,7 +45,7 @@ type RelationSeter interface {
 	// RelationByType finds a relation that matches the specified type.
 	RelationByType(relationship RelationType) *Relation
 	// Remove removes a relation from the relation set.
-	Remove(relation Relationer)
+	Remove(relation *Relation)
 }
 
 // RelationSet held by an object establishes its relationships with objects
@@ -92,12 +92,12 @@ func NewRelationSet() *RelationSet {
 // This function ref's the AtkRelation so the caller of this function should
 // unref it to ensure that it will be destroyed when the AtkRelationSet is
 // destroyed.
-func (set *RelationSet) Add(relation Relationer) {
+func (set *RelationSet) Add(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer((relation).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_add(_arg0, _arg1)
 }
@@ -106,14 +106,14 @@ func (set *RelationSet) Add(relation Relationer) {
 // specified target to the current relation set if the relation set does not
 // contain a relation of that type. If it is does contain a relation of that
 // typea the target is added to the relation.
-func (set *RelationSet) AddRelationByType(relationship RelationType, target ObjectClasser) {
+func (set *RelationSet) AddRelationByType(relationship RelationType, target *ObjectClass) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
 }
@@ -140,8 +140,8 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 }
 
 // ContainsTarget determines whether the relation set contains a relation that
-// matches the specified pair formed by type @relationship and object @target.
-func (set *RelationSet) ContainsTarget(relationship RelationType, target ObjectClasser) bool {
+// matches the specified pair formed by type relationship and object target.
+func (set *RelationSet) ContainsTarget(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -149,7 +149,7 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target ObjectC
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
 
@@ -217,12 +217,12 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 
 // Remove removes a relation from the relation set. This function unref's the
 // Relation so it will be deleted unless there is another reference to it.
-func (set *RelationSet) Remove(relation Relationer) {
+func (set *RelationSet) Remove(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
 
 	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(set.Native()))
-	_arg1 = (*C.AtkRelation)(unsafe.Pointer((relation).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
 
 	C.atk_relation_set_remove(_arg0, _arg1)
 }

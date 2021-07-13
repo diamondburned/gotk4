@@ -55,19 +55,19 @@ func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer
 // yet, so the interface currently has no use.
 type ScaleOverrider interface {
 	// LayoutOffsets obtains the coordinates where the scale will draw the
-	// `PangoLayout` representing the text in the scale.
+	// PangoLayout representing the text in the scale.
 	//
-	// Remember when using the `PangoLayout` function you need to convert to and
-	// from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
+	// Remember when using the PangoLayout function you need to convert to and
+	// from pixels using PANGO_PIXELS() or PANGO_SCALE.
 	//
-	// If the [property@GtkScale:draw-value] property is false, the return
-	// values are undefined.
+	// If the gtkscale:draw-value property is FALSE, the return values are
+	// undefined.
 	LayoutOffsets() (x int, y int)
 }
 
 // Scaler describes Scale's methods.
 type Scaler interface {
-	// AddMark adds a mark at @value.
+	// AddMark adds a mark at value.
 	AddMark(value float64, position PositionType, markup string)
 	// ClearMarks removes any marks that have been added.
 	ClearMarks()
@@ -78,10 +78,10 @@ type Scaler interface {
 	DrawValue() bool
 	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
-	// Layout gets the `PangoLayout` used to display the scale.
+	// Layout gets the PangoLayout used to display the scale.
 	Layout() *pango.Layout
 	// LayoutOffsets obtains the coordinates where the scale will draw the
-	// `PangoLayout` representing the text in the scale.
+	// PangoLayout representing the text in the scale.
 	LayoutOffsets() (x int, y int)
 	// ValuePos gets the position in which the current value is displayed.
 	ValuePos() PositionType
@@ -97,53 +97,64 @@ type Scaler interface {
 	SetValuePos(pos PositionType)
 }
 
-// Scale: `GtkScale` is a slider control used to select a numeric value.
+// Scale: GtkScale is a slider control used to select a numeric value.
 //
 // !An example GtkScale (scales.png)
 //
 // To use it, you’ll probably want to investigate the methods on its base class,
-// [class@GtkRange], in addition to the methods for `GtkScale` itself. To set
-// the value of a scale, you would normally use [method@Gtk.Range.set_value]. To
-// detect changes to the value, you would normally use the
-// [signal@Gtk.Range::value-changed] signal.
+// gtkrange, in addition to the methods for GtkScale itself. To set the value of
+// a scale, you would normally use gtk.Range.SetValue(). To detect changes to
+// the value, you would normally use the gtk.Range::value-changed signal.
 //
-// Note that using the same upper and lower bounds for the `GtkScale` (through
-// the `GtkRange` methods) will hide the slider itself. This is useful for
+// Note that using the same upper and lower bounds for the GtkScale (through the
+// GtkRange methods) will hide the slider itself. This is useful for
 // applications that want to show an undeterminate value on the scale, without
 // changing the layout of the application (such as movie or music players).
 //
 //
 // GtkScale as GtkBuildable
 //
-// `GtkScale` supports a custom <marks> element, which can contain multiple
+// GtkScale supports a custom <marks> element, which can contain multiple
 // <mark\> elements. The “value” and “position” attributes have the same meaning
-// as [method@Gtk.Scale.add_mark] parameters of the same name. If the element is
-// not empty, its content is taken as the markup to show at the mark. It can be
+// as gtk.Scale.AddMark() parameters of the same name. If the element is not
+// empty, its content is taken as the markup to show at the mark. It can be
 // translated with the usual ”translatable” and “context” attributes.
-//
 //
 // CSS nodes
 //
-// “` scale[.fine-tune][.marks-before][.marks-after] ├──
-// [value][.top][.right][.bottom][.left] ├── marks.top │ ├── mark │ ┊ ├──
-// [label] │ ┊ ╰── indicator ┊ ┊ │ ╰── mark ├── marks.bottom │ ├── mark │ ┊ ├──
-// indicator │ ┊ ╰── [label] ┊ ┊ │ ╰── mark ╰── trough ├── [fill] ├──
-// [highlight] ╰── slider “`
+//    scale[.fine-tune][.marks-before][.marks-after]
+//    ├── [value][.top][.right][.bottom][.left]
+//    ├── marks.top
+//    │   ├── mark
+//    │   ┊    ├── [label]
+//    │   ┊    ╰── indicator
+//    ┊   ┊
+//    │   ╰── mark
+//    ├── marks.bottom
+//    │   ├── mark
+//    │   ┊    ├── indicator
+//    │   ┊    ╰── [label]
+//    ┊   ┊
+//    │   ╰── mark
+//    ╰── trough
+//        ├── [fill]
+//        ├── [highlight]
+//        ╰── slider
 //
-// `GtkScale` has a main CSS node with name scale and a subnode for its
-// contents, with subnodes named trough and slider.
+//
+// GtkScale has a main CSS node with name scale and a subnode for its contents,
+// with subnodes named trough and slider.
 //
 // The main node gets the style class .fine-tune added when the scale is in
 // 'fine-tuning' mode.
 //
-// If the scale has an origin (see [method@Gtk.Scale.set_has_origin]), there is
-// a subnode with name highlight below the trough node that is used for
-// rendering the highlighted part of the trough.
+// If the scale has an origin (see gtk.Scale.SetHasOrigin()), there is a subnode
+// with name highlight below the trough node that is used for rendering the
+// highlighted part of the trough.
 //
-// If the scale is showing a fill level (see
-// [method@Gtk.Range.set_show_fill_level]), there is a subnode with name fill
-// below the trough node that is used for rendering the filled in part of the
-// trough.
+// If the scale is showing a fill level (see gtk.Range.SetShowFillLevel()),
+// there is a subnode with name fill below the trough node that is used for
+// rendering the filled in part of the trough.
 //
 // If marks are present, there is a marks subnode before or after the trough
 // node, below which each mark gets a node with name mark. The marks nodes get
@@ -157,14 +168,14 @@ type Scaler interface {
 // The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
 // added depending on what marks are present.
 //
-// If the scale is displaying the value (see [property@Gtk.Scale:draw-value]),
-// there is subnode with name value. This node will get the .top or .bottom
-// style classes similar to the marks node.
+// If the scale is displaying the value (see gtk.Scale:draw-value), there is
+// subnode with name value. This node will get the .top or .bottom style classes
+// similar to the marks node.
 //
 //
 // Accessibility
 //
-// `GtkScale` uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
+// GtkScale uses the GTK_ACCESSIBLE_ROLE_SLIDER role.
 type Scale struct {
 	Range
 }
@@ -204,14 +215,14 @@ func marshalScaler(p uintptr) (interface{}, error) {
 	return wrapScale(obj), nil
 }
 
-// NewScale creates a new `GtkScale`.
-func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
+// NewScale creates a new GtkScale.
+func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
 
@@ -222,16 +233,16 @@ func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
 	return _scale
 }
 
-// NewScaleWithRange creates a new scale widget with a range from @min to @max.
+// NewScaleWithRange creates a new scale widget with a range from min to max.
 //
 // The returns scale will have the given orientation and will let the user input
-// a number between @min and @max (including @min and @max) with the increment
-// @step. @step must be nonzero; it’s the distance the slider moves when using
-// the arrow keys to adjust the scale value.
+// a number between min and max (including min and max) with the increment step.
+// step must be nonzero; it’s the distance the slider moves when using the arrow
+// keys to adjust the scale value.
 //
-// Note that the way in which the precision is derived works best if @step is a
+// Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
-// [method@Gtk.Scale.set_digits] to correct it.
+// gtk.Scale.SetDigits() to correct it.
 func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.double         // out
@@ -253,15 +264,15 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	return _scale
 }
 
-// AddMark adds a mark at @value.
+// AddMark adds a mark at value.
 //
 // A mark is indicated visually by drawing a tick mark next to the scale, and
 // GTK makes it easy for the user to position the scale exactly at the marks
 // value.
 //
-// If @markup is not nil, text is shown next to the tick mark.
+// If markup is not NULL, text is shown next to the tick mark.
 //
-// To remove marks from a scale, use [method@Gtk.Scale.clear_marks].
+// To remove marks from a scale, use gtk.Scale.ClearMarks().
 func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
 	var _arg0 *C.GtkScale       // out
 	var _arg1 C.double          // out
@@ -338,7 +349,7 @@ func (scale *Scale) HasOrigin() bool {
 	return _ok
 }
 
-// Layout gets the `PangoLayout` used to display the scale.
+// Layout gets the PangoLayout used to display the scale.
 //
 // The returned object is owned by the scale so does not need to be freed by the
 // caller.
@@ -363,13 +374,13 @@ func (scale *Scale) Layout() *pango.Layout {
 }
 
 // LayoutOffsets obtains the coordinates where the scale will draw the
-// `PangoLayout` representing the text in the scale.
+// PangoLayout representing the text in the scale.
 //
-// Remember when using the `PangoLayout` function you need to convert to and
-// from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
+// Remember when using the PangoLayout function you need to convert to and from
+// pixels using PANGO_PIXELS() or PANGO_SCALE.
 //
-// If the [property@GtkScale:draw-value] property is false, the return values
-// are undefined.
+// If the gtkscale:draw-value property is FALSE, the return values are
+// undefined.
 func (scale *Scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // in
@@ -408,14 +419,13 @@ func (scale *Scale) ValuePos() PositionType {
 //
 // Also causes the value of the adjustment to be rounded to this number of
 // digits, so the retrieved value matches the displayed one, if
-// [property@GtkScale:draw-value] is true when the value changes. If you want to
-// enforce rounding the value when [property@GtkScale:draw-value] is false, you
-// can set [property@GtkRange:round-digits] instead.
+// gtkscale:draw-value is TRUE when the value changes. If you want to enforce
+// rounding the value when gtkscale:draw-value is FALSE, you can set
+// gtkrange:round-digits instead.
 //
 // Note that rounding to a small number of digits can interfere with the smooth
-// autoscrolling that is built into `GtkScale`. As an alternative, you can use
-// [method@Gtk.Scale.set_format_value_func] to format the displayed value
-// yourself.
+// autoscrolling that is built into GtkScale. As an alternative, you can use
+// gtk.Scale.SetFormatValueFunc() to format the displayed value yourself.
 func (scale *Scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.int       // out
@@ -442,9 +452,9 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 
 // SetHasOrigin sets whether the scale has an origin.
 //
-// If [property@GtkScale:has-origin] is set to true (the default), the scale
-// will highlight the part of the trough between the origin (bottom or left
-// side) and the current value.
+// If gtkscale:has-origin is set to TRUE (the default), the scale will highlight
+// the part of the trough between the origin (bottom or left side) and the
+// current value.
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gboolean  // out

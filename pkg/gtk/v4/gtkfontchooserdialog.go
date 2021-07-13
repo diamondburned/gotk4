@@ -26,21 +26,21 @@ type FontChooserDialoger interface {
 	privateFontChooserDialog()
 }
 
-// FontChooserDialog: `GtkFontChooserDialog` widget is a dialog for selecting a
+// FontChooserDialog: GtkFontChooserDialog widget is a dialog for selecting a
 // font.
 //
 // !An example GtkFontChooserDialog (fontchooser.png)
 //
-// `GtkFontChooserDialog` implements the [iface@Gtk.FontChooser] interface and
-// does not provide much API of its own.
+// GtkFontChooserDialog implements the gtk.FontChooser interface and does not
+// provide much API of its own.
 //
-// To create a `GtkFontChooserDialog`, use [ctor@Gtk.FontChooserDialog.new].
+// To create a GtkFontChooserDialog, use gtk.FontChooserDialog.New.
 //
 //
 // GtkFontChooserDialog as GtkBuildable
 //
-// The `GtkFontChooserDialog` implementation of the `GtkBuildable` interface
-// exposes the buttons with the names “select_button” and “cancel_button”.
+// The GtkFontChooserDialog implementation of the GtkBuildable interface exposes
+// the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog struct {
 	Dialog
 
@@ -105,14 +105,14 @@ func marshalFontChooserDialoger(p uintptr) (interface{}, error) {
 	return wrapFontChooserDialog(obj), nil
 }
 
-// NewFontChooserDialog creates a new `GtkFontChooserDialog`.
-func NewFontChooserDialog(title string, parent Windower) *FontChooserDialog {
+// NewFontChooserDialog creates a new GtkFontChooserDialog.
+func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 

@@ -134,18 +134,18 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 // VolumeMonitorAdoptOrphanMount: this function should be called by any Monitor
 // implementation when a new #GMount object is created that is not associated
 // with a #GVolume object. It must be called just before emitting the
-// @mount_added signal.
+// mount_added signal.
 //
-// If the return value is not nil, the caller must associate the returned
+// If the return value is not NULL, the caller must associate the returned
 // #GVolume object with the #GMount. This involves returning it in its
 // g_mount_get_volume() implementation. The caller must also listen for the
 // "removed" signal on the returned object and give up its reference when
 // handling that signal
 //
 // Similarly, if implementing g_volume_monitor_adopt_orphan_mount(), the
-// implementor must take a reference to @mount and return it in its
+// implementor must take a reference to mount and return it in its
 // g_volume_get_mount() implemented. Also, the implementor must listen for the
-// "unmounted" signal on @mount and give up its reference upon handling that
+// "unmounted" signal on mount and give up its reference upon handling that
 // signal.
 //
 // There are two main use cases for this function.

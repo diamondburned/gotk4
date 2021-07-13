@@ -25,24 +25,24 @@ func init() {
 // DropControllerMotioner describes DropControllerMotion's methods.
 type DropControllerMotioner interface {
 	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
-	// @self or one of its children.
+	// self or one of its children.
 	ContainsPointer() bool
-	// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
-	// widget of @self.
+	// Drop returns the GdkDrop of a current Drag-and-Drop operation over the
+	// widget of self.
 	Drop() *gdk.Drop
-	// IsPointer returns if a Drag-and-Drop operation is within the widget
-	// @self, not one of its children.
+	// IsPointer returns if a Drag-and-Drop operation is within the widget self,
+	// not one of its children.
 	IsPointer() bool
 }
 
-// DropControllerMotion: `GtkDropControllerMotion` is an event controller
-// tracking the pointer during Drag-and-Drop operations.
+// DropControllerMotion: GtkDropControllerMotion is an event controller tracking
+// the pointer during Drag-and-Drop operations.
 //
-// It is modeled after [class@Gtk.EventControllerMotion] so if you have used
-// that, this should feel really familiar.
+// It is modeled after gtk.EventControllerMotion so if you have used that, this
+// should feel really familiar.
 //
-// This controller is not able to accept drops, use [class@Gtk.DropTarget] for
-// that purpose.
+// This controller is not able to accept drops, use gtk.DropTarget for that
+// purpose.
 type DropControllerMotion struct {
 	EventController
 }
@@ -81,7 +81,7 @@ func NewDropControllerMotion() *DropControllerMotion {
 }
 
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
-// @self or one of its children.
+// self or one of its children.
 func (self *DropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in
@@ -99,8 +99,8 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 	return _ok
 }
 
-// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
-// widget of @self.
+// Drop returns the GdkDrop of a current Drag-and-Drop operation over the widget
+// of self.
 func (self *DropControllerMotion) Drop() *gdk.Drop {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
@@ -121,8 +121,8 @@ func (self *DropControllerMotion) Drop() *gdk.Drop {
 	return _drop
 }
 
-// IsPointer returns if a Drag-and-Drop operation is within the widget @self,
-// not one of its children.
+// IsPointer returns if a Drag-and-Drop operation is within the widget self, not
+// one of its children.
 func (self *DropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret C.gboolean                 // in

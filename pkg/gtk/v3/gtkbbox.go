@@ -58,7 +58,7 @@ type ButtonBoxer interface {
 	// ChildNonHomogeneous returns whether the child is exempted from homogenous
 	// sizing.
 	ChildNonHomogeneous(child Widgeter) bool
-	// ChildSecondary returns whether @child should appear in a secondary group
+	// ChildSecondary returns whether child should appear in a secondary group
 	// of children.
 	ChildSecondary(child Widgeter) bool
 	// Layout retrieves the method being used to arrange the buttons in a button
@@ -67,7 +67,7 @@ type ButtonBoxer interface {
 	// SetChildNonHomogeneous sets whether the child is exempted from homogeous
 	// sizing.
 	SetChildNonHomogeneous(child Widgeter, nonHomogeneous bool)
-	// SetChildSecondary sets whether @child should appear in a secondary group
+	// SetChildSecondary sets whether child should appear in a secondary group
 	// of children.
 	SetChildSecondary(child Widgeter, isSecondary bool)
 	// SetLayout changes the way buttons are arranged in their container.
@@ -149,7 +149,7 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgeter) bool {
 	return _ok
 }
 
-// ChildSecondary returns whether @child should appear in a secondary group of
+// ChildSecondary returns whether child should appear in a secondary group of
 // children.
 func (widget *ButtonBox) ChildSecondary(child Widgeter) bool {
 	var _arg0 *C.GtkButtonBox // out
@@ -203,7 +203,7 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgeter, nonHomogeneous b
 	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
 }
 
-// SetChildSecondary sets whether @child should appear in a secondary group of
+// SetChildSecondary sets whether child should appear in a secondary group of
 // children. A typical use of a secondary child is the help button in a dialog.
 //
 // This group appears after the other children if the style is

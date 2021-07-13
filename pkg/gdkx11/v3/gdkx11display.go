@@ -23,7 +23,7 @@ func init() {
 }
 
 // X11RegisterStandardEventType registers interest in receiving extension events
-// with type codes between @event_base and `event_base + n_events - 1`. The
+// with type codes between event_base and event_base + n_events - 1. The
 // registered events must have the window field in the same place as core X
 // events (this is not the case for e.g. XKB extension events).
 //
@@ -34,19 +34,19 @@ func init() {
 //
 // This function should only be needed in unusual circumstances, e.g. when
 // filtering XInput extension events on the root window.
-func X11RegisterStandardEventType(display X11Displayer, eventBase int, nEvents int) {
+func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.gint(eventBase)
 	_arg3 = C.gint(nEvents)
 
 	C.gdk_x11_register_standard_event_type(_arg1, _arg2, _arg3)
 }
 
-// X11SetSmClientID sets the `SM_CLIENT_ID` property on the application’s leader
+// X11SetSmClientID sets the SM_CLIENT_ID property on the application’s leader
 // window so that the window manager can save the application’s state using the
 // X11R6 ICCCM session management protocol.
 //
@@ -68,14 +68,14 @@ type X11Displayer interface {
 	// ErrorTrapPopIgnored pops the error trap pushed by
 	// gdk_x11_display_error_trap_push().
 	ErrorTrapPopIgnored()
-	// ErrorTrapPush begins a range of X requests on @display for which X error
+	// ErrorTrapPush begins a range of X requests on display for which X error
 	// events will be ignored.
 	ErrorTrapPush()
 	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
-	// UserTime returns the timestamp of the last user interaction on @display.
+	// UserTime returns the timestamp of the last user interaction on display.
 	UserTime() uint32
-	// Grab: call XGrabServer() on @display.
+	// Grab: call XGrabServer() on display.
 	Grab()
 	// SetCursorTheme sets the cursor theme from which the images for cursor
 	// should be taken.
@@ -85,7 +85,7 @@ type X11Displayer interface {
 	// SetWindowScale forces a specific window scale for all windows on this
 	// display, instead of using the default or user configured scale.
 	SetWindowScale(scale int)
-	// Ungrab @display after it has been grabbed with gdk_x11_display_grab().
+	// Ungrab display after it has been grabbed with gdk_x11_display_grab().
 	Ungrab()
 }
 
@@ -149,7 +149,7 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 	C.gdk_x11_display_error_trap_pop_ignored(_arg0)
 }
 
-// ErrorTrapPush begins a range of X requests on @display for which X error
+// ErrorTrapPush begins a range of X requests on display for which X error
 // events will be ignored. Unignored errors (when no trap is pushed) will abort
 // the application. Use gdk_x11_display_error_trap_pop() or
 // gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
@@ -180,7 +180,7 @@ func (display *X11Display) StartupNotificationID() string {
 	return _utf8
 }
 
-// UserTime returns the timestamp of the last user interaction on @display. The
+// UserTime returns the timestamp of the last user interaction on display. The
 // timestamp is taken from events caused by user interaction such as key presses
 // or pointer movements. See gdk_x11_window_set_user_time().
 func (display *X11Display) UserTime() uint32 {
@@ -198,7 +198,7 @@ func (display *X11Display) UserTime() uint32 {
 	return _guint32
 }
 
-// Grab: call XGrabServer() on @display. To ungrab the display again, use
+// Grab: call XGrabServer() on display. To ungrab the display again, use
 // gdk_x11_display_ungrab().
 //
 // gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
@@ -256,7 +256,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 
 // SetWindowScale forces a specific window scale for all windows on this
 // display, instead of using the default or user configured scale. This is can
-// be used to disable scaling support by setting @scale to 1, or to
+// be used to disable scaling support by setting scale to 1, or to
 // programmatically set the window scale.
 //
 // Once the scale is set by this call it will not change in response to later
@@ -271,7 +271,7 @@ func (display *X11Display) SetWindowScale(scale int) {
 	C.gdk_x11_display_set_window_scale(_arg0, _arg1)
 }
 
-// Ungrab @display after it has been grabbed with gdk_x11_display_grab().
+// Ungrab display after it has been grabbed with gdk_x11_display_grab().
 func (display *X11Display) Ungrab() {
 	var _arg0 *C.GdkDisplay // out
 

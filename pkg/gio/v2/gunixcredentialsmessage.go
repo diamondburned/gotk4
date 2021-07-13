@@ -33,7 +33,7 @@ func init() {
 
 // UnixCredentialsMessager describes UnixCredentialsMessage's methods.
 type UnixCredentialsMessager interface {
-	// Credentials gets the credentials stored in @message.
+	// Credentials gets the credentials stored in message.
 	Credentials() *Credentials
 }
 
@@ -84,12 +84,12 @@ func NewUnixCredentialsMessage() *UnixCredentialsMessage {
 }
 
 // NewUnixCredentialsMessageWithCredentials creates a new CredentialsMessage
-// holding @credentials.
-func NewUnixCredentialsMessageWithCredentials(credentials Credentialser) *UnixCredentialsMessage {
+// holding credentials.
+func NewUnixCredentialsMessageWithCredentials(credentials *Credentials) *UnixCredentialsMessage {
 	var _arg1 *C.GCredentials          // out
 	var _cret *C.GSocketControlMessage // in
 
-	_arg1 = (*C.GCredentials)(unsafe.Pointer((credentials).(gextras.Nativer).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	_cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
@@ -100,7 +100,7 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentialser) *UnixCr
 	return _unixCredentialsMessage
 }
 
-// Credentials gets the credentials stored in @message.
+// Credentials gets the credentials stored in message.
 func (message *UnixCredentialsMessage) Credentials() *Credentials {
 	var _arg0 *C.GUnixCredentialsMessage // out
 	var _cret *C.GCredentials            // in

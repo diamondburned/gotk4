@@ -30,29 +30,29 @@ func init() {
 type EditableOverrider interface {
 	Changed()
 	// DeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters deleted
-	// are those from @start_pos to the end of the text.
+	// deleted are those characters at positions from start_pos up to, but not
+	// including end_pos. If end_pos is negative, then the characters deleted
+	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DeleteText(startPos int, endPos int)
 	// DoDeleteText deletes a sequence of characters. The characters that are
-	// deleted are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters deleted
-	// are those from @start_pos to the end of the text.
+	// deleted are those characters at positions from start_pos up to, but not
+	// including end_pos. If end_pos is negative, then the characters deleted
+	// are those from start_pos to the end of the text.
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
-	// DoInsertText inserts @new_text_length bytes of @new_text into the
-	// contents of the widget, at position @position.
+	// DoInsertText inserts new_text_length bytes of new_text into the contents
+	// of the widget, at position position.
 	//
 	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
+	// updates position to point after the newly inserted text.
 	DoInsertText(newText string, newTextLength int, position *int)
 	// Chars retrieves a sequence of characters. The characters that are
-	// retrieved are those characters at positions from @start_pos up to, but
-	// not including @end_pos. If @end_pos is negative, then the characters
-	// retrieved are those characters from @start_pos to the end of the text.
+	// retrieved are those characters at positions from start_pos up to, but not
+	// including end_pos. If end_pos is negative, then the characters retrieved
+	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
 	Chars(startPos int, endPos int) string
@@ -62,16 +62,16 @@ type EditableOverrider interface {
 	// Note that this position is in characters, not in bytes.
 	Position() int
 	// SelectionBounds retrieves the selection bound of the editable. start_pos
-	// will be filled with the start of the selection and @end_pos with end. If
-	// no text was selected both will be identical and false will be returned.
+	// will be filled with the start of the selection and end_pos with end. If
+	// no text was selected both will be identical and FALSE will be returned.
 	//
 	// Note that positions are specified in characters, not bytes.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// InsertText inserts @new_text_length bytes of @new_text into the contents
-	// of the widget, at position @position.
+	// InsertText inserts new_text_length bytes of new_text into the contents of
+	// the widget, at position position.
 	//
 	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
+	// updates position to point after the newly inserted text.
 	InsertText(newText string, newTextLength int, position *int)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
@@ -79,12 +79,12 @@ type EditableOverrider interface {
 	// index in the contents of the editable. The value must be less than or
 	// equal to the number of characters in the editable. A value of -1
 	// indicates that the position should be set after the last character of the
-	// editable. Note that @position is in characters, not in bytes.
+	// editable. Note that position is in characters, not in bytes.
 	SetPosition(position int)
 	// SetSelectionBounds selects a region of text. The characters that are
-	// selected are those characters at positions from @start_pos up to, but not
-	// including @end_pos. If @end_pos is negative, then the characters selected
-	// are those characters from @start_pos to the end of the text.
+	// selected are those characters at positions from start_pos up to, but not
+	// including end_pos. If end_pos is negative, then the characters selected
+	// are those characters from start_pos to the end of the text.
 	//
 	// Note that positions are specified in characters, not bytes.
 	SetSelectionBounds(startPos int, endPos int)
@@ -104,15 +104,15 @@ type Editabler interface {
 	DeleteText(startPos int, endPos int)
 	// Chars retrieves a sequence of characters.
 	Chars(startPos int, endPos int) string
-	// Editable retrieves whether @editable is editable.
+	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
 	Position() int
 	// SelectionBounds retrieves the selection bound of the editable.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// InsertText inserts @new_text_length bytes of @new_text into the contents
-	// of the widget, at position @position.
+	// InsertText inserts new_text_length bytes of new_text into the contents of
+	// the widget, at position position.
 	InsertText(newText string, newTextLength int, position *int)
 	// PasteClipboard pastes the content of the clipboard to the current
 	// position of the cursor in the editable.
@@ -211,9 +211,9 @@ func (editable *Editable) DeleteSelection() {
 }
 
 // DeleteText deletes a sequence of characters. The characters that are deleted
-// are those characters at positions from @start_pos up to, but not including
-// @end_pos. If @end_pos is negative, then the characters deleted are those from
-// @start_pos to the end of the text.
+// are those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters deleted are those from
+// start_pos to the end of the text.
 //
 // Note that the positions are specified in characters, not bytes.
 func (editable *Editable) DeleteText(startPos int, endPos int) {
@@ -229,9 +229,9 @@ func (editable *Editable) DeleteText(startPos int, endPos int) {
 }
 
 // Chars retrieves a sequence of characters. The characters that are retrieved
-// are those characters at positions from @start_pos up to, but not including
-// @end_pos. If @end_pos is negative, then the characters retrieved are those
-// characters from @start_pos to the end of the text.
+// are those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters retrieved are those
+// characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
 func (editable *Editable) Chars(startPos int, endPos int) string {
@@ -254,7 +254,7 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 	return _utf8
 }
 
-// Editable retrieves whether @editable is editable. See
+// Editable retrieves whether editable is editable. See
 // gtk_editable_set_editable().
 func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
@@ -293,8 +293,8 @@ func (editable *Editable) Position() int {
 }
 
 // SelectionBounds retrieves the selection bound of the editable. start_pos will
-// be filled with the start of the selection and @end_pos with end. If no text
-// was selected both will be identical and false will be returned.
+// be filled with the start of the selection and end_pos with end. If no text
+// was selected both will be identical and FALSE will be returned.
 //
 // Note that positions are specified in characters, not bytes.
 func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) {
@@ -320,11 +320,11 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 	return _startPos, _endPos, _ok
 }
 
-// InsertText inserts @new_text_length bytes of @new_text into the contents of
-// the widget, at position @position.
+// InsertText inserts new_text_length bytes of new_text into the contents of the
+// widget, at position position.
 //
 // Note that the position is in characters, not in bytes. The function updates
-// @position to point after the newly inserted text.
+// position to point after the newly inserted text.
 func (editable *Editable) InsertText(newText string, newTextLength int, position *int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 *C.gchar       // out
@@ -350,9 +350,9 @@ func (editable *Editable) PasteClipboard() {
 }
 
 // SelectRegion selects a region of text. The characters that are selected are
-// those characters at positions from @start_pos up to, but not including
-// @end_pos. If @end_pos is negative, then the characters selected are those
-// characters from @start_pos to the end of the text.
+// those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters selected are those
+// characters from start_pos to the end of the text.
 //
 // Note that positions are specified in characters, not bytes.
 func (editable *Editable) SelectRegion(startPos int, endPos int) {
@@ -387,7 +387,7 @@ func (editable *Editable) SetEditable(isEditable bool) {
 // the contents of the editable. The value must be less than or equal to the
 // number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
-// @position is in characters, not in bytes.
+// position is in characters, not in bytes.
 func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gint         // out

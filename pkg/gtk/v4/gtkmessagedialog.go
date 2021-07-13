@@ -22,10 +22,10 @@ func init() {
 	})
 }
 
-// ButtonsType: prebuilt sets of buttons for `GtkDialog`.
+// ButtonsType: prebuilt sets of buttons for GtkDialog.
 //
 // If none of these choices are appropriate, simply use GTK_BUTTONS_NONE and
-// call [method@Gtk.Dialog.add_buttons].
+// call gtk.Dialog.AddButtons().
 //
 // > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
 // GTK_BUTTONS_OK_CANCEL are discouraged by the > GNOME Human Interface
@@ -59,45 +59,62 @@ type MessageDialoger interface {
 	SetMarkup(str string)
 }
 
-// MessageDialog: `GtkMessageDialog` presents a dialog with some message text.
+// MessageDialog: GtkMessageDialog presents a dialog with some message text.
 //
 // !An example GtkMessageDialog (messagedialog.png)
 //
 // It’s simply a convenience widget; you could construct the equivalent of
-// `GtkMessageDialog` from `GtkDialog` without too much effort, but
-// `GtkMessageDialog` saves typing.
+// GtkMessageDialog from GtkDialog without too much effort, but GtkMessageDialog
+// saves typing.
 //
 // The easiest way to do a modal message dialog is to use the GTK_DIALOG_MODAL
-// flag, which will call [method@Gtk.Window.set_modal] internally. The dialog
-// will prevent interaction with the parent window until it's hidden or
-// destroyed. You can use the [signal@Gtk.Dialog::response] signal to know when
-// the user dismissed the dialog.
+// flag, which will call gtk.Window.SetModal() internally. The dialog will
+// prevent interaction with the parent window until it's hidden or destroyed.
+// You can use the gtk.Dialog::response signal to know when the user dismissed
+// the dialog.
 //
-// An example for using a modal dialog: “`c GtkDialogFlags flags =
-// GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL; dialog =
-// gtk_message_dialog_new (parent_window, flags, GTK_MESSAGE_ERROR,
-// GTK_BUTTONS_CLOSE, "Error reading “s”: s", filename, g_strerror (errno)); //
-// Destroy the dialog when the user responds to it // (e.g. clicks a button)
+// An example for using a modal dialog:
 //
-// g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
-// “`
+//    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL;
+//    dialog = gtk_message_dialog_new (parent_window,
+//                                     flags,
+//                                     GTK_MESSAGE_ERROR,
+//                                     GTK_BUTTONS_CLOSE,
+//                                     "Error reading “s”: s",
+//                                     filename,
+//                                     g_strerror (errno));
+//    // Destroy the dialog when the user responds to it
+//    // (e.g. clicks a button)
 //
-// You might do a non-modal `GtkMessageDialog` simply by omitting the
+//    g_signal_connect (dialog, "response",
+//                      G_CALLBACK (gtk_window_destroy),
+//                      NULL);
+//
+//
+// You might do a non-modal GtkMessageDialog simply by omitting the
 // GTK_DIALOG_MODAL flag:
 //
-// “`c GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT; dialog =
-// gtk_message_dialog_new (parent_window, flags, GTK_MESSAGE_ERROR,
-// GTK_BUTTONS_CLOSE, "Error reading “s”: s", filename, g_strerror (errno));
+//    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+//    dialog = gtk_message_dialog_new (parent_window,
+//                                     flags,
+//                                     GTK_MESSAGE_ERROR,
+//                                     GTK_BUTTONS_CLOSE,
+//                                     "Error reading “s”: s",
+//                                     filename,
+//                                     g_strerror (errno));
 //
-// // Destroy the dialog when the user responds to it // (e.g. clicks a button)
-// // g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
-// // “`
+//    // Destroy the dialog when the user responds to it
+//    // (e.g. clicks a button)
+//    g_signal_connect (dialog, "response",
+//                      G_CALLBACK (gtk_window_destroy),
+//                      NULL);
+//
 //
 //
 // GtkMessageDialog as GtkBuildable
 //
-// The `GtkMessageDialog` implementation of the `GtkBuildable` interface exposes
-// the message area as an internal child with the name “message_area”.
+// The GtkMessageDialog implementation of the GtkBuildable interface exposes the
+// message area as an internal child with the name “message_area”.
 type MessageDialog struct {
 	Dialog
 }
@@ -161,8 +178,8 @@ func marshalMessageDialoger(p uintptr) (interface{}, error) {
 //
 // This is the box where the dialog’s primary and secondary labels are packed.
 // You can add your own extra content to that box and it will appear below those
-// labels. See [method@Gtk.Dialog.get_content_area] for the corresponding
-// function in the parent [class@Gtk.Dialog].
+// labels. See gtk.Dialog.GetContentArea() for the corresponding function in the
+// parent gtk.Dialog.
 func (messageDialog *MessageDialog) MessageArea() *Widget {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in

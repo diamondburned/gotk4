@@ -42,7 +42,7 @@ type RadioButtoner interface {
 	// (some_condition) { radio_button = gtk_radio_button_new (NULL);
 	// gtk_radio_button_join_group (radio_button, last_button); last_button =
 	// radio_button; }
-	JoinGroup(groupSource RadioButtoner)
+	JoinGroup(groupSource *RadioButton)
 }
 
 // RadioButton: single radio button performs the same basic function as a
@@ -54,7 +54,7 @@ type RadioButtoner interface {
 // selected, all other radio buttons in the same group are deselected. A
 // RadioButton is one way of giving the user a choice from many options.
 //
-// Radio button widgets are created with gtk_radio_button_new(), passing nil as
+// Radio button widgets are created with gtk_radio_button_new(), passing NULL as
 // the argument if this is the first radio button in a group. In subsequent
 // calls, the group you wish to add this button to should be passed as an
 // argument. Optionally, gtk_radio_button_new_with_label() can be used if you
@@ -163,13 +163,13 @@ func marshalRadioButtoner(p uintptr) (interface{}, error) {
 }
 
 // NewRadioButtonFromWidget creates a new RadioButton, adding it to the same
-// group as @radio_group_member. As with gtk_radio_button_new(), a widget should
+// group as radio_group_member. As with gtk_radio_button_new(), a widget should
 // be packed into the radio button.
-func NewRadioButtonFromWidget(radioGroupMember RadioButtoner) *RadioButton {
+func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 
 	_cret = C.gtk_radio_button_new_from_widget(_arg1)
 
@@ -181,13 +181,13 @@ func NewRadioButtonFromWidget(radioGroupMember RadioButtoner) *RadioButton {
 }
 
 // NewRadioButtonWithLabelFromWidget creates a new RadioButton with a text
-// label, adding it to the same group as @radio_group_member.
-func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtoner, label string) *RadioButton {
+// label, adding it to the same group as radio_group_member.
+func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 
 	_cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
@@ -201,13 +201,13 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButtoner, label str
 
 // NewRadioButtonWithMnemonicFromWidget creates a new RadioButton containing a
 // label. The label will be created using gtk_label_new_with_mnemonic(), so
-// underscores in @label indicate the mnemonic for the button.
-func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtoner, label string) *RadioButton {
+// underscores in label indicate the mnemonic for the button.
+func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _arg1 *C.GtkRadioButton // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkWidget      // in
 
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((radioGroupMember).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 
 	_cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
@@ -237,12 +237,12 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButtoner, label 
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
 //        }
-func (radioButton *RadioButton) JoinGroup(groupSource RadioButtoner) {
+func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _arg0 *C.GtkRadioButton // out
 	var _arg1 *C.GtkRadioButton // out
 
 	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(radioButton.Native()))
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer((groupSource).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
 
 	C.gtk_radio_button_join_group(_arg0, _arg1)
 }

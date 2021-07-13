@@ -26,11 +26,11 @@ type CenterBoxer interface {
 	// BaselinePosition gets the value set by
 	// gtk_center_box_set_baseline_position().
 	BaselinePosition() BaselinePosition
-	// CenterWidget gets the center widget, or nil if there is none.
+	// CenterWidget gets the center widget, or NULL if there is none.
 	CenterWidget() *Widget
-	// EndWidget gets the end widget, or nil if there is none.
+	// EndWidget gets the end widget, or NULL if there is none.
 	EndWidget() *Widget
-	// StartWidget gets the start widget, or nil if there is none.
+	// StartWidget gets the start widget, or NULL if there is none.
 	StartWidget() *Widget
 	// SetBaselinePosition sets the baseline position of a center box.
 	SetBaselinePosition(position BaselinePosition)
@@ -42,15 +42,13 @@ type CenterBoxer interface {
 	SetStartWidget(child Widgeter)
 }
 
-// CenterBox: `GtkCenterBox` arranges three children in a row, keeping the
-// middle child centered as well as possible.
+// CenterBox: GtkCenterBox arranges three children in a row, keeping the middle
+// child centered as well as possible.
 //
 // !An example GtkCenterBox (centerbox.png)
 //
-// To add children to `GtkCenterBox`, use
-// [method@Gtk.CenterBox.set_start_widget],
-// [method@Gtk.CenterBox.set_center_widget] and
-// [method@Gtk.CenterBox.set_end_widget].
+// To add children to GtkCenterBox, use gtk.CenterBox.SetStartWidget(),
+// gtk.CenterBox.SetCenterWidget() and gtk.CenterBox.SetEndWidget().
 //
 // The sizing and positioning of children can be influenced with the align and
 // expand properties of the children.
@@ -58,16 +56,16 @@ type CenterBoxer interface {
 //
 // GtkCenterBox as GtkBuildable
 //
-// The `GtkCenterBox` implementation of the `GtkBuildable` interface supports
+// The GtkCenterBox implementation of the GtkBuildable interface supports
 // placing children in the 3 positions by specifying “start”, “center” or “end”
 // as the “type” attribute of a <child> element.
 //
 //
 // CSS nodes
 //
-// `GtkCenterBox` uses a single CSS node with the name “box”,
+// GtkCenterBox uses a single CSS node with the name “box”,
 //
-// The first child of the `GtkCenterBox` will be allocated depending on the text
+// The first child of the GtkCenterBox will be allocated depending on the text
 // direction, i.e. in left-to-right layouts it will be allocated on the left and
 // in right-to-left layouts on the right.
 //
@@ -77,7 +75,7 @@ type CenterBoxer interface {
 //
 // Accessibility
 //
-// `GtkCenterBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkCenterBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox struct {
 	Widget
 
@@ -117,7 +115,7 @@ func marshalCenterBoxer(p uintptr) (interface{}, error) {
 	return wrapCenterBox(obj), nil
 }
 
-// NewCenterBox creates a new `GtkCenterBox`.
+// NewCenterBox creates a new GtkCenterBox.
 func NewCenterBox() *CenterBox {
 	var _cret *C.GtkWidget // in
 
@@ -153,7 +151,7 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 	return _baselinePosition
 }
 
-// CenterWidget gets the center widget, or nil if there is none.
+// CenterWidget gets the center widget, or NULL if there is none.
 func (self *CenterBox) CenterWidget() *Widget {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -169,7 +167,7 @@ func (self *CenterBox) CenterWidget() *Widget {
 	return _widget
 }
 
-// EndWidget gets the end widget, or nil if there is none.
+// EndWidget gets the end widget, or NULL if there is none.
 func (self *CenterBox) EndWidget() *Widget {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -185,7 +183,7 @@ func (self *CenterBox) EndWidget() *Widget {
 	return _widget
 }
 
-// StartWidget gets the start widget, or nil if there is none.
+// StartWidget gets the start widget, or NULL if there is none.
 func (self *CenterBox) StartWidget() *Widget {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
@@ -205,7 +203,7 @@ func (self *CenterBox) StartWidget() *Widget {
 //
 // This affects only horizontal boxes with at least one baseline aligned child.
 // If there is more vertical space available than requested, and the baseline is
-// not allocated by the parent then @position is used to allocate the baseline
+// not allocated by the parent then position is used to allocate the baseline
 // wrt. the extra space available.
 func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkCenterBox       // out
@@ -219,7 +217,7 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 
 // SetCenterWidget sets the center widget.
 //
-// To remove the existing center widget, pas nil.
+// To remove the existing center widget, pas NULL.
 func (self *CenterBox) SetCenterWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
@@ -232,7 +230,7 @@ func (self *CenterBox) SetCenterWidget(child Widgeter) {
 
 // SetEndWidget sets the end widget.
 //
-// To remove the existing end widget, pass nil.
+// To remove the existing end widget, pass NULL.
 func (self *CenterBox) SetEndWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
@@ -245,7 +243,7 @@ func (self *CenterBox) SetEndWidget(child Widgeter) {
 
 // SetStartWidget sets the start widget.
 //
-// To remove the existing start widget, pass nil.
+// To remove the existing start widget, pass NULL.
 func (self *CenterBox) SetStartWidget(child Widgeter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out

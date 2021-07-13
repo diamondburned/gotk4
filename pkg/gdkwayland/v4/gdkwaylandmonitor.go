@@ -27,11 +27,10 @@ type WaylandMonitorer interface {
 	privateWaylandMonitor()
 }
 
-// WaylandMonitor: wayland implementation of `GdkMonitor`.
+// WaylandMonitor: wayland implementation of GdkMonitor.
 //
-// Beyond the [class@Gdk.Monitor] API, the Wayland implementation offers access
-// to the Wayland `wl_output` object with
-// [method@GdkWayland.WaylandMonitor.get_wl_output].
+// Beyond the gdk.Monitor API, the Wayland implementation offers access to the
+// Wayland wl_output object with gdkwayland.WaylandMonitor.GetWlOutput().
 type WaylandMonitor struct {
 	gdk.Monitor
 }

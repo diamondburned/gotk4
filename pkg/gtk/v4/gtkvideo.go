@@ -24,43 +24,42 @@ func init() {
 
 // Videoer describes Video's methods.
 type Videoer interface {
-	// Autoplay returns true if videos have been set to loop.
+	// Autoplay returns TRUE if videos have been set to loop.
 	Autoplay() bool
-	// File gets the file played by @self or nil if not playing back a file.
+	// File gets the file played by self or NULL if not playing back a file.
 	File() *gio.File
-	// Loop returns true if videos have been set to loop.
+	// Loop returns TRUE if videos have been set to loop.
 	Loop() bool
-	// MediaStream gets the media stream managed by @self or nil if none.
+	// MediaStream gets the media stream managed by self or NULL if none.
 	MediaStream() *MediaStream
-	// SetAutoplay sets whether @self automatically starts playback when it
+	// SetAutoplay sets whether self automatically starts playback when it
 	// becomes visible or when a new file gets loaded.
 	SetAutoplay(autoplay bool)
-	// SetFile makes @self play the given @file.
+	// SetFile makes self play the given file.
 	SetFile(file gio.Filer)
-	// SetFilename makes @self play the given @filename.
+	// SetFilename makes self play the given filename.
 	SetFilename(filename string)
-	// SetLoop sets whether new files loaded by @self should be set to loop.
+	// SetLoop sets whether new files loaded by self should be set to loop.
 	SetLoop(loop bool)
 	// SetMediaStream sets the media stream to be played back.
 	SetMediaStream(stream MediaStreamer)
-	// SetResource makes @self play the resource at the given @resource_path.
+	// SetResource makes self play the resource at the given resource_path.
 	SetResource(resourcePath string)
 }
 
-// Video: `GtkVideo` is a widget to show a `GtkMediaStream` with media controls.
+// Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
 //
 // !An example GtkVideo (video.png)
 //
-// The controls are available separately as [class@Gtk.MediaControls]. If you
-// just want to display a video without controls, you can treat it like any
-// other paintable and for example put it into a [class@Gtk.Picture].
+// The controls are available separately as gtk.MediaControls. If you just want
+// to display a video without controls, you can treat it like any other
+// paintable and for example put it into a gtk.Picture.
 //
-// `GtkVideo` aims to cover use cases such as previews, embedded animations,
-// etc. It supports autoplay, looping, and simple media controls. It does not
-// have support for video overlays, multichannel audio, device selection, or
-// input. If you are writing a full-fledged video player, you may want to use
-// the [class@Gdk.Paintable] API and a media framework such as Gstreamer
-// directly.
+// GtkVideo aims to cover use cases such as previews, embedded animations, etc.
+// It supports autoplay, looping, and simple media controls. It does not have
+// support for video overlays, multichannel audio, device selection, or input.
+// If you are writing a full-fledged video player, you may want to use the
+// gdk.Paintable API and a media framework such as Gstreamer directly.
 type Video struct {
 	Widget
 }
@@ -95,7 +94,7 @@ func marshalVideoer(p uintptr) (interface{}, error) {
 	return wrapVideo(obj), nil
 }
 
-// NewVideo creates a new empty `GtkVideo`.
+// NewVideo creates a new empty GtkVideo.
 func NewVideo() *Video {
 	var _cret *C.GtkWidget // in
 
@@ -108,7 +107,7 @@ func NewVideo() *Video {
 	return _video
 }
 
-// NewVideoForFile creates a `GtkVideo` to play back the given @file.
+// NewVideoForFile creates a GtkVideo to play back the given file.
 func NewVideoForFile(file gio.Filer) *Video {
 	var _arg1 *C.GFile     // out
 	var _cret *C.GtkWidget // in
@@ -124,10 +123,10 @@ func NewVideoForFile(file gio.Filer) *Video {
 	return _video
 }
 
-// NewVideoForFilename creates a `GtkVideo` to play back the given @filename.
+// NewVideoForFilename creates a GtkVideo to play back the given filename.
 //
-// This is a utility function that calls [ctor@Gtk.Video.new_for_file], See that
-// function for details.
+// This is a utility function that calls gtk.Video.NewForFile, See that function
+// for details.
 func NewVideoForFilename(filename string) *Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -143,7 +142,7 @@ func NewVideoForFilename(filename string) *Video {
 	return _video
 }
 
-// NewVideoForMediaStream creates a `GtkVideo` to play back the given @stream.
+// NewVideoForMediaStream creates a GtkVideo to play back the given stream.
 func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	var _arg1 *C.GtkMediaStream // out
 	var _cret *C.GtkWidget      // in
@@ -159,10 +158,10 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 	return _video
 }
 
-// NewVideoForResource creates a `GtkVideo` to play back the resource at the
-// given @resource_path.
+// NewVideoForResource creates a GtkVideo to play back the resource at the given
+// resource_path.
 //
-// This is a utility function that calls [ctor@Gtk.Video.new_for_file].
+// This is a utility function that calls gtk.Video.NewForFile.
 func NewVideoForResource(resourcePath string) *Video {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -178,7 +177,7 @@ func NewVideoForResource(resourcePath string) *Video {
 	return _video
 }
 
-// Autoplay returns true if videos have been set to loop.
+// Autoplay returns TRUE if videos have been set to loop.
 func (self *Video) Autoplay() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
@@ -196,7 +195,7 @@ func (self *Video) Autoplay() bool {
 	return _ok
 }
 
-// File gets the file played by @self or nil if not playing back a file.
+// File gets the file played by self or NULL if not playing back a file.
 func (self *Video) File() *gio.File {
 	var _arg0 *C.GtkVideo // out
 	var _cret *C.GFile    // in
@@ -217,7 +216,7 @@ func (self *Video) File() *gio.File {
 	return _file
 }
 
-// Loop returns true if videos have been set to loop.
+// Loop returns TRUE if videos have been set to loop.
 func (self *Video) Loop() bool {
 	var _arg0 *C.GtkVideo // out
 	var _cret C.gboolean  // in
@@ -235,7 +234,7 @@ func (self *Video) Loop() bool {
 	return _ok
 }
 
-// MediaStream gets the media stream managed by @self or nil if none.
+// MediaStream gets the media stream managed by self or NULL if none.
 func (self *Video) MediaStream() *MediaStream {
 	var _arg0 *C.GtkVideo       // out
 	var _cret *C.GtkMediaStream // in
@@ -251,7 +250,7 @@ func (self *Video) MediaStream() *MediaStream {
 	return _mediaStream
 }
 
-// SetAutoplay sets whether @self automatically starts playback when it becomes
+// SetAutoplay sets whether self automatically starts playback when it becomes
 // visible or when a new file gets loaded.
 func (self *Video) SetAutoplay(autoplay bool) {
 	var _arg0 *C.GtkVideo // out
@@ -265,7 +264,7 @@ func (self *Video) SetAutoplay(autoplay bool) {
 	C.gtk_video_set_autoplay(_arg0, _arg1)
 }
 
-// SetFile makes @self play the given @file.
+// SetFile makes self play the given file.
 func (self *Video) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.GFile    // out
@@ -276,7 +275,7 @@ func (self *Video) SetFile(file gio.Filer) {
 	C.gtk_video_set_file(_arg0, _arg1)
 }
 
-// SetFilename makes @self play the given @filename.
+// SetFilename makes self play the given filename.
 //
 // This is a utility function that calls gtk_video_set_file(),
 func (self *Video) SetFilename(filename string) {
@@ -289,7 +288,7 @@ func (self *Video) SetFilename(filename string) {
 	C.gtk_video_set_filename(_arg0, _arg1)
 }
 
-// SetLoop sets whether new files loaded by @self should be set to loop.
+// SetLoop sets whether new files loaded by self should be set to loop.
 func (self *Video) SetLoop(loop bool) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 C.gboolean  // out
@@ -304,12 +303,10 @@ func (self *Video) SetLoop(loop bool) {
 
 // SetMediaStream sets the media stream to be played back.
 //
-// @self will take full control of managing the media stream. If you want to
-// manage a media stream yourself, consider using a [class@Gtk.Picture] for
-// display.
+// self will take full control of managing the media stream. If you want to
+// manage a media stream yourself, consider using a gtk.Picture for display.
 //
-// If you want to display a file, consider using [method@Gtk.Video.set_file]
-// instead.
+// If you want to display a file, consider using gtk.Video.SetFile() instead.
 func (self *Video) SetMediaStream(stream MediaStreamer) {
 	var _arg0 *C.GtkVideo       // out
 	var _arg1 *C.GtkMediaStream // out
@@ -320,9 +317,9 @@ func (self *Video) SetMediaStream(stream MediaStreamer) {
 	C.gtk_video_set_media_stream(_arg0, _arg1)
 }
 
-// SetResource makes @self play the resource at the given @resource_path.
+// SetResource makes self play the resource at the given resource_path.
 //
-// This is a utility function that calls [method@Gtk.Video.set_file].
+// This is a utility function that calls gtk.Video.SetFile().
 func (self *Video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo // out
 	var _arg1 *C.char     // out

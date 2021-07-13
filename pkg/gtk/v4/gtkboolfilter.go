@@ -35,7 +35,7 @@ type BoolFilterer interface {
 	SetInvert(invert bool)
 }
 
-// BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
+// BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
 // whether to include items.
 type BoolFilter struct {
 	Filter

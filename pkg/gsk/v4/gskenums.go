@@ -102,7 +102,7 @@ func marshalCorner(p uintptr) (interface{}, error) {
 	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// GLUniformType: this defines the types of the uniforms that `GskGLShaders`
+// GLUniformType: this defines the types of the uniforms that GskGLShaders
 // declare.
 //
 // It defines both what the type is called in the GLSL shader code, and what the
@@ -234,13 +234,13 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 // TransformCategory categories of matrices relevant for GSK and GTK.
 //
 // Note that any category includes matrices of all later categories. So if you
-// want to for example check if a matrix is a 2D matrix, `category >=
-// GSK_TRANSFORM_CATEGORY_2D` is the way to do this.
+// want to for example check if a matrix is a 2D matrix, category >=
+// GSK_TRANSFORM_CATEGORY_2D is the way to do this.
 //
 // Also keep in mind that rounding errors may cause matrices to not conform to
 // their categories. Otherwise, matrix operations done via multiplication will
-// not worsen categories. So for the matrix multiplication `C = A * B`,
-// `category(C) = MIN (category(A), category(B))`.
+// not worsen categories. So for the matrix multiplication C = A * B,
+// category(C) = MIN (category(A), category(B)).
 type TransformCategory int
 
 const (
@@ -253,7 +253,7 @@ const (
 	// has the values (0, 0, 0, 1).
 	TransformCategory3D
 	// 2D: matrix is a 2D matrix. This is equivalent to graphene_matrix_is_2d()
-	// returning true. In particular, this means that Cairo can deal with the
+	// returning TRUE. In particular, this means that Cairo can deal with the
 	// matrix.
 	TransformCategory2D
 	// 2DAffine: matrix is a combination of 2D scale and 2D translation

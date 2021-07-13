@@ -25,34 +25,32 @@ func init() {
 
 // MountOperationer describes MountOperation's methods.
 type MountOperationer interface {
-	// Display gets the display on which windows of the `GtkMountOperation` will
+	// Display gets the display on which windows of the GtkMountOperation will
 	// be shown.
 	Display() *gdk.Display
-	// Parent gets the transient parent used by the `GtkMountOperation`.
+	// Parent gets the transient parent used by the GtkMountOperation.
 	Parent() *Window
-	// IsShowing returns whether the `GtkMountOperation` is currently displaying
-	// a window.
+	// IsShowing returns whether the GtkMountOperation is currently displaying a
+	// window.
 	IsShowing() bool
-	// SetDisplay sets the display to show windows of the `GtkMountOperation`
-	// on.
-	SetDisplay(display gdk.Displayer)
+	// SetDisplay sets the display to show windows of the GtkMountOperation on.
+	SetDisplay(display *gdk.Display)
 	// SetParent sets the transient parent for windows shown by the
-	// `GtkMountOperation`.
-	SetParent(parent Windower)
+	// GtkMountOperation.
+	SetParent(parent *Window)
 }
 
-// MountOperation: `GtkMountOperation` is an implementation of
-// `GMountOperation`.
+// MountOperation: GtkMountOperation is an implementation of GMountOperation.
 //
 // The functions and objects described here make working with GTK and GIO more
 // convenient.
 //
-// `GtkMountOperation` is needed when mounting volumes: It is an implementation
-// of `GMountOperation` that can be used with GIO functions for mounting volumes
-// such as g_file_mount_enclosing_volume(), g_file_mount_mountable(),
+// GtkMountOperation is needed when mounting volumes: It is an implementation of
+// GMountOperation that can be used with GIO functions for mounting volumes such
+// as g_file_mount_enclosing_volume(), g_file_mount_mountable(),
 // g_volume_mount(), g_mount_unmount_with_operation() and others.
 //
-// When necessary, `GtkMountOperation` shows dialogs to let the user enter
+// When necessary, GtkMountOperation shows dialogs to let the user enter
 // passwords, ask questions or show processes blocking unmount.
 type MountOperation struct {
 	gio.MountOperation
@@ -77,12 +75,12 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 	return wrapMountOperation(obj), nil
 }
 
-// NewMountOperation creates a new `GtkMountOperation`.
-func NewMountOperation(parent Windower) *MountOperation {
+// NewMountOperation creates a new GtkMountOperation.
+func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
@@ -93,7 +91,7 @@ func NewMountOperation(parent Windower) *MountOperation {
 	return _mountOperation
 }
 
-// Display gets the display on which windows of the `GtkMountOperation` will be
+// Display gets the display on which windows of the GtkMountOperation will be
 // shown.
 func (op *MountOperation) Display() *gdk.Display {
 	var _arg0 *C.GtkMountOperation // out
@@ -115,7 +113,7 @@ func (op *MountOperation) Display() *gdk.Display {
 	return _display
 }
 
-// Parent gets the transient parent used by the `GtkMountOperation`.
+// Parent gets the transient parent used by the GtkMountOperation.
 func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
 	var _cret *C.GtkWindow         // in
@@ -131,7 +129,7 @@ func (op *MountOperation) Parent() *Window {
 	return _window
 }
 
-// IsShowing returns whether the `GtkMountOperation` is currently displaying a
+// IsShowing returns whether the GtkMountOperation is currently displaying a
 // window.
 func (op *MountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
@@ -150,25 +148,25 @@ func (op *MountOperation) IsShowing() bool {
 	return _ok
 }
 
-// SetDisplay sets the display to show windows of the `GtkMountOperation` on.
-func (op *MountOperation) SetDisplay(display gdk.Displayer) {
+// SetDisplay sets the display to show windows of the GtkMountOperation on.
+func (op *MountOperation) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkDisplay        // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gtk_mount_operation_set_display(_arg0, _arg1)
 }
 
 // SetParent sets the transient parent for windows shown by the
-// `GtkMountOperation`.
-func (op *MountOperation) SetParent(parent Windower) {
+// GtkMountOperation.
+func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }

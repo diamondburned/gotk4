@@ -69,10 +69,10 @@ type ShortcutsShortcuter interface {
 	privateShortcutsShortcut()
 }
 
-// ShortcutsShortcut: `GtkShortcutsShortcut` represents a single keyboard
-// shortcut or gesture with a short text.
+// ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut
+// or gesture with a short text.
 //
-// This widget is only meant to be used with `GtkShortcutsWindow`.
+// This widget is only meant to be used with GtkShortcutsWindow.
 type ShortcutsShortcut struct {
 	Widget
 }

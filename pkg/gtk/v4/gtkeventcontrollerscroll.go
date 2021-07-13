@@ -23,7 +23,7 @@ func init() {
 }
 
 // EventControllerScrollFlags describes the behavior of a
-// `GtkEventControllerScroll`.
+// GtkEventControllerScroll.
 type EventControllerScrollFlags int
 
 const (
@@ -55,31 +55,31 @@ type EventControllerScroller interface {
 	SetFlags(flags EventControllerScrollFlags)
 }
 
-// EventControllerScroll: `GtkEventControllerScroll` is an event controller that
+// EventControllerScroll: GtkEventControllerScroll is an event controller that
 // handles scroll events.
 //
 // It is capable of handling both discrete and continuous scroll events from
 // mice or touchpads, abstracting them both with the
-// [signal@Gtk.EventControllerScroll::scroll] signal. Deltas in the discrete
-// case are multiples of 1.
+// gtk.EventControllerScroll::scroll signal. Deltas in the discrete case are
+// multiples of 1.
 //
-// In the case of continuous scroll events, `GtkEventControllerScroll` encloses
-// all [signal@Gtk.EventControllerScroll::scroll] emissions between two
-// [signal@Gtk.EventControllerScroll::scroll-begin] and
-// [signal@Gtk.EventControllerScroll::scroll-end] signals.
+// In the case of continuous scroll events, GtkEventControllerScroll encloses
+// all gtk.EventControllerScroll::scroll emissions between two
+// gtk.EventControllerScroll::scroll-begin and
+// gtk.EventControllerScroll::scroll-end signals.
 //
 // The behavior of the event controller can be modified by the flags given at
 // creation time, or modified at a later point through
-// [method@Gtk.EventControllerScroll.set_flags] (e.g. because the scrolling
-// conditions of the widget changed).
+// gtk.EventControllerScroll.SetFlags() (e.g. because the scrolling conditions
+// of the widget changed).
 //
 // The controller can be set up to emit motion for either/both vertical and
 // horizontal scroll events through GTK_EVENT_CONTROLLER_SCROLL_VERTICAL,
 // GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL and
 // GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES. If any axis is disabled, the
-// respective [signal@Gtk.EventControllerScroll::scroll] delta will be 0.
-// Vertical scroll events will be translated to horizontal motion for the
-// devices incapable of horizontal scrolling.
+// respective gtk.EventControllerScroll::scroll delta will be 0. Vertical scroll
+// events will be translated to horizontal motion for the devices incapable of
+// horizontal scrolling.
 //
 // The event controller can also be forced to emit discrete events on all
 // devices through GTK_EVENT_CONTROLLER_SCROLL_DISCRETE. This can be used to
@@ -87,9 +87,9 @@ type EventControllerScroller interface {
 // across combobox options).
 //
 // The GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag toggles the emission of the
-// [signal@Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
-// scrolling with two X/Y velocity arguments that are consistent with the motion
-// that was received.
+// gtk.EventControllerScroll::decelerate signal, emitted at the end of scrolling
+// with two X/Y velocity arguments that are consistent with the motion that was
+// received.
 type EventControllerScroll struct {
 	EventController
 }

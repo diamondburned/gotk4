@@ -128,8 +128,8 @@ func marshalWeight(p uintptr) (interface{}, error) {
 	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontMask bits in a `PangoFontMask` correspond to the set fields in a
-// `PangoFontDescription`.
+// FontMask bits in a PangoFontMask correspond to the set fields in a
+// PangoFontDescription.
 type FontMask int
 
 const (
@@ -162,8 +162,8 @@ func marshalFontMask(p uintptr) (interface{}, error) {
 type FontOverrider interface {
 	// Describe returns a description of the font, with font size set in points.
 	//
-	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
-	// size in device units.
+	// Use pango.Font.DescribeWithAbsoluteSize() if you want the font size in
+	// device units.
 	Describe() *FontDescription
 	DescribeAbsolute() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
@@ -173,7 +173,7 @@ type FontOverrider interface {
 	// Note that the font maintains a *weak* reference to the font map, so if
 	// all references to font map are dropped, the font map will be finalized
 	// even if there are fonts created with the font map that are still alive.
-	// In that case this function will return nil.
+	// In that case this function will return NULL.
 	//
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
@@ -185,7 +185,7 @@ type FontOverrider interface {
 	// language tag can be provided to indicate that the metrics should be
 	// retrieved that correspond to the script(s) used by that language.
 	//
-	// If @font is nil, this function gracefully sets some sane values in the
+	// If font is NULL, this function gracefully sets some sane values in the
 	// output variables and returns.
 	Metrics(language *Language) *FontMetrics
 }
@@ -199,7 +199,7 @@ type Fonter interface {
 	DescribeWithAbsoluteSize() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
-	// Face gets the `PangoFontFace` to which @font belongs.
+	// Face gets the PangoFontFace to which font belongs.
 	Face() *FontFace
 	// FontMap gets the font map for which the font was created.
 	FontMap() *FontMap
@@ -209,8 +209,8 @@ type Fonter interface {
 	HasChar(wc uint32) bool
 }
 
-// Font: `PangoFont` is used to represent a font in a
-// rendering-system-independent manner.
+// Font: PangoFont is used to represent a font in a rendering-system-independent
+// manner.
 type Font struct {
 	*externglib.Object
 }
@@ -234,8 +234,8 @@ func marshalFonter(p uintptr) (interface{}, error) {
 
 // Describe returns a description of the font, with font size set in points.
 //
-// Use [method@Pango.Font.describe_with_absolute_size] if you want the font size
-// in device units.
+// Use pango.Font.DescribeWithAbsoluteSize() if you want the font size in device
+// units.
 func (font *Font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -257,7 +257,7 @@ func (font *Font) Describe() *FontDescription {
 // DescribeWithAbsoluteSize returns a description of the font, with absolute
 // font size set in device units.
 //
-// Use [method@Pango.Font.describe] if you want the font size in points.
+// Use pango.Font.Describe() if you want the font size in points.
 func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -294,7 +294,7 @@ func (font *Font) Coverage(language *Language) *Coverage {
 	return _coverage
 }
 
-// Face gets the `PangoFontFace` to which @font belongs.
+// Face gets the PangoFontFace to which font belongs.
 func (font *Font) Face() *FontFace {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
@@ -315,7 +315,7 @@ func (font *Font) Face() *FontFace {
 // Note that the font maintains a *weak* reference to the font map, so if all
 // references to font map are dropped, the font map will be finalized even if
 // there are fonts created with the font map that are still alive. In that case
-// this function will return nil.
+// this function will return NULL.
 //
 // It is the responsibility of the user to ensure that the font map is kept
 // alive. In most uses this is not an issue as a Context holds a reference to
@@ -341,7 +341,7 @@ func (font *Font) FontMap() *FontMap {
 // language tag can be provided to indicate that the metrics should be retrieved
 // that correspond to the script(s) used by that language.
 //
-// If @font is nil, this function gracefully sets some sane values in the output
+// If font is NULL, this function gracefully sets some sane values in the output
 // variables and returns.
 func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _arg0 *C.PangoFont        // out
@@ -366,7 +366,7 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 
 // HasChar returns whether the font provides a glyph for this character.
 //
-// Returns true if @font can render @wc
+// Returns TRUE if font can render wc
 func (font *Font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -410,24 +410,24 @@ func FontDescriptionsFree(descs []*FontDescription) {
 // yet, so the interface currently has no use.
 type FontFaceOverrider interface {
 	// Describe returns the family, style, variant, weight and stretch of a
-	// `PangoFontFace`. The size field of the resulting font description will be
+	// PangoFontFace. The size field of the resulting font description will be
 	// unset.
 	Describe() *FontDescription
 	// FaceName gets a name representing the style of this face among the
-	// different faces in the `PangoFontFamily` for the face. The name is
-	// suitable for displaying to users.
+	// different faces in the PangoFontFamily for the face. The name is suitable
+	// for displaying to users.
 	FaceName() string
-	// Family gets the `PangoFontFamily` that @face belongs to.
+	// Family gets the PangoFontFamily that face belongs to.
 	Family() *FontFamily
-	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// IsSynthesized returns whether a PangoFontFace is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
 	IsSynthesized() bool
 	// ListSizes: list the available sizes for a font.
 	//
-	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
-	// at the location pointed to by @sizes and 0 at the location pointed to by
-	// @n_sizes. The sizes returned are in Pango units and are sorted in
+	// This is only applicable to bitmap fonts. For scalable fonts, stores NULL
+	// at the location pointed to by sizes and 0 at the location pointed to by
+	// n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
 	ListSizes() []int
 }
@@ -435,14 +435,14 @@ type FontFaceOverrider interface {
 // FontFacer describes FontFace's methods.
 type FontFacer interface {
 	// Describe returns the family, style, variant, weight and stretch of a
-	// `PangoFontFace`.
+	// PangoFontFace.
 	Describe() *FontDescription
 	// FaceName gets a name representing the style of this face among the
-	// different faces in the `PangoFontFamily` for the face.
+	// different faces in the PangoFontFamily for the face.
 	FaceName() string
-	// Family gets the `PangoFontFamily` that @face belongs to.
+	// Family gets the PangoFontFamily that face belongs to.
 	Family() *FontFamily
-	// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+	// IsSynthesized returns whether a PangoFontFace is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
 	IsSynthesized() bool
@@ -450,7 +450,7 @@ type FontFacer interface {
 	ListSizes() []int
 }
 
-// FontFace: `PangoFontFace` is used to represent a group of fonts with the same
+// FontFace: PangoFontFace is used to represent a group of fonts with the same
 // family, slant, weight, and width, but varying sizes.
 type FontFace struct {
 	*externglib.Object
@@ -474,7 +474,7 @@ func marshalFontFacer(p uintptr) (interface{}, error) {
 }
 
 // Describe returns the family, style, variant, weight and stretch of a
-// `PangoFontFace`. The size field of the resulting font description will be
+// PangoFontFace. The size field of the resulting font description will be
 // unset.
 func (face *FontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
@@ -495,7 +495,7 @@ func (face *FontFace) Describe() *FontDescription {
 }
 
 // FaceName gets a name representing the style of this face among the different
-// faces in the `PangoFontFamily` for the face. The name is suitable for
+// faces in the PangoFontFamily for the face. The name is suitable for
 // displaying to users.
 func (face *FontFace) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
@@ -512,7 +512,7 @@ func (face *FontFace) FaceName() string {
 	return _utf8
 }
 
-// Family gets the `PangoFontFamily` that @face belongs to.
+// Family gets the PangoFontFamily that face belongs to.
 func (face *FontFace) Family() *FontFamily {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
@@ -528,7 +528,7 @@ func (face *FontFace) Family() *FontFamily {
 	return _fontFamily
 }
 
-// IsSynthesized returns whether a `PangoFontFace` is synthesized by the
+// IsSynthesized returns whether a PangoFontFace is synthesized by the
 // underlying font rendering engine from another face, perhaps by shearing,
 // emboldening, or lightening it.
 func (face *FontFace) IsSynthesized() bool {
@@ -550,10 +550,9 @@ func (face *FontFace) IsSynthesized() bool {
 
 // ListSizes: list the available sizes for a font.
 //
-// This is only applicable to bitmap fonts. For scalable fonts, stores nil at
-// the location pointed to by @sizes and 0 at the location pointed to by
-// @n_sizes. The sizes returned are in Pango units and are sorted in ascending
-// order.
+// This is only applicable to bitmap fonts. For scalable fonts, stores NULL at
+// the location pointed to by sizes and 0 at the location pointed to by n_sizes.
+// The sizes returned are in Pango units and are sorted in ascending order.
 func (face *FontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
 	var _arg1 *C.int
@@ -577,12 +576,12 @@ func (face *FontFace) ListSizes() []int {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontFamilyOverrider interface {
-	// Face gets the `PangoFontFace` of @family with the given name.
+	// Face gets the PangoFontFace of family with the given name.
 	Face(name string) *FontFace
 	// Name gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
-	// in a `PangoFontDescription` to specify that a face from this family is
+	// in a PangoFontDescription to specify that a face from this family is
 	// desired.
 	Name() string
 	// IsMonospace: monospace font is a font designed for text display where the
@@ -595,14 +594,14 @@ type FontFamilyOverrider interface {
 	// character is typically double-width in a monospace font.
 	//
 	// The best way to find out the grid-cell size is to call
-	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
-	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
-	// by double-width characters.
+	// pango.FontMetrics.GetApproximateDigitWidth(), since the results of
+	// pango.FontMetrics.GetApproximateCharWidth() may be affected by
+	// double-width characters.
 	IsMonospace() bool
 	// IsVariable: variable font is a font which has axes that can be modified
 	// to produce different faces.
 	IsVariable() bool
-	// ListFaces lists the different font faces that make up @family.
+	// ListFaces lists the different font faces that make up family.
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
@@ -611,7 +610,7 @@ type FontFamilyOverrider interface {
 
 // FontFamilier describes FontFamily's methods.
 type FontFamilier interface {
-	// Face gets the `PangoFontFace` of @family with the given name.
+	// Face gets the PangoFontFace of family with the given name.
 	Face(name string) *FontFace
 	// Name gets the name of the family.
 	Name() string
@@ -621,11 +620,11 @@ type FontFamilier interface {
 	// IsVariable: variable font is a font which has axes that can be modified
 	// to produce different faces.
 	IsVariable() bool
-	// ListFaces lists the different font faces that make up @family.
+	// ListFaces lists the different font faces that make up family.
 	ListFaces() []*FontFace
 }
 
-// FontFamily: `PangoFontFamily` is used to represent a family of related font
+// FontFamily: PangoFontFamily is used to represent a family of related font
 // faces.
 //
 // The font faces in a family share a common design, but differ in slant,
@@ -651,7 +650,7 @@ func marshalFontFamilier(p uintptr) (interface{}, error) {
 	return wrapFontFamily(obj), nil
 }
 
-// Face gets the `PangoFontFace` of @family with the given name.
+// Face gets the PangoFontFace of family with the given name.
 func (family *FontFamily) Face(name string) *FontFace {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out
@@ -672,7 +671,7 @@ func (family *FontFamily) Face(name string) *FontFace {
 // Name gets the name of the family.
 //
 // The name is unique among all fonts for the font backend and can be used in a
-// `PangoFontDescription` to specify that a face from this family is desired.
+// PangoFontDescription to specify that a face from this family is desired.
 func (family *FontFamily) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
@@ -698,9 +697,9 @@ func (family *FontFamily) Name() string {
 // typically double-width in a monospace font.
 //
 // The best way to find out the grid-cell size is to call
-// [method@Pango.FontMetrics.get_approximate_digit_width], since the results of
-// [method@Pango.FontMetrics.get_approximate_char_width] may be affected by
-// double-width characters.
+// pango.FontMetrics.GetApproximateDigitWidth(), since the results of
+// pango.FontMetrics.GetApproximateCharWidth() may be affected by double-width
+// characters.
 func (family *FontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
@@ -737,7 +736,7 @@ func (family *FontFamily) IsVariable() bool {
 	return _ok
 }
 
-// ListFaces lists the different font faces that make up @family.
+// ListFaces lists the different font faces that make up family.
 //
 // The faces in a family share a common design, but differ in slant, weight,
 // width and other aspects.
@@ -764,10 +763,10 @@ func (family *FontFamily) ListFaces() []*FontFace {
 	return _faces
 }
 
-// FontDescription: `PangoFontDescription` describes a font in an
+// FontDescription: PangoFontDescription describes a font in an
 // implementation-independent manner.
 //
-// `PangoFontDescription` structures are used both to list what fonts are
+// PangoFontDescription structures are used both to list what fonts are
 // available on the system and also for specifying the characteristics of a font
 // to load.
 type FontDescription struct {
@@ -800,9 +799,9 @@ func (f *FontDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// BetterMatch determines if the style attributes of @new_match are a closer
-// match for @desc than those of @old_match are, or if @old_match is nil,
-// determines if @new_match is a match at all.
+// BetterMatch determines if the style attributes of new_match are a closer
+// match for desc than those of old_match are, or if old_match is NULL,
+// determines if new_match is a match at all.
 //
 // Approximate matching is done for weight and style; other style attributes
 // must match exactly. Style attributes are all attributes other than family and
@@ -810,7 +809,7 @@ func (f *FontDescription) Native() unsafe.Pointer {
 // PANGO_STYLE_OBLIQUE and PANGO_STYLE_ITALIC as matches, but not as good a
 // match as when the styles are equal.
 //
-// Note that @old_match must match @desc.
+// Note that old_match must match desc.
 func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -832,7 +831,7 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 	return _ok
 }
 
-// Copy: make a copy of a `PangoFontDescription`.
+// Copy: make a copy of a PangoFontDescription.
 func (desc *FontDescription) Copy() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
@@ -851,13 +850,13 @@ func (desc *FontDescription) Copy() *FontDescription {
 	return _fontDescription
 }
 
-// CopyStatic: make a copy of a `PangoFontDescription`, but don't duplicate
+// CopyStatic: make a copy of a PangoFontDescription, but don't duplicate
 // allocated fields.
 //
-// This is like [method@Pango.FontDescription.copy], but only a shallow copy is
-// made of the family name and other allocated fields. The result can only be
-// used until @desc is modified or freed. This is meant to be used when the copy
-// is only needed temporarily.
+// This is like pango.FontDescription.Copy(), but only a shallow copy is made of
+// the family name and other allocated fields. The result can only be used until
+// desc is modified or freed. This is meant to be used when the copy is only
+// needed temporarily.
 func (desc *FontDescription) CopyStatic() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
@@ -881,7 +880,7 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 // Two font descriptions are considered equal if the fonts they describe are
 // provably identical. This means that their masks do not have to match, as long
 // as other fields are all the same. (Two font descriptions may result in
-// identical fonts being loaded, but still compare false.)
+// identical fonts being loaded, but still compare FALSE.)
 func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -912,7 +911,7 @@ func (desc *FontDescription) free() {
 
 // Family gets the family name field of a font description.
 //
-// See [method@Pango.FontDescription.set_family].
+// See pango.FontDescription.SetFamily().
 func (desc *FontDescription) Family() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -930,7 +929,7 @@ func (desc *FontDescription) Family() string {
 
 // Gravity gets the gravity field of a font description.
 //
-// See [method@Pango.FontDescription.set_gravity].
+// See pango.FontDescription.SetGravity().
 func (desc *FontDescription) Gravity() Gravity {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoGravity          // in
@@ -964,7 +963,7 @@ func (desc *FontDescription) SetFields() FontMask {
 
 // Size gets the size field of a font description.
 //
-// See [method@Pango.FontDescription.set_size].
+// See pango.FontDescription.SetSize().
 func (desc *FontDescription) Size() int {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gint                  // in
@@ -983,8 +982,8 @@ func (desc *FontDescription) Size() int {
 // SizeIsAbsolute determines whether the size of the font is in points (not
 // absolute) or device units (absolute).
 //
-// See [method@Pango.FontDescription.set_size] and
-// [method@Pango.FontDescription.set_absolute_size].
+// See pango.FontDescription.SetSize() and
+// pango.FontDescription.SetAbsoluteSize().
 func (desc *FontDescription) SizeIsAbsolute() bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gboolean              // in
@@ -1004,7 +1003,7 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 
 // Stretch gets the stretch field of a font description.
 //
-// See [method@Pango.FontDescription.set_stretch].
+// See pango.FontDescription.SetStretch().
 func (desc *FontDescription) Stretch() Stretch {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStretch          // in
@@ -1020,9 +1019,9 @@ func (desc *FontDescription) Stretch() Stretch {
 	return _stretch
 }
 
-// Style gets the style field of a `PangoFontDescription`.
+// Style gets the style field of a PangoFontDescription.
 //
-// See [method@Pango.FontDescription.set_style].
+// See pango.FontDescription.SetStyle().
 func (desc *FontDescription) Style() Style {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStyle            // in
@@ -1038,9 +1037,9 @@ func (desc *FontDescription) Style() Style {
 	return _style
 }
 
-// Variant gets the variant field of a `PangoFontDescription`.
+// Variant gets the variant field of a PangoFontDescription.
 //
-// See [method@Pango.FontDescription.set_variant].
+// See pango.FontDescription.SetVariant().
 func (desc *FontDescription) Variant() Variant {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoVariant          // in
@@ -1058,7 +1057,7 @@ func (desc *FontDescription) Variant() Variant {
 
 // Variations gets the variations field of a font description.
 //
-// See [method@Pango.FontDescription.set_variations].
+// See pango.FontDescription.SetVariations().
 func (desc *FontDescription) Variations() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -1076,7 +1075,7 @@ func (desc *FontDescription) Variations() string {
 
 // Weight gets the weight field of a font description.
 //
-// See [method@Pango.FontDescription.set_weight].
+// See pango.FontDescription.SetWeight().
 func (desc *FontDescription) Weight() Weight {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoWeight           // in
@@ -1092,10 +1091,10 @@ func (desc *FontDescription) Weight() Weight {
 	return _weight
 }
 
-// Hash computes a hash of a `PangoFontDescription` structure.
+// Hash computes a hash of a PangoFontDescription structure.
 //
 // This is suitable to be used, for example, as an argument to
-// g_hash_table_new(). The hash value is independent of @desc->mask.
+// g_hash_table_new(). The hash value is independent of desc->mask.
 func (desc *FontDescription) Hash() uint {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.guint                 // in
@@ -1111,14 +1110,14 @@ func (desc *FontDescription) Hash() uint {
 	return _guint
 }
 
-// Merge merges the fields that are set in @desc_to_merge into the fields in
-// @desc.
+// Merge merges the fields that are set in desc_to_merge into the fields in
+// desc.
 //
-// If @replace_existing is false, only fields in @desc that are not already set
-// are affected. If true, then fields that are already set will be replaced as
+// If replace_existing is FALSE, only fields in desc that are not already set
+// are affected. If TRUE, then fields that are already set will be replaced as
 // well.
 //
-// If @desc_to_merge is nil, this function performs nothing.
+// If desc_to_merge is NULL, this function performs nothing.
 func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -1133,13 +1132,13 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 	C.pango_font_description_merge(_arg0, _arg1, _arg2)
 }
 
-// MergeStatic merges the fields that are set in @desc_to_merge into the fields
-// in @desc, without copying allocated fields.
+// MergeStatic merges the fields that are set in desc_to_merge into the fields
+// in desc, without copying allocated fields.
 //
-// This is like [method@Pango.FontDescription.merge], but only a shallow copy is
-// made of the family name and other allocated fields. @desc can only be used
-// until @desc_to_merge is modified or freed. This is meant to be used when the
-// merged font description is only needed temporarily.
+// This is like pango.FontDescription.Merge(), but only a shallow copy is made
+// of the family name and other allocated fields. desc can only be used until
+// desc_to_merge is modified or freed. This is meant to be used when the merged
+// font description is only needed temporarily.
 func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -1156,8 +1155,8 @@ func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceEx
 
 // SetAbsoluteSize sets the size field of a font description, in device units.
 //
-// This is mutually exclusive with [method@Pango.FontDescription.set_size] which
-// sets the font size in points.
+// This is mutually exclusive with pango.FontDescription.SetSize() which sets
+// the font size in points.
 func (desc *FontDescription) SetAbsoluteSize(size float64) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.double                // out
@@ -1171,9 +1170,8 @@ func (desc *FontDescription) SetAbsoluteSize(size float64) {
 // SetFamily sets the family name field of a font description.
 //
 // The family name represents a family of related font styles, and will resolve
-// to a particular `PangoFontFamily`. In some uses of `PangoFontDescription`, it
-// is also possible to use a comma separated list of family names for this
-// field.
+// to a particular PangoFontFamily. In some uses of PangoFontDescription, it is
+// also possible to use a comma separated list of family names for this field.
 func (desc *FontDescription) SetFamily(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -1187,11 +1185,11 @@ func (desc *FontDescription) SetFamily(family string) {
 // SetFamilyStatic sets the family name field of a font description, without
 // copying the string.
 //
-// This is like [method@Pango.FontDescription.set_family], except that no copy
-// of @family is made. The caller must make sure that the string passed in stays
-// around until @desc has been freed or the name is set again. This function can
-// be used if @family is a static string such as a C string literal, or if @desc
-// is only needed temporarily.
+// This is like pango.FontDescription.SetFamily(), except that no copy of family
+// is made. The caller must make sure that the string passed in stays around
+// until desc has been freed or the name is set again. This function can be used
+// if family is a static string such as a C string literal, or if desc is only
+// needed temporarily.
 func (desc *FontDescription) SetFamilyStatic(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -1204,12 +1202,12 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 
 // SetGravity sets the gravity field of a font description.
 //
-// The gravity field specifies how the glyphs should be rotated. If @gravity is
+// The gravity field specifies how the glyphs should be rotated. If gravity is
 // PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
 // description.
 //
 // This function is seldom useful to the user. Gravity should normally be set on
-// a `PangoContext`.
+// a PangoContext.
 func (desc *FontDescription) SetGravity(gravity Gravity) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoGravity          // out
@@ -1222,8 +1220,7 @@ func (desc *FontDescription) SetGravity(gravity Gravity) {
 
 // SetSize sets the size field of a font description in fractional points.
 //
-// This is mutually exclusive with
-// [method@Pango.FontDescription.set_absolute_size].
+// This is mutually exclusive with pango.FontDescription.SetAbsoluteSize().
 func (desc *FontDescription) SetSize(size int) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.gint                  // out
@@ -1236,8 +1233,7 @@ func (desc *FontDescription) SetSize(size int) {
 
 // SetStretch sets the stretch field of a font description.
 //
-// The [enum@Pango.Stretch] field specifies how narrow or wide the font should
-// be.
+// The pango.Stretch field specifies how narrow or wide the font should be.
 func (desc *FontDescription) SetStretch(stretch Stretch) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoStretch          // out
@@ -1248,10 +1244,10 @@ func (desc *FontDescription) SetStretch(stretch Stretch) {
 	C.pango_font_description_set_stretch(_arg0, _arg1)
 }
 
-// SetStyle sets the style field of a `PangoFontDescription`.
+// SetStyle sets the style field of a PangoFontDescription.
 //
-// The [enum@Pango.Style] enumeration describes whether the font is slanted and
-// the manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
+// The pango.Style enumeration describes whether the font is slanted and the
+// manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
 // NGO_STYLE_ITALIC, or NGO_STYLE_OBLIQUE.
 //
 // Most fonts will either have a italic style or an oblique style, but not both,
@@ -1269,7 +1265,7 @@ func (desc *FontDescription) SetStyle(style Style) {
 
 // SetVariant sets the variant field of a font description.
 //
-// The [enum@Pango.Variant] can either be PANGO_VARIANT_NORMAL or
+// The pango.Variant can either be PANGO_VARIANT_NORMAL or
 // PANGO_VARIANT_SMALL_CAPS.
 func (desc *FontDescription) SetVariant(variant Variant) {
 	var _arg0 *C.PangoFontDescription // out
@@ -1308,11 +1304,11 @@ func (desc *FontDescription) SetVariations(variations string) {
 
 // SetVariationsStatic sets the variations field of a font description.
 //
-// This is like [method@Pango.FontDescription.set_variations], except that no
-// copy of @variations is made. The caller must make sure that the string passed
-// in stays around until @desc has been freed or the name is set again. This
-// function can be used if @variations is a static string such as a C string
-// literal, or if @desc is only needed temporarily.
+// This is like pango.FontDescription.SetVariations(), except that no copy of
+// variations is made. The caller must make sure that the string passed in stays
+// around until desc has been freed or the name is set again. This function can
+// be used if variations is a static string such as a C string literal, or if
+// desc is only needed temporarily.
 func (desc *FontDescription) SetVariationsStatic(variations string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -1326,8 +1322,8 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 // SetWeight sets the weight field of a font description.
 //
 // The weight field specifies how bold or light the font should be. In addition
-// to the values of the [enum@Pango.Weight] enumeration, other intermediate
-// numeric values are possible.
+// to the values of the pango.Weight enumeration, other intermediate numeric
+// values are possible.
 func (desc *FontDescription) SetWeight(weight Weight) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoWeight           // out
@@ -1341,8 +1337,8 @@ func (desc *FontDescription) SetWeight(weight Weight) {
 // ToFilename creates a filename representation of a font description.
 //
 // The filename is identical to the result from calling
-// [method@Pango.FontDescription.to_string], but with underscores instead of
-// characters that are untypical in filenames, and in lower case only.
+// pango.FontDescription.ToString(), but with underscores instead of characters
+// that are untypical in filenames, and in lower case only.
 func (desc *FontDescription) ToFilename() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -1361,10 +1357,10 @@ func (desc *FontDescription) ToFilename() string {
 
 // String creates a string representation of a font description.
 //
-// See [type_func@Pango.FontDescription.from_string] for a description of the
-// format of the string representation. The family list in the string
-// description will only have a terminating comma if the last word of the list
-// is a valid style option.
+// See pango.FontDescription.FromString for a description of the format of the
+// string representation. The family list in the string description will only
+// have a terminating comma if the last word of the list is a valid style
+// option.
 func (desc *FontDescription) String() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -1381,7 +1377,7 @@ func (desc *FontDescription) String() string {
 	return _utf8
 }
 
-// UnsetFields unsets some of the fields in a `PangoFontDescription`.
+// UnsetFields unsets some of the fields in a PangoFontDescription.
 //
 // The unset fields will get back to their default values.
 func (desc *FontDescription) UnsetFields(toUnset FontMask) {
@@ -1406,7 +1402,7 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 // word describes one of style, variant, weight, stretch, or gravity, and SIZE
 // is a decimal number (size in points) or optionally followed by the unit
 // modifier "px" for absolute size. VARIATIONS is a comma-separated list of font
-// variation specifications of the form "\@axis=value" (the = sign is optional).
+// variation specifications of the form "\axis=value" (the = sign is optional).
 //
 // The following words are understood as styles: "Normal", "Roman", "Oblique",
 // "Italic".
@@ -1427,13 +1423,13 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // Any one of the options may be absent. If FAMILY-LIST is absent, then the
 // family_name field of the resulting font description will be initialized to
-// nil. If STYLE-OPTIONS is missing, then all style options will be set to the
+// NULL. If STYLE-OPTIONS is missing, then all style options will be set to the
 // default values. If SIZE is missing, the size in the resulting font
 // description will be set to 0.
 //
 // A typical example:
 //
-//    "Cantarell Italic Light 15 \@wght=200"
+//    "Cantarell Italic Light 15 \wght=200"
 func FontDescriptionFromString(str string) *FontDescription {
 	var _arg1 *C.char                 // out
 	var _cret *C.PangoFontDescription // in
@@ -1452,10 +1448,10 @@ func FontDescriptionFromString(str string) *FontDescription {
 	return _fontDescription
 }
 
-// FontMetrics: `PangoFontMetrics` structure holds the overall metric
-// information for a font.
+// FontMetrics: PangoFontMetrics structure holds the overall metric information
+// for a font.
 //
-// The information in a `PangoFontMetrics` structure may be restricted to a
+// The information in a PangoFontMetrics structure may be restricted to a
 // script. The fields of this structure are private to implementations of a font
 // backend. See the documentation of the corresponding getters for documentation
 // of their meaning.

@@ -62,24 +62,24 @@ const (
 	// URIFlagsParseRelaxed: parse the URI more relaxedly than the RFC 3986
 	// (https://tools.ietf.org/html/rfc3986) grammar specifies, fixing up or
 	// ignoring common mistakes in URIs coming from external sources. This is
-	// also needed for some obscure URI schemes where `;` separates the host
-	// from the path. Don’t use this flag unless you need to.
+	// also needed for some obscure URI schemes where ; separates the host from
+	// the path. Don’t use this flag unless you need to.
 	URIFlagsParseRelaxed URIFlags = 0b1
 	// URIFlagsHasPassword: userinfo field may contain a password, which will be
-	// separated from the username by `:`.
+	// separated from the username by :.
 	URIFlagsHasPassword URIFlags = 0b10
 	// URIFlagsHasAuthParams: userinfo may contain additional
 	// authentication-related parameters, which will be separated from the
-	// username and/or password by `;`.
+	// username and/or password by ;.
 	URIFlagsHasAuthParams URIFlags = 0b100
-	// URIFlagsEncoded: when parsing a URI, this indicates that `%`-encoded
+	// URIFlagsEncoded: when parsing a URI, this indicates that %-encoded
 	// characters in the userinfo, path, query, and fragment fields should not
 	// be decoded. (And likewise the host field if G_URI_FLAGS_NON_DNS is also
-	// set.) When building a URI, it indicates that you have already `%`-encoded
+	// set.) When building a URI, it indicates that you have already %-encoded
 	// the components, and so #GUri should not do any encoding itself.
 	URIFlagsEncoded URIFlags = 0b1000
 	// URIFlagsNonDns: host component should not be assumed to be a DNS hostname
-	// or IP address (for example, for `smb` URIs with NetBIOS hostnames).
+	// or IP address (for example, for smb URIs with NetBIOS hostnames).
 	URIFlagsNonDns URIFlags = 0b10000
 	// URIFlagsEncodedQuery: same as G_URI_FLAGS_ENCODED, for the query field
 	// only.
@@ -90,10 +90,9 @@ const (
 	// only.
 	URIFlagsEncodedFragment URIFlags = 0b10000000
 	// URIFlagsSchemeNormalize: scheme-based normalization will be applied. For
-	// example, when parsing an HTTP URI changing omitted path to `/` and
-	// omitted port to `80`; and when building a URI, changing empty path to `/`
-	// and default port `80`). This only supports a subset of known schemes.
-	// (Since: 2.68)
+	// example, when parsing an HTTP URI changing omitted path to / and omitted
+	// port to 80; and when building a URI, changing empty path to / and default
+	// port 80). This only supports a subset of known schemes. (Since: 2.68)
 	URIFlagsSchemeNormalize URIFlags = 0b100000000
 )
 
@@ -127,8 +126,8 @@ const (
 	URIParamsFlagsNone URIParamsFlags = 0b0
 	// URIParamsFlagsCaseInsensitive: parameter names are case insensitive.
 	URIParamsFlagsCaseInsensitive URIParamsFlags = 0b1
-	// URIParamsFlagsWwwForm: replace `+` with space character. Only useful for
-	// URLs on the web, using the `https` or `http` schemas.
+	// URIParamsFlagsWwwForm: replace + with space character. Only useful for
+	// URLs on the web, using the https or http schemas.
 	URIParamsFlagsWwwForm URIParamsFlags = 0b10
 	// URIParamsFlagsParseRelaxed: see G_URI_FLAGS_PARSE_RELAXED.
 	URIParamsFlagsParseRelaxed URIParamsFlags = 0b100
@@ -160,17 +159,17 @@ const (
 // Relative references have one or more components of the URI missing. In
 // particular, they have no scheme. Any other component, such as hostname,
 // query, etc. may be missing, apart from a path, which has to be specified (but
-// may be empty). The path may be relative, starting with `./` rather than `/`.
+// may be empty). The path may be relative, starting with ./ rather than /.
 //
-// For example, a valid relative reference is `./path?query`, `/?query#fragment`
-// or `//example.com`.
+// For example, a valid relative reference is ./path?query, /?query#fragment or
+// //example.com.
 //
 // Absolute URIs have a scheme specified. Any other components of the URI which
 // are missing are specified as explicitly unset in the URI, rather than being
 // resolved relative to a base URI using g_uri_parse_relative().
 //
-// For example, a valid absolute URI is `file:///home/bob` or
-// `https://search.com?query=string`.
+// For example, a valid absolute URI is file:///home/bob or
+// https://search.com?query=string.
 //
 // A #GUri instance is always an absolute URI. A string may be an absolute URI
 // or a relative reference; see the documentation for individual functions as to
@@ -206,7 +205,7 @@ const (
 //
 // For example, you might want to use G_URI_PARAMS_WWW_FORM when parsing the
 // params for a web URI, so compare the result of g_uri_peek_scheme() against
-// `http` and `https`.
+// http and https.
 //
 //
 // Building URIs
@@ -220,26 +219,26 @@ const (
 //
 // As with the parsing functions, the building functions take a Flags argument.
 // In particular, it is important to keep in mind whether the URI components you
-// are using are already `%`-encoded. If so, you must pass the
-// G_URI_FLAGS_ENCODED flag.
+// are using are already %-encoded. If so, you must pass the G_URI_FLAGS_ENCODED
+// flag.
 //
-// `file://` URIs
+// file:// URIs
 //
-// Note that Windows and Unix both define special rules for parsing `file://`
-// URIs (involving non-UTF-8 character sets on Unix, and the interpretation of
-// path separators on Windows). #GUri does not implement these rules. Use
+// Note that Windows and Unix both define special rules for parsing file:// URIs
+// (involving non-UTF-8 character sets on Unix, and the interpretation of path
+// separators on Windows). #GUri does not implement these rules. Use
 // g_filename_from_uri() and g_filename_to_uri() if you want to properly convert
-// between `file://` URIs and local filenames.
+// between file:// URIs and local filenames.
 //
 //
 // URI Equality
 //
-// Note that there is no `g_uri_equal ()` function, because comparing URIs
+// Note that there is no g_uri_equal () function, because comparing URIs
 // usefully requires scheme-specific knowledge that #GUri does not have. #GUri
 // can help with normalization if you use the various encoded Flags as well as
 // G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
-// `data:,foo` and `data:;base64,Zm9v` resolve to the same thing according to
-// the `data:` URI specification which GLib does not handle.
+// data:,foo and data:;base64,Zm9v resolve to the same thing according to the
+// data: URI specification which GLib does not handle.
 type URI struct {
 	native C.GUri
 }
@@ -254,9 +253,9 @@ func (u *URI) Native() unsafe.Pointer {
 	return unsafe.Pointer(&u.native)
 }
 
-// AuthParams gets @uri's authentication parameters, which may contain
-// `%`-encoding, depending on the flags with which @uri was created. (If @uri
-// was not created with G_URI_FLAGS_HAS_AUTH_PARAMS then this will be nil.)
+// AuthParams gets uri's authentication parameters, which may contain
+// %-encoding, depending on the flags with which uri was created. (If uri was
+// not created with G_URI_FLAGS_HAS_AUTH_PARAMS then this will be NULL.)
 //
 // Depending on the URI scheme, g_uri_parse_params() may be useful for further
 // parsing this information.
@@ -275,7 +274,7 @@ func (uri *URI) AuthParams() string {
 	return _utf8
 }
 
-// Flags gets @uri's flags set upon construction.
+// Flags gets uri's flags set upon construction.
 func (uri *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
@@ -291,8 +290,8 @@ func (uri *URI) Flags() URIFlags {
 	return _uriFlags
 }
 
-// Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
-// the flags with which @uri was created.
+// Fragment gets uri's fragment, which may contain %-encoding, depending on the
+// flags with which uri was created.
 func (uri *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -308,15 +307,15 @@ func (uri *URI) Fragment() string {
 	return _utf8
 }
 
-// Host gets @uri's host. This will never have `%`-encoded characters, unless it
-// is non-UTF-8 (which can only be the case if @uri was created with
+// Host gets uri's host. This will never have %-encoded characters, unless it is
+// non-UTF-8 (which can only be the case if uri was created with
 // G_URI_FLAGS_NON_DNS).
 //
-// If @uri contained an IPv6 address literal, this value will be just that
+// If uri contained an IPv6 address literal, this value will be just that
 // address, without the brackets around it that are necessary in the string form
 // of the URI. Note that in this case there may also be a scope ID attached to
-// the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
-// still encoded).
+// the address. Eg, fe80::1234em1 (or fe80::123425em1 if the string is still
+// encoded).
 func (uri *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -332,9 +331,9 @@ func (uri *URI) Host() string {
 	return _utf8
 }
 
-// Password gets @uri's password, which may contain `%`-encoding, depending on
-// the flags with which @uri was created. (If @uri was not created with
-// G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
+// Password gets uri's password, which may contain %-encoding, depending on the
+// flags with which uri was created. (If uri was not created with
+// G_URI_FLAGS_HAS_PASSWORD then this will be NULL.)
 func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -350,8 +349,8 @@ func (uri *URI) Password() string {
 	return _utf8
 }
 
-// Path gets @uri's path, which may contain `%`-encoding, depending on the flags
-// with which @uri was created.
+// Path gets uri's path, which may contain %-encoding, depending on the flags
+// with which uri was created.
 func (uri *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -367,7 +366,7 @@ func (uri *URI) Path() string {
 	return _utf8
 }
 
-// Port gets @uri's port.
+// Port gets uri's port.
 func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
@@ -383,10 +382,10 @@ func (uri *URI) Port() int {
 	return _gint
 }
 
-// Query gets @uri's query, which may contain `%`-encoding, depending on the
-// flags with which @uri was created.
+// Query gets uri's query, which may contain %-encoding, depending on the flags
+// with which uri was created.
 //
-// For queries consisting of a series of `name=value` parameters, ParamsIter or
+// For queries consisting of a series of name=value parameters, ParamsIter or
 // g_uri_parse_params() may be useful.
 func (uri *URI) Query() string {
 	var _arg0 *C.GUri  // out
@@ -403,8 +402,8 @@ func (uri *URI) Query() string {
 	return _utf8
 }
 
-// Scheme gets @uri's scheme. Note that this will always be all-lowercase,
-// regardless of the string or strings that @uri was created from.
+// Scheme gets uri's scheme. Note that this will always be all-lowercase,
+// regardless of the string or strings that uri was created from.
 func (uri *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -420,10 +419,10 @@ func (uri *URI) Scheme() string {
 	return _utf8
 }
 
-// User gets the ‘username’ component of @uri's userinfo, which may contain
-// `%`-encoding, depending on the flags with which @uri was created. If @uri was
-// not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
-// this is the same as g_uri_get_userinfo().
+// User gets the ‘username’ component of uri's userinfo, which may contain
+// %-encoding, depending on the flags with which uri was created. If uri was not
+// created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS, this is
+// the same as g_uri_get_userinfo().
 func (uri *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -439,8 +438,8 @@ func (uri *URI) User() string {
 	return _utf8
 }
 
-// Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
-// the flags with which @uri was created.
+// Userinfo gets uri's userinfo, which may contain %-encoding, depending on the
+// flags with which uri was created.
 func (uri *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -456,10 +455,9 @@ func (uri *URI) Userinfo() string {
 	return _utf8
 }
 
-// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
-// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
-// result is not a valid absolute URI, it will be discarded, and an error
-// returned.
+// ParseRelative parses uri_ref according to flags and, if it is a [relative
+// URI][relative-absolute-uris], resolves it relative to base_uri. If the result
+// is not a valid absolute URI, it will be discarded, and an error returned.
 func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _arg0 *C.GUri     // out
 	var _arg1 *C.gchar    // out
@@ -485,16 +483,16 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	return _uri, _goerr
 }
 
-// String returns a string representing @uri.
+// String returns a string representing uri.
 //
 // This is not guaranteed to return a string which is identical to the string
-// that @uri was parsed from. However, if the source URI was syntactically
+// that uri was parsed from. However, if the source URI was syntactically
 // correct (according to RFC 3986), and it was parsed with G_URI_FLAGS_ENCODED,
 // then g_uri_to_string() is guaranteed to return a string which is at least
 // semantically equivalent to the source URI (according to RFC 3986).
 //
-// If @uri might contain sensitive details, such as authentication parameters,
-// or private data in its query string, and the returned string is going to be
+// If uri might contain sensitive details, such as authentication parameters, or
+// private data in its query string, and the returned string is going to be
 // logged, then consider using g_uri_to_string_partial() to redact parts.
 func (uri *URI) String() string {
 	var _arg0 *C.GUri // out
@@ -512,8 +510,8 @@ func (uri *URI) String() string {
 	return _utf8
 }
 
-// ToStringPartial returns a string representing @uri, subject to the options in
-// @flags. See g_uri_to_string() and HideFlags for more details.
+// ToStringPartial returns a string representing uri, subject to the options in
+// flags. See g_uri_to_string() and HideFlags for more details.
 func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	var _arg0 *C.GUri         // out
 	var _arg1 C.GUriHideFlags // out
@@ -532,7 +530,7 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	return _utf8
 }
 
-// URIBuild creates a new #GUri from the given components according to @flags.
+// URIBuild creates a new #GUri from the given components according to flags.
 //
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
@@ -569,13 +567,13 @@ func UriBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 }
 
 // URIBuildWithUser creates a new #GUri from the given components according to
-// @flags (G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must
-// be coherent with the passed values, in particular use `%`-encoded values with
+// flags (G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The flags must be
+// coherent with the passed values, in particular use %-encoded values with
 // G_URI_FLAGS_ENCODED.
 //
 // In contrast to g_uri_build(), this allows specifying the components of the
-// ‘userinfo’ field separately. Note that @user must be non-nil if either
-// @password or @auth_params is non-nil.
+// ‘userinfo’ field separately. Note that user must be non-NULL if either
+// password or auth_params is non-NULL.
 func UriBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -616,12 +614,11 @@ func UriBuildWithUser(flags URIFlags, scheme string, user string, password strin
 //
 // Normally all characters that are not ‘unreserved’ (i.e. ASCII alphanumerical
 // characters plus dash, dot, underscore and tilde) are escaped. But if you
-// specify characters in @reserved_chars_allowed they are not escaped. This is
+// specify characters in reserved_chars_allowed they are not escaped. This is
 // useful for the ‘reserved’ characters in the URI specification, since those
 // are allowed unescaped in some portions of a URI.
 //
-// Though technically incorrect, this will also allow escaping nul bytes as
-// `%“00`.
+// Though technically incorrect, this will also allow escaping nul bytes as 00.
 func UriEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	var _arg1 *C.guint8
 	var _arg2 C.gsize
@@ -648,7 +645,7 @@ func UriEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 //
 // Normally all characters that are not "unreserved" (i.e. ASCII alphanumerical
 // characters plus dash, dot, underscore and tilde) are escaped. But if you
-// specify characters in @reserved_chars_allowed they are not escaped. This is
+// specify characters in reserved_chars_allowed they are not escaped. This is
 // useful for the "reserved" characters in the URI specification, since those
 // are allowed unescaped in some portions of a URI.
 func UriEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bool) string {
@@ -673,14 +670,14 @@ func UriEscapeString(unescaped string, reservedCharsAllowed string, allowUtf8 bo
 	return _utf8
 }
 
-// URIIsValid parses @uri_string according to @flags, to determine whether it is
-// a valid [absolute URI][relative-absolute-uris], i.e. it does not need to be
+// URIIsValid parses uri_string according to flags, to determine whether it is a
+// valid [absolute URI][relative-absolute-uris], i.e. it does not need to be
 // resolved relative to another URI using g_uri_parse_relative().
 //
 // If it’s not a valid URI, an error is returned explaining how it’s invalid.
 //
 // See g_uri_split(), and the definition of Flags, for more information on the
-// effect of @flags.
+// effect of flags.
 func UriIsValid(uriString string, flags URIFlags) error {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -698,20 +695,20 @@ func UriIsValid(uriString string, flags URIFlags) error {
 	return _goerr
 }
 
-// URIJoin joins the given components together according to @flags to create an
-// absolute URI string. @path may not be nil (though it may be the empty
+// URIJoin joins the given components together according to flags to create an
+// absolute URI string. path may not be NULL (though it may be the empty
 // string).
 //
-// When @host is present, @path must either be empty or begin with a slash (`/`)
-// character. When @host is not present, @path cannot begin with two slash
-// characters (`//`). See RFC 3986, section 3
+// When host is present, path must either be empty or begin with a slash (/)
+// character. When host is not present, path cannot begin with two slash
+// characters (//). See RFC 3986, section 3
 // (https://tools.ietf.org/html/rfc3986#section-3).
 //
 // See also g_uri_join_with_user(), which allows specifying the components of
 // the ‘userinfo’ separately.
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
-// in @flags.
+// in flags.
 func UriJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -742,15 +739,15 @@ func UriJoin(flags URIFlags, scheme string, userinfo string, host string, port i
 	return _utf8
 }
 
-// URIJoinWithUser joins the given components together according to @flags to
-// create an absolute URI string. @path may not be nil (though it may be the
+// URIJoinWithUser joins the given components together according to flags to
+// create an absolute URI string. path may not be NULL (though it may be the
 // empty string).
 //
 // In contrast to g_uri_join(), this allows specifying the components of the
 // ‘userinfo’ separately. It otherwise behaves the same.
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
-// in @flags.
+// in flags.
 func UriJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -785,7 +782,7 @@ func UriJoinWithUser(flags URIFlags, scheme string, user string, password string
 	return _utf8
 }
 
-// URIParse parses @uri_string according to @flags. If the result is not a valid
+// URIParse parses uri_string according to flags. If the result is not a valid
 // [absolute URI][relative-absolute-uris], it will be discarded, and an error
 // returned.
 func UriParse(uriString string, flags URIFlags) (*URI, error) {
@@ -817,24 +814,23 @@ func UriParse(uriString string, flags URIFlags) (*URI, error) {
 // final returned value. If you need to handle repeated attributes differently,
 // use ParamsIter.
 //
-// The @params string is assumed to still be `%`-encoded, but the returned
-// values will be fully decoded. (Thus it is possible that the returned values
-// may contain `=` or @separators, if the value was encoded in the input.)
-// Invalid `%`-encoding is treated as with the G_URI_FLAGS_PARSE_RELAXED rules
-// for g_uri_parse(). (However, if @params is the path or query string from a
-// #GUri that was parsed without G_URI_FLAGS_PARSE_RELAXED and
-// G_URI_FLAGS_ENCODED, then you already know that it does not contain any
-// invalid encoding.)
+// The params string is assumed to still be %-encoded, but the returned values
+// will be fully decoded. (Thus it is possible that the returned values may
+// contain = or separators, if the value was encoded in the input.) Invalid
+// %-encoding is treated as with the G_URI_FLAGS_PARSE_RELAXED rules for
+// g_uri_parse(). (However, if params is the path or query string from a #GUri
+// that was parsed without G_URI_FLAGS_PARSE_RELAXED and G_URI_FLAGS_ENCODED,
+// then you already know that it does not contain any invalid encoding.)
 //
 // G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
 //
-// If G_URI_PARAMS_CASE_INSENSITIVE is passed to @flags, attributes will be
-// compared case-insensitively, so a params string `attr=123&Attr=456` will only
-// return a single attribute–value pair, `Attr=456`. Case will be preserved in
-// the returned attributes.
+// If G_URI_PARAMS_CASE_INSENSITIVE is passed to flags, attributes will be
+// compared case-insensitively, so a params string attr=123&Attr=456 will only
+// return a single attribute–value pair, Attr=456. Case will be preserved in the
+// returned attributes.
 //
-// If @params cannot be parsed (for example, it contains two @separators
-// characters in a row), then @error is set and nil is returned.
+// If params cannot be parsed (for example, it contains two separators
+// characters in a row), then error is set and NULL is returned.
 func UriParseParams(params string, length int, separators string, flags URIParamsFlags) (*HashTable, error) {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gssize          // out
@@ -867,7 +863,7 @@ func UriParseParams(params string, length int, separators string, flags URIParam
 //
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
-// Common schemes include `file`, `https`, `svn+ssh`, etc.
+// Common schemes include file, https, svn+ssh, etc.
 func UriParseScheme(uri string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -889,7 +885,7 @@ func UriParseScheme(uri string) string {
 //
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
-// Common schemes include `file`, `https`, `svn+ssh`, etc.
+// Common schemes include file, https, svn+ssh, etc.
 //
 // Unlike g_uri_parse_scheme(), the returned scheme is normalized to
 // all-lowercase and does not need to be freed.
@@ -908,13 +904,13 @@ func UriPeekScheme(uri string) string {
 	return _utf8
 }
 
-// URIResolveRelative parses @uri_ref according to @flags and, if it is a
+// URIResolveRelative parses uri_ref according to flags and, if it is a
 // [relative URI][relative-absolute-uris], resolves it relative to
-// @base_uri_string. If the result is not a valid absolute URI, it will be
+// base_uri_string. If the result is not a valid absolute URI, it will be
 // discarded, and an error returned.
 //
-// (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
-// is invalid or not absolute.)
+// (If base_uri_string is NULL, this just returns uri_ref, or NULL if uri_ref is
+// invalid or not absolute.)
 func UriResolveRelative(baseUriString string, uriRef string, flags URIFlags) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -938,19 +934,18 @@ func UriResolveRelative(baseUriString string, uriRef string, flags URIFlags) (st
 	return _utf8, _goerr
 }
 
-// URISplit parses @uri_ref (which can be an [absolute or relative
-// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
-// Any component that doesn't appear in @uri_ref will be returned as nil (but
-// note that all URIs always have a path component, though it may be the empty
+// URISplit parses uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to flags, and returns the pieces. Any
+// component that doesn't appear in uri_ref will be returned as NULL (but note
+// that all URIs always have a path component, though it may be the empty
 // string).
 //
-// If @flags contains G_URI_FLAGS_ENCODED, then `%`-encoded characters in
-// @uri_ref will remain encoded in the output strings. (If not, then all such
-// characters will be decoded.) Note that decoding will only work if the URI
-// components are ASCII or UTF-8, so you will need to use G_URI_FLAGS_ENCODED if
-// they are not.
+// If flags contains G_URI_FLAGS_ENCODED, then %-encoded characters in uri_ref
+// will remain encoded in the output strings. (If not, then all such characters
+// will be decoded.) Note that decoding will only work if the URI components are
+// ASCII or UTF-8, so you will need to use G_URI_FLAGS_ENCODED if they are not.
 //
-// Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
+// Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS flags
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
 func UriSplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int, path string, query string, fragment string, goerr error) {
@@ -997,11 +992,11 @@ func UriSplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 	return _scheme, _userinfo, _host, _port, _path, _query, _fragment, _goerr
 }
 
-// URISplitNetwork parses @uri_string (which must be an [absolute
-// URI][relative-absolute-uris]) according to @flags, and returns the pieces
+// URISplitNetwork parses uri_string (which must be an [absolute
+// URI][relative-absolute-uris]) according to flags, and returns the pieces
 // relevant to connecting to a host. See the documentation for g_uri_split() for
 // more details; this is mostly a wrapper around that function with simpler
-// arguments. However, it will return an error if @uri_string is a relative URI,
+// arguments. However, it will return an error if uri_string is a relative URI,
 // or does not contain a hostname component.
 func UriSplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int, goerr error) {
 	var _arg1 *C.gchar    // out
@@ -1031,16 +1026,16 @@ func UriSplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 	return _scheme, _host, _port, _goerr
 }
 
-// URISplitWithUser parses @uri_ref (which can be an [absolute or relative
-// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
-// Any component that doesn't appear in @uri_ref will be returned as nil (but
-// note that all URIs always have a path component, though it may be the empty
+// URISplitWithUser parses uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to flags, and returns the pieces. Any
+// component that doesn't appear in uri_ref will be returned as NULL (but note
+// that all URIs always have a path component, though it may be the empty
 // string).
 //
 // See g_uri_split(), and the definition of Flags, for more information on the
-// effect of @flags. Note that @password will only be parsed out if @flags
-// contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
-// if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
+// effect of flags. Note that password will only be parsed out if flags contains
+// G_URI_FLAGS_HAS_PASSWORD, and auth_params will only be parsed out if flags
+// contains G_URI_FLAGS_HAS_AUTH_PARAMS.
 func UriSplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -1095,13 +1090,13 @@ func UriSplitWithUser(uriRef string, flags URIFlags) (scheme string, user string
 
 // URIUnescapeSegment unescapes a segment of an escaped string.
 //
-// If any of the characters in @illegal_characters or the NUL character appears
-// as an escaped character in @escaped_string, then that is an error and nil
+// If any of the characters in illegal_characters or the NUL character appears
+// as an escaped character in escaped_string, then that is an error and NULL
 // will be returned. This is useful if you want to avoid for instance having a
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
 //
-// Note: `NUL` byte is not accepted in the output, in contrast to
+// Note: NUL byte is not accepted in the output, in contrast to
 // g_uri_unescape_bytes().
 func UriUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string {
 	var _arg1 *C.char // out
@@ -1125,8 +1120,8 @@ func UriUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 
 // URIUnescapeString unescapes a whole escaped string.
 //
-// If any of the characters in @illegal_characters or the NUL character appears
-// as an escaped character in @escaped_string, then that is an error and nil
+// If any of the characters in illegal_characters or the NUL character appears
+// as an escaped character in escaped_string, then that is an error and NULL
 // will be returned. This is useful if you want to avoid for instance having a
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
@@ -1149,9 +1144,8 @@ func UriUnescapeString(escapedString string, illegalCharacters string) string {
 }
 
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
-// part of the URI value. For example
-// `scheme://server/path?query=string&is=there` has two attributes –
-// `query=string` and `is=there` – in its query part.
+// part of the URI value. For example scheme://server/path?query=string&is=there
+// has two attributes – query=string and is=there – in its query part.
 //
 // A ParamsIter structure represents an iterator that can be used to iterate
 // over the attribute/value pairs of a URI query string. ParamsIter structures
@@ -1169,18 +1163,18 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 
 // Init initializes an attribute/value pair iterator.
 //
-// The iterator keeps pointers to the @params and @separators arguments, those
+// The iterator keeps pointers to the params and separators arguments, those
 // variables must thus outlive the iterator and not be modified during the
 // iteration.
 //
-// If G_URI_PARAMS_WWW_FORM is passed in @flags, `+` characters in the param
-// string will be replaced with spaces in the output. For example, `foo=bar+baz`
-// will give attribute `foo` with value `bar baz`. This is commonly used on the
-// web (the `https` and `http` schemes only), but is deprecated in favour of the
-// equivalent of encoding spaces as `20`.
+// If G_URI_PARAMS_WWW_FORM is passed in flags, + characters in the param string
+// will be replaced with spaces in the output. For example, foo=bar+baz will
+// give attribute foo with value bar baz. This is commonly used on the web (the
+// https and http schemes only), but is deprecated in favour of the equivalent
+// of encoding spaces as 20.
 //
 // Unlike with g_uri_parse_params(), G_URI_PARAMS_CASE_INSENSITIVE has no effect
-// if passed to @flags for g_uri_params_iter_init(). The caller is responsible
+// if passed to flags for g_uri_params_iter_init(). The caller is responsible
 // for doing their own case-insensitive comparisons.
 //
 //    GUriParamsIter iter;
@@ -1214,14 +1208,14 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 	C.g_uri_params_iter_init(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// Next advances @iter and retrieves the next attribute/value. false is returned
-// if an error has occurred (in which case @error is set), or if the end of the
-// iteration is reached (in which case @attribute and @value are set to nil and
-// the iterator becomes invalid). If true is returned, g_uri_params_iter_next()
+// Next advances iter and retrieves the next attribute/value. FALSE is returned
+// if an error has occurred (in which case error is set), or if the end of the
+// iteration is reached (in which case attribute and value are set to NULL and
+// the iterator becomes invalid). If TRUE is returned, g_uri_params_iter_next()
 // may be called again to receive another attribute/value pair.
 //
-// Note that the same @attribute may be returned multiple times, since URIs
-// allow repeated attributes.
+// Note that the same attribute may be returned multiple times, since URIs allow
+// repeated attributes.
 func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // in

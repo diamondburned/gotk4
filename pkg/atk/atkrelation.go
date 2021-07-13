@@ -39,7 +39,7 @@ func RelationTypeForName(name string) RelationType {
 }
 
 // RelationTypeGetName gets the description string describing the RelationType
-// @type.
+// type.
 func RelationTypeGetName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.gchar          // in
@@ -55,7 +55,7 @@ func RelationTypeGetName(typ RelationType) string {
 	return _utf8
 }
 
-// RelationTypeRegister: associate @name with a new RelationType
+// RelationTypeRegister: associate name with a new RelationType
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -75,12 +75,12 @@ func RelationTypeRegister(name string) RelationType {
 type Relationer interface {
 	// AddTarget adds the specified AtkObject to the target for the relation, if
 	// it is not already present.
-	AddTarget(target ObjectClasser)
-	// RelationType gets the type of @relation
+	AddTarget(target *ObjectClass)
+	// RelationType gets the type of relation
 	RelationType() RelationType
 	// RemoveTarget: remove the specified AtkObject from the target for the
 	// relation.
-	RemoveTarget(target ObjectClasser) bool
+	RemoveTarget(target *ObjectClass) bool
 }
 
 // Relation describes a relation between an object and one or more other
@@ -136,17 +136,17 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 
 // AddTarget adds the specified AtkObject to the target for the relation, if it
 // is not already present. See also atk_object_add_relationship().
-func (relation *Relation) AddTarget(target ObjectClasser) {
+func (relation *Relation) AddTarget(target *ObjectClass) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	C.atk_relation_add_target(_arg0, _arg1)
 }
 
-// RelationType gets the type of @relation
+// RelationType gets the type of relation
 func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
@@ -164,13 +164,13 @@ func (relation *Relation) RelationType() RelationType {
 
 // RemoveTarget: remove the specified AtkObject from the target for the
 // relation.
-func (relation *Relation) RemoveTarget(target ObjectClasser) bool {
+func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.AtkRelation)(unsafe.Pointer(relation.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_relation_remove_target(_arg0, _arg1)
 

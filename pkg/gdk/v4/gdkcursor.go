@@ -23,7 +23,7 @@ func init() {
 
 // Cursorer describes Cursor's methods.
 type Cursorer interface {
-	// Fallback returns the fallback for this @cursor.
+	// Fallback returns the fallback for this cursor.
 	Fallback() *Cursor
 	// HotspotX returns the horizontal offset of the hotspot.
 	HotspotX() int
@@ -35,40 +35,38 @@ type Cursorer interface {
 	Texture() *Texture
 }
 
-// Cursor: `GdkCursor` is used to create and destroy cursors.
+// Cursor: GdkCursor is used to create and destroy cursors.
 //
 // Cursors are immutable objects, so once you created them, there is no way to
 // modify them later. You should create a new cursor when you want to change
 // something about it.
 //
 // Cursors by themselves are not very interesting: they must be bound to a
-// window for users to see them. This is done with
-// [method@Gdk.Surface.set_cursor] or [method@Gdk.Surface.set_device_cursor].
-// Applications will typically use higher-level GTK functions such as
-// [method@Gtk.Widget.set_cursor]` instead.
+// window for users to see them. This is done with gdk.Surface.SetCursor() or
+// gdk.Surface.SetDeviceCursor(). Applications will typically use higher-level
+// GTK functions such as gtk.Widget.SetCursor()` instead.
 //
-// Cursors are not bound to a given [class@Gdk.Display], so they can be shared.
-// However, the appearance of cursors may vary when used on different platforms.
+// Cursors are not bound to a given gdk.Display, so they can be shared. However,
+// the appearance of cursors may vary when used on different platforms.
 //
 //
 // Named and texture cursors
 //
 // There are multiple ways to create cursors. The platform's own cursors can be
-// created with [ctor@Gdk.Cursor.new_from_name]. That function lists the
-// commonly available names that are shared with the CSS specification. Other
-// names may be available, depending on the platform in use. On some platforms,
-// what images are used for named cursors may be influenced by the cursor theme.
+// created with gdk.Cursor.NewFromName. That function lists the commonly
+// available names that are shared with the CSS specification. Other names may
+// be available, depending on the platform in use. On some platforms, what
+// images are used for named cursors may be influenced by the cursor theme.
 //
-// Another option to create a cursor is to use
-// [ctor@Gdk.Cursor.new_from_texture] and provide an image to use for the
-// cursor.
+// Another option to create a cursor is to use gdk.Cursor.NewFromTexture and
+// provide an image to use for the cursor.
 //
 // To ease work with unsupported cursors, a fallback cursor can be provided. If
-// a [class@Gdk.Surface] cannot use a cursor because of the reasons mentioned
-// above, it will try the fallback cursor. Fallback cursors can themselves have
-// fallback cursors again, so it is possible to provide a chain of progressively
-// easier to support cursors. If none of the provided cursors can be supported,
-// the default cursor will be the ultimate fallback.
+// a gdk.Surface cannot use a cursor because of the reasons mentioned above, it
+// will try the fallback cursor. Fallback cursors can themselves have fallback
+// cursors again, so it is possible to provide a chain of progressively easier
+// to support cursors. If none of the provided cursors can be supported, the
+// default cursor will be the ultimate fallback.
 type Cursor struct {
 	*externglib.Object
 }
@@ -90,7 +88,7 @@ func marshalCursorer(p uintptr) (interface{}, error) {
 	return wrapCursor(obj), nil
 }
 
-// NewCursorFromName creates a new cursor by looking up @name in the current
+// NewCursorFromName creates a new cursor by looking up name in the current
 // cursor theme.
 //
 // A recommended set of cursor names that will work across different platforms
@@ -115,13 +113,13 @@ func marshalCursorer(p uintptr) (interface{}, error) {
 // (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
 // "zoom-out" | |
-func NewCursorFromName(name string, fallback Cursorer) *Cursor {
+func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _arg1 *C.char      // out
 	var _arg2 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
 
 	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
@@ -132,8 +130,8 @@ func NewCursorFromName(name string, fallback Cursorer) *Cursor {
 	return _cursor
 }
 
-// NewCursorFromTexture creates a new cursor from a `GdkTexture`.
-func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback Cursorer) *Cursor {
+// NewCursorFromTexture creates a new cursor from a GdkTexture.
+func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback *Cursor) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out
@@ -143,7 +141,7 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
 	_arg2 = C.int(hotspotX)
 	_arg3 = C.int(hotspotY)
-	_arg4 = (*C.GdkCursor)(unsafe.Pointer((fallback).(gextras.Nativer).Native()))
+	_arg4 = (*C.GdkCursor)(unsafe.Pointer(fallback.Native()))
 
 	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 
@@ -154,12 +152,12 @@ func NewCursorFromTexture(texture Texturer, hotspotX int, hotspotY int, fallback
 	return _cursor
 }
 
-// Fallback returns the fallback for this @cursor.
+// Fallback returns the fallback for this cursor.
 //
 // The fallback will be used if this cursor is not available on a given
-// `GdkDisplay`. For named cursors, this can happen when using nonstandard names
+// GdkDisplay. For named cursors, this can happen when using nonstandard names
 // or when using an incomplete cursor theme. For textured cursors, this can
-// happen when the texture is too large or when the `GdkDisplay` it is used on
+// happen when the texture is too large or when the GdkDisplay it is used on
 // does not support textured cursors.
 func (cursor *Cursor) Fallback() *Cursor {
 	var _arg0 *C.GdkCursor // out
@@ -182,7 +180,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 //
 // Note that named cursors may have a nonzero hotspot, but this function will
 // only return the hotspot position for cursors created with
-// [ctor@Gdk.Cursor.new_from_texture].
+// gdk.Cursor.NewFromTexture.
 func (cursor *Cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
@@ -204,7 +202,7 @@ func (cursor *Cursor) HotspotX() int {
 //
 // Note that named cursors may have a nonzero hotspot, but this function will
 // only return the hotspot position for cursors created with
-// [ctor@Gdk.Cursor.new_from_texture].
+// gdk.Cursor.NewFromTexture.
 func (cursor *Cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
@@ -222,7 +220,7 @@ func (cursor *Cursor) HotspotY() int {
 
 // Name returns the name of the cursor.
 //
-// If the cursor is not a named cursor, nil will be returned.
+// If the cursor is not a named cursor, NULL will be returned.
 func (cursor *Cursor) Name() string {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.char      // in
@@ -240,7 +238,7 @@ func (cursor *Cursor) Name() string {
 
 // Texture returns the texture for the cursor.
 //
-// If the cursor is a named cursor, nil will be returned.
+// If the cursor is a named cursor, NULL will be returned.
 func (cursor *Cursor) Texture() *Texture {
 	var _arg0 *C.GdkCursor  // out
 	var _cret *C.GdkTexture // in

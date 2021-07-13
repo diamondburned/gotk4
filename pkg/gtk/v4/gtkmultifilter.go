@@ -29,10 +29,10 @@ type AnyFilterer interface {
 	privateAnyFilter()
 }
 
-// AnyFilter: `GtkAnyFilter` matches an item when at least one of its filters
+// AnyFilter: GtkAnyFilter matches an item when at least one of its filters
 // matches.
 //
-// To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
+// To add filters to a GtkAnyFilter, use gtk.MultiFilter.Append().
 type AnyFilter struct {
 	MultiFilter
 }
@@ -66,7 +66,7 @@ func marshalAnyFilterer(p uintptr) (interface{}, error) {
 
 // NewAnyFilter creates a new empty "any" filter.
 //
-// Use [method@Gtk.MultiFilter.append] to add filters to it.
+// Use gtk.MultiFilter.Append() to add filters to it.
 //
 // This filter matches an item if any of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
@@ -90,10 +90,9 @@ type EveryFilterer interface {
 	privateEveryFilter()
 }
 
-// EveryFilter: `GtkEveryFilter` matches an item when each of its filters
-// matches.
+// EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
 //
-// To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
+// To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
 type EveryFilter struct {
 	MultiFilter
 }
@@ -127,7 +126,7 @@ func marshalEveryFilterer(p uintptr) (interface{}, error) {
 
 // NewEveryFilter creates a new empty "every" filter.
 //
-// Use [method@Gtk.MultiFilter.append] to add filters to it.
+// Use gtk.MultiFilter.Append() to add filters to it.
 //
 // This filter matches an item if each of the filters added to it matches the
 // item. In particular, this means that if no filter has been added to it, the
@@ -148,14 +147,14 @@ func (*EveryFilter) privateEveryFilter() {}
 
 // MultiFilterer describes MultiFilter's methods.
 type MultiFilterer interface {
-	// Append adds a @filter to @self to use for matching.
-	Append(filter Filterer)
-	// Remove removes the filter at the given @position from the list of filters
-	// used by @self.
+	// Append adds a filter to self to use for matching.
+	Append(filter *Filter)
+	// Remove removes the filter at the given position from the list of filters
+	// used by self.
 	Remove(position uint)
 }
 
-// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
+// MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
 	Filter
@@ -195,21 +194,21 @@ func (v *MultiFilter) Native() uintptr {
 	return v.Filter.Object.Native()
 }
 
-// Append adds a @filter to @self to use for matching.
-func (self *MultiFilter) Append(filter Filterer) {
+// Append adds a filter to self to use for matching.
+func (self *MultiFilter) Append(filter *Filter) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 *C.GtkFilter      // out
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkFilter)(unsafe.Pointer((filter).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
 	C.gtk_multi_filter_append(_arg0, _arg1)
 }
 
-// Remove removes the filter at the given @position from the list of filters
-// used by @self.
+// Remove removes the filter at the given position from the list of filters used
+// by self.
 //
-// If @position is larger than the number of filters, nothing happens and the
+// If position is larger than the number of filters, nothing happens and the
 // function returns.
 func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out

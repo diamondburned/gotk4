@@ -54,35 +54,35 @@ type ToolbarOverrider interface {
 // Toolbarer describes Toolbar's methods.
 type Toolbarer interface {
 	// DropIndex returns the position corresponding to the indicated point on
-	// @toolbar.
+	// toolbar.
 	DropIndex(x int, y int) int
 	// IconSize retrieves the icon size for the toolbar.
 	IconSize() IconSize
-	// ItemIndex returns the position of @item on the toolbar, starting from 0.
-	ItemIndex(item ToolItemer) int
+	// ItemIndex returns the position of item on the toolbar, starting from 0.
+	ItemIndex(item *ToolItem) int
 	// NItems returns the number of items on the toolbar.
 	NItems() int
-	// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
-	// not contain an @n'th item.
+	// NthItem returns the n'th item on toolbar, or NULL if the toolbar does not
+	// contain an n'th item.
 	NthItem(n int) *ToolItem
-	// ReliefStyle returns the relief style of buttons on @toolbar.
+	// ReliefStyle returns the relief style of buttons on toolbar.
 	ReliefStyle() ReliefStyle
 	// ShowArrow returns whether the toolbar has an overflow menu.
 	ShowArrow() bool
 	// Style retrieves whether the toolbar has text, icons, or both .
 	Style() ToolbarStyle
-	// Insert a ToolItem into the toolbar at position @pos.
-	Insert(item ToolItemer, pos int)
-	// SetDropHighlightItem highlights @toolbar to give an idea of what it would
-	// look like if @item was added to @toolbar at the position indicated by
-	// @index_.
-	SetDropHighlightItem(toolItem ToolItemer, index_ int)
+	// Insert a ToolItem into the toolbar at position pos.
+	Insert(item *ToolItem, pos int)
+	// SetDropHighlightItem highlights toolbar to give an idea of what it would
+	// look like if item was added to toolbar at the position indicated by
+	// index_.
+	SetDropHighlightItem(toolItem *ToolItem, index_ int)
 	// SetIconSize: this function sets the size of stock icons in the toolbar.
 	SetIconSize(iconSize IconSize)
-	// SetShowArrow sets whether to show an overflow menu when @toolbar isn’t
+	// SetShowArrow sets whether to show an overflow menu when toolbar isn’t
 	// allocated enough size to show all of its items.
 	SetShowArrow(showArrow bool)
-	// SetStyle alters the view of @toolbar to display either icons only, text
+	// SetStyle alters the view of toolbar to display either icons only, text
 	// only, or both.
 	SetStyle(style ToolbarStyle)
 	// UnsetIconSize unsets toolbar icon size set with
@@ -109,7 +109,7 @@ type Toolbarer interface {
 // By default, a toolbar can be shrunk, upon which it will add an arrow button
 // to show an overflow menu offering access to any ToolItem child that has a
 // proxy menu item. To disable this and request enough size for all children,
-// call gtk_toolbar_set_show_arrow() to set Toolbar:show-arrow to false.
+// call gtk_toolbar_set_show_arrow() to set Toolbar:show-arrow to FALSE.
 //
 // Creating a context menu for the toolbar can be done by connecting to the
 // Toolbar::popup-context-menu signal.
@@ -190,10 +190,10 @@ func (v *Toolbar) Native() uintptr {
 }
 
 // DropIndex returns the position corresponding to the indicated point on
-// @toolbar. This is useful when dragging items to the toolbar: this function
+// toolbar. This is useful when dragging items to the toolbar: this function
 // returns the position a new item should be inserted.
 //
-// @x and @y are in @toolbar coordinates.
+// x and y are in toolbar coordinates.
 func (toolbar *Toolbar) DropIndex(x int, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
@@ -230,15 +230,15 @@ func (toolbar *Toolbar) IconSize() IconSize {
 	return _iconSize
 }
 
-// ItemIndex returns the position of @item on the toolbar, starting from 0. It
-// is an error if @item is not a child of the toolbar.
-func (toolbar *Toolbar) ItemIndex(item ToolItemer) int {
+// ItemIndex returns the position of item on the toolbar, starting from 0. It is
+// an error if item is not a child of the toolbar.
+func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _cret C.gint         // in
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 
@@ -265,8 +265,8 @@ func (toolbar *Toolbar) NItems() int {
 	return _gint
 }
 
-// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does not
-// contain an @n'th item.
+// NthItem returns the n'th item on toolbar, or NULL if the toolbar does not
+// contain an n'th item.
 func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 C.gint         // out
@@ -284,7 +284,7 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	return _toolItem
 }
 
-// ReliefStyle returns the relief style of buttons on @toolbar. See
+// ReliefStyle returns the relief style of buttons on toolbar. See
 // gtk_button_set_relief().
 func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
@@ -337,36 +337,35 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-// Insert a ToolItem into the toolbar at position @pos. If @pos is 0 the item is
-// prepended to the start of the toolbar. If @pos is negative, the item is
+// Insert a ToolItem into the toolbar at position pos. If pos is 0 the item is
+// prepended to the start of the toolbar. If pos is negative, the item is
 // appended to the end of the toolbar.
-func (toolbar *Toolbar) Insert(item ToolItemer, pos int) {
+func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 	_arg2 = C.gint(pos)
 
 	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
 }
 
-// SetDropHighlightItem highlights @toolbar to give an idea of what it would
-// look like if @item was added to @toolbar at the position indicated by
-// @index_. If @item is nil, highlighting is turned off. In that case @index_ is
-// ignored.
+// SetDropHighlightItem highlights toolbar to give an idea of what it would look
+// like if item was added to toolbar at the position indicated by index_. If
+// item is NULL, highlighting is turned off. In that case index_ is ignored.
 //
-// The @tool_item passed to this function must not be part of any widget
+// The tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to any
 // widget hierarchy or used as highlight item for another toolbar.
-func (toolbar *Toolbar) SetDropHighlightItem(toolItem ToolItemer, index_ int) {
+func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(toolbar.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((toolItem).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
 	_arg2 = C.gint(index_)
 
 	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)
@@ -388,12 +387,12 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	C.gtk_toolbar_set_icon_size(_arg0, _arg1)
 }
 
-// SetShowArrow sets whether to show an overflow menu when @toolbar isn’t
-// allocated enough size to show all of its items. If true, items which can’t
-// fit in @toolbar, and which have a proxy menu item set by
+// SetShowArrow sets whether to show an overflow menu when toolbar isn’t
+// allocated enough size to show all of its items. If TRUE, items which can’t
+// fit in toolbar, and which have a proxy menu item set by
 // gtk_tool_item_set_proxy_menu_item() or ToolItem::create-menu-proxy, will be
 // available in an overflow menu, which can be opened by an added arrow button.
-// If false, @toolbar will request enough size to fit all of its child items
+// If FALSE, toolbar will request enough size to fit all of its child items
 // without any overflow.
 func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	var _arg0 *C.GtkToolbar // out
@@ -407,7 +406,7 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	C.gtk_toolbar_set_show_arrow(_arg0, _arg1)
 }
 
-// SetStyle alters the view of @toolbar to display either icons only, text only,
+// SetStyle alters the view of toolbar to display either icons only, text only,
 // or both.
 func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolbar     // out

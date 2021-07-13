@@ -37,14 +37,14 @@ type ScaleOverrider interface {
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
 	// NGO_SCALE.
 	//
-	// If the Scale:draw-value property is false, the return values are
+	// If the Scale:draw-value property is FALSE, the return values are
 	// undefined.
 	LayoutOffsets() (x int, y int)
 }
 
 // Scaler describes Scale's methods.
 type Scaler interface {
-	// AddMark adds a mark at @value.
+	// AddMark adds a mark at value.
 	AddMark(value float64, position PositionType, markup string)
 	// ClearMarks removes any marks that have been added with
 	// gtk_scale_add_mark().
@@ -69,7 +69,7 @@ type Scaler interface {
 	// SetDrawValue specifies whether the current value is displayed as a string
 	// next to the slider.
 	SetDrawValue(drawValue bool)
-	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
+	// SetHasOrigin: if Scale:has-origin is set to TRUE (the default), the scale
 	// will highlight the part of the trough between the origin (bottom or left
 	// side) and the current value.
 	SetHasOrigin(hasOrigin bool)
@@ -183,13 +183,13 @@ func marshalScaler(p uintptr) (interface{}, error) {
 }
 
 // NewScale creates a new Scale.
-func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
+func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
 	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_scale_new(_arg1, _arg2)
 
@@ -201,11 +201,11 @@ func NewScale(orientation Orientation, adjustment Adjustmenter) *Scale {
 }
 
 // NewScaleWithRange creates a new scale widget with the given orientation that
-// lets the user input a number between @min and @max (including @min and @max)
-// with the increment @step. @step must be nonzero; it’s the distance the slider
-// moves when using the arrow keys to adjust the scale value.
+// lets the user input a number between min and max (including min and max) with
+// the increment step. step must be nonzero; it’s the distance the slider moves
+// when using the arrow keys to adjust the scale value.
 //
-// Note that the way in which the precision is derived works best if @step is a
+// Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_scale_set_digits() to correct it.
 func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) *Scale {
@@ -229,13 +229,13 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	return _scale
 }
 
-// AddMark adds a mark at @value.
+// AddMark adds a mark at value.
 //
 // A mark is indicated visually by drawing a tick mark next to the scale, and
 // GTK+ makes it easy for the user to position the scale exactly at the marks
 // value.
 //
-// If @markup is not nil, text is shown next to the tick mark.
+// If markup is not NULL, text is shown next to the tick mark.
 //
 // To remove marks from a scale, use gtk_scale_clear_marks().
 func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
@@ -340,7 +340,7 @@ func (scale *Scale) Layout() *pango.Layout {
 // representing the text in the scale. Remember when using the Layout function
 // you need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
 //
-// If the Scale:draw-value property is false, the return values are undefined.
+// If the Scale:draw-value property is FALSE, the return values are undefined.
 func (scale *Scale) LayoutOffsets() (x int, y int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // in
@@ -378,8 +378,8 @@ func (scale *Scale) ValuePos() PositionType {
 // SetDigits sets the number of decimal places that are displayed in the value.
 // Also causes the value of the adjustment to be rounded to this number of
 // digits, so the retrieved value matches the displayed one, if Scale:draw-value
-// is true when the value changes. If you want to enforce rounding the value
-// when Scale:draw-value is false, you can set Range:round-digits instead.
+// is TRUE when the value changes. If you want to enforce rounding the value
+// when Scale:draw-value is FALSE, you can set Range:round-digits instead.
 //
 // Note that rounding to a small number of digits can interfere with the smooth
 // autoscrolling that is built into Scale. As an alternative, you can use the
@@ -408,7 +408,7 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 	C.gtk_scale_set_draw_value(_arg0, _arg1)
 }
 
-// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
+// SetHasOrigin: if Scale:has-origin is set to TRUE (the default), the scale
 // will highlight the part of the trough between the origin (bottom or left
 // side) and the current value.
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {

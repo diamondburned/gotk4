@@ -27,62 +27,62 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolverer},
+		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProXYResolverer},
 	})
 }
 
-// SimpleProxyResolverer describes SimpleProxyResolver's methods.
-type SimpleProxyResolverer interface {
-	// SetDefaultProxy sets the default proxy on @resolver, to be used for any
+// SimpleProXYResolverer describes SimpleProXYResolver's methods.
+type SimpleProXYResolverer interface {
+	// SetDefaultProXY sets the default proxy on resolver, to be used for any
 	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
 	// g_simple_proxy_resolver_set_uri_proxy().
-	SetDefaultProxy(defaultProxy string)
-	// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose
-	// scheme matches @uri_scheme (and which don't match
-	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
-	SetURIProxy(uriScheme string, proxy string)
+	SetDefaultProXY(defaultProxy string)
+	// SetURIProXY adds a URI-scheme-specific proxy to resolver; URIs whose
+	// scheme matches uri_scheme (and which don't match
+	// ProxyResolver:ignore-hosts) will be proxied via proxy.
+	SetURIProXY(uriScheme string, proxy string)
 }
 
-// SimpleProxyResolver is a simple Resolver implementation that handles a single
+// SimpleProXYResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.
 //
 // ProxyResolver is never the default proxy resolver, but it can be used as the
 // base class for another proxy resolver implementation, or it can be created
 // and used manually, such as with g_socket_client_set_proxy_resolver().
-type SimpleProxyResolver struct {
+type SimpleProXYResolver struct {
 	*externglib.Object
 
-	ProxyResolver
+	ProXYResolver
 }
 
 var (
-	_ SimpleProxyResolverer = (*SimpleProxyResolver)(nil)
-	_ gextras.Nativer       = (*SimpleProxyResolver)(nil)
+	_ SimpleProXYResolverer = (*SimpleProXYResolver)(nil)
+	_ gextras.Nativer       = (*SimpleProXYResolver)(nil)
 )
 
-func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
-	return &SimpleProxyResolver{
+func wrapSimpleProXYResolver(obj *externglib.Object) *SimpleProXYResolver {
+	return &SimpleProXYResolver{
 		Object: obj,
-		ProxyResolver: ProxyResolver{
+		ProXYResolver: ProXYResolver{
 			Object: obj,
 		},
 	}
 }
 
-func marshalSimpleProxyResolverer(p uintptr) (interface{}, error) {
+func marshalSimpleProXYResolverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapSimpleProxyResolver(obj), nil
+	return wrapSimpleProXYResolver(obj), nil
 }
 
-// SetDefaultProxy sets the default proxy on @resolver, to be used for any URIs
+// SetDefaultProXY sets the default proxy on resolver, to be used for any URIs
 // that don't match ProxyResolver:ignore-hosts or a proxy set via
 // g_simple_proxy_resolver_set_uri_proxy().
 //
-// If @default_proxy starts with "socks://", ProxyResolver will treat it as
+// If default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
-func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
+func (resolver *SimpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 
@@ -92,14 +92,14 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
-// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose scheme
-// matches @uri_scheme (and which don't match ProxyResolver:ignore-hosts) will
-// be proxied via @proxy.
+// SetURIProXY adds a URI-scheme-specific proxy to resolver; URIs whose scheme
+// matches uri_scheme (and which don't match ProxyResolver:ignore-hosts) will be
+// proxied via proxy.
 //
-// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
+// As with ProxyResolver:default-proxy, if proxy starts with "socks://",
 // ProxyResolver will treat it as referring to all three of the socks5, socks4a,
 // and socks4 proxy types.
-func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
+func (resolver *SimpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.gchar                // out

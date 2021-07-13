@@ -23,13 +23,18 @@ const (
 )
 
 var (
+	cmtListRegex      = regexp.MustCompile(`(?m)\n?\n^- `)
+	cmtCodeSpanRegex  = regexp.MustCompile("`.*?`")
+	cmtReferenceRegex = regexp.MustCompile(`\[(\w+)@(.*?)\]`)
 	cmtNamespaceRegex = regexp.MustCompile(`#[A-Z]\w+?[A-Z]`)
 	cmtArgumentRegex  = regexp.MustCompile(`@\w+`)
 	cmtPrimitiveRegex = regexp.MustCompile(`%\w+`)
 	cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
 	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
-	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n\]\|\n*`)
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
+	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n\]\|\n*`)
+
+	mdCodeblockRegex = regexp.MustCompile(`(?ms)\n*\x60\x60\x60\w*\n(.*?)\x60\x60\x60\n*`)
 )
 
 // InfoFields contains common fields that a GIR schema type may contain. These
@@ -149,10 +154,6 @@ func AdditionalString(str string) Option { return additionalString(str) }
 // TrailingNewLine adds a trailing new line during documentation generation.
 func TrailingNewLine() Option { return trailingNewLine{} }
 
-func isLower(s string) bool {
-	return strings.IndexFunc(s, unicode.IsUpper) == -1
-}
-
 // Synopsis renders the synopsis of the documentation.
 func Synopsis(v interface{}, indentLvl int, opts ...Option) string {
 	return goDoc(v, indentLvl, append(opts, synopsize{}))
@@ -172,12 +173,7 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 
 	if inf.Name != nil {
 		orig = *inf.Name
-
-		if strings.Contains(orig, "_") || isLower(orig) {
-			self = strcases.SnakeToGo(true, orig)
-		} else {
-			self = strcases.PascalToGo(orig)
-		}
+		self = strcases.Go(orig)
 	}
 
 	var docBuilder strings.Builder
@@ -304,8 +300,8 @@ func format(self, cmt string, opts []Option) string {
 	}
 
 	// Fix up the codeblocks and render it using GoDoc format.
-	cmt = cmtCodeblockRegex.ReplaceAllStringFunc(cmt, func(match string) string {
-		matches := cmtCodeblockRegex.FindStringSubmatch(match)
+	codeblockFunc := func(re *regexp.Regexp, match string) string {
+		matches := re.FindStringSubmatch(match)
 
 		lines := strings.Split(matches[1], "\n")
 		for i, line := range lines {
@@ -314,6 +310,12 @@ func format(self, cmt string, opts []Option) string {
 
 		// Use our own new lines.
 		return "\n\n" + strings.Join(lines, "\n") + "\n\n"
+	}
+	cmt = cmtCodeblockRegex.ReplaceAllStringFunc(cmt, func(match string) string {
+		return codeblockFunc(cmtCodeblockRegex, match)
+	})
+	cmt = mdCodeblockRegex.ReplaceAllStringFunc(cmt, func(match string) string {
+		return codeblockFunc(mdCodeblockRegex, match)
 	})
 
 	// Fix up headers in the preprocessing stage. We also sanitize the trailing
@@ -326,11 +328,62 @@ func format(self, cmt string, opts []Option) string {
 		return str[len(str)-1:]
 	})
 
-	// Undo all hyperlinks.
+	// Put list entries into their own paragraphs.
+	cmt = cmtListRegex.ReplaceAllStringFunc(cmt, func(in string) string {
+		if strings.HasPrefix(in, "\n\n") {
+			return in
+		}
+		return "\n" + in
+	})
+
+	// Unwrap all hyperlinks.
 	cmt = cmtHyperlinkRegex.ReplaceAllString(cmt, "$1 ($2)")
 
 	// Fix up new lines before we throw this into ToText so to not confuse it.
 	cmt = tidyParagraphs(cmt)
+
+	cmt = cmtCodeSpanRegex.ReplaceAllStringFunc(cmt, func(in string) string {
+		return strings.Trim(in, "`")
+	})
+
+	cmt = cmtReferenceRegex.ReplaceAllStringFunc(cmt, func(in string) string {
+		matches := cmtReferenceRegex.FindStringSubmatch(in)
+
+		rtype := matches[1]
+		if rtype == "id" {
+			// Keep as original
+			return matches[2]
+		}
+
+		words := strings.Split(matches[2], ".")
+		if len(words) > 0 {
+			// Package namespace.
+			words[0] = strings.ToLower(words[0])
+		}
+		if len(words) > 1 {
+			// Class/Record type or whatever.
+			words[1] = strcases.Go(words[1])
+			// Indicate that this is a function if possible.
+			switch rtype {
+			case "func":
+				words[1] += "()"
+			}
+		}
+		if len(words) > 2 {
+			// Method name.
+			words[2] = strcases.SnakeToGo(true, words[2])
+			// Indicate that this is a function if possible.
+			switch rtype {
+			case "method", "vfunc":
+				words[2] += "()"
+			}
+		}
+
+		return strings.Join(words, ".")
+	})
+
+	cmt = cmtPrimitiveRegex.ReplaceAllStringFunc(cmt, func(in string) string { return in[1:] })
+	cmt = cmtArgumentRegex.ReplaceAllStringFunc(cmt, func(in string) string { return in[1:] })
 
 	// TODO: Replace snake-cased functions with known ones in the namespace.
 	// Prepend a C prefix otherwise.

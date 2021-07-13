@@ -28,8 +28,8 @@ type TextChildAnchorer interface {
 	Deleted() bool
 }
 
-// TextChildAnchor: `GtkTextChildAnchor` is a spot in a `GtkTextBuffer` where
-// child widgets can be “anchored”.
+// TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child
+// widgets can be “anchored”.
 //
 // The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor struct {
@@ -53,12 +53,11 @@ func marshalTextChildAnchorer(p uintptr) (interface{}, error) {
 	return wrapTextChildAnchor(obj), nil
 }
 
-// NewTextChildAnchor creates a new `GtkTextChildAnchor`.
+// NewTextChildAnchor creates a new GtkTextChildAnchor.
 //
-// Usually you would then insert it into a `GtkTextBuffer` with
-// [method@Gtk.TextBuffer.insert_child_anchor]. To perform the creation and
-// insertion in one step, use the convenience function
-// [method@Gtk.TextBuffer.create_child_anchor].
+// Usually you would then insert it into a GtkTextBuffer with
+// gtk.TextBuffer.InsertChildAnchor(). To perform the creation and insertion in
+// one step, use the convenience function gtk.TextBuffer.CreateChildAnchor().
 func NewTextChildAnchor() *TextChildAnchor {
 	var _cret *C.GtkTextChildAnchor // in
 

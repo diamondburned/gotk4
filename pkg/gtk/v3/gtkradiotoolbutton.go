@@ -99,12 +99,12 @@ func marshalRadioToolButtoner(p uintptr) (interface{}, error) {
 }
 
 // NewRadioToolButtonFromWidget creates a new RadioToolButton adding it to the
-// same group as @gruup
-func NewRadioToolButtonFromWidget(group RadioToolButtoner) *RadioToolButton {
+// same group as gruup
+func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
 
 	_cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
 
@@ -116,16 +116,16 @@ func NewRadioToolButtonFromWidget(group RadioToolButtoner) *RadioToolButton {
 }
 
 // NewRadioToolButtonWithStockFromWidget creates a new RadioToolButton adding it
-// to the same group as @group. The new RadioToolButton will contain an icon and
-// label from the stock item indicated by @stock_id.
+// to the same group as group. The new RadioToolButton will contain an icon and
+// label from the stock item indicated by stock_id.
 //
 // Deprecated: gtk_radio_tool_button_new_from_widget.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButtoner, stockId string) *RadioToolButton {
+func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId string) *RadioToolButton {
 	var _arg1 *C.GtkRadioToolButton // out
 	var _arg2 *C.gchar              // out
 	var _cret *C.GtkToolItem        // in
 
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer((group).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 
 	_cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)

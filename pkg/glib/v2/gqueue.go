@@ -22,7 +22,7 @@ func (q *Queue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
-// Clear removes all the elements in @queue. If queue elements contain
+// Clear removes all the elements in queue. If queue elements contain
 // dynamically-allocated memory, they should be freed first.
 func (queue *Queue) Clear() {
 	var _arg0 *C.GQueue // out
@@ -33,7 +33,7 @@ func (queue *Queue) Clear() {
 }
 
 // Free frees the memory allocated for the #GQueue. Only call this function if
-// @queue was created with g_queue_new(). If queue elements contain
+// queue was created with g_queue_new(). If queue elements contain
 // dynamically-allocated memory, they should be freed first.
 //
 // If queue elements contain dynamically-allocated memory, you should either use
@@ -46,7 +46,7 @@ func (queue *Queue) free() {
 	C.g_queue_free(_arg0)
 }
 
-// Length returns the number of items in @queue.
+// Length returns the number of items in queue.
 func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
@@ -62,8 +62,7 @@ func (queue *Queue) Length() uint {
 	return _guint
 }
 
-// Index returns the position of the first element in @queue which contains
-// @data.
+// Index returns the position of the first element in queue which contains data.
 func (queue *Queue) Index(data cgo.Handle) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -92,7 +91,7 @@ func (queue *Queue) Init() {
 	C.g_queue_init(_arg0)
 }
 
-// IsEmpty returns true if the queue is empty.
+// IsEmpty returns TRUE if the queue is empty.
 func (queue *Queue) IsEmpty() bool {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gboolean // in
@@ -126,7 +125,7 @@ func (queue *Queue) PeekHead() cgo.Handle {
 	return _gpointer
 }
 
-// PeekNth returns the @n'th element of @queue.
+// PeekNth returns the n'th element of queue.
 func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -176,7 +175,7 @@ func (queue *Queue) PopHead() cgo.Handle {
 	return _gpointer
 }
 
-// PopNth removes the @n'th element of @queue and returns its data.
+// PopNth removes the n'th element of queue and returns its data.
 func (queue *Queue) PopNth(n uint) cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -221,7 +220,7 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 	C.g_queue_push_head(_arg0, _arg1)
 }
 
-// PushNth inserts a new element into @queue at the given position.
+// PushNth inserts a new element into queue at the given position.
 func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -245,7 +244,7 @@ func (queue *Queue) PushTail(data cgo.Handle) {
 	C.g_queue_push_tail(_arg0, _arg1)
 }
 
-// Remove removes the first element in @queue that contains @data.
+// Remove removes the first element in queue that contains data.
 func (queue *Queue) Remove(data cgo.Handle) bool {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -265,7 +264,7 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 	return _ok
 }
 
-// RemoveAll: remove all elements whose data equals @data from @queue.
+// RemoveAll: remove all elements whose data equals data from queue.
 func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -283,7 +282,7 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	return _guint
 }
 
-// Reverse reverses the order of the items in @queue.
+// Reverse reverses the order of the items in queue.
 func (queue *Queue) Reverse() {
 	var _arg0 *C.GQueue // out
 

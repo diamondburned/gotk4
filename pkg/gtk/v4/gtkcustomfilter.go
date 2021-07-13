@@ -23,11 +23,11 @@ func init() {
 	})
 }
 
-// CustomFilterFunc: user function that is called to determine if the @item
+// CustomFilterFunc: user function that is called to determine if the item
 // should be matched.
 //
-// If the filter matches the item, this function must return true. If the item
-// should be filtered out, false must be returned.
+// If the filter matches the item, this function must return TRUE. If the item
+// should be filtered out, FALSE must be returned.
 type CustomFilterFunc func(item *externglib.Object, userData cgo.Handle) (ok bool)
 
 //export gotk4_CustomFilterFunc
@@ -58,7 +58,7 @@ type CustomFilterer interface {
 	privateCustomFilter()
 }
 
-// CustomFilter: `GtkCustomFilter` determines whether to include items with a
+// CustomFilter: GtkCustomFilter determines whether to include items with a
 // callback.
 type CustomFilter struct {
 	Filter

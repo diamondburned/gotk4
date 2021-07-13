@@ -71,7 +71,7 @@ func marshalDeviceTooler(p uintptr) (interface{}, error) {
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known. When
 // non-zero, the identificator is unique for the given tool model, meaning that
-// two identical tools will share the same @hardware_id, but will have different
+// two identical tools will share the same hardware_id, but will have different
 // serial numbers (see gdk_device_tool_get_serial()).
 //
 // This is a more concrete (and device specific) method to identify a DeviceTool
@@ -146,10 +146,10 @@ type DragContexter interface {
 	SourceWindow() *Window
 	// SuggestedAction determines the suggested drag action of the context.
 	SuggestedAction() DragAction
-	// ManageDnd requests the drag and drop operation to be managed by @context.
+	// ManageDnd requests the drag and drop operation to be managed by context.
 	ManageDnd(ipcWindow Windower, actions DragAction) bool
-	// SetDevice associates a Device to @context, so all Drag and Drop events
-	// for @context are emitted as if they came from this device.
+	// SetDevice associates a Device to context, so all Drag and Drop events for
+	// context are emitted as if they came from this device.
 	SetDevice(device Devicer)
 	// SetHotspot sets the position of the drag window that will be kept under
 	// the cursor hotspot.
@@ -229,7 +229,7 @@ func (context *DragContext) Device() *Device {
 // DragWindow returns the window on which the drag icon should be rendered
 // during the drag operation. Note that the window may not be available until
 // the drag operation has begun. GDK will move the window in accordance with the
-// ongoing drag operation. The window is owned by @context and will be destroyed
+// ongoing drag operation. The window is owned by context and will be destroyed
 // when the drag operation is over.
 func (context *DragContext) DragWindow() *Window {
 	var _arg0 *C.GdkDragContext // out
@@ -310,20 +310,26 @@ func (context *DragContext) SuggestedAction() DragAction {
 	return _dragAction
 }
 
-// ManageDnd requests the drag and drop operation to be managed by @context.
-// When a drag and drop operation becomes managed, the DragContext will
-// internally handle all input and source-side EventDND events as required by
-// the windowing system.
+// ManageDnd requests the drag and drop operation to be managed by context. When
+// a drag and drop operation becomes managed, the DragContext will internally
+// handle all input and source-side EventDND events as required by the windowing
+// system.
 //
 // Once the drag and drop operation is managed, the drag context will emit the
-// following signals: - The DragContext::action-changed signal whenever the
-// final action to be performed by the drag and drop operation changes. - The
-// DragContext::drop-performed signal after the user performs the drag and drop
-// gesture (typically by releasing the mouse button). - The
-// DragContext::dnd-finished signal after the drag and drop operation concludes
-// (after all Selection transfers happen). - The DragContext::cancel signal if
-// the drag and drop operation is finished but doesn't happen over an accepting
-// destination, or is cancelled through other means.
+// following signals:
+//
+// - The DragContext::action-changed signal whenever the final action to be
+// performed by the drag and drop operation changes.
+//
+// - The DragContext::drop-performed signal after the user performs the drag and
+// drop gesture (typically by releasing the mouse button).
+//
+// - The DragContext::dnd-finished signal after the drag and drop operation
+// concludes (after all Selection transfers happen).
+//
+// - The DragContext::cancel signal if the drag and drop operation is finished
+// but doesn't happen over an accepting destination, or is cancelled through
+// other means.
 func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
@@ -345,8 +351,8 @@ func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bo
 	return _ok
 }
 
-// SetDevice associates a Device to @context, so all Drag and Drop events for
-// @context are emitted as if they came from this device.
+// SetDevice associates a Device to context, so all Drag and Drop events for
+// context are emitted as if they came from this device.
 func (context *DragContext) SetDevice(device Devicer) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkDevice      // out

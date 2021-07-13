@@ -70,17 +70,17 @@ type Monitorer interface {
 	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
-	// IsValid returns true if the @monitor object corresponds to a physical
+	// IsValid returns TRUE if the monitor object corresponds to a physical
 	// monitor.
 	IsValid() bool
 }
 
-// Monitor: `GdkMonitor` objects represent the individual outputs that are
-// associated with a `GdkDisplay`.
+// Monitor: GdkMonitor objects represent the individual outputs that are
+// associated with a GdkDisplay.
 //
-// `GdkDisplay` keeps a `GListModel` to enumerate and monitor monitors with
-// [method@Gdk.Display.get_monitors]. You can use
-// [method@Gdk.Display.get_monitor_at_surface] to find a particular monitor.
+// GdkDisplay keeps a GListModel to enumerate and monitor monitors with
+// gdk.Display.GetMonitors(). You can use gdk.Display.GetMonitorAtSurface() to
+// find a particular monitor.
 type Monitor struct {
 	*externglib.Object
 }
@@ -138,7 +138,7 @@ func (monitor *Monitor) Display() *Display {
 // coordinate space.
 //
 // The returned geometry is in ”application pixels”, not in ”device pixels” (see
-// [method@Gdk.Monitor.get_scale_factor]).
+// gdk.Monitor.GetScaleFactor()).
 func (monitor *Monitor) Geometry() Rectangle {
 	var _arg0 *C.GdkMonitor // out
 	var _geometry Rectangle
@@ -229,7 +229,7 @@ func (monitor *Monitor) RefreshRate() int {
 //
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a surface where it is better
-// to use [method@Gdk.Surface.get_scale_factor] instead.
+// to use gdk.Surface.GetScaleFactor() instead.
 func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
@@ -278,10 +278,9 @@ func (monitor *Monitor) WidthMm() int {
 	return _gint
 }
 
-// IsValid returns true if the @monitor object corresponds to a physical
-// monitor.
+// IsValid returns TRUE if the monitor object corresponds to a physical monitor.
 //
-// The @monitor becomes invalid when the physical monitor is unplugged or
+// The monitor becomes invalid when the physical monitor is unplugged or
 // removed.
 func (monitor *Monitor) IsValid() bool {
 	var _arg0 *C.GdkMonitor // out

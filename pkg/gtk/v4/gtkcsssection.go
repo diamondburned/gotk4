@@ -81,10 +81,10 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 	return _cssLocation
 }
 
-// File gets the file that @section was parsed from.
+// File gets the file that section was parsed from.
 //
 // If no such file exists, for example because the CSS was loaded via
-// [method@Gtk.CssProvider.load_from_data], then `NULL` is returned.
+// gtk.CSSProvider.LoadFromData(), then NULL is returned.
 func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
@@ -105,14 +105,13 @@ func (section *CSSSection) File() *gio.File {
 	return _file
 }
 
-// Parent gets the parent section for the given `section`.
+// Parent gets the parent section for the given section.
 //
-// The parent section is the section that contains this `section`. A special
-// case are sections of type `GTK_CSS_SECTION_DOCUMEN`T. Their parent will
-// either be `NULL` if they are the original CSS document that was loaded by
-// [method@Gtk.CssProvider.load_from_file] or a section of type
-// `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from a
-// different file.
+// The parent section is the section that contains this section. A special case
+// are sections of type GTK_CSS_SECTION_DOCUMENT. Their parent will either be
+// NULL if they are the original CSS document that was loaded by
+// gtk.CSSProvider.LoadFromFile() or a section of type GTK_CSS_SECTION_IMPORT if
+// it was loaded with an import rule from a different file.
 func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
@@ -149,7 +148,7 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 	return _cssLocation
 }
 
-// Ref increments the reference count on `section`.
+// Ref increments the reference count on section.
 func (section *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
@@ -170,7 +169,7 @@ func (section *CSSSection) ref() *CSSSection {
 }
 
 // String prints the section into a human-readable text form using
-// [method@Gtk.CssSection.print].
+// gtk.CSSSection.Print().
 func (section *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.char          // in
@@ -187,8 +186,8 @@ func (section *CSSSection) String() string {
 	return _utf8
 }
 
-// Unref decrements the reference count on `section`, freeing the structure if
-// the reference count reaches 0.
+// Unref decrements the reference count on section, freeing the structure if the
+// reference count reaches 0.
 func (section *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 

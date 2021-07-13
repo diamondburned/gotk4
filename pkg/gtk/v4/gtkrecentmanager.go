@@ -61,31 +61,31 @@ type RecentManagerOverrider interface {
 
 // RecentManagerer describes RecentManager's methods.
 type RecentManagerer interface {
-	// AddFull adds a new resource, pointed by @uri, into the recently used
-	// resources list, using the metadata specified inside the `GtkRecentData`
-	// passed in @recent_data.
+	// AddFull adds a new resource, pointed by uri, into the recently used
+	// resources list, using the metadata specified inside the GtkRecentData
+	// passed in recent_data.
 	AddFull(uri string, recentData *RecentData) bool
-	// AddItem adds a new resource, pointed by @uri, into the recently used
+	// AddItem adds a new resource, pointed by uri, into the recently used
 	// resources list.
 	AddItem(uri string) bool
 	// HasItem checks whether there is a recently used resource registered with
-	// @uri inside the recent manager.
+	// uri inside the recent manager.
 	HasItem(uri string) bool
 	// LookupItem searches for a URI inside the recently used resources list,
-	// and returns a `GtkRecentInfo` containing information about the resource
+	// and returns a GtkRecentInfo containing information about the resource
 	// like its MIME type, or its display name.
 	LookupItem(uri string) (*RecentInfo, error)
-	// MoveItem changes the location of a recently used resource from @uri to
-	// @new_uri.
+	// MoveItem changes the location of a recently used resource from uri to
+	// new_uri.
 	MoveItem(uri string, newUri string) error
 	// PurgeItems purges every item from the recently used resources list.
 	PurgeItems() (int, error)
-	// RemoveItem removes a resource pointed by @uri from the recently used
+	// RemoveItem removes a resource pointed by uri from the recently used
 	// resources list handled by a recent manager.
 	RemoveItem(uri string) error
 }
 
-// RecentManager: `GtkRecentManager` manages and looks up recently used files.
+// RecentManager: GtkRecentManager manages and looks up recently used files.
 //
 // Each recently used file is identified by its URI, and has meta-data
 // associated to it, like the names and command lines of the applications that
@@ -95,36 +95,47 @@ type RecentManagerer interface {
 //
 // The recently used files list is per user.
 //
-// `GtkRecentManager` acts like a database of all the recently used files. You
-// can create new `GtkRecentManager` objects, but it is more efficient to use
-// the default manager created by GTK.
+// GtkRecentManager acts like a database of all the recently used files. You can
+// create new GtkRecentManager objects, but it is more efficient to use the
+// default manager created by GTK.
 //
 // Adding a new recently used file is as simple as:
 //
-// “`c GtkRecentManager *manager;
+//    GtkRecentManager *manager;
 //
-// manager = gtk_recent_manager_get_default (); gtk_recent_manager_add_item
-// (manager, file_uri); “`
+//    manager = gtk_recent_manager_get_default ();
+//    gtk_recent_manager_add_item (manager, file_uri);
 //
-// The `GtkRecentManager` will try to gather all the needed information from the
+//
+// The GtkRecentManager will try to gather all the needed information from the
 // file itself through GIO.
 //
 // Looking up the meta-data associated with a recently used file given its URI
-// requires calling [method@Gtk.RecentManager.lookup_item]:
+// requires calling gtk.RecentManager.LookupItem():
 //
-// “`c GtkRecentManager *manager; GtkRecentInfo *info; GError *error = NULL;
+//    GtkRecentManager *manager;
+//    GtkRecentInfo *info;
+//    GError *error = NULL;
 //
-// manager = gtk_recent_manager_get_default (); info =
-// gtk_recent_manager_lookup_item (manager, file_uri, &error); if (error) {
-// g_warning ("Could not find the file: s", error->message); g_error_free
-// (error); } else { // Use the info object gtk_recent_info_unref (info); } “`
+//    manager = gtk_recent_manager_get_default ();
+//    info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
+//    if (error)
+//      {
+//        g_warning ("Could not find the file: s", error->message);
+//        g_error_free (error);
+//      }
+//    else
+//     {
+//       // Use the info object
+//       gtk_recent_info_unref (info);
+//     }
+//
 //
 // In order to retrieve the list of recently used files, you can use
-// [method@Gtk.RecentManager.get_items], which returns a list of
-// [struct@Gtk.RecentInfo].
+// gtk.RecentManager.GetItems(), which returns a list of gtk.RecentInfo.
 //
 // Note that the maximum age of the recently used files list is controllable
-// through the [property@Gtk.Settings:gtk-recent-files-max-age] property.
+// through the gtk.Settings:gtk-recent-files-max-age property.
 type RecentManager struct {
 	*externglib.Object
 }
@@ -149,12 +160,12 @@ func marshalRecentManagerer(p uintptr) (interface{}, error) {
 // NewRecentManager creates a new recent manager object.
 //
 // Recent manager objects are used to handle the list of recently used
-// resources. A `GtkRecentManager` object monitors the recently used resources
-// list, and emits the [signal@Gtk.RecentManager::changed] signal each time
-// something inside the list changes.
+// resources. A GtkRecentManager object monitors the recently used resources
+// list, and emits the gtk.RecentManager::changed signal each time something
+// inside the list changes.
 //
-// `GtkRecentManager` objects are expensive: be sure to create them only when
-// needed. You should use [type_func@Gtk.RecentManager.get_default] instead.
+// GtkRecentManager objects are expensive: be sure to create them only when
+// needed. You should use gtk.RecentManager.GetDefault instead.
 func NewRecentManager() *RecentManager {
 	var _cret *C.GtkRecentManager // in
 
@@ -167,19 +178,19 @@ func NewRecentManager() *RecentManager {
 	return _recentManager
 }
 
-// AddFull adds a new resource, pointed by @uri, into the recently used
-// resources list, using the metadata specified inside the `GtkRecentData`
-// passed in @recent_data.
+// AddFull adds a new resource, pointed by uri, into the recently used resources
+// list, using the metadata specified inside the GtkRecentData passed in
+// recent_data.
 //
 // The passed URI will be used to identify this resource inside the list.
 //
 // In order to register the new recently used resource, metadata about the
 // resource must be passed as well as the URI; the metadata is stored in a
-// `GtkRecentData`, which must contain the MIME type of the resource pointed by
+// GtkRecentData, which must contain the MIME type of the resource pointed by
 // the URI; the name of the application that is registering the item, and a
 // command line to be used when launching the item.
 //
-// Optionally, a `GtkRecentData` might contain a UTF-8 string to be used when
+// Optionally, a GtkRecentData might contain a UTF-8 string to be used when
 // viewing the item instead of the last component of the URI; a short
 // description of the item; whether the item should be considered private - that
 // is, should be displayed only by the applications that have registered it.
@@ -204,15 +215,15 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	return _ok
 }
 
-// AddItem adds a new resource, pointed by @uri, into the recently used
-// resources list.
+// AddItem adds a new resource, pointed by uri, into the recently used resources
+// list.
 //
 // This function automatically retrieves some of the needed metadata and setting
 // other metadata to common default values; it then feeds the data to
-// [method@Gtk.RecentManager.add_full].
+// gtk.RecentManager.AddFull().
 //
-// See [method@Gtk.RecentManager.add_full] if you want to explicitly define the
-// metadata for the resource pointed by @uri.
+// See gtk.RecentManager.AddFull() if you want to explicitly define the metadata
+// for the resource pointed by uri.
 func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
@@ -232,7 +243,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 	return _ok
 }
 
-// HasItem checks whether there is a recently used resource registered with @uri
+// HasItem checks whether there is a recently used resource registered with uri
 // inside the recent manager.
 func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
@@ -254,7 +265,7 @@ func (manager *RecentManager) HasItem(uri string) bool {
 }
 
 // LookupItem searches for a URI inside the recently used resources list, and
-// returns a `GtkRecentInfo` containing information about the resource like its
+// returns a GtkRecentInfo containing information about the resource like its
 // MIME type, or its display name.
 func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
@@ -280,8 +291,8 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	return _recentInfo, _goerr
 }
 
-// MoveItem changes the location of a recently used resource from @uri to
-// @new_uri.
+// MoveItem changes the location of a recently used resource from uri to
+// new_uri.
 //
 // Please note that this function will not affect the resource pointed by the
 // URIs, but only the URI used in the recently used resources list.
@@ -323,8 +334,8 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 	return _gint, _goerr
 }
 
-// RemoveItem removes a resource pointed by @uri from the recently used
-// resources list handled by a recent manager.
+// RemoveItem removes a resource pointed by uri from the recently used resources
+// list handled by a recent manager.
 func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
 	var _arg1 *C.char             // out
@@ -342,7 +353,7 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	return _goerr
 }
 
-// RecentManagerGetDefault gets a unique instance of `GtkRecentManager` that you
+// RecentManagerGetDefault gets a unique instance of GtkRecentManager that you
 // can share in your application without caring about memory management.
 func RecentManagerGetDefault() *RecentManager {
 	var _cret *C.GtkRecentManager // in
@@ -367,7 +378,7 @@ func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// RecentInfo: `GtkRecentInfo` contains the metadata associated with an item in
+// RecentInfo: GtkRecentInfo contains the metadata associated with an item in
 // the recently used files list.
 type RecentInfo struct {
 	native C.GtkRecentInfo
@@ -383,7 +394,7 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// CreateAppInfo creates a `GAppInfo` for the specified `GtkRecentInfo`
+// CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo
 func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
@@ -409,7 +420,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	return _appInfo, _goerr
 }
 
-// Exists checks whether the resource pointed by @info still exists. At the
+// Exists checks whether the resource pointed by info still exists. At the
 // moment this check is done only on resources pointing to local files.
 func (info *RecentInfo) Exists() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -429,7 +440,7 @@ func (info *RecentInfo) Exists() bool {
 }
 
 // Age gets the number of days elapsed since the last update of the resource
-// pointed by @info.
+// pointed by info.
 func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.int            // in
@@ -479,8 +490,8 @@ func (info *RecentInfo) DisplayName() string {
 	return _utf8
 }
 
-// GIcon retrieves the icon associated to the resource MIME type.
-func (info *RecentInfo) GIcon() *gio.Icon {
+// Gicon retrieves the icon associated to the resource MIME type.
+func (info *RecentInfo) Gicon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
@@ -518,7 +529,7 @@ func (info *RecentInfo) MIMEType() string {
 
 // PrivateHint gets the value of the “private” flag.
 //
-// Resources in the recently used list that have this flag set to true should
+// Resources in the recently used list that have this flag set to TRUE should
 // only be displayed by the applications that have registered them.
 func (info *RecentInfo) PrivateHint() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -577,8 +588,7 @@ func (info *RecentInfo) URI() string {
 // URIDisplay gets a displayable version of the resource’s URI.
 //
 // If the resource is local, it returns a local path; if the resource is not
-// local, it returns the UTF-8 encoded content of
-// [method@Gtk.RecentInfo.get_uri].
+// local, it returns the UTF-8 encoded content of gtk.RecentInfo.GetURI().
 func (info *RecentInfo) URIDisplay() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
@@ -596,7 +606,7 @@ func (info *RecentInfo) URIDisplay() string {
 }
 
 // HasApplication checks whether an application registered this resource using
-// @app_name.
+// app_name.
 func (info *RecentInfo) HasApplication(appName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
@@ -616,8 +626,8 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 	return _ok
 }
 
-// HasGroup checks whether @group_name appears inside the groups registered for
-// the recently used item @info.
+// HasGroup checks whether group_name appears inside the groups registered for
+// the recently used item info.
 func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
@@ -657,7 +667,7 @@ func (info *RecentInfo) IsLocal() bool {
 }
 
 // LastApplication gets the name of the last application that have registered
-// the recently used resource represented by @info.
+// the recently used resource represented by info.
 func (info *RecentInfo) LastApplication() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
@@ -674,7 +684,7 @@ func (info *RecentInfo) LastApplication() string {
 	return _utf8
 }
 
-// Match checks whether two `GtkRecentInfo` point to the same resource.
+// Match checks whether two GtkRecentInfo point to the same resource.
 func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.GtkRecentInfo // out
@@ -694,7 +704,7 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	return _ok
 }
 
-// Ref increases the reference count of @recent_info by one.
+// Ref increases the reference count of recent_info by one.
 func (info *RecentInfo) ref() *RecentInfo {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GtkRecentInfo // in
@@ -714,9 +724,9 @@ func (info *RecentInfo) ref() *RecentInfo {
 	return _recentInfo
 }
 
-// Unref decreases the reference count of @info by one.
+// Unref decreases the reference count of info by one.
 //
-// If the reference count reaches zero, @info is deallocated, and the memory
+// If the reference count reaches zero, info is deallocated, and the memory
 // freed.
 func (info *RecentInfo) unref() {
 	var _arg0 *C.GtkRecentInfo // out

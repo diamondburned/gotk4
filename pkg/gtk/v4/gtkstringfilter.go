@@ -61,19 +61,19 @@ type StringFilterer interface {
 	SetSearch(search string)
 }
 
-// StringFilter: `GtkStringFilter` determines whether to include items by
+// StringFilter: GtkStringFilter determines whether to include items by
 // comparing strings to a fixed search term.
 //
-// The strings are obtained from the items by evaluating a `GtkExpression` set
-// with [method@Gtk.StringFilter.set_expression], and they are compared against
-// a search term set with [method@Gtk.StringFilter.set_search].
+// The strings are obtained from the items by evaluating a GtkExpression set
+// with gtk.StringFilter.SetExpression(), and they are compared against a search
+// term set with gtk.StringFilter.SetSearch().
 //
-// `GtkStringFilter` has several different modes of comparison - it can match
-// the whole string, just a prefix, or any substring. Use
-// [method@Gtk.StringFilter.set_match_mode] choose a mode.
+// GtkStringFilter has several different modes of comparison - it can match the
+// whole string, just a prefix, or any substring. Use
+// gtk.StringFilter.SetMatchMode() choose a mode.
 //
 // It is also possible to make case-insensitive comparisons, with
-// [method@Gtk.StringFilter.set_ignore_case].
+// gtk.StringFilter.SetIgnoreCase().
 type StringFilter struct {
 	Filter
 }

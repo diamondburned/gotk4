@@ -32,7 +32,7 @@ type ButtonOverrider interface {
 
 // Buttoner describes Button's methods.
 type Buttoner interface {
-	// Child gets the child widget of @button.
+	// Child gets the child widget of button.
 	Child() *Widget
 	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
@@ -42,50 +42,49 @@ type Buttoner interface {
 	Label() string
 	// UseUnderline gets whether underlines are interpreted as mnemonics.
 	UseUnderline() bool
-	// SetChild sets the child widget of @button.
+	// SetChild sets the child widget of button.
 	SetChild(child Widgeter)
 	// SetHasFrame sets the style of the button.
 	SetHasFrame(hasFrame bool)
-	// SetIconName adds a `GtkImage` with the given icon name as a child.
+	// SetIconName adds a GtkImage with the given icon name as a child.
 	SetIconName(iconName string)
-	// SetLabel sets the text of the label of the button to @label.
+	// SetLabel sets the text of the label of the button to label.
 	SetLabel(label string)
 	// SetUseUnderline sets whether to use underlines as mnemonics.
 	SetUseUnderline(useUnderline bool)
 }
 
-// Button: `GtkButton` widget is generally used to trigger a callback function
+// Button: GtkButton widget is generally used to trigger a callback function
 // that is called when the button is pressed.
 //
 // !An example GtkButton (button.png)
 //
-// The `GtkButton` widget can hold any valid child widget. That is, it can hold
-// almost any other standard `GtkWidget`. The most commonly used child is the
-// `GtkLabel`.
+// The GtkButton widget can hold any valid child widget. That is, it can hold
+// almost any other standard GtkWidget. The most commonly used child is the
+// GtkLabel.
 //
 //
 // CSS nodes
 //
-// `GtkButton` has a single CSS node with name button. The node will get the
-// style classes .image-button or .text-button, if the content is just an image
-// or label, respectively. It may also receive the .flat style class. When
+// GtkButton has a single CSS node with name button. The node will get the style
+// classes .image-button or .text-button, if the content is just an image or
+// label, respectively. It may also receive the .flat style class. When
 // activating a button via the keyboard, the button will temporarily gain the
 // .keyboard-activating style class.
 //
-// Other style classes that are commonly used with `GtkButton` include
+// Other style classes that are commonly used with GtkButton include
 // .suggested-action and .destructive-action. In special cases, buttons can be
 // made round by adding the .circular style class.
 //
-// Button-like widgets like [class@Gtk.ToggleButton], [class@Gtk.MenuButton],
-// [class@Gtk.VolumeButton], [class@Gtk.LockButton], [class@Gtk.ColorButton] or
-// [class@Gtk.FontButton] use style classes such as .toggle, .popup, .scale,
-// .lock, .color on the button node to differentiate themselves from a plain
-// `GtkButton`.
+// Button-like widgets like gtk.ToggleButton, gtk.MenuButton, gtk.VolumeButton,
+// gtk.LockButton, gtk.ColorButton or gtk.FontButton use style classes such as
+// .toggle, .popup, .scale, .lock, .color on the button node to differentiate
+// themselves from a plain GtkButton.
 //
 //
 // Accessibility
 //
-// `GtkButton` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
+// GtkButton uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button struct {
 	Widget
 
@@ -138,9 +137,9 @@ func marshalButtoner(p uintptr) (interface{}, error) {
 	return wrapButton(obj), nil
 }
 
-// NewButton creates a new `GtkButton` widget.
+// NewButton creates a new GtkButton widget.
 //
-// To add a child widget to the button, use [method@Gtk.Button.set_child].
+// To add a child widget to the button, use gtk.Button.SetChild().
 func NewButton() *Button {
 	var _cret *C.GtkWidget // in
 
@@ -174,7 +173,7 @@ func NewButtonFromIconName(iconName string) *Button {
 	return _button
 }
 
-// NewButtonWithLabel creates a `GtkButton` widget with a `GtkLabel` child.
+// NewButtonWithLabel creates a GtkButton widget with a GtkLabel child.
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -190,10 +189,10 @@ func NewButtonWithLabel(label string) *Button {
 	return _button
 }
 
-// NewButtonWithMnemonic creates a new `GtkButton` containing a label.
+// NewButtonWithMnemonic creates a new GtkButton containing a label.
 //
-// If characters in @label are preceded by an underscore, they are underlined.
-// If you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
@@ -218,7 +217,7 @@ func (v *Button) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// Child gets the child widget of @button.
+// Child gets the child widget of button.
 func (button *Button) Child() *Widget {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
@@ -254,9 +253,9 @@ func (button *Button) HasFrame() bool {
 
 // IconName returns the icon name of the button.
 //
-// If the icon name has not been set with [method@Gtk.Button.set_icon_name] the
-// return value will be nil. This will be the case if you create an empty button
-// with [ctor@Gtk.Button.new] to use as a container.
+// If the icon name has not been set with gtk.Button.SetIconName() the return
+// value will be NULL. This will be the case if you create an empty button with
+// gtk.Button.New to use as a container.
 func (button *Button) IconName() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.char      // in
@@ -274,9 +273,9 @@ func (button *Button) IconName() string {
 
 // Label fetches the text from the label of the button.
 //
-// If the label text has not been set with [method@Gtk.Button.set_label] the
-// return value will be nil. This will be the case if you create an empty button
-// with [ctor@Gtk.Button.new] to use as a container.
+// If the label text has not been set with gtk.Button.SetLabel() the return
+// value will be NULL. This will be the case if you create an empty button with
+// gtk.Button.New to use as a container.
 func (button *Button) Label() string {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.char      // in
@@ -294,7 +293,7 @@ func (button *Button) Label() string {
 
 // UseUnderline gets whether underlines are interpreted as mnemonics.
 //
-// See [method@Gtk.Button.set_use_underline].
+// See gtk.Button.SetUseUnderline().
 func (button *Button) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
 	var _cret C.gboolean   // in
@@ -312,7 +311,7 @@ func (button *Button) UseUnderline() bool {
 	return _ok
 }
 
-// SetChild sets the child widget of @button.
+// SetChild sets the child widget of button.
 func (button *Button) SetChild(child Widgeter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
@@ -338,9 +337,9 @@ func (button *Button) SetHasFrame(hasFrame bool) {
 	C.gtk_button_set_has_frame(_arg0, _arg1)
 }
 
-// SetIconName adds a `GtkImage` with the given icon name as a child.
+// SetIconName adds a GtkImage with the given icon name as a child.
 //
-// If @button already contains a child widget, that child widget will be removed
+// If button already contains a child widget, that child widget will be removed
 // and replaced with the image.
 func (button *Button) SetIconName(iconName string) {
 	var _arg0 *C.GtkButton // out
@@ -352,7 +351,7 @@ func (button *Button) SetIconName(iconName string) {
 	C.gtk_button_set_icon_name(_arg0, _arg1)
 }
 
-// SetLabel sets the text of the label of the button to @label.
+// SetLabel sets the text of the label of the button to label.
 //
 // This will also clear any previously set labels.
 func (button *Button) SetLabel(label string) {

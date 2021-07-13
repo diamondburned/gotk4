@@ -65,8 +65,8 @@ func marshalAnchorHints(p uintptr) (interface{}, error) {
 	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PopupLayout: `GdkPopupLayout` struct contains information that is necessary
-// position a [interface@Gdk.Popup] relative to its parent.
+// PopupLayout: GdkPopupLayout struct contains information that is necessary
+// position a gdk.Popup relative to its parent.
 //
 // The positioning requires a negotiation with the windowing system, since it
 // depends on external constraints, such as the position of the parent surface,
@@ -91,12 +91,11 @@ func marshalAnchorHints(p uintptr) (interface{}, error) {
 //
 // Ultimatively, it is up to the windowing system to determine the position and
 // size of the popup. You can learn about the result by calling
-// [method@Gdk.Popup.get_position_x], [method@Gdk.Popup.get_position_y],
-// [method@Gdk.Popup.get_rect_anchor] and [method@Gdk.Popup.get_surface_anchor]
-// after the popup has been presented. This can be used to adjust the rendering.
-// For example, [class@Gtk.Popover] changes its arrow position accordingly. But
-// you have to be careful avoid changing the size of the popover, or it has to
-// be presented again.
+// gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(), gdk.Popup.GetRectAnchor()
+// and gdk.Popup.GetSurfaceAnchor() after the popup has been presented. This can
+// be used to adjust the rendering. For example, gtk.Popover changes its arrow
+// position accordingly. But you have to be careful avoid changing the size of
+// the popover, or it has to be presented again.
 type PopupLayout struct {
 	native C.GdkPopupLayout
 }
@@ -135,7 +134,7 @@ func (p *PopupLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Copy makes a copy of @layout.
+// Copy makes a copy of layout.
 func (layout *PopupLayout) Copy() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
@@ -155,7 +154,7 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	return _popupLayout
 }
 
-// Equal: check whether @layout and @other has identical layout properties.
+// Equal: check whether layout and other has identical layout properties.
 func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkPopupLayout // out
@@ -175,7 +174,7 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	return _ok
 }
 
-// AnchorHints: get the `GdkAnchorHints`.
+// AnchorHints: get the GdkAnchorHints.
 func (layout *PopupLayout) AnchorHints() AnchorHints {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkAnchorHints  // in
@@ -283,7 +282,7 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	return _gravity
 }
 
-// Ref increases the reference count of @value.
+// Ref increases the reference count of value.
 func (layout *PopupLayout) ref() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
@@ -305,10 +304,10 @@ func (layout *PopupLayout) ref() *PopupLayout {
 
 // SetAnchorHints: set new anchor hints.
 //
-// The set @anchor_hints determines how @surface will be moved if the anchor
+// The set anchor_hints determines how surface will be moved if the anchor
 // points cause it to move off-screen. For example, GDK_ANCHOR_FLIP_X will
 // replace GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if
-// @surface extends beyond the left or right edges of the monitor.
+// surface extends beyond the left or right edges of the monitor.
 func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkAnchorHints  // out
@@ -386,7 +385,7 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	C.gdk_popup_layout_set_surface_anchor(_arg0, _arg1)
 }
 
-// Unref decreases the reference count of @value.
+// Unref decreases the reference count of value.
 func (layout *PopupLayout) unref() {
 	var _arg0 *C.GdkPopupLayout // out
 

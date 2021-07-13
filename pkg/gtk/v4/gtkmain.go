@@ -13,8 +13,8 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// DisableSetlocale prevents [id@gtk_init] and [id@gtk_init_check] from
-// automatically calling `setlocale (LC_ALL, "")`.
+// DisableSetlocale prevents gtk_init and gtk_init_check from automatically
+// calling setlocale (LC_ALL, "").
 //
 // You would want to use this function if you wanted to set the locale for your
 // program to something other than the user’s locale, or if you wanted to set
@@ -85,18 +85,18 @@ func GetLocaleDirection() TextDirection {
 // windowing system for some reason. If you want your program to fall back to a
 // textual interface you want to call gtk_init_check() instead.
 //
-// GTK calls `signal (SIGPIPE, SIG_IGN)` during initialization, to ignore
-// SIGPIPE signals, since these are almost never wanted in graphical
-// applications. If you do need to handle SIGPIPE for some reason, reset the
-// handler after gtk_init(), but notice that other libraries (e.g. libdbus or
-// gvfs) might do similar things.
+// GTK calls signal (SIGPIPE, SIG_IGN) during initialization, to ignore SIGPIPE
+// signals, since these are almost never wanted in graphical applications. If
+// you do need to handle SIGPIPE for some reason, reset the handler after
+// gtk_init(), but notice that other libraries (e.g. libdbus or gvfs) might do
+// similar things.
 func Init() {
 	C.gtk_init()
 }
 
 // InitCheck: this function does the same work as gtk_init() with only a single
 // change: It does not terminate the program if the windowing system can’t be
-// initialized. Instead it returns false on failure.
+// initialized. Instead it returns FALSE on failure.
 //
 // This way the application can fall back to some other means of communication
 // with the user - for example a curses or command line interface.

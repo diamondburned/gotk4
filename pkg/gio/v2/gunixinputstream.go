@@ -33,12 +33,12 @@ func init() {
 
 // UnixInputStreamer describes UnixInputStream's methods.
 type UnixInputStreamer interface {
-	// CloseFd returns whether the file descriptor of @stream will be closed
-	// when the stream is closed.
+	// CloseFd returns whether the file descriptor of stream will be closed when
+	// the stream is closed.
 	CloseFd() bool
 	// Fd: return the UNIX file descriptor that the stream reads from.
 	Fd() int
-	// SetCloseFd sets whether the file descriptor of @stream shall be closed
+	// SetCloseFd sets whether the file descriptor of stream shall be closed
 	// when the stream is closed.
 	SetCloseFd(closeFd bool)
 }
@@ -48,8 +48,8 @@ type UnixInputStreamer interface {
 // or pipe, this will use poll() to do asynchronous I/O. If it refers to a
 // regular file, it will fall back to doing asynchronous I/O in another thread.)
 //
-// Note that `<gio/gunixinputstream.h>` belongs to the UNIX-specific GIO
-// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// Note that <gio/gunixinputstream.h> belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the gio-unix-2.0.pc pkg-config file when
 // using it.
 type UnixInputStream struct {
 	InputStream
@@ -85,9 +85,9 @@ func marshalUnixInputStreamer(p uintptr) (interface{}, error) {
 	return wrapUnixInputStream(obj), nil
 }
 
-// NewUnixInputStream creates a new InputStream for the given @fd.
+// NewUnixInputStream creates a new InputStream for the given fd.
 //
-// If @close_fd is true, the file descriptor will be closed when the stream is
+// If close_fd is TRUE, the file descriptor will be closed when the stream is
 // closed.
 func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream {
 	var _arg1 C.gint          // out
@@ -114,8 +114,8 @@ func (v *UnixInputStream) Native() uintptr {
 	return v.InputStream.Object.Native()
 }
 
-// CloseFd returns whether the file descriptor of @stream will be closed when
-// the stream is closed.
+// CloseFd returns whether the file descriptor of stream will be closed when the
+// stream is closed.
 func (stream *UnixInputStream) CloseFd() bool {
 	var _arg0 *C.GUnixInputStream // out
 	var _cret C.gboolean          // in
@@ -149,7 +149,7 @@ func (stream *UnixInputStream) Fd() int {
 	return _gint
 }
 
-// SetCloseFd sets whether the file descriptor of @stream shall be closed when
+// SetCloseFd sets whether the file descriptor of stream shall be closed when
 // the stream is closed.
 func (stream *UnixInputStream) SetCloseFd(closeFd bool) {
 	var _arg0 *C.GUnixInputStream // out

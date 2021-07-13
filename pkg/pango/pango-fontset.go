@@ -60,10 +60,10 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FontsetOverrider interface {
-	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	//
-	// If @func returns true, that stops the iteration.
+	// If func returns TRUE, that stops the iteration.
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
@@ -75,7 +75,7 @@ type FontsetOverrider interface {
 
 // Fontseter describes Fontset's methods.
 type Fontseter interface {
-	// Foreach iterates through all the fonts in a fontset, calling @func for
+	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
@@ -85,13 +85,13 @@ type Fontseter interface {
 	Metrics() *FontMetrics
 }
 
-// Fontset: `PangoFontset` represents a set of `PangoFont` to use when rendering
+// Fontset: PangoFontset represents a set of PangoFont to use when rendering
 // text.
 //
-// A `PAngoFontset` is the result of resolving a `PangoFontDescription` against
-// a particular `PangoContext`. It has operations for finding the component font
-// for a particular Unicode character, and for finding a composite set of
-// metrics for the entire fontset.
+// A PAngoFontset is the result of resolving a PangoFontDescription against a
+// particular PangoContext. It has operations for finding the component font for
+// a particular Unicode character, and for finding a composite set of metrics
+// for the entire fontset.
 type Fontset struct {
 	*externglib.Object
 }
@@ -113,10 +113,10 @@ func marshalFontseter(p uintptr) (interface{}, error) {
 	return wrapFontset(obj), nil
 }
 
-// Foreach iterates through all the fonts in a fontset, calling @func for each
+// Foreach iterates through all the fonts in a fontset, calling func for each
 // one.
 //
-// If @func returns true, that stops the iteration.
+// If func returns TRUE, that stops the iteration.
 func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
@@ -176,10 +176,10 @@ type FontsetSimpler interface {
 	Size() int
 }
 
-// FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
-// `PangoFontset` base class as an array of fonts.
+// FontsetSimple: PangoFontsetSimple is a implementation of the abstract
+// PangoFontset base class as an array of fonts.
 //
-// When creating a `PangoFontsetSimple`, you have to provide the array of fonts
+// When creating a PangoFontsetSimple, you have to provide the array of fonts
 // that make up the fontset.
 type FontsetSimple struct {
 	Fontset
@@ -204,7 +204,7 @@ func marshalFontsetSimpler(p uintptr) (interface{}, error) {
 	return wrapFontsetSimple(obj), nil
 }
 
-// NewFontsetSimple creates a new `PangoFontsetSimple` for the given language.
+// NewFontsetSimple creates a new PangoFontsetSimple for the given language.
 func NewFontsetSimple(language *Language) *FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in

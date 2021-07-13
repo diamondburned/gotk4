@@ -47,7 +47,7 @@ func marshalSorterChange(p uintptr) (interface{}, error) {
 	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SorterOrder describes the type of order that a `GtkSorter` may produce.
+// SorterOrder describes the type of order that a GtkSorter may produce.
 type SorterOrder int
 
 const (
@@ -81,11 +81,11 @@ type SorterOverrider interface {
 	// then a ≤ c
 	//
 	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order gets the order that @self conforms to.
+	// return value of gtk.Sorter.GetOrder().
+	Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering
+	// Order gets the order that self conforms to.
 	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	// See gtk.SorterOrder for details of the possible return values.
 	//
 	// This function is intended to allow optimizations.
 	Order() SorterOrder
@@ -93,35 +93,36 @@ type SorterOverrider interface {
 
 // Sorterer describes Sorter's methods.
 type Sorterer interface {
-	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-	// of the sorter that it has changed.
+	// Changed emits the gtk.Sorter::changed signal to notify all users of the
+	// sorter that it has changed.
 	Changed(change SorterChange)
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order gets the order that @self conforms to.
+	Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering
+	// Order gets the order that self conforms to.
 	Order() SorterOrder
 }
 
-// Sorter: `GtkSorter` is an object to describe sorting criteria.
+// Sorter: GtkSorter is an object to describe sorting criteria.
 //
-// Its primary user is [class@Gtk.SortListModel]
+//
+// Its primary user is gtk.SortListModel
 //
 // The model will use a sorter to determine the order in which its items should
-// appear by calling [method@Gtk.Sorter.compare] for pairs of items.
+// appear by calling gtk.Sorter.Compare() for pairs of items.
 //
 // Sorters may change their sorting behavior through their lifetime. In that
-// case, they will emit the [signal@Gtk.Sorter::changed] signal to notify that
-// the sort order is no longer valid and should be updated by calling
+// case, they will emit the gtk.Sorter::changed signal to notify that the sort
+// order is no longer valid and should be updated by calling
 // gtk_sorter_compare() again.
 //
 // GTK provides various pre-made sorter implementations for common sorting
-// operations. [class@Gtk.ColumnView] has built-in support for sorting lists via
-// the [property@Gtk.ColumnViewColumn:sorter] property, where the user can
-// change the sorting by clicking on list headers.
+// operations. gtk.ColumnView has built-in support for sorting lists via the
+// gtk.ColumnViewColumn:sorter property, where the user can change the sorting
+// by clicking on list headers.
 //
 // Of course, in particular for large lists, it is also possible to subclass
-// `GtkSorter` and provide one's own sorter.
+// GtkSorter and provide one's own sorter.
 type Sorter struct {
 	*externglib.Object
 }
@@ -143,18 +144,18 @@ func marshalSorterer(p uintptr) (interface{}, error) {
 	return wrapSorter(obj), nil
 }
 
-// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users of
-// the sorter that it has changed.
+// Changed emits the gtk.Sorter::changed signal to notify all users of the
+// sorter that it has changed.
 //
 // Users of the sorter should then update the sort order via
 // gtk_sorter_compare().
 //
-// Depending on the @change parameter, it may be possible to update the sort
-// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-// documentation for details.
+// Depending on the change parameter, it may be possible to update the sort
+// order without a full resorting. Refer to the gtk.SorterChange documentation
+// for details.
 //
-// This function is intended for implementors of `GtkSorter` subclasses and
-// should not be called from other functions.
+// This function is intended for implementors of GtkSorter subclasses and should
+// not be called from other functions.
 func (self *Sorter) Changed(change SorterChange) {
 	var _arg0 *C.GtkSorter      // out
 	var _arg1 C.GtkSorterChange // out
@@ -175,8 +176,8 @@ func (self *Sorter) Changed(change SorterChange) {
 // then a ≤ c
 //
 // The sorter may signal it conforms to additional constraints via the return
-// value of [method@Gtk.Sorter.get_order].
-func (self *Sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
+// value of gtk.Sorter.GetOrder().
+func (self *Sorter) Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering {
 	var _arg0 *C.GtkSorter  // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.gpointer    // out
@@ -195,9 +196,9 @@ func (self *Sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Orde
 	return _ordering
 }
 
-// Order gets the order that @self conforms to.
+// Order gets the order that self conforms to.
 //
-// See [enum@Gtk.SorterOrder] for details of the possible return values.
+// See gtk.SorterOrder for details of the possible return values.
 //
 // This function is intended to allow optimizations.
 func (self *Sorter) Order() SorterOrder {

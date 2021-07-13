@@ -23,7 +23,7 @@ func init() {
 
 // InternMIMEType canonicalizes the given mime type and interns the result.
 //
-// If @string is not a valid mime type, nil is returned instead. See RFC 2048
+// If string is not a valid mime type, NULL is returned instead. See RFC 2048
 // for the syntax if mime types.
 func InternMIMEType(_string string) string {
 	var _arg1 *C.char // out
@@ -40,8 +40,8 @@ func InternMIMEType(_string string) string {
 	return _utf8
 }
 
-// ContentFormatsBuilder: `GdkContentFormatsBuilder` is an auxiliary struct used
-// to create new `GdkContentFormats`, and should not be kept around.
+// ContentFormatsBuilder: GdkContentFormatsBuilder is an auxiliary struct used
+// to create new GdkContentFormats, and should not be kept around.
 type ContentFormatsBuilder struct {
 	native C.GdkContentFormatsBuilder
 }
@@ -73,7 +73,7 @@ func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// AddFormats appends all formats from @formats to @builder, skipping those that
+// AddFormats appends all formats from formats to builder, skipping those that
 // already exist.
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
@@ -85,8 +85,8 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 }
 
-// AddGType appends @type to @builder if it has not already been added.
-func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
+// AddGtype appends type to builder if it has not already been added.
+func (builder *ContentFormatsBuilder) AddGtype(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 C.GType                     // out
 
@@ -96,7 +96,7 @@ func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	C.gdk_content_formats_builder_add_gtype(_arg0, _arg1)
 }
 
-// AddMIMEType appends @mime_type to @builder if it has not already been added.
+// AddMIMEType appends mime_type to builder if it has not already been added.
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 *C.char                     // out
@@ -107,9 +107,9 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
 }
 
-// Ref acquires a reference on the given @builder.
+// Ref acquires a reference on the given builder.
 //
-// This function is intended primarily for bindings. `GdkContentFormatsBuilder`
+// This function is intended primarily for bindings. GdkContentFormatsBuilder
 // objects should not be kept around.
 func (builder *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder // out
@@ -130,13 +130,13 @@ func (builder *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
 	return _contentFormatsBuilder
 }
 
-// ToFormats creates a new `GdkContentFormats` from the given @builder.
+// ToFormats creates a new GdkContentFormats from the given builder.
 //
-// The given `GdkContentFormatsBuilder` is reset once this function returns; you
-// cannot call this function multiple times on the same @builder instance.
+// The given GdkContentFormatsBuilder is reset once this function returns; you
+// cannot call this function multiple times on the same builder instance.
 //
 // This function is intended primarily for bindings. C code should use
-// [method@Gdk.ContentFormatsBuilder.free_to_formats].
+// gdk.ContentFormatsBuilder.FreeToFormats().
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _cret *C.GdkContentFormats        // in
@@ -156,7 +156,7 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	return _contentFormats
 }
 
-// Unref releases a reference on the given @builder.
+// Unref releases a reference on the given builder.
 func (builder *ContentFormatsBuilder) unref() {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 

@@ -46,7 +46,7 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 // display to the user. The accessor functions for FrameTimings can return 0 to
 // indicate an unavailable value for two reasons: either because the information
 // is not yet available, or because it isn't available at all. Once
-// gdk_frame_timings_get_complete() returns true for a frame, you can be certain
+// gdk_frame_timings_get_complete() returns TRUE for a frame, you can be certain
 // that no further values will become available and be stored in the
 // FrameTimings.
 func (timings *FrameTimings) Complete() bool {
@@ -160,7 +160,7 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 	return _gint64
 }
 
-// Ref increases the reference count of @timings.
+// Ref increases the reference count of timings.
 func (timings *FrameTimings) ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret *C.GdkFrameTimings // in
@@ -180,7 +180,7 @@ func (timings *FrameTimings) ref() *FrameTimings {
 	return _frameTimings
 }
 
-// Unref decreases the reference count of @timings. If @timings is no longer
+// Unref decreases the reference count of timings. If timings is no longer
 // referenced, it will be freed.
 func (timings *FrameTimings) unref() {
 	var _arg0 *C.GdkFrameTimings // out

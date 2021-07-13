@@ -60,9 +60,9 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 //
 // Compatibility is defined by two things: first the version of the running
 // library is newer than the version
-// @required_major.required_minor.@required_micro. Second the running library
-// must be binary compatible with the version
-// @required_major.required_minor.@required_micro (same major version.)
+// required_major.required_minor.required_micro. Second the running library must
+// be binary compatible with the version
+// required_major.required_minor.required_micro (same major version.)
 //
 // This function is primarily for GTK+ modules; the module can call this
 // function to check that it wasn’t loaded into an incompatible version of GTK+.
@@ -89,10 +89,10 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	return _utf8
 }
 
-// DeviceGrabAdd adds a GTK+ grab on @device, so all the events on @device and
-// its associated pointer or keyboard (if any) are delivered to @widget. If the
-// @block_others parameter is true, any other devices will be unable to interact
-// with @widget during the grab.
+// DeviceGrabAdd adds a GTK+ grab on device, so all the events on device and its
+// associated pointer or keyboard (if any) are delivered to widget. If the
+// block_others parameter is TRUE, any other devices will be unable to interact
+// with widget during the grab.
 func DeviceGrabAdd(widget Widgeter, device gdk.Devicer, blockOthers bool) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
@@ -121,7 +121,7 @@ func DeviceGrabRemove(widget Widgeter, device gdk.Devicer) {
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
-// and gtk_parse_args() from automatically calling `setlocale (LC_ALL, "")`. You
+// and gtk_parse_args() from automatically calling setlocale (LC_ALL, ""). You
 // would want to use this function if you wanted to set the locale for your
 // program to something other than the user’s locale, or if you wanted to set
 // different values for different locale categories.
@@ -159,7 +159,7 @@ func EventsPending() bool {
 }
 
 // False: analogical to gtk_true(), this function does nothing but always
-// returns false.
+// returns FALSE.
 func False() bool {
 	var _cret C.gboolean // in
 
@@ -174,9 +174,9 @@ func False() bool {
 	return _ok
 }
 
-// GetBinaryAge returns the binary age as passed to `libtool` when building the
-// GTK+ library the process is running against. If `libtool` means nothing to
-// you, don't worry about it.
+// GetBinaryAge returns the binary age as passed to libtool when building the
+// GTK+ library the process is running against. If libtool means nothing to you,
+// don't worry about it.
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
@@ -190,7 +190,7 @@ func GetBinaryAge() uint {
 }
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
-// return that device, otherwise return nil.
+// return that device, otherwise return NULL.
 func GetCurrentEventDevice() *gdk.Device {
 	var _cret *C.GdkDevice // in
 
@@ -209,7 +209,7 @@ func GetCurrentEventDevice() *gdk.Device {
 }
 
 // GetCurrentEventState: if there is a current event and it has a state field,
-// place that state field in @state and return true, otherwise return false.
+// place that state field in state and return TRUE, otherwise return FALSE.
 func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _arg1 C.GdkModifierType // in
 	var _cret C.gboolean        // in
@@ -260,9 +260,9 @@ func GetDefaultLanguage() *pango.Language {
 	return _language
 }
 
-// GetInterfaceAge returns the interface age as passed to `libtool` when
-// building the GTK+ library the process is running against. If `libtool` means
-// nothing to you, don't worry about it.
+// GetInterfaceAge returns the interface age as passed to libtool when building
+// the GTK+ library the process is running against. If libtool means nothing to
+// you, don't worry about it.
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
@@ -442,7 +442,7 @@ func MainIteration() bool {
 }
 
 // MainIterationDo runs a single iteration of the mainloop. If no events are
-// available either return or block depending on the value of @blocking.
+// available either return or block depending on the value of blocking.
 func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
 	var _cret C.gboolean // in
@@ -481,7 +481,7 @@ func MainQuit() {
 	C.gtk_main_quit()
 }
 
-// True: all this function does it to return true.
+// True: all this function does it to return TRUE.
 //
 // This can be useful for example if you want to inhibit the deletion of a
 // window. Of course you should not do this as the user expects a reaction from

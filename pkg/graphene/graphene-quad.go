@@ -55,7 +55,7 @@ func (q *Quad) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
-// Bounds computes the bounding rectangle of @q and places it into @r.
+// Bounds computes the bounding rectangle of q and places it into r.
 func (q *Quad) Bounds() Rect {
 	var _arg0 *C.graphene_quad_t // out
 	var _r Rect

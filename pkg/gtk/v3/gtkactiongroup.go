@@ -37,33 +37,33 @@ type ActionGroupOverrider interface {
 // ActionGrouper describes ActionGroup's methods.
 type ActionGrouper interface {
 	// AddAction adds an action object to the action group.
-	AddAction(action Actioner)
+	AddAction(action *Action)
 	// AddActionWithAccel adds an action object to the action group and sets up
 	// the accelerator.
-	AddActionWithAccel(action Actioner, accelerator string)
+	AddActionWithAccel(action *Action, accelerator string)
 	// AccelGroup gets the accelerator group.
 	AccelGroup() *AccelGroup
 	// Action looks up an action in the action group by name.
 	Action(actionName string) *Action
 	// Name gets the name of the action group.
 	Name() string
-	// Sensitive returns true if the group is sensitive.
+	// Sensitive returns TRUE if the group is sensitive.
 	Sensitive() bool
-	// Visible returns true if the group is visible.
+	// Visible returns TRUE if the group is visible.
 	Visible() bool
 	// RemoveAction removes an action object from the action group.
-	RemoveAction(action Actioner)
+	RemoveAction(action *Action)
 	// SetAccelGroup sets the accelerator group to be used by every action in
 	// this group.
-	SetAccelGroup(accelGroup AccelGrouper)
-	// SetSensitive changes the sensitivity of @action_group Deprecated: since
+	SetAccelGroup(accelGroup *AccelGroup)
+	// SetSensitive changes the sensitivity of action_group Deprecated: since
 	// version 3.10.
 	SetSensitive(sensitive bool)
 	// SetTranslationDomain sets the translation domain and uses g_dgettext()
-	// for translating the @label and @tooltip of ActionEntrys added by
+	// for translating the label and tooltip of ActionEntrys added by
 	// gtk_action_group_add_actions().
 	SetTranslationDomain(domain string)
-	// SetVisible changes the visible of @action_group.
+	// SetVisible changes the visible of action_group.
 	SetVisible(visible bool)
 	// TranslateString translates a string using the function set with
 	// gtk_action_group_set_translate_func().
@@ -87,7 +87,7 @@ type ActionGrouper interface {
 //
 // Accelerators are handled by the GTK+ accelerator map. All actions are
 // assigned an accelerator path (which normally has the form
-// `<Actions>/group-name/action-name`) and a shortcut is associated with this
+// <Actions>/group-name/action-name) and a shortcut is associated with this
 // accelerator path. All menuitems and toolitems take on this accelerator path.
 // The GTK+ accelerator map code makes sure that the correct shortcut is
 // displayed next to the menu item.
@@ -168,16 +168,16 @@ func NewActionGroup(name string) *ActionGroup {
 // does not set up the accel path of the action, which can lead to problems if a
 // user tries to modify the accelerator of a menuitem associated with the
 // action. Therefore you must either set the accel path yourself with
-// gtk_action_set_accel_path(), or use `gtk_action_group_add_action_with_accel
-// (..., NULL)`.
+// gtk_action_set_accel_path(), or use gtk_action_group_add_action_with_accel
+// (..., NULL).
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) AddAction(action Actioner) {
+func (actionGroup *ActionGroup) AddAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_add_action(_arg0, _arg1)
 }
@@ -185,19 +185,19 @@ func (actionGroup *ActionGroup) AddAction(action Actioner) {
 // AddActionWithAccel adds an action object to the action group and sets up the
 // accelerator.
 //
-// If @accelerator is nil, attempts to use the accelerator associated with the
+// If accelerator is NULL, attempts to use the accelerator associated with the
 // stock_id of the action.
 //
-// Accel paths are set to `<Actions>/group-name/action-name`.
+// Accel paths are set to <Actions>/group-name/action-name.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) AddActionWithAccel(action Actioner, accelerator string) {
+func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 	var _arg2 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
@@ -259,7 +259,7 @@ func (actionGroup *ActionGroup) Name() string {
 	return _utf8
 }
 
-// Sensitive returns true if the group is sensitive. The constituent actions can
+// Sensitive returns TRUE if the group is sensitive. The constituent actions can
 // only be logically sensitive (see gtk_action_is_sensitive()) if they are
 // sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
 //
@@ -281,7 +281,7 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 	return _ok
 }
 
-// Visible returns true if the group is visible. The constituent actions can
+// Visible returns TRUE if the group is visible. The constituent actions can
 // only be logically visible (see gtk_action_is_visible()) if they are visible
 // (see gtk_action_get_visible()) and their group is visible.
 //
@@ -306,12 +306,12 @@ func (actionGroup *ActionGroup) Visible() bool {
 // RemoveAction removes an action object from the action group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) RemoveAction(action Actioner) {
+func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer((action).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
 	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
@@ -320,17 +320,17 @@ func (actionGroup *ActionGroup) RemoveAction(action Actioner) {
 // group.
 //
 // Deprecated: since version 3.10.
-func (actionGroup *ActionGroup) SetAccelGroup(accelGroup AccelGrouper) {
+func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkAccelGroup  // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer((accelGroup).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }
 
-// SetSensitive changes the sensitivity of @action_group
+// SetSensitive changes the sensitivity of action_group
 //
 // Deprecated: since version 3.10.
 func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
@@ -346,7 +346,7 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext() for
-// translating the @label and @tooltip of ActionEntrys added by
+// translating the label and tooltip of ActionEntrys added by
 // gtk_action_group_add_actions().
 //
 // If you’re not using gettext() for localization, see
@@ -363,7 +363,7 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
 }
 
-// SetVisible changes the visible of @action_group.
+// SetVisible changes the visible of action_group.
 //
 // Deprecated: since version 3.10.
 func (actionGroup *ActionGroup) SetVisible(visible bool) {

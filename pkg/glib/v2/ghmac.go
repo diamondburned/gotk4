@@ -11,7 +11,7 @@ import (
 // #include <glib.h>
 import "C"
 
-// ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
+// ComputeHMACForData computes the HMAC for a binary data of length. This is a
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.

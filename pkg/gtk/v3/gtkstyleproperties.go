@@ -30,20 +30,20 @@ func init() {
 
 // StylePropertieser describes StyleProperties's methods.
 type StylePropertieser interface {
-	// Clear clears all style information from @props.
+	// Clear clears all style information from props.
 	Clear()
-	// Property gets a style property from @props for the given state.
+	// Property gets a style property from props for the given state.
 	Property(property string, state StateFlags) (externglib.Value, bool)
-	// LookupColor returns the symbolic color that is mapped to @name.
+	// LookupColor returns the symbolic color that is mapped to name.
 	LookupColor(name string) *SymbolicColor
-	// MapColor maps @color so it can be referenced by @name.
+	// MapColor maps color so it can be referenced by name.
 	MapColor(name string, color *SymbolicColor)
-	// Merge merges into @props all the style information contained in
-	// @props_to_merge.
-	Merge(propsToMerge StylePropertieser, replace bool)
-	// SetPropertyStylePropertieser sets a styling property in @props.
+	// Merge merges into props all the style information contained in
+	// props_to_merge.
+	Merge(propsToMerge *StyleProperties, replace bool)
+	// SetPropertyStylePropertieser sets a styling property in props.
 	SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value)
-	// UnsetProperty unsets a style property in @props.
+	// UnsetProperty unsets a style property in props.
 	UnsetProperty(property string, state StateFlags)
 }
 
@@ -102,7 +102,7 @@ func NewStyleProperties() *StyleProperties {
 	return _styleProperties
 }
 
-// Clear clears all style information from @props.
+// Clear clears all style information from props.
 //
 // Deprecated: StyleProperties are deprecated.
 func (props *StyleProperties) Clear() {
@@ -113,8 +113,8 @@ func (props *StyleProperties) Clear() {
 	C.gtk_style_properties_clear(_arg0)
 }
 
-// Property gets a style property from @props for the given state. When done
-// with @value, g_value_unset() needs to be called to free any allocated memory.
+// Property gets a style property from props for the given state. When done with
+// value, g_value_unset() needs to be called to free any allocated memory.
 //
 // Deprecated: StyleProperties are deprecated.
 func (props *StyleProperties) Property(property string, state StateFlags) (externglib.Value, bool) {
@@ -144,7 +144,7 @@ func (props *StyleProperties) Property(property string, state StateFlags) (exter
 	return _value, _ok
 }
 
-// LookupColor returns the symbolic color that is mapped to @name.
+// LookupColor returns the symbolic color that is mapped to name.
 //
 // Deprecated: SymbolicColor is deprecated.
 func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
@@ -168,7 +168,7 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	return _symbolicColor
 }
 
-// MapColor maps @color so it can be referenced by @name. See
+// MapColor maps color so it can be referenced by name. See
 // gtk_style_properties_lookup_color()
 //
 // Deprecated: SymbolicColor is deprecated.
@@ -184,18 +184,18 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
 }
 
-// Merge merges into @props all the style information contained in
-// @props_to_merge. If @replace is true, the values will be overwritten, if it
-// is false, the older values will prevail.
+// Merge merges into props all the style information contained in
+// props_to_merge. If replace is TRUE, the values will be overwritten, if it is
+// FALSE, the older values will prevail.
 //
 // Deprecated: StyleProperties are deprecated.
-func (props *StyleProperties) Merge(propsToMerge StylePropertieser, replace bool) {
+func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _arg2 C.gboolean            // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((propsToMerge).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
 	if replace {
 		_arg2 = C.TRUE
 	}
@@ -203,7 +203,7 @@ func (props *StyleProperties) Merge(propsToMerge StylePropertieser, replace bool
 	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 }
 
-// SetPropertyStylePropertieser sets a styling property in @props.
+// SetPropertyStylePropertieser sets a styling property in props.
 //
 // Deprecated: StyleProperties are deprecated.
 func (props *StyleProperties) SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value) {
@@ -220,7 +220,7 @@ func (props *StyleProperties) SetPropertyStylePropertieser(property string, stat
 	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-// UnsetProperty unsets a style property in @props.
+// UnsetProperty unsets a style property in props.
 //
 // Deprecated: StyleProperties are deprecated.
 func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
@@ -319,7 +319,7 @@ func (g *Gradient) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// AddColorStop adds a stop color to @gradient.
+// AddColorStop adds a stop color to gradient.
 //
 // Deprecated: Gradient is deprecated.
 func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
@@ -334,7 +334,7 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	C.gtk_gradient_add_color_stop(_arg0, _arg1, _arg2)
 }
 
-// Ref increases the reference count of @gradient.
+// Ref increases the reference count of gradient.
 //
 // Deprecated: Gradient is deprecated.
 func (gradient *Gradient) ref() *Gradient {
@@ -356,20 +356,20 @@ func (gradient *Gradient) ref() *Gradient {
 	return _ret
 }
 
-// Resolve: if @gradient is resolvable, @resolved_gradient will be filled in
-// with the resolved gradient as a cairo_pattern_t, and true will be returned.
-// Generally, if @gradient can’t be resolved, it is due to it being defined on
-// top of a named color that doesn't exist in @props.
+// Resolve: if gradient is resolvable, resolved_gradient will be filled in with
+// the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
+// Generally, if gradient can’t be resolved, it is due to it being defined on
+// top of a named color that doesn't exist in props.
 //
 // Deprecated: Gradient is deprecated.
-func (gradient *Gradient) Resolve(props StylePropertieser) (*cairo.Pattern, bool) {
+func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
 	var _arg0 *C.GtkGradient        // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _resolvedGradient *cairo.Pattern
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((props).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, (**C.cairo_pattern_t)(unsafe.Pointer(&_resolvedGradient)))
 
@@ -382,13 +382,13 @@ func (gradient *Gradient) Resolve(props StylePropertieser) (*cairo.Pattern, bool
 	return _resolvedGradient, _ok
 }
 
-func (gradient *Gradient) ResolveForContext(context StyleContexter) *cairo.Pattern {
+func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Pattern {
 	var _arg0 *C.GtkGradient     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _cret *C.cairo_pattern_t // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer((context).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
 	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
 
@@ -402,7 +402,7 @@ func (gradient *Gradient) ResolveForContext(context StyleContexter) *cairo.Patte
 	return _pattern
 }
 
-// String creates a string representation for @gradient that is suitable for
+// String creates a string representation for gradient that is suitable for
 // using in GTK CSS files.
 //
 // Deprecated: Gradient is deprecated.
@@ -422,7 +422,7 @@ func (gradient *Gradient) String() string {
 	return _utf8
 }
 
-// Unref decreases the reference count of @gradient, freeing its memory if the
+// Unref decreases the reference count of gradient, freeing its memory if the
 // reference count reaches 0.
 //
 // Deprecated: Gradient is deprecated.
@@ -590,7 +590,7 @@ func (s *SymbolicColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// Ref increases the reference count of @color
+// Ref increases the reference count of color
 //
 // Deprecated: SymbolicColor is deprecated.
 func (color *SymbolicColor) ref() *SymbolicColor {
@@ -612,23 +612,23 @@ func (color *SymbolicColor) ref() *SymbolicColor {
 	return _symbolicColor
 }
 
-// Resolve: if @color is resolvable, @resolved_color will be filled in with the
-// resolved color, and true will be returned. Generally, if @color can’t be
+// Resolve: if color is resolvable, resolved_color will be filled in with the
+// resolved color, and TRUE will be returned. Generally, if color can’t be
 // resolved, it is due to it being defined on top of a named color that doesn’t
-// exist in @props.
+// exist in props.
 //
-// When @props is nil, resolving of named colors will fail, so if your @color is
-// or references such a color, this function will return false.
+// When props is NULL, resolving of named colors will fail, so if your color is
+// or references such a color, this function will return FALSE.
 //
 // Deprecated: SymbolicColor is deprecated.
-func (color *SymbolicColor) Resolve(props StylePropertieser) (gdk.RGBA, bool) {
+func (color *SymbolicColor) Resolve(props *StyleProperties) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
 	var _arg1 *C.GtkStyleProperties // out
 	var _resolvedColor gdk.RGBA
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(color))
-	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer((props).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_resolvedColor)))
 
@@ -641,7 +641,7 @@ func (color *SymbolicColor) Resolve(props StylePropertieser) (gdk.RGBA, bool) {
 	return _resolvedColor, _ok
 }
 
-// String converts the given @color to a string representation. This is useful
+// String converts the given color to a string representation. This is useful
 // both for debugging and for serialization of strings. The format of the string
 // may change between different versions of GTK, but it is guaranteed that the
 // GTK css parser is able to read the string and create the same symbolic color
@@ -664,7 +664,7 @@ func (color *SymbolicColor) String() string {
 	return _utf8
 }
 
-// Unref decreases the reference count of @color, freeing its memory if the
+// Unref decreases the reference count of color, freeing its memory if the
 // reference count reaches 0.
 //
 // Deprecated: SymbolicColor is deprecated.

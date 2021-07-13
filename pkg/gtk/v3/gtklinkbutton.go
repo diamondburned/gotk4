@@ -39,7 +39,7 @@ type LinkButtoner interface {
 	// Visited retrieves the “visited” state of the URI where the LinkButton
 	// points.
 	Visited() bool
-	// SetURI sets @uri as the URI where the LinkButton points.
+	// SetURI sets uri as the URI where the LinkButton points.
 	SetURI(uri string)
 	// SetVisited sets the “visited” state of the URI where the LinkButton
 	// points.
@@ -59,7 +59,7 @@ type LinkButtoner interface {
 //
 // By default, GtkLinkButton calls gtk_show_uri_on_window() when the button is
 // clicked. This behaviour can be overridden by connecting to the
-// LinkButton::activate-link signal and returning true from the signal handler.
+// LinkButton::activate-link signal and returning TRUE from the signal handler.
 //
 //
 // CSS nodes
@@ -191,8 +191,8 @@ func (linkButton *LinkButton) Visited() bool {
 	return _ok
 }
 
-// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
-// this unsets the “visited” state of the button.
+// SetURI sets uri as the URI where the LinkButton points. As a side-effect this
+// unsets the “visited” state of the button.
 func (linkButton *LinkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
 	var _arg1 *C.gchar         // out

@@ -23,7 +23,7 @@ func init() {
 }
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
-// @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+// symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
@@ -44,7 +44,7 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 
 // KeyvalFromName converts a key name to a key value.
 //
-// The names are the same as those in the `gdk/gdkkeysyms.h` header file but
+// The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
@@ -61,7 +61,7 @@ func KeyvalFromName(keyvalName string) uint {
 	return _guint
 }
 
-// KeyvalIsLower returns true if the given key value is in lower case.
+// KeyvalIsLower returns TRUE if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -79,7 +79,7 @@ func KeyvalIsLower(keyval uint) bool {
 	return _ok
 }
 
-// KeyvalIsUpper returns true if the given key value is in upper case.
+// KeyvalIsUpper returns TRUE if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
@@ -99,7 +99,7 @@ func KeyvalIsUpper(keyval uint) bool {
 
 // KeyvalName converts a key value into a symbolic name.
 //
-// The names are the same as those in the `gdk/gdkkeysyms.h` header file but
+// The names are the same as those in the gdk/gdkkeysyms.h header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint  // out
@@ -187,12 +187,12 @@ type Keymaper interface {
 	CapsLockState() bool
 	// Direction returns the direction of effective layout of the keymap.
 	Direction() pango.Direction
-	// EntriesForKeycode returns the keyvals bound to @hardware_keycode.
+	// EntriesForKeycode returns the keyvals bound to hardware_keycode.
 	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
 	// EntriesForKeyval obtains a list of keycode/group/level combinations that
-	// will generate @keyval.
+	// will generate keyval.
 	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
-	// ModifierMask returns the modifier mask the @keymap’s windowing system
+	// ModifierMask returns the modifier mask the keymap’s windowing system
 	// backend uses for a particular purpose.
 	ModifierMask(intent ModifierIntent) ModifierType
 	// ModifierState returns the current modifier state.
@@ -272,8 +272,8 @@ func (keymap *Keymap) Direction() pango.Direction {
 	return _direction
 }
 
-// EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
-// KeymapKey in @keys is bound to the Nth keyval in @keyvals. Free the returned
+// EntriesForKeycode returns the keyvals bound to hardware_keycode. The Nth
+// KeymapKey in keys is bound to the Nth keyval in keyvals. Free the returned
 // arrays with g_free(). When a keycode is pressed by the user, the keyval from
 // this list of entries is selected by considering the effective keyboard group
 // and level. See gdk_keymap_translate_keyboard_state().
@@ -308,7 +308,7 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 }
 
 // EntriesForKeyval obtains a list of keycode/group/level combinations that will
-// generate @keyval. Groups and levels are two kinds of keyboard mode; in
+// generate keyval. Groups and levels are two kinds of keyboard mode; in
 // general, the level determines whether the top or bottom symbol on a key is
 // used, and the group determines whether the left or right symbol is used. On
 // US keyboards, the shift key changes the keyboard level, and there are no
@@ -341,7 +341,7 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	return _keys, _ok
 }
 
-// ModifierMask returns the modifier mask the @keymap’s windowing system backend
+// ModifierMask returns the modifier mask the keymap’s windowing system backend
 // uses for a particular purpose.
 //
 // Note that this function always returns real hardware modifiers, not virtual
@@ -438,7 +438,7 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 }
 
 // LookupKey looks up the keyval mapped to a keycode/group/level triplet. If no
-// keyval is bound to @key, returns 0. For normal user input, you want to use
+// keyval is bound to key, returns 0. For normal user input, you want to use
 // gdk_keymap_translate_keyboard_state() instead of this function, since the
 // effective group/level may not be the same as the current keyboard state.
 func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
@@ -460,17 +460,17 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 
 // TranslateKeyboardState translates the contents of a EventKey into a keyval,
 // effective group, and level. Modifiers that affected the translation and are
-// thus unavailable for application use are returned in @consumed_modifiers. See
+// thus unavailable for application use are returned in consumed_modifiers. See
 // [Groups][key-group-explanation] for an explanation of groups and levels. The
-// @effective_group is the group that was actually used for the translation;
-// some keys such as Enter are not affected by the active keyboard group. The
-// @level is derived from @state. For convenience, EventKey already contains the
+// effective_group is the group that was actually used for the translation; some
+// keys such as Enter are not affected by the active keyboard group. The level
+// is derived from state. For convenience, EventKey already contains the
 // translated keyval, so this function isn’t as useful as you might think.
 //
-// @consumed_modifiers gives modifiers that should be masked outfrom @state when
+// consumed_modifiers gives modifiers that should be masked outfrom state when
 // comparing this key press to a hot key. For instance, on a US keyboard, the
-// `plus` symbol is shifted, so when comparing a key press to a `<Control>plus`
-// accelerator `<Shift>` should be masked out.
+// plus symbol is shifted, so when comparing a key press to a <Control>plus
+// accelerator <Shift> should be masked out.
 //
 //    // XXX Don’t do this XXX
 //    if (keyval == accel_keyval &&
@@ -478,13 +478,13 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 //      // Accelerator was pressed
 //
 // However, this did not work if multi-modifier combinations were used in the
-// keymap, since, for instance, `<Control>` would be masked out even if only
-// `<Control><Alt>` was used in the keymap. To support this usage as well as
-// well as possible, all single modifier combinations that could affect the key
-// for any combination of modifiers will be returned in @consumed_modifiers;
-// multi-modifier combinations are returned only when actually found in @state.
+// keymap, since, for instance, <Control> would be masked out even if only
+// <Control><Alt> was used in the keymap. To support this usage as well as well
+// as possible, all single modifier combinations that could affect the key for
+// any combination of modifiers will be returned in consumed_modifiers;
+// multi-modifier combinations are returned only when actually found in state.
 // When you store accelerators, you should always store them with consumed
-// modifiers removed. Store `<Control>plus`, not `<Control><Shift>plus`,
+// modifiers removed. Store <Control>plus, not <Control><Shift>plus,
 func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out
@@ -535,12 +535,12 @@ func KeymapGetDefault() *Keymap {
 	return _keymap
 }
 
-// KeymapGetForDisplay returns the Keymap attached to @display.
-func KeymapGetForDisplay(display Displayer) *Keymap {
+// KeymapGetForDisplay returns the Keymap attached to display.
+func KeymapGetForDisplay(display *Display) *Keymap {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkKeymap  // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gdk_keymap_get_for_display(_arg1)
 

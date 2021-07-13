@@ -27,42 +27,42 @@ const (
 	SpawnErrorRead SpawnError = 1
 	// Chdir: changing to working directory failed.
 	SpawnErrorChdir SpawnError = 2
-	// Acces: execv() returned `EACCES`
+	// Acces: execv() returned EACCES
 	SpawnErrorAcces SpawnError = 3
-	// Perm: execv() returned `EPERM`
+	// Perm: execv() returned EPERM
 	SpawnErrorPerm SpawnError = 4
-	// TooBig: execv() returned `E2BIG`
+	// TooBig: execv() returned E2BIG
 	SpawnErrorTooBig SpawnError = 5
 	// 2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated since GLib
 	// 2.32)
 	SpawnError2Big SpawnError = 5
-	// Noexec: execv() returned `ENOEXEC`
+	// Noexec: execv() returned ENOEXEC
 	SpawnErrorNoexec SpawnError = 6
-	// Nametoolong: execv() returned `ENAMETOOLONG`
+	// Nametoolong: execv() returned ENAMETOOLONG
 	SpawnErrorNametoolong SpawnError = 7
-	// Noent: execv() returned `ENOENT`
+	// Noent: execv() returned ENOENT
 	SpawnErrorNoent SpawnError = 8
-	// NOMEM: execv() returned `ENOMEM`
-	SpawnErrorNOMEM SpawnError = 9
-	// Notdir: execv() returned `ENOTDIR`
+	// Nomem: execv() returned ENOMEM
+	SpawnErrorNomem SpawnError = 9
+	// Notdir: execv() returned ENOTDIR
 	SpawnErrorNotdir SpawnError = 10
-	// Loop: execv() returned `ELOOP`
+	// Loop: execv() returned ELOOP
 	SpawnErrorLoop SpawnError = 11
-	// Txtbusy: execv() returned `ETXTBUSY`
+	// Txtbusy: execv() returned ETXTBUSY
 	SpawnErrorTxtbusy SpawnError = 12
-	// IO: execv() returned `EIO`
+	// IO: execv() returned EIO
 	SpawnErrorIO SpawnError = 13
-	// Nfile: execv() returned `ENFILE`
+	// Nfile: execv() returned ENFILE
 	SpawnErrorNfile SpawnError = 14
-	// Mfile: execv() returned `EMFILE`
+	// Mfile: execv() returned EMFILE
 	SpawnErrorMfile SpawnError = 15
-	// Inval: execv() returned `EINVAL`
+	// Inval: execv() returned EINVAL
 	SpawnErrorInval SpawnError = 16
-	// Isdir: execv() returned `EISDIR`
+	// Isdir: execv() returned EISDIR
 	SpawnErrorIsdir SpawnError = 17
-	// Libbad: execv() returned `ELIBBAD`
+	// Libbad: execv() returned ELIBBAD
 	SpawnErrorLibbad SpawnError = 18
-	// Failed: some other fatal failure, `error->message` should explain.
+	// Failed: some other fatal failure, error->message should explain.
 	SpawnErrorFailed SpawnError = 19
 )
 
@@ -79,10 +79,10 @@ const (
 	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 0b1
 	// SpawnFlagsDoNotReapChild: child will not be automatically reaped; you
 	// must use g_child_watch_add() yourself (or call waitpid() or handle
-	// `SIGCHLD` yourself), or the child will become a zombie.
+	// SIGCHLD yourself), or the child will become a zombie.
 	SpawnFlagsDoNotReapChild SpawnFlags = 0b10
-	// SpawnFlagsSearchPath: `argv[0]` need not be an absolute path, it will be
-	// looked for in the user's `PATH`.
+	// SpawnFlagsSearchPath: argv[0] need not be an absolute path, it will be
+	// looked for in the user's PATH.
 	SpawnFlagsSearchPath SpawnFlags = 0b100
 	// SpawnFlagsStdoutToDevNull child's standard output will be discarded,
 	// instead of going to the same location as the parent's standard output.
@@ -90,19 +90,17 @@ const (
 	// SpawnFlagsStderrToDevNull child's standard error will be discarded.
 	SpawnFlagsStderrToDevNull SpawnFlags = 0b10000
 	// SpawnFlagsChildInheritsStdin: child will inherit the parent's standard
-	// input (by default, the child's standard input is attached to
-	// `/dev/null`).
+	// input (by default, the child's standard input is attached to /dev/null).
 	SpawnFlagsChildInheritsStdin SpawnFlags = 0b100000
-	// SpawnFlagsFileAndArgvZero: first element of `argv` is the file to
-	// execute, while the remaining elements are the actual argument vector to
-	// pass to the file. Normally g_spawn_async_with_pipes() uses `argv[0]` as
-	// the file to execute, and passes all of `argv` to the child.
+	// SpawnFlagsFileAndArgvZero: first element of argv is the file to execute,
+	// while the remaining elements are the actual argument vector to pass to
+	// the file. Normally g_spawn_async_with_pipes() uses argv[0] as the file to
+	// execute, and passes all of argv to the child.
 	SpawnFlagsFileAndArgvZero SpawnFlags = 0b1000000
-	// SpawnFlagsSearchPathFromEnvp: if `argv[0]` is not an absolute path, it
-	// will be looked for in the `PATH` from the passed child environment.
-	// Since: 2.34
+	// SpawnFlagsSearchPathFromEnvp: if argv[0] is not an absolute path, it will
+	// be looked for in the PATH from the passed child environment. Since: 2.34
 	SpawnFlagsSearchPathFromEnvp SpawnFlags = 0b10000000
-	// SpawnFlagsCloexecPipes: create all pipes with the `O_CLOEXEC` flag set.
+	// SpawnFlagsCloexecPipes: create all pipes with the O_CLOEXEC flag set.
 	// Since: 2.40
 	SpawnFlagsCloexecPipes SpawnFlags = 0b100000000
 )
@@ -132,7 +130,7 @@ const (
 // which includes POSIX functions such as setenv(). If you need to set up the
 // child environment differently from the parent, you should use
 // g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
-// the complete environment list to the `g_spawn...` function.
+// the complete environment list to the g_spawn... function.
 type SpawnChildSetupFunc func(userData cgo.Handle)
 
 //export gotk4_SpawnChildSetupFunc
@@ -150,7 +148,7 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 	fn(userData)
 }
 
-// SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
+// SpawnCheckExitStatus: set error if exit_status indicates the child exited
 // abnormally (e.g. with a nonzero exit code, or via a fatal signal).
 //
 // The g_spawn_sync() and g_child_watch_add() family of APIs return an exit
@@ -159,22 +157,22 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 // guaranteed to be the result of GetExitCodeProcess().
 //
 // Prior to the introduction of this function in GLib 2.34, interpreting
-// @exit_status required use of platform-specific APIs, which is problematic for
+// exit_status required use of platform-specific APIs, which is problematic for
 // software using GLib as a cross-platform layer.
 //
 // Additionally, many programs simply want to determine whether or not the child
 // exited successfully, and either propagate a #GError or print a message to
 // standard error. In that common case, this function can be used. Note that the
-// error message in @error will contain human-readable information about the
-// exit status.
+// error message in error will contain human-readable information about the exit
+// status.
 //
-// The @domain and @code of @error have special semantics in the case where the
+// The domain and code of error have special semantics in the case where the
 // process has an "exit code", as opposed to being killed by a signal. On Unix,
-// this happens if WIFEXITED() would be true of @exit_status. On Windows, it is
+// this happens if WIFEXITED() would be true of exit_status. On Windows, it is
 // always the case.
 //
 // The special semantics are that the actual exit code will be the code set in
-// @error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
+// error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
 // differentiate between different exit codes.
 //
 // If the process was terminated by some means other than an exit status, the
@@ -182,7 +180,7 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 //
 // This function just offers convenience; you can of course also check the
 // available platform via a macro such as G_OS_UNIX, and use WIFEXITED() and
-// WEXITSTATUS() on @exit_status directly. Do not attempt to scan or parse the
+// WEXITSTATUS() on exit_status directly. Do not attempt to scan or parse the
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
@@ -226,20 +224,20 @@ func SpawnCommandLineAsync(commandLine string) error {
 
 // SpawnCommandLineSync: simple version of g_spawn_sync() with little-used
 // parameters removed, taking a command line instead of an argument vector. See
-// g_spawn_sync() for full details. @command_line will be parsed by
+// g_spawn_sync() for full details. command_line will be parsed by
 // g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag is
 // enabled. Note that G_SPAWN_SEARCH_PATH can have security implications, so
 // consider using g_spawn_sync() directly if appropriate. Possible errors are
 // those from g_spawn_sync() and those from g_shell_parse_argv().
 //
-// If @exit_status is non-nil, the platform-specific exit status of the child is
+// If exit_status is non-NULL, the platform-specific exit status of the child is
 // stored there; see the documentation of g_spawn_check_exit_status() for how to
 // use and interpret this.
 //
 // On Windows, please note the implications of g_shell_parse_argv() parsing
-// @command_line. Parsing is done according to Unix shell rules, not Windows
+// command_line. Parsing is done according to Unix shell rules, not Windows
 // command interpreter rules. Space is a separator, and backslashes are special.
-// Thus you cannot simply pass a @command_line containing canonical Windows
+// Thus you cannot simply pass a command_line containing canonical Windows
 // paths, like "c:\\program files\\app\\app.exe", as the backslashes will be
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
@@ -293,19 +291,19 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 }
 
 // SpawnSync executes a child synchronously (waits for the child to exit before
-// returning). All output from the child is stored in @standard_output and
-// @standard_error, if those parameters are non-nil. Note that you must set the
+// returning). All output from the child is stored in standard_output and
+// standard_error, if those parameters are non-NULL. Note that you must set the
 // G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
-// nil for @standard_output and @standard_error.
+// NULL for standard_output and standard_error.
 //
-// If @exit_status is non-nil, the platform-specific exit status of the child is
+// If exit_status is non-NULL, the platform-specific exit status of the child is
 // stored there; see the documentation of g_spawn_check_exit_status() for how to
 // use and interpret this. Note that it is invalid to pass
-// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
+// G_SPAWN_DO_NOT_REAP_CHILD in flags, and on POSIX platforms, the same
 // restrictions as for g_child_watch_source_new() apply.
 //
-// If an error occurs, no data is returned in @standard_output, @standard_error,
-// or @exit_status.
+// If an error occurs, no data is returned in standard_output, standard_error,
+// or exit_status.
 //
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
@@ -323,18 +321,26 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	var _cerr *C.GError // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(workingDirectory)))
-	_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg2, len(argv))
-		for i := range argv {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(argv)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg2, len(argv)+1)
+			var zero *C.gchar
+			out[len(argv)] = zero
+			for i := range argv {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+			}
 		}
 	}
-	_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice(_arg3, len(envp))
-		for i := range envp {
-			out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(envp)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(envp)+1)
+			var zero *C.gchar
+			out[len(envp)] = zero
+			for i := range envp {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(envp[i])))
+			}
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)

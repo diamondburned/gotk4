@@ -27,36 +27,36 @@ func init() {
 
 // ToolItemGrouper describes ToolItemGroup's methods.
 type ToolItemGrouper interface {
-	// Collapsed gets whether @group is collapsed or expanded.
+	// Collapsed gets whether group is collapsed or expanded.
 	Collapsed() bool
 	// DropItem gets the tool item at position (x, y).
 	DropItem(x int, y int) *ToolItem
-	// Ellipsize gets the ellipsization mode of @group.
+	// Ellipsize gets the ellipsization mode of group.
 	Ellipsize() pango.EllipsizeMode
-	// HeaderRelief gets the relief mode of the header button of @group.
+	// HeaderRelief gets the relief mode of the header button of group.
 	HeaderRelief() ReliefStyle
-	// ItemPosition gets the position of @item in @group as index.
-	ItemPosition(item ToolItemer) int
-	// Label gets the label of @group.
+	// ItemPosition gets the position of item in group as index.
+	ItemPosition(item *ToolItem) int
+	// Label gets the label of group.
 	Label() string
-	// LabelWidget gets the label widget of @group.
+	// LabelWidget gets the label widget of group.
 	LabelWidget() *Widget
-	// NItems gets the number of tool items in @group.
+	// NItems gets the number of tool items in group.
 	NItems() uint
-	// NthItem gets the tool item at @index in group.
+	// NthItem gets the tool item at index in group.
 	NthItem(index uint) *ToolItem
-	// Insert inserts @item at @position in the list of children of @group.
-	Insert(item ToolItemer, position int)
-	// SetCollapsed sets whether the @group should be collapsed or expanded.
+	// Insert inserts item at position in the list of children of group.
+	Insert(item *ToolItem, position int)
+	// SetCollapsed sets whether the group should be collapsed or expanded.
 	SetCollapsed(collapsed bool)
 	// SetEllipsize sets the ellipsization mode which should be used by labels
-	// in @group.
+	// in group.
 	SetEllipsize(ellipsize pango.EllipsizeMode)
 	// SetHeaderRelief: set the button relief of the group header.
 	SetHeaderRelief(style ReliefStyle)
-	// SetItemPosition sets the position of @item in the list of children of
-	// @group.
-	SetItemPosition(item ToolItemer, position int)
+	// SetItemPosition sets the position of item in the list of children of
+	// group.
+	SetItemPosition(item *ToolItem, position int)
 	// SetLabel sets the label of the tool item group.
 	SetLabel(label string)
 	// SetLabelWidget sets the label of the tool item group.
@@ -118,7 +118,7 @@ func marshalToolItemGrouper(p uintptr) (interface{}, error) {
 	return wrapToolItemGroup(obj), nil
 }
 
-// NewToolItemGroup creates a new tool item group with label @label.
+// NewToolItemGroup creates a new tool item group with label label.
 func NewToolItemGroup(label string) *ToolItemGroup {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -140,7 +140,7 @@ func (v *ToolItemGroup) Native() uintptr {
 	return v.Container.Widget.InitiallyUnowned.Object.Native()
 }
 
-// Collapsed gets whether @group is collapsed or expanded.
+// Collapsed gets whether group is collapsed or expanded.
 func (group *ToolItemGroup) Collapsed() bool {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.gboolean          // in
@@ -178,7 +178,7 @@ func (group *ToolItemGroup) DropItem(x int, y int) *ToolItem {
 	return _toolItem
 }
 
-// Ellipsize gets the ellipsization mode of @group.
+// Ellipsize gets the ellipsization mode of group.
 func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItemGroup  // out
 	var _cret C.PangoEllipsizeMode // in
@@ -194,7 +194,7 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 	return _ellipsizeMode
 }
 
-// HeaderRelief gets the relief mode of the header button of @group.
+// HeaderRelief gets the relief mode of the header button of group.
 func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.GtkReliefStyle    // in
@@ -210,14 +210,14 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	return _reliefStyle
 }
 
-// ItemPosition gets the position of @item in @group as index.
-func (group *ToolItemGroup) ItemPosition(item ToolItemer) int {
+// ItemPosition gets the position of item in group as index.
+func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _cret C.gint              // in
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_tool_item_group_get_item_position(_arg0, _arg1)
 
@@ -228,7 +228,7 @@ func (group *ToolItemGroup) ItemPosition(item ToolItemer) int {
 	return _gint
 }
 
-// Label gets the label of @group.
+// Label gets the label of group.
 func (group *ToolItemGroup) Label() string {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret *C.gchar            // in
@@ -244,7 +244,7 @@ func (group *ToolItemGroup) Label() string {
 	return _utf8
 }
 
-// LabelWidget gets the label widget of @group. See
+// LabelWidget gets the label widget of group. See
 // gtk_tool_item_group_set_label_widget().
 func (group *ToolItemGroup) LabelWidget() *Widget {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -261,7 +261,7 @@ func (group *ToolItemGroup) LabelWidget() *Widget {
 	return _widget
 }
 
-// NItems gets the number of tool items in @group.
+// NItems gets the number of tool items in group.
 func (group *ToolItemGroup) NItems() uint {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret C.guint             // in
@@ -277,7 +277,7 @@ func (group *ToolItemGroup) NItems() uint {
 	return _guint
 }
 
-// NthItem gets the tool item at @index in group.
+// NthItem gets the tool item at index in group.
 func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.guint             // out
@@ -295,20 +295,20 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	return _toolItem
 }
 
-// Insert inserts @item at @position in the list of children of @group.
-func (group *ToolItemGroup) Insert(item ToolItemer, position int) {
+// Insert inserts item at position in the list of children of group.
+func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_insert(_arg0, _arg1, _arg2)
 }
 
-// SetCollapsed sets whether the @group should be collapsed or expanded.
+// SetCollapsed sets whether the group should be collapsed or expanded.
 func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 C.gboolean          // out
@@ -322,7 +322,7 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 }
 
 // SetEllipsize sets the ellipsization mode which should be used by labels in
-// @group.
+// group.
 func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 	var _arg0 *C.GtkToolItemGroup  // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -345,14 +345,14 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 	C.gtk_tool_item_group_set_header_relief(_arg0, _arg1)
 }
 
-// SetItemPosition sets the position of @item in the list of children of @group.
-func (group *ToolItemGroup) SetItemPosition(item ToolItemer, position int) {
+// SetItemPosition sets the position of item in the list of children of group.
+func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkToolItem      // out
 	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
-	_arg1 = (*C.GtkToolItem)(unsafe.Pointer((item).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 	_arg2 = C.gint(position)
 
 	C.gtk_tool_item_group_set_item_position(_arg0, _arg1, _arg2)

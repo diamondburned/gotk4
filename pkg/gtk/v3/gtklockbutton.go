@@ -27,9 +27,9 @@ func init() {
 
 // LockButtoner describes LockButton's methods.
 type LockButtoner interface {
-	// Permission obtains the #GPermission object that controls @button.
+	// Permission obtains the #GPermission object that controls button.
 	Permission() *gio.Permission
-	// SetPermission sets the #GPermission object that controls @button.
+	// SetPermission sets the #GPermission object that controls button.
 	SetPermission(permission gio.Permissioner)
 }
 
@@ -116,7 +116,7 @@ func marshalLockButtoner(p uintptr) (interface{}, error) {
 	return wrapLockButton(obj), nil
 }
 
-// NewLockButton creates a new lock button which reflects the @permission.
+// NewLockButton creates a new lock button which reflects the permission.
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
 	var _cret *C.GtkWidget   // in
@@ -132,7 +132,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 	return _lockButton
 }
 
-// Permission obtains the #GPermission object that controls @button.
+// Permission obtains the #GPermission object that controls button.
 func (button *LockButton) Permission() *gio.Permission {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
@@ -153,7 +153,7 @@ func (button *LockButton) Permission() *gio.Permission {
 	return _permission
 }
 
-// SetPermission sets the #GPermission object that controls @button.
+// SetPermission sets the #GPermission object that controls button.
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out
 	var _arg1 *C.GPermission   // out

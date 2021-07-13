@@ -30,15 +30,15 @@ type DragIconer interface {
 	SetChild(child Widgeter)
 }
 
-// DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
+// DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
 //
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is
 // destroyed when the drag ends.
 //
 // To set up a drag icon and associate it with an ongoing drag operation, use
-// [func@Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use
-// it like any other widget and use [method@Gtk.DragIcon.set_child] to set
-// whatever widget should be used for the drag icon.
+// gtk.DragIcon().GetForDrag to get the icon for a drag. You can then use it
+// like any other widget and use gtk.DragIcon.SetChild() to set whatever widget
+// should be used for the drag icon.
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon struct {
@@ -129,13 +129,13 @@ func (self *DragIcon) SetChild(child Widgeter) {
 }
 
 // DragIconCreateWidgetForValue creates a widget that can be used as a drag icon
-// for the given @value.
+// for the given value.
 //
-// Supported types include strings, `GdkRGBA` and `GtkTextBuffer`. If GTK does
-// not know how to create a widget for a given value, it will return nil.
+// Supported types include strings, GdkRGBA and GtkTextBuffer. If GTK does not
+// know how to create a widget for a given value, it will return NULL.
 //
 // This method is used to set the default drag icon on drag'n'drop operations
-// started by `GtkDragSource`, so you don't need to set a drag icon using this
+// started by GtkDragSource, so you don't need to set a drag icon using this
 // function there.
 func DragIconCreateWidgetForValue(value *externglib.Value) *Widget {
 	var _arg1 *C.GValue    // out
@@ -152,7 +152,7 @@ func DragIconCreateWidgetForValue(value *externglib.Value) *Widget {
 	return _widget
 }
 
-// DragIconGetForDrag gets the `GtkDragIcon` in use with @drag.
+// DragIconGetForDrag gets the GtkDragIcon in use with drag.
 //
 // If no drag icon exists yet, a new one will be created and shown.
 func DragIconGetForDrag(drag gdk.Drager) *Widget {
@@ -170,7 +170,7 @@ func DragIconGetForDrag(drag gdk.Drager) *Widget {
 	return _widget
 }
 
-// DragIconSetFromPaintable creates a `GtkDragIcon` that shows @paintable, and
+// DragIconSetFromPaintable creates a GtkDragIcon that shows paintable, and
 // associates it with the drag operation.
 //
 // The hotspot position on the paintable is aligned with the hotspot of the

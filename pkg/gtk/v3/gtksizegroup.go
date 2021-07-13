@@ -90,10 +90,10 @@ type SizeGrouper interface {
 // GtkSizeGroup as GtkBuildable
 //
 // Size groups can be specified in a UI definition by placing an <object>
-// element with `class="GtkSizeGroup"` somewhere in the UI definition. The
-// widgets that belong to the size group are specified by a <widgets> element
-// that may contain multiple <widget> elements, one for each member of the size
-// group. The ”name” attribute gives the id of the widget.
+// element with class="GtkSizeGroup" somewhere in the UI definition. The widgets
+// that belong to the size group are specified by a <widgets> element that may
+// contain multiple <widget> elements, one for each member of the size group.
+// The ”name” attribute gives the id of the widget.
 //
 // An example of a UI definition fragment with GtkSizeGroup:
 //
@@ -170,7 +170,7 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgeter) {
 // Deprecated: Measuring the size of hidden widgets has not worked reliably for
 // a long time. In most cases, they will report a size of 0 nowadays, and thus,
 // their size will not affect the other size group members. In effect, size
-// groups will always operate as if this property was true. Use a Stack instead
+// groups will always operate as if this property was TRUE. Use a Stack instead
 // to hide widgets while still having their size taken into account.
 func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 	var _arg0 *C.GtkSizeGroup // out
@@ -222,7 +222,7 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
 // Deprecated: Measuring the size of hidden widgets has not worked reliably for
 // a long time. In most cases, they will report a size of 0 nowadays, and thus,
 // their size will not affect the other size group members. In effect, size
-// groups will always operate as if this property was true. Use a Stack instead
+// groups will always operate as if this property was TRUE. Use a Stack instead
 // to hide widgets while still having their size taken into account.
 func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 	var _arg0 *C.GtkSizeGroup // out

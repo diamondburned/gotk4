@@ -91,16 +91,16 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 	return cret
 }
 
-// DBusProxyTypeFunc: function signature for a function used to determine the
-// #GType to use for an interface proxy (if @interface_name is not nil) or
-// object proxy (if @interface_name is nil).
+// DBusProXYTypeFunc: function signature for a function used to determine the
+// #GType to use for an interface proxy (if interface_name is not NULL) or
+// object proxy (if interface_name is NULL).
 //
 // This function is called in the [thread-default main
-// loop][g-main-context-push-thread-default] that @manager was constructed in.
-type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
+// loop][g-main-context-push-thread-default] that manager was constructed in.
+type DBusProXYTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
 
-//export gotk4_DBusProxyTypeFunc
-func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
+//export gotk4_DBusProXYTypeFunc
+func gotk4_DBusProXYTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -118,7 +118,7 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	defer C.free(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
-	fn := v.(DBusProxyTypeFunc)
+	fn := v.(DBusProXYTypeFunc)
 	gType := fn(manager, objectPath, interfaceName, userData)
 
 	cret = C.GType(gType)
@@ -163,9 +163,9 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 // support them. At the minimum, however, one call will always be made
 // immediately.
 //
-// In the case that there is no support, @reporting will be set to false (and
-// the other values undefined) and no further calls will be made. Otherwise, the
-// @reporting will be true and the other values all-zeros during the first
+// In the case that there is no support, reporting will be set to FALSE (and the
+// other values undefined) and no further calls will be made. Otherwise, the
+// reporting will be TRUE and the other values all-zeros during the first
 // (immediate) call. In this way, you can know which type of progress UI to show
 // without a delay.
 //
@@ -174,7 +174,7 @@ func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, 
 // context of the calling thread (ie: the same way that the final async result
 // would be reported).
 //
-// @current_size is in the same units as requested by the operation (see
+// current_size is in the same units as requested by the operation (see
 // G_FILE_MEASURE_APPARENT_SIZE).
 //
 // The frequency of the updates is implementation defined, but is ideally about
@@ -236,7 +236,7 @@ func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer)
 // FileReadMoreCallback: when loading the partial contents of a file with
 // g_file_load_partial_contents_async(), it may become necessary to determine if
 // any more data from the file should be loaded. A ReadMoreCallback function
-// facilitates this by returning true if more data should be read, or false
+// facilitates this by returning TRUE if more data should be read, or FALSE
 // otherwise.
 type FileReadMoreCallback func(fileContents string, fileSize int64, callbackData cgo.Handle) (ok bool)
 
@@ -359,8 +359,8 @@ func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 }
 
 // EnumerateNamespace checks if the matcher will match all of the keys in a
-// given namespace. This will always return true if a wildcard character is in
-// use (e.g. if matcher was created with "standard::*" and @ns is "standard", or
+// given namespace. This will always return TRUE if a wildcard character is in
+// use (e.g. if matcher was created with "standard::*" and ns is "standard", or
 // if matcher was created using "*" and namespace is anything.)
 //
 // TODO: this is awkwardly worded.
@@ -401,7 +401,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 // Matches checks if an attribute will be matched by an attribute matcher. If
 // the matcher was created with the "*" matching string, this function will
-// always return true.
+// always return TRUE.
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -422,7 +422,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 }
 
 // MatchesOnly checks if a attribute matcher only matches a given attribute.
-// Always returns false if "*" was used when creating the matcher.
+// Always returns FALSE if "*" was used when creating the matcher.
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -462,12 +462,12 @@ func (matcher *FileAttributeMatcher) ref() *FileAttributeMatcher {
 	return _fileAttributeMatcher
 }
 
-// Subtract subtracts all attributes of @subtract from @matcher and returns a
+// Subtract subtracts all attributes of subtract from matcher and returns a
 // matcher that supports those attributes.
 //
 // Note that currently it is not possible to remove a single attribute when the
-// @matcher matches the whole namespace - or remove a namespace or attribute
-// when the matcher matches everything. This is a limitation of the current
+// matcher matches the whole namespace - or remove a namespace or attribute when
+// the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -510,8 +510,8 @@ func (matcher *FileAttributeMatcher) String() string {
 	return _utf8
 }
 
-// Unref unreferences @matcher. If the reference count falls below 1, the
-// @matcher is automatically freed.
+// Unref unreferences matcher. If the reference count falls below 1, the matcher
+// is automatically freed.
 func (matcher *FileAttributeMatcher) unref() {
 	var _arg0 *C.GFileAttributeMatcher // out
 
@@ -523,22 +523,22 @@ func (matcher *FileAttributeMatcher) unref() {
 // InputMessage: structure used for scatter/gather data input when receiving
 // multiple messages or packets in one go. You generally pass in an array of
 // empty Vectors and the operation will use all the buffers as if they were one
-// buffer, and will set @bytes_received to the total number of bytes received
+// buffer, and will set bytes_received to the total number of bytes received
 // across all Vectors.
 //
-// This structure closely mirrors `struct mmsghdr` and `struct msghdr` from the
-// POSIX sockets API (see `man 2 recvmmsg`).
+// This structure closely mirrors struct mmsghdr and struct msghdr from the
+// POSIX sockets API (see man 2 recvmmsg).
 //
-// If @address is non-nil then it is set to the source address the message was
+// If address is non-NULL then it is set to the source address the message was
 // received from, and the caller must free it afterwards.
 //
-// If @control_messages is non-nil then it is set to an array of control
+// If control_messages is non-NULL then it is set to an array of control
 // messages received with the message (if any), and the caller must free it
-// afterwards. @num_control_messages is set to the number of elements in this
+// afterwards. num_control_messages is set to the number of elements in this
 // array, which may be zero.
 //
-// Flags relevant to this message will be returned in @flags. For example,
-// `MSG_EOR` or `MSG_TRUNC`.
+// Flags relevant to this message will be returned in flags. For example,
+// MSG_EOR or MSG_TRUNC.
 type InputMessage struct {
 	native C.GInputMessage
 }
@@ -565,7 +565,7 @@ func (i *InputVector) Native() unsafe.Pointer {
 // Vectors and the operation will use all the buffers as if they were one
 // buffer.
 //
-// If @address is nil then the message is sent to the default receiver (as
+// If address is NULL then the message is sent to the default receiver (as
 // previously set by g_socket_connect()).
 type OutputMessage struct {
 	native C.GOutputMessage
@@ -591,7 +591,7 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // Resource applications and libraries often contain binary or textual data that
 // is really part of the application, rather than user data. For instance
 // Builder .ui files, splashscreen images, GMenu markup XML, CSS files, icons,
-// etc. These are often shipped as files in `$datadir/appname`, or manually
+// etc. These are often shipped as files in $datadir/appname, or manually
 // included as literal strings in the code.
 //
 // The #GResource API and the [glib-compile-resources][glib-compile-resources]
@@ -609,35 +609,35 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // text files that are parsed once (or rarely) and then thrown away.
 //
 // Resource files can also be marked to be preprocessed, by setting the value of
-// the `preprocess` attribute to a comma-separated list of preprocessing
-// options. The only options currently supported are:
+// the preprocess attribute to a comma-separated list of preprocessing options.
+// The only options currently supported are:
 //
-// `xml-stripblanks` which will use the xmllint command to strip ignorable
-// whitespace from the XML file. For this to work, the `XMLLINT` environment
+// xml-stripblanks which will use the xmllint command to strip ignorable
+// whitespace from the XML file. For this to work, the XMLLINT environment
 // variable must be set to the full path to the xmllint executable, or xmllint
-// must be in the `PATH`; otherwise the preprocessing step is skipped.
+// must be in the PATH; otherwise the preprocessing step is skipped.
 //
-// `to-pixdata` (deprecated since gdk-pixbuf 2.32) which will use the
-// `gdk-pixbuf-pixdata` command to convert images to the Pixdata format, which
+// to-pixdata (deprecated since gdk-pixbuf 2.32) which will use the
+// gdk-pixbuf-pixdata command to convert images to the Pixdata format, which
 // allows you to create pixbufs directly using the data inside the resource
 // file, rather than an (uncompressed) copy of it. For this, the
-// `gdk-pixbuf-pixdata` program must be in the `PATH`, or the
-// `GDK_PIXBUF_PIXDATA` environment variable must be set to the full path to the
-// `gdk-pixbuf-pixdata` executable; otherwise the resource compiler will abort.
-// `to-pixdata` has been deprecated since gdk-pixbuf 2.32, as #GResource
-// supports embedding modern image formats just as well. Instead of using it,
-// embed a PNG or SVG file in your #GResource.
+// gdk-pixbuf-pixdata program must be in the PATH, or the GDK_PIXBUF_PIXDATA
+// environment variable must be set to the full path to the gdk-pixbuf-pixdata
+// executable; otherwise the resource compiler will abort. to-pixdata has been
+// deprecated since gdk-pixbuf 2.32, as #GResource supports embedding modern
+// image formats just as well. Instead of using it, embed a PNG or SVG file in
+// your #GResource.
 //
-// `json-stripblanks` which will use the `json-glib-format` command to strip
+// json-stripblanks which will use the json-glib-format command to strip
 // ignorable whitespace from the JSON file. For this to work, the
-// `JSON_GLIB_FORMAT` environment variable must be set to the full path to the
-// `json-glib-format` executable, or it must be in the `PATH`; otherwise the
+// JSON_GLIB_FORMAT environment variable must be set to the full path to the
+// json-glib-format executable, or it must be in the PATH; otherwise the
 // preprocessing step is skipped. In addition, at least version 1.6 of
-// `json-glib-format` is required.
+// json-glib-format is required.
 //
 // Resource files will be exported in the GResource namespace using the
-// combination of the given `prefix` and the filename from the `file` element.
-// The `alias` attribute can be used to alter the filename to expose them at a
+// combination of the given prefix and the filename from the file element. The
+// alias attribute can be used to alter the filename to expose them at a
 // different location in the resource namespace. Typically, this is used to
 // include files from a different source directory without exposing the source
 // directory in the resource namespace, as in the example below.
@@ -673,12 +673,11 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // the XML to a binary bundle that you can load with g_resource_load(). However,
 // its more common to use the --generate-source and --generate-header arguments
 // to create a source file and header to link directly into your application.
-// This will generate `get_resource()`, `register_resource()` and
-// `unregister_resource()` functions, prefixed by the `--c-name` argument passed
-// to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
-// the generated #GResource object. The register and unregister functions
-// register the resource so its files can be accessed using
-// g_resources_lookup_data().
+// This will generate get_resource(), register_resource() and
+// unregister_resource() functions, prefixed by the --c-name argument passed to
+// [glib-compile-resources][glib-compile-resources]. get_resource() returns the
+// generated #GResource object. The register and unregister functions register
+// the resource so its files can be accessed using g_resources_lookup_data().
 //
 // Once a #GResource has been created and registered all the data in it can be
 // accessed globally in the process by using API calls like
@@ -694,7 +693,7 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // There are two forms of the generated source, the default version uses the
 // compiler support for constructor and destructor functions (where available)
 // to automatically create and register the #GResource on startup or library
-// load time. If you pass `--manual-register`, two functions to
+// load time. If you pass --manual-register, two functions to
 // register/unregister the resource are created instead. This requires an
 // explicit initialization call in your application/library, but it works on all
 // platforms, even on the minor ones where constructors are not supported.
@@ -710,7 +709,7 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // When debugging a program or testing a change to an installed version, it is
 // often useful to be able to replace resources in the program or library,
 // without recompiling, for debugging or quick hacking and testing purposes.
-// Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment
+// Since GLib 2.50, it is possible to use the G_RESOURCE_OVERLAYS environment
 // variable to selectively overlay resources with replacements from the
 // filesystem. It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to
 // perform during resource lookups. It is ignored when running in a setuid
@@ -720,15 +719,14 @@ func (o *OutputVector) Native() unsafe.Pointer {
 //
 //    /org/gtk/libgtk=/home/desrt/gtk-overlay
 //
-// The part before the `=` is the resource subpath for which the overlay
-// applies. The part after is a filesystem path which contains files and
-// subdirectories as you would like to be loaded as resources with the
-// equivalent names.
+// The part before the = is the resource subpath for which the overlay applies.
+// The part after is a filesystem path which contains files and subdirectories
+// as you would like to be loaded as resources with the equivalent names.
 //
 // In the example above, if an application tried to load a resource with the
-// resource path `/org/gtk/libgtk/ui/gtkdialog.ui` then GResource would check
-// the filesystem path `/home/desrt/gtk-overlay/ui/gtkdialog.ui`. If a file was
-// found there, it would be used instead. This is an overlay, not an outright
+// resource path /org/gtk/libgtk/ui/gtkdialog.ui then GResource would check the
+// filesystem path /home/desrt/gtk-overlay/ui/gtkdialog.ui. If a file was found
+// there, it would be used instead. This is an overlay, not an outright
 // replacement, which means that if a file is not found at that path, the
 // built-in version will be used instead. Whiteouts are not currently supported.
 //
@@ -750,14 +748,14 @@ func (r *Resource) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// EnumerateChildren returns all the names of children at the specified @path in
-// the resource. The return result is a nil terminated list of strings which
+// EnumerateChildren returns all the names of children at the specified path in
+// the resource. The return result is a NULL terminated list of strings which
 // should be released with g_strfreev().
 //
-// If @path is invalid or does not exist in the #GResource,
+// If path is invalid or does not exist in the #GResource,
 // G_RESOURCE_ERROR_NOT_FOUND will be returned.
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -792,10 +790,10 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 	return _utf8s, _goerr
 }
 
-// Info looks for a file at the specified @path in the resource and if found
+// Info looks for a file at the specified path in the resource and if found
 // returns information about it.
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -821,10 +819,10 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 	return _size, _flags, _goerr
 }
 
-// OpenStream looks for a file at the specified @path in the resource and
-// returns a Stream that lets you read the data.
+// OpenStream looks for a file at the specified path in the resource and returns
+// a Stream that lets you read the data.
 //
-// @lookup_flags controls the behaviour of the lookup.
+// lookup_flags controls the behaviour of the lookup.
 func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (*InputStream, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -847,7 +845,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	return _inputStream, _goerr
 }
 
-// Ref: atomically increments the reference count of @resource by one. This
+// Ref: atomically increments the reference count of resource by one. This
 // function is MT-safe and may be called from any thread.
 func (resource *Resource) ref() *Resource {
 	var _arg0 *C.GResource // out
@@ -868,7 +866,7 @@ func (resource *Resource) ref() *Resource {
 	return _ret
 }
 
-// Unref: atomically decrements the reference count of @resource by one. If the
+// Unref: atomically decrements the reference count of resource by one. If the
 // reference count drops to 0, all memory allocated by the resource is released.
 // This function is MT-safe and may be called from any thread.
 func (resource *Resource) unref() {
@@ -930,7 +928,7 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
-// Copy copies @target
+// Copy copies target
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
@@ -949,7 +947,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	return _srvTarget
 }
 
-// Free frees @target
+// Free frees target
 func (target *SrvTarget) free() {
 	var _arg0 *C.GSrvTarget // out
 
@@ -958,7 +956,7 @@ func (target *SrvTarget) free() {
 	C.g_srv_target_free(_arg0)
 }
 
-// Hostname gets @target's hostname (in ASCII form; if you are going to present
+// Hostname gets target's hostname (in ASCII form; if you are going to present
 // this to the user, you should use g_hostname_is_ascii_encoded() to check if it
 // contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
 // it if it does.)
@@ -977,7 +975,7 @@ func (target *SrvTarget) Hostname() string {
 	return _utf8
 }
 
-// Port gets @target's port
+// Port gets target's port
 func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -993,7 +991,7 @@ func (target *SrvTarget) Port() uint16 {
 	return _guint16
 }
 
-// Priority gets @target's priority. You should not need to look at this;
+// Priority gets target's priority. You should not need to look at this;
 // #GResolver already sorts the targets according to the algorithm in RFC 2782.
 func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
@@ -1010,7 +1008,7 @@ func (target *SrvTarget) Priority() uint16 {
 	return _guint16
 }
 
-// Weight gets @target's weight. You should not need to look at this; #GResolver
+// Weight gets target's weight. You should not need to look at this; #GResolver
 // already sorts the targets according to the algorithm in RFC 2782.
 func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out

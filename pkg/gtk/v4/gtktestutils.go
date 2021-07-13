@@ -21,14 +21,14 @@ func TestRegisterAllTypes() {
 	C.gtk_test_register_all_types()
 }
 
-// TestWidgetWaitForDraw enters the main loop and waits for @widget to be
+// TestWidgetWaitForDraw enters the main loop and waits for widget to be
 // “drawn”.
 //
-// In this context that means it waits for the frame clock of @widget to have
-// run a full styling, layout and drawing cycle.
+// In this context that means it waits for the frame clock of widget to have run
+// a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
-// @widget relayouting or on interaction with the display server.
+// widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widgeter) {
 	var _arg1 *C.GtkWidget // out
 

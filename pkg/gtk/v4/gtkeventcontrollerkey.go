@@ -23,17 +23,17 @@ func init() {
 
 // EventControllerKeyer describes EventControllerKey's methods.
 type EventControllerKeyer interface {
-	// Forward forwards the current event of this @controller to a @widget.
+	// Forward forwards the current event of this controller to a widget.
 	Forward(widget Widgeter) bool
-	// Group gets the key group of the current event of this @controller.
+	// Group gets the key group of the current event of this controller.
 	Group() uint
-	// ImContext gets the input method context of the key @controller.
+	// ImContext gets the input method context of the key controller.
 	ImContext() *IMContext
-	// SetImContext sets the input method context of the key @controller.
+	// SetImContext sets the input method context of the key controller.
 	SetImContext(imContext IMContexter)
 }
 
-// EventControllerKey: `GtkEventControllerKey` is an event controller that
+// EventControllerKey: GtkEventControllerKey is an event controller that
 // provides access to key events.
 type EventControllerKey struct {
 	EventController
@@ -72,12 +72,11 @@ func NewEventControllerKey() *EventControllerKey {
 	return _eventControllerKey
 }
 
-// Forward forwards the current event of this @controller to a @widget.
+// Forward forwards the current event of this controller to a widget.
 //
 // This function can only be used in handlers for the
-// [signal@Gtk.EventControllerKey::key-pressed],
-// [signal@Gtk.EventControllerKey::key-released] or
-// [signal@Gtk.EventControllerKey::modifiers] signals.
+// gtk.EventControllerKey::key-pressed, gtk.EventControllerKey::key-released or
+// gtk.EventControllerKey::modifiers signals.
 func (controller *EventControllerKey) Forward(widget Widgeter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
@@ -97,9 +96,9 @@ func (controller *EventControllerKey) Forward(widget Widgeter) bool {
 	return _ok
 }
 
-// Group gets the key group of the current event of this @controller.
+// Group gets the key group of the current event of this controller.
 //
-// See [method@Gdk.KeyEvent.get_layout].
+// See gdk.KeyEvent.GetLayout().
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
@@ -115,7 +114,7 @@ func (controller *EventControllerKey) Group() uint {
 	return _guint
 }
 
-// ImContext gets the input method context of the key @controller.
+// ImContext gets the input method context of the key controller.
 func (controller *EventControllerKey) ImContext() *IMContext {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
@@ -131,7 +130,7 @@ func (controller *EventControllerKey) ImContext() *IMContext {
 	return _imContext
 }
 
-// SetImContext sets the input method context of the key @controller.
+// SetImContext sets the input method context of the key controller.
 func (controller *EventControllerKey) SetImContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkIMContext          // out

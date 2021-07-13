@@ -83,40 +83,40 @@ type SpinButtonOverrider interface {
 // SpinButtoner describes SpinButton's methods.
 type SpinButtoner interface {
 	// Configure changes the properties of an existing spin button.
-	Configure(adjustment Adjustmenter, climbRate float64, digits uint)
+	Configure(adjustment *Adjustment, climbRate float64, digits uint)
 	// Adjustment: get the adjustment associated with a SpinButton
 	Adjustment() *Adjustment
-	// Digits fetches the precision of @spin_button.
+	// Digits fetches the precision of spin_button.
 	Digits() uint
 	// Increments gets the current step and page the increments used by
-	// @spin_button.
+	// spin_button.
 	Increments() (step float64, page float64)
 	// Numeric returns whether non-numeric text can be typed into the spin
 	// button.
 	Numeric() bool
-	// Range gets the range allowed for @spin_button.
+	// Range gets the range allowed for spin_button.
 	Range() (min float64, max float64)
 	// SnapToTicks returns whether the values are corrected to the nearest step.
 	SnapToTicks() bool
 	// UpdatePolicy gets the update behavior of a spin button.
 	UpdatePolicy() SpinButtonUpdatePolicy
-	// Value: get the value in the @spin_button.
+	// Value: get the value in the spin_button.
 	Value() float64
-	// ValueAsInt: get the value @spin_button represented as an integer.
+	// ValueAsInt: get the value spin_button represented as an integer.
 	ValueAsInt() int
 	// Wrap returns whether the spin button’s value wraps around to the opposite
 	// limit when the upper or lower limit of the range is exceeded.
 	Wrap() bool
-	// SetAdjustment replaces the Adjustment associated with @spin_button.
-	SetAdjustment(adjustment Adjustmenter)
-	// SetDigits: set the precision to be displayed by @spin_button.
+	// SetAdjustment replaces the Adjustment associated with spin_button.
+	SetAdjustment(adjustment *Adjustment)
+	// SetDigits: set the precision to be displayed by spin_button.
 	SetDigits(digits uint)
 	// SetIncrements sets the step and page increments for spin_button.
 	SetIncrements(step float64, page float64)
 	// SetNumeric sets the flag that determines if non-numeric text can be typed
 	// into the spin button.
 	SetNumeric(numeric bool)
-	// SetRange sets the minimum and maximum allowable values for @spin_button.
+	// SetRange sets the minimum and maximum allowable values for spin_button.
 	SetRange(min float64, max float64)
 	// SetSnapToTicks sets the policy as to whether values are corrected to the
 	// nearest step increment when a spin button is activated after providing an
@@ -124,7 +124,7 @@ type SpinButtoner interface {
 	SetSnapToTicks(snapToTicks bool)
 	// SetUpdatePolicy sets the update behavior of a spin button.
 	SetUpdatePolicy(policy SpinButtonUpdatePolicy)
-	// SetValue sets the value of @spin_button.
+	// SetValue sets the value of spin_button.
 	SetValue(value float64)
 	// SetWrap sets the flag that determines if a spin button value wraps around
 	// to the opposite limit when the upper or lower limit of the range is
@@ -235,13 +235,13 @@ func marshalSpinButtoner(p uintptr) (interface{}, error) {
 }
 
 // NewSpinButton creates a new SpinButton.
-func NewSpinButton(adjustment Adjustmenter, climbRate float64, digits uint) *SpinButton {
+func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.gdouble        // out
 	var _arg3 C.guint          // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 	_arg2 = C.gdouble(climbRate)
 	_arg3 = C.guint(digits)
 
@@ -256,11 +256,11 @@ func NewSpinButton(adjustment Adjustmenter, climbRate float64, digits uint) *Spi
 
 // NewSpinButtonWithRange: this is a convenience constructor that allows
 // creation of a numeric SpinButton without manually creating an adjustment. The
-// value is initially set to the minimum value and a page increment of 10 *
-// @step is the default. The precision of the spin button is equivalent to the
-// precision of @step.
+// value is initially set to the minimum value and a page increment of 10 * step
+// is the default. The precision of the spin button is equivalent to the
+// precision of step.
 //
-// Note that the way in which the precision is derived works best if @step is a
+// Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_spin_button_set_digits() to correct it.
 func NewSpinButtonWithRange(min float64, max float64, step float64) *SpinButton {
@@ -290,14 +290,14 @@ func (v *SpinButton) Native() uintptr {
 
 // Configure changes the properties of an existing spin button. The adjustment,
 // climb rate, and number of decimal places are updated accordingly.
-func (spinButton *SpinButton) Configure(adjustment Adjustmenter, climbRate float64, digits uint) {
+func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.gdouble        // out
 	var _arg3 C.guint          // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 	_arg2 = C.gdouble(climbRate)
 	_arg3 = C.guint(digits)
 
@@ -320,7 +320,7 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 	return _adjustment
 }
 
-// Digits fetches the precision of @spin_button. See
+// Digits fetches the precision of spin_button. See
 // gtk_spin_button_set_digits().
 func (spinButton *SpinButton) Digits() uint {
 	var _arg0 *C.GtkSpinButton // out
@@ -337,8 +337,8 @@ func (spinButton *SpinButton) Digits() uint {
 	return _guint
 }
 
-// Increments gets the current step and page the increments used by
-// @spin_button. See gtk_spin_button_set_increments().
+// Increments gets the current step and page the increments used by spin_button.
+// See gtk_spin_button_set_increments().
 func (spinButton *SpinButton) Increments() (step float64, page float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // in
@@ -376,7 +376,7 @@ func (spinButton *SpinButton) Numeric() bool {
 	return _ok
 }
 
-// Range gets the range allowed for @spin_button. See
+// Range gets the range allowed for spin_button. See
 // gtk_spin_button_set_range().
 func (spinButton *SpinButton) Range() (min float64, max float64) {
 	var _arg0 *C.GtkSpinButton // out
@@ -432,7 +432,7 @@ func (spinButton *SpinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 	return _spinButtonUpdatePolicy
 }
 
-// Value: get the value in the @spin_button.
+// Value: get the value in the spin_button.
 func (spinButton *SpinButton) Value() float64 {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gdouble        // in
@@ -448,7 +448,7 @@ func (spinButton *SpinButton) Value() float64 {
 	return _gdouble
 }
 
-// ValueAsInt: get the value @spin_button represented as an integer.
+// ValueAsInt: get the value spin_button represented as an integer.
 func (spinButton *SpinButton) ValueAsInt() int {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gint           // in
@@ -484,18 +484,18 @@ func (spinButton *SpinButton) Wrap() bool {
 	return _ok
 }
 
-// SetAdjustment replaces the Adjustment associated with @spin_button.
-func (spinButton *SpinButton) SetAdjustment(adjustment Adjustmenter) {
+// SetAdjustment replaces the Adjustment associated with spin_button.
+func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(spinButton.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_spin_button_set_adjustment(_arg0, _arg1)
 }
 
-// SetDigits: set the precision to be displayed by @spin_button. Up to 20 digit
+// SetDigits: set the precision to be displayed by spin_button. Up to 20 digit
 // precision is allowed.
 func (spinButton *SpinButton) SetDigits(digits uint) {
 	var _arg0 *C.GtkSpinButton // out
@@ -535,7 +535,7 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 	C.gtk_spin_button_set_numeric(_arg0, _arg1)
 }
 
-// SetRange sets the minimum and maximum allowable values for @spin_button.
+// SetRange sets the minimum and maximum allowable values for spin_button.
 //
 // If the current value is outside this range, it will be adjusted to fit within
 // the range, otherwise it will remain unchanged.
@@ -578,7 +578,7 @@ func (spinButton *SpinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy) {
 	C.gtk_spin_button_set_update_policy(_arg0, _arg1)
 }
 
-// SetValue sets the value of @spin_button.
+// SetValue sets the value of spin_button.
 func (spinButton *SpinButton) SetValue(value float64) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.gdouble        // out

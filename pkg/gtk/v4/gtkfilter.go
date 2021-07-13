@@ -35,10 +35,10 @@ const (
 	// enumeration values.
 	FilterChangeDifferent FilterChange = iota
 	// LessStrict: filter is less strict than it was before: All items that it
-	// used to return true for still return true, others now may, too.
+	// used to return TRUE for still return TRUE, others now may, too.
 	FilterChangeLessStrict
 	// MoreStrict: filter is more strict than it was before: All items that it
-	// used to return false for still return false, others now may, too.
+	// used to return FALSE for still return FALSE, others now may, too.
 	FilterChangeMoreStrict
 )
 
@@ -54,13 +54,13 @@ func marshalFilterChange(p uintptr) (interface{}, error) {
 type FilterMatch int
 
 const (
-	// Some: filter matches some items, gtk_filter_match() may return true or
-	// false
+	// Some: filter matches some items, gtk_filter_match() may return TRUE or
+	// FALSE
 	FilterMatchSome FilterMatch = iota
 	// None: filter does not match any item, gtk_filter_match() will always
-	// return false.
+	// return FALSE.
 	FilterMatchNone
-	// All: filter matches all items, gtk_filter_match() will alays return true.
+	// All: filter matches all items, gtk_filter_match() will alays return TRUE.
 	FilterMatchAll
 )
 
@@ -73,16 +73,16 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type FilterOverrider interface {
-	// Strictness gets the known strictness of @filters. If the strictness is
-	// not known, GTK_FILTER_MATCH_SOME is returned.
+	// Strictness gets the known strictness of filters. If the strictness is not
+	// known, GTK_FILTER_MATCH_SOME is returned.
 	//
 	// This value may change after emission of the Filter::changed signal.
 	//
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
+	// Match checks if the given item is matched by the filter or not.
+	Match(item *externglib.Object) bool
 }
 
 // Filterer describes Filter's methods.
@@ -90,23 +90,23 @@ type Filterer interface {
 	// Changed emits the Filter::changed signal to notify all users of the
 	// filter that the filter changed.
 	Changed(change FilterChange)
-	// Strictness gets the known strictness of @filters.
+	// Strictness gets the known strictness of filters.
 	Strictness() FilterMatch
-	// Match checks if the given @item is matched by the filter or not.
-	Match(item gextras.Objector) bool
+	// Match checks if the given item is matched by the filter or not.
+	Match(item *externglib.Object) bool
 }
 
-// Filter: `GtkFilter` object describes the filtering to be performed by a
-// `GtkFilterListModel`.
+// Filter: GtkFilter object describes the filtering to be performed by a
+// GtkFilterListModel.
 //
 // The model will use the filter to determine if it should include items or not
-// by calling [method@Gtk.Filter.match] for each item and only keeping the ones
-// that the function returns true for.
+// by calling gtk.Filter.Match() for each item and only keeping the ones that
+// the function returns TRUE for.
 //
 // Filters may change what items they match through their lifetime. In that
-// case, they will emit the [signal@Gtk.Filter::changed] signal to notify that
-// previous filter results are no longer valid and that items should be checked
-// again via [method@Gtk.Filter.match].
+// case, they will emit the gtk.Filter::changed signal to notify that previous
+// filter results are no longer valid and that items should be checked again via
+// gtk.Filter.Match().
 //
 // GTK provides various pre-made filter implementations for common filtering
 // operations. These filters often include properties that can be linked to
@@ -139,8 +139,8 @@ func marshalFilterer(p uintptr) (interface{}, error) {
 // that the filter changed. Users of the filter should then check items again
 // via gtk_filter_match().
 //
-// Depending on the @change parameter, not all items need to be changed, but
-// only some. Refer to the FilterChange documentation for details.
+// Depending on the change parameter, not all items need to be changed, but only
+// some. Refer to the FilterChange documentation for details.
 //
 // This function is intended for implementors of Filter subclasses and should
 // not be called from other functions.
@@ -154,7 +154,7 @@ func (self *Filter) Changed(change FilterChange) {
 	C.gtk_filter_changed(_arg0, _arg1)
 }
 
-// Strictness gets the known strictness of @filters. If the strictness is not
+// Strictness gets the known strictness of filters. If the strictness is not
 // known, GTK_FILTER_MATCH_SOME is returned.
 //
 // This value may change after emission of the Filter::changed signal.
@@ -176,8 +176,8 @@ func (self *Filter) Strictness() FilterMatch {
 	return _filterMatch
 }
 
-// Match checks if the given @item is matched by the filter or not.
-func (self *Filter) Match(item gextras.Objector) bool {
+// Match checks if the given item is matched by the filter or not.
+func (self *Filter) Match(item *externglib.Object) bool {
 	var _arg0 *C.GtkFilter // out
 	var _arg1 C.gpointer   // out
 	var _cret C.gboolean   // in

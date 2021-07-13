@@ -31,35 +31,38 @@ type PasswordEntrier interface {
 	// contents.
 	ShowPeekIcon() bool
 	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for @entry.
+	// for entry.
 	SetExtraMenu(model gio.MenuModeler)
 	// SetShowPeekIcon sets whether the entry should have a clickable icon to
 	// reveal the contents.
 	SetShowPeekIcon(showPeekIcon bool)
 }
 
-// PasswordEntry: `GtkPasswordEntry` is an entry that has been tailored for
+// PasswordEntry: GtkPasswordEntry is an entry that has been tailored for
 // entering secrets.
 //
 // !An example GtkPasswordEntry (password-entry.png)
 //
 // It does not show its contents in clear text, does not allow to copy it to the
 // clipboard, and it shows a warning when Caps Lock is engaged. If the
-// underlying platform allows it, `GtkPasswordEntry` will also place the text in
-// a non-pageable memory area, to avoid it being written out to disk by the
+// underlying platform allows it, GtkPasswordEntry will also place the text in a
+// non-pageable memory area, to avoid it being written out to disk by the
 // operating system.
 //
 // Optionally, it can offer a way to reveal the contents in clear text.
 //
-// `GtkPasswordEntry` provides only minimal API and should be used with the
-// [iface@Gtk.Editable] API.
-//
+// GtkPasswordEntry provides only minimal API and should be used with the
+// gtk.Editable API.
 //
 // CSS Nodes
 //
-// “` entry.password ╰── text ├── image.caps-lock-indicator ┊ “`
+//    entry.password
+//    ╰── text
+//        ├── image.caps-lock-indicator
+//        ┊
 //
-// `GtkPasswordEntry` has a single CSS node with name entry that carries a
+//
+// GtkPasswordEntry has a single CSS node with name entry that carries a
 // .passwordstyle class. The text Css node below it has a child with name image
 // and style class .caps-lock-indicator for the Caps Lock icon, and possibly
 // other children.
@@ -67,7 +70,7 @@ type PasswordEntrier interface {
 //
 // Accessibility
 //
-// `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
+// GtkPasswordEntry uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
 	Widget
 
@@ -120,7 +123,7 @@ func marshalPasswordEntrier(p uintptr) (interface{}, error) {
 	return wrapPasswordEntry(obj), nil
 }
 
-// NewPasswordEntry creates a `GtkPasswordEntry`.
+// NewPasswordEntry creates a GtkPasswordEntry.
 func NewPasswordEntry() *PasswordEntry {
 	var _cret *C.GtkWidget // in
 
@@ -180,7 +183,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 }
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
-// @entry.
+// entry.
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
@@ -194,7 +197,7 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeler) {
 // SetShowPeekIcon sets whether the entry should have a clickable icon to reveal
 // the contents.
 //
-// Setting this to false also hides the text again.
+// Setting this to FALSE also hides the text again.
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 C.gboolean          // out

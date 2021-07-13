@@ -25,56 +25,64 @@ func init() {
 
 // ShortcutControllerer describes ShortcutController's methods.
 type ShortcutControllerer interface {
-	// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
-	AddShortcut(shortcut Shortcuter)
+	// AddShortcut adds shortcut to the list of shortcuts handled by self.
+	AddShortcut(shortcut *Shortcut)
 	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
 	// activates its shortcuts.
 	MnemonicsModifiers() gdk.ModifierType
 	// Scope gets the scope for when this controller activates its shortcuts.
 	Scope() ShortcutScope
-	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
-	// @self.
-	RemoveShortcut(shortcut Shortcuter)
+	// RemoveShortcut removes shortcut from the list of shortcuts handled by
+	// self.
+	RemoveShortcut(shortcut *Shortcut)
 	// SetMnemonicsModifiers sets the controller to have the given
-	// @mnemonics_modifiers.
+	// mnemonics_modifiers.
 	SetMnemonicsModifiers(modifiers gdk.ModifierType)
-	// SetScope sets the controller to have the given @scope.
+	// SetScope sets the controller to have the given scope.
 	SetScope(scope ShortcutScope)
 }
 
-// ShortcutController: `GtkShortcutController` is an event controller that
-// manages shortcuts.
+// ShortcutController: GtkShortcutController is an event controller that manages
+// shortcuts.
 //
 // Most common shortcuts are using this controller implicitly, e.g. by adding a
-// mnemonic underline to a `GtkLabel`, or by installing a key binding using
+// mnemonic underline to a GtkLabel, or by installing a key binding using
 // gtk_widget_class_add_binding(), or by adding accelerators to global actions
 // using gtk_application_set_accels_for_action().
 //
 // But it is possible to create your own shortcut controller, and add shortcuts
 // to it.
 //
-// `GtkShortcutController` implements `GListModel` for querying the shortcuts
-// that have been added to it.
+// GtkShortcutController implements GListModel for querying the shortcuts that
+// have been added to it.
 //
 //
 // GtkShortcutController as a GtkBuildable
 //
-// `GtkShortcutControllers` can be creates in ui files to set up shortcuts in
-// the same place as the widgets.
+// GtkShortcutControllers can be creates in ui files to set up shortcuts in the
+// same place as the widgets.
 //
-// An example of a UI definition fragment with `GtkShortcutController`: “`xml
-// <object class='GtkButton'> <child> <object class='GtkShortcutController'>
-// <property name='scope'>managed</property> <child> <object
-// class='GtkShortcut'> <property
-// name='trigger'>&amp;lt;Control&amp;gt;k</property> <property
-// name='action'>activate</property> </object> </child> </object> </child>
-// </object> “`
+// An example of a UI definition fragment with GtkShortcutController:
 //
-// This example creates a [class@Gtk.ActivateAction] for triggering the
-// `activate` signal of the `GtkButton`. See
-// [ctor@Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
-// `GtkShortcutAction`. See [ctor@Gtk.ShortcutTrigger.parse_string] to learn
-// more about the syntax for triggers.
+//      <object class='GtkButton'>
+//        <child>
+//          <object class='GtkShortcutController'>
+//            <property name='scope'>managed</property>
+//            <child>
+//              <object class='GtkShortcut'>
+//                <property name='trigger'>&amp;lt;Control&amp;gt;k</property>
+//                <property name='action'>activate</property>
+//              </object>
+//            </child>
+//          </object>
+//        </child>
+//      </object>
+//
+//
+// This example creates a gtk.ActivateAction for triggering the activate signal
+// of the GtkButton. See gtk.ShortcutAction.ParseString for the syntax for other
+// kinds of GtkShortcutAction. See gtk.ShortcutTrigger.ParseString to learn more
+// about the syntax for triggers.
 type ShortcutController struct {
 	EventController
 
@@ -147,16 +155,16 @@ func (v *ShortcutController) Native() uintptr {
 	return v.EventController.Object.Native()
 }
 
-// AddShortcut adds @shortcut to the list of shortcuts handled by @self.
+// AddShortcut adds shortcut to the list of shortcuts handled by self.
 //
 // If this controller uses an external shortcut list, this function does
 // nothing.
-func (self *ShortcutController) AddShortcut(shortcut Shortcuter) {
+func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((shortcut).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
 }
@@ -195,22 +203,22 @@ func (self *ShortcutController) Scope() ShortcutScope {
 	return _shortcutScope
 }
 
-// RemoveShortcut removes @shortcut from the list of shortcuts handled by @self.
+// RemoveShortcut removes shortcut from the list of shortcuts handled by self.
 //
-// If @shortcut had not been added to @controller or this controller uses an
+// If shortcut had not been added to controller or this controller uses an
 // external shortcut list, this function does nothing.
-func (self *ShortcutController) RemoveShortcut(shortcut Shortcuter) {
+func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	var _arg0 *C.GtkShortcutController // out
 	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GtkShortcut)(unsafe.Pointer((shortcut).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_remove_shortcut(_arg0, _arg1)
 }
 
 // SetMnemonicsModifiers sets the controller to have the given
-// @mnemonics_modifiers.
+// mnemonics_modifiers.
 //
 // The mnemonics modifiers determines which modifiers need to be pressed to
 // allow activation of shortcuts with mnemonics triggers.
@@ -233,7 +241,7 @@ func (self *ShortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType
 	C.gtk_shortcut_controller_set_mnemonics_modifiers(_arg0, _arg1)
 }
 
-// SetScope sets the controller to have the given @scope.
+// SetScope sets the controller to have the given scope.
 //
 // The scope allows shortcuts to be activated outside of the normal event
 // propagation. In particular, it allows installing global keyboard shortcuts

@@ -27,11 +27,10 @@ type WaylandSeater interface {
 	privateWaylandSeat()
 }
 
-// WaylandSeat: wayland implementation of `GdkSeat`.
+// WaylandSeat: wayland implementation of GdkSeat.
 //
-// Beyond the regular [class@Gdk.Seat] API, the Wayland implementation provides
-// access to the Wayland `wl_seat` object with
-// [method@GdkWayland.WaylandSeat.get_wl_seat].
+// Beyond the regular gdk.Seat API, the Wayland implementation provides access
+// to the Wayland wl_seat object with gdkwayland.WaylandSeat.GetWlSeat().
 type WaylandSeat struct {
 	gdk.Seat
 }

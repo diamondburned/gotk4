@@ -85,7 +85,7 @@ type ActivateActioner interface {
 	privateActivateAction()
 }
 
-// ActivateAction: `GtkShortcutAction` that calls gtk_widget_activate().
+// ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	ShortcutAction
 }
@@ -132,7 +132,7 @@ type CallbackActioner interface {
 	privateCallbackAction()
 }
 
-// CallbackAction: `GtkShortcutAction` that invokes a callback.
+// CallbackAction: GtkShortcutAction that invokes a callback.
 type CallbackAction struct {
 	ShortcutAction
 }
@@ -163,8 +163,7 @@ type MnemonicActioner interface {
 	privateMnemonicAction()
 }
 
-// MnemonicAction: `GtkShortcutAction` that calls
-// gtk_widget_mnemonic_activate().
+// MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	ShortcutAction
 }
@@ -212,7 +211,7 @@ type NamedActioner interface {
 	ActionName() string
 }
 
-// NamedAction: `GtkShortcutAction` that activates an action by name.
+// NamedAction: GtkShortcutAction that activates an action by name.
 type NamedAction struct {
 	ShortcutAction
 }
@@ -241,8 +240,7 @@ func marshalNamedActioner(p uintptr) (interface{}, error) {
 //
 // It also passes the given arguments to it.
 //
-// See [method@Gtk.Widget.insert_action_group] for how to add actions to
-// widgets.
+// See gtk.Widget.InsertActionGroup() for how to add actions to widgets.
 func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -279,7 +277,7 @@ type NothingActioner interface {
 	privateNothingAction()
 }
 
-// NothingAction: `GtkShortcutAction` that does nothing.
+// NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
 	ShortcutAction
 }
@@ -322,39 +320,39 @@ func NothingActionGet() *NothingAction {
 
 // ShortcutActioner describes ShortcutAction's methods.
 type ShortcutActioner interface {
-	// Activate activates the action on the @widget with the given @args.
+	// Activate activates the action on the widget with the given args.
 	Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	String() string
 }
 
-// ShortcutAction: `GtkShortcutAction` encodes an action that can be triggered
-// by a keyboard shortcut.
+// ShortcutAction: GtkShortcutAction encodes an action that can be triggered by
+// a keyboard shortcut.
 //
-// `GtkShortcutActions` contain functions that allow easy presentation to end
+// GtkShortcutActions contain functions that allow easy presentation to end
 // users as well as being printed for debugging.
 //
-// All `GtkShortcutActions` are immutable, you can only specify their properties
+// All GtkShortcutActions are immutable, you can only specify their properties
 // during construction. If you want to change a action, you have to replace it
 // with a new one. If you need to pass arguments to an action, these are
-// specified by the higher-level `GtkShortcut` object.
+// specified by the higher-level GtkShortcut object.
 //
-// To activate a `GtkShortcutAction` manually,
-// [method@Gtk.ShortcutAction.activate] can be called.
+// To activate a GtkShortcutAction manually, gtk.ShortcutAction.Activate() can
+// be called.
 //
 // GTK provides various actions:
 //
-//    - [class@Gtk.MnemonicAction]: a shortcut action that calls
+//    - gtk.MnemonicAction: a shortcut action that calls
 //      gtk_widget_mnemonic_activate()
-//    - [class@Gtk.CallbackAction]: a shortcut action that invokes
+//    - gtk.CallbackAction: a shortcut action that invokes
 //      a given callback
-//    - [class@Gtk.SignalAction]: a shortcut action that emits a
+//    - gtk.SignalAction: a shortcut action that emits a
 //      given signal
-//    - [class@Gtk.ActivateAction]: a shortcut action that calls
+//    - gtk.ActivateAction: a shortcut action that calls
 //      gtk_widget_activate()
-//    - [class@Gtk.NamedAction]: a shortcut action that calls
+//    - gtk.NamedAction: a shortcut action that calls
 //      gtk_widget_activate_action()
-//    - [class@Gtk.NothingAction]: a shortcut action that does nothing
+//    - gtk.NothingAction: a shortcut action that does nothing
 type ShortcutAction struct {
 	*externglib.Object
 }
@@ -378,15 +376,20 @@ func marshalShortcutActioner(p uintptr) (interface{}, error) {
 
 // NewShortcutActionParseString tries to parse the given string into an action.
 //
-// On success, the parsed action is returned. When parsing failed, nil is
+// On success, the parsed action is returned. When parsing failed, NULL is
 // returned.
 //
 // The accepted strings are:
 //
-// - `nothing`, for `GtkNothingAction` - `activate`, for `GtkActivateAction` -
-// `mnemonic-activate`, for `GtkMnemonicAction` - `action(NAME)`, for a
-// `GtkNamedAction` for the action named `NAME` - `signal(NAME)`, for a
-// `GtkSignalAction` for the signal `NAME`
+// - nothing, for GtkNothingAction
+//
+// - activate, for GtkActivateAction
+//
+// - mnemonic-activate, for GtkMnemonicAction
+//
+// - action(NAME), for a GtkNamedAction for the action named NAME
+//
+// - signal(NAME), for a GtkSignalAction for the signal NAME
 func NewShortcutActionParseString(_string string) *ShortcutAction {
 	var _arg1 *C.char              // out
 	var _cret *C.GtkShortcutAction // in
@@ -402,13 +405,13 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 	return _shortcutAction
 }
 
-// Activate activates the action on the @widget with the given @args.
+// Activate activates the action on the widget with the given args.
 //
-// Note that some actions ignore the passed in @flags, @widget or @args.
+// Note that some actions ignore the passed in flags, widget or args.
 //
 // Activation of an action can fail for various reasons. If the action is not
-// supported by the @widget, if the @args don't match the action or if the
-// activation otherwise had no effect, false will be returned.
+// supported by the widget, if the args don't match the action or if the
+// activation otherwise had no effect, FALSE will be returned.
 func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
@@ -434,7 +437,7 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgeter,
 
 // String prints the given action into a human-readable string.
 //
-// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help when
+// This is a small wrapper around gtk.ShortcutAction.Print() to help when
 // debugging.
 func (self *ShortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
@@ -458,7 +461,7 @@ type SignalActioner interface {
 	SignalName() string
 }
 
-// SignalAction: `GtkShortcut`Action that emits a signal.
+// SignalAction: GtkShortcutAction that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.

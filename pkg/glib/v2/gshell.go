@@ -61,7 +61,7 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 }
 
 // ShellQuote quotes a string so that the shell (/bin/sh) will interpret the
-// quoted string to mean @unquoted_string. If you pass a filename to the shell,
+// quoted string to mean unquoted_string. If you pass a filename to the shell,
 // for example, you should first quote it with this function. The return value
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
@@ -87,8 +87,8 @@ func ShellQuote(unquotedString string) string {
 // will be different from the result a real shell would produce (the variables,
 // backticks, etc. will be passed through literally instead of being expanded).
 // This function is guaranteed to succeed if applied to the result of
-// g_shell_quote(). If it fails, it returns nil and sets the error. The
-// @quoted_string need not actually contain quoted or escaped text;
+// g_shell_quote(). If it fails, it returns NULL and sets the error. The
+// quoted_string need not actually contain quoted or escaped text;
 // g_shell_unquote() simply goes through the string and unquotes/unescapes
 // anything that the shell would. Both single and double quotes are handled, as
 // are escapes including escaped newlines. The return value must be freed with

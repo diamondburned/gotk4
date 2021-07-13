@@ -31,7 +31,7 @@ type AppLaunchContexter interface {
 	SetDesktop(desktop int)
 	// SetDisplay sets the display on which applications will be launched when
 	// using this context.
-	SetDisplay(display Displayer)
+	SetDisplay(display *Display)
 	// SetIcon sets the icon for applications that are launched with this
 	// context.
 	SetIcon(icon gio.Iconer)
@@ -40,8 +40,8 @@ type AppLaunchContexter interface {
 	SetIconName(iconName string)
 	// SetScreen sets the screen on which applications will be launched when
 	// using this context.
-	SetScreen(screen Screener)
-	// SetTimestamp sets the timestamp of @context.
+	SetScreen(screen *Screen)
+	// SetTimestamp sets the timestamp of context.
 	SetTimestamp(timestamp uint32)
 }
 
@@ -105,7 +105,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 // workspaces, as described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec).
 //
-// When the workspace is not specified or @desktop is set to -1, it is up to the
+// When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -121,12 +121,12 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // this context. See also gdk_app_launch_context_set_screen().
 //
 // Deprecated: Use gdk_display_get_app_launch_context() instead.
-func (context *AppLaunchContext) SetDisplay(display Displayer) {
+func (context *AppLaunchContext) SetDisplay(display *Display) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkDisplay          // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	C.gdk_app_launch_context_set_display(_arg0, _arg1)
 }
@@ -148,13 +148,13 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 }
 
 // SetIconName sets the icon for applications that are launched with this
-// context. The @icon_name will be interpreted in the same way as the Icon field
+// context. The icon_name will be interpreted in the same way as the Icon field
 // in desktop files. See also gdk_app_launch_context_set_icon().
 //
-// If both @icon and @icon_name are set, the @icon_name takes priority. If
-// neither @icon or @icon_name is set, the icon is taken from either the file
-// that is passed to launched application or from the Info for the launched
-// application itself.
+// If both icon and icon_name are set, the icon_name takes priority. If neither
+// icon or icon_name is set, the icon is taken from either the file that is
+// passed to launched application or from the Info for the launched application
+// itself.
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
@@ -168,19 +168,19 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 // SetScreen sets the screen on which applications will be launched when using
 // this context. See also gdk_app_launch_context_set_display().
 //
-// If both @screen and @display are set, the @screen takes priority. If neither
-// @screen or @display are set, the default screen and display are used.
-func (context *AppLaunchContext) SetScreen(screen Screener) {
+// If both screen and display are set, the screen takes priority. If neither
+// screen or display are set, the default screen and display are used.
+func (context *AppLaunchContext) SetScreen(screen *Screen) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GdkScreen           // out
 
 	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gdk_app_launch_context_set_screen(_arg0, _arg1)
 }
 
-// SetTimestamp sets the timestamp of @context. The timestamp should ideally be
+// SetTimestamp sets the timestamp of context. The timestamp should ideally be
 // taken from the event that triggered the launch.
 //
 // Window managers can use this information to avoid moving the focus to the

@@ -23,7 +23,7 @@ func init() {
 }
 
 // RevealerTransitionType: these enumeration values describe the possible
-// transitions when the child of a `GtkRevealer` widget is shown or hidden.
+// transitions when the child of a GtkRevealer widget is shown or hidden.
 type RevealerTransitionType int
 
 const (
@@ -55,7 +55,7 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 
 // Revealerer describes Revealer's methods.
 type Revealerer interface {
-	// Child gets the child widget of @revealer.
+	// Child gets the child widget of revealer.
 	Child() *Widget
 	// ChildRevealed returns whether the child is fully revealed.
 	ChildRevealed() bool
@@ -65,42 +65,41 @@ type Revealerer interface {
 	// transitions will take.
 	TransitionDuration() uint
 	// TransitionType gets the type of animation that will be used for
-	// transitions in @revealer.
+	// transitions in revealer.
 	TransitionType() RevealerTransitionType
-	// SetChild sets the child widget of @revealer.
+	// SetChild sets the child widget of revealer.
 	SetChild(child Widgeter)
-	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
+	// SetRevealChild tells the GtkRevealer to reveal or conceal its child.
 	SetRevealChild(revealChild bool)
 	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
 	// SetTransitionType sets the type of animation that will be used for
-	// transitions in @revealer.
+	// transitions in revealer.
 	SetTransitionType(transition RevealerTransitionType)
 }
 
-// Revealer: `GtkRevealer` animates the transition of its child from invisible
-// to visible.
+// Revealer: GtkRevealer animates the transition of its child from invisible to
+// visible.
 //
 // The style of transition can be controlled with
-// [method@Gtk.Revealer.set_transition_type].
+// gtk.Revealer.SetTransitionType().
 //
-// These animations respect the [property@Gtk.Settings:gtk-enable-animations]
-// setting.
+// These animations respect the gtk.Settings:gtk-enable-animations setting.
 //
 //
 // CSS nodes
 //
-// `GtkRevealer` has a single CSS node with name revealer. When styling
-// `GtkRevealer` using CSS, remember that it only hides its contents, not
-// itself. That means applied margin, padding and borders will be visible even
-// when the [property@Gtk.Revealer:reveal-child] property is set to false.
+// GtkRevealer has a single CSS node with name revealer. When styling
+// GtkRevealer using CSS, remember that it only hides its contents, not itself.
+// That means applied margin, padding and borders will be visible even when the
+// gtk.Revealer:reveal-child property is set to FALSE.
 //
 //
 // Accessibility
 //
-// `GtkRevealer` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkRevealer uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 //
-// The child of `GtkRevealer`, if set, is always available in the accessibility
+// The child of GtkRevealer, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
 type Revealer struct {
 	Widget
@@ -136,7 +135,7 @@ func marshalRevealerer(p uintptr) (interface{}, error) {
 	return wrapRevealer(obj), nil
 }
 
-// NewRevealer creates a new `GtkRevealer`.
+// NewRevealer creates a new GtkRevealer.
 func NewRevealer() *Revealer {
 	var _cret *C.GtkWidget // in
 
@@ -149,7 +148,7 @@ func NewRevealer() *Revealer {
 	return _revealer
 }
 
-// Child gets the child widget of @revealer.
+// Child gets the child widget of revealer.
 func (revealer *Revealer) Child() *Widget {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
@@ -188,9 +187,9 @@ func (revealer *Revealer) ChildRevealed() bool {
 
 // RevealChild returns whether the child is currently revealed.
 //
-// This function returns true as soon as the transition is to the revealed state
+// This function returns TRUE as soon as the transition is to the revealed state
 // is started. To learn whether the child is fully revealed (ie the transition
-// is completed), use [method@Gtk.Revealer.get_child_revealed].
+// is completed), use gtk.Revealer.GetChildRevealed().
 func (revealer *Revealer) RevealChild() bool {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.gboolean     // in
@@ -226,7 +225,7 @@ func (revealer *Revealer) TransitionDuration() uint {
 }
 
 // TransitionType gets the type of animation that will be used for transitions
-// in @revealer.
+// in revealer.
 func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	var _arg0 *C.GtkRevealer              // out
 	var _cret C.GtkRevealerTransitionType // in
@@ -242,7 +241,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 	return _revealerTransitionType
 }
 
-// SetChild sets the child widget of @revealer.
+// SetChild sets the child widget of revealer.
 func (revealer *Revealer) SetChild(child Widgeter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
@@ -253,10 +252,9 @@ func (revealer *Revealer) SetChild(child Widgeter) {
 	C.gtk_revealer_set_child(_arg0, _arg1)
 }
 
-// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
+// SetRevealChild tells the GtkRevealer to reveal or conceal its child.
 //
-// The transition will be animated with the current transition type of
-// @revealer.
+// The transition will be animated with the current transition type of revealer.
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.gboolean     // out
@@ -281,7 +279,7 @@ func (revealer *Revealer) SetTransitionDuration(duration uint) {
 }
 
 // SetTransitionType sets the type of animation that will be used for
-// transitions in @revealer.
+// transitions in revealer.
 //
 // Available types include various kinds of fades and slides.
 func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {

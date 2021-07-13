@@ -52,7 +52,7 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Distance computes the distance between @a and @b.
+// Distance computes the distance between a and b.
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -76,7 +76,7 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	return _dX, _dY, _gfloat
 }
 
-// Equal checks if the two points @a and @b point to the same coordinates.
+// Equal checks if the two points a and b point to the same coordinates.
 //
 // This function accounts for floating point fluctuations; if you want to
 // control the fuzziness of the match, you can use graphene_point_near()
@@ -109,7 +109,7 @@ func (p *Point) free() {
 	C.graphene_point_free(_arg0)
 }
 
-// Init initializes @p to the given @x and @y coordinates.
+// Init initializes p to the given x and y coordinates.
 //
 // It's safe to call this function multiple times.
 func (p *Point) Init(x float32, y float32) *Point {
@@ -131,7 +131,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 	return _point
 }
 
-// InitFromPoint initializes @p with the same coordinates of @src.
+// InitFromPoint initializes p with the same coordinates of src.
 func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -149,7 +149,7 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 	return _point
 }
 
-// InitFromVec2 initializes @p with the coordinates inside the given
+// InitFromVec2 initializes p with the coordinates inside the given
 // #graphene_vec2_t.
 func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg0 *C.graphene_point_t // out
@@ -168,8 +168,8 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	return _point
 }
 
-// Interpolate: linearly interpolates the coordinates of @a and @b using the
-// given @factor.
+// Interpolate: linearly interpolates the coordinates of a and b using the given
+// factor.
 func (a *Point) Interpolate(b *Point, factor float64) Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -185,8 +185,8 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	return _res
 }
 
-// Near checks whether the two points @a and @b are within the threshold of
-// @epsilon.
+// Near checks whether the two points a and b are within the threshold of
+// epsilon.
 func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out

@@ -23,12 +23,12 @@ func init() {
 
 // PixbufSimpleAnimer describes PixbufSimpleAnim's methods.
 type PixbufSimpleAnimer interface {
-	// AddFrame adds a new frame to @animation.
-	AddFrame(pixbuf Pixbufer)
-	// Loop gets whether @animation should loop indefinitely when it reaches the
+	// AddFrame adds a new frame to animation.
+	AddFrame(pixbuf *Pixbuf)
+	// Loop gets whether animation should loop indefinitely when it reaches the
 	// end.
 	Loop() bool
-	// SetLoop sets whether @animation should loop indefinitely when it reaches
+	// SetLoop sets whether animation should loop indefinitely when it reaches
 	// the end.
 	SetLoop(loop bool)
 }
@@ -77,20 +77,19 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim 
 	return _pixbufSimpleAnim
 }
 
-// AddFrame adds a new frame to @animation. The @pixbuf must have the dimensions
+// AddFrame adds a new frame to animation. The pixbuf must have the dimensions
 // specified when the animation was constructed.
-func (animation *PixbufSimpleAnim) AddFrame(pixbuf Pixbufer) {
+func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(animation.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }
 
-// Loop gets whether @animation should loop indefinitely when it reaches the
-// end.
+// Loop gets whether animation should loop indefinitely when it reaches the end.
 func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
@@ -108,7 +107,7 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 	return _ok
 }
 
-// SetLoop sets whether @animation should loop indefinitely when it reaches the
+// SetLoop sets whether animation should loop indefinitely when it reaches the
 // end.
 func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out

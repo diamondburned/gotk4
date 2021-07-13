@@ -23,17 +23,17 @@ func init() {
 
 // IMMulticontexter describes IMMulticontext's methods.
 type IMMulticontexter interface {
-	// ContextID gets the id of the currently active delegate of the @context.
+	// ContextID gets the id of the currently active delegate of the context.
 	ContextID() string
-	// SetContextID sets the context id for @context.
+	// SetContextID sets the context id for context.
 	SetContextID(contextId string)
 }
 
-// IMMulticontext: `GtkIMMulticontext` is input method supporting multiple,
+// IMMulticontext: GtkIMMulticontext is input method supporting multiple,
 // switchable input methods.
 //
-// Text widgets such as `GtkText` or `GtkTextView` use a `GtkIMMultiContext` to
-// implement their `im-module` property for switching between different input
+// Text widgets such as GtkText or GtkTextView use a GtkIMMultiContext to
+// implement their im-module property for switching between different input
 // methods.
 type IMMulticontext struct {
 	IMContext
@@ -58,7 +58,7 @@ func marshalIMMulticontexter(p uintptr) (interface{}, error) {
 	return wrapIMMulticontext(obj), nil
 }
 
-// NewIMMulticontext creates a new `GtkIMMulticontext`.
+// NewIMMulticontext creates a new GtkIMMulticontext.
 func NewIMMulticontext() *IMMulticontext {
 	var _cret *C.GtkIMContext // in
 
@@ -71,7 +71,7 @@ func NewIMMulticontext() *IMMulticontext {
 	return _imMulticontext
 }
 
-// ContextID gets the id of the currently active delegate of the @context.
+// ContextID gets the id of the currently active delegate of the context.
 func (context *IMMulticontext) ContextID() string {
 	var _arg0 *C.GtkIMMulticontext // out
 	var _cret *C.char              // in
@@ -87,9 +87,9 @@ func (context *IMMulticontext) ContextID() string {
 	return _utf8
 }
 
-// SetContextID sets the context id for @context.
+// SetContextID sets the context id for context.
 //
-// This causes the currently active delegate of @context to be replaced by the
+// This causes the currently active delegate of context to be replaced by the
 // delegate corresponding to the new context id.
 func (context *IMMulticontext) SetContextID(contextId string) {
 	var _arg0 *C.GtkIMMulticontext // out

@@ -30,25 +30,25 @@ type Layouter interface {
 	// BinWindow: retrieve the bin window of the layout used for drawing
 	// operations.
 	BinWindow() *gdk.Window
-	// HAdjustment: this function should only be called after the layout has
+	// Hadjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling.
-	HAdjustment() *Adjustment
+	Hadjustment() *Adjustment
 	// Size gets the size that has been set on the layout, and that determines
 	// the total extents of the layout’s scrollbar area.
 	Size() (width uint, height uint)
-	// VAdjustment: this function should only be called after the layout has
+	// Vadjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling.
-	VAdjustment() *Adjustment
-	// Move moves a current child of @layout to a new position.
+	Vadjustment() *Adjustment
+	// Move moves a current child of layout to a new position.
 	Move(childWidget Widgeter, x int, y int)
-	// Put adds @child_widget to @layout, at position (@x,@y).
+	// Put adds child_widget to layout, at position (x,y).
 	Put(childWidget Widgeter, x int, y int)
-	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
-	SetHAdjustment(adjustment Adjustmenter)
+	// SetHadjustment sets the horizontal scroll adjustment for the layout.
+	SetHadjustment(adjustment *Adjustment)
 	// SetSize sets the size of the scrollable area of the layout.
 	SetSize(width uint, height uint)
-	// SetVAdjustment sets the vertical scroll adjustment for the layout.
-	SetVAdjustment(adjustment Adjustmenter)
+	// SetVadjustment sets the vertical scroll adjustment for the layout.
+	SetVadjustment(adjustment *Adjustment)
 }
 
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
@@ -102,15 +102,15 @@ func marshalLayouter(p uintptr) (interface{}, error) {
 }
 
 // NewLayout creates a new Layout. Unless you have a specific adjustment you’d
-// like the layout to use for scrolling, pass nil for @hadjustment and
-// @vadjustment.
-func NewLayout(hadjustment Adjustmenter, vadjustment Adjustmenter) *Layout {
+// like the layout to use for scrolling, pass NULL for hadjustment and
+// vadjustment.
+func NewLayout(hadjustment *Adjustment, vadjustment *Adjustment) *Layout {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((hadjustment).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer((vadjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	_cret = C.gtk_layout_new(_arg1, _arg2)
 
@@ -148,15 +148,15 @@ func (layout *Layout) BinWindow() *gdk.Window {
 	return _window
 }
 
-// HAdjustment: this function should only be called after the layout has been
+// Hadjustment: this function should only be called after the layout has been
 // placed in a ScrolledWindow or otherwise configured for scrolling. It returns
 // the Adjustment used for communication between the horizontal scrollbar and
-// @layout.
+// layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (layout *Layout) HAdjustment() *Adjustment {
+func (layout *Layout) Hadjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
@@ -191,15 +191,15 @@ func (layout *Layout) Size() (width uint, height uint) {
 	return _width, _height
 }
 
-// VAdjustment: this function should only be called after the layout has been
+// Vadjustment: this function should only be called after the layout has been
 // placed in a ScrolledWindow or otherwise configured for scrolling. It returns
 // the Adjustment used for communication between the vertical scrollbar and
-// @layout.
+// layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (layout *Layout) VAdjustment() *Adjustment {
+func (layout *Layout) Vadjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
 	var _cret *C.GtkAdjustment // in
 
@@ -214,7 +214,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 	return _adjustment
 }
 
-// Move moves a current child of @layout to a new position.
+// Move moves a current child of layout to a new position.
 func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
@@ -229,8 +229,8 @@ func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
 	C.gtk_layout_move(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Put adds @child_widget to @layout, at position (@x,@y). @layout becomes the
-// new parent container of @child_widget.
+// Put adds child_widget to layout, at position (x,y). layout becomes the new
+// parent container of child_widget.
 func (layout *Layout) Put(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
@@ -245,17 +245,17 @@ func (layout *Layout) Put(childWidget Widgeter, x int, y int) {
 	C.gtk_layout_put(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetHAdjustment sets the horizontal scroll adjustment for the layout.
+// SetHadjustment sets the horizontal scroll adjustment for the layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
-func (layout *Layout) SetHAdjustment(adjustment Adjustmenter) {
+func (layout *Layout) SetHadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_layout_set_hadjustment(_arg0, _arg1)
 }
@@ -273,17 +273,17 @@ func (layout *Layout) SetSize(width uint, height uint) {
 	C.gtk_layout_set_size(_arg0, _arg1, _arg2)
 }
 
-// SetVAdjustment sets the vertical scroll adjustment for the layout.
+// SetVadjustment sets the vertical scroll adjustment for the layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
-func (layout *Layout) SetVAdjustment(adjustment Adjustmenter) {
+func (layout *Layout) SetVadjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
 	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(layout.Native()))
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 }

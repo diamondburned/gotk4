@@ -66,7 +66,7 @@ func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 
 func (*DTLSServerConnection) privateDTLSServerConnection() {}
 
-// NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
+// NewDTLSServerConnection creates a new ServerConnection wrapping base_socket.
 func DtlsServerConnectionNew(baseSocket DatagramBaseder, certificate TLSCertificater) (*DTLSServerConnection, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out

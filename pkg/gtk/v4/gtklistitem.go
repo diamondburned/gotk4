@@ -26,41 +26,40 @@ type ListItemer interface {
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
 	Activatable() bool
-	// Child gets the child previously set via gtk_list_item_set_child() or nil
+	// Child gets the child previously set via gtk_list_item_set_child() or NULL
 	// if none was set.
 	Child() *Widget
-	// Item gets the model item that associated with @self.
+	// Item gets the model item that associated with self.
 	Item() *externglib.Object
-	// Position gets the position in the model that @self currently displays.
+	// Position gets the position in the model that self currently displays.
 	Position() uint
 	// Selectable checks if a list item has been set to be selectable via
 	// gtk_list_item_set_selectable().
 	Selectable() bool
 	// Selected checks if the item is displayed as selected.
 	Selected() bool
-	// SetActivatable sets @self to be activatable.
+	// SetActivatable sets self to be activatable.
 	SetActivatable(activatable bool)
 	// SetChild sets the child to be used for this listitem.
 	SetChild(child Widgeter)
-	// SetSelectable sets @self to be selectable.
+	// SetSelectable sets self to be selectable.
 	SetSelectable(selectable bool)
 }
 
-// ListItem: `GtkListItem` is used by list widgets to represent items in a
-// `GListModel`.
+// ListItem: GtkListItem is used by list widgets to represent items in a
+// GListModel.
 //
-// The `GtkListItem`s are managed by the list widget (with its factory) and
-// cannot be created by applications, but they need to be populated by
-// application code. This is done by calling [method@Gtk.ListItem.set_child].
+// The GtkListItems are managed by the list widget (with its factory) and cannot
+// be created by applications, but they need to be populated by application
+// code. This is done by calling gtk.ListItem.SetChild().
 //
-// `GtkListItem`s exist in 2 stages:
+// GtkListItems exist in 2 stages:
 //
 // 1. The unbound stage where the listitem is not currently connected to an item
-// in the list. In that case, the [property@Gtk.ListItem:item] property is set
-// to nil.
+// in the list. In that case, the gtk.ListItem:item property is set to NULL.
 //
 // 2. The bound stage where the listitem references an item from the list. The
-// [property@Gtk.ListItem:item] property is not nil.
+// gtk.ListItem:item property is not NULL.
 type ListItem struct {
 	*externglib.Object
 }
@@ -101,7 +100,7 @@ func (self *ListItem) Activatable() bool {
 	return _ok
 }
 
-// Child gets the child previously set via gtk_list_item_set_child() or nil if
+// Child gets the child previously set via gtk_list_item_set_child() or NULL if
 // none was set.
 func (self *ListItem) Child() *Widget {
 	var _arg0 *C.GtkListItem // out
@@ -118,9 +117,9 @@ func (self *ListItem) Child() *Widget {
 	return _widget
 }
 
-// Item gets the model item that associated with @self.
+// Item gets the model item that associated with self.
 //
-// If @self is unbound, this function returns nil.
+// If self is unbound, this function returns NULL.
 func (self *ListItem) Item() *externglib.Object {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gpointer     // in
@@ -136,9 +135,9 @@ func (self *ListItem) Item() *externglib.Object {
 	return _object
 }
 
-// Position gets the position in the model that @self currently displays.
+// Position gets the position in the model that self currently displays.
 //
-// If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
+// If self is unbound, GTK_INVALID_LIST_POSITION is returned.
 func (self *ListItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
@@ -157,7 +156,7 @@ func (self *ListItem) Position() uint {
 // Selectable checks if a list item has been set to be selectable via
 // gtk_list_item_set_selectable().
 //
-// Do not confuse this function with [method@Gtk.ListItem.get_selected].
+// Do not confuse this function with gtk.ListItem.GetSelected().
 func (self *ListItem) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.gboolean     // in
@@ -196,12 +195,12 @@ func (self *ListItem) Selected() bool {
 	return _ok
 }
 
-// SetActivatable sets @self to be activatable.
+// SetActivatable sets self to be activatable.
 //
 // If an item is activatable, double-clicking on the item, using the Return key
 // or calling gtk_widget_activate() will activate the item. Activating instructs
-// the containing view to handle activation. `GtkListView` for example will be
-// emitting the [signal@Gtk.ListView::activate] signal.
+// the containing view to handle activation. GtkListView for example will be
+// emitting the gtk.ListView::activate signal.
 //
 // By default, list items are activatable.
 func (self *ListItem) SetActivatable(activatable bool) {
@@ -230,7 +229,7 @@ func (self *ListItem) SetChild(child Widgeter) {
 	C.gtk_list_item_set_child(_arg0, _arg1)
 }
 
-// SetSelectable sets @self to be selectable.
+// SetSelectable sets self to be selectable.
 //
 // If an item is selectable, clicking on the item or using the keyboard will try
 // to select or unselect the item. If this succeeds is up to the model to

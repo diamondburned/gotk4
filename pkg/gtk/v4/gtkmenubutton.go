@@ -25,11 +25,11 @@ func init() {
 }
 
 // MenuButtonCreatePopupFunc: user-provided callback function to create a popup
-// for a `GtkMenuButton` on demand.
+// for a GtkMenuButton on demand.
 //
-// This function is called when the popup of @menu_button is shown, but none has
-// been provided via [method@Gtk.MenuButton.set_popover] or
-// [method@Gtk.MenuButton.set_menu_model].
+// This function is called when the popup of menu_button is shown, but none has
+// been provided via gtk.MenuButton.SetPopover() or
+// gtk.MenuButton.SetMenuModel().
 type MenuButtonCreatePopupFunc func(menuButton *MenuButton, userData cgo.Handle)
 
 //export gotk4_MenuButtonCreatePopupFunc
@@ -60,9 +60,9 @@ type MenuButtoner interface {
 	IconName() string
 	// Label gets the label shown in the button
 	Label() string
-	// MenuModel returns the `GMenuModel` used to generate the popup.
+	// MenuModel returns the GMenuModel used to generate the popup.
 	MenuModel() *gio.MenuModel
-	// Popover returns the `GtkPopover` that pops out of the button.
+	// Popover returns the GtkPopover that pops out of the button.
 	Popover() *Popover
 	// UseUnderline returns whether an embedded underline in the text indicates
 	// a mnemonic.
@@ -79,41 +79,41 @@ type MenuButtoner interface {
 	SetIconName(iconName string)
 	// SetLabel sets the label to show inside the menu button.
 	SetLabel(label string)
-	// SetMenuModel sets the `GMenuModel` from which the popup will be
+	// SetMenuModel sets the GMenuModel from which the popup will be
 	// constructed.
 	SetMenuModel(menuModel gio.MenuModeler)
-	// SetPopover sets the `GtkPopover` that will be popped up when the
-	// @menu_button is clicked.
+	// SetPopover sets the GtkPopover that will be popped up when the
+	// menu_button is clicked.
 	SetPopover(popover Widgeter)
 	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
 	SetUseUnderline(useUnderline bool)
 }
 
-// MenuButton: `GtkMenuButton` widget is used to display a popup when clicked.
+// MenuButton: GtkMenuButton widget is used to display a popup when clicked.
 //
 // !An example GtkMenuButton (menu-button.png)
 //
-// This popup can be provided either as a `GtkPopover` or as an abstract
-// `GMenuModel`.
+// This popup can be provided either as a GtkPopover or as an abstract
+// GMenuModel.
 //
-// The `GtkMenuButton` widget can show either an icon (set with the
-// [property@Gtk.MenuButton:icon-name] property) or a label (set with the
-// [property@Gtk.MenuButton:label] property). If neither is explicitly set, a
-// [class@Gtk.Image] is automatically created, using an arrow image oriented
-// according to [property@Gtk.MenuButton:direction] or the generic
-// “open-menu-symbolic” icon if the direction is not set.
+// The GtkMenuButton widget can show either an icon (set with the
+// gtk.MenuButton:icon-name property) or a label (set with the
+// gtk.MenuButton:label property). If neither is explicitly set, a gtk.Image is
+// automatically created, using an arrow image oriented according to
+// gtk.MenuButton:direction or the generic “open-menu-symbolic” icon if the
+// direction is not set.
 //
-// The positioning of the popup is determined by the
-// [property@Gtk.MenuButton:direction] property of the menu button.
+// The positioning of the popup is determined by the gtk.MenuButton:direction
+// property of the menu button.
 //
-// For menus, the [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign]
-// properties of the menu are also taken into account. For example, when the
-// direction is GTK_ARROW_DOWN and the horizontal alignment is GTK_ALIGN_START,
-// the menu will be positioned below the button, with the starting edge
-// (depending on the text direction) of the menu aligned with the starting edge
-// of the button. If there is not enough space below the button, the menu is
-// popped up above the button instead. If the alignment would move part of the
-// menu offscreen, it is “pushed in”.
+// For menus, the gtk.Widget:halign and gtk.Widget:valign properties of the menu
+// are also taken into account. For example, when the direction is
+// GTK_ARROW_DOWN and the horizontal alignment is GTK_ALIGN_START, the menu will
+// be positioned below the button, with the starting edge (depending on the text
+// direction) of the menu aligned with the starting edge of the button. If there
+// is not enough space below the button, the menu is popped up above the button
+// instead. If the alignment would move part of the menu offscreen, it is
+// “pushed in”.
 //
 // | | start | center | end | | - | --- | --- | --- | | **down** | !
 // (down-start.png) | ! (down-center.png) | ! (down-end.png) | | **up** | !
@@ -121,27 +121,30 @@ type MenuButtoner interface {
 // (left-start.png) | ! (left-center.png) | ! (left-end.png) | | **right** | !
 // (right-start.png) | ! (right-center.png) | ! (right-end.png) |
 //
-//
 // CSS nodes
 //
-// “` menubutton ╰── button.toggle ╰── <content> ╰── [arrow] “`
+//    menubutton
+//    ╰── button.toggle
+//        ╰── <content>
+//             ╰── [arrow]
 //
-// `GtkMenuButton` has a single CSS node with name `menubutton` which contains a
-// `button` node with a `.toggle` style class.
 //
-// Inside the toggle button content, there is an `arrow` node for the indicator,
-// which will carry one of the `.none`, `.up`, `.down`, `.left` or `.right`
-// style classes to indicate the direction that the menu will appear in. The CSS
-// is expected to provide a suitable image for each of these cases using the
-// `-gtk-icon-source` property.
+// GtkMenuButton has a single CSS node with name menubutton which contains a
+// button node with a .toggle style class.
 //
-// Optionally, the `menubutton` node can carry the `.circular` style class to
+// Inside the toggle button content, there is an arrow node for the indicator,
+// which will carry one of the .none, .up, .down, .left or .right style classes
+// to indicate the direction that the menu will appear in. The CSS is expected
+// to provide a suitable image for each of these cases using the
+// -gtk-icon-source property.
+//
+// Optionally, the menubutton node can carry the .circular style class to
 // request a round appearance.
 //
 //
 // Accessibility
 //
-// `GtkMenuButton` uses the K_ACCESSIBLE_ROLE_BUTTON role.
+// GtkMenuButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type MenuButton struct {
 	Widget
 }
@@ -176,10 +179,10 @@ func marshalMenuButtoner(p uintptr) (interface{}, error) {
 	return wrapMenuButton(obj), nil
 }
 
-// NewMenuButton creates a new `GtkMenuButton` widget with downwards-pointing
+// NewMenuButton creates a new GtkMenuButton widget with downwards-pointing
 // arrow as the only child.
 //
-// You can replace the child widget with another `GtkWidget` should you wish to.
+// You can replace the child widget with another GtkWidget should you wish to.
 func NewMenuButton() *MenuButton {
 	var _cret *C.GtkWidget // in
 
@@ -258,7 +261,7 @@ func (menuButton *MenuButton) Label() string {
 	return _utf8
 }
 
-// MenuModel returns the `GMenuModel` used to generate the popup.
+// MenuModel returns the GMenuModel used to generate the popup.
 func (menuButton *MenuButton) MenuModel() *gio.MenuModel {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GMenuModel    // in
@@ -279,9 +282,9 @@ func (menuButton *MenuButton) MenuModel() *gio.MenuModel {
 	return _menuModel
 }
 
-// Popover returns the `GtkPopover` that pops out of the button.
+// Popover returns the GtkPopover that pops out of the button.
 //
-// If the button is not using a `GtkPopover`, this function returns nil.
+// If the button is not using a GtkPopover, this function returns NULL.
 func (menuButton *MenuButton) Popover() *Popover {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkPopover    // in
@@ -342,7 +345,7 @@ func (menuButton *MenuButton) Popup() {
 // If the does not fit in the available space in the given direction, GTK will
 // its best to keep it inside the screen and fully visible.
 //
-// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if you
+// If you pass GTK_ARROW_NONE for a direction, the popup will behave as if you
 // passed GTK_ARROW_DOWN (although you won’t see any arrows).
 func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	var _arg0 *C.GtkMenuButton // out
@@ -389,16 +392,16 @@ func (menuButton *MenuButton) SetLabel(label string) {
 	C.gtk_menu_button_set_label(_arg0, _arg1)
 }
 
-// SetMenuModel sets the `GMenuModel` from which the popup will be constructed.
+// SetMenuModel sets the GMenuModel from which the popup will be constructed.
 //
-// If @menu_model is nil, the button is disabled.
+// If menu_model is NULL, the button is disabled.
 //
-// A [class@Gtk.Popover] will be created from the menu model with
-// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
-// documented for this function.
+// A gtk.Popover will be created from the menu model with
+// gtk.PopoverMenu.NewFromModel. Actions will be connected as documented for
+// this function.
 //
-// If [property@Gtk.MenuButton:popover] is already set, it will be dissociated
-// from the @menu_button, and the property is set to nil.
+// If gtk.MenuButton:popover is already set, it will be dissociated from the
+// menu_button, and the property is set to NULL.
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
@@ -409,13 +412,13 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
 
-// SetPopover sets the `GtkPopover` that will be popped up when the @menu_button
-// is clicked.
+// SetPopover sets the GtkPopover that will be popped up when the menu_button is
+// clicked.
 //
-// If @popover is nil, the button is disabled.
+// If popover is NULL, the button is disabled.
 //
-// If [property@Gtk.MenuButton:menu-model] is set, the menu model is dissociated
-// from the @menu_button, and the property is set to nil.
+// If gtk.MenuButton:menu-model is set, the menu model is dissociated from the
+// menu_button, and the property is set to NULL.
 func (menuButton *MenuButton) SetPopover(popover Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out

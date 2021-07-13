@@ -292,6 +292,7 @@ func (conv *Converter) convertType(
 		return nil
 	}
 
+	of.header.ImportImpl(result.Resolved)
 	return &result
 }
 

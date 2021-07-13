@@ -52,11 +52,11 @@ func init() {
 
 // BlendNoder describes BlendNode's methods.
 type BlendNoder interface {
-	// BlendMode retrieves the blend mode used by @node.
+	// BlendMode retrieves the blend mode used by node.
 	BlendMode() BlendMode
-	// BottomChild retrieves the bottom `GskRenderNode` child of the @node.
+	// BottomChild retrieves the bottom GskRenderNode child of the node.
 	BottomChild() *RenderNode
-	// TopChild retrieves the top `GskRenderNode` child of the @node.
+	// TopChild retrieves the top GskRenderNode child of the node.
 	TopChild() *RenderNode
 }
 
@@ -85,8 +85,8 @@ func marshalBlendNoder(p uintptr) (interface{}, error) {
 	return wrapBlendNode(obj), nil
 }
 
-// NewBlendNode creates a `GskRenderNode` that will use @blend_mode to blend the
-// @top node onto the @bottom node.
+// NewBlendNode creates a GskRenderNode that will use blend_mode to blend the
+// top node onto the bottom node.
 func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *BlendNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -106,7 +106,7 @@ func NewBlendNode(bottom RenderNoder, top RenderNoder, blendMode BlendMode) *Ble
 	return _blendNode
 }
 
-// BlendMode retrieves the blend mode used by @node.
+// BlendMode retrieves the blend mode used by node.
 func (node *BlendNode) BlendMode() BlendMode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.GskBlendMode   // in
@@ -122,7 +122,7 @@ func (node *BlendNode) BlendMode() BlendMode {
 	return _blendMode
 }
 
-// BottomChild retrieves the bottom `GskRenderNode` child of the @node.
+// BottomChild retrieves the bottom GskRenderNode child of the node.
 func (node *BlendNode) BottomChild() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -138,7 +138,7 @@ func (node *BlendNode) BottomChild() *RenderNode {
 	return _renderNode
 }
 
-// TopChild retrieves the top `GskRenderNode` child of the @node.
+// TopChild retrieves the top GskRenderNode child of the node.
 func (node *BlendNode) TopChild() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -156,9 +156,9 @@ func (node *BlendNode) TopChild() *RenderNode {
 
 // BlurNoder describes BlurNode's methods.
 type BlurNoder interface {
-	// Child retrieves the child `GskRenderNode` of the blur @node.
+	// Child retrieves the child GskRenderNode of the blur node.
 	Child() *RenderNode
-	// Radius retrieves the blur radius of the @node.
+	// Radius retrieves the blur radius of the node.
 	Radius() float32
 }
 
@@ -204,7 +204,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 	return _blurNode
 }
 
-// Child retrieves the child `GskRenderNode` of the blur @node.
+// Child retrieves the child GskRenderNode of the blur node.
 func (node *BlurNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -220,7 +220,7 @@ func (node *BlurNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// Radius retrieves the blur radius of the @node.
+// Radius retrieves the blur radius of the node.
 func (node *BlurNode) Radius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -270,8 +270,8 @@ func marshalBorderNoder(p uintptr) (interface{}, error) {
 	return wrapBorderNode(obj), nil
 }
 
-// NewBorderNode creates a `GskRenderNode` that will stroke a border rectangle
-// inside the given @outline.
+// NewBorderNode creates a GskRenderNode that will stroke a border rectangle
+// inside the given outline.
 //
 // The 4 sides of the border can have different widths and colors.
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode {
@@ -374,11 +374,10 @@ func marshalCairoNoder(p uintptr) (interface{}, error) {
 	return wrapCairoNode(obj), nil
 }
 
-// NewCairoNode creates a `GskRenderNode` that will render a cairo surface into
-// the area given by @bounds.
+// NewCairoNode creates a GskRenderNode that will render a cairo surface into
+// the area given by bounds.
 //
-// You can draw to the cairo surface using
-// [method@Gsk.CairoNode.get_draw_context].
+// You can draw to the cairo surface using gsk.CairoNode.GetDrawContext().
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -398,7 +397,7 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 // to the render node.
 //
 // If no surface exists yet, a surface will be created optimized for rendering
-// to @renderer.
+// to renderer.
 func (node *CairoNode) DrawContext() *cairo.Context {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.cairo_t       // in
@@ -435,9 +434,9 @@ func (node *CairoNode) Surface() *cairo.Surface {
 
 // ClipNoder describes ClipNode's methods.
 type ClipNoder interface {
-	// Child gets the child node that is getting clipped by the given @node.
+	// Child gets the child node that is getting clipped by the given node.
 	Child() *RenderNode
-	// Clip retrieves the clip rectangle for @node.
+	// Clip retrieves the clip rectangle for node.
 	Clip() *graphene.Rect
 }
 
@@ -465,8 +464,8 @@ func marshalClipNoder(p uintptr) (interface{}, error) {
 	return wrapClipNode(obj), nil
 }
 
-// NewClipNode creates a `GskRenderNode` that will clip the @child to the area
-// given by @clip.
+// NewClipNode creates a GskRenderNode that will clip the child to the area
+// given by clip.
 func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -484,7 +483,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	return _clipNode
 }
 
-// Child gets the child node that is getting clipped by the given @node.
+// Child gets the child node that is getting clipped by the given node.
 func (node *ClipNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -500,7 +499,7 @@ func (node *ClipNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// Clip retrieves the clip rectangle for @node.
+// Clip retrieves the clip rectangle for node.
 func (node *ClipNode) Clip() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
@@ -519,11 +518,11 @@ func (node *ClipNode) Clip() *graphene.Rect {
 // ColorMatrixNoder describes ColorMatrixNode's methods.
 type ColorMatrixNoder interface {
 	// Child gets the child node that is getting its colors modified by the
-	// given @node.
+	// given node.
 	Child() *RenderNode
-	// ColorMatrix retrieves the color matrix used by the @node.
+	// ColorMatrix retrieves the color matrix used by the node.
 	ColorMatrix() *graphene.Matrix
-	// ColorOffset retrieves the color offset used by the @node.
+	// ColorOffset retrieves the color offset used by the node.
 	ColorOffset() *graphene.Vec4
 }
 
@@ -552,8 +551,8 @@ func marshalColorMatrixNoder(p uintptr) (interface{}, error) {
 	return wrapColorMatrixNode(obj), nil
 }
 
-// NewColorMatrixNode creates a `GskRenderNode` that will drawn the @child with
-// @color_matrix.
+// NewColorMatrixNode creates a GskRenderNode that will drawn the child with
+// color_matrix.
 //
 // In particular, the node will transform the operation
 //
@@ -580,7 +579,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 }
 
 // Child gets the child node that is getting its colors modified by the given
-// @node.
+// node.
 func (node *ColorMatrixNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -596,7 +595,7 @@ func (node *ColorMatrixNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// ColorMatrix retrieves the color matrix used by the @node.
+// ColorMatrix retrieves the color matrix used by the node.
 func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 	var _arg0 *C.GskRenderNode     // out
 	var _cret *C.graphene_matrix_t // in
@@ -612,7 +611,7 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 	return _matrix
 }
 
-// ColorOffset retrieves the color offset used by the @node.
+// ColorOffset retrieves the color offset used by the node.
 func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_vec4_t // in
@@ -630,7 +629,7 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 // ColorNoder describes ColorNode's methods.
 type ColorNoder interface {
-	// Color retrieves the color of the given @node.
+	// Color retrieves the color of the given node.
 	Color() *gdk.RGBA
 }
 
@@ -658,8 +657,8 @@ func marshalColorNoder(p uintptr) (interface{}, error) {
 	return wrapColorNode(obj), nil
 }
 
-// NewColorNode creates a `GskRenderNode` that will render the color specified
-// by @rgba into the area given by @bounds.
+// NewColorNode creates a GskRenderNode that will render the color specified by
+// rgba into the area given by bounds.
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _arg1 *C.GdkRGBA         // out
 	var _arg2 *C.graphene_rect_t // out
@@ -677,7 +676,7 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	return _colorNode
 }
 
-// Color retrieves the color of the given @node.
+// Color retrieves the color of the given node.
 func (node *ColorNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -730,9 +729,9 @@ func marshalConicGradientNoder(p uintptr) (interface{}, error) {
 	return wrapConicGradientNode(obj), nil
 }
 
-// NewConicGradientNode creates a `GskRenderNode` that draws a conic gradient.
+// NewConicGradientNode creates a GskRenderNode that draws a conic gradient.
 //
-// The conic gradient starts around @center in the direction of @rotation. A
+// The conic gradient starts around center in the direction of rotation. A
 // rotation of 0 means that the gradient points up. Color stops are then added
 // clockwise.
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) *ConicGradientNode {
@@ -832,9 +831,9 @@ func (node *ConicGradientNode) Rotation() float32 {
 
 // ContainerNoder describes ContainerNode's methods.
 type ContainerNoder interface {
-	// Child gets one of the children of @container.
+	// Child gets one of the children of container.
 	Child(idx uint) *RenderNode
-	// NChildren retrieves the number of direct children of @node.
+	// NChildren retrieves the number of direct children of node.
 	NChildren() uint
 }
 
@@ -862,11 +861,11 @@ func marshalContainerNoder(p uintptr) (interface{}, error) {
 	return wrapContainerNode(obj), nil
 }
 
-// NewContainerNode creates a new `GskRenderNode` instance for holding the given
-// @children.
+// NewContainerNode creates a new GskRenderNode instance for holding the given
+// children.
 //
 // The new node will acquire a reference to each of the children.
-func NewContainerNode(children []*RenderNode) *ContainerNode {
+func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _arg1 **C.GskRenderNode
 	var _arg2 C.guint
 	var _cret *C.GskRenderNode // in
@@ -876,7 +875,7 @@ func NewContainerNode(children []*RenderNode) *ContainerNode {
 	{
 		out := unsafe.Slice((**C.GskRenderNode)(_arg1), len(children))
 		for i := range children {
-			out[i] = (*C.GskRenderNode)(unsafe.Pointer(children[i].Native()))
+			out[i] = (*C.GskRenderNode)(unsafe.Pointer((children[i]).(gextras.Nativer).Native()))
 		}
 	}
 
@@ -889,7 +888,7 @@ func NewContainerNode(children []*RenderNode) *ContainerNode {
 	return _containerNode
 }
 
-// Child gets one of the children of @container.
+// Child gets one of the children of container.
 func (node *ContainerNode) Child(idx uint) *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
@@ -907,7 +906,7 @@ func (node *ContainerNode) Child(idx uint) *RenderNode {
 	return _renderNode
 }
 
-// NChildren retrieves the number of direct children of @node.
+// NChildren retrieves the number of direct children of node.
 func (node *ContainerNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
@@ -925,12 +924,11 @@ func (node *ContainerNode) NChildren() uint {
 
 // CrossFadeNoder describes CrossFadeNode's methods.
 type CrossFadeNoder interface {
-	// EndChild retrieves the child `GskRenderNode` at the end of the
-	// cross-fade.
+	// EndChild retrieves the child GskRenderNode at the end of the cross-fade.
 	EndChild() *RenderNode
 	// Progress retrieves the progress value of the cross fade.
 	Progress() float32
-	// StartChild retrieves the child `GskRenderNode` at the beginning of the
+	// StartChild retrieves the child GskRenderNode at the beginning of the
 	// cross-fade.
 	StartChild() *RenderNode
 }
@@ -959,8 +957,8 @@ func marshalCrossFadeNoder(p uintptr) (interface{}, error) {
 	return wrapCrossFadeNode(obj), nil
 }
 
-// NewCrossFadeNode creates a `GskRenderNode` that will do a cross-fade between
-// @start and @end.
+// NewCrossFadeNode creates a GskRenderNode that will do a cross-fade between
+// start and end.
 func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -980,7 +978,7 @@ func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *Cro
 	return _crossFadeNode
 }
 
-// EndChild retrieves the child `GskRenderNode` at the end of the cross-fade.
+// EndChild retrieves the child GskRenderNode at the end of the cross-fade.
 func (node *CrossFadeNode) EndChild() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1012,7 +1010,7 @@ func (node *CrossFadeNode) Progress() float32 {
 	return _gfloat
 }
 
-// StartChild retrieves the child `GskRenderNode` at the beginning of the
+// StartChild retrieves the child GskRenderNode at the beginning of the
 // cross-fade.
 func (node *CrossFadeNode) StartChild() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
@@ -1031,7 +1029,7 @@ func (node *CrossFadeNode) StartChild() *RenderNode {
 
 // DebugNoder describes DebugNode's methods.
 type DebugNoder interface {
-	// Child gets the child node that is getting drawn by the given @node.
+	// Child gets the child node that is getting drawn by the given node.
 	Child() *RenderNode
 	// Message gets the debug message that was set on this node
 	Message() string
@@ -1062,8 +1060,8 @@ func marshalDebugNoder(p uintptr) (interface{}, error) {
 	return wrapDebugNode(obj), nil
 }
 
-// NewDebugNode creates a `GskRenderNode` that will add debug information about
-// the given @child.
+// NewDebugNode creates a GskRenderNode that will add debug information about
+// the given child.
 //
 // Adding this node has no visual effect.
 func NewDebugNode(child RenderNoder, message string) *DebugNode {
@@ -1084,7 +1082,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	return _debugNode
 }
 
-// Child gets the child node that is getting drawn by the given @node.
+// Child gets the child node that is getting drawn by the given node.
 func (node *DebugNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1240,8 +1238,8 @@ func marshalInsetShadowNoder(p uintptr) (interface{}, error) {
 	return wrapInsetShadowNode(obj), nil
 }
 
-// NewInsetShadowNode creates a `GskRenderNode` that will render an inset shadow
-// into the box given by @outline.
+// NewInsetShadowNode creates a GskRenderNode that will render an inset shadow
+// into the box given by outline.
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1397,9 +1395,9 @@ func marshalLinearGradientNoder(p uintptr) (interface{}, error) {
 	return wrapLinearGradientNode(obj), nil
 }
 
-// NewLinearGradientNode creates a `GskRenderNode` that will create a linear
+// NewLinearGradientNode creates a GskRenderNode that will create a linear
 // gradient from the given points and color stops, and render that into the area
-// given by @bounds.
+// given by bounds.
 func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1475,7 +1473,7 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 
 // OpacityNoder describes OpacityNode's methods.
 type OpacityNoder interface {
-	// Child gets the child node that is getting opacityed by the given @node.
+	// Child gets the child node that is getting opacityed by the given node.
 	Child() *RenderNode
 	// Opacity gets the transparency factor for an opacity node.
 	Opacity() float32
@@ -1505,8 +1503,8 @@ func marshalOpacityNoder(p uintptr) (interface{}, error) {
 	return wrapOpacityNode(obj), nil
 }
 
-// NewOpacityNode creates a `GskRenderNode` that will drawn the @child with
-// reduced @opacity.
+// NewOpacityNode creates a GskRenderNode that will drawn the child with reduced
+// opacity.
 func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -1524,7 +1522,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	return _opacityNode
 }
 
-// Child gets the child node that is getting opacityed by the given @node.
+// Child gets the child node that is getting opacityed by the given node.
 func (node *OpacityNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1596,8 +1594,8 @@ func marshalOutsetShadowNoder(p uintptr) (interface{}, error) {
 	return wrapOutsetShadowNode(obj), nil
 }
 
-// NewOutsetShadowNode creates a `GskRenderNode` that will render an outset
-// shadow around the box given by @outline.
+// NewOutsetShadowNode creates a GskRenderNode that will render an outset shadow
+// around the box given by outline.
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -1759,10 +1757,10 @@ func marshalRadialGradientNoder(p uintptr) (interface{}, error) {
 	return wrapRadialGradientNode(obj), nil
 }
 
-// NewRadialGradientNode creates a `GskRenderNode` that draws a radial gradient.
+// NewRadialGradientNode creates a GskRenderNode that draws a radial gradient.
 //
-// The radial gradient starts around @center. The size of the gradient is
-// dictated by @hradius in horizontal orientation and by @vradius in vertial
+// The radial gradient starts around center. The size of the gradient is
+// dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) *RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -1893,9 +1891,9 @@ func (node *RadialGradientNode) Vradius() float32 {
 
 // RepeatNoder describes RepeatNode's methods.
 type RepeatNoder interface {
-	// Child retrieves the child of @node.
+	// Child retrieves the child of node.
 	Child() *RenderNode
-	// ChildBounds retrieves the bounding rectangle of the child of @node.
+	// ChildBounds retrieves the bounding rectangle of the child of node.
 	ChildBounds() *graphene.Rect
 }
 
@@ -1923,8 +1921,8 @@ func marshalRepeatNoder(p uintptr) (interface{}, error) {
 	return wrapRepeatNode(obj), nil
 }
 
-// NewRepeatNode creates a `GskRenderNode` that will repeat the drawing of
-// @child across the given @bounds.
+// NewRepeatNode creates a GskRenderNode that will repeat the drawing of child
+// across the given bounds.
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.GskRenderNode   // out
@@ -1944,7 +1942,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 	return _repeatNode
 }
 
-// Child retrieves the child of @node.
+// Child retrieves the child of node.
 func (node *RepeatNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1960,7 +1958,7 @@ func (node *RepeatNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// ChildBounds retrieves the bounding rectangle of the child of @node.
+// ChildBounds retrieves the bounding rectangle of the child of node.
 func (node *RepeatNode) ChildBounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
@@ -2005,9 +2003,9 @@ func marshalRepeatingLinearGradientNoder(p uintptr) (interface{}, error) {
 	return wrapRepeatingLinearGradientNode(obj), nil
 }
 
-// NewRepeatingLinearGradientNode creates a `GskRenderNode` that will create a
+// NewRepeatingLinearGradientNode creates a GskRenderNode that will create a
 // repeating linear gradient from the given points and color stops, and render
-// that into the area given by @bounds.
+// that into the area given by bounds.
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -2064,11 +2062,11 @@ func marshalRepeatingRadialGradientNoder(p uintptr) (interface{}, error) {
 	return wrapRepeatingRadialGradientNode(obj), nil
 }
 
-// NewRepeatingRadialGradientNode creates a `GskRenderNode` that draws a
-// repeating radial gradient.
+// NewRepeatingRadialGradientNode creates a GskRenderNode that draws a repeating
+// radial gradient.
 //
-// The radial gradient starts around @center. The size of the gradient is
-// dictated by @hradius in horizontal orientation and by @vradius in vertial
+// The radial gradient starts around center. The size of the gradient is
+// dictated by hradius in horizontal orientation and by vradius in vertial
 // orientation.
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -2105,10 +2103,10 @@ func (*RepeatingRadialGradientNode) privateRepeatingRadialGradientNode() {}
 
 // RoundedClipNoder describes RoundedClipNode's methods.
 type RoundedClipNoder interface {
-	// Child gets the child node that is getting clipped by the given @node.
+	// Child gets the child node that is getting clipped by the given node.
 	Child() *RenderNode
 	// Clip retrieves the rounded rectangle used to clip the contents of the
-	// @node.
+	// node.
 	Clip() *RoundedRect
 }
 
@@ -2137,8 +2135,8 @@ func marshalRoundedClipNoder(p uintptr) (interface{}, error) {
 	return wrapRoundedClipNode(obj), nil
 }
 
-// NewRoundedClipNode creates a `GskRenderNode` that will clip the @child to the
-// area given by @clip.
+// NewRoundedClipNode creates a GskRenderNode that will clip the child to the
+// area given by clip.
 func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.GskRoundedRect // out
@@ -2156,7 +2154,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	return _roundedClipNode
 }
 
-// Child gets the child node that is getting clipped by the given @node.
+// Child gets the child node that is getting clipped by the given node.
 func (node *RoundedClipNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -2172,7 +2170,7 @@ func (node *RoundedClipNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// Clip retrieves the rounded rectangle used to clip the contents of the @node.
+// Clip retrieves the rounded rectangle used to clip the contents of the node.
 func (node *RoundedClipNode) Clip() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
@@ -2190,11 +2188,11 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 
 // ShadowNoder describes ShadowNode's methods.
 type ShadowNoder interface {
-	// Child retrieves the child `GskRenderNode` of the shadow @node.
+	// Child retrieves the child GskRenderNode of the shadow node.
 	Child() *RenderNode
-	// NShadows retrieves the number of shadows in the @node.
+	// NShadows retrieves the number of shadows in the node.
 	NShadows() uint
-	// Shadow retrieves the shadow data at the given index @i.
+	// Shadow retrieves the shadow data at the given index i.
 	Shadow(i uint) *Shadow
 }
 
@@ -2223,8 +2221,8 @@ func marshalShadowNoder(p uintptr) (interface{}, error) {
 	return wrapShadowNode(obj), nil
 }
 
-// NewShadowNode creates a `GskRenderNode` that will draw a @child with the
-// given @shadows below it.
+// NewShadowNode creates a GskRenderNode that will draw a child with the given
+// shadows below it.
 func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskShadow
@@ -2246,7 +2244,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	return _shadowNode
 }
 
-// Child retrieves the child `GskRenderNode` of the shadow @node.
+// Child retrieves the child GskRenderNode of the shadow node.
 func (node *ShadowNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -2262,7 +2260,7 @@ func (node *ShadowNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// NShadows retrieves the number of shadows in the @node.
+// NShadows retrieves the number of shadows in the node.
 func (node *ShadowNode) NShadows() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
@@ -2278,7 +2276,7 @@ func (node *ShadowNode) NShadows() uint {
 	return _gsize
 }
 
-// Shadow retrieves the shadow data at the given index @i.
+// Shadow retrieves the shadow data at the given index i.
 func (node *ShadowNode) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.gsize          // out
@@ -2298,15 +2296,15 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 
 // TextNoder describes TextNode's methods.
 type TextNoder interface {
-	// Color retrieves the color used by the text @node.
+	// Color retrieves the color used by the text node.
 	Color() *gdk.RGBA
-	// Font returns the font used by the text @node.
+	// Font returns the font used by the text node.
 	Font() *pango.Font
 	// NumGlyphs retrieves the number of glyphs in the text node.
 	NumGlyphs() uint
 	// Offset retrieves the offset applied to the text.
 	Offset() *graphene.Point
-	// HasColorGlyphs checks whether the text @node has color glyphs.
+	// HasColorGlyphs checks whether the text node has color glyphs.
 	HasColorGlyphs() bool
 }
 
@@ -2336,7 +2334,7 @@ func marshalTextNoder(p uintptr) (interface{}, error) {
 
 // NewTextNode creates a render node that renders the given glyphs.
 //
-// Note that @color may not be used if the font contains color glyphs.
+// Note that color may not be used if the font contains color glyphs.
 func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode {
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -2358,7 +2356,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	return _textNode
 }
 
-// Color retrieves the color used by the text @node.
+// Color retrieves the color used by the text node.
 func (node *TextNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -2374,7 +2372,7 @@ func (node *TextNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
-// Font returns the font used by the text @node.
+// Font returns the font used by the text node.
 func (node *TextNode) Font() *pango.Font {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.PangoFont     // in
@@ -2427,7 +2425,7 @@ func (node *TextNode) Offset() *graphene.Point {
 	return _point
 }
 
-// HasColorGlyphs checks whether the text @node has color glyphs.
+// HasColorGlyphs checks whether the text node has color glyphs.
 func (node *TextNode) HasColorGlyphs() bool {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gboolean       // in
@@ -2447,8 +2445,7 @@ func (node *TextNode) HasColorGlyphs() bool {
 
 // TextureNoder describes TextureNode's methods.
 type TextureNoder interface {
-	// Texture retrieves the `GdkTexture` used when creating this
-	// `GskRenderNode`.
+	// Texture retrieves the GdkTexture used when creating this GskRenderNode.
 	Texture() *gdk.Texture
 }
 
@@ -2476,8 +2473,8 @@ func marshalTextureNoder(p uintptr) (interface{}, error) {
 	return wrapTextureNode(obj), nil
 }
 
-// NewTextureNode creates a `GskRenderNode` that will render the given @texture
-// into the area given by @bounds.
+// NewTextureNode creates a GskRenderNode that will render the given texture
+// into the area given by bounds.
 func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _arg1 *C.GdkTexture      // out
 	var _arg2 *C.graphene_rect_t // out
@@ -2495,7 +2492,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	return _textureNode
 }
 
-// Texture retrieves the `GdkTexture` used when creating this `GskRenderNode`.
+// Texture retrieves the GdkTexture used when creating this GskRenderNode.
 func (node *TextureNode) Texture() *gdk.Texture {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkTexture    // in
@@ -2521,14 +2518,13 @@ func (node *TextureNode) Texture() *gdk.Texture {
 
 // TransformNoder describes TransformNode's methods.
 type TransformNoder interface {
-	// Child gets the child node that is getting transformed by the given @node.
+	// Child gets the child node that is getting transformed by the given node.
 	Child() *RenderNode
-	// Transform retrieves the `GskTransform` used by the @node.
+	// Transform retrieves the GskTransform used by the node.
 	Transform() *Transform
 }
 
-// TransformNode: render node applying a `GskTransform` to its single child
-// node.
+// TransformNode: render node applying a GskTransform to its single child node.
 type TransformNode struct {
 	RenderNode
 }
@@ -2552,8 +2548,8 @@ func marshalTransformNoder(p uintptr) (interface{}, error) {
 	return wrapTransformNode(obj), nil
 }
 
-// NewTransformNode creates a `GskRenderNode` that will transform the given
-// @child with the given @transform.
+// NewTransformNode creates a GskRenderNode that will transform the given child
+// with the given transform.
 func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskTransform  // out
@@ -2571,7 +2567,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	return _transformNode
 }
 
-// Child gets the child node that is getting transformed by the given @node.
+// Child gets the child node that is getting transformed by the given node.
 func (node *TransformNode) Child() *RenderNode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -2587,7 +2583,7 @@ func (node *TransformNode) Child() *RenderNode {
 	return _renderNode
 }
 
-// Transform retrieves the `GskTransform` used by the @node.
+// Transform retrieves the GskTransform used by the node.
 func (node *TransformNode) Transform() *Transform {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskTransform  // in

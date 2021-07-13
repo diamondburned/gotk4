@@ -26,9 +26,9 @@ func init() {
 
 // Clipboarder describes Clipboard's methods.
 type Clipboarder interface {
-	// Content returns the `GdkContentProvider` currently set on @clipboard.
+	// Content returns the GdkContentProvider currently set on clipboard.
 	Content() *ContentProvider
-	// Display gets the `GdkDisplay` that the clipboard was created for.
+	// Display gets the GdkDisplay that the clipboard was created for.
 	Display() *Display
 	// Formats gets the formats that the clipboard can provide its current
 	// contents in.
@@ -43,31 +43,28 @@ type Clipboarder interface {
 	ReadTextureFinish(result gio.AsyncResulter) (*Texture, error)
 	// ReadValueFinish finishes an asynchronous clipboard read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
-	// SetContent sets a new content provider on @clipboard.
-	SetContent(provider ContentProviderer) bool
-	// SetValue sets the @clipboard to contain the given @value.
+	// SetContent sets a new content provider on clipboard.
+	SetContent(provider *ContentProvider) bool
+	// SetValue sets the clipboard to contain the given value.
 	SetValue(value *externglib.Value)
 	// StoreFinish finishes an asynchronous clipboard store.
 	StoreFinish(result gio.AsyncResulter) error
 }
 
-// Clipboard: `GdkClipboard` object represents data shared between applications
-// or inside an application.
+// Clipboard: GdkClipboard object represents data shared between applications or
+// inside an application.
 //
-// To get a `GdkClipboard` object, use [method@Gdk.Display.get_clipboard] or
-// [method@Gdk.Display.get_primary_clipboard]. You can find out about the data
-// that is currently available in a clipboard using
-// [method@Gdk.Clipboard.get_formats].
+// To get a GdkClipboard object, use gdk.Display.GetClipboard() or
+// gdk.Display.GetPrimaryClipboard(). You can find out about the data that is
+// currently available in a clipboard using gdk.Clipboard.GetFormats().
 //
 // To make text or image data available in a clipboard, use
-// [method@Gdk.Clipboard.set_text] or [method@Gdk.Clipboard.set_texture]. For
-// other data, you can use [method@Gdk.Clipboard.set_content], which takes a
-// [class@Gdk.ContentProvider] object.
+// gdk.Clipboard.SetText() or gdk.Clipboard.SetTexture(). For other data, you
+// can use gdk.Clipboard.SetContent(), which takes a gdk.ContentProvider object.
 //
 // To read textual or image data from a clipboard, use
-// [method@Gdk.Clipboard.read_text_async] or
-// [method@Gdk.Clipboard.read_texture_async]. For other data, use
-// [method@Gdk.Clipboard.read_async], which provides a `GInputStream` object.
+// gdk.Clipboard.ReadTextAsync() or gdk.Clipboard.ReadTextureAsync(). For other
+// data, use gdk.Clipboard.ReadAsync(), which provides a GInputStream object.
 type Clipboard struct {
 	*externglib.Object
 }
@@ -89,10 +86,10 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 	return wrapClipboard(obj), nil
 }
 
-// Content returns the `GdkContentProvider` currently set on @clipboard.
+// Content returns the GdkContentProvider currently set on clipboard.
 //
-// If the @clipboard is empty or its contents are not owned by the current
-// process, nil will be returned.
+// If the clipboard is empty or its contents are not owned by the current
+// process, NULL will be returned.
 func (clipboard *Clipboard) Content() *ContentProvider {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
@@ -108,7 +105,7 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 	return _contentProvider
 }
 
-// Display gets the `GdkDisplay` that the clipboard was created for.
+// Display gets the GdkDisplay that the clipboard was created for.
 func (clipboard *Clipboard) Display() *Display {
 	var _arg0 *C.GdkClipboard // out
 	var _cret *C.GdkDisplay   // in
@@ -150,7 +147,7 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 // A clipboard is considered local if it was last claimed by the running
 // application.
 //
-// Note that [method@Gdk.Clipboard.get_content] may return nil even on a local
+// Note that gdk.Clipboard.GetContent() may return NULL even on a local
 // clipboard. In this case the clipboard is empty.
 func (clipboard *Clipboard) IsLocal() bool {
 	var _arg0 *C.GdkClipboard // out
@@ -171,7 +168,7 @@ func (clipboard *Clipboard) IsLocal() bool {
 
 // ReadFinish finishes an asynchronous clipboard read.
 //
-// See [method@Gdk.Clipboard.read_async].
+// See gdk.Clipboard.ReadAsync().
 func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -202,7 +199,7 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.I
 
 // ReadTextFinish finishes an asynchronous clipboard read.
 //
-// See [method@Gdk.Clipboard.read_text_async].
+// See gdk.Clipboard.ReadTextAsync().
 func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -226,7 +223,7 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 
 // ReadTextureFinish finishes an asynchronous clipboard read.
 //
-// See [method@Gdk.Clipboard.read_texture_async].
+// See gdk.Clipboard.ReadTextureAsync().
 func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Texture, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -249,7 +246,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Textur
 
 // ReadValueFinish finishes an asynchronous clipboard read.
 //
-// See [method@Gdk.Clipboard.read_value_async].
+// See gdk.Clipboard.ReadValueAsync().
 func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -270,24 +267,24 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*externgl
 	return _value, _goerr
 }
 
-// SetContent sets a new content provider on @clipboard.
+// SetContent sets a new content provider on clipboard.
 //
-// The clipboard will claim the `GdkDisplay`'s resources and advertise these new
+// The clipboard will claim the GdkDisplay's resources and advertise these new
 // contents to other applications.
 //
-// In the rare case of a failure, this function will return false. The clipboard
-// will then continue reporting its old contents and ignore @provider.
+// In the rare case of a failure, this function will return FALSE. The clipboard
+// will then continue reporting its old contents and ignore provider.
 //
-// If the contents are read by either an external application or the
-// @clipboard's read functions, @clipboard will select the best format to
-// transfer the contents and then request that format from @provider.
-func (clipboard *Clipboard) SetContent(provider ContentProviderer) bool {
+// If the contents are read by either an external application or the clipboard's
+// read functions, clipboard will select the best format to transfer the
+// contents and then request that format from provider.
+func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GdkContentProvider // out
 	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer((provider).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
 
 	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
 
@@ -300,7 +297,7 @@ func (clipboard *Clipboard) SetContent(provider ContentProviderer) bool {
 	return _ok
 }
 
-// SetValue sets the @clipboard to contain the given @value.
+// SetValue sets the clipboard to contain the given value.
 func (clipboard *Clipboard) SetValue(value *externglib.Value) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GValue       // out
@@ -313,7 +310,7 @@ func (clipboard *Clipboard) SetValue(value *externglib.Value) {
 
 // StoreFinish finishes an asynchronous clipboard store.
 //
-// See [method@Gdk.Clipboard.store_async].
+// See gdk.Clipboard.StoreAsync().
 func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out

@@ -117,7 +117,7 @@ const (
 	// state. In such cases, direct user interaction can often result in the
 	// object gaining STATE_SENSITIVE, for instance if a user makes an explicit
 	// selection using an object whose current state is ambiguous or undefined.
-	// @see STATE_ENABLED, STATE_INDETERMINATE.
+	// see STATE_ENABLED, STATE_INDETERMINATE.
 	StateTypeSensitive
 	// Showing indicates this object, the object's parent, the object's parent's
 	// parent, and so on, are all 'shown' to the end-user, i.e. subject to
@@ -194,11 +194,11 @@ const (
 	// that implement Selection. In some cases the typeahead behavior may result
 	// in full or partial ¨completion¨ of the data in the input field, in which
 	// case these input events may trigger text-changed events from the AtkText
-	// interface. This state supplants @ATK_ROLE_AUTOCOMPLETE.
+	// interface. This state supplants ATK_ROLE_AUTOCOMPLETE.
 	StateTypeSupportsAutocompletion
 	// SelectableText indicates that the object in question supports text
 	// selection. It should only be exposed on objects which implement the Text
-	// interface, in order to distinguish this state from @ATK_STATE_SELECTABLE,
+	// interface, in order to distinguish this state from ATK_STATE_SELECTABLE,
 	// which infers that the object in question is a selectable child of an
 	// object which implements Selection. While similar, text selection and
 	// subelement selection are distinct operations.
@@ -220,14 +220,14 @@ const (
 	// rendered, or otherwise "visited".
 	StateTypeVisited
 	// Checkable indicates this object has the potential to be checked, such as
-	// a checkbox or toggle-able table cell. @Since: ATK-2.12
+	// a checkbox or toggle-able table cell. Since: ATK-2.12
 	StateTypeCheckable
 	// HasPopup indicates that the object has a popup context menu or sub-level
 	// menu which may or may not be showing. This means that activation renders
 	// conditional content. Note that ordinary tooltips are not considered
-	// popups in this context. @Since: ATK-2.12
+	// popups in this context. Since: ATK-2.12
 	StateTypeHasPopup
-	// HasTooltip indicates this object has a tooltip. @Since: ATK-2.16
+	// HasTooltip indicates this object has a tooltip. Since: ATK-2.16
 	StateTypeHasTooltip
 	// ReadOnly indicates that a widget which is ENABLED and SENSITIVE has a
 	// value which can be read, but not modified, by the user. Note that this
@@ -237,7 +237,7 @@ const (
 	// the expected interaction with that widget is not possible. When the
 	// expected interaction with a widget does not include modification by the
 	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
-	// should not be applied. See also ATK_STATE_EDITABLE. @Since: ATK-2-16
+	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16
 	StateTypeReadOnly
 	// LastDefined: not a valid state, used for finding end of enumeration
 	StateTypeLastDefined
@@ -248,7 +248,7 @@ func marshalStateType(p uintptr) (interface{}, error) {
 }
 
 // StateTypeForName gets the StateType corresponding to the description string
-// @name.
+// name.
 func StateTypeForName(name string) StateType {
 	var _arg1 *C.gchar       // out
 	var _cret C.AtkStateType // in
@@ -264,7 +264,7 @@ func StateTypeForName(name string) StateType {
 	return _stateType
 }
 
-// StateTypeGetName gets the description string describing the StateType @type.
+// StateTypeGetName gets the description string describing the StateType type.
 func StateTypeGetName(typ StateType) string {
 	var _arg1 C.AtkStateType // out
 	var _cret *C.gchar       // in

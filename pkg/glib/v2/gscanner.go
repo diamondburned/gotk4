@@ -12,7 +12,7 @@ import (
 // #include <glib.h>
 import "C"
 
-// ErrorType: possible errors, used in the @v_error field of Value, when the
+// ErrorType: possible errors, used in the v_error field of Value, when the
 // token is a G_TOKEN_ERROR.
 type ErrorType int
 
@@ -90,14 +90,14 @@ const (
 
 // Scanner: data structure representing a lexical scanner.
 //
-// You should set @input_name after creating the scanner, since it is used by
-// the default message handler when displaying warnings and errors. If you are
+// You should set input_name after creating the scanner, since it is used by the
+// default message handler when displaying warnings and errors. If you are
 // scanning a file, the filename would be a good choice.
 //
-// The @user_data and @max_parse_errors fields are not used. If you need to
+// The user_data and max_parse_errors fields are not used. If you need to
 // associate extra data with the scanner you can place them here.
 //
-// If you want to use your own message handler you can set the @msg_handler
+// If you want to use your own message handler you can set the msg_handler
 // field. The type of the message handler function is declared by MsgFunc.
 type Scanner struct {
 	native C.GScanner
@@ -143,7 +143,7 @@ func (scanner *Scanner) CurPosition() uint {
 	return _guint
 }
 
-// CurToken gets the current token type. This is simply the @token field in the
+// CurToken gets the current token type. This is simply the token field in the
 // #GScanner structure.
 func (scanner *Scanner) CurToken() TokenType {
 	var _arg0 *C.GScanner  // out
@@ -169,7 +169,7 @@ func (scanner *Scanner) Destroy() {
 	C.g_scanner_destroy(_arg0)
 }
 
-// EOF returns true if the scanner has reached the end of the file or text
+// EOF returns TRUE if the scanner has reached the end of the file or text
 // buffer.
 func (scanner *Scanner) EOF() bool {
 	var _arg0 *C.GScanner // out
@@ -189,8 +189,8 @@ func (scanner *Scanner) EOF() bool {
 }
 
 // NextToken parses the next token just like g_scanner_peek_next_token() and
-// also removes it from the input stream. The token data is placed in the
-// @token, @value, @line, and @position fields of the #GScanner structure.
+// also removes it from the input stream. The token data is placed in the token,
+// value, line, and position fields of the #GScanner structure.
 func (scanner *Scanner) NextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -231,7 +231,7 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 }
 
 // LookupSymbol looks up a symbol in the current scope and return its value. If
-// the symbol is not bound in the current scope, nil is returned.
+// the symbol is not bound in the current scope, NULL is returned.
 func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
@@ -250,8 +250,8 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 }
 
 // PeekNextToken parses the next token, without removing it from the input
-// stream. The token data is placed in the @next_token, @next_value, @next_line,
-// and @next_position fields of the #GScanner structure.
+// stream. The token data is placed in the next_token, next_value, next_line,
+// and next_position fields of the #GScanner structure.
 //
 // Note that, while the token is not removed from the input stream (i.e. the
 // next call to g_scanner_get_next_token() will return the same token), it will
@@ -291,7 +291,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
-// symbol is not bound in the scope, nil is returned.
+// symbol is not bound in the scope, NULL is returned.
 func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handle {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out

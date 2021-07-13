@@ -50,23 +50,23 @@ func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TextTagTableOverrider interface {
-	TagAdded(tag TextTager)
-	TagChanged(tag TextTager, sizeChanged bool)
-	TagRemoved(tag TextTager)
+	TagAdded(tag *TextTag)
+	TagChanged(tag *TextTag, sizeChanged bool)
+	TagRemoved(tag *TextTag)
 }
 
 // TextTagTabler describes TextTagTable's methods.
 type TextTagTabler interface {
 	// Add a tag to the table.
-	Add(tag TextTager) bool
-	// Foreach calls @func on each tag in @table, with user data @data.
+	Add(tag *TextTag) bool
+	// Foreach calls func on each tag in table, with user data data.
 	Foreach(fn TextTagTableForeach)
 	// Size returns the size of the table (number of tags)
 	Size() int
 	// Lookup: look up a named tag.
 	Lookup(name string) *TextTag
 	// Remove a tag from the table.
-	Remove(tag TextTager)
+	Remove(tag *TextTag)
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -129,15 +129,15 @@ func NewTextTagTable() *TextTagTable {
 // Add a tag to the table. The tag is assigned the highest priority in the
 // table.
 //
-// @tag must not be in a tag table already, and may not have the same name as an
+// tag must not be in a tag table already, and may not have the same name as an
 // already-added tag.
-func (table *TextTagTable) Add(tag TextTager) bool {
+func (table *TextTagTable) Add(tag *TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
@@ -150,8 +150,8 @@ func (table *TextTagTable) Add(tag TextTager) bool {
 	return _ok
 }
 
-// Foreach calls @func on each tag in @table, with user data @data. Note that
-// the table may not be modified while iterating over it (you can’t add/remove
+// Foreach calls func on each tag in table, with user data data. Note that the
+// table may not be modified while iterating over it (you can’t add/remove
 // tags).
 func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 	var _arg0 *C.GtkTextTagTable       // out
@@ -199,15 +199,15 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	return _textTag
 }
 
-// Remove a tag from the table. If a TextBuffer has @table as its tag table, the
+// Remove a tag from the table. If a TextBuffer has table as its tag table, the
 // tag is removed from the buffer. The table’s reference to the tag is removed,
 // so the tag will end up destroyed if you don’t have a reference to it.
-func (table *TextTagTable) Remove(tag TextTager) {
+func (table *TextTagTable) Remove(tag *TextTag) {
 	var _arg0 *C.GtkTextTagTable // out
 	var _arg1 *C.GtkTextTag      // out
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer((tag).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }

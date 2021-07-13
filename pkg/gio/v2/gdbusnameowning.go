@@ -72,7 +72,7 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	fn(connection, name, userData)
 }
 
-// BusNameLostCallback: invoked when the name is lost or @connection has been
+// BusNameLostCallback: invoked when the name is lost or connection has been
 // closed.
 type BusNameLostCallback func(connection *DBusConnection, name string, userData cgo.Handle)
 

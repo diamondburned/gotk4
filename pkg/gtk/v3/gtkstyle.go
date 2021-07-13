@@ -49,11 +49,11 @@ func marshalExpanderStyle(p uintptr) (interface{}, error) {
 	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PaintArrow draws an arrow in the given rectangle on @cr using the given
-// parameters. @arrow_type determines the direction of the arrow.
+// PaintArrow draws an arrow in the given rectangle on cr using the given
+// parameters. arrow_type determines the direction of the arrow.
 //
 // Deprecated: Use gtk_render_arrow() instead.
-func PaintArrow(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int) {
+func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -67,7 +67,7 @@ func PaintArrow(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	var _arg11 C.gint         // out
 	var _arg12 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -85,10 +85,10 @@ func PaintArrow(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	C.gtk_paint_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
 }
 
-// PaintBox draws a box on @cr with the given parameters.
+// PaintBox draws a box on cr with the given parameters.
 //
 // Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-func PaintBox(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -100,7 +100,7 @@ func PaintBox(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -114,11 +114,11 @@ func PaintBox(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	C.gtk_paint_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintBoxGap draws a box in @cr using the given style and state and shadow
+// PaintBoxGap draws a box in cr using the given style and state and shadow
 // type, leaving a gap in one side.
 //
 // Deprecated: Use gtk_render_frame_gap() instead.
-func PaintBoxGap(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
+func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -133,7 +133,7 @@ func PaintBoxGap(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	var _arg12 C.gint            // out
 	var _arg13 C.gint            // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -150,11 +150,11 @@ func PaintBoxGap(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	C.gtk_paint_box_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
 }
 
-// PaintCheck draws a check button indicator in the given rectangle on @cr with
+// PaintCheck draws a check button indicator in the given rectangle on cr with
 // the given parameters.
 //
 // Deprecated: Use gtk_render_check() instead.
-func PaintCheck(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -166,7 +166,7 @@ func PaintCheck(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -180,11 +180,11 @@ func PaintCheck(style Styler, cr *cairo.Context, stateType StateType, shadowType
 	C.gtk_paint_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintDiamond draws a diamond in the given rectangle on @window using the
-// given parameters.
+// PaintDiamond draws a diamond in the given rectangle on window using the given
+// parameters.
 //
 // Deprecated: Use cairo instead.
-func PaintDiamond(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -196,7 +196,7 @@ func PaintDiamond(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -210,9 +210,9 @@ func PaintDiamond(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	C.gtk_paint_diamond(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintExpander draws an expander as used in TreeView. @x and @y specify the
+// PaintExpander draws an expander as used in TreeView. x and y specify the
 // center the expander. The size of the expander is determined by the
-// “expander-size” style property of @widget. (If widget is not specified or
+// “expander-size” style property of widget. (If widget is not specified or
 // doesn’t have an “expander-size” property, an unspecified default size will be
 // used, since the caller doesn't have sufficient information to position the
 // expander, this is likely not useful.) The expander is expander_size pixels
@@ -220,7 +220,7 @@ func PaintDiamond(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 // position.
 //
 // Deprecated: Use gtk_render_expander() instead.
-func PaintExpander(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, expanderStyle ExpanderStyle) {
+func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, expanderStyle ExpanderStyle) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -230,7 +230,7 @@ func PaintExpander(style Styler, cr *cairo.Context, stateType StateType, widget 
 	var _arg7 C.gint             // out
 	var _arg8 C.GtkExpanderStyle // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -245,7 +245,7 @@ func PaintExpander(style Styler, cr *cairo.Context, stateType StateType, widget 
 // PaintExtension draws an extension, i.e. a notebook tab.
 //
 // Deprecated: Use gtk_render_extension() instead.
-func PaintExtension(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType) {
+func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -258,7 +258,7 @@ func PaintExtension(style Styler, cr *cairo.Context, stateType StateType, shadow
 	var _arg10 C.gint            // out
 	var _arg11 C.GtkPositionType // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -273,10 +273,10 @@ func PaintExtension(style Styler, cr *cairo.Context, stateType StateType, shadow
 	C.gtk_paint_extension(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
-// PaintFlatBox draws a flat box on @cr with the given parameters.
+// PaintFlatBox draws a flat box on cr with the given parameters.
 //
 // Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-func PaintFlatBox(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -288,7 +288,7 @@ func PaintFlatBox(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -302,11 +302,11 @@ func PaintFlatBox(style Styler, cr *cairo.Context, stateType StateType, shadowTy
 	C.gtk_paint_flat_box(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintFocus draws a focus indicator around the given rectangle on @cr using
-// the given style.
+// PaintFocus draws a focus indicator around the given rectangle on cr using the
+// given style.
 //
 // Deprecated: Use gtk_render_focus() instead.
-func PaintFocus(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -317,7 +317,7 @@ func PaintFocus(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	var _arg8 C.gint         // out
 	var _arg9 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -333,7 +333,7 @@ func PaintFocus(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 // PaintHandle draws a handle as used in HandleBox and Paned.
 //
 // Deprecated: Use gtk_render_handle() instead.
-func PaintHandle(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
+func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -346,7 +346,7 @@ func PaintHandle(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	var _arg10 C.gint           // out
 	var _arg11 C.GtkOrientation // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -361,11 +361,11 @@ func PaintHandle(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	C.gtk_paint_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
-// PaintHline draws a horizontal line from (@x1, @y) to (@x2, @y) in @cr using
-// the given style and state.
+// PaintHline draws a horizontal line from (x1, y) to (x2, y) in cr using the
+// given style and state.
 //
 // Deprecated: Use gtk_render_line() instead.
-func PaintHline(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x1 int, x2 int, y int) {
+func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x1 int, x2 int, y int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -375,7 +375,7 @@ func PaintHline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	var _arg7 C.gint         // out
 	var _arg8 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -387,10 +387,10 @@ func PaintHline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	C.gtk_paint_hline(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
-// PaintLayout draws a layout on @cr using the given parameters.
+// PaintLayout draws a layout on cr using the given parameters.
 //
 // Deprecated: Use gtk_render_layout() instead.
-func PaintLayout(style Styler, cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout pango.Layouter) {
+func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout *pango.Layout) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -401,7 +401,7 @@ func PaintLayout(style Styler, cr *cairo.Context, stateType StateType, useText b
 	var _arg8 C.gint         // out
 	var _arg9 *C.PangoLayout // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	if useText {
@@ -411,16 +411,16 @@ func PaintLayout(style Styler, cr *cairo.Context, stateType StateType, useText b
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
 	_arg7 = C.gint(x)
 	_arg8 = C.gint(y)
-	_arg9 = (*C.PangoLayout)(unsafe.Pointer((layout).(gextras.Nativer).Native()))
+	_arg9 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.gtk_paint_layout(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
-// PaintOption draws a radio button indicator in the given rectangle on @cr with
+// PaintOption draws a radio button indicator in the given rectangle on cr with
 // the given parameters.
 //
 // Deprecated: Use gtk_render_option() instead.
-func PaintOption(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -432,7 +432,7 @@ func PaintOption(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -446,11 +446,11 @@ func PaintOption(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	C.gtk_paint_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintResizeGrip draws a resize grip in the given rectangle on @cr using the
+// PaintResizeGrip draws a resize grip in the given rectangle on cr using the
 // given parameters.
 //
 // Deprecated: Use gtk_render_handle() instead.
-func PaintResizeGrip(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int) {
+func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -462,7 +462,7 @@ func PaintResizeGrip(style Styler, cr *cairo.Context, stateType StateType, widge
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -476,11 +476,11 @@ func PaintResizeGrip(style Styler, cr *cairo.Context, stateType StateType, widge
 	C.gtk_paint_resize_grip(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintShadow draws a shadow around the given rectangle in @cr using the given
+// PaintShadow draws a shadow around the given rectangle in cr using the given
 // style and state and shadow type.
 //
 // Deprecated: Use gtk_render_frame() instead.
-func PaintShadow(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -492,7 +492,7 @@ func PaintShadow(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -506,11 +506,11 @@ func PaintShadow(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	C.gtk_paint_shadow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintShadowGap draws a shadow around the given rectangle in @cr using the
+// PaintShadowGap draws a shadow around the given rectangle in cr using the
 // given style and state and shadow type, leaving a gap in one side.
 //
 // Deprecated: Use gtk_render_frame_gap() instead.
-func PaintShadowGap(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
+func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -525,7 +525,7 @@ func PaintShadowGap(style Styler, cr *cairo.Context, stateType StateType, shadow
 	var _arg12 C.gint            // out
 	var _arg13 C.gint            // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -542,11 +542,11 @@ func PaintShadowGap(style Styler, cr *cairo.Context, stateType StateType, shadow
 	C.gtk_paint_shadow_gap(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13)
 }
 
-// PaintSlider draws a slider in the given rectangle on @cr using the given
-// style and orientation.
+// PaintSlider draws a slider in the given rectangle on cr using the given style
+// and orientation.
 //
 // Deprecated: Use gtk_render_slider() instead.
-func PaintSlider(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
+func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -559,7 +559,7 @@ func PaintSlider(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	var _arg10 C.gint           // out
 	var _arg11 C.GtkOrientation // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -574,11 +574,11 @@ func PaintSlider(style Styler, cr *cairo.Context, stateType StateType, shadowTyp
 	C.gtk_paint_slider(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
 }
 
-// PaintSpinner draws a spinner on @window using the given parameters.
+// PaintSpinner draws a spinner on window using the given parameters.
 //
 // Deprecated: Use gtk_render_icon() and the StyleContext you are drawing
 // instead.
-func PaintSpinner(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, step uint, x int, y int, width int, height int) {
+func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, step uint, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -590,7 +590,7 @@ func PaintSpinner(style Styler, cr *cairo.Context, stateType StateType, widget W
 	var _arg9 C.gint         // out
 	var _arg10 C.gint        // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -605,10 +605,10 @@ func PaintSpinner(style Styler, cr *cairo.Context, stateType StateType, widget W
 }
 
 // PaintTab draws an option menu tab (i.e. the up and down pointing arrows) in
-// the given rectangle on @cr using the given parameters.
+// the given rectangle on cr using the given parameters.
 //
 // Deprecated: Use cairo instead.
-func PaintTab(style Styler, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -620,7 +620,7 @@ func PaintTab(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	var _arg9 C.gint          // out
 	var _arg10 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = C.GtkShadowType(shadowType)
@@ -634,11 +634,11 @@ func PaintTab(style Styler, cr *cairo.Context, stateType StateType, shadowType S
 	C.gtk_paint_tab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// PaintVline draws a vertical line from (@x, @y1_) to (@x, @y2_) in @cr using
-// the given style and state.
+// PaintVline draws a vertical line from (x, y1_) to (x, y2_) in cr using the
+// given style and state.
 //
 // Deprecated: Use gtk_render_line() instead.
-func PaintVline(style Styler, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, y1 int, y2 int, x int) {
+func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, y1 int, y2 int, x int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -648,7 +648,7 @@ func PaintVline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 	var _arg7 C.gint         // out
 	var _arg8 C.gint         // out
 
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer((style).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
 	_arg3 = C.GtkStateType(stateType)
 	_arg4 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -665,7 +665,7 @@ func PaintVline(style Styler, cr *cairo.Context, stateType StateType, widget Wid
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type StyleOverrider interface {
-	Copy(src Styler)
+	Copy(src *Style)
 	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int)
 	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
 	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
@@ -677,7 +677,7 @@ type StyleOverrider interface {
 	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, width int, height int)
 	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation)
 	DrawHline(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x1 int, x2 int, y int)
-	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout pango.Layouter)
+	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout *pango.Layout)
 	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
 	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int)
 	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
@@ -686,15 +686,15 @@ type StyleOverrider interface {
 	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, step uint, x int, y int, width int, height int)
 	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
 	DrawVline(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, y1 int, y2 int, x int)
-	InitFromRC(rcStyle RCStyler)
+	InitFromRC(rcStyle *RCStyle)
 	Realize()
-	// RenderIcon renders the icon specified by @source at the given @size
+	// RenderIcon renders the icon specified by source at the given size
 	// according to the given parameters and returns the result in a pixbuf.
 	//
 	// Deprecated: Use gtk_render_icon_pixbuf() instead.
 	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf
-	// SetBackground sets the background of @window to the background color or
-	// pixmap specified by @style for the given state.
+	// SetBackground sets the background of window to the background color or
+	// pixmap specified by style for the given state.
 	//
 	// Deprecated: Use gtk_style_context_set_background() instead.
 	SetBackground(window gdk.Windower, stateType StateType)
@@ -712,20 +712,20 @@ type Styler interface {
 	// StyleProperty queries the value of a style property corresponding to a
 	// widget class is in the given style.
 	StyleProperty(widgetType externglib.Type, propertyName string) externglib.Value
-	// HasContext returns whether @style has an associated StyleContext.
+	// HasContext returns whether style has an associated StyleContext.
 	HasContext() bool
-	// LookupColor looks up @color_name in the style’s logical color mappings,
-	// filling in @color and returning true if found, otherwise returning false.
+	// LookupColor looks up color_name in the style’s logical color mappings,
+	// filling in color and returning TRUE if found, otherwise returning FALSE.
 	LookupColor(colorName string) (gdk.Color, bool)
-	// LookupIconSet looks up @stock_id in the icon factories associated with
-	// @style and the default icon factory, returning an icon set if found,
-	// otherwise nil.
+	// LookupIconSet looks up stock_id in the icon factories associated with
+	// style and the default icon factory, returning an icon set if found,
+	// otherwise NULL.
 	LookupIconSet(stockId string) *IconSet
-	// RenderIcon renders the icon specified by @source at the given @size
+	// RenderIcon renders the icon specified by source at the given size
 	// according to the given parameters and returns the result in a pixbuf.
 	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf
-	// SetBackground sets the background of @window to the background color or
-	// pixmap specified by @style for the given state.
+	// SetBackground sets the background of window to the background color or
+	// pixmap specified by style for the given state.
 	SetBackground(window gdk.Windower, stateType StateType)
 }
 
@@ -853,7 +853,7 @@ func (style *Style) StyleProperty(widgetType externglib.Type, propertyName strin
 	return _value
 }
 
-// HasContext returns whether @style has an associated StyleContext.
+// HasContext returns whether style has an associated StyleContext.
 func (style *Style) HasContext() bool {
 	var _arg0 *C.GtkStyle // out
 	var _cret C.gboolean  // in
@@ -871,8 +871,8 @@ func (style *Style) HasContext() bool {
 	return _ok
 }
 
-// LookupColor looks up @color_name in the style’s logical color mappings,
-// filling in @color and returning true if found, otherwise returning false. Do
+// LookupColor looks up color_name in the style’s logical color mappings,
+// filling in color and returning TRUE if found, otherwise returning FALSE. Do
 // not cache the found mapping, because it depends on the Style and might change
 // when a theme switch occurs.
 //
@@ -897,8 +897,8 @@ func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	return _color, _ok
 }
 
-// LookupIconSet looks up @stock_id in the icon factories associated with @style
-// and the default icon factory, returning an icon set if found, otherwise nil.
+// LookupIconSet looks up stock_id in the icon factories associated with style
+// and the default icon factory, returning an icon set if found, otherwise NULL.
 //
 // Deprecated: Use gtk_style_context_lookup_icon_set() instead.
 func (style *Style) LookupIconSet(stockId string) *IconSet {
@@ -922,7 +922,7 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	return _iconSet
 }
 
-// RenderIcon renders the icon specified by @source at the given @size according
+// RenderIcon renders the icon specified by source at the given size according
 // to the given parameters and returns the result in a pixbuf.
 //
 // Deprecated: Use gtk_render_icon_pixbuf() instead.
@@ -961,8 +961,8 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 	return _pixbuf
 }
 
-// SetBackground sets the background of @window to the background color or
-// pixmap specified by @style for the given state.
+// SetBackground sets the background of window to the background color or pixmap
+// specified by style for the given state.
 //
 // Deprecated: Use gtk_style_context_set_background() instead.
 func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {

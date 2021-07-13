@@ -29,7 +29,7 @@ type StackSidebarer interface {
 	// Stack retrieves the stack.
 	Stack() *Stack
 	// SetStack: set the Stack associated with this StackSidebar.
-	SetStack(stack Stacker)
+	SetStack(stack *Stack)
 }
 
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"
@@ -115,12 +115,12 @@ func (sidebar *StackSidebar) Stack() *Stack {
 //
 // The sidebar widget will automatically update according to the order (packing)
 // and items within the given Stack.
-func (sidebar *StackSidebar) SetStack(stack Stacker) {
+func (sidebar *StackSidebar) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSidebar // out
 	var _arg1 *C.GtkStack        // out
 
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(sidebar.Native()))
-	_arg1 = (*C.GtkStack)(unsafe.Pointer((stack).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

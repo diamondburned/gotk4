@@ -34,7 +34,7 @@ type CellRendererToggler interface {
 	SetActivatable(setting bool)
 	// SetActive activates or deactivates a cell renderer.
 	SetActive(setting bool)
-	// SetRadio: if @radio is true, the cell renderer renders a radio toggle
+	// SetRadio: if radio is TRUE, the cell renderer renders a radio toggle
 	// (i.e.
 	SetRadio(radio bool)
 }
@@ -169,8 +169,8 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 	C.gtk_cell_renderer_toggle_set_active(_arg0, _arg1)
 }
 
-// SetRadio: if @radio is true, the cell renderer renders a radio toggle (i.e. a
-// toggle in a group of mutually-exclusive toggles). If false, it renders a
+// SetRadio: if radio is TRUE, the cell renderer renders a radio toggle (i.e. a
+// toggle in a group of mutually-exclusive toggles). If FALSE, it renders a
 // check toggle (a standalone boolean option). This can be set globally for the
 // cell renderer, or changed just before rendering each cell in the model (for
 // TreeView, you set up a per-row setting using TreeViewColumn to associate

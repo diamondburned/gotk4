@@ -22,7 +22,7 @@ func init() {
 	})
 }
 
-// CoverageLevel: `PangoCoverageLevel` is used to indicate how well a font can
+// CoverageLevel: PangoCoverageLevel is used to indicate how well a font can
 // represent a particular Unicode character for a particular script.
 //
 // Since 1.44, only PANGO_COVERAGE_NONE and PANGO_COVERAGE_EXACT will be
@@ -50,21 +50,21 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 
 // Coverager describes Coverage's methods.
 type Coverager interface {
-	// Copy an existing `PangoCoverage`.
+	// Copy an existing PangoCoverage.
 	Copy() *Coverage
-	// Get: determine whether a particular index is covered by @coverage.
+	// Get: determine whether a particular index is covered by coverage.
 	Get(index_ int) CoverageLevel
-	// Max: set the coverage for each index in @coverage to be the max (better)
+	// Max: set the coverage for each index in coverage to be the max (better)
 	// value of the current coverage for the index and the coverage for the
-	// corresponding index in @other.
-	Max(other Coverager)
-	// Ref: increase the reference count on the `PangoCoverage` by one.
+	// corresponding index in other.
+	Max(other *Coverage)
+	// Ref: increase the reference count on the PangoCoverage by one.
 	ref() *Coverage
-	// Set: modify a particular index within @coverage
+	// Set: modify a particular index within coverage
 	Set(index_ int, level CoverageLevel)
-	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
+	// ToBytes: convert a PangoCoverage structure into a flat binary format.
 	ToBytes() []byte
-	// Unref: decrease the reference count on the `PangoCoverage` by one.
+	// Unref: decrease the reference count on the PangoCoverage by one.
 	unref()
 }
 
@@ -95,7 +95,7 @@ func marshalCoverager(p uintptr) (interface{}, error) {
 	return wrapCoverage(obj), nil
 }
 
-// NewCoverage: create a new `PangoCoverage`
+// NewCoverage: create a new PangoCoverage
 func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
 
@@ -108,7 +108,7 @@ func NewCoverage() *Coverage {
 	return _coverage
 }
 
-// Copy an existing `PangoCoverage`.
+// Copy an existing PangoCoverage.
 func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -124,7 +124,7 @@ func (coverage *Coverage) Copy() *Coverage {
 	return _ret
 }
 
-// Get: determine whether a particular index is covered by @coverage.
+// Get: determine whether a particular index is covered by coverage.
 func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -142,22 +142,22 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	return _coverageLevel
 }
 
-// Max: set the coverage for each index in @coverage to be the max (better)
-// value of the current coverage for the index and the coverage for the
-// corresponding index in @other.
+// Max: set the coverage for each index in coverage to be the max (better) value
+// of the current coverage for the index and the coverage for the corresponding
+// index in other.
 //
 // Deprecated: This function does nothing.
-func (coverage *Coverage) Max(other Coverager) {
+func (coverage *Coverage) Max(other *Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coverage.Native()))
-	_arg1 = (*C.PangoCoverage)(unsafe.Pointer((other).(gextras.Nativer).Native()))
+	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
 	C.pango_coverage_max(_arg0, _arg1)
 }
 
-// Ref: increase the reference count on the `PangoCoverage` by one.
+// Ref: increase the reference count on the PangoCoverage by one.
 func (coverage *Coverage) ref() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -173,7 +173,7 @@ func (coverage *Coverage) ref() *Coverage {
 	return _ret
 }
 
-// Set: modify a particular index within @coverage
+// Set: modify a particular index within coverage
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -186,9 +186,9 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	C.pango_coverage_set(_arg0, _arg1, _arg2)
 }
 
-// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
+// ToBytes: convert a PangoCoverage structure into a flat binary format.
 //
-// Deprecated: This returns nil.
+// Deprecated: This returns NULL.
 func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar
@@ -207,7 +207,7 @@ func (coverage *Coverage) ToBytes() []byte {
 	return _bytes
 }
 
-// Unref: decrease the reference count on the `PangoCoverage` by one.
+// Unref: decrease the reference count on the PangoCoverage by one.
 //
 // If the result is zero, free the coverage and all associated memory.
 func (coverage *Coverage) unref() {
@@ -219,9 +219,9 @@ func (coverage *Coverage) unref() {
 }
 
 // CoverageFromBytes: convert data generated from pango_coverage_to_bytes() back
-// to a `PangoCoverage`.
+// to a PangoCoverage.
 //
-// Deprecated: This returns nil.
+// Deprecated: This returns NULL.
 func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg1 *C.guchar
 	var _arg2 C.int

@@ -26,15 +26,15 @@ func init() {
 
 // ShortcutLabeler describes ShortcutLabel's methods.
 type ShortcutLabeler interface {
-	// Accelerator retrieves the current accelerator of @self.
+	// Accelerator retrieves the current accelerator of self.
 	Accelerator() string
 	// DisabledText retrieves the text that is displayed when no accelerator is
 	// set.
 	DisabledText() string
-	// SetAccelerator sets the accelerator to be displayed by @self.
+	// SetAccelerator sets the accelerator to be displayed by self.
 	SetAccelerator(accelerator string)
-	// SetDisabledText sets the text to be displayed by @self when no
-	// accelerator is set.
+	// SetDisabledText sets the text to be displayed by self when no accelerator
+	// is set.
 	SetDisabledText(disabledText string)
 }
 
@@ -78,7 +78,7 @@ func marshalShortcutLabeler(p uintptr) (interface{}, error) {
 	return wrapShortcutLabel(obj), nil
 }
 
-// NewShortcutLabel creates a new ShortcutLabel with @accelerator set.
+// NewShortcutLabel creates a new ShortcutLabel with accelerator set.
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -94,7 +94,7 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	return _shortcutLabel
 }
 
-// Accelerator retrieves the current accelerator of @self.
+// Accelerator retrieves the current accelerator of self.
 func (self *ShortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _cret *C.gchar            // in
@@ -126,7 +126,7 @@ func (self *ShortcutLabel) DisabledText() string {
 	return _utf8
 }
 
-// SetAccelerator sets the accelerator to be displayed by @self.
+// SetAccelerator sets the accelerator to be displayed by self.
 func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	var _arg0 *C.GtkShortcutLabel // out
 	var _arg1 *C.gchar            // out
@@ -137,7 +137,7 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	C.gtk_shortcut_label_set_accelerator(_arg0, _arg1)
 }
 
-// SetDisabledText sets the text to be displayed by @self when no accelerator is
+// SetDisabledText sets the text to be displayed by self when no accelerator is
 // set.
 func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	var _arg0 *C.GtkShortcutLabel // out

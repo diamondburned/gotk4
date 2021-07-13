@@ -26,7 +26,7 @@ type ColorChooserWidgeter interface {
 	privateColorChooserWidget()
 }
 
-// ColorChooserWidget: `GtkColorChooserWidget` widget lets the user select a
+// ColorChooserWidget: GtkColorChooserWidget widget lets the user select a
 // color.
 //
 // By default, the chooser presents a predefined palette of colors, plus a small
@@ -39,19 +39,18 @@ type ColorChooserWidgeter interface {
 // The chooser automatically remembers the last selection, as well as custom
 // colors.
 //
-// To create a `GtkColorChooserWidget`, use [ctor@Gtk.ColorChooserWidget.new].
+// To create a GtkColorChooserWidget, use gtk.ColorChooserWidget.New.
 //
-// To change the initially selected color, use
-// [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
-// [method@Gtk.ColorChooser.get_rgba].
+// To change the initially selected color, use gtk.ColorChooser.SetRGBA(). To
+// get the selected color use gtk.ColorChooser.GetRGBA().
 //
-// The `GtkColorChooserWidget` is used in the [class@Gtk.ColorChooserDialog] to
-// provide a dialog for selecting colors.
+// The GtkColorChooserWidget is used in the gtk.ColorChooserDialog to provide a
+// dialog for selecting colors.
 //
 //
 // CSS names
 //
-// `GtkColorChooserWidget` has a single CSS node with name colorchooser.
+// GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
 	Widget
 
@@ -91,7 +90,7 @@ func marshalColorChooserWidgeter(p uintptr) (interface{}, error) {
 	return wrapColorChooserWidget(obj), nil
 }
 
-// NewColorChooserWidget creates a new `GtkColorChooserWidget`.
+// NewColorChooserWidget creates a new GtkColorChooserWidget.
 func NewColorChooserWidget() *ColorChooserWidget {
 	var _cret *C.GtkWidget // in
 

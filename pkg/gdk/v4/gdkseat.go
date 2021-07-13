@@ -50,9 +50,9 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 
 // Seater describes Seat's methods.
 type Seater interface {
-	// Capabilities returns the capabilities this `GdkSeat` currently has.
+	// Capabilities returns the capabilities this GdkSeat currently has.
 	Capabilities() SeatCapabilities
-	// Display returns the `GdkDisplay` this seat belongs to.
+	// Display returns the GdkDisplay this seat belongs to.
 	Display() *Display
 	// Keyboard returns the device that routes keyboard events.
 	Keyboard() *Device
@@ -60,8 +60,8 @@ type Seater interface {
 	Pointer() *Device
 }
 
-// Seat: `GdkSeat` object represents a collection of input devices that belong
-// to a user.
+// Seat: GdkSeat object represents a collection of input devices that belong to
+// a user.
 type Seat struct {
 	*externglib.Object
 }
@@ -83,7 +83,7 @@ func marshalSeater(p uintptr) (interface{}, error) {
 	return wrapSeat(obj), nil
 }
 
-// Capabilities returns the capabilities this `GdkSeat` currently has.
+// Capabilities returns the capabilities this GdkSeat currently has.
 func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
 	var _cret C.GdkSeatCapabilities // in
@@ -99,7 +99,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 	return _seatCapabilities
 }
 
-// Display returns the `GdkDisplay` this seat belongs to.
+// Display returns the GdkDisplay this seat belongs to.
 func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
 	var _cret *C.GdkDisplay // in

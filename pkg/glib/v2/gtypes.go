@@ -65,7 +65,7 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 }
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
-// is called with each key/value pair, together with the @user_data parameter
+// is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
 type HFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle)
 
@@ -93,8 +93,8 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 //
 // GLib is attempting to unify around the use of 64-bit integers to represent
 // microsecond-precision time. As such, this type will be removed from a future
-// version of GLib. A consequence of using `glong` for `tv_sec` is that on
-// 32-bit systems `GTimeVal` is subject to the year 2038 problem.
+// version of GLib. A consequence of using glong for tv_sec is that on 32-bit
+// systems GTimeVal is subject to the year 2038 problem.
 //
 // Deprecated: Use Time or #guint64 instead.
 type TimeVal struct {
@@ -106,10 +106,10 @@ func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
-// Add adds the given number of microseconds to @time_. @microseconds can also
-// be negative to decrease the value of @time_.
+// Add adds the given number of microseconds to time_. microseconds can also be
+// negative to decrease the value of time_.
 //
-// Deprecated: Val is not year-2038-safe. Use `guint64` for representing
+// Deprecated: Val is not year-2038-safe. Use guint64 for representing
 // microseconds since the epoch, or use Time.
 func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
@@ -121,14 +121,14 @@ func (time_ *TimeVal) Add(microseconds int32) {
 	C.g_time_val_add(_arg0, _arg1)
 }
 
-// ToISO8601 converts @time_ into an RFC 3339 encoded string, relative to the
+// ToISO8601 converts time_ into an RFC 3339 encoded string, relative to the
 // Coordinated Universal Time (UTC). This is one of the many formats allowed by
 // ISO 8601.
 //
 // ISO 8601 allows a large number of date/time formats, with or without
 // punctuation and optional elements. The format returned by this function is a
 // complete date and time, with optional punctuation included, the UTC time zone
-// represented as "Z", and the @tv_usec part included if and only if it is
+// represented as "Z", and the tv_usec part included if and only if it is
 // nonzero, i.e. either "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
 //
 // This corresponds to the Internet date/time format defined by RFC 3339
@@ -140,9 +140,9 @@ func (time_ *TimeVal) Add(microseconds int32) {
 // Use g_date_time_format() or g_strdup_printf() if a different variation of ISO
 // 8601 format is required.
 //
-// If @time_ represents a date which is too large to fit into a `struct tm`, nil
-// will be returned. This is platform dependent. Note also that since `GTimeVal`
-// stores the number of seconds as a `glong`, on 32-bit systems it is subject to
+// If time_ represents a date which is too large to fit into a struct tm, NULL
+// will be returned. This is platform dependent. Note also that since GTimeVal
+// stores the number of seconds as a glong, on 32-bit systems it is subject to
 // the year 2038 problem. Accordingly, since GLib 2.62, this function has been
 // deprecated. Equivalent functionality is available using:
 //

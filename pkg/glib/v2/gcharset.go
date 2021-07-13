@@ -22,13 +22,13 @@ import "C"
 // different from the character set used by the C library's current locale.
 //
 // On Linux, the character set is found by consulting nl_langinfo() if
-// available. If not, the environment variables `LC_ALL`, `LC_CTYPE`, `LANG` and
-// `CHARSET` are queried in order.
+// available. If not, the environment variables LC_ALL, LC_CTYPE, LANG and
+// CHARSET are queried in order.
 //
-// The return value is true if the locale's encoding is UTF-8, in that case you
+// The return value is TRUE if the locale's encoding is UTF-8, in that case you
 // can perhaps avoid calling g_convert().
 //
-// The string returned in @charset is not allocated, and should not be freed.
+// The string returned in charset is not allocated, and should not be freed.
 func GetCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -72,10 +72,10 @@ func GetCodeset() string {
 // can't be determined (for example because there is no console attached) UTF-8
 // is assumed.
 //
-// The return value is true if the locale's encoding is UTF-8, in that case you
+// The return value is TRUE if the locale's encoding is UTF-8, in that case you
 // can perhaps avoid calling g_convert().
 //
-// The string returned in @charset is not allocated, and should not be freed.
+// The string returned in charset is not allocated, and should not be freed.
 func GetConsoleCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -101,8 +101,8 @@ func GetConsoleCharset() (string, bool) {
 // For example, if LANGUAGE=de:en_US, then the returned list is "de", "en_US",
 // "en", "C".
 //
-// This function consults the environment variables `LANGUAGE`, `LC_ALL`,
-// `LC_MESSAGES` and `LANG` to find the list of locales specified by the user.
+// This function consults the environment variables LANGUAGE, LC_ALL,
+// LC_MESSAGES and LANG to find the list of locales specified by the user.
 func GetLanguageNames() []string {
 	var _cret **C.gchar
 
@@ -133,8 +133,8 @@ func GetLanguageNames() []string {
 // locale-dependent filenames or search paths. The returned list is sorted from
 // most desirable to least desirable and always contains the default locale "C".
 //
-// This function consults the environment variables `LANGUAGE`, `LC_ALL`,
-// @category_name, and `LANG` to find the list of locales specified by the user.
+// This function consults the environment variables LANGUAGE, LC_ALL,
+// category_name, and LANG to find the list of locales specified by the user.
 //
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
@@ -166,18 +166,17 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 	return _utf8s
 }
 
-// GetLocaleVariants returns a list of derived variants of @locale, which can be
+// GetLocaleVariants returns a list of derived variants of locale, which can be
 // used to e.g. construct locale-dependent filenames or search paths. The
 // returned list is sorted from most desirable to least desirable. This function
-// handles territory, charset and extra locale modifiers. See `setlocale(3)`
+// handles territory, charset and extra locale modifiers. See setlocale(3)
 // (man:setlocale) for information about locales and their format.
 //
-// @locale itself is guaranteed to be returned in the output.
+// locale itself is guaranteed to be returned in the output.
 //
-// For example, if @locale is `fr_BE`, then the returned list is `fr_BE`, `fr`.
-// If @locale is `en_GB.UTF-8@euro`, then the returned list is
-// `en_GB.UTF-8@euro`, `en_GB.UTF-8`, `en_GB@euro`, `en_GB`, `en.UTF-8@euro`,
-// `en.UTF-8`, `en@euro`, `en`.
+// For example, if locale is fr_BE, then the returned list is fr_BE, fr. If
+// locale is en_GB.UTF-8euro, then the returned list is en_GB.UTF-8euro,
+// en_GB.UTF-8, en_GBeuro, en_GB, en.UTF-8euro, en.UTF-8, eneuro, en.
 //
 // If you need the list of variants for the current locale, use
 // g_get_language_names().

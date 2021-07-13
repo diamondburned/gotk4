@@ -34,11 +34,11 @@ func init() {
 
 // UnixFDLister describes UnixFDList's methods.
 type UnixFDLister interface {
-	// Append adds a file descriptor to @list.
+	// Append adds a file descriptor to list.
 	Append(fd int) (int, error)
-	// Get gets a file descriptor out of @list.
+	// Get gets a file descriptor out of list.
 	Get(index_ int) (int, error)
-	// Length gets the length of @list (ie: the number of file descriptors
+	// Length gets the length of list (ie: the number of file descriptors
 	// contained within).
 	Length() int
 }
@@ -50,8 +50,8 @@ type UnixFDLister interface {
 // G_SOCKET_FAMILY_UNIX family by using g_socket_send_message() and received
 // using g_socket_receive_message().
 //
-// Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
-// thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
+// Note that <gio/gunixfdlist.h> belongs to the UNIX-specific GIO interfaces,
+// thus you have to use the gio-unix-2.0.pc pkg-config file when using it.
 type UnixFDList struct {
 	*externglib.Object
 }
@@ -87,12 +87,12 @@ func NewUnixFDList() *UnixFDList {
 }
 
 // NewUnixFDListFromArray creates a new FDList containing the file descriptors
-// given in @fds. The file descriptors become the property of the new list and
+// given in fds. The file descriptors become the property of the new list and
 // may no longer be used by the caller. The array itself is owned by the caller.
 //
 // Each file descriptor in the array should be set to close-on-exec.
 //
-// If @n_fds is -1 then @fds must be terminated with -1.
+// If n_fds is -1 then fds must be terminated with -1.
 func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	var _arg1 *C.gint
 	var _arg2 C.gint
@@ -112,10 +112,10 @@ func NewUnixFDListFromArray(fds []int) *UnixFDList {
 	return _unixFDList
 }
 
-// Append adds a file descriptor to @list.
+// Append adds a file descriptor to list.
 //
 // The file descriptor is duplicated using dup(). You keep your copy of the
-// descriptor and the copy contained in @list will be closed when @list is
+// descriptor and the copy contained in list will be closed when list is
 // finalized.
 //
 // A possible cause of failure is exceeding the per-process or system-wide file
@@ -144,10 +144,10 @@ func (list *UnixFDList) Append(fd int) (int, error) {
 	return _gint, _goerr
 }
 
-// Get gets a file descriptor out of @list.
+// Get gets a file descriptor out of list.
 //
-// @index_ specifies the index of the file descriptor to get. It is a programmer
-// error for @index_ to be out of range; see g_unix_fd_list_get_length().
+// index_ specifies the index of the file descriptor to get. It is a programmer
+// error for index_ to be out of range; see g_unix_fd_list_get_length().
 //
 // The file descriptor is duplicated using dup() and set as close-on-exec before
 // being returned. You must call close() on it when you are done.
@@ -174,7 +174,7 @@ func (list *UnixFDList) Get(index_ int) (int, error) {
 	return _gint, _goerr
 }
 
-// Length gets the length of @list (ie: the number of file descriptors contained
+// Length gets the length of list (ie: the number of file descriptors contained
 // within).
 func (list *UnixFDList) Length() int {
 	var _arg0 *C.GUnixFDList // out

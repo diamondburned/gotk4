@@ -35,27 +35,29 @@ type FontButtoner interface {
 	SetModal(modal bool)
 	// SetTitle sets the title for the font chooser dialog.
 	SetTitle(title string)
-	// SetUseFont: if @use_font is true, the font name will be written using the
+	// SetUseFont: if use_font is TRUE, the font name will be written using the
 	// selected font.
 	SetUseFont(useFont bool)
-	// SetUseSize: if @use_size is true, the font name will be written using the
+	// SetUseSize: if use_size is TRUE, the font name will be written using the
 	// selected size.
 	SetUseSize(useSize bool)
 }
 
-// FontButton: `GtkFontButton` allows to open a font chooser dialog to change
-// the font.
+// FontButton: GtkFontButton allows to open a font chooser dialog to change the
+// font.
 //
 // !An example GtkFontButton (font-button.png)
 //
 // It is suitable widget for selecting a font in a preference dialog.
 //
-//
 // CSS nodes
 //
-// “` fontbutton ╰── button.font ╰── [content] “`
+//    fontbutton
+//    ╰── button.font
+//        ╰── [content]
 //
-// `GtkFontButton` has a single CSS node with name fontbutton which contains a
+//
+// GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton struct {
 	Widget
@@ -226,7 +228,7 @@ func (fontButton *FontButton) SetTitle(title string) {
 	C.gtk_font_button_set_title(_arg0, _arg1)
 }
 
-// SetUseFont: if @use_font is true, the font name will be written using the
+// SetUseFont: if use_font is TRUE, the font name will be written using the
 // selected font.
 func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -240,7 +242,7 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 	C.gtk_font_button_set_use_font(_arg0, _arg1)
 }
 
-// SetUseSize: if @use_size is true, the font name will be written using the
+// SetUseSize: if use_size is TRUE, the font name will be written using the
 // selected size.
 func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out

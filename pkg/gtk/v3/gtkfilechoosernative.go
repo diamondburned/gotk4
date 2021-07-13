@@ -220,7 +220,7 @@ func marshalFileChooserNativer(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserNative creates a new FileChooserNative.
-func NewFileChooserNative(title string, parent Windower, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative {
+func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative {
 	var _arg1 *C.gchar                // out
 	var _arg2 *C.GtkWindow            // out
 	var _arg3 C.GtkFileChooserAction  // out
@@ -229,7 +229,7 @@ func NewFileChooserNative(title string, parent Windower, action FileChooserActio
 	var _cret *C.GtkFileChooserNative // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg3 = C.GtkFileChooserAction(action)
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(acceptLabel)))
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(cancelLabel)))
@@ -283,8 +283,8 @@ func (self *FileChooserNative) CancelLabel() string {
 
 // SetAcceptLabel sets the custom label text for the accept button.
 //
-// If characters in @label are preceded by an underscore, they are underlined.
-// If you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
@@ -300,8 +300,8 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 
 // SetCancelLabel sets the custom label text for the cancel button.
 //
-// If characters in @label are preceded by an underscore, they are underlined.
-// If you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.

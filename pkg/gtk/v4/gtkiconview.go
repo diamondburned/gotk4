@@ -80,25 +80,25 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 // IconViewer describes IconView's methods.
 type IconViewer interface {
 	// CreateDragIcon creates a #cairo_surface_t representation of the item at
-	// @path.
+	// path.
 	CreateDragIcon(path *TreePath) *gdk.Paintable
-	// EnableModelDragDest turns @icon_view into a drop destination for
-	// automatic DND.
+	// EnableModelDragDest turns icon_view into a drop destination for automatic
+	// DND.
 	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
-	// EnableModelDragSource turns @icon_view into a drag source for automatic
+	// EnableModelDragSource turns icon_view into a drag source for automatic
 	// DND.
 	EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
 	// ActivateOnSingleClick gets the setting set by
 	// gtk_icon_view_set_activate_on_single_click().
 	ActivateOnSingleClick() bool
 	// CellRect fills the bounding rectangle in widget coordinates for the cell
-	// specified by @path and @cell.
+	// specified by path and cell.
 	CellRect(path *TreePath, cell CellRendererer) (gdk.Rectangle, bool)
 	// ColumnSpacing returns the value of the ::column-spacing property.
 	ColumnSpacing() int
 	// Columns returns the value of the ::columns property.
 	Columns() int
-	// Cursor fills in @path and @cell with the current cursor path and cell.
+	// Cursor fills in path and cell with the current cursor path and cell.
 	Cursor() (*TreePath, *CellRenderer, bool)
 	// DestItemAtPos determines the destination item for a given position.
 	DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
@@ -107,8 +107,7 @@ type IconViewer interface {
 	DragDestItem() (*TreePath, IconViewDropPosition)
 	// ItemAtPos gets the path and cell for the icon at the given position.
 	ItemAtPos(x int, y int) (*TreePath, *CellRenderer, bool)
-	// ItemColumn gets the column in which the item @path is currently
-	// displayed.
+	// ItemColumn gets the column in which the item path is currently displayed.
 	ItemColumn(path *TreePath) int
 	// ItemOrientation returns the value of the ::item-orientation property
 	// which determines whether the labels are drawn beside the icons instead of
@@ -116,51 +115,51 @@ type IconViewer interface {
 	ItemOrientation() Orientation
 	// ItemPadding returns the value of the ::item-padding property.
 	ItemPadding() int
-	// ItemRow gets the row in which the item @path is currently displayed.
+	// ItemRow gets the row in which the item path is currently displayed.
 	ItemRow(path *TreePath) int
 	// ItemWidth returns the value of the ::item-width property.
 	ItemWidth() int
 	// Margin returns the value of the ::margin property.
 	Margin() int
-	// MarkupColumn returns the column with markup text for @icon_view.
+	// MarkupColumn returns the column with markup text for icon_view.
 	MarkupColumn() int
 	// Model returns the model the IconView is based on.
 	Model() *TreeModel
 	// PathAtPos gets the path for the icon at the given position.
 	PathAtPos(x int, y int) *TreePath
-	// PixbufColumn returns the column with pixbufs for @icon_view.
+	// PixbufColumn returns the column with pixbufs for icon_view.
 	PixbufColumn() int
 	// Reorderable retrieves whether the user can reorder the list via
 	// drag-and-drop.
 	Reorderable() bool
 	// RowSpacing returns the value of the ::row-spacing property.
 	RowSpacing() int
-	// SelectionMode gets the selection mode of the @icon_view.
+	// SelectionMode gets the selection mode of the icon_view.
 	SelectionMode() SelectionMode
 	// Spacing returns the value of the ::spacing property.
 	Spacing() int
-	// TextColumn returns the column with text for @icon_view.
+	// TextColumn returns the column with text for icon_view.
 	TextColumn() int
-	// TooltipColumn returns the column of @icon_view’s model which is being
-	// used for displaying tooltips on @icon_view’s rows.
+	// TooltipColumn returns the column of icon_view’s model which is being used
+	// for displaying tooltips on icon_view’s rows.
 	TooltipColumn() int
 	// TooltipContext: this function is supposed to be used in a
 	// Widget::query-tooltip signal handler for IconView.
 	TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
-	// VisibleRange sets @start_path and @end_path to be the first and last
+	// VisibleRange sets start_path and end_path to be the first and last
 	// visible path.
 	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
-	// ItemActivated activates the item determined by @path.
+	// ItemActivated activates the item determined by path.
 	ItemActivated(path *TreePath)
-	// PathIsSelected returns true if the icon pointed to by @path is currently
+	// PathIsSelected returns TRUE if the icon pointed to by path is currently
 	// selected.
 	PathIsSelected(path *TreePath) bool
-	// ScrollToPath moves the alignments of @icon_view to the position specified
-	// by @path.
+	// ScrollToPath moves the alignments of icon_view to the position specified
+	// by path.
 	ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32)
 	// SelectAll selects all the icons.
 	SelectAll()
-	// SelectPath selects the row at @path.
+	// SelectPath selects the row at path.
 	SelectPath(path *TreePath)
 	// SelectedForeach calls a function for each selected icon.
 	SelectedForeach(fn IconViewForeachFunc)
@@ -173,7 +172,7 @@ type IconViewer interface {
 	// SetColumns sets the ::columns property which determines in how many
 	// columns the icons are arranged.
 	SetColumns(columns int)
-	// SetCursor sets the current keyboard focus to be at @path, and selects it.
+	// SetCursor sets the current keyboard focus to be at path, and selects it.
 	SetCursor(path *TreePath, cell CellRendererer, startEditing bool)
 	// SetDragDestItem sets the item that is highlighted for feedback.
 	SetDragDestItem(path *TreePath, pos IconViewDropPosition)
@@ -189,13 +188,12 @@ type IconViewer interface {
 	// SetMargin sets the ::margin property which specifies the space which is
 	// inserted at the top, bottom, left and right of the icon view.
 	SetMargin(margin int)
-	// SetMarkupColumn sets the column with markup information for @icon_view to
-	// be @column.
+	// SetMarkupColumn sets the column with markup information for icon_view to
+	// be column.
 	SetMarkupColumn(column int)
 	// SetModel sets the model for a IconView.
 	SetModel(model TreeModeler)
-	// SetPixbufColumn sets the column with pixbufs for @icon_view to be
-	// @column.
+	// SetPixbufColumn sets the column with pixbufs for icon_view to be column.
 	SetPixbufColumn(column int)
 	// SetReorderable: this function is a convenience function to allow you to
 	// reorder models that support the TreeDragSourceIface and the
@@ -204,26 +202,26 @@ type IconViewer interface {
 	// SetRowSpacing sets the ::row-spacing property which specifies the space
 	// which is inserted between the rows of the icon view.
 	SetRowSpacing(rowSpacing int)
-	// SetSelectionMode sets the selection mode of the @icon_view.
+	// SetSelectionMode sets the selection mode of the icon_view.
 	SetSelectionMode(mode SelectionMode)
 	// SetSpacing sets the ::spacing property which specifies the space which is
 	// inserted between the cells (i.e.
 	SetSpacing(spacing int)
-	// SetTextColumn sets the column with text for @icon_view to be @column.
+	// SetTextColumn sets the column with text for icon_view to be column.
 	SetTextColumn(column int)
-	// SetTooltipCell sets the tip area of @tooltip to the area which @cell
-	// occupies in the item pointed to by @path.
-	SetTooltipCell(tooltip Tooltiper, path *TreePath, cell CellRendererer)
+	// SetTooltipCell sets the tip area of tooltip to the area which cell
+	// occupies in the item pointed to by path.
+	SetTooltipCell(tooltip *Tooltip, path *TreePath, cell CellRendererer)
 	// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
 	// full items, you can use this function to have IconView handle these
 	// automatically for you.
 	SetTooltipColumn(column int)
-	// SetTooltipItem sets the tip area of @tooltip to be the area covered by
-	// the item at @path.
-	SetTooltipItem(tooltip Tooltiper, path *TreePath)
+	// SetTooltipItem sets the tip area of tooltip to be the area covered by the
+	// item at path.
+	SetTooltipItem(tooltip *Tooltip, path *TreePath)
 	// UnselectAll unselects all the icons.
 	UnselectAll()
-	// UnselectPath unselects the row at @path.
+	// UnselectPath unselects the row at path.
 	UnselectPath(path *TreePath)
 	// UnsetModelDragDest undoes the effect of
 	// gtk_icon_view_enable_model_drag_dest().
@@ -233,25 +231,26 @@ type IconViewer interface {
 	UnsetModelDragSource()
 }
 
-// IconView: `GtkIconView` is a widget which displays data in a grid of icons.
+// IconView: GtkIconView is a widget which displays data in a grid of icons.
 //
-// `GtkIconView` provides an alternative view on a `GtkTreeModel`. It displays
-// the model as a grid of icons with labels. Like [class@Gtk.TreeView], it
-// allows to select one or multiple items (depending on the selection mode, see
-// [method@Gtk.IconView.set_selection_mode]). In addition to selection with the
-// arrow keys, `GtkIconView` supports rubberband selection, which is controlled
-// by dragging the pointer.
+// GtkIconView provides an alternative view on a GtkTreeModel. It displays the
+// model as a grid of icons with labels. Like gtk.TreeView, it allows to select
+// one or multiple items (depending on the selection mode, see
+// gtk.IconView.SetSelectionMode()). In addition to selection with the arrow
+// keys, GtkIconView supports rubberband selection, which is controlled by
+// dragging the pointer.
 //
 // Note that if the tree model is backed by an actual tree store (as opposed to
 // a flat list where the mapping to icons is obvious), IconView will only
 // display the first level of the tree and ignore the tree’s branches.
 //
-//
 // CSS nodes
 //
-// “` iconview.view ╰── [rubberband] “`
+//    iconview.view
+//    ╰── [rubberband]
 //
-// `GtkIconView` has a single CSS node with name iconview and style class .view.
+//
+// GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView struct {
 	Widget
@@ -309,8 +308,8 @@ func NewIconView() *IconView {
 	return _iconView
 }
 
-// NewIconViewWithArea creates a new IconView widget using the specified @area
-// to layout cells inside the icons.
+// NewIconViewWithArea creates a new IconView widget using the specified area to
+// layout cells inside the icons.
 func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _arg1 *C.GtkCellArea // out
 	var _cret *C.GtkWidget   // in
@@ -326,7 +325,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 	return _iconView
 }
 
-// NewIconViewWithModel creates a new IconView widget with the model @model.
+// NewIconViewWithModel creates a new IconView widget with the model model.
 func NewIconViewWithModel(model TreeModeler) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
@@ -348,8 +347,8 @@ func (v *IconView) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// CreateDragIcon creates a #cairo_surface_t representation of the item at
-// @path. This image is used for a drag icon.
+// CreateDragIcon creates a #cairo_surface_t representation of the item at path.
+// This image is used for a drag icon.
 func (iconView *IconView) CreateDragIcon(path *TreePath) *gdk.Paintable {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreePath  // out
@@ -372,8 +371,8 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) *gdk.Paintable {
 	return _paintable
 }
 
-// EnableModelDragDest turns @icon_view into a drop destination for automatic
-// DND. Calling this method sets IconView:reorderable to false.
+// EnableModelDragDest turns icon_view into a drop destination for automatic
+// DND. Calling this method sets IconView:reorderable to FALSE.
 func (iconView *IconView) EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction) {
 	var _arg0 *C.GtkIconView       // out
 	var _arg1 *C.GdkContentFormats // out
@@ -386,8 +385,8 @@ func (iconView *IconView) EnableModelDragDest(formats *gdk.ContentFormats, actio
 	C.gtk_icon_view_enable_model_drag_dest(_arg0, _arg1, _arg2)
 }
 
-// EnableModelDragSource turns @icon_view into a drag source for automatic DND.
-// Calling this method sets IconView:reorderable to false.
+// EnableModelDragSource turns icon_view into a drag source for automatic DND.
+// Calling this method sets IconView:reorderable to FALSE.
 func (iconView *IconView) EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction) {
 	var _arg0 *C.GtkIconView       // out
 	var _arg1 C.GdkModifierType    // out
@@ -422,9 +421,9 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 }
 
 // CellRect fills the bounding rectangle in widget coordinates for the cell
-// specified by @path and @cell. If @cell is nil the main cell area is used.
+// specified by path and cell. If cell is NULL the main cell area is used.
 //
-// This function is only valid if @icon_view is realized.
+// This function is only valid if icon_view is realized.
 func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTreePath     // out
@@ -479,9 +478,9 @@ func (iconView *IconView) Columns() int {
 	return _gint
 }
 
-// Cursor fills in @path and @cell with the current cursor path and cell. If the
-// cursor isn’t currently set, then *@path will be nil. If no cell currently has
-// focus, then *@cell will be nil.
+// Cursor fills in path and cell with the current cursor path and cell. If the
+// cursor isn’t currently set, then *path will be NULL. If no cell currently has
+// focus, then *cell will be NULL.
 //
 // The returned TreePath must be freed with gtk_tree_path_free().
 func (iconView *IconView) Cursor() (*TreePath, *CellRenderer, bool) {
@@ -575,7 +574,7 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, *CellRenderer, boo
 	return _path, _cell, _ok
 }
 
-// ItemColumn gets the column in which the item @path is currently displayed.
+// ItemColumn gets the column in which the item path is currently displayed.
 // Column numbers start at 0.
 func (iconView *IconView) ItemColumn(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
@@ -627,7 +626,7 @@ func (iconView *IconView) ItemPadding() int {
 	return _gint
 }
 
-// ItemRow gets the row in which the item @path is currently displayed. Row
+// ItemRow gets the row in which the item path is currently displayed. Row
 // numbers start at 0.
 func (iconView *IconView) ItemRow(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
@@ -678,7 +677,7 @@ func (iconView *IconView) Margin() int {
 	return _gint
 }
 
-// MarkupColumn returns the column with markup text for @icon_view.
+// MarkupColumn returns the column with markup text for icon_view.
 func (iconView *IconView) MarkupColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
@@ -694,8 +693,8 @@ func (iconView *IconView) MarkupColumn() int {
 	return _gint
 }
 
-// Model returns the model the IconView is based on. Returns nil if the model is
-// unset.
+// Model returns the model the IconView is based on. Returns NULL if the model
+// is unset.
 func (iconView *IconView) Model() *TreeModel {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
@@ -734,7 +733,7 @@ func (iconView *IconView) PathAtPos(x int, y int) *TreePath {
 	return _treePath
 }
 
-// PixbufColumn returns the column with pixbufs for @icon_view.
+// PixbufColumn returns the column with pixbufs for icon_view.
 func (iconView *IconView) PixbufColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
@@ -785,7 +784,7 @@ func (iconView *IconView) RowSpacing() int {
 	return _gint
 }
 
-// SelectionMode gets the selection mode of the @icon_view.
+// SelectionMode gets the selection mode of the icon_view.
 func (iconView *IconView) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkIconView     // out
 	var _cret C.GtkSelectionMode // in
@@ -817,7 +816,7 @@ func (iconView *IconView) Spacing() int {
 	return _gint
 }
 
-// TextColumn returns the column with text for @icon_view.
+// TextColumn returns the column with text for icon_view.
 func (iconView *IconView) TextColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
@@ -833,8 +832,8 @@ func (iconView *IconView) TextColumn() int {
 	return _gint
 }
 
-// TooltipColumn returns the column of @icon_view’s model which is being used
-// for displaying tooltips on @icon_view’s rows.
+// TooltipColumn returns the column of icon_view’s model which is being used for
+// displaying tooltips on icon_view’s rows.
 func (iconView *IconView) TooltipColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.int          // in
@@ -851,15 +850,15 @@ func (iconView *IconView) TooltipColumn() int {
 }
 
 // TooltipContext: this function is supposed to be used in a
-// Widget::query-tooltip signal handler for IconView. The @x, @y and
-// @keyboard_tip values which are received in the signal handler, should be
-// passed to this function without modification.
+// Widget::query-tooltip signal handler for IconView. The x, y and keyboard_tip
+// values which are received in the signal handler, should be passed to this
+// function without modification.
 //
 // The return value indicates whether there is an icon view item at the given
-// coordinates (true) or not (false) for mouse tooltips. For keyboard tooltips
-// the item returned will be the cursor item. When true, then any of @model,
-// @path and @iter which have been provided will be set to point to that row and
-// the corresponding model.
+// coordinates (TRUE) or not (FALSE) for mouse tooltips. For keyboard tooltips
+// the item returned will be the cursor item. When TRUE, then any of model, path
+// and iter which have been provided will be set to point to that row and the
+// corresponding model.
 func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 C.int           // out
@@ -892,7 +891,7 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (*TreeM
 	return _model, _path, _iter, _ok
 }
 
-// VisibleRange sets @start_path and @end_path to be the first and last visible
+// VisibleRange sets start_path and end_path to be the first and last visible
 // path. Note that there may be invisible paths in between.
 //
 // Both paths should be freed with gtk_tree_path_free() after use.
@@ -915,7 +914,7 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	return _startPath, _endPath, _ok
 }
 
-// ItemActivated activates the item determined by @path.
+// ItemActivated activates the item determined by path.
 func (iconView *IconView) ItemActivated(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -926,8 +925,8 @@ func (iconView *IconView) ItemActivated(path *TreePath) {
 	C.gtk_icon_view_item_activated(_arg0, _arg1)
 }
 
-// PathIsSelected returns true if the icon pointed to by @path is currently
-// selected. If @path does not point to a valid location, false is returned.
+// PathIsSelected returns TRUE if the icon pointed to by path is currently
+// selected. If path does not point to a valid location, FALSE is returned.
 func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -947,19 +946,18 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	return _ok
 }
 
-// ScrollToPath moves the alignments of @icon_view to the position specified by
-// @path. @row_align determines where the row is placed, and @col_align
-// determines where @column is placed. Both are expected to be between 0.0 and
-// 1.0. 0.0 means left/top alignment, 1.0 means right/bottom alignment, 0.5
-// means center.
+// ScrollToPath moves the alignments of icon_view to the position specified by
+// path. row_align determines where the row is placed, and col_align determines
+// where column is placed. Both are expected to be between 0.0 and 1.0. 0.0
+// means left/top alignment, 1.0 means right/bottom alignment, 0.5 means center.
 //
-// If @use_align is false, then the alignment arguments are ignored, and the
-// tree does the minimum amount of work to scroll the item onto the screen. This
+// If use_align is FALSE, then the alignment arguments are ignored, and the tree
+// does the minimum amount of work to scroll the item onto the screen. This
 // means that the item will be scrolled to the edge closest to its current
 // position. If the item is currently visible on the screen, nothing is done.
 //
-// This function only works if the model is set, and @path is a valid row on the
-// model. If the model changes before the @icon_view is realized, the centered
+// This function only works if the model is set, and path is a valid row on the
+// model. If the model changes before the icon_view is realized, the centered
 // path will be modified to reflect this change.
 func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32) {
 	var _arg0 *C.GtkIconView // out
@@ -979,8 +977,8 @@ func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign f
 	C.gtk_icon_view_scroll_to_path(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SelectAll selects all the icons. @icon_view must has its selection mode set
-// to K_SELECTION_MULTIPLE.
+// SelectAll selects all the icons. icon_view must has its selection mode set to
+// K_SELECTION_MULTIPLE.
 func (iconView *IconView) SelectAll() {
 	var _arg0 *C.GtkIconView // out
 
@@ -989,7 +987,7 @@ func (iconView *IconView) SelectAll() {
 	C.gtk_icon_view_select_all(_arg0)
 }
 
-// SelectPath selects the row at @path.
+// SelectPath selects the row at path.
 func (iconView *IconView) SelectPath(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -1041,7 +1039,7 @@ func (iconView *IconView) SetColumnSpacing(columnSpacing int) {
 }
 
 // SetColumns sets the ::columns property which determines in how many columns
-// the icons are arranged. If @columns is -1, the number of columns will be
+// the icons are arranged. If columns is -1, the number of columns will be
 // chosen automatically to fill the available area.
 func (iconView *IconView) SetColumns(columns int) {
 	var _arg0 *C.GtkIconView // out
@@ -1053,14 +1051,14 @@ func (iconView *IconView) SetColumns(columns int) {
 	C.gtk_icon_view_set_columns(_arg0, _arg1)
 }
 
-// SetCursor sets the current keyboard focus to be at @path, and selects it.
-// This is useful when you want to focus the user’s attention on a particular
-// item. If @cell is not nil, then focus is given to the cell specified by it.
-// Additionally, if @start_editing is true, then editing should be started in
-// the specified cell.
+// SetCursor sets the current keyboard focus to be at path, and selects it. This
+// is useful when you want to focus the user’s attention on a particular item.
+// If cell is not NULL, then focus is given to the cell specified by it.
+// Additionally, if start_editing is TRUE, then editing should be started in the
+// specified cell.
 //
-// This function is often followed by `gtk_widget_grab_focus (icon_view)` in
-// order to give keyboard focus to the widget. Please note that editing can only
+// This function is often followed by gtk_widget_grab_focus (icon_view) in order
+// to give keyboard focus to the widget. Please note that editing can only
 // happen when the widget is realized.
 func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEditing bool) {
 	var _arg0 *C.GtkIconView     // out
@@ -1140,8 +1138,8 @@ func (iconView *IconView) SetMargin(margin int) {
 	C.gtk_icon_view_set_margin(_arg0, _arg1)
 }
 
-// SetMarkupColumn sets the column with markup information for @icon_view to be
-// @column. The markup column must be of type TYPE_STRING. If the markup column
+// SetMarkupColumn sets the column with markup information for icon_view to be
+// column. The markup column must be of type TYPE_STRING. If the markup column
 // is set to something, it overrides the text column set by
 // gtk_icon_view_set_text_column().
 func (iconView *IconView) SetMarkupColumn(column int) {
@@ -1154,8 +1152,8 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 	C.gtk_icon_view_set_markup_column(_arg0, _arg1)
 }
 
-// SetModel sets the model for a IconView. If the @icon_view already has a model
-// set, it will remove it before setting the new model. If @model is nil, then
+// SetModel sets the model for a IconView. If the icon_view already has a model
+// set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
 func (iconView *IconView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkIconView  // out
@@ -1167,8 +1165,8 @@ func (iconView *IconView) SetModel(model TreeModeler) {
 	C.gtk_icon_view_set_model(_arg0, _arg1)
 }
 
-// SetPixbufColumn sets the column with pixbufs for @icon_view to be @column.
-// The pixbuf column must be of type K_TYPE_PIXBUF
+// SetPixbufColumn sets the column with pixbufs for icon_view to be column. The
+// pixbuf column must be of type K_TYPE_PIXBUF
 func (iconView *IconView) SetPixbufColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
@@ -1181,11 +1179,11 @@ func (iconView *IconView) SetPixbufColumn(column int) {
 
 // SetReorderable: this function is a convenience function to allow you to
 // reorder models that support the TreeDragSourceIface and the
-// TreeDragDestIface. Both TreeStore and ListStore support these. If
-// @reorderable is true, then the user can reorder the model by dragging and
-// dropping rows. The developer can listen to these changes by connecting to the
-// model's row_inserted and row_deleted signals. The reordering is implemented
-// by setting up the icon view as a drag source and destination. Therefore, drag
+// TreeDragDestIface. Both TreeStore and ListStore support these. If reorderable
+// is TRUE, then the user can reorder the model by dragging and dropping rows.
+// The developer can listen to these changes by connecting to the model's
+// row_inserted and row_deleted signals. The reordering is implemented by
+// setting up the icon view as a drag source and destination. Therefore, drag
 // and drop can not be used in a reorderable view for any other purpose.
 //
 // This function does not give you any degree of control over the order -- any
@@ -1215,7 +1213,7 @@ func (iconView *IconView) SetRowSpacing(rowSpacing int) {
 	C.gtk_icon_view_set_row_spacing(_arg0, _arg1)
 }
 
-// SetSelectionMode sets the selection mode of the @icon_view.
+// SetSelectionMode sets the selection mode of the icon_view.
 func (iconView *IconView) SetSelectionMode(mode SelectionMode) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.GtkSelectionMode // out
@@ -1238,8 +1236,8 @@ func (iconView *IconView) SetSpacing(spacing int) {
 	C.gtk_icon_view_set_spacing(_arg0, _arg1)
 }
 
-// SetTextColumn sets the column with text for @icon_view to be @column. The
-// text column must be of type TYPE_STRING.
+// SetTextColumn sets the column with text for icon_view to be column. The text
+// column must be of type TYPE_STRING.
 func (iconView *IconView) SetTextColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.int          // out
@@ -1250,18 +1248,18 @@ func (iconView *IconView) SetTextColumn(column int) {
 	C.gtk_icon_view_set_text_column(_arg0, _arg1)
 }
 
-// SetTooltipCell sets the tip area of @tooltip to the area which @cell occupies
-// in the item pointed to by @path. See also gtk_tooltip_set_tip_area().
+// SetTooltipCell sets the tip area of tooltip to the area which cell occupies
+// in the item pointed to by path. See also gtk_tooltip_set_tip_area().
 //
 // See also gtk_icon_view_set_tooltip_column() for a simpler alternative.
-func (iconView *IconView) SetTooltipCell(tooltip Tooltiper, path *TreePath, cell CellRendererer) {
+func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell CellRendererer) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 *C.GtkTooltip      // out
 	var _arg2 *C.GtkTreePath     // out
 	var _arg3 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.GtkTooltip)(unsafe.Pointer((tooltip).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
 	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
 
@@ -1270,10 +1268,10 @@ func (iconView *IconView) SetTooltipCell(tooltip Tooltiper, path *TreePath, cell
 
 // SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
 // full items, you can use this function to have IconView handle these
-// automatically for you. @column should be set to the column in @icon_view’s
+// automatically for you. column should be set to the column in icon_view’s
 // model containing the tooltip texts, or -1 to disable this feature.
 //
-// When enabled, Widget:has-tooltip will be set to true and @icon_view will
+// When enabled, Widget:has-tooltip will be set to TRUE and icon_view will
 // connect a Widget::query-tooltip signal handler.
 //
 // Note that the signal handler sets the text with gtk_tooltip_set_markup(), so
@@ -1288,16 +1286,16 @@ func (iconView *IconView) SetTooltipColumn(column int) {
 	C.gtk_icon_view_set_tooltip_column(_arg0, _arg1)
 }
 
-// SetTooltipItem sets the tip area of @tooltip to be the area covered by the
-// item at @path. See also gtk_icon_view_set_tooltip_column() for a simpler
+// SetTooltipItem sets the tip area of tooltip to be the area covered by the
+// item at path. See also gtk_icon_view_set_tooltip_column() for a simpler
 // alternative. See also gtk_tooltip_set_tip_area().
-func (iconView *IconView) SetTooltipItem(tooltip Tooltiper, path *TreePath) {
+func (iconView *IconView) SetTooltipItem(tooltip *Tooltip, path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTooltip  // out
 	var _arg2 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.GtkTooltip)(unsafe.Pointer((tooltip).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
 	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path))
 
 	C.gtk_icon_view_set_tooltip_item(_arg0, _arg1, _arg2)
@@ -1312,7 +1310,7 @@ func (iconView *IconView) UnselectAll() {
 	C.gtk_icon_view_unselect_all(_arg0)
 }
 
-// UnselectPath unselects the row at @path.
+// UnselectPath unselects the row at path.
 func (iconView *IconView) UnselectPath(path *TreePath) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
@@ -1325,7 +1323,7 @@ func (iconView *IconView) UnselectPath(path *TreePath) {
 
 // UnsetModelDragDest undoes the effect of
 // gtk_icon_view_enable_model_drag_dest(). Calling this method sets
-// IconView:reorderable to false.
+// IconView:reorderable to FALSE.
 func (iconView *IconView) UnsetModelDragDest() {
 	var _arg0 *C.GtkIconView // out
 
@@ -1336,7 +1334,7 @@ func (iconView *IconView) UnsetModelDragDest() {
 
 // UnsetModelDragSource undoes the effect of
 // gtk_icon_view_enable_model_drag_source(). Calling this method sets
-// IconView:reorderable to false.
+// IconView:reorderable to FALSE.
 func (iconView *IconView) UnsetModelDragSource() {
 	var _arg0 *C.GtkIconView // out
 

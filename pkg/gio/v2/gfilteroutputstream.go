@@ -36,10 +36,10 @@ type FilterOutputStreamer interface {
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() *OutputStream
 	// CloseBaseStream returns whether the base stream will be closed when
-	// @stream is closed.
+	// stream is closed.
 	CloseBaseStream() bool
 	// SetCloseBaseStream sets whether the base stream will be closed when
-	// @stream is closed.
+	// stream is closed.
 	SetCloseBaseStream(closeBase bool)
 }
 
@@ -86,8 +86,8 @@ func (stream *FilterOutputStream) BaseStream() *OutputStream {
 	return _outputStream
 }
 
-// CloseBaseStream returns whether the base stream will be closed when @stream
-// is closed.
+// CloseBaseStream returns whether the base stream will be closed when stream is
+// closed.
 func (stream *FilterOutputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret C.gboolean             // in
@@ -105,8 +105,8 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 	return _ok
 }
 
-// SetCloseBaseStream sets whether the base stream will be closed when @stream
-// is closed.
+// SetCloseBaseStream sets whether the base stream will be closed when stream is
+// closed.
 func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out

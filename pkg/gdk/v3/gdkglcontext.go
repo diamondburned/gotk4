@@ -27,7 +27,7 @@ type GLContexter interface {
 	// DebugEnabled retrieves the value set using
 	// gdk_gl_context_set_debug_enabled().
 	DebugEnabled() bool
-	// Display retrieves the Display the @context is created for
+	// Display retrieves the Display the context is created for
 	Display() *Display
 	// ForwardCompatible retrieves the value set using
 	// gdk_gl_context_set_forward_compatible().
@@ -35,18 +35,17 @@ type GLContexter interface {
 	// RequiredVersion retrieves the major and minor version requested by
 	// calling gdk_gl_context_set_required_version().
 	RequiredVersion() (major int, minor int)
-	// SharedContext retrieves the GLContext that this @context share data with.
+	// SharedContext retrieves the GLContext that this context share data with.
 	SharedContext() *GLContext
-	// UseES checks whether the @context is using an OpenGL or OpenGL ES
-	// profile.
+	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
 	UseES() bool
-	// Version retrieves the OpenGL version of the @context.
+	// Version retrieves the OpenGL version of the context.
 	Version() (major int, minor int)
-	// Window retrieves the Window used by the @context.
+	// Window retrieves the Window used by the context.
 	Window() *Window
 	// IsLegacy: whether the GLContext is in legacy mode or not.
 	IsLegacy() bool
-	// MakeCurrent makes the @context the current one.
+	// MakeCurrent makes the context the current one.
 	MakeCurrent()
 	// Realize realizes the given GLContext.
 	Realize() error
@@ -77,7 +76,7 @@ type GLContexter interface {
 // that of other widgets.
 //
 // Support for GLContext is platform-specific, context creation can fail,
-// returning nil context.
+// returning NULL context.
 //
 // A GLContext has to be made "current" in order to start using it, otherwise
 // any OpenGL call will be ignored.
@@ -149,7 +148,7 @@ func (context *GLContext) DebugEnabled() bool {
 	return _ok
 }
 
-// Display retrieves the Display the @context is created for
+// Display retrieves the Display the context is created for
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in
@@ -204,7 +203,7 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 	return _major, _minor
 }
 
-// SharedContext retrieves the GLContext that this @context share data with.
+// SharedContext retrieves the GLContext that this context share data with.
 func (context *GLContext) SharedContext() *GLContext {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
@@ -220,7 +219,7 @@ func (context *GLContext) SharedContext() *GLContext {
 	return _glContext
 }
 
-// UseES checks whether the @context is using an OpenGL or OpenGL ES profile.
+// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
 func (context *GLContext) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -238,9 +237,9 @@ func (context *GLContext) UseES() bool {
 	return _ok
 }
 
-// Version retrieves the OpenGL version of the @context.
+// Version retrieves the OpenGL version of the context.
 //
-// The @context must be realized prior to calling this function.
+// The context must be realized prior to calling this function.
 func (context *GLContext) Version() (major int, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
@@ -259,7 +258,7 @@ func (context *GLContext) Version() (major int, minor int) {
 	return _major, _minor
 }
 
-// Window retrieves the Window used by the @context.
+// Window retrieves the Window used by the context.
 func (context *GLContext) Window() *Window {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkWindow    // in
@@ -282,11 +281,11 @@ func (context *GLContext) Window() *Window {
 // When realizing a GL context, GDK will try to use the OpenGL 3.2 core profile;
 // this profile removes all the OpenGL API that was deprecated prior to the 3.2
 // version of the specification. If the realization is successful, this function
-// will return false.
+// will return FALSE.
 //
 // If the underlying OpenGL implementation does not support core profiles, GDK
 // will fall back to a pre-3.2 compatibility profile, and this function will
-// return true.
+// return TRUE.
 //
 // You can use the value returned by this function to decide which kind of
 // OpenGL API to use, or whether to do extension discovery, or what kind of
@@ -308,7 +307,7 @@ func (context *GLContext) IsLegacy() bool {
 	return _ok
 }
 
-// MakeCurrent makes the @context the current one.
+// MakeCurrent makes the context the current one.
 func (context *GLContext) MakeCurrent() {
 	var _arg0 *C.GdkGLContext // out
 
@@ -376,7 +375,7 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 
 // SetRequiredVersion sets the major and minor version of OpenGL to request.
 //
-// Setting @major and @minor to zero will use the default values.
+// Setting major and minor to zero will use the default values.
 //
 // The GLContext must not be realized or made current prior to calling this
 // function.
@@ -395,10 +394,10 @@ func (context *GLContext) SetRequiredVersion(major int, minor int) {
 // SetUseES requests that GDK create a OpenGL ES context instead of an OpenGL
 // one, if the platform and windowing system allows it.
 //
-// The @context must not have been realized.
+// The context must not have been realized.
 //
 // By default, GDK will attempt to automatically detect whether the underlying
-// GL implementation is OpenGL or OpenGL ES once the @context is realized.
+// GL implementation is OpenGL or OpenGL ES once the context is realized.
 //
 // You should check the return value of gdk_gl_context_get_use_es() after
 // calling gdk_gl_context_realize() to decide whether to use the OpenGL or

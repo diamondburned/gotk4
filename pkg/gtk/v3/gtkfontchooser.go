@@ -99,14 +99,14 @@ type FontChooserOverrider interface {
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
 	//
-	// If the selected font is not installed, returns nil.
+	// If the selected font is not installed, returns NULL.
 	FontFace() *pango.FontFace
 	// FontFamily gets the FontFamily representing the selected font family.
 	// Font families are a collection of font faces.
 	//
-	// If the selected font is not installed, returns nil.
+	// If the selected font is not installed, returns NULL.
 	FontFamily() *pango.FontFamily
-	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
 	FontMap() *pango.FontMap
 	// FontSize: selected font size.
@@ -147,7 +147,7 @@ type FontChooserer interface {
 	FontFamily() *pango.FontFamily
 	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
-	// FontMap gets the custom font map of this font chooser widget, or nil if
+	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
 	FontMap() *pango.FontMap
 	// FontSize: selected font size.
@@ -162,7 +162,7 @@ type FontChooserer interface {
 	ShowPreviewEntry() bool
 	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
-	// SetFontDesc sets the currently-selected font from @font_desc.
+	// SetFontDesc sets the currently-selected font from font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget.
 	SetFontMap(fontmap pango.FontMaper)
@@ -256,7 +256,7 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 // FontFace gets the FontFace representing the selected font group details (i.e.
 // family, slant, weight, width, etc).
 //
-// If the selected font is not installed, returns nil.
+// If the selected font is not installed, returns NULL.
 func (fontchooser *FontChooser) FontFace() *pango.FontFace {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontFace  // in
@@ -280,7 +280,7 @@ func (fontchooser *FontChooser) FontFace() *pango.FontFace {
 // FontFamily gets the FontFamily representing the selected font family. Font
 // families are a collection of font faces.
 //
-// If the selected font is not installed, returns nil.
+// If the selected font is not installed, returns NULL.
 func (fontchooser *FontChooser) FontFamily() *pango.FontFamily {
 	var _arg0 *C.GtkFontChooser  // out
 	var _cret *C.PangoFontFamily // in
@@ -318,7 +318,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 	return _utf8
 }
 
-// FontMap gets the custom font map of this font chooser widget, or nil if it
+// FontMap gets the custom font map of this font chooser widget, or NULL if it
 // does not have one.
 func (fontchooser *FontChooser) FontMap() *pango.FontMap {
 	var _arg0 *C.GtkFontChooser // out
@@ -435,7 +435,7 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 	C.gtk_font_chooser_set_font(_arg0, _arg1)
 }
 
-// SetFontDesc sets the currently-selected font from @font_desc.
+// SetFontDesc sets the currently-selected font from font_desc.
 func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _arg0 *C.GtkFontChooser       // out
 	var _arg1 *C.PangoFontDescription // out
@@ -498,7 +498,7 @@ func (fontchooser *FontChooser) SetLevel(level FontChooserLevel) {
 	C.gtk_font_chooser_set_level(_arg0, _arg1)
 }
 
-// SetPreviewText sets the text displayed in the preview area. The @text is used
+// SetPreviewText sets the text displayed in the preview area. The text is used
 // to show how the selected font looks.
 func (fontchooser *FontChooser) SetPreviewText(text string) {
 	var _arg0 *C.GtkFontChooser // out

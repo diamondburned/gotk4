@@ -37,9 +37,9 @@ type MountOperationer interface {
 	IsShowing() bool
 	// SetParent sets the transient parent for windows shown by the
 	// MountOperation.
-	SetParent(parent Windower)
+	SetParent(parent *Window)
 	// SetScreen sets the screen to show windows of the MountOperation on.
-	SetScreen(screen gdk.Screener)
+	SetScreen(screen *gdk.Screen)
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
@@ -68,11 +68,11 @@ func marshalMountOperationer(p uintptr) (interface{}, error) {
 }
 
 // NewMountOperation creates a new MountOperation
-func NewMountOperation(parent Windower) *MountOperation {
+func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
 	var _cret *C.GMountOperation // in
 
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	_cret = C.gtk_mount_operation_new(_arg1)
 
@@ -140,23 +140,23 @@ func (op *MountOperation) IsShowing() bool {
 }
 
 // SetParent sets the transient parent for windows shown by the MountOperation.
-func (op *MountOperation) SetParent(parent Windower) {
+func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GtkWindow         // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }
 
 // SetScreen sets the screen to show windows of the MountOperation on.
-func (op *MountOperation) SetScreen(screen gdk.Screener) {
+func (op *MountOperation) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkMountOperation // out
 	var _arg1 *C.GdkScreen         // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(op.Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer((screen).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
 	C.gtk_mount_operation_set_screen(_arg0, _arg1)
 }

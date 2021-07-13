@@ -26,22 +26,22 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ObjectFactoryOverrider interface {
-	// Invalidate: inform @factory that it is no longer being used to create
-	// accessibles. When called, @factory may need to inform Objects which it
-	// has created that they need to be re-instantiated. Note: primarily used
-	// for runtime replacement of ObjectFactorys in object registries.
+	// Invalidate: inform factory that it is no longer being used to create
+	// accessibles. When called, factory may need to inform Objects which it has
+	// created that they need to be re-instantiated. Note: primarily used for
+	// runtime replacement of ObjectFactorys in object registries.
 	Invalidate()
 }
 
 // ObjectFactorier describes ObjectFactory's methods.
 type ObjectFactorier interface {
 	// CreateAccessible provides an Object that implements an accessibility
-	// interface on behalf of @obj
-	CreateAccessible(obj gextras.Objector) *ObjectClass
+	// interface on behalf of obj
+	CreateAccessible(obj *externglib.Object) *ObjectClass
 	// AccessibleType gets the GType of the accessible which is created by the
 	// factory.
 	AccessibleType() externglib.Type
-	// Invalidate: inform @factory that it is no longer being used to create
+	// Invalidate: inform factory that it is no longer being used to create
 	// accessibles.
 	Invalidate()
 }
@@ -72,8 +72,8 @@ func marshalObjectFactorier(p uintptr) (interface{}, error) {
 }
 
 // CreateAccessible provides an Object that implements an accessibility
-// interface on behalf of @obj
-func (factory *ObjectFactory) CreateAccessible(obj gextras.Objector) *ObjectClass {
+// interface on behalf of obj
+func (factory *ObjectFactory) CreateAccessible(obj *externglib.Object) *ObjectClass {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -107,8 +107,8 @@ func (factory *ObjectFactory) AccessibleType() externglib.Type {
 	return _gType
 }
 
-// Invalidate: inform @factory that it is no longer being used to create
-// accessibles. When called, @factory may need to inform Objects which it has
+// Invalidate: inform factory that it is no longer being used to create
+// accessibles. When called, factory may need to inform Objects which it has
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
 func (factory *ObjectFactory) Invalidate() {

@@ -33,8 +33,8 @@ type IMContextOverrider interface {
 	// delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal.
 	//
-	// Note that @offset and @n_chars are in characters not in bytes which
-	// differs from the usage other places in IMContext.
+	// Note that offset and n_chars are in characters not in bytes which differs
+	// from the usage other places in IMContext.
 	//
 	// In order to use this function, you should first call
 	// gtk_im_context_get_surrounding() to get the current context, and call
@@ -50,7 +50,7 @@ type IMContextOverrider interface {
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	//
-	// If this function returns true, then no further processing should be done
+	// If this function returns TRUE, then no further processing should be done
 	// for this key event.
 	FilterKeypress(event gdk.Eventer) bool
 	// FocusIn: notify the input method that the widget to which this input
@@ -77,17 +77,16 @@ type IMContextOverrider interface {
 	// where only some sequences of characters are allowed.
 	//
 	// This function is implemented by emitting the
-	// [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-	// in response to this signal, a widget should provide as much context as is
+	// gtk.IMContext::retrieve-surrounding signal on the input method; in
+	// response to this signal, a widget should provide as much context as is
 	// available, up to an entire paragraph, by calling
-	// [method@Gtk.IMContext.set_surrounding].
+	// gtk.IMContext.SetSurrounding().
 	//
 	// Note that there is no obligation for a widget to respond to the
-	// `::retrieve-surrounding` signal, so input methods must be prepared to
+	// ::retrieve-surrounding signal, so input methods must be prepared to
 	// function without context.
 	//
-	// Deprecated: Use [method@Gtk.IMContext.get_surrounding_with_selection]
-	// instead.
+	// Deprecated: Use gtk.IMContext.GetSurroundingWithSelection() instead.
 	Surrounding() (string, int, bool)
 	// SurroundingWithSelection retrieves context around the insertion point.
 	//
@@ -96,13 +95,13 @@ type IMContextOverrider interface {
 	// where only some sequences of characters are allowed.
 	//
 	// This function is implemented by emitting the
-	// [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
-	// in response to this signal, a widget should provide as much context as is
+	// gtk.IMContext::retrieve-surrounding signal on the input method; in
+	// response to this signal, a widget should provide as much context as is
 	// available, up to an entire paragraph, by calling
-	// [method@Gtk.IMContext.set_surrounding_with_selection].
+	// gtk.IMContext.SetSurroundingWithSelection().
 	//
 	// Note that there is no obligation for a widget to respond to the
-	// `::retrieve-surrounding` signal, so input methods must be prepared to
+	// ::retrieve-surrounding signal, so input methods must be prepared to
 	// function without context.
 	SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool)
 	PreeditChanged()
@@ -116,7 +115,7 @@ type IMContextOverrider interface {
 	RetrieveSurrounding() bool
 	// SetClientWidget: set the client widget for the input context.
 	//
-	// This is the `GtkWidget` holding the input focus. This widget is used in
+	// This is the GtkWidget holding the input focus. This widget is used in
 	// order to correctly position status windows, and may also be used for
 	// purposes internal to the input method.
 	SetClientWidget(widget Widgeter)
@@ -129,11 +128,10 @@ type IMContextOverrider interface {
 	// preedit string.
 	//
 	// This function is expected to be called in response to the
-	// [signal@Gtk.IMContext::retrieve-surrounding] signal, and will likely have
-	// no effect if called at other times.
+	// gtk.IMContext::retrieve-surrounding signal, and will likely have no
+	// effect if called at other times.
 	//
-	// Deprecated: Use [method@Gtk.IMContext.set_surrounding_with_selection]
-	// instead.
+	// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
 	SetSurrounding(text string, len int, cursorIndex int)
 	// SetSurroundingWithSelection sets surrounding context around the insertion
 	// point and preedit string. This function is expected to be called in
@@ -143,7 +141,7 @@ type IMContextOverrider interface {
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback.
 	//
-	// If @use_preedit is false (default is true), then the IM context may use
+	// If use_preedit is FALSE (default is TRUE), then the IM context may use
 	// some other method to display feedback, such as displaying it in a child
 	// of the root window.
 	SetUsePreedit(usePreedit bool)
@@ -156,8 +154,7 @@ type IMContexter interface {
 	// GtkIMContext::delete_surrounding signal.
 	DeleteSurrounding(offset int, nChars int) bool
 	// FilterKey: allow an input method to forward key press and release events
-	// to another input methodm without necessarily having a `GdkEvent`
-	// available.
+	// to another input methodm without necessarily having a GdkEvent available.
 	FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
@@ -194,34 +191,33 @@ type IMContexter interface {
 	SetUsePreedit(usePreedit bool)
 }
 
-// IMContext: `GtkIMContext` defines the interface for GTK input methods.
+// IMContext: GtkIMContext defines the interface for GTK input methods.
 //
-// `GtkIMContext` is used by GTK text input widgets like `GtkText` to map from
-// key events to Unicode character strings.
+// GtkIMContext is used by GTK text input widgets like GtkText to map from key
+// events to Unicode character strings.
 //
 // By default, GTK uses a platform-dependent default input method. On Windows,
 // the default implementation is IME-based and on Wayland, it is using the
 // Wayland text protocol. The choice can be overridden programmatically via the
-// [property@Gtk.Settings:gtk-im-module] setting. Users may set the
-// `GTK_IM_MODULE` environment variable to override the default.
+// gtk.Settings:gtk-im-module setting. Users may set the GTK_IM_MODULE
+// environment variable to override the default.
 //
-// Text widgets have a :im-module property (e.g.
-// [property@Gtk.TextView:im-module]) that may also be used to set input methods
-// for specific widget instances. For instance, a certain entry widget might be
-// expected to contain certain characters which would be easier to input with a
-// specific input method.
+// Text widgets have a :im-module property (e.g. gtk.TextView:im-module) that
+// may also be used to set input methods for specific widget instances. For
+// instance, a certain entry widget might be expected to contain certain
+// characters which would be easier to input with a specific input method.
 //
 // An input method may consume multiple key events in sequence before finally
 // outputting the composed result. This is called *preediting*, and an input
 // method may provide feedback about this process by displaying the intermediate
 // composition states as preedit text.
 //
-// For instance, the built-in GTK input method `GtkIMContextSimple` implements
-// the input of arbitrary Unicode code points by holding down the
-// <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>U</kbd>
-// followed by the hexadecimal digits of the code point. When releasing the
-// <kbd>Control</kbd> and <kbd>Shift</kbd> keys, preediting ends and the
-// character is inserted as text. For example,
+// For instance, the built-in GTK input method GtkIMContextSimple implements the
+// input of arbitrary Unicode code points by holding down the <kbd>Control</kbd>
+// and <kbd>Shift</kbd> keys and then typing <kbd>U</kbd> followed by the
+// hexadecimal digits of the code point. When releasing the <kbd>Control</kbd>
+// and <kbd>Shift</kbd> keys, preediting ends and the character is inserted as
+// text. For example,
 //
 //    Ctrl+Shift+u 2 0 A C
 //
@@ -229,7 +225,7 @@ type IMContexter interface {
 //
 // Additional input methods can be made available for use by GTK widgets as
 // loadable modules. An input method module is a small shared library which
-// provides a `GIOExtension` for the extension point named "gtk-im-module".
+// provides a GIOExtension for the extension point named "gtk-im-module".
 type IMContext struct {
 	*externglib.Object
 }
@@ -255,7 +251,7 @@ func marshalIMContexter(p uintptr) (interface{}, error) {
 // delete characters around the cursor position by emitting the
 // GtkIMContext::delete_surrounding signal.
 //
-// Note that @offset and @n_chars are in characters not in bytes which differs
+// Note that offset and n_chars are in characters not in bytes which differs
 // from the usage other places in IMContext.
 //
 // In order to use this function, you should first call
@@ -290,7 +286,7 @@ func (context *IMContext) DeleteSurrounding(offset int, nChars int) bool {
 }
 
 // FilterKey: allow an input method to forward key press and release events to
-// another input methodm without necessarily having a `GdkEvent` available.
+// another input methodm without necessarily having a GdkEvent available.
 func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool {
 	var _arg0 *C.GtkIMContext   // out
 	var _arg1 C.gboolean        // out
@@ -327,7 +323,7 @@ func (context *IMContext) FilterKey(press bool, surface gdk.Surfacer, device gdk
 // FilterKeypress: allow an input method to internally handle key press and
 // release events.
 //
-// If this function returns true, then no further processing should be done for
+// If this function returns TRUE, then no further processing should be done for
 // this key event.
 func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 	var _arg0 *C.GtkIMContext // out
@@ -407,17 +403,15 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 // some sequences of characters are allowed.
 //
 // This function is implemented by emitting the
-// [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method; in
-// response to this signal, a widget should provide as much context as is
-// available, up to an entire paragraph, by calling
-// [method@Gtk.IMContext.set_surrounding].
+// gtk.IMContext::retrieve-surrounding signal on the input method; in response
+// to this signal, a widget should provide as much context as is available, up
+// to an entire paragraph, by calling gtk.IMContext.SetSurrounding().
 //
 // Note that there is no obligation for a widget to respond to the
-// `::retrieve-surrounding` signal, so input methods must be prepared to
-// function without context.
+// ::retrieve-surrounding signal, so input methods must be prepared to function
+// without context.
 //
-// Deprecated: Use [method@Gtk.IMContext.get_surrounding_with_selection]
-// instead.
+// Deprecated: Use gtk.IMContext.GetSurroundingWithSelection() instead.
 func (context *IMContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // in
@@ -449,14 +443,14 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 // some sequences of characters are allowed.
 //
 // This function is implemented by emitting the
-// [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method; in
-// response to this signal, a widget should provide as much context as is
-// available, up to an entire paragraph, by calling
-// [method@Gtk.IMContext.set_surrounding_with_selection].
+// gtk.IMContext::retrieve-surrounding signal on the input method; in response
+// to this signal, a widget should provide as much context as is available, up
+// to an entire paragraph, by calling
+// gtk.IMContext.SetSurroundingWithSelection().
 //
 // Note that there is no obligation for a widget to respond to the
-// `::retrieve-surrounding` signal, so input methods must be prepared to
-// function without context.
+// ::retrieve-surrounding signal, so input methods must be prepared to function
+// without context.
 func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // in
@@ -498,7 +492,7 @@ func (context *IMContext) Reset() {
 
 // SetClientWidget: set the client widget for the input context.
 //
-// This is the `GtkWidget` holding the input focus. This widget is used in order
+// This is the GtkWidget holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
 func (context *IMContext) SetClientWidget(widget Widgeter) {
@@ -529,11 +523,10 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 // preedit string.
 //
 // This function is expected to be called in response to the
-// [signal@Gtk.IMContext::retrieve-surrounding] signal, and will likely have no
-// effect if called at other times.
+// gtk.IMContext::retrieve-surrounding signal, and will likely have no effect if
+// called at other times.
 //
-// Deprecated: Use [method@Gtk.IMContext.set_surrounding_with_selection]
-// instead.
+// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
 func (context *IMContext) SetSurrounding(text string, len int, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.char         // out
@@ -571,7 +564,7 @@ func (context *IMContext) SetSurroundingWithSelection(text string, len int, curs
 // SetUsePreedit sets whether the IM context should use the preedit string to
 // display feedback.
 //
-// If @use_preedit is false (default is true), then the IM context may use some
+// If use_preedit is FALSE (default is TRUE), then the IM context may use some
 // other method to display feedback, such as displaying it in a child of the
 // root window.
 func (context *IMContext) SetUsePreedit(usePreedit bool) {

@@ -55,7 +55,7 @@ type Pluger interface {
 //
 // The Plug and Socket widgets are only available when GTK+ is compiled for the
 // X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
-// X11Display. To use Plug and Socket, you need to include the `gtk/gtkx.h`
+// X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
 // header.
 type Plug struct {
 	Window

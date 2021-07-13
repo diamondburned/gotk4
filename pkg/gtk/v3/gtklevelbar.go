@@ -34,8 +34,8 @@ type LevelBarOverrider interface {
 
 // LevelBarer describes LevelBar's methods.
 type LevelBarer interface {
-	// AddOffsetValue adds a new offset marker on @self at the position
-	// specified by @value.
+	// AddOffsetValue adds a new offset marker on self at the position specified
+	// by value.
 	AddOffsetValue(name string, value float64)
 	// Inverted: return the value of the LevelBar:inverted property.
 	Inverted() bool
@@ -45,8 +45,8 @@ type LevelBarer interface {
 	MinValue() float64
 	// Mode returns the value of the LevelBar:mode property.
 	Mode() LevelBarMode
-	// OffsetValue fetches the value specified for the offset marker @name in
-	// @self, returning true in case an offset named @name was found.
+	// OffsetValue fetches the value specified for the offset marker name in
+	// self, returning TRUE in case an offset named name was found.
 	OffsetValue(name string) (float64, bool)
 	// Value returns the value of the LevelBar:value property.
 	Value() float64
@@ -172,12 +172,12 @@ func (v *LevelBar) Native() uintptr {
 	return v.Widget.InitiallyUnowned.Object.Native()
 }
 
-// AddOffsetValue adds a new offset marker on @self at the position specified by
-// @value. When the bar value is in the interval topped by @value (or between
-// @value and LevelBar:max-value in case the offset is the last one on the bar)
-// a style class named `level-`@name will be applied when rendering the level
-// bar fill. If another offset marker named @name exists, its value will be
-// replaced by @value.
+// AddOffsetValue adds a new offset marker on self at the position specified by
+// value. When the bar value is in the interval topped by value (or between
+// value and LevelBar:max-value in case the offset is the last one on the bar) a
+// style class named level-name will be applied when rendering the level bar
+// fill. If another offset marker named name exists, its value will be replaced
+// by value.
 func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
@@ -256,8 +256,8 @@ func (self *LevelBar) Mode() LevelBarMode {
 	return _levelBarMode
 }
 
-// OffsetValue fetches the value specified for the offset marker @name in @self,
-// returning true in case an offset named @name was found.
+// OffsetValue fetches the value specified for the offset marker name in self,
+// returning TRUE in case an offset named name was found.
 func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out

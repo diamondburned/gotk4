@@ -35,8 +35,8 @@ func init() {
 type ZlibCompressorer interface {
 	// FileInfo returns the Compressor:file-info property.
 	FileInfo() *FileInfo
-	// SetFileInfo sets @file_info in @compressor.
-	SetFileInfo(fileInfo FileInfor)
+	// SetFileInfo sets file_info in compressor.
+	SetFileInfo(fileInfo *FileInfo)
 }
 
 // ZlibCompressor: zlib decompression
@@ -100,20 +100,20 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	return _fileInfo
 }
 
-// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
+// SetFileInfo sets file_info in compressor. If non-NULL, and compressor's
 // Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used
 // to set the file name and modification time in the GZIP header of the
 // compressed data.
 //
 // Note: it is an error to call this function while a compression is in
-// progress; it may only be called immediately after creation of @compressor, or
+// progress; it may only be called immediately after creation of compressor, or
 // after resetting it with g_converter_reset().
-func (compressor *ZlibCompressor) SetFileInfo(fileInfo FileInfor) {
+func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
 
 	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(compressor.Native()))
-	_arg1 = (*C.GFileInfo)(unsafe.Pointer((fileInfo).(gextras.Nativer).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
 
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }

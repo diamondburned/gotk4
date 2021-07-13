@@ -103,7 +103,7 @@ type RecentFilterer interface {
 	// AddPixbufFormats adds a rule allowing image files in the formats
 	// supported by GdkPixbuf.
 	AddPixbufFormats()
-	// Filter tests whether a file should be displayed according to @filter.
+	// Filter tests whether a file should be displayed according to filter.
 	Filter(filterInfo *RecentFilterInfo) bool
 	// Name gets the human-readable name for the filter.
 	Name() string
@@ -289,10 +289,10 @@ func (filter *RecentFilter) AddPixbufFormats() {
 	C.gtk_recent_filter_add_pixbuf_formats(_arg0)
 }
 
-// Filter tests whether a file should be displayed according to @filter. The
-// RecentFilterInfo @filter_info should include the fields returned from
+// Filter tests whether a file should be displayed according to filter. The
+// RecentFilterInfo filter_info should include the fields returned from
 // gtk_recent_filter_get_needed(), and must set the RecentFilterInfo.contains
-// field of @filter_info to indicate which fields have been set.
+// field of filter_info to indicate which fields have been set.
 //
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.

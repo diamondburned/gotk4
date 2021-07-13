@@ -257,9 +257,9 @@ const (
 	// (Since: 1.1.1)
 	RoleRuler
 	// Application: object is an application object, which may contain
-	// @ATK_ROLE_FRAME objects or other types of accessibles. The root
-	// accessible of any application's ATK hierarchy should have
-	// ATK_ROLE_APPLICATION. (Since: 1.1.4)
+	// ATK_ROLE_FRAME objects or other types of accessibles. The root accessible
+	// of any application's ATK hierarchy should have ATK_ROLE_APPLICATION.
+	// (Since: 1.1.4)
 	RoleApplication
 	// Autocomplete: object is a dialog or list containing items for insertion
 	// into an entry widget, for instance a list of words for completion of a
@@ -272,7 +272,7 @@ const (
 	// share a context. (Since: 1.7.2)
 	RoleEmbedded
 	// Entry: object is a component whose textual content may be entered or
-	// modified by the user, provided @ATK_STATE_EDITABLE is present. (Since:
+	// modified by the user, provided ATK_STATE_EDITABLE is present. (Since:
 	// 1.11)
 	RoleEntry
 	// Chart: object is a graphical depiction of quantitative data. It may
@@ -298,8 +298,8 @@ const (
 	// obtained by querying the object's attributes.
 	RoleHeading
 	// Page: object is a containing instance which encapsulates a page of
-	// information. @ATK_ROLE_PAGE is used in documents and content which
-	// support a paginated navigation model. (Since: 1.11)
+	// information. ATK_ROLE_PAGE is used in documents and content which support
+	// a paginated navigation model. (Since: 1.11)
 	RolePage
 	// Section: object is a containing instance of document content which
 	// constitutes a particular 'logical' section of the document. The type of
@@ -501,7 +501,7 @@ func RoleForName(name string) Role {
 }
 
 // RoleGetLocalizedName gets the localized description string describing the
-// Role @role.
+// Role role.
 func RoleGetLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -517,7 +517,7 @@ func RoleGetLocalizedName(role Role) string {
 	return _utf8
 }
 
-// RoleGetName gets the description string describing the Role @role.
+// RoleGetName gets the description string describing the Role role.
 func RoleGetName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -533,8 +533,8 @@ func RoleGetName(role Role) string {
 	return _utf8
 }
 
-// RoleRegister registers the role specified by @name. @name must be a
-// meaningful name. So it should not be empty, or consisting on whitespaces.
+// RoleRegister registers the role specified by name. name must be a meaningful
+// name. So it should not be empty, or consisting on whitespaces.
 //
 // Deprecated: Since 2.12. If your application/toolkit doesn't find a suitable
 // role for a specific object defined at Role, please submit a bug in order to
@@ -627,16 +627,16 @@ type ObjectClassOverrider interface {
 	//
 	// Deprecated: Use atk_component_get_layer instead.
 	Layer() Layer
-	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
+	// MDIZorder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
-	MDIZOrder() int
+	MDIZorder() int
 	NChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-	// locale of @accessible.
+	// locale of accessible.
 	ObjectLocale() string
 	// Parent gets the accessible parent of the accessible. By default this is
 	// the one assigned with atk_object_set_parent(), but it is assumed that ATK
@@ -674,9 +674,9 @@ type ObjectClassOverrider interface {
 	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
 	// value you can use "".
 	SetName(name string)
-	// SetParent sets the accessible parent of the accessible. @parent can be
+	// SetParent sets the accessible parent of the accessible. parent can be
 	// NULL.
-	SetParent(parent ObjectClasser)
+	SetParent(parent *ObjectClass)
 	// SetRole sets the role of the accessible.
 	SetRole(role Role)
 	StateChange(name string, stateSet bool)
@@ -687,7 +687,7 @@ type ObjectClassOverrider interface {
 type ObjectClasser interface {
 	// AddRelationship adds a relationship of the specified type with the
 	// specified target.
-	AddRelationship(relationship RelationType, target ObjectClasser) bool
+	AddRelationship(relationship RelationType, target *ObjectClass) bool
 	// AccessibleID gets the accessible id of the accessible.
 	AccessibleID() string
 	// Description gets the accessible description of the accessible.
@@ -697,15 +697,15 @@ type ObjectClasser interface {
 	IndexInParent() int
 	// Layer gets the layer of the accessible.
 	Layer() Layer
-	// MDIZOrder gets the zorder of the accessible.
-	MDIZOrder() int
+	// MDIZorder gets the zorder of the accessible.
+	MDIZorder() int
 	// NAccessibleChildren gets the number of accessible children of the
 	// accessible.
 	NAccessibleChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-	// locale of @accessible.
+	// locale of accessible.
 	ObjectLocale() string
 	// Parent gets the accessible parent of the accessible.
 	Parent() *ObjectClass
@@ -729,7 +729,7 @@ type ObjectClasser interface {
 	RemovePropertyChangeHandler(handlerId uint)
 	// RemoveRelationship removes a relationship of the specified type with the
 	// specified target.
-	RemoveRelationship(relationship RelationType, target ObjectClasser) bool
+	RemoveRelationship(relationship RelationType, target *ObjectClass) bool
 	// SetAccessibleID sets the accessible ID of the accessible.
 	SetAccessibleID(name string)
 	// SetDescription sets the accessible description of the accessible.
@@ -737,7 +737,7 @@ type ObjectClasser interface {
 	// SetName sets the accessible name of the accessible.
 	SetName(name string)
 	// SetParent sets the accessible parent of the accessible.
-	SetParent(parent ObjectClasser)
+	SetParent(parent *ObjectClass)
 	// SetRole sets the role of the accessible.
 	SetRole(role Role)
 }
@@ -781,7 +781,7 @@ func marshalObjectClasser(p uintptr) (interface{}, error) {
 
 // AddRelationship adds a relationship of the specified type with the specified
 // target.
-func (object *ObjectClass) AddRelationship(relationship RelationType, target ObjectClasser) bool {
+func (object *ObjectClass) AddRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -789,7 +789,7 @@ func (object *ObjectClass) AddRelationship(relationship RelationType, target Obj
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
 
@@ -869,11 +869,11 @@ func (accessible *ObjectClass) Layer() Layer {
 	return _layer
 }
 
-// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
+// MDIZorder gets the zorder of the accessible. The value G_MININT will be
 // returned if the layer of the accessible is not ATK_LAYER_MDI.
 //
 // Deprecated: Use atk_component_get_mdi_zorder instead.
-func (accessible *ObjectClass) MDIZOrder() int {
+func (accessible *ObjectClass) MDIZorder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -921,7 +921,7 @@ func (accessible *ObjectClass) Name() string {
 }
 
 // ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-// locale of @accessible.
+// locale of accessible.
 func (accessible *ObjectClass) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -992,7 +992,7 @@ func (accessible *ObjectClass) Initialize(data cgo.Handle) {
 
 // PeekParent gets the accessible parent of the accessible, if it has been
 // manually assigned with atk_object_set_parent. Otherwise, this function
-// returns nil.
+// returns NULL.
 //
 // This method is intended as an utility for ATK implementors, and not to be
 // exposed to accessible tools. See atk_object_get_parent() for further
@@ -1080,7 +1080,7 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 
 // RemoveRelationship removes a relationship of the specified type with the
 // specified target.
-func (object *ObjectClass) RemoveRelationship(relationship RelationType, target ObjectClasser) bool {
+func (object *ObjectClass) RemoveRelationship(relationship RelationType, target *ObjectClass) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -1088,7 +1088,7 @@ func (object *ObjectClass) RemoveRelationship(relationship RelationType, target 
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(object.Native()))
 	_arg1 = C.AtkRelationType(relationship)
-	_arg2 = (*C.AtkObject)(unsafe.Pointer((target).(gextras.Nativer).Native()))
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(target.Native()))
 
 	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
 
@@ -1144,13 +1144,13 @@ func (accessible *ObjectClass) SetName(name string) {
 	C.atk_object_set_name(_arg0, _arg1)
 }
 
-// SetParent sets the accessible parent of the accessible. @parent can be NULL.
-func (accessible *ObjectClass) SetParent(parent ObjectClasser) {
+// SetParent sets the accessible parent of the accessible. parent can be NULL.
+func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(accessible.Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(parent.Native()))
 
 	C.atk_object_set_parent(_arg0, _arg1)
 }
@@ -1186,7 +1186,7 @@ func (a *Attribute) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
-// PropertyValues: note: @old_value field of PropertyValues will not contain a
+// PropertyValues: note: old_value field of PropertyValues will not contain a
 // valid value. This is a field defined with the purpose of contain the previous
 // value of the property, but is not used anymore.
 type PropertyValues struct {

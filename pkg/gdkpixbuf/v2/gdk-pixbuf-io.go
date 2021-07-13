@@ -41,7 +41,7 @@ const (
 )
 
 // PixbufModulePreparedFunc defines the type of the function that gets called
-// once the initial setup of @pixbuf is done.
+// once the initial setup of pixbuf is done.
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
@@ -69,13 +69,13 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 // PixbufModuleSizeFunc defines the type of the function that gets called once
 // the size of the loaded image is known.
 //
-// The function is expected to set @width and @height to the desired size to
-// which the image should be scaled. If a module has no efficient way to achieve
-// the desired scaling during the loading of the image, it may either ignore the
+// The function is expected to set width and height to the desired size to which
+// the image should be scaled. If a module has no efficient way to achieve the
+// desired scaling during the loading of the image, it may either ignore the
 // size request, or only approximate it - gdk-pixbuf will then perform the
 // required scaling on the completely loaded image.
 //
-// If the function sets @width or @height to zero, the module should interpret
+// If the function sets width or height to zero, the module should interpret
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
@@ -101,7 +101,7 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 }
 
 // PixbufModuleUpdatedFunc defines the type of the function that gets called
-// every time a region of @pixbuf is updated.
+// every time a region of pixbuf is updated.
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
@@ -182,7 +182,7 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height i
 }
 
 // PixbufInitModules initalizes the gdk-pixbuf loader modules referenced by the
-// `loaders.cache` file present inside that directory.
+// loaders.cache file present inside that directory.
 //
 // This is to be used by applications that want to ship certain loaders in a
 // different location from the system ones.
@@ -208,11 +208,11 @@ func PixbufInitModules(path string) error {
 	return _goerr
 }
 
-// PixbufFormat: `GdkPixbufFormat` contains information about the image format
+// PixbufFormat: GdkPixbufFormat contains information about the image format
 // accepted by a module.
 //
 // Only modules should access the fields directly, applications should use the
-// `gdk_pixbuf_format_*` family of functions.
+// gdk_pixbuf_format_* family of functions.
 type PixbufFormat struct {
 	native C.GdkPixbufFormat
 }
@@ -227,7 +227,7 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Copy creates a copy of `format`.
+// Copy creates a copy of format.
 func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.GdkPixbufFormat // in
@@ -246,7 +246,7 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 	return _pixbufFormat
 }
 
-// Free frees the resources allocated when copying a `GdkPixbufFormat` using
+// Free frees the resources allocated when copying a GdkPixbufFormat using
 // gdk_pixbuf_format_copy()
 func (format *PixbufFormat) free() {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -388,9 +388,8 @@ func (format *PixbufFormat) IsDisabled() bool {
 	return _ok
 }
 
-// IsSaveOptionSupported returns `TRUE` if the save option specified by
-// @option_key is supported when saving a pixbuf using the module implementing
-// @format.
+// IsSaveOptionSupported returns TRUE if the save option specified by option_key
+// is supported when saving a pixbuf using the module implementing format.
 //
 // See gdk_pixbuf_save() for more information about option keys.
 func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {

@@ -46,8 +46,8 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 type ContentDeserializerer interface {
 	// Cancellable gets the cancellable for the current operation.
 	Cancellable() *gio.Cancellable
-	// GType gets the GType to create an instance of.
-	GType() externglib.Type
+	// Gtype gets the GType to create an instance of.
+	Gtype() externglib.Type
 	// InputStream gets the input stream for the current operation.
 	InputStream() *gio.InputStream
 	// MIMEType gets the mime type to deserialize from.
@@ -59,7 +59,7 @@ type ContentDeserializerer interface {
 	// UserData gets the user data that was passed when the deserializer was
 	// registered.
 	UserData() cgo.Handle
-	// Value gets the `GValue` to store the deserialized object in.
+	// Value gets the GValue to store the deserialized object in.
 	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	ReturnError(err error)
@@ -68,17 +68,17 @@ type ContentDeserializerer interface {
 	ReturnSuccess()
 }
 
-// ContentDeserializer: `GdkContentDeserializer` is used to deserialize content
+// ContentDeserializer: GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
 //
-// The `GdkContentDeserializer` transforms serialized content that is identified
+// The GdkContentDeserializer transforms serialized content that is identified
 // by a mime type into an object identified by a GType.
 //
 // GTK provides serializers and deserializers for common data types such as
 // text, colors, images or file lists. To register your own deserialization
-// functions, use [func@content_register_deserializer].
+// functions, use content_register_deserializer.
 //
-// Also see [class@Gdk.ContentSerializer].
+// Also see gdk.ContentSerializer.
 type ContentDeserializer struct {
 	*externglib.Object
 
@@ -107,8 +107,7 @@ func marshalContentDeserializerer(p uintptr) (interface{}, error) {
 
 // Cancellable gets the cancellable for the current operation.
 //
-// This is the `GCancellable` that was passed to
-// [func@content_deserialize_async].
+// This is the GCancellable that was passed to content_deserialize_async.
 func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GCancellable           // in
@@ -129,8 +128,8 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	return _cancellable
 }
 
-// GType gets the GType to create an instance of.
-func (deserializer *ContentDeserializer) GType() externglib.Type {
+// Gtype gets the GType to create an instance of.
+func (deserializer *ContentDeserializer) Gtype() externglib.Type {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.GType                   // in
 
@@ -147,7 +146,7 @@ func (deserializer *ContentDeserializer) GType() externglib.Type {
 
 // InputStream gets the input stream for the current operation.
 //
-// This is the stream that was passed to [func@content_deserialize_async].
+// This is the stream that was passed to content_deserialize_async.
 func (deserializer *ContentDeserializer) InputStream() *gio.InputStream {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GInputStream           // in
@@ -204,7 +203,7 @@ func (deserializer *ContentDeserializer) Priority() int {
 
 // TaskData gets the data that was associated with the current operation.
 //
-// See [method@Gdk.ContentDeserializer.set_task_data].
+// See gdk.ContentDeserializer.SetTaskData().
 func (deserializer *ContentDeserializer) TaskData() cgo.Handle {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.gpointer                // in
@@ -237,7 +236,7 @@ func (deserializer *ContentDeserializer) UserData() cgo.Handle {
 	return _gpointer
 }
 
-// Value gets the `GValue` to store the deserialized object in.
+// Value gets the GValue to store the deserialized object in.
 func (deserializer *ContentDeserializer) Value() *externglib.Value {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GValue                 // in
@@ -255,7 +254,7 @@ func (deserializer *ContentDeserializer) Value() *externglib.Value {
 
 // ReturnError: indicate that the deserialization has ended with an error.
 //
-// This function consumes @error.
+// This function consumes error.
 func (deserializer *ContentDeserializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _arg1 *C.GError                 // out

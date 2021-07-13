@@ -39,8 +39,8 @@ type ToolShellOverrider interface {
 	// items must not call this function directly, but rely on
 	// gtk_tool_item_get_orientation() instead.
 	Orientation() Orientation
-	// ReliefStyle returns the relief style of buttons on @shell. Tool items
-	// must not call this function directly, but rely on
+	// ReliefStyle returns the relief style of buttons on shell. Tool items must
+	// not call this function directly, but rely on
 	// gtk_tool_item_get_relief_style() instead.
 	ReliefStyle() ReliefStyle
 	// Style retrieves whether the tool shell has text, icons, or both. Tool
@@ -77,7 +77,7 @@ type ToolSheller interface {
 	IconSize() int
 	// Orientation retrieves the current orientation for the tool shell.
 	Orientation() Orientation
-	// ReliefStyle returns the relief style of buttons on @shell.
+	// ReliefStyle returns the relief style of buttons on shell.
 	ReliefStyle() ReliefStyle
 	// Style retrieves whether the tool shell has text, icons, or both.
 	Style() ToolbarStyle
@@ -179,8 +179,8 @@ func (shell *ToolShell) Orientation() Orientation {
 	return _orientation
 }
 
-// ReliefStyle returns the relief style of buttons on @shell. Tool items must
-// not call this function directly, but rely on gtk_tool_item_get_relief_style()
+// ReliefStyle returns the relief style of buttons on shell. Tool items must not
+// call this function directly, but rely on gtk_tool_item_get_relief_style()
 // instead.
 func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolShell  // out

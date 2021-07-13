@@ -25,10 +25,10 @@ func init() {
 // EventControllerer describes EventController's methods.
 type EventControllerer interface {
 	// CurrentEvent returns the event that is currently being handled by the
-	// controller, and nil at other times.
+	// controller, and NULL at other times.
 	CurrentEvent() *gdk.Event
 	// CurrentEventDevice returns the device of the event that is currently
-	// being handled by the controller, and nil otherwise.
+	// being handled by the controller, and NULL otherwise.
 	CurrentEventDevice() *gdk.Device
 	// CurrentEventState returns the modifier state of the event that is
 	// currently being handled by the controller, and 0 otherwise.
@@ -36,16 +36,16 @@ type EventControllerer interface {
 	// CurrentEventTime returns the timestamp of the event that is currently
 	// being handled by the controller, and 0 otherwise.
 	CurrentEventTime() uint32
-	// Name gets the name of @controller.
+	// Name gets the name of controller.
 	Name() string
 	// PropagationLimit gets the propagation limit of the event controller.
 	PropagationLimit() PropagationLimit
-	// PropagationPhase gets the propagation phase at which @controller handles
+	// PropagationPhase gets the propagation phase at which controller handles
 	// events.
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
 	Widget() *Widget
-	// Reset resets the @controller to a clean state.
+	// Reset resets the controller to a clean state.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
 	SetName(name string)
@@ -57,15 +57,14 @@ type EventControllerer interface {
 	SetPropagationPhase(phase PropagationPhase)
 }
 
-// EventController: `GtkEventController` is the base class for event
-// controllers.
+// EventController: GtkEventController is the base class for event controllers.
 //
-// These are ancillary objects associated to widgets, which react to
-// `GdkEvents`, and possibly trigger actions as a consequence.
+// These are ancillary objects associated to widgets, which react to GdkEvents,
+// and possibly trigger actions as a consequence.
 //
-// Event controllers are added to a widget with
-// [method@Gtk.Widget.add_controller]. It is rarely necessary to explicitly
-// remove a controller with [method@Gtk.Widget.remove_controller].
+// Event controllers are added to a widget with gtk.Widget.AddController(). It
+// is rarely necessary to explicitly remove a controller with
+// gtk.Widget.RemoveController().
 //
 // See the chapter of input handling (input-handling.html) for an overview of
 // the basic concepts, such as the capture and bubble phases of even
@@ -92,7 +91,7 @@ func marshalEventControllerer(p uintptr) (interface{}, error) {
 }
 
 // CurrentEvent returns the event that is currently being handled by the
-// controller, and nil at other times.
+// controller, and NULL at other times.
 func (controller *EventController) CurrentEvent() *gdk.Event {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
@@ -114,7 +113,7 @@ func (controller *EventController) CurrentEvent() *gdk.Event {
 }
 
 // CurrentEventDevice returns the device of the event that is currently being
-// handled by the controller, and nil otherwise.
+// handled by the controller, and NULL otherwise.
 func (controller *EventController) CurrentEventDevice() *gdk.Device {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
@@ -169,7 +168,7 @@ func (controller *EventController) CurrentEventTime() uint32 {
 	return _guint32
 }
 
-// Name gets the name of @controller.
+// Name gets the name of controller.
 func (controller *EventController) Name() string {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.char               // in
@@ -201,7 +200,7 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 	return _propagationLimit
 }
 
-// PropagationPhase gets the propagation phase at which @controller handles
+// PropagationPhase gets the propagation phase at which controller handles
 // events.
 func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
@@ -234,7 +233,7 @@ func (controller *EventController) Widget() *Widget {
 	return _widget
 }
 
-// Reset resets the @controller to a clean state.
+// Reset resets the controller to a clean state.
 func (controller *EventController) Reset() {
 	var _arg0 *C.GtkEventController // out
 
@@ -271,7 +270,7 @@ func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 // SetPropagationPhase sets the propagation phase at which a controller handles
 // events.
 //
-// If @phase is GTK_PHASE_NONE, no automatic event handling will be performed,
+// If phase is GTK_PHASE_NONE, no automatic event handling will be performed,
 // but other additional gesture maintenance will.
 func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out

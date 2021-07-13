@@ -37,15 +37,15 @@ type GLAreaOverrider interface {
 
 // GLAreaer describes GLArea's methods.
 type GLAreaer interface {
-	// AttachBuffers ensures that the @area framebuffer object is made the
+	// AttachBuffers ensures that the area framebuffer object is made the
 	// current draw and read target, and that all the required buffers for the
-	// @area are created and bound to the frambuffer.
+	// area are created and bound to the frambuffer.
 	AttachBuffers()
 	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
-	// Context retrieves the GLContext used by @area.
+	// Context retrieves the GLContext used by area.
 	Context() *gdk.GLContext
-	// Error gets the current error set on the @area.
+	// Error gets the current error set on the area.
 	Error() error
 	// HasAlpha returns whether the area has an alpha component.
 	HasAlpha() bool
@@ -58,33 +58,33 @@ type GLAreaer interface {
 	RequiredVersion() (major int, minor int)
 	// UseES retrieves the value set by gtk_gl_area_set_use_es().
 	UseES() bool
-	// MakeCurrent ensures that the GLContext used by @area is associated with
+	// MakeCurrent ensures that the GLContext used by area is associated with
 	// the GLArea.
 	MakeCurrent()
 	// QueueRender marks the currently rendered data (if any) as invalid, and
 	// queues a redraw of the widget, ensuring that the GLArea::render signal is
 	// emitted during the draw.
 	QueueRender()
-	// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+	// SetAutoRender: if auto_render is TRUE the GLArea::render signal will be
 	// emitted every time the widget draws.
 	SetAutoRender(autoRender bool)
 	// SetError sets an error on the area which will be shown instead of the GL
 	// rendering.
 	SetError(err error)
-	// SetHasAlpha: if @has_alpha is true the buffer allocated by the widget
-	// will have an alpha channel component, and when rendering to the window
-	// the result will be composited over whatever is below the widget.
+	// SetHasAlpha: if has_alpha is TRUE the buffer allocated by the widget will
+	// have an alpha channel component, and when rendering to the window the
+	// result will be composited over whatever is below the widget.
 	SetHasAlpha(hasAlpha bool)
-	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
+	// SetHasDepthBuffer: if has_depth_buffer is TRUE the widget will allocate
 	// and enable a depth buffer for the target framebuffer.
 	SetHasDepthBuffer(hasDepthBuffer bool)
-	// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will
+	// SetHasStencilBuffer: if has_stencil_buffer is TRUE the widget will
 	// allocate and enable a stencil buffer for the target framebuffer.
 	SetHasStencilBuffer(hasStencilBuffer bool)
 	// SetRequiredVersion sets the required version of OpenGL to be used when
 	// creating the context for the widget.
 	SetRequiredVersion(major int, minor int)
-	// SetUseES sets whether the @area should create an OpenGL or an OpenGL ES
+	// SetUseES sets whether the area should create an OpenGL or an OpenGL ES
 	// context.
 	SetUseES(useEs bool)
 }
@@ -97,7 +97,7 @@ type GLAreaer interface {
 // rendering.
 //
 // In order to draw, you have to connect to the GLArea::render signal, or
-// subclass GLArea and override the @GtkGLAreaClass.render() virtual function.
+// subclass GLArea and override the GtkGLAreaClass.render() virtual function.
 //
 // The GLArea widget ensures that the GLContext is associated with the widget's
 // drawing area, and it is kept updated when the size and position of the
@@ -188,8 +188,8 @@ func NewGLArea() *GLArea {
 	return _glArea
 }
 
-// AttachBuffers ensures that the @area framebuffer object is made the current
-// draw and read target, and that all the required buffers for the @area are
+// AttachBuffers ensures that the area framebuffer object is made the current
+// draw and read target, and that all the required buffers for the area are
 // created and bound to the frambuffer.
 //
 // This function is automatically called before emitting the GLArea::render
@@ -220,7 +220,7 @@ func (area *GLArea) AutoRender() bool {
 	return _ok
 }
 
-// Context retrieves the GLContext used by @area.
+// Context retrieves the GLContext used by area.
 func (area *GLArea) Context() *gdk.GLContext {
 	var _arg0 *C.GtkGLArea    // out
 	var _cret *C.GdkGLContext // in
@@ -241,7 +241,7 @@ func (area *GLArea) Context() *gdk.GLContext {
 	return _glContext
 }
 
-// Error gets the current error set on the @area.
+// Error gets the current error set on the area.
 func (area *GLArea) Error() error {
 	var _arg0 *C.GtkGLArea // out
 	var _cret *C.GError    // in
@@ -349,7 +349,7 @@ func (area *GLArea) UseES() bool {
 	return _ok
 }
 
-// MakeCurrent ensures that the GLContext used by @area is associated with the
+// MakeCurrent ensures that the GLContext used by area is associated with the
 // GLArea.
 //
 // This function is automatically called before emitting the GLArea::render
@@ -367,7 +367,7 @@ func (area *GLArea) MakeCurrent() {
 // during the draw.
 //
 // This is only needed when the gtk_gl_area_set_auto_render() has been called
-// with a false value. The default behaviour is to emit GLArea::render on each
+// with a FALSE value. The default behaviour is to emit GLArea::render on each
 // draw.
 func (area *GLArea) QueueRender() {
 	var _arg0 *C.GtkGLArea // out
@@ -377,11 +377,11 @@ func (area *GLArea) QueueRender() {
 	C.gtk_gl_area_queue_render(_arg0)
 }
 
-// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+// SetAutoRender: if auto_render is TRUE the GLArea::render signal will be
 // emitted every time the widget draws. This is the default and is useful if
 // drawing the widget is faster.
 //
-// If @auto_render is false the data from previous rendering is kept around and
+// If auto_render is FALSE the data from previous rendering is kept around and
 // will be used for drawing the widget the next time, unless the window is
 // resized. In order to force a rendering gtk_gl_area_queue_render() must be
 // called. This mode is useful when the scene changes seldomly, but takes a long
@@ -411,11 +411,11 @@ func (area *GLArea) SetError(err error) {
 	C.gtk_gl_area_set_error(_arg0, _arg1)
 }
 
-// SetHasAlpha: if @has_alpha is true the buffer allocated by the widget will
+// SetHasAlpha: if has_alpha is TRUE the buffer allocated by the widget will
 // have an alpha channel component, and when rendering to the window the result
 // will be composited over whatever is below the widget.
 //
-// If @has_alpha is false there will be no alpha channel, and the buffer will
+// If has_alpha is FALSE there will be no alpha channel, and the buffer will
 // fully replace anything below the widget.
 func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -429,7 +429,7 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	C.gtk_gl_area_set_has_alpha(_arg0, _arg1)
 }
 
-// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate and
+// SetHasDepthBuffer: if has_depth_buffer is TRUE the widget will allocate and
 // enable a depth buffer for the target framebuffer. Otherwise there will be
 // none.
 func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
@@ -444,7 +444,7 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	C.gtk_gl_area_set_has_depth_buffer(_arg0, _arg1)
 }
 
-// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will allocate
+// SetHasStencilBuffer: if has_stencil_buffer is TRUE the widget will allocate
 // and enable a stencil buffer for the target framebuffer. Otherwise there will
 // be none.
 func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
@@ -475,7 +475,7 @@ func (area *GLArea) SetRequiredVersion(major int, minor int) {
 	C.gtk_gl_area_set_required_version(_arg0, _arg1, _arg2)
 }
 
-// SetUseES sets whether the @area should create an OpenGL or an OpenGL ES
+// SetUseES sets whether the area should create an OpenGL or an OpenGL ES
 // context.
 //
 // You should check the capabilities of the GLContext before drawing with either

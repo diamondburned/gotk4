@@ -26,7 +26,7 @@ func init() {
 
 // Biner describes Bin's methods.
 type Biner interface {
-	// Child gets the child of the Bin, or nil if the bin contains no child
+	// Child gets the child of the Bin, or NULL if the bin contains no child
 	// widget.
 	Child() *Widget
 }
@@ -70,7 +70,7 @@ func marshalBiner(p uintptr) (interface{}, error) {
 	return wrapBin(obj), nil
 }
 
-// Child gets the child of the Bin, or nil if the bin contains no child widget.
+// Child gets the child of the Bin, or NULL if the bin contains no child widget.
 // The returned widget does not have a reference added, so you do not need to
 // unref it.
 func (bin *Bin) Child() *Widget {

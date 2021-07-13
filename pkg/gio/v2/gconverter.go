@@ -39,8 +39,8 @@ func init() {
 type ConverterOverrider interface {
 	// Convert: this is the main operation used when converting data. It is to
 	// be called multiple times in a loop, and each time it will do some work,
-	// i.e. producing some output (in @outbuf) or consuming some input (from
-	// @inbuf) or both. If its not possible to do any work an error is returned.
+	// i.e. producing some output (in outbuf) or consuming some input (from
+	// inbuf) or both. If its not possible to do any work an error is returned.
 	//
 	// Note that a single call may not consume all input (or any input at all).
 	// Also a call may produce output even if given no input, due to state
@@ -52,7 +52,7 @@ type ConverterOverrider interface {
 	//
 	// A full conversion loop involves calling this method repeatedly, each time
 	// giving it new input and space output space. When there is no more input
-	// data after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be
+	// data after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be
 	// set. The loop will be (unless some error happens) returning
 	// G_CONVERTER_CONVERTED each time until all data is consumed and all output
 	// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
@@ -61,27 +61,26 @@ type ConverterOverrider interface {
 	// is detectable from the data (and there might even be other data after the
 	// end of the compressed data).
 	//
-	// When some data has successfully been converted @bytes_read and is set to
-	// the number of bytes read from @inbuf, and @bytes_written is set to
-	// indicate how many bytes was written to @outbuf. If there are more data to
-	// output or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified)
-	// then G_CONVERTER_CONVERTED is returned, and if no more data is to be
-	// output then G_CONVERTER_FINISHED is returned.
+	// When some data has successfully been converted bytes_read and is set to
+	// the number of bytes read from inbuf, and bytes_written is set to indicate
+	// how many bytes was written to outbuf. If there are more data to output or
+	// consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
+	// G_CONVERTER_CONVERTED is returned, and if no more data is to be output
+	// then G_CONVERTER_FINISHED is returned.
 	//
-	// On error G_CONVERTER_ERROR is returned and @error is set accordingly.
-	// Some errors need special handling:
+	// On error G_CONVERTER_ERROR is returned and error is set accordingly. Some
+	// errors need special handling:
 	//
 	// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
 	// resulting converted data, the application should call the function again
-	// with a larger @outbuf to continue.
+	// with a larger outbuf to continue.
 	//
 	// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to
 	// fully determine what the conversion should produce, and the
 	// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
 	// an incomplete multibyte sequence when converting text, or when a regexp
 	// matches up to the end of the input (and may match further input). It may
-	// also happen when @inbuf_size is zero and there is no more data to
-	// produce.
+	// also happen when inbuf_size is zero and there is no more data to produce.
 	//
 	// When this happens the application should read more input and then call
 	// the function again. If further input shows that there is no more data
@@ -162,7 +161,7 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 
 // Convert: this is the main operation used when converting data. It is to be
 // called multiple times in a loop, and each time it will do some work, i.e.
-// producing some output (in @outbuf) or consuming some input (from @inbuf) or
+// producing some output (in outbuf) or consuming some input (from inbuf) or
 // both. If its not possible to do any work an error is returned.
 //
 // Note that a single call may not consume all input (or any input at all). Also
@@ -175,7 +174,7 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 //
 // A full conversion loop involves calling this method repeatedly, each time
 // giving it new input and space output space. When there is no more input data
-// after the data in @inbuf, the flag G_CONVERTER_INPUT_AT_END must be set. The
+// after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be set. The
 // loop will be (unless some error happens) returning G_CONVERTER_CONVERTED each
 // time until all data is consumed and all output is produced, then
 // G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED may
@@ -183,26 +182,26 @@ func marshalConverterer(p uintptr) (interface{}, error) {
 // decompression converter where the end of data is detectable from the data
 // (and there might even be other data after the end of the compressed data).
 //
-// When some data has successfully been converted @bytes_read and is set to the
-// number of bytes read from @inbuf, and @bytes_written is set to indicate how
-// many bytes was written to @outbuf. If there are more data to output or
-// consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
+// When some data has successfully been converted bytes_read and is set to the
+// number of bytes read from inbuf, and bytes_written is set to indicate how
+// many bytes was written to outbuf. If there are more data to output or consume
+// (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
 // G_CONVERTER_CONVERTED is returned, and if no more data is to be output then
 // G_CONVERTER_FINISHED is returned.
 //
-// On error G_CONVERTER_ERROR is returned and @error is set accordingly. Some
+// On error G_CONVERTER_ERROR is returned and error is set accordingly. Some
 // errors need special handling:
 //
 // G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
 // resulting converted data, the application should call the function again with
-// a larger @outbuf to continue.
+// a larger outbuf to continue.
 //
 // G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to fully
 // determine what the conversion should produce, and the
 // G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with an
 // incomplete multibyte sequence when converting text, or when a regexp matches
 // up to the end of the input (and may match further input). It may also happen
-// when @inbuf_size is zero and there is no more data to produce.
+// when inbuf_size is zero and there is no more data to produce.
 //
 // When this happens the application should read more input and then call the
 // function again. If further input shows that there is no more data call the

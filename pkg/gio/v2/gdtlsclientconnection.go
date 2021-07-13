@@ -34,16 +34,16 @@ func init() {
 
 // DTLSClientConnectioner describes DTLSClientConnection's methods.
 type DTLSClientConnectioner interface {
-	// ServerIdentity gets @conn's expected server identity
+	// ServerIdentity gets conn's expected server identity
 	ServerIdentity() *SocketConnectable
-	// ValidationFlags gets @conn's validation flags
+	// ValidationFlags gets conn's validation flags
 	ValidationFlags() TLSCertificateFlags
-	// SetServerIdentity sets @conn's expected server identity, which is used
+	// SetServerIdentity sets conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
-	// also to let @conn know what name to look for in the certificate when
+	// also to let conn know what name to look for in the certificate when
 	// performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 	SetServerIdentity(identity SocketConnectabler)
-	// SetValidationFlags sets @conn's validation flags, to override the default
+	// SetValidationFlags sets conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate.
 	SetValidationFlags(flags TLSCertificateFlags)
 }
@@ -75,7 +75,7 @@ func marshalDTLSClientConnectioner(p uintptr) (interface{}, error) {
 	return wrapDTLSClientConnection(obj), nil
 }
 
-// ServerIdentity gets @conn's expected server identity
+// ServerIdentity gets conn's expected server identity
 func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
@@ -91,7 +91,7 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	return _socketConnectable
 }
 
-// ValidationFlags gets @conn's validation flags
+// ValidationFlags gets conn's validation flags
 func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
@@ -107,9 +107,9 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetServerIdentity sets @conn's expected server identity, which is used both
-// to tell servers on virtual hosts which certificate to present, and also to
-// let @conn know what name to look for in the certificate when performing
+// SetServerIdentity sets conn's expected server identity, which is used both to
+// tell servers on virtual hosts which certificate to present, and also to let
+// conn know what name to look for in the certificate when performing
 // G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GDtlsClientConnection // out
@@ -121,7 +121,7 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }
 
-// SetValidationFlags sets @conn's validation flags, to override the default set
+// SetValidationFlags sets conn's validation flags, to override the default set
 // of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
@@ -134,9 +134,9 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
 }
 
-// NewDTLSClientConnection creates a new ClientConnection wrapping @base_socket
+// NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
 // which is assumed to communicate with the server identified by
-// @server_identity.
+// server_identity.
 func DtlsClientConnectionNew(baseSocket DatagramBaseder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out

@@ -55,7 +55,7 @@ func (q *Quaternion) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
 }
 
-// Add adds two #graphene_quaternion_t @a and @b.
+// Add adds two #graphene_quaternion_t a and b.
 func (a *Quaternion) Add(b *Quaternion) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -140,8 +140,8 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 	return _quaternion
 }
 
-// InitFromAngleVec3 initializes a #graphene_quaternion_t using an @angle on a
-// specific @axis.
+// InitFromAngleVec3 initializes a #graphene_quaternion_t using an angle on a
+// specific axis.
 func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -225,7 +225,7 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 }
 
 // InitFromQuaternion initializes a #graphene_quaternion_t with the values from
-// @src.
+// src.
 func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -268,7 +268,7 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 	return _quaternion
 }
 
-// InitFromVec4 initializes a #graphene_quaternion_t with the values from @src.
+// InitFromVec4 initializes a #graphene_quaternion_t with the values from src.
 func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_vec4_t       // out
@@ -304,7 +304,7 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 }
 
 // Invert inverts a #graphene_quaternion_t, and returns the conjugate quaternion
-// of @q.
+// of q.
 func (q *Quaternion) Invert() Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _res Quaternion
@@ -316,7 +316,7 @@ func (q *Quaternion) Invert() Quaternion {
 	return _res
 }
 
-// Multiply multiplies two #graphene_quaternion_t @a and @b.
+// Multiply multiplies two #graphene_quaternion_t a and b.
 func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -342,7 +342,7 @@ func (q *Quaternion) Normalize() Quaternion {
 	return _res
 }
 
-// Scale scales all the elements of a #graphene_quaternion_t @q using the given
+// Scale scales all the elements of a #graphene_quaternion_t q using the given
 // scalar factor.
 func (q *Quaternion) Scale(factor float32) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -359,7 +359,7 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 
 // Slerp interpolates between the two given quaternions using a spherical linear
 // interpolation, or SLERP (http://en.wikipedia.org/wiki/Slerp), using the given
-// interpolation @factor.
+// interpolation factor.
 func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -375,7 +375,7 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 	return _res
 }
 
-// ToAngleVec3 converts a quaternion into an @angle, @axis pair.
+// ToAngleVec3 converts a quaternion into an angle, axis pair.
 func (q *Quaternion) ToAngleVec3() (float32, Vec3) {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // in

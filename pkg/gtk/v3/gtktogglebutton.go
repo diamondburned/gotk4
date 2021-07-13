@@ -201,7 +201,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 
 // NewToggleButtonWithMnemonic creates a new ToggleButton containing a label.
 // The label will be created using gtk_label_new_with_mnemonic(), so underscores
-// in @label indicate the mnemonic for the button.
+// in label indicate the mnemonic for the button.
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GtkWidget // in
@@ -217,8 +217,8 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	return _toggleButton
 }
 
-// Active queries a ToggleButton and returns its current state. Returns true if
-// the toggle button is pressed in and false if it is raised.
+// Active queries a ToggleButton and returns its current state. Returns TRUE if
+// the toggle button is pressed in and FALSE if it is raised.
 func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
 	var _cret C.gboolean         // in
@@ -273,8 +273,8 @@ func (toggleButton *ToggleButton) Mode() bool {
 	return _ok
 }
 
-// SetActive sets the status of the toggle button. Set to true if you want the
-// GtkToggleButton to be “pressed in”, and false to raise it. This action causes
+// SetActive sets the status of the toggle button. Set to TRUE if you want the
+// GtkToggleButton to be “pressed in”, and FALSE to raise it. This action causes
 // the ToggleButton::toggled signal and the Button::clicked signal to be
 // emitted.
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
@@ -311,7 +311,7 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 
 // SetMode sets whether the button is displayed as a separate indicator and
 // label. You can call this function on a checkbutton or a radiobutton with
-// @draw_indicator = false to make the button look like a normal button.
+// draw_indicator = FALSE to make the button look like a normal button.
 //
 // This can be used to create linked strip of buttons that work like a
 // StackSwitcher.

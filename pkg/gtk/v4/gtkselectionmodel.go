@@ -30,10 +30,10 @@ func init() {
 type SelectionModelOverrider interface {
 	// SelectionInRange gets the set of selected items in a range.
 	//
-	// This function is an optimization for
-	// [method@Gtk.SelectionModel.get_selection] when you are only interested in
-	// part of the model's selected state. A common use case is in response to
-	// the [signal@Gtk.SelectionModel::selection-changed] signal.
+	// This function is an optimization for gtk.SelectionModel.GetSelection()
+	// when you are only interested in part of the model's selected state. A
+	// common use case is in response to the
+	// gtk.SelectionModel::selection-changed signal.
 	SelectionInRange(position uint, nItems uint) *Bitset
 	// IsSelected checks if the given item is selected.
 	IsSelected(position uint) bool
@@ -50,24 +50,29 @@ type SelectionModelOverrider interface {
 	// the simpler versions, as implementations are more likely to implement
 	// support for those.
 	//
-	// Requests that the selection state of all positions set in @mask be
-	// updated to the respective value in the @selected bitmask.
+	// Requests that the selection state of all positions set in mask be updated
+	// to the respective value in the selected bitmask.
 	//
 	// In pseudocode, it would look something like this:
 	//
-	// “`c for (i = 0; i < n_items; i++) { // don't change values not in the
-	// mask if (!gtk_bitset_contains (mask, i)) continue;
+	//    for (i = 0; i < n_items; i++)
+	//      {
+	//        // don't change values not in the mask
+	//        if (!gtk_bitset_contains (mask, i))
+	//          continue;
 	//
-	//      if (gtk_bitset_contains (selected, i))
-	//        select_item (i);
-	//      else
-	//        unselect_item (i);
-	//    }
+	//        if (gtk_bitset_contains (selected, i))
+	//          select_item (i);
+	//        else
+	//          unselect_item (i);
+	//      }
 	//
-	// gtk_selection_model_selection_changed (model, first_changed_item,
-	// n_changed_items); “`
+	//    gtk_selection_model_selection_changed (model,
+	//                                           first_changed_item,
+	//                                           n_changed_items);
 	//
-	// @mask and @selected must not be modified. They may refer to the same
+	//
+	// mask and selected must not be modified. They may refer to the same
 	// bitset, which would mean that every item in the set should be selected.
 	SetSelection(selected *Bitset, mask *Bitset) bool
 	// UnselectAll requests to unselect all items in the model.
@@ -94,7 +99,7 @@ type SelectionModeler interface {
 	// SelectRange requests to select a range of items in the model.
 	SelectRange(position uint, nItems uint, unselectRest bool) bool
 	// SelectionChanged: helper function for implementations of
-	// `GtkSelectionModel`.
+	// GtkSelectionModel.
 	SelectionChanged(position uint, nItems uint)
 	// SetSelection: make selection changes.
 	SetSelection(selected *Bitset, mask *Bitset) bool
@@ -106,24 +111,22 @@ type SelectionModeler interface {
 	UnselectRange(position uint, nItems uint) bool
 }
 
-// SelectionModel: `GtkSelectionModel` is an interface that add support for
+// SelectionModel: GtkSelectionModel is an interface that add support for
 // selection to list models.
 //
 // This support is then used by widgets using list models to add the ability to
 // select and unselect various items.
 //
 // GTK provides default implementations of the most common selection modes such
-// as [class@Gtk.SingleSelection], so you will only need to implement this
-// interface if you want detailed control about how selections should be
-// handled.
+// as gtk.SingleSelection, so you will only need to implement this interface if
+// you want detailed control about how selections should be handled.
 //
-// A `GtkSelectionModel` supports a single boolean per item indicating if an
-// item is selected or not. This can be queried via
-// [method@Gtk.SelectionModel.is_selected]. When the selected state of one or
-// more items changes, the model will emit the
-// [signal@Gtk.SelectionModel::selection-changed] signal by calling the
-// [method@Gtk.SelectionModel.selection_changed] function. The positions given
-// in that signal may have their selection state changed, though that is not a
+// A GtkSelectionModel supports a single boolean per item indicating if an item
+// is selected or not. This can be queried via gtk.SelectionModel.IsSelected().
+// When the selected state of one or more items changes, the model will emit the
+// gtk.SelectionModel::selection-changed signal by calling the
+// gtk.SelectionModel.SelectionChanged() function. The positions given in that
+// signal may have their selection state changed, though that is not a
 // requirement. If new items added to the model via the ::items-changed signal
 // are selected or not is up to the implementation.
 //
@@ -133,7 +136,7 @@ type SelectionModeler interface {
 //
 // Additionally, the interface can expose functionality to select and unselect
 // items. If these functions are implemented, GTK's list widgets will allow
-// users to select and unselect items. However, `GtkSelectionModel`s are free to
+// users to select and unselect items. However, GtkSelectionModels are free to
 // only implement them partially or not at all. In that case the widgets will
 // not support the unimplemented operations.
 //
@@ -171,9 +174,8 @@ func marshalSelectionModeler(p uintptr) (interface{}, error) {
 // Selection gets the set containing all currently selected items in the model.
 //
 // This function may be slow, so if you are only interested in single item,
-// consider using [method@Gtk.SelectionModel.is_selected] or if you are only
-// interested in a few, consider
-// [method@Gtk.SelectionModel.get_selection_in_range].
+// consider using gtk.SelectionModel.IsSelected() or if you are only interested
+// in a few, consider gtk.SelectionModel.GetSelectionInRange().
 func (model *SelectionModel) Selection() *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
 	var _cret *C.GtkBitset         // in
@@ -195,10 +197,9 @@ func (model *SelectionModel) Selection() *Bitset {
 
 // SelectionInRange gets the set of selected items in a range.
 //
-// This function is an optimization for
-// [method@Gtk.SelectionModel.get_selection] when you are only interested in
-// part of the model's selected state. A common use case is in response to the
-// [signal@Gtk.SelectionModel::selection-changed] signal.
+// This function is an optimization for gtk.SelectionModel.GetSelection() when
+// you are only interested in part of the model's selected state. A common use
+// case is in response to the gtk.SelectionModel::selection-changed signal.
 func (model *SelectionModel) SelectionInRange(position uint, nItems uint) *Bitset {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -310,10 +311,10 @@ func (model *SelectionModel) SelectRange(position uint, nItems uint, unselectRes
 	return _ok
 }
 
-// SelectionChanged: helper function for implementations of `GtkSelectionModel`.
+// SelectionChanged: helper function for implementations of GtkSelectionModel.
 //
 // Call this when a the selection changes to emit the
-// [signal@Gtk.SelectionModel::selection-changed] signal.
+// gtk.SelectionModel::selection-changed signal.
 func (model *SelectionModel) SelectionChanged(position uint, nItems uint) {
 	var _arg0 *C.GtkSelectionModel // out
 	var _arg1 C.guint              // out
@@ -333,24 +334,29 @@ func (model *SelectionModel) SelectionChanged(position uint, nItems uint) {
 // simpler versions, as implementations are more likely to implement support for
 // those.
 //
-// Requests that the selection state of all positions set in @mask be updated to
-// the respective value in the @selected bitmask.
+// Requests that the selection state of all positions set in mask be updated to
+// the respective value in the selected bitmask.
 //
 // In pseudocode, it would look something like this:
 //
-// “`c for (i = 0; i < n_items; i++) { // don't change values not in the mask if
-// (!gtk_bitset_contains (mask, i)) continue;
+//    for (i = 0; i < n_items; i++)
+//      {
+//        // don't change values not in the mask
+//        if (!gtk_bitset_contains (mask, i))
+//          continue;
 //
-//      if (gtk_bitset_contains (selected, i))
-//        select_item (i);
-//      else
-//        unselect_item (i);
-//    }
+//        if (gtk_bitset_contains (selected, i))
+//          select_item (i);
+//        else
+//          unselect_item (i);
+//      }
 //
-// gtk_selection_model_selection_changed (model, first_changed_item,
-// n_changed_items); “`
+//    gtk_selection_model_selection_changed (model,
+//                                           first_changed_item,
+//                                           n_changed_items);
 //
-// @mask and @selected must not be modified. They may refer to the same bitset,
+//
+// mask and selected must not be modified. They may refer to the same bitset,
 // which would mean that every item in the set should be selected.
 func (model *SelectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 	var _arg0 *C.GtkSelectionModel // out

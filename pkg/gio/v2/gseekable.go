@@ -43,7 +43,7 @@ type SeekableOverrider interface {
 	// CanTruncate tests if the length of the stream can be adjusted with
 	// g_seekable_truncate().
 	CanTruncate() bool
-	// Seek seeks in the stream by the given @offset, modified by @type.
+	// Seek seeks in the stream by the given offset, modified by type.
 	//
 	// Attempting to seek past the end of the stream will have different results
 	// depending on if the stream is fixed-sized or resizable. If the stream is
@@ -54,23 +54,22 @@ type SeekableOverrider interface {
 	//
 	// Any operation that would result in a negative offset will fail.
 	//
-	// If @cancellable is not nil, then the operation can be cancelled by
+	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error
+	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
 	// Tell tells the current position within the stream.
 	Tell() int64
-	// TruncateFn sets the length of the stream to @offset. If the stream was
-	// previously larger than @offset, the extra data is discarded. If the
-	// stream was previously shorter than @offset, it is extended with NUL
-	// ('\0') bytes.
+	// TruncateFn sets the length of the stream to offset. If the stream was
+	// previously larger than offset, the extra data is discarded. If the stream
+	// was previously shorter than offset, it is extended with NUL ('\0') bytes.
 	//
-	// If @cancellable is not nil, then the operation can be cancelled by
+	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	TruncateFn(offset int64, cancellable Cancellabler) error
+	TruncateFn(offset int64, cancellable *Cancellable) error
 }
 
 // Seekabler describes Seekable's methods.
@@ -80,12 +79,12 @@ type Seekabler interface {
 	// CanTruncate tests if the length of the stream can be adjusted with
 	// g_seekable_truncate().
 	CanTruncate() bool
-	// Seek seeks in the stream by the given @offset, modified by @type.
-	Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error
+	// Seek seeks in the stream by the given offset, modified by type.
+	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
 	// Tell tells the current position within the stream.
 	Tell() int64
-	// Truncate sets the length of the stream to @offset.
-	Truncate(offset int64, cancellable Cancellabler) error
+	// Truncate sets the length of the stream to offset.
+	Truncate(offset int64, cancellable *Cancellable) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -158,7 +157,7 @@ func (seekable *Seekable) CanTruncate() bool {
 	return _ok
 }
 
-// Seek seeks in the stream by the given @offset, modified by @type.
+// Seek seeks in the stream by the given offset, modified by type.
 //
 // Attempting to seek past the end of the stream will have different results
 // depending on if the stream is fixed-sized or resizable. If the stream is
@@ -169,10 +168,10 @@ func (seekable *Seekable) CanTruncate() bool {
 //
 // Any operation that would result in a negative offset will fail.
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (seekable *Seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellabler) error {
+func (seekable *Seekable) Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 C.GSeekType     // out
@@ -182,7 +181,7 @@ func (seekable *Seekable) Seek(offset int64, typ glib.SeekType, cancellable Canc
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 	_arg1 = C.goffset(offset)
 	_arg2 = C.GSeekType(typ)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_seekable_seek(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -209,16 +208,16 @@ func (seekable *Seekable) Tell() int64 {
 	return _gint64
 }
 
-// Truncate sets the length of the stream to @offset. If the stream was
-// previously larger than @offset, the extra data is discarded. If the stream
-// was previously shorter than @offset, it is extended with NUL ('\0') bytes.
+// Truncate sets the length of the stream to offset. If the stream was
+// previously larger than offset, the extra data is discarded. If the stream was
+// previously shorter than offset, it is extended with NUL ('\0') bytes.
 //
-// If @cancellable is not nil, then the operation can be cancelled by triggering
+// If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
-func (seekable *Seekable) Truncate(offset int64, cancellable Cancellabler) error {
+func (seekable *Seekable) Truncate(offset int64, cancellable *Cancellable) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg1 C.goffset       // out
 	var _arg2 *C.GCancellable // out
@@ -226,7 +225,7 @@ func (seekable *Seekable) Truncate(offset int64, cancellable Cancellabler) error
 
 	_arg0 = (*C.GSeekable)(unsafe.Pointer(seekable.Native()))
 	_arg1 = C.goffset(offset)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer((cancellable).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
 

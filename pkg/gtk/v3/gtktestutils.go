@@ -18,10 +18,10 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// TestCreateSimpleWindow: create a simple window with window title
-// @window_title and text contents @dialog_text. The window will quit any
-// running gtk_main()-loop when destroyed, and it will automatically be
-// destroyed upon test function teardown.
+// TestCreateSimpleWindow: create a simple window with window title window_title
+// and text contents dialog_text. The window will quit any running
+// gtk_main()-loop when destroyed, and it will automatically be destroyed upon
+// test function teardown.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget {
@@ -41,13 +41,13 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget {
 	return _widget
 }
 
-// TestFindLabel: this function will search @widget and all its descendants for
-// a GtkLabel widget with a text string matching @label_pattern. The
-// @label_pattern may contain asterisks “*” and question marks “?” as
-// placeholders, g_pattern_match() is used for the matching. Note that locales
-// other than "C“ tend to alter (translate” label strings, so this function is
-// genrally only useful in test programs with predetermined locales, see
-// gtk_test_init() for more details.
+// TestFindLabel: this function will search widget and all its descendants for a
+// GtkLabel widget with a text string matching label_pattern. The label_pattern
+// may contain asterisks “*” and question marks “?” as placeholders,
+// g_pattern_match() is used for the matching. Note that locales other than "C“
+// tend to alter (translate” label strings, so this function is genrally only
+// useful in test programs with predetermined locales, see gtk_test_init() for
+// more details.
 func TestFindLabel(widget Widgeter, labelPattern string) *Widget {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.gchar     // out
@@ -65,9 +65,9 @@ func TestFindLabel(widget Widgeter, labelPattern string) *Widget {
 	return _ret
 }
 
-// TestFindSibling: this function will search siblings of @base_widget and
-// siblings of its ancestors for all widgets matching @widget_type. Of the
-// matching widgets, the one that is geometrically closest to @base_widget will
+// TestFindSibling: this function will search siblings of base_widget and
+// siblings of its ancestors for all widgets matching widget_type. Of the
+// matching widgets, the one that is geometrically closest to base_widget will
 // be returned. The general purpose of this function is to find the most likely
 // “action” widget, relative to another labeling widget. Such as finding a
 // button or text entry widget, given its corresponding label widget.
@@ -88,8 +88,8 @@ func TestFindSibling(baseWidget Widgeter, widgetType externglib.Type) *Widget {
 	return _widget
 }
 
-// TestFindWidget: this function will search the descendants of @widget for a
-// widget of type @widget_type that has a label matching @label_pattern next to
+// TestFindWidget: this function will search the descendants of widget for a
+// widget of type widget_type that has a label matching label_pattern next to
 // it. This is most useful for automated GUI testing, e.g. to find the “OK”
 // button in a dialog and synthesize clicks on it. However see
 // gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
@@ -124,7 +124,7 @@ func TestRegisterAllTypes() {
 // TestSliderGetValue: retrive the literal adjustment value for GtkRange based
 // widgets and spin buttons. Note that the value returned by this function is
 // anything between the lower and upper bounds of the adjustment belonging to
-// @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
+// widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestSliderGetValue(widget Widgeter) float64 {
@@ -145,7 +145,7 @@ func TestSliderGetValue(widget Widgeter) float64 {
 // TestSliderSetPerc: this function will adjust the slider position of all
 // GtkRange based widgets, such as scrollbars or scales, it’ll also adjust spin
 // buttons. The adjustment value of these widgets is set to a value between the
-// lower and upper limits, according to the @percentage argument.
+// lower and upper limits, according to the percentage argument.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestSliderSetPerc(widget Widgeter, percentage float64) {
@@ -158,18 +158,18 @@ func TestSliderSetPerc(widget Widgeter, percentage float64) {
 	C.gtk_test_slider_set_perc(_arg1, _arg2)
 }
 
-// TestSpinButtonClick: this function will generate a @button click in the
+// TestSpinButtonClick: this function will generate a button click in the
 // upwards or downwards spin button arrow areas, usually leading to an increase
 // or decrease of spin button’s value.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
-func TestSpinButtonClick(spinner SpinButtoner, button uint, upwards bool) bool {
+func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
 	var _cret C.gboolean       // in
 
-	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer((spinner).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer(spinner.Native()))
 	_arg2 = C.guint(button)
 	if upwards {
 		_arg3 = C.TRUE
@@ -186,7 +186,7 @@ func TestSpinButtonClick(spinner SpinButtoner, button uint, upwards bool) bool {
 	return _ok
 }
 
-// TestTextGet: retrive the text string of @widget if it is a GtkLabel,
+// TestTextGet: retrive the text string of widget if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
@@ -206,7 +206,7 @@ func TestTextGet(widget Widgeter) string {
 	return _utf8
 }
 
-// TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
+// TestTextSet: set the text string of widget to string if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
@@ -220,14 +220,14 @@ func TestTextSet(widget Widgeter, _string string) {
 	C.gtk_test_text_set(_arg1, _arg2)
 }
 
-// TestWidgetClick: this function will generate a @button click (button press
-// and button release event) in the middle of the first GdkWindow found that
-// belongs to @widget. For windowless widgets like Button (which returns false
-// from gtk_widget_get_has_window()), this will often be an input-only event
-// window. For other widgets, this is usually widget->window. Certain caveats
-// should be considered when using this function, in particular because the
-// mouse pointer is warped to the button click location, see
-// gdk_test_simulate_button() for details.
+// TestWidgetClick: this function will generate a button click (button press and
+// button release event) in the middle of the first GdkWindow found that belongs
+// to widget. For windowless widgets like Button (which returns FALSE from
+// gtk_widget_get_has_window()), this will often be an input-only event window.
+// For other widgets, this is usually widget->window. Certain caveats should be
+// considered when using this function, in particular because the mouse pointer
+// is warped to the button click location, see gdk_test_simulate_button() for
+// details.
 //
 // Deprecated: This testing infrastructure is phased out in favor of reftests.
 func TestWidgetClick(widget Widgeter, button uint, modifiers gdk.ModifierType) bool {
@@ -252,8 +252,8 @@ func TestWidgetClick(widget Widgeter, button uint, modifiers gdk.ModifierType) b
 }
 
 // TestWidgetSendKey: this function will generate keyboard press and release
-// events in the middle of the first GdkWindow found that belongs to @widget.
-// For windowless widgets like Button (which returns false from
+// events in the middle of the first GdkWindow found that belongs to widget. For
+// windowless widgets like Button (which returns FALSE from
 // gtk_widget_get_has_window()), this will often be an input-only event window.
 // For other widgets, this is usually widget->window. Certain caveats should be
 // considered when using this function, in particular because the mouse pointer
@@ -279,12 +279,12 @@ func TestWidgetSendKey(widget Widgeter, keyval uint, modifiers gdk.ModifierType)
 	return _ok
 }
 
-// TestWidgetWaitForDraw enters the main loop and waits for @widget to be
-// “drawn”. In this context that means it waits for the frame clock of @widget
-// to have run a full styling, layout and drawing cycle.
+// TestWidgetWaitForDraw enters the main loop and waits for widget to be
+// “drawn”. In this context that means it waits for the frame clock of widget to
+// have run a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
-// @widget relayouting or on interaction with the display server.
+// widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widgeter) {
 	var _arg1 *C.GtkWidget // out
 

@@ -37,12 +37,12 @@ type ToolButtoner interface {
 	// IconName returns the name of the themed icon for the tool button, see
 	// gtk_tool_button_set_icon_name().
 	IconName() string
-	// IconWidget: return the widget used as icon widget on @button.
+	// IconWidget: return the widget used as icon widget on button.
 	IconWidget() *Widget
-	// Label returns the label used by the tool button, or nil if the tool
+	// Label returns the label used by the tool button, or NULL if the tool
 	// button doesn’t have a label.
 	Label() string
-	// LabelWidget returns the widget used as label on @button.
+	// LabelWidget returns the widget used as label on button.
 	LabelWidget() *Widget
 	// StockID returns the name of the stock item.
 	StockID() string
@@ -51,12 +51,12 @@ type ToolButtoner interface {
 	UseUnderline() bool
 	// SetIconName sets the icon for the tool button from a named themed icon.
 	SetIconName(iconName string)
-	// SetIconWidget sets @icon as the widget used as icon on @button.
+	// SetIconWidget sets icon as the widget used as icon on button.
 	SetIconWidget(iconWidget Widgeter)
-	// SetLabel sets @label as the label used for the tool button.
+	// SetLabel sets label as the label used for the tool button.
 	SetLabel(label string)
-	// SetLabelWidget sets @label_widget as the widget that will be used as the
-	// label for @button.
+	// SetLabelWidget sets label_widget as the widget that will be used as the
+	// label for button.
 	SetLabelWidget(labelWidget Widgeter)
 	// SetStockID sets the name of the stock item.
 	SetStockID(stockId string)
@@ -72,15 +72,15 @@ type ToolButtoner interface {
 //
 // The label of a ToolButton is determined by the properties
 // ToolButton:label-widget, ToolButton:label, and ToolButton:stock-id. If
-// ToolButton:label-widget is non-nil, then that widget is used as the label.
-// Otherwise, if ToolButton:label is non-nil, that string is used as the label.
-// Otherwise, if ToolButton:stock-id is non-nil, the label is determined by the
+// ToolButton:label-widget is non-NULL, then that widget is used as the label.
+// Otherwise, if ToolButton:label is non-NULL, that string is used as the label.
+// Otherwise, if ToolButton:stock-id is non-NULL, the label is determined by the
 // stock item. Otherwise, the button does not have a label.
 //
 // The icon of a ToolButton is determined by the properties
 // ToolButton:icon-widget and ToolButton:stock-id. If ToolButton:icon-widget is
-// non-nil, then that widget is used as the icon. Otherwise, if
-// ToolButton:stock-id is non-nil, the icon is determined by the stock item.
+// non-NULL, then that widget is used as the icon. Otherwise, if
+// ToolButton:stock-id is non-NULL, the icon is determined by the stock item.
 // Otherwise, the button does not have a icon.
 //
 //
@@ -142,8 +142,8 @@ func marshalToolButtoner(p uintptr) (interface{}, error) {
 	return wrapToolButton(obj), nil
 }
 
-// NewToolButton creates a new ToolButton using @icon_widget as contents and
-// @label as label.
+// NewToolButton creates a new ToolButton using icon_widget as contents and
+// label as label.
 func NewToolButton(iconWidget Widgeter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
@@ -165,7 +165,7 @@ func NewToolButton(iconWidget Widgeter, label string) *ToolButton {
 // from a stock item. Some stock ids have preprocessor macros like K_STOCK_OK
 // and K_STOCK_APPLY.
 //
-// It is an error if @stock_id is not a name of a stock item.
+// It is an error if stock_id is not a name of a stock item.
 //
 // Deprecated: Use gtk_tool_button_new() together with
 // gtk_image_new_from_icon_name() instead.
@@ -207,7 +207,7 @@ func (button *ToolButton) IconName() string {
 	return _utf8
 }
 
-// IconWidget: return the widget used as icon widget on @button. See
+// IconWidget: return the widget used as icon widget on button. See
 // gtk_tool_button_set_icon_widget().
 func (button *ToolButton) IconWidget() *Widget {
 	var _arg0 *C.GtkToolButton // out
@@ -224,7 +224,7 @@ func (button *ToolButton) IconWidget() *Widget {
 	return _widget
 }
 
-// Label returns the label used by the tool button, or nil if the tool button
+// Label returns the label used by the tool button, or NULL if the tool button
 // doesn’t have a label. or uses a the label from a stock item. The returned
 // string is owned by GTK+, and must not be modified or freed.
 func (button *ToolButton) Label() string {
@@ -242,7 +242,7 @@ func (button *ToolButton) Label() string {
 	return _utf8
 }
 
-// LabelWidget returns the widget used as label on @button. See
+// LabelWidget returns the widget used as label on button. See
 // gtk_tool_button_set_label_widget().
 func (button *ToolButton) LabelWidget() *Widget {
 	var _arg0 *C.GtkToolButton // out
@@ -301,7 +301,7 @@ func (button *ToolButton) UseUnderline() bool {
 
 // SetIconName sets the icon for the tool button from a named themed icon. See
 // the docs for IconTheme for more details. The ToolButton:icon-name property
-// only has an effect if not overridden by non-nil ToolButton:label-widget,
+// only has an effect if not overridden by non-NULL ToolButton:label-widget,
 // ToolButton:icon-widget and ToolButton:stock-id properties.
 func (button *ToolButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
@@ -313,10 +313,9 @@ func (button *ToolButton) SetIconName(iconName string) {
 	C.gtk_tool_button_set_icon_name(_arg0, _arg1)
 }
 
-// SetIconWidget sets @icon as the widget used as icon on @button. If
-// @icon_widget is nil the icon is determined by the ToolButton:stock-id
-// property. If the ToolButton:stock-id property is also nil, @button will not
-// have an icon.
+// SetIconWidget sets icon as the widget used as icon on button. If icon_widget
+// is NULL the icon is determined by the ToolButton:stock-id property. If the
+// ToolButton:stock-id property is also NULL, button will not have an icon.
 func (button *ToolButton) SetIconWidget(iconWidget Widgeter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
@@ -327,12 +326,12 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgeter) {
 	C.gtk_tool_button_set_icon_widget(_arg0, _arg1)
 }
 
-// SetLabel sets @label as the label used for the tool button. The
-// ToolButton:label property only has an effect if not overridden by a non-nil
+// SetLabel sets label as the label used for the tool button. The
+// ToolButton:label property only has an effect if not overridden by a non-NULL
 // ToolButton:label-widget property. If both the ToolButton:label-widget and
-// ToolButton:label properties are nil, the label is determined by the
+// ToolButton:label properties are NULL, the label is determined by the
 // ToolButton:stock-id property. If the ToolButton:stock-id property is also
-// nil, @button will not have a label.
+// NULL, button will not have a label.
 func (button *ToolButton) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.gchar         // out
@@ -343,11 +342,11 @@ func (button *ToolButton) SetLabel(label string) {
 	C.gtk_tool_button_set_label(_arg0, _arg1)
 }
 
-// SetLabelWidget sets @label_widget as the widget that will be used as the
-// label for @button. If @label_widget is nil the ToolButton:label property is
-// used as label. If ToolButton:label is also nil, the label in the stock item
+// SetLabelWidget sets label_widget as the widget that will be used as the label
+// for button. If label_widget is NULL the ToolButton:label property is used as
+// label. If ToolButton:label is also NULL, the label in the stock item
 // determined by the ToolButton:stock-id property is used as label. If
-// ToolButton:stock-id is also nil, @button does not have a label.
+// ToolButton:stock-id is also NULL, button does not have a label.
 func (button *ToolButton) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
@@ -360,7 +359,7 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgeter) {
 
 // SetStockID sets the name of the stock item. See
 // gtk_tool_button_new_from_stock(). The stock_id property only has an effect if
-// not overridden by non-nil ToolButton:label-widget and ToolButton:icon-widget
+// not overridden by non-NULL ToolButton:label-widget and ToolButton:icon-widget
 // properties.
 //
 // Deprecated: Use gtk_tool_button_set_icon_name() instead.
@@ -377,7 +376,7 @@ func (button *ToolButton) SetStockID(stockId string) {
 // SetUseUnderline: if set, an underline in the label property indicates that
 // the next character should be used for the mnemonic accelerator key in the
 // overflow menu. For example, if the label property is “_Open” and
-// @use_underline is true, the label on the tool button will be “Open” and the
+// use_underline is TRUE, the label on the tool button will be “Open” and the
 // item on the overflow menu will have an underlined “O”.
 //
 // Labels shown on tool buttons never have mnemonics on them; this property only

@@ -48,14 +48,14 @@ type MenuButtoner interface {
 	// well as changing the arrow’s direction.
 	SetDirection(direction ArrowType)
 	// SetMenuModel sets the Model from which the popup will be constructed, or
-	// nil to dissociate any existing menu model and disable the button.
+	// NULL to dissociate any existing menu model and disable the button.
 	SetMenuModel(menuModel gio.MenuModeler)
-	// SetPopover sets the Popover that will be popped up when the @menu_button
-	// is clicked, or nil to dissociate any existing popover and disable the
+	// SetPopover sets the Popover that will be popped up when the menu_button
+	// is clicked, or NULL to dissociate any existing popover and disable the
 	// button.
 	SetPopover(popover Widgeter)
-	// SetPopup sets the Menu that will be popped up when the @menu_button is
-	// clicked, or nil to dissociate any existing menu and disable the button.
+	// SetPopup sets the Menu that will be popped up when the menu_button is
+	// clicked, or NULL to dissociate any existing menu and disable the button.
 	SetPopup(menu Widgeter)
 	// SetUsePopover sets whether to construct a Popover instead of Menu when
 	// gtk_menu_button_set_menu_model() is called.
@@ -267,7 +267,7 @@ func (menuButton *MenuButton) MenuModel() *gio.MenuModel {
 }
 
 // Popover returns the Popover that pops out of the button. If the button is not
-// using a Popover, this function returns nil.
+// using a Popover, this function returns NULL.
 func (menuButton *MenuButton) Popover() *Popover {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkPopover    // in
@@ -284,7 +284,7 @@ func (menuButton *MenuButton) Popover() *Popover {
 }
 
 // Popup returns the Menu that pops out of the button. If the button does not
-// use a Menu, this function returns nil.
+// use a Menu, this function returns NULL.
 func (menuButton *MenuButton) Popup() *Menu {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GtkMenu       // in
@@ -320,9 +320,10 @@ func (menuButton *MenuButton) UsePopover() bool {
 }
 
 // SetAlignWidget sets the Widget to use to line the menu with when popped up.
-// Note that the @align_widget must contain the MenuButton itself.
+// Note that the align_widget must contain the MenuButton itself.
 //
-// Setting it to nil means that the menu will be aligned with the button itself.
+// Setting it to NULL means that the menu will be aligned with the button
+// itself.
 //
 // Note that this property is only used with menus currently, and not for
 // popovers.
@@ -343,7 +344,7 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgeter) {
 // If the does not fit in the available space in the given direction, GTK+ will
 // its best to keep it inside the screen and fully visible.
 //
-// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if you
+// If you pass GTK_ARROW_NONE for a direction, the popup will behave as if you
 // passed GTK_ARROW_DOWN (although you won’t see any arrows).
 func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	var _arg0 *C.GtkMenuButton // out
@@ -355,7 +356,7 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	C.gtk_menu_button_set_direction(_arg0, _arg1)
 }
 
-// SetMenuModel sets the Model from which the popup will be constructed, or nil
+// SetMenuModel sets the Model from which the popup will be constructed, or NULL
 // to dissociate any existing menu model and disable the button.
 //
 // Depending on the value of MenuButton:use-popover, either a Menu will be
@@ -364,7 +365,7 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 // documented for these functions.
 //
 // If MenuButton:popup or MenuButton:popover are already set, those widgets are
-// dissociated from the @menu_button, and those properties are set to nil.
+// dissociated from the menu_button, and those properties are set to NULL.
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
@@ -375,11 +376,11 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 	C.gtk_menu_button_set_menu_model(_arg0, _arg1)
 }
 
-// SetPopover sets the Popover that will be popped up when the @menu_button is
-// clicked, or nil to dissociate any existing popover and disable the button.
+// SetPopover sets the Popover that will be popped up when the menu_button is
+// clicked, or NULL to dissociate any existing popover and disable the button.
 //
 // If MenuButton:menu-model or MenuButton:popup are set, those objects are
-// dissociated from the @menu_button, and those properties are set to nil.
+// dissociated from the menu_button, and those properties are set to NULL.
 func (menuButton *MenuButton) SetPopover(popover Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
@@ -390,11 +391,11 @@ func (menuButton *MenuButton) SetPopover(popover Widgeter) {
 	C.gtk_menu_button_set_popover(_arg0, _arg1)
 }
 
-// SetPopup sets the Menu that will be popped up when the @menu_button is
-// clicked, or nil to dissociate any existing menu and disable the button.
+// SetPopup sets the Menu that will be popped up when the menu_button is
+// clicked, or NULL to dissociate any existing menu and disable the button.
 //
 // If MenuButton:menu-model or MenuButton:popover are set, those objects are
-// dissociated from the @menu_button, and those properties are set to nil.
+// dissociated from the menu_button, and those properties are set to NULL.
 func (menuButton *MenuButton) SetPopup(menu Widgeter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out

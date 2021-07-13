@@ -48,7 +48,7 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 	return SeatCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SeatGrabPrepareFunc: type of the callback used to set up @window so it can be
+// SeatGrabPrepareFunc: type of the callback used to set up window so it can be
 // grabbed. A typical action would be ensuring the window is visible, although
 // there's room for other initialization actions.
 type SeatGrabPrepareFunc func(seat *Seat, window *Window, userData cgo.Handle)

@@ -23,23 +23,22 @@ func init() {
 
 // EventControllerMotioner describes EventControllerMotion's methods.
 type EventControllerMotioner interface {
-	// ContainsPointer returns if a pointer is within @self or one of its
+	// ContainsPointer returns if a pointer is within self or one of its
 	// children.
 	ContainsPointer() bool
-	// IsPointer returns if a pointer is within @self, but not one of its
+	// IsPointer returns if a pointer is within self, but not one of its
 	// children.
 	IsPointer() bool
 }
 
-// EventControllerMotion: `GtkEventControllerMotion` is an event controller
+// EventControllerMotion: GtkEventControllerMotion is an event controller
 // tracking the pointer position.
 //
-// The event controller offers [signal@Gtk.EventControllerMotion::enter] and
-// [signal@Gtk.EventControllerMotion::leave] signals, as well as
-// [property@Gtk.EventControllerMotion:is-pointer] and
-// [property@Gtk.EventControllerMotion:contains-pointer] properties which are
-// updated to reflect changes in the pointer position as it moves over the
-// widget.
+// The event controller offers gtk.EventControllerMotion::enter and
+// gtk.EventControllerMotion::leave signals, as well as
+// gtk.EventControllerMotion:is-pointer and
+// gtk.EventControllerMotion:contains-pointer properties which are updated to
+// reflect changes in the pointer position as it moves over the widget.
 type EventControllerMotion struct {
 	EventController
 }
@@ -77,7 +76,7 @@ func NewEventControllerMotion() *EventControllerMotion {
 	return _eventControllerMotion
 }
 
-// ContainsPointer returns if a pointer is within @self or one of its children.
+// ContainsPointer returns if a pointer is within self or one of its children.
 func (self *EventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in
@@ -95,7 +94,7 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 	return _ok
 }
 
-// IsPointer returns if a pointer is within @self, but not one of its children.
+// IsPointer returns if a pointer is within self, but not one of its children.
 func (self *EventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
 	var _cret C.gboolean                  // in

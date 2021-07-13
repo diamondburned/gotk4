@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,7 +24,7 @@ import (
 import "C"
 
 // DBusActionGroupGet obtains a BusActionGroup for the action group which is
-// exported at the given @bus_name and @object_path.
+// exported at the given bus_name and object_path.
 //
 // The thread default main context is taken at the time of this call. All
 // signals on the menu model (and any linked models) are reported with respect
@@ -37,13 +36,13 @@ import "C"
 // be filled in. The correct thing to do is connect the signals for the action
 // group to monitor for changes and then to call g_action_group_list_actions()
 // to get the initial list.
-func DBusActionGroupGet(connection DBusConnectioner, busName string, objectPath string) *DBusActionGroup {
+func DBusActionGroupGet(connection *DBusConnection, busName string, objectPath string) *DBusActionGroup {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out
 	var _cret *C.GDBusActionGroup // in
 
-	_arg1 = (*C.GDBusConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 

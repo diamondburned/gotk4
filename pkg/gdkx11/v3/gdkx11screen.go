@@ -37,19 +37,19 @@ func X11GetDefaultScreen() int {
 
 // X11Screener describes X11Screen's methods.
 type X11Screener interface {
-	// CurrentDesktop returns the current workspace for @screen when running
+	// CurrentDesktop returns the current workspace for screen when running
 	// under a window manager that supports multiple workspaces, as described in
 	// the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-	// NumberOfDesktops returns the number of workspaces for @screen when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
+	// NumberOfDesktops returns the number of workspaces for screen when running
+	// under a window manager that supports multiple workspaces, as described in
+	// the Extended Window Manager Hints
 	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
 	// ScreenNumber returns the index of a Screen.
 	ScreenNumber() int
-	// WindowManagerName returns the name of the window manager for @screen.
+	// WindowManagerName returns the name of the window manager for screen.
 	WindowManagerName() string
 }
 
@@ -76,7 +76,7 @@ func marshalX11Screener(p uintptr) (interface{}, error) {
 	return wrapX11Screen(obj), nil
 }
 
-// CurrentDesktop returns the current workspace for @screen when running under a
+// CurrentDesktop returns the current workspace for screen when running under a
 // window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
@@ -95,7 +95,7 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 	return _guint32
 }
 
-// NumberOfDesktops returns the number of workspaces for @screen when running
+// NumberOfDesktops returns the number of workspaces for screen when running
 // under a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
@@ -130,7 +130,7 @@ func (screen *X11Screen) ScreenNumber() int {
 	return _gint
 }
 
-// WindowManagerName returns the name of the window manager for @screen.
+// WindowManagerName returns the name of the window manager for screen.
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in

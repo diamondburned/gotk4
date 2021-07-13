@@ -49,7 +49,7 @@ type Adjustmenter interface {
 	// Changed emits a Adjustment::changed signal from the Adjustment.
 	Changed()
 	// ClampPage updates the Adjustment:value property to ensure that the range
-	// between @lower and @upper is in the current page (i.e.
+	// between lower and upper is in the current page (i.e.
 	ClampPage(lower float64, upper float64)
 	// Configure sets all properties of the adjustment at once.
 	Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
@@ -155,10 +155,9 @@ func (adjustment *Adjustment) Changed() {
 }
 
 // ClampPage updates the Adjustment:value property to ensure that the range
-// between @lower and @upper is in the current page (i.e. between
-// Adjustment:value and Adjustment:value + Adjustment:page-size). If the range
-// is larger than the page size, then only the start of it will be in the
-// current page.
+// between lower and upper is in the current page (i.e. between Adjustment:value
+// and Adjustment:value + Adjustment:page-size). If the range is larger than the
+// page size, then only the start of it will be in the current page.
 //
 // A Adjustment::value-changed signal will be emitted if the value is changed.
 func (adjustment *Adjustment) ClampPage(lower float64, upper float64) {
@@ -378,7 +377,7 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 
 // SetUpper sets the maximum value of the adjustment.
 //
-// Note that values will be restricted by `upper - page-size` if the page-size
+// Note that values will be restricted by upper - page-size if the page-size
 // property is nonzero.
 //
 // See gtk_adjustment_set_lower() about how to compress multiple emissions of

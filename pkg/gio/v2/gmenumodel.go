@@ -44,15 +44,15 @@ type MenuAttributeIterOverrider interface {
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 	//
 	// First the iterator is advanced to the next (possibly first) attribute. If
-	// that fails, then false is returned and there are no other effects.
+	// that fails, then FALSE is returned and there are no other effects.
 	//
-	// If successful, @name and @value are set to the name and value of the
+	// If successful, name and value are set to the name and value of the
 	// attribute that has just been advanced to. At this point,
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
 	// will return the same values again.
 	//
-	// The value returned in @name remains valid for as long as the iterator
-	// remains at the current position. The value returned in @value must be
+	// The value returned in name remains valid for as long as the iterator
+	// remains at the current position. The value returned in value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
 	Next() (string, *glib.Variant, bool)
 }
@@ -118,15 +118,15 @@ func (iter *MenuAttributeIter) Name() string {
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 //
 // First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then false is returned and there are no other effects.
+// that fails, then FALSE is returned and there are no other effects.
 //
-// If successful, @name and @value are set to the name and value of the
-// attribute that has just been advanced to. At this point,
+// If successful, name and value are set to the name and value of the attribute
+// that has just been advanced to. At this point,
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
 // return the same values again.
 //
-// The value returned in @name remains valid for as long as the iterator remains
-// at the current position. The value returned in @value must be unreffed using
+// The value returned in name remains valid for as long as the iterator remains
+// at the current position. The value returned in value must be unreffed using
 // g_variant_unref() when it is no longer in use.
 func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
@@ -175,7 +175,7 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 
 // Next attempts to advance the iterator to the next (possibly first) attribute.
 //
-// true is returned on success, or false if there are no more attributes.
+// TRUE is returned on success, or FALSE if there are no more attributes.
 //
 // You must call this function when you first acquire the iterator to advance it
 // to the first attribute (and determine if the first attribute exists at all).
@@ -205,15 +205,15 @@ type MenuLinkIterOverrider interface {
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 	//
 	// First the iterator is advanced to the next (possibly first) link. If that
-	// fails, then false is returned and there are no other effects.
+	// fails, then FALSE is returned and there are no other effects.
 	//
-	// If successful, @out_link and @value are set to the name and Model of the
+	// If successful, out_link and value are set to the name and Model of the
 	// link that has just been advanced to. At this point,
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return
 	// the same values again.
 	//
-	// The value returned in @out_link remains valid for as long as the iterator
-	// remains at the current position. The value returned in @value must be
+	// The value returned in out_link remains valid for as long as the iterator
+	// remains at the current position. The value returned in value must be
 	// unreffed using g_object_unref() when it is no longer in use.
 	Next() (string, *MenuModel, bool)
 }
@@ -276,15 +276,15 @@ func (iter *MenuLinkIter) Name() string {
 // g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 //
 // First the iterator is advanced to the next (possibly first) link. If that
-// fails, then false is returned and there are no other effects.
+// fails, then FALSE is returned and there are no other effects.
 //
-// If successful, @out_link and @value are set to the name and Model of the link
+// If successful, out_link and value are set to the name and Model of the link
 // that has just been advanced to. At this point, g_menu_link_iter_get_name()
 // and g_menu_link_iter_get_value() will return the same values again.
 //
-// The value returned in @out_link remains valid for as long as the iterator
-// remains at the current position. The value returned in @value must be
-// unreffed using g_object_unref() when it is no longer in use.
+// The value returned in out_link remains valid for as long as the iterator
+// remains at the current position. The value returned in value must be unreffed
+// using g_object_unref() when it is no longer in use.
 func (iter *MenuLinkIter) GetNext() (string, *MenuModel, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
@@ -328,7 +328,7 @@ func (iter *MenuLinkIter) Value() *MenuModel {
 
 // Next attempts to advance the iterator to the next (possibly first) link.
 //
-// true is returned on success, or false if there are no more links.
+// TRUE is returned on success, or FALSE if there are no more links.
 //
 // You must call this function when you first acquire the iterator to advance it
 // to the first link (and determine if the first link exists at all).
@@ -354,43 +354,43 @@ func (iter *MenuLinkIter) Next() bool {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type MenuModelOverrider interface {
-	// ItemAttributeValue queries the item at position @item_index in @model for
-	// the attribute specified by @attribute.
+	// ItemAttributeValue queries the item at position item_index in model for
+	// the attribute specified by attribute.
 	//
-	// If @expected_type is non-nil then it specifies the expected type of the
-	// attribute. If it is nil then any type will be accepted.
+	// If expected_type is non-NULL then it specifies the expected type of the
+	// attribute. If it is NULL then any type will be accepted.
 	//
-	// If the attribute exists and matches @expected_type (or if the expected
+	// If the attribute exists and matches expected_type (or if the expected
 	// type is unspecified) then the value is returned.
 	//
 	// If the attribute does not exist, or does not match the expected type then
-	// nil is returned.
+	// NULL is returned.
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
 	ItemAttributes(itemIndex int) *glib.HashTable
-	// ItemLink queries the item at position @item_index in @model for the link
-	// specified by @link.
+	// ItemLink queries the item at position item_index in model for the link
+	// specified by link.
 	//
 	// If the link exists, the linked Model is returned. If the link does not
-	// exist, nil is returned.
+	// exist, NULL is returned.
 	ItemLink(itemIndex int, link string) *MenuModel
 	// ItemLinks gets all the links associated with the item in the menu model.
 	ItemLinks(itemIndex int) *glib.HashTable
-	// NItems: query the number of items in @model.
+	// NItems: query the number of items in model.
 	NItems() int
-	// IsMutable queries if @model is mutable.
+	// IsMutable queries if model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
 	// Consumers of the model may make optimisations accordingly.
 	IsMutable() bool
 	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position @item_index in @model.
+	// attributes of the item at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
 	IterateItemAttributes(itemIndex int) *MenuAttributeIter
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position @item_index in @model.
+	// at position item_index in model.
 	//
 	// You must free the iterator with g_object_unref() when you are done.
 	IterateItemLinks(itemIndex int) *MenuLinkIter
@@ -398,24 +398,24 @@ type MenuModelOverrider interface {
 
 // MenuModeler describes MenuModel's methods.
 type MenuModeler interface {
-	// ItemAttributeValue queries the item at position @item_index in @model for
-	// the attribute specified by @attribute.
+	// ItemAttributeValue queries the item at position item_index in model for
+	// the attribute specified by attribute.
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// ItemLink queries the item at position @item_index in @model for the link
-	// specified by @link.
+	// ItemLink queries the item at position item_index in model for the link
+	// specified by link.
 	ItemLink(itemIndex int, link string) *MenuModel
-	// NItems: query the number of items in @model.
+	// NItems: query the number of items in model.
 	NItems() int
-	// IsMutable queries if @model is mutable.
+	// IsMutable queries if model is mutable.
 	IsMutable() bool
 	// ItemsChanged requests emission of the Model::items-changed signal on
-	// @model.
+	// model.
 	ItemsChanged(position int, removed int, added int)
 	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position @item_index in @model.
+	// attributes of the item at position item_index in model.
 	IterateItemAttributes(itemIndex int) *MenuAttributeIter
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position @item_index in @model.
+	// at position item_index in model.
 	IterateItemLinks(itemIndex int) *MenuLinkIter
 }
 
@@ -442,12 +442,21 @@ type MenuModeler interface {
 // There are 8 "menus" visible in the screenshot: one menubar, two submenus and
 // 5 sections:
 //
-// - the toplevel menubar (containing 4 items) - the View submenu (containing 3
-// sections) - the first section of the View submenu (containing 2 items) - the
-// second section of the View submenu (containing 1 item) - the final section of
-// the View submenu (containing 1 item) - the Highlight Mode submenu (containing
-// 2 sections) - the Sources section (containing 2 items) - the Markup section
-// (containing 2 items)
+// - the toplevel menubar (containing 4 items)
+//
+// - the View submenu (containing 3 sections)
+//
+// - the first section of the View submenu (containing 2 items)
+//
+// - the second section of the View submenu (containing 1 item)
+//
+// - the final section of the View submenu (containing 1 item)
+//
+// - the Highlight Mode submenu (containing 2 sections)
+//
+// - the Sources section (containing 2 items)
+//
+// - the Markup section (containing 2 items)
 //
 // The [example][menu-model] illustrates the conceptual connection between these
 // 8 menus. Each large block in the figure represents a menu and the smaller
@@ -495,9 +504,13 @@ type MenuModeler interface {
 //
 // While a wide variety of stateful actions is possible, the following is the
 // minimum that is expected to be supported by all users of exported menu
-// information: - an action with no parameter type and no state - an action with
-// no parameter type and boolean state - an action with string parameter type
-// and string state
+// information:
+//
+// - an action with no parameter type and no state
+//
+// - an action with no parameter type and boolean state
+//
+// - an action with string parameter type and string state
 //
 //
 // Stateless
@@ -550,17 +563,17 @@ func marshalMenuModeler(p uintptr) (interface{}, error) {
 	return wrapMenuModel(obj), nil
 }
 
-// ItemAttributeValue queries the item at position @item_index in @model for the
-// attribute specified by @attribute.
+// ItemAttributeValue queries the item at position item_index in model for the
+// attribute specified by attribute.
 //
-// If @expected_type is non-nil then it specifies the expected type of the
-// attribute. If it is nil then any type will be accepted.
+// If expected_type is non-NULL then it specifies the expected type of the
+// attribute. If it is NULL then any type will be accepted.
 //
-// If the attribute exists and matches @expected_type (or if the expected type
-// is unspecified) then the value is returned.
+// If the attribute exists and matches expected_type (or if the expected type is
+// unspecified) then the value is returned.
 //
-// If the attribute does not exist, or does not match the expected type then nil
-// is returned.
+// If the attribute does not exist, or does not match the expected type then
+// NULL is returned.
 func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
@@ -586,11 +599,11 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 	return _variant
 }
 
-// ItemLink queries the item at position @item_index in @model for the link
-// specified by @link.
+// ItemLink queries the item at position item_index in model for the link
+// specified by link.
 //
 // If the link exists, the linked Model is returned. If the link does not exist,
-// nil is returned.
+// NULL is returned.
 func (model *MenuModel) ItemLink(itemIndex int, link string) *MenuModel {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -610,7 +623,7 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) *MenuModel {
 	return _menuModel
 }
 
-// NItems: query the number of items in @model.
+// NItems: query the number of items in model.
 func (model *MenuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
@@ -626,7 +639,7 @@ func (model *MenuModel) NItems() int {
 	return _gint
 }
 
-// IsMutable queries if @model is mutable.
+// IsMutable queries if model is mutable.
 //
 // An immutable Model will never emit the Model::items-changed signal. Consumers
 // of the model may make optimisations accordingly.
@@ -647,7 +660,7 @@ func (model *MenuModel) IsMutable() bool {
 	return _ok
 }
 
-// ItemsChanged requests emission of the Model::items-changed signal on @model.
+// ItemsChanged requests emission of the Model::items-changed signal on model.
 //
 // This function should never be called except by Model subclasses. Any other
 // calls to this function will very likely lead to a violation of the interface
@@ -677,7 +690,7 @@ func (model *MenuModel) ItemsChanged(position int, removed int, added int) {
 }
 
 // IterateItemAttributes creates a AttributeIter to iterate over the attributes
-// of the item at position @item_index in @model.
+// of the item at position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
 func (model *MenuModel) IterateItemAttributes(itemIndex int) *MenuAttributeIter {
@@ -698,7 +711,7 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) *MenuAttributeIter 
 }
 
 // IterateItemLinks creates a LinkIter to iterate over the links of the item at
-// position @item_index in @model.
+// position item_index in model.
 //
 // You must free the iterator with g_object_unref() when you are done.
 func (model *MenuModel) IterateItemLinks(itemIndex int) *MenuLinkIter {

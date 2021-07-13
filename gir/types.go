@@ -85,13 +85,13 @@ type Callback struct {
 }
 
 type Class struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 class"`
-	Name    string   `xml:"name,attr"`
+	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 class"`
+	Name     string   `xml:"name,attr"`
+	Parent   string   `xml:"parent,attr"`
+	Abstract bool     `xml:"abstract,attr"`
 
 	CType         string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
 	CSymbolPrefix string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
-
-	Parent string `xml:"parent,attr"`
 
 	GLibTypeName   string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
 	GLibGetType    string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`

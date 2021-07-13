@@ -27,9 +27,9 @@ func init() {
 // GestureMultiPresser describes GestureMultiPress's methods.
 type GestureMultiPresser interface {
 	// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-	// function will return true and fill in @rect with the press area.
+	// function will return TRUE and fill in rect with the press area.
 	Area() (gdk.Rectangle, bool)
-	// SetArea: if @rect is non-nil, the press area will be checked to be
+	// SetArea: if rect is non-NULL, the press area will be checked to be
 	// confined within the rectangle, otherwise the button count will be reset
 	// so the press is seen as being the first one.
 	SetArea(rect *gdk.Rectangle)
@@ -89,7 +89,7 @@ func NewGestureMultiPress(widget Widgeter) *GestureMultiPress {
 }
 
 // Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-// function will return true and fill in @rect with the press area. See
+// function will return TRUE and fill in rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press area
 // represents.
 func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
@@ -110,9 +110,9 @@ func (gesture *GestureMultiPress) Area() (gdk.Rectangle, bool) {
 	return _rect, _ok
 }
 
-// SetArea: if @rect is non-nil, the press area will be checked to be confined
+// SetArea: if rect is non-NULL, the press area will be checked to be confined
 // within the rectangle, otherwise the button count will be reset so the press
-// is seen as being the first one. If @rect is nil, the area will be reset to an
+// is seen as being the first one. If rect is NULL, the area will be reset to an
 // unrestricted state.
 //
 // Note: The rectangle is only used to determine whether any non-first click

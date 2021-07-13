@@ -77,11 +77,11 @@ func marshalHScaler(p uintptr) (interface{}, error) {
 // NewHScale creates a new HScale.
 //
 // Deprecated: Use gtk_scale_new() with GTK_ORIENTATION_HORIZONTAL instead.
-func NewHScale(adjustment Adjustmenter) *HScale {
+func NewHScale(adjustment *Adjustment) *HScale {
 	var _arg1 *C.GtkAdjustment // out
 	var _cret *C.GtkWidget     // in
 
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer((adjustment).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	_cret = C.gtk_hscale_new(_arg1)
 
@@ -93,11 +93,11 @@ func NewHScale(adjustment Adjustmenter) *HScale {
 }
 
 // NewHScaleWithRange creates a new horizontal scale widget that lets the user
-// input a number between @min and @max (including @min and @max) with the
-// increment @step. @step must be nonzero; it’s the distance the slider moves
-// when using the arrow keys to adjust the scale value.
+// input a number between min and max (including min and max) with the increment
+// step. step must be nonzero; it’s the distance the slider moves when using the
+// arrow keys to adjust the scale value.
 //
-// Note that the way in which the precision is derived works best if @step is a
+// Note that the way in which the precision is derived works best if step is a
 // power of ten. If the resulting precision is not suitable for your needs, use
 // gtk_scale_set_digits() to correct it.
 //

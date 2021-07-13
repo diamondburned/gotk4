@@ -23,7 +23,7 @@ func init() {
 
 // DragSurfacer describes DragSurface's methods.
 type DragSurfacer interface {
-	// Present @drag_surface.
+	// Present drag_surface.
 	Present(width int, height int) bool
 }
 
@@ -51,7 +51,7 @@ func marshalDragSurfacer(p uintptr) (interface{}, error) {
 	return wrapDragSurface(obj), nil
 }
 
-// Present @drag_surface.
+// Present drag_surface.
 func (dragSurface *DragSurface) Present(width int, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out

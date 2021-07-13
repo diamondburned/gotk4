@@ -153,7 +153,7 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 type Clipboarder interface {
 	// Clear clears the contents of the clipboard.
 	Clear()
-	// Display gets the Display associated with @clipboard
+	// Display gets the Display associated with clipboard
 	Display() *gdk.Display
 	// Owner: if the clipboard contents callbacks were set with
 	// gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
@@ -170,7 +170,7 @@ type Clipboarder interface {
 	// the application exits or when gtk_clipboard_store () is called.
 	SetCanStore(targets []TargetEntry)
 	// SetImage sets the contents of the clipboard to the given Pixbuf.
-	SetImage(pixbuf gdkpixbuf.Pixbufer)
+	SetImage(pixbuf *gdkpixbuf.Pixbuf)
 	// SetText sets the contents of the clipboard to the given UTF-8 string.
 	SetText(text string, len int)
 	// Store stores the current clipboard data somewhere so that it will stay
@@ -191,7 +191,7 @@ type Clipboarder interface {
 	// WaitIsRichTextAvailable: test to see if there is rich text available to
 	// be pasted This is done by requesting the TARGETS atom and checking if it
 	// contains any of the supported rich text targets.
-	WaitIsRichTextAvailable(buffer TextBufferer) bool
+	WaitIsRichTextAvailable(buffer *TextBuffer) bool
 	// WaitIsTextAvailable: test to see if there is text available to be pasted
 	// This is done by requesting the TARGETS atom and checking if it contains
 	// any of the supported text targets.
@@ -223,14 +223,14 @@ type Clipboarder interface {
 // similar; the choice between the two depends mostly on which is more
 // convenient in a particular situation. The former is most useful when you want
 // to have a blob of data with callbacks to convert it into the various data
-// types that you advertise. When the @clear_func you provided is called, you
+// types that you advertise. When the clear_func you provided is called, you
 // simply free the data blob. The latter is more useful when the contents of
 // clipboard reflect the internal state of a #GObject (As an example, for the
 // PRIMARY clipboard, when an entry widget provides the clipboard’s contents the
 // contents are simply the text within the selected region.) If the contents
 // change, the entry widget can call gtk_clipboard_set_with_owner() to update
 // the timestamp for clipboard ownership, without having to worry about
-// @clear_func being called.
+// clear_func being called.
 //
 // Requesting the data from the clipboard is essentially asynchronous. If the
 // contents of the clipboard are provided within the same process, then a direct
@@ -275,7 +275,7 @@ func marshalClipboarder(p uintptr) (interface{}, error) {
 
 // Clear clears the contents of the clipboard. Generally this should only be
 // called between the time you call gtk_clipboard_set_with_owner() or
-// gtk_clipboard_set_with_data(), and when the @clear_func you supplied is
+// gtk_clipboard_set_with_data(), and when the clear_func you supplied is
 // called. Otherwise, the clipboard may be owned by someone else.
 func (clipboard *Clipboard) Clear() {
 	var _arg0 *C.GtkClipboard // out
@@ -285,7 +285,7 @@ func (clipboard *Clipboard) Clear() {
 	C.gtk_clipboard_clear(_arg0)
 }
 
-// Display gets the Display associated with @clipboard
+// Display gets the Display associated with clipboard
 func (clipboard *Clipboard) Display() *gdk.Display {
 	var _arg0 *C.GtkClipboard // out
 	var _cret *C.GdkDisplay   // in
@@ -326,11 +326,11 @@ func (clipboard *Clipboard) Owner() *externglib.Object {
 }
 
 // RequestImage requests the contents of the clipboard as image. When the image
-// is later received, it will be converted to a Pixbuf, and @callback will be
+// is later received, it will be converted to a Pixbuf, and callback will be
 // called.
 //
-// The @pixbuf parameter to @callback will contain the resulting Pixbuf if the
-// request succeeded, or nil if it failed. This could happen for various
+// The pixbuf parameter to callback will contain the resulting Pixbuf if the
+// request succeeded, or NULL if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of the
 // clipboard could not be converted into an image.
 func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
@@ -346,13 +346,13 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 }
 
 // RequestText requests the contents of the clipboard as text. When the text is
-// later received, it will be converted to UTF-8 if necessary, and @callback
-// will be called.
+// later received, it will be converted to UTF-8 if necessary, and callback will
+// be called.
 //
-// The @text parameter to @callback will contain the resulting text if the
-// request succeeded, or nil if it failed. This could happen for various
-// reasons, in particular if the clipboard was empty or if the contents of the
-// clipboard could not be converted into text form.
+// The text parameter to callback will contain the resulting text if the request
+// succeeded, or NULL if it failed. This could happen for various reasons, in
+// particular if the clipboard was empty or if the contents of the clipboard
+// could not be converted into text form.
 func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg0 *C.GtkClipboard                // out
 	var _arg1 C.GtkClipboardTextReceivedFunc // out
@@ -366,10 +366,10 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 }
 
 // RequestUris requests the contents of the clipboard as URIs. When the URIs are
-// later received @callback will be called.
+// later received callback will be called.
 //
-// The @uris parameter to @callback will contain the resulting array of URIs if
-// the request succeeded, or nil if it failed. This could happen for various
+// The uris parameter to callback will contain the resulting array of URIs if
+// the request succeeded, or NULL if it failed. This could happen for various
 // reasons, in particular if the clipboard was empty or if the contents of the
 // clipboard could not be converted into URI form.
 func (clipboard *Clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
@@ -407,12 +407,12 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 // SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
 // take responsibility for responding for requests for the image, and for
 // converting the image into the requested format.
-func (clipboard *Clipboard) SetImage(pixbuf gdkpixbuf.Pixbufer) {
+func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.GdkPixbuf    // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer((pixbuf).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	C.gtk_clipboard_set_image(_arg0, _arg1)
 }
@@ -552,13 +552,13 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 // actual text.
-func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer TextBufferer) bool {
+func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 	var _arg0 *C.GtkClipboard  // out
 	var _arg1 *C.GtkTextBuffer // out
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer((buffer).(gextras.Nativer).Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
 
@@ -622,11 +622,11 @@ func (clipboard *Clipboard) WaitIsUrisAvailable() bool {
 
 // ClipboardGetDefault returns the default clipboard object for use with
 // cut/copy/paste menu items and keyboard shortcuts.
-func ClipboardGetDefault(display gdk.Displayer) *Clipboard {
+func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkClipboard // in
 
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer((display).(gextras.Nativer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
 	_cret = C.gtk_clipboard_get_default(_arg1)
 

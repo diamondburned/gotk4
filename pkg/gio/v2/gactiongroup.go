@@ -38,29 +38,29 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ActionGroupOverrider interface {
-	// ActionAdded emits the Group::action-added signal on @action_group.
+	// ActionAdded emits the Group::action-added signal on action_group.
 	//
 	// This function should only be called by Group implementations.
 	ActionAdded(actionName string)
 	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
+	// action_group.
 	//
 	// This function should only be called by Group implementations.
 	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
+	// ActionRemoved emits the Group::action-removed signal on action_group.
 	//
 	// This function should only be called by Group implementations.
 	ActionRemoved(actionName string)
 	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
+	// action_group.
 	//
 	// This function should only be called by Group implementations.
 	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
+	// ActivateAction: activate the named action within action_group.
 	//
 	// If the action is expecting a parameter, then the correct type of
-	// parameter must be given as @parameter. If the action is expecting no
-	// parameters then @parameter must be nil. See
+	// parameter must be given as parameter. If the action is expecting no
+	// parameters then parameter must be NULL. See
 	// g_action_group_get_action_parameter_type().
 	//
 	// If the Group implementation supports asynchronous remote activation over
@@ -73,7 +73,7 @@ type ActionGroupOverrider interface {
 	//
 	// The following code which runs in a remote app instance, shows an example
 	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
+	// D-Bus. Here g_dbus_connection_flush() is called before exit(). Without
 	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
 	// the primary instance.
 	//
@@ -88,51 +88,51 @@ type ActionGroupOverrider interface {
 	//    exit (0);
 	ActivateAction(actionName string, parameter *glib.Variant)
 	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
+	// action_group to be changed to value.
 	//
-	// The action must be stateful and @value must be of the correct type. See
+	// The action must be stateful and value must be of the correct type. See
 	// g_action_group_get_action_state_type().
 	//
 	// This call merely requests a change. The action may refuse to change its
-	// state or may change its state to something other than @value. See
+	// state or may change its state to something other than value. See
 	// g_action_group_get_action_state_hint().
 	//
-	// If the @value GVariant is floating, it is consumed.
+	// If the value GVariant is floating, it is consumed.
 	ChangeActionState(actionName string, value *glib.Variant)
-	// ActionEnabled checks if the named action within @action_group is
-	// currently enabled.
+	// ActionEnabled checks if the named action within action_group is currently
+	// enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
 	// its state changed from outside callers.
 	ActionEnabled(actionName string) bool
 	// ActionParameterType queries the type of the parameter that must be given
-	// when activating the named action within @action_group.
+	// when activating the named action within action_group.
 	//
 	// When activating the action using g_action_group_activate_action(), the
 	// #GVariant given to that function must be of the type returned by this
 	// function.
 	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
+	// In the case that this function returns NULL, you must not give any
+	// #GVariant, but NULL instead.
 	//
 	// The parameter type of a particular action will never change but it is
 	// possible for an action to be removed and for a new action to be added
 	// with the same name but a different parameter type.
 	ActionParameterType(actionName string) *glib.VariantType
 	// ActionState queries the current state of the named action within
-	// @action_group.
+	// action_group.
 	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
+	// If the action is not stateful then NULL will be returned. If the action
+	// is stateful then the type of the return value is the type given by
 	// g_action_group_get_action_state_type().
 	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
+	// The return value (if non-NULL) should be freed with g_variant_unref()
+	// when it is no longer required.
 	ActionState(actionName string) *glib.Variant
 	// ActionStateHint requests a hint about the valid range of values for the
-	// state of the named action within @action_group.
+	// state of the named action within action_group.
 	//
-	// If nil is returned it either means that the action is not stateful or
+	// If NULL is returned it either means that the action is not stateful or
 	// that there is no hint about the valid range of values for the state of
 	// the action.
 	//
@@ -145,34 +145,34 @@ type ActionGroupOverrider interface {
 	// a state value outside of the hinted range and setting a value within the
 	// range may fail.
 	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
+	// The return value (if non-NULL) should be freed with g_variant_unref()
+	// when it is no longer required.
 	ActionStateHint(actionName string) *glib.Variant
 	// ActionStateType queries the type of the state of the named action within
-	// @action_group.
+	// action_group.
 	//
 	// If the action is stateful then this function returns the Type of the
 	// state. All calls to g_action_group_change_action_state() must give a
 	// #GVariant of this type and g_action_group_get_action_state() will return
 	// a #GVariant of the same type.
 	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
+	// If the action is not stateful then this function will return NULL. In
+	// that case, g_action_group_get_action_state() will return NULL and you
+	// must not call g_action_group_change_action_state().
 	//
 	// The state type of a particular action will never change but it is
 	// possible for an action to be removed and for a new action to be added
 	// with the same name but a different state type.
 	ActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
+	// HasAction checks if the named action exists within action_group.
 	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
+	// ListActions lists the actions contained within action_group.
 	//
 	// The caller is responsible for freeing the list with g_strfreev() when it
 	// is no longer required.
 	ListActions() []string
 	// QueryAction queries all aspects of the named action within an
-	// @action_group.
+	// action_group.
 	//
 	// This function acquires the information available from
 	// g_action_group_has_action(), g_action_group_get_action_enabled(),
@@ -194,51 +194,51 @@ type ActionGroupOverrider interface {
 	// that call this function. All implementations, therefore, must override
 	// either this function or all of the others.
 	//
-	// If the action exists, true is returned and any of the requested fields
-	// (as indicated by having a non-nil reference passed in) are filled. If the
-	// action doesn't exist, false is returned and the fields may or may not
+	// If the action exists, TRUE is returned and any of the requested fields
+	// (as indicated by having a non-NULL reference passed in) are filled. If
+	// the action doesn't exist, FALSE is returned and the fields may or may not
 	// have been modified.
 	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionGrouper describes ActionGroup's methods.
 type ActionGrouper interface {
-	// ActionAdded emits the Group::action-added signal on @action_group.
+	// ActionAdded emits the Group::action-added signal on action_group.
 	ActionAdded(actionName string)
 	// ActionEnabledChanged emits the Group::action-enabled-changed signal on
-	// @action_group.
+	// action_group.
 	ActionEnabledChanged(actionName string, enabled bool)
-	// ActionRemoved emits the Group::action-removed signal on @action_group.
+	// ActionRemoved emits the Group::action-removed signal on action_group.
 	ActionRemoved(actionName string)
 	// ActionStateChanged emits the Group::action-state-changed signal on
-	// @action_group.
+	// action_group.
 	ActionStateChanged(actionName string, state *glib.Variant)
-	// ActivateAction: activate the named action within @action_group.
+	// ActivateAction: activate the named action within action_group.
 	ActivateAction(actionName string, parameter *glib.Variant)
 	// ChangeActionState: request for the state of the named action within
-	// @action_group to be changed to @value.
+	// action_group to be changed to value.
 	ChangeActionState(actionName string, value *glib.Variant)
-	// ActionEnabled checks if the named action within @action_group is
-	// currently enabled.
+	// ActionEnabled checks if the named action within action_group is currently
+	// enabled.
 	ActionEnabled(actionName string) bool
 	// ActionParameterType queries the type of the parameter that must be given
-	// when activating the named action within @action_group.
+	// when activating the named action within action_group.
 	ActionParameterType(actionName string) *glib.VariantType
 	// ActionState queries the current state of the named action within
-	// @action_group.
+	// action_group.
 	ActionState(actionName string) *glib.Variant
 	// ActionStateHint requests a hint about the valid range of values for the
-	// state of the named action within @action_group.
+	// state of the named action within action_group.
 	ActionStateHint(actionName string) *glib.Variant
 	// ActionStateType queries the type of the state of the named action within
-	// @action_group.
+	// action_group.
 	ActionStateType(actionName string) *glib.VariantType
-	// HasAction checks if the named action exists within @action_group.
+	// HasAction checks if the named action exists within action_group.
 	HasAction(actionName string) bool
-	// ListActions lists the actions contained within @action_group.
+	// ListActions lists the actions contained within action_group.
 	ListActions() []string
 	// QueryAction queries all aspects of the named action within an
-	// @action_group.
+	// action_group.
 	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
@@ -304,7 +304,7 @@ func marshalActionGrouper(p uintptr) (interface{}, error) {
 	return wrapActionGroup(obj), nil
 }
 
-// ActionAdded emits the Group::action-added signal on @action_group.
+// ActionAdded emits the Group::action-added signal on action_group.
 //
 // This function should only be called by Group implementations.
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
@@ -318,7 +318,7 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 }
 
 // ActionEnabledChanged emits the Group::action-enabled-changed signal on
-// @action_group.
+// action_group.
 //
 // This function should only be called by Group implementations.
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
@@ -335,7 +335,7 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 	C.g_action_group_action_enabled_changed(_arg0, _arg1, _arg2)
 }
 
-// ActionRemoved emits the Group::action-removed signal on @action_group.
+// ActionRemoved emits the Group::action-removed signal on action_group.
 //
 // This function should only be called by Group implementations.
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
@@ -349,7 +349,7 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 }
 
 // ActionStateChanged emits the Group::action-state-changed signal on
-// @action_group.
+// action_group.
 //
 // This function should only be called by Group implementations.
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
@@ -364,11 +364,11 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
 }
 
-// ActivateAction: activate the named action within @action_group.
+// ActivateAction: activate the named action within action_group.
 //
 // If the action is expecting a parameter, then the correct type of parameter
-// must be given as @parameter. If the action is expecting no parameters then
-// @parameter must be nil. See g_action_group_get_action_parameter_type().
+// must be given as parameter. If the action is expecting no parameters then
+// parameter must be NULL. See g_action_group_get_action_parameter_type().
 //
 // If the Group implementation supports asynchronous remote activation over
 // D-Bus, this call may return before the relevant D-Bus traffic has been sent,
@@ -380,7 +380,7 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //
 // The following code which runs in a remote app instance, shows an example of a
 // "quit" action being activated on the primary app instance over D-Bus. Here
-// g_dbus_connection_flush() is called before `exit()`. Without
+// g_dbus_connection_flush() is called before exit(). Without
 // g_dbus_connection_flush(), the "quit" action may fail to be activated on the
 // primary instance.
 //
@@ -406,16 +406,16 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 }
 
 // ChangeActionState: request for the state of the named action within
-// @action_group to be changed to @value.
+// action_group to be changed to value.
 //
-// The action must be stateful and @value must be of the correct type. See
+// The action must be stateful and value must be of the correct type. See
 // g_action_group_get_action_state_type().
 //
 // This call merely requests a change. The action may refuse to change its state
-// or may change its state to something other than @value. See
+// or may change its state to something other than value. See
 // g_action_group_get_action_state_hint().
 //
-// If the @value GVariant is floating, it is consumed.
+// If the value GVariant is floating, it is consumed.
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -428,7 +428,7 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
 }
 
-// ActionEnabled checks if the named action within @action_group is currently
+// ActionEnabled checks if the named action within action_group is currently
 // enabled.
 //
 // An action must be enabled in order to be activated or in order to have its
@@ -453,14 +453,14 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 }
 
 // ActionParameterType queries the type of the parameter that must be given when
-// activating the named action within @action_group.
+// activating the named action within action_group.
 //
 // When activating the action using g_action_group_activate_action(), the
 // #GVariant given to that function must be of the type returned by this
 // function.
 //
-// In the case that this function returns nil, you must not give any #GVariant,
-// but nil instead.
+// In the case that this function returns NULL, you must not give any #GVariant,
+// but NULL instead.
 //
 // The parameter type of a particular action will never change but it is
 // possible for an action to be removed and for a new action to be added with
@@ -483,13 +483,13 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 }
 
 // ActionState queries the current state of the named action within
-// @action_group.
+// action_group.
 //
-// If the action is not stateful then nil will be returned. If the action is
+// If the action is not stateful then NULL will be returned. If the action is
 // stateful then the type of the return value is the type given by
 // g_action_group_get_action_state_type().
 //
-// The return value (if non-nil) should be freed with g_variant_unref() when it
+// The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
@@ -513,9 +513,9 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 }
 
 // ActionStateHint requests a hint about the valid range of values for the state
-// of the named action within @action_group.
+// of the named action within action_group.
 //
-// If nil is returned it either means that the action is not stateful or that
+// If NULL is returned it either means that the action is not stateful or that
 // there is no hint about the valid range of values for the state of the action.
 //
 // If a #GVariant array is returned then each item in the array is a possible
@@ -527,7 +527,7 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 // state value outside of the hinted range and setting a value within the range
 // may fail.
 //
-// The return value (if non-nil) should be freed with g_variant_unref() when it
+// The return value (if non-NULL) should be freed with g_variant_unref() when it
 // is no longer required.
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
@@ -551,16 +551,16 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 }
 
 // ActionStateType queries the type of the state of the named action within
-// @action_group.
+// action_group.
 //
 // If the action is stateful then this function returns the Type of the state.
 // All calls to g_action_group_change_action_state() must give a #GVariant of
 // this type and g_action_group_get_action_state() will return a #GVariant of
 // the same type.
 //
-// If the action is not stateful then this function will return nil. In that
-// case, g_action_group_get_action_state() will return nil and you must not call
-// g_action_group_change_action_state().
+// If the action is not stateful then this function will return NULL. In that
+// case, g_action_group_get_action_state() will return NULL and you must not
+// call g_action_group_change_action_state().
 //
 // The state type of a particular action will never change but it is possible
 // for an action to be removed and for a new action to be added with the same
@@ -582,7 +582,7 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 	return _variantType
 }
 
-// HasAction checks if the named action exists within @action_group.
+// HasAction checks if the named action exists within action_group.
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -602,7 +602,7 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	return _ok
 }
 
-// ListActions lists the actions contained within @action_group.
+// ListActions lists the actions contained within action_group.
 //
 // The caller is responsible for freeing the list with g_strfreev() when it is
 // no longer required.
@@ -633,7 +633,7 @@ func (actionGroup *ActionGroup) ListActions() []string {
 	return _utf8s
 }
 
-// QueryAction queries all aspects of the named action within an @action_group.
+// QueryAction queries all aspects of the named action within an action_group.
 //
 // This function acquires the information available from
 // g_action_group_has_action(), g_action_group_get_action_enabled(),
@@ -655,9 +655,9 @@ func (actionGroup *ActionGroup) ListActions() []string {
 // this function. All implementations, therefore, must override either this
 // function or all of the others.
 //
-// If the action exists, true is returned and any of the requested fields (as
-// indicated by having a non-nil reference passed in) are filled. If the action
-// doesn't exist, false is returned and the fields may or may not have been
+// If the action exists, TRUE is returned and any of the requested fields (as
+// indicated by having a non-NULL reference passed in) are filled. If the action
+// doesn't exist, FALSE is returned and the fields may or may not have been
 // modified.
 func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	var _arg0 *C.GActionGroup // out

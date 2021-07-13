@@ -38,7 +38,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectManagerClientOverrider interface {
-	InterfaceProXYSignal(objectProxy *DBusObjectProXY, interfaceProxy *DBusProXY, senderName string, signalName string, parameters *glib.Variant)
+	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName string, signalName string, parameters *glib.Variant)
 }
 
 // DBusObjectManagerClienter describes DBusObjectManagerClient's methods.

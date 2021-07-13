@@ -29,20 +29,20 @@ func init() {
 type Viewporter interface {
 	// BinWindow gets the bin window of the Viewport.
 	BinWindow() *gdk.Window
-	// Hadjustment returns the horizontal adjustment of the viewport.
-	Hadjustment() *Adjustment
+	// HAdjustment returns the horizontal adjustment of the viewport.
+	HAdjustment() *Adjustment
 	// ShadowType gets the shadow type of the Viewport.
 	ShadowType() ShadowType
-	// Vadjustment returns the vertical adjustment of the viewport.
-	Vadjustment() *Adjustment
+	// VAdjustment returns the vertical adjustment of the viewport.
+	VAdjustment() *Adjustment
 	// ViewWindow gets the view window of the Viewport.
 	ViewWindow() *gdk.Window
-	// SetHadjustment sets the horizontal adjustment of the viewport.
-	SetHadjustment(adjustment *Adjustment)
+	// SetHAdjustment sets the horizontal adjustment of the viewport.
+	SetHAdjustment(adjustment *Adjustment)
 	// SetShadowType sets the shadow type of the viewport.
 	SetShadowType(typ ShadowType)
-	// SetVadjustment sets the vertical adjustment of the viewport.
-	SetVadjustment(adjustment *Adjustment)
+	// SetVAdjustment sets the vertical adjustment of the viewport.
+	SetVAdjustment(adjustment *Adjustment)
 }
 
 // Viewport widget acts as an adaptor class, implementing scrollability for
@@ -149,10 +149,10 @@ func (viewport *Viewport) BinWindow() *gdk.Window {
 	return _window
 }
 
-// Hadjustment returns the horizontal adjustment of the viewport.
+// HAdjustment returns the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (viewport *Viewport) Hadjustment() *Adjustment {
+func (viewport *Viewport) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -184,10 +184,10 @@ func (viewport *Viewport) ShadowType() ShadowType {
 	return _shadowType
 }
 
-// Vadjustment returns the vertical adjustment of the viewport.
+// VAdjustment returns the vertical adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (viewport *Viewport) Vadjustment() *Adjustment {
+func (viewport *Viewport) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -223,10 +223,10 @@ func (viewport *Viewport) ViewWindow() *gdk.Window {
 	return _window
 }
 
-// SetHadjustment sets the horizontal adjustment of the viewport.
+// SetHAdjustment sets the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
-func (viewport *Viewport) SetHadjustment(adjustment *Adjustment) {
+func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -247,10 +247,10 @@ func (viewport *Viewport) SetShadowType(typ ShadowType) {
 	C.gtk_viewport_set_shadow_type(_arg0, _arg1)
 }
 
-// SetVadjustment sets the vertical adjustment of the viewport.
+// SetVAdjustment sets the vertical adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
-func (viewport *Viewport) SetVadjustment(adjustment *Adjustment) {
+func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
 	var _arg1 *C.GtkAdjustment // out
 

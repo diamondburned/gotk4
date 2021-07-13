@@ -298,18 +298,18 @@ type Widgeter interface {
 	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
 	FrameClock() *gdk.FrameClock
-	// Halign gets the horizontal alignment of widget.
-	Halign() Align
+	// HAlign gets the horizontal alignment of widget.
+	HAlign() Align
 	// HasTooltip returns the current value of the has-tooltip property.
 	HasTooltip() bool
 	// Height returns the content height of the widget.
 	Height() int
-	// Hexpand gets whether the widget would like any available extra horizontal
+	// HExpand gets whether the widget would like any available extra horizontal
 	// space.
-	Hexpand() bool
-	// HexpandSet gets whether gtk_widget_set_hexpand() has been used to
+	HExpand() bool
+	// HExpandSet gets whether gtk_widget_set_hexpand() has been used to
 	// explicitly set the expand flag on this widget.
-	HexpandSet() bool
+	HExpandSet() bool
 	// LastChild returns the widgets last child.
 	LastChild() *Widget
 	// LayoutManager retrieves the layout manager used by widget See
@@ -382,14 +382,14 @@ type Widgeter interface {
 	TooltipMarkup() string
 	// TooltipText gets the contents of the tooltip for widget.
 	TooltipText() string
-	// Valign gets the vertical alignment of widget.
-	Valign() Align
-	// Vexpand gets whether the widget would like any available extra vertical
+	// VAlign gets the vertical alignment of widget.
+	VAlign() Align
+	// VExpand gets whether the widget would like any available extra vertical
 	// space.
-	Vexpand() bool
-	// VexpandSet gets whether gtk_widget_set_vexpand() has been used to
+	VExpand() bool
+	// VExpandSet gets whether gtk_widget_set_vexpand() has been used to
 	// explicitly set the expand flag on this widget.
-	VexpandSet() bool
+	VExpandSet() bool
 	// Visible determines whether the widget is visible.
 	Visible() bool
 	// Width returns the content width of the widget.
@@ -500,15 +500,15 @@ type Widgeter interface {
 	// SetFontOptions sets the cairo_font_options_t used for Pango rendering in
 	// this widget.
 	SetFontOptions(options *cairo.FontOptions)
-	// SetHalign sets the horizontal alignment of widget.
-	SetHalign(align Align)
+	// SetHAlign sets the horizontal alignment of widget.
+	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on widget to has_tooltip.
 	SetHasTooltip(hasTooltip bool)
-	// SetHexpand sets whether the widget would like any available extra
+	// SetHExpand sets whether the widget would like any available extra
 	// horizontal space.
-	SetHexpand(expand bool)
-	// SetHexpandSet sets whether the hexpand flag will be used.
-	SetHexpandSet(set bool)
+	SetHExpand(expand bool)
+	// SetHExpandSet sets whether the hexpand flag will be used.
+	SetHExpandSet(set bool)
 	// SetLayoutManager sets the layout manager delegate instance that provides
 	// an implementation for measuring and allocating the children of widget.
 	SetLayoutManager(layoutManager LayoutManagerer)
@@ -544,13 +544,13 @@ type Widgeter interface {
 	SetTooltipMarkup(markup string)
 	// SetTooltipText sets text as the contents of the tooltip.
 	SetTooltipText(text string)
-	// SetValign sets the vertical alignment of widget.
-	SetValign(align Align)
-	// SetVexpand sets whether the widget would like any available extra
+	// SetVAlign sets the vertical alignment of widget.
+	SetVAlign(align Align)
+	// SetVExpand sets whether the widget would like any available extra
 	// vertical space.
-	SetVexpand(expand bool)
-	// SetVexpandSet sets whether the vexpand flag will be used.
-	SetVexpandSet(set bool)
+	SetVExpand(expand bool)
+	// SetVExpandSet sets whether the vexpand flag will be used.
+	SetVExpandSet(set bool)
 	// SetVisible sets the visibility state of widget.
 	SetVisible(visible bool)
 	// ShouldLayout returns whether widget should contribute to the measuring
@@ -1196,8 +1196,8 @@ func (widget *Widget) ComputeBounds(target Widgeter) (graphene.Rect, bool) {
 // ComputeExpand computes whether a container should give this widget extra
 // space when possible.
 //
-// Containers should check this, rather than looking at gtk.Widget.GetHexpand()
-// or gtk.Widget.GetVexpand().
+// Containers should check this, rather than looking at gtk.Widget.GetHExpand()
+// or gtk.Widget.GetVExpand().
 //
 // This function already checks whether the widget is visible, so visibility
 // does not need to be checked separately. Non-visible widgets are not expanded.
@@ -1832,12 +1832,12 @@ func (widget *Widget) FrameClock() *gdk.FrameClock {
 	return _frameClock
 }
 
-// Halign gets the horizontal alignment of widget.
+// HAlign gets the horizontal alignment of widget.
 //
 // For backwards compatibility reasons this method will never return
 // GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
 // Baselines are not supported for horizontal alignment.
-func (widget *Widget) Halign() Align {
+func (widget *Widget) HAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
@@ -1891,7 +1891,7 @@ func (widget *Widget) Height() int {
 	return _gint
 }
 
-// Hexpand gets whether the widget would like any available extra horizontal
+// HExpand gets whether the widget would like any available extra horizontal
 // space.
 //
 // When a user resizes a GtkWindow, widgets with expand=TRUE generally receive
@@ -1905,7 +1905,7 @@ func (widget *Widget) Height() int {
 // This function only looks at the widget’s own hexpand flag, rather than
 // computing whether the entire widget tree rooted at this widget wants to
 // expand.
-func (widget *Widget) Hexpand() bool {
+func (widget *Widget) HExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -1922,7 +1922,7 @@ func (widget *Widget) Hexpand() bool {
 	return _ok
 }
 
-// HexpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
+// HExpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
 // set the expand flag on this widget.
 //
 // If gtk.Widget:hexpand property is set, then it overrides any computed expand
@@ -1931,7 +1931,7 @@ func (widget *Widget) Hexpand() bool {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
-func (widget *Widget) HexpandSet() bool {
+func (widget *Widget) HExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -2579,8 +2579,8 @@ func (widget *Widget) TooltipText() string {
 	return _utf8
 }
 
-// Valign gets the vertical alignment of widget.
-func (widget *Widget) Valign() Align {
+// VAlign gets the vertical alignment of widget.
+func (widget *Widget) VAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
@@ -2595,11 +2595,11 @@ func (widget *Widget) Valign() Align {
 	return _align
 }
 
-// Vexpand gets whether the widget would like any available extra vertical
+// VExpand gets whether the widget would like any available extra vertical
 // space.
 //
-// See gtk.Widget.GetHexpand() for more detail.
-func (widget *Widget) Vexpand() bool {
+// See gtk.Widget.GetHExpand() for more detail.
+func (widget *Widget) VExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -2616,11 +2616,11 @@ func (widget *Widget) Vexpand() bool {
 	return _ok
 }
 
-// VexpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
+// VExpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
 // set the expand flag on this widget.
 //
-// See gtk.Widget.GetHexpandSet() for more detail.
-func (widget *Widget) VexpandSet() bool {
+// See gtk.Widget.GetHExpandSet() for more detail.
+func (widget *Widget) VExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -3242,7 +3242,7 @@ func (widget *Widget) Pick(x float64, y float64, flags PickFlags) *Widget {
 // Use this function instead of gtk.Widget.QueueResize() when the widget's size
 // request didn't change but it wants to reposition its contents.
 //
-// An example user of this function is gtk.Widget.SetHalign().
+// An example user of this function is gtk.Widget.SetHAlign().
 //
 // This function is only for use in widget implementations.
 func (widget *Widget) QueueAllocate() {
@@ -3593,8 +3593,8 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	C.gtk_widget_set_font_options(_arg0, _arg1)
 }
 
-// SetHalign sets the horizontal alignment of widget.
-func (widget *Widget) SetHalign(align Align) {
+// SetHAlign sets the horizontal alignment of widget.
+func (widget *Widget) SetHAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
 
@@ -3617,7 +3617,7 @@ func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 	C.gtk_widget_set_has_tooltip(_arg0, _arg1)
 }
 
-// SetHexpand sets whether the widget would like any available extra horizontal
+// SetHExpand sets whether the widget would like any available extra horizontal
 // space.
 //
 // When a user resizes a GtkWindow, widgets with expand=TRUE generally receive
@@ -3637,11 +3637,11 @@ func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 // expand behavior.
 //
 // This function forces the widget to expand or not to expand, regardless of
-// children. The override occurs because gtk.Widget.SetHexpand() sets the
-// hexpand-set property (see gtk.Widget.SetHexpandSet()) which causes the
+// children. The override occurs because gtk.Widget.SetHExpand() sets the
+// hexpand-set property (see gtk.Widget.SetHExpandSet()) which causes the
 // widget’s hexpand value to be used, rather than looking at children and widget
 // state.
-func (widget *Widget) SetHexpand(expand bool) {
+func (widget *Widget) SetHExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -3653,10 +3653,10 @@ func (widget *Widget) SetHexpand(expand bool) {
 	C.gtk_widget_set_hexpand(_arg0, _arg1)
 }
 
-// SetHexpandSet sets whether the hexpand flag will be used.
+// SetHExpandSet sets whether the hexpand flag will be used.
 //
 // The gtk.Widget:hexpand-set property will be set automatically when you call
-// gtk.Widget.SetHexpand() to set hexpand, so the most likely reason to use this
+// gtk.Widget.SetHExpand() to set hexpand, so the most likely reason to use this
 // function would be to unset an explicit expand flag.
 //
 // If hexpand is set, then it overrides any computed expand value based on child
@@ -3665,7 +3665,7 @@ func (widget *Widget) SetHexpand(expand bool) {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
-func (widget *Widget) SetHexpandSet(set bool) {
+func (widget *Widget) SetHExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -3948,8 +3948,8 @@ func (widget *Widget) SetTooltipText(text string) {
 	C.gtk_widget_set_tooltip_text(_arg0, _arg1)
 }
 
-// SetValign sets the vertical alignment of widget.
-func (widget *Widget) SetValign(align Align) {
+// SetVAlign sets the vertical alignment of widget.
+func (widget *Widget) SetVAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
 
@@ -3959,11 +3959,11 @@ func (widget *Widget) SetValign(align Align) {
 	C.gtk_widget_set_valign(_arg0, _arg1)
 }
 
-// SetVexpand sets whether the widget would like any available extra vertical
+// SetVExpand sets whether the widget would like any available extra vertical
 // space.
 //
-// See gtk.Widget.SetHexpand() for more detail.
-func (widget *Widget) SetVexpand(expand bool) {
+// See gtk.Widget.SetHExpand() for more detail.
+func (widget *Widget) SetVExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -3975,10 +3975,10 @@ func (widget *Widget) SetVexpand(expand bool) {
 	C.gtk_widget_set_vexpand(_arg0, _arg1)
 }
 
-// SetVexpandSet sets whether the vexpand flag will be used.
+// SetVExpandSet sets whether the vexpand flag will be used.
 //
-// See gtk.Widget.SetHexpandSet() for more detail.
-func (widget *Widget) SetVexpandSet(set bool) {
+// See gtk.Widget.SetHExpandSet() for more detail.
+func (widget *Widget) SetVExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 

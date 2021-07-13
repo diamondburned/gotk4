@@ -91,16 +91,16 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.
 	return cret
 }
 
-// DBusProXYTypeFunc: function signature for a function used to determine the
+// DBusProxyTypeFunc: function signature for a function used to determine the
 // #GType to use for an interface proxy (if interface_name is not NULL) or
 // object proxy (if interface_name is NULL).
 //
 // This function is called in the [thread-default main
 // loop][g-main-context-push-thread-default] that manager was constructed in.
-type DBusProXYTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
 
-//export gotk4_DBusProXYTypeFunc
-func gotk4_DBusProXYTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
+//export gotk4_DBusProxyTypeFunc
+func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -118,7 +118,7 @@ func gotk4_DBusProXYTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 	defer C.free(unsafe.Pointer(arg2))
 	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
-	fn := v.(DBusProXYTypeFunc)
+	fn := v.(DBusProxyTypeFunc)
 	gType := fn(manager, objectPath, interfaceName, userData)
 
 	cret = C.GType(gType)

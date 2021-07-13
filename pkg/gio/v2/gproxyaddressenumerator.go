@@ -27,16 +27,16 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProXYAddressEnumeratorer},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorer},
 	})
 }
 
-// ProXYAddressEnumeratorer describes ProXYAddressEnumerator's methods.
-type ProXYAddressEnumeratorer interface {
-	privateProXYAddressEnumerator()
+// ProxyAddressEnumeratorer describes ProxyAddressEnumerator's methods.
+type ProxyAddressEnumeratorer interface {
+	privateProxyAddressEnumerator()
 }
 
-// ProXYAddressEnumerator is a wrapper around AddressEnumerator which takes the
+// ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
 //
@@ -44,27 +44,27 @@ type ProXYAddressEnumeratorer interface {
 // g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
-type ProXYAddressEnumerator struct {
+type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
 var (
-	_ ProXYAddressEnumeratorer = (*ProXYAddressEnumerator)(nil)
-	_ gextras.Nativer          = (*ProXYAddressEnumerator)(nil)
+	_ ProxyAddressEnumeratorer = (*ProxyAddressEnumerator)(nil)
+	_ gextras.Nativer          = (*ProxyAddressEnumerator)(nil)
 )
 
-func wrapProXYAddressEnumerator(obj *externglib.Object) *ProXYAddressEnumerator {
-	return &ProXYAddressEnumerator{
+func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
+	return &ProxyAddressEnumerator{
 		SocketAddressEnumerator: SocketAddressEnumerator{
 			Object: obj,
 		},
 	}
 }
 
-func marshalProXYAddressEnumeratorer(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumeratorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProXYAddressEnumerator(obj), nil
+	return wrapProxyAddressEnumerator(obj), nil
 }
 
-func (*ProXYAddressEnumerator) privateProXYAddressEnumerator() {}
+func (*ProxyAddressEnumerator) privateProxyAddressEnumerator() {}

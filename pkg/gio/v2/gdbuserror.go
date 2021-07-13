@@ -23,7 +23,7 @@ import (
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
-// DBusErrorEncodeGerror creates a D-Bus error name to use for error. If error
+// DBusErrorEncodeGError creates a D-Bus error name to use for error. If error
 // matches a registered error (cf. g_dbus_error_register_error()), the
 // corresponding D-Bus error name will be returned.
 //
@@ -34,7 +34,7 @@ import "C"
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DBusErrorEncodeGerror(err error) string {
+func DBusErrorEncodeGError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 
@@ -92,7 +92,7 @@ func DBusErrorIsRemoteError(err error) bool {
 	return _ok
 }
 
-// DBusErrorNewForDbusError creates a #GError based on the contents of
+// DBusErrorNewForDBusError creates a #GError based on the contents of
 // dbus_error_name and dbus_error_message.
 //
 // Errors registered with g_dbus_error_register_error() will be looked up using
@@ -117,7 +117,7 @@ func DBusErrorIsRemoteError(err error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DBusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) error {
+func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
 	var _cret *C.GError // in

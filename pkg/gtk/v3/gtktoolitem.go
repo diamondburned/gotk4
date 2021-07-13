@@ -30,7 +30,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type ToolItemOverrider interface {
-	CreateMenuProXY() bool
+	CreateMenuProxy() bool
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// tool_item. Toolbar and other ToolShell implementations use this function
 	// to notify children, when some aspect of their configuration changes.
@@ -52,9 +52,9 @@ type ToolItemer interface {
 	IsImportant() bool
 	// Orientation returns the orientation used for tool_item.
 	Orientation() Orientation
-	// ProXYMenuItem: if menu_item_id matches the string passed to
+	// ProxyMenuItem: if menu_item_id matches the string passed to
 	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
-	ProXYMenuItem(menuItemId string) *Widget
+	ProxyMenuItem(menuItemId string) *Widget
 	// ReliefStyle returns the relief style of tool_item.
 	ReliefStyle() ReliefStyle
 	// TextAlignment returns the text alignment used for tool_item.
@@ -76,9 +76,9 @@ type ToolItemer interface {
 	// RebuildMenu: calling this function signals to the toolbar that the
 	// overflow menu item for tool_item has changed.
 	RebuildMenu()
-	// RetrieveProXYMenuItem returns the MenuItem that was last set by
+	// RetrieveProxyMenuItem returns the MenuItem that was last set by
 	// gtk_tool_item_set_proxy_menu_item(), ie.
-	RetrieveProXYMenuItem() *Widget
+	RetrieveProxyMenuItem() *Widget
 	// SetExpand sets whether tool_item is allocated extra space when there is
 	// more room on the toolbar then needed for the items.
 	SetExpand(expand bool)
@@ -87,8 +87,8 @@ type ToolItemer interface {
 	SetHomogeneous(homogeneous bool)
 	// SetIsImportant sets whether tool_item should be considered important.
 	SetIsImportant(isImportant bool)
-	// SetProXYMenuItem sets the MenuItem used in the toolbar overflow menu.
-	SetProXYMenuItem(menuItemId string, menuItem Widgeter)
+	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu.
+	SetProxyMenuItem(menuItemId string, menuItem Widgeter)
 	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 	// item.
 	SetTooltipMarkup(markup string)
@@ -286,14 +286,14 @@ func (toolItem *ToolItem) Orientation() Orientation {
 	return _orientation
 }
 
-// ProXYMenuItem: if menu_item_id matches the string passed to
+// ProxyMenuItem: if menu_item_id matches the string passed to
 // gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
 //
 // Custom subclasses of ToolItem should use this function to update their menu
 // item when the ToolItem changes. That the menu_item_ids must match ensures
 // that a ToolItem will not inadvertently change a menu item that they did not
 // create.
-func (toolItem *ToolItem) ProXYMenuItem(menuItemId string) *Widget {
+func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) *Widget {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkWidget   // in
@@ -485,10 +485,10 @@ func (toolItem *ToolItem) RebuildMenu() {
 	C.gtk_tool_item_rebuild_menu(_arg0)
 }
 
-// RetrieveProXYMenuItem returns the MenuItem that was last set by
+// RetrieveProxyMenuItem returns the MenuItem that was last set by
 // gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to appear
 // in the overflow menu.
-func (toolItem *ToolItem) RetrieveProXYMenuItem() *Widget {
+func (toolItem *ToolItem) RetrieveProxyMenuItem() *Widget {
 	var _arg0 *C.GtkToolItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -551,12 +551,12 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	C.gtk_tool_item_set_is_important(_arg0, _arg1)
 }
 
-// SetProXYMenuItem sets the MenuItem used in the toolbar overflow menu. The
+// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
 // menu_item_id is used to identify the caller of this function and should also
 // be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (toolItem *ToolItem) SetProXYMenuItem(menuItemId string, menuItem Widgeter) {
+func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgeter) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out

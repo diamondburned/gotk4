@@ -1,3 +1,5 @@
+# Edge cases after Pascal case.
+
 Tolower -> ToLower
 Toupper -> ToUpper
 Totitle -> ToTitle

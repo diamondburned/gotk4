@@ -1357,8 +1357,8 @@ func NewTreeRowReference(model TreeModeler, path *TreePath) *TreeRowReference {
 	return _treeRowReference
 }
 
-// NewTreeRowReferenceProXY constructs a struct TreeRowReference.
-func NewTreeRowReferenceProXY(proxy *externglib.Object, model TreeModeler, path *TreePath) *TreeRowReference {
+// NewTreeRowReferenceProxy constructs a struct TreeRowReference.
+func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeler, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GObject             // out
 	var _arg2 *C.GtkTreeModel        // out
 	var _arg3 *C.GtkTreePath         // out

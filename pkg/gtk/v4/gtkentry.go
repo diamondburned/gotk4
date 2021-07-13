@@ -76,8 +76,8 @@ type Entrier interface {
 	IconArea(iconPos EntryIconPosition) gdk.Rectangle
 	// IconAtPos finds the icon at the given position and return its index.
 	IconAtPos(x int, y int) int
-	// IconGicon retrieves the GIcon used for the icon.
-	IconGicon(iconPos EntryIconPosition) *gio.Icon
+	// IconGIcon retrieves the GIcon used for the icon.
+	IconGIcon(iconPos EntryIconPosition) *gio.Icon
 	// IconName retrieves the icon name used for the icon.
 	IconName(iconPos EntryIconPosition) string
 	// IconPaintable retrieves the GdkPaintable used for the icon.
@@ -148,9 +148,9 @@ type Entrier interface {
 	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
 	// SetIconDragSource sets up the icon at the given position as drag source.
 	SetIconDragSource(iconPos EntryIconPosition, provider *gdk.ContentProvider, actions gdk.DragAction)
-	// SetIconFromGicon sets the icon shown in the entry at the specified
+	// SetIconFromGIcon sets the icon shown in the entry at the specified
 	// position from the current icon theme.
-	SetIconFromGicon(iconPos EntryIconPosition, icon gio.Iconer)
+	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer)
 	// SetIconFromIconName sets the icon shown in the entry at the specified
 	// position from the current icon theme.
 	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
@@ -217,7 +217,7 @@ type Entrier interface {
 //
 // Additionally, GtkEntry can show icons at either side of the entry. These
 // icons can be activatable by clicking, can be set up as drag source and can
-// have tooltips. To add an icon, use gtk.Entry.SetIconFromGicon() or one of the
+// have tooltips. To add an icon, use gtk.Entry.SetIconFromGIcon() or one of the
 // various other functions that set an icon from an icon name or a paintable. To
 // trigger an action when the user clicks an icon, connect to the
 // gtk.Entry::icon-press signal. To allow DND operations from an icon, use
@@ -596,11 +596,11 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 	return _gint
 }
 
-// IconGicon retrieves the GIcon used for the icon.
+// IconGIcon retrieves the GIcon used for the icon.
 //
 // NULL will be returned if there is no icon or if the icon was set by some
 // other method (e.g., by GdkPaintable or icon name).
-func (entry *Entry) IconGicon(iconPos EntryIconPosition) *gio.Icon {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -1129,13 +1129,13 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, provider *gdk.C
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetIconFromGicon sets the icon shown in the entry at the specified position
+// SetIconFromGIcon sets the icon shown in the entry at the specified position
 // from the current icon theme.
 //
 // If the icon isn’t known, a “broken image” icon will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGicon(iconPos EntryIconPosition, icon gio.Iconer) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

@@ -493,8 +493,8 @@ type Widgeter interface {
 	// DragDestSet sets a widget as a potential drop destination, and adds
 	// default behaviors.
 	DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction)
-	// DragDestSetProXY sets this widget as a proxy for drops to another window.
-	DragDestSetProXY(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool)
+	// DragDestSetProxy sets this widget as a proxy for drops to another window.
+	DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool)
 	// DragDestSetTargetList sets the target types that this widget can accept
 	// from drag-and-drop.
 	DragDestSetTargetList(targetList *TargetList)
@@ -522,9 +522,9 @@ type Widgeter interface {
 	// DragSourceSet sets up a widget so that GTK+ will start a drag operation
 	// when the user clicks and drags on the widget.
 	DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
-	// DragSourceSetIconGicon sets the icon that will be used for drags from a
+	// DragSourceSetIconGIcon sets the icon that will be used for drags from a
 	// particular source to icon.
-	DragSourceSetIconGicon(icon gio.Iconer)
+	DragSourceSetIconGIcon(icon gio.Iconer)
 	// DragSourceSetIconName sets the icon that will be used for drags from a
 	// particular source to a themed icon.
 	DragSourceSetIconName(iconName string)
@@ -606,18 +606,18 @@ type Widgeter interface {
 	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
 	FrameClock() *gdk.FrameClock
-	// Halign gets the value of the Widget:halign property.
-	Halign() Align
+	// HAlign gets the value of the Widget:halign property.
+	HAlign() Align
 	// HasTooltip returns the current value of the has-tooltip property.
 	HasTooltip() bool
 	// HasWindow determines whether widget has a Window of its own.
 	HasWindow() bool
-	// Hexpand gets whether the widget would like any available extra horizontal
+	// HExpand gets whether the widget would like any available extra horizontal
 	// space.
-	Hexpand() bool
-	// HexpandSet gets whether gtk_widget_set_hexpand() has been used to
+	HExpand() bool
+	// HExpandSet gets whether gtk_widget_set_hexpand() has been used to
 	// explicitly set the expand flag on this widget.
-	HexpandSet() bool
+	HExpandSet() bool
 	// Mapped: whether the widget is mapped.
 	Mapped() bool
 	// MarginBottom gets the value of the Widget:margin-bottom property.
@@ -725,17 +725,17 @@ type Widgeter interface {
 	// Toplevel: this function returns the topmost widget in the container
 	// hierarchy widget is a part of.
 	Toplevel() *Widget
-	// Valign gets the value of the Widget:valign property.
-	Valign() Align
-	// ValignWithBaseline gets the value of the Widget:valign property,
+	// VAlign gets the value of the Widget:valign property.
+	VAlign() Align
+	// VAlignWithBaseline gets the value of the Widget:valign property,
 	// including GTK_ALIGN_BASELINE.
-	ValignWithBaseline() Align
-	// Vexpand gets whether the widget would like any available extra vertical
+	VAlignWithBaseline() Align
+	// VExpand gets whether the widget would like any available extra vertical
 	// space.
-	Vexpand() bool
-	// VexpandSet gets whether gtk_widget_set_vexpand() has been used to
+	VExpand() bool
+	// VExpandSet gets whether gtk_widget_set_vexpand() has been used to
 	// explicitly set the expand flag on this widget.
-	VexpandSet() bool
+	VExpandSet() bool
 	// Visible determines whether the widget is visible.
 	Visible() bool
 	// Visual gets the visual that will be used to render widget.
@@ -933,18 +933,18 @@ type Widgeter interface {
 	// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
 	// this widget.
 	SetFontOptions(options *cairo.FontOptions)
-	// SetHalign sets the horizontal alignment of widget.
-	SetHalign(align Align)
+	// SetHAlign sets the horizontal alignment of widget.
+	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on widget to has_tooltip.
 	SetHasTooltip(hasTooltip bool)
 	// SetHasWindow specifies whether widget has a Window of its own.
 	SetHasWindow(hasWindow bool)
-	// SetHexpand sets whether the widget would like any available extra
+	// SetHExpand sets whether the widget would like any available extra
 	// horizontal space.
-	SetHexpand(expand bool)
-	// SetHexpandSet sets whether the hexpand flag (see
+	SetHExpand(expand bool)
+	// SetHExpandSet sets whether the hexpand flag (see
 	// gtk_widget_get_hexpand()) will be used.
-	SetHexpandSet(set bool)
+	SetHExpandSet(set bool)
 	// SetMapped marks the widget as being mapped.
 	SetMapped(mapped bool)
 	// SetMarginBottom sets the bottom margin of widget.
@@ -1003,14 +1003,14 @@ type Widgeter interface {
 	// SetTooltipWindow replaces the default window used for displaying tooltips
 	// with custom_window.
 	SetTooltipWindow(customWindow *Window)
-	// SetValign sets the vertical alignment of widget.
-	SetValign(align Align)
-	// SetVexpand sets whether the widget would like any available extra
+	// SetVAlign sets the vertical alignment of widget.
+	SetVAlign(align Align)
+	// SetVExpand sets whether the widget would like any available extra
 	// vertical space.
-	SetVexpand(expand bool)
-	// SetVexpandSet sets whether the vexpand flag (see
+	SetVExpand(expand bool)
+	// SetVExpandSet sets whether the vexpand flag (see
 	// gtk_widget_get_vexpand()) will be used.
-	SetVexpandSet(set bool)
+	SetVExpandSet(set bool)
 	// SetVisible sets the visibility state of widget.
 	SetVisible(visible bool)
 	// SetVisual sets the visual that should be used for by widget and its
@@ -1689,10 +1689,10 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 	C.gtk_drag_dest_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// DragDestSetProXY sets this widget as a proxy for drops to another window.
+// DragDestSetProxy sets this widget as a proxy for drops to another window.
 //
 // Deprecated: since version 3.22.
-func (widget *Widget) DragDestSetProXY(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
+func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragProtocol // out
@@ -1837,9 +1837,9 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// DragSourceSetIconGicon sets the icon that will be used for drags from a
+// DragSourceSetIconGIcon sets the icon that will be used for drags from a
 // particular source to icon. See the docs for IconTheme for more details.
-func (widget *Widget) DragSourceSetIconGicon(icon gio.Iconer) {
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 
@@ -2479,12 +2479,12 @@ func (widget *Widget) FrameClock() *gdk.FrameClock {
 	return _frameClock
 }
 
-// Halign gets the value of the Widget:halign property.
+// HAlign gets the value of the Widget:halign property.
 //
 // For backwards compatibility reasons this method will never return
 // GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
 // Baselines are not supported for horizontal alignment.
-func (widget *Widget) Halign() Align {
+func (widget *Widget) HAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
@@ -2537,7 +2537,7 @@ func (widget *Widget) HasWindow() bool {
 	return _ok
 }
 
-// Hexpand gets whether the widget would like any available extra horizontal
+// HExpand gets whether the widget would like any available extra horizontal
 // space. When a user resizes a Window, widgets with expand=TRUE generally
 // receive the extra space. For example, a list or scrollable area or document
 // in your window would often be set to expand.
@@ -2549,7 +2549,7 @@ func (widget *Widget) HasWindow() bool {
 // This function only looks at the widget’s own hexpand flag, rather than
 // computing whether the entire widget tree rooted at this widget wants to
 // expand.
-func (widget *Widget) Hexpand() bool {
+func (widget *Widget) HExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -2566,7 +2566,7 @@ func (widget *Widget) Hexpand() bool {
 	return _ok
 }
 
-// HexpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
+// HExpandSet gets whether gtk_widget_set_hexpand() has been used to explicitly
 // set the expand flag on this widget.
 //
 // If hexpand is set, then it overrides any computed expand value based on child
@@ -2575,7 +2575,7 @@ func (widget *Widget) Hexpand() bool {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
-func (widget *Widget) HexpandSet() bool {
+func (widget *Widget) HExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -3533,14 +3533,14 @@ func (widget *Widget) Toplevel() *Widget {
 	return _ret
 }
 
-// Valign gets the value of the Widget:valign property.
+// VAlign gets the value of the Widget:valign property.
 //
 // For backwards compatibility reasons this method will never return
 // GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL. If your
 // widget want to support baseline aligned children it must use
 // gtk_widget_get_valign_with_baseline(), or g_object_get (widget, "valign",
 // &value, NULL), which will also report the true value.
-func (widget *Widget) Valign() Align {
+func (widget *Widget) VAlign() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
@@ -3555,9 +3555,9 @@ func (widget *Widget) Valign() Align {
 	return _align
 }
 
-// ValignWithBaseline gets the value of the Widget:valign property, including
+// VAlignWithBaseline gets the value of the Widget:valign property, including
 // GTK_ALIGN_BASELINE.
-func (widget *Widget) ValignWithBaseline() Align {
+func (widget *Widget) VAlignWithBaseline() Align {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.GtkAlign   // in
 
@@ -3572,11 +3572,11 @@ func (widget *Widget) ValignWithBaseline() Align {
 	return _align
 }
 
-// Vexpand gets whether the widget would like any available extra vertical
+// VExpand gets whether the widget would like any available extra vertical
 // space.
 //
 // See gtk_widget_get_hexpand() for more detail.
-func (widget *Widget) Vexpand() bool {
+func (widget *Widget) VExpand() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -3593,11 +3593,11 @@ func (widget *Widget) Vexpand() bool {
 	return _ok
 }
 
-// VexpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
+// VExpandSet gets whether gtk_widget_set_vexpand() has been used to explicitly
 // set the expand flag on this widget.
 //
 // See gtk_widget_get_hexpand_set() for more detail.
-func (widget *Widget) VexpandSet() bool {
+func (widget *Widget) VExpandSet() bool {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gboolean   // in
 
@@ -5188,9 +5188,9 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	C.gtk_widget_set_font_options(_arg0, _arg1)
 }
 
-// SetHalign sets the horizontal alignment of widget. See the Widget:halign
+// SetHAlign sets the horizontal alignment of widget. See the Widget:halign
 // property.
-func (widget *Widget) SetHalign(align Align) {
+func (widget *Widget) SetHAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
 
@@ -5235,7 +5235,7 @@ func (widget *Widget) SetHasWindow(hasWindow bool) {
 	C.gtk_widget_set_has_window(_arg0, _arg1)
 }
 
-// SetHexpand sets whether the widget would like any available extra horizontal
+// SetHExpand sets whether the widget would like any available extra horizontal
 // space. When a user resizes a Window, widgets with expand=TRUE generally
 // receive the extra space. For example, a list or scrollable area or document
 // in your window would often be set to expand.
@@ -5257,7 +5257,7 @@ func (widget *Widget) SetHasWindow(hasWindow bool) {
 // hexpand-set property (see gtk_widget_set_hexpand_set()) which causes the
 // widget’s hexpand value to be used, rather than looking at children and widget
 // state.
-func (widget *Widget) SetHexpand(expand bool) {
+func (widget *Widget) SetHExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -5269,7 +5269,7 @@ func (widget *Widget) SetHexpand(expand bool) {
 	C.gtk_widget_set_hexpand(_arg0, _arg1)
 }
 
-// SetHexpandSet sets whether the hexpand flag (see gtk_widget_get_hexpand())
+// SetHExpandSet sets whether the hexpand flag (see gtk_widget_get_hexpand())
 // will be used.
 //
 // The hexpand-set property will be set automatically when you call
@@ -5282,7 +5282,7 @@ func (widget *Widget) SetHexpand(expand bool) {
 //
 // There are few reasons to use this function, but it’s here for completeness
 // and consistency.
-func (widget *Widget) SetHexpandSet(set bool) {
+func (widget *Widget) SetHExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -5708,9 +5708,9 @@ func (widget *Widget) SetTooltipWindow(customWindow *Window) {
 	C.gtk_widget_set_tooltip_window(_arg0, _arg1)
 }
 
-// SetValign sets the vertical alignment of widget. See the Widget:valign
+// SetVAlign sets the vertical alignment of widget. See the Widget:valign
 // property.
-func (widget *Widget) SetValign(align Align) {
+func (widget *Widget) SetVAlign(align Align) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GtkAlign   // out
 
@@ -5720,11 +5720,11 @@ func (widget *Widget) SetValign(align Align) {
 	C.gtk_widget_set_valign(_arg0, _arg1)
 }
 
-// SetVexpand sets whether the widget would like any available extra vertical
+// SetVExpand sets whether the widget would like any available extra vertical
 // space.
 //
 // See gtk_widget_set_hexpand() for more detail.
-func (widget *Widget) SetVexpand(expand bool) {
+func (widget *Widget) SetVExpand(expand bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 
@@ -5736,11 +5736,11 @@ func (widget *Widget) SetVexpand(expand bool) {
 	C.gtk_widget_set_vexpand(_arg0, _arg1)
 }
 
-// SetVexpandSet sets whether the vexpand flag (see gtk_widget_get_vexpand())
+// SetVExpandSet sets whether the vexpand flag (see gtk_widget_get_vexpand())
 // will be used.
 //
 // See gtk_widget_set_hexpand_set() for more detail.
-func (widget *Widget) SetVexpandSet(set bool) {
+func (widget *Widget) SetVExpandSet(set bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gboolean   // out
 

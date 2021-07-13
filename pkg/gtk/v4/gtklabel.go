@@ -74,10 +74,10 @@ type Labeler interface {
 	Wrap() bool
 	// WrapMode returns line wrap mode used by the label.
 	WrapMode() pango.WrapMode
-	// Xalign gets the xalign of the label.
-	Xalign() float32
-	// Yalign gets the yalign of the label.
-	Yalign() float32
+	// XAlign gets the xalign of the label.
+	XAlign() float32
+	// YAlign gets the yalign of the label.
+	YAlign() float32
 	// SelectRegion selects a range of characters in the label, if the label is
 	// selectable.
 	SelectRegion(startOffset int, endOffset int)
@@ -124,10 +124,10 @@ type Labeler interface {
 	SetWrap(wrap bool)
 	// SetWrapMode controls how line wrapping is done.
 	SetWrapMode(wrapMode pango.WrapMode)
-	// SetXalign sets the xalign of the label.
-	SetXalign(xalign float32)
-	// SetYalign sets the yalign of the label.
-	SetYalign(yalign float32)
+	// SetXAlign sets the xalign of the label.
+	SetXAlign(xalign float32)
+	// SetYAlign sets the yalign of the label.
+	SetYAlign(yalign float32)
 }
 
 // Label: GtkLabel widget displays a small amount of text.
@@ -813,10 +813,10 @@ func (self *Label) WrapMode() pango.WrapMode {
 	return _wrapMode
 }
 
-// Xalign gets the xalign of the label.
+// XAlign gets the xalign of the label.
 //
 // See the gtk.Label:xalign property.
-func (self *Label) Xalign() float32 {
+func (self *Label) XAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.float     // in
 
@@ -831,10 +831,10 @@ func (self *Label) Xalign() float32 {
 	return _gfloat
 }
 
-// Yalign gets the yalign of the label.
+// YAlign gets the yalign of the label.
 //
 // See the gtk.Label:yalign property.
-func (self *Label) Yalign() float32 {
+func (self *Label) YAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.float     // in
 
@@ -915,7 +915,7 @@ func (self *Label) SetExtraMenu(model gio.MenuModeler) {
 //
 // GTK_JUSTIFY_LEFT is the default value when the widget is first created with
 // gtk.Label.New. If you instead want to set the alignment of the label as a
-// whole, use gtk.Widget.SetHalign() instead. gtk.Label.SetJustify() has no
+// whole, use gtk.Widget.SetHAlign() instead. gtk.Label.SetJustify() has no
 // effect on labels containing only a single line.
 func (self *Label) SetJustify(jtype Justification) {
 	var _arg0 *C.GtkLabel        // out
@@ -1188,10 +1188,10 @@ func (self *Label) SetWrapMode(wrapMode pango.WrapMode) {
 	C.gtk_label_set_wrap_mode(_arg0, _arg1)
 }
 
-// SetXalign sets the xalign of the label.
+// SetXAlign sets the xalign of the label.
 //
 // See the gtk.Label:xalign property.
-func (self *Label) SetXalign(xalign float32) {
+func (self *Label) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.float     // out
 
@@ -1201,10 +1201,10 @@ func (self *Label) SetXalign(xalign float32) {
 	C.gtk_label_set_xalign(_arg0, _arg1)
 }
 
-// SetYalign sets the yalign of the label.
+// SetYAlign sets the yalign of the label.
 //
 // See the gtk.Label:yalign property.
-func (self *Label) SetYalign(yalign float32) {
+func (self *Label) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.float     // out
 

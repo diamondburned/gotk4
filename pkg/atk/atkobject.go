@@ -627,11 +627,11 @@ type ObjectClassOverrider interface {
 	//
 	// Deprecated: Use atk_component_get_layer instead.
 	Layer() Layer
-	// MDIZorder gets the zorder of the accessible. The value G_MININT will be
+	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
 	// Deprecated: Use atk_component_get_mdi_zorder instead.
-	MDIZorder() int
+	MDIZOrder() int
 	NChildren() int
 	// Name gets the accessible name of the accessible.
 	Name() string
@@ -697,8 +697,8 @@ type ObjectClasser interface {
 	IndexInParent() int
 	// Layer gets the layer of the accessible.
 	Layer() Layer
-	// MDIZorder gets the zorder of the accessible.
-	MDIZorder() int
+	// MDIZOrder gets the zorder of the accessible.
+	MDIZOrder() int
 	// NAccessibleChildren gets the number of accessible children of the
 	// accessible.
 	NAccessibleChildren() int
@@ -869,11 +869,11 @@ func (accessible *ObjectClass) Layer() Layer {
 	return _layer
 }
 
-// MDIZorder gets the zorder of the accessible. The value G_MININT will be
+// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 // returned if the layer of the accessible is not ATK_LAYER_MDI.
 //
 // Deprecated: Use atk_component_get_mdi_zorder instead.
-func (accessible *ObjectClass) MDIZorder() int {
+func (accessible *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 

@@ -45,8 +45,8 @@ type StatusIconer interface {
 	// Geometry obtains information about the location of the status icon on
 	// screen.
 	Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool)
-	// Gicon retrieves the #GIcon being displayed by the StatusIcon.
-	Gicon() *gio.Icon
+	// GIcon retrieves the #GIcon being displayed by the StatusIcon.
+	GIcon() *gio.Icon
 	// HasTooltip returns the current value of the has-tooltip property.
 	HasTooltip() bool
 	// IconName gets the name of the icon being displayed by the StatusIcon.
@@ -78,8 +78,8 @@ type StatusIconer interface {
 	IsEmbedded() bool
 	// SetFromFile makes status_icon display the file filename.
 	SetFromFile(filename string)
-	// SetFromGicon makes status_icon display the #GIcon.
-	SetFromGicon(icon gio.Iconer)
+	// SetFromGIcon makes status_icon display the #GIcon.
+	SetFromGIcon(icon gio.Iconer)
 	// SetFromIconName makes status_icon display the icon named icon_name from
 	// the current icon theme.
 	SetFromIconName(iconName string)
@@ -200,12 +200,12 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromGicon creates a status icon displaying a #GIcon. If the icon
+// NewStatusIconFromGIcon creates a status icon displaying a #GIcon. If the icon
 // is a themed icon, it will be updated when the theme changes.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromGicon(icon gio.Iconer) *StatusIcon {
+func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -331,7 +331,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 	return _screen, _area, _orientation, _ok
 }
 
-// Gicon retrieves the #GIcon being displayed by the StatusIcon. The storage
+// GIcon retrieves the #GIcon being displayed by the StatusIcon. The storage
 // type of the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_status_icon_get_storage_type()). The caller of this function does not own
 // a reference to the returned #GIcon.
@@ -340,7 +340,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
-func (statusIcon *StatusIcon) Gicon() *gio.Icon {
+func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GIcon         // in
 
@@ -677,13 +677,13 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	C.gtk_status_icon_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGicon makes status_icon display the #GIcon. See
+// SetFromGIcon makes status_icon display the #GIcon. See
 // gtk_status_icon_new_from_gicon() for details.
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromGicon(icon gio.Iconer) {
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 

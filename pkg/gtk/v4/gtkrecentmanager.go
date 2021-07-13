@@ -490,8 +490,8 @@ func (info *RecentInfo) DisplayName() string {
 	return _utf8
 }
 
-// Gicon retrieves the icon associated to the resource MIME type.
-func (info *RecentInfo) Gicon() *gio.Icon {
+// GIcon retrieves the icon associated to the resource MIME type.
+func (info *RecentInfo) GIcon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 

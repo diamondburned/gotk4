@@ -381,8 +381,8 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 // gtk.Widget.SetSizeRequest().
 //
 // Also of note is that a similar function for growing does not exist because
-// the grow behavior can be controlled via gtk.Widget.SetHalign() and
-// gtk.Widget.SetValign().
+// the grow behavior can be controlled via gtk.Widget.SetHAlign() and
+// gtk.Widget.SetVAlign().
 func (self *Picture) SetCanShrink(canShrink bool) {
 	var _arg0 *C.GtkPicture // out
 	var _arg1 C.gboolean    // out

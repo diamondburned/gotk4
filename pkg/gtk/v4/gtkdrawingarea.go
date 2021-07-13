@@ -240,7 +240,7 @@ func (self *DrawingArea) ContentWidth() int {
 //
 // Note that because widgets may be allocated larger sizes than they requested,
 // it is possible that the actual height passed to your draw function is larger
-// than the height set here. You can use gtk.Widget.SetValign() to avoid that.
+// than the height set here. You can use gtk.Widget.SetVAlign() to avoid that.
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
 func (self *DrawingArea) SetContentHeight(height int) {
@@ -257,7 +257,7 @@ func (self *DrawingArea) SetContentHeight(height int) {
 //
 // Note that because widgets may be allocated larger sizes than they requested,
 // it is possible that the actual width passed to your draw function is larger
-// than the width set here. You can use gtk.Widget.SetHalign() to avoid that.
+// than the width set here. You can use gtk.Widget.SetHAlign() to avoid that.
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
 func (self *DrawingArea) SetContentWidth(width int) {

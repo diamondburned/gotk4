@@ -1766,9 +1766,9 @@ type DBusMessager interface {
 	SetSignature(value string)
 	// SetUnixFdList sets the UNIX file descriptors associated with message.
 	SetUnixFdList(fdList *UnixFDList)
-	// ToGerror: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
+	// ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 	// nothing and returns FALSE.
-	ToGerror() error
+	ToGError() error
 }
 
 // DBusMessage: type for representing D-Bus messages that can be sent or
@@ -2549,14 +2549,14 @@ func (message *DBusMessage) SetUnixFdList(fdList *UnixFDList) {
 	C.g_dbus_message_set_unix_fd_list(_arg0, _arg1)
 }
 
-// ToGerror: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
+// ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
 // and returns FALSE.
 //
 // Otherwise this method encodes the error in message as a #GError using
 // g_dbus_error_set_dbus_error() using the information in the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of message as well as the
 // first string item in message's body.
-func (message *DBusMessage) ToGerror() error {
+func (message *DBusMessage) ToGError() error {
 	var _arg0 *C.GDBusMessage // out
 	var _cerr *C.GError       // in
 
@@ -2593,12 +2593,12 @@ type DBusMethodInvocationer interface {
 	PropertyInfo() *DBusPropertyInfo
 	// Sender gets the bus name that invoked the method.
 	Sender() string
-	// ReturnDbusError finishes handling a D-Bus method call by returning an
+	// ReturnDBusError finishes handling a D-Bus method call by returning an
 	// error.
-	ReturnDbusError(errorName string, errorMessage string)
-	// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
+	ReturnDBusError(errorName string, errorMessage string)
+	// ReturnGError: like g_dbus_method_invocation_return_error() but takes a
 	// #GError instead of the error domain, error code and message.
-	ReturnGerror(err error)
+	ReturnGError(err error)
 	// ReturnValue finishes handling a D-Bus method call by returning
 	// parameters.
 	ReturnValue(parameters *glib.Variant)
@@ -2818,11 +2818,11 @@ func (invocation *DBusMethodInvocation) Sender() string {
 	return _utf8
 }
 
-// ReturnDbusError finishes handling a D-Bus method call by returning an error.
+// ReturnDBusError finishes handling a D-Bus method call by returning an error.
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
-func (invocation *DBusMethodInvocation) ReturnDbusError(errorName string, errorMessage string) {
+func (invocation *DBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
 	var _arg2 *C.gchar                 // out
@@ -2834,12 +2834,12 @@ func (invocation *DBusMethodInvocation) ReturnDbusError(errorName string, errorM
 	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
 }
 
-// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
+// ReturnGError: like g_dbus_method_invocation_return_error() but takes a
 // #GError instead of the error domain, error code and message.
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
-func (invocation *DBusMethodInvocation) ReturnGerror(err error) {
+func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
 

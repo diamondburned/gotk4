@@ -30,22 +30,22 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProXYer},
+		{T: externglib.Type(C.g_proxy_get_type()), F: marshalProxier},
 	})
 }
 
-// ProXYOverrider contains methods that are overridable.
+// ProxyOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProXYOverrider interface {
-	// ConnectProXYer: given connection to communicate with a proxy (eg, a
+type ProxyOverrider interface {
+	// ConnectProxier: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProXYer(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable) (*IOStream, error)
+	ConnectProxier(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable) (*IOStream, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
-	ConnectAsync(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable, callback AsyncReadyCallback)
+	ConnectAsync(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResulter) (*IOStream, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -58,15 +58,15 @@ type ProXYOverrider interface {
 	SupportsHostname() bool
 }
 
-// ProXYer describes ProXY's methods.
-type ProXYer interface {
-	// ConnectProXYer: given connection to communicate with a proxy (eg, a
+// Proxier describes Proxy's methods.
+type Proxier interface {
+	// ConnectProxier: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
 	// necessary handshake to connect to proxy_address, and if required, wraps
 	// the OStream to handle proxy payload.
-	ConnectProXYer(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable) (*IOStream, error)
+	ConnectProxier(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable) (*IOStream, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
-	ConnectAsync(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable, callback AsyncReadyCallback)
+	ConnectAsync(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResulter) (*IOStream, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -74,37 +74,37 @@ type ProXYer interface {
 	SupportsHostname() bool
 }
 
-// ProXY handles connecting to a remote host via a given type of proxy server.
+// Proxy handles connecting to a remote host via a given type of proxy server.
 // It is implemented by the 'gio-proxy' extension point. The extensions are
 // named after their proxy protocol name. As an example, a SOCKS5 proxy
 // implementation can be retrieved with the name 'socks5' using the function
 // g_io_extension_point_get_extension_by_name().
-type ProXY struct {
+type Proxy struct {
 	*externglib.Object
 }
 
 var (
-	_ ProXYer         = (*ProXY)(nil)
-	_ gextras.Nativer = (*ProXY)(nil)
+	_ Proxier         = (*Proxy)(nil)
+	_ gextras.Nativer = (*Proxy)(nil)
 )
 
-func wrapProXY(obj *externglib.Object) *ProXY {
-	return &ProXY{
+func wrapProxy(obj *externglib.Object) *Proxy {
+	return &Proxy{
 		Object: obj,
 	}
 }
 
-func marshalProXYer(p uintptr) (interface{}, error) {
+func marshalProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProXY(obj), nil
+	return wrapProxy(obj), nil
 }
 
-// ConnectProXYer: given connection to communicate with a proxy (eg, a
+// ConnectProxier: given connection to communicate with a proxy (eg, a
 // Connection that is connected to the proxy server), this does the necessary
 // handshake to connect to proxy_address, and if required, wraps the OStream to
 // handle proxy payload.
-func (proxy *ProXY) ConnectProXYer(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable) (*IOStream, error) {
+func (proxy *Proxy) ConnectProxier(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable) (*IOStream, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg1 *C.GIOStream     // out
 	var _arg2 *C.GProxyAddress // out
@@ -129,7 +129,7 @@ func (proxy *ProXY) ConnectProXYer(connection IOStreamer, proxyAddress *ProXYAdd
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
-func (proxy *ProXY) ConnectAsync(connection IOStreamer, proxyAddress *ProXYAddress, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (proxy *Proxy) ConnectAsync(connection IOStreamer, proxyAddress *ProxyAddress, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GProxyAddress      // out
@@ -148,7 +148,7 @@ func (proxy *ProXY) ConnectAsync(connection IOStreamer, proxyAddress *ProXYAddre
 }
 
 // ConnectFinish: see g_proxy_connect().
-func (proxy *ProXY) ConnectFinish(result AsyncResulter) (*IOStream, error) {
+func (proxy *Proxy) ConnectFinish(result AsyncResulter) (*IOStream, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GIOStream    // in
@@ -174,7 +174,7 @@ func (proxy *ProXY) ConnectFinish(result AsyncResulter) (*IOStream, error) {
 // protocol. When FALSE is returned, the caller should resolve the destination
 // hostname first, and then pass a Address containing the stringified IP address
 // to g_proxy_connect() or g_proxy_connect_async().
-func (proxy *ProXY) SupportsHostname() bool {
+func (proxy *Proxy) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
 
@@ -191,9 +191,9 @@ func (proxy *ProXY) SupportsHostname() bool {
 	return _ok
 }
 
-// ProXYGetDefaultForProtocol: find the gio-proxy extension point for a proxy
+// ProxyGetDefaultForProtocol: find the gio-proxy extension point for a proxy
 // implementation that supports the specified protocol.
-func ProxyGetDefaultForProtocol(protocol string) *ProXY {
+func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in
 
@@ -201,9 +201,9 @@ func ProxyGetDefaultForProtocol(protocol string) *ProXY {
 
 	_cret = C.g_proxy_get_default_for_protocol(_arg1)
 
-	var _proxy *ProXY // out
+	var _proxy *Proxy // out
 
-	_proxy = wrapProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_proxy = wrapProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxy
 }

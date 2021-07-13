@@ -51,8 +51,8 @@ const (
 	// IconName: widget contains a named icon. This image type was added in GTK+
 	// 2.6
 	ImageTypeIconName
-	// Gicon: widget contains a #GIcon. This image type was added in GTK+ 2.14
-	ImageTypeGicon
+	// GIcon: widget contains a #GIcon. This image type was added in GTK+ 2.14
+	ImageTypeGIcon
 	// Surface: widget contains a #cairo_surface_t. This image type was added in
 	// GTK+ 3.10
 	ImageTypeSurface
@@ -68,8 +68,8 @@ type Imager interface {
 	Clear()
 	// Animation gets the PixbufAnimation being displayed by the Image.
 	Animation() *gdkpixbuf.PixbufAnimation
-	// Gicon gets the #GIcon and size being displayed by the Image.
-	Gicon() (*gio.Icon, int)
+	// GIcon gets the #GIcon and size being displayed by the Image.
+	GIcon() (*gio.Icon, int)
 	// IconName gets the icon name and size being displayed by the Image.
 	IconName() (string, int)
 	// IconSet gets the icon set and size being displayed by the Image.
@@ -88,8 +88,8 @@ type Imager interface {
 	SetFromAnimation(animation *gdkpixbuf.PixbufAnimation)
 	// SetFromFile: see gtk_image_new_from_file() for details.
 	SetFromFile(filename string)
-	// SetFromGicon: see gtk_image_new_from_gicon() for details.
-	SetFromGicon(icon gio.Iconer, size int)
+	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+	SetFromGIcon(icon gio.Iconer, size int)
 	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	SetFromIconName(iconName string, size int)
 	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
@@ -261,11 +261,11 @@ func NewImageFromFile(filename string) *Image {
 	return _image
 }
 
-// NewImageFromGicon creates a Image displaying an icon from the current icon
+// NewImageFromGIcon creates a Image displaying an icon from the current icon
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGicon(icon gio.Iconer, size int) *Image {
+func NewImageFromGIcon(icon gio.Iconer, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -458,11 +458,11 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 	return _pixbufAnimation
 }
 
-// Gicon gets the #GIcon and size being displayed by the Image. The storage type
+// GIcon gets the #GIcon and size being displayed by the Image. The storage type
 // of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned #GIcon.
-func (image *Image) Gicon() (*gio.Icon, int) {
+func (image *Image) GIcon() (*gio.Icon, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // in
 	var _arg2 C.GtkIconSize // in
@@ -642,8 +642,8 @@ func (image *Image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGicon: see gtk_image_new_from_gicon() for details.
-func (image *Image) SetFromGicon(icon gio.Iconer, size int) {
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+func (image *Image) SetFromGIcon(icon gio.Iconer, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

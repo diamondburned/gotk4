@@ -33,9 +33,9 @@ type Tooltiper interface {
 	// SetIcon sets the icon of the tooltip (which is in front of the text) to
 	// be pixbuf.
 	SetIcon(pixbuf *gdkpixbuf.Pixbuf)
-	// SetIconFromGicon sets the icon of the tooltip (which is in front of the
+	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by gicon with the size indicated by size.
-	SetIconFromGicon(gicon gio.Iconer, size int)
+	SetIconFromGIcon(gicon gio.Iconer, size int)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by icon_name with the size indicated
 	// by size.
@@ -136,10 +136,10 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
 }
 
-// SetIconFromGicon sets the icon of the tooltip (which is in front of the text)
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
 // to be the icon indicated by gicon with the size indicated by size. If gicon
 // is NULL, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromGicon(gicon gio.Iconer, size int) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconer, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

@@ -30,9 +30,9 @@ type Tooltiper interface {
 	// SetIcon sets the icon of the tooltip (which is in front of the text) to
 	// be paintable.
 	SetIcon(paintable gdk.Paintabler)
-	// SetIconFromGicon sets the icon of the tooltip (which is in front of the
+	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by gicon with the size indicated by size.
-	SetIconFromGicon(gicon gio.Iconer)
+	SetIconFromGIcon(gicon gio.Iconer)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by icon_name with the size indicated
 	// by size.
@@ -116,10 +116,10 @@ func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 	C.gtk_tooltip_set_icon(_arg0, _arg1)
 }
 
-// SetIconFromGicon sets the icon of the tooltip (which is in front of the text)
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
 // to be the icon indicated by gicon with the size indicated by size. If gicon
 // is NULL, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromGicon(gicon gio.Iconer) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconer) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 

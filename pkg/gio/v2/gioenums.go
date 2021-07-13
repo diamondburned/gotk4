@@ -81,7 +81,7 @@ func init() {
 		{T: externglib.Type(C.g_dbus_message_flags_get_type()), F: marshalDBusMessageFlags},
 		{T: externglib.Type(C.g_dbus_object_manager_client_flags_get_type()), F: marshalDBusObjectManagerClientFlags},
 		{T: externglib.Type(C.g_dbus_property_info_flags_get_type()), F: marshalDBusPropertyInfoFlags},
-		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProXYFlags},
+		{T: externglib.Type(C.g_dbus_proxy_flags_get_type()), F: marshalDBusProxyFlags},
 		{T: externglib.Type(C.g_dbus_send_message_flags_get_type()), F: marshalDBusSendMessageFlags},
 		{T: externglib.Type(C.g_dbus_server_flags_get_type()), F: marshalDBusServerFlags},
 		{T: externglib.Type(C.g_dbus_signal_flags_get_type()), F: marshalDBusSignalFlags},
@@ -674,26 +674,26 @@ const (
 	IOErrorEnumPartialInput IOErrorEnum = 34
 	// InvalidData: input data was invalid. Since 2.24
 	IOErrorEnumInvalidData IOErrorEnum = 35
-	// DbusError: remote object generated an error that doesn't correspond to a
+	// DBusError: remote object generated an error that doesn't correspond to a
 	// locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	IOErrorEnumDbusError IOErrorEnum = 36
+	IOErrorEnumDBusError IOErrorEnum = 36
 	// HostUnreachable: host unreachable. Since 2.26
 	IOErrorEnumHostUnreachable IOErrorEnum = 37
 	// NetworkUnreachable: network unreachable. Since 2.26
 	IOErrorEnumNetworkUnreachable IOErrorEnum = 38
 	// ConnectionRefused: connection refused. Since 2.26
 	IOErrorEnumConnectionRefused IOErrorEnum = 39
-	// ProXYFailed: connection to proxy server failed. Since 2.26
-	IOErrorEnumProXYFailed IOErrorEnum = 40
-	// ProXYAuthFailed: proxy authentication failed. Since 2.26
-	IOErrorEnumProXYAuthFailed IOErrorEnum = 41
-	// ProXYNeedAuth: proxy server needs authentication. Since 2.26
-	IOErrorEnumProXYNeedAuth IOErrorEnum = 42
-	// ProXYNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
-	IOErrorEnumProXYNotAllowed IOErrorEnum = 43
+	// ProxyFailed: connection to proxy server failed. Since 2.26
+	IOErrorEnumProxyFailed IOErrorEnum = 40
+	// ProxyAuthFailed: proxy authentication failed. Since 2.26
+	IOErrorEnumProxyAuthFailed IOErrorEnum = 41
+	// ProxyNeedAuth: proxy server needs authentication. Since 2.26
+	IOErrorEnumProxyNeedAuth IOErrorEnum = 42
+	// ProxyNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
+	IOErrorEnumProxyNotAllowed IOErrorEnum = 43
 	// BrokenPipe: broken pipe. Since 2.36
 	IOErrorEnumBrokenPipe IOErrorEnum = 44
 	// ConnectionClosed: connection closed by peer. Note that this is the same
@@ -962,11 +962,11 @@ const (
 	SocketClientEventConnecting
 	// Connected: client has connected to a remote host.
 	SocketClientEventConnected
-	// ProXYNegotiating: client is negotiating with a proxy to connect to the
+	// ProxyNegotiating: client is negotiating with a proxy to connect to the
 	// destination server.
-	SocketClientEventProXYNegotiating
-	// ProXYNegotiated: client has negotiated with the proxy server.
-	SocketClientEventProXYNegotiated
+	SocketClientEventProxyNegotiating
+	// ProxyNegotiated: client has negotiated with the proxy server.
+	SocketClientEventProxyNegotiated
 	// TLSHandshaking: client is performing a TLS handshake.
 	SocketClientEventTLSHandshaking
 	// TLSHandshaked: client has performed a TLS handshake.
@@ -988,10 +988,10 @@ const (
 	SocketFamilyInvalid SocketFamily = 0
 	// Unix: UNIX domain family
 	SocketFamilyUnix SocketFamily = 1
-	// Ipv4: IPv4 family
-	SocketFamilyIpv4 SocketFamily = 2
-	// Ipv6: IPv6 family
-	SocketFamilyIpv6 SocketFamily = 10
+	// IPv4: IPv4 family
+	SocketFamilyIPv4 SocketFamily = 2
+	// IPv6: IPv6 family
+	SocketFamilyIPv6 SocketFamily = 10
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
@@ -1573,24 +1573,24 @@ func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
 	return DBusPropertyInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DBusProXYFlags flags used when constructing an instance of a BusProxy derived
+// DBusProxyFlags flags used when constructing an instance of a BusProxy derived
 // class.
-type DBusProXYFlags int
+type DBusProxyFlags int
 
 const (
-	// DBusProXYFlagsNone: no flags set.
-	DBusProXYFlagsNone DBusProXYFlags = 0b0
-	// DBusProXYFlagsDoNotLoadProperties: don't load properties.
-	DBusProXYFlagsDoNotLoadProperties DBusProXYFlags = 0b1
-	// DBusProXYFlagsDoNotConnectSignals: don't connect to signals on the remote
+	// DBusProxyFlagsNone: no flags set.
+	DBusProxyFlagsNone DBusProxyFlags = 0b0
+	// DBusProxyFlagsDoNotLoadProperties: don't load properties.
+	DBusProxyFlagsDoNotLoadProperties DBusProxyFlags = 0b1
+	// DBusProxyFlagsDoNotConnectSignals: don't connect to signals on the remote
 	// object.
-	DBusProXYFlagsDoNotConnectSignals DBusProXYFlags = 0b10
-	// DBusProXYFlagsDoNotAutoStart: if the proxy is for a well-known name, do
+	DBusProxyFlagsDoNotConnectSignals DBusProxyFlags = 0b10
+	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name, do
 	// not ask the bus to launch an owner during proxy initialization or a
 	// method call. This flag is only meaningful in proxies for well-known
 	// names.
-	DBusProXYFlagsDoNotAutoStart DBusProXYFlags = 0b100
-	// DBusProXYFlagsGetInvalidatedProperties: if set, the property value for
+	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 0b100
+	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
 	// any __invalidated property__ will be (asynchronously) retrieved upon
 	// receiving the PropertiesChanged
 	// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
@@ -1598,17 +1598,17 @@ const (
 	// BusProxy::g-properties-changed signal. When the value is received the
 	// BusProxy::g-properties-changed signal is emitted for the property along
 	// with the retrieved value. Since 2.32.
-	DBusProXYFlagsGetInvalidatedProperties DBusProXYFlags = 0b1000
-	// DBusProXYFlagsDoNotAutoStartAtConstruction: if the proxy is for a
+	DBusProxyFlagsGetInvalidatedProperties DBusProxyFlags = 0b1000
+	// DBusProxyFlagsDoNotAutoStartAtConstruction: if the proxy is for a
 	// well-known name, do not ask the bus to launch an owner during proxy
 	// initialization, but allow it to be autostarted by a method call. This
 	// flag is only meaningful in proxies for well-known names, and only if
 	// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
-	DBusProXYFlagsDoNotAutoStartAtConstruction DBusProXYFlags = 0b10000
+	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 0b10000
 )
 
-func marshalDBusProXYFlags(p uintptr) (interface{}, error) {
-	return DBusProXYFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
+	return DBusProxyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.

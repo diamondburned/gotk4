@@ -27,12 +27,12 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProXYAddresser},
+		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProxyAddresser},
 	})
 }
 
-// ProXYAddresser describes ProXYAddress's methods.
-type ProXYAddresser interface {
+// ProxyAddresser describes ProxyAddress's methods.
+type ProxyAddresser interface {
 	// DestinationHostname gets proxy's destination hostname; that is, the name
 	// of the host that will be connected to via the proxy, not the name of the
 	// proxy itself.
@@ -54,18 +54,18 @@ type ProXYAddresser interface {
 	Username() string
 }
 
-// ProXYAddress: support for proxied SocketAddress.
-type ProXYAddress struct {
+// ProxyAddress: support for proxied SocketAddress.
+type ProxyAddress struct {
 	InetSocketAddress
 }
 
 var (
-	_ ProXYAddresser  = (*ProXYAddress)(nil)
-	_ gextras.Nativer = (*ProXYAddress)(nil)
+	_ ProxyAddresser  = (*ProxyAddress)(nil)
+	_ gextras.Nativer = (*ProxyAddress)(nil)
 )
 
-func wrapProXYAddress(obj *externglib.Object) *ProXYAddress {
-	return &ProXYAddress{
+func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
+	return &ProxyAddress{
 		InetSocketAddress: InetSocketAddress{
 			SocketAddress: SocketAddress{
 				Object: obj,
@@ -77,19 +77,19 @@ func wrapProXYAddress(obj *externglib.Object) *ProXYAddress {
 	}
 }
 
-func marshalProXYAddresser(p uintptr) (interface{}, error) {
+func marshalProxyAddresser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProXYAddress(obj), nil
+	return wrapProxyAddress(obj), nil
 }
 
-// NewProXYAddress creates a new Address for inetaddr with protocol that should
+// NewProxyAddress creates a new Address for inetaddr with protocol that should
 // tunnel through dest_hostname and dest_port.
 //
 // (Note that this method doesn't set the Address:uri or
 // Address:destination-protocol fields; use g_object_new() directly if you want
 // to set those.)
-func NewProXYAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProXYAddress {
+func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
 	var _arg3 *C.gchar          // out
@@ -109,9 +109,9 @@ func NewProXYAddress(inetaddr *InetAddress, port uint16, protocol string, destHo
 
 	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
-	var _proxyAddress *ProXYAddress // out
+	var _proxyAddress *ProxyAddress // out
 
-	_proxyAddress = wrapProXYAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_proxyAddress = wrapProxyAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }
@@ -119,7 +119,7 @@ func NewProXYAddress(inetaddr *InetAddress, port uint16, protocol string, destHo
 // DestinationHostname gets proxy's destination hostname; that is, the name of
 // the host that will be connected to via the proxy, not the name of the proxy
 // itself.
-func (proxy *ProXYAddress) DestinationHostname() string {
+func (proxy *ProxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -137,7 +137,7 @@ func (proxy *ProXYAddress) DestinationHostname() string {
 // DestinationPort gets proxy's destination port; that is, the port on the
 // destination host that will be connected to via the proxy, not the port number
 // of the proxy itself.
-func (proxy *ProXYAddress) DestinationPort() uint16 {
+func (proxy *ProxyAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
 
@@ -154,7 +154,7 @@ func (proxy *ProXYAddress) DestinationPort() uint16 {
 
 // DestinationProtocol gets the protocol that is being spoken to the destination
 // server; eg, "http" or "ftp".
-func (proxy *ProXYAddress) DestinationProtocol() string {
+func (proxy *ProxyAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -170,7 +170,7 @@ func (proxy *ProXYAddress) DestinationProtocol() string {
 }
 
 // Password gets proxy's password.
-func (proxy *ProXYAddress) Password() string {
+func (proxy *ProxyAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -186,7 +186,7 @@ func (proxy *ProXYAddress) Password() string {
 }
 
 // Protocol gets proxy's protocol. eg, "socks" or "http"
-func (proxy *ProXYAddress) Protocol() string {
+func (proxy *ProxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -202,7 +202,7 @@ func (proxy *ProXYAddress) Protocol() string {
 }
 
 // URI gets the proxy URI that proxy was constructed from.
-func (proxy *ProXYAddress) URI() string {
+func (proxy *ProxyAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 
@@ -218,7 +218,7 @@ func (proxy *ProXYAddress) URI() string {
 }
 
 // Username gets proxy's username.
-func (proxy *ProXYAddress) Username() string {
+func (proxy *ProxyAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
 

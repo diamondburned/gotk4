@@ -738,12 +738,12 @@ type IconThemer interface {
 	// LoadSurface looks up an icon in an icon theme for a particular window
 	// scale, scales it to the given size and renders it into a cairo surface.
 	LoadSurface(iconName string, size int, scale int, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error)
-	// LookupByGicon looks up an icon and returns a IconInfo containing
+	// LookupByGIcon looks up an icon and returns a IconInfo containing
 	// information such as the filename of the icon.
-	LookupByGicon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo
-	// LookupByGiconForScale looks up an icon and returns a IconInfo containing
+	LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo
+	// LookupByGIconForScale looks up an icon and returns a IconInfo containing
 	// information such as the filename of the icon.
-	LookupByGiconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo
+	LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo
 	// LookupIcon looks up a named icon and returns a IconInfo containing
 	// information such as the filename of the icon.
 	LookupIcon(iconName string, size int, flags IconLookupFlags) *IconInfo
@@ -1199,7 +1199,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 	return _surface, _goerr
 }
 
-// LookupByGicon looks up an icon and returns a IconInfo containing information
+// LookupByGIcon looks up an icon and returns a IconInfo containing information
 // such as the filename of the icon. The icon can then be rendered into a pixbuf
 // using gtk_icon_info_load_icon().
 //
@@ -1208,7 +1208,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 // gdk_window_get_scale_factor(). Instead, you should use
 // gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a given
 // scaling factor may be different.
-func (iconTheme *IconTheme) LookupByGicon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1229,10 +1229,10 @@ func (iconTheme *IconTheme) LookupByGicon(icon gio.Iconer, size int, flags IconL
 	return _iconInfo
 }
 
-// LookupByGiconForScale looks up an icon and returns a IconInfo containing
+// LookupByGIconForScale looks up an icon and returns a IconInfo containing
 // information such as the filename of the icon. The icon can then be rendered
 // into a pixbuf using gtk_icon_info_load_icon().
-func (iconTheme *IconTheme) LookupByGiconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out

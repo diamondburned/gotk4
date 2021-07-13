@@ -49,8 +49,8 @@ type ApplicationOverrider interface {
 	AfterEmit(platformData *glib.Variant)
 	BeforeEmit(platformData *glib.Variant)
 	CommandLine(commandLine *ApplicationCommandLine) int
-	DbusRegister(connection *DBusConnection, objectPath string) error
-	DbusUnregister(connection *DBusConnection, objectPath string)
+	DBusRegister(connection *DBusConnection, objectPath string) error
+	DBusUnregister(connection *DBusConnection, objectPath string)
 	HandleLocalOptions(options *glib.VariantDict) int
 	NameLost() bool
 	// Open opens the given files.
@@ -90,12 +90,12 @@ type Applicationer interface {
 	BindBusyProperty(object *externglib.Object, property string)
 	// ApplicationID gets the unique identifier for application.
 	ApplicationID() string
-	// DbusConnection gets the BusConnection being used by the application, or
+	// DBusConnection gets the BusConnection being used by the application, or
 	// NULL.
-	DbusConnection() *DBusConnection
-	// DbusObjectPath gets the D-Bus object path being used by the application,
+	DBusConnection() *DBusConnection
+	// DBusObjectPath gets the D-Bus object path being used by the application,
 	// or NULL.
-	DbusObjectPath() string
+	DBusObjectPath() string
 	// Flags gets the flags for application.
 	Flags() ApplicationFlags
 	// InactivityTimeout gets the current inactivity timeout for the
@@ -510,7 +510,7 @@ func (application *Application) ApplicationID() string {
 	return _utf8
 }
 
-// DbusConnection gets the BusConnection being used by the application, or NULL.
+// DBusConnection gets the BusConnection being used by the application, or NULL.
 //
 // If #GApplication is using its D-Bus backend then this function will return
 // the BusConnection being used for uniqueness and communication with the
@@ -522,7 +522,7 @@ func (application *Application) ApplicationID() string {
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
-func (application *Application) DbusConnection() *DBusConnection {
+func (application *Application) DBusConnection() *DBusConnection {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
 
@@ -537,7 +537,7 @@ func (application *Application) DbusConnection() *DBusConnection {
 	return _dBusConnection
 }
 
-// DbusObjectPath gets the D-Bus object path being used by the application, or
+// DBusObjectPath gets the D-Bus object path being used by the application, or
 // NULL.
 //
 // If #GApplication is using its D-Bus backend then this function will return
@@ -552,7 +552,7 @@ func (application *Application) DbusConnection() *DBusConnection {
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
-func (application *Application) DbusObjectPath() string {
+func (application *Application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
 

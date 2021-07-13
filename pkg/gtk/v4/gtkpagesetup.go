@@ -71,8 +71,8 @@ type PageSetuper interface {
 	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from setup to file_name.
 	ToFile(fileName string) error
-	// ToGvariant: serialize page setup to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize page setup to an a{sv} variant.
+	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the page setup from setup to key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
@@ -173,10 +173,10 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	return _pageSetup, _goerr
 }
 
-// NewPageSetupFromGvariant: desrialize a page setup from an a{sv} variant.
+// NewPageSetupFromGVariant: desrialize a page setup from an a{sv} variant.
 //
-// The variant must be in the format produced by gtk.PageSetup.ToGvariant().
-func NewPageSetupFromGvariant(variant *glib.Variant) *PageSetup {
+// The variant must be in the format produced by gtk.PageSetup.ToGVariant().
+func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
 
@@ -568,8 +568,8 @@ func (setup *PageSetup) ToFile(fileName string) error {
 	return _goerr
 }
 
-// ToGvariant: serialize page setup to an a{sv} variant.
-func (setup *PageSetup) ToGvariant() *glib.Variant {
+// ToGVariant: serialize page setup to an a{sv} variant.
+func (setup *PageSetup) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPageSetup // out
 	var _cret *C.GVariant     // in
 

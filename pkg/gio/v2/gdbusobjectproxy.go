@@ -27,32 +27,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProXYer},
+		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProxier},
 	})
 }
 
-// DBusObjectProXYer describes DBusObjectProXY's methods.
-type DBusObjectProXYer interface {
+// DBusObjectProxier describes DBusObjectProxy's methods.
+type DBusObjectProxier interface {
 	// Connection gets the connection that proxy is for.
 	Connection() *DBusConnection
 }
 
-// DBusObjectProXY is an object used to represent a remote object with one or
+// DBusObjectProxy is an object used to represent a remote object with one or
 // more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
 // yourself - typically BusObjectManagerClient is used to obtain it.
-type DBusObjectProXY struct {
+type DBusObjectProxy struct {
 	*externglib.Object
 
 	DBusObject
 }
 
 var (
-	_ DBusObjectProXYer = (*DBusObjectProXY)(nil)
-	_ gextras.Nativer   = (*DBusObjectProXY)(nil)
+	_ DBusObjectProxier = (*DBusObjectProxy)(nil)
+	_ gextras.Nativer   = (*DBusObjectProxy)(nil)
 )
 
-func wrapDBusObjectProXY(obj *externglib.Object) *DBusObjectProXY {
-	return &DBusObjectProXY{
+func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
+	return &DBusObjectProxy{
 		Object: obj,
 		DBusObject: DBusObject{
 			Object: obj,
@@ -60,15 +60,15 @@ func wrapDBusObjectProXY(obj *externglib.Object) *DBusObjectProXY {
 	}
 }
 
-func marshalDBusObjectProXYer(p uintptr) (interface{}, error) {
+func marshalDBusObjectProxier(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapDBusObjectProXY(obj), nil
+	return wrapDBusObjectProxy(obj), nil
 }
 
-// NewDBusObjectProXY creates a new BusObjectProxy for the given connection and
+// NewDBusObjectProxy creates a new BusObjectProxy for the given connection and
 // object path.
-func NewDBusObjectProXY(connection *DBusConnection, objectPath string) *DBusObjectProXY {
+func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _cret *C.GDBusObjectProxy // in
@@ -78,15 +78,15 @@ func NewDBusObjectProXY(connection *DBusConnection, objectPath string) *DBusObje
 
 	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
-	var _dBusObjectProxy *DBusObjectProXY // out
+	var _dBusObjectProxy *DBusObjectProxy // out
 
-	_dBusObjectProxy = wrapDBusObjectProXY(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectProxy = wrapDBusObjectProxy(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
 
 // Connection gets the connection that proxy is for.
-func (proxy *DBusObjectProXY) Connection() *DBusConnection {
+func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
 

@@ -30,12 +30,12 @@ type AspectFramer interface {
 	ObeyChild() bool
 	// Ratio returns the desired aspect ratio of the child.
 	Ratio() float32
-	// Xalign returns the horizontal alignment of the child within the
+	// XAlign returns the horizontal alignment of the child within the
 	// allocation of the GtkAspectFrame.
-	Xalign() float32
-	// Yalign returns the vertical alignment of the child within the allocation
+	XAlign() float32
+	// YAlign returns the vertical alignment of the child within the allocation
 	// of the GtkAspectFrame.
-	Yalign() float32
+	YAlign() float32
 	// SetChild sets the child widget of self.
 	SetChild(child Widgeter)
 	// SetObeyChild sets whether the aspect ratio of the child's size request
@@ -43,12 +43,12 @@ type AspectFramer interface {
 	SetObeyChild(obeyChild bool)
 	// SetRatio sets the desired aspect ratio of the child.
 	SetRatio(ratio float32)
-	// SetXalign sets the horizontal alignment of the child within the
+	// SetXAlign sets the horizontal alignment of the child within the
 	// allocation of the GtkAspectFrame.
-	SetXalign(xalign float32)
-	// SetYalign sets the vertical alignment of the child within the allocation
+	SetXAlign(xalign float32)
+	// SetYAlign sets the vertical alignment of the child within the allocation
 	// of the GtkAspectFrame.
-	SetYalign(yalign float32)
+	SetYAlign(yalign float32)
 }
 
 // AspectFrame: GtkAspectFrame preserves the aspect ratio of its child.
@@ -169,9 +169,9 @@ func (self *AspectFrame) Ratio() float32 {
 	return _gfloat
 }
 
-// Xalign returns the horizontal alignment of the child within the allocation of
+// XAlign returns the horizontal alignment of the child within the allocation of
 // the GtkAspectFrame.
-func (self *AspectFrame) Xalign() float32 {
+func (self *AspectFrame) XAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
@@ -186,9 +186,9 @@ func (self *AspectFrame) Xalign() float32 {
 	return _gfloat
 }
 
-// Yalign returns the vertical alignment of the child within the allocation of
+// YAlign returns the vertical alignment of the child within the allocation of
 // the GtkAspectFrame.
-func (self *AspectFrame) Yalign() float32 {
+func (self *AspectFrame) YAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret C.float           // in
 
@@ -239,9 +239,9 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 	C.gtk_aspect_frame_set_ratio(_arg0, _arg1)
 }
 
-// SetXalign sets the horizontal alignment of the child within the allocation of
+// SetXAlign sets the horizontal alignment of the child within the allocation of
 // the GtkAspectFrame.
-func (self *AspectFrame) SetXalign(xalign float32) {
+func (self *AspectFrame) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 
@@ -251,9 +251,9 @@ func (self *AspectFrame) SetXalign(xalign float32) {
 	C.gtk_aspect_frame_set_xalign(_arg0, _arg1)
 }
 
-// SetYalign sets the vertical alignment of the child within the allocation of
+// SetYAlign sets the vertical alignment of the child within the allocation of
 // the GtkAspectFrame.
-func (self *AspectFrame) SetYalign(yalign float32) {
+func (self *AspectFrame) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 C.float           // out
 

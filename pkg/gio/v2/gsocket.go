@@ -166,8 +166,8 @@ type Socketer interface {
 	SetTTL(ttl uint)
 	// Shutdown: shut down part or all of a full-duplex connection.
 	Shutdown(shutdownRead bool, shutdownWrite bool) error
-	// SpeaksIpv4 checks if a socket is capable of speaking IPv4.
-	SpeaksIpv4() bool
+	// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
+	SpeaksIPv4() bool
 }
 
 // Socket is a low-level networking primitive. It is a more or less direct
@@ -1817,7 +1817,7 @@ func (socket *Socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 	return _goerr
 }
 
-// SpeaksIpv4 checks if a socket is capable of speaking IPv4.
+// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
 //
 // IPv4 sockets are capable of speaking IPv4. On some operating systems and
 // under some combinations of circumstances IPv6 sockets are also capable of
@@ -1825,7 +1825,7 @@ func (socket *Socket) Shutdown(shutdownRead bool, shutdownWrite bool) error {
 //
 // No other types of sockets are currently considered as being capable of
 // speaking IPv4.
-func (socket *Socket) SpeaksIpv4() bool {
+func (socket *Socket) SpeaksIPv4() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
 

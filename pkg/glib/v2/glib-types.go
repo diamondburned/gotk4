@@ -26,7 +26,7 @@ func StrvGetType() externglib.Type {
 	return _gType
 }
 
-func VariantGetGtype() externglib.Type {
+func VariantGetGType() externglib.Type {
 	var _cret C.GType // in
 
 	_cret = C.g_variant_get_gtype()

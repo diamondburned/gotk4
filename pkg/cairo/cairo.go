@@ -330,8 +330,8 @@ const (
 	SurfaceTypeGlitz
 	SurfaceTypeQuartz
 	SurfaceTypeWin32
-	SurfaceTypeBeos
-	SurfaceTypeDirectfb
+	SurfaceTypeBeOS
+	SurfaceTypeDirectFB
 	SurfaceTypeSvg
 	SurfaceTypeOS2
 	SurfaceTypeWin32Printing

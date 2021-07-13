@@ -30,15 +30,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProXYResolverer},
+		{T: externglib.Type(C.g_proxy_resolver_get_type()), F: marshalProxyResolverer},
 	})
 }
 
-// ProXYResolverOverrider contains methods that are overridable.
+// ProxyResolverOverrider contains methods that are overridable.
 //
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
-type ProXYResolverOverrider interface {
+type ProxyResolverOverrider interface {
 	// IsSupported checks if resolver can be used on this system. (This is used
 	// internally; g_proxy_resolver_get_default() will only return a proxy
 	// resolver that returns TRUE for this method.)
@@ -65,8 +65,8 @@ type ProXYResolverOverrider interface {
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
-// ProXYResolverer describes ProXYResolver's methods.
-type ProXYResolverer interface {
+// ProxyResolverer describes ProxyResolver's methods.
+type ProxyResolverer interface {
 	// IsSupported checks if resolver can be used on this system.
 	IsSupported() bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
@@ -79,38 +79,38 @@ type ProXYResolverer interface {
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
-// ProXYResolver provides synchronous and asynchronous network proxy resolution.
+// ProxyResolver provides synchronous and asynchronous network proxy resolution.
 // Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().
 //
 // Implementations of Resolver based on libproxy and GNOME settings can be found
 // in glib-networking. GIO comes with an implementation for use inside Flatpak
 // portals.
-type ProXYResolver struct {
+type ProxyResolver struct {
 	*externglib.Object
 }
 
 var (
-	_ ProXYResolverer = (*ProXYResolver)(nil)
-	_ gextras.Nativer = (*ProXYResolver)(nil)
+	_ ProxyResolverer = (*ProxyResolver)(nil)
+	_ gextras.Nativer = (*ProxyResolver)(nil)
 )
 
-func wrapProXYResolver(obj *externglib.Object) *ProXYResolver {
-	return &ProXYResolver{
+func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
+	return &ProxyResolver{
 		Object: obj,
 	}
 }
 
-func marshalProXYResolverer(p uintptr) (interface{}, error) {
+func marshalProxyResolverer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapProXYResolver(obj), nil
+	return wrapProxyResolver(obj), nil
 }
 
 // IsSupported checks if resolver can be used on this system. (This is used
 // internally; g_proxy_resolver_get_default() will only return a proxy resolver
 // that returns TRUE for this method.)
-func (resolver *ProXYResolver) IsSupported() bool {
+func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
 
@@ -139,7 +139,7 @@ func (resolver *ProXYResolver) IsSupported() bool {
 //
 // direct:// is used when no proxy is needed. Direct connection should not be
 // attempted unless it is part of the returned array of proxies.
-func (resolver *ProXYResolver) Lookup(uri string, cancellable *Cancellable) ([]string, error) {
+func (resolver *ProxyResolver) Lookup(uri string, cancellable *Cancellable) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
@@ -175,7 +175,7 @@ func (resolver *ProXYResolver) Lookup(uri string, cancellable *Cancellable) ([]s
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
 // more details.
-func (resolver *ProXYResolver) LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (resolver *ProxyResolver) LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
@@ -194,7 +194,7 @@ func (resolver *ProXYResolver) LookupAsync(uri string, cancellable *Cancellable,
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
 // for more details.
-func (resolver *ProXYResolver) LookupFinish(result AsyncResulter) ([]string, error) {
+func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
 	var _cret **C.gchar
@@ -226,15 +226,15 @@ func (resolver *ProXYResolver) LookupFinish(result AsyncResulter) ([]string, err
 	return _utf8s, _goerr
 }
 
-// ProXYResolverGetDefault gets the default Resolver for the system.
-func ProxyResolverGetDefault() *ProXYResolver {
+// ProxyResolverGetDefault gets the default Resolver for the system.
+func ProxyResolverGetDefault() *ProxyResolver {
 	var _cret *C.GProxyResolver // in
 
 	_cret = C.g_proxy_resolver_get_default()
 
-	var _proxyResolver *ProXYResolver // out
+	var _proxyResolver *ProxyResolver // out
 
-	_proxyResolver = wrapProXYResolver(externglib.Take(unsafe.Pointer(_cret)))
+	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }

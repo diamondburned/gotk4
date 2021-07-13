@@ -27,13 +27,13 @@ import (
 // void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// DbusAddressEscapeValue: escape string so it can appear in a D-Bus address as
+// DBusAddressEscapeValue: escape string so it can appear in a D-Bus address as
 // the value part of a key-value pair.
 //
 // For instance, if string is /run/bus-for-:0, this function would return
 // /run/bus-for-3A0, which could be used in a D-Bus address like
 // unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0.
-func DbusAddressEscapeValue(_string string) string {
+func DBusAddressEscapeValue(_string string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
@@ -49,13 +49,13 @@ func DbusAddressEscapeValue(_string string) string {
 	return _utf8
 }
 
-// DbusAddressGetForBusSync: synchronously looks up the D-Bus address for the
+// DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
 // well-known message bus instance specified by bus_type. This may involve using
 // various platform specific mechanisms.
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string, error) {
+func DBusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string, error) {
 	var _arg1 C.GBusType      // out
 	var _arg2 *C.GCancellable // out
 	var _cret *C.gchar        // in
@@ -76,7 +76,7 @@ func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string
 	return _utf8, _goerr
 }
 
-// DbusAddressGetStream: asynchronously connects to an endpoint specified by
+// DBusAddressGetStream: asynchronously connects to an endpoint specified by
 // address and sets up the connection so it is in a state to run the client-side
 // of the D-Bus authentication conversation. address must be in the D-Bus
 // address format
@@ -87,7 +87,7 @@ func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string
 //
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
-func DbusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback) {
+func DBusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback) {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg3 C.GAsyncReadyCallback // out
@@ -101,12 +101,12 @@ func DbusAddressGetStream(address string, cancellable *Cancellable, callback Asy
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }
 
-// DbusAddressGetStreamFinish finishes an operation started with
+// DBusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
 //
 // A server is not required to set a GUID, so out_guid may be set to NULL even
 // on success.
-func DbusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
+func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
 	var _cret *C.GIOStream    // in
@@ -128,7 +128,7 @@ func DbusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 	return _outGuid, _ioStream, _goerr
 }
 
-// DbusAddressGetStreamSync: synchronously connects to an endpoint specified by
+// DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
 // address and sets up the connection so it is in a state to run the client-side
 // of the D-Bus authentication conversation. address must be in the D-Bus
 // address format
@@ -139,7 +139,7 @@ func DbusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DbusAddressGetStreamSync(address string, cancellable *Cancellable) (string, *IOStream, error) {
+func DBusAddressGetStreamSync(address string, cancellable *Cancellable) (string, *IOStream, error) {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // in
 	var _arg3 *C.GCancellable // out
@@ -163,12 +163,12 @@ func DbusAddressGetStreamSync(address string, cancellable *Cancellable) (string,
 	return _outGuid, _ioStream, _goerr
 }
 
-// DbusIsAddress checks if string is a D-Bus address
+// DBusIsAddress checks if string is a D-Bus address
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This doesn't check if string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
-func DbusIsAddress(_string string) bool {
+func DBusIsAddress(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -185,11 +185,11 @@ func DbusIsAddress(_string string) bool {
 	return _ok
 }
 
-// DbusIsSupportedAddress: like g_dbus_is_address() but also checks if the
+// DBusIsSupportedAddress: like g_dbus_is_address() but also checks if the
 // library supports the transports in string and that key/value pairs for each
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DbusIsSupportedAddress(_string string) error {
+func DBusIsSupportedAddress(_string string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
 

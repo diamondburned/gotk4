@@ -39,8 +39,8 @@ type FileFilterer interface {
 	Name() string
 	// SetName sets a human-readable name of the filter.
 	SetName(name string)
-	// ToGvariant: serialize a file filter to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize a file filter to an a{sv} variant.
+	ToGVariant() *glib.Variant
 }
 
 // FileFilter: GtkFileFilter filters files by name or mime type.
@@ -131,10 +131,10 @@ func NewFileFilter() *FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGvariant: deserialize a file filter from a GVariant.
+// NewFileFilterFromGVariant: deserialize a file filter from a GVariant.
 //
-// The variant must be in the format produced by gtk.FileFilter.ToGvariant().
-func NewFileFilterFromGvariant(variant *glib.Variant) *FileFilter {
+// The variant must be in the format produced by gtk.FileFilter.ToGVariant().
+func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -255,8 +255,8 @@ func (filter *FileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-// ToGvariant: serialize a file filter to an a{sv} variant.
-func (filter *FileFilter) ToGvariant() *glib.Variant {
+// ToGVariant: serialize a file filter to an a{sv} variant.
+func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

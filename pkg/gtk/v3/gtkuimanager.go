@@ -69,8 +69,8 @@ func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 type UIManagerOverrider interface {
 	ActionsChanged()
 	AddWidget(widget Widgeter)
-	ConnectProXY(action *Action, proxy Widgeter)
-	DisconnectProXY(action *Action, proxy Widgeter)
+	ConnectProxy(action *Action, proxy Widgeter)
+	DisconnectProxy(action *Action, proxy Widgeter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
 	//

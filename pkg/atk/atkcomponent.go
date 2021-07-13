@@ -78,10 +78,10 @@ type ComponentOverrider interface {
 	Extents(coordType CoordType) (x int, y int, width int, height int)
 	// Layer gets the layer of the component.
 	Layer() Layer
-	// MDIZorder gets the zorder of the component. The value G_MININT will be
+	// MDIZOrder gets the zorder of the component. The value G_MININT will be
 	// returned if the layer of the component is not ATK_LAYER_MDI or
 	// ATK_LAYER_WINDOW.
-	MDIZorder() int
+	MDIZOrder() int
 	// Position gets the position of component in the form of a point specifying
 	// component's top-left corner.
 	//
@@ -142,8 +142,8 @@ type Componenter interface {
 	Extents(coordType CoordType) (x int, y int, width int, height int)
 	// Layer gets the layer of the component.
 	Layer() Layer
-	// MDIZorder gets the zorder of the component.
-	MDIZorder() int
+	// MDIZOrder gets the zorder of the component.
+	MDIZOrder() int
 	// Position gets the position of component in the form of a point specifying
 	// component's top-left corner.
 	Position(coordType CoordType) (x int, y int)
@@ -294,10 +294,10 @@ func (component *Component) Layer() Layer {
 	return _layer
 }
 
-// MDIZorder gets the zorder of the component. The value G_MININT will be
+// MDIZOrder gets the zorder of the component. The value G_MININT will be
 // returned if the layer of the component is not ATK_LAYER_MDI or
 // ATK_LAYER_WINDOW.
-func (component *Component) MDIZorder() int {
+func (component *Component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
 

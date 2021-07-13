@@ -44,8 +44,8 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 type ContentSerializerer interface {
 	// Cancellable gets the cancellable for the current operation.
 	Cancellable() *gio.Cancellable
-	// Gtype gets the GType to of the object to serialize.
-	Gtype() externglib.Type
+	// GType gets the GType to of the object to serialize.
+	GType() externglib.Type
 	// MIMEType gets the mime type to serialize to.
 	MIMEType() string
 	// OutputStream gets the output stream for the current operation.
@@ -127,8 +127,8 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	return _cancellable
 }
 
-// Gtype gets the GType to of the object to serialize.
-func (serializer *ContentSerializer) Gtype() externglib.Type {
+// GType gets the GType to of the object to serialize.
+func (serializer *ContentSerializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.GType                 // in
 

@@ -42,8 +42,8 @@ const (
 	SpawnErrorNametoolong SpawnError = 7
 	// Noent: execv() returned ENOENT
 	SpawnErrorNoent SpawnError = 8
-	// Nomem: execv() returned ENOMEM
-	SpawnErrorNomem SpawnError = 9
+	// NOMEM: execv() returned ENOMEM
+	SpawnErrorNOMEM SpawnError = 9
 	// Notdir: execv() returned ENOTDIR
 	SpawnErrorNotdir SpawnError = 10
 	// Loop: execv() returned ELOOP

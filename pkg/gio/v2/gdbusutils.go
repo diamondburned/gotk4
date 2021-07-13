@@ -26,9 +26,9 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// DbusEscapeObjectPath: this is a language binding friendly version of
+// DBusEscapeObjectPath: this is a language binding friendly version of
 // g_dbus_escape_object_path_bytestring().
-func DbusEscapeObjectPath(s string) string {
+func DBusEscapeObjectPath(s string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
@@ -44,7 +44,7 @@ func DbusEscapeObjectPath(s string) string {
 	return _utf8
 }
 
-// DbusEscapeObjectPathBytestring escapes bytes for use in a D-Bus object path
+// DBusEscapeObjectPathBytestring escapes bytes for use in a D-Bus object path
 // component. bytes is an array of zero or more nonzero bytes in an unspecified
 // encoding, followed by a single zero byte.
 //
@@ -58,7 +58,7 @@ func DbusEscapeObjectPath(s string) string {
 // object paths.
 //
 // This can be reversed with g_dbus_unescape_object_path().
-func DbusEscapeObjectPathBytestring(bytes []byte) string {
+func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8
 	var _cret *C.gchar // in
 
@@ -78,12 +78,12 @@ func DbusEscapeObjectPathBytestring(bytes []byte) string {
 	return _utf8
 }
 
-// DbusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
+// DBusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
 // g_dbus_connection_new().
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DbusGenerateGuid() string {
+func DBusGenerateGuid() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_generate_guid()
@@ -96,7 +96,7 @@ func DbusGenerateGuid() string {
 	return _utf8
 }
 
-// DbusGvalueToGvariant converts a #GValue to a #GVariant of the type indicated
+// DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
 // by the type parameter.
 //
 // The conversion is using the following rules:
@@ -132,7 +132,7 @@ func DbusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DbusGvalueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
+func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
@@ -153,7 +153,7 @@ func DbusGvalueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	return _variant
 }
 
-// DbusGvariantToGvalue converts a #GVariant to a #GValue. If value is floating,
+// DBusGVariantToGValue converts a #GVariant to a #GValue. If value is floating,
 // it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
@@ -164,7 +164,7 @@ func DbusGvalueToGvariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 //
 // The conversion never fails - a valid #GValue is always returned in
 // out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant) externglib.Value {
+func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	var _arg1 *C.GVariant // out
 	var _arg2 C.GValue    // in
 
@@ -179,11 +179,11 @@ func DbusGvariantToGvalue(value *glib.Variant) externglib.Value {
 	return _outGvalue
 }
 
-// DbusIsGuid checks if string is a D-Bus GUID.
+// DBusIsGuid checks if string is a D-Bus GUID.
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DbusIsGuid(_string string) bool {
+func DBusIsGuid(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -200,8 +200,8 @@ func DbusIsGuid(_string string) bool {
 	return _ok
 }
 
-// DbusIsInterfaceName checks if string is a valid D-Bus interface name.
-func DbusIsInterfaceName(_string string) bool {
+// DBusIsInterfaceName checks if string is a valid D-Bus interface name.
+func DBusIsInterfaceName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -218,9 +218,9 @@ func DbusIsInterfaceName(_string string) bool {
 	return _ok
 }
 
-// DbusIsMemberName checks if string is a valid D-Bus member (e.g. signal or
+// DBusIsMemberName checks if string is a valid D-Bus member (e.g. signal or
 // method) name.
-func DbusIsMemberName(_string string) bool {
+func DBusIsMemberName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -237,9 +237,9 @@ func DbusIsMemberName(_string string) bool {
 	return _ok
 }
 
-// DbusIsName checks if string is a valid D-Bus bus name (either unique or
+// DBusIsName checks if string is a valid D-Bus bus name (either unique or
 // well-known).
-func DbusIsName(_string string) bool {
+func DBusIsName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -256,8 +256,8 @@ func DbusIsName(_string string) bool {
 	return _ok
 }
 
-// DbusIsUniqueName checks if string is a valid D-Bus unique bus name.
-func DbusIsUniqueName(_string string) bool {
+// DBusIsUniqueName checks if string is a valid D-Bus unique bus name.
+func DBusIsUniqueName(_string string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 
@@ -274,13 +274,13 @@ func DbusIsUniqueName(_string string) bool {
 	return _ok
 }
 
-// DbusUnescapeObjectPath unescapes an string that was previously escaped with
+// DBusUnescapeObjectPath unescapes an string that was previously escaped with
 // g_dbus_escape_object_path(). If the string is in a format that could not have
 // been returned by g_dbus_escape_object_path(), this function returns NULL.
 //
 // Encoding alphanumeric characters which do not need to be encoded is not
 // allowed (e.g _63 is not valid, the string should contain c instead).
-func DbusUnescapeObjectPath(s string) []byte {
+func DBusUnescapeObjectPath(s string) []byte {
 	var _arg1 *C.gchar // out
 	var _cret *C.guint8
 

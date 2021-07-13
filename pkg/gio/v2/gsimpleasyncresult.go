@@ -35,12 +35,12 @@ func init() {
 	})
 }
 
-// SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
+// SimpleAsyncReportGErrorInIdle reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
 //
 // Deprecated: Use g_task_report_error().
-func SimpleAsyncReportGerrorInIdle(object *externglib.Object, callback AsyncReadyCallback, err error) {
+func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer

@@ -40,22 +40,22 @@ type Scrollabler interface {
 	// Border returns the size of a non-scrolling border around the outside of
 	// the scrollable.
 	Border() (Border, bool)
-	// Hadjustment retrieves the Adjustment used for horizontal scrolling.
-	Hadjustment() *Adjustment
+	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
+	HAdjustment() *Adjustment
 	// HscrollPolicy gets the horizontal ScrollablePolicy.
 	HscrollPolicy() ScrollablePolicy
-	// Vadjustment retrieves the Adjustment used for vertical scrolling.
-	Vadjustment() *Adjustment
+	// VAdjustment retrieves the Adjustment used for vertical scrolling.
+	VAdjustment() *Adjustment
 	// VscrollPolicy gets the vertical ScrollablePolicy.
 	VscrollPolicy() ScrollablePolicy
-	// SetHadjustment sets the horizontal adjustment of the Scrollable.
-	SetHadjustment(hadjustment *Adjustment)
+	// SetHAdjustment sets the horizontal adjustment of the Scrollable.
+	SetHAdjustment(hadjustment *Adjustment)
 	// SetHscrollPolicy sets the ScrollablePolicy to determine whether
 	// horizontal scrolling should start below the minimum width or below the
 	// natural width.
 	SetHscrollPolicy(policy ScrollablePolicy)
-	// SetVadjustment sets the vertical adjustment of the Scrollable.
-	SetVadjustment(vadjustment *Adjustment)
+	// SetVAdjustment sets the vertical adjustment of the Scrollable.
+	SetVAdjustment(vadjustment *Adjustment)
 	// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
 	// scrolling should start below the minimum height or below the natural
 	// height.
@@ -130,8 +130,8 @@ func (scrollable *Scrollable) Border() (Border, bool) {
 	return _border, _ok
 }
 
-// Hadjustment retrieves the Adjustment used for horizontal scrolling.
-func (scrollable *Scrollable) Hadjustment() *Adjustment {
+// HAdjustment retrieves the Adjustment used for horizontal scrolling.
+func (scrollable *Scrollable) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
@@ -162,8 +162,8 @@ func (scrollable *Scrollable) HscrollPolicy() ScrollablePolicy {
 	return _scrollablePolicy
 }
 
-// Vadjustment retrieves the Adjustment used for vertical scrolling.
-func (scrollable *Scrollable) Vadjustment() *Adjustment {
+// VAdjustment retrieves the Adjustment used for vertical scrolling.
+func (scrollable *Scrollable) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrollable // out
 	var _cret *C.GtkAdjustment // in
 
@@ -194,8 +194,8 @@ func (scrollable *Scrollable) VscrollPolicy() ScrollablePolicy {
 	return _scrollablePolicy
 }
 
-// SetHadjustment sets the horizontal adjustment of the Scrollable.
-func (scrollable *Scrollable) SetHadjustment(hadjustment *Adjustment) {
+// SetHAdjustment sets the horizontal adjustment of the Scrollable.
+func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -217,8 +217,8 @@ func (scrollable *Scrollable) SetHscrollPolicy(policy ScrollablePolicy) {
 	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
 }
 
-// SetVadjustment sets the vertical adjustment of the Scrollable.
-func (scrollable *Scrollable) SetVadjustment(vadjustment *Adjustment) {
+// SetVAdjustment sets the vertical adjustment of the Scrollable.
+func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
 	var _arg1 *C.GtkAdjustment // out
 

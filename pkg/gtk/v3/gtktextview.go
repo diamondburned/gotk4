@@ -154,8 +154,8 @@ type TextViewer interface {
 	DefaultAttributes() *TextAttributes
 	// Editable returns the default editability of the TextView.
 	Editable() bool
-	// Hadjustment gets the horizontal-scrolling Adjustment.
-	Hadjustment() *Adjustment
+	// HAdjustment gets the horizontal-scrolling Adjustment.
+	HAdjustment() *Adjustment
 	// Indent gets the default indentation of paragraphs in text_view.
 	Indent() int
 	// InputHints gets the value of the TextView:input-hints property.
@@ -200,8 +200,8 @@ type TextViewer interface {
 	Tabs() *pango.TabArray
 	// TopMargin gets the top margin for text in the text_view.
 	TopMargin() int
-	// Vadjustment gets the vertical-scrolling Adjustment.
-	Vadjustment() *Adjustment
+	// VAdjustment gets the vertical-scrolling Adjustment.
+	VAdjustment() *Adjustment
 	// VisibleRect fills visible_rect with the currently-visible region of the
 	// buffer, in buffer coordinates.
 	VisibleRect() gdk.Rectangle
@@ -744,10 +744,10 @@ func (textView *TextView) Editable() bool {
 	return _ok
 }
 
-// Hadjustment gets the horizontal-scrolling Adjustment.
+// HAdjustment gets the horizontal-scrolling Adjustment.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (textView *TextView) Hadjustment() *Adjustment {
+func (textView *TextView) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -1112,10 +1112,10 @@ func (textView *TextView) TopMargin() int {
 	return _gint
 }
 
-// Vadjustment gets the vertical-scrolling Adjustment.
+// VAdjustment gets the vertical-scrolling Adjustment.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (textView *TextView) Vadjustment() *Adjustment {
+func (textView *TextView) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkTextView   // out
 	var _cret *C.GtkAdjustment // in
 

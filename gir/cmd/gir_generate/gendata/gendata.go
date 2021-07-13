@@ -1,21 +1,48 @@
-package main
+// Package gendata contains data used to generate GTK4 bindings for Go. It
+// exists primarily to be used externally.
+package gendata
 
 import (
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-// pkgExceptions contains a list of file names that won't be deleted off of
+type Package struct {
+	PkgName    string   // pkg-config name
+	Namespaces []string // refer to ./cmd/gir_namespaces
+}
+
+// PkgExceptions contains a list of file names that won't be deleted off of
 // pkg/.
-var pkgExceptions = []string{
+var PkgExceptions = []string{
 	"core",
 	"go.mod",
 	"go.sum",
 	"LICENSE",
 }
 
-// packages lists pkg-config packages and optionally the namespaces to be
+// PkgGenerated contains a list of file names that are packages generated using
+// the given Packages list. It is manually updated.
+var PkgGenerated = []string{
+	"atk",
+	"cairo",
+	"gdk",
+	"gdkpixbuf",
+	"gdkpixdata",
+	"gdkwayland",
+	"gdkx11",
+	"gio",
+	"glib",
+	"gobject",
+	"graphene",
+	"gsk",
+	"gtk",
+	"pango",
+	"pangocairo",
+}
+
+// Packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
-var packages = []Package{
+var Packages = []Package{
 	{"gobject-introspection-1.0", []string{
 		"GLib-2",
 		"GObject-2",
@@ -33,9 +60,9 @@ var packages = []Package{
 	{"gtk+-3.0", nil}, // includes Gdk
 }
 
-// preprocessors defines a list of preprocessors that the main generator will
+// Preprocessors defines a list of preprocessors that the main generator will
 // use. It's mostly used for renaming colliding types/identifiers.
-var preprocessors = []Preprocessor{
+var Preprocessors = []Preprocessor{
 	// Collision due to case conversions.
 	TypeRenamer("GLib-2.file_test", "test_file"),
 	// CellRendererSpinner (generated interface) collides with an actual
@@ -53,9 +80,9 @@ var preprocessors = []Preprocessor{
 	// ),
 }
 
-// filters defines a list of GIR types to be filtered. The map key is the
+// Filters defines a list of GIR types to be filtered. The map key is the
 // namespace, and the values are list of names.
-var filters = []FilterMatcher{
+var Filters = []FilterMatcher{
 	AbsoluteFilter("C.cairo_image_surface_create"),
 
 	// Broadway is not included, so we don't generate code for it.

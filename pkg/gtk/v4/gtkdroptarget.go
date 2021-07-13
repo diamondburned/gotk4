@@ -39,8 +39,8 @@ type DropTargeter interface {
 	Reject()
 	// SetActions sets the actions that this drop target supports.
 	SetActions(actions gdk.DragAction)
-	// SetGtypes sets the supported GTypes for this drop target.
-	SetGtypes(types []externglib.Type)
+	// SetGTypes sets the supported GTypes for this drop target.
+	SetGTypes(types []externglib.Type)
 	// SetPreload sets whether data should be preloaded on hover.
 	SetPreload(preload bool)
 }
@@ -140,7 +140,7 @@ func marshalDropTargeter(p uintptr) (interface{}, error) {
 // NewDropTarget creates a new GtkDropTarget object.
 //
 // If the drop target should support more than 1 type, pass G_TYPE_INVALID for
-// type and then call gtk.DropTarget.SetGtypes().
+// type and then call gtk.DropTarget.SetGTypes().
 func NewDropTarget(typ externglib.Type, actions gdk.DragAction) *DropTarget {
 	var _arg1 C.GType          // out
 	var _arg2 C.GdkDragAction  // out
@@ -279,8 +279,8 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 	C.gtk_drop_target_set_actions(_arg0, _arg1)
 }
 
-// SetGtypes sets the supported GTypes for this drop target.
-func (self *DropTarget) SetGtypes(types []externglib.Type) {
+// SetGTypes sets the supported GTypes for this drop target.
+func (self *DropTarget) SetGTypes(types []externglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType
 	var _arg2 C.gsize

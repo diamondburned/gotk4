@@ -1166,8 +1166,8 @@ func UnicharIszerowidth(c uint32) bool {
 	return _ok
 }
 
-// UnicharTolower converts a character to lower case.
-func UnicharTolower(c uint32) uint32 {
+// UnicharToLower converts a character to lower case.
+func UnicharToLower(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
@@ -1182,8 +1182,8 @@ func UnicharTolower(c uint32) uint32 {
 	return _gunichar
 }
 
-// UnicharTotitle converts a character to the titlecase.
-func UnicharTotitle(c uint32) uint32 {
+// UnicharToTitle converts a character to the titlecase.
+func UnicharToTitle(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
@@ -1198,8 +1198,8 @@ func UnicharTotitle(c uint32) uint32 {
 	return _gunichar
 }
 
-// UnicharToupper converts a character to uppercase.
-func UnicharToupper(c uint32) uint32 {
+// UnicharToUpper converts a character to uppercase.
+func UnicharToUpper(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
 
@@ -1250,9 +1250,9 @@ func UnicharValidate(ch uint32) bool {
 	return _ok
 }
 
-// UnicharXdigitValue determines the numeric value of a character as a
+// UnicharXDigitValue determines the numeric value of a character as a
 // hexadecimal digit.
-func UnicharXdigitValue(c uint32) int {
+func UnicharXDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
 

@@ -100,8 +100,8 @@ type FileFilterer interface {
 	// that will be displayed in the file selector user interface if there is a
 	// selectable list of filters.
 	SetName(name string)
-	// ToGvariant: serialize a file filter to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize a file filter to an a{sv} variant.
+	ToGVariant() *glib.Variant
 }
 
 // FileFilter can be used to restrict the files being shown in a FileChooser.
@@ -188,9 +188,9 @@ func NewFileFilter() *FileFilter {
 	return _fileFilter
 }
 
-// NewFileFilterFromGvariant: deserialize a file filter from an a{sv} variant in
+// NewFileFilterFromGVariant: deserialize a file filter from an a{sv} variant in
 // the format produced by gtk_file_filter_to_gvariant().
-func NewFileFilterFromGvariant(variant *glib.Variant) *FileFilter {
+func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
@@ -318,8 +318,8 @@ func (filter *FileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(_arg0, _arg1)
 }
 
-// ToGvariant: serialize a file filter to an a{sv} variant.
-func (filter *FileFilter) ToGvariant() *glib.Variant {
+// ToGVariant: serialize a file filter to an a{sv} variant.
+func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out
 	var _cret *C.GVariant      // in
 

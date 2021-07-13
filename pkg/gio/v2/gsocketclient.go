@@ -44,9 +44,9 @@ type SocketClientOverrider interface {
 
 // SocketClienter describes SocketClient's methods.
 type SocketClienter interface {
-	// AddApplicationProXY: enable proxy protocols to be handled by the
+	// AddApplicationProxy: enable proxy protocols to be handled by the
 	// application.
-	AddApplicationProXY(protocol string)
+	AddApplicationProxy(protocol string)
 	// ConnectSocketClienter tries to resolve the connectable and make a network
 	// connection to it.
 	ConnectSocketClienter(connectable SocketConnectabler, cancellable *Cancellable) (*SocketConnection, error)
@@ -76,17 +76,17 @@ type SocketClienter interface {
 	ConnectToURIAsync(uri string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback)
 	// ConnectToURIFinish finishes an async connect operation.
 	ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error)
-	// EnableProXY gets the proxy enable state; see
+	// EnableProxy gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
-	EnableProXY() bool
+	EnableProxy() bool
 	// Family gets the socket family of the socket client.
 	Family() SocketFamily
 	// LocalAddress gets the local address of the socket client.
 	LocalAddress() *SocketAddress
 	// Protocol gets the protocol name type of the socket client.
 	Protocol() SocketProtocol
-	// ProXYResolver gets the Resolver being used by client.
-	ProXYResolver() *ProXYResolver
+	// ProxyResolver gets the Resolver being used by client.
+	ProxyResolver() *ProxyResolver
 	// SocketType gets the socket type of the socket client.
 	SocketType() SocketType
 	// Timeout gets the I/O timeout time for sockets created by client.
@@ -96,17 +96,17 @@ type SocketClienter interface {
 	// TLSValidationFlags gets the TLS validation flags used creating TLS
 	// connections via client.
 	TLSValidationFlags() TLSCertificateFlags
-	// SetEnableProXY sets whether or not client attempts to make connections
+	// SetEnableProxy sets whether or not client attempts to make connections
 	// via a proxy server.
-	SetEnableProXY(enable bool)
+	SetEnableProxy(enable bool)
 	// SetFamily sets the socket family of the socket client.
 	SetFamily(family SocketFamily)
 	// SetLocalAddress sets the local address of the socket client.
 	SetLocalAddress(address SocketAddresser)
 	// SetProtocol sets the protocol of the socket client.
 	SetProtocol(protocol SocketProtocol)
-	// SetProXYResolver overrides the Resolver used by client.
-	SetProXYResolver(proxyResolver ProXYResolverer)
+	// SetProxyResolver overrides the Resolver used by client.
+	SetProxyResolver(proxyResolver ProxyResolverer)
 	// SetSocketType sets the socket type of the socket client.
 	SetSocketType(typ SocketType)
 	// SetTimeout sets the I/O timeout for sockets created by client.
@@ -164,7 +164,7 @@ func NewSocketClient() *SocketClient {
 	return _socketClient
 }
 
-// AddApplicationProXY: enable proxy protocols to be handled by the application.
+// AddApplicationProxy: enable proxy protocols to be handled by the application.
 // When the indicated proxy protocol is returned by the Resolver, Client will
 // consider this protocol as supported but will not try to find a #GProxy
 // instance to handle handshaking. The application must check for this case by
@@ -181,7 +181,7 @@ func NewSocketClient() *SocketClient {
 // When the proxy is detected as being an application proxy, TLS handshake will
 // be skipped. This is required to let the application do the proxy specific
 // handshake.
-func (client *SocketClient) AddApplicationProXY(protocol string) {
+func (client *SocketClient) AddApplicationProxy(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
 
@@ -547,9 +547,9 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	return _socketConnection, _goerr
 }
 
-// EnableProXY gets the proxy enable state; see
+// EnableProxy gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
-func (client *SocketClient) EnableProXY() bool {
+func (client *SocketClient) EnableProxy() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
 
@@ -620,10 +620,10 @@ func (client *SocketClient) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
-// ProXYResolver gets the Resolver being used by client. Normally, this will be
+// ProxyResolver gets the Resolver being used by client. Normally, this will be
 // the resolver returned by g_proxy_resolver_get_default(), but you can override
 // it with g_socket_client_set_proxy_resolver().
-func (client *SocketClient) ProXYResolver() *ProXYResolver {
+func (client *SocketClient) ProxyResolver() *ProxyResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -631,9 +631,9 @@ func (client *SocketClient) ProXYResolver() *ProXYResolver {
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 
-	var _proxyResolver *ProXYResolver // out
+	var _proxyResolver *ProxyResolver // out
 
-	_proxyResolver = wrapProXYResolver(externglib.Take(unsafe.Pointer(_cret)))
+	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }
@@ -710,13 +710,13 @@ func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 	return _tlsCertificateFlags
 }
 
-// SetEnableProXY sets whether or not client attempts to make connections via a
+// SetEnableProxy sets whether or not client attempts to make connections via a
 // proxy server. When enabled (the default), Client will use a Resolver to
 // determine if a proxy protocol such as SOCKS is needed, and automatically do
 // the necessary proxy negotiation.
 //
 // See also g_socket_client_set_proxy_resolver().
-func (client *SocketClient) SetEnableProXY(enable bool) {
+func (client *SocketClient) SetEnableProxy(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
 
@@ -776,14 +776,14 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	C.g_socket_client_set_protocol(_arg0, _arg1)
 }
 
-// SetProXYResolver overrides the Resolver used by client. You can call this if
+// SetProxyResolver overrides the Resolver used by client. You can call this if
 // you want to use specific proxies, rather than using the system default proxy
 // settings.
 //
 // Note that whether or not the proxy resolver is actually used depends on the
 // setting of Client:enable-proxy, which is not changed by this function (but
 // which is TRUE by default)
-func (client *SocketClient) SetProXYResolver(proxyResolver ProXYResolverer) {
+func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
 

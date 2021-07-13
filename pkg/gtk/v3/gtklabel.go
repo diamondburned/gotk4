@@ -95,10 +95,10 @@ type Labeler interface {
 	UseUnderline() bool
 	// WidthChars retrieves the desired width of label, in characters.
 	WidthChars() int
-	// Xalign gets the Label:xalign property for label.
-	Xalign() float32
-	// Yalign gets the Label:yalign property for label.
-	Yalign() float32
+	// XAlign gets the Label:xalign property for label.
+	XAlign() float32
+	// YAlign gets the Label:yalign property for label.
+	YAlign() float32
 	// SelectRegion selects a range of characters in the label, if the label is
 	// selectable.
 	SelectRegion(startOffset int, endOffset int)
@@ -160,10 +160,10 @@ type Labeler interface {
 	SetUseUnderline(setting bool)
 	// SetWidthChars sets the desired width in characters of label to n_chars.
 	SetWidthChars(nChars int)
-	// SetXalign sets the Label:xalign property for label.
-	SetXalign(xalign float32)
-	// SetYalign sets the Label:yalign property for label.
-	SetYalign(yalign float32)
+	// SetXAlign sets the Label:xalign property for label.
+	SetXAlign(xalign float32)
+	// SetYAlign sets the Label:yalign property for label.
+	SetYAlign(yalign float32)
 }
 
 // Label widget displays a small amount of text. As the name implies, most
@@ -680,8 +680,8 @@ func (label *Label) WidthChars() int {
 	return _gint
 }
 
-// Xalign gets the Label:xalign property for label.
-func (label *Label) Xalign() float32 {
+// XAlign gets the Label:xalign property for label.
+func (label *Label) XAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gfloat    // in
 
@@ -696,8 +696,8 @@ func (label *Label) Xalign() float32 {
 	return _gfloat
 }
 
-// Yalign gets the Label:yalign property for label.
-func (label *Label) Yalign() float32 {
+// YAlign gets the Label:yalign property for label.
+func (label *Label) YAlign() float32 {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gfloat    // in
 
@@ -1061,8 +1061,8 @@ func (label *Label) SetWidthChars(nChars int) {
 	C.gtk_label_set_width_chars(_arg0, _arg1)
 }
 
-// SetXalign sets the Label:xalign property for label.
-func (label *Label) SetXalign(xalign float32) {
+// SetXAlign sets the Label:xalign property for label.
+func (label *Label) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out
 
@@ -1072,8 +1072,8 @@ func (label *Label) SetXalign(xalign float32) {
 	C.gtk_label_set_xalign(_arg0, _arg1)
 }
 
-// SetYalign sets the Label:yalign property for label.
-func (label *Label) SetYalign(yalign float32) {
+// SetYAlign sets the Label:yalign property for label.
+func (label *Label) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gfloat    // out
 

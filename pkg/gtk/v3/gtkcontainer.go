@@ -110,12 +110,12 @@ type Containerer interface {
 	BorderWidth() uint
 	// FocusChild returns the current focus child widget inside container.
 	FocusChild() *Widget
-	// FocusHadjustment retrieves the horizontal focus adjustment for the
+	// FocusHAdjustment retrieves the horizontal focus adjustment for the
 	// container.
-	FocusHadjustment() *Adjustment
-	// FocusVadjustment retrieves the vertical focus adjustment for the
+	FocusHAdjustment() *Adjustment
+	// FocusVAdjustment retrieves the vertical focus adjustment for the
 	// container.
-	FocusVadjustment() *Adjustment
+	FocusVAdjustment() *Adjustment
 	// PathForChild returns a newly created widget path representing all the
 	// widget hierarchy from the toplevel down to and including child.
 	PathForChild(child Widgeter) *WidgetPath
@@ -134,14 +134,14 @@ type Containerer interface {
 	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
 	// container.
 	SetFocusChild(child Widgeter)
-	// SetFocusHadjustment hooks up an adjustment to focus handling in a
+	// SetFocusHAdjustment hooks up an adjustment to focus handling in a
 	// container, so when a child of the container is focused, the adjustment is
 	// scrolled to show that widget.
-	SetFocusHadjustment(adjustment *Adjustment)
-	// SetFocusVadjustment hooks up an adjustment to focus handling in a
+	SetFocusHAdjustment(adjustment *Adjustment)
+	// SetFocusVAdjustment hooks up an adjustment to focus handling in a
 	// container, so when a child of the container is focused, the adjustment is
 	// scrolled to show that widget.
-	SetFocusVadjustment(adjustment *Adjustment)
+	SetFocusVAdjustment(adjustment *Adjustment)
 	// SetReallocateRedraws sets the reallocate_redraws flag of the container to
 	// the given value.
 	SetReallocateRedraws(needsRedraws bool)
@@ -526,9 +526,9 @@ func (container *Container) FocusChild() *Widget {
 	return _widget
 }
 
-// FocusHadjustment retrieves the horizontal focus adjustment for the container.
+// FocusHAdjustment retrieves the horizontal focus adjustment for the container.
 // See gtk_container_set_focus_hadjustment ().
-func (container *Container) FocusHadjustment() *Adjustment {
+func (container *Container) FocusHAdjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
@@ -543,9 +543,9 @@ func (container *Container) FocusHadjustment() *Adjustment {
 	return _adjustment
 }
 
-// FocusVadjustment retrieves the vertical focus adjustment for the container.
+// FocusVAdjustment retrieves the vertical focus adjustment for the container.
 // See gtk_container_set_focus_vadjustment().
-func (container *Container) FocusVadjustment() *Adjustment {
+func (container *Container) FocusVAdjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
 	var _cret *C.GtkAdjustment // in
 
@@ -694,7 +694,7 @@ func (container *Container) SetFocusChild(child Widgeter) {
 	C.gtk_container_set_focus_child(_arg0, _arg1)
 }
 
-// SetFocusHadjustment hooks up an adjustment to focus handling in a container,
+// SetFocusHAdjustment hooks up an adjustment to focus handling in a container,
 // so when a child of the container is focused, the adjustment is scrolled to
 // show that widget. This function sets the horizontal alignment. See
 // gtk_scrolled_window_get_hadjustment() for a typical way of obtaining the
@@ -703,7 +703,7 @@ func (container *Container) SetFocusChild(child Widgeter) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
-func (container *Container) SetFocusHadjustment(adjustment *Adjustment) {
+func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -713,7 +713,7 @@ func (container *Container) SetFocusHadjustment(adjustment *Adjustment) {
 	C.gtk_container_set_focus_hadjustment(_arg0, _arg1)
 }
 
-// SetFocusVadjustment hooks up an adjustment to focus handling in a container,
+// SetFocusVAdjustment hooks up an adjustment to focus handling in a container,
 // so when a child of the container is focused, the adjustment is scrolled to
 // show that widget. This function sets the vertical alignment. See
 // gtk_scrolled_window_get_vadjustment() for a typical way of obtaining the
@@ -722,7 +722,7 @@ func (container *Container) SetFocusHadjustment(adjustment *Adjustment) {
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the container.
-func (container *Container) SetFocusVadjustment(adjustment *Adjustment) {
+func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
 	var _arg1 *C.GtkAdjustment // out
 

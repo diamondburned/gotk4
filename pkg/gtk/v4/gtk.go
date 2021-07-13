@@ -30,7 +30,7 @@ const (
 	EditablePropertiesPropEditable
 	EditablePropertiesPropWidthChars
 	EditablePropertiesPropMaxWidthChars
-	EditablePropertiesPropXalign
+	EditablePropertiesPropXAlign
 	EditablePropertiesPropEnableUndo
 	EditablePropertiesNumProperties
 )

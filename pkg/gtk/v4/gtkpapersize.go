@@ -88,8 +88,8 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	return _paperSize
 }
 
-// NewPaperSizeFromGvariant constructs a struct PaperSize.
-func NewPaperSizeFromGvariant(variant *glib.Variant) *PaperSize {
+// NewPaperSizeFromGVariant constructs a struct PaperSize.
+func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPaperSize // in
 
@@ -439,8 +439,8 @@ func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ToGvariant: serialize a paper size to an a{sv} variant.
-func (paperSize *PaperSize) ToGvariant() *glib.Variant {
+// ToGVariant: serialize a paper size to an a{sv} variant.
+func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPaperSize // out
 	var _cret *C.GVariant     // in
 

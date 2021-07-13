@@ -301,8 +301,8 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	return _contentFormats
 }
 
-// NewContentFormatsForGtype constructs a struct ContentFormats.
-func NewContentFormatsForGtype(typ externglib.Type) *ContentFormats {
+// NewContentFormatsForGType constructs a struct ContentFormats.
+func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 	var _arg1 C.GType              // out
 	var _cret *C.GdkContentFormats // in
 
@@ -326,8 +326,8 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// ContainGtype checks if a given GType is part of the given formats.
-func (formats *ContentFormats) ContainGtype(typ externglib.Type) bool {
+// ContainGType checks if a given GType is part of the given formats.
+func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 C.GType              // out
 	var _cret C.gboolean           // in
@@ -386,10 +386,10 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 	return _ok
 }
 
-// MatchGtype finds the first GType from first that is also contained in second.
+// MatchGType finds the first GType from first that is also contained in second.
 //
 // If no matching GType is found, G_TYPE_INVALID is returned.
-func (first *ContentFormats) MatchGtype(second *ContentFormats) externglib.Type {
+func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.GType              // in
@@ -490,9 +490,9 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	return _contentFormats
 }
 
-// UnionDeserializeGtypes: add GTypes for mime types in formats for which
+// UnionDeserializeGTypes: add GTypes for mime types in formats for which
 // deserializers are registered.
-func (formats *ContentFormats) UnionDeserializeGtypes() *ContentFormats {
+func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
@@ -532,9 +532,9 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	return _contentFormats
 }
 
-// UnionSerializeGtypes: add GTypes for the mime types in formats for which
+// UnionSerializeGTypes: add GTypes for the mime types in formats for which
 // serializers are registered.
-func (formats *ContentFormats) UnionSerializeGtypes() *ContentFormats {
+func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 

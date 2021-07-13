@@ -37,7 +37,7 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-	ConnectProXY(proxy Widgeter)
+	ConnectProxy(proxy Widgeter)
 	// CreateMenu: if action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
@@ -57,7 +57,7 @@ type ActionOverrider interface {
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
 	CreateToolItem() *Widget
-	DisconnectProXY(proxy Widgeter)
+	DisconnectProxy(proxy Widgeter)
 }
 
 // Actioner describes Action's methods.
@@ -94,8 +94,8 @@ type Actioner interface {
 	// AlwaysShowImage returns whether action's menu item proxies will always
 	// show their image, if available.
 	AlwaysShowImage() bool
-	// Gicon gets the gicon of action.
-	Gicon() *gio.Icon
+	// GIcon gets the gicon of action.
+	GIcon() *gio.Icon
 	// IconName gets the icon name of action.
 	IconName() string
 	// IsImportant checks whether action is important or not Deprecated: Use
@@ -137,8 +137,8 @@ type Actioner interface {
 	// the Settings:gtk-menu-images setting and always show their image, if
 	// available.
 	SetAlwaysShowImage(alwaysShow bool)
-	// SetGicon sets the icon of action.
-	SetGicon(icon gio.Iconer)
+	// SetGIcon sets the icon of action.
+	SetGIcon(icon gio.Iconer)
 	// SetIconName sets the icon name on action Deprecated: Use #GAction
 	// instead, and g_menu_item_set_icon() to set an icon on a Item associated
 	// with a #GAction, or gtk_container_add() to add a Image to a Button.
@@ -453,11 +453,11 @@ func (action *Action) AlwaysShowImage() bool {
 	return _ok
 }
 
-// Gicon gets the gicon of action.
+// GIcon gets the gicon of action.
 //
 // Deprecated: Use #GAction instead, and g_menu_item_get_attribute_value() to
 // get an icon from a Item associated with a #GAction.
-func (action *Action) Gicon() *gio.Icon {
+func (action *Action) GIcon() *gio.Icon {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GIcon     // in
 
@@ -793,12 +793,12 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	C.gtk_action_set_always_show_image(_arg0, _arg1)
 }
 
-// SetGicon sets the icon of action.
+// SetGIcon sets the icon of action.
 //
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
-func (action *Action) SetGicon(icon gio.Iconer) {
+func (action *Action) SetGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
 

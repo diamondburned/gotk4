@@ -38,8 +38,8 @@ const (
 	PrintErrorGeneral PrintError = iota
 	// InternalError: internal error occurred.
 	PrintErrorInternalError
-	// Nomem: memory allocation failed.
-	PrintErrorNomem
+	// NOMEM: memory allocation failed.
+	PrintErrorNOMEM
 	// InvalidFile: error occurred while loading a page setup or paper size from
 	// a key file.
 	PrintErrorInvalidFile

@@ -109,9 +109,9 @@ type TLSConnectioner interface {
 	// RequireCloseNotify tests whether or not conn expects a proper TLS close
 	// notification when the connection is closed.
 	RequireCloseNotify() bool
-	// UseSystemCertdb gets whether conn uses the system certificate database to
+	// UseSystemCertDB gets whether conn uses the system certificate database to
 	// verify peer certificates.
-	UseSystemCertdb() bool
+	UseSystemCertDB() bool
 	// Handshake attempts a TLS handshake on conn.
 	Handshake(cancellable *Cancellable) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
@@ -136,9 +136,9 @@ type TLSConnectioner interface {
 	// SetRequireCloseNotify sets whether or not conn expects a proper TLS close
 	// notification before the connection is closed.
 	SetRequireCloseNotify(requireCloseNotify bool)
-	// SetUseSystemCertdb sets whether conn uses the system certificate database
+	// SetUseSystemCertDB sets whether conn uses the system certificate database
 	// to verify peer certificates.
-	SetUseSystemCertdb(useSystemCertdb bool)
+	SetUseSystemCertDB(useSystemCertdb bool)
 }
 
 // TLSConnection is the base TLS connection class type, which wraps a OStream
@@ -384,11 +384,11 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 	return _ok
 }
 
-// UseSystemCertdb gets whether conn uses the system certificate database to
+// UseSystemCertDB gets whether conn uses the system certificate database to
 // verify peer certificates. See g_tls_connection_set_use_system_certdb().
 //
 // Deprecated: Use g_tls_connection_get_database() instead.
-func (conn *TLSConnection) UseSystemCertdb() bool {
+func (conn *TLSConnection) UseSystemCertDB() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
 
@@ -630,7 +630,7 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	C.g_tls_connection_set_require_close_notify(_arg0, _arg1)
 }
 
-// SetUseSystemCertdb sets whether conn uses the system certificate database to
+// SetUseSystemCertDB sets whether conn uses the system certificate database to
 // verify peer certificates. This is TRUE by default. If set to FALSE, then peer
 // certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error
 // (meaning Connection::accept-certificate will always be emitted on client-side
@@ -638,7 +638,7 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // ClientConnection:validation-flags).
 //
 // Deprecated: Use g_tls_connection_set_database() instead.
-func (conn *TLSConnection) SetUseSystemCertdb(useSystemCertdb bool) {
+func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
 

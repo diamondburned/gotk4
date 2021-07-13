@@ -26,9 +26,9 @@ func init() {
 
 // NumerableIconer describes NumerableIcon's methods.
 type NumerableIconer interface {
-	// BackgroundGicon returns the #GIcon that was set as the base background
+	// BackgroundGIcon returns the #GIcon that was set as the base background
 	// image, or NULL if there’s none.
-	BackgroundGicon() *gio.Icon
+	BackgroundGIcon() *gio.Icon
 	// BackgroundIconName returns the icon name used as the base background
 	// image, or NULL if there’s none.
 	BackgroundIconName() string
@@ -39,9 +39,9 @@ type NumerableIconer interface {
 	// StyleContext returns the StyleContext used by the icon for theming, or
 	// NULL if there’s none.
 	StyleContext() *StyleContext
-	// SetBackgroundGicon updates the icon to use icon as the base background
+	// SetBackgroundGIcon updates the icon to use icon as the base background
 	// image.
-	SetBackgroundGicon(icon gio.Iconer)
+	SetBackgroundGIcon(icon gio.Iconer)
 	// SetBackgroundIconName updates the icon to use the icon named icon_name
 	// from the current icon theme as the base background image.
 	SetBackgroundIconName(iconName string)
@@ -88,12 +88,12 @@ func marshalNumerableIconer(p uintptr) (interface{}, error) {
 	return wrapNumerableIcon(obj), nil
 }
 
-// BackgroundGicon returns the #GIcon that was set as the base background image,
+// BackgroundGIcon returns the #GIcon that was set as the base background image,
 // or NULL if there’s none. The caller of this function does not own a reference
 // to the returned #GIcon.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) BackgroundGicon() *gio.Icon {
+func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
 
@@ -187,7 +187,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	return _styleContext
 }
 
-// SetBackgroundGicon updates the icon to use icon as the base background image.
+// SetBackgroundGIcon updates the icon to use icon as the base background image.
 // If icon is NULL, self will go back using style information or default theming
 // for its background image.
 //
@@ -197,7 +197,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) SetBackgroundGicon(icon gio.Iconer) {
+func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
 

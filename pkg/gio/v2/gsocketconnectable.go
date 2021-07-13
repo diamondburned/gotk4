@@ -38,13 +38,13 @@ func init() {
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() *SocketAddressEnumerator
-	// ProXYEnumerate creates a AddressEnumerator for connectable that will
+	// ProxyEnumerate creates a AddressEnumerator for connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
 	//
 	// If connectable does not implement g_socket_connectable_proxy_enumerate(),
 	// this will fall back to calling g_socket_connectable_enumerate().
-	ProXYEnumerate() *SocketAddressEnumerator
+	ProxyEnumerate() *SocketAddressEnumerator
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -59,10 +59,10 @@ type SocketConnectableOverrider interface {
 type SocketConnectabler interface {
 	// Enumerate creates a AddressEnumerator for connectable.
 	Enumerate() *SocketAddressEnumerator
-	// ProXYEnumerate creates a AddressEnumerator for connectable that will
+	// ProxyEnumerate creates a AddressEnumerator for connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
-	ProXYEnumerate() *SocketAddressEnumerator
+	ProxyEnumerate() *SocketAddressEnumerator
 	// String: format a Connectable as a string.
 	String() string
 }
@@ -158,12 +158,12 @@ func (connectable *SocketConnectable) Enumerate() *SocketAddressEnumerator {
 	return _socketAddressEnumerator
 }
 
-// ProXYEnumerate creates a AddressEnumerator for connectable that will return a
+// ProxyEnumerate creates a AddressEnumerator for connectable that will return a
 // Address for each of its addresses that you must connect to via a proxy.
 //
 // If connectable does not implement g_socket_connectable_proxy_enumerate(),
 // this will fall back to calling g_socket_connectable_enumerate().
-func (connectable *SocketConnectable) ProXYEnumerate() *SocketAddressEnumerator {
+func (connectable *SocketConnectable) ProxyEnumerate() *SocketAddressEnumerator {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
 

@@ -82,9 +82,9 @@ type Entrier interface {
 	// CurrentIconDragSource returns the index of the icon which is the source
 	// of the current DND operation, or -1.
 	CurrentIconDragSource() int
-	// CursorHadjustment retrieves the horizontal cursor adjustment for the
+	// CursorHAdjustment retrieves the horizontal cursor adjustment for the
 	// entry.
-	CursorHadjustment() *Adjustment
+	CursorHAdjustment() *Adjustment
 	// HasFrame gets the value set by gtk_entry_set_has_frame().
 	HasFrame() bool
 	// IconActivatable returns whether the icon is activatable.
@@ -93,10 +93,10 @@ type Entrier interface {
 	IconArea(iconPos EntryIconPosition) gdk.Rectangle
 	// IconAtPos finds the icon at the given position and return its index.
 	IconAtPos(x int, y int) int
-	// IconGicon retrieves the #GIcon used for the icon, or NULL if there is no
+	// IconGIcon retrieves the #GIcon used for the icon, or NULL if there is no
 	// icon or if the icon was set by some other method (e.g., by stock, pixbuf,
 	// or icon name).
-	IconGicon(iconPos EntryIconPosition) *gio.Icon
+	IconGIcon(iconPos EntryIconPosition) *gio.Icon
 	// IconName retrieves the icon name used for the icon, or NULL if there is
 	// no icon or if the icon was set by some other method (e.g., by pixbuf,
 	// stock or gicon).
@@ -190,10 +190,10 @@ type Entrier interface {
 	// SetCompletion sets completion to be the auxiliary completion object to
 	// use with entry.
 	SetCompletion(completion *EntryCompletion)
-	// SetCursorHadjustment hooks up an adjustment to the cursor position in an
+	// SetCursorHAdjustment hooks up an adjustment to the cursor position in an
 	// entry, so that when the cursor is moved, the adjustment is scrolled to
 	// show that position.
-	SetCursorHadjustment(adjustment *Adjustment)
+	SetCursorHAdjustment(adjustment *Adjustment)
 	// SetHasFrame sets whether the entry has a beveled frame around it.
 	SetHasFrame(setting bool)
 	// SetIconActivatable sets whether the icon is activatable.
@@ -201,9 +201,9 @@ type Entrier interface {
 	// SetIconDragSource sets up the icon at the given position so that GTK+
 	// will start a drag operation when the user clicks and drags the icon.
 	SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
-	// SetIconFromGicon sets the icon shown in the entry at the specified
+	// SetIconFromGIcon sets the icon shown in the entry at the specified
 	// position from the current icon theme.
-	SetIconFromGicon(iconPos EntryIconPosition, icon gio.Iconer)
+	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer)
 	// SetIconFromIconName sets the icon shown in the entry at the specified
 	// position from the current icon theme.
 	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
@@ -531,9 +531,9 @@ func (entry *Entry) CurrentIconDragSource() int {
 	return _gint
 }
 
-// CursorHadjustment retrieves the horizontal cursor adjustment for the entry.
+// CursorHAdjustment retrieves the horizontal cursor adjustment for the entry.
 // See gtk_entry_set_cursor_hadjustment().
-func (entry *Entry) CursorHadjustment() *Adjustment {
+func (entry *Entry) CursorHAdjustment() *Adjustment {
 	var _arg0 *C.GtkEntry      // out
 	var _cret *C.GtkAdjustment // in
 
@@ -630,10 +630,10 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 	return _gint
 }
 
-// IconGicon retrieves the #GIcon used for the icon, or NULL if there is no icon
+// IconGIcon retrieves the #GIcon used for the icon, or NULL if there is no icon
 // or if the icon was set by some other method (e.g., by stock, pixbuf, or icon
 // name).
-func (entry *Entry) IconGicon(iconPos EntryIconPosition) *gio.Icon {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -1314,14 +1314,14 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 	C.gtk_entry_set_completion(_arg0, _arg1)
 }
 
-// SetCursorHadjustment hooks up an adjustment to the cursor position in an
+// SetCursorHAdjustment hooks up an adjustment to the cursor position in an
 // entry, so that when the cursor is moved, the adjustment is scrolled to show
 // that position. See gtk_scrolled_window_get_hadjustment() for a typical way of
 // obtaining the adjustment.
 //
 // The adjustment has to be in pixel units and in the same coordinate system as
 // the entry.
-func (entry *Entry) SetCursorHadjustment(adjustment *Adjustment) {
+func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkEntry      // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -1385,12 +1385,12 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SetIconFromGicon sets the icon shown in the entry at the specified position
+// SetIconFromGIcon sets the icon shown in the entry at the specified position
 // from the current icon theme. If the icon isn’t known, a “broken image” icon
 // will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGicon(iconPos EntryIconPosition, icon gio.Iconer) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

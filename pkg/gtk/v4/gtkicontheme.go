@@ -212,14 +212,14 @@ type IconThemer interface {
 	SearchPath() []string
 	// ThemeName gets the current icon theme name.
 	ThemeName() string
-	// HasGicon checks whether an icon theme includes an icon for a particular
+	// HasGIcon checks whether an icon theme includes an icon for a particular
 	// GIcon.
-	HasGicon(gicon gio.Iconer) bool
+	HasGIcon(gicon gio.Iconer) bool
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// LookupByGicon looks up a icon for a desired size and window scale.
-	LookupByGicon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
+	// LookupByGIcon looks up a icon for a desired size and window scale.
+	LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
 	// LookupIcon looks up a named icon for a desired size and window scale,
 	// returning a GtkIconPaintable.
 	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
@@ -491,9 +491,9 @@ func (self *IconTheme) ThemeName() string {
 	return _utf8
 }
 
-// HasGicon checks whether an icon theme includes an icon for a particular
+// HasGIcon checks whether an icon theme includes an icon for a particular
 // GIcon.
-func (self *IconTheme) HasGicon(gicon gio.Iconer) bool {
+func (self *IconTheme) HasGIcon(gicon gio.Iconer) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
@@ -532,11 +532,11 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 	return _ok
 }
 
-// LookupByGicon looks up a icon for a desired size and window scale.
+// LookupByGIcon looks up a icon for a desired size and window scale.
 //
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
-func (self *IconTheme) LookupByGicon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out

@@ -58,14 +58,14 @@ type ToolPaletter interface {
 	Expand(group *ToolItemGroup) bool
 	// GroupPosition gets the position of group in palette as index.
 	GroupPosition(group *ToolItemGroup) int
-	// Hadjustment gets the horizontal adjustment of the tool palette.
-	Hadjustment() *Adjustment
+	// HAdjustment gets the horizontal adjustment of the tool palette.
+	HAdjustment() *Adjustment
 	// IconSize gets the size of icons in the tool palette.
 	IconSize() int
 	// Style gets the style (icons, text or both) of items in the tool palette.
 	Style() ToolbarStyle
-	// Vadjustment gets the vertical adjustment of the tool palette.
-	Vadjustment() *Adjustment
+	// VAdjustment gets the vertical adjustment of the tool palette.
+	VAdjustment() *Adjustment
 	// SetDragSource sets the tool palette as a drag source.
 	SetDragSource(targets ToolPaletteDragTargets)
 	// SetExclusive sets whether the group should be exclusive or not.
@@ -338,10 +338,10 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int {
 	return _gint
 }
 
-// Hadjustment gets the horizontal adjustment of the tool palette.
+// HAdjustment gets the horizontal adjustment of the tool palette.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (palette *ToolPalette) Hadjustment() *Adjustment {
+func (palette *ToolPalette) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
 
@@ -389,10 +389,10 @@ func (palette *ToolPalette) Style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-// Vadjustment gets the vertical adjustment of the tool palette.
+// VAdjustment gets the vertical adjustment of the tool palette.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (palette *ToolPalette) Vadjustment() *Adjustment {
+func (palette *ToolPalette) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkToolPalette // out
 	var _cret *C.GtkAdjustment  // in
 

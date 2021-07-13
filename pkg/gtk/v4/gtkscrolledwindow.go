@@ -73,8 +73,8 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 type ScrolledWindower interface {
 	// Child gets the child widget of scrolled_window.
 	Child() *Widget
-	// Hadjustment returns the horizontal scrollbar’s adjustment.
-	Hadjustment() *Adjustment
+	// HAdjustment returns the horizontal scrollbar’s adjustment.
+	HAdjustment() *Adjustment
 	// HasFrame gets whether the scrolled window draws a frame.
 	HasFrame() bool
 	// Hscrollbar returns the horizontal scrollbar of scrolled_window.
@@ -106,14 +106,14 @@ type ScrolledWindower interface {
 	// be calculated and propagated through the scrolled window’s requested
 	// natural width.
 	PropagateNaturalWidth() bool
-	// Vadjustment returns the vertical scrollbar’s adjustment.
-	Vadjustment() *Adjustment
+	// VAdjustment returns the vertical scrollbar’s adjustment.
+	VAdjustment() *Adjustment
 	// Vscrollbar returns the vertical scrollbar of scrolled_window.
 	Vscrollbar() *Widget
 	// SetChild sets the child widget of scrolled_window.
 	SetChild(child Widgeter)
-	// SetHadjustment sets the GtkAdjustment for the horizontal scrollbar.
-	SetHadjustment(hadjustment *Adjustment)
+	// SetHAdjustment sets the GtkAdjustment for the horizontal scrollbar.
+	SetHAdjustment(hadjustment *Adjustment)
 	// SetHasFrame changes the frame drawn around the contents of
 	// scrolled_window.
 	SetHasFrame(hasFrame bool)
@@ -148,8 +148,8 @@ type ScrolledWindower interface {
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural width.
 	SetPropagateNaturalWidth(propagate bool)
-	// SetVadjustment sets the GtkAdjustment for the vertical scrollbar.
-	SetVadjustment(vadjustment *Adjustment)
+	// SetVAdjustment sets the GtkAdjustment for the vertical scrollbar.
+	SetVAdjustment(vadjustment *Adjustment)
 	// UnsetPlacement unsets the placement of the contents with respect to the
 	// scrollbars.
 	UnsetPlacement()
@@ -302,11 +302,11 @@ func (scrolledWindow *ScrolledWindow) Child() *Widget {
 	return _widget
 }
 
-// Hadjustment returns the horizontal scrollbar’s adjustment.
+// HAdjustment returns the horizontal scrollbar’s adjustment.
 //
 // This is the adjustment used to connect the horizontal scrollbar to the child
 // widget’s horizontal scroll functionality.
-func (scrolledWindow *ScrolledWindow) Hadjustment() *Adjustment {
+func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkAdjustment     // in
 
@@ -534,11 +534,11 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 	return _ok
 }
 
-// Vadjustment returns the vertical scrollbar’s adjustment.
+// VAdjustment returns the vertical scrollbar’s adjustment.
 //
 // This is the adjustment used to connect the vertical scrollbar to the child
 // widget’s vertical scroll functionality.
-func (scrolledWindow *ScrolledWindow) Vadjustment() *Adjustment {
+func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkAdjustment     // in
 
@@ -580,8 +580,8 @@ func (scrolledWindow *ScrolledWindow) SetChild(child Widgeter) {
 	C.gtk_scrolled_window_set_child(_arg0, _arg1)
 }
 
-// SetHadjustment sets the GtkAdjustment for the horizontal scrollbar.
-func (scrolledWindow *ScrolledWindow) SetHadjustment(hadjustment *Adjustment) {
+// SetHAdjustment sets the GtkAdjustment for the horizontal scrollbar.
+func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkAdjustment     // out
 
@@ -776,8 +776,8 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 	C.gtk_scrolled_window_set_propagate_natural_width(_arg0, _arg1)
 }
 
-// SetVadjustment sets the GtkAdjustment for the vertical scrollbar.
-func (scrolledWindow *ScrolledWindow) SetVadjustment(vadjustment *Adjustment) {
+// SetVAdjustment sets the GtkAdjustment for the vertical scrollbar.
+func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkAdjustment     // out
 

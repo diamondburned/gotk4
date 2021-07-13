@@ -463,6 +463,11 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		return true
 	}
 
+	if value.IsPublic {
+		// Require the abstract cast if we have an abstract type.
+		goto abstract
+	}
+
 	if !value.NeedsNamespace {
 		value.p.LineTmpl(m, `
 			<.Value.Out.Set> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
@@ -487,6 +492,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		return true
 	}
 
+abstract:
 	value.header.ImportCore("gextras")
 	value.p.LineTmpl(m,
 		"<.Value.Out.Set> = (< .Value.OutPtr 1 ->gextras.CastObject(externglib.<.Func>("+

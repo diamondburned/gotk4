@@ -84,10 +84,10 @@ func DragSetIconDefault(context *gdk.DragContext) {
 	C.gtk_drag_set_icon_default(_arg1)
 }
 
-// DragSetIconGicon sets the icon for a given drag from the given icon. See the
+// DragSetIconGIcon sets the icon for a given drag from the given icon. See the
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
-func DragSetIconGicon(context *gdk.DragContext, icon gio.Iconer, hotX int, hotY int) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconer, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out

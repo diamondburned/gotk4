@@ -40,9 +40,9 @@ const (
 	// <function>*_RLE_PIXEL_DATA</function> or
 	// <function>*_PIXEL_DATA</function> macro definitions for the image.
 	PixdataDumpTypeMacros PixdataDumpType = 0b10
-	// PixdataDumpTypeGtypes: generate GLib data types instead of standard C
+	// PixdataDumpTypeGTypes: generate GLib data types instead of standard C
 	// data types.
-	PixdataDumpTypeGtypes PixdataDumpType = 0b0
+	PixdataDumpTypeGTypes PixdataDumpType = 0b0
 	// PixdataDumpTypeCtypes: generate standard C data types instead of GLib
 	// data types.
 	PixdataDumpTypeCtypes PixdataDumpType = 0b100000000

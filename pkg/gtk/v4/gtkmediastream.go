@@ -72,8 +72,8 @@ type MediaStreamOverrider interface {
 type MediaStreamer interface {
 	// Ended pauses the media stream and marks it as ended.
 	Ended()
-	// Gerror sets self into an error state.
-	Gerror(err error)
+	// GError sets self into an error state.
+	GError(err error)
 	// Duration gets the duration of the stream.
 	Duration() int64
 	// GetEnded returns whether the streams playback is finished.
@@ -147,7 +147,7 @@ type MediaStreamer interface {
 // used in applications: gtk.MediaStream.Prepared(),
 // gtk.MediaStream.Unprepared(), gtk.MediaStream.Update(),
 // gtk.MediaStream.Ended(), gtk.MediaStream.SeekSuccess(),
-// gtk.MediaStream.SeekFailed(), gtk.MediaStream.Gerror(),
+// gtk.MediaStream.SeekFailed(), gtk.MediaStream.GError(),
 // gtk.MediaStream.Error(), gtk.MediaStream.ErrorValist().
 type MediaStream struct {
 	*externglib.Object
@@ -188,7 +188,7 @@ func (self *MediaStream) Ended() {
 	C.gtk_media_stream_ended(_arg0)
 }
 
-// Gerror sets self into an error state.
+// GError sets self into an error state.
 //
 // This will pause the stream (you can check for an error via
 // gtk.MediaStream.GetError() in your GtkMediaStream.pause() implementation),
@@ -199,7 +199,7 @@ func (self *MediaStream) Ended() {
 //
 // To unset an error, the stream must be reset via a call to
 // gtk.MediaStream.Unprepared().
-func (self *MediaStream) Gerror(err error) {
+func (self *MediaStream) GError(err error) {
 	var _arg0 *C.GtkMediaStream // out
 	var _arg1 *C.GError         // out
 

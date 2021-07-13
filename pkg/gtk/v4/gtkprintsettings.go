@@ -203,8 +203,8 @@ type PrintSettingser interface {
 	// ToFile: this function saves the print settings from settings to
 	// file_name.
 	ToFile(fileName string) error
-	// ToGvariant: serialize print settings to an a{sv} variant.
-	ToGvariant() *glib.Variant
+	// ToGVariant: serialize print settings to an a{sv} variant.
+	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the print settings from settings to
 	// key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
@@ -283,11 +283,11 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 	return _printSettings, _goerr
 }
 
-// NewPrintSettingsFromGvariant: deserialize print settings from an a{sv}
+// NewPrintSettingsFromGVariant: deserialize print settings from an a{sv}
 // variant.
 //
-// The variant must be in the format produced by gtk.PrintSettings.ToGvariant().
-func NewPrintSettingsFromGvariant(variant *glib.Variant) *PrintSettings {
+// The variant must be in the format produced by gtk.PrintSettings.ToGVariant().
+func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 	var _arg1 *C.GVariant         // out
 	var _cret *C.GtkPrintSettings // in
 
@@ -1374,8 +1374,8 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 	return _goerr
 }
 
-// ToGvariant: serialize print settings to an a{sv} variant.
-func (settings *PrintSettings) ToGvariant() *glib.Variant {
+// ToGVariant: serialize print settings to an a{sv} variant.
+func (settings *PrintSettings) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret *C.GVariant         // in
 

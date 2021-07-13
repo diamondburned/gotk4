@@ -68,9 +68,9 @@ const (
 	// Nospc: no space left on device; write operation on a file failed because
 	// the disk is full.
 	FileErrorNospc
-	// Nomem: no memory available. The system cannot allocate more virtual
+	// NOMEM: no memory available. The system cannot allocate more virtual
 	// memory because its capacity is full.
-	FileErrorNomem
+	FileErrorNOMEM
 	// Mfile: current process has too many files open and can't open any more.
 	// Duplicate descriptors do count toward this limit.
 	FileErrorMfile

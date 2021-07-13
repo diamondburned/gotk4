@@ -30,6 +30,10 @@ var (
 
 func initPascalWords() {
 	for _, line := range strings.Split(replacedTXT, "\n") {
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
 		words := strings.Split(line, "->")
 		if len(words) != 2 {
 			log.Fatalf("invalid replace %q", line)
@@ -72,6 +76,7 @@ func initPascalPostReplacer() {
 }
 
 func init() {
+	initPascalWords()
 	initPascalRegex()
 	initPascalPostReplacer()
 }

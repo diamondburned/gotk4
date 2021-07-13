@@ -85,8 +85,8 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 }
 
-// AddGtype appends type to builder if it has not already been added.
-func (builder *ContentFormatsBuilder) AddGtype(typ externglib.Type) {
+// AddGType appends type to builder if it has not already been added.
+func (builder *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
 	var _arg1 C.GType                     // out
 

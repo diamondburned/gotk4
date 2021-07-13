@@ -46,8 +46,8 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 type ContentDeserializerer interface {
 	// Cancellable gets the cancellable for the current operation.
 	Cancellable() *gio.Cancellable
-	// Gtype gets the GType to create an instance of.
-	Gtype() externglib.Type
+	// GType gets the GType to create an instance of.
+	GType() externglib.Type
 	// InputStream gets the input stream for the current operation.
 	InputStream() *gio.InputStream
 	// MIMEType gets the mime type to deserialize from.
@@ -128,8 +128,8 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	return _cancellable
 }
 
-// Gtype gets the GType to create an instance of.
-func (deserializer *ContentDeserializer) Gtype() externglib.Type {
+// GType gets the GType to create an instance of.
+func (deserializer *ContentDeserializer) GType() externglib.Type {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret C.GType                   // in
 

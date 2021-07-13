@@ -41,8 +41,8 @@ const (
 	ImageTypeEmpty ImageType = iota
 	// IconName: widget contains a named icon
 	ImageTypeIconName
-	// Gicon: widget contains a #GIcon
-	ImageTypeGicon
+	// GIcon: widget contains a #GIcon
+	ImageTypeGIcon
 	// Paintable: widget contains a Paintable
 	ImageTypePaintable
 )
@@ -55,8 +55,8 @@ func marshalImageType(p uintptr) (interface{}, error) {
 type Imager interface {
 	// Clear resets the image to be empty.
 	Clear()
-	// Gicon gets the GIcon being displayed by the GtkImage.
-	Gicon() *gio.Icon
+	// GIcon gets the GIcon being displayed by the GtkImage.
+	GIcon() *gio.Icon
 	// IconName gets the icon name and size being displayed by the GtkImage.
 	IconName() string
 	// IconSize gets the icon size used by the image when rendering icons.
@@ -70,8 +70,8 @@ type Imager interface {
 	StorageType() ImageType
 	// SetFromFile sets a GtkImage to show a file.
 	SetFromFile(filename string)
-	// SetFromGicon sets a GtkImage to show a GIcon.
-	SetFromGicon(icon gio.Iconer)
+	// SetFromGIcon sets a GtkImage to show a GIcon.
+	SetFromGIcon(icon gio.Iconer)
 	// SetFromIconName sets a GtkImage to show a named icon.
 	SetFromIconName(iconName string)
 	// SetFromPaintable sets a GtkImage to show a GdkPaintable.
@@ -197,13 +197,13 @@ func NewImageFromFile(filename string) *Image {
 	return _image
 }
 
-// NewImageFromGicon creates a GtkImage displaying an icon from the current icon
+// NewImageFromGIcon creates a GtkImage displaying an icon from the current icon
 // theme.
 //
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGicon(icon gio.Iconer) *Image {
+func NewImageFromGIcon(icon gio.Iconer) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -326,12 +326,12 @@ func (image *Image) Clear() {
 	C.gtk_image_clear(_arg0)
 }
 
-// Gicon gets the GIcon being displayed by the GtkImage.
+// GIcon gets the GIcon being displayed by the GtkImage.
 //
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk.Image.GetStorageType()). The caller of this function does not own a
 // reference to the returned GIcon.
-func (image *Image) Gicon() *gio.Icon {
+func (image *Image) GIcon() *gio.Icon {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
 
@@ -460,10 +460,10 @@ func (image *Image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(_arg0, _arg1)
 }
 
-// SetFromGicon sets a GtkImage to show a GIcon.
+// SetFromGIcon sets a GtkImage to show a GIcon.
 //
-// See gtk.Image.NewFromGicon for details.
-func (image *Image) SetFromGicon(icon gio.Iconer) {
+// See gtk.Image.NewFromGIcon for details.
+func (image *Image) SetFromGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 

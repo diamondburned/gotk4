@@ -172,8 +172,8 @@ type FlowBoxer interface {
 	SetActivateOnSingleClick(single bool)
 	// SetColumnSpacing sets the horizontal space to add between children.
 	SetColumnSpacing(spacing uint)
-	// SetHadjustment hooks up an adjustment to focus handling in box.
-	SetHadjustment(adjustment *Adjustment)
+	// SetHAdjustment hooks up an adjustment to focus handling in box.
+	SetHAdjustment(adjustment *Adjustment)
 	// SetHomogeneous sets whether or not all children of box are given equal
 	// space in the box.
 	SetHomogeneous(homogeneous bool)
@@ -187,8 +187,8 @@ type FlowBoxer interface {
 	SetRowSpacing(spacing uint)
 	// SetSelectionMode sets how selection works in box.
 	SetSelectionMode(mode SelectionMode)
-	// SetVadjustment hooks up an adjustment to focus handling in box.
-	SetVadjustment(adjustment *Adjustment)
+	// SetVAdjustment hooks up an adjustment to focus handling in box.
+	SetVAdjustment(adjustment *Adjustment)
 	// UnselectAll: unselect all children of box, if the selection mode allows
 	// it.
 	UnselectAll()
@@ -570,16 +570,16 @@ func (box *FlowBox) SetColumnSpacing(spacing uint) {
 	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
 }
 
-// SetHadjustment hooks up an adjustment to focus handling in box.
+// SetHAdjustment hooks up an adjustment to focus handling in box.
 //
 // The adjustment is also used for autoscrolling during rubberband selection.
-// See gtk.ScrolledWindow.GetHadjustment() for a typical way of obtaining the
-// adjustment, and gtk.FlowBox.SetVadjustment() for setting the vertical
+// See gtk.ScrolledWindow.GetHAdjustment() for a typical way of obtaining the
+// adjustment, and gtk.FlowBox.SetVAdjustment() for setting the vertical
 // adjustment.
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the box.
-func (box *FlowBox) SetHadjustment(adjustment *Adjustment) {
+func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -653,16 +653,16 @@ func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
 	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
 }
 
-// SetVadjustment hooks up an adjustment to focus handling in box.
+// SetVAdjustment hooks up an adjustment to focus handling in box.
 //
 // The adjustment is also used for autoscrolling during rubberband selection.
-// See gtk.ScrolledWindow.GetVadjustment() for a typical way of obtaining the
-// adjustment, and gtk.FlowBox.SetHadjustment() for setting the horizontal
+// See gtk.ScrolledWindow.GetVAdjustment() for a typical way of obtaining the
+// adjustment, and gtk.FlowBox.SetHAdjustment() for setting the horizontal
 // adjustment.
 //
 // The adjustments have to be in pixel units and in the same coordinate system
 // as the allocation for immediate children of the box.
-func (box *FlowBox) SetVadjustment(adjustment *Adjustment) {
+func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkFlowBox    // out
 	var _arg1 *C.GtkAdjustment // out
 

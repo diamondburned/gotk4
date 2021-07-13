@@ -333,9 +333,9 @@ type TreeViewer interface {
 	FixedHeightMode() bool
 	// GridLines returns which grid lines are enabled in tree_view.
 	GridLines() TreeViewGridLines
-	// Hadjustment gets the Adjustment currently being used for the horizontal
+	// HAdjustment gets the Adjustment currently being used for the horizontal
 	// aspect.
-	Hadjustment() *Adjustment
+	HAdjustment() *Adjustment
 	// HeadersClickable returns whether all header columns are clickable.
 	HeadersClickable() bool
 	// HeadersVisible returns TRUE if the headers on the tree_view are visible.
@@ -378,9 +378,9 @@ type TreeViewer interface {
 	// TooltipContext: this function is supposed to be used in a
 	// Widget::query-tooltip signal handler for TreeView.
 	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
-	// Vadjustment gets the Adjustment currently being used for the vertical
+	// VAdjustment gets the Adjustment currently being used for the vertical
 	// aspect.
-	Vadjustment() *Adjustment
+	VAdjustment() *Adjustment
 	// VisibleRange sets start_path and end_path to be the first and last
 	// visible path.
 	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
@@ -437,8 +437,8 @@ type TreeViewer interface {
 	SetFixedHeightMode(enable bool)
 	// SetGridLines sets which grid lines to draw in tree_view.
 	SetGridLines(gridLines TreeViewGridLines)
-	// SetHadjustment sets the Adjustment for the current horizontal aspect.
-	SetHadjustment(adjustment *Adjustment)
+	// SetHAdjustment sets the Adjustment for the current horizontal aspect.
+	SetHAdjustment(adjustment *Adjustment)
 	// SetHeadersClickable: allow the column title buttons to be clicked.
 	SetHeadersClickable(setting bool)
 	// SetHeadersVisible sets the visibility state of the headers.
@@ -481,8 +481,8 @@ type TreeViewer interface {
 	// SetTooltipRow sets the tip area of tooltip to be the area covered by the
 	// row at path.
 	SetTooltipRow(tooltip *Tooltip, path *TreePath)
-	// SetVadjustment sets the Adjustment for the current vertical aspect.
-	SetVadjustment(adjustment *Adjustment)
+	// SetVAdjustment sets the Adjustment for the current vertical aspect.
+	SetVAdjustment(adjustment *Adjustment)
 	// UnsetRowsDragDest undoes the effect of
 	// gtk_tree_view_enable_model_drag_dest().
 	UnsetRowsDragDest()
@@ -1210,11 +1210,11 @@ func (treeView *TreeView) GridLines() TreeViewGridLines {
 	return _treeViewGridLines
 }
 
-// Hadjustment gets the Adjustment currently being used for the horizontal
+// HAdjustment gets the Adjustment currently being used for the horizontal
 // aspect.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
-func (treeView *TreeView) Hadjustment() *Adjustment {
+func (treeView *TreeView) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkTreeView   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -1586,10 +1586,10 @@ func (treeView *TreeView) TooltipContext(x *int, y *int, keyboardTip bool) (*Tre
 	return _model, _path, _iter, _ok
 }
 
-// Vadjustment gets the Adjustment currently being used for the vertical aspect.
+// VAdjustment gets the Adjustment currently being used for the vertical aspect.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
-func (treeView *TreeView) Vadjustment() *Adjustment {
+func (treeView *TreeView) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkTreeView   // out
 	var _cret *C.GtkAdjustment // in
 
@@ -2026,10 +2026,10 @@ func (treeView *TreeView) SetGridLines(gridLines TreeViewGridLines) {
 	C.gtk_tree_view_set_grid_lines(_arg0, _arg1)
 }
 
-// SetHadjustment sets the Adjustment for the current horizontal aspect.
+// SetHAdjustment sets the Adjustment for the current horizontal aspect.
 //
 // Deprecated: Use gtk_scrollable_set_hadjustment().
-func (treeView *TreeView) SetHadjustment(adjustment *Adjustment) {
+func (treeView *TreeView) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkTreeView   // out
 	var _arg1 *C.GtkAdjustment // out
 
@@ -2304,10 +2304,10 @@ func (treeView *TreeView) SetTooltipRow(tooltip *Tooltip, path *TreePath) {
 	C.gtk_tree_view_set_tooltip_row(_arg0, _arg1, _arg2)
 }
 
-// SetVadjustment sets the Adjustment for the current vertical aspect.
+// SetVAdjustment sets the Adjustment for the current vertical aspect.
 //
 // Deprecated: Use gtk_scrollable_set_vadjustment().
-func (treeView *TreeView) SetVadjustment(adjustment *Adjustment) {
+func (treeView *TreeView) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkTreeView   // out
 	var _arg1 *C.GtkAdjustment // out
 

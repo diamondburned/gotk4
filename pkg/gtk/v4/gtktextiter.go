@@ -215,6 +215,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
+	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
 	_cret = C.gtk_text_iter_backward_find_char(_arg0, _arg1, _arg2, _arg3)
@@ -915,6 +916,7 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
 	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
+	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))
 
 	_cret = C.gtk_text_iter_forward_find_char(_arg0, _arg1, _arg2, _arg3)

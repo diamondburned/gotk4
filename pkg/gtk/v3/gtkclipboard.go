@@ -340,7 +340,7 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardImageReceivedFunc)
-	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_image(_arg0, _arg1, _arg2)
 }
@@ -360,7 +360,7 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardTextReceivedFunc)
-	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_text(_arg0, _arg1, _arg2)
 }
@@ -379,7 +379,7 @@ func (clipboard *Clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_ClipboardURIReceivedFunc)
-	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)
 }

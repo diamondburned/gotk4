@@ -1244,6 +1244,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
 	_arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
 

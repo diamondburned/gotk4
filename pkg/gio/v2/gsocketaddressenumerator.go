@@ -157,7 +157,7 @@ func (enumerator *SocketAddressEnumerator) NextAsync(cancellable *Cancellable, c
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(enumerator.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
 }

@@ -1348,6 +1348,7 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
 	_arg2 = C.gpointer(gbox.Assign(saveFunc))
+	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	{
 		_arg4 = (**C.char)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))

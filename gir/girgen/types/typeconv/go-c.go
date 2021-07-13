@@ -494,19 +494,50 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// https://github.com/golang/go/issues/19835.
 		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.Out.Set, file.CallbackPrefix, exportedName)
 
-		value.outDecl.Linef("var %s %s", closure.OutName, closure.Out.Type)
-		value.p.Linef("%s = %s(gbox.Assign(%s))", closure.Out.Set, closure.Out.Type, value.InName)
+		scope := value.Scope
+		if scope == "" {
+			// https://wiki.gnome.org/Projects/GObjectIntrospection/Annotations
+			scope = "call"
+		}
 
-		if value.Destroy != nil {
-			if destroy := conv.convertParam(*value.Destroy); destroy != nil {
-				value.header.ApplyHeader(destroy.Header())
-				value.header.CallbackDelete = true
-				value.outDecl.Linef("var %s %s", destroy.OutName, destroy.Out.Type)
-				value.p.Linef(
-					"%s = (%s)((*[0]byte)(C.callbackDelete))",
-					destroy.Out.Set, destroy.Out.Type,
-				)
+		assign := "Assign"
+		if scope == "async" {
+			// AssignOnce will pop the callback once it's called.
+			assign = "AssignOnce"
+		}
+
+		value.outDecl.Linef("var %s %s", closure.OutName, closure.Out.Type)
+		value.p.Linef(
+			"%s = %s(gbox.%s(%s))",
+			closure.Out.Set, closure.Out.Type, assign, value.InName,
+		)
+
+		switch scope {
+		case "call":
+			value.p.Linef("defer gbox.Delete(uintptr(%s))", closure.Out.Set)
+		case "async":
+			// Handled in AssignOnce.
+		case "notified":
+			if value.Destroy == nil {
+				value.Logln(logger.Debug, "scope=notified missing destroy param")
+				return false
 			}
+
+			destroy := conv.convertParam(*value.Destroy)
+			if destroy == nil {
+				value.Logln(logger.Debug, "cannot find destroy param, allowing anyway...")
+				return true
+			}
+
+			value.header.ApplyHeader(destroy.Header())
+			value.header.CallbackDelete = true
+			value.outDecl.Linef("var %s %s", destroy.OutName, destroy.Out.Type)
+			value.p.Linef(
+				"%s = (%s)((*[0]byte)(C.callbackDelete))",
+				destroy.Out.Set, destroy.Out.Type,
+			)
+		default:
+			return false
 		}
 
 		return true

@@ -132,7 +132,7 @@ func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancel
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

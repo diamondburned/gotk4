@@ -353,6 +353,7 @@ func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_print_settings_foreach(_arg0, _arg1, _arg2)
 }

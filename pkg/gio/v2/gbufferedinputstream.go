@@ -243,7 +243,7 @@ func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancella
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

@@ -359,6 +359,7 @@ func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }

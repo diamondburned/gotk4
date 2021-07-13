@@ -125,6 +125,7 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 }

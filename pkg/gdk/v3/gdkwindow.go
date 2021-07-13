@@ -2480,6 +2480,7 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
 	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
 	_arg3 = C.gpointer(gbox.Assign(childFunc))
+	defer gbox.Delete(uintptr(_arg3))
 
 	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
 }

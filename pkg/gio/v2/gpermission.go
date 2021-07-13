@@ -204,7 +204,7 @@ func (permission *Permission) AcquireAsync(cancellable *Cancellable, callback As
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -360,7 +360,7 @@ func (permission *Permission) ReleaseAsync(cancellable *Cancellable, callback As
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 }

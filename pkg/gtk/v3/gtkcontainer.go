@@ -465,6 +465,7 @@ func (container *Container) Forall(callback Callback) {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_container_forall(_arg0, _arg1, _arg2)
 }
@@ -487,6 +488,7 @@ func (container *Container) Foreach(callback Callback) {
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_Callback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_container_foreach(_arg0, _arg1, _arg2)
 }

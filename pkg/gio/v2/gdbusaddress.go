@@ -96,7 +96,7 @@ func DBusAddressGetStream(address string, cancellable *Cancellable, callback Asy
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }

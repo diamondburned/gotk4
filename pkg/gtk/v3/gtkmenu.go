@@ -466,7 +466,7 @@ func (menu *Menu) Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn Me
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parentMenuShell).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((parentMenuItem).(gextras.Nativer).Native()))
 	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
-	_arg4 = C.gpointer(gbox.Assign(fn))
+	_arg4 = C.gpointer(gbox.AssignOnce(fn))
 	_arg5 = C.guint(button)
 	_arg6 = C.guint32(activateTime)
 

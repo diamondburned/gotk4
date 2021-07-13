@@ -345,7 +345,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 	}
 	_arg4 = C.GSpawnFlags(flags)
 	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
-	_arg6 = C.gpointer(gbox.Assign(childSetup))
+	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
 
 	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
 

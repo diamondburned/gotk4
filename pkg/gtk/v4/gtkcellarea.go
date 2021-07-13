@@ -773,6 +773,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_CellCallback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_cell_area_foreach(_arg0, _arg1, _arg2)
 }
@@ -795,6 +796,7 @@ func (area *CellArea) ForeachAlloc(context *CellAreaContext, widget Widgeter, ce
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
 	_arg5 = (*[0]byte)(C.gotk4_CellAllocCallback)
 	_arg6 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg6))
 
 	C.gtk_cell_area_foreach_alloc(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

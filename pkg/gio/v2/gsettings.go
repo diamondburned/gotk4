@@ -1020,6 +1020,7 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
 	_arg3 = C.gpointer(gbox.Assign(mapping))
+	defer gbox.Delete(uintptr(_arg3))
 
 	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
 

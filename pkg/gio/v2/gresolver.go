@@ -205,7 +205,7 @@ func (resolver *Resolver) LookupByAddressAsync(address *InetAddress, cancellable
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -252,7 +252,7 @@ func (resolver *Resolver) LookupByNameAsync(hostname string, cancellable *Cancel
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -274,7 +274,7 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(hostname string, flags Reso
 	_arg2 = C.GResolverNameLookupFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -296,7 +296,7 @@ func (resolver *Resolver) LookupRecordsAsync(rrname string, recordType ResolverR
 	_arg2 = C.GResolverRecordType(recordType)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -320,7 +320,7 @@ func (resolver *Resolver) LookupServiceAsync(service string, protocol string, do
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

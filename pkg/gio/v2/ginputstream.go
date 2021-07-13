@@ -238,7 +238,7 @@ func (stream *InputStream) CloseAsync(ioPriority int, cancellable *Cancellable, 
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_input_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -359,7 +359,7 @@ func (stream *InputStream) ReadBytesAsync(count uint, ioPriority int, cancellabl
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_input_stream_read_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
@@ -475,7 +475,7 @@ func (stream *InputStream) SkipAsync(count uint, ioPriority int, cancellable *Ca
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_input_stream_skip_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

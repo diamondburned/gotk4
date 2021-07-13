@@ -188,6 +188,7 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(compareFunc))
+	defer gbox.Delete(uintptr(_arg3))
 
 	_cret = C.g_list_store_insert_sorted(_arg0, _arg1, _arg2, _arg3)
 
@@ -231,6 +232,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
 	_arg2 = C.gpointer(gbox.Assign(compareFunc))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.g_list_store_sort(_arg0, _arg1, _arg2)
 }

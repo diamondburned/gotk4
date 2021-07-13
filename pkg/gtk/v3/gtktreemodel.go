@@ -461,6 +461,7 @@ func (model *TreeModel) Foreach(fn TreeModelForeachFunc) {
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_tree_model_foreach(_arg0, _arg1, _arg2)
 }

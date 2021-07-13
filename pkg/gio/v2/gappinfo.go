@@ -778,7 +778,7 @@ func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, canc
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg5 = C.gpointer(gbox.Assign(callback))
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }

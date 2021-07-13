@@ -1741,6 +1741,7 @@ func (treeView *TreeView) MapExpandedRows(fn TreeViewMappingFunc) {
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TreeViewMappingFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_tree_view_map_expanded_rows(_arg0, _arg1, _arg2)
 }

@@ -75,6 +75,18 @@ type ConversionValue struct {
 func NewValue(
 	in, out string, i int, dir ConversionDirection, param gir.Parameter) ConversionValue {
 
+	// https://wiki.gnome.org/Projects/GObjectIntrospection/Annotations
+	if param.TransferOwnership.TransferOwnership == "" {
+		switch param.Direction {
+		case "in":
+			param.TransferOwnership.TransferOwnership = "full"
+		case "out", "inout":
+			if param.CallerAllocates {
+				param.TransferOwnership.TransferOwnership = "none"
+			}
+		}
+	}
+
 	value := ConversionValue{
 		InName:         in,
 		OutName:        out,
@@ -106,6 +118,14 @@ func NewReceiverValue(
 
 // NewReturnValue creates a new ConversionValue from the given return attribute.
 func NewReturnValue(in, out string, dir ConversionDirection, ret gir.ReturnValue) ConversionValue {
+	if ret.TransferOwnership.TransferOwnership == "" {
+		if strings.Contains(types.AnyTypeC(ret.AnyType), "const") {
+			ret.TransferOwnership.TransferOwnership = "none"
+		} else {
+			ret.TransferOwnership.TransferOwnership = "full"
+		}
+	}
+
 	return ConversionValue{
 		InName:         in,
 		OutName:        out,

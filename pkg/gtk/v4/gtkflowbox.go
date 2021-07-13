@@ -541,6 +541,7 @@ func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
 	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 }

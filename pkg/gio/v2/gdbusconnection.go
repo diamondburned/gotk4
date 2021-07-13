@@ -443,7 +443,7 @@ func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallba
 	_arg1 = C.GBusType(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
 }
@@ -542,7 +542,7 @@ func DBusConnectionNew(stream IOStreamer, guid string, flags DBusConnectionFlags
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg7 = C.gpointer(gbox.Assign(callback))
+	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
@@ -579,7 +579,7 @@ func DBusConnectionNewForAddress(address string, flags DBusConnectionFlags, obse
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

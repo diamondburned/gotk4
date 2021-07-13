@@ -173,7 +173,7 @@ func (listener *SocketListener) AcceptAsync(cancellable *Cancellable, callback A
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -252,7 +252,7 @@ func (listener *SocketListener) AcceptSocketAsync(cancellable *Cancellable, call
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
 }

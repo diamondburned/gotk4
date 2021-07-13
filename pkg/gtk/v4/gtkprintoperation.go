@@ -194,7 +194,7 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
-	_arg5 = C.gpointer(gbox.Assign(doneCb))
+	_arg5 = C.gpointer(gbox.AssignOnce(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)
 }

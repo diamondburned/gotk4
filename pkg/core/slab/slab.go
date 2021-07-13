@@ -1,52 +1,99 @@
 package slab
 
-type slabEntry struct {
-	Value interface{}
-	Index uintptr
-}
+import (
+	"sync"
+	"sync/atomic"
+)
 
-func (entry slabEntry) IsValid() bool {
-	return entry.Value != nil
+type slabEntry struct {
+	Value atomic.Value
+	Index uintptr
+	Once  bool
 }
 
 // Slab is an implementation of the internal registry free list. A zero-value
-// instance is a valid instance. This data structure is not thread-safe.
+// instance is a valid instance. A slab is safe to use concurrently.
 type Slab struct {
-	entries []slabEntry
-	free    uintptr
+	list []slabEntry  // 3 words
+	mu   sync.RWMutex // 3 words (assuming 64-bit)
+	free uintptr      // 1 word
 }
 
-func (s *Slab) Put(entry interface{}) uintptr {
-	if s.free == uintptr(len(s.entries)) {
-		index := uintptr(len(s.entries))
-		s.entries = append(s.entries, slabEntry{entry, 0})
+// Put stores the entry inside the slab. If once is true, then when the entry is
+// retrieved using Get, it will also be wiped off the list.
+func (s *Slab) Put(entry interface{}, once bool) uintptr {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if s.free == uintptr(len(s.list)) {
+		index := uintptr(len(s.list))
+		s.list = append(s.list, slabEntry{atomic.Value{}, 0, once})
 		s.free++
+
 		return index
 	}
 
 	index := s.free
-
-	s.free = s.entries[index].Index
-	s.entries[index] = slabEntry{entry, 0}
+	s.free = s.list[index].Index
+	s.list[index] = slabEntry{atomic.Value{}, 0, once}
 
 	return index
 }
 
+// Get gets the entry at the given index.
 func (s *Slab) Get(i uintptr) interface{} {
-	// Perform bound check.
-	if i >= uintptr(len(s.entries)) {
+	s.mu.RLock()
+
+	// Perform simple bound check.
+	if i >= uintptr(len(s.list)) {
+		s.mu.RUnlock()
 		return nil
 	}
-	// Perform validity check in case of invalid ID.
-	if entry := s.entries[i]; entry.IsValid() {
-		return entry.Value
+
+	entry := s.list[i]
+	var v interface{}
+
+	// Perform an atomic value retrieve.
+	if entry.Once {
+		// Use Swap here, so that future Get is guaranteed to return nil while
+		// we're acquiring the lock in Pop.
+		v = entry.Value.Swap(nil)
+		s.mu.RUnlock()
+		// Reacquire the lock and free the entry in the list.
+		s.Delete(i)
+	} else {
+		v = entry.Value.Load()
+		s.mu.RUnlock()
 	}
-	return nil
+
+	return v
 }
 
+// Pop removes the entry at the given index and returns the old value.
 func (s *Slab) Pop(i uintptr) interface{} {
-	popped := s.entries[i].Value
-	s.entries[i] = slabEntry{nil, s.free}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	// Perform simple bound check.
+	if i >= uintptr(len(s.list)) {
+		return nil
+	}
+
+	popped := s.list[i].Value.Load()
+	s.list[i] = slabEntry{atomic.Value{}, s.free, false}
 	s.free = i
+
 	return popped
+}
+
+// Delete removes the entry at the given index.
+func (s *Slab) Delete(i uintptr) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	// Perform simple bound check.
+	if i < uintptr(len(s.list)) {
+		s.list[i] = slabEntry{atomic.Value{}, s.free, false}
+		s.free = i
+	}
 }

@@ -313,7 +313,7 @@ func NewTask(sourceObject *externglib.Object, cancellable *Cancellable, callback
 	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -869,7 +869,7 @@ func TaskReportError(sourceObject *externglib.Object, callback AsyncReadyCallbac
 
 	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 	_arg5 = (*C.GError)(gerror.New(err))
 

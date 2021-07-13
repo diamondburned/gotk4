@@ -375,7 +375,7 @@ func (stream *OutputStream) CloseAsync(ioPriority int, cancellable *Cancellable,
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -440,7 +440,7 @@ func (stream *OutputStream) FlushAsync(ioPriority int, cancellable *Cancellable,
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg4 = C.gpointer(gbox.Assign(callback))
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_flush_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -582,7 +582,7 @@ func (stream *OutputStream) SpliceAsync(source InputStreamer, flags OutputStream
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -729,7 +729,7 @@ func (stream *OutputStream) WriteAllAsync(buffer []byte, ioPriority int, cancell
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_write_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -814,7 +814,7 @@ func (stream *OutputStream) WriteAsync(buffer []byte, ioPriority int, cancellabl
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_write_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -990,7 +990,7 @@ func (stream *OutputStream) WritevAllAsync(vectors []OutputVector, ioPriority in
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_writev_all_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
@@ -1071,7 +1071,7 @@ func (stream *OutputStream) WritevAsync(vectors []OutputVector, ioPriority int, 
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_output_stream_writev_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

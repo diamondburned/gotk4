@@ -152,7 +152,7 @@ func (connection *UnixConnection) ReceiveCredentialsAsync(cancellable *Cancellab
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_unix_connection_receive_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
@@ -261,7 +261,7 @@ func (connection *UnixConnection) SendCredentialsAsync(cancellable *Cancellable,
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
-	_arg3 = C.gpointer(gbox.Assign(callback))
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_unix_connection_send_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }

@@ -5,6 +5,7 @@ package genutil
 import (
 	"context"
 	"fmt"
+	"go/format"
 	"log"
 	"os"
 	"path"
@@ -176,6 +177,39 @@ func CleanDirectory(path string, except []string) error {
 		if err := os.RemoveAll(fullPath); err != nil {
 			return errors.Wrapf(err, "failed to rm -rf %s", oldFile)
 		}
+	}
+
+	return nil
+}
+
+// AppendGoFiles appends the value of the given contents map into the files at
+// its keys and run go fmt on it.
+func AppendGoFiles(path string, contents map[string]string) error {
+	for name, content := range contents {
+		if err := appendGoFile(path, name, content); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func appendGoFile(path, filename, content string) error {
+	fullPath := filepath.Join(path, filename)
+
+	b, err := os.ReadFile(fullPath)
+	if err != nil {
+		return errors.Wrapf(err, "failed to read file %q", filename)
+	}
+
+	b = append(b, []byte(content)...)
+
+	b, err = format.Source(b)
+	if err != nil {
+		return errors.Wrapf(err, "failed to go fmt file %q", filename)
+	}
+
+	if err := os.WriteFile(fullPath, b, os.ModePerm); err != nil {
+		return errors.Wrapf(err, "failed to write file %q", filename)
 	}
 
 	return nil

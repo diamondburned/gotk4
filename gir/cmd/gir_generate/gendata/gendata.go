@@ -156,3 +156,15 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gdk_window_destroy_notify"),
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
 }
+
+// Appends contains the contents of files that are appended into generated
+// outputs. It is used to add custom implementations of missing functions.
+var Appends = map[string]string{
+	"gtk/v3/gtk.go": `
+		// Init binds to the gtk_init() function. Argument parsing is not
+		// supported.
+		func Init() {
+			C.gtk_init(nil, nil)
+		}
+	`,
+}

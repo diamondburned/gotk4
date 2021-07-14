@@ -180,3 +180,9 @@ func (v *EntryIconAccessible) Native() uintptr {
 }
 
 func (*EntryIconAccessible) privateEntryIconAccessible() {}
+
+// Init binds to the gtk_init() function. Argument parsing is not
+// supported.
+func Init() {
+	C.gtk_init(nil, nil)
+}

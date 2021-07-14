@@ -64,6 +64,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err := genutil.AppendGoFiles(output, gendata.Appends); err != nil {
+		log.Fatalln("failed to append files post-generation:", err)
+	}
+
 	finalFiles := [][]string{gendata.PkgExceptions, gendata.PkgGenerated}
 	if err := genutil.EnsureDirectory(output, finalFiles...); err != nil {
 		log.Fatalln("error verifying generation:", err)

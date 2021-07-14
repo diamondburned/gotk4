@@ -20,8 +20,8 @@ import "C"
 // first value comes after the second.
 type CompareDataFunc func(a cgo.Handle, b cgo.Handle, userData cgo.Handle) (gint int)
 
-//export gotk4_CompareDataFunc
-func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
+//export _gotk4_glib2_CompareDataFunc
+func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -47,8 +47,8 @@ func gotk4_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gp
 // g_slist_foreach().
 type Func func(data cgo.Handle, userData cgo.Handle)
 
-//export gotk4_Func
-func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
+//export _gotk4_glib2_Func
+func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -69,8 +69,8 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 // which is passed to g_hash_table_foreach().
 type HFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle)
 
-//export gotk4_HFunc
-func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
+//export _gotk4_glib2_HFunc
+func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

@@ -23,8 +23,8 @@ import "C"
 // iter.
 type TextBufferDeserializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool, userData cgo.Handle) (ok bool)
 
-//export gotk4_TextBufferDeserializeFunc
-func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TextBufferDeserializeFunc
+func _gotk4_gtk3_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -65,8 +65,8 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 // a text buffer. It must return the serialized form of the content.
 type TextBufferSerializeFunc func(registerBuffer *TextBuffer, contentBuffer *TextBuffer, start *TextIter, end *TextIter, userData cgo.Handle) (length uint, guint8 *byte)
 
-//export gotk4_TextBufferSerializeFunc
-func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) (cret *C.guint8) {
+//export _gotk4_gtk3_TextBufferSerializeFunc
+func _gotk4_gtk3_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) (cret *C.guint8) {
 	v := gbox.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)

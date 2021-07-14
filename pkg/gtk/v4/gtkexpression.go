@@ -34,8 +34,8 @@ func init() {
 // expression value changes.
 type ExpressionNotify func(userData cgo.Handle)
 
-//export gotk4_ExpressionNotify
-func gotk4_ExpressionNotify(arg0 C.gpointer) {
+//export _gotk4_gtk4_ExpressionNotify
+func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
 	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

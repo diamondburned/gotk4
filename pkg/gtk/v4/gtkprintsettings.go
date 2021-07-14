@@ -18,7 +18,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void gotk4_PrintSettingsFunc(char*, char*, gpointer);
+// void _gotk4_gtk4_PrintSettingsFunc(char*, char*, gpointer);
 import "C"
 
 func init() {
@@ -29,8 +29,8 @@ func init() {
 
 type PrintSettingsFunc func(key string, value string, userData cgo.Handle)
 
-//export gotk4_PrintSettingsFunc
-func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
+//export _gotk4_gtk4_PrintSettingsFunc
+func _gotk4_gtk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -351,7 +351,7 @@ func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_PrintSettingsFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

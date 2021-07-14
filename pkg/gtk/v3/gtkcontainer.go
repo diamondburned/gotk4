@@ -19,7 +19,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_Callback(GtkWidget*, gpointer);
+// void _gotk4_gtk3_Callback(GtkWidget*, gpointer);
 import "C"
 
 func init() {
@@ -463,7 +463,7 @@ func (container *Container) Forall(callback Callback) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_Callback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_arg2))
 
@@ -486,7 +486,7 @@ func (container *Container) Foreach(callback Callback) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_Callback)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_Callback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_arg2))
 

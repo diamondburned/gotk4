@@ -20,8 +20,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// gboolean gotk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
-// gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer);
+// gboolean _gotk4_gtk3_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
+// gboolean _gotk4_gtk3_CellCallback(GtkCellRenderer*, gpointer);
 import "C"
 
 func init() {
@@ -35,8 +35,8 @@ func init() {
 // gtk_cell_area_foreach_alloc().
 type CellAllocCallback func(renderer *CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle, data cgo.Handle) (ok bool)
 
-//export gotk4_CellAllocCallback
-func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_CellAllocCallback
+func _gotk4_gtk3_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -72,8 +72,8 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 // renderers of a CellArea, see gtk_cell_area_foreach().
 type CellCallback func(renderer *CellRenderer, data cgo.Handle) (ok bool)
 
-//export gotk4_CellCallback
-func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_CellCallback
+func _gotk4_gtk3_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -709,7 +709,7 @@ func (area *CellArea) Foreach(callback CellCallback) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_CellCallback)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_CellCallback)
 	_arg2 = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_arg2))
 
@@ -732,7 +732,7 @@ func (area *CellArea) ForeachAlloc(context *CellAreaContext, widget Widgeter, ce
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
-	_arg5 = (*[0]byte)(C.gotk4_CellAllocCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gtk3_CellAllocCallback)
 	_arg6 = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_arg6))
 

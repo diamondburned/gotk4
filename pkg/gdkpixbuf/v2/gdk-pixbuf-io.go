@@ -47,8 +47,8 @@ const (
 // linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
 type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation, userData cgo.Handle)
 
-//export gotk4_PixbufModulePreparedFunc
-func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
+//export _gotk4_gdkpixbuf2_PixbufModulePreparedFunc
+func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -81,8 +81,8 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 // efficiently.
 type PixbufModuleSizeFunc func(width *int, height *int, userData cgo.Handle)
 
-//export gotk4_PixbufModuleSizeFunc
-func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
+//export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
+func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -107,8 +107,8 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
 type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x int, y int, width int, height int, userData cgo.Handle)
 
-//export gotk4_PixbufModuleUpdatedFunc
-func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+//export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
+func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
 	v := gbox.Get(uintptr(arg5))
 	if v == nil {
 		panic(`callback not found`)

@@ -18,7 +18,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// gboolean gotk4_WindowChildFunc(GdkWindow*, gpointer);
+// gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
 import "C"
 
 func init() {
@@ -324,8 +324,8 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 // window to determine whether to recursively invalidate it or now.
 type WindowChildFunc func(window *Window, userData cgo.Handle) (ok bool)
 
-//export gotk4_WindowChildFunc
-func gotk4_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gdk3_WindowChildFunc
+func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -2478,7 +2478,7 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
-	_arg2 = (*[0]byte)(C.gotk4_WindowChildFunc)
+	_arg2 = (*[0]byte)(C._gotk4_gdk3_WindowChildFunc)
 	_arg3 = C.gpointer(gbox.Assign(childFunc))
 	defer gbox.Delete(uintptr(_arg3))
 

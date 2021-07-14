@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -230,7 +230,7 @@ func (stream *IOStream) CloseAsync(ioPriority int, cancellable *Cancellable, cal
 	_arg0 = (*C.GIOStream)(unsafe.Pointer(stream.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -360,7 +360,7 @@ func (stream1 *IOStream) SpliceAsync(stream2 IOStreamer, flags IOStreamSpliceFla
 	_arg2 = C.GIOStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

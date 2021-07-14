@@ -32,8 +32,8 @@ func init() {
 // efficient operation.
 type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int, data cgo.Handle) (value externglib.Value)
 
-//export gotk4_TreeModelFilterModifyFunc
-func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
+//export _gotk4_gtk4_TreeModelFilterModifyFunc
+func _gotk4_gtk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -62,8 +62,8 @@ func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 // by iter is visible.
 type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
 
-//export gotk4_TreeModelFilterVisibleFunc
-func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk4_TreeModelFilterVisibleFunc
+func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// gint gotk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
 func init() {
@@ -186,7 +186,7 @@ func (store *ListStore) InsertSorted(item *externglib.Object, compareFunc glib.C
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	_arg2 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_arg3 = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_arg3))
 
@@ -230,7 +230,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GListStore)(unsafe.Pointer(store.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_arg2 = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_arg2))
 

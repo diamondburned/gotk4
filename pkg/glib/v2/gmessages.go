@@ -72,8 +72,8 @@ const (
 // Logging][using-structured-logging].
 type LogFunc func(logDomain string, logLevel LogLevelFlags, message string, userData cgo.Handle)
 
-//export gotk4_LogFunc
-func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
+//export _gotk4_glib2_LogFunc
+func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -115,8 +115,8 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 // chained and fall back to simpler handlers in case of failure.
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) (logWriterOutput LogWriterOutput)
 
-//export gotk4_LogWriterFunc
-func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
+//export _gotk4_glib2_LogWriterFunc
+func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

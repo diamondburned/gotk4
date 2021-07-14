@@ -401,7 +401,10 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	}
 
 	if value.Resolved.IsCallback() {
-		value.header.AddCallback(value.Resolved.Extern.Type.(*gir.Callback))
+		value.header.AddCallback(
+			value.Resolved.Extern.NamespaceFindResult,
+			value.Resolved.Extern.Type.(*gir.Callback),
+		)
 	}
 
 	// If this is the output parameter, then the pointer count should be less.

@@ -19,8 +19,8 @@ var callbackTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
 	type {{ .GoName }} func{{ .GoTail }}
 
-	//export {{ .Prefix }}{{ .GoName }}
-	func {{ .Prefix }}{{ .GoName }}{{ .CGoTail }} {{ .Block }}
+	//export {{ .CGoName }}
+	func {{ .CGoName }}{{ .CGoTail }} {{ .Block }}
 `)
 
 // GenerateCallback generates a callback type declaration and handler into the
@@ -41,9 +41,9 @@ func GenerateCallback(gen FileGeneratorWriter, callback *gir.Callback) bool {
 // CallbackGenerator generates a callback in Go.
 type CallbackGenerator struct {
 	*gir.Callback
-	Prefix  string
 	GoName  string
 	GoTail  string
+	CGoName string
 	CGoTail string
 	Block   string
 
@@ -58,9 +58,8 @@ type CallbackGenerator struct {
 // NewCallbackGenerator creates a new CallbackGenerator instance.
 func NewCallbackGenerator(gen FileGenerator) CallbackGenerator {
 	return CallbackGenerator{
-		Prefix: file.CallbackPrefix,
-		pen:    pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128),
-		gen:    gen,
+		pen: pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128),
+		gen: gen,
 	}
 }
 
@@ -73,9 +72,8 @@ func (g *CallbackGenerator) Reset() {
 	g.pen.Reset()
 
 	*g = CallbackGenerator{
-		Prefix: g.Prefix,
-		pen:    g.pen,
-		gen:    g.gen,
+		pen: g.pen,
+		gen: g.gen,
 	}
 }
 
@@ -108,6 +106,7 @@ func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
 	// }
 
 	g.GoName = strcases.PascalToGo(cb.Name)
+	g.CGoName = file.CallbackExportedName(g.gen.Namespace(), cb)
 
 	if g.Closure = findClosure(cb.Parameters.Parameters); g.Closure == nil {
 		g.Logln(logger.Debug, "skipping since no closure argument")

@@ -21,7 +21,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk3_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -51,8 +51,8 @@ func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
 
 type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int, userData cgo.Handle)
 
-//export gotk4_TreeDestroyCountFunc
-func gotk4_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gint, arg3 C.gpointer) {
+//export _gotk4_gtk3_TreeDestroyCountFunc
+func _gotk4_gtk3_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gint, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -85,8 +85,8 @@ func gotk4_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C
 // user.
 type TreeViewColumnDropFunc func(treeView *TreeView, column *TreeViewColumn, prevColumn *TreeViewColumn, nextColumn *TreeViewColumn, data cgo.Handle) (ok bool)
 
-//export gotk4_TreeViewColumnDropFunc
-func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeViewColumnDropFunc
+func _gotk4_gtk3_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -117,8 +117,8 @@ func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn
 // TreeViewMappingFunc: function used for gtk_tree_view_map_expanded_rows().
 type TreeViewMappingFunc func(treeView *TreeView, path *TreePath, userData cgo.Handle)
 
-//export gotk4_TreeViewMappingFunc
-func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export _gotk4_gtk3_TreeViewMappingFunc
+func _gotk4_gtk3_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -145,8 +145,8 @@ func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.
 // TreeViewRowSeparatorFunc returns.
 type TreeViewRowSeparatorFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
 
-//export gotk4_TreeViewRowSeparatorFunc
-func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeViewRowSeparatorFunc
+func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -179,8 +179,8 @@ func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, a
 // to strcmp() returning 0 for equal strings.
 type TreeViewSearchEqualFunc func(model *TreeModel, column int, key string, iter *TreeIter, searchData cgo.Handle) (ok bool)
 
-//export gotk4_TreeViewSearchEqualFunc
-func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeViewSearchEqualFunc
+func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -214,8 +214,8 @@ func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gc
 
 type TreeViewSearchPositionFunc func(treeView *TreeView, searchDialog *Widget, userData cgo.Handle)
 
-//export gotk4_TreeViewSearchPositionFunc
-func gotk4_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidget, arg2 C.gpointer) {
+//export _gotk4_gtk3_TreeViewSearchPositionFunc
+func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidget, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -1739,7 +1739,7 @@ func (treeView *TreeView) MapExpandedRows(fn TreeViewMappingFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeViewMappingFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewMappingFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

@@ -26,8 +26,8 @@ import "C"
 // They can be used to implement custom key event handling.
 type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey, funcData cgo.Handle) (gint int)
 
-//export gotk4_KeySnoopFunc
-func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
+//export _gotk4_gtk3_KeySnoopFunc
+func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

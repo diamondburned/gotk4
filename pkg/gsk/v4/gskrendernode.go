@@ -31,8 +31,8 @@ func init() {
 // node deserialization.
 type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error, userData cgo.Handle)
 
-//export gotk4_ParseErrorFunc
-func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
+//export _gotk4_gsk4_ParseErrorFunc
+func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

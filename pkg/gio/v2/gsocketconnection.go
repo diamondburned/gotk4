@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -131,7 +131,7 @@ func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancel
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)

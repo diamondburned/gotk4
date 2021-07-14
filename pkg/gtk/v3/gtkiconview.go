@@ -21,7 +21,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk3_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer);
 import "C"
 
 func init() {
@@ -57,8 +57,8 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 // all selected rows. It will be called on every selected row in the view.
 type IconViewForeachFunc func(iconView *IconView, path *TreePath, data cgo.Handle)
 
-//export gotk4_IconViewForeachFunc
-func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export _gotk4_gtk3_IconViewForeachFunc
+func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -1068,7 +1068,7 @@ func (iconView *IconView) SelectedForeach(fn IconViewForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_IconViewForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

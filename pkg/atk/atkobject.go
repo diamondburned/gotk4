@@ -558,8 +558,8 @@ func RoleRegister(name string) Role {
 // class and interface structures to allow for expansion in the future.
 type Function func(userData cgo.Handle) (ok bool)
 
-//export gotk4_Function
-func gotk4_Function(arg0 C.gpointer) (cret C.gboolean) {
+//export _gotk4_atk1_Function
+func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

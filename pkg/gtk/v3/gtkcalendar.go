@@ -59,8 +59,8 @@ func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 // appointments. The function returns NULL when no information is available.
 type CalendarDetailFunc func(calendar *Calendar, year uint, month uint, day uint, userData cgo.Handle) (utf8 string)
 
-//export gotk4_CalendarDetailFunc
-func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
+//export _gotk4_gtk3_CalendarDetailFunc
+func _gotk4_gtk3_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.gpointer) (cret *C.gchar) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

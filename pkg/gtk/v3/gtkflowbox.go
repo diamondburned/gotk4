@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
+// void _gotk4_gtk3_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 import "C"
 
 func init() {
@@ -32,8 +32,8 @@ func init() {
 // gtk_flow_box_bind_model() for each item that gets added to the model.
 type FlowBoxCreateWidgetFunc func(item *externglib.Object, userData cgo.Handle) (widget Widgeter)
 
-//export gotk4_FlowBoxCreateWidgetFunc
-func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
+//export _gotk4_gtk3_FlowBoxCreateWidgetFunc
+func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -57,8 +57,8 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 // is added. It lets you control if the child should be visible or not.
 type FlowBoxFilterFunc func(child *FlowBoxChild, userData cgo.Handle) (ok bool)
 
-//export gotk4_FlowBoxFilterFunc
-func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_FlowBoxFilterFunc
+func _gotk4_gtk3_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -84,8 +84,8 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) (cret C.g
 // be called on every selected child of the box.
 type FlowBoxForeachFunc func(box *FlowBox, child *FlowBoxChild, userData cgo.Handle)
 
-//export gotk4_FlowBoxForeachFunc
-func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+//export _gotk4_gtk3_FlowBoxForeachFunc
+func _gotk4_gtk3_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -107,8 +107,8 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 // come first.
 type FlowBoxSortFunc func(child1 *FlowBoxChild, child2 *FlowBoxChild, userData cgo.Handle) (gint int)
 
-//export gotk4_FlowBoxSortFunc
-func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gint) {
+//export _gotk4_gtk3_FlowBoxSortFunc
+func _gotk4_gtk3_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -536,7 +536,7 @@ func (box *FlowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

@@ -18,7 +18,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// gboolean gotk4_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
+// gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
 import "C"
 
 func init() {
@@ -1346,7 +1346,7 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_PixbufSaveFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufSaveFunc)
 	_arg2 = C.gpointer(gbox.Assign(saveFunc))
 	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))

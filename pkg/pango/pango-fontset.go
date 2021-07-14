@@ -16,7 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// gboolean gotk4_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
+// gboolean _gotk4_pango1_FontsetForeachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 func init() {
@@ -30,8 +30,8 @@ func init() {
 // fonts in a fontset.
 type FontsetForeachFunc func(fontset *Fontset, font *Font, userData cgo.Handle) (ok bool)
 
-//export gotk4_FontsetForeachFunc
-func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_pango1_FontsetForeachFunc
+func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -123,7 +123,7 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(fontset.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_FontsetForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

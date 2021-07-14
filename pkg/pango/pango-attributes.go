@@ -17,7 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
-// gboolean gotk4_AttrFilterFunc(PangoAttribute*, gpointer);
+// gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
 import "C"
 
 func init() {
@@ -227,8 +227,8 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 // attribute.
 type AttrDataCopyFunc func(userData cgo.Handle) (gpointer cgo.Handle)
 
-//export gotk4_AttrDataCopyFunc
-func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
+//export _gotk4_pango1_AttrDataCopyFunc
+func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -249,8 +249,8 @@ func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 // AttrFilterFunc: type of a function filtering a list of attributes.
 type AttrFilterFunc func(attribute *Attribute, userData cgo.Handle) (ok bool)
 
-//export gotk4_AttrFilterFunc
-func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_pango1_AttrFilterFunc
+func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -1242,7 +1242,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _cret *C.PangoAttrList // in
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(list))
-	_arg1 = (*[0]byte)(C.gotk4_AttrFilterFunc)
+	_arg1 = (*[0]byte)(C._gotk4_pango1_AttrFilterFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

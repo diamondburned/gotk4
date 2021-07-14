@@ -31,8 +31,8 @@ func init() {
 // PANGO_ATTR_SHAPE with Pango's Cairo renderer.
 type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool, data cgo.Handle)
 
-//export gotk4_ShapeRendererFunc
-func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
+//export _gotk4_pangocairo1_ShapeRendererFunc
+func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

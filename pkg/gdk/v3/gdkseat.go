@@ -53,8 +53,8 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 // there's room for other initialization actions.
 type SeatGrabPrepareFunc func(seat *Seat, window *Window, userData cgo.Handle)
 
-//export gotk4_SeatGrabPrepareFunc
-func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
+//export _gotk4_gdk3_SeatGrabPrepareFunc
+func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

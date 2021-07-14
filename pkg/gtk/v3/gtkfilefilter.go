@@ -52,8 +52,8 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 // gtk_file_filter_add_custom().
 type FileFilterFunc func(filterInfo *FileFilterInfo, data cgo.Handle) (ok bool)
 
-//export gotk4_FileFilterFunc
-func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_FileFilterFunc
+func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

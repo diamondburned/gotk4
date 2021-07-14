@@ -40,8 +40,8 @@ type Allocation = gdk.Rectangle
 // gtk_widget_add_tick_callback().
 type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData cgo.Handle) (ok bool)
 
-//export gotk4_TickCallback
-func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk4_TickCallback
+func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

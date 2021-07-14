@@ -51,8 +51,8 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
 type ShortcutFunc func(widget *Widget, args *glib.Variant, userData cgo.Handle) (ok bool)
 
-//export gotk4_ShortcutFunc
-func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk4_ShortcutFunc
+func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

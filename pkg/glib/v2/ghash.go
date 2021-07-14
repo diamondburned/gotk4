@@ -29,8 +29,8 @@ func init() {
 // should be removed from the Table.
 type HRFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle) (ok bool)
 
-//export gotk4_HRFunc
-func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_glib2_HRFunc
+func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

@@ -41,8 +41,8 @@ func init() {
 // for uri, or NULL to continue with the default implementation.
 type VFSFileLookupFunc func(vfs *VFS, identifier string, userData cgo.Handle) (file Filer)
 
-//export gotk4_VFSFileLookupFunc
-func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
+//export _gotk4_gio2_VFSFileLookupFunc
+func _gotk4_gio2_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) (cret *C.GFile) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

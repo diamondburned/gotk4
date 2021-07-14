@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_PrintSettingsFunc(gchar*, gchar*, gpointer);
+// void _gotk4_gtk3_PrintSettingsFunc(gchar*, gchar*, gpointer);
 import "C"
 
 func init() {
@@ -31,8 +31,8 @@ func init() {
 
 type PrintSettingsFunc func(key string, value string, userData cgo.Handle)
 
-//export gotk4_PrintSettingsFunc
-func gotk4_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
+//export _gotk4_gtk3_PrintSettingsFunc
+func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -346,7 +346,7 @@ func (settings *PrintSettings) Foreach(fn PrintSettingsFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_PrintSettingsFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

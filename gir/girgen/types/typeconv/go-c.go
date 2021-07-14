@@ -7,7 +7,6 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -467,8 +466,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 
 	case *gir.Callback:
-		exportedName := value.Resolved.Extern.Name()
-		exportedName = strcases.PascalToGo(exportedName)
+		exportedName := file.CallbackExportedName(value.Resolved.Extern.NamespaceFindResult, v)
 
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
@@ -485,14 +483,14 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		value.header.ApplyHeader(closure.Header())
 		value.header.ImportCore("gbox")
-		value.header.AddCallback(v)
+		value.header.AddCallback(value.Resolved.Extern.NamespaceFindResult, v)
 
 		// Return the constant function here. The function will dynamically load
 		// the user_data, which will match with the "gpointer" case above.
 		//
 		// As for the pointer to byte array cast, see
 		// https://github.com/golang/go/issues/19835.
-		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.Out.Set, file.CallbackPrefix, exportedName)
+		value.p.Linef("%s = (*[0]byte)(C.%s)", value.Out.Set, exportedName)
 
 		scope := value.Scope
 		if scope == "" {

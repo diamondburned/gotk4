@@ -111,8 +111,8 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 // the same error.
 type PixbufSaveFunc func(buf []byte, data cgo.Handle) (err error, ok bool)
 
-//export gotk4_PixbufSaveFunc
-func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gdkpixbuf2_PixbufSaveFunc
+func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

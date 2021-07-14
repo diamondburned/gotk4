@@ -54,8 +54,8 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 // See also: gtk_tree_view_column_set_cell_data_func()
 type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
 
-//export gotk4_TreeCellDataFunc
-func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+//export _gotk4_gtk4_TreeCellDataFunc
+func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

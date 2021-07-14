@@ -28,8 +28,8 @@ func init() {
 // renderer(s) as appropriate.
 type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
 
-//export gotk4_CellLayoutDataFunc
-func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+//export _gotk4_gtk4_CellLayoutDataFunc
+func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

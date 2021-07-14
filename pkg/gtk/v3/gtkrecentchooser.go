@@ -66,8 +66,8 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 
 type RecentSortFunc func(a *RecentInfo, b *RecentInfo, userData cgo.Handle) (gint int)
 
-//export gotk4_RecentSortFunc
-func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
+//export _gotk4_gtk3_RecentSortFunc
+func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

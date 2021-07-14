@@ -27,7 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -346,7 +346,7 @@ func (proxy *DBusProxy) Call(methodName string, parameters *glib.Variant, flags 
 	_arg3 = C.GDBusCallFlags(flags)
 	_arg4 = C.gint(timeoutMsec)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -461,7 +461,7 @@ func (proxy *DBusProxy) CallWithUnixFdList(methodName string, parameters *glib.V
 	_arg4 = C.gint(timeoutMsec)
 	_arg5 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg8 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_proxy_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
@@ -847,7 +847,7 @@ func DBusProxyNew(connection *DBusConnection, flags DBusProxyFlags, info *DBusIn
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg9 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_proxy_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
@@ -875,7 +875,7 @@ func DBusProxyNewForBus(busType BusType, flags DBusProxyFlags, info *DBusInterfa
 	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg8 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg9 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_proxy_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)

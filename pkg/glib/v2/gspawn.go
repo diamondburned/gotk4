@@ -14,7 +14,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
-// void gotk4_SpawnChildSetupFunc(gpointer);
+// void _gotk4_glib2_SpawnChildSetupFunc(gpointer);
 import "C"
 
 // SpawnError: error codes returned by spawning processes.
@@ -133,8 +133,8 @@ const (
 // the complete environment list to the g_spawn... function.
 type SpawnChildSetupFunc func(userData cgo.Handle)
 
-//export gotk4_SpawnChildSetupFunc
-func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
+//export _gotk4_glib2_SpawnChildSetupFunc
+func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
 	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -344,7 +344,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 		}
 	}
 	_arg4 = C.GSpawnFlags(flags)
-	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	_arg5 = (*[0]byte)(C._gotk4_glib2_SpawnChildSetupFunc)
 	_arg6 = C.gpointer(gbox.AssignOnce(childSetup))
 
 	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)

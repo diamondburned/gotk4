@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// gboolean _gotk4_gtk3_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -54,8 +54,8 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 // to iterate over the rows in a tree model.
 type TreeModelForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data cgo.Handle) (ok bool)
 
-//export gotk4_TreeModelForeachFunc
-func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeModelForeachFunc
+func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -459,7 +459,7 @@ func (model *TreeModel) Foreach(fn TreeModelForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

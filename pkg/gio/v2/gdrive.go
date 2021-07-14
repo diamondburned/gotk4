@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -341,7 +341,7 @@ func (drive *Drive) Eject(flags MountUnmountFlags, cancellable *Cancellable, cal
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -382,7 +382,7 @@ func (drive *Drive) EjectWithOperation(flags MountUnmountFlags, mountOperation *
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -645,7 +645,7 @@ func (drive *Drive) PollForMedia(cancellable *Cancellable, callback AsyncReadyCa
 
 	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
@@ -686,7 +686,7 @@ func (drive *Drive) Start(flags DriveStartFlags, mountOperation *MountOperation,
 	_arg1 = C.GDriveStartFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -726,7 +726,7 @@ func (drive *Drive) Stop(flags MountUnmountFlags, mountOperation *MountOperation
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

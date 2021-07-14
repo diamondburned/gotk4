@@ -4,6 +4,7 @@ package file
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
@@ -108,7 +109,7 @@ func (h *Header) ImportPubl(resolved *types.Resolved) {
 	if resolved.Extern != nil {
 		callback, ok := resolved.Extern.Type.(*gir.Callback)
 		if ok {
-			h.AddCallback(callback)
+			h.AddCallback(resolved.Extern.NamespaceFindResult, callback)
 		}
 	}
 }
@@ -127,7 +128,7 @@ func (h *Header) ImportImpl(resolved *types.Resolved) {
 	if resolved.Extern != nil {
 		callback, ok := resolved.Extern.Type.(*gir.Callback)
 		if ok {
-			h.AddCallback(callback)
+			h.AddCallback(resolved.Extern.NamespaceFindResult, callback)
 		}
 	}
 }
@@ -169,32 +170,45 @@ func (h *Header) AddMarshaler(glibGetType, goName string) {
 	h.Import("unsafe")
 }
 
-func (h *Header) AddCallback(callback *gir.Callback) {
-	h.AddCallbackHeader(CallbackCHeader(callback))
+func (h *Header) AddCallback(source *gir.NamespaceFindResult, callback *gir.Callback) {
+	h.AddCallbackHeader(CallbackCHeader(source, callback))
 }
 
-// CallbackPrefix is the prefix to prepend to a C callback that bridges CGo.
-// Generators should use this prefix when generating.
-const CallbackPrefix = "gotk4_"
+const callbackPrefix = "_gotk4"
+
+// CallbackExportedName creates the exported C name of the given callback from
+// the given namespace.
+func CallbackExportedName(source *gir.NamespaceFindResult, callback *gir.Callback) string {
+	namespaceName := strings.ToLower(source.Namespace.Name)
+	if source.Namespace.Version != "" {
+		namespaceName += gir.MajorVersion(source.Namespace.Version)
+	}
+
+	goName := strcases.PascalToGo(callback.Name)
+
+	return fmt.Sprintf("%s_%s_%s", callbackPrefix, namespaceName, goName)
+}
 
 // CallbackCHeader renders the C function signature.
-func CallbackCHeader(cb *gir.Callback) string {
+func CallbackCHeader(source *gir.NamespaceFindResult, callback *gir.Callback) string {
 	var ctail pen.Joints
-	if cb.Parameters != nil {
-		ctail = pen.NewJoints(", ", len(cb.Parameters.Parameters))
+	if callback.Parameters != nil {
+		ctail = pen.NewJoints(", ", len(callback.Parameters.Parameters))
 
-		for _, param := range cb.Parameters.Parameters {
+		for _, param := range callback.Parameters.Parameters {
 			ctail.Add(types.AnyTypeC(param.AnyType))
 		}
 	}
 
 	cReturn := "void"
-	if cb.ReturnValue != nil {
-		cReturn = types.AnyTypeC(cb.ReturnValue.AnyType)
+	if callback.ReturnValue != nil {
+		cReturn = types.AnyTypeC(callback.ReturnValue.AnyType)
 	}
 
-	goName := strcases.PascalToGo(cb.Name)
-	return fmt.Sprintf("%s %s(%s);", cReturn, CallbackPrefix+goName, ctail.Join())
+	return fmt.Sprintf(
+		"%s %s(%s);",
+		cReturn, CallbackExportedName(source, callback), ctail.Join(),
+	)
 }
 
 // AddCallbackHeader adds a callback header raw.

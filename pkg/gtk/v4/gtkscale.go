@@ -26,8 +26,8 @@ func init() {
 
 type ScaleFormatValueFunc func(scale *Scale, value float64, userData cgo.Handle) (utf8 string)
 
-//export gotk4_ScaleFormatValueFunc
-func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) (cret *C.char) {
+//export _gotk4_gtk4_ScaleFormatValueFunc
+func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) (cret *C.char) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

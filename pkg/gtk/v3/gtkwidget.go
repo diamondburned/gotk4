@@ -58,8 +58,8 @@ func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 // children of a container, see gtk_container_foreach().
 type Callback func(widget *Widget, data cgo.Handle)
 
-//export gotk4_Callback
-func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
+//export _gotk4_gtk3_Callback
+func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -79,8 +79,8 @@ func gotk4_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 // gtk_widget_add_tick_callback().
 type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData cgo.Handle) (ok bool)
 
-//export gotk4_TickCallback
-func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TickCallback
+func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

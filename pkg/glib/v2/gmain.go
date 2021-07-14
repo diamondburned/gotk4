@@ -36,8 +36,8 @@ type MainContextPusher = C.void
 // incompatible function types.
 type SourceFunc func(userData cgo.Handle) (ok bool)
 
-//export gotk4_SourceFunc
-func gotk4_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
+//export _gotk4_glib2_SourceFunc
+func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)

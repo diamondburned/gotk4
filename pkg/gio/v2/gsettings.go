@@ -27,7 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
 import "C"
 
 func init() {
@@ -75,8 +75,8 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 // values of the appropriate type.
 type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant, userData cgo.Handle) (ok bool)
 
-//export gotk4_SettingsBindGetMapping
-func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gio2_SettingsBindGetMapping
+func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -111,8 +111,8 @@ func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpoin
 // object property value to a #GVariant for storing it in #GSettings.
 type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType, userData cgo.Handle) (variant *glib.Variant)
 
-//export gotk4_SettingsBindSetMapping
-func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
+//export _gotk4_gio2_SettingsBindSetMapping
+func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -152,8 +152,8 @@ func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.g
 // this case.
 type SettingsGetMapping func(value *glib.Variant, userData cgo.Handle) (result cgo.Handle, ok bool)
 
-//export gotk4_SettingsGetMapping
-func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gio2_SettingsGetMapping
+func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -1018,7 +1018,7 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) cgo.Han
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_SettingsGetMapping)
 	_arg3 = C.gpointer(gbox.Assign(mapping))
 	defer gbox.Delete(uintptr(_arg3))
 

@@ -74,8 +74,8 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 // See gtk.Assistant.SetForwardPageFunc().
 type AssistantPageFunc func(currentPage int, data cgo.Handle) (gint int)
 
-//export gotk4_AssistantPageFunc
-func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
+//export _gotk4_gtk4_AssistantPageFunc
+func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

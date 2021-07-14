@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -270,7 +270,7 @@ func (volume *Volume) Eject(flags MountUnmountFlags, cancellable *Cancellable, c
 	_arg0 = (*C.GVolume)(unsafe.Pointer(volume.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -313,7 +313,7 @@ func (volume *Volume) EjectWithOperation(flags MountUnmountFlags, mountOperation
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -549,7 +549,7 @@ func (volume *Volume) Mount(flags MountMountFlags, mountOperation *MountOperatio
 	_arg1 = C.GMountMountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

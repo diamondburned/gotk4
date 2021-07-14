@@ -32,8 +32,8 @@ func init() {
 // gtk.MenuButton.SetMenuModel().
 type MenuButtonCreatePopupFunc func(menuButton *MenuButton, userData cgo.Handle)
 
-//export gotk4_MenuButtonCreatePopupFunc
-func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
+//export _gotk4_gtk4_MenuButtonCreatePopupFunc
+func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

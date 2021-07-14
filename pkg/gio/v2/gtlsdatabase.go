@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -299,7 +299,7 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(handle string, interact
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_database_lookup_certificate_for_handle_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -381,7 +381,7 @@ func (self *TLSDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_database_lookup_certificate_issuer_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -435,7 +435,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, int
 	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg3 = C.GTlsDatabaseLookupFlags(flags)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_database_lookup_certificates_issued_by_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -526,7 +526,7 @@ func (self *TLSDatabase) VerifyChainAsync(chain TLSCertificater, purpose string,
 	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg8 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_database_verify_chain_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)

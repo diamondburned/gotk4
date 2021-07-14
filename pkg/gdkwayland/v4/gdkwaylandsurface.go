@@ -24,8 +24,8 @@ import "C"
 // surfaces as transient for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string, userData cgo.Handle)
 
-//export gotk4_WaylandToplevelExported
-func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
+//export _gotk4_gdkwayland4_WaylandToplevelExported
+func _gotk4_gdkwayland4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

@@ -34,8 +34,8 @@ func init() {
 // (gtk_entry_completion_get_entry ())).
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData cgo.Handle) (ok bool)
 
-//export gotk4_EntryCompletionMatchFunc
-func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_EntryCompletionMatchFunc
+func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

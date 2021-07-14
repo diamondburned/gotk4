@@ -37,8 +37,8 @@ func init() {
 // “price” column could be one which returns price_of(a) - price_of(b).
 type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter, userData cgo.Handle) (gint int)
 
-//export gotk4_TreeIterCompareFunc
-func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gint) {
+//export _gotk4_gtk3_TreeIterCompareFunc
+func _gotk4_gtk3_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)

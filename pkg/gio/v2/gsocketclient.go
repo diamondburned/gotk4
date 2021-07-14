@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -254,7 +254,7 @@ func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancell
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -352,7 +352,7 @@ func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort u
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -431,7 +431,7 @@ func (client *SocketClient) ConnectToServiceAsync(domain string, service string,
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -519,7 +519,7 @@ func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, ca
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = C.guint16(defaultPort)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

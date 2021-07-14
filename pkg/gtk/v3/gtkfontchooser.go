@@ -55,8 +55,8 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
 type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace, data cgo.Handle) (ok bool)
 
-//export gotk4_FontFilterFunc
-func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_FontFilterFunc
+func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

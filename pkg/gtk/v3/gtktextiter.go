@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// gboolean gotk4_TextCharPredicate(gunichar, gpointer);
+// gboolean _gotk4_gtk3_TextCharPredicate(gunichar, gpointer);
 import "C"
 
 func init() {
@@ -55,8 +55,8 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 
 type TextCharPredicate func(ch uint32, userData cgo.Handle) (ok bool)
 
-//export gotk4_TextCharPredicate
-func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TextCharPredicate
+func _gotk4_gtk3_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -204,7 +204,7 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
 	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))
@@ -891,7 +891,7 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextIter)(unsafe.Pointer(iter))
-	_arg1 = (*[0]byte)(C.gotk4_TextCharPredicate)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
 	_arg2 = C.gpointer(gbox.Assign(pred))
 	defer gbox.Delete(uintptr(_arg2))
 	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(limit))

@@ -24,7 +24,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // DBusAddressEscapeValue: escape string so it can appear in a D-Bus address as
@@ -95,7 +95,7 @@ func DBusAddressGetStream(address string, cancellable *Cancellable, callback Asy
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)

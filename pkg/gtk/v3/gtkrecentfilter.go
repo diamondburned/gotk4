@@ -57,8 +57,8 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 // gtk_recent_filter_add_custom().
 type RecentFilterFunc func(filterInfo *RecentFilterInfo, userData cgo.Handle) (ok bool)
 
-//export gotk4_RecentFilterFunc
-func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_RecentFilterFunc
+func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

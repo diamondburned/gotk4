@@ -26,7 +26,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -47,7 +47,7 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 	var _arg4 *C.GError // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
 
@@ -290,7 +290,7 @@ func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCa
 	var _cret *C.GSimpleAsyncResult // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
 
@@ -314,7 +314,7 @@ func NewSimpleAsyncResultFromError(sourceObject *externglib.Object, callback Asy
 	var _cret *C.GSimpleAsyncResult // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	_arg4 = (*C.GError)(gerror.New(err))
 

@@ -27,8 +27,8 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
-// void gotk4_FileProgressCallback(goffset, goffset, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
 func init() {
@@ -1394,7 +1394,7 @@ func (file *File) AppendToAsync(flags FileCreateFlags, ioPriority int, cancellab
 	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_append_to_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -1507,7 +1507,7 @@ func (source *File) Copy(destination Filer, flags FileCopyFlags, cancellable *Ca
 	_arg1 = (*C.GFile)(unsafe.Pointer((destination).(gextras.Nativer).Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
 	_arg5 = C.gpointer(gbox.Assign(progressCallback))
 	defer gbox.Delete(uintptr(_arg5))
 
@@ -1624,7 +1624,7 @@ func (file *File) CreateAsync(flags FileCreateFlags, ioPriority int, cancellable
 	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_create_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -1714,7 +1714,7 @@ func (file *File) CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, ca
 	_arg1 = C.GFileCreateFlags(flags)
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_create_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -1792,7 +1792,7 @@ func (file *File) DeleteAsync(ioPriority int, cancellable *Cancellable, callback
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_delete_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1860,7 +1860,7 @@ func (file *File) EjectMountable(flags MountUnmountFlags, cancellable *Cancellab
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_eject_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -1907,7 +1907,7 @@ func (file *File) EjectMountableWithOperation(flags MountUnmountFlags, mountOper
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_eject_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -1999,7 +1999,7 @@ func (file *File) EnumerateChildrenAsync(attributes string, flags FileQueryInfoF
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_enumerate_children_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -2098,7 +2098,7 @@ func (file *File) FindEnclosingMountAsync(ioPriority int, cancellable *Cancellab
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_find_enclosing_mount_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -2482,7 +2482,7 @@ func (file *File) LoadBytesAsync(cancellable *Cancellable, callback AsyncReadyCa
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_load_bytes_async(_arg0, _arg1, _arg2, _arg3)
@@ -2542,7 +2542,7 @@ func (file *File) LoadContentsAsync(cancellable *Cancellable, callback AsyncRead
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_load_contents_async(_arg0, _arg1, _arg2, _arg3)
@@ -2653,7 +2653,7 @@ func (file *File) MakeDirectoryAsync(ioPriority int, cancellable *Cancellable, c
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_make_directory_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -2881,7 +2881,7 @@ func (location *File) MountEnclosingVolume(flags MountMountFlags, mountOperation
 	_arg1 = C.GMountMountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_mount_enclosing_volume(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -2928,7 +2928,7 @@ func (file *File) MountMountable(flags MountMountFlags, mountOperation *MountOpe
 	_arg1 = C.GMountMountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_mount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -3005,7 +3005,7 @@ func (source *File) Move(destination Filer, flags FileCopyFlags, cancellable *Ca
 	_arg1 = (*C.GFile)(unsafe.Pointer((destination).(gextras.Nativer).Native()))
 	_arg2 = C.GFileCopyFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_FileProgressCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
 	_arg5 = C.gpointer(gbox.Assign(progressCallback))
 	defer gbox.Delete(uintptr(_arg5))
 
@@ -3068,7 +3068,7 @@ func (file *File) OpenReadwriteAsync(ioPriority int, cancellable *Cancellable, c
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_open_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -3133,7 +3133,7 @@ func (file *File) PollMountable(cancellable *Cancellable, callback AsyncReadyCal
 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_poll_mountable(_arg0, _arg1, _arg2, _arg3)
@@ -3198,7 +3198,7 @@ func (file *File) QueryDefaultHandlerAsync(ioPriority int, cancellable *Cancella
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_query_default_handler_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -3357,7 +3357,7 @@ func (file *File) QueryFilesystemInfoAsync(attributes string, ioPriority int, ca
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_query_filesystem_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -3458,7 +3458,7 @@ func (file *File) QueryInfoAsync(attributes string, flags FileQueryInfoFlags, io
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -3599,7 +3599,7 @@ func (file *File) ReadAsync(ioPriority int, cancellable *Cancellable, callback A
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_read_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -3718,7 +3718,7 @@ func (file *File) ReplaceAsync(etag string, makeBackup bool, flags FileCreateFla
 	_arg3 = C.GFileCreateFlags(flags)
 	_arg4 = C.int(ioPriority)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_replace_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -3815,7 +3815,7 @@ func (file *File) ReplaceContentsAsync(contents []byte, etag string, makeBackup 
 	}
 	_arg5 = C.GFileCreateFlags(flags)
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg7 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg8 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
@@ -3931,7 +3931,7 @@ func (file *File) ReplaceReadwriteAsync(etag string, makeBackup bool, flags File
 	_arg3 = C.GFileCreateFlags(flags)
 	_arg4 = C.int(ioPriority)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_replace_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -4209,7 +4209,7 @@ func (file *File) SetAttributesAsync(info *FileInfo, flags FileQueryInfoFlags, i
 	_arg2 = C.GFileQueryInfoFlags(flags)
 	_arg3 = C.int(ioPriority)
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_set_attributes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -4325,7 +4325,7 @@ func (file *File) SetDisplayNameAsync(displayName string, ioPriority int, cancel
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	_arg2 = C.int(ioPriority)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_set_display_name_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -4375,7 +4375,7 @@ func (file *File) StartMountable(flags DriveStartFlags, startOperation *MountOpe
 	_arg1 = C.GDriveStartFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(startOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_start_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -4423,7 +4423,7 @@ func (file *File) StopMountable(flags MountUnmountFlags, mountOperation *MountOp
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_stop_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -4510,7 +4510,7 @@ func (file *File) TrashAsync(ioPriority int, cancellable *Cancellable, callback 
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.int(ioPriority)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_trash_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -4555,7 +4555,7 @@ func (file *File) UnmountMountable(flags MountUnmountFlags, cancellable *Cancell
 	_arg0 = (*C.GFile)(unsafe.Pointer(file.Native()))
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_unmount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -4605,7 +4605,7 @@ func (file *File) UnmountMountableWithOperation(flags MountUnmountFlags, mountOp
 	_arg1 = C.GMountUnmountFlags(flags)
 	_arg2 = (*C.GMountOperation)(unsafe.Pointer(mountOperation.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_unmount_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

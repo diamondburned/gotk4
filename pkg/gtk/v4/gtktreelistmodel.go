@@ -34,8 +34,8 @@ func init() {
 // children arrive.
 type TreeListModelCreateModelFunc func(item *externglib.Object, userData cgo.Handle) (listModel gio.ListModeler)
 
-//export gotk4_TreeListModelCreateModelFunc
-func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
+//export _gotk4_gtk4_TreeListModelCreateModelFunc
+func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

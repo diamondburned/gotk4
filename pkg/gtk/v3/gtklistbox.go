@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
+// void _gotk4_gtk3_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 import "C"
 
 func init() {
@@ -37,8 +37,8 @@ func init() {
 // updated to show the desired row widgets.
 type ListBoxCreateWidgetFunc func(item *externglib.Object, userData cgo.Handle) (widget Widgeter)
 
-//export gotk4_ListBoxCreateWidgetFunc
-func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
+//export _gotk4_gtk3_ListBoxCreateWidgetFunc
+func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -62,8 +62,8 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.Gt
 // lets you control if the row should be visible or not.
 type ListBoxFilterFunc func(row *ListBoxRow, userData cgo.Handle) (ok bool)
 
-//export gotk4_ListBoxFilterFunc
-func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_ListBoxFilterFunc
+func _gotk4_gtk3_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -89,8 +89,8 @@ func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) (cret C.gbo
 // be called on every selected child of the box.
 type ListBoxForeachFunc func(box *ListBox, row *ListBoxRow, userData cgo.Handle)
 
-//export gotk4_ListBoxForeachFunc
-func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export _gotk4_gtk3_ListBoxForeachFunc
+func _gotk4_gtk3_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -111,8 +111,8 @@ func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.
 // ListBoxSortFunc: compare two rows to determine which should be first.
 type ListBoxSortFunc func(row1 *ListBoxRow, row2 *ListBoxRow, userData cgo.Handle) (gint int)
 
-//export gotk4_ListBoxSortFunc
-func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
+//export _gotk4_gtk3_ListBoxSortFunc
+func _gotk4_gtk3_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -140,8 +140,8 @@ func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.
 // state of the current header widget.
 type ListBoxUpdateHeaderFunc func(row *ListBoxRow, before *ListBoxRow, userData cgo.Handle)
 
-//export gotk4_ListBoxUpdateHeaderFunc
-func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export _gotk4_gtk3_ListBoxUpdateHeaderFunc
+func _gotk4_gtk3_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -538,7 +538,7 @@ func (box *ListBox) SelectedForeach(fn ListBoxForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

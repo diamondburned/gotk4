@@ -32,8 +32,8 @@ func init() {
 // must not call any widget functions that cause changes.
 type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int, userData cgo.Handle)
 
-//export gotk4_DrawingAreaDrawFunc
-func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
+//export _gotk4_gtk4_DrawingAreaDrawFunc
+func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)

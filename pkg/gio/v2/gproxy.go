@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -141,7 +141,7 @@ func (proxy *Proxy) ConnectAsync(connection IOStreamer, proxyAddress *ProxyAddre
 	_arg1 = (*C.GIOStream)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

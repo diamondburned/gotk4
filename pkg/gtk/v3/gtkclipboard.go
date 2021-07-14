@@ -21,9 +21,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
-// void gotk4_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
-// void gotk4_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
+// void _gotk4_gtk3_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
+// void _gotk4_gtk3_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
+// void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 import "C"
 
 func init() {
@@ -36,8 +36,8 @@ func init() {
 // gtk_clipboard_request_image() are received, or when the request fails.
 type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf, data cgo.Handle)
 
-//export gotk4_ClipboardImageReceivedFunc
-func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
+//export _gotk4_gtk3_ClipboardImageReceivedFunc
+func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -67,8 +67,8 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 // gtk_clipboard_request_contents() are received, or when the request fails.
 type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData, data cgo.Handle)
 
-//export gotk4_ClipboardReceivedFunc
-func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
+//export _gotk4_gtk3_ClipboardReceivedFunc
+func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -93,8 +93,8 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 // gtk_clipboard_request_text() are received, or when the request fails.
 type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string, data cgo.Handle)
 
-//export gotk4_ClipboardTextReceivedFunc
-func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
+//export _gotk4_gtk3_ClipboardTextReceivedFunc
+func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -117,8 +117,8 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 // gtk_clipboard_request_uris() are received, or when the request fails.
 type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string, data cgo.Handle)
 
-//export gotk4_ClipboardURIReceivedFunc
-func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
+//export _gotk4_gtk3_ClipboardURIReceivedFunc
+func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -339,7 +339,7 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ClipboardImageReceivedFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardImageReceivedFunc)
 	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_image(_arg0, _arg1, _arg2)
@@ -359,7 +359,7 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ClipboardTextReceivedFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardTextReceivedFunc)
 	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_text(_arg0, _arg1, _arg2)
@@ -378,7 +378,7 @@ func (clipboard *Clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_ClipboardURIReceivedFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardURIReceivedFunc)
 	_arg2 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)

@@ -27,7 +27,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -653,7 +653,7 @@ func (connection *DBusConnection) Call(busName string, objectPath string, interf
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg10 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg10 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg11 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
@@ -797,7 +797,7 @@ func (connection *DBusConnection) CallWithUnixFdList(busName string, objectPath 
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 	_arg10 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg11 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg11 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg12 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_call_with_unix_fd_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12)
@@ -921,7 +921,7 @@ func (connection *DBusConnection) Close(cancellable *Cancellable, callback Async
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
@@ -1093,7 +1093,7 @@ func (connection *DBusConnection) Flush(cancellable *Cancellable, callback Async
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
@@ -1407,7 +1407,7 @@ func (connection *DBusConnection) SendMessageWithReply(message *DBusMessage, fla
 	_arg2 = C.GDBusSendMessageFlags(flags)
 	_arg3 = C.gint(timeoutMsec)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_send_message_with_reply(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, _arg6, _arg7)
@@ -4644,7 +4644,7 @@ func (subprocess *Subprocess) CommunicateUTF8Async(stdinBuf string, cancellable 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(stdinBuf)))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_subprocess_communicate_utf8_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -4962,7 +4962,7 @@ func (subprocess *Subprocess) WaitAsync(cancellable *Cancellable, callback Async
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_subprocess_wait_async(_arg0, _arg1, _arg2, _arg3)
@@ -4998,7 +4998,7 @@ func (subprocess *Subprocess) WaitCheckAsync(cancellable *Cancellable, callback 
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_subprocess_wait_check_async(_arg0, _arg1, _arg2, _arg3)

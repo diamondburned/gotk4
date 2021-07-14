@@ -67,8 +67,8 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 // below.
 type KeySnoopFunc func(event *KeyEventStruct, userData cgo.Handle) (gint int)
 
-//export gotk4_KeySnoopFunc
-func gotk4_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
+//export _gotk4_atk1_KeySnoopFunc
+func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

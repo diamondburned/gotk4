@@ -29,8 +29,8 @@ import "C"
 // to have an owner.
 type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string, userData cgo.Handle)
 
-//export gotk4_BusNameAppearedCallback
-func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
+//export _gotk4_gio2_BusNameAppearedCallback
+func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -59,8 +59,8 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // established has been closed. In that case, connection will be NULL.
 type BusNameVanishedCallback func(connection *DBusConnection, name string, userData cgo.Handle)
 
-//export gotk4_BusNameVanishedCallback
-func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+//export _gotk4_gio2_BusNameVanishedCallback
+func _gotk4_gio2_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := gbox.Get(uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)

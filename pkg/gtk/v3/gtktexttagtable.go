@@ -17,7 +17,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_TextTagTableForeach(GtkTextTag*, gpointer);
+// void _gotk4_gtk3_TextTagTableForeach(GtkTextTag*, gpointer);
 import "C"
 
 func init() {
@@ -28,8 +28,8 @@ func init() {
 
 type TextTagTableForeach func(tag *TextTag, data cgo.Handle)
 
-//export gotk4_TextTagTableForeach
-func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
+//export _gotk4_gtk3_TextTagTableForeach
+func _gotk4_gtk3_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -159,7 +159,7 @@ func (table *TextTagTable) Foreach(fn TextTagTableForeach) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextTagTableForeach)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

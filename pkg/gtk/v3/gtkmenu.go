@@ -20,7 +20,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_MenuPositionFunc(GtkMenu*, gint*, gint*, gboolean*, gpointer);
+// void _gotk4_gtk3_MenuPositionFunc(GtkMenu*, gint*, gint*, gboolean*, gpointer);
 import "C"
 
 func init() {
@@ -54,8 +54,8 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 // gtk_menu_set_monitor() must be called.
 type MenuPositionFunc func(menu *Menu, x *int, y *int, userData cgo.Handle) (pushIn bool)
 
-//export gotk4_MenuPositionFunc
-func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
+//export _gotk4_gtk3_MenuPositionFunc
+func _gotk4_gtk3_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -465,7 +465,7 @@ func (menu *Menu) Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn Me
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parentMenuShell).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((parentMenuItem).(gextras.Nativer).Native()))
-	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
+	_arg3 = (*[0]byte)(C._gotk4_gtk3_MenuPositionFunc)
 	_arg4 = C.gpointer(gbox.AssignOnce(fn))
 	_arg5 = C.guint(button)
 	_arg6 = C.guint32(activateTime)

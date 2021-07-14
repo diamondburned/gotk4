@@ -16,7 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
+// void _gotk4_gtk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 import "C"
 
 func init() {
@@ -134,8 +134,8 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 // also serves as destroy notify for data.
 type PageSetupDoneFunc func(pageSetup *PageSetup, data cgo.Handle)
 
-//export gotk4_PageSetupDoneFunc
-func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
+//export _gotk4_gtk4_PageSetupDoneFunc
+func _gotk4_gtk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -193,7 +193,7 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_PageSetupDoneFunc)
+	_arg4 = (*[0]byte)(C._gotk4_gtk4_PageSetupDoneFunc)
 	_arg5 = C.gpointer(gbox.AssignOnce(doneCb))
 
 	C.gtk_print_run_page_setup_dialog_async(_arg1, _arg2, _arg3, _arg4, _arg5)

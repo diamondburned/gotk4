@@ -25,7 +25,7 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -250,7 +250,7 @@ func (interaction *TLSInteraction) AskPasswordAsync(password *TLSPassword, cance
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
 	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(password.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_interaction_ask_password_async(_arg0, _arg1, _arg2, _arg3, _arg4)
@@ -433,7 +433,7 @@ func (interaction *TLSInteraction) RequestCertificateAsync(connection TLSConnect
 	_arg1 = (*C.GTlsConnection)(unsafe.Pointer((connection).(gextras.Nativer).Native()))
 	_arg2 = C.GTlsCertificateRequestFlags(flags)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_tls_interaction_request_certificate_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)

@@ -30,8 +30,8 @@ func init() {
 // should be filtered out, FALSE must be returned.
 type CustomFilterFunc func(item *externglib.Object, userData cgo.Handle) (ok bool)
 
-//export gotk4_CustomFilterFunc
-func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk4_CustomFilterFunc
+func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

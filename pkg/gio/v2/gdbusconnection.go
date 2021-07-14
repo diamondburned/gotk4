@@ -27,15 +27,15 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
-// void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in
 // BusInterfaceVTable.
 type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, userData cgo.Handle) (err error, variant *glib.Variant)
 
-//export gotk4_DBusInterfaceGetPropertyFunc
-func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) (cret *C.GVariant) {
+//export _gotk4_gio2_DBusInterfaceGetPropertyFunc
+func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) (cret *C.GVariant) {
 	v := gbox.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -72,8 +72,8 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 // BusInterfaceVTable.
 type DBusInterfaceMethodCallFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation *DBusMethodInvocation, userData cgo.Handle)
 
-//export gotk4_DBusInterfaceMethodCallFunc
-func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
+//export _gotk4_gio2_DBusInterfaceMethodCallFunc
+func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
 	v := gbox.Get(uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
@@ -113,8 +113,8 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 // BusInterfaceVTable.
 type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, userData cgo.Handle) (err error, ok bool)
 
-//export gotk4_DBusInterfaceSetPropertyFunc
-func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gio2_DBusInterfaceSetPropertyFunc
+func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
@@ -216,8 +216,8 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 // BusCapabilityFlags value obtained from connection.
 type DBusMessageFilterFunction func(connection *DBusConnection, message *DBusMessage, incoming bool, userData cgo.Handle) (dBusMessage *DBusMessage)
 
-//export gotk4_DBusMessageFilterFunction
-func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) (cret *C.GDBusMessage) {
+//export _gotk4_gio2_DBusMessageFilterFunction
+func _gotk4_gio2_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) (cret *C.GDBusMessage) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -247,8 +247,8 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 // g_dbus_connection_signal_subscribe().
 type DBusSignalCallback func(connection *DBusConnection, senderName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant, userData cgo.Handle)
 
-//export gotk4_DBusSignalCallback
-func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
+//export _gotk4_gio2_DBusSignalCallback
+func _gotk4_gio2_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
 	v := gbox.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -288,8 +288,8 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 // object path (ie: it never contains a slash).
 type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender string, objectPath string, interfaceName string, node string, userData cgo.Handle) (outUserData cgo.Handle, dBusInterfaceVTable *DBusInterfaceVTable)
 
-//export gotk4_DBusSubtreeDispatchFunc
-func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) (cret *C.GDBusInterfaceVTable) {
+//export _gotk4_gio2_DBusSubtreeDispatchFunc
+func _gotk4_gio2_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) (cret *C.GDBusInterfaceVTable) {
 	v := gbox.Get(uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
@@ -335,8 +335,8 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // The return value will be freed with g_strfreev().
 type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender string, objectPath string, userData cgo.Handle) (utf8s []string)
 
-//export gotk4_DBusSubtreeEnumerateFunc
-func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret **C.gchar) {
+//export _gotk4_gio2_DBusSubtreeEnumerateFunc
+func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret **C.gchar) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -393,8 +393,8 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 // the empty array case, but not in the NULL case.
 type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender string, objectPath string, node string, userData cgo.Handle) (dBusInterfaceInfos []*DBusInterfaceInfo)
 
-//export gotk4_DBusSubtreeIntrospectFunc
-func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret **C.GDBusInterfaceInfo) {
+//export _gotk4_gio2_DBusSubtreeIntrospectFunc
+func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret **C.GDBusInterfaceInfo) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -442,7 +442,7 @@ func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallba
 
 	_arg1 = C.GBusType(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
@@ -541,7 +541,7 @@ func DBusConnectionNew(stream IOStreamer, guid string, flags DBusConnectionFlags
 	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
@@ -578,7 +578,7 @@ func DBusConnectionNewForAddress(address string, flags DBusConnectionFlags, obse
 	_arg2 = C.GDBusConnectionFlags(flags)
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

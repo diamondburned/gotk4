@@ -31,8 +31,8 @@ func init() {
 // with.
 type MapListModelMapFunc func(item *externglib.Object, userData cgo.Handle) (object *externglib.Object)
 
-//export gotk4_MapListModelMapFunc
-func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
+//export _gotk4_gtk4_MapListModelMapFunc
+func _gotk4_gtk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gpointer) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

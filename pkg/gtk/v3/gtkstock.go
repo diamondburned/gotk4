@@ -24,8 +24,8 @@ type Stock = string
 // Deprecated: since version 3.10.
 type TranslateFunc func(path string, funcData cgo.Handle) (utf8 string)
 
-//export gotk4_TranslateFunc
-func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
+//export _gotk4_gtk3_TranslateFunc
+func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 	v := gbox.Get(uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)

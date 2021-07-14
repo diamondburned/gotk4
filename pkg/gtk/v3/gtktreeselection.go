@@ -18,7 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -32,8 +32,8 @@ func init() {
 // called on every selected row in the view.
 type TreeSelectionForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data cgo.Handle)
 
-//export gotk4_TreeSelectionForeachFunc
-func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
+//export _gotk4_gtk3_TreeSelectionForeachFunc
+func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
 	v := gbox.Get(uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -65,8 +65,8 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 // okay to change the selection.
 type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool, data cgo.Handle) (ok bool)
 
-//export gotk4_TreeSelectionFunc
-func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
+//export _gotk4_gtk3_TreeSelectionFunc
+func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
 	v := gbox.Get(uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -363,7 +363,7 @@ func (selection *TreeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
-	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeSelectionForeachFunc)
 	_arg2 = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_arg2))
 

@@ -1047,6 +1047,34 @@ func (t *TextRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
 
+// Bounds: rectangle giving the bounds of the text range
+func (t *TextRange) Bounds() TextRectangle {
+	var v TextRectangle // out
+	v = *(*TextRectangle)(unsafe.Pointer((&t.native.bounds)))
+	return v
+}
+
+// StartOffset: start offset of a AtkTextRange
+func (t *TextRange) StartOffset() int {
+	var v int // out
+	v = int(t.native.start_offset)
+	return v
+}
+
+// EndOffset: end offset of a AtkTextRange
+func (t *TextRange) EndOffset() int {
+	var v int // out
+	v = int(t.native.end_offset)
+	return v
+}
+
+// Content: text in the text range
+func (t *TextRange) Content() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.content)))
+	return v
+}
+
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
 	native C.AtkTextRectangle
@@ -1055,4 +1083,32 @@ type TextRectangle struct {
 // Native returns the underlying C source pointer.
 func (t *TextRectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// X: horizontal coordinate of a rectangle
+func (t *TextRectangle) X() int {
+	var v int // out
+	v = int(t.native.x)
+	return v
+}
+
+// Y: vertical coordinate of a rectangle
+func (t *TextRectangle) Y() int {
+	var v int // out
+	v = int(t.native.y)
+	return v
+}
+
+// Width: width of a rectangle
+func (t *TextRectangle) Width() int {
+	var v int // out
+	v = int(t.native.width)
+	return v
+}
+
+// Height: height of a rectangle
+func (t *TextRectangle) Height() int {
+	var v int // out
+	v = int(t.native.height)
+	return v
 }

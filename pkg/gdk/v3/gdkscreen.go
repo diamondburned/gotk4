@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,9 +27,6 @@ type Screener interface {
 	ActiveWindow() *Window
 	// Display gets the display to which the screen belongs.
 	Display() *Display
-	// FontOptions gets any options previously set with
-	// gdk_screen_set_font_options().
-	FontOptions() *cairo.FontOptions
 	// Height gets the height of screen in pixels.
 	Height() int
 	// HeightMm returns the height of screen in millimeters.
@@ -87,8 +83,6 @@ type Screener interface {
 	// MakeDisplayName determines the name to pass to gdk_display_open() to get
 	// a Display with this screen as the default screen.
 	MakeDisplayName() string
-	// SetFontOptions sets the default font options for the screen.
-	SetFontOptions(options *cairo.FontOptions)
 	// SetResolution sets the resolution for font handling on the screen.
 	SetResolution(dpi float64)
 }
@@ -168,23 +162,6 @@ func (screen *Screen) Display() *Display {
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
-}
-
-// FontOptions gets any options previously set with
-// gdk_screen_set_font_options().
-func (screen *Screen) FontOptions() *cairo.FontOptions {
-	var _arg0 *C.GdkScreen            // out
-	var _cret *C.cairo_font_options_t // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-
-	_cret = C.gdk_screen_get_font_options(_arg0)
-
-	var _fontOptions *cairo.FontOptions // out
-
-	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
-
-	return _fontOptions
 }
 
 // Height gets the height of screen in pixels. The returned size is in
@@ -663,20 +640,6 @@ func (screen *Screen) MakeDisplayName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// SetFontOptions sets the default font options for the screen. These options
-// will be set on any Context’s newly created with
-// gdk_pango_context_get_for_screen(). Changing the default set of font options
-// does not affect contexts that have already been created.
-func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
-	var _arg0 *C.GdkScreen            // out
-	var _arg1 *C.cairo_font_options_t // out
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
-
-	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This is a

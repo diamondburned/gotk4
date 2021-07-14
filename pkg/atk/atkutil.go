@@ -259,3 +259,65 @@ type KeyEventStruct struct {
 func (k *KeyEventStruct) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
 }
+
+// Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
+// ATK_KEY_EVENT_RELEASE
+func (k *KeyEventStruct) Type() int {
+	var v int // out
+	v = int(k.native._type)
+	return v
+}
+
+// State: bitmask representing the state of the modifier keys immediately after
+// the event takes place. The meaning of the bits is currently defined to match
+// the bitmask used by GDK in GdkEventType.state, see
+// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey
+func (k *KeyEventStruct) State() uint {
+	var v uint // out
+	v = uint(k.native.state)
+	return v
+}
+
+// Keyval: guint representing a keysym value corresponding to those used by GDK
+// and X11: see /usr/X11/include/keysymdef.h.
+func (k *KeyEventStruct) Keyval() uint {
+	var v uint // out
+	v = uint(k.native.keyval)
+	return v
+}
+
+// Length: length of member #string.
+func (k *KeyEventStruct) Length() int {
+	var v int // out
+	v = int(k.native.length)
+	return v
+}
+
+// String: string containing one of the following: either a string approximating
+// the text that would result from this keypress, if the key is a control or
+// graphic character, or a symbolic name for this keypress. Alphanumeric and
+// printable keys will have the symbolic key name in this string member, for
+// instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
+func (k *KeyEventStruct) String() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(k.native.string)))
+	return v
+}
+
+// Keycode: raw hardware code that generated the key event. This field is raraly
+// useful.
+func (k *KeyEventStruct) Keycode() uint16 {
+	var v uint16 // out
+	v = uint16(k.native.keycode)
+	return v
+}
+
+// Timestamp: timestamp in milliseconds indicating when the event occurred.
+// These timestamps are relative to a starting point which should be considered
+// arbitrary, and only used to compare the dispatch times of events to one
+// another.
+func (k *KeyEventStruct) Timestamp() uint32 {
+	var v uint32 // out
+	v = uint32(k.native.timestamp)
+	return v
+}

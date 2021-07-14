@@ -7,10 +7,10 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,26 +60,6 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	fn(cr, attr, doPath, data)
 }
 
-// ContextGetFontOptions retrieves any font rendering options previously set
-// with pangocairo.ContextSetFontOptions().
-//
-// This function does not report options that are derived from the target
-// surface by update_context.
-func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
-	var _arg1 *C.PangoContext         // out
-	var _cret *C.cairo_font_options_t // in
-
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-
-	_cret = C.pango_cairo_context_get_font_options(_arg1)
-
-	var _fontOptions *cairo.FontOptions // out
-
-	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
-
-	return _fontOptions
-}
-
 // ContextGetResolution gets the resolution for the context. See
 // pangocairo.ContextSetResolution()
 func ContextGetResolution(context *pango.Context) float64 {
@@ -95,21 +75,6 @@ func ContextGetResolution(context *pango.Context) float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
-}
-
-// ContextSetFontOptions sets the font options used when rendering text with
-// this context.
-//
-// These options override any options that update_context derives from the
-// target surface.
-func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
-	var _arg1 *C.PangoContext         // out
-	var _arg2 *C.cairo_font_options_t // out
-
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
-
-	C.pango_cairo_context_set_font_options(_arg1, _arg2)
 }
 
 // ContextSetResolution sets the resolution for the context.

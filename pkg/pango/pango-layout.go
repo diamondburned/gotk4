@@ -1799,6 +1799,27 @@ func (l *LayoutLine) Native() unsafe.Pointer {
 	return unsafe.Pointer(&l.native)
 }
 
+// Layout: layout this line belongs to, might be NULL
+func (l *LayoutLine) Layout() *Layout {
+	var v *Layout // out
+	v = wrapLayout(externglib.Take(unsafe.Pointer(l.native.layout)))
+	return v
+}
+
+// StartIndex: start of line as byte index into layout->text
+func (l *LayoutLine) StartIndex() int {
+	var v int // out
+	v = int(l.native.start_index)
+	return v
+}
+
+// Length: length of line in bytes
+func (l *LayoutLine) Length() int {
+	var v int // out
+	v = int(l.native.length)
+	return v
+}
+
 // Extents computes the logical and ink extents of a layout line. See
 // pango.Font.GetGlyphExtents() for details about the interpretation of the
 // rectangles.

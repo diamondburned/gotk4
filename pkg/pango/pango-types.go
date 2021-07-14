@@ -91,3 +91,31 @@ type Rectangle struct {
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
+
+// X coordinate of the left side of the rectangle.
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.native.x)
+	return v
+}
+
+// Y coordinate of the the top side of the rectangle.
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.native.y)
+	return v
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.native.width)
+	return v
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.native.height)
+	return v
+}

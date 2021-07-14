@@ -655,3 +655,10 @@ type RCProperty struct {
 func (r *RCProperty) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
+
+// Origin: field similar to one found in SettingsValue
+func (r *RCProperty) Origin() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.origin)))
+	return v
+}

@@ -53,6 +53,51 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusAnnotationInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Key: name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
+func (d *DBusAnnotationInfo) Key() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.key)))
+	return v
+}
+
+// Value: value of the annotation.
+func (d *DBusAnnotationInfo) Value() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.value)))
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
 // Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusAnnotationInfo) ref() *DBusAnnotationInfo {
@@ -124,6 +169,51 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusArgInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Name of the argument, e.g. unix_user_id.
+func (d *DBusArgInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
+	return v
+}
+
+// Signature d-Bus signature of the argument (a single complete type).
+func (d *DBusArgInfo) Signature() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.signature)))
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
 // Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusArgInfo) ref() *DBusArgInfo {
@@ -169,6 +259,116 @@ func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusInterfaceInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Name: name of the D-Bus interface, e.g. "org.freedesktop.DBus.Properties".
+func (d *DBusInterfaceInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
+	return v
+}
+
+// Methods: pointer to a NULL-terminated array of pointers to BusMethodInfo
+// structures or NULL if there are no methods.
+func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
+	var v []*DBusMethodInfo
+	{
+		var i int
+		var z *C.GDBusMethodInfo
+		for p := d.native.methods; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.methods, i)
+		v = make([]*DBusMethodInfo, i)
+		for i := range src {
+			v[i] = (*DBusMethodInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_method_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusMethodInfo) {
+				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Signals: pointer to a NULL-terminated array of pointers to BusSignalInfo
+// structures or NULL if there are no signals.
+func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
+	var v []*DBusSignalInfo
+	{
+		var i int
+		var z *C.GDBusSignalInfo
+		for p := d.native.signals; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.signals, i)
+		v = make([]*DBusSignalInfo, i)
+		for i := range src {
+			v[i] = (*DBusSignalInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_signal_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusSignalInfo) {
+				C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Properties: pointer to a NULL-terminated array of pointers to BusPropertyInfo
+// structures or NULL if there are no properties.
+func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
+	var v []*DBusPropertyInfo
+	{
+		var i int
+		var z *C.GDBusPropertyInfo
+		for p := d.native.properties; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.properties, i)
+		v = make([]*DBusPropertyInfo, i)
+		for i := range src {
+			v[i] = (*DBusPropertyInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_property_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusPropertyInfo) {
+				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
 }
 
 // CacheBuild builds a lookup-cache to speed up
@@ -321,6 +521,92 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusMethodInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Name: name of the D-Bus method, e.g. RequestName.
+func (d *DBusMethodInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
+	return v
+}
+
+// InArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
+// structures or NULL if there are no in arguments.
+func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
+	var v []*DBusArgInfo
+	{
+		var i int
+		var z *C.GDBusArgInfo
+		for p := d.native.in_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.in_args, i)
+		v = make([]*DBusArgInfo, i)
+		for i := range src {
+			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_arg_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
+				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// OutArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
+// structures or NULL if there are no out arguments.
+func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
+	var v []*DBusArgInfo
+	{
+		var i int
+		var z *C.GDBusArgInfo
+		for p := d.native.out_args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.out_args, i)
+		v = make([]*DBusArgInfo, i)
+		for i := range src {
+			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_arg_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
+				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
 // Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusMethodInfo) ref() *DBusMethodInfo {
@@ -389,6 +675,93 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 // Native returns the underlying C source pointer.
 func (d *DBusNodeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusNodeInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Path: path of the node or NULL if omitted. Note that this may be a relative
+// path. See the D-Bus specification for more details.
+func (d *DBusNodeInfo) Path() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.path)))
+	return v
+}
+
+// Interfaces: pointer to a NULL-terminated array of pointers to
+// BusInterfaceInfo structures or NULL if there are no interfaces.
+func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
+	var v []*DBusInterfaceInfo
+	{
+		var i int
+		var z *C.GDBusInterfaceInfo
+		for p := d.native.interfaces; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.interfaces, i)
+		v = make([]*DBusInterfaceInfo, i)
+		for i := range src {
+			v[i] = (*DBusInterfaceInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_interface_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusInterfaceInfo) {
+				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Nodes: pointer to a NULL-terminated array of pointers to BusNodeInfo
+// structures or NULL if there are no nodes.
+func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
+	var v []*DBusNodeInfo
+	{
+		var i int
+		var z *C.GDBusNodeInfo
+		for p := d.native.nodes; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.nodes, i)
+		v = make([]*DBusNodeInfo, i)
+		for i := range src {
+			v[i] = (*DBusNodeInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_node_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusNodeInfo) {
+				C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
 }
 
 // LookupInterface looks up information about an interface.
@@ -462,6 +835,58 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
 
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusPropertyInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Name: name of the D-Bus property, e.g. "SupportedFilesystems".
+func (d *DBusPropertyInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
+	return v
+}
+
+// Signature d-Bus signature of the property (a single complete type).
+func (d *DBusPropertyInfo) Signature() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.signature)))
+	return v
+}
+
+// Flags access control flags for the property.
+func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
+	var v DBusPropertyInfoFlags // out
+	v = DBusPropertyInfoFlags(d.native.flags)
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
 // Ref: if info is statically allocated does nothing. Otherwise increases the
 // reference count.
 func (info *DBusPropertyInfo) ref() *DBusPropertyInfo {
@@ -507,6 +932,68 @@ func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (d *DBusSignalInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusSignalInfo) RefCount() int {
+	var v int // out
+	v = int(d.native.ref_count)
+	return v
+}
+
+// Name: name of the D-Bus signal, e.g. "NameOwnerChanged".
+func (d *DBusSignalInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.name)))
+	return v
+}
+
+// Args: pointer to a NULL-terminated array of pointers to BusArgInfo structures
+// or NULL if there are no arguments.
+func (d *DBusSignalInfo) Args() []*DBusArgInfo {
+	var v []*DBusArgInfo
+	{
+		var i int
+		var z *C.GDBusArgInfo
+		for p := d.native.args; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.args, i)
+		v = make([]*DBusArgInfo, i)
+		for i := range src {
+			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_arg_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
+				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
+	var v []*DBusAnnotationInfo
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := d.native.annotations; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(d.native.annotations, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
+				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
+			})
+		}
+	}
+	return v
 }
 
 // Ref: if info is statically allocated does nothing. Otherwise increases the

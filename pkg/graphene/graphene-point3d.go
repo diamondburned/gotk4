@@ -52,6 +52,27 @@ func (p *Point3D) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// X coordinate
+func (p *Point3D) X() float32 {
+	var v float32 // out
+	v = float32(p.native.x)
+	return v
+}
+
+// Y coordinate
+func (p *Point3D) Y() float32 {
+	var v float32 // out
+	v = float32(p.native.y)
+	return v
+}
+
+// Z coordinate
+func (p *Point3D) Z() float32 {
+	var v float32 // out
+	v = float32(p.native.z)
+	return v
+}
+
 // Cross computes the cross product of the two given #graphene_point3d_t.
 func (a *Point3D) Cross(b *Point3D) Point3D {
 	var _arg0 *C.graphene_point3d_t // out

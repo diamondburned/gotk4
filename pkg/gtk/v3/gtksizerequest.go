@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime/cgo"
 	"unsafe"
 )
 
@@ -48,4 +49,25 @@ type RequestedSize struct {
 // Native returns the underlying C source pointer.
 func (r *RequestedSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Data: client pointer
+func (r *RequestedSize) Data() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(r.native.data))
+	return v
+}
+
+// MinimumSize: minimum size needed for allocation in a given orientation
+func (r *RequestedSize) MinimumSize() int {
+	var v int // out
+	v = int(r.native.minimum_size)
+	return v
+}
+
+// NaturalSize: natural size for allocation in a given orientation
+func (r *RequestedSize) NaturalSize() int {
+	var v int // out
+	v = int(r.native.natural_size)
+	return v
 }

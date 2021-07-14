@@ -24,7 +24,6 @@ var PkgExceptions = []string{
 // the given Packages list. It is manually updated.
 var PkgGenerated = []string{
 	"atk",
-	"cairo",
 	"gdk",
 	"gdkpixbuf",
 	"gdkpixdata",
@@ -38,6 +37,20 @@ var PkgGenerated = []string{
 	"gtk",
 	"pango",
 	"pangocairo",
+}
+
+// GenerateExceptions contains the keys of the underneath ImportOverrides map.
+var GenerateExceptions = []string{
+	"cairo-1",
+}
+
+// ImportOverrides is the list of imports to defer to another library, usually
+// because it's tedious or impossible to generate.
+//
+// Not included: externglib (gotk3/gotk3/glib).
+var ImportOverrides = map[string]string{
+	// Just manually generate Cairo bindings.
+	"cairo-1": "github.com/gotk3/gotk3/cairo",
 }
 
 // Packages lists pkg-config packages and optionally the namespaces to be
@@ -99,6 +112,12 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.GdkPixbufModule"),
 	AbsoluteFilter("GdkPixbuf.PixbufNonAnim"),
 	AbsoluteFilter("GdkPixbuf.PixbufModulePattern"),
+	AbsoluteFilter("GdkPixbuf.PixbufFormat.domain"),
+	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
+	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
+
+	// TODO: remove this once https://github.com/gotk3/gotk3/pull/804 is merged.
+	AbsoluteFilter("cairo.FontOptions"),
 
 	FileFilter("garray."),
 	FileFilter("gasyncqueue."),

@@ -35,6 +35,20 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Bounds bounds of the rectangle
+func (r *RoundedRect) Bounds() graphene.Rect {
+	var v graphene.Rect // out
+	v = *(*graphene.Rect)(unsafe.Pointer((&r.native.bounds)))
+	return v
+}
+
+// Corner: size of the 4 rounded corners
+func (r *RoundedRect) Corner() [4]graphene.Size {
+	var v [4]graphene.Size
+	v = *(*[4]graphene.Size)(unsafe.Pointer(&r.native.corner))
+	return v
+}
+
 // ContainsPoint checks if the given point is inside the rounded rectangle.
 func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out

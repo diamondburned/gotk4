@@ -30,3 +30,39 @@ type CSSLocation struct {
 func (c *CSSLocation) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
+
+// Bytes: number of bytes parsed since the beginning
+func (c *CSSLocation) Bytes() uint {
+	var v uint // out
+	v = uint(c.native.bytes)
+	return v
+}
+
+// Chars: number of characters parsed since the beginning
+func (c *CSSLocation) Chars() uint {
+	var v uint // out
+	v = uint(c.native.chars)
+	return v
+}
+
+// Lines: number of full lines that have been parsed If you want to display this
+// as a line number, you need to add 1 to this.
+func (c *CSSLocation) Lines() uint {
+	var v uint // out
+	v = uint(c.native.lines)
+	return v
+}
+
+// LineBytes: number of bytes parsed since the last line break
+func (c *CSSLocation) LineBytes() uint {
+	var v uint // out
+	v = uint(c.native.line_bytes)
+	return v
+}
+
+// LineChars: number of characters parsed since the last line break
+func (c *CSSLocation) LineChars() uint {
+	var v uint // out
+	v = uint(c.native.line_chars)
+	return v
+}

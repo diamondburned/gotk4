@@ -370,6 +370,76 @@ func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// DisplayName: UTF-8 encoded string, containing the name of the recently used
+// resource to be displayed, or NULL;
+func (r *RecentData) DisplayName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.display_name)))
+	return v
+}
+
+// Description: UTF-8 encoded string, containing a short description of the
+// resource, or NULL;
+func (r *RecentData) Description() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.description)))
+	return v
+}
+
+// MIMEType: MIME type of the resource;
+func (r *RecentData) MIMEType() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.mime_type)))
+	return v
+}
+
+// AppName: name of the application that is registering this recently used
+// resource;
+func (r *RecentData) AppName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_name)))
+	return v
+}
+
+// AppExec: command line used to launch this resource; may contain the “\f” and
+// “\u” escape characters which will be expanded to the resource file path and
+// URI respectively when the command line is retrieved;
+func (r *RecentData) AppExec() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_exec)))
+	return v
+}
+
+// Groups: vector of strings containing groups names;
+func (r *RecentData) Groups() []string {
+	var v []string
+	{
+		var i int
+		var z *C.gchar
+		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, i+1)[i] {
+			i++
+		}
+
+		src := unsafe.Slice(r.native.groups, i)
+		v = make([]string, i)
+		for i := range src {
+			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
+}
+
+// IsPrivate: whether this resource should be displayed only by the applications
+// that have registered it or not.
+func (r *RecentData) IsPrivate() bool {
+	var v bool // out
+	if r.native.is_private != 0 {
+		v = true
+	}
+	return v
+}
+
 // RecentInfo contains private data only, and should be accessed using the
 // provided API.
 //

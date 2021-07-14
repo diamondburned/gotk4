@@ -455,6 +455,12 @@ func (a *AccelGroupEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+func (a *AccelGroupEntry) Key() AccelKey {
+	var v AccelKey // out
+	v = *(*AccelKey)(unsafe.Pointer((&a.native.key)))
+	return v
+}
+
 type AccelKey struct {
 	native C.GtkAccelKey
 }
@@ -462,4 +468,18 @@ type AccelKey struct {
 // Native returns the underlying C source pointer.
 func (a *AccelKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// AccelKey: accelerator keyval
+func (a *AccelKey) AccelKey() uint {
+	var v uint // out
+	v = uint(a.native.accel_key)
+	return v
+}
+
+// AccelMods: accelerator modifiers
+func (a *AccelKey) AccelMods() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(a.native.accel_mods)
+	return v
 }

@@ -52,6 +52,20 @@ func (s *Size) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
+// Width: width
+func (s *Size) Width() float32 {
+	var v float32 // out
+	v = float32(s.native.width)
+	return v
+}
+
+// Height: height
+func (s *Size) Height() float32 {
+	var v float32 // out
+	v = float32(s.native.height)
+	return v
+}
+
 // Equal checks whether the two give #graphene_size_t are equal.
 func (a *Size) Equal(b *Size) bool {
 	var _arg0 *C.graphene_size_t // out

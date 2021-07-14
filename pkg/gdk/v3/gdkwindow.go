@@ -7,10 +7,10 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -4000,6 +4000,89 @@ func (g *Geometry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// MinWidth: minimum width of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MinWidth() int {
+	var v int // out
+	v = int(g.native.min_width)
+	return v
+}
+
+// MinHeight: minimum height of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MinHeight() int {
+	var v int // out
+	v = int(g.native.min_height)
+	return v
+}
+
+// MaxWidth: maximum width of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MaxWidth() int {
+	var v int // out
+	v = int(g.native.max_width)
+	return v
+}
+
+// MaxHeight: maximum height of window (or -1 to use requisition, with Window
+// only)
+func (g *Geometry) MaxHeight() int {
+	var v int // out
+	v = int(g.native.max_height)
+	return v
+}
+
+// BaseWidth: allowed window widths are base_width + width_inc * N where N is
+// any integer (-1 allowed with Window)
+func (g *Geometry) BaseWidth() int {
+	var v int // out
+	v = int(g.native.base_width)
+	return v
+}
+
+// BaseHeight: allowed window widths are base_height + height_inc * N where N is
+// any integer (-1 allowed with Window)
+func (g *Geometry) BaseHeight() int {
+	var v int // out
+	v = int(g.native.base_height)
+	return v
+}
+
+// WidthInc: width resize increment
+func (g *Geometry) WidthInc() int {
+	var v int // out
+	v = int(g.native.width_inc)
+	return v
+}
+
+// HeightInc: height resize increment
+func (g *Geometry) HeightInc() int {
+	var v int // out
+	v = int(g.native.height_inc)
+	return v
+}
+
+// MinAspect: minimum width/height ratio
+func (g *Geometry) MinAspect() float64 {
+	var v float64 // out
+	v = float64(g.native.min_aspect)
+	return v
+}
+
+// MaxAspect: maximum width/height ratio
+func (g *Geometry) MaxAspect() float64 {
+	var v float64 // out
+	v = float64(g.native.max_aspect)
+	return v
+}
+
+// WinGravity: window gravity, see gtk_window_set_gravity()
+func (g *Geometry) WinGravity() Gravity {
+	var v Gravity // out
+	v = Gravity(g.native.win_gravity)
+	return v
+}
+
 // WindowAttr attributes to use for a newly-created window.
 type WindowAttr struct {
 	native C.GdkWindowAttr
@@ -4008,4 +4091,105 @@ type WindowAttr struct {
 // Native returns the underlying C source pointer.
 func (w *WindowAttr) Native() unsafe.Pointer {
 	return unsafe.Pointer(&w.native)
+}
+
+// Title: title of the window (for toplevel windows)
+func (w *WindowAttr) Title() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.title)))
+	return v
+}
+
+// EventMask: event mask (see gdk_window_set_events())
+func (w *WindowAttr) EventMask() int {
+	var v int // out
+	v = int(w.native.event_mask)
+	return v
+}
+
+// X coordinate relative to parent window (see gdk_window_move())
+func (w *WindowAttr) X() int {
+	var v int // out
+	v = int(w.native.x)
+	return v
+}
+
+// Y coordinate relative to parent window (see gdk_window_move())
+func (w *WindowAttr) Y() int {
+	var v int // out
+	v = int(w.native.y)
+	return v
+}
+
+// Width: width of window
+func (w *WindowAttr) Width() int {
+	var v int // out
+	v = int(w.native.width)
+	return v
+}
+
+// Height: height of window
+func (w *WindowAttr) Height() int {
+	var v int // out
+	v = int(w.native.height)
+	return v
+}
+
+// Wclass (normal window) or K_INPUT_ONLY (invisible window that receives
+// events)
+func (w *WindowAttr) Wclass() WindowWindowClass {
+	var v WindowWindowClass // out
+	v = WindowWindowClass(w.native.wclass)
+	return v
+}
+
+// Visual for window
+func (w *WindowAttr) Visual() *Visual {
+	var v *Visual // out
+	v = wrapVisual(externglib.Take(unsafe.Pointer(w.native.visual)))
+	return v
+}
+
+// WindowType: type of window
+func (w *WindowAttr) WindowType() WindowType {
+	var v WindowType // out
+	v = WindowType(w.native.window_type)
+	return v
+}
+
+// Cursor: cursor for the window (see gdk_window_set_cursor())
+func (w *WindowAttr) Cursor() *Cursor {
+	var v *Cursor // out
+	v = wrapCursor(externglib.Take(unsafe.Pointer(w.native.cursor)))
+	return v
+}
+
+// WmclassName: don’t use (see gtk_window_set_wmclass())
+func (w *WindowAttr) WmclassName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.wmclass_name)))
+	return v
+}
+
+// WmclassClass: don’t use (see gtk_window_set_wmclass())
+func (w *WindowAttr) WmclassClass() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(w.native.wmclass_class)))
+	return v
+}
+
+// OverrideRedirect: TRUE to bypass the window manager
+func (w *WindowAttr) OverrideRedirect() bool {
+	var v bool // out
+	if w.native.override_redirect != 0 {
+		v = true
+	}
+	return v
+}
+
+// TypeHint: hint of the function of the window
+func (w *WindowAttr) TypeHint() WindowTypeHint {
+	var v WindowTypeHint // out
+	v = WindowTypeHint(w.native.type_hint)
+	return v
 }

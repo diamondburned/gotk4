@@ -470,6 +470,20 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
+// X: x coordinate of the point.
+func (p *Point) X() int {
+	var v int // out
+	v = int(p.native.x)
+	return v
+}
+
+// Y: y coordinate of the point.
+func (p *Point) Y() int {
+	var v int // out
+	v = int(p.native.y)
+	return v
+}
+
 // Rectangle defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
@@ -484,6 +498,30 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *Rectangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+func (r *Rectangle) X() int {
+	var v int // out
+	v = int(r.native.x)
+	return v
+}
+
+func (r *Rectangle) Y() int {
+	var v int // out
+	v = int(r.native.y)
+	return v
+}
+
+func (r *Rectangle) Width() int {
+	var v int // out
+	v = int(r.native.width)
+	return v
+}
+
+func (r *Rectangle) Height() int {
+	var v int // out
+	v = int(r.native.height)
+	return v
 }
 
 // Equal checks if the two given rectangles are equal.

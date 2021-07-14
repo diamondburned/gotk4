@@ -187,18 +187,25 @@ func FilterCType(gen FileGenerator, c string) (omit bool) {
 	return Filter(gen, "\x00", c)
 }
 
-// FilterMethod filters a method similarly to Filter.
-func FilterMethod(gen FileGenerator, parent string, method *gir.Method) (omit bool) {
-	girName := strcases.Dots(gen.Namespace().Namespace.Name, parent, method.Name)
-
-	cType := method.CIdentifier
+// FilterSub filters a field or method inside a parent.
+func FilterSub(gen FileGenerator, parent, sub, cType string) (omit bool) {
 	if cType == "" {
 		// If the method is missing a C identifier for some dumb reason, we
 		// should ensure that it will never be matched incorrectly.
 		cType = "\x00"
 	}
-
+	girName := strcases.Dots(gen.Namespace().Namespace.Name, parent, sub)
 	return Filter(gen, girName, cType)
+}
+
+// FilterMethod filters a method similarly to Filter.
+func FilterMethod(gen FileGenerator, parent string, method *gir.Method) (omit bool) {
+	return FilterSub(gen, parent, method.Name, method.CIdentifier)
+}
+
+// FilterField filters a field similarly to Filter.
+func FilterField(gen FileGenerator, parent string, field *gir.Field) (omit bool) {
+	return FilterSub(gen, parent, field.Name, "")
 }
 
 type absoluteFilter struct {

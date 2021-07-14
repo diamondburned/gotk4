@@ -907,6 +907,20 @@ func (a *AttrColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: common portion of the attribute
+func (a *AttrColor) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Color: PangoColor which is the value of the attribute
+func (a *AttrColor) Color() Color {
+	var v Color // out
+	v = *(*Color)(unsafe.Pointer((&a.native.color)))
+	return v
+}
+
 // AttrFloat: PangoAttrFloat structure is used to represent attributes with a
 // float or double value.
 type AttrFloat struct {
@@ -918,6 +932,20 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: common portion of the attribute
+func (a *AttrFloat) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Value: value of the attribute
+func (a *AttrFloat) Value() float64 {
+	var v float64 // out
+	v = float64(a.native.value)
+	return v
+}
+
 // AttrFontDesc: PangoAttrFontDesc structure is used to store an attribute that
 // sets all aspects of the font description at once.
 type AttrFontDesc struct {
@@ -927,6 +955,20 @@ type AttrFontDesc struct {
 // Native returns the underlying C source pointer.
 func (a *AttrFontDesc) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: common portion of the attribute
+func (a *AttrFontDesc) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Desc: font description which is the value of this attribute
+func (a *AttrFontDesc) Desc() *FontDescription {
+	var v *FontDescription // out
+	v = (*FontDescription)(unsafe.Pointer(a.native.desc))
+	return v
 }
 
 // NewAttrFontDesc: create a new font description attribute.
@@ -962,6 +1004,20 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: common portion of the attribute
+func (a *AttrFontFeatures) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Features: featues, as a string in CSS syntax
+func (a *AttrFontFeatures) Features() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.features)))
+	return v
+}
+
 // NewAttrFontFeatures: create a new font features tag attribute.
 func AttrFontFeaturesNew(features string) *Attribute {
 	var _arg1 *C.gchar          // out
@@ -990,6 +1046,20 @@ type AttrInt struct {
 // Native returns the underlying C source pointer.
 func (a *AttrInt) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: common portion of the attribute
+func (a *AttrInt) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Value: value of the attribute
+func (a *AttrInt) Value() int {
+	var v int // out
+	v = int(a.native.value)
+	return v
 }
 
 // AttrIterator: PangoAttrIterator is used to iterate through a PangoAttrList.
@@ -1109,6 +1179,20 @@ type AttrLanguage struct {
 // Native returns the underlying C source pointer.
 func (a *AttrLanguage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: common portion of the attribute
+func (a *AttrLanguage) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Value: PangoLanguage which is the value of the attribute
+func (a *AttrLanguage) Value() *Language {
+	var v *Language // out
+	v = (*Language)(unsafe.Pointer(a.native.value))
+	return v
 }
 
 // NewAttrLanguage: create a new language tag attribute.
@@ -1396,6 +1480,34 @@ func (a *AttrShape) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: common portion of the attribute
+func (a *AttrShape) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// InkRect: ink rectangle to restrict to
+func (a *AttrShape) InkRect() Rectangle {
+	var v Rectangle // out
+	v = *(*Rectangle)(unsafe.Pointer((&a.native.ink_rect)))
+	return v
+}
+
+// LogicalRect: logical rectangle to restrict to
+func (a *AttrShape) LogicalRect() Rectangle {
+	var v Rectangle // out
+	v = *(*Rectangle)(unsafe.Pointer((&a.native.logical_rect)))
+	return v
+}
+
+// Data: user data set (see pango.AttrShape.NewWithData)
+func (a *AttrShape) Data() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(a.native.data))
+	return v
+}
+
 // NewAttrShape: create a new shape attribute.
 //
 // A shape is used to impose a particular ink and logical rectangle on the
@@ -1430,6 +1542,21 @@ type AttrSize struct {
 // Native returns the underlying C source pointer.
 func (a *AttrSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// Attr: common portion of the attribute
+func (a *AttrSize) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Size: size of font, in units of 1/PANGO_SCALE of a point (for
+// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE)
+func (a *AttrSize) Size() int {
+	var v int // out
+	v = int(a.native.size)
+	return v
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
@@ -1481,6 +1608,20 @@ func (a *AttrString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Attr: common portion of the attribute
+func (a *AttrString) Attr() Attribute {
+	var v Attribute // out
+	v = *(*Attribute)(unsafe.Pointer((&a.native.attr)))
+	return v
+}
+
+// Value: string which is the value of the attribute
+func (a *AttrString) Value() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.value)))
+	return v
+}
+
 // Attribute: PangoAttribute structure represents the common portions of all
 // attributes.
 //
@@ -1501,6 +1642,21 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (a *Attribute) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// StartIndex: start index of the range (in bytes).
+func (a *Attribute) StartIndex() uint {
+	var v uint // out
+	v = uint(a.native.start_index)
+	return v
+}
+
+// EndIndex: end index of the range (in bytes). The character at this index is
+// not included in the range.
+func (a *Attribute) EndIndex() uint {
+	var v uint // out
+	v = uint(a.native.end_index)
+	return v
 }
 
 // Copy: make a copy of an attribute.
@@ -1566,6 +1722,27 @@ func marshalColor(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (c *Color) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
+}
+
+// Red: value of red component
+func (c *Color) Red() uint16 {
+	var v uint16 // out
+	v = uint16(c.native.red)
+	return v
+}
+
+// Green: value of green component
+func (c *Color) Green() uint16 {
+	var v uint16 // out
+	v = uint16(c.native.green)
+	return v
+}
+
+// Blue: value of blue component
+func (c *Color) Blue() uint16 {
+	var v uint16 // out
+	v = uint16(c.native.blue)
+	return v
 }
 
 // Copy creates a copy of src.

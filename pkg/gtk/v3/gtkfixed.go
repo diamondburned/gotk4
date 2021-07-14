@@ -153,3 +153,21 @@ type FixedChild struct {
 func (f *FixedChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
+
+func (f *FixedChild) Widget() *Widget {
+	var v *Widget // out
+	v = wrapWidget(externglib.Take(unsafe.Pointer(f.native.widget)))
+	return v
+}
+
+func (f *FixedChild) X() int {
+	var v int // out
+	v = int(f.native.x)
+	return v
+}
+
+func (f *FixedChild) Y() int {
+	var v int // out
+	v = int(f.native.y)
+	return v
+}

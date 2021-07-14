@@ -792,3 +792,17 @@ type TimeCoord struct {
 func (t *TimeCoord) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
+
+// Time: timestamp for this event.
+func (t *TimeCoord) Time() uint32 {
+	var v uint32 // out
+	v = uint32(t.native.time)
+	return v
+}
+
+// Axes values of the device’s axes.
+func (t *TimeCoord) Axes() [128]float64 {
+	var v [128]float64
+	v = *(*[128]float64)(unsafe.Pointer(&t.native.axes))
+	return v
+}

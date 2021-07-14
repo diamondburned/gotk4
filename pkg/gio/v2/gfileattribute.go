@@ -41,6 +41,27 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
+// Name: name of the attribute.
+func (f *FileAttributeInfo) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.name)))
+	return v
+}
+
+// Type type of the attribute.
+func (f *FileAttributeInfo) Type() FileAttributeType {
+	var v FileAttributeType // out
+	v = FileAttributeType(f.native._type)
+	return v
+}
+
+// Flags: set of AttributeInfoFlags.
+func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
+	var v FileAttributeInfoFlags // out
+	v = FileAttributeInfoFlags(f.native.flags)
+	return v
+}
+
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 type FileAttributeInfoList struct {
@@ -72,6 +93,20 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 // Native returns the underlying C source pointer.
 func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
+}
+
+// Infos: array of AttributeInfos.
+func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
+	var v *FileAttributeInfo // out
+	v = (*FileAttributeInfo)(unsafe.Pointer(f.native.infos))
+	return v
+}
+
+// NInfos: number of values in the array.
+func (f *FileAttributeInfoList) NInfos() int {
+	var v int // out
+	v = int(f.native.n_infos)
+	return v
 }
 
 // Add adds a new attribute with name to the list, setting its type and flags.

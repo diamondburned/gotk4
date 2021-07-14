@@ -225,6 +225,7 @@ func (rg *RecordGenerator) methods() []callable.Generator {
 
 		cbgen := callable.NewGenerator(rg.gen)
 		if !cbgen.Use(&method.CallableAttrs) {
+			rg.Logln(logger.Skip, "record", rg.Name, "method", method.Name)
 			continue
 		}
 
@@ -246,30 +247,35 @@ func (rg *RecordGenerator) getters() []recordGetter {
 
 	methodNames := make(map[string]struct{}, len(rg.Methods))
 	for _, method := range rg.Methods {
+		// Fill the name map. The name we get here is the transformed name
+		// (method is a callable.Generator), so we don't have to do it again.
 		methodNames[method.Name] = struct{}{}
+	}
+
+	fieldCollides := func(name string) bool {
+		_, collides := methodNames[strcases.SnakeToGo(true, name)]
+		return collides
 	}
 
 	recv := strcases.FirstLetter(rg.GoName)
 	fields := make([]typeconv.ConversionValue, 0, len(rg.Fields))
 
-fieldLoop:
 	for _, field := range rg.Fields {
 		if ignoreField(&field) || mustIgnoreAny(rg.gen, field.AnyType) {
+			rg.Logln(logger.Debug, "skipping field", field.Name, "after ignoreField")
+			continue
+		}
+		if types.FilterField(rg.gen, rg.Name, &field) {
+			rg.Logln(logger.Skip, "record", rg.Name, "field", field.Name)
 			continue
 		}
 
 		value := typeconv.NewFieldValue(recv, "v", field)
 
-		// Double-heck if we have a method with the existing name.
-		for i := 0; i < 2; i++ {
-			_, collides := methodNames[strcases.SnakeToGo(true, value.Name)]
-			if collides {
-				value.Name = "get_" + value.Name
-			}
-			// After the first prepend, just skip the whole field.
-			if i == 1 {
-				continue fieldLoop
-			}
+		// Double-check if we have a method with the existing name.
+		if fieldCollides(value.Name) {
+			rg.Logln(logger.Debug, "colliding name", value.Name)
+			continue
 		}
 
 		fields = append(fields, value)
@@ -281,6 +287,7 @@ fieldLoop:
 	for i := range fields {
 		converted := converter.Convert(i)
 		if converted == nil {
+			rg.Logln(logger.Skip, "record", rg.Name, "field", fields[i].Name)
 			continue
 		}
 

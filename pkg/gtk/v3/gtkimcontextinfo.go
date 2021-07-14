@@ -22,3 +22,39 @@ type IMContextInfo struct {
 func (i *IMContextInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
+
+// ContextID: unique identification string of the input method.
+func (i *IMContextInfo) ContextID() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.context_id)))
+	return v
+}
+
+// ContextName: human-readable name of the input method.
+func (i *IMContextInfo) ContextName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.context_name)))
+	return v
+}
+
+// Domain: translation domain to be used with dgettext()
+func (i *IMContextInfo) Domain() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain)))
+	return v
+}
+
+// DomainDirname: name of locale directory for use with bindtextdomain()
+func (i *IMContextInfo) DomainDirname() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain_dirname)))
+	return v
+}
+
+// DefaultLocales: colon-separated list of locales where this input method
+// should be the default. The asterisk “*” sets the default for all locales.
+func (i *IMContextInfo) DefaultLocales() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.default_locales)))
+	return v
+}

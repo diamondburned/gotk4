@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/gotk3/gotk3/cairo"
 )
 
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0

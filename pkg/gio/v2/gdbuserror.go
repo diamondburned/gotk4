@@ -187,3 +187,17 @@ type DBusErrorEntry struct {
 func (d *DBusErrorEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
+
+// ErrorCode: error code.
+func (d *DBusErrorEntry) ErrorCode() int {
+	var v int // out
+	v = int(d.native.error_code)
+	return v
+}
+
+// DBusErrorName d-Bus error name to associate with error_code.
+func (d *DBusErrorEntry) DBusErrorName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.dbus_error_name)))
+	return v
+}

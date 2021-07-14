@@ -1186,6 +1186,20 @@ func (a *Attribute) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Name: attribute name.
+func (a *Attribute) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
+	return v
+}
+
+// Value: value of the attribute, represented as a string.
+func (a *Attribute) Value() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.value)))
+	return v
+}
+
 // PropertyValues: note: old_value field of PropertyValues will not contain a
 // valid value. This is a field defined with the purpose of contain the previous
 // value of the property, but is not used anymore.
@@ -1196,4 +1210,11 @@ type PropertyValues struct {
 // Native returns the underlying C source pointer.
 func (p *PropertyValues) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
+}
+
+// PropertyName: name of the ATK property which has changed.
+func (p *PropertyValues) PropertyName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.property_name)))
+	return v
 }

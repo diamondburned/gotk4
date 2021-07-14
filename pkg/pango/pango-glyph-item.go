@@ -42,6 +42,20 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
+// Item: corresponding PangoItem
+func (g *GlyphItem) Item() *Item {
+	var v *Item // out
+	v = (*Item)(unsafe.Pointer(g.native.item))
+	return v
+}
+
+// Glyphs: corresponding PangoGlyphString
+func (g *GlyphItem) Glyphs() *GlyphString {
+	var v *GlyphString // out
+	v = (*GlyphString)(unsafe.Pointer(g.native.glyphs))
+	return v
+}
+
 // Copy: make a deep copy of an existing PangoGlyphItem structure.
 func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
@@ -151,6 +165,54 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (g *GlyphItemIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
+}
+
+func (g *GlyphItemIter) GlyphItem() *GlyphItem {
+	var v *GlyphItem // out
+	v = (*GlyphItem)(unsafe.Pointer(g.native.glyph_item))
+	return v
+}
+
+func (g *GlyphItemIter) Text() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(g.native.text)))
+	return v
+}
+
+func (g *GlyphItemIter) StartGlyph() int {
+	var v int // out
+	v = int(g.native.start_glyph)
+	return v
+}
+
+func (g *GlyphItemIter) StartIndex() int {
+	var v int // out
+	v = int(g.native.start_index)
+	return v
+}
+
+func (g *GlyphItemIter) StartChar() int {
+	var v int // out
+	v = int(g.native.start_char)
+	return v
+}
+
+func (g *GlyphItemIter) EndGlyph() int {
+	var v int // out
+	v = int(g.native.end_glyph)
+	return v
+}
+
+func (g *GlyphItemIter) EndIndex() int {
+	var v int // out
+	v = int(g.native.end_index)
+	return v
+}
+
+func (g *GlyphItemIter) EndChar() int {
+	var v int // out
+	v = int(g.native.end_char)
+	return v
 }
 
 // Copy: make a shallow copy of an existing PangoGlyphItemIter structure.

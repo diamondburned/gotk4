@@ -548,6 +548,35 @@ func (i *InputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
 }
 
+// NumVectors: number of input vectors pointed to by vectors
+func (i *InputMessage) NumVectors() uint {
+	var v uint // out
+	v = uint(i.native.num_vectors)
+	return v
+}
+
+// BytesReceived: will be set to the number of bytes that have been received
+func (i *InputMessage) BytesReceived() uint {
+	var v uint // out
+	v = uint(i.native.bytes_received)
+	return v
+}
+
+// Flags: collection of MsgFlags for the received message, outputted by the call
+func (i *InputMessage) Flags() int {
+	var v int // out
+	v = int(i.native.flags)
+	return v
+}
+
+// NumControlMessages: return location for the number of elements in
+// control_messages
+func (i *InputMessage) NumControlMessages() *uint {
+	var v *uint // out
+	v = (*uint)(unsafe.Pointer(i.native.num_control_messages))
+	return v
+}
+
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -558,6 +587,20 @@ type InputVector struct {
 // Native returns the underlying C source pointer.
 func (i *InputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
+}
+
+// Buffer: pointer to a buffer where data will be written.
+func (i *InputVector) Buffer() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(i.native.buffer))
+	return v
+}
+
+// Size: available size in buffer.
+func (i *InputVector) Size() uint {
+	var v uint // out
+	v = uint(i.native.size)
+	return v
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -576,6 +619,42 @@ func (o *OutputMessage) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
+// Address or NULL
+func (o *OutputMessage) Address() *SocketAddress {
+	var v *SocketAddress // out
+	v = wrapSocketAddress(externglib.Take(unsafe.Pointer(o.native.address)))
+	return v
+}
+
+// Vectors: pointer to an array of output vectors
+func (o *OutputMessage) Vectors() *OutputVector {
+	var v *OutputVector // out
+	v = (*OutputVector)(unsafe.Pointer(o.native.vectors))
+	return v
+}
+
+// NumVectors: number of output vectors pointed to by vectors.
+func (o *OutputMessage) NumVectors() uint {
+	var v uint // out
+	v = uint(o.native.num_vectors)
+	return v
+}
+
+// BytesSent: initialize to 0. Will be set to the number of bytes that have been
+// sent
+func (o *OutputMessage) BytesSent() uint {
+	var v uint // out
+	v = uint(o.native.bytes_sent)
+	return v
+}
+
+// NumControlMessages: number of elements in control_messages.
+func (o *OutputMessage) NumControlMessages() uint {
+	var v uint // out
+	v = uint(o.native.num_control_messages)
+	return v
+}
+
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -586,6 +665,20 @@ type OutputVector struct {
 // Native returns the underlying C source pointer.
 func (o *OutputVector) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
+}
+
+// Buffer: pointer to a buffer of data to read.
+func (o *OutputVector) Buffer() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(o.native.buffer))
+	return v
+}
+
+// Size: size of buffer.
+func (o *OutputVector) Size() uint {
+	var v uint // out
+	v = uint(o.native.size)
+	return v
 }
 
 // Resource applications and libraries often contain binary or textual data that

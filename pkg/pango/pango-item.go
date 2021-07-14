@@ -4,6 +4,7 @@ package pango
 
 import (
 	"runtime"
+	"runtime/cgo"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -30,6 +31,62 @@ type Analysis struct {
 // Native returns the underlying C source pointer.
 func (a *Analysis) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
+}
+
+// ShapeEngine: unused
+func (a *Analysis) ShapeEngine() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(a.native.shape_engine))
+	return v
+}
+
+// LangEngine: unused
+func (a *Analysis) LangEngine() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(a.native.lang_engine))
+	return v
+}
+
+// Font: font for this segment.
+func (a *Analysis) Font() *Font {
+	var v *Font // out
+	v = wrapFont(externglib.Take(unsafe.Pointer(a.native.font)))
+	return v
+}
+
+// Level: bidirectional level for this segment.
+func (a *Analysis) Level() byte {
+	var v byte // out
+	v = byte(a.native.level)
+	return v
+}
+
+// Gravity: glyph orientation for this segment (A PangoGravity).
+func (a *Analysis) Gravity() byte {
+	var v byte // out
+	v = byte(a.native.gravity)
+	return v
+}
+
+// Flags: boolean flags for this segment (Since: 1.16).
+func (a *Analysis) Flags() byte {
+	var v byte // out
+	v = byte(a.native.flags)
+	return v
+}
+
+// Script: detected script for this segment (A PangoScript) (Since: 1.18).
+func (a *Analysis) Script() byte {
+	var v byte // out
+	v = byte(a.native.script)
+	return v
+}
+
+// Language: detected language for this segment.
+func (a *Analysis) Language() *Language {
+	var v *Language // out
+	v = (*Language)(unsafe.Pointer(a.native.language))
+	return v
 }
 
 // Item: PangoItem structure stores information about a segment of text.
@@ -63,6 +120,34 @@ func NewItem() *Item {
 // Native returns the underlying C source pointer.
 func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(&i.native)
+}
+
+// Offset: byte offset of the start of this item in text.
+func (i *Item) Offset() int {
+	var v int // out
+	v = int(i.native.offset)
+	return v
+}
+
+// Length: length of this item in bytes.
+func (i *Item) Length() int {
+	var v int // out
+	v = int(i.native.length)
+	return v
+}
+
+// NumChars: number of Unicode characters in the item.
+func (i *Item) NumChars() int {
+	var v int // out
+	v = int(i.native.num_chars)
+	return v
+}
+
+// Analysis analysis results for the item.
+func (i *Item) Analysis() Analysis {
+	var v Analysis // out
+	v = *(*Analysis)(unsafe.Pointer((&i.native.analysis)))
+	return v
 }
 
 // ApplyAttrs: add attributes to a PangoItem.

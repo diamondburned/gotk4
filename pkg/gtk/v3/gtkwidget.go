@@ -8,13 +8,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -602,8 +602,6 @@ type Widgeter interface {
 	// FontMap gets the font map that has been set with
 	// gtk_widget_set_font_map().
 	FontMap() *pango.FontMap
-	// FontOptions returns the #cairo_font_options_t used for Pango rendering.
-	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
 	FrameClock() *gdk.FrameClock
 	// HAlign gets the value of the Widget:halign property.
@@ -930,9 +928,6 @@ type Widgeter interface {
 	SetFocusOnClick(focusOnClick bool)
 	// SetFontMap sets the font map to use for Pango rendering.
 	SetFontMap(fontMap pango.FontMaper)
-	// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
-	// this widget.
-	SetFontOptions(options *cairo.FontOptions)
 	// SetHAlign sets the horizontal alignment of widget.
 	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on widget to has_tooltip.
@@ -2421,23 +2416,6 @@ func (widget *Widget) FontMap() *pango.FontMap {
 	}
 
 	return _fontMap
-}
-
-// FontOptions returns the #cairo_font_options_t used for Pango rendering. When
-// not set, the defaults font options for the Screen will be used.
-func (widget *Widget) FontOptions() *cairo.FontOptions {
-	var _arg0 *C.GtkWidget            // out
-	var _cret *C.cairo_font_options_t // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	_cret = C.gtk_widget_get_font_options(_arg0)
-
-	var _fontOptions *cairo.FontOptions // out
-
-	_fontOptions = (*cairo.FontOptions)(unsafe.Pointer(_cret))
-
-	return _fontOptions
 }
 
 // FrameClock obtains the frame clock for a widget. The frame clock is a global
@@ -5175,19 +5153,6 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
 	C.gtk_widget_set_font_map(_arg0, _arg1)
 }
 
-// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
-// this widget. When not set, the default font options for the Screen will be
-// used.
-func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.cairo_font_options_t // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options))
-
-	C.gtk_widget_set_font_options(_arg0, _arg1)
-}
-
 // SetHAlign sets the horizontal alignment of widget. See the Widget:halign
 // property.
 func (widget *Widget) SetHAlign(align Align) {
@@ -6111,6 +6076,20 @@ func NewRequisition() *Requisition {
 // Native returns the underlying C source pointer.
 func (r *Requisition) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
+}
+
+// Width widget’s desired width
+func (r *Requisition) Width() int {
+	var v int // out
+	v = int(r.native.width)
+	return v
+}
+
+// Height widget’s desired height
+func (r *Requisition) Height() int {
+	var v int // out
+	v = int(r.native.height)
+	return v
 }
 
 // Copy copies a Requisition.

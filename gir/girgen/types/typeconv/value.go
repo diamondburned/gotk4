@@ -153,7 +153,7 @@ func NewFieldValue(recv, out string, field gir.Field) ConversionValue {
 		InName:         fmt.Sprintf("%s.native.%s", recv, strcases.CGoField(field.Name)),
 		OutName:        out,
 		Direction:      ConvertCToGo,
-		ParameterIndex: UnknownValueIndex,
+		ParameterIndex: ReturnValueIndex,
 		ParameterAttrs: gir.ParameterAttrs{
 			Name:    field.Name,
 			Skip:    field.Private || !field.IsReadable() || field.Bits > 0,

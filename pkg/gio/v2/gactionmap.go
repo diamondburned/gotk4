@@ -211,3 +211,29 @@ type ActionEntry struct {
 func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
+
+// Name: name of the action
+func (a *ActionEntry) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
+	return v
+}
+
+// ParameterType: type of the parameter that must be passed to the activate
+// function for this action, given as a single GVariant type string (or NULL for
+// no parameter)
+func (a *ActionEntry) ParameterType() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.parameter_type)))
+	return v
+}
+
+// State: initial state for this action, given in [GVariant text
+// format][gvariant-text]. The state is parsed with no extra type information,
+// so type tags must be added to the string if they are necessary. Stateless
+// actions should give NULL here.
+func (a *ActionEntry) State() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.state)))
+	return v
+}

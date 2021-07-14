@@ -474,3 +474,24 @@ type TimeCoord struct {
 func (t *TimeCoord) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
+
+// Time: timestamp for this event.
+func (t *TimeCoord) Time() uint32 {
+	var v uint32 // out
+	v = uint32(t.native.time)
+	return v
+}
+
+// Flags indicating what axes are present
+func (t *TimeCoord) Flags() AxisFlags {
+	var v AxisFlags // out
+	v = AxisFlags(t.native.flags)
+	return v
+}
+
+// Axes axis values
+func (t *TimeCoord) Axes() [12]float64 {
+	var v [12]float64
+	v = *(*[12]float64)(unsafe.Pointer(&t.native.axes))
+	return v
+}

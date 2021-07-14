@@ -725,3 +725,17 @@ type DebugKey struct {
 func (d *DebugKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&d.native)
 }
+
+// Key: string
+func (d *DebugKey) Key() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.key)))
+	return v
+}
+
+// Value: flag
+func (d *DebugKey) Value() uint {
+	var v uint // out
+	v = uint(d.native.value)
+	return v
+}

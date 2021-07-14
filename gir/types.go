@@ -30,11 +30,11 @@ type Annotation struct {
 type Array struct {
 	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 array"`
 	Name           string   `xml:"name,attr"`
+	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	Length         *int     `xml:"length,attr"` // ix of .Parameters
 	ZeroTerminated *bool    `xml:"zero-terminated,attr"`
 	FixedSize      int      `xml:"fixed-size,attr"`
 	Introspectable bool     `xml:"introspectable,attr"`
-	Length         *int     `xml:"length,attr"` // ix of .Parameters
-	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
 	AnyType
 }
 

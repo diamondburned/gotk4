@@ -108,6 +108,76 @@ func (s *Scanner) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
 
+// UserData: unused
+func (s *Scanner) UserData() cgo.Handle {
+	var v cgo.Handle // out
+	v = (cgo.Handle)(unsafe.Pointer(s.native.user_data))
+	return v
+}
+
+// MaxParseErrors: unused
+func (s *Scanner) MaxParseErrors() uint {
+	var v uint // out
+	v = uint(s.native.max_parse_errors)
+	return v
+}
+
+// ParseErrors: g_scanner_error() increments this field
+func (s *Scanner) ParseErrors() uint {
+	var v uint // out
+	v = uint(s.native.parse_errors)
+	return v
+}
+
+// InputName: name of input stream, featured by the default message handler
+func (s *Scanner) InputName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.input_name)))
+	return v
+}
+
+// Config: link into the scanner configuration
+func (s *Scanner) Config() *ScannerConfig {
+	var v *ScannerConfig // out
+	v = (*ScannerConfig)(unsafe.Pointer(s.native.config))
+	return v
+}
+
+// Token: token parsed by the last g_scanner_get_next_token()
+func (s *Scanner) Token() TokenType {
+	var v TokenType // out
+	v = TokenType(s.native.token)
+	return v
+}
+
+// Line: line number of the last token from g_scanner_get_next_token()
+func (s *Scanner) Line() uint {
+	var v uint // out
+	v = uint(s.native.line)
+	return v
+}
+
+// Position: char number of the last token from g_scanner_get_next_token()
+func (s *Scanner) Position() uint {
+	var v uint // out
+	v = uint(s.native.position)
+	return v
+}
+
+// NextLine: line number of the last token from g_scanner_peek_next_token()
+func (s *Scanner) NextLine() uint {
+	var v uint // out
+	v = uint(s.native.next_line)
+	return v
+}
+
+// NextPosition: char number of the last token from g_scanner_peek_next_token()
+func (s *Scanner) NextPosition() uint {
+	var v uint // out
+	v = uint(s.native.next_position)
+	return v
+}
+
 // CurLine returns the current line in the input stream (counting from 1). This
 // is the line of the last token parsed via g_scanner_get_next_token().
 func (scanner *Scanner) CurLine() uint {
@@ -389,4 +459,39 @@ type ScannerConfig struct {
 // Native returns the underlying C source pointer.
 func (s *ScannerConfig) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
+}
+
+// CsetSkipCharacters specifies which characters should be skipped by the
+// scanner (the default is the whitespace characters: space, tab,
+// carriage-return and line-feed).
+func (s *ScannerConfig) CsetSkipCharacters() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.cset_skip_characters)))
+	return v
+}
+
+// CsetIdentifierFirst specifies the characters which can start identifiers (the
+// default is CSET_a_2_z, "_", and CSET_A_2_Z).
+func (s *ScannerConfig) CsetIdentifierFirst() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.cset_identifier_first)))
+	return v
+}
+
+// CsetIdentifierNth specifies the characters which can be used in identifiers,
+// after the first character (the default is CSET_a_2_z, "_0123456789",
+// CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
+func (s *ScannerConfig) CsetIdentifierNth() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.cset_identifier_nth)))
+	return v
+}
+
+// CpairCommentSingle specifies the characters at the start and end of
+// single-line comments. The default is "#\n" which means that single-line
+// comments start with a '#' and continue until a '\n' (end of line).
+func (s *ScannerConfig) CpairCommentSingle() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.cpair_comment_single)))
+	return v
 }

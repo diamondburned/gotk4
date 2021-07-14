@@ -413,6 +413,45 @@ func (a *ActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&a.native)
 }
 
+// Name: name of the action.
+func (a *ActionEntry) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
+	return v
+}
+
+// StockID: stock id for the action, or the name of an icon from the icon theme.
+func (a *ActionEntry) StockID() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.stock_id)))
+	return v
+}
+
+// Label: label for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain(). If label is NULL,
+// the label of the stock item with id stock_id is used.
+func (a *ActionEntry) Label() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.label)))
+	return v
+}
+
+// Accelerator: accelerator for the action, in the format understood by
+// gtk_accelerator_parse().
+func (a *ActionEntry) Accelerator() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.accelerator)))
+	return v
+}
+
+// Tooltip: tooltip for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (a *ActionEntry) Tooltip() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.tooltip)))
+	return v
+}
+
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()
 // to construct groups of radio actions.
 //
@@ -426,6 +465,52 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
+// Name: name of the action.
+func (r *RadioActionEntry) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.name)))
+	return v
+}
+
+// StockID: stock id for the action, or the name of an icon from the icon theme.
+func (r *RadioActionEntry) StockID() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.stock_id)))
+	return v
+}
+
+// Label: label for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (r *RadioActionEntry) Label() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.label)))
+	return v
+}
+
+// Accelerator: accelerator for the action, in the format understood by
+// gtk_accelerator_parse().
+func (r *RadioActionEntry) Accelerator() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.accelerator)))
+	return v
+}
+
+// Tooltip: tooltip for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (r *RadioActionEntry) Tooltip() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.tooltip)))
+	return v
+}
+
+// Value: value to set on the radio action. See
+// gtk_radio_action_get_current_value().
+func (r *RadioActionEntry) Value() int {
+	var v int // out
+	v = int(r.native.value)
+	return v
+}
+
 // ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
 // to construct toggle actions.
 //
@@ -437,4 +522,51 @@ type ToggleActionEntry struct {
 // Native returns the underlying C source pointer.
 func (t *ToggleActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
+}
+
+// Name: name of the action.
+func (t *ToggleActionEntry) Name() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.name)))
+	return v
+}
+
+// StockID: stock id for the action, or the name of an icon from the icon theme.
+func (t *ToggleActionEntry) StockID() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.stock_id)))
+	return v
+}
+
+// Label: label for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (t *ToggleActionEntry) Label() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.label)))
+	return v
+}
+
+// Accelerator: accelerator for the action, in the format understood by
+// gtk_accelerator_parse().
+func (t *ToggleActionEntry) Accelerator() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.accelerator)))
+	return v
+}
+
+// Tooltip: tooltip for the action. This field should typically be marked for
+// translation, see gtk_action_group_set_translation_domain().
+func (t *ToggleActionEntry) Tooltip() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.tooltip)))
+	return v
+}
+
+// IsActive: initial state of the toggle action.
+func (t *ToggleActionEntry) IsActive() bool {
+	var v bool // out
+	if t.native.is_active != 0 {
+		v = true
+	}
+	return v
 }

@@ -40,9 +40,15 @@ func StringSet(strs ...[]string) map[string]struct{} {
 	return set
 }
 
-// ModulePath crafts the full module path from the given base module path.
-func ModulePath(module string) func(*gir.Namespace) string {
+// ModulePath crafts the full module path from the given base module path. If
+// the overrides map is given, then the function will use that as the list of
+// special cases.
+func ModulePath(module string, overrides map[string]string) func(*gir.Namespace) string {
 	return func(namespace *gir.Namespace) string {
+		if path, ok := overrides[gir.VersionedNamespace(namespace)]; ok {
+			return path
+		}
+
 		modulePath := path.Join(module, gir.GoPackageName(namespace.Name))
 		if version := MajorVersion(namespace); version > 1 {
 			modulePath = path.Join(modulePath, fmt.Sprintf("v%d", version))
@@ -124,16 +130,31 @@ func LoadPackages(pkgs []gendata.Package) (gir.Repositories, error) {
 
 // GenerateAll generates all namespaces inside the given generator into the
 // given dst path. It uses WriteNamespace to do so. The namespaces will be
-// generated in parallel.
-func GenerateAll(gen *girgen.Generator, dst string) []error {
+// generated in parallel. If a versioned namespace is in the except slice, then
+// it is skipped.
+func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 	sema := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(-1)))
 	var wg sync.WaitGroup
+
+	exemptions := StringSet(except)
 
 	var errMut sync.Mutex
 	var errors []error
 
 	for _, repo := range gen.Repositories() {
 		for _, namespace := range repo.Namespaces {
+			str := gir.VersionedNamespace(&namespace)
+			log.Println(str)
+		}
+	}
+
+	for _, repo := range gen.Repositories() {
+		for _, namespace := range repo.Namespaces {
+			_, exempted := exemptions[gir.VersionedNamespace(&namespace)]
+			if exempted {
+				continue
+			}
+
 			ng := gen.UseNamespace(namespace.Name, namespace.Version)
 			if ng == nil {
 				log.Fatalln("cannot find namespace", namespace.Name, "v"+namespace.Version)

@@ -205,3 +205,11 @@ type SettingsValue struct {
 func (s *SettingsValue) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
 }
+
+// Origin should be something like “filename:linenumber” for rc files, or e.g.
+// “XProperty” for other sources.
+func (s *SettingsValue) Origin() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.origin)))
+	return v
+}

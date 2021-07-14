@@ -348,3 +348,38 @@ type FileFilterInfo struct {
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
+
+// Contains flags indicating which of the following fields need are filled
+func (f *FileFilterInfo) Contains() FileFilterFlags {
+	var v FileFilterFlags // out
+	v = FileFilterFlags(f.native.contains)
+	return v
+}
+
+// Filename: filename of the file being tested
+func (f *FileFilterInfo) Filename() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.filename)))
+	return v
+}
+
+// URI for the file being tested
+func (f *FileFilterInfo) URI() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.uri)))
+	return v
+}
+
+// DisplayName: string that will be used to display the file in the file chooser
+func (f *FileFilterInfo) DisplayName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.display_name)))
+	return v
+}
+
+// MIMEType: mime type of the file
+func (f *FileFilterInfo) MIMEType() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(f.native.mime_type)))
+	return v
+}

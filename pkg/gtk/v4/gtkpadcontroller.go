@@ -201,3 +201,40 @@ type PadActionEntry struct {
 func (p *PadActionEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
+
+// Type: type of pad feature that will trigger this action entry.
+func (p *PadActionEntry) Type() PadActionType {
+	var v PadActionType // out
+	v = PadActionType(p.native._type)
+	return v
+}
+
+// Index: 0-indexed button/ring/strip number that will trigger this action
+// entry.
+func (p *PadActionEntry) Index() int {
+	var v int // out
+	v = int(p.native.index)
+	return v
+}
+
+// Mode: mode that will trigger this action entry, or -1 for all modes.
+func (p *PadActionEntry) Mode() int {
+	var v int // out
+	v = int(p.native.mode)
+	return v
+}
+
+// Label: human readable description of this action entry, this string should be
+// deemed user-visible.
+func (p *PadActionEntry) Label() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.label)))
+	return v
+}
+
+// ActionName: action name that will be activated in the Group.
+func (p *PadActionEntry) ActionName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.action_name)))
+	return v
+}

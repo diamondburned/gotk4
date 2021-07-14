@@ -12,6 +12,7 @@ import (
 
 // #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
@@ -72,6 +73,13 @@ func (b *BindingArg) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// ArgType: implementation detail
+func (b *BindingArg) ArgType() externglib.Type {
+	var v externglib.Type // out
+	v = externglib.Type(b.native.arg_type)
+	return v
+}
+
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
@@ -81,6 +89,48 @@ type BindingEntry struct {
 // Native returns the underlying C source pointer.
 func (b *BindingEntry) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
+}
+
+// Keyval: key value to match
+func (b *BindingEntry) Keyval() uint {
+	var v uint // out
+	v = uint(b.native.keyval)
+	return v
+}
+
+// Modifiers: key modifiers to match
+func (b *BindingEntry) Modifiers() gdk.ModifierType {
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(b.native.modifiers)
+	return v
+}
+
+// BindingSet: binding set this entry belongs to
+func (b *BindingEntry) BindingSet() *BindingSet {
+	var v *BindingSet // out
+	v = (*BindingSet)(unsafe.Pointer(b.native.binding_set))
+	return v
+}
+
+// SetNext: linked list of entries maintained by binding set
+func (b *BindingEntry) SetNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
+	return v
+}
+
+// HashNext: implementation detail
+func (b *BindingEntry) HashNext() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
+	return v
+}
+
+// Signals: action signals of this entry
+func (b *BindingEntry) Signals() *BindingSignal {
+	var v *BindingSignal // out
+	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
+	return v
 }
 
 // BindingEntryAddSignalFromString parses a signal description from signal_desc
@@ -158,6 +208,34 @@ func (b *BindingSet) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
 }
 
+// SetName: unique name of this binding set
+func (b *BindingSet) SetName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(b.native.set_name)))
+	return v
+}
+
+// Priority: unused
+func (b *BindingSet) Priority() int {
+	var v int // out
+	v = int(b.native.priority)
+	return v
+}
+
+// Entries: key binding entries in this binding set
+func (b *BindingSet) Entries() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.native.entries))
+	return v
+}
+
+// Current: implementation detail
+func (b *BindingSet) Current() *BindingEntry {
+	var v *BindingEntry // out
+	v = (*BindingEntry)(unsafe.Pointer(b.native.current))
+	return v
+}
+
 // Activate: find a key binding matching keyval and modifiers within binding_set
 // and activate the binding on object.
 func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *externglib.Object) bool {
@@ -231,4 +309,25 @@ type BindingSignal struct {
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
+}
+
+// Next: implementation detail
+func (b *BindingSignal) Next() *BindingSignal {
+	var v *BindingSignal // out
+	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
+	return v
+}
+
+// SignalName: action signal to be emitted
+func (b *BindingSignal) SignalName() string {
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(b.native.signal_name)))
+	return v
+}
+
+// NArgs: number of arguments specified for the signal
+func (b *BindingSignal) NArgs() uint {
+	var v uint // out
+	v = uint(b.native.n_args)
+	return v
 }

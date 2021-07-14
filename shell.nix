@@ -16,9 +16,13 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 			go = super.go.overrideAttrs (old: {
 				version = "1.17beta1";
 				src = builtins.fetchurl {
-				    url    = "https://dl.google.com/go/go1.17beta1.src.tar.gz";
-					sha256 = "1w3m3p7b09cwakjxk7zn28ingjpnr3l7cmc6amcm9g7r4lvrgf02";
+					url    = "https://golang.org/dl/go1.17rc1.linux-arm64.tar.gz";
+					sha256 = "sha256:0kps5kw9yymxawf57ps9xivqrkx2p60bpmkisahr8jl1rqkf963l";
 				};
+				# postInstall = (old.postInstall or "") + ''
+				# 	echo "Building std as shared library"
+				# 	$out/bin/go install -buildmode=shared -linkshared std
+				# '';
 				doCheck = false;
 			});
 			gopls = self.buildGoModule rec {
@@ -88,7 +92,18 @@ in unstable.mkShell.override { stdenv = unstable.ccacheStdenv; } {
 
 			# minitime is a mini-output time wrapper.
 			(sh "minitime" "command time --format $'%C -> %es\\n' \"$@\"")
+			# Alias for gocopy.
+			# (sh "gocopy" "exec $TMP/gocopy/${unstable.go.version}/go/bin/go \"$@\"")
 		];
+
+	# shellHook = ''
+	# 	[[ ! -d $TMP/gocopy/${unstable.go.version} ]] && {
+	# 		rm -rf $TMP/gocopy/${unstable.go.version}
+	# 		mkdir -p $TMP/gocopy/${unstable.go.version}
+	# 		cp -rf ${unstable.go}/share/go $TMP/gocopy/${unstable.go.version}
+	# 		chmod u+wx -R $TMP/gocopy/${unstable.go.version}
+	# 	}
+	# '';
 
 	CGO_ENABLED = "1";
 

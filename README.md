@@ -5,6 +5,7 @@
 A GTK4 bindings generator for Go.
 
 [Package documentation](https://pkg.go.dev/github.com/diamondburned/gotk4/pkg) |
+[Package examples](https://github.com/diamondburned/gotk4-examples) |
 [GIR documentation](https://pkg.go.dev/github.com/diamondburned/gotk4/gir) |
 [Progress tracker](https://github.com/diamondburned/gotk4/issues/2)
 
@@ -12,16 +13,16 @@ All generated packages are in `pkg/`. The generation code is in `gir/girgen/`.
 At the moment, the repository depends on gotk3's GLib. This may change in the
 future.
 
+As of the time this README was written, `gotk4/pkg/gtk4` is ready to be used for
+most purposes. However, memory leaks and sometimes crashes may occur in certain
+parts of the API, while other parts might be completely missing. In that case,
+an issue should be opened.
+
+`gotk4/pkg/gtk3` is currently not usable, since `gtk.Init()` is not generated.
+
 ## Contributing to gotk4
 
 For contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-## Wishes
-
-- I wish I generated models first before generating functions
-- I wish I used a registry of converted model types with their respective Go
-  names to ease translation
-- I wish I used common struct types that share names and such.
 
 ## License
 

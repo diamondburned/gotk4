@@ -81,6 +81,22 @@ func init() {
 	initPascalPostReplacer()
 }
 
+// AddPascalSpecials adds the given list of regexes into the list of cases that
+// will be fully capitalized during case conversion to Go.
+func AddPascalSpecials(regexes []string) {
+	pascalSpecials = append(pascalSpecials, regexes...)
+	initPascalRegex()
+}
+
+// SetPascalWords sets the given map of words to be replaced after the pascal
+// specials stage as a method of fixing edge cases.
+func SetPascalWords(words map[string]string) {
+	for from, to := range words {
+		pascalWords[from] = to
+	}
+	initPascalPostReplacer()
+}
+
 // Dots is a helper function to join strings in dots for debugging.
 func Dots(parts ...string) string {
 	nonEmptyParts := parts[:0]

@@ -36,11 +36,11 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 	return _ok
 }
 
-// HostnameIsIpAddress tests if hostname is the string form of an IPv4 or IPv6
+// HostnameIsIPAddress tests if hostname is the string form of an IPv4 or IPv6
 // address. (Eg, "192.168.0.1".)
 //
 // Since 2.66, IPv6 addresses with a zone-id are accepted (RFC6874).
-func HostnameIsIpAddress(hostname string) bool {
+func HostnameIsIPAddress(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
 

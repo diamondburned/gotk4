@@ -21,6 +21,7 @@ const (
 	_ ConversionDirection = iota
 	ConvertGoToC
 	ConvertCToGo
+	ConvertGoToCToGo
 )
 
 // ConversionValueIndex describes an overloaded index type that reserves its
@@ -198,7 +199,7 @@ func (value *ConversionValue) IsZero() bool {
 // ParameterIsOutput returns true if the direction is out.
 func (value *ConversionValue) ParameterIsOutput() bool {
 	switch value.ParameterAttrs.Direction {
-	case "out":
+	case "out", "inout":
 		return true
 	case "in":
 		return false
@@ -293,7 +294,8 @@ type ValueConverted struct {
 	In  ValueName
 	Out ValueName
 
-	Conversion string
+	Conversion     string
+	PostConversion string // only for two-stage conversions
 
 	// internal states
 	Resolved       *types.Resolved // only for type conversions
@@ -322,6 +324,13 @@ type ValueName struct {
 }
 
 func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
+	switch value.Direction {
+	case ConvertCToGo, ConvertGoToC, ConvertGoToCToGo:
+		// ok
+	default:
+		log.Panicf("unknown conversion direction %v", value.Direction)
+	}
+
 	return ValueConverted{
 		ConversionValue: *value,
 		In: ValueName{
@@ -414,11 +423,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 
 	cgoType := value.Resolved.CGoType()
 
-	if value.Direction == ConvertCToGo {
+	switch value.Direction {
+	case ConvertCToGo:
 		value.In.Type = cgoType
 		// Go output can be the implementation type.
 		value.Out.Type = value.Resolved.ImplType(value.NeedsNamespace)
-	} else {
+
+	case ConvertGoToC, ConvertGoToCToGo:
 		value.Out.Type = cgoType
 		if !value.KeepType && value.Resolved.IsAbstract() {
 			value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
@@ -444,6 +455,9 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		case ConvertGoToC:
 			value.Out.Set = "*" + value.Out.Set
 			value.Out.Type = strings.TrimPrefix(value.Out.Type, "*")
+		case ConvertGoToCToGo: // in is Go, out is C
+			value.In.Call = "&" + value.In.Call
+			value.In.Type = strings.TrimPrefix(value.In.Type, "*")
 		}
 	}
 
@@ -557,8 +571,8 @@ func (value *ValueConverted) logPrefix() string {
 		prefix = fmt.Sprintf("C %s -> Go %s", value.InName, value.OutName)
 	case ConvertGoToC:
 		prefix = fmt.Sprintf("Go %s -> C %s", value.InName, value.OutName)
-	default:
-		return ""
+	case ConvertGoToCToGo:
+		prefix = fmt.Sprintf("Go %s -> C %s -> Go", value.InName, value.OutName)
 	}
 
 	if value.Resolved != nil {
@@ -579,7 +593,7 @@ func (value *ValueConverted) isPtr(wantC int) bool {
 	switch value.Direction {
 	case ConvertCToGo:
 		return strings.Count(value.In.Type, "*") == wantC
-	case ConvertGoToC:
+	case ConvertGoToC, ConvertGoToCToGo: // TODO: doubt
 		return strings.Count(value.Out.Type, "*") == wantC
 	default:
 		return false
@@ -643,8 +657,11 @@ func (value *ValueConverted) OutInPtr(want int) string {
 func (value *ValueConverted) OutPtr(want int) string {
 	has := strings.Count(value.Out.Type, "*")
 	// Account for gpointer.
-	if value.Direction == ConvertGoToC && value.Resolved.IsGpointer() {
-		has++
+	if value.Resolved.IsGpointer() {
+		switch value.Direction {
+		case ConvertGoToC, ConvertGoToCToGo:
+			has++
+		}
 	}
 
 	ptr := value._ptr(want, has)

@@ -171,7 +171,7 @@ type IconViewer interface {
 	TooltipColumn() int
 	// TooltipContext: this function is supposed to be used in a
 	// Widget::query-tooltip signal handler for IconView.
-	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
+	TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
 	// VisibleRange sets start_path and end_path to be the first and last
 	// visible path.
 	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
@@ -921,10 +921,10 @@ func (iconView *IconView) TooltipColumn() int {
 // and iter which have been provided will be set to point to that row and the
 // corresponding model. x and y will always be converted to be relative to
 // icon_view’s bin_window if keyboard_tooltip is FALSE.
-func (iconView *IconView) TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
+func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkIconView  // out
-	var _arg1 *C.gint         // out
-	var _arg2 *C.gint         // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
 	var _arg3 C.gboolean      // out
 	var _arg4 *C.GtkTreeModel // in
 	var _path *TreePath
@@ -932,8 +932,8 @@ func (iconView *IconView) TooltipContext(x *int, y *int, keyboardTip bool) (*Tre
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.gint)(unsafe.Pointer(x))
-	_arg2 = (*C.gint)(unsafe.Pointer(y))
+	*_arg1 = C.gint(x)
+	*_arg2 = C.gint(y)
 	if keyboardTip {
 		_arg3 = C.TRUE
 	}

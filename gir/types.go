@@ -292,6 +292,7 @@ type ParameterAttrs struct {
 	Closure         *int   `xml:"closure,attr"`
 	Destroy         *int   `xml:"destroy,attr"`
 	CallerAllocates bool   `xml:"caller-allocates,attr"`
+	CalleeAllocates bool   `xml:"callee-allocates,attr"`
 	Skip            bool   `xml:"skip,attr"`
 	Nullable        bool   `xml:"nullable,attr"`
 	Optional        bool   `xml:"optional,attr"`

@@ -871,16 +871,16 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; notifications do not have menus, but can have buttons, and
 // actions associated with each button.
-func StatusIconPositionMenu(menu *Menu, x *int, y *int, userData *StatusIcon) bool {
+func StatusIconPositionMenu(menu *Menu, x int, y int, userData *StatusIcon) bool {
 	var _arg1 *C.GtkMenu // out
-	var _arg2 *C.gint    // out
-	var _arg3 *C.gint    // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
 	var _arg4 C.gboolean // in
 	var _arg5 C.gpointer // out
 
 	_arg1 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg2 = (*C.gint)(unsafe.Pointer(x))
-	_arg3 = (*C.gint)(unsafe.Pointer(y))
+	*_arg2 = C.gint(x)
+	*_arg3 = C.gint(y)
 	_arg5 = C.gpointer(unsafe.Pointer(userData.Native()))
 
 	C.gtk_status_icon_position_menu(_arg1, _arg2, _arg3, &_arg4, _arg5)

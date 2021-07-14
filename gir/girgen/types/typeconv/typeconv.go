@@ -70,11 +70,14 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 			return nil
 		}
 
-		if value.ParameterAttrs.Direction == "out" && !types.AnyTypeIsPtr(value.AnyType) {
-			// Output direction but not pointer parameter is invalid; bail.
-			conv.Logln(logger.Debug,
-				"value type", types.AnyTypeC(value.AnyType), "is output but no ptr")
-			return nil
+		switch value.ParameterAttrs.Direction {
+		case "out", "inout":
+			if !types.AnyTypeIsPtr(value.AnyType) {
+				// Output direction but not pointer parameter is invalid; bail.
+				conv.Logln(logger.Debug,
+					"value type", types.AnyTypeC(value.AnyType), "is output but no ptr")
+				return nil
+			}
 		}
 
 		// Only skip the parameter's closure index if the parameter itself is
@@ -114,7 +117,7 @@ func (conv *Converter) CCallParams() []string {
 
 	for _, result := range conv.results {
 		switch result.Direction {
-		case ConvertGoToC:
+		case ConvertGoToC, ConvertGoToCToGo:
 			params = append(params, result.Out.Call)
 		case ConvertCToGo:
 			if result.ParameterIsOutput() {
@@ -220,7 +223,7 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 			result.fail = true
 			return false
 		}
-	case ConvertGoToC:
+	case ConvertGoToC, ConvertGoToCToGo:
 		if !conv.gocConvert(result) || result.fail {
 			conv.Logln(logger.Debug, "Go->C cannot convert type", types.AnyTypeC(result.AnyType))
 			result.fail = true
@@ -229,6 +232,14 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 	default:
 		log.Panicf("unknown conversion direction %d", result.Direction)
 		return false
+	}
+
+	if result.Direction == ConvertGoToCToGo {
+		if !conv.cgoConvert(result) || result.fail {
+			conv.Logln(logger.Debug, "C->Go cannot convert type", types.AnyTypeC(result.AnyType))
+			result.fail = true
+			return false
+		}
 	}
 
 	if !result.Optional {

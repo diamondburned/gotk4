@@ -467,6 +467,9 @@ type Widgeter interface {
 	CreatePangoLayout(text string) *pango.Layout
 	// Destroy destroys a widget.
 	Destroy()
+	// Destroyed: this function sets *widget_pointer to NULL if widget_pointer
+	// != NULL.
+	Destroyed(widgetPointer Widgeter)
 	// DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+
 	// device grab on another widget, so it would stop sending events to widget.
 	DeviceIsShadowed(device gdk.Devicer) bool
@@ -1502,6 +1505,22 @@ func (widget *Widget) Destroy() {
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_widget_destroy(_arg0)
+}
+
+// Destroyed: this function sets *widget_pointer to NULL if widget_pointer !=
+// NULL. It’s intended to be used as a callback connected to the “destroy”
+// signal of a widget. You connect gtk_widget_destroyed() as a signal handler,
+// and pass the address of your widget variable as user data. Then when the
+// widget is destroyed, the variable will be set to NULL. Useful for example to
+// avoid multiple copies of the same dialog.
+func (widget *Widget) Destroyed(widgetPointer Widgeter) {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	*_arg1 = (*C.GtkWidget)(unsafe.Pointer((widgetPointer).(gextras.Nativer).Native()))
+
+	C.gtk_widget_destroyed(_arg0, _arg1)
 }
 
 // DeviceIsShadowed returns TRUE if device has been shadowed by a GTK+ device

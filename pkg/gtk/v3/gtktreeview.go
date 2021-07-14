@@ -377,7 +377,7 @@ type TreeViewer interface {
 	TooltipColumn() int
 	// TooltipContext: this function is supposed to be used in a
 	// Widget::query-tooltip signal handler for TreeView.
-	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
+	TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
 	// VAdjustment gets the Adjustment currently being used for the vertical
 	// aspect.
 	VAdjustment() *Adjustment
@@ -1554,10 +1554,10 @@ func (treeView *TreeView) TooltipColumn() int {
 // and iter which have been provided will be set to point to that row and the
 // corresponding model. x and y will always be converted to be relative to
 // tree_view’s bin_window if keyboard_tooltip is FALSE.
-func (treeView *TreeView) TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
+func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkTreeView  // out
-	var _arg1 *C.gint         // out
-	var _arg2 *C.gint         // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
 	var _arg3 C.gboolean      // out
 	var _arg4 *C.GtkTreeModel // in
 	var _path *TreePath
@@ -1565,8 +1565,8 @@ func (treeView *TreeView) TooltipContext(x *int, y *int, keyboardTip bool) (*Tre
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
-	_arg1 = (*C.gint)(unsafe.Pointer(x))
-	_arg2 = (*C.gint)(unsafe.Pointer(y))
+	*_arg1 = C.gint(x)
+	*_arg2 = C.gint(y)
 	if keyboardTip {
 		_arg3 = C.TRUE
 	}

@@ -52,6 +52,17 @@ type ApplicationOverrider interface {
 	DBusRegister(connection *DBusConnection, objectPath string) error
 	DBusUnregister(connection *DBusConnection, objectPath string)
 	HandleLocalOptions(options *glib.VariantDict) int
+	// LocalCommandLine: this virtual function is always invoked in the local
+	// instance. It gets passed a pointer to a NULL-terminated copy of argv and
+	// is expected to remove arguments that it handled (shifting up remaining
+	// arguments).
+	//
+	// The last argument to local_command_line() is a pointer to the status
+	// variable which can used to set the exit status that is returned from
+	// g_application_run().
+	//
+	// See g_application_run() for more details on #GApplication startup.
+	LocalCommandLine(arguments []string) (int, bool)
 	NameLost() bool
 	// Open opens the given files.
 	//

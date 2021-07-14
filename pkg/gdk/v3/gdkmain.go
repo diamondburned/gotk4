@@ -153,6 +153,64 @@ func GetProgramClass() string {
 	return _utf8
 }
 
+// Init initializes the GDK library and connects to the windowing system. If
+// initialization fails, a warning message is output and the application
+// terminates with a call to exit(1).
+//
+// Any arguments used by GDK are removed from the array and argc and argv are
+// updated accordingly.
+//
+// GTK+ initializes GDK in gtk_init() and so this function is not usually needed
+// by GTK+ applications.
+func Init(argv []string) {
+	var _arg2 ***C.gchar
+	var _arg1 C.gint
+
+	*_arg1 = (C.gint)(len(argv))
+	_arg2 = (***C.gchar)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.gchar)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	C.gdk_init(_arg1, _arg2)
+}
+
+// InitCheck initializes the GDK library and connects to the windowing system,
+// returning TRUE on success.
+//
+// Any arguments used by GDK are removed from the array and argc and argv are
+// updated accordingly.
+//
+// GTK+ initializes GDK in gtk_init() and so this function is not usually needed
+// by GTK+ applications.
+func InitCheck(argv []string) bool {
+	var _arg2 ***C.gchar
+	var _arg1 C.gint
+	var _cret C.gboolean // in
+
+	*_arg1 = (C.gint)(len(argv))
+	_arg2 = (***C.gchar)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.gchar)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	_cret = C.gdk_init_check(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // KeyboardGrab grabs the keyboard so that all events are passed to this
 // application until the keyboard is ungrabbed with gdk_keyboard_ungrab(). This
 // overrides any previous keyboard grab by this client.
@@ -218,6 +276,30 @@ func NotifyStartupCompleteWithID(startupId string) {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
 
 	C.gdk_notify_startup_complete_with_id(_arg1)
+}
+
+// ParseArgs: parse command line arguments, and store for future use by calls to
+// gdk_display_open().
+//
+// Any arguments used by GDK are removed from the array and argc and argv are
+// updated accordingly.
+//
+// You shouldn’t call this function explicitly if you are using gtk_init(),
+// gtk_init_check(), gdk_init(), or gdk_init_check().
+func ParseArgs(argv []string) {
+	var _arg2 ***C.gchar
+	var _arg1 C.gint
+
+	*_arg1 = (C.gint)(len(argv))
+	_arg2 = (***C.gchar)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.gchar)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	C.gdk_parse_args(_arg1, _arg2)
 }
 
 // PointerGrab grabs the pointer (usually a mouse) so that all events are passed

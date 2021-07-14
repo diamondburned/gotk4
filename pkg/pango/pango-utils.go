@@ -198,14 +198,59 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 //
 // Care is taken to make sure thickness is at least one pixel when this function
 // returns, but returned position may become zero as a result of rounding.
-func QuantizeLineGeometry(thickness *int, position *int) {
-	var _arg1 *C.int // out
-	var _arg2 *C.int // out
+func QuantizeLineGeometry(thickness int, position int) {
+	var _arg1 C.int // out
+	var _arg2 C.int // out
 
-	_arg1 = (*C.int)(unsafe.Pointer(thickness))
-	_arg2 = (*C.int)(unsafe.Pointer(position))
+	*_arg1 = C.int(thickness)
+	*_arg2 = C.int(position)
 
 	C.pango_quantize_line_geometry(_arg1, _arg2)
+}
+
+// ScanInt scans an integer.
+//
+// Leading white space is skipped.
+//
+// Deprecated: since version 1.38.
+func ScanInt(pos string) (int, bool) {
+	var _arg1 *C.char    // out
+	var _arg2 C.int      // in
+	var _cret C.gboolean // in
+
+	*_arg1 = (*C.char)(unsafe.Pointer(C.CString(pos)))
+
+	_cret = C.pango_scan_int(_arg1, &_arg2)
+
+	var _out int // out
+	var _ok bool // out
+
+	_out = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _out, _ok
+}
+
+// SkipSpace skips 0 or more characters of white space.
+//
+// Deprecated: since version 1.38.
+func SkipSpace(pos string) bool {
+	var _arg1 *C.char    // out
+	var _cret C.gboolean // in
+
+	*_arg1 = (*C.char)(unsafe.Pointer(C.CString(pos)))
+
+	_cret = C.pango_skip_space(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,

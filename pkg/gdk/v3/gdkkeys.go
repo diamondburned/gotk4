@@ -183,6 +183,9 @@ func UnicodeToKeyval(wc uint32) uint {
 
 // Keymaper describes Keymap's methods.
 type Keymaper interface {
+	// AddVirtualModifiers maps the non-virtual modifiers (i.e Mod2, Mod3, ...)
+	// which are set in state to the virtual modifiers (i.e.
+	AddVirtualModifiers(state ModifierType)
 	// CapsLockState returns whether the Caps Lock modifer is locked.
 	CapsLockState() bool
 	// Direction returns the direction of effective layout of the keymap.
@@ -206,6 +209,8 @@ type Keymaper interface {
 	HaveBidiLayouts() bool
 	// LookupKey looks up the keyval mapped to a keycode/group/level triplet.
 	LookupKey(key *KeymapKey) uint
+	// MapVirtualModifiers maps the virtual modifiers (i.e.
+	MapVirtualModifiers(state ModifierType) bool
 	// TranslateKeyboardState translates the contents of a EventKey into a
 	// keyval, effective group, and level.
 	TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
@@ -236,6 +241,25 @@ func marshalKeymaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapKeymap(obj), nil
+}
+
+// AddVirtualModifiers maps the non-virtual modifiers (i.e Mod2, Mod3, ...)
+// which are set in state to the virtual modifiers (i.e. Super, Hyper and Meta)
+// and set the corresponding bits in state.
+//
+// GDK already does this before delivering key events, but for compatibility
+// reasons, it only sets the first virtual modifier it finds, whereas this
+// function sets all matching virtual modifiers.
+//
+// This function is useful when matching key events against accelerators.
+func (keymap *Keymap) AddVirtualModifiers(state ModifierType) {
+	var _arg0 *C.GdkKeymap      // out
+	var _arg1 C.GdkModifierType // out
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	*_arg1 = C.GdkModifierType(state)
+
+	C.gdk_keymap_add_virtual_modifiers(_arg0, _arg1)
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.
@@ -456,6 +480,30 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// MapVirtualModifiers maps the virtual modifiers (i.e. Super, Hyper and Meta)
+// which are set in state to their non-virtual counterparts (i.e. Mod2,
+// Mod3,...) and set the corresponding bits in state.
+//
+// This function is useful when matching key events against accelerators.
+func (keymap *Keymap) MapVirtualModifiers(state ModifierType) bool {
+	var _arg0 *C.GdkKeymap      // out
+	var _arg1 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
+	*_arg1 = C.GdkModifierType(state)
+
+	_cret = C.gdk_keymap_map_virtual_modifiers(_arg0, _arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // TranslateKeyboardState translates the contents of a EventKey into a keyval,

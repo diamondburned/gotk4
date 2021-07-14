@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -402,6 +403,123 @@ func GrabGetCurrent() *Widget {
 	return _widget
 }
 
+// Init: call this function before using any other GTK+ functions in your GUI
+// applications. It will initialize everything needed to operate the toolkit and
+// parses some standard command line options.
+//
+// Although you are expected to pass the argc, argv parameters from main() to
+// this function, it is possible to pass NULL if argv is not available or
+// commandline handling is not required.
+//
+// argc and argv are adjusted accordingly so your own code will never see those
+// standard arguments.
+//
+// Note that there are some alternative ways to initialize GTK+: if you are
+// calling gtk_parse_args(), gtk_init_check(), gtk_init_with_args() or
+// g_option_context_parse() with the option group returned by
+// gtk_get_option_group(), you don’t have to call gtk_init().
+//
+// And if you are using Application, you don't have to call any of the
+// initialization functions either; the Application::startup handler does it for
+// you.
+//
+// This function will terminate your program if it was unable to initialize the
+// windowing system for some reason. If you want your program to fall back to a
+// textual interface you want to call gtk_init_check() instead.
+//
+// Since 2.18, GTK+ calls signal (SIGPIPE, SIG_IGN) during initialization, to
+// ignore SIGPIPE signals, since these are almost never wanted in graphical
+// applications. If you do need to handle SIGPIPE for some reason, reset the
+// handler after gtk_init(), but notice that other libraries (e.g. libdbus or
+// gvfs) might do similar things.
+func Init(argv []string) {
+	var _arg2 ***C.char
+	var _arg1 C.int
+
+	*_arg1 = (C.int)(len(argv))
+	_arg2 = (***C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.char)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	C.gtk_init(_arg1, _arg2)
+}
+
+// InitCheck: this function does the same work as gtk_init() with only a single
+// change: It does not terminate the program if the commandline arguments
+// couldn’t be parsed or the windowing system can’t be initialized. Instead it
+// returns FALSE on failure.
+//
+// This way the application can fall back to some other means of communication
+// with the user - for example a curses or command line interface.
+//
+// Note that calling any GTK function or instantiating any GTK type after this
+// function returns FALSE results in undefined behavior.
+func InitCheck(argv []string) bool {
+	var _arg2 ***C.char
+	var _arg1 C.int
+	var _cret C.gboolean // in
+
+	*_arg1 = (C.int)(len(argv))
+	_arg2 = (***C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.char)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	_cret = C.gtk_init_check(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// InitWithArgs: this function does the same work as gtk_init_check().
+// Additionally, it allows you to add your own commandline options, and it
+// automatically generates nicely formatted --help output. Note that your
+// program will be terminated after writing out the help output.
+func InitWithArgs(argv []string, parameterString string, entries []glib.OptionEntry, translationDomain string) error {
+	var _arg2 ***C.gchar
+	var _arg1 C.gint
+	var _arg3 *C.gchar // out
+	var _arg4 *C.GOptionEntry
+	var _arg5 *C.gchar  // out
+	var _cerr *C.GError // in
+
+	*_arg1 = (C.gint)(len(argv))
+	_arg2 = (***C.gchar)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.gchar)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.gchar)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
+	{
+		var zero glib.OptionEntry
+		entries = append(entries, zero)
+		_arg4 = (*C.GOptionEntry)(unsafe.Pointer(&entries[0]))
+	}
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(translationDomain)))
+
+	C.gtk_init_with_args(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+
+	var _goerr error // out
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // KeySnooperRemove removes the key snooper function with the given id.
 //
 // Deprecated: Key snooping should not be done. Events should be handled by
@@ -479,6 +597,44 @@ func MainLevel() uint {
 // regains control.
 func MainQuit() {
 	C.gtk_main_quit()
+}
+
+// ParseArgs parses command line arguments, and initializes global attributes of
+// GTK+, but does not actually open a connection to a display. (See
+// gdk_display_open(), gdk_get_display_arg_name())
+//
+// Any arguments used by GTK+ or GDK are removed from the array and argc and
+// argv are updated accordingly.
+//
+// There is no need to call this function explicitly if you are using
+// gtk_init(), or gtk_init_check().
+//
+// Note that many aspects of GTK+ require a display connection to function, so
+// this way of initializing GTK+ is really only useful for specialized use
+// cases.
+func ParseArgs(argv []string) bool {
+	var _arg2 ***C.char
+	var _arg1 C.int
+	var _cret C.gboolean // in
+
+	*_arg1 = (C.int)(len(argv))
+	_arg2 = (***C.char)(C.malloc(C.ulong(len(argv)) * C.ulong(unsafe.Sizeof(uint(0)))))
+	{
+		out := unsafe.Slice((**C.char)(_arg2), len(argv))
+		for i := range argv {
+			*out[i] = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
+		}
+	}
+
+	_cret = C.gtk_parse_args(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // True: all this function does it to return TRUE.

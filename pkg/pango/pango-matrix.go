@@ -172,14 +172,14 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 // transforms to the same vector. If (x1,y1) transforms to (x2,y2) then
 // (x1+dx1,y1+dy1) will transform to (x1+dx2,y1+dy2) for all values of x1 and
 // x2.
-func (matrix *Matrix) TransformDistance(dx *float64, dy *float64) {
+func (matrix *Matrix) TransformDistance(dx float64, dy float64) {
 	var _arg0 *C.PangoMatrix // out
-	var _arg1 *C.double      // out
-	var _arg2 *C.double      // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
-	_arg1 = (*C.double)(unsafe.Pointer(dx))
-	_arg2 = (*C.double)(unsafe.Pointer(dy))
+	*_arg1 = C.double(dx)
+	*_arg2 = C.double(dy)
 
 	C.pango_matrix_transform_distance(_arg0, _arg1, _arg2)
 }
@@ -194,25 +194,25 @@ func (matrix *Matrix) TransformDistance(dx *float64, dy *float64) {
 // For better accuracy, you should use pango.Matrix.TransformRectangle() on
 // original rectangle in Pango units and convert to pixels afterward using
 // extents_to_pixels's first argument.
-func (matrix *Matrix) TransformPixelRectangle(rect *Rectangle) {
-	var _arg0 *C.PangoMatrix    // out
-	var _arg1 *C.PangoRectangle // out
+func (matrix *Matrix) TransformPixelRectangle(rect Rectangle) {
+	var _arg0 *C.PangoMatrix   // out
+	var _arg1 C.PangoRectangle // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
-	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect))
+	*_arg1 = *(*C.PangoRectangle)(unsafe.Pointer((&rect)))
 
 	C.pango_matrix_transform_pixel_rectangle(_arg0, _arg1)
 }
 
 // TransformPoint transforms the point (x, y) by matrix.
-func (matrix *Matrix) TransformPoint(x *float64, y *float64) {
+func (matrix *Matrix) TransformPoint(x float64, y float64) {
 	var _arg0 *C.PangoMatrix // out
-	var _arg1 *C.double      // out
-	var _arg2 *C.double      // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
-	_arg1 = (*C.double)(unsafe.Pointer(x))
-	_arg2 = (*C.double)(unsafe.Pointer(y))
+	*_arg1 = C.double(x)
+	*_arg2 = C.double(y)
 
 	C.pango_matrix_transform_point(_arg0, _arg1, _arg2)
 }
@@ -234,12 +234,12 @@ func (matrix *Matrix) TransformPoint(x *float64, y *float64) {
 // may want to convert to pixels first and then transform, for example when the
 // transformed coordinates may overflow in Pango units (large matrix translation
 // for example).
-func (matrix *Matrix) TransformRectangle(rect *Rectangle) {
-	var _arg0 *C.PangoMatrix    // out
-	var _arg1 *C.PangoRectangle // out
+func (matrix *Matrix) TransformRectangle(rect Rectangle) {
+	var _arg0 *C.PangoMatrix   // out
+	var _arg1 C.PangoRectangle // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
-	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect))
+	*_arg1 = *(*C.PangoRectangle)(unsafe.Pointer((&rect)))
 
 	C.pango_matrix_transform_rectangle(_arg0, _arg1)
 }

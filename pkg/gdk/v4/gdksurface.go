@@ -83,7 +83,7 @@ type Surfacer interface {
 	// SetOpaqueRegion marks a region of the GdkSurface as opaque.
 	SetOpaqueRegion(region *cairo.Region)
 	// TranslateCoordinates translates coordinates between two surfaces.
-	TranslateCoordinates(to Surfacer, x *float64, y *float64) bool
+	TranslateCoordinates(to Surfacer, x float64, y float64) bool
 }
 
 // Surface: GdkSurface is a rectangular region on the screen.
@@ -619,17 +619,17 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 //
 // Note that this only works if to and from are popups or transient-for to the
 // same toplevel (directly or indirectly).
-func (from *Surface) TranslateCoordinates(to Surfacer, x *float64, y *float64) bool {
+func (from *Surface) TranslateCoordinates(to Surfacer, x float64, y float64) bool {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out
-	var _arg2 *C.double     // out
-	var _arg3 *C.double     // out
+	var _arg2 C.double      // out
+	var _arg3 C.double      // out
 	var _cret C.gboolean    // in
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(from.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer((to).(gextras.Nativer).Native()))
-	_arg2 = (*C.double)(unsafe.Pointer(x))
-	_arg3 = (*C.double)(unsafe.Pointer(y))
+	*_arg2 = C.double(x)
+	*_arg3 = C.double(y)
 
 	_cret = C.gdk_surface_translate_coordinates(_arg0, _arg1, _arg2, _arg3)
 

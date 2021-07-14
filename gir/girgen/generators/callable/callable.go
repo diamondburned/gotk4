@@ -188,6 +188,10 @@ func (g *Generator) renderBlock() bool {
 				in = fmt.Sprintf("_arg%d", i+1)
 				out = "_" + strcases.SnakeToGo(false, param.Name)
 				dir = typeconv.ConvertCToGo
+			case "inout":
+				in = strcases.SnakeToGo(false, param.Name)
+				out = fmt.Sprintf("_arg%d", i+1)
+				dir = typeconv.ConvertGoToCToGo
 			default:
 				return false
 			}
@@ -256,6 +260,17 @@ func (g *Generator) renderBlock() bool {
 			g.pen.Line(secInputDecl, converted.Out.Declare)
 			// Conversions follow right after declaring all outputs.
 			g.pen.Line(secInputConv, converted.Conversion)
+
+		case typeconv.ConvertGoToCToGo:
+			g.GoArgs.Addf("%s %s", converted.InName, converted.In.Type)
+			g.GoRets.Addf("%sOut %s", converted.InName, converted.In.Type)
+
+			// Return the input variable, since its length may change.
+			goReturns.Add(converted.InName)
+
+			g.pen.Line(secInputDecl, converted.Out.Declare)
+			g.pen.Line(secInputConv, converted.Conversion)
+			g.pen.Line(secOutputConv, converted.PostConversion)
 
 		case typeconv.ConvertCToGo: // return
 			// decoOut is the name that's used solely for documentation

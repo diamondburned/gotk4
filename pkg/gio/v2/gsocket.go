@@ -120,7 +120,7 @@ type Socketer interface {
 	// Listen marks the socket as a server socket, i.e.
 	Listen() error
 	// ReceiveMessage: receive data from a socket.
-	ReceiveMessage(vectors []InputVector, flags *int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error)
+	ReceiveMessage(vectors []InputVector, flags int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error)
 	// ReceiveMessages: receive multiple data messages from socket in one go.
 	ReceiveMessages(messages []InputMessage, flags int, cancellable *Cancellable) (int, error)
 	// Send tries to send size bytes from buffer on the socket.
@@ -1194,14 +1194,14 @@ func (socket *Socket) Listen() error {
 // available, wait for the G_IO_IN condition.
 //
 // On error -1 is returned and error is set accordingly.
-func (socket *Socket) ReceiveMessage(vectors []InputVector, flags *int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error) {
+func (socket *Socket) ReceiveMessage(vectors []InputVector, flags int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // in
 	var _arg2 *C.GInputVector
 	var _arg3 C.gint
 	var _arg4 **C.GSocketControlMessage
 	var _arg5 C.gint          // in
-	var _arg6 *C.gint         // out
+	var _arg6 C.gint          // out
 	var _arg7 *C.GCancellable // out
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
@@ -1211,7 +1211,7 @@ func (socket *Socket) ReceiveMessage(vectors []InputVector, flags *int, cancella
 	if len(vectors) > 0 {
 		_arg2 = (*C.GInputVector)(unsafe.Pointer(&vectors[0]))
 	}
-	_arg6 = (*C.gint)(unsafe.Pointer(flags))
+	*_arg6 = C.gint(flags)
 	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_receive_message(_arg0, &_arg1, _arg2, _arg3, &_arg4, &_arg5, _arg6, _arg7, &_cerr)

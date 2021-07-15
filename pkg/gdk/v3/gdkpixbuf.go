@@ -32,7 +32,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	var _arg5 C.gint             // out
 	var _cret *C.GdkPixbuf       // in
 
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 	_arg2 = C.gint(srcX)
 	_arg3 = C.gint(srcY)
 	_arg4 = C.gint(width)

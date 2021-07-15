@@ -671,7 +671,6 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
 	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
-	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
 		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
 	})

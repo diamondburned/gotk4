@@ -183,7 +183,6 @@ func (self *Transform) ref() *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(unsafe.Pointer(_cret))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
 	})

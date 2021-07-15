@@ -120,7 +120,7 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 	var _arg1 *C.cairo_t       // out
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gsk_render_node_draw(_arg0, _arg1)
 }

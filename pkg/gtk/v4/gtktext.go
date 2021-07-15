@@ -291,7 +291,6 @@ func (self *Text) Attributes() *pango.AttrList {
 	var _attrList *pango.AttrList // out
 
 	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
-	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})

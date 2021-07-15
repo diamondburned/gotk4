@@ -838,7 +838,6 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _markupParseContext *glib.MarkupParseContext // out
 
 	_markupParseContext = (*glib.MarkupParseContext)(unsafe.Pointer(_cret))
-	C.g_markup_parse_context_ref(_cret)
 	runtime.SetFinalizer(_markupParseContext, func(v *glib.MarkupParseContext) {
 		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
 	})

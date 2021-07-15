@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -98,7 +99,7 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkDrawContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_draw_context_begin_frame(_arg0, _arg1)
 }
@@ -154,7 +155,13 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _region
 }

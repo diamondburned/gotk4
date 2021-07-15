@@ -140,7 +140,6 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	var _transform *gsk.Transform // out
 
 	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
 	})

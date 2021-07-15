@@ -61,7 +61,7 @@ func DrawInsertionCursor(widget Widgeter, cr *cairo.Context, location *gdk.Recta
 	var _arg6 C.gboolean         // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(location))
 	if isPrimary {
 		_arg4 = C.TRUE
@@ -86,7 +86,7 @@ func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, 
 	var _arg7 C.PangoDirection   // out
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 	_arg5 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
@@ -627,7 +627,6 @@ func (context *StyleContext) Path() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
@@ -730,7 +729,6 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
-	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
 	})
@@ -876,7 +874,6 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})

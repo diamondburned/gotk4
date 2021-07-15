@@ -286,9 +286,10 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int, scale
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _surface
@@ -1418,7 +1419,6 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})

@@ -139,9 +139,22 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 		return nil
 	}
 
-	resolvedImport := ResolvedImport{
-		Path:    gen.ModPath(result.Namespace),
-		Package: gir.GoNamespace(result.Namespace),
+	var resolvedImport ResolvedImport
+	var ignoreOpaque bool
+
+	switch result.Namespace.Name {
+	case "cairo":
+		// gotk3/cairo structs already contain a pointer.
+		ignoreOpaque = true
+		resolvedImport = ResolvedImport{
+			Path:    "github.com/gotk3/gotk3/cairo",
+			Package: "cairo",
+		}
+	default:
+		resolvedImport = ResolvedImport{
+			Path:    gen.ModPath(result.Namespace),
+			Package: gir.GoNamespace(result.Namespace),
+		}
 	}
 
 	ptr := countPtrs(typ, result)
@@ -153,7 +166,7 @@ func typeFromResult(gen FileGenerator, typ gir.Type, result *gir.TypeFindResult)
 	// Always use internal types (like GVariant) by reference and not value,
 	// since Go will refuse to allocate them.
 	if record, ok := result.Type.(*gir.Record); ok {
-		if RecordIsOpaque(*record) && ptr == 0 {
+		if !ignoreOpaque && RecordIsOpaque(*record) && ptr == 0 {
 			ptr++
 		}
 	}

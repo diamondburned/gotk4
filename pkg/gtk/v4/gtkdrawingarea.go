@@ -46,9 +46,10 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 	var height int               // out
 
 	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
-	cr = (*cairo.Context)(unsafe.Pointer(arg1))
+	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
+	C.cairo_reference(arg1)
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 	width = int(arg2)
 	height = int(arg3)

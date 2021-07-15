@@ -397,7 +397,6 @@ func (task *Task) Context() *glib.MainContext {
 	var _mainContext *glib.MainContext // out
 
 	_mainContext = (*glib.MainContext)(unsafe.Pointer(_cret))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *glib.MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})

@@ -556,7 +556,7 @@ func (cell *CellRenderer) Render(cr *cairo.Context, widget Widgeter, backgroundA
 	var _arg5 C.GtkCellRendererState // out
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))

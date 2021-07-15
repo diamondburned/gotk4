@@ -160,7 +160,6 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _symbolicColor *SymbolicColor // out
 
 	_symbolicColor = (*SymbolicColor)(unsafe.Pointer(_cret))
-	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
 		C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(unsafe.Pointer(v)))
 	})
@@ -365,16 +364,25 @@ func (gradient *Gradient) ref() *Gradient {
 func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
 	var _arg0 *C.GtkGradient        // out
 	var _arg1 *C.GtkStyleProperties // out
-	var _resolvedGradient *cairo.Pattern
-	var _cret C.gboolean // in
+	var _arg2 *C.cairo_pattern_t    // in
+	var _cret C.gboolean            // in
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(gradient))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
-	_cret = C.gtk_gradient_resolve(_arg0, _arg1, (**C.cairo_pattern_t)(unsafe.Pointer(&_resolvedGradient)))
+	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _resolvedGradient *cairo.Pattern // out
+	var _ok bool                         // out
 
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
+		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(v))
+	}
+	C.cairo_pattern_reference(_arg2)
+	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -394,9 +402,13 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 
 	var _pattern *cairo.Pattern // out
 
-	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pattern = (*cairo.Pattern)(unsafe.Pointer(v))
+	}
+	C.cairo_pattern_reference(_cret)
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _pattern

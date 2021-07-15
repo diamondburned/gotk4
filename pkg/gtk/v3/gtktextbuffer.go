@@ -681,7 +681,6 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
-	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
@@ -922,7 +921,6 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
-	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})

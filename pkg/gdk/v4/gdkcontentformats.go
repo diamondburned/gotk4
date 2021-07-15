@@ -122,7 +122,6 @@ func (builder *ContentFormatsBuilder) ref() *ContentFormatsBuilder {
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
 	_contentFormatsBuilder = (*ContentFormatsBuilder)(unsafe.Pointer(_cret))
-	C.gdk_content_formats_builder_ref(_cret)
 	runtime.SetFinalizer(_contentFormatsBuilder, func(v *ContentFormatsBuilder) {
 		C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(unsafe.Pointer(v)))
 	})

@@ -627,7 +627,7 @@ func (container *Container) PropagateDraw(child Widgeter, cr *cairo.Context) {
 
 	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gtk_container_propagate_draw(_arg0, _arg1, _arg2)
 }

@@ -384,7 +384,6 @@ func (self *Bitset) ref() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(unsafe.Pointer(_cret))
-	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
 	})

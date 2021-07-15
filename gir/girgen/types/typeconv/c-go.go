@@ -332,7 +332,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	// Resolve special-case GLib types.
-	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
+	switch name := types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name); name {
 	case "GObject.Type", "GType":
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
@@ -360,6 +360,64 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		return value.cgoSetObject(conv)
+
+	// These 4 cairo structs are found when grep -R-ing the codebase.
+	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
+		var ref string
+		var unref string
+
+		value.header.Import("unsafe")
+		value.header.Import("runtime")
+
+		switch name {
+		case "cairo.Context":
+			ref = "cairo_reference"
+			unref = "cairo_destroy"
+			value.p.Linef(
+				"%s = cairo.WrapContext(uintptr(unsafe.Pointer(%s)))",
+				value.Out.Set, value.InNamePtr(1),
+			)
+
+		case "cairo.Surface":
+			ref = "cairo_surface_reference"
+			unref = "cairo_surface_destroy"
+			value.p.Linef(
+				"%s = cairo.WrapSurface(uintptr(unsafe.Pointer(%s)))",
+				value.Out.Set, value.InNamePtr(1),
+			)
+
+		case "cairo.Pattern":
+			ref = "cairo_pattern_reference"
+			unref = "cairo_pattern_destroy"
+			value.p.Descend()
+			// Hack to fit the Pattern type.
+			value.p.Linef("v := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(v))", value.Out.Set)
+			value.p.Ascend()
+
+		case "cairo.Region":
+			ref = "cairo_region_reference"
+			unref = "cairo_region_destroy"
+			value.p.Descend()
+			// Hack to fit the Region type.
+			value.p.Linef("v := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(v))", value.Out.Set)
+			value.p.Ascend()
+		}
+
+		// MustRealloc can also be used to check if we need to take a reference:
+		// instead of reallocating, we take our own reference.
+		if value.MustRealloc() {
+			value.p.Linef("C.%s(%s)", ref, value.InNamePtr(1))
+		}
+
+		value.p.Linef("runtime.SetFinalizer(%s%s, func(v %s%s) {",
+			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
+		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
+			unref, value.InPtr(1), value.In.Type)
+		value.p.Linef("})")
+
+		return true
 	}
 
 	// TODO: function
@@ -410,7 +468,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		var unref bool
 
 		if ref := types.RecordHasRef(v); ref != nil && value.Resolved.Ptr > 0 {
-			value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
+			// MustRealloc can also be used to check if we need to take a
+			// reference: instead of reallocating, we take our own reference.
+			if value.MustRealloc() {
+				value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
+			}
 			unref = true
 			free = types.RecordHasUnref(v)
 		} else {

@@ -119,7 +119,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
 	_cret = C.gtk_cairo_should_draw_window(_arg1, _arg2)
@@ -146,7 +146,7 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgeter, window gdk.Windo
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
 
@@ -1639,7 +1639,6 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
-	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
@@ -1843,7 +1842,6 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	_targetList = (*TargetList)(unsafe.Pointer(_cret))
-	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
 	})
@@ -1975,7 +1973,7 @@ func (widget *Widget) Draw(cr *cairo.Context) {
 	var _arg1 *C.cairo_t   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gtk_widget_draw(_arg0, _arg1)
 }
@@ -2907,7 +2905,6 @@ func (widget *Widget) GetPath() *WidgetPath {
 	var _widgetPath *WidgetPath // out
 
 	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
-	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
 	})
@@ -3968,7 +3965,7 @@ func (widget *Widget) InputShapeCombineRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gtk_widget_input_shape_combine_region(_arg0, _arg1)
 }
@@ -4651,7 +4648,7 @@ func (widget *Widget) QueueDrawRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gtk_widget_queue_draw_region(_arg0, _arg1)
 }
@@ -4719,15 +4716,19 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 	var _cret *C.cairo_region_t // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	_cret = C.gtk_widget_region_intersect(_arg0, _arg1)
 
 	var _ret *cairo.Region // out
 
-	_ret = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_ret = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _ret
@@ -5819,7 +5820,7 @@ func (widget *Widget) ShapeCombineRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gtk_widget_shape_combine_region(_arg0, _arg1)
 }

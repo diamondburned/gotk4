@@ -207,7 +207,6 @@ func (staticResource *StaticResource) Resource() *Resource {
 	var _resource *Resource // out
 
 	_resource = (*Resource)(unsafe.Pointer(_cret))
-	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_resource, func(v *Resource) {
 		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
 	})

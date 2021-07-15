@@ -235,9 +235,10 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, h
 
 	var _ret *cairo.Surface // out
 
-	_ret = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_ret = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _ret
@@ -584,7 +585,7 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_surface_set_input_region(_arg0, _arg1)
 }
@@ -608,7 +609,7 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_surface_set_opaque_region(_arg0, _arg1)
 }

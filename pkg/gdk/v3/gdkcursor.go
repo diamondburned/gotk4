@@ -428,7 +428,7 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x float64, y
 	var _cret *C.GdkCursor       // in
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 	_arg3 = C.gdouble(x)
 	_arg4 = C.gdouble(y)
 
@@ -523,9 +523,10 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 
 	_xHot = float64(_arg1)
 	_yHot = float64(_arg2)
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _xHot, _yHot, _surface

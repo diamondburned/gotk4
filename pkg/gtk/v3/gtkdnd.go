@@ -163,7 +163,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 	var _arg2 *C.cairo_surface_t // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_drag_set_icon_surface(_arg1, _arg2)
 }

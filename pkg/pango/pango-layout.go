@@ -354,7 +354,6 @@ func (layout *Layout) Attributes() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(unsafe.Pointer(_cret))
-	C.pango_attr_list_ref(_cret)
 	runtime.SetFinalizer(_attrList, func(v *AttrList) {
 		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
 	})
@@ -622,7 +621,6 @@ func (layout *Layout) Line(line int) *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
 	})
@@ -663,7 +661,6 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
 	})
@@ -1614,7 +1611,6 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
 	})
@@ -1654,7 +1650,6 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
 	})

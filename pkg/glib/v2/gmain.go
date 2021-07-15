@@ -156,7 +156,6 @@ func MainCurrentSource() *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -424,7 +423,6 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -456,7 +454,6 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -480,7 +477,6 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(unsafe.Pointer(_cret))
-	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
 		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
 	})
@@ -722,7 +718,6 @@ func MainContextDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
@@ -748,7 +743,6 @@ func MainContextGetThreadDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
@@ -830,7 +824,6 @@ func (loop *MainLoop) Context() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})
@@ -1103,7 +1096,6 @@ func (source *Source) Context() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
-	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
 		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
 	})

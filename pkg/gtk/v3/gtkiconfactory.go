@@ -354,7 +354,6 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -393,7 +392,6 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 	var _iconSet *IconSet // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
-	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})

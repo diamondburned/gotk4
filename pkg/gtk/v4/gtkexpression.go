@@ -421,7 +421,6 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 	var _expressionWatch *ExpressionWatch // out
 
 	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
-	C.gtk_expression_watch_ref(_cret)
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
 		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
 	})
@@ -554,7 +553,6 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	var _expressionWatch *ExpressionWatch // out
 
 	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
-	C.gtk_expression_watch_ref(_cret)
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
 		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
 	})

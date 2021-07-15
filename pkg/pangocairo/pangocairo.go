@@ -44,9 +44,10 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	var attr *pango.AttrShape // out
 	var doPath bool           // out
 
-	cr = (*cairo.Context)(unsafe.Pointer(arg0))
+	cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg0)))
+	C.cairo_reference(arg0)
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 	attr = (*pango.AttrShape)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(attr, func(v *pango.AttrShape) {
@@ -123,7 +124,7 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 	var _arg1 *C.cairo_t      // out
 	var _cret *C.PangoContext // in
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.pango_cairo_create_context(_arg1)
 
@@ -155,7 +156,7 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 	var _arg1 *C.cairo_t     // out
 	var _cret *C.PangoLayout // in
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	_cret = C.pango_cairo_create_layout(_arg1)
 
@@ -184,7 +185,7 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 	var _arg4 C.double   // out
 	var _arg5 C.double   // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
@@ -203,7 +204,7 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg2 *C.PangoFont        // out
 	var _arg3 *C.PangoGlyphString // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
@@ -219,7 +220,7 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
 	var _arg2 *C.PangoLayoutLine // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
 
 	C.pango_cairo_layout_line_path(_arg1, _arg2)
@@ -234,7 +235,7 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_layout_path(_arg1, _arg2)
@@ -253,7 +254,7 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 	var _arg4 C.double   // out
 	var _arg5 C.double   // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = C.double(x)
 	_arg3 = C.double(y)
 	_arg4 = C.double(width)
@@ -278,7 +279,7 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	var _arg2 *C.char           // out
 	var _arg3 *C.PangoGlyphItem // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	_arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
 
@@ -294,7 +295,7 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	var _arg2 *C.PangoFont        // out
 	var _arg3 *C.PangoGlyphString // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
 	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
 
@@ -309,7 +310,7 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_show_layout(_arg1, _arg2)
@@ -323,7 +324,7 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
 	var _arg2 *C.PangoLayoutLine // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
 
 	C.pango_cairo_show_layout_line(_arg1, _arg2)
@@ -338,7 +339,7 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.PangoContext // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	C.pango_cairo_update_context(_arg1, _arg2)
@@ -351,7 +352,7 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
 	C.pango_cairo_update_layout(_arg1, _arg2)

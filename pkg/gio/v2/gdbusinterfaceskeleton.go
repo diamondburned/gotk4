@@ -200,7 +200,6 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
 	})

@@ -408,9 +408,10 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	_context = (*cairo.Context)(unsafe.Pointer(_cret))
+	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_reference(_cret)
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _context
@@ -427,7 +428,10 @@ func (node *CairoNode) Surface() *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _surface
 }
@@ -2595,7 +2599,6 @@ func (node *TransformNode) Transform() *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(unsafe.Pointer(_cret))
-	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
 		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
 	})

@@ -427,7 +427,6 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
-	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
 		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
 	})

@@ -2063,7 +2063,6 @@ func (message *DBusMessage) Body() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -2154,7 +2153,6 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -2843,7 +2841,6 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _dBusMethodInfo *DBusMethodInfo // out
 
 	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_method_info_ref(_cret)
 	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
 	})
@@ -2897,7 +2894,6 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
-	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
@@ -2927,7 +2923,6 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_property_info_ref(_cret)
 	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
 	})

@@ -414,7 +414,7 @@ func NewImageFromSurface(surface *cairo.Surface) *Image {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.GtkWidget       // in
 
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	_cret = C.gtk_image_new_from_surface(_arg1)
 
@@ -525,7 +525,6 @@ func (image *Image) IconSet() (*IconSet, int) {
 	var _size int         // out
 
 	_iconSet = (*IconSet)(unsafe.Pointer(_arg1))
-	C.gtk_icon_set_ref(_arg1)
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
 	})
@@ -726,7 +725,7 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 	var _arg1 *C.cairo_surface_t // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	C.gtk_image_set_from_surface(_arg0, _arg1)
 }

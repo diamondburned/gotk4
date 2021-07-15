@@ -388,7 +388,10 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _surface
 }
@@ -915,7 +918,7 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 	var _cret *C.GdkDrawingContext // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
 
@@ -1026,7 +1029,7 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_window_begin_paint_region(_arg0, _arg1)
 }
@@ -1232,9 +1235,10 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width int, 
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _surface
@@ -1265,9 +1269,10 @@ func (window *Window) CreateSimilarSurface(content cairo.Content, width int, hei
 
 	var _surface *cairo.Surface // out
 
-	_surface = (*cairo.Surface)(unsafe.Pointer(_cret))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	C.cairo_surface_reference(_cret)
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _surface
@@ -1500,7 +1505,13 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 
 	var _pattern *cairo.Pattern // out
 
-	_pattern = (*cairo.Pattern)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pattern = (*cairo.Pattern)(unsafe.Pointer(v))
+	}
+	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _pattern
 }
@@ -1519,9 +1530,13 @@ func (window *Window) ClipRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -2286,9 +2301,13 @@ func (window *Window) UpdateArea() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -2324,9 +2343,13 @@ func (window *Window) VisibleRegion() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -2447,7 +2470,7 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
 	_arg2 = C.gint(offsetX)
 	_arg3 = C.gint(offsetY)
 
@@ -2475,7 +2498,7 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	_arg2 = (*[0]byte)(C._gotk4_gdk3_WindowChildFunc)
 	_arg3 = C.gpointer(gbox.Assign(childFunc))
 	defer gbox.Delete(uintptr(_arg3))
@@ -2522,7 +2545,7 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 	var _arg2 C.gboolean        // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	if invalidateChildren {
 		_arg2 = C.TRUE
 	}
@@ -2655,7 +2678,7 @@ func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
 	var _arg1 *C.cairo_t   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
 }
@@ -2738,7 +2761,7 @@ func (window *Window) MoveRegion(region *cairo.Region, dx int, dy int) {
 	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	_arg2 = C.gint(dx)
 	_arg3 = C.gint(dy)
 
@@ -2976,7 +2999,7 @@ func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 	var _arg1 *C.cairo_pattern_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern))
+	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern.Native()))
 
 	C.gdk_window_set_background_pattern(_arg0, _arg1)
 }
@@ -3410,7 +3433,7 @@ func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_window_set_opaque_region(_arg0, _arg1)
 }
@@ -3712,7 +3735,7 @@ func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int,
 	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
 	_arg2 = C.gint(offsetX)
 	_arg3 = C.gint(offsetY)
 

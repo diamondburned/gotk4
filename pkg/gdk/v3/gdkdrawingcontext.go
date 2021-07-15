@@ -83,7 +83,10 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
+	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _ret
 }
@@ -99,9 +102,13 @@ func (context *DrawingContext) Clip() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	_region = (*cairo.Region)(unsafe.Pointer(_cret))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region

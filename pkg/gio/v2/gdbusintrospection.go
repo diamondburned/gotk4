@@ -89,7 +89,6 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -205,7 +204,6 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -290,7 +288,6 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
 			v[i] = (*DBusMethodInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_method_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusMethodInfo) {
 				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
 			})
@@ -314,7 +311,6 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
 			v[i] = (*DBusSignalInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_signal_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusSignalInfo) {
 				C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
 			})
@@ -338,7 +334,6 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
 			v[i] = (*DBusPropertyInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_property_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusPropertyInfo) {
 				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
 			})
@@ -362,7 +357,6 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -416,7 +410,6 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _dBusMethodInfo *DBusMethodInfo // out
 
 	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_method_info_ref(_cret)
 	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
 		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
 	})
@@ -441,7 +434,6 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_property_info_ref(_cret)
 	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
 		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
 	})
@@ -466,7 +458,6 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _dBusSignalInfo *DBusSignalInfo // out
 
 	_dBusSignalInfo = (*DBusSignalInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_signal_info_ref(_cret)
 	runtime.SetFinalizer(_dBusSignalInfo, func(v *DBusSignalInfo) {
 		C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(unsafe.Pointer(v)))
 	})
@@ -550,7 +541,6 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
 			})
@@ -574,7 +564,6 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
 			})
@@ -598,7 +587,6 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -707,7 +695,6 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
 			v[i] = (*DBusInterfaceInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_interface_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusInterfaceInfo) {
 				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
 			})
@@ -731,7 +718,6 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
 			v[i] = (*DBusNodeInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_node_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusNodeInfo) {
 				C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(unsafe.Pointer(v)))
 			})
@@ -755,7 +741,6 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -780,7 +765,6 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
-	C.g_dbus_interface_info_ref(_cret)
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
 	})
@@ -878,7 +862,6 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})
@@ -963,7 +946,6 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusArgInfo) {
 				C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(unsafe.Pointer(v)))
 			})
@@ -987,7 +969,6 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(unsafe.Pointer(src[i]))
-			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(v[i], func(v *DBusAnnotationInfo) {
 				C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(unsafe.Pointer(v)))
 			})

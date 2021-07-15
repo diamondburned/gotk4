@@ -174,7 +174,7 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((root).(gextras.Nativer).Native()))
-	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region))
+	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }

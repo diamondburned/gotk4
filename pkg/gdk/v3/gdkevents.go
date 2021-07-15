@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/gotk3/gotk3/cairo"
@@ -942,7 +943,13 @@ func (e *EventExpose) Area() Rectangle {
 // Region: region that needs to be redrawn.
 func (e *EventExpose) Region() *cairo.Region {
 	var v *cairo.Region // out
-	v = (*cairo.Region)(unsafe.Pointer(e.native.region))
+	{
+		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(e.native.region)}
+		v = (*cairo.Region)(unsafe.Pointer(v))
+	}
+	runtime.SetFinalizer(v, func(v *cairo.Region) {
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+	})
 	return v
 }
 

@@ -320,7 +320,6 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _variantDict *glib.VariantDict // out
 
 	_variantDict = (*glib.VariantDict)(unsafe.Pointer(_cret))
-	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *glib.VariantDict) {
 		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
 	})

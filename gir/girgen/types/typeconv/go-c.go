@@ -425,6 +425,14 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.p.LineTmpl(value,
 			"<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtrPubl 1>.Native()))")
 		return true
+
+	case "cairo.Context", "cairo.Pattern", "cairo.Region", "cairo.Surface":
+		value.header.Import("unsafe")
+		value.p.Linef(
+			"%s = (%s)(unsafe.Pointer(%s.Native()))",
+			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
+		)
+		return true
 	}
 
 	if value.Resolved.Extern == nil {

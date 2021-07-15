@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -200,7 +201,10 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = (*cairo.Context)(unsafe.Pointer(_cret))
+	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
 
 	return _ret
 }
@@ -351,7 +355,7 @@ func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX float64, dp
 	var _arg3 C.double           // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = C.double(dpiX)
 	_arg3 = C.double(dpiY)
 

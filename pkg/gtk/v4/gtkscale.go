@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -24,7 +25,7 @@ func init() {
 	})
 }
 
-type ScaleFormatValueFunc func(scale *Scale, value float64, userData cgo.Handle) (utf8 string)
+type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
 //export _gotk4_gtk4_ScaleFormatValueFunc
 func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) (cret *C.char) {
@@ -33,16 +34,14 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var scale *Scale        // out
-	var value float64       // out
-	var userData cgo.Handle // out
+	var scale *Scale  // out
+	var value float64 // out
 
 	scale = wrapScale(externglib.Take(unsafe.Pointer(arg0)))
 	value = float64(arg1)
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ScaleFormatValueFunc)
-	utf8 := fn(scale, value, userData)
+	utf8 := fn(scale, value)
 
 	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
@@ -91,6 +90,9 @@ type Scaler interface {
 	// SetDrawValue specifies whether the current value is displayed as a string
 	// next to the slider.
 	SetDrawValue(drawValue bool)
+	// SetFormatValueFunc: func allows you to change how the scale value is
+	// displayed.
+	SetFormatValueFunc(fn ScaleFormatValueFunc)
 	// SetHasOrigin sets whether the scale has an origin.
 	SetHasOrigin(hasOrigin bool)
 	// SetValuePos sets the position in which the current value is displayed.
@@ -448,6 +450,28 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 	}
 
 	C.gtk_scale_set_draw_value(_arg0, _arg1)
+}
+
+// SetFormatValueFunc: func allows you to change how the scale value is
+// displayed.
+//
+// The given function will return an allocated string representing value. That
+// string will then be used to display the scale's value.
+//
+// If LL is passed as func, the value will be displayed on its own, rounded
+// according to the value of the gtkscale:digits property.
+func (scale *Scale) SetFormatValueFunc(fn ScaleFormatValueFunc) {
+	var _arg0 *C.GtkScale               // out
+	var _arg1 C.GtkScaleFormatValueFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(scale.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_ScaleFormatValueFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_scale_set_format_value_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetHasOrigin sets whether the scale has an origin.

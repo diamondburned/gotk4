@@ -3,11 +3,9 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -20,7 +18,6 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_MenuPositionFunc(GtkMenu*, gint*, gint*, gboolean*, gpointer);
 import "C"
 
 func init() {
@@ -45,38 +42,6 @@ const (
 
 func marshalArrowPlacement(p uintptr) (interface{}, error) {
 	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// MenuPositionFunc: user function supplied when calling gtk_menu_popup() which
-// controls the positioning of the menu when it is displayed. The function sets
-// the x and y parameters to the coordinates where the menu is to be drawn. To
-// make the menu appear on a different monitor than the mouse pointer,
-// gtk_menu_set_monitor() must be called.
-type MenuPositionFunc func(menu *Menu, x *int, y *int, userData cgo.Handle) (pushIn bool)
-
-//export _gotk4_gtk3_MenuPositionFunc
-func _gotk4_gtk3_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
-	v := gbox.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	var menu *Menu          // out
-	var x *int              // out
-	var y *int              // out
-	var userData cgo.Handle // out
-
-	menu = wrapMenu(externglib.Take(unsafe.Pointer(arg0)))
-	x = (*int)(unsafe.Pointer(arg1))
-	y = (*int)(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg4))
-
-	fn := v.(MenuPositionFunc)
-	pushIn := fn(menu, x, y, userData)
-
-	if pushIn {
-		*arg3 = C.TRUE
-	}
 }
 
 // Menuer describes Menu's methods.
@@ -107,8 +72,6 @@ type Menuer interface {
 	PlaceOnMonitor(monitor *gdk.Monitor)
 	// Popdown removes the menu from the screen.
 	Popdown()
-	// Popup displays a menu and makes it available for selection.
-	Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn MenuPositionFunc, button uint, activateTime uint32)
 	// ReorderChild moves child to a new position in the list of menu children.
 	ReorderChild(child Widgeter, position int)
 	// Reposition repositions the menu according to its position function.
@@ -428,49 +391,6 @@ func (menu *Menu) Popdown() {
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
 
 	C.gtk_menu_popdown(_arg0)
-}
-
-// Popup displays a menu and makes it available for selection.
-//
-// Applications can use this function to display context-sensitive menus, and
-// will typically supply NULL for the parent_menu_shell, parent_menu_item, func
-// and data parameters. The default menu positioning function will position the
-// menu at the current mouse cursor position.
-//
-// The button parameter should be the mouse button pressed to initiate the menu
-// popup. If the menu popup was initiated by something other than a mouse button
-// press, such as a mouse button release or a keypress, button should be 0.
-//
-// The activate_time parameter is used to conflict-resolve initiation of
-// concurrent requests for mouse/keyboard grab requests. To function properly,
-// this needs to be the timestamp of the user event (such as a mouse click or
-// key press) that caused the initiation of the popup. Only if no such event is
-// available, gtk_get_current_event_time() can be used instead.
-//
-// Note that this function does not work very well on GDK backends that do not
-// have global coordinates, such as Wayland or Mir. You should probably use one
-// of the gtk_menu_popup_at_ variants, which do not have this problem.
-//
-// Deprecated: Please use gtk_menu_popup_at_widget(),
-// gtk_menu_popup_at_pointer(). or gtk_menu_popup_at_rect() instead.
-func (menu *Menu) Popup(parentMenuShell Widgeter, parentMenuItem Widgeter, fn MenuPositionFunc, button uint, activateTime uint32) {
-	var _arg0 *C.GtkMenu            // out
-	var _arg1 *C.GtkWidget          // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.GtkMenuPositionFunc // out
-	var _arg4 C.gpointer
-	var _arg5 C.guint   // out
-	var _arg6 C.guint32 // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(menu.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer((parentMenuShell).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer((parentMenuItem).(gextras.Nativer).Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gtk3_MenuPositionFunc)
-	_arg4 = C.gpointer(gbox.AssignOnce(fn))
-	_arg5 = C.guint(button)
-	_arg6 = C.guint32(activateTime)
-
-	C.gtk_menu_popup(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ReorderChild moves child to a new position in the list of menu children.

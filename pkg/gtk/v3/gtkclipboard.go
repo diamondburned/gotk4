@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -34,7 +33,7 @@ func init() {
 
 // ClipboardImageReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_image() are received, or when the request fails.
-type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf, data cgo.Handle)
+type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf)
 
 //export _gotk4_gtk3_ClipboardImageReceivedFunc
 func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
@@ -45,7 +44,6 @@ func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPix
 
 	var clipboard *Clipboard     // out
 	var pixbuf *gdkpixbuf.Pixbuf // out
-	var data cgo.Handle          // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	{
@@ -57,15 +55,14 @@ func _gotk4_gtk3_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPix
 			},
 		}
 	}
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardImageReceivedFunc)
-	fn(clipboard, pixbuf, data)
+	fn(clipboard, pixbuf)
 }
 
 // ClipboardReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_contents() are received, or when the request fails.
-type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData, data cgo.Handle)
+type ClipboardReceivedFunc func(clipboard *Clipboard, selectionData *SelectionData)
 
 //export _gotk4_gtk3_ClipboardReceivedFunc
 func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
@@ -76,22 +73,20 @@ func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectio
 
 	var clipboard *Clipboard         // out
 	var selectionData *SelectionData // out
-	var data cgo.Handle              // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(selectionData, func(v *SelectionData) {
 		C.gtk_selection_data_free((*C.GtkSelectionData)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardReceivedFunc)
-	fn(clipboard, selectionData, data)
+	fn(clipboard, selectionData)
 }
 
 // ClipboardTextReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_text() are received, or when the request fails.
-type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string, data cgo.Handle)
+type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string)
 
 //export _gotk4_gtk3_ClipboardTextReceivedFunc
 func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
@@ -102,20 +97,18 @@ func _gotk4_gtk3_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, 
 
 	var clipboard *Clipboard // out
 	var text string          // out
-	var data cgo.Handle      // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardTextReceivedFunc)
-	fn(clipboard, text, data)
+	fn(clipboard, text)
 }
 
 // ClipboardURIReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_uris() are received, or when the request fails.
-type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string, data cgo.Handle)
+type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string)
 
 //export _gotk4_gtk3_ClipboardURIReceivedFunc
 func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
@@ -126,7 +119,6 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 
 	var clipboard *Clipboard // out
 	var uris []string
-	var data cgo.Handle // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
 	{
@@ -143,10 +135,9 @@ func _gotk4_gtk3_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, 
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ClipboardURIReceivedFunc)
-	fn(clipboard, uris, data)
+	fn(clipboard, uris)
 }
 
 // Clipboarder describes Clipboard's methods.

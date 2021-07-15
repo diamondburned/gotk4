@@ -33,19 +33,14 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 		currentNamespace: fgen.Namespace(),
 	}
 
-	// paramAt gets the parameter at the given index.
-	paramAt := func(at int) *ConversionValue {
-		for i, value := range values {
-			if value.ParameterIndex.Is(at) {
-				return &values[i]
-			}
-		}
-		return nil
+	for i := range conv.results {
+		// Fill up the results list after transforming the values.
+		conv.results[i] = newValueConverted(&conv, &values[i])
 	}
 
 	// skip marks the value at the given parameter index to be skipped.
 	skip := func(at int) {
-		if value := paramAt(at); value != nil {
+		if value := conv.param(at); value != nil {
 			value.Skip = true
 		}
 	}
@@ -55,8 +50,7 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 	// type is handled weirdly with an opposite direction length input, and
 	// there's no good way to handle that in Go, so we skip.
 	isSameDirection := func(of *ConversionValue, at int) bool {
-		value := paramAt(at)
-		if value != nil {
+		if value := conv.param(at); value != nil {
 			return value.ParameterAttrs.Direction == of.ParameterAttrs.Direction
 		}
 		return true
@@ -80,7 +74,7 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 		// Only skip the parameter's closure index if the parameter itself is
 		// a callback. Sometimes, the user_data parameter will flag the callback
 		// as a closure argument, which messes up the generator.
-		if value.Scope != "" && value.Closure != nil {
+		if value.Closure != nil && !types.IsGpointer(types.AnyTypeC(value.AnyType)) {
 			skip(*value.Closure)
 		}
 		if value.Destroy != nil {
@@ -94,11 +88,6 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 
 			skip(*value.AnyType.Array.Length)
 		}
-	}
-
-	for i := range conv.results {
-		// Fill up the results list after transforming the values.
-		conv.results[i] = newValueConverted(&conv, &values[i])
 	}
 
 	return &conv
@@ -169,7 +158,11 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 	// Convert everything in one go.
 	for i := range conv.results {
 		if !conv.convert(&conv.results[i]) || conv.results[i].fail {
-			return nil
+			// final is true if the value is already manually handled.
+			// Otherwise, exit.
+			if !conv.results[i].final {
+				return nil
+			}
 		}
 	}
 
@@ -216,13 +209,13 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 	switch result.Direction {
 	case ConvertCToGo:
 		if !conv.cgoConvert(result) || result.fail {
-			conv.Logln(logger.Debug, "C->Go cannot convert type", types.AnyTypeC(result.AnyType))
+			result.Logln(logger.Debug, "C->Go cannot convert type", types.AnyTypeC(result.AnyType))
 			result.fail = true
 			return false
 		}
 	case ConvertGoToC:
 		if !conv.gocConvert(result) || result.fail {
-			conv.Logln(logger.Debug, "Go->C cannot convert type", types.AnyTypeC(result.AnyType))
+			result.Logln(logger.Debug, "Go->C cannot convert type", types.AnyTypeC(result.AnyType))
 			result.fail = true
 			return false
 		}
@@ -296,6 +289,18 @@ func (conv *Converter) convertType(
 	return &result
 }
 
+// param returns the unconverted value.
+func (conv *Converter) param(at int) *ValueConverted {
+	for i := range conv.results {
+		result := &conv.results[i]
+
+		if result.ParameterIndex.Is(at) {
+			return result
+		}
+	}
+	return nil
+}
+
 // convertParam converts the parameter at the given index. This parameter index
 // is different from indexing the values slice. If inherit is given (not nil),
 // then several attributes such as the direction is brought over.
@@ -309,9 +314,11 @@ func (conv *Converter) convertParam(at int) *ValueConverted {
 
 	// Fast path.
 	if at < len(conv.results) {
-		result := &conv.results[at]
-		if result.ParameterIndex.Is(at) {
-			return convert(result)
+		for i := at; i < at+2 && i < len(conv.results); i++ {
+			result := &conv.results[i]
+			if result.ParameterIndex.Is(at) {
+				return convert(result)
+			}
 		}
 	}
 

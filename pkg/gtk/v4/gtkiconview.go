@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -53,7 +52,7 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 // all selected rows.
 //
 // It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView *IconView, path *TreePath, data cgo.Handle)
+type IconViewForeachFunc func(iconView *IconView, path *TreePath)
 
 //export _gotk4_gtk4_IconViewForeachFunc
 func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
@@ -64,17 +63,15 @@ func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 
 	var iconView *IconView // out
 	var path *TreePath     // out
-	var data cgo.Handle    // out
 
 	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(IconViewForeachFunc)
-	fn(iconView, path, data)
+	fn(iconView, path)
 }
 
 // IconViewer describes IconView's methods.

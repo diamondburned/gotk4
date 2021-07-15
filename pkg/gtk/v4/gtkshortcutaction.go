@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -17,6 +16,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
 import "C"
 
 func init() {
@@ -49,7 +50,7 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget *Widget, args *glib.Variant, userData cgo.Handle) (ok bool)
+type ShortcutFunc func(widget *Widget, args *glib.Variant) (ok bool)
 
 //export _gotk4_gtk4_ShortcutFunc
 func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
@@ -58,9 +59,8 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 		panic(`callback not found`)
 	}
 
-	var widget *Widget      // out
-	var args *glib.Variant  // out
-	var userData cgo.Handle // out
+	var widget *Widget     // out
+	var args *glib.Variant // out
 
 	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	args = (*glib.Variant)(unsafe.Pointer(arg1))
@@ -68,10 +68,9 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(ShortcutFunc)
-	ok := fn(widget, args, userData)
+	ok := fn(widget, args)
 
 	if ok {
 		cret = C.TRUE
@@ -154,6 +153,27 @@ func marshalCallbackActioner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCallbackAction(obj), nil
+}
+
+// NewCallbackAction: create a custom action that calls the given callback when
+// activated.
+func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
+	var _arg1 C.GtkShortcutFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret *C.GtkShortcutAction // in
+
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
+
+	var _callbackAction *CallbackAction // out
+
+	_callbackAction = wrapCallbackAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _callbackAction
 }
 
 func (*CallbackAction) privateCallbackAction() {}

@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_ExpressionNotify(gpointer);
 import "C"
 
 func init() {
@@ -32,7 +33,7 @@ func init() {
 
 // ExpressionNotify: callback called by gtk_expression_watch() when the
 // expression value changes.
-type ExpressionNotify func(userData cgo.Handle)
+type ExpressionNotify func()
 
 //export _gotk4_gtk4_ExpressionNotify
 func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
@@ -41,12 +42,8 @@ func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var userData cgo.Handle // out
-
-	userData = (cgo.Handle)(unsafe.Pointer(arg0))
-
 	fn := v.(ExpressionNotify)
-	fn(userData)
+	fn()
 }
 
 // ValueDupExpression retrieves the GtkExpression stored inside the given value,
@@ -249,6 +246,9 @@ type Expressioner interface {
 	ref() *Expression
 	// Unref releases a reference on the given GtkExpression.
 	unref()
+	// Watch installs a watch for the given expression that calls the notify
+	// function whenever the evaluation of self may have changed.
+	Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch
 }
 
 // Expression: GtkExpression provides a way to describe references to values.
@@ -527,6 +527,39 @@ func (self *Expression) unref() {
 	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
 
 	C.gtk_expression_unref(_arg0)
+}
+
+// Watch installs a watch for the given expression that calls the notify
+// function whenever the evaluation of self may have changed.
+//
+// GTK cannot guarantee that the evaluation did indeed change when the notify
+// gets invoked, but it guarantees the opposite: When it did in fact change, the
+// notify will be invoked.
+func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch {
+	var _arg0 *C.GtkExpression      // out
+	var _arg1 C.gpointer            // out
+	var _arg2 C.GtkExpressionNotify // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+	var _cret *C.GtkExpressionWatch // in
+
+	_arg0 = (*C.GtkExpression)(unsafe.Pointer(self.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(this_.Native()))
+	_arg2 = (*[0]byte)(C._gotk4_gtk4_ExpressionNotify)
+	_arg3 = C.gpointer(gbox.Assign(notify))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_expression_watch(_arg0, _arg1, _arg2, _arg3, _arg4)
+
+	var _expressionWatch *ExpressionWatch // out
+
+	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	C.gtk_expression_watch_ref(_cret)
+	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
+	})
+
+	return _expressionWatch
 }
 
 // ObjectExpressioner describes ObjectExpression's methods.

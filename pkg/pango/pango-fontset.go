@@ -4,7 +4,6 @@ package pango
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -28,7 +27,7 @@ func init() {
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset *Fontset, font *Font, userData cgo.Handle) (ok bool)
+type FontsetForeachFunc func(fontset *Fontset, font *Font) (ok bool)
 
 //export _gotk4_pango1_FontsetForeachFunc
 func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
@@ -37,16 +36,14 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		panic(`callback not found`)
 	}
 
-	var fontset *Fontset    // out
-	var font *Font          // out
-	var userData cgo.Handle // out
+	var fontset *Fontset // out
+	var font *Font       // out
 
 	fontset = wrapFontset(externglib.Take(unsafe.Pointer(arg0)))
 	font = wrapFont(externglib.Take(unsafe.Pointer(arg1)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FontsetForeachFunc)
-	ok := fn(fontset, font, userData)
+	ok := fn(fontset, font)
 
 	if ok {
 		cret = C.TRUE

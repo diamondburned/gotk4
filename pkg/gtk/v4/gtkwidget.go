@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -22,6 +21,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 import "C"
 
 func init() {
@@ -37,7 +38,7 @@ type Allocation = gdk.Rectangle
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget *Widget, frameClock *gdk.FrameClock, userData cgo.Handle) (ok bool)
+type TickCallback func(widget *Widget, frameClock *gdk.FrameClock) (ok bool)
 
 //export _gotk4_gtk4_TickCallback
 func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
@@ -48,7 +49,6 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 
 	var widget *Widget             // out
 	var frameClock *gdk.FrameClock // out
-	var userData cgo.Handle        // out
 
 	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	{
@@ -57,10 +57,9 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 			Object: obj,
 		}
 	}
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TickCallback)
-	ok := fn(widget, frameClock, userData)
+	ok := fn(widget, frameClock)
 
 	if ok {
 		cret = C.TRUE
@@ -218,6 +217,9 @@ type Widgeter interface {
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
 	AddMnemonicLabel(label Widgeter)
+	// AddTickCallback queues an animation frame update and adds a callback to
+	// be called before each frame.
+	AddTickCallback(callback TickCallback) uint
 	// Allocate: this function is only used by GtkWidget subclasses, to assign a
 	// size, position and (optionally) baseline to their child widgets.
 	Allocate(width int, height int, baseline int, transform *gsk.Transform)
@@ -1091,6 +1093,46 @@ func (widget *Widget) AddMnemonicLabel(label Widgeter) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((label).(gextras.Nativer).Native()))
 
 	C.gtk_widget_add_mnemonic_label(_arg0, _arg1)
+}
+
+// AddTickCallback queues an animation frame update and adds a callback to be
+// called before each frame.
+//
+// Until the tick callback is removed, it will be called frequently (usually at
+// the frame rate of the output device or as quickly as the application can be
+// repainted, whichever is slower). For this reason, is most suitable for
+// handling graphics that change every frame or every few frames. The tick
+// callback does not automatically imply a relayout or repaint. If you want a
+// repaint or relayout, and aren’t changing widget properties that would trigger
+// that (for example, changing the text of a Label), then you will have to call
+// gtk.Widget.QueueResize() or gtk.Widget.QueueDraw() yourself.
+//
+// gdk.FrameClock.GetFrameTime() should generally be used for timing continuous
+// animations and gdk.FrameTimings.GetPredictedPresentationTime() if you are
+// trying to display isolated frames at particular times.
+//
+// This is a more convenient alternative to connecting directly to the
+// gdk.FrameClock::update signal of GdkFrameClock, since you don't have to worry
+// about when a GdkFrameClock is assigned to a widget.
+func (widget *Widget) AddTickCallback(callback TickCallback) uint {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 C.GtkTickCallback // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret C.guint // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_TickCallback)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_widget_add_tick_callback(_arg0, _arg1, _arg2, _arg3)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // Allocate: this function is only used by GtkWidget subclasses, to assign a

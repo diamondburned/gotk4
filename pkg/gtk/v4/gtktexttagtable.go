@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -26,7 +25,7 @@ func init() {
 
 // TextTagTableForeach: function used with gtk_text_tag_table_foreach(), to
 // iterate over every GtkTextTag inside a GtkTextTagTable.
-type TextTagTableForeach func(tag *TextTag, data cgo.Handle)
+type TextTagTableForeach func(tag *TextTag)
 
 //export _gotk4_gtk4_TextTagTableForeach
 func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
@@ -35,14 +34,12 @@ func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var tag *TextTag    // out
-	var data cgo.Handle // out
+	var tag *TextTag // out
 
 	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
-	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TextTagTableForeach)
-	fn(tag, data)
+	fn(tag)
 }
 
 // TextTagTabler describes TextTagTable's methods.

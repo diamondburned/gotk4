@@ -27,7 +27,10 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 // #include <glib-object.h>
+// GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer);
+// extern void callbackDelete(gpointer);
 // void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_DBusSignalCallback(GDBusConnection*, gchar*, gchar*, gchar*, gchar*, GVariant*, gpointer);
 import "C"
 
 func init() {
@@ -293,6 +296,8 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 
 // DBusConnectioner describes DBusConnection's methods.
 type DBusConnectioner interface {
+	// AddFilter adds a message filter.
+	AddFilter(filterFunction DBusMessageFilterFunction) uint
 	// Call: asynchronously invokes the method_name method on the interface_name
 	// D-Bus interface on the remote object at object_path owned by bus_name.
 	Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback)
@@ -370,6 +375,9 @@ type DBusConnectioner interface {
 	// SetExitOnClose sets whether the process should be terminated when
 	// connection is closed by the remote peer.
 	SetExitOnClose(exitOnClose bool)
+	// SignalSubscribe subscribes to signals on connection and invokes callback
+	// with a whenever the signal is received.
+	SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint
 	// SignalUnsubscribe unsubscribes from signals.
 	SignalUnsubscribe(subscriptionId uint)
 	// StartMessageProcessing: if connection was created with
@@ -586,6 +594,52 @@ func NewDBusConnectionSync(stream IOStreamer, guid string, flags DBusConnectionF
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dBusConnection, _goerr
+}
+
+// AddFilter adds a message filter. Filters are handlers that are run on all
+// incoming and outgoing messages, prior to standard dispatch. Filters are run
+// in the order that they were added. The same handler can be added as a filter
+// more than once, in which case it will be run more than once. Filters added
+// during a filter callback won't be run on the message being processed. Filter
+// functions are allowed to modify and even drop messages.
+//
+// Note that filters are run in a dedicated message handling thread so they
+// can't block and, generally, can't do anything but signal a worker thread.
+// Also note that filters are rarely needed - use API such as
+// g_dbus_connection_send_message_with_reply(),
+// g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
+//
+// If a filter consumes an incoming message the message is not dispatched
+// anywhere else - not even the standard dispatch machinery (that API such as
+// g_dbus_connection_signal_subscribe() and
+// g_dbus_connection_send_message_with_reply() relies on) will see the message.
+// Similarly, if a filter consumes an outgoing message, the message will not be
+// sent to the other peer.
+//
+// If user_data_free_func is non-NULL, it will be called (in the thread-default
+// main context of the thread you are calling this method from) at some point
+// after user_data is no longer needed. (It is not guaranteed to be called
+// synchronously when the filter is removed, and may be called after connection
+// has been destroyed.)
+func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
+	var _arg0 *C.GDBusConnection           // out
+	var _arg1 C.GDBusMessageFilterFunction // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret C.guint // in
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gio2_DBusMessageFilterFunction)
+	_arg2 = C.gpointer(gbox.Assign(filterFunction))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.g_dbus_connection_add_filter(_arg0, _arg1, _arg2, _arg3)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // Call: asynchronously invokes the method_name method on the interface_name
@@ -1526,6 +1580,85 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 	}
 
 	C.g_dbus_connection_set_exit_on_close(_arg0, _arg1)
+}
+
+// SignalSubscribe subscribes to signals on connection and invokes callback with
+// a whenever the signal is received. Note that callback will be invoked in the
+// [thread-default main context][g-main-context-push-thread-default] of the
+// thread you are calling this method from.
+//
+// If connection is not a message bus connection, sender must be NULL.
+//
+// If sender is a well-known name note that callback is invoked with the unique
+// name for the owner of sender, not the well-known name as one would expect.
+// This is because the message bus rewrites the name. As such, to avoid certain
+// race conditions, users should be tracking the name owner of the well-known
+// name and use that when processing the received signal.
+//
+// If one of G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE or
+// G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH are given, arg0 is interpreted as part of
+// a namespace or path. The first argument of a signal is matched against that
+// part as specified by D-Bus.
+//
+// If user_data_free_func is non-NULL, it will be called (in the thread-default
+// main context of the thread you are calling this method from) at some point
+// after user_data is no longer needed. (It is not guaranteed to be called
+// synchronously when the signal is unsubscribed from, and may be called after
+// connection has been destroyed.)
+//
+// As callback is potentially invoked in a different thread from where it’s
+// emitted, it’s possible for this to happen after
+// g_dbus_connection_signal_unsubscribe() has been called in another thread. Due
+// to this, user_data should have a strong reference which is freed with
+// user_data_free_func, rather than pointing to data whose lifecycle is tied to
+// the signal subscription. For example, if a #GObject is used to store the
+// subscription ID from g_dbus_connection_signal_subscribe(), a strong reference
+// to that #GObject must be passed to user_data, and g_object_unref() passed to
+// user_data_free_func. You are responsible for breaking the resulting reference
+// count cycle by explicitly unsubscribing from the signal when dropping the
+// last external reference to the #GObject. Alternatively, a weak reference may
+// be used.
+//
+// It is guaranteed that if you unsubscribe from a signal using
+// g_dbus_connection_signal_unsubscribe() from the same thread which made the
+// corresponding g_dbus_connection_signal_subscribe() call, callback will not be
+// invoked after g_dbus_connection_signal_unsubscribe() returns.
+//
+// The returned subscription identifier is an opaque value which is guaranteed
+// to never be zero.
+//
+// This function can never fail.
+func (connection *DBusConnection) SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.gchar              // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 C.GDBusSignalFlags    // out
+	var _arg7 C.GDBusSignalCallback // out
+	var _arg8 C.gpointer
+	var _arg9 C.GDestroyNotify
+	var _cret C.guint // in
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sender)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(member)))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(arg0)))
+	_arg6 = C.GDBusSignalFlags(flags)
+	_arg7 = (*[0]byte)(C._gotk4_gio2_DBusSignalCallback)
+	_arg8 = C.gpointer(gbox.Assign(callback))
+	_arg9 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.g_dbus_connection_signal_subscribe(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // SignalUnsubscribe unsubscribes from signals.

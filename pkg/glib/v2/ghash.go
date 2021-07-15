@@ -27,7 +27,7 @@ func init() {
 // together with the user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
 // should be removed from the Table.
-type HRFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle) (ok bool)
+type HRFunc func(key cgo.Handle, value cgo.Handle) (ok bool)
 
 //export _gotk4_glib2_HRFunc
 func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
@@ -36,16 +36,14 @@ func _gotk4_glib2_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) (cre
 		panic(`callback not found`)
 	}
 
-	var key cgo.Handle      // out
-	var value cgo.Handle    // out
-	var userData cgo.Handle // out
+	var key cgo.Handle   // out
+	var value cgo.Handle // out
 
 	key = (cgo.Handle)(unsafe.Pointer(arg0))
 	value = (cgo.Handle)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(HRFunc)
-	ok := fn(key, value, userData)
+	ok := fn(key, value)
 
 	if ok {
 		cret = C.TRUE

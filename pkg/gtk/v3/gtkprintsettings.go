@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -29,7 +28,7 @@ func init() {
 	})
 }
 
-type PrintSettingsFunc func(key string, value string, userData cgo.Handle)
+type PrintSettingsFunc func(key string, value string)
 
 //export _gotk4_gtk3_PrintSettingsFunc
 func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
@@ -38,18 +37,16 @@ func _gotk4_gtk3_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer
 		panic(`callback not found`)
 	}
 
-	var key string          // out
-	var value string        // out
-	var userData cgo.Handle // out
+	var key string   // out
+	var value string // out
 
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	defer C.free(unsafe.Pointer(arg0))
 	value = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PrintSettingsFunc)
-	fn(key, value, userData)
+	fn(key, value)
 }
 
 // PrintSettingser describes PrintSettings's methods.

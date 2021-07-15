@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -30,7 +29,7 @@ func init() {
 // CellAllocCallback: type of the callback functions used for iterating over the
 // cell renderers and their allocated areas inside a CellArea, see
 // gtk_cell_area_foreach_alloc().
-type CellAllocCallback func(renderer *CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle, data cgo.Handle) (ok bool)
+type CellAllocCallback func(renderer *CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle) (ok bool)
 
 //export _gotk4_gtk4_CellAllocCallback
 func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) (cret C.gboolean) {
@@ -42,7 +41,6 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 	var renderer *CellRenderer        // out
 	var cellArea *gdk.Rectangle       // out
 	var cellBackground *gdk.Rectangle // out
-	var data cgo.Handle               // out
 
 	renderer = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg0)))
 	cellArea = (*gdk.Rectangle)(unsafe.Pointer(arg1))
@@ -53,10 +51,9 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 	runtime.SetFinalizer(cellBackground, func(v *gdk.Rectangle) {
 		C.free(unsafe.Pointer(v))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(CellAllocCallback)
-	ok := fn(renderer, cellArea, cellBackground, data)
+	ok := fn(renderer, cellArea, cellBackground)
 
 	if ok {
 		cret = C.TRUE
@@ -67,7 +64,7 @@ func _gotk4_gtk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle
 
 // CellCallback: type of the callback functions used for iterating over the cell
 // renderers of a CellArea, see gtk_cell_area_foreach().
-type CellCallback func(renderer *CellRenderer, data cgo.Handle) (ok bool)
+type CellCallback func(renderer *CellRenderer) (ok bool)
 
 //export _gotk4_gtk4_CellCallback
 func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.gboolean) {
@@ -77,13 +74,11 @@ func _gotk4_gtk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) (cret C.
 	}
 
 	var renderer *CellRenderer // out
-	var data cgo.Handle        // out
 
 	renderer = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg0)))
-	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CellCallback)
-	ok := fn(renderer, data)
+	ok := fn(renderer)
 
 	if ok {
 		cret = C.TRUE

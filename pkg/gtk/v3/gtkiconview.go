@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -55,7 +54,7 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 
 // IconViewForeachFunc: function used by gtk_icon_view_selected_foreach() to map
 // all selected rows. It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView *IconView, path *TreePath, data cgo.Handle)
+type IconViewForeachFunc func(iconView *IconView, path *TreePath)
 
 //export _gotk4_gtk3_IconViewForeachFunc
 func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
@@ -66,17 +65,15 @@ func _gotk4_gtk3_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 
 	var iconView *IconView // out
 	var path *TreePath     // out
-	var data cgo.Handle    // out
 
 	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(IconViewForeachFunc)
-	fn(iconView, path, data)
+	fn(iconView, path)
 }
 
 // IconViewOverrider contains methods that are overridable.
@@ -169,9 +166,6 @@ type IconViewer interface {
 	// TooltipColumn returns the column of icon_view’s model which is being used
 	// for displaying tooltips on icon_view’s rows.
 	TooltipColumn() int
-	// TooltipContext: this function is supposed to be used in a
-	// Widget::query-tooltip signal handler for IconView.
-	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
 	// VisibleRange sets start_path and end_path to be the first and last
 	// visible path.
 	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
@@ -908,49 +902,6 @@ func (iconView *IconView) TooltipColumn() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// TooltipContext: this function is supposed to be used in a
-// Widget::query-tooltip signal handler for IconView. The x, y and keyboard_tip
-// values which are received in the signal handler, should be passed to this
-// function without modification.
-//
-// The return value indicates whether there is an icon view item at the given
-// coordinates (TRUE) or not (FALSE) for mouse tooltips. For keyboard tooltips
-// the item returned will be the cursor item. When TRUE, then any of model, path
-// and iter which have been provided will be set to point to that row and the
-// corresponding model. x and y will always be converted to be relative to
-// icon_view’s bin_window if keyboard_tooltip is FALSE.
-func (iconView *IconView) TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
-	var _arg0 *C.GtkIconView  // out
-	var _arg1 *C.gint         // out
-	var _arg2 *C.gint         // out
-	var _arg3 C.gboolean      // out
-	var _arg4 *C.GtkTreeModel // in
-	var _path *TreePath
-	var _iter TreeIter
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
-	_arg1 = (*C.gint)(unsafe.Pointer(x))
-	_arg2 = (*C.gint)(unsafe.Pointer(y))
-	if keyboardTip {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
-
-	var _model *TreeModel // out
-
-	var _ok bool // out
-
-	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _model, _path, _iter, _ok
 }
 
 // VisibleRange sets start_path and end_path to be the first and last visible

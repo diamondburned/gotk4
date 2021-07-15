@@ -190,24 +190,6 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	return _weight, _ok
 }
 
-// QuantizeLineGeometry quantizes the thickness and position of a line to whole
-// device pixels.
-//
-// This is typically used for underline or strikethrough. The purpose of this
-// function is to avoid such lines looking blurry.
-//
-// Care is taken to make sure thickness is at least one pixel when this function
-// returns, but returned position may become zero as a result of rounding.
-func QuantizeLineGeometry(thickness *int, position *int) {
-	var _arg1 *C.int // out
-	var _arg2 *C.int // out
-
-	_arg1 = (*C.int)(unsafe.Pointer(thickness))
-	_arg2 = (*C.int)(unsafe.Pointer(position))
-
-	C.pango_quantize_line_geometry(_arg1, _arg2)
-}
-
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 //

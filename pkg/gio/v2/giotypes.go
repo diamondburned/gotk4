@@ -43,7 +43,7 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult, userData cgo.Handle)
+type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult)
 
 //export _gotk4_gio2_AsyncReadyCallback
 func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
@@ -54,19 +54,17 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 
 	var sourceObject *externglib.Object // out
 	var res *AsyncResult                // out
-	var userData cgo.Handle             // out
 
 	sourceObject = externglib.Take(unsafe.Pointer(arg0))
 	res = wrapAsyncResult(externglib.Take(unsafe.Pointer(arg1)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(AsyncReadyCallback)
-	fn(sourceObject, res, userData)
+	fn(sourceObject, res)
 }
 
 // CancellableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_cancellable_source_new().
-type CancellableSourceFunc func(cancellable *Cancellable, userData cgo.Handle) (ok bool)
+type CancellableSourceFunc func(cancellable *Cancellable) (ok bool)
 
 //export _gotk4_gio2_CancellableSourceFunc
 func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (cret C.gboolean) {
@@ -76,13 +74,11 @@ func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (c
 	}
 
 	var cancellable *Cancellable // out
-	var userData cgo.Handle      // out
 
 	cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CancellableSourceFunc)
-	ok := fn(cancellable, userData)
+	ok := fn(cancellable)
 
 	if ok {
 		cret = C.TRUE
@@ -97,7 +93,7 @@ func _gotk4_gio2_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) (c
 //
 // This function is called in the [thread-default main
 // loop][g-main-context-push-thread-default] that manager was constructed in.
-type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string, userData cgo.Handle) (gType externglib.Type)
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath string, interfaceName string) (gType externglib.Type)
 
 //export _gotk4_gio2_DBusProxyTypeFunc
 func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) (cret C.GType) {
@@ -109,17 +105,15 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 	var manager *DBusObjectManagerClient // out
 	var objectPath string                // out
 	var interfaceName string             // out
-	var userData cgo.Handle              // out
 
 	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
 	objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
 	interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(DBusProxyTypeFunc)
-	gType := fn(manager, objectPath, interfaceName, userData)
+	gType := fn(manager, objectPath, interfaceName)
 
 	cret = C.GType(gType)
 
@@ -128,7 +122,7 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition, userData cgo.Handle) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_DatagramBasedSourceFunc
 func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -139,14 +133,12 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 
 	var datagramBased *DatagramBased // out
 	var condition glib.IOCondition   // out
-	var userData cgo.Handle          // out
 
 	datagramBased = wrapDatagramBased(externglib.Take(unsafe.Pointer(arg0)))
 	condition = glib.IOCondition(arg1)
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(DatagramBasedSourceFunc)
-	ok := fn(datagramBased, condition, userData)
+	ok := fn(datagramBased, condition)
 
 	if ok {
 		cret = C.TRUE
@@ -182,7 +174,7 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 //
 // The last progress callback may or may not be equal to the final result.
 // Always check the async result to get the final value.
-type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64, userData cgo.Handle)
+type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64)
 
 //export _gotk4_gio2_FileMeasureProgressCallback
 func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
@@ -191,11 +183,10 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, ar
 		panic(`callback not found`)
 	}
 
-	var reporting bool      // out
-	var currentSize uint64  // out
-	var numDirs uint64      // out
-	var numFiles uint64     // out
-	var userData cgo.Handle // out
+	var reporting bool     // out
+	var currentSize uint64 // out
+	var numDirs uint64     // out
+	var numFiles uint64    // out
 
 	if arg0 != 0 {
 		reporting = true
@@ -203,16 +194,15 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, ar
 	currentSize = uint64(arg1)
 	numDirs = uint64(arg2)
 	numFiles = uint64(arg3)
-	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(FileMeasureProgressCallback)
-	fn(reporting, currentSize, numDirs, numFiles, userData)
+	fn(reporting, currentSize, numDirs, numFiles)
 }
 
 // FileProgressCallback: when doing file operations that may take a while, such
 // as moving a file or copying a file, a progress callback is used to pass how
 // far along that operation is to the application.
-type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64, userData cgo.Handle)
+type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
 
 //export _gotk4_gio2_FileProgressCallback
 func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
@@ -223,14 +213,12 @@ func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpo
 
 	var currentNumBytes int64 // out
 	var totalNumBytes int64   // out
-	var userData cgo.Handle   // out
 
 	currentNumBytes = int64(arg0)
 	totalNumBytes = int64(arg1)
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FileProgressCallback)
-	fn(currentNumBytes, totalNumBytes, userData)
+	fn(currentNumBytes, totalNumBytes)
 }
 
 // FileReadMoreCallback: when loading the partial contents of a file with
@@ -238,7 +226,7 @@ func _gotk4_gio2_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpo
 // any more data from the file should be loaded. A ReadMoreCallback function
 // facilitates this by returning TRUE if more data should be read, or FALSE
 // otherwise.
-type FileReadMoreCallback func(fileContents string, fileSize int64, callbackData cgo.Handle) (ok bool)
+type FileReadMoreCallback func(fileContents string, fileSize int64) (ok bool)
 
 //export _gotk4_gio2_FileReadMoreCallback
 func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) (cret C.gboolean) {
@@ -247,17 +235,15 @@ func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpoin
 		panic(`callback not found`)
 	}
 
-	var fileContents string     // out
-	var fileSize int64          // out
-	var callbackData cgo.Handle // out
+	var fileContents string // out
+	var fileSize int64      // out
 
 	fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	defer C.free(unsafe.Pointer(arg0))
 	fileSize = int64(arg1)
-	callbackData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FileReadMoreCallback)
-	ok := fn(fileContents, fileSize, callbackData)
+	ok := fn(fileContents, fileSize)
 
 	if ok {
 		cret = C.TRUE
@@ -269,7 +255,7 @@ func _gotk4_gio2_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpoin
 // PollableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_pollable_input_stream_create_source() and
 // g_pollable_output_stream_create_source().
-type PollableSourceFunc func(pollableStream *externglib.Object, userData cgo.Handle) (ok bool)
+type PollableSourceFunc func(pollableStream *externglib.Object) (ok bool)
 
 //export _gotk4_gio2_PollableSourceFunc
 func _gotk4_gio2_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gboolean) {
@@ -279,13 +265,11 @@ func _gotk4_gio2_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gb
 	}
 
 	var pollableStream *externglib.Object // out
-	var userData cgo.Handle               // out
 
 	pollableStream = externglib.Take(unsafe.Pointer(arg0))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PollableSourceFunc)
-	ok := fn(pollableStream, userData)
+	ok := fn(pollableStream)
 
 	if ok {
 		cret = C.TRUE
@@ -296,7 +280,7 @@ func _gotk4_gio2_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) (cret C.gb
 
 // SocketSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_socket_create_source().
-type SocketSourceFunc func(socket *Socket, condition glib.IOCondition, userData cgo.Handle) (ok bool)
+type SocketSourceFunc func(socket *Socket, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_SocketSourceFunc
 func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -307,14 +291,12 @@ func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.g
 
 	var socket *Socket             // out
 	var condition glib.IOCondition // out
-	var userData cgo.Handle        // out
 
 	socket = wrapSocket(externglib.Take(unsafe.Pointer(arg0)))
 	condition = glib.IOCondition(arg1)
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SocketSourceFunc)
-	ok := fn(socket, condition, userData)
+	ok := fn(socket, condition)
 
 	if ok {
 		cret = C.TRUE

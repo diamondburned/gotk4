@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -53,7 +52,7 @@ func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type TextCharPredicate func(ch uint32, userData cgo.Handle) (ok bool)
+type TextCharPredicate func(ch uint32) (ok bool)
 
 //export _gotk4_gtk3_TextCharPredicate
 func _gotk4_gtk3_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gboolean) {
@@ -62,14 +61,12 @@ func _gotk4_gtk3_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) (cret C.gbo
 		panic(`callback not found`)
 	}
 
-	var ch uint32           // out
-	var userData cgo.Handle // out
+	var ch uint32 // out
 
 	ch = uint32(arg0)
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TextCharPredicate)
-	ok := fn(ch, userData)
+	ok := fn(ch)
 
 	if ok {
 		cret = C.TRUE

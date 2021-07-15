@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -17,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -119,6 +122,9 @@ type ComboBoxer interface {
 	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 	// width matching the allocated width of the combo box.
 	SetPopupFixedWidth(fixed bool)
+	// SetRowSeparatorFunc sets the row separator function, which is used to
+	// determine whether a row should be drawn as a separator.
+	SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc)
 	// SetRowSpanColumn sets the column with row span information for combo_box
 	// to be row_span.
 	SetRowSpanColumn(rowSpan int)
@@ -828,6 +834,23 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 	}
 
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
+}
+
+// SetRowSeparatorFunc sets the row separator function, which is used to
+// determine whether a row should be drawn as a separator. If the row separator
+// function is NULL, no separators are drawn. This is the default value.
+func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
+	var _arg0 *C.GtkComboBox                // out
+	var _arg1 C.GtkTreeViewRowSeparatorFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewRowSeparatorFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_combo_box_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetRowSpanColumn sets the column with row span information for combo_box to

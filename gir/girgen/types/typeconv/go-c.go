@@ -521,18 +521,26 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 				return false
 			}
 
-			destroy := conv.convertParam(*value.Destroy)
+			// Check if destroy's Resolved type is nil
+			destroy := conv.param(*value.Destroy)
 			if destroy == nil {
 				value.Logln(logger.Debug, "cannot find destroy param, allowing anyway...")
 				return true
 			}
+			if destroy.Type == nil || destroy.Type.Name != "GLib.DestroyNotify" {
+				value.Logln(logger.Debug, "unknown destroyer type, allowing anyway...")
+				return true
+			}
 
-			value.header.ApplyHeader(destroy.Header())
-			value.header.CallbackDelete = true
-			value.outDecl.Linef("var %s %s", destroy.OutName, destroy.Out.Type)
+			// Mark this as done.
+			if destroy.finalize() {
+				value.header.CallbackDelete = true
+				value.outDecl.Linef("var %s C.GDestroyNotify", destroy.OutName)
+			}
+
 			value.p.Linef(
-				"%s = (%s)((*[0]byte)(C.callbackDelete))",
-				destroy.Out.Set, destroy.Out.Type,
+				"%s = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))",
+				destroy.OutName,
 			)
 		default:
 			return false

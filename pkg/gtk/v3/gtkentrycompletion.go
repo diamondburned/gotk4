@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -18,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_EntryCompletionMatchFunc(GtkEntryCompletion*, gchar*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -32,7 +33,7 @@ func init() {
 // and g_utf8_casefold()). If this is not appropriate, match functions have
 // access to the unmodified key via gtk_entry_get_text (GTK_ENTRY
 // (gtk_entry_completion_get_entry ())).
-type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter, userData cgo.Handle) (ok bool)
+type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_EntryCompletionMatchFunc
 func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
@@ -44,7 +45,6 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 	var completion *EntryCompletion // out
 	var key string                  // out
 	var iter *TreeIter              // out
-	var userData cgo.Handle         // out
 
 	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
@@ -53,10 +53,9 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(EntryCompletionMatchFunc)
-	ok := fn(completion, key, iter, userData)
+	ok := fn(completion, key, iter)
 
 	if ok {
 		cret = C.TRUE
@@ -127,6 +126,8 @@ type EntryCompletioner interface {
 	// SetInlineSelection sets whether it is possible to cycle through the
 	// possible completions inside the entry.
 	SetInlineSelection(inlineSelection bool)
+	// SetMatchFunc sets the match function for completion to be func.
+	SetMatchFunc(fn EntryCompletionMatchFunc)
 	// SetMinimumKeyLength requires the length of the search key for completion
 	// to be at least length.
 	SetMinimumKeyLength(length int)
@@ -535,6 +536,23 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	}
 
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
+}
+
+// SetMatchFunc sets the match function for completion to be func. The match
+// function is used to determine if a row should or should not be in the
+// completion list.
+func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
+	var _arg0 *C.GtkEntryCompletion         // out
+	var _arg1 C.GtkEntryCompletionMatchFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_EntryCompletionMatchFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_entry_completion_set_match_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetMinimumKeyLength requires the length of the search key for completion to

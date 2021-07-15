@@ -225,7 +225,7 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 
 // AttrDataCopyFunc: type of a function that can duplicate user data for an
 // attribute.
-type AttrDataCopyFunc func(userData cgo.Handle) (gpointer cgo.Handle)
+type AttrDataCopyFunc func() (gpointer cgo.Handle)
 
 //export _gotk4_pango1_AttrDataCopyFunc
 func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
@@ -234,12 +234,8 @@ func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var userData cgo.Handle // out
-
-	userData = (cgo.Handle)(unsafe.Pointer(arg0))
-
 	fn := v.(AttrDataCopyFunc)
-	gpointer := fn(userData)
+	gpointer := fn()
 
 	cret = (C.gpointer)(unsafe.Pointer(gpointer))
 
@@ -247,7 +243,7 @@ func _gotk4_pango1_AttrDataCopyFunc(arg0 C.gconstpointer) (cret C.gpointer) {
 }
 
 // AttrFilterFunc: type of a function filtering a list of attributes.
-type AttrFilterFunc func(attribute *Attribute, userData cgo.Handle) (ok bool)
+type AttrFilterFunc func(attribute *Attribute) (ok bool)
 
 //export _gotk4_pango1_AttrFilterFunc
 func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret C.gboolean) {
@@ -257,16 +253,14 @@ func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret
 	}
 
 	var attribute *Attribute // out
-	var userData cgo.Handle  // out
 
 	attribute = (*Attribute)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(attribute, func(v *Attribute) {
 		C.free(unsafe.Pointer(v))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(AttrFilterFunc)
-	ok := fn(attribute, userData)
+	ok := fn(attribute)
 
 	if ok {
 		cret = C.TRUE

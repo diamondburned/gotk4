@@ -50,7 +50,7 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 
 // TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
 // to iterate over the rows in a tree model.
-type TreeModelForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data cgo.Handle) (ok bool)
+type TreeModelForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeModelForeachFunc
 func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
@@ -62,7 +62,6 @@ func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 	var model *TreeModel // out
 	var path *TreePath   // out
 	var iter *TreeIter   // out
-	var data cgo.Handle  // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
@@ -73,10 +72,9 @@ func _gotk4_gtk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeModelForeachFunc)
-	ok := fn(model, path, iter, data)
+	ok := fn(model, path, iter)
 
 	if ok {
 		cret = C.TRUE

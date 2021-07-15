@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -52,7 +53,7 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 // “text” attribute of “cell” by converting it to its written equivalent.
 //
 // See also: gtk_tree_view_column_set_cell_data_func()
-type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
+type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeCellDataFunc
 func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -65,7 +66,6 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 	var cell *CellRenderer         // out
 	var treeModel *TreeModel       // out
 	var iter *TreeIter             // out
-	var data cgo.Handle            // out
 
 	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
 	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
@@ -74,10 +74,9 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeCellDataFunc)
-	fn(treeColumn, cell, treeModel, iter, data)
+	fn(treeColumn, cell, treeModel, iter)
 }
 
 // TreeViewColumner describes TreeViewColumn's methods.
@@ -159,6 +158,8 @@ type TreeViewColumner interface {
 	// SetAlignment sets the alignment of the title or custom widget inside the
 	// column header.
 	SetAlignment(xalign float32)
+	// SetCellDataFunc sets the TreeCellDataFunc to use for the column.
+	SetCellDataFunc(cellRenderer CellRendererer, fn TreeCellDataFunc)
 	// SetClickable sets the header to be active if clickable is TRUE.
 	SetClickable(clickable bool)
 	// SetExpand sets the column to take available extra space.
@@ -833,6 +834,26 @@ func (treeColumn *TreeViewColumn) SetAlignment(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.gtk_tree_view_column_set_alignment(_arg0, _arg1)
+}
+
+// SetCellDataFunc sets the TreeCellDataFunc to use for the column. This
+// function is used instead of the standard attributes mapping for setting the
+// column value, and should set the value of tree_column's cell renderer as
+// appropriate. func may be NULL to remove an older one.
+func (treeColumn *TreeViewColumn) SetCellDataFunc(cellRenderer CellRendererer, fn TreeCellDataFunc) {
+	var _arg0 *C.GtkTreeViewColumn  // out
+	var _arg1 *C.GtkCellRenderer    // out
+	var _arg2 C.GtkTreeCellDataFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cellRenderer).(gextras.Nativer).Native()))
+	_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeCellDataFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_column_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetClickable sets the header to be active if clickable is TRUE. When the

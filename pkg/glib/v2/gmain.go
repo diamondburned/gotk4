@@ -34,7 +34,7 @@ type MainContextPusher = C.void
 // When calling g_source_set_callback(), you may need to cast a function of a
 // different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
 // incompatible function types.
-type SourceFunc func(userData cgo.Handle) (ok bool)
+type SourceFunc func() (ok bool)
 
 //export _gotk4_glib2_SourceFunc
 func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
@@ -43,12 +43,8 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 		panic(`callback not found`)
 	}
 
-	var userData cgo.Handle // out
-
-	userData = (cgo.Handle)(unsafe.Pointer(arg0))
-
 	fn := v.(SourceFunc)
-	ok := fn(userData)
+	ok := fn()
 
 	if ok {
 		cret = C.TRUE

@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -51,7 +50,7 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 // SeatGrabPrepareFunc: type of the callback used to set up window so it can be
 // grabbed. A typical action would be ensuring the window is visible, although
 // there's room for other initialization actions.
-type SeatGrabPrepareFunc func(seat *Seat, window *Window, userData cgo.Handle)
+type SeatGrabPrepareFunc func(seat *Seat, window *Window)
 
 //export _gotk4_gdk3_SeatGrabPrepareFunc
 func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
@@ -60,16 +59,14 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		panic(`callback not found`)
 	}
 
-	var seat *Seat          // out
-	var window *Window      // out
-	var userData cgo.Handle // out
+	var seat *Seat     // out
+	var window *Window // out
 
 	seat = wrapSeat(externglib.Take(unsafe.Pointer(arg0)))
 	window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SeatGrabPrepareFunc)
-	fn(seat, window, userData)
+	fn(seat, window)
 }
 
 // Seater describes Seat's methods.

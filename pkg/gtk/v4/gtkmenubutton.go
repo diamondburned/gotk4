@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
 import "C"
 
 func init() {
@@ -30,7 +31,7 @@ func init() {
 // This function is called when the popup of menu_button is shown, but none has
 // been provided via gtk.MenuButton.SetPopover() or
 // gtk.MenuButton.SetMenuModel().
-type MenuButtonCreatePopupFunc func(menuButton *MenuButton, userData cgo.Handle)
+type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
 
 //export _gotk4_gtk4_MenuButtonCreatePopupFunc
 func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
@@ -40,13 +41,11 @@ func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointe
 	}
 
 	var menuButton *MenuButton // out
-	var userData cgo.Handle    // out
 
 	menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(arg0)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(MenuButtonCreatePopupFunc)
-	fn(menuButton, userData)
+	fn(menuButton)
 }
 
 // MenuButtoner describes MenuButton's methods.
@@ -71,6 +70,9 @@ type MenuButtoner interface {
 	Popdown()
 	// Popup: pop up the menu.
 	Popup()
+	// SetCreatePopupFunc sets func to be called when a popup is about to be
+	// shown.
+	SetCreatePopupFunc(fn MenuButtonCreatePopupFunc)
 	// SetDirection sets the direction in which the popup will be popped up.
 	SetDirection(direction ArrowType)
 	// SetHasFrame sets the style of the button.
@@ -335,6 +337,32 @@ func (menuButton *MenuButton) Popup() {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
 
 	C.gtk_menu_button_popup(_arg0)
+}
+
+// SetCreatePopupFunc sets func to be called when a popup is about to be shown.
+//
+// func should use one of
+//
+//    - gtk.MenuButton.SetPopover()
+//    - gtk.MenuButton.SetMenuModel()
+//
+// to set a popup for menu_button. If func is non-NULL, menu_button will always
+// be sensitive.
+//
+// Using this function will not reset the menu widget attached to menu_button.
+// Instead, this can be done manually in func.
+func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
+	var _arg0 *C.GtkMenuButton               // out
+	var _arg1 C.GtkMenuButtonCreatePopupFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(menuButton.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_MenuButtonCreatePopupFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_menu_button_set_create_popup_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetDirection sets the direction in which the popup will be popped up.

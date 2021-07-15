@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -17,6 +16,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 import "C"
 
 func init() {
@@ -30,7 +31,7 @@ func init() {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int, userData cgo.Handle)
+type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width int, height int)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
 func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
@@ -43,7 +44,6 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 	var cr *cairo.Context        // out
 	var width int                // out
 	var height int               // out
-	var userData cgo.Handle      // out
 
 	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
 	cr = (*cairo.Context)(unsafe.Pointer(arg1))
@@ -52,10 +52,9 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, ar
 	})
 	width = int(arg2)
 	height = int(arg3)
-	userData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(DrawingAreaDrawFunc)
-	fn(drawingArea, cr, width, height, userData)
+	fn(drawingArea, cr, width, height)
 }
 
 // DrawingAreaOverrider contains methods that are overridable.
@@ -78,6 +77,9 @@ type DrawingAreaer interface {
 	// SetContentWidth sets the desired width of the contents of the drawing
 	// area.
 	SetContentWidth(width int)
+	// SetDrawFunc: setting a draw function is the main thing you want to do
+	// when using a drawing area.
+	SetDrawFunc(drawFunc DrawingAreaDrawFunc)
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
@@ -268,4 +270,31 @@ func (self *DrawingArea) SetContentWidth(width int) {
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
+}
+
+// SetDrawFunc: setting a draw function is the main thing you want to do when
+// using a drawing area.
+//
+// The draw function is called whenever GTK needs to draw the contents of the
+// drawing area to the screen.
+//
+// The draw function will be called during the drawing stage of GTK. In the
+// drawing stage it is not allowed to change properties of any GTK widgets or
+// call any functions that would cause any properties to be changed. You should
+// restrict yourself exclusively to drawing your contents in the draw function.
+//
+// If what you are drawing does change, call gtk.Widget.QueueDraw() on the
+// drawing area. This will cause a redraw and will call draw_func again.
+func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
+	var _arg0 *C.GtkDrawingArea        // out
+	var _arg1 C.GtkDrawingAreaDrawFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(self.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
+	_arg2 = C.gpointer(gbox.Assign(drawFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 }

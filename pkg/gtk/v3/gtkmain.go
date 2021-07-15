@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -24,7 +23,7 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey, funcData cgo.Handle) (gint int)
+type KeySnoopFunc func(grabWidget *Widget, event *gdk.EventKey) (gint int)
 
 //export _gotk4_gtk3_KeySnoopFunc
 func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) (cret C.gint) {
@@ -35,17 +34,15 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 
 	var grabWidget *Widget  // out
 	var event *gdk.EventKey // out
-	var funcData cgo.Handle // out
 
 	grabWidget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
 	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(event, func(v *gdk.EventKey) {
 		C.free(unsafe.Pointer(v))
 	})
-	funcData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(KeySnoopFunc)
-	gint := fn(grabWidget, event, funcData)
+	gint := fn(grabWidget, event)
 
 	cret = C.gint(gint)
 

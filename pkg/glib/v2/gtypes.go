@@ -18,7 +18,7 @@ import "C"
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a cgo.Handle, b cgo.Handle, userData cgo.Handle) (gint int)
+type CompareDataFunc func(a cgo.Handle, b cgo.Handle) (gint int)
 
 //export _gotk4_glib2_CompareDataFunc
 func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, arg2 C.gpointer) (cret C.gint) {
@@ -27,16 +27,14 @@ func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, ar
 		panic(`callback not found`)
 	}
 
-	var a cgo.Handle        // out
-	var b cgo.Handle        // out
-	var userData cgo.Handle // out
+	var a cgo.Handle // out
+	var b cgo.Handle // out
 
 	a = (cgo.Handle)(unsafe.Pointer(arg0))
 	b = (cgo.Handle)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(CompareDataFunc)
-	gint := fn(a, b, userData)
+	gint := fn(a, b)
 
 	cret = C.gint(gint)
 
@@ -45,7 +43,7 @@ func _gotk4_glib2_CompareDataFunc(arg0 C.gconstpointer, arg1 C.gconstpointer, ar
 
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
-type Func func(data cgo.Handle, userData cgo.Handle)
+type Func func(data cgo.Handle)
 
 //export _gotk4_glib2_Func
 func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
@@ -54,20 +52,18 @@ func _gotk4_glib2_Func(arg0 C.gpointer, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var data cgo.Handle     // out
-	var userData cgo.Handle // out
+	var data cgo.Handle // out
 
 	data = (cgo.Handle)(unsafe.Pointer(arg0))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(Func)
-	fn(data, userData)
+	fn(data)
 }
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
-type HFunc func(key cgo.Handle, value cgo.Handle, userData cgo.Handle)
+type HFunc func(key cgo.Handle, value cgo.Handle)
 
 //export _gotk4_glib2_HFunc
 func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
@@ -76,16 +72,14 @@ func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var key cgo.Handle      // out
-	var value cgo.Handle    // out
-	var userData cgo.Handle // out
+	var key cgo.Handle   // out
+	var value cgo.Handle // out
 
 	key = (cgo.Handle)(unsafe.Pointer(arg0))
 	value = (cgo.Handle)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(HFunc)
-	fn(key, value, userData)
+	fn(key, value)
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to

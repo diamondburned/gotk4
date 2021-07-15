@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -19,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_FileFilterFunc(GtkFileFilterInfo*, gpointer);
 import "C"
 
 func init() {
@@ -50,7 +51,7 @@ func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 
 // FileFilterFunc: type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo *FileFilterInfo, data cgo.Handle) (ok bool)
+type FileFilterFunc func(filterInfo *FileFilterInfo) (ok bool)
 
 //export _gotk4_gtk3_FileFilterFunc
 func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
@@ -60,16 +61,14 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 	}
 
 	var filterInfo *FileFilterInfo // out
-	var data cgo.Handle            // out
 
 	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(filterInfo, func(v *FileFilterInfo) {
 		C.free(unsafe.Pointer(v))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(FileFilterFunc)
-	ok := fn(filterInfo, data)
+	ok := fn(filterInfo)
 
 	if ok {
 		cret = C.TRUE
@@ -80,6 +79,9 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 
 // FileFilterer describes FileFilter's methods.
 type FileFilterer interface {
+	// AddCustom adds rule to a filter that allows files based on a custom
+	// callback function.
+	AddCustom(needed FileFilterFlags, fn FileFilterFunc)
 	// AddMIMEType adds a rule allowing a given mime type to filter.
 	AddMIMEType(mimeType string)
 	// AddPattern adds a rule allowing a shell style glob to a filter.
@@ -209,6 +211,26 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 // field.
 func (v *FileFilter) Native() uintptr {
 	return v.InitiallyUnowned.Object.Native()
+}
+
+// AddCustom adds rule to a filter that allows files based on a custom callback
+// function. The bitfield needed which is passed in provides information about
+// what sorts of information that the filter function needs; this allows GTK+ to
+// avoid retrieving expensive information when it isn’t needed by the filter.
+func (filter *FileFilter) AddCustom(needed FileFilterFlags, fn FileFilterFunc) {
+	var _arg0 *C.GtkFileFilter     // out
+	var _arg1 C.GtkFileFilterFlags // out
+	var _arg2 C.GtkFileFilterFunc  // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = C.GtkFileFilterFlags(needed)
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_FileFilterFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_file_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // AddMIMEType adds a rule allowing a given mime type to filter.

@@ -5,6 +5,7 @@ package gdkwayland
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -14,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 import "C"
 
 func init() {
@@ -93,6 +96,9 @@ func (*WaylandSurface) privateWaylandSurface() {}
 
 // WaylandTopleveler describes WaylandToplevel's methods.
 type WaylandTopleveler interface {
+	// ExportHandle: asynchronously obtains a handle for a surface that can be
+	// passed to other processes.
+	ExportHandle(callback WaylandToplevelExported) bool
 	// SetApplicationID sets the application id on a GdkToplevel.
 	SetApplicationID(applicationId string)
 	// SetTransientForExported marks toplevel as transient for the surface to
@@ -132,6 +138,46 @@ func marshalWaylandTopleveler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandToplevel(obj), nil
+}
+
+// ExportHandle: asynchronously obtains a handle for a surface that can be
+// passed to other processes.
+//
+// When the handle has been obtained, callback will be called.
+//
+// It is an error to call this function on a surface that is already exported.
+//
+// When the handle is no longer needed,
+// gdkwayland.WaylandToplevel.UnexportHandle() should be called to clean up
+// resources.
+//
+// The main purpose for obtaining a handle is to mark a surface from another
+// surface as transient for this one, see
+// gdkwayland.WaylandToplevel.SetTransientForExported().
+//
+// Note that this API depends on an unstable Wayland protocol, and thus may
+// require changes in the future.
+func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
+	var _arg0 *C.GdkToplevel               // out
+	var _arg1 C.GdkWaylandToplevelExported // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gdk_wayland_toplevel_export_handle(_arg0, _arg1, _arg2, _arg3)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetApplicationID sets the application id on a GdkToplevel.

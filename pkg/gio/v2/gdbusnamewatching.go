@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -27,7 +26,7 @@ import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have
 // to have an owner.
-type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string, userData cgo.Handle)
+type BusNameAppearedCallback func(connection *DBusConnection, name string, nameOwner string)
 
 //export _gotk4_gio2_BusNameAppearedCallback
 func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
@@ -39,17 +38,15 @@ func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 	var connection *DBusConnection // out
 	var name string                // out
 	var nameOwner string           // out
-	var userData cgo.Handle        // out
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
 	nameOwner = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(BusNameAppearedCallback)
-	fn(connection, name, nameOwner, userData)
+	fn(connection, name, nameOwner)
 }
 
 // BusNameVanishedCallback: invoked when the name being watched is known not to
@@ -57,7 +54,7 @@ func _gotk4_gio2_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 //
 // This is also invoked when the BusConnection on which the watch was
 // established has been closed. In that case, connection will be NULL.
-type BusNameVanishedCallback func(connection *DBusConnection, name string, userData cgo.Handle)
+type BusNameVanishedCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameVanishedCallback
 func _gotk4_gio2_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -68,15 +65,13 @@ func _gotk4_gio2_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar,
 
 	var connection *DBusConnection // out
 	var name string                // out
-	var userData cgo.Handle        // out
 
 	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
 	name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(BusNameVanishedCallback)
-	fn(connection, name, userData)
+	fn(connection, name)
 }
 
 // BusUnwatchName stops watching a name.

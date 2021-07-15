@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
+// extern void callbackDelete(gpointer);
 import "C"
 
 func init() {
@@ -32,7 +33,7 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item *externglib.Object, userData cgo.Handle) (listModel gio.ListModeler)
+type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeler)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
 func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
@@ -42,13 +43,11 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) 
 	}
 
 	var item *externglib.Object // out
-	var userData cgo.Handle     // out
 
 	item = externglib.Take(unsafe.Pointer(arg0))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TreeListModelCreateModelFunc)
-	listModel := fn(item, userData)
+	listModel := fn(item)
 
 	cret = (*C.GListModel)(unsafe.Pointer((listModel).(gextras.Nativer).Native()))
 
@@ -99,6 +98,37 @@ func marshalTreeListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeListModel(obj), nil
+}
+
+// NewTreeListModel creates a new empty GtkTreeListModel displaying root with
+// all rows collapsed.
+func NewTreeListModel(root gio.ListModeler, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
+	var _arg1 *C.GListModel                     // out
+	var _arg2 C.gboolean                        // out
+	var _arg3 C.gboolean                        // out
+	var _arg4 C.GtkTreeListModelCreateModelFunc // out
+	var _arg5 C.gpointer
+	var _arg6 C.GDestroyNotify
+	var _cret *C.GtkTreeListModel // in
+
+	_arg1 = (*C.GListModel)(unsafe.Pointer((root).(gextras.Nativer).Native()))
+	if passthrough {
+		_arg2 = C.TRUE
+	}
+	if autoexpand {
+		_arg3 = C.TRUE
+	}
+	_arg4 = (*[0]byte)(C._gotk4_gtk4_TreeListModelCreateModelFunc)
+	_arg5 = C.gpointer(gbox.Assign(createFunc))
+	_arg6 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_tree_list_model_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _treeListModel *TreeListModel // out
+
+	_treeListModel = wrapTreeListModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _treeListModel
 }
 
 // Autoexpand gets whether the model is set to automatically expand new rows

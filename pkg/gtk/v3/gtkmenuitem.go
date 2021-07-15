@@ -43,9 +43,6 @@ type MenuItemOverrider interface {
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
 	ToggleSizeAllocate(allocation int)
-	// ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
-	// given item.
-	ToggleSizeRequest(requisition *int)
 }
 
 // MenuItemer describes MenuItem's methods.
@@ -94,9 +91,6 @@ type MenuItemer interface {
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
 	ToggleSizeAllocate(allocation int)
-	// ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
-	// given item.
-	ToggleSizeRequest(requisition *int)
 }
 
 // MenuItem widget and the derived widgets are the only valid children for
@@ -476,16 +470,4 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	_arg1 = C.gint(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
-}
-
-// ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the given
-// item.
-func (menuItem *MenuItem) ToggleSizeRequest(requisition *int) {
-	var _arg0 *C.GtkMenuItem // out
-	var _arg1 *C.gint        // out
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(menuItem.Native()))
-	_arg1 = (*C.gint)(unsafe.Pointer(requisition))
-
-	C.gtk_menu_item_toggle_size_request(_arg0, _arg1)
 }

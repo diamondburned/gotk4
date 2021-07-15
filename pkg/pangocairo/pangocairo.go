@@ -4,7 +4,7 @@ package pangocairo
 
 import (
 	"runtime"
-	"runtime/cgo"
+	_ "runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -18,6 +18,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangocairo.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
 import "C"
 
 func init() {
@@ -29,7 +31,7 @@ func init() {
 
 // ShapeRendererFunc: function type for rendering attributes of type
 // PANGO_ATTR_SHAPE with Pango's Cairo renderer.
-type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool, data cgo.Handle)
+type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
 
 //export _gotk4_pangocairo1_ShapeRendererFunc
 func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer) {
@@ -41,7 +43,6 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	var cr *cairo.Context     // out
 	var attr *pango.AttrShape // out
 	var doPath bool           // out
-	var data cgo.Handle       // out
 
 	cr = (*cairo.Context)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
@@ -54,10 +55,9 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	if arg2 != 0 {
 		doPath = true
 	}
-	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(ShapeRendererFunc)
-	fn(cr, attr, doPath, data)
+	fn(cr, attr, doPath)
 }
 
 // ContextGetResolution gets the resolution for the context. See
@@ -90,6 +90,24 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 	_arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(_arg1, _arg2)
+}
+
+// ContextSetShapeRenderer sets callback function for context to use for
+// rendering attributes of type PANGO_ATTR_SHAPE.
+//
+// See PangoCairoShapeRendererFunc for details.
+func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
+	var _arg1 *C.PangoContext               // out
+	var _arg2 C.PangoCairoShapeRendererFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
 }
 
 // CreateContext creates a context object set up to match the current

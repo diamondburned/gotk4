@@ -4,7 +4,6 @@ package atk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -65,7 +64,7 @@ func marshalKeyEventType(p uintptr) (interface{}, error) {
 // occurs, if registered via atk_add_key_event_listener. It allows for
 // pre-emptive interception of key events via the return code as described
 // below.
-type KeySnoopFunc func(event *KeyEventStruct, userData cgo.Handle) (gint int)
+type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 
 //export _gotk4_atk1_KeySnoopFunc
 func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret C.gint) {
@@ -75,16 +74,14 @@ func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret 
 	}
 
 	var event *KeyEventStruct // out
-	var userData cgo.Handle   // out
 
 	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(event, func(v *KeyEventStruct) {
 		C.free(unsafe.Pointer(v))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(KeySnoopFunc)
-	gint := fn(event, userData)
+	gint := fn(event)
 
 	cret = C.gint(gint)
 

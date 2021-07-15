@@ -73,7 +73,7 @@ func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 // SettingsBindGetMapping: type for the function that is used to convert from
 // #GSettings to an object property. The value is already initialized to hold
 // values of the appropriate type.
-type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant, userData cgo.Handle) (ok bool)
+type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant) (ok bool)
 
 //export _gotk4_gio2_SettingsBindGetMapping
 func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
@@ -84,7 +84,6 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 
 	var value *externglib.Value // out
 	var variant *glib.Variant   // out
-	var userData cgo.Handle     // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
@@ -95,10 +94,9 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SettingsBindGetMapping)
-	ok := fn(value, variant, userData)
+	ok := fn(value, variant)
 
 	if ok {
 		cret = C.TRUE
@@ -109,7 +107,7 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 
 // SettingsBindSetMapping: type for the function that is used to convert an
 // object property value to a #GVariant for storing it in #GSettings.
-type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType, userData cgo.Handle) (variant *glib.Variant)
+type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
 
 //export _gotk4_gio2_SettingsBindSetMapping
 func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) (cret *C.GVariant) {
@@ -120,7 +118,6 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 
 	var value *externglib.Value        // out
 	var expectedType *glib.VariantType // out
-	var userData cgo.Handle            // out
 
 	value = externglib.ValueFromNative(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
@@ -130,10 +127,9 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 	runtime.SetFinalizer(expectedType, func(v *glib.VariantType) {
 		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SettingsBindSetMapping)
-	variant := fn(value, expectedType, userData)
+	variant := fn(value, expectedType)
 
 	cret = (*C.GVariant)(unsafe.Pointer(variant))
 
@@ -150,7 +146,7 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 // If value is NULL then it means that the mapping function is being given a
 // "last chance" to successfully return a valid value. TRUE must be returned in
 // this case.
-type SettingsGetMapping func(value *glib.Variant, userData cgo.Handle) (result cgo.Handle, ok bool)
+type SettingsGetMapping func(value *glib.Variant) (result cgo.Handle, ok bool)
 
 //export _gotk4_gio2_SettingsGetMapping
 func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
@@ -160,17 +156,15 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 	}
 
 	var value *glib.Variant // out
-	var userData cgo.Handle // out
 
 	value = (*glib.Variant)(unsafe.Pointer(arg0))
 	C.g_variant_ref(arg0)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
 		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(SettingsGetMapping)
-	result, ok := fn(value, userData)
+	result, ok := fn(value)
 
 	*arg1 = (C.gpointer)(unsafe.Pointer(result))
 	if ok {

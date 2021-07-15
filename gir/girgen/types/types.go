@@ -334,7 +334,7 @@ func FindParameter(c *gir.CallableAttrs, paramName string) *gir.ParameterAttrs {
 // up for GIR's painful shortcomings.
 func GuessParameterOutput(param *gir.Parameter) string {
 	switch param.Direction {
-	case "out", "in":
+	case "out", "in", "inout":
 		return param.Direction
 	}
 

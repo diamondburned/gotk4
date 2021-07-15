@@ -4,7 +4,6 @@ package gsk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -30,7 +29,7 @@ func init() {
 
 // ParseErrorFunc: type of callback that is called when an error occurs during
 // node deserialization.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error, userData cgo.Handle)
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, err error)
 
 //export _gotk4_gsk4_ParseErrorFunc
 func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
@@ -42,7 +41,6 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 	var start *ParseLocation // out
 	var end *ParseLocation   // out
 	var err error            // out
-	var userData cgo.Handle  // out
 
 	start = (*ParseLocation)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(start, func(v *ParseLocation) {
@@ -53,10 +51,9 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 		C.free(unsafe.Pointer(v))
 	})
 	err = gerror.Take(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(ParseErrorFunc)
-	fn(start, end, err, userData)
+	fn(start, end, err)
 }
 
 // RenderNoder describes RenderNode's methods.

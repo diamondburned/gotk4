@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	_ "runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"

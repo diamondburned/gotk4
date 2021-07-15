@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -131,7 +130,7 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 //
 // This function will be called when the page setup dialog is dismissed, and
 // also serves as destroy notify for data.
-type PageSetupDoneFunc func(pageSetup *PageSetup, data cgo.Handle)
+type PageSetupDoneFunc func(pageSetup *PageSetup)
 
 //export _gotk4_gtk3_PageSetupDoneFunc
 func _gotk4_gtk3_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
@@ -141,13 +140,11 @@ func _gotk4_gtk3_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	}
 
 	var pageSetup *PageSetup // out
-	var data cgo.Handle      // out
 
 	pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg0)))
-	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(PageSetupDoneFunc)
-	fn(pageSetup, data)
+	fn(pageSetup)
 }
 
 // PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the

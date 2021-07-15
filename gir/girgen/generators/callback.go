@@ -3,6 +3,7 @@ package generators
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -97,13 +98,13 @@ func (g *CallbackGenerator) Use(cb *gir.Callback) bool {
 		return false
 	}
 
-	// // Don't generate destroy notifiers. It's an edge case that we handle
-	// // separately and mostly manually. There are also no good ways to detect
-	// // this.
-	// if strings.HasSuffix(cb.Name, "DestroyNotify") {
-	// 	g.Logln(logger.Debug, "skipping DestroyNotify-ish callback")
-	// 	return false
-	// }
+	// Don't generate destroy notifiers. It's an edge case that we handle
+	// separately and mostly manually. There are also no good ways to detect
+	// this.
+	if strings.HasSuffix(cb.Name, "DestroyNotify") {
+		g.Logln(logger.Debug, "skipping DestroyNotify-ish callback")
+		return false
+	}
 
 	g.GoName = strcases.PascalToGo(cb.Name)
 	g.CGoName = file.CallbackExportedName(g.gen.Namespace(), cb)
@@ -191,7 +192,8 @@ func (g *CallbackGenerator) renderBlock() bool {
 	callbackValues := make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
 
 	for i, param := range g.Parameters.Parameters {
-		if param.Skip {
+		// Skip generating the closure parameter.
+		if param.Skip || i == *g.Closure {
 			continue
 		}
 

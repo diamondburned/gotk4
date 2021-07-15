@@ -119,8 +119,6 @@ type Socketer interface {
 	LeaveMulticastGroupSSM(group *InetAddress, sourceSpecific *InetAddress, iface string) error
 	// Listen marks the socket as a server socket, i.e.
 	Listen() error
-	// ReceiveMessage: receive data from a socket.
-	ReceiveMessage(vectors []InputVector, flags *int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error)
 	// ReceiveMessages: receive multiple data messages from socket in one go.
 	ReceiveMessages(messages []InputMessage, flags int, cancellable *Cancellable) (int, error)
 	// Send tries to send size bytes from buffer on the socket.
@@ -1138,102 +1136,6 @@ func (socket *Socket) Listen() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// ReceiveMessage: receive data from a socket. For receiving multiple messages,
-// see g_socket_receive_messages(); for easier use, see g_socket_receive() and
-// g_socket_receive_from().
-//
-// If address is non-NULL then address will be set equal to the source address
-// of the received packet. address is owned by the caller.
-//
-// vector must point to an array of Vector structs and num_vectors must be the
-// length of this array. These structs describe the buffers that received data
-// will be scattered into. If num_vectors is -1, then vectors is assumed to be
-// terminated by a Vector with a NULL buffer pointer.
-//
-// As a special case, if num_vectors is 0 (in which case, vectors may of course
-// be NULL), then a single byte is received and discarded. This is to facilitate
-// the common practice of sending a single '\0' byte for the purposes of
-// transferring ancillary data.
-//
-// messages, if non-NULL, will be set to point to a newly-allocated array of
-// ControlMessage instances or NULL if no such messages was received. These
-// correspond to the control messages received from the kernel, one
-// ControlMessage per message from the kernel. This array is NULL-terminated and
-// must be freed by the caller using g_free() after calling g_object_unref() on
-// each element. If messages is NULL, any control messages received will be
-// discarded.
-//
-// num_messages, if non-NULL, will be set to the number of control messages
-// received.
-//
-// If both messages and num_messages are non-NULL, then num_messages gives the
-// number of ControlMessage instances in messages (ie: not including the NULL
-// terminator).
-//
-// flags is an in/out parameter. The commonly available arguments for this are
-// available in the MsgFlags enum, but the values there are the same as the
-// system values, and the flags are passed in as-is, so you can pass in
-// system-specific flags too (and g_socket_receive_message() may pass
-// system-specific flags out). Flags passed in to the parameter affect the
-// receive operation; flags returned out of it are relevant to the specific
-// returned message.
-//
-// As with g_socket_receive(), data may be discarded if socket is
-// G_SOCKET_TYPE_DATAGRAM or G_SOCKET_TYPE_SEQPACKET and you do not provide
-// enough buffer space to read a complete message. You can pass
-// G_SOCKET_MSG_PEEK in flags to peek at the current message without removing it
-// from the receive queue, but there is no portable way to find out the length
-// of the message other than by reading it into a sufficiently-large buffer.
-//
-// If the socket is in blocking mode the call will block until there is some
-// data to receive, the connection is closed, or there is an error. If there is
-// no data available and the socket is in non-blocking mode, a
-// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data is
-// available, wait for the G_IO_IN condition.
-//
-// On error -1 is returned and error is set accordingly.
-func (socket *Socket) ReceiveMessage(vectors []InputVector, flags *int, cancellable *Cancellable) (*SocketAddress, []*SocketControlMessage, int, error) {
-	var _arg0 *C.GSocket        // out
-	var _arg1 *C.GSocketAddress // in
-	var _arg2 *C.GInputVector
-	var _arg3 C.gint
-	var _arg4 **C.GSocketControlMessage
-	var _arg5 C.gint          // in
-	var _arg6 *C.gint         // out
-	var _arg7 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
-	_arg3 = (C.gint)(len(vectors))
-	if len(vectors) > 0 {
-		_arg2 = (*C.GInputVector)(unsafe.Pointer(&vectors[0]))
-	}
-	_arg6 = (*C.gint)(unsafe.Pointer(flags))
-	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	_cret = C.g_socket_receive_message(_arg0, &_arg1, _arg2, _arg3, &_arg4, &_arg5, _arg6, _arg7, &_cerr)
-
-	var _address *SocketAddress // out
-	var _messages []*SocketControlMessage
-	var _gssize int  // out
-	var _goerr error // out
-
-	_address = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg4))
-	{
-		src := unsafe.Slice(_arg4, _arg5)
-		_messages = make([]*SocketControlMessage, _arg5)
-		for i := 0; i < int(_arg5); i++ {
-			_messages[i] = wrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(src[i])))
-		}
-	}
-	_gssize = int(_cret)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _address, _messages, _gssize, _goerr
 }
 
 // ReceiveMessages: receive multiple data messages from socket in one go. This

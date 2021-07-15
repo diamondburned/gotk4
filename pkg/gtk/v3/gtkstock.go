@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -15,6 +14,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 import "C"
 
 type Stock = string
@@ -23,7 +24,7 @@ type Stock = string
 // ActionGroup.
 //
 // Deprecated: since version 3.10.
-type TranslateFunc func(path string, funcData cgo.Handle) (utf8 string)
+type TranslateFunc func(path string) (utf8 string)
 
 //export _gotk4_gtk3_TranslateFunc
 func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
@@ -32,15 +33,13 @@ func _gotk4_gtk3_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) (cret *C.gchar) {
 		panic(`callback not found`)
 	}
 
-	var path string         // out
-	var funcData cgo.Handle // out
+	var path string // out
 
 	path = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	defer C.free(unsafe.Pointer(arg0))
-	funcData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(TranslateFunc)
-	utf8 := fn(path, funcData)
+	utf8 := fn(path)
 
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
@@ -102,6 +101,52 @@ func StockLookup(stockId string) (StockItem, bool) {
 	}
 
 	return _item, _ok
+}
+
+// StockSetTranslateFunc sets a function to be used for translating the label of
+// a stock item.
+//
+// If no function is registered for a translation domain, g_dgettext() is used.
+//
+// The function is used for all stock items whose translation_domain matches
+// domain. Note that it is possible to use strings different from the actual
+// gettext translation domain of your application for this, as long as your
+// TranslateFunc uses the correct domain when calling dgettext(). This can be
+// useful, e.g. when dealing with message contexts:
+//
+//    GtkStockItem items[] = {
+//     { MY_ITEM1, NC_("odd items", "Item 1"), 0, 0, "odd-item-domain" },
+//     { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
+//    };
+//
+//    gchar *
+//    my_translate_func (const gchar *msgid,
+//                       gpointer     data)
+//    {
+//      gchar *msgctxt = data;
+//
+//      return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
+//    }
+//
+//    ...
+//
+//    gtk_stock_add (items, G_N_ELEMENTS (items));
+//    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
+//    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
+//
+// Deprecated: since version 3.10.
+func StockSetTranslateFunc(domain string, fn TranslateFunc) {
+	var _arg1 *C.gchar           // out
+	var _arg2 C.GtkTranslateFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_stock_set_translate_func(_arg1, _arg2, _arg3, _arg4)
 }
 
 // StockItem: deprecated: since version 3.10.

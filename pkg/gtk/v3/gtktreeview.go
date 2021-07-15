@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -21,7 +20,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
+// gboolean _gotk4_gtk3_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// gboolean _gotk4_gtk3_TreeViewSearchEqualFunc(GtkTreeModel*, gint, gchar*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeDestroyCountFunc(GtkTreeView*, GtkTreePath*, gint, gpointer);
 // void _gotk4_gtk3_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
+// void _gotk4_gtk3_TreeViewSearchPositionFunc(GtkTreeView*, GtkWidget*, gpointer);
 import "C"
 
 func init() {
@@ -49,7 +55,7 @@ func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
 	return TreeViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int, userData cgo.Handle)
+type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int)
 
 //export _gotk4_gtk3_TreeDestroyCountFunc
 func _gotk4_gtk3_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gint, arg3 C.gpointer) {
@@ -58,10 +64,9 @@ func _gotk4_gtk3_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, 
 		panic(`callback not found`)
 	}
 
-	var treeView *TreeView  // out
-	var path *TreePath      // out
-	var children int        // out
-	var userData cgo.Handle // out
+	var treeView *TreeView // out
+	var path *TreePath     // out
+	var children int       // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
@@ -69,10 +74,9 @@ func _gotk4_gtk3_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, 
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
 	children = int(arg2)
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeDestroyCountFunc)
-	fn(treeView, path, children, userData)
+	fn(treeView, path, children)
 }
 
 // TreeViewColumnDropFunc: function type for determining whether column can be
@@ -83,7 +87,7 @@ func _gotk4_gtk3_TreeDestroyCountFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, 
 // Please note that returning TRUE does not actually indicate that the column
 // drop was made, but is meant only to indicate a possible drop spot to the
 // user.
-type TreeViewColumnDropFunc func(treeView *TreeView, column *TreeViewColumn, prevColumn *TreeViewColumn, nextColumn *TreeViewColumn, data cgo.Handle) (ok bool)
+type TreeViewColumnDropFunc func(treeView *TreeView, column *TreeViewColumn, prevColumn *TreeViewColumn, nextColumn *TreeViewColumn) (ok bool)
 
 //export _gotk4_gtk3_TreeViewColumnDropFunc
 func _gotk4_gtk3_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) (cret C.gboolean) {
@@ -96,16 +100,14 @@ func _gotk4_gtk3_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeView
 	var column *TreeViewColumn     // out
 	var prevColumn *TreeViewColumn // out
 	var nextColumn *TreeViewColumn // out
-	var data cgo.Handle            // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
 	prevColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
 	nextColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg3)))
-	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeViewColumnDropFunc)
-	ok := fn(treeView, column, prevColumn, nextColumn, data)
+	ok := fn(treeView, column, prevColumn, nextColumn)
 
 	if ok {
 		cret = C.TRUE
@@ -115,7 +117,7 @@ func _gotk4_gtk3_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeView
 }
 
 // TreeViewMappingFunc: function used for gtk_tree_view_map_expanded_rows().
-type TreeViewMappingFunc func(treeView *TreeView, path *TreePath, userData cgo.Handle)
+type TreeViewMappingFunc func(treeView *TreeView, path *TreePath)
 
 //export _gotk4_gtk3_TreeViewMappingFunc
 func _gotk4_gtk3_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
@@ -124,26 +126,24 @@ func _gotk4_gtk3_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, a
 		panic(`callback not found`)
 	}
 
-	var treeView *TreeView  // out
-	var path *TreePath      // out
-	var userData cgo.Handle // out
+	var treeView *TreeView // out
+	var path *TreePath     // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewMappingFunc)
-	fn(treeView, path, userData)
+	fn(treeView, path)
 }
 
 // TreeViewRowSeparatorFunc: function type for determining whether the row
 // pointed to by iter should be rendered as a separator. A common way to
 // implement this is to have a boolean column in the model, whose values the
 // TreeViewRowSeparatorFunc returns.
-type TreeViewRowSeparatorFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
+type TreeViewRowSeparatorFunc func(model *TreeModel, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewRowSeparatorFunc
 func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -154,17 +154,15 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 
 	var model *TreeModel // out
 	var iter *TreeIter   // out
-	var data cgo.Handle  // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewRowSeparatorFunc)
-	ok := fn(model, iter, data)
+	ok := fn(model, iter)
 
 	if ok {
 		cret = C.TRUE
@@ -177,7 +175,7 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model *TreeModel, column int, key string, iter *TreeIter, searchData cgo.Handle) (ok bool)
+type TreeViewSearchEqualFunc func(model *TreeModel, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewSearchEqualFunc
 func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
@@ -186,11 +184,10 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel      // out
-	var column int            // out
-	var key string            // out
-	var iter *TreeIter        // out
-	var searchData cgo.Handle // out
+	var model *TreeModel // out
+	var column int       // out
+	var key string       // out
+	var iter *TreeIter   // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	column = int(arg1)
@@ -200,10 +197,9 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	searchData = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeViewSearchEqualFunc)
-	ok := fn(model, column, key, iter, searchData)
+	ok := fn(model, column, key, iter)
 
 	if ok {
 		cret = C.TRUE
@@ -212,7 +208,7 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 	return cret
 }
 
-type TreeViewSearchPositionFunc func(treeView *TreeView, searchDialog *Widget, userData cgo.Handle)
+type TreeViewSearchPositionFunc func(treeView *TreeView, searchDialog *Widget)
 
 //export _gotk4_gtk3_TreeViewSearchPositionFunc
 func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidget, arg2 C.gpointer) {
@@ -223,14 +219,12 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidg
 
 	var treeView *TreeView   // out
 	var searchDialog *Widget // out
-	var userData cgo.Handle  // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
 	searchDialog = wrapWidget(externglib.Take(unsafe.Pointer(arg1)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeViewSearchPositionFunc)
-	fn(treeView, searchDialog, userData)
+	fn(treeView, searchDialog)
 }
 
 // TreeViewOverrider contains methods that are overridable.
@@ -375,9 +369,6 @@ type TreeViewer interface {
 	// TooltipColumn returns the column of tree_view’s model which is being used
 	// for displaying tooltips on tree_view’s rows.
 	TooltipColumn() int
-	// TooltipContext: this function is supposed to be used in a
-	// Widget::query-tooltip signal handler for TreeView.
-	TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
 	// VAdjustment gets the Adjustment currently being used for the vertical
 	// aspect.
 	VAdjustment() *Adjustment
@@ -389,6 +380,10 @@ type TreeViewer interface {
 	VisibleRect() gdk.Rectangle
 	// InsertColumn: this inserts the column into the tree_view at position.
 	InsertColumn(column *TreeViewColumn, position int) int
+	// InsertColumnWithDataFunc: convenience function that inserts a new column
+	// into the TreeView with the given cell renderer and a TreeCellDataFunc to
+	// set cell renderer attributes (normally using data from the model).
+	InsertColumnWithDataFunc(position int, title string, cell CellRendererer, fn TreeCellDataFunc) int
 	// IsBlankAtPos: determine whether the point (x, y) in tree_view is blank,
 	// that is no cell content nor an expander arrow is drawn at the location.
 	IsBlankAtPos(x int, y int) (path *TreePath, column *TreeViewColumn, cellX int, cellY int, ok bool)
@@ -416,11 +411,16 @@ type TreeViewer interface {
 	// SetActivateOnSingleClick: cause the TreeView::row-activated signal to be
 	// emitted on a single click instead of a double click.
 	SetActivateOnSingleClick(single bool)
+	// SetColumnDragFunction sets a user function for determining where a column
+	// may be dropped when dragged.
+	SetColumnDragFunction(fn TreeViewColumnDropFunc)
 	// SetCursor sets the current keyboard focus to be at path, and selects it.
 	SetCursor(path *TreePath, focusColumn *TreeViewColumn, startEditing bool)
 	// SetCursorOnCell sets the current keyboard focus to be at path, and
 	// selects it.
 	SetCursorOnCell(path *TreePath, focusColumn *TreeViewColumn, focusCell CellRendererer, startEditing bool)
+	// SetDestroyCountFunc: this function should almost never be used.
+	SetDestroyCountFunc(fn TreeDestroyCountFunc)
 	// SetDragDestRow sets the row that is highlighted for feedback.
 	SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
 	// SetEnableSearch: if enable_search is set, then the user can type in text
@@ -457,6 +457,9 @@ type TreeViewer interface {
 	// reorder models that support the TreeDragSourceIface and the
 	// TreeDragDestIface.
 	SetReorderable(reorderable bool)
+	// SetRowSeparatorFunc sets the row separator function, which is used to
+	// determine whether a row should be drawn as a separator.
+	SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc)
 	// SetRubberBanding enables or disables rubber banding in tree_view.
 	SetRubberBanding(enable bool)
 	// SetRulesHint sets a hint for the theme to draw even/odd rows in the
@@ -468,6 +471,13 @@ type TreeViewer interface {
 	// SetSearchEntry sets the entry which the interactive search code will use
 	// for this tree_view.
 	SetSearchEntry(entry *Entry)
+	// SetSearchEqualFunc sets the compare function for the interactive search
+	// capabilities; note that somewhat like strcmp() returning 0 for equality
+	// TreeViewSearchEqualFunc returns FALSE on matches.
+	SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc)
+	// SetSearchPositionFunc sets the function to use when positioning the
+	// search dialog.
+	SetSearchPositionFunc(fn TreeViewSearchPositionFunc)
 	// SetShowExpanders sets whether to draw and enable expanders and indent
 	// child rows in tree_view.
 	SetShowExpanders(enabled bool)
@@ -1543,49 +1553,6 @@ func (treeView *TreeView) TooltipColumn() int {
 	return _gint
 }
 
-// TooltipContext: this function is supposed to be used in a
-// Widget::query-tooltip signal handler for TreeView. The x, y and keyboard_tip
-// values which are received in the signal handler, should be passed to this
-// function without modification.
-//
-// The return value indicates whether there is a tree view row at the given
-// coordinates (TRUE) or not (FALSE) for mouse tooltips. For keyboard tooltips
-// the row returned will be the cursor row. When TRUE, then any of model, path
-// and iter which have been provided will be set to point to that row and the
-// corresponding model. x and y will always be converted to be relative to
-// tree_view’s bin_window if keyboard_tooltip is FALSE.
-func (treeView *TreeView) TooltipContext(x *int, y *int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
-	var _arg0 *C.GtkTreeView  // out
-	var _arg1 *C.gint         // out
-	var _arg2 *C.gint         // out
-	var _arg3 C.gboolean      // out
-	var _arg4 *C.GtkTreeModel // in
-	var _path *TreePath
-	var _iter TreeIter
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
-	_arg1 = (*C.gint)(unsafe.Pointer(x))
-	_arg2 = (*C.gint)(unsafe.Pointer(y))
-	if keyboardTip {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
-
-	var _model *TreeModel // out
-
-	var _ok bool // out
-
-	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _model, _path, _iter, _ok
-}
-
 // VAdjustment gets the Adjustment currently being used for the vertical aspect.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
@@ -1657,6 +1624,39 @@ func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int) int
 	_arg2 = C.gint(position)
 
 	_cret = C.gtk_tree_view_insert_column(_arg0, _arg1, _arg2)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// InsertColumnWithDataFunc: convenience function that inserts a new column into
+// the TreeView with the given cell renderer and a TreeCellDataFunc to set cell
+// renderer attributes (normally using data from the model). See also
+// gtk_tree_view_column_set_cell_data_func(), gtk_tree_view_column_pack_start().
+// If tree_view has “fixed_height” mode enabled, then the new column will have
+// its “sizing” property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+func (treeView *TreeView) InsertColumnWithDataFunc(position int, title string, cell CellRendererer, fn TreeCellDataFunc) int {
+	var _arg0 *C.GtkTreeView        // out
+	var _arg1 C.gint                // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.GtkCellRenderer    // out
+	var _arg4 C.GtkTreeCellDataFunc // out
+	var _arg5 C.gpointer
+	var _arg6 C.GDestroyNotify
+	var _cret C.gint // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = C.gint(position)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg4 = (*[0]byte)(C._gotk4_gtk3_TreeCellDataFunc)
+	_arg5 = C.gpointer(gbox.Assign(fn))
+	_arg6 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_tree_view_insert_column_with_data_func(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _gint int // out
 
@@ -1880,6 +1880,28 @@ func (treeView *TreeView) SetActivateOnSingleClick(single bool) {
 	C.gtk_tree_view_set_activate_on_single_click(_arg0, _arg1)
 }
 
+// SetColumnDragFunction sets a user function for determining where a column may
+// be dropped when dragged. This function is called on every column pair in turn
+// at the beginning of a column drag to determine where a drop can take place.
+// The arguments passed to func are: the tree_view, the TreeViewColumn being
+// dragged, the two TreeViewColumn s determining the drop spot, and user_data.
+// If either of the TreeViewColumn arguments for the drop spot are NULL, then
+// they indicate an edge. If func is set to be NULL, then tree_view reverts to
+// the default behavior of allowing all columns to be dropped everywhere.
+func (treeView *TreeView) SetColumnDragFunction(fn TreeViewColumnDropFunc) {
+	var _arg0 *C.GtkTreeView              // out
+	var _arg1 C.GtkTreeViewColumnDropFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewColumnDropFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_set_column_drag_function(_arg0, _arg1, _arg2, _arg3)
+}
+
 // SetCursor sets the current keyboard focus to be at path, and selects it. This
 // is useful when you want to focus the user’s attention on a particular row. If
 // focus_column is not NULL, then focus is given to the column specified by it.
@@ -1936,6 +1958,25 @@ func (treeView *TreeView) SetCursorOnCell(path *TreePath, focusColumn *TreeViewC
 	}
 
 	C.gtk_tree_view_set_cursor_on_cell(_arg0, _arg1, _arg2, _arg3, _arg4)
+}
+
+// SetDestroyCountFunc: this function should almost never be used. It is meant
+// for private use by ATK for determining the number of visible children that
+// are removed when the user collapses a row, or a row is deleted.
+//
+// Deprecated: Accessibility does not need the function anymore.
+func (treeView *TreeView) SetDestroyCountFunc(fn TreeDestroyCountFunc) {
+	var _arg0 *C.GtkTreeView            // out
+	var _arg1 C.GtkTreeDestroyCountFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeDestroyCountFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_set_destroy_count_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetDragDestRow sets the row that is highlighted for feedback. If path is
@@ -2149,6 +2190,23 @@ func (treeView *TreeView) SetReorderable(reorderable bool) {
 	C.gtk_tree_view_set_reorderable(_arg0, _arg1)
 }
 
+// SetRowSeparatorFunc sets the row separator function, which is used to
+// determine whether a row should be drawn as a separator. If the row separator
+// function is NULL, no separators are drawn. This is the default value.
+func (treeView *TreeView) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
+	var _arg0 *C.GtkTreeView                // out
+	var _arg1 C.GtkTreeViewRowSeparatorFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewRowSeparatorFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
+}
+
 // SetRubberBanding enables or disables rubber banding in tree_view. If the
 // selection mode is K_SELECTION_MULTIPLE, rubber banding will allow the user to
 // select multiple rows by dragging the mouse.
@@ -2223,6 +2281,39 @@ func (treeView *TreeView) SetSearchEntry(entry *Entry) {
 	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 
 	C.gtk_tree_view_set_search_entry(_arg0, _arg1)
+}
+
+// SetSearchEqualFunc sets the compare function for the interactive search
+// capabilities; note that somewhat like strcmp() returning 0 for equality
+// TreeViewSearchEqualFunc returns FALSE on matches.
+func (treeView *TreeView) SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc) {
+	var _arg0 *C.GtkTreeView               // out
+	var _arg1 C.GtkTreeViewSearchEqualFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewSearchEqualFunc)
+	_arg2 = C.gpointer(gbox.Assign(searchEqualFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_set_search_equal_func(_arg0, _arg1, _arg2, _arg3)
+}
+
+// SetSearchPositionFunc sets the function to use when positioning the search
+// dialog.
+func (treeView *TreeView) SetSearchPositionFunc(fn TreeViewSearchPositionFunc) {
+	var _arg0 *C.GtkTreeView                  // out
+	var _arg1 C.GtkTreeViewSearchPositionFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeViewSearchPositionFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_view_set_search_position_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetShowExpanders sets whether to draw and enable expanders and indent child

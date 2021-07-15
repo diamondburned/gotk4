@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -15,6 +14,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 import "C"
 
 func init() {
@@ -28,7 +29,7 @@ func init() {
 //
 // If the filter matches the item, this function must return TRUE. If the item
 // should be filtered out, FALSE must be returned.
-type CustomFilterFunc func(item *externglib.Object, userData cgo.Handle) (ok bool)
+type CustomFilterFunc func(item *externglib.Object) (ok bool)
 
 //export _gotk4_gtk4_CustomFilterFunc
 func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboolean) {
@@ -38,13 +39,11 @@ func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboo
 	}
 
 	var item *externglib.Object // out
-	var userData cgo.Handle     // out
 
 	item = externglib.Take(unsafe.Pointer(arg0))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(CustomFilterFunc)
-	ok := fn(item, userData)
+	ok := fn(item)
 
 	if ok {
 		cret = C.TRUE
@@ -55,7 +54,8 @@ func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboo
 
 // CustomFilterer describes CustomFilter's methods.
 type CustomFilterer interface {
-	privateCustomFilter()
+	// SetFilterFunc sets the function used for filtering items.
+	SetFilterFunc(matchFunc CustomFilterFunc)
 }
 
 // CustomFilter: GtkCustomFilter determines whether to include items with a
@@ -83,4 +83,50 @@ func marshalCustomFilterer(p uintptr) (interface{}, error) {
 	return wrapCustomFilter(obj), nil
 }
 
-func (*CustomFilter) privateCustomFilter() {}
+// NewCustomFilter creates a new filter using the given match_func to filter
+// items.
+//
+// If match_func is NULL, the filter matches all items.
+//
+// If the filter func changes its filtering behavior, gtk_filter_changed() needs
+// to be called.
+func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
+	var _arg1 C.GtkCustomFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret *C.GtkCustomFilter // in
+
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+	_arg2 = C.gpointer(gbox.Assign(matchFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_custom_filter_new(_arg1, _arg2, _arg3)
+
+	var _customFilter *CustomFilter // out
+
+	_customFilter = wrapCustomFilter(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _customFilter
+}
+
+// SetFilterFunc sets the function used for filtering items.
+//
+// If match_func is NULL, the filter matches all items.
+//
+// If the filter func changes its filtering behavior, gtk_filter_changed() needs
+// to be called.
+//
+// If a previous function was set, its user_destroy will be called now.
+func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
+	var _arg0 *C.GtkCustomFilter    // out
+	var _arg1 C.GtkCustomFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(self.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+	_arg2 = C.gpointer(gbox.Assign(matchFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_custom_filter_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+}

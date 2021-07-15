@@ -288,7 +288,7 @@ func (prop *ConversionValue) MustRealloc() bool {
 // Usually, these are the same, but they're sometimes different depending on the
 // edge case.
 type ValueConverted struct {
-	ConversionValue // original
+	*ConversionValue // original
 
 	In  ValueName
 	Out ValueName
@@ -323,7 +323,7 @@ type ValueName struct {
 
 func newValueConverted(conv *Converter, value *ConversionValue) ValueConverted {
 	return ValueConverted{
-		ConversionValue: *value,
+		ConversionValue: value,
 		In: ValueName{
 			Name: value.InName,
 			Call: value.InName,

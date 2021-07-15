@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -18,6 +17,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// void _gotk4_gtk3_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, gint, gpointer);
 import "C"
 
 func init() {
@@ -32,7 +34,7 @@ func init() {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int, data cgo.Handle) (value externglib.Value)
+type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int) (value externglib.Value)
 
 //export _gotk4_gtk3_TreeModelFilterModifyFunc
 func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
@@ -44,7 +46,6 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 	var model *TreeModel // out
 	var iter *TreeIter   // out
 	var column int       // out
-	var data cgo.Handle  // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
@@ -52,17 +53,16 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
 	column = int(arg3)
-	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeModelFilterModifyFunc)
-	value := fn(model, iter, column, data)
+	value := fn(model, iter, column)
 
 	*arg2 = *(*C.GValue)(unsafe.Pointer(&(&value).GValue))
 }
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
 // by iter is visible.
-type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter, data cgo.Handle) (ok bool)
+type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeModelFilterVisibleFunc
 func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -73,17 +73,15 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 
 	var model *TreeModel // out
 	var iter *TreeIter   // out
-	var data cgo.Handle  // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	iter = (*TreeIter)(unsafe.Pointer(arg1))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(TreeModelFilterVisibleFunc)
-	ok := fn(model, iter, data)
+	ok := fn(model, iter)
 
 	if ok {
 		cret = C.TRUE
@@ -121,9 +119,16 @@ type TreeModelFilterer interface {
 	// Refilter emits ::row_changed for each row in the child model, which
 	// causes the filter to re-evaluate whether a row is visible or not.
 	Refilter()
+	// SetModifyFunc: with the n_columns and types parameters, you give an array
+	// of column types for this model (which will be exposed to the parent
+	// model/view).
+	SetModifyFunc(types []externglib.Type, fn TreeModelFilterModifyFunc)
 	// SetVisibleColumn sets column of the child_model to be the column where
 	// filter should look for visibility information.
 	SetVisibleColumn(column int)
+	// SetVisibleFunc sets the visible function used when filtering the filter
+	// to be func.
+	SetVisibleFunc(fn TreeModelFilterVisibleFunc)
 }
 
 // TreeModelFilter is a tree model which wraps another tree model, and can do
@@ -345,6 +350,39 @@ func (filter *TreeModelFilter) Refilter() {
 	C.gtk_tree_model_filter_refilter(_arg0)
 }
 
+// SetModifyFunc: with the n_columns and types parameters, you give an array of
+// column types for this model (which will be exposed to the parent model/view).
+// The func, data and destroy parameters are for specifying the modify function.
+// The modify function will get called for each data access, the goal of the
+// modify function is to return the data which should be displayed at the
+// location specified using the parameters of the modify function.
+//
+// Note that gtk_tree_model_filter_set_modify_func() can only be called once for
+// a given filter model.
+func (filter *TreeModelFilter) SetModifyFunc(types []externglib.Type, fn TreeModelFilterModifyFunc) {
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg2 *C.GType
+	var _arg1 C.gint
+	var _arg3 C.GtkTreeModelFilterModifyFunc // out
+	var _arg4 C.gpointer
+	var _arg5 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (C.gint)(len(types))
+	_arg2 = (*C.GType)(C.malloc(C.ulong(len(types)) * C.ulong(C.sizeof_GType)))
+	{
+		out := unsafe.Slice((*C.GType)(_arg2), len(types))
+		for i := range types {
+			out[i] = C.GType(types[i])
+		}
+	}
+	_arg3 = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterModifyFunc)
+	_arg4 = C.gpointer(gbox.Assign(fn))
+	_arg5 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_model_filter_set_modify_func(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 // SetVisibleColumn sets column of the child_model to be the column where filter
 // should look for visibility information. columns should be a column of type
 // G_TYPE_BOOLEAN, where TRUE means that a row is visible, and FALSE if not.
@@ -360,4 +398,51 @@ func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 	_arg1 = C.gint(column)
 
 	C.gtk_tree_model_filter_set_visible_column(_arg0, _arg1)
+}
+
+// SetVisibleFunc sets the visible function used when filtering the filter to be
+// func. The function should return TRUE if the given row should be visible and
+// FALSE otherwise.
+//
+// If the condition calculated by the function changes over time (e.g. because
+// it depends on some global parameters), you must call
+// gtk_tree_model_filter_refilter() to keep the visibility information of the
+// model up-to-date.
+//
+// Note that func is called whenever a row is inserted, when it may still be
+// empty. The visible function should therefore take special care of empty rows,
+// like in the example below.
+//
+//    static gboolean
+//    visible_func (GtkTreeModel *model,
+//                  GtkTreeIter  *iter,
+//                  gpointer      data)
+//    {
+//      // Visible if row is non-empty and first column is “HI”
+//      gchar *str;
+//      gboolean visible = FALSE;
+//
+//      gtk_tree_model_get (model, iter, 0, &str, -1);
+//      if (str && strcmp (str, "HI") == 0)
+//        visible = TRUE;
+//      g_free (str);
+//
+//      return visible;
+//    }
+//
+// Note that gtk_tree_model_filter_set_visible_func() or
+// gtk_tree_model_filter_set_visible_column() can only be called once for a
+// given filter model.
+func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
+	var _arg0 *C.GtkTreeModelFilter           // out
+	var _arg1 C.GtkTreeModelFilterVisibleFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterVisibleFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_model_filter_set_visible_func(_arg0, _arg1, _arg2, _arg3)
 }

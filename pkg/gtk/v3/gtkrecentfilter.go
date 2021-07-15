@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -18,6 +17,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_RecentFilterFunc(GtkRecentFilterInfo*, gpointer);
 import "C"
 
 func init() {
@@ -55,7 +56,7 @@ func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 
 // RecentFilterFunc: type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
-type RecentFilterFunc func(filterInfo *RecentFilterInfo, userData cgo.Handle) (ok bool)
+type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 
 //export _gotk4_gtk3_RecentFilterFunc
 func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) (cret C.gboolean) {
@@ -65,16 +66,14 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 	}
 
 	var filterInfo *RecentFilterInfo // out
-	var userData cgo.Handle          // out
 
 	filterInfo = (*RecentFilterInfo)(unsafe.Pointer(arg0))
 	runtime.SetFinalizer(filterInfo, func(v *RecentFilterInfo) {
 		C.free(unsafe.Pointer(v))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(RecentFilterFunc)
-	ok := fn(filterInfo, userData)
+	ok := fn(filterInfo)
 
 	if ok {
 		cret = C.TRUE
@@ -91,6 +90,9 @@ type RecentFilterer interface {
 	// AddApplication adds a rule that allows resources based on the name of the
 	// application that has registered them.
 	AddApplication(application string)
+	// AddCustom adds a rule to a filter that allows resources based on a custom
+	// callback function.
+	AddCustom(needed RecentFilterFlags, fn RecentFilterFunc)
 	// AddGroup adds a rule that allows resources based on the name of the group
 	// to which they belong
 	AddGroup(group string)
@@ -241,6 +243,27 @@ func (filter *RecentFilter) AddApplication(application string) {
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(application)))
 
 	C.gtk_recent_filter_add_application(_arg0, _arg1)
+}
+
+// AddCustom adds a rule to a filter that allows resources based on a custom
+// callback function. The bitfield needed which is passed in provides
+// information about what sorts of information that the filter function needs;
+// this allows GTK+ to avoid retrieving expensive information when it isn’t
+// needed by the filter.
+func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
+	var _arg0 *C.GtkRecentFilter     // out
+	var _arg1 C.GtkRecentFilterFlags // out
+	var _arg2 C.GtkRecentFilterFunc  // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = C.GtkRecentFilterFlags(needed)
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_RecentFilterFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_recent_filter_add_custom(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // AddGroup adds a rule that allows resources based on the name of the group to

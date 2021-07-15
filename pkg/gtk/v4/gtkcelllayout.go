@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// void _gotk4_gtk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 import "C"
 
 func init() {
@@ -26,7 +27,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of cell_layout’s cell
 // renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter, data cgo.Handle)
+type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter)
 
 //export _gotk4_gtk4_CellLayoutDataFunc
 func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -39,7 +40,6 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 	var cell *CellRenderer     // out
 	var treeModel *TreeModel   // out
 	var iter *TreeIter         // out
-	var data cgo.Handle        // out
 
 	cellLayout = wrapCellLayout(externglib.Take(unsafe.Pointer(arg0)))
 	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
@@ -48,10 +48,9 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(CellLayoutDataFunc)
-	fn(cellLayout, cell, treeModel, iter, data)
+	fn(cellLayout, cell, treeModel, iter)
 }
 
 // CellLayoutOverrider contains methods that are overridable.
@@ -92,6 +91,14 @@ type CellLayoutOverrider interface {
 	// Note that cell has already to be packed into cell_layout for this to
 	// function properly.
 	Reorder(cell CellRendererer, position int)
+	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+	//
+	// This function is used instead of the standard attributes mapping for
+	// setting the column value, and should set the value of cell_layout’s cell
+	// renderer(s) as appropriate.
+	//
+	// func may be NULL to remove a previously set function.
+	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
 
 // CellLayouter describes CellLayout's methods.
@@ -113,6 +120,8 @@ type CellLayouter interface {
 	PackStart(cell CellRendererer, expand bool)
 	// Reorder re-inserts cell at position.
 	Reorder(cell CellRendererer, position int)
+	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
 
 // CellLayout: interface for packing cells
@@ -335,4 +344,27 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	_arg2 = C.int(position)
 
 	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
+}
+
+// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+//
+// This function is used instead of the standard attributes mapping for setting
+// the column value, and should set the value of cell_layout’s cell renderer(s)
+// as appropriate.
+//
+// func may be NULL to remove a previously set function.
+func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
+	var _arg0 *C.GtkCellLayout        // out
+	var _arg1 *C.GtkCellRenderer      // out
+	var _arg2 C.GtkCellLayoutDataFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((cell).(gextras.Nativer).Native()))
+	_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_cell_layout_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

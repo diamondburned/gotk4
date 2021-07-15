@@ -4,7 +4,6 @@ package gdkpixbuf
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -45,7 +44,7 @@ const (
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
-type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation, userData cgo.Handle)
+type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation)
 
 //export _gotk4_gdkpixbuf2_PixbufModulePreparedFunc
 func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
@@ -56,14 +55,12 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPi
 
 	var pixbuf *Pixbuf        // out
 	var anim *PixbufAnimation // out
-	var userData cgo.Handle   // out
 
 	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
 	anim = wrapPixbufAnimation(externglib.Take(unsafe.Pointer(arg1)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PixbufModulePreparedFunc)
-	fn(pixbuf, anim, userData)
+	fn(pixbuf, anim)
 }
 
 // PixbufModuleSizeFunc defines the type of the function that gets called once
@@ -79,7 +76,7 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPi
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
-type PixbufModuleSizeFunc func(width *int, height *int, userData cgo.Handle)
+type PixbufModuleSizeFunc func(width *int, height *int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
 func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
@@ -88,16 +85,14 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.g
 		panic(`callback not found`)
 	}
 
-	var width *int          // out
-	var height *int         // out
-	var userData cgo.Handle // out
+	var width *int  // out
+	var height *int // out
 
 	width = (*int)(unsafe.Pointer(arg0))
 	height = (*int)(unsafe.Pointer(arg1))
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(PixbufModuleSizeFunc)
-	fn(width, height, userData)
+	fn(width, height)
 }
 
 // PixbufModuleUpdatedFunc defines the type of the function that gets called
@@ -105,7 +100,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.g
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x int, y int, width int, height int, userData cgo.Handle)
+type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x int, y int, width int, height int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
 func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
@@ -114,22 +109,20 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, ar
 		panic(`callback not found`)
 	}
 
-	var pixbuf *Pixbuf      // out
-	var x int               // out
-	var y int               // out
-	var width int           // out
-	var height int          // out
-	var userData cgo.Handle // out
+	var pixbuf *Pixbuf // out
+	var x int          // out
+	var y int          // out
+	var width int      // out
+	var height int     // out
 
 	pixbuf = wrapPixbuf(externglib.Take(unsafe.Pointer(arg0)))
 	x = int(arg1)
 	y = int(arg2)
 	width = int(arg3)
 	height = int(arg4)
-	userData = (cgo.Handle)(unsafe.Pointer(arg5))
 
 	fn := v.(PixbufModuleUpdatedFunc)
-	fn(pixbuf, x, y, width, height, userData)
+	fn(pixbuf, x, y, width, height)
 }
 
 // PixbufGetFileInfo parses an image file far enough to determine its format and

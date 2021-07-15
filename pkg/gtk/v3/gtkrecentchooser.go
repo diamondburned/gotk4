@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -19,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gint _gotk4_gtk3_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
 import "C"
 
 func init() {
@@ -64,7 +65,7 @@ func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type RecentSortFunc func(a *RecentInfo, b *RecentInfo, userData cgo.Handle) (gint int)
+type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)
 
 //export _gotk4_gtk3_RecentSortFunc
 func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) (cret C.gint) {
@@ -73,9 +74,8 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 		panic(`callback not found`)
 	}
 
-	var a *RecentInfo       // out
-	var b *RecentInfo       // out
-	var userData cgo.Handle // out
+	var a *RecentInfo // out
+	var b *RecentInfo // out
 
 	a = (*RecentInfo)(unsafe.Pointer(arg0))
 	C.gtk_recent_info_ref(arg0)
@@ -87,10 +87,9 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
 		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
-	userData = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(RecentSortFunc)
-	gint := fn(a, b, userData)
+	gint := fn(a, b)
 
 	cret = C.gint(gint)
 
@@ -122,6 +121,15 @@ type RecentChooserOverrider interface {
 	SelectionChanged()
 	// SetCurrentURI sets uri as the current URI for chooser.
 	SetCurrentURI(uri string) error
+	// SetSortFunc sets the comparison function used when sorting to be
+	// sort_func. If the chooser has the sort type set to K_RECENT_SORT_CUSTOM
+	// then the chooser will sort using this function.
+	//
+	// To the comparison function will be passed two RecentInfo structs and
+	// sort_data; sort_func should return a positive integer if the first item
+	// comes before the second, zero if the two items are equal and a negative
+	// integer if the first item comes after the second.
+	SetSortFunc(sortFunc RecentSortFunc)
 	// UnselectAll unselects all the items inside chooser.
 	UnselectAll()
 	// UnselectURI unselects uri inside chooser.
@@ -196,6 +204,9 @@ type RecentChooserer interface {
 	// SetShowTips sets whether to show a tooltips containing the full path of
 	// each recently used resource in a RecentChooser widget.
 	SetShowTips(showTips bool)
+	// SetSortFunc sets the comparison function used when sorting to be
+	// sort_func.
+	SetSortFunc(sortFunc RecentSortFunc)
 	// SetSortType changes the sorting order of the recently used resources list
 	// displayed by chooser.
 	SetSortType(sortType RecentSortType)
@@ -610,6 +621,28 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
+}
+
+// SetSortFunc sets the comparison function used when sorting to be sort_func.
+// If the chooser has the sort type set to K_RECENT_SORT_CUSTOM then the chooser
+// will sort using this function.
+//
+// To the comparison function will be passed two RecentInfo structs and
+// sort_data; sort_func should return a positive integer if the first item comes
+// before the second, zero if the two items are equal and a negative integer if
+// the first item comes after the second.
+func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
+	_arg2 = C.gpointer(gbox.Assign(sortFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_recent_chooser_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetSortType changes the sorting order of the recently used resources list

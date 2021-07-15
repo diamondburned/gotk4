@@ -322,7 +322,7 @@ func marshalWindowHints(p uintptr) (interface{}, error) {
 // WindowChildFunc: function of this type is passed to
 // gdk_window_invalidate_maybe_recurse(). It gets called for each child of the
 // window to determine whether to recursively invalidate it or now.
-type WindowChildFunc func(window *Window, userData cgo.Handle) (ok bool)
+type WindowChildFunc func(window *Window) (ok bool)
 
 //export _gotk4_gdk3_WindowChildFunc
 func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
@@ -331,14 +331,12 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 		panic(`callback not found`)
 	}
 
-	var window *Window      // out
-	var userData cgo.Handle // out
+	var window *Window // out
 
 	window = wrapWindow(externglib.Take(unsafe.Pointer(arg0)))
-	userData = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(WindowChildFunc)
-	ok := fn(window, userData)
+	ok := fn(window)
 
 	if ok {
 		cret = C.TRUE

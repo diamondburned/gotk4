@@ -70,7 +70,7 @@ const (
 //
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-type LogFunc func(logDomain string, logLevel LogLevelFlags, message string, userData cgo.Handle)
+type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 
 //export _gotk4_glib2_LogFunc
 func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
@@ -82,17 +82,15 @@ func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, a
 	var logDomain string       // out
 	var logLevel LogLevelFlags // out
 	var message string         // out
-	var userData cgo.Handle    // out
 
 	logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg0)))
 	defer C.free(unsafe.Pointer(arg0))
 	logLevel = LogLevelFlags(arg1)
 	message = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(LogFunc)
-	fn(logDomain, logLevel, message, userData)
+	fn(logDomain, logLevel, message)
 }
 
 // LogWriterFunc: writer function for log entries. A log entry is a collection
@@ -113,7 +111,7 @@ func _gotk4_glib2_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, a
 // send messages to a remote logging server and there is a network error), it
 // should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
 // chained and fall back to simpler handlers in case of failure.
-type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField, userData cgo.Handle) (logWriterOutput LogWriterOutput)
+type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
 //export _gotk4_glib2_LogWriterFunc
 func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) (cret C.GLogWriterOutput) {
@@ -124,16 +122,14 @@ func _gotk4_glib2_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C
 
 	var logLevel LogLevelFlags // out
 	var fields []LogField
-	var userData cgo.Handle // out
 
 	logLevel = LogLevelFlags(arg0)
 	defer C.free(unsafe.Pointer(arg1))
 	fields = make([]LogField, arg2)
 	copy(fields, unsafe.Slice((*LogField)(unsafe.Pointer(arg1)), arg2))
-	userData = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(LogWriterFunc)
-	logWriterOutput := fn(logLevel, fields, userData)
+	logWriterOutput := fn(logLevel, fields)
 
 	cret = C.GLogWriterOutput(logWriterOutput)
 

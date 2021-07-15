@@ -43,12 +43,6 @@ type EditableOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
-	// DoInsertText inserts new_text_length bytes of new_text into the contents
-	// of the widget, at position position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates position to point after the newly inserted text.
-	DoInsertText(newText string, newTextLength int, position *int)
 	// Chars retrieves a sequence of characters. The characters that are
 	// retrieved are those characters at positions from start_pos up to, but not
 	// including end_pos. If end_pos is negative, then the characters retrieved
@@ -67,12 +61,6 @@ type EditableOverrider interface {
 	//
 	// Note that positions are specified in characters, not bytes.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// InsertText inserts new_text_length bytes of new_text into the contents of
-	// the widget, at position position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates position to point after the newly inserted text.
-	InsertText(newText string, newTextLength int, position *int)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
 	// The cursor is displayed before the character with the given (base 0)
@@ -111,9 +99,6 @@ type Editabler interface {
 	Position() int
 	// SelectionBounds retrieves the selection bound of the editable.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// InsertText inserts new_text_length bytes of new_text into the contents of
-	// the widget, at position position.
-	InsertText(newText string, newTextLength int, position *int)
 	// PasteClipboard pastes the content of the clipboard to the current
 	// position of the cursor in the editable.
 	PasteClipboard()
@@ -318,25 +303,6 @@ func (editable *Editable) SelectionBounds() (startPos int, endPos int, ok bool) 
 	}
 
 	return _startPos, _endPos, _ok
-}
-
-// InsertText inserts new_text_length bytes of new_text into the contents of the
-// widget, at position position.
-//
-// Note that the position is in characters, not in bytes. The function updates
-// position to point after the newly inserted text.
-func (editable *Editable) InsertText(newText string, newTextLength int, position *int) {
-	var _arg0 *C.GtkEditable // out
-	var _arg1 *C.gchar       // out
-	var _arg2 C.gint         // out
-	var _arg3 *C.gint        // out
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(editable.Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(newText)))
-	_arg2 = C.gint(newTextLength)
-	_arg3 = (*C.gint)(unsafe.Pointer(position))
-
-	C.gtk_editable_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
 // PasteClipboard pastes the content of the clipboard to the current position of

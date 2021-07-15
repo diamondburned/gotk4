@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
 // void _gotk4_gtk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 import "C"
 
@@ -28,7 +29,7 @@ func init() {
 // TreeSelectionForeachFunc: function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter, data cgo.Handle)
+type TreeSelectionForeachFunc func(model *TreeModel, path *TreePath, iter *TreeIter)
 
 //export _gotk4_gtk4_TreeSelectionForeachFunc
 func _gotk4_gtk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
@@ -40,7 +41,6 @@ func _gotk4_gtk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 	var model *TreeModel // out
 	var path *TreePath   // out
 	var iter *TreeIter   // out
-	var data cgo.Handle  // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
 	path = (*TreePath)(unsafe.Pointer(arg1))
@@ -51,10 +51,9 @@ func _gotk4_gtk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
 	})
-	data = (cgo.Handle)(unsafe.Pointer(arg3))
 
 	fn := v.(TreeSelectionForeachFunc)
-	fn(model, path, iter, data)
+	fn(model, path, iter)
 }
 
 // TreeSelectionFunc: function used by gtk_tree_selection_set_select_function()
@@ -63,7 +62,7 @@ func _gotk4_gtk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 //
 // A return value of TRUE indicates to selection that it is okay to change the
 // selection.
-type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool, data cgo.Handle) (ok bool)
+type TreeSelectionFunc func(selection *TreeSelection, model *TreeModel, path *TreePath, pathCurrentlySelected bool) (ok bool)
 
 //export _gotk4_gtk4_TreeSelectionFunc
 func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
@@ -76,7 +75,6 @@ func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 	var model *TreeModel           // out
 	var path *TreePath             // out
 	var pathCurrentlySelected bool // out
-	var data cgo.Handle            // out
 
 	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg1)))
@@ -87,10 +85,9 @@ func _gotk4_gtk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 	if arg3 != 0 {
 		pathCurrentlySelected = true
 	}
-	data = (cgo.Handle)(unsafe.Pointer(arg4))
 
 	fn := v.(TreeSelectionFunc)
-	ok := fn(selection, model, path, pathCurrentlySelected, data)
+	ok := fn(selection, model, path, pathCurrentlySelected)
 
 	if ok {
 		cret = C.TRUE
@@ -129,6 +126,8 @@ type TreeSelectioner interface {
 	SelectedForeach(fn TreeSelectionForeachFunc)
 	// SetMode sets the selection mode of the selection.
 	SetMode(typ SelectionMode)
+	// SetSelectFunction sets the selection function.
+	SetSelectFunction(fn TreeSelectionFunc)
 	// UnselectAll unselects all the nodes.
 	UnselectAll()
 	// UnselectIter unselects the specified iterator.
@@ -375,6 +374,26 @@ func (selection *TreeSelection) SetMode(typ SelectionMode) {
 	_arg1 = C.GtkSelectionMode(typ)
 
 	C.gtk_tree_selection_set_mode(_arg0, _arg1)
+}
+
+// SetSelectFunction sets the selection function.
+//
+// If set, this function is called before any node is selected or unselected,
+// giving some control over which nodes are selected. The select function should
+// return TRUE if the state of the node may be toggled, and FALSE if the state
+// of the node should be left unchanged.
+func (selection *TreeSelection) SetSelectFunction(fn TreeSelectionFunc) {
+	var _arg0 *C.GtkTreeSelection    // out
+	var _arg1 C.GtkTreeSelectionFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeSelectionFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_tree_selection_set_select_function(_arg0, _arg1, _arg2, _arg3)
 }
 
 // UnselectAll unselects all the nodes.

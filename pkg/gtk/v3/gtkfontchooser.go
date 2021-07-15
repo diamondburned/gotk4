@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -19,6 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gboolean _gotk4_gtk3_FontFilterFunc(PangoFontFamily*, PangoFontFace*, gpointer);
 import "C"
 
 func init() {
@@ -53,7 +54,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 
 // FontFilterFunc: type of function that is used for deciding what fonts get
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
-type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace, data cgo.Handle) (ok bool)
+type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace) (ok bool)
 
 //export _gotk4_gtk3_FontFilterFunc
 func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
@@ -64,7 +65,6 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 
 	var family *pango.FontFamily // out
 	var face *pango.FontFace     // out
-	var data cgo.Handle          // out
 
 	{
 		obj := externglib.Take(unsafe.Pointer(arg0))
@@ -78,10 +78,9 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 			Object: obj,
 		}
 	}
-	data = (cgo.Handle)(unsafe.Pointer(arg2))
 
 	fn := v.(FontFilterFunc)
-	ok := fn(family, face, data)
+	ok := fn(family, face)
 
 	if ok {
 		cret = C.TRUE
@@ -111,6 +110,9 @@ type FontChooserOverrider interface {
 	FontMap() *pango.FontMap
 	// FontSize: selected font size.
 	FontSize() int
+	// SetFilterFunc adds a filter function that decides which fonts to display
+	// in the font chooser.
+	SetFilterFunc(filter FontFilterFunc)
 	// SetFontMap sets a custom font map to use for this font chooser widget. A
 	// custom font map can be used to present application-specific fonts instead
 	// of or in addition to the normal system fonts.
@@ -160,6 +162,9 @@ type FontChooserer interface {
 	PreviewText() string
 	// ShowPreviewEntry returns whether the preview entry is shown or not.
 	ShowPreviewEntry() bool
+	// SetFilterFunc adds a filter function that decides which fonts to display
+	// in the font chooser.
+	SetFilterFunc(filter FontFilterFunc)
 	// SetFont sets the currently-selected font.
 	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from font_desc.
@@ -422,6 +427,22 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	}
 
 	return _ok
+}
+
+// SetFilterFunc adds a filter function that decides which fonts to display in
+// the font chooser.
+func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
+	var _arg0 *C.GtkFontChooser   // out
+	var _arg1 C.GtkFontFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_FontFilterFunc)
+	_arg2 = C.gpointer(gbox.Assign(filter))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_font_chooser_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetFont sets the currently-selected font.

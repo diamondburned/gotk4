@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -15,6 +16,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 import "C"
 
 func init() {
@@ -59,6 +62,9 @@ type ActionGrouper interface {
 	// SetSensitive changes the sensitivity of action_group Deprecated: since
 	// version 3.10.
 	SetSensitive(sensitive bool)
+	// SetTranslateFunc sets a function to be used for translating the label and
+	// tooltip of ActionEntrys added by gtk_action_group_add_actions().
+	SetTranslateFunc(fn TranslateFunc)
 	// SetTranslationDomain sets the translation domain and uses g_dgettext()
 	// for translating the label and tooltip of ActionEntrys added by
 	// gtk_action_group_add_actions().
@@ -343,6 +349,27 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	}
 
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
+}
+
+// SetTranslateFunc sets a function to be used for translating the label and
+// tooltip of ActionEntrys added by gtk_action_group_add_actions().
+//
+// If you’re using gettext(), it is enough to set the translation domain with
+// gtk_action_group_set_translation_domain().
+//
+// Deprecated: since version 3.10.
+func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
+	var _arg0 *C.GtkActionGroup  // out
+	var _arg1 C.GtkTranslateFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_action_group_set_translate_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext() for

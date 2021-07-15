@@ -556,7 +556,7 @@ func RoleRegister(name string) Role {
 
 // Function is a function definition used for padding which has been added to
 // class and interface structures to allow for expansion in the future.
-type Function func(userData cgo.Handle) (ok bool)
+type Function func() (ok bool)
 
 //export _gotk4_atk1_Function
 func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
@@ -565,12 +565,8 @@ func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 		panic(`callback not found`)
 	}
 
-	var userData cgo.Handle // out
-
-	userData = (cgo.Handle)(unsafe.Pointer(arg0))
-
 	fn := v.(Function)
-	ok := fn(userData)
+	ok := fn()
 
 	if ok {
 		cret = C.TRUE

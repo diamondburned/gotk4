@@ -208,6 +208,12 @@ var gpointerTypes = map[string]struct{}{
 	"gconstpointer": {},
 }
 
+// IsGpointer returns true if the given type is a gpointer or a pointer to it.
+func IsGpointer(ctype string) bool {
+	_, is := gpointerTypes[CleanCType(ctype, true)]
+	return is
+}
+
 // IsGpointer returns true if the given type is a gpointer type.
 func (typ *Resolved) IsGpointer() bool {
 	return isGpointer(typ.CType, typ.GType, int(typ.Ptr)-1)
@@ -633,7 +639,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	}
 
 	// Resolve the unknown namespace that is GLib and primitive types.
-	switch EnsureNamespace(gen.Namespace(), typ.Name) {
+	switch typ.Name = EnsureNamespace(gen.Namespace(), typ.Name); typ.Name {
 	// TODO: ignore field
 	case "GLib.Error":
 		return builtinType("", "error", typ)

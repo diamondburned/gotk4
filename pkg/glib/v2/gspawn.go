@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -131,7 +130,7 @@ const (
 // child environment differently from the parent, you should use
 // g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
 // the complete environment list to the g_spawn... function.
-type SpawnChildSetupFunc func(userData cgo.Handle)
+type SpawnChildSetupFunc func()
 
 //export _gotk4_glib2_SpawnChildSetupFunc
 func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
@@ -140,12 +139,8 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg0 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var userData cgo.Handle // out
-
-	userData = (cgo.Handle)(unsafe.Pointer(arg0))
-
 	fn := v.(SpawnChildSetupFunc)
-	fn(userData)
+	fn()
 }
 
 // SpawnCheckExitStatus: set error if exit_status indicates the child exited

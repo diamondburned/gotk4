@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -16,6 +15,8 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
+// extern void callbackDelete(gpointer);
+// int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
 import "C"
 
 func init() {
@@ -72,7 +73,7 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 // “forward” button and for handling the behavior of the “last” button.
 //
 // See gtk.Assistant.SetForwardPageFunc().
-type AssistantPageFunc func(currentPage int, data cgo.Handle) (gint int)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export _gotk4_gtk4_AssistantPageFunc
 func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
@@ -82,13 +83,11 @@ func _gotk4_gtk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) (cret C.int) {
 	}
 
 	var currentPage int // out
-	var data cgo.Handle // out
 
 	currentPage = int(arg0)
-	data = (cgo.Handle)(unsafe.Pointer(arg1))
 
 	fn := v.(AssistantPageFunc)
-	gint := fn(currentPage, data)
+	gint := fn(currentPage)
 
 	cret = C.int(gint)
 
@@ -134,6 +133,8 @@ type Assistanter interface {
 	RemovePage(pageNum int)
 	// SetCurrentPage switches the page to page_num.
 	SetCurrentPage(pageNum int)
+	// SetForwardPageFunc sets the page forwarding function to be page_func.
+	SetForwardPageFunc(pageFunc AssistantPageFunc)
 	// SetPageComplete sets whether page contents are complete.
 	SetPageComplete(page Widgeter, complete bool)
 	// SetPageTitle sets a title for page.
@@ -543,6 +544,26 @@ func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
+}
+
+// SetForwardPageFunc sets the page forwarding function to be page_func.
+//
+// This function will be used to determine what will be the next page when the
+// user presses the forward button. Setting page_func to NULL will make the
+// assistant to use the default forward function, which just goes to the next
+// visible page.
+func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 C.GtkAssistantPageFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(assistant.Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_AssistantPageFunc)
+	_arg2 = C.gpointer(gbox.Assign(pageFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_assistant_set_forward_page_func(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetPageComplete sets whether page contents are complete.

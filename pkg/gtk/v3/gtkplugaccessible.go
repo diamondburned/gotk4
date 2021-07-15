@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// PlugAccessibler describes PlugAccessible's methods.
-type PlugAccessibler interface {
-	ID() string
-}
-
 type PlugAccessible struct {
 	WindowAccessible
 }
 
-var (
-	_ PlugAccessibler = (*PlugAccessible)(nil)
-	_ gextras.Nativer = (*PlugAccessible)(nil)
-)
+var _ gextras.Nativer = (*PlugAccessible)(nil)
 
 func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 	return &PlugAccessible{

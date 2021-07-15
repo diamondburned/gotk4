@@ -31,18 +31,6 @@ func init() {
 	})
 }
 
-// UnixOutputStreamer describes UnixOutputStream's methods.
-type UnixOutputStreamer interface {
-	// CloseFd returns whether the file descriptor of stream will be closed when
-	// the stream is closed.
-	CloseFd() bool
-	// Fd: return the UNIX file descriptor that the stream writes to.
-	Fd() int
-	// SetCloseFd sets whether the file descriptor of stream shall be closed
-	// when the stream is closed.
-	SetCloseFd(closeFd bool)
-}
-
 // UnixOutputStream implements Stream for writing to a UNIX file descriptor,
 // including asynchronous operations. (If the file descriptor refers to a socket
 // or pipe, this will use poll() to do asynchronous I/O. If it refers to a
@@ -58,10 +46,7 @@ type UnixOutputStream struct {
 	PollableOutputStream
 }
 
-var (
-	_ UnixOutputStreamer = (*UnixOutputStream)(nil)
-	_ gextras.Nativer    = (*UnixOutputStream)(nil)
-)
+var _ gextras.Nativer = (*UnixOutputStream)(nil)
 
 func wrapUnixOutputStream(obj *externglib.Object) *UnixOutputStream {
 	return &UnixOutputStream{

@@ -31,18 +31,6 @@ func init() {
 	})
 }
 
-// UnixInputStreamer describes UnixInputStream's methods.
-type UnixInputStreamer interface {
-	// CloseFd returns whether the file descriptor of stream will be closed when
-	// the stream is closed.
-	CloseFd() bool
-	// Fd: return the UNIX file descriptor that the stream reads from.
-	Fd() int
-	// SetCloseFd sets whether the file descriptor of stream shall be closed
-	// when the stream is closed.
-	SetCloseFd(closeFd bool)
-}
-
 // UnixInputStream implements Stream for reading from a UNIX file descriptor,
 // including asynchronous operations. (If the file descriptor refers to a socket
 // or pipe, this will use poll() to do asynchronous I/O. If it refers to a
@@ -58,10 +46,7 @@ type UnixInputStream struct {
 	PollableInputStream
 }
 
-var (
-	_ UnixInputStreamer = (*UnixInputStream)(nil)
-	_ gextras.Nativer   = (*UnixInputStream)(nil)
-)
+var _ gextras.Nativer = (*UnixInputStream)(nil)
 
 func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 	return &UnixInputStream{

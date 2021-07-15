@@ -21,21 +21,6 @@ func init() {
 	})
 }
 
-// WindowControlser describes WindowControls's methods.
-type WindowControlser interface {
-	// DecorationLayout gets the decoration layout of this GtkWindowControls.
-	DecorationLayout() string
-	// Empty gets whether the widget has any window buttons.
-	Empty() bool
-	// Side gets the side to which this GtkWindowControls instance belongs.
-	Side() PackType
-	// SetDecorationLayout sets the decoration layout for the title buttons.
-	SetDecorationLayout(layout string)
-	// SetSide determines which part of decoration layout the GtkWindowControls
-	// uses.
-	SetSide(side PackType)
-}
-
 // WindowControls: GtkWindowControls shows window frame controls.
 //
 // Typical window frame controls are minimize, maximize and close buttons, and
@@ -88,10 +73,7 @@ type WindowControls struct {
 	Widget
 }
 
-var (
-	_ WindowControlser = (*WindowControls)(nil)
-	_ gextras.Nativer  = (*WindowControls)(nil)
-)
+var _ gextras.Nativer = (*WindowControls)(nil)
 
 func wrapWindowControls(obj *externglib.Object) *WindowControls {
 	return &WindowControls{

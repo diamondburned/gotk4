@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorer},
+		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
 	})
 }
 
@@ -71,8 +71,19 @@ type NetworkMonitorOverrider interface {
 	NetworkChanged(networkAvailable bool)
 }
 
-// NetworkMonitorer describes NetworkMonitor's methods.
-type NetworkMonitorer interface {
+// NetworkMonitor provides an easy-to-use cross-platform API for monitoring
+// network connectivity. On Linux, the available implementations are based on
+// the kernel's netlink interface and on NetworkManager.
+//
+// There is also an implementation for use inside Flatpak sandboxes.
+type NetworkMonitor struct {
+	Initable
+}
+
+var _ gextras.Nativer = (*NetworkMonitor)(nil)
+
+// NetworkMonitorrer describes NetworkMonitor's abstract methods.
+type NetworkMonitorrer interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// connectable can be reached, without actually trying to connect to it.
 	CanReach(connectable SocketConnectabler, cancellable *Cancellable) error
@@ -91,19 +102,7 @@ type NetworkMonitorer interface {
 	NetworkMetered() bool
 }
 
-// NetworkMonitor provides an easy-to-use cross-platform API for monitoring
-// network connectivity. On Linux, the available implementations are based on
-// the kernel's netlink interface and on NetworkManager.
-//
-// There is also an implementation for use inside Flatpak sandboxes.
-type NetworkMonitor struct {
-	Initable
-}
-
-var (
-	_ NetworkMonitorer = (*NetworkMonitor)(nil)
-	_ gextras.Nativer  = (*NetworkMonitor)(nil)
-)
+var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
 
 func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
@@ -113,7 +112,7 @@ func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	}
 }
 
-func marshalNetworkMonitorer(p uintptr) (interface{}, error) {
+func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNetworkMonitor(obj), nil

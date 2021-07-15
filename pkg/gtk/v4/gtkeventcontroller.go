@@ -22,7 +22,25 @@ func init() {
 	})
 }
 
-// EventControllerer describes EventController's methods.
+// EventController: GtkEventController is the base class for event controllers.
+//
+// These are ancillary objects associated to widgets, which react to GdkEvents,
+// and possibly trigger actions as a consequence.
+//
+// Event controllers are added to a widget with gtk.Widget.AddController(). It
+// is rarely necessary to explicitly remove a controller with
+// gtk.Widget.RemoveController().
+//
+// See the chapter of input handling (input-handling.html) for an overview of
+// the basic concepts, such as the capture and bubble phases of even
+// propagation.
+type EventController struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*EventController)(nil)
+
+// EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
 	// CurrentEvent returns the event that is currently being handled by the
 	// controller, and NULL at other times.
@@ -57,26 +75,7 @@ type EventControllerer interface {
 	SetPropagationPhase(phase PropagationPhase)
 }
 
-// EventController: GtkEventController is the base class for event controllers.
-//
-// These are ancillary objects associated to widgets, which react to GdkEvents,
-// and possibly trigger actions as a consequence.
-//
-// Event controllers are added to a widget with gtk.Widget.AddController(). It
-// is rarely necessary to explicitly remove a controller with
-// gtk.Widget.RemoveController().
-//
-// See the chapter of input handling (input-handling.html) for an overview of
-// the basic concepts, such as the capture and bubble phases of even
-// propagation.
-type EventController struct {
-	*externglib.Object
-}
-
-var (
-	_ EventControllerer = (*EventController)(nil)
-	_ gextras.Nativer   = (*EventController)(nil)
-)
+var _ EventControllerer = (*EventController)(nil)
 
 func wrapEventController(obj *externglib.Object) *EventController {
 	return &EventController{

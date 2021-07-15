@@ -23,48 +23,6 @@ func init() {
 	})
 }
 
-// TreeStorer describes TreeStore's methods.
-type TreeStorer interface {
-	// Append appends a new row to tree_store.
-	Append(parent *TreeIter) TreeIter
-	// Clear removes all rows from tree_store
-	Clear()
-	// Insert creates a new row at position.
-	Insert(parent *TreeIter, position int) TreeIter
-	// InsertAfter inserts a new row after sibling.
-	InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter
-	// InsertBefore inserts a new row before sibling.
-	InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter
-	// InsertWithValuesv: variant of gtk_tree_store_insert_with_values() which
-	// takes the columns and values as two arrays, instead of varargs.
-	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter
-	// IsAncestor returns TRUE if iter is an ancestor of descendant.
-	IsAncestor(iter *TreeIter, descendant *TreeIter) bool
-	// IterDepth returns the depth of iter.
-	IterDepth(iter *TreeIter) int
-	// IterIsValid: WARNING: This function is slow.
-	IterIsValid(iter *TreeIter) bool
-	// MoveAfter moves iter in tree_store to the position after position.
-	MoveAfter(iter *TreeIter, position *TreeIter)
-	// MoveBefore moves iter in tree_store to the position before position.
-	MoveBefore(iter *TreeIter, position *TreeIter)
-	// Prepend prepends a new row to tree_store.
-	Prepend(parent *TreeIter) TreeIter
-	// Remove removes iter from tree_store.
-	Remove(iter *TreeIter) bool
-	// SetColumnTypes: this function is meant primarily for #GObjects that
-	// inherit from TreeStore, and should only be used when constructing a new
-	// TreeStore.
-	SetColumnTypes(types []externglib.Type)
-	// SetValue sets the data in the cell specified by iter and column.
-	SetValue(iter *TreeIter, column int, value *externglib.Value)
-	// SetValuesv: variant of gtk_tree_store_set_valist() which takes the
-	// columns and values as two arrays, instead of varargs.
-	SetValuesv(iter *TreeIter, columns []int, values []externglib.Value)
-	// Swap swaps a and b in the same level of tree_store.
-	Swap(a *TreeIter, b *TreeIter)
-}
-
 // TreeStore object is a list model for use with a TreeView widget. It
 // implements the TreeModel interface, and consequentially, can use all of the
 // methods available there. It also implements the TreeSortable interface so it
@@ -97,10 +55,7 @@ type TreeStore struct {
 	TreeSortable
 }
 
-var (
-	_ TreeStorer      = (*TreeStore)(nil)
-	_ gextras.Nativer = (*TreeStore)(nil)
-)
+var _ gextras.Nativer = (*TreeStore)(nil)
 
 func wrapTreeStore(obj *externglib.Object) *TreeStore {
 	return &TreeStore{

@@ -80,7 +80,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 //
 // (In short, there are several ways this function can fail, and if it fails it
 // returns NULL; so check the return value.)
-func PixbufGetFromWindow(window Windower, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
+func PixbufGetFromWindow(window Windowwer, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out

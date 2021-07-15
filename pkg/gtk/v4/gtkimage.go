@@ -51,41 +51,6 @@ func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Imager describes Image's methods.
-type Imager interface {
-	// Clear resets the image to be empty.
-	Clear()
-	// GIcon gets the GIcon being displayed by the GtkImage.
-	GIcon() *gio.Icon
-	// IconName gets the icon name and size being displayed by the GtkImage.
-	IconName() string
-	// IconSize gets the icon size used by the image when rendering icons.
-	IconSize() IconSize
-	// Paintable gets the image GdkPaintable being displayed by the GtkImage.
-	Paintable() *gdk.Paintable
-	// PixelSize gets the pixel size used for named icons.
-	PixelSize() int
-	// StorageType gets the type of representation being used by the GtkImage to
-	// store image data.
-	StorageType() ImageType
-	// SetFromFile sets a GtkImage to show a file.
-	SetFromFile(filename string)
-	// SetFromGIcon sets a GtkImage to show a GIcon.
-	SetFromGIcon(icon gio.Iconer)
-	// SetFromIconName sets a GtkImage to show a named icon.
-	SetFromIconName(iconName string)
-	// SetFromPaintable sets a GtkImage to show a GdkPaintable.
-	SetFromPaintable(paintable gdk.Paintabler)
-	// SetFromPixbuf sets a GtkImage to show a GdkPixbuf.
-	SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf)
-	// SetFromResource sets a GtkImage to show a resource.
-	SetFromResource(resourcePath string)
-	// SetIconSize suggests an icon size to the theme for named icons.
-	SetIconSize(iconSize IconSize)
-	// SetPixelSize sets the pixel size to use for named icons.
-	SetPixelSize(pixelSize int)
-}
-
 // Image: GtkImage widget displays an image.
 //
 // !An example GtkImage (image.png)
@@ -128,10 +93,7 @@ type Image struct {
 	Widget
 }
 
-var (
-	_ Imager          = (*Image)(nil)
-	_ gextras.Nativer = (*Image)(nil)
-)
+var _ gextras.Nativer = (*Image)(nil)
 
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
@@ -203,7 +165,7 @@ func NewImageFromFile(filename string) *Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconer) *Image {
+func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -463,7 +425,7 @@ func (image *Image) SetFromFile(filename string) {
 // SetFromGIcon sets a GtkImage to show a GIcon.
 //
 // See gtk.Image.NewFromGIcon for details.
-func (image *Image) SetFromGIcon(icon gio.Iconer) {
+func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 

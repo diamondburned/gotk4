@@ -52,7 +52,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 // shape.
 //
 // Deprecated: Use gtk_render_insertion_cursor() instead.
-func DrawInsertionCursor(widget Widgeter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
+func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkRectangle    // out
@@ -102,131 +102,6 @@ func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, 
 // yet, so the interface currently has no use.
 type StyleContextOverrider interface {
 	Changed()
-}
-
-// StyleContexter describes StyleContext's methods.
-type StyleContexter interface {
-	// AddClass adds a style class to context, so posterior calls to
-	// gtk_style_context_get() or any of the gtk_render_*() functions will make
-	// use of this new class for styling.
-	AddClass(className string)
-	// AddProvider adds a style provider to context, to be used in style
-	// construction.
-	AddProvider(provider StyleProviderer, priority uint)
-	// AddRegion adds a region to context, so posterior calls to
-	// gtk_style_context_get() or any of the gtk_render_*() functions will make
-	// use of this new region for styling.
-	AddRegion(regionName string, flags RegionFlags)
-	// CancelAnimations stops all running animations for region_id and all
-	// animatable regions underneath.
-	CancelAnimations(regionId cgo.Handle)
-	// BackgroundColor gets the background color for a given state.
-	BackgroundColor(state StateFlags) gdk.RGBA
-	// Border gets the border for a given state as a Border.
-	Border(state StateFlags) Border
-	// BorderColor gets the border color for a given state.
-	BorderColor(state StateFlags) gdk.RGBA
-	// Color gets the foreground color for a given state.
-	Color(state StateFlags) gdk.RGBA
-	// Direction returns the widget direction used for rendering.
-	Direction() TextDirection
-	// Font returns the font description for a given state.
-	Font(state StateFlags) *pango.FontDescription
-	// FrameClock returns the FrameClock to which context is attached.
-	FrameClock() *gdk.FrameClock
-	// JunctionSides returns the sides where rendered elements connect visually
-	// with others.
-	JunctionSides() JunctionSides
-	// Margin gets the margin for a given state as a Border.
-	Margin(state StateFlags) Border
-	// Padding gets the padding for a given state as a Border.
-	Padding(state StateFlags) Border
-	// Parent gets the parent context set via gtk_style_context_set_parent().
-	Parent() *StyleContext
-	// Path returns the widget path used for style matching.
-	Path() *WidgetPath
-	// Property gets a style property from context for the given state.
-	Property(property string, state StateFlags) externglib.Value
-	// Scale returns the scale used for assets.
-	Scale() int
-	// Screen returns the Screen to which context is attached.
-	Screen() *gdk.Screen
-	// Section queries the location in the CSS where property was defined for
-	// the current context.
-	Section(property string) *CSSSection
-	// State returns the state used for style matching.
-	State() StateFlags
-	// StyleProperty gets the value for a widget style property.
-	StyleProperty(propertyName string) externglib.Value
-	// HasClass returns TRUE if context currently has defined the given class
-	// name.
-	HasClass(className string) bool
-	// HasRegion returns TRUE if context has the region defined.
-	HasRegion(regionName string) (RegionFlags, bool)
-	// Invalidate invalidates context style information, so it will be
-	// reconstructed again.
-	Invalidate()
-	// LookupColor looks up and resolves a color name in the context color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
-	// LookupIconSet looks up stock_id in the icon factories associated to
-	// context and the default icon factory, returning an icon set if found,
-	// otherwise NULL.
-	LookupIconSet(stockId string) *IconSet
-	// NotifyStateChange notifies a state change on context, so if the current
-	// style makes use of transition animations, one will be started so all
-	// rendered elements under region_id are animated for state state being set
-	// to value state_value.
-	NotifyStateChange(window gdk.Windower, regionId cgo.Handle, state StateType, stateValue bool)
-	// PopAnimatableRegion pops an animatable region from context.
-	PopAnimatableRegion()
-	// PushAnimatableRegion pushes an animatable region, so all further
-	// gtk_render_*() calls between this call and the following
-	// gtk_style_context_pop_animatable_region() will potentially show
-	// transition animations for this region if
-	// gtk_style_context_notify_state_change() is called for a given state, and
-	// the current theme/style defines transition animations for state changes.
-	PushAnimatableRegion(regionId cgo.Handle)
-	// RemoveClass removes class_name from context.
-	RemoveClass(className string)
-	// RemoveProvider removes provider from the style providers list in context.
-	RemoveProvider(provider StyleProviderer)
-	// RemoveRegion removes a region from context.
-	RemoveRegion(regionName string)
-	// Restore restores context state to a previous stage.
-	Restore()
-	// Save saves the context state, so temporary modifications done through
-	// gtk_style_context_add_class(), gtk_style_context_remove_class(),
-	// gtk_style_context_set_state(), etc.
-	Save()
-	// ScrollAnimations: this function is analogous to gdk_window_scroll(), and
-	// should be called together with it so the invalidation areas for any
-	// ongoing animation are scrolled together with it.
-	ScrollAnimations(window gdk.Windower, dx int, dy int)
-	// SetBackground sets the background of window to the background pattern or
-	// color specified in context for its current state.
-	SetBackground(window gdk.Windower)
-	// SetDirection sets the reading direction for rendering purposes.
-	SetDirection(direction TextDirection)
-	// SetFrameClock attaches context to the given frame clock.
-	SetFrameClock(frameClock gdk.FrameClocker)
-	// SetJunctionSides sets the sides where rendered elements (mostly through
-	// gtk_render_frame()) will visually connect with other visual elements.
-	SetJunctionSides(sides JunctionSides)
-	// SetParent sets the parent style context for context.
-	SetParent(parent *StyleContext)
-	// SetPath sets the WidgetPath used for style matching.
-	SetPath(path *WidgetPath)
-	// SetScale sets the scale to use when getting image assets for the style.
-	SetScale(scale int)
-	// SetScreen attaches context to the given screen.
-	SetScreen(screen *gdk.Screen)
-	// SetState sets the state to be used for style matching.
-	SetState(flags StateFlags)
-	// StateIsRunning returns TRUE if there is a transition animation running
-	// for the current region (see gtk_style_context_push_animatable_region()).
-	StateIsRunning(state StateType) (float64, bool)
-	// String converts the style context into a string representation.
-	String(flags StyleContextPrintFlags) string
 }
 
 // StyleContext is an object that stores styling information affecting a widget
@@ -287,10 +162,7 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var (
-	_ StyleContexter  = (*StyleContext)(nil)
-	_ gextras.Nativer = (*StyleContext)(nil)
-)
+var _ gextras.Nativer = (*StyleContext)(nil)
 
 func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	return &StyleContext{
@@ -936,7 +808,7 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 // the style places the transition under the :hover pseudo-class.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId cgo.Handle, state StateType, stateValue bool) {
+func (context *StyleContext) NotifyStateChange(window gdk.Windowwer, regionId cgo.Handle, state StateType, stateValue bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gpointer         // out
@@ -1052,7 +924,7 @@ func (context *StyleContext) Save() {
 // animation are scrolled together with it.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy int) {
+func (context *StyleContext) ScrollAnimations(window gdk.Windowwer, dx int, dy int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gint             // out
@@ -1072,7 +944,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy in
 // Deprecated: Use gtk_render_background() instead. Note that clients still
 // using this function are now responsible for calling this function again
 // whenever context is invalidated.
-func (context *StyleContext) SetBackground(window gdk.Windower) {
+func (context *StyleContext) SetBackground(window gdk.Windowwer) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 

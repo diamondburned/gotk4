@@ -20,39 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIconer},
+		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIconner},
 	})
-}
-
-// NumerableIconer describes NumerableIcon's methods.
-type NumerableIconer interface {
-	// BackgroundGIcon returns the #GIcon that was set as the base background
-	// image, or NULL if there’s none.
-	BackgroundGIcon() *gio.Icon
-	// BackgroundIconName returns the icon name used as the base background
-	// image, or NULL if there’s none.
-	BackgroundIconName() string
-	// Count returns the value currently displayed by self.
-	Count() int
-	// Label returns the currently displayed label of the icon, or NULL.
-	Label() string
-	// StyleContext returns the StyleContext used by the icon for theming, or
-	// NULL if there’s none.
-	StyleContext() *StyleContext
-	// SetBackgroundGIcon updates the icon to use icon as the base background
-	// image.
-	SetBackgroundGIcon(icon gio.Iconer)
-	// SetBackgroundIconName updates the icon to use the icon named icon_name
-	// from the current icon theme as the base background image.
-	SetBackgroundIconName(iconName string)
-	// SetCount sets the currently displayed value of self to count.
-	SetCount(count int)
-	// SetLabel sets the currently displayed value of self to the string in
-	// label.
-	SetLabel(label string)
-	// SetStyleContext updates the icon to fetch theme information from the
-	// given StyleContext.
-	SetStyleContext(style *StyleContext)
 }
 
 // NumerableIcon is a subclass of Icon that can show a number or short string as
@@ -66,10 +35,7 @@ type NumerableIcon struct {
 	gio.EmblemedIcon
 }
 
-var (
-	_ NumerableIconer = (*NumerableIcon)(nil)
-	_ gextras.Nativer = (*NumerableIcon)(nil)
-)
+var _ gextras.Nativer = (*NumerableIcon)(nil)
 
 func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	return &NumerableIcon{
@@ -82,7 +48,7 @@ func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	}
 }
 
-func marshalNumerableIconer(p uintptr) (interface{}, error) {
+func marshalNumerableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNumerableIcon(obj), nil
@@ -197,7 +163,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconer) {
+func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
 
@@ -289,7 +255,7 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 // NewNumerableIcon creates a new unthemed NumerableIcon.
 //
 // Deprecated: since version 3.14.
-func NumerableIconNew(baseIcon gio.Iconer) *gio.Icon {
+func NumerableIconNew(baseIcon gio.Iconner) *gio.Icon {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 
@@ -314,7 +280,7 @@ func NumerableIconNew(baseIcon gio.Iconer) *gio.Icon {
 // constructor that calls gtk_numerable_icon_set_style_context() internally.
 //
 // Deprecated: since version 3.14.
-func NumerableIconNewWithStyleContext(baseIcon gio.Iconer, context *StyleContext) *gio.Icon {
+func NumerableIconNewWithStyleContext(baseIcon gio.Iconner, context *StyleContext) *gio.Icon {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in

@@ -62,50 +62,6 @@ func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Imager describes Image's methods.
-type Imager interface {
-	// Clear resets the image to be empty.
-	Clear()
-	// Animation gets the PixbufAnimation being displayed by the Image.
-	Animation() *gdkpixbuf.PixbufAnimation
-	// GIcon gets the #GIcon and size being displayed by the Image.
-	GIcon() (*gio.Icon, int)
-	// IconName gets the icon name and size being displayed by the Image.
-	IconName() (string, int)
-	// IconSet gets the icon set and size being displayed by the Image.
-	IconSet() (*IconSet, int)
-	// Pixbuf gets the Pixbuf being displayed by the Image.
-	Pixbuf() *gdkpixbuf.Pixbuf
-	// PixelSize gets the pixel size used for named icons.
-	PixelSize() int
-	// Stock gets the stock icon name and size being displayed by the Image.
-	Stock() (string, int)
-	// StorageType gets the type of representation being used by the Image to
-	// store image data.
-	StorageType() ImageType
-	// SetFromAnimation causes the Image to display the given animation (or
-	// display nothing, if you set the animation to NULL).
-	SetFromAnimation(animation *gdkpixbuf.PixbufAnimation)
-	// SetFromFile: see gtk_image_new_from_file() for details.
-	SetFromFile(filename string)
-	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
-	SetFromGIcon(icon gio.Iconer, size int)
-	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
-	SetFromIconName(iconName string, size int)
-	// SetFromIconSet: see gtk_image_new_from_icon_set() for details.
-	SetFromIconSet(iconSet *IconSet, size int)
-	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
-	SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf)
-	// SetFromResource: see gtk_image_new_from_resource() for details.
-	SetFromResource(resourcePath string)
-	// SetFromStock: see gtk_image_new_from_stock() for details.
-	SetFromStock(stockId string, size int)
-	// SetFromSurface: see gtk_image_new_from_surface() for details.
-	SetFromSurface(surface *cairo.Surface)
-	// SetPixelSize sets the pixel size to use for named icons.
-	SetPixelSize(pixelSize int)
-}
-
 // Image widget displays an image. Various kinds of object can be displayed as
 // an image; most typically, you would load a Pixbuf ("pixel buffer") from a
 // file, and then display that. There’s a convenience function to do this,
@@ -166,10 +122,7 @@ type Image struct {
 	Misc
 }
 
-var (
-	_ Imager          = (*Image)(nil)
-	_ gextras.Nativer = (*Image)(nil)
-)
+var _ gextras.Nativer = (*Image)(nil)
 
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{
@@ -265,7 +218,7 @@ func NewImageFromFile(filename string) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconer, size int) *Image {
+func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -642,7 +595,7 @@ func (image *Image) SetFromFile(filename string) {
 }
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
-func (image *Image) SetFromGIcon(icon gio.Iconer, size int) {
+func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

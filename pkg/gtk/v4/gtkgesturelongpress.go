@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// GestureLongPresser describes GestureLongPress's methods.
-type GestureLongPresser interface {
-	// DelayFactor returns the delay factor.
-	DelayFactor() float64
-	// SetDelayFactor applies the given delay factor.
-	SetDelayFactor(delayFactor float64)
-}
-
 // GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.
 //
 // This gesture is also known as “Press and Hold”.
@@ -47,10 +39,7 @@ type GestureLongPress struct {
 	GestureSingle
 }
 
-var (
-	_ GestureLongPresser = (*GestureLongPress)(nil)
-	_ gextras.Nativer    = (*GestureLongPress)(nil)
-)
+var _ gextras.Nativer = (*GestureLongPress)(nil)
 
 func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	return &GestureLongPress{

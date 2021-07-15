@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookuper},
+		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
 		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
 }
@@ -51,14 +51,6 @@ type DesktopAppInfoLookupOverrider interface {
 	DefaultForURIScheme(uriScheme string) *AppInfo
 }
 
-// DesktopAppInfoLookuper describes DesktopAppInfoLookup's methods.
-type DesktopAppInfoLookuper interface {
-	// DefaultForURIScheme gets the default application for launching
-	// applications using this URI scheme for a particular AppInfoLookup
-	// implementation.
-	DefaultForURIScheme(uriScheme string) *AppInfo
-}
-
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 //
@@ -67,10 +59,17 @@ type DesktopAppInfoLookup struct {
 	*externglib.Object
 }
 
-var (
-	_ DesktopAppInfoLookuper = (*DesktopAppInfoLookup)(nil)
-	_ gextras.Nativer        = (*DesktopAppInfoLookup)(nil)
-)
+var _ gextras.Nativer = (*DesktopAppInfoLookup)(nil)
+
+// DesktopAppInfoLookupper describes DesktopAppInfoLookup's abstract methods.
+type DesktopAppInfoLookupper interface {
+	// DefaultForURIScheme gets the default application for launching
+	// applications using this URI scheme for a particular AppInfoLookup
+	// implementation.
+	DefaultForURIScheme(uriScheme string) *AppInfo
+}
+
+var _ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
 
 func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	return &DesktopAppInfoLookup{
@@ -78,7 +77,7 @@ func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	}
 }
 
-func marshalDesktopAppInfoLookuper(p uintptr) (interface{}, error) {
+func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDesktopAppInfoLookup(obj), nil
@@ -110,47 +109,6 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 	return _appInfo
 }
 
-// DesktopAppInfor describes DesktopAppInfo's methods.
-type DesktopAppInfor interface {
-	// ActionName gets the user-visible display name of the "additional
-	// application action" specified by action_name.
-	ActionName(actionName string) string
-	// Boolean looks up a boolean value in the keyfile backing info.
-	Boolean(key string) bool
-	// Categories gets the categories from the desktop file.
-	Categories() string
-	// Filename: when info was created from a known filename, return it.
-	Filename() string
-	// GenericName gets the generic name from the desktop file.
-	GenericName() string
-	// IsHidden: desktop file is hidden if the Hidden key in it is set to True.
-	IsHidden() bool
-	// Keywords gets the keywords from the desktop file.
-	Keywords() []string
-	// LocaleString looks up a localized string value in the keyfile backing
-	// info translated to the current locale.
-	LocaleString(key string) string
-	// Nodisplay gets the value of the NoDisplay key, which helps determine if
-	// the application info should be shown in menus.
-	Nodisplay() bool
-	// ShowIn checks if the application info should be shown in menus that list
-	// available applications for a specific name of the desktop, based on the
-	// OnlyShowIn and NotShowIn keys.
-	ShowIn(desktopEnv string) bool
-	// StartupWmClass retrieves the StartupWMClass field from info.
-	StartupWmClass() string
-	// String looks up a string value in the keyfile backing info.
-	String(key string) string
-	// HasKey returns whether key exists in the "Desktop Entry" group of the
-	// keyfile backing info.
-	HasKey(key string) bool
-	// LaunchAction activates the named application action.
-	LaunchAction(actionName string, launchContext *AppLaunchContext)
-	// ListActions returns the list of "additional application actions"
-	// supported on the desktop file, as per the desktop file specification.
-	ListActions() []string
-}
-
 // DesktopAppInfo is an implementation of Info based on desktop files.
 //
 // Note that <gio/gdesktopappinfo.h> belongs to the UNIX-specific GIO
@@ -162,10 +120,7 @@ type DesktopAppInfo struct {
 	AppInfo
 }
 
-var (
-	_ DesktopAppInfor = (*DesktopAppInfo)(nil)
-	_ gextras.Nativer = (*DesktopAppInfo)(nil)
-)
+var _ gextras.Nativer = (*DesktopAppInfo)(nil)
 
 func wrapDesktopAppInfo(obj *externglib.Object) *DesktopAppInfo {
 	return &DesktopAppInfo{

@@ -59,14 +59,6 @@ type RemoteActionGroupOverrider interface {
 	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
 }
 
-// RemoteActionGrouper describes RemoteActionGroup's methods.
-type RemoteActionGrouper interface {
-	// ActivateActionFull activates the remote action.
-	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
-	// ChangeActionStateFull changes the state of a remote action.
-	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
-}
-
 // RemoteActionGroup interface is implemented by Group instances that either
 // transmit action invocations to other processes or receive action invocations
 // in the local process from other processes.
@@ -88,10 +80,17 @@ type RemoteActionGroup struct {
 	ActionGroup
 }
 
-var (
-	_ RemoteActionGrouper = (*RemoteActionGroup)(nil)
-	_ gextras.Nativer     = (*RemoteActionGroup)(nil)
-)
+var _ gextras.Nativer = (*RemoteActionGroup)(nil)
+
+// RemoteActionGrouper describes RemoteActionGroup's abstract methods.
+type RemoteActionGrouper interface {
+	// ActivateActionFull activates the remote action.
+	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	// ChangeActionStateFull changes the state of a remote action.
+	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+}
+
+var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
 
 func wrapRemoteActionGroup(obj *externglib.Object) *RemoteActionGroup {
 	return &RemoteActionGroup{

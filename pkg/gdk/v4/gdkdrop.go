@@ -20,12 +20,32 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDroper},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
 	})
 }
 
-// Droper describes Drop's methods.
-type Droper interface {
+// Drop: GdkDrop object represents the target of an ongoing DND operation.
+//
+// Possible drop sites get informed about the status of the ongoing drag
+// operation with events of type GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION
+// and GDK_DROP_START. The GdkDrop object can be obtained from these gdk.Event
+// types using gdk.DNDEvent.GetDrop().
+//
+// The actual data transfer is initiated from the target side via an async read,
+// using one of the GdkDrop methods for this purpose: gdk.Drop.ReadAsync() or
+// gdk.Drop.ReadValueAsync().
+//
+// GTK provides a higher level abstraction based on top of these functions, and
+// so they are not normally needed in GTK applications. See the "Drag and Drop"
+// section of the GTK documentation for more information.
+type Drop struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Drop)(nil)
+
+// Dropper describes Drop's abstract methods.
+type Dropper interface {
 	// Finish ends the drag operation after a drop.
 	Finish(action DragAction)
 	// Actions returns the possible actions for this GdkDrop.
@@ -51,28 +71,7 @@ type Droper interface {
 	Status(actions DragAction, preferred DragAction)
 }
 
-// Drop: GdkDrop object represents the target of an ongoing DND operation.
-//
-// Possible drop sites get informed about the status of the ongoing drag
-// operation with events of type GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION
-// and GDK_DROP_START. The GdkDrop object can be obtained from these gdk.Event
-// types using gdk.DNDEvent.GetDrop().
-//
-// The actual data transfer is initiated from the target side via an async read,
-// using one of the GdkDrop methods for this purpose: gdk.Drop.ReadAsync() or
-// gdk.Drop.ReadValueAsync().
-//
-// GTK provides a higher level abstraction based on top of these functions, and
-// so they are not normally needed in GTK applications. See the "Drag and Drop"
-// section of the GTK documentation for more information.
-type Drop struct {
-	*externglib.Object
-}
-
-var (
-	_ Droper          = (*Drop)(nil)
-	_ gextras.Nativer = (*Drop)(nil)
-)
+var _ Dropper = (*Drop)(nil)
 
 func wrapDrop(obj *externglib.Object) *Drop {
 	return &Drop{
@@ -80,7 +79,7 @@ func wrapDrop(obj *externglib.Object) *Drop {
 	}
 }
 
-func marshalDroper(p uintptr) (interface{}, error) {
+func marshalDropper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrop(obj), nil

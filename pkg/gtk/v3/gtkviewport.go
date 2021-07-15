@@ -25,26 +25,6 @@ func init() {
 	})
 }
 
-// Viewporter describes Viewport's methods.
-type Viewporter interface {
-	// BinWindow gets the bin window of the Viewport.
-	BinWindow() *gdk.Window
-	// HAdjustment returns the horizontal adjustment of the viewport.
-	HAdjustment() *Adjustment
-	// ShadowType gets the shadow type of the Viewport.
-	ShadowType() ShadowType
-	// VAdjustment returns the vertical adjustment of the viewport.
-	VAdjustment() *Adjustment
-	// ViewWindow gets the view window of the Viewport.
-	ViewWindow() *gdk.Window
-	// SetHAdjustment sets the horizontal adjustment of the viewport.
-	SetHAdjustment(adjustment *Adjustment)
-	// SetShadowType sets the shadow type of the viewport.
-	SetShadowType(typ ShadowType)
-	// SetVAdjustment sets the vertical adjustment of the viewport.
-	SetVAdjustment(adjustment *Adjustment)
-}
-
 // Viewport widget acts as an adaptor class, implementing scrollability for
 // child widgets that lack their own scrolling capabilities. Use GtkViewport to
 // scroll child widgets such as Grid, Box, and so on.
@@ -69,10 +49,7 @@ type Viewport struct {
 	Scrollable
 }
 
-var (
-	_ Viewporter      = (*Viewport)(nil)
-	_ gextras.Nativer = (*Viewport)(nil)
-)
+var _ gextras.Nativer = (*Viewport)(nil)
 
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{

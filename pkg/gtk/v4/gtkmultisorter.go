@@ -22,15 +22,6 @@ func init() {
 	})
 }
 
-// MultiSorterer describes MultiSorter's methods.
-type MultiSorterer interface {
-	// Append: add sorter to self to use for sorting at the end.
-	Append(sorter *Sorter)
-	// Remove removes the sorter at the given position from the list of sorter
-	// used by self.
-	Remove(position uint)
-}
-
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
 //
 // If the first sorter compares two items as equal, the second is tried next,
@@ -42,10 +33,7 @@ type MultiSorter struct {
 	Buildable
 }
 
-var (
-	_ MultiSorterer   = (*MultiSorter)(nil)
-	_ gextras.Nativer = (*MultiSorter)(nil)
-)
+var _ gextras.Nativer = (*MultiSorter)(nil)
 
 func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
 	return &MultiSorter{

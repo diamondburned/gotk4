@@ -18,22 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayer},
+		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayyer},
 	})
-}
-
-// WaylandDisplayer describes WaylandDisplay's methods.
-type WaylandDisplayer interface {
-	// StartupNotificationID gets the startup notification ID for a Wayland
-	// display, or NULL if no ID has been defined.
-	StartupNotificationID() string
-	// QueryRegistry returns TRUE if the the interface was found in the display
-	// wl_registry.global handler.
-	QueryRegistry(global string) bool
-	// SetCursorTheme sets the cursor theme for the given display.
-	SetCursorTheme(name string, size int)
-	// SetStartupNotificationID sets the startup notification ID for a display.
-	SetStartupNotificationID(startupId string)
 }
 
 // WaylandDisplay: wayland implementation of GdkDisplay.
@@ -49,10 +35,7 @@ type WaylandDisplay struct {
 	gdk.Display
 }
 
-var (
-	_ WaylandDisplayer = (*WaylandDisplay)(nil)
-	_ gextras.Nativer  = (*WaylandDisplay)(nil)
-)
+var _ gextras.Nativer = (*WaylandDisplay)(nil)
 
 func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 	return &WaylandDisplay{
@@ -62,7 +45,7 @@ func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 	}
 }
 
-func marshalWaylandDisplayer(p uintptr) (interface{}, error) {
+func marshalWaylandDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandDisplay(obj), nil

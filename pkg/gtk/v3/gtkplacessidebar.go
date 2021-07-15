@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarer},
+		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
 	})
 }
 
@@ -65,81 +65,6 @@ const (
 
 func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 	return PlacesOpenFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PlacesSidebarer describes PlacesSidebar's methods.
-type PlacesSidebarer interface {
-	// AddShortcut applications may want to present some folders in the places
-	// sidebar if they could be immediately useful to users.
-	AddShortcut(location gio.Filer)
-	// LocalOnly returns the value previously set with
-	// gtk_places_sidebar_set_local_only().
-	LocalOnly() bool
-	// Location gets the currently selected location in the sidebar.
-	Location() *gio.File
-	// NthBookmark: this function queries the bookmarks added by the user to the
-	// places sidebar, and returns one of them.
-	NthBookmark(n int) *gio.File
-	// OpenFlags gets the open flags.
-	OpenFlags() PlacesOpenFlags
-	// ShowConnectToServer returns the value previously set with
-	// gtk_places_sidebar_set_show_connect_to_server() Deprecated: It is
-	// recommended to group this functionality with the drives and network
-	// location under the new 'Other Location' item.
-	ShowConnectToServer() bool
-	// ShowDesktop returns the value previously set with
-	// gtk_places_sidebar_set_show_desktop()
-	ShowDesktop() bool
-	// ShowEnterLocation returns the value previously set with
-	// gtk_places_sidebar_set_show_enter_location()
-	ShowEnterLocation() bool
-	// ShowOtherLocations returns the value previously set with
-	// gtk_places_sidebar_set_show_other_locations()
-	ShowOtherLocations() bool
-	// ShowRecent returns the value previously set with
-	// gtk_places_sidebar_set_show_recent()
-	ShowRecent() bool
-	// ShowStarredLocation returns the value previously set with
-	// gtk_places_sidebar_set_show_starred_location()
-	ShowStarredLocation() bool
-	// ShowTrash returns the value previously set with
-	// gtk_places_sidebar_set_show_trash()
-	ShowTrash() bool
-	// RemoveShortcut removes an application-specific shortcut that has been
-	// previously been inserted with gtk_places_sidebar_add_shortcut().
-	RemoveShortcut(location gio.Filer)
-	// SetDropTargetsVisible: make the GtkPlacesSidebar show drop targets, so it
-	// can show the available drop targets and a "new bookmark" row.
-	SetDropTargetsVisible(visible bool, context *gdk.DragContext)
-	// SetLocalOnly sets whether the sidebar should only show local files.
-	SetLocalOnly(localOnly bool)
-	// SetLocation sets the location that is being shown in the widgets
-	// surrounding the sidebar, for example, in a folder view in a file manager.
-	SetLocation(location gio.Filer)
-	// SetOpenFlags sets the way in which the calling application can open new
-	// locations from the places sidebar.
-	SetOpenFlags(flags PlacesOpenFlags)
-	// SetShowConnectToServer sets whether the sidebar should show an item for
-	// connecting to a network server; this is off by default.
-	SetShowConnectToServer(showConnectToServer bool)
-	// SetShowDesktop sets whether the sidebar should show an item for the
-	// Desktop folder.
-	SetShowDesktop(showDesktop bool)
-	// SetShowEnterLocation sets whether the sidebar should show an item for
-	// entering a location; this is off by default.
-	SetShowEnterLocation(showEnterLocation bool)
-	// SetShowOtherLocations sets whether the sidebar should show an item for
-	// the application to show an Other Locations view; this is off by default.
-	SetShowOtherLocations(showOtherLocations bool)
-	// SetShowRecent sets whether the sidebar should show an item for recent
-	// files.
-	SetShowRecent(showRecent bool)
-	// SetShowStarredLocation: if you enable this, you should connect to the
-	// PlacesSidebar::show-starred-location signal.
-	SetShowStarredLocation(showStarredLocation bool)
-	// SetShowTrash sets whether the sidebar should show an item for the Trash
-	// location.
-	SetShowTrash(showTrash bool)
 }
 
 // PlacesSidebar is a widget that displays a list of frequently-used places in
@@ -184,10 +109,7 @@ type PlacesSidebar struct {
 	ScrolledWindow
 }
 
-var (
-	_ PlacesSidebarer = (*PlacesSidebar)(nil)
-	_ gextras.Nativer = (*PlacesSidebar)(nil)
-)
+var _ gextras.Nativer = (*PlacesSidebar)(nil)
 
 func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	return &PlacesSidebar{
@@ -211,7 +133,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	}
 }
 
-func marshalPlacesSidebarer(p uintptr) (interface{}, error) {
+func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlacesSidebar(obj), nil

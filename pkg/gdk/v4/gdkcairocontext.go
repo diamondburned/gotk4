@@ -23,13 +23,6 @@ func init() {
 	})
 }
 
-// CairoContexter describes CairoContext's methods.
-type CairoContexter interface {
-	// CairoCreate retrieves a Cairo context to be used to draw on the
-	// GdkSurface of context.
-	CairoCreate() *cairo.Context
-}
-
 // CairoContext: GdkCairoContext is an object representing the platform-specific
 // draw context.
 //
@@ -40,10 +33,16 @@ type CairoContext struct {
 	DrawContext
 }
 
-var (
-	_ CairoContexter  = (*CairoContext)(nil)
-	_ gextras.Nativer = (*CairoContext)(nil)
-)
+var _ gextras.Nativer = (*CairoContext)(nil)
+
+// CairoContexter describes CairoContext's abstract methods.
+type CairoContexter interface {
+	// CairoCreate retrieves a Cairo context to be used to draw on the
+	// GdkSurface of context.
+	CairoCreate() *cairo.Context
+}
+
+var _ CairoContexter = (*CairoContext)(nil)
 
 func wrapCairoContext(obj *externglib.Object) *CairoContext {
 	return &CairoContext{

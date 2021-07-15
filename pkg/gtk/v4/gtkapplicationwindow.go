@@ -18,24 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindower},
+		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindowwer},
 	})
-}
-
-// ApplicationWindower describes ApplicationWindow's methods.
-type ApplicationWindower interface {
-	// HelpOverlay gets the GtkShortcutsWindow that is associated with window.
-	HelpOverlay() *ShortcutsWindow
-	// ID returns the unique ID of the window.
-	ID() uint
-	// ShowMenubar returns whether the window will display a menubar for the app
-	// menu and menubar as needed.
-	ShowMenubar() bool
-	// SetHelpOverlay associates a shortcuts window with the application window.
-	SetHelpOverlay(helpOverlay *ShortcutsWindow)
-	// SetShowMenubar sets whether the window will display a menubar for the app
-	// menu and menubar as needed.
-	SetShowMenubar(showMenubar bool)
 }
 
 // ApplicationWindow: GtkApplicationWindow is a GtkWindow subclass that
@@ -111,10 +95,7 @@ type ApplicationWindow struct {
 	gio.ActionMap
 }
 
-var (
-	_ ApplicationWindower = (*ApplicationWindow)(nil)
-	_ gextras.Nativer     = (*ApplicationWindow)(nil)
-)
+var _ gextras.Nativer = (*ApplicationWindow)(nil)
 
 func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -164,7 +145,7 @@ func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
 	}
 }
 
-func marshalApplicationWindower(p uintptr) (interface{}, error) {
+func marshalApplicationWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapApplicationWindow(obj), nil

@@ -17,18 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeler},
+		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeller},
 	})
-}
-
-// EditableLabeler describes EditableLabel's methods.
-type EditableLabeler interface {
-	// Editing returns whether the label is currently in “editing mode”.
-	Editing() bool
-	// StartEditing switches the label into “editing mode”.
-	StartEditing()
-	// StopEditing switches the label out of “editing mode”.
-	StopEditing(commit bool)
 }
 
 // EditableLabel: GtkEditableLabel is a label that allows users to edit the text
@@ -62,10 +52,7 @@ type EditableLabel struct {
 	Editable
 }
 
-var (
-	_ EditableLabeler = (*EditableLabel)(nil)
-	_ gextras.Nativer = (*EditableLabel)(nil)
-)
+var _ gextras.Nativer = (*EditableLabel)(nil)
 
 func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	return &EditableLabel{
@@ -102,7 +89,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	}
 }
 
-func marshalEditableLabeler(p uintptr) (interface{}, error) {
+func marshalEditableLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEditableLabel(obj), nil

@@ -23,11 +23,6 @@ func init() {
 	})
 }
 
-// CellRendererSpinnerer describes CellRendererSpinner's methods.
-type CellRendererSpinnerer interface {
-	privateCellRendererSpinner()
-}
-
 // CellRendererSpinner renders a spinning animation in a cell, very similar to
 // Spinner. It can often be used as an alternative to a CellRendererProgress for
 // displaying indefinite activity, instead of actual progress.
@@ -41,10 +36,7 @@ type CellRendererSpinner struct {
 	CellRenderer
 }
 
-var (
-	_ CellRendererSpinnerer = (*CellRendererSpinner)(nil)
-	_ gextras.Nativer       = (*CellRendererSpinner)(nil)
-)
+var _ gextras.Nativer = (*CellRendererSpinner)(nil)
 
 func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
 	return &CellRendererSpinner{

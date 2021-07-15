@@ -18,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorer},
+		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorrer},
 	})
 }
 
@@ -45,36 +45,6 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Monitorer describes Monitor's methods.
-type Monitorer interface {
-	// Connector gets the name of the monitor's connector, if available.
-	Connector() string
-	// Display gets the display that this monitor belongs to.
-	Display() *Display
-	// Geometry retrieves the size and position of the monitor within the
-	// display coordinate space.
-	Geometry() Rectangle
-	// HeightMm gets the height in millimeters of the monitor.
-	HeightMm() int
-	// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
-	Manufacturer() string
-	// Model gets the string identifying the monitor model, if available.
-	Model() string
-	// RefreshRate gets the refresh rate of the monitor, if available.
-	RefreshRate() int
-	// ScaleFactor gets the internal scale factor that maps from monitor
-	// coordinates to device pixels.
-	ScaleFactor() int
-	// SubpixelLayout gets information about the layout of red, green and blue
-	// primaries for pixels.
-	SubpixelLayout() SubpixelLayout
-	// WidthMm gets the width in millimeters of the monitor.
-	WidthMm() int
-	// IsValid returns TRUE if the monitor object corresponds to a physical
-	// monitor.
-	IsValid() bool
-}
-
 // Monitor: GdkMonitor objects represent the individual outputs that are
 // associated with a GdkDisplay.
 //
@@ -85,10 +55,7 @@ type Monitor struct {
 	*externglib.Object
 }
 
-var (
-	_ Monitorer       = (*Monitor)(nil)
-	_ gextras.Nativer = (*Monitor)(nil)
-)
+var _ gextras.Nativer = (*Monitor)(nil)
 
 func wrapMonitor(obj *externglib.Object) *Monitor {
 	return &Monitor{
@@ -96,7 +63,7 @@ func wrapMonitor(obj *externglib.Object) *Monitor {
 	}
 }
 
-func marshalMonitorer(p uintptr) (interface{}, error) {
+func marshalMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMonitor(obj), nil

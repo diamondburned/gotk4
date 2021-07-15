@@ -20,14 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrower},
+		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrowwer},
 	})
-}
-
-// Arrower describes Arrow's methods.
-type Arrower interface {
-	// Set sets the direction and style of the Arrow, arrow.
-	Set(arrowType ArrowType, shadowType ShadowType)
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the
@@ -52,10 +46,7 @@ type Arrow struct {
 	Misc
 }
 
-var (
-	_ Arrower         = (*Arrow)(nil)
-	_ gextras.Nativer = (*Arrow)(nil)
-)
+var _ gextras.Nativer = (*Arrow)(nil)
 
 func wrapArrow(obj *externglib.Object) *Arrow {
 	return &Arrow{
@@ -75,7 +66,7 @@ func wrapArrow(obj *externglib.Object) *Arrow {
 	}
 }
 
-func marshalArrower(p uintptr) (interface{}, error) {
+func marshalArrowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapArrow(obj), nil

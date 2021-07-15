@@ -21,45 +21,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtoner},
+		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtonner},
 	})
-}
-
-// MenuButtoner describes MenuButton's methods.
-type MenuButtoner interface {
-	// AlignWidget returns the parent Widget to use to line up with menu.
-	AlignWidget() *Widget
-	// Direction returns the direction the popup will be pointing at when popped
-	// up.
-	Direction() ArrowType
-	// MenuModel returns the Model used to generate the popup.
-	MenuModel() *gio.MenuModel
-	// Popover returns the Popover that pops out of the button.
-	Popover() *Popover
-	// Popup returns the Menu that pops out of the button.
-	Popup() *Menu
-	// UsePopover returns whether a Popover or a Menu will be constructed from
-	// the menu model.
-	UsePopover() bool
-	// SetAlignWidget sets the Widget to use to line the menu with when popped
-	// up.
-	SetAlignWidget(alignWidget Widgeter)
-	// SetDirection sets the direction in which the popup will be popped up, as
-	// well as changing the arrow’s direction.
-	SetDirection(direction ArrowType)
-	// SetMenuModel sets the Model from which the popup will be constructed, or
-	// NULL to dissociate any existing menu model and disable the button.
-	SetMenuModel(menuModel gio.MenuModeler)
-	// SetPopover sets the Popover that will be popped up when the menu_button
-	// is clicked, or NULL to dissociate any existing popover and disable the
-	// button.
-	SetPopover(popover Widgeter)
-	// SetPopup sets the Menu that will be popped up when the menu_button is
-	// clicked, or NULL to dissociate any existing menu and disable the button.
-	SetPopup(menu Widgeter)
-	// SetUsePopover sets whether to construct a Popover instead of Menu when
-	// gtk_menu_button_set_menu_model() is called.
-	SetUsePopover(usePopover bool)
 }
 
 // MenuButton widget is used to display a popup when clicked on. This popup can
@@ -147,10 +110,7 @@ type MenuButton struct {
 	ToggleButton
 }
 
-var (
-	_ MenuButtoner    = (*MenuButton)(nil)
-	_ gextras.Nativer = (*MenuButton)(nil)
-)
+var _ gextras.Nativer = (*MenuButton)(nil)
 
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
@@ -192,7 +152,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	}
 }
 
-func marshalMenuButtoner(p uintptr) (interface{}, error) {
+func marshalMenuButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuButton(obj), nil
@@ -327,7 +287,7 @@ func (menuButton *MenuButton) UsePopover() bool {
 //
 // Note that this property is only used with menus currently, and not for
 // popovers.
-func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgeter) {
+func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -366,7 +326,7 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 //
 // If MenuButton:popup or MenuButton:popover are already set, those widgets are
 // dissociated from the menu_button, and those properties are set to NULL.
-func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
+func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
@@ -381,7 +341,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 //
 // If MenuButton:menu-model or MenuButton:popup are set, those objects are
 // dissociated from the menu_button, and those properties are set to NULL.
-func (menuButton *MenuButton) SetPopover(popover Widgeter) {
+func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -396,7 +356,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgeter) {
 //
 // If MenuButton:menu-model or MenuButton:popover are set, those objects are
 // dissociated from the menu_button, and those properties are set to NULL.
-func (menuButton *MenuButton) SetPopup(menu Widgeter) {
+func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 

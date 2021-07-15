@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemer},
+		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemmer},
 	})
-}
-
-// TearoffMenuItemer describes TearoffMenuItem's methods.
-type TearoffMenuItemer interface {
-	privateTearoffMenuItem()
 }
 
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
@@ -47,10 +42,7 @@ type TearoffMenuItem struct {
 	MenuItem
 }
 
-var (
-	_ TearoffMenuItemer = (*TearoffMenuItem)(nil)
-	_ gextras.Nativer   = (*TearoffMenuItem)(nil)
-)
+var _ gextras.Nativer = (*TearoffMenuItem)(nil)
 
 func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	return &TearoffMenuItem{
@@ -90,7 +82,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	}
 }
 
-func marshalTearoffMenuItemer(p uintptr) (interface{}, error) {
+func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTearoffMenuItem(obj), nil

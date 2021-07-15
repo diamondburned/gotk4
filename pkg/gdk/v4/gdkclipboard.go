@@ -24,33 +24,6 @@ func init() {
 	})
 }
 
-// Clipboarder describes Clipboard's methods.
-type Clipboarder interface {
-	// Content returns the GdkContentProvider currently set on clipboard.
-	Content() *ContentProvider
-	// Display gets the GdkDisplay that the clipboard was created for.
-	Display() *Display
-	// Formats gets the formats that the clipboard can provide its current
-	// contents in.
-	Formats() *ContentFormats
-	// IsLocal returns if the clipboard is local.
-	IsLocal() bool
-	// ReadFinish finishes an asynchronous clipboard read.
-	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
-	// ReadTextFinish finishes an asynchronous clipboard read.
-	ReadTextFinish(result gio.AsyncResulter) (string, error)
-	// ReadTextureFinish finishes an asynchronous clipboard read.
-	ReadTextureFinish(result gio.AsyncResulter) (*Texture, error)
-	// ReadValueFinish finishes an asynchronous clipboard read.
-	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
-	// SetContent sets a new content provider on clipboard.
-	SetContent(provider *ContentProvider) bool
-	// SetValue sets the clipboard to contain the given value.
-	SetValue(value *externglib.Value)
-	// StoreFinish finishes an asynchronous clipboard store.
-	StoreFinish(result gio.AsyncResulter) error
-}
-
 // Clipboard: GdkClipboard object represents data shared between applications or
 // inside an application.
 //
@@ -69,10 +42,7 @@ type Clipboard struct {
 	*externglib.Object
 }
 
-var (
-	_ Clipboarder     = (*Clipboard)(nil)
-	_ gextras.Nativer = (*Clipboard)(nil)
-)
+var _ gextras.Nativer = (*Clipboard)(nil)
 
 func wrapClipboard(obj *externglib.Object) *Clipboard {
 	return &Clipboard{

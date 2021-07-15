@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// ComboBoxAccessibler describes ComboBoxAccessible's methods.
-type ComboBoxAccessibler interface {
-	privateComboBoxAccessible()
-}
-
 type ComboBoxAccessible struct {
 	ContainerAccessible
 
@@ -36,10 +31,7 @@ type ComboBoxAccessible struct {
 	atk.Selection
 }
 
-var (
-	_ ComboBoxAccessibler = (*ComboBoxAccessible)(nil)
-	_ gextras.Nativer     = (*ComboBoxAccessible)(nil)
-)
+var _ gextras.Nativer = (*ComboBoxAccessible)(nil)
 
 func wrapComboBoxAccessible(obj *externglib.Object) *ComboBoxAccessible {
 	return &ComboBoxAccessible{

@@ -78,19 +78,6 @@ type FileOutputStreamOverrider interface {
 	TruncateFn(size int64, cancellable *Cancellable) error
 }
 
-// FileOutputStreamer describes FileOutputStream's methods.
-type FileOutputStreamer interface {
-	// Etag gets the entity tag for the file when it has been written.
-	Etag() string
-	// QueryInfo queries a file output stream for the given attributes.
-	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
-	// QueryInfoAsync: asynchronously queries the stream for a Info.
-	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-}
-
 // FileOutputStream provides output streams that write their content to a file.
 //
 // GFileOutputStream implements #GSeekable, which allows the output stream to
@@ -108,10 +95,7 @@ type FileOutputStream struct {
 	Seekable
 }
 
-var (
-	_ FileOutputStreamer = (*FileOutputStream)(nil)
-	_ gextras.Nativer    = (*FileOutputStream)(nil)
-)
+var _ gextras.Nativer = (*FileOutputStream)(nil)
 
 func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 	return &FileOutputStream{

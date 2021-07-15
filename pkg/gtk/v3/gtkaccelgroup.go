@@ -297,24 +297,6 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	return _ok
 }
 
-// AccelGrouper describes AccelGroup's methods.
-type AccelGrouper interface {
-	// DisconnectKey removes an accelerator previously installed through
-	// gtk_accel_group_connect().
-	DisconnectKey(accelKey uint, accelMods gdk.ModifierType) bool
-	// IsLocked locks are added and removed using gtk_accel_group_lock() and
-	// gtk_accel_group_unlock().
-	IsLocked() bool
-	// ModifierMask gets a ModifierType representing the mask for this
-	// accel_group.
-	ModifierMask() gdk.ModifierType
-	// Lock locks the given accelerator group.
-	Lock()
-	// Unlock undoes the last call to gtk_accel_group_lock() on this
-	// accel_group.
-	Unlock()
-}
-
 // AccelGroup represents a group of keyboard accelerators, typically attached to
 // a toplevel Window (with gtk_window_add_accel_group()). Usually you won’t need
 // to create a AccelGroup directly; instead, when using UIManager, GTK+
@@ -332,10 +314,7 @@ type AccelGroup struct {
 	*externglib.Object
 }
 
-var (
-	_ AccelGrouper    = (*AccelGroup)(nil)
-	_ gextras.Nativer = (*AccelGroup)(nil)
-)
+var _ gextras.Nativer = (*AccelGroup)(nil)
 
 func wrapAccelGroup(obj *externglib.Object) *AccelGroup {
 	return &AccelGroup{

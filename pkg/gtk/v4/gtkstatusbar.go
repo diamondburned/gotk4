@@ -17,25 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarer},
+		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarrer},
 	})
-}
-
-// Statusbarer describes Statusbar's methods.
-type Statusbarer interface {
-	// ContextID returns a new context identifier, given a description of the
-	// actual context.
-	ContextID(contextDescription string) uint
-	// Pop removes the first message in the GtkStatusbar’s stack with the given
-	// context id.
-	Pop(contextId uint)
-	// Push pushes a new message onto a statusbar’s stack.
-	Push(contextId uint, text string) uint
-	// Remove forces the removal of a message from a statusbar’s stack.
-	Remove(contextId uint, messageId uint)
-	// RemoveAll forces the removal of all messages from a statusbar's stack
-	// with the exact context_id.
-	RemoveAll(contextId uint)
 }
 
 // Statusbar: GtkStatusbar widget is usually placed along the bottom of an
@@ -78,10 +61,7 @@ type Statusbar struct {
 	Widget
 }
 
-var (
-	_ Statusbarer     = (*Statusbar)(nil)
-	_ gextras.Nativer = (*Statusbar)(nil)
-)
+var _ gextras.Nativer = (*Statusbar)(nil)
 
 func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	return &Statusbar{
@@ -102,7 +82,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	}
 }
 
-func marshalStatusbarer(p uintptr) (interface{}, error) {
+func marshalStatusbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusbar(obj), nil

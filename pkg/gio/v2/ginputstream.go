@@ -102,7 +102,24 @@ type InputStreamOverrider interface {
 	SkipFinish(result AsyncResulter) (int, error)
 }
 
-// InputStreamer describes InputStream's methods.
+// InputStream has functions to read from a stream (g_input_stream_read()), to
+// close a stream (g_input_stream_close()) and to skip some content
+// (g_input_stream_skip()).
+//
+// To copy the content of an input stream to an output stream without manually
+// handling the reads and writes, use g_output_stream_splice().
+//
+// See the documentation for OStream for details of thread safety of streaming
+// APIs.
+//
+// All of these functions have async variants too.
+type InputStream struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*InputStream)(nil)
+
+// InputStreamer describes InputStream's abstract methods.
 type InputStreamer interface {
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
@@ -136,25 +153,7 @@ type InputStreamer interface {
 	SkipFinish(result AsyncResulter) (int, error)
 }
 
-// InputStream has functions to read from a stream (g_input_stream_read()), to
-// close a stream (g_input_stream_close()) and to skip some content
-// (g_input_stream_skip()).
-//
-// To copy the content of an input stream to an output stream without manually
-// handling the reads and writes, use g_output_stream_splice().
-//
-// See the documentation for OStream for details of thread safety of streaming
-// APIs.
-//
-// All of these functions have async variants too.
-type InputStream struct {
-	*externglib.Object
-}
-
-var (
-	_ InputStreamer   = (*InputStream)(nil)
-	_ gextras.Nativer = (*InputStream)(nil)
-)
+var _ InputStreamer = (*InputStream)(nil)
 
 func wrapInputStream(obj *externglib.Object) *InputStream {
 	return &InputStream{

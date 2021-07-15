@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtoner},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
 	})
 }
 
@@ -30,40 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type FontButtonOverrider interface {
 	FontSet()
-}
-
-// FontButtoner describes FontButton's methods.
-type FontButtoner interface {
-	// FontName retrieves the name of the currently selected font.
-	FontName() string
-	// ShowSize returns whether the font size will be shown in the label.
-	ShowSize() bool
-	// ShowStyle returns whether the name of the font style will be shown in the
-	// label.
-	ShowStyle() bool
-	// Title retrieves the title of the font chooser dialog.
-	Title() string
-	// UseFont returns whether the selected font is used in the label.
-	UseFont() bool
-	// UseSize returns whether the selected size is used in the label.
-	UseSize() bool
-	// SetFontName sets or updates the currently-displayed font in font picker
-	// dialog.
-	SetFontName(fontname string) bool
-	// SetShowSize: if show_size is TRUE, the font size will be displayed along
-	// with the name of the selected font.
-	SetShowSize(showSize bool)
-	// SetShowStyle: if show_style is TRUE, the font style will be displayed
-	// along with name of the selected font.
-	SetShowStyle(showStyle bool)
-	// SetTitle sets the title for the font chooser dialog.
-	SetTitle(title string)
-	// SetUseFont: if use_font is TRUE, the font name will be written using the
-	// selected font.
-	SetUseFont(useFont bool)
-	// SetUseSize: if use_size is TRUE, the font name will be written using the
-	// selected size.
-	SetUseSize(useSize bool)
 }
 
 // FontButton is a button which displays the currently selected font an allows
@@ -80,10 +46,7 @@ type FontButton struct {
 	FontChooser
 }
 
-var (
-	_ FontButtoner    = (*FontButton)(nil)
-	_ gextras.Nativer = (*FontButton)(nil)
-)
+var _ gextras.Nativer = (*FontButton)(nil)
 
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{
@@ -126,7 +89,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 	}
 }
 
-func marshalFontButtoner(p uintptr) (interface{}, error) {
+func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontButton(obj), nil

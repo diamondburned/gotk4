@@ -398,7 +398,30 @@ type TextOverrider interface {
 	TextSelectionChanged()
 }
 
-// Texter describes Text's methods.
+// Text should be implemented by Objects on behalf of widgets that have text
+// content which is either attributed or otherwise non-trivial. Objects whose
+// text content is simple, unattributed, and very brief may expose that content
+// via #atk_object_get_name instead; however if the text is editable,
+// multi-line, typically longer than three or four words, attributed,
+// selectable, or if the object already uses the 'name' ATK property for other
+// information, the Text interface should be used to expose the text content. In
+// the case of editable text content, EditableText (a subtype of the Text
+// interface) should be implemented instead.
+//
+//    Text provides not only traversal facilities and change
+//
+// notification for text content, but also caret tracking and glyph bounding box
+// calculations. Note that the text strings are exposed as UTF-8, and are
+// therefore potentially multi-byte, and caret-to-byte offset mapping makes no
+// assumptions about the character length; also bounding box glyph-to-offset
+// mapping may be complex for languages which use ligatures.
+type Text struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Text)(nil)
+
+// Texter describes Text's abstract methods.
 type Texter interface {
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset int, endOffset int) bool
@@ -447,31 +470,7 @@ type Texter interface {
 	SetSelection(selectionNum int, startOffset int, endOffset int) bool
 }
 
-// Text should be implemented by Objects on behalf of widgets that have text
-// content which is either attributed or otherwise non-trivial. Objects whose
-// text content is simple, unattributed, and very brief may expose that content
-// via #atk_object_get_name instead; however if the text is editable,
-// multi-line, typically longer than three or four words, attributed,
-// selectable, or if the object already uses the 'name' ATK property for other
-// information, the Text interface should be used to expose the text content. In
-// the case of editable text content, EditableText (a subtype of the Text
-// interface) should be implemented instead.
-//
-//    Text provides not only traversal facilities and change
-//
-// notification for text content, but also caret tracking and glyph bounding box
-// calculations. Note that the text strings are exposed as UTF-8, and are
-// therefore potentially multi-byte, and caret-to-byte offset mapping makes no
-// assumptions about the character length; also bounding box glyph-to-offset
-// mapping may be complex for languages which use ligatures.
-type Text struct {
-	*externglib.Object
-}
-
-var (
-	_ Texter          = (*Text)(nil)
-	_ gextras.Nativer = (*Text)(nil)
-)
+var _ Texter = (*Text)(nil)
 
 func wrapText(obj *externglib.Object) *Text {
 	return &Text{

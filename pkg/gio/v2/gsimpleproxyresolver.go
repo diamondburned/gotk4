@@ -31,18 +31,6 @@ func init() {
 	})
 }
 
-// SimpleProxyResolverer describes SimpleProxyResolver's methods.
-type SimpleProxyResolverer interface {
-	// SetDefaultProxy sets the default proxy on resolver, to be used for any
-	// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
-	// g_simple_proxy_resolver_set_uri_proxy().
-	SetDefaultProxy(defaultProxy string)
-	// SetURIProxy adds a URI-scheme-specific proxy to resolver; URIs whose
-	// scheme matches uri_scheme (and which don't match
-	// ProxyResolver:ignore-hosts) will be proxied via proxy.
-	SetURIProxy(uriScheme string, proxy string)
-}
-
 // SimpleProxyResolver is a simple Resolver implementation that handles a single
 // default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
 // proxies should not be used for.
@@ -56,10 +44,7 @@ type SimpleProxyResolver struct {
 	ProxyResolver
 }
 
-var (
-	_ SimpleProxyResolverer = (*SimpleProxyResolver)(nil)
-	_ gextras.Nativer       = (*SimpleProxyResolver)(nil)
-)
+var _ gextras.Nativer = (*SimpleProxyResolver)(nil)
 
 func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{

@@ -32,11 +32,6 @@ func init() {
 	})
 }
 
-// TLSFileDatabaser describes TLSFileDatabase's methods.
-type TLSFileDatabaser interface {
-	privateTLSFileDatabase()
-}
-
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.
@@ -44,10 +39,14 @@ type TLSFileDatabase struct {
 	TLSDatabase
 }
 
-var (
-	_ TLSFileDatabaser = (*TLSFileDatabase)(nil)
-	_ gextras.Nativer  = (*TLSFileDatabase)(nil)
-)
+var _ gextras.Nativer = (*TLSFileDatabase)(nil)
+
+// TLSFileDatabaser describes TLSFileDatabase's abstract methods.
+type TLSFileDatabaser interface {
+	privateTLSFileDatabase()
+}
+
+var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
 
 func wrapTLSFileDatabase(obj *externglib.Object) *TLSFileDatabase {
 	return &TLSFileDatabase{

@@ -18,18 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeler},
+		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeller},
 	})
-}
-
-// FlattenListModeler describes FlattenListModel's methods.
-type FlattenListModeler interface {
-	// Model gets the model set via gtk_flatten_list_model_set_model().
-	Model() *gio.ListModel
-	// ModelForItem returns the model containing the item at the given position.
-	ModelForItem(position uint) *gio.ListModel
-	// SetModel sets a new model to be flattened.
-	SetModel(model gio.ListModeler)
 }
 
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
@@ -43,10 +33,7 @@ type FlattenListModel struct {
 	gio.ListModel
 }
 
-var (
-	_ FlattenListModeler = (*FlattenListModel)(nil)
-	_ gextras.Nativer    = (*FlattenListModel)(nil)
-)
+var _ gextras.Nativer = (*FlattenListModel)(nil)
 
 func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	return &FlattenListModel{
@@ -57,14 +44,14 @@ func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	}
 }
 
-func marshalFlattenListModeler(p uintptr) (interface{}, error) {
+func marshalFlattenListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFlattenListModel(obj), nil
 }
 
 // NewFlattenListModel creates a new GtkFlattenListModel that flattens list.
-func NewFlattenListModel(model gio.ListModeler) *FlattenListModel {
+func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in
 
@@ -124,7 +111,7 @@ func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
 }
 
 // SetModel sets a new model to be flattened.
-func (self *FlattenListModel) SetModel(model gio.ListModeler) {
+func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 *C.GListModel          // out
 

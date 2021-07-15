@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// BinLayouter describes BinLayout's methods.
-type BinLayouter interface {
-	privateBinLayout()
-}
-
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create
 // "bins" of widgets.
 //
@@ -37,10 +32,7 @@ type BinLayout struct {
 	LayoutManager
 }
 
-var (
-	_ BinLayouter     = (*BinLayout)(nil)
-	_ gextras.Nativer = (*BinLayout)(nil)
-)
+var _ gextras.Nativer = (*BinLayout)(nil)
 
 func wrapBinLayout(obj *externglib.Object) *BinLayout {
 	return &BinLayout{

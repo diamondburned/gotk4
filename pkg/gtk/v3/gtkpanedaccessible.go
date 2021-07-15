@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// PanedAccessibler describes PanedAccessible's methods.
-type PanedAccessibler interface {
-	privatePanedAccessible()
-}
-
 type PanedAccessible struct {
 	ContainerAccessible
 
 	atk.Value
 }
 
-var (
-	_ PanedAccessibler = (*PanedAccessible)(nil)
-	_ gextras.Nativer  = (*PanedAccessible)(nil)
-)
+var _ gextras.Nativer = (*PanedAccessible)(nil)
 
 func wrapPanedAccessible(obj *externglib.Object) *PanedAccessible {
 	return &PanedAccessible{

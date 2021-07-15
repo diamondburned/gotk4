@@ -18,20 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtoner},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
 	})
-}
-
-// ColorButtoner describes ColorButton's methods.
-type ColorButtoner interface {
-	// Modal gets whether the dialog is modal.
-	Modal() bool
-	// Title gets the title of the color chooser dialog.
-	Title() string
-	// SetModal sets whether the dialog should be modal.
-	SetModal(modal bool)
-	// SetTitle sets the title for the color chooser dialog.
-	SetTitle(title string)
 }
 
 // ColorButton: GtkColorButton allows to open a color chooser dialog to change
@@ -57,10 +45,7 @@ type ColorButton struct {
 	ColorChooser
 }
 
-var (
-	_ ColorButtoner   = (*ColorButton)(nil)
-	_ gextras.Nativer = (*ColorButton)(nil)
-)
+var _ gextras.Nativer = (*ColorButton)(nil)
 
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
@@ -84,7 +69,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 	}
 }
 
-func marshalColorButtoner(p uintptr) (interface{}, error) {
+func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorButton(obj), nil

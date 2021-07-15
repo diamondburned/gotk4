@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayer},
+		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayyer},
 	})
 }
 
@@ -60,43 +60,11 @@ func X11SetSmClientID(smClientId string) {
 	C.gdk_x11_set_sm_client_id(_arg1)
 }
 
-// X11Displayer describes X11Display's methods.
-type X11Displayer interface {
-	// ErrorTrapPop pops the error trap pushed by
-	// gdk_x11_display_error_trap_push().
-	ErrorTrapPop() int
-	// ErrorTrapPopIgnored pops the error trap pushed by
-	// gdk_x11_display_error_trap_push().
-	ErrorTrapPopIgnored()
-	// ErrorTrapPush begins a range of X requests on display for which X error
-	// events will be ignored.
-	ErrorTrapPush()
-	// StartupNotificationID gets the startup notification ID for a display.
-	StartupNotificationID() string
-	// UserTime returns the timestamp of the last user interaction on display.
-	UserTime() uint32
-	// Grab: call XGrabServer() on display.
-	Grab()
-	// SetCursorTheme sets the cursor theme from which the images for cursor
-	// should be taken.
-	SetCursorTheme(theme string, size int)
-	// SetStartupNotificationID sets the startup notification ID for a display.
-	SetStartupNotificationID(startupId string)
-	// SetWindowScale forces a specific window scale for all windows on this
-	// display, instead of using the default or user configured scale.
-	SetWindowScale(scale int)
-	// Ungrab display after it has been grabbed with gdk_x11_display_grab().
-	Ungrab()
-}
-
 type X11Display struct {
 	gdk.Display
 }
 
-var (
-	_ X11Displayer    = (*X11Display)(nil)
-	_ gextras.Nativer = (*X11Display)(nil)
-)
+var _ gextras.Nativer = (*X11Display)(nil)
 
 func wrapX11Display(obj *externglib.Object) *X11Display {
 	return &X11Display{
@@ -106,7 +74,7 @@ func wrapX11Display(obj *externglib.Object) *X11Display {
 	}
 }
 
-func marshalX11Displayer(p uintptr) (interface{}, error) {
+func marshalX11Displayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Display(obj), nil

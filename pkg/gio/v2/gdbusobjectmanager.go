@@ -49,17 +49,6 @@ type DBusObjectManagerOverrider interface {
 	ObjectRemoved(object DBusObjector)
 }
 
-// DBusObjectManagerer describes DBusObjectManager's methods.
-type DBusObjectManagerer interface {
-	// Interface gets the interface proxy for interface_name at object_path, if
-	// any.
-	Interface(objectPath string, interfaceName string) *DBusInterface
-	// GetObject gets the BusObjectProxy at object_path, if any.
-	GetObject(objectPath string) *DBusObject
-	// ObjectPath gets the object path that manager is for.
-	ObjectPath() string
-}
-
 // DBusObjectManager type is the base type for service- and client-side
 // implementations of the standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
@@ -71,10 +60,20 @@ type DBusObjectManager struct {
 	*externglib.Object
 }
 
-var (
-	_ DBusObjectManagerer = (*DBusObjectManager)(nil)
-	_ gextras.Nativer     = (*DBusObjectManager)(nil)
-)
+var _ gextras.Nativer = (*DBusObjectManager)(nil)
+
+// DBusObjectManagerer describes DBusObjectManager's abstract methods.
+type DBusObjectManagerer interface {
+	// Interface gets the interface proxy for interface_name at object_path, if
+	// any.
+	Interface(objectPath string, interfaceName string) *DBusInterface
+	// GetObject gets the BusObjectProxy at object_path, if any.
+	GetObject(objectPath string) *DBusObject
+	// ObjectPath gets the object path that manager is for.
+	ObjectPath() string
+}
+
+var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
 
 func wrapDBusObjectManager(obj *externglib.Object) *DBusObjectManager {
 	return &DBusObjectManager{

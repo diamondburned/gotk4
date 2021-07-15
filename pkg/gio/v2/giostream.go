@@ -61,33 +61,6 @@ type IOStreamOverrider interface {
 	OutputStream() *OutputStream
 }
 
-// IOStreamer describes IOStream's methods.
-type IOStreamer interface {
-	// ClearPending clears the pending flag on stream.
-	ClearPending()
-	// Close closes the stream, releasing resources related to it.
-	Close(cancellable *Cancellable) error
-	// CloseAsync requests an asynchronous close of the stream, releasing
-	// resources related to it.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CloseFinish closes a stream.
-	CloseFinish(result AsyncResulter) error
-	// InputStream gets the input stream for this object.
-	InputStream() *InputStream
-	// OutputStream gets the output stream for this object.
-	OutputStream() *OutputStream
-	// HasPending checks if a stream has pending actions.
-	HasPending() bool
-	// IsClosed checks if a stream is closed.
-	IsClosed() bool
-	// SetPending sets stream to have actions pending.
-	SetPending() error
-	// SpliceAsync: asynchronously splice the output stream of stream1 to the
-	// input stream of stream2, and splice the output stream of stream2 to the
-	// input stream of stream1.
-	SpliceAsync(stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-}
-
 // IOStream represents an object that has both read and write streams. Generally
 // the two streams act as separate input and output streams, but they share some
 // common resources and state. For instance, for seekable streams, both streams
@@ -136,10 +109,36 @@ type IOStream struct {
 	*externglib.Object
 }
 
-var (
-	_ IOStreamer      = (*IOStream)(nil)
-	_ gextras.Nativer = (*IOStream)(nil)
-)
+var _ gextras.Nativer = (*IOStream)(nil)
+
+// IOStreamer describes IOStream's abstract methods.
+type IOStreamer interface {
+	// ClearPending clears the pending flag on stream.
+	ClearPending()
+	// Close closes the stream, releasing resources related to it.
+	Close(cancellable *Cancellable) error
+	// CloseAsync requests an asynchronous close of the stream, releasing
+	// resources related to it.
+	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	// CloseFinish closes a stream.
+	CloseFinish(result AsyncResulter) error
+	// InputStream gets the input stream for this object.
+	InputStream() *InputStream
+	// OutputStream gets the output stream for this object.
+	OutputStream() *OutputStream
+	// HasPending checks if a stream has pending actions.
+	HasPending() bool
+	// IsClosed checks if a stream is closed.
+	IsClosed() bool
+	// SetPending sets stream to have actions pending.
+	SetPending() error
+	// SpliceAsync: asynchronously splice the output stream of stream1 to the
+	// input stream of stream2, and splice the output stream of stream2 to the
+	// input stream of stream1.
+	SpliceAsync(stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+}
+
+var _ IOStreamer = (*IOStream)(nil)
 
 func wrapIOStream(obj *externglib.Object) *IOStream {
 	return &IOStream{

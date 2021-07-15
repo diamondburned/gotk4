@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// StyleProviderer describes StyleProvider's methods.
-type StyleProviderer interface {
-	privateStyleProvider()
-}
-
 // StyleProvider: GtkStyleProvider is an interface for style information used by
 // GtkStyleContext.
 //
@@ -37,10 +32,14 @@ type StyleProvider struct {
 	*externglib.Object
 }
 
-var (
-	_ StyleProviderer = (*StyleProvider)(nil)
-	_ gextras.Nativer = (*StyleProvider)(nil)
-)
+var _ gextras.Nativer = (*StyleProvider)(nil)
+
+// StyleProviderer describes StyleProvider's abstract methods.
+type StyleProviderer interface {
+	privateStyleProvider()
+}
+
+var _ StyleProviderer = (*StyleProvider)(nil)
 
 func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	return &StyleProvider{

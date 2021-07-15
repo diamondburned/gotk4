@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// TreeViewAccessibler describes TreeViewAccessible's methods.
-type TreeViewAccessibler interface {
-	privateTreeViewAccessible()
-}
-
 type TreeViewAccessible struct {
 	ContainerAccessible
 
@@ -37,10 +32,7 @@ type TreeViewAccessible struct {
 	CellAccessibleParent
 }
 
-var (
-	_ TreeViewAccessibler = (*TreeViewAccessible)(nil)
-	_ gextras.Nativer     = (*TreeViewAccessible)(nil)
-)
+var _ gextras.Nativer = (*TreeViewAccessible)(nil)
 
 func wrapTreeViewAccessible(obj *externglib.Object) *TreeViewAccessible {
 	return &TreeViewAccessible{

@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialoger},
+		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialogger},
 	})
 }
 
@@ -87,83 +87,6 @@ type AboutDialogOverrider interface {
 	ActivateLink(uri string) bool
 }
 
-// AboutDialoger describes AboutDialog's methods.
-type AboutDialoger interface {
-	// AddCreditSection creates a new section in the Credits page.
-	AddCreditSection(sectionName string, people []string)
-	// Artists returns the string which are displayed in the artists tab of the
-	// secondary credits dialog.
-	Artists() []string
-	Authors() []string
-	// Comments returns the comments string.
-	Comments() string
-	Copyright() string
-	// Documenters returns the string which are displayed in the documenters tab
-	// of the secondary credits dialog.
-	Documenters() []string
-	// License returns the license information.
-	License() string
-	// LicenseType retrieves the license set using
-	// gtk_about_dialog_set_license_type()
-	LicenseType() License
-	// Logo returns the pixbuf displayed as logo in the about dialog.
-	Logo() *gdkpixbuf.Pixbuf
-	// LogoIconName returns the icon name displayed as logo in the about dialog.
-	LogoIconName() string
-	// ProgramName returns the program name displayed in the about dialog.
-	ProgramName() string
-	// TranslatorCredits returns the translator credits string which is
-	// displayed in the translators tab of the secondary credits dialog.
-	TranslatorCredits() string
-	// Version returns the version string.
-	Version() string
-	// Website returns the website URL.
-	Website() string
-	// WebsiteLabel returns the label used for the website link.
-	WebsiteLabel() string
-	// WrapLicense returns whether the license text in about is automatically
-	// wrapped.
-	WrapLicense() bool
-	// SetArtists sets the strings which are displayed in the artists tab of the
-	// secondary credits dialog.
-	SetArtists(artists []string)
-	// SetAuthors sets the strings which are displayed in the authors tab of the
-	// secondary credits dialog.
-	SetAuthors(authors []string)
-	// SetComments sets the comments string to display in the about dialog.
-	SetComments(comments string)
-	// SetCopyright sets the copyright string to display in the about dialog.
-	SetCopyright(copyright string)
-	// SetDocumenters sets the strings which are displayed in the documenters
-	// tab of the secondary credits dialog.
-	SetDocumenters(documenters []string)
-	// SetLicense sets the license information to be displayed in the secondary
-	// license dialog.
-	SetLicense(license string)
-	// SetLicenseType sets the license of the application showing the about
-	// dialog from a list of known licenses.
-	SetLicenseType(licenseType License)
-	// SetLogo sets the pixbuf to be displayed as logo in the about dialog.
-	SetLogo(logo *gdkpixbuf.Pixbuf)
-	// SetLogoIconName sets the pixbuf to be displayed as logo in the about
-	// dialog.
-	SetLogoIconName(iconName string)
-	// SetProgramName sets the name to display in the about dialog.
-	SetProgramName(name string)
-	// SetTranslatorCredits sets the translator credits string which is
-	// displayed in the translators tab of the secondary credits dialog.
-	SetTranslatorCredits(translatorCredits string)
-	// SetVersion sets the version string to display in the about dialog.
-	SetVersion(version string)
-	// SetWebsite sets the URL to use for the website link.
-	SetWebsite(website string)
-	// SetWebsiteLabel sets the label to be used for the website link.
-	SetWebsiteLabel(websiteLabel string)
-	// SetWrapLicense sets whether the license text in about is automatically
-	// wrapped.
-	SetWrapLicense(wrapLicense bool)
-}
-
 // AboutDialog offers a simple way to display information about a program like
 // its logo, name, copyright, website and license. It is also possible to give
 // credits to the authors, documenters, translators and artists who have worked
@@ -203,10 +126,7 @@ type AboutDialog struct {
 	Dialog
 }
 
-var (
-	_ AboutDialoger   = (*AboutDialog)(nil)
-	_ gextras.Nativer = (*AboutDialog)(nil)
-)
+var _ gextras.Nativer = (*AboutDialog)(nil)
 
 func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	return &AboutDialog{
@@ -232,7 +152,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	}
 }
 
-func marshalAboutDialoger(p uintptr) (interface{}, error) {
+func marshalAboutDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAboutDialog(obj), nil

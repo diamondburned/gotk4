@@ -32,20 +32,6 @@ func init() {
 	})
 }
 
-// MemoryOutputStreamer describes MemoryOutputStream's methods.
-type MemoryOutputStreamer interface {
-	// Data gets any loaded data from the ostream.
-	Data() cgo.Handle
-	// DataSize returns the number of bytes from the start up to including the
-	// last byte written in the stream that has not been truncated away.
-	DataSize() uint
-	// Size gets the size of the currently allocated data area (available from
-	// g_memory_output_stream_get_data()).
-	Size() uint
-	// StealData gets any loaded data from the ostream.
-	StealData() cgo.Handle
-}
-
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
 //
@@ -58,10 +44,7 @@ type MemoryOutputStream struct {
 	Seekable
 }
 
-var (
-	_ MemoryOutputStreamer = (*MemoryOutputStream)(nil)
-	_ gextras.Nativer      = (*MemoryOutputStream)(nil)
-)
+var _ gextras.Nativer = (*MemoryOutputStream)(nil)
 
 func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{

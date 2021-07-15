@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// SpinButtonAccessibler describes SpinButtonAccessible's methods.
-type SpinButtonAccessibler interface {
-	privateSpinButtonAccessible()
-}
-
 type SpinButtonAccessible struct {
 	EntryAccessible
 
 	atk.Value
 }
 
-var (
-	_ SpinButtonAccessibler = (*SpinButtonAccessible)(nil)
-	_ gextras.Nativer       = (*SpinButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*SpinButtonAccessible)(nil)
 
 func wrapSpinButtonAccessible(obj *externglib.Object) *SpinButtonAccessible {
 	return &SpinButtonAccessible{

@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtoner},
+		{T: externglib.Type(C.gtk_radio_tool_button_get_type()), F: marshalRadioToolButtonner},
 	})
-}
-
-// RadioToolButtoner describes RadioToolButton's methods.
-type RadioToolButtoner interface {
-	privateRadioToolButton()
 }
 
 // RadioToolButton is a ToolItem that contains a radio button, that is, a button
@@ -45,10 +40,7 @@ type RadioToolButton struct {
 	ToggleToolButton
 }
 
-var (
-	_ RadioToolButtoner = (*RadioToolButton)(nil)
-	_ gextras.Nativer   = (*RadioToolButton)(nil)
-)
+var _ gextras.Nativer = (*RadioToolButton)(nil)
 
 func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	return &RadioToolButton{
@@ -92,7 +84,7 @@ func wrapRadioToolButton(obj *externglib.Object) *RadioToolButton {
 	}
 }
 
-func marshalRadioToolButtoner(p uintptr) (interface{}, error) {
+func marshalRadioToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioToolButton(obj), nil

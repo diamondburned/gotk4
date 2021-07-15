@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// WindowGrouper describes WindowGroup's methods.
-type WindowGrouper interface {
-	// AddWindow adds a window to a GtkWindowGroup.
-	AddWindow(window *Window)
-	// RemoveWindow removes a window from a GtkWindowGroup.
-	RemoveWindow(window *Window)
-}
-
 // WindowGroup: GtkWindowGroup makes group of windows behave like separate
 // applications.
 //
@@ -49,10 +41,7 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var (
-	_ WindowGrouper   = (*WindowGroup)(nil)
-	_ gextras.Nativer = (*WindowGroup)(nil)
-)
+var _ gextras.Nativer = (*WindowGroup)(nil)
 
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{

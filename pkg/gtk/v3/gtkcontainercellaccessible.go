@@ -24,20 +24,11 @@ func init() {
 	})
 }
 
-// ContainerCellAccessibler describes ContainerCellAccessible's methods.
-type ContainerCellAccessibler interface {
-	AddChild(child *CellAccessible)
-	RemoveChild(child *CellAccessible)
-}
-
 type ContainerCellAccessible struct {
 	CellAccessible
 }
 
-var (
-	_ ContainerCellAccessibler = (*ContainerCellAccessible)(nil)
-	_ gextras.Nativer          = (*ContainerCellAccessible)(nil)
-)
+var _ gextras.Nativer = (*ContainerCellAccessible)(nil)
 
 func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessible {
 	return &ContainerCellAccessible{

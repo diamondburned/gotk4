@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBoxer},
+		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBoxxer},
 	})
 }
 
@@ -29,29 +29,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
-	ChildAttached(child Widgeter)
-	ChildDetached(child Widgeter)
-}
-
-// HandleBoxer describes HandleBox's methods.
-type HandleBoxer interface {
-	// ChildDetached: whether the handlebox’s child is currently detached.
-	ChildDetached() bool
-	// HandlePosition gets the handle position of the handle box.
-	HandlePosition() PositionType
-	// ShadowType gets the type of shadow drawn around the handle box.
-	ShadowType() ShadowType
-	// SnapEdge gets the edge used for determining reattachment of the handle
-	// box.
-	SnapEdge() PositionType
-	// SetHandlePosition sets the side of the handlebox where the handle is
-	// drawn.
-	SetHandlePosition(position PositionType)
-	// SetShadowType sets the type of shadow to be drawn around the border of
-	// the handle box.
-	SetShadowType(typ ShadowType)
-	// SetSnapEdge sets the snap edge of a handlebox.
-	SetSnapEdge(edge PositionType)
+	ChildAttached(child Widgetter)
+	ChildDetached(child Widgetter)
 }
 
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin
@@ -80,10 +59,7 @@ type HandleBox struct {
 	Bin
 }
 
-var (
-	_ HandleBoxer     = (*HandleBox)(nil)
-	_ gextras.Nativer = (*HandleBox)(nil)
-)
+var _ gextras.Nativer = (*HandleBox)(nil)
 
 func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	return &HandleBox{
@@ -105,7 +81,7 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	}
 }
 
-func marshalHandleBoxer(p uintptr) (interface{}, error) {
+func marshalHandleBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHandleBox(obj), nil

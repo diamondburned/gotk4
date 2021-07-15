@@ -30,7 +30,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
-		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgeter},
+		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgetter},
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
@@ -114,7 +114,7 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 // system this function will return TRUE for all windows, so you need to draw
 // the bottommost window first. Also, do not use “else if” statements to check
 // which window should be drawn.
-func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
+func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windowwer) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -141,7 +141,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 // expose event to be emitted with the Widget::draw signal. It is intended to
 // help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
 // GTK+ 3.
-func CairoTransformToWindow(cr *cairo.Context, widget Widgeter, window gdk.Windower) {
+func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Windowwer) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
@@ -309,7 +309,7 @@ type WidgetOverrider interface {
 	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
 	// hidden (invisible to the user).
 	Hide()
-	HierarchyChanged(previousToplevel Widgeter)
+	HierarchyChanged(previousToplevel Widgetter)
 	KeyPressEvent(event *gdk.EventKey) bool
 	KeyReleaseEvent(event *gdk.EventKey) bool
 	// KeynavFailed: this function should be called whenever keyboard navigation
@@ -348,7 +348,7 @@ type WidgetOverrider interface {
 	MnemonicActivate(groupCycling bool) bool
 	MotionNotifyEvent(event *gdk.EventMotion) bool
 	MoveFocus(direction DirectionType)
-	ParentSet(previousParent Widgeter)
+	ParentSet(previousParent Widgetter)
 	PopupMenu() bool
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
 	ProximityInEvent(event *gdk.EventProximity) bool
@@ -421,8 +421,115 @@ type WidgetOverrider interface {
 	WindowStateEvent(event *gdk.EventWindowState) bool
 }
 
-// Widgeter describes Widget's methods.
-type Widgeter interface {
+// Widget is the base class all widgets in GTK+ derive from. It manages the
+// widget lifecycle, states and style.
+//
+//
+// Height-for-width Geometry Management
+//
+// GTK+ uses a height-for-width (and width-for-height) geometry management
+// system. Height-for-width means that a widget can change how much vertical
+// space it needs, depending on the amount of horizontal space that it is given
+// (and similar for width-for-height). The most common example is a label that
+// reflows to fill up the available width, wraps to fewer lines, and therefore
+// needs less height.
+//
+// Height-for-width geometry management is implemented in GTK+ by way of five
+// virtual methods:
+//
+// - WidgetClass.get_request_mode()
+//
+// - WidgetClass.get_preferred_width()
+//
+// - WidgetClass.get_preferred_height()
+//
+// - WidgetClass.get_preferred_height_for_width()
+//
+// - WidgetClass.get_preferred_width_for_height()
+//
+// - WidgetClass.get_preferred_height_and_baseline_for_width()
+//
+// There are some important things to keep in mind when implementing
+// height-for-width and when using it in container implementations.
+//
+// The geometry management system will query a widget hierarchy in only one
+// orientation at a time. When widgets are initially queried for their minimum
+// sizes it is generally done in two initial passes in the SizeRequestMode
+// chosen by the toplevel.
+//
+// For example, when queried in the normal GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH
+// mode: First, the default minimum and natural width for each widget in the
+// interface will be computed using gtk_widget_get_preferred_width(). Because
+// the preferred widths for each container depend on the preferred widths of
+// their children, this information propagates up the hierarchy, and finally a
+// minimum and natural width is determined for the entire toplevel. Next, the
+// toplevel will use the minimum width to query for the minimum height
+// contextual to that width using gtk_widget_get_preferred_height_for_width(),
+// which will also be a highly recursive operation. The minimum height for the
+// minimum width is normally used to set the minimum size constraint on the
+// toplevel (unless gtk_window_set_geometry_hints() is explicitly used instead).
+//
+// After the toplevel window has initially requested its size in both dimensions
+// it can go on to allocate itself a reasonable size (or a size previously
+// specified with gtk_window_set_default_size()). During the recursive
+// allocation process it’s important to note that request cycles will be
+// recursively executed while container widgets allocate their children. Each
+// container widget, once allocated a size, will go on to first share the space
+// in one orientation among its children and then request each child's height
+// for its target allocated width or its width for allocated height, depending.
+// In this way a Widget will typically be requested its size a number of times
+// before actually being allocated a size. The size a widget is finally
+// allocated can of course differ from the size it has requested. For this
+// reason, Widget caches a small number of results to avoid re-querying for the
+// same sizes in one allocation cycle.
+//
+// See [GtkContainer’s geometry management
+// section][container-geometry-management] to learn more about how
+// height-for-width allocations are performed by container widgets.
+//
+// If a widget does move content around to intelligently use up the allocated
+// size then it must support the request in both SizeRequestModes even if the
+// widget in question only trades sizes in a single orientation.
+//
+// For instance, a Label that does height-for-width word wrapping will not
+// expect to have WidgetClass.get_preferred_height() called because that call is
+// specific to a width-for-height request. In this case the label must return
+// the height required for its own minimum possible width. By following this
+// rule any widget that handles height-for-width or width-for-height requests
+// will always be allocated at least enough space to fit its own content.
+//
+// Here are some examples of how a GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH widget
+// generally deals with width-for-height requests, for
+// WidgetClass.get_preferred_height() it will do:
+//
+//    // the signal handler has the instance and user data swapped
+//    // because of the swapped="yes" attribute in the template XML
+//    static void
+//    hello_button_clicked (FooWidget *self,
+//                          GtkButton *button)
+//    {
+//      g_print ("Hello, world!\n");
+//    }
+//
+//    static void
+//    foo_widget_class_init (FooWidgetClass *klass)
+//    {
+//      // ...
+//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
+//                                                   "/com/example/ui/foowidget.ui");
+//      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
+//    }
+type Widget struct {
+	externglib.InitiallyUnowned
+
+	atk.ImplementorIface
+	Buildable
+}
+
+var _ gextras.Nativer = (*Widget)(nil)
+
+// Widgetter describes Widget's abstract methods.
+type Widgetter interface {
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
 	Activate() bool
@@ -437,7 +544,7 @@ type Widgeter interface {
 	AddEvents(events int)
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
-	AddMnemonicLabel(label Widgeter)
+	AddMnemonicLabel(label Widgetter)
 	// AddTickCallback queues an animation frame update and adds a callback to
 	// be called before each frame.
 	AddTickCallback(callback TickCallback) uint
@@ -494,7 +601,7 @@ type Widgeter interface {
 	// default behaviors.
 	DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction)
 	// DragDestSetProxy sets this widget as a proxy for drops to another window.
-	DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool)
+	DragDestSetProxy(proxyWindow gdk.Windowwer, protocol gdk.DragProtocol, useCoordinates bool)
 	// DragDestSetTargetList sets the target types that this widget can accept
 	// from drag-and-drop.
 	DragDestSetTargetList(targetList *TargetList)
@@ -524,7 +631,7 @@ type Widgeter interface {
 	DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
 	// DragSourceSetIconGIcon sets the icon that will be used for drags from a
 	// particular source to icon.
-	DragSourceSetIconGIcon(icon gio.Iconer)
+	DragSourceSetIconGIcon(icon gio.Iconner)
 	// DragSourceSetIconName sets the icon that will be used for drags from a
 	// particular source to a themed icon.
 	DragSourceSetIconName(iconName string)
@@ -602,6 +709,8 @@ type Widgeter interface {
 	// FontMap gets the font map that has been set with
 	// gtk_widget_set_font_map().
 	FontMap() *pango.FontMap
+	// FontOptions returns the #cairo_font_options_t used for Pango rendering.
+	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
 	FrameClock() *gdk.FrameClock
 	// HAlign gets the value of the Widget:halign property.
@@ -786,7 +895,7 @@ type Widgeter interface {
 	Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool)
 	// IsAncestor determines whether widget is somewhere inside ancestor,
 	// possibly with intermediate containers.
-	IsAncestor(ancestor Widgeter) bool
+	IsAncestor(ancestor Widgetter) bool
 	// IsComposited: whether widget can rely on having its alpha channel drawn
 	// correctly.
 	IsComposited() bool
@@ -868,13 +977,13 @@ type Widgeter interface {
 	RegionIntersect(region *cairo.Region) *cairo.Region
 	// RegisterWindow registers a Window with the widget and sets it up so that
 	// the widget receives events for it.
-	RegisterWindow(window gdk.Windower)
+	RegisterWindow(window gdk.Windowwer)
 	// RemoveAccelerator removes an accelerator from widget, previously
 	// installed with gtk_widget_add_accelerator().
 	RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget.
-	RemoveMnemonicLabel(label Widgeter)
+	RemoveMnemonicLabel(label Widgetter)
 	// RemoveTickCallback removes a tick callback previously registered with
 	// gtk_widget_add_tick_callback().
 	RemoveTickCallback(id uint)
@@ -886,7 +995,7 @@ type Widgeter interface {
 	RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf
 	// Reparent moves a widget from one Container to another, handling reference
 	// count issues to avoid destroying the widget.
-	Reparent(newParent Widgeter)
+	Reparent(newParent Widgetter)
 	// ResetRCStyles: reset the styles of widget and all descendents, so when
 	// they are looked up again, they get the correct values for the currently
 	// loaded RC file settings.
@@ -927,7 +1036,10 @@ type Widgeter interface {
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
 	// SetFontMap sets the font map to use for Pango rendering.
-	SetFontMap(fontMap pango.FontMaper)
+	SetFontMap(fontMap pango.FontMapper)
+	// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
+	// this widget.
+	SetFontOptions(options *cairo.FontOptions)
 	// SetHAlign sets the horizontal alignment of widget.
 	SetHAlign(align Align)
 	// SetHasTooltip sets the has-tooltip property on widget to has_tooltip.
@@ -965,9 +1077,9 @@ type Widgeter interface {
 	SetOpacity(opacity float64)
 	// SetParent: this function is useful only when implementing subclasses of
 	// Container.
-	SetParent(parent Widgeter)
+	SetParent(parent Widgetter)
 	// SetParentWindow sets a non default parent window for widget.
-	SetParentWindow(parentWindow gdk.Windower)
+	SetParentWindow(parentWindow gdk.Windowwer)
 	// SetRealized marks the widget as being realized.
 	SetRealized(realized bool)
 	// SetReceivesDefault specifies whether widget will be treated as the
@@ -1012,7 +1124,7 @@ type Widgeter interface {
 	// children for creating Windows.
 	SetVisual(visual *gdk.Visual)
 	// SetWindow sets a widget’s window.
-	SetWindow(window gdk.Windower)
+	SetWindow(window gdk.Windowwer)
 	// ShapeCombineRegion sets a shape for this widget’s GDK window.
 	ShapeCombineRegion(region *cairo.Region)
 	// Show flags a widget to be displayed.
@@ -1035,7 +1147,7 @@ type Widgeter interface {
 	ThawChildNotify()
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool)
+	TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -1047,120 +1159,12 @@ type Widgeter interface {
 	Unrealize()
 	// UnregisterWindow unregisters a Window from the widget that was previously
 	// set up with gtk_widget_register_window().
-	UnregisterWindow(window gdk.Windower)
+	UnregisterWindow(window gdk.Windowwer)
 	// UnsetStateFlags: this function is for use in widget implementations.
 	UnsetStateFlags(flags StateFlags)
 }
 
-// Widget is the base class all widgets in GTK+ derive from. It manages the
-// widget lifecycle, states and style.
-//
-//
-// Height-for-width Geometry Management
-//
-// GTK+ uses a height-for-width (and width-for-height) geometry management
-// system. Height-for-width means that a widget can change how much vertical
-// space it needs, depending on the amount of horizontal space that it is given
-// (and similar for width-for-height). The most common example is a label that
-// reflows to fill up the available width, wraps to fewer lines, and therefore
-// needs less height.
-//
-// Height-for-width geometry management is implemented in GTK+ by way of five
-// virtual methods:
-//
-// - WidgetClass.get_request_mode()
-//
-// - WidgetClass.get_preferred_width()
-//
-// - WidgetClass.get_preferred_height()
-//
-// - WidgetClass.get_preferred_height_for_width()
-//
-// - WidgetClass.get_preferred_width_for_height()
-//
-// - WidgetClass.get_preferred_height_and_baseline_for_width()
-//
-// There are some important things to keep in mind when implementing
-// height-for-width and when using it in container implementations.
-//
-// The geometry management system will query a widget hierarchy in only one
-// orientation at a time. When widgets are initially queried for their minimum
-// sizes it is generally done in two initial passes in the SizeRequestMode
-// chosen by the toplevel.
-//
-// For example, when queried in the normal GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH
-// mode: First, the default minimum and natural width for each widget in the
-// interface will be computed using gtk_widget_get_preferred_width(). Because
-// the preferred widths for each container depend on the preferred widths of
-// their children, this information propagates up the hierarchy, and finally a
-// minimum and natural width is determined for the entire toplevel. Next, the
-// toplevel will use the minimum width to query for the minimum height
-// contextual to that width using gtk_widget_get_preferred_height_for_width(),
-// which will also be a highly recursive operation. The minimum height for the
-// minimum width is normally used to set the minimum size constraint on the
-// toplevel (unless gtk_window_set_geometry_hints() is explicitly used instead).
-//
-// After the toplevel window has initially requested its size in both dimensions
-// it can go on to allocate itself a reasonable size (or a size previously
-// specified with gtk_window_set_default_size()). During the recursive
-// allocation process it’s important to note that request cycles will be
-// recursively executed while container widgets allocate their children. Each
-// container widget, once allocated a size, will go on to first share the space
-// in one orientation among its children and then request each child's height
-// for its target allocated width or its width for allocated height, depending.
-// In this way a Widget will typically be requested its size a number of times
-// before actually being allocated a size. The size a widget is finally
-// allocated can of course differ from the size it has requested. For this
-// reason, Widget caches a small number of results to avoid re-querying for the
-// same sizes in one allocation cycle.
-//
-// See [GtkContainer’s geometry management
-// section][container-geometry-management] to learn more about how
-// height-for-width allocations are performed by container widgets.
-//
-// If a widget does move content around to intelligently use up the allocated
-// size then it must support the request in both SizeRequestModes even if the
-// widget in question only trades sizes in a single orientation.
-//
-// For instance, a Label that does height-for-width word wrapping will not
-// expect to have WidgetClass.get_preferred_height() called because that call is
-// specific to a width-for-height request. In this case the label must return
-// the height required for its own minimum possible width. By following this
-// rule any widget that handles height-for-width or width-for-height requests
-// will always be allocated at least enough space to fit its own content.
-//
-// Here are some examples of how a GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH widget
-// generally deals with width-for-height requests, for
-// WidgetClass.get_preferred_height() it will do:
-//
-//    // the signal handler has the instance and user data swapped
-//    // because of the swapped="yes" attribute in the template XML
-//    static void
-//    hello_button_clicked (FooWidget *self,
-//                          GtkButton *button)
-//    {
-//      g_print ("Hello, world!\n");
-//    }
-//
-//    static void
-//    foo_widget_class_init (FooWidgetClass *klass)
-//    {
-//      // ...
-//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
-//                                                   "/com/example/ui/foowidget.ui");
-//      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
-//    }
-type Widget struct {
-	externglib.InitiallyUnowned
-
-	atk.ImplementorIface
-	Buildable
-}
-
-var (
-	_ Widgeter        = (*Widget)(nil)
-	_ gextras.Nativer = (*Widget)(nil)
-)
+var _ Widgetter = (*Widget)(nil)
 
 func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{
@@ -1176,7 +1180,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 	}
 }
 
-func marshalWidgeter(p uintptr) (interface{}, error) {
+func marshalWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
@@ -1267,7 +1271,7 @@ func (widget *Widget) AddEvents(events int) {
 // labels for the widget is cleared when the widget is destroyed, so the caller
 // must make sure to update its internal state at this point as well, by using a
 // connection to the Widget::destroy signal or a weak notifier.
-func (widget *Widget) AddMnemonicLabel(label Widgeter) {
+func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1725,7 +1729,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 // DragDestSetProxy sets this widget as a proxy for drops to another window.
 //
 // Deprecated: since version 3.22.
-func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
+func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windowwer, protocol gdk.DragProtocol, useCoordinates bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragProtocol // out
@@ -1871,7 +1875,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 
 // DragSourceSetIconGIcon sets the icon that will be used for drags from a
 // particular source to icon. See the docs for IconTheme for more details.
-func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconer) {
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 
@@ -2457,6 +2461,23 @@ func (widget *Widget) FontMap() *pango.FontMap {
 	}
 
 	return _fontMap
+}
+
+// FontOptions returns the #cairo_font_options_t used for Pango rendering. When
+// not set, the defaults font options for the Screen will be used.
+func (widget *Widget) FontOptions() *cairo.FontOptions {
+	var _arg0 *C.GtkWidget            // out
+	var _cret *C.cairo_font_options_t // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_get_font_options(_arg0)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _fontOptions
 }
 
 // FrameClock obtains the frame clock for a widget. The frame clock is a global
@@ -4030,7 +4051,7 @@ func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 
 // IsAncestor determines whether widget is somewhere inside ancestor, possibly
 // with intermediate containers.
-func (widget *Widget) IsAncestor(ancestor Widgeter) bool {
+func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4758,7 +4779,7 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 // up. This is now deprecated and you should use gtk_widget_register_window()
 // instead. Old code will keep working as is, although some new features like
 // transparency might not work perfectly.
-func (widget *Widget) RegisterWindow(window gdk.Windower) {
+func (widget *Widget) RegisterWindow(window gdk.Windowwer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4796,7 +4817,7 @@ func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, a
 // RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 // this widget. (See gtk_widget_list_mnemonic_labels()). The widget must have
 // previously been added to the list with gtk_widget_add_mnemonic_label().
-func (widget *Widget) RemoveMnemonicLabel(label Widgeter) {
+func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4900,7 +4921,7 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 // count issues to avoid destroying the widget.
 //
 // Deprecated: Use gtk_container_remove() and gtk_container_add().
-func (widget *Widget) Reparent(newParent Widgeter) {
+func (widget *Widget) Reparent(newParent Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -5199,7 +5220,7 @@ func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 
 // SetFontMap sets the font map to use for Pango rendering. When not set, the
 // widget will inherit the font map from its parent.
-func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
+func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -5207,6 +5228,19 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
 	_arg1 = (*C.PangoFontMap)(unsafe.Pointer((fontMap).(gextras.Nativer).Native()))
 
 	C.gtk_widget_set_font_map(_arg0, _arg1)
+}
+
+// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
+// this widget. When not set, the default font options for the Screen will be
+// used.
+func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
+	var _arg0 *C.GtkWidget            // out
+	var _arg1 *C.cairo_font_options_t // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+
+	C.gtk_widget_set_font_options(_arg0, _arg1)
 }
 
 // SetHAlign sets the horizontal alignment of widget. See the Widget:halign
@@ -5470,7 +5504,7 @@ func (widget *Widget) SetOpacity(opacity float64) {
 // Container. Sets the container as the parent of widget, and takes care of some
 // details such as updating the state and style of the child to reflect its new
 // location. The opposite function is gtk_widget_unparent().
-func (widget *Widget) SetParent(parent Widgeter) {
+func (widget *Widget) SetParent(parent Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -5486,7 +5520,7 @@ func (widget *Widget) SetParent(parent Widgeter) {
 // toplevel window or can be embedded into other widgets.
 //
 // For Window classes, this needs to be called before the window is realized.
-func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
+func (widget *Widget) SetParentWindow(parentWindow gdk.Windowwer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -5818,7 +5852,7 @@ func (widget *Widget) SetVisual(visual *gdk.Visual) {
 // function.
 //
 // Note that this function does not add any reference to window.
-func (widget *Widget) SetWindow(window gdk.Windower) {
+func (widget *Widget) SetWindow(window gdk.Windowwer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -5958,7 +5992,7 @@ func (widget *Widget) ThawChildNotify() {
 // allocation to coordinates relative to dest_widget’s allocations. In order to
 // perform this operation, both widgets must be realized, and must share a
 // common toplevel.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -6033,7 +6067,7 @@ func (widget *Widget) Unrealize() {
 // UnregisterWindow unregisters a Window from the widget that was previously set
 // up with gtk_widget_register_window(). You need to call this when the window
 // is no longer used by the widget, such as when you destroy it.
-func (widget *Widget) UnregisterWindow(window gdk.Windower) {
+func (widget *Widget) UnregisterWindow(window gdk.Windowwer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 

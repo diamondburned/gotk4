@@ -88,64 +88,6 @@ func marshalStackTransitionType(p uintptr) (interface{}, error) {
 	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Stacker describes Stack's methods.
-type Stacker interface {
-	// AddChild adds a child to stack.
-	AddChild(child Widgeter) *StackPage
-	// AddNamed adds a child to stack.
-	AddNamed(child Widgeter, name string) *StackPage
-	// AddTitled adds a child to stack.
-	AddTitled(child Widgeter, name string, title string) *StackPage
-	// ChildByName finds the child with the name given as the argument.
-	ChildByName(name string) *Widget
-	// Hhomogeneous gets whether stack is horizontally homogeneous.
-	Hhomogeneous() bool
-	// InterpolateSize returns whether the Stack is set up to interpolate
-	// between the sizes of children on page switch.
-	InterpolateSize() bool
-	// Page returns the GtkStackPage object for child.
-	Page(child Widgeter) *StackPage
-	// Pages returns a GListModel that contains the pages of the stack.
-	Pages() *SelectionModel
-	// TransitionDuration returns the amount of time (in milliseconds) that
-	// transitions between pages in stack will take.
-	TransitionDuration() uint
-	// TransitionRunning returns whether the stack is currently in a transition
-	// from one page to another.
-	TransitionRunning() bool
-	// TransitionType gets the type of animation that will be used for
-	// transitions between pages in stack.
-	TransitionType() StackTransitionType
-	// Vhomogeneous gets whether stack is vertically homogeneous.
-	Vhomogeneous() bool
-	// VisibleChild gets the currently visible child of stack.
-	VisibleChild() *Widget
-	// VisibleChildName returns the name of the currently visible child of
-	// stack.
-	VisibleChildName() string
-	// Remove removes a child widget from stack.
-	Remove(child Widgeter)
-	// SetHhomogeneous sets the GtkStack to be horizontally homogeneous or not.
-	SetHhomogeneous(hhomogeneous bool)
-	// SetInterpolateSize sets whether or not stack will interpolate its size
-	// when changing the visible child.
-	SetInterpolateSize(interpolateSize bool)
-	// SetTransitionDuration sets the duration that transitions between pages in
-	// stack will take.
-	SetTransitionDuration(duration uint)
-	// SetTransitionType sets the type of animation that will be used for
-	// transitions between pages in stack.
-	SetTransitionType(transition StackTransitionType)
-	// SetVhomogeneous sets the Stack to be vertically homogeneous or not.
-	SetVhomogeneous(vhomogeneous bool)
-	// SetVisibleChild makes child the visible child of stack.
-	SetVisibleChild(child Widgeter)
-	// SetVisibleChildFull makes the child with the given name visible.
-	SetVisibleChildFull(name string, transition StackTransitionType)
-	// SetVisibleChildName makes the child with the given name visible.
-	SetVisibleChildName(name string)
-}
-
 // Stack: GtkStack is a container which only shows one of its children at a
 // time.
 //
@@ -197,10 +139,7 @@ type Stack struct {
 	Widget
 }
 
-var (
-	_ Stacker         = (*Stack)(nil)
-	_ gextras.Nativer = (*Stack)(nil)
-)
+var _ gextras.Nativer = (*Stack)(nil)
 
 func wrapStack(obj *externglib.Object) *Stack {
 	return &Stack{
@@ -241,7 +180,7 @@ func NewStack() *Stack {
 }
 
 // AddChild adds a child to stack.
-func (stack *Stack) AddChild(child Widgeter) *StackPage {
+func (stack *Stack) AddChild(child Widgetter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GtkStackPage // in
@@ -261,7 +200,7 @@ func (stack *Stack) AddChild(child Widgeter) *StackPage {
 // AddNamed adds a child to stack.
 //
 // The child is identified by the name.
-func (stack *Stack) AddNamed(child Widgeter, name string) *StackPage {
+func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -284,7 +223,7 @@ func (stack *Stack) AddNamed(child Widgeter, name string) *StackPage {
 //
 // The child is identified by the name. The title will be used by
 // GtkStackSwitcher to represent child in a tab bar, so it should be short.
-func (stack *Stack) AddTitled(child Widgeter, name string, title string) *StackPage {
+func (stack *Stack) AddTitled(child Widgetter, name string, title string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -363,7 +302,7 @@ func (stack *Stack) InterpolateSize() bool {
 }
 
 // Page returns the GtkStackPage object for child.
-func (stack *Stack) Page(child Widgeter) *StackPage {
+func (stack *Stack) Page(child Widgetter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GtkStackPage // in
@@ -507,7 +446,7 @@ func (stack *Stack) VisibleChildName() string {
 }
 
 // Remove removes a child widget from stack.
-func (stack *Stack) Remove(child Widgeter) {
+func (stack *Stack) Remove(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -606,7 +545,7 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the child widget has to be visible itself (see gtk.Widget.Show())
 // in order to become the visible child of stack.
-func (stack *Stack) SetVisibleChild(child Widgeter) {
+func (stack *Stack) SetVisibleChild(child Widgetter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -649,38 +588,6 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
 }
 
-// StackPager describes StackPage's methods.
-type StackPager interface {
-	// Child returns the stack child to which self belongs.
-	Child() *Widget
-	// IconName returns the icon name of the page.
-	IconName() string
-	// Name returns the name of the page.
-	Name() string
-	// NeedsAttention returns whether the page is marked as “needs attention”.
-	NeedsAttention() bool
-	// Title gets the page title.
-	Title() string
-	// UseUnderline gets whether underlines in the page title indicate
-	// mnemonics.
-	UseUnderline() bool
-	// Visible returns whether page is visible in its GtkStack.
-	Visible() bool
-	// SetIconName sets the icon name of the page.
-	SetIconName(setting string)
-	// SetName sets the name of the page.
-	SetName(setting string)
-	// SetNeedsAttention sets whether the page is marked as “needs attention”.
-	SetNeedsAttention(setting bool)
-	// SetTitle sets the page title.
-	SetTitle(setting string)
-	// SetUseUnderline sets whether underlines in the page title indicate
-	// mnemonics.
-	SetUseUnderline(setting bool)
-	// SetVisible sets whether page is visible in its GtkStack.
-	SetVisible(visible bool)
-}
-
 // StackPage: GtkStackPage is an auxiliary class used by GtkStack.
 type StackPage struct {
 	*externglib.Object
@@ -688,10 +595,7 @@ type StackPage struct {
 	Accessible
 }
 
-var (
-	_ StackPager      = (*StackPage)(nil)
-	_ gextras.Nativer = (*StackPage)(nil)
-)
+var _ gextras.Nativer = (*StackPage)(nil)
 
 func wrapStackPage(obj *externglib.Object) *StackPage {
 	return &StackPage{

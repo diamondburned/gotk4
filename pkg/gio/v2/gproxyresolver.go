@@ -65,7 +65,20 @@ type ProxyResolverOverrider interface {
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
-// ProxyResolverer describes ProxyResolver's methods.
+// ProxyResolver provides synchronous and asynchronous network proxy resolution.
+// Resolver is used within Client through the method
+// g_socket_connectable_proxy_enumerate().
+//
+// Implementations of Resolver based on libproxy and GNOME settings can be found
+// in glib-networking. GIO comes with an implementation for use inside Flatpak
+// portals.
+type ProxyResolver struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*ProxyResolver)(nil)
+
+// ProxyResolverer describes ProxyResolver's abstract methods.
 type ProxyResolverer interface {
 	// IsSupported checks if resolver can be used on this system.
 	IsSupported() bool
@@ -79,21 +92,7 @@ type ProxyResolverer interface {
 	LookupFinish(result AsyncResulter) ([]string, error)
 }
 
-// ProxyResolver provides synchronous and asynchronous network proxy resolution.
-// Resolver is used within Client through the method
-// g_socket_connectable_proxy_enumerate().
-//
-// Implementations of Resolver based on libproxy and GNOME settings can be found
-// in glib-networking. GIO comes with an implementation for use inside Flatpak
-// portals.
-type ProxyResolver struct {
-	*externglib.Object
-}
-
-var (
-	_ ProxyResolverer = (*ProxyResolver)(nil)
-	_ gextras.Nativer = (*ProxyResolver)(nil)
-)
+var _ ProxyResolverer = (*ProxyResolver)(nil)
 
 func wrapProxyResolver(obj *externglib.Object) *ProxyResolver {
 	return &ProxyResolver{

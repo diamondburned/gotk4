@@ -46,25 +46,13 @@ type MiscOverrider interface {
 	ThreadsLeave()
 }
 
-// Miscer describes Misc's methods.
-type Miscer interface {
-	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
-	ThreadsEnter()
-	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
-	// exists.
-	ThreadsLeave()
-}
-
 // Misc: set of utility functions for thread locking. This interface and all his
 // related methods are deprecated since 2.12.
 type Misc struct {
 	*externglib.Object
 }
 
-var (
-	_ Miscer          = (*Misc)(nil)
-	_ gextras.Nativer = (*Misc)(nil)
-)
+var _ gextras.Nativer = (*Misc)(nil)
 
 func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{

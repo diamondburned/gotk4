@@ -34,70 +34,13 @@ func init() {
 	})
 }
 
-// DataInputStreamer describes DataInputStream's methods.
-type DataInputStreamer interface {
-	// ByteOrder gets the byte order for the data input stream.
-	ByteOrder() DataStreamByteOrder
-	// NewlineType gets the current newline type for the stream.
-	NewlineType() DataStreamNewlineType
-	// ReadByte reads an unsigned 8-bit/1-byte value from stream.
-	ReadByte(cancellable *Cancellable) (byte, error)
-	// ReadInt16 reads a 16-bit/2-byte value from stream.
-	ReadInt16(cancellable *Cancellable) (int16, error)
-	// ReadInt32 reads a signed 32-bit/4-byte value from stream.
-	ReadInt32(cancellable *Cancellable) (int32, error)
-	// ReadInt64 reads a 64-bit/8-byte value from stream.
-	ReadInt64(cancellable *Cancellable) (int64, error)
-	// ReadLine reads a line from the data input stream.
-	ReadLine(cancellable *Cancellable) (uint, []byte, error)
-	// ReadLineAsync asynchronous version of g_data_input_stream_read_line().
-	ReadLineAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ReadLineFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async().
-	ReadLineFinish(result AsyncResulter) (uint, []byte, error)
-	// ReadLineFinishUTF8: finish an asynchronous call started by
-	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResulter) (uint, string, error)
-	// ReadLineUTF8 reads a UTF-8 encoded line from the data input stream.
-	ReadLineUTF8(cancellable *Cancellable) (uint, string, error)
-	// ReadUint16 reads an unsigned 16-bit/2-byte value from stream.
-	ReadUint16(cancellable *Cancellable) (uint16, error)
-	// ReadUint32 reads an unsigned 32-bit/4-byte value from stream.
-	ReadUint32(cancellable *Cancellable) (uint32, error)
-	// ReadUint64 reads an unsigned 64-bit/8-byte value from stream.
-	ReadUint64(cancellable *Cancellable) (uint64, error)
-	// ReadUntil reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
-	ReadUntil(stopChars string, cancellable *Cancellable) (uint, string, error)
-	// ReadUntilAsync asynchronous version of g_data_input_stream_read_until().
-	ReadUntilAsync(stopChars string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ReadUntilFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_until_async().
-	ReadUntilFinish(result AsyncResulter) (uint, string, error)
-	// ReadUpto reads a string from the data input stream, up to the first
-	// occurrence of any of the stop characters.
-	ReadUpto(stopChars string, stopCharsLen int, cancellable *Cancellable) (uint, string, error)
-	// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto().
-	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ReadUptoFinish: finish an asynchronous call started by
-	// g_data_input_stream_read_upto_async().
-	ReadUptoFinish(result AsyncResulter) (uint, string, error)
-	// SetByteOrder: this function sets the byte order for the given stream.
-	SetByteOrder(order DataStreamByteOrder)
-	// SetNewlineType sets the newline type for the stream.
-	SetNewlineType(typ DataStreamNewlineType)
-}
-
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
 type DataInputStream struct {
 	BufferedInputStream
 }
 
-var (
-	_ DataInputStreamer = (*DataInputStream)(nil)
-	_ gextras.Nativer   = (*DataInputStream)(nil)
-)
+var _ gextras.Nativer = (*DataInputStream)(nil)
 
 func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{

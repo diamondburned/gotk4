@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// CairoRendererer describes CairoRenderer's methods.
-type CairoRendererer interface {
-	privateCairoRenderer()
-}
-
 // CairoRenderer: GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
@@ -33,10 +28,7 @@ type CairoRenderer struct {
 	Renderer
 }
 
-var (
-	_ CairoRendererer = (*CairoRenderer)(nil)
-	_ gextras.Nativer = (*CairoRenderer)(nil)
-)
+var _ gextras.Nativer = (*CairoRenderer)(nil)
 
 func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	return &CairoRenderer{

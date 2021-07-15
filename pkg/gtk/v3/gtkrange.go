@@ -38,7 +38,22 @@ type RangeOverrider interface {
 	ValueChanged()
 }
 
-// Ranger describes Range's methods.
+// Range is the common base class for widgets which visualize an adjustment, e.g
+// Scale or Scrollbar.
+//
+// Apart from signals for monitoring the parameters of the adjustment, Range
+// provides properties and methods for influencing the sensitivity of the
+// “steppers”. It also provides properties and methods for setting a “fill
+// level” on range widgets. See gtk_range_set_fill_level().
+type Range struct {
+	Widget
+
+	Orientable
+}
+
+var _ gextras.Nativer = (*Range)(nil)
+
+// Ranger describes Range's abstract methods.
 type Ranger interface {
 	// Adjustment: get the Adjustment which is the “model” object for Range.
 	Adjustment() *Adjustment
@@ -115,23 +130,7 @@ type Ranger interface {
 	SetValue(value float64)
 }
 
-// Range is the common base class for widgets which visualize an adjustment, e.g
-// Scale or Scrollbar.
-//
-// Apart from signals for monitoring the parameters of the adjustment, Range
-// provides properties and methods for influencing the sensitivity of the
-// “steppers”. It also provides properties and methods for setting a “fill
-// level” on range widgets. See gtk_range_set_fill_level().
-type Range struct {
-	Widget
-
-	Orientable
-}
-
-var (
-	_ Ranger          = (*Range)(nil)
-	_ gextras.Nativer = (*Range)(nil)
-)
+var _ Ranger = (*Range)(nil)
 
 func wrapRange(obj *externglib.Object) *Range {
 	return &Range{

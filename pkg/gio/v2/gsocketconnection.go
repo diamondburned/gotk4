@@ -34,27 +34,6 @@ func init() {
 	})
 }
 
-// SocketConnectioner describes SocketConnection's methods.
-type SocketConnectioner interface {
-	// ConnectSocketConnectioner: connect connection to the specified remote
-	// address.
-	ConnectSocketConnectioner(address SocketAddresser, cancellable *Cancellable) error
-	// ConnectAsync: asynchronously connect connection to the specified remote
-	// address.
-	ConnectAsync(address SocketAddresser, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish gets the result of a g_socket_connection_connect_async()
-	// call.
-	ConnectFinish(result AsyncResulter) error
-	// LocalAddress: try to get the local address of a socket connection.
-	LocalAddress() (*SocketAddress, error)
-	// RemoteAddress: try to get the remote address of a socket connection.
-	RemoteAddress() (*SocketAddress, error)
-	// Socket gets the underlying #GSocket object of the connection.
-	Socket() *Socket
-	// IsConnected checks if connection is connected.
-	IsConnected() bool
-}
-
 // SocketConnection is a OStream for a connected socket. They can be created
 // either by Client when connecting to a host, or by Listener when accepting a
 // new client.
@@ -74,10 +53,7 @@ type SocketConnection struct {
 	IOStream
 }
 
-var (
-	_ SocketConnectioner = (*SocketConnection)(nil)
-	_ gextras.Nativer    = (*SocketConnection)(nil)
-)
+var _ gextras.Nativer = (*SocketConnection)(nil)
 
 func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	return &SocketConnection{

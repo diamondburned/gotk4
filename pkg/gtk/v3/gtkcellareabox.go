@@ -19,21 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBoxer},
+		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBoxxer},
 	})
-}
-
-// CellAreaBoxer describes CellAreaBox's methods.
-type CellAreaBoxer interface {
-	// Spacing gets the spacing added between cell renderers.
-	Spacing() int
-	// PackEnd adds renderer to box, packed with reference to the end of box.
-	PackEnd(renderer CellRendererer, expand bool, align bool, fixed bool)
-	// PackStart adds renderer to box, packed with reference to the start of
-	// box.
-	PackStart(renderer CellRendererer, expand bool, align bool, fixed bool)
-	// SetSpacing sets the spacing to add between cell renderers in box.
-	SetSpacing(spacing int)
 }
 
 // CellAreaBox renders cell renderers into a row or a column depending on its
@@ -57,10 +44,7 @@ type CellAreaBox struct {
 	Orientable
 }
 
-var (
-	_ CellAreaBoxer   = (*CellAreaBox)(nil)
-	_ gextras.Nativer = (*CellAreaBox)(nil)
-)
+var _ gextras.Nativer = (*CellAreaBox)(nil)
 
 func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	return &CellAreaBox{
@@ -81,7 +65,7 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	}
 }
 
-func marshalCellAreaBoxer(p uintptr) (interface{}, error) {
+func marshalCellAreaBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellAreaBox(obj), nil

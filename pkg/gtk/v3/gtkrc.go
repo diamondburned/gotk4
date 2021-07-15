@@ -331,7 +331,7 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyle(widget Widgeter) *Style {
+func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
@@ -585,12 +585,6 @@ type RCStyleOverrider interface {
 	Parse(settings *Settings, scanner *glib.Scanner) uint
 }
 
-// RCStyler describes RCStyle's methods.
-type RCStyler interface {
-	// Copy makes a copy of the specified RcStyle.
-	Copy() *RCStyle
-}
-
 // RCStyle is used to represent a set of information about the appearance of a
 // widget. This can later be composited together with other RcStyle-struct<!--
 // -->s to form a Style.
@@ -598,10 +592,7 @@ type RCStyle struct {
 	*externglib.Object
 }
 
-var (
-	_ RCStyler        = (*RCStyle)(nil)
-	_ gextras.Nativer = (*RCStyle)(nil)
-)
+var _ gextras.Nativer = (*RCStyle)(nil)
 
 func wrapRCStyle(obj *externglib.Object) *RCStyle {
 	return &RCStyle{

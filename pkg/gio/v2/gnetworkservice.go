@@ -31,20 +31,6 @@ func init() {
 	})
 }
 
-// NetworkServicer describes NetworkService's methods.
-type NetworkServicer interface {
-	// Domain gets the domain that srv serves.
-	Domain() string
-	// Protocol gets srv's protocol name (eg, "tcp").
-	Protocol() string
-	// Scheme gets the URI scheme used to resolve proxies.
-	Scheme() string
-	// Service gets srv's service name (eg, "ldap").
-	Service() string
-	// SetScheme set's the URI scheme used to resolve proxies.
-	SetScheme(scheme string)
-}
-
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
 // that implements that service, handling service priority/weighting, multiple
@@ -58,10 +44,7 @@ type NetworkService struct {
 	SocketConnectable
 }
 
-var (
-	_ NetworkServicer = (*NetworkService)(nil)
-	_ gextras.Nativer = (*NetworkService)(nil)
-)
+var _ gextras.Nativer = (*NetworkService)(nil)
 
 func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	return &NetworkService{

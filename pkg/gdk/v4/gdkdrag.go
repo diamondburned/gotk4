@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrager},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDragger},
 	})
 }
 
@@ -60,8 +60,24 @@ func DragActionIsUnique(action DragAction) bool {
 	return _ok
 }
 
-// Drager describes Drag's methods.
-type Drager interface {
+// Drag: GdkDrag object represents the source of an ongoing DND operation.
+//
+// A GdkDrag is created when a drag is started, and stays alive for duration of
+// the DND operation. After a drag has been started with gdk.Drag().Begin, the
+// caller gets informed about the status of the ongoing drag operation with
+// signals on the GdkDrag object.
+//
+// GTK provides a higher level abstraction based on top of these functions, and
+// so they are not normally needed in GTK applications. See the "Drag and Drop"
+// section of the GTK documentation for more information.
+type Drag struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Drag)(nil)
+
+// Dragger describes Drag's abstract methods.
+type Dragger interface {
 	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
 	// Actions determines the bitmask of possible actions proposed by the
@@ -87,24 +103,7 @@ type Drager interface {
 	SetHotspot(hotX int, hotY int)
 }
 
-// Drag: GdkDrag object represents the source of an ongoing DND operation.
-//
-// A GdkDrag is created when a drag is started, and stays alive for duration of
-// the DND operation. After a drag has been started with gdk.Drag().Begin, the
-// caller gets informed about the status of the ongoing drag operation with
-// signals on the GdkDrag object.
-//
-// GTK provides a higher level abstraction based on top of these functions, and
-// so they are not normally needed in GTK applications. See the "Drag and Drop"
-// section of the GTK documentation for more information.
-type Drag struct {
-	*externglib.Object
-}
-
-var (
-	_ Drager          = (*Drag)(nil)
-	_ gextras.Nativer = (*Drag)(nil)
-)
+var _ Dragger = (*Drag)(nil)
 
 func wrapDrag(obj *externglib.Object) *Drag {
 	return &Drag{
@@ -112,7 +111,7 @@ func wrapDrag(obj *externglib.Object) *Drag {
 	}
 }
 
-func marshalDrager(p uintptr) (interface{}, error) {
+func marshalDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrag(obj), nil

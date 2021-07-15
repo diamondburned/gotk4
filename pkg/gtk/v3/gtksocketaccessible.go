@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// SocketAccessibler describes SocketAccessible's methods.
-type SocketAccessibler interface {
-	Embed(path string)
-}
-
 type SocketAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ SocketAccessibler = (*SocketAccessible)(nil)
-	_ gextras.Nativer   = (*SocketAccessible)(nil)
-)
+var _ gextras.Nativer = (*SocketAccessible)(nil)
 
 func wrapSocketAccessible(obj *externglib.Object) *SocketAccessible {
 	return &SocketAccessible{

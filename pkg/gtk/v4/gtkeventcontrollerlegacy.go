@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// EventControllerLegacier describes EventControllerLegacy's methods.
-type EventControllerLegacier interface {
-	privateEventControllerLegacy()
-}
-
 // EventControllerLegacy: GtkEventControllerLegacy is an event controller that
 // provides raw access to the event stream.
 //
@@ -35,10 +30,7 @@ type EventControllerLegacy struct {
 	EventController
 }
 
-var (
-	_ EventControllerLegacier = (*EventControllerLegacy)(nil)
-	_ gextras.Nativer         = (*EventControllerLegacy)(nil)
-)
+var _ gextras.Nativer = (*EventControllerLegacy)(nil)
 
 func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
 	return &EventControllerLegacy{

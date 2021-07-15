@@ -21,42 +21,6 @@ func init() {
 	})
 }
 
-// Expanderer describes Expander's methods.
-type Expanderer interface {
-	// Child gets the child widget of expander.
-	Child() *Widget
-	// Expanded queries a Expander and returns its current state.
-	Expanded() bool
-	// Label fetches the text from a label widget.
-	Label() string
-	// LabelWidget retrieves the label widget for the frame.
-	LabelWidget() *Widget
-	// ResizeToplevel returns whether the expander will resize the toplevel
-	// widget containing the expander upon resizing and collpasing.
-	ResizeToplevel() bool
-	// UseMarkup returns whether the label’s text is interpreted as Pango
-	// markup.
-	UseMarkup() bool
-	// UseUnderline returns whether an underline in the text indicates a
-	// mnemonic.
-	UseUnderline() bool
-	// SetChild sets the child widget of expander.
-	SetChild(child Widgeter)
-	// SetExpanded sets the state of the expander.
-	SetExpanded(expanded bool)
-	// SetLabel sets the text of the label of the expander to label.
-	SetLabel(label string)
-	// SetLabelWidget: set the label widget for the expander.
-	SetLabelWidget(labelWidget Widgeter)
-	// SetResizeToplevel sets whether the expander will resize the toplevel
-	// widget containing the expander upon resizing and collpasing.
-	SetResizeToplevel(resizeToplevel bool)
-	// SetUseMarkup sets whether the text of the label contains Pango markup.
-	SetUseMarkup(useMarkup bool)
-	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
-	SetUseUnderline(useUnderline bool)
-}
-
 // Expander: GtkExpander allows the user to reveal its child by clicking on an
 // expander triangle.
 //
@@ -151,10 +115,7 @@ type Expander struct {
 	Widget
 }
 
-var (
-	_ Expanderer      = (*Expander)(nil)
-	_ gextras.Nativer = (*Expander)(nil)
-)
+var _ gextras.Nativer = (*Expander)(nil)
 
 func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
@@ -350,7 +311,7 @@ func (expander *Expander) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of expander.
-func (expander *Expander) SetChild(child Widgeter) {
+func (expander *Expander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -392,7 +353,7 @@ func (expander *Expander) SetLabel(label string) {
 // SetLabelWidget: set the label widget for the expander.
 //
 // This is the widget that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

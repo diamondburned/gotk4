@@ -20,23 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlayer},
+		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlayyer},
 	})
-}
-
-// Overlayer describes Overlay's methods.
-type Overlayer interface {
-	// AddOverlay adds widget to overlay.
-	AddOverlay(widget Widgeter)
-	// OverlayPassThrough: convenience function to get the value of the
-	// Overlay:pass-through child property for widget.
-	OverlayPassThrough(widget Widgeter) bool
-	// ReorderOverlay moves child to a new index in the list of overlay
-	// children.
-	ReorderOverlay(child Widgeter, index_ int)
-	// SetOverlayPassThrough: convenience function to set the value of the
-	// Overlay:pass-through child property for widget.
-	SetOverlayPassThrough(widget Widgeter, passThrough bool)
 }
 
 // Overlay is a container which contains a single main child, on top of which it
@@ -71,10 +56,7 @@ type Overlay struct {
 	Bin
 }
 
-var (
-	_ Overlayer       = (*Overlay)(nil)
-	_ gextras.Nativer = (*Overlay)(nil)
-)
+var _ gextras.Nativer = (*Overlay)(nil)
 
 func wrapOverlay(obj *externglib.Object) *Overlay {
 	return &Overlay{
@@ -96,7 +78,7 @@ func wrapOverlay(obj *externglib.Object) *Overlay {
 	}
 }
 
-func marshalOverlayer(p uintptr) (interface{}, error) {
+func marshalOverlayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapOverlay(obj), nil
@@ -122,7 +104,7 @@ func NewOverlay() *Overlay {
 //
 // The position at which widget is placed is determined from its Widget:halign
 // and Widget:valign properties.
-func (overlay *Overlay) AddOverlay(widget Widgeter) {
+func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -134,7 +116,7 @@ func (overlay *Overlay) AddOverlay(widget Widgeter) {
 
 // OverlayPassThrough: convenience function to get the value of the
 // Overlay:pass-through child property for widget.
-func (overlay *Overlay) OverlayPassThrough(widget Widgeter) bool {
+func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _cret C.gboolean    // in
@@ -160,7 +142,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgeter) bool {
 // A widget’s index in the overlay children list determines which order the
 // children are drawn if they overlap. The first child is drawn at the bottom.
 // It also affects the default focus chain order.
-func (overlay *Overlay) ReorderOverlay(child Widgeter, index_ int) {
+func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -174,7 +156,7 @@ func (overlay *Overlay) ReorderOverlay(child Widgeter, index_ int) {
 
 // SetOverlayPassThrough: convenience function to set the value of the
 // Overlay:pass-through child property for widget.
-func (overlay *Overlay) SetOverlayPassThrough(widget Widgeter, passThrough bool) {
+func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out

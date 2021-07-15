@@ -52,20 +52,6 @@ type TextTagTableOverrider interface {
 	TagRemoved(tag *TextTag)
 }
 
-// TextTagTabler describes TextTagTable's methods.
-type TextTagTabler interface {
-	// Add a tag to the table.
-	Add(tag *TextTag) bool
-	// Foreach calls func on each tag in table, with user data data.
-	Foreach(fn TextTagTableForeach)
-	// Size returns the size of the table (number of tags)
-	Size() int
-	// Lookup: look up a named tag.
-	Lookup(name string) *TextTag
-	// Remove a tag from the table.
-	Remove(tag *TextTag)
-}
-
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -89,10 +75,7 @@ type TextTagTable struct {
 	Buildable
 }
 
-var (
-	_ TextTagTabler   = (*TextTagTable)(nil)
-	_ gextras.Nativer = (*TextTagTable)(nil)
-)
+var _ gextras.Nativer = (*TextTagTable)(nil)
 
 func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{

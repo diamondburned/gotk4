@@ -31,18 +31,6 @@ func init() {
 	})
 }
 
-// UnixSocketAddresser describes UnixSocketAddress's methods.
-type UnixSocketAddresser interface {
-	// AddressType gets address's type.
-	AddressType() UnixSocketAddressType
-	// IsAbstract tests if address is abstract.
-	IsAbstract() bool
-	// Path gets address's path, or for abstract sockets the "name".
-	Path() string
-	// PathLen gets the length of address's path.
-	PathLen() uint
-}
-
 // UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
 //
 // UNIX domain sockets are generally visible in the filesystem. However, some
@@ -60,10 +48,7 @@ type UnixSocketAddress struct {
 	SocketAddress
 }
 
-var (
-	_ UnixSocketAddresser = (*UnixSocketAddress)(nil)
-	_ gextras.Nativer     = (*UnixSocketAddress)(nil)
-)
+var _ gextras.Nativer = (*UnixSocketAddress)(nil)
 
 func wrapUnixSocketAddress(obj *externglib.Object) *UnixSocketAddress {
 	return &UnixSocketAddress{

@@ -40,44 +40,6 @@ type InetAddressOverrider interface {
 	String() string
 }
 
-// InetAddresser describes InetAddress's methods.
-type InetAddresser interface {
-	// Equal checks if two Address instances are equal, e.g.
-	Equal(otherAddress *InetAddress) bool
-	// Family gets address's family
-	Family() SocketFamily
-	// IsAny tests whether address is the "any" address for its family.
-	IsAny() bool
-	// IsLinkLocal tests whether address is a link-local address (that is, if it
-	// identifies a host on a local network that is not connected to the
-	// Internet).
-	IsLinkLocal() bool
-	// IsLoopback tests whether address is the loopback address for its family.
-	IsLoopback() bool
-	// IsMcGlobal tests whether address is a global multicast address.
-	IsMcGlobal() bool
-	// IsMcLinkLocal tests whether address is a link-local multicast address.
-	IsMcLinkLocal() bool
-	// IsMcNodeLocal tests whether address is a node-local multicast address.
-	IsMcNodeLocal() bool
-	// IsMcOrgLocal tests whether address is an organization-local multicast
-	// address.
-	IsMcOrgLocal() bool
-	// IsMcSiteLocal tests whether address is a site-local multicast address.
-	IsMcSiteLocal() bool
-	// IsMulticast tests whether address is a multicast address.
-	IsMulticast() bool
-	// IsSiteLocal tests whether address is a site-local address such as
-	// 10.0.0.1 (that is, the address identifies a host on a local network that
-	// can not be reached directly from the Internet, but which may have
-	// outgoing Internet connectivity via a NAT or firewall).
-	IsSiteLocal() bool
-	// NativeSize gets the size of the native raw binary address for address.
-	NativeSize() uint
-	// String converts address to string form.
-	String() string
-}
-
 // InetAddress represents an IPv4 or IPv6 internet address. Use
 // g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
 // the Address for a hostname. Use g_resolver_lookup_by_address() or
@@ -89,10 +51,7 @@ type InetAddress struct {
 	*externglib.Object
 }
 
-var (
-	_ InetAddresser   = (*InetAddress)(nil)
-	_ gextras.Nativer = (*InetAddress)(nil)
-)
+var _ gextras.Nativer = (*InetAddress)(nil)
 
 func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	return &InetAddress{

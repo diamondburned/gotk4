@@ -27,14 +27,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxer},
+		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxxer},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChilder},
 	})
 }
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgeter)
+type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk3_FlowBoxCreateWidgetFunc
 func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
@@ -143,78 +143,6 @@ type FlowBoxOverrider interface {
 	UnselectAll()
 }
 
-// FlowBoxer describes FlowBox's methods.
-type FlowBoxer interface {
-	// BindModel binds model to box.
-	BindModel(model gio.ListModeler, createWidgetFunc FlowBoxCreateWidgetFunc)
-	// ActivateOnSingleClick returns whether children activate on single clicks.
-	ActivateOnSingleClick() bool
-	// ChildAtIndex gets the nth child in the box.
-	ChildAtIndex(idx int) *FlowBoxChild
-	// ChildAtPos gets the child in the (x, y) position.
-	ChildAtPos(x int, y int) *FlowBoxChild
-	// ColumnSpacing gets the horizontal spacing.
-	ColumnSpacing() uint
-	// Homogeneous returns whether the box is homogeneous (all children are the
-	// same size).
-	Homogeneous() bool
-	// MaxChildrenPerLine gets the maximum number of children per line.
-	MaxChildrenPerLine() uint
-	// MinChildrenPerLine gets the minimum number of children per line.
-	MinChildrenPerLine() uint
-	// RowSpacing gets the vertical spacing.
-	RowSpacing() uint
-	// SelectionMode gets the selection mode of box.
-	SelectionMode() SelectionMode
-	// Insert inserts the widget into box at position.
-	Insert(widget Widgeter, position int)
-	// InvalidateFilter updates the filtering for all children.
-	InvalidateFilter()
-	// InvalidateSort updates the sorting for all children.
-	InvalidateSort()
-	// SelectAll: select all children of box, if the selection mode allows it.
-	SelectAll()
-	// SelectChild selects a single child of box, if the selection mode allows
-	// it.
-	SelectChild(child *FlowBoxChild)
-	// SelectedForeach calls a function for each selected child.
-	SelectedForeach(fn FlowBoxForeachFunc)
-	// SetActivateOnSingleClick: if single is TRUE, children will be activated
-	// when you click on them, otherwise you need to double-click.
-	SetActivateOnSingleClick(single bool)
-	// SetColumnSpacing sets the horizontal space to add between children.
-	SetColumnSpacing(spacing uint)
-	// SetFilterFunc: by setting a filter function on the box one can decide
-	// dynamically which of the children to show.
-	SetFilterFunc(filterFunc FlowBoxFilterFunc)
-	// SetHAdjustment hooks up an adjustment to focus handling in box.
-	SetHAdjustment(adjustment *Adjustment)
-	// SetHomogeneous sets the FlowBox:homogeneous property of box, controlling
-	// whether or not all children of box are given equal space in the box.
-	SetHomogeneous(homogeneous bool)
-	// SetMaxChildrenPerLine sets the maximum number of children to request and
-	// allocate space for in box’s orientation.
-	SetMaxChildrenPerLine(nChildren uint)
-	// SetMinChildrenPerLine sets the minimum number of children to line up in
-	// box’s orientation before flowing.
-	SetMinChildrenPerLine(nChildren uint)
-	// SetRowSpacing sets the vertical space to add between children.
-	SetRowSpacing(spacing uint)
-	// SetSelectionMode sets how selection works in box.
-	SetSelectionMode(mode SelectionMode)
-	// SetSortFunc: by setting a sort function on the box, one can dynamically
-	// reorder the children of the box, based on the contents of the children.
-	SetSortFunc(sortFunc FlowBoxSortFunc)
-	// SetVAdjustment hooks up an adjustment to focus handling in box.
-	SetVAdjustment(adjustment *Adjustment)
-	// UnselectAll: unselect all children of box, if the selection mode allows
-	// it.
-	UnselectAll()
-	// UnselectChild unselects a single child of box, if the selection mode
-	// allows it.
-	UnselectChild(child *FlowBoxChild)
-}
-
 // FlowBox positions child widgets in sequence according to its orientation.
 //
 // For instance, with the horizontal orientation, the widgets will be arranged
@@ -259,10 +187,7 @@ type FlowBox struct {
 	Orientable
 }
 
-var (
-	_ FlowBoxer       = (*FlowBox)(nil)
-	_ gextras.Nativer = (*FlowBox)(nil)
-)
+var _ gextras.Nativer = (*FlowBox)(nil)
 
 func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	return &FlowBox{
@@ -285,7 +210,7 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	}
 }
 
-func marshalFlowBoxer(p uintptr) (interface{}, error) {
+func marshalFlowBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFlowBox(obj), nil
@@ -324,7 +249,7 @@ func (v *FlowBox) Native() uintptr {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting should
 // be implemented by the model.
-func (box *FlowBox) BindModel(model gio.ListModeler, createWidgetFunc FlowBoxCreateWidgetFunc) {
+func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
@@ -503,7 +428,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgeter, position int) {
+func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -782,26 +707,11 @@ type FlowBoxChildOverrider interface {
 	Activate()
 }
 
-// FlowBoxChilder describes FlowBoxChild's methods.
-type FlowBoxChilder interface {
-	// Changed marks child as changed, causing any state that depends on this to
-	// be updated.
-	Changed()
-	// Index gets the current index of the child in its FlowBox container.
-	Index() int
-	// IsSelected returns whether the child is currently selected in its FlowBox
-	// container.
-	IsSelected() bool
-}
-
 type FlowBoxChild struct {
 	Bin
 }
 
-var (
-	_ FlowBoxChilder  = (*FlowBoxChild)(nil)
-	_ gextras.Nativer = (*FlowBoxChild)(nil)
-)
+var _ gextras.Nativer = (*FlowBoxChild)(nil)
 
 func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{

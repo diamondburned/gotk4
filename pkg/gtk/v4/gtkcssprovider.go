@@ -22,23 +22,6 @@ func init() {
 	})
 }
 
-// CSSProviderer describes CSSProvider's methods.
-type CSSProviderer interface {
-	// LoadFromData loads data into css_provider.
-	LoadFromData(data []byte)
-	// LoadFromFile loads the data contained in file into css_provider.
-	LoadFromFile(file gio.Filer)
-	// LoadFromPath loads the data contained in path into css_provider.
-	LoadFromPath(path string)
-	// LoadFromResource loads the data contained in the resource at
-	// resource_path into the css_provider.
-	LoadFromResource(resourcePath string)
-	// LoadNamed loads a theme from the usual theme paths.
-	LoadNamed(name string, variant string)
-	// String converts the provider into a string representation in CSS format.
-	String() string
-}
-
 // CSSProvider: GtkCssProvider is an object implementing the GtkStyleProvider
 // interface for CSS.
 //
@@ -72,10 +55,7 @@ type CSSProvider struct {
 	StyleProvider
 }
 
-var (
-	_ CSSProviderer   = (*CSSProvider)(nil)
-	_ gextras.Nativer = (*CSSProvider)(nil)
-)
+var _ gextras.Nativer = (*CSSProvider)(nil)
 
 func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{

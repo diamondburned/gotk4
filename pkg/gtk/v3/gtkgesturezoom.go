@@ -23,14 +23,6 @@ func init() {
 	})
 }
 
-// GestureZoomer describes GestureZoom's methods.
-type GestureZoomer interface {
-	// ScaleDelta: if gesture is active, this function returns the zooming
-	// difference since the gesture was recognized (hence the starting point is
-	// considered 1:1).
-	ScaleDelta() float64
-}
-
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
@@ -38,10 +30,7 @@ type GestureZoom struct {
 	Gesture
 }
 
-var (
-	_ GestureZoomer   = (*GestureZoom)(nil)
-	_ gextras.Nativer = (*GestureZoom)(nil)
-)
+var _ gextras.Nativer = (*GestureZoom)(nil)
 
 func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{
@@ -61,7 +50,7 @@ func marshalGestureZoomer(p uintptr) (interface{}, error) {
 
 // NewGestureZoom returns a newly created Gesture that recognizes zoom in/out
 // gestures (usually known as pinch/zoom).
-func NewGestureZoom(widget Widgeter) *GestureZoom {
+func NewGestureZoom(widget Widgetter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

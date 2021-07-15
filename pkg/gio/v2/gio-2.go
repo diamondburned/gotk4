@@ -35,17 +35,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorer},
-		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconer},
+		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
+		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
-		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeler},
+		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeller},
 		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessager},
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocationer},
 		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerer},
 		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenuer},
-		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemer},
+		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemmer},
 		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotificationer},
 		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyActioner},
 		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleActioner},
@@ -53,13 +53,8 @@ func init() {
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermissioner},
 		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocesser},
 		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncherer},
-		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBuser},
+		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBusser},
 	})
-}
-
-// AppInfoMonitorer describes AppInfoMonitor's methods.
-type AppInfoMonitorer interface {
-	privateAppInfoMonitor()
 }
 
 // AppInfoMonitor is a very simple object used for monitoring the app info
@@ -81,10 +76,7 @@ type AppInfoMonitor struct {
 	*externglib.Object
 }
 
-var (
-	_ AppInfoMonitorer = (*AppInfoMonitor)(nil)
-	_ gextras.Nativer  = (*AppInfoMonitor)(nil)
-)
+var _ gextras.Nativer = (*AppInfoMonitor)(nil)
 
 func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	return &AppInfoMonitor{
@@ -92,18 +84,13 @@ func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	}
 }
 
-func marshalAppInfoMonitorer(p uintptr) (interface{}, error) {
+func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppInfoMonitor(obj), nil
 }
 
 func (*AppInfoMonitor) privateAppInfoMonitor() {}
-
-// BytesIconer describes BytesIcon's methods.
-type BytesIconer interface {
-	privateBytesIcon()
-}
 
 // BytesIcon specifies an image held in memory in a common format (usually png)
 // to be used as icon.
@@ -113,10 +100,7 @@ type BytesIcon struct {
 	LoadableIcon
 }
 
-var (
-	_ BytesIconer     = (*BytesIcon)(nil)
-	_ gextras.Nativer = (*BytesIcon)(nil)
-)
+var _ gextras.Nativer = (*BytesIcon)(nil)
 
 func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	return &BytesIcon{
@@ -129,18 +113,13 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	}
 }
 
-func marshalBytesIconer(p uintptr) (interface{}, error) {
+func marshalBytesIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBytesIcon(obj), nil
 }
 
 func (*BytesIcon) privateBytesIcon() {}
-
-// DBusActionGrouper describes DBusActionGroup's methods.
-type DBusActionGrouper interface {
-	privateDBusActionGroup()
-}
 
 // DBusActionGroup is an implementation of the Group interface that can be used
 // as a proxy for an action group that is exported over D-Bus with
@@ -151,10 +130,7 @@ type DBusActionGroup struct {
 	RemoteActionGroup
 }
 
-var (
-	_ DBusActionGrouper = (*DBusActionGroup)(nil)
-	_ gextras.Nativer   = (*DBusActionGroup)(nil)
-)
+var _ gextras.Nativer = (*DBusActionGroup)(nil)
 
 func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 	return &DBusActionGroup{
@@ -174,14 +150,6 @@ func marshalDBusActionGrouper(p uintptr) (interface{}, error) {
 }
 
 func (*DBusActionGroup) privateDBusActionGroup() {}
-
-// DBusAuthObserverer describes DBusAuthObserver's methods.
-type DBusAuthObserverer interface {
-	// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
-	// observer.
-	AllowMechanism(mechanism string) bool
-	AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool
-}
 
 // DBusAuthObserver type provides a mechanism for participating in how a
 // BusServer (or a BusConnection) authenticates remote peers. Simply instantiate
@@ -221,10 +189,7 @@ type DBusAuthObserver struct {
 	*externglib.Object
 }
 
-var (
-	_ DBusAuthObserverer = (*DBusAuthObserver)(nil)
-	_ gextras.Nativer    = (*DBusAuthObserver)(nil)
-)
+var _ gextras.Nativer = (*DBusAuthObserver)(nil)
 
 func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 	return &DBusAuthObserver{
@@ -294,108 +259,6 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	return _ok
 }
 
-// DBusConnectioner describes DBusConnection's methods.
-type DBusConnectioner interface {
-	// AddFilter adds a message filter.
-	AddFilter(filterFunction DBusMessageFilterFunction) uint
-	// Call: asynchronously invokes the method_name method on the interface_name
-	// D-Bus interface on the remote object at object_path owned by bus_name.
-	Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CallFinish finishes an operation started with g_dbus_connection_call().
-	CallFinish(res AsyncResulter) (*glib.Variant, error)
-	// CallSync: synchronously invokes the method_name method on the
-	// interface_name D-Bus interface on the remote object at object_path owned
-	// by bus_name.
-	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
-	// object.
-	CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CallWithUnixFdListFinish finishes an operation started with
-	// g_dbus_connection_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-	// and returns FDList objects.
-	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable) (*UnixFDList, *glib.Variant, error)
-	// Close closes connection.
-	Close(cancellable *Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes an operation started with g_dbus_connection_close().
-	CloseFinish(res AsyncResulter) error
-	// CloseSync: synchronously closes connection.
-	CloseSync(cancellable *Cancellable) error
-	// EmitSignal emits a signal.
-	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
-	// ExportActionGroup exports action_group on connection at object_path.
-	ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error)
-	// ExportMenuModel exports menu on connection at object_path.
-	ExportMenuModel(objectPath string, menu MenuModeler) (uint, error)
-	// Flush: asynchronously flushes connection, that is, writes all queued
-	// outgoing message to the transport and then flushes the transport (using
-	// g_output_stream_flush_async()).
-	Flush(cancellable *Cancellable, callback AsyncReadyCallback)
-	// FlushFinish finishes an operation started with g_dbus_connection_flush().
-	FlushFinish(res AsyncResulter) error
-	// FlushSync: synchronously flushes connection.
-	FlushSync(cancellable *Cancellable) error
-	// Capabilities gets the capabilities negotiated with the remote peer
-	Capabilities() DBusCapabilityFlags
-	// ExitOnClose gets whether the process is terminated when connection is
-	// closed by the remote peer.
-	ExitOnClose() bool
-	// Flags gets the flags used to construct this connection
-	Flags() DBusConnectionFlags
-	// Guid: GUID of the peer performing the role of server when authenticating.
-	Guid() string
-	// LastSerial retrieves the last serial number assigned to a BusMessage on
-	// the current thread.
-	LastSerial() uint32
-	// PeerCredentials gets the credentials of the authenticated peer.
-	PeerCredentials() *Credentials
-	// Stream gets the underlying stream used for IO.
-	Stream() *IOStream
-	// UniqueName gets the unique name of connection as assigned by the message
-	// bus.
-	UniqueName() string
-	// IsClosed gets whether connection is closed.
-	IsClosed() bool
-	// RemoveFilter removes a filter.
-	RemoveFilter(filterId uint)
-	// SendMessage: asynchronously sends message to the peer represented by
-	// connection.
-	SendMessage(message *DBusMessage, flags DBusSendMessageFlags) (uint32, error)
-	// SendMessageWithReply: asynchronously sends message to the peer
-	// represented by connection.
-	SendMessageWithReply(message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback) uint32
-	// SendMessageWithReplyFinish finishes an operation started with
-	// g_dbus_connection_send_message_with_reply().
-	SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error)
-	// SendMessageWithReplySync: synchronously sends message to the peer
-	// represented by connection and blocks the calling thread until a reply is
-	// received or the timeout is reached.
-	SendMessageWithReplySync(message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable *Cancellable) (uint32, *DBusMessage, error)
-	// SetExitOnClose sets whether the process should be terminated when
-	// connection is closed by the remote peer.
-	SetExitOnClose(exitOnClose bool)
-	// SignalSubscribe subscribes to signals on connection and invokes callback
-	// with a whenever the signal is received.
-	SignalSubscribe(sender string, interfaceName string, member string, objectPath string, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint
-	// SignalUnsubscribe unsubscribes from signals.
-	SignalUnsubscribe(subscriptionId uint)
-	// StartMessageProcessing: if connection was created with
-	// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
-	// processing messages.
-	StartMessageProcessing()
-	// UnexportActionGroup reverses the effect of a previous call to
-	// g_dbus_connection_export_action_group().
-	UnexportActionGroup(exportId uint)
-	// UnexportMenuModel reverses the effect of a previous call to
-	// g_dbus_connection_export_menu_model().
-	UnexportMenuModel(exportId uint)
-	// UnregisterObject unregisters an object.
-	UnregisterObject(registrationId uint) bool
-	// UnregisterSubtree unregisters a subtree.
-	UnregisterSubtree(registrationId uint) bool
-}
-
 // DBusConnection type is used for D-Bus connections to remote peers such as a
 // message buses. It is a low-level API that offers a lot of flexibility. For
 // instance, it lets you establish a connection over any transport that can by
@@ -454,10 +317,7 @@ type DBusConnection struct {
 	Initable
 }
 
-var (
-	_ DBusConnectioner = (*DBusConnection)(nil)
-	_ gextras.Nativer  = (*DBusConnection)(nil)
-)
+var _ gextras.Nativer = (*DBusConnection)(nil)
 
 func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 	return &DBusConnection{
@@ -1104,7 +964,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // You can unexport the menu model using g_dbus_connection_unexport_menu_model()
 // with the return value of this function.
-func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeler) (uint, error) {
+func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -1763,11 +1623,6 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	return _ok
 }
 
-// DBusMenuModeler describes DBusMenuModel's methods.
-type DBusMenuModeler interface {
-	privateDBusMenuModel()
-}
-
 // DBusMenuModel is an implementation of Model that can be used as a proxy for a
 // menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
@@ -1775,10 +1630,7 @@ type DBusMenuModel struct {
 	MenuModel
 }
 
-var (
-	_ DBusMenuModeler = (*DBusMenuModel)(nil)
-	_ gextras.Nativer = (*DBusMenuModel)(nil)
-)
+var _ gextras.Nativer = (*DBusMenuModel)(nil)
 
 func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	return &DBusMenuModel{
@@ -1788,7 +1640,7 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	}
 }
 
-func marshalDBusMenuModeler(p uintptr) (interface{}, error) {
+func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusMenuModel(obj), nil
@@ -1796,124 +1648,13 @@ func marshalDBusMenuModeler(p uintptr) (interface{}, error) {
 
 func (*DBusMenuModel) privateDBusMenuModel() {}
 
-// DBusMessager describes DBusMessage's methods.
-type DBusMessager interface {
-	// Copy copies message.
-	Copy() (*DBusMessage, error)
-	// Arg0: convenience to get the first item in the body of message.
-	Arg0() string
-	// Body gets the body of a message.
-	Body() *glib.Variant
-	// ByteOrder gets the byte order of message.
-	ByteOrder() DBusMessageByteOrder
-	// Destination: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	Destination() string
-	// ErrorName: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	ErrorName() string
-	// Flags gets the flags for message.
-	Flags() DBusMessageFlags
-	// Header gets a header field on message.
-	Header(headerField DBusMessageHeaderField) *glib.Variant
-	// HeaderFields gets an array of all header fields on message that are set.
-	HeaderFields() []byte
-	// Interface: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	Interface() string
-	// Locked checks whether message is locked.
-	Locked() bool
-	// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
-	// header field.
-	Member() string
-	// MessageType gets the type of message.
-	MessageType() DBusMessageType
-	// NumUnixFds: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	NumUnixFds() uint32
-	// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
-	// field.
-	Path() string
-	// ReplySerial: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	ReplySerial() uint32
-	// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
-	// header field.
-	Sender() string
-	// Serial gets the serial for message.
-	Serial() uint32
-	// Signature: convenience getter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	Signature() string
-	// UnixFdList gets the UNIX file descriptors associated with message, if
-	// any.
-	UnixFdList() *UnixFDList
-	// Lock: if message is locked, does nothing.
-	Lock()
-	// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
-	// method_call_message.
-	NewMethodErrorLiteral(errorName string, errorMessage string) *DBusMessage
-	// NewMethodReply creates a new BusMessage that is a reply to
-	// method_call_message.
-	NewMethodReply() *DBusMessage
-	// Print produces a human-readable multi-line description of message.
-	Print(indent uint) string
-	// SetBody sets the body message.
-	SetBody(body *glib.Variant)
-	// SetByteOrder sets the byte order of message.
-	SetByteOrder(byteOrder DBusMessageByteOrder)
-	// SetDestination: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	SetDestination(value string)
-	// SetErrorName: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	SetErrorName(value string)
-	// SetFlags sets the flags to set on message.
-	SetFlags(flags DBusMessageFlags)
-	// SetHeader sets a header field on message.
-	SetHeader(headerField DBusMessageHeaderField, value *glib.Variant)
-	// SetInterface: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	SetInterface(value string)
-	// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
-	// header field.
-	SetMember(value string)
-	// SetMessageType sets message to be of type.
-	SetMessageType(typ DBusMessageType)
-	// SetNumUnixFds: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	SetNumUnixFds(value uint32)
-	// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
-	// header field.
-	SetPath(value string)
-	// SetReplySerial: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	SetReplySerial(value uint32)
-	// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
-	// header field.
-	SetSender(value string)
-	// SetSerial sets the serial for message.
-	SetSerial(serial uint32)
-	// SetSignature: convenience setter for the
-	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	SetSignature(value string)
-	// SetUnixFdList sets the UNIX file descriptors associated with message.
-	SetUnixFdList(fdList *UnixFDList)
-	// ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
-	// nothing and returns FALSE.
-	ToGError() error
-}
-
 // DBusMessage: type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage struct {
 	*externglib.Object
 }
 
-var (
-	_ DBusMessager    = (*DBusMessage)(nil)
-	_ gextras.Nativer = (*DBusMessage)(nil)
-)
+var _ gextras.Nativer = (*DBusMessage)(nil)
 
 func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 	return &DBusMessage{
@@ -2702,42 +2443,6 @@ func (message *DBusMessage) ToGError() error {
 	return _goerr
 }
 
-// DBusMethodInvocationer describes DBusMethodInvocation's methods.
-type DBusMethodInvocationer interface {
-	// Connection gets the BusConnection the method was invoked on.
-	Connection() *DBusConnection
-	// InterfaceName gets the name of the D-Bus interface the method was invoked
-	// on.
-	InterfaceName() string
-	// Message gets the BusMessage for the method invocation.
-	Message() *DBusMessage
-	// MethodInfo gets information about the method call, if any.
-	MethodInfo() *DBusMethodInfo
-	// MethodName gets the name of the method that was invoked.
-	MethodName() string
-	// ObjectPath gets the object path the method was invoked on.
-	ObjectPath() string
-	// Parameters gets the parameters of the method invocation.
-	Parameters() *glib.Variant
-	// PropertyInfo gets information about the property that this method call is
-	// for, if any.
-	PropertyInfo() *DBusPropertyInfo
-	// Sender gets the bus name that invoked the method.
-	Sender() string
-	// ReturnDBusError finishes handling a D-Bus method call by returning an
-	// error.
-	ReturnDBusError(errorName string, errorMessage string)
-	// ReturnGError: like g_dbus_method_invocation_return_error() but takes a
-	// #GError instead of the error domain, error code and message.
-	ReturnGError(err error)
-	// ReturnValue finishes handling a D-Bus method call by returning
-	// parameters.
-	ReturnValue(parameters *glib.Variant)
-	// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
-	// but also takes a FDList.
-	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList *UnixFDList)
-}
-
 // DBusMethodInvocation instances of the BusMethodInvocation class are used when
 // handling D-Bus method calls. It provides a way to asynchronously return
 // results and errors.
@@ -2749,10 +2454,7 @@ type DBusMethodInvocation struct {
 	*externglib.Object
 }
 
-var (
-	_ DBusMethodInvocationer = (*DBusMethodInvocation)(nil)
-	_ gextras.Nativer        = (*DBusMethodInvocation)(nil)
-)
+var _ gextras.Nativer = (*DBusMethodInvocation)(nil)
 
 func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 	return &DBusMethodInvocation{
@@ -3034,24 +2736,6 @@ func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *gl
 	C.g_dbus_method_invocation_return_value_with_unix_fd_list(_arg0, _arg1, _arg2)
 }
 
-// DBusServerer describes DBusServer's methods.
-type DBusServerer interface {
-	// ClientAddress gets a D-Bus address
-	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
-	// string that can be used by clients to connect to server.
-	ClientAddress() string
-	// Flags gets the flags for server.
-	Flags() DBusServerFlags
-	// Guid gets the GUID for server.
-	Guid() string
-	// IsActive gets whether server is active.
-	IsActive() bool
-	// Start starts server.
-	Start()
-	// Stop stops server.
-	Stop()
-}
-
 // DBusServer is a helper for listening to and accepting D-Bus connections. This
 // can be used to create a new D-Bus server, allowing two peers to use the D-Bus
 // protocol for their own specialized communication. A server instance provided
@@ -3077,10 +2761,7 @@ type DBusServer struct {
 	Initable
 }
 
-var (
-	_ DBusServerer    = (*DBusServer)(nil)
-	_ gextras.Nativer = (*DBusServer)(nil)
-)
+var _ gextras.Nativer = (*DBusServer)(nil)
 
 func wrapDBusServer(obj *externglib.Object) *DBusServer {
 	return &DBusServer{
@@ -3229,48 +2910,6 @@ func (server *DBusServer) Stop() {
 	C.g_dbus_server_stop(_arg0)
 }
 
-// Menuer describes Menu's methods.
-type Menuer interface {
-	// Append: convenience function for appending a normal menu item to the end
-	// of menu.
-	Append(label string, detailedAction string)
-	// AppendItem appends item to the end of menu.
-	AppendItem(item *MenuItem)
-	// AppendSection: convenience function for appending a section menu item to
-	// the end of menu.
-	AppendSection(label string, section MenuModeler)
-	// AppendSubmenu: convenience function for appending a submenu menu item to
-	// the end of menu.
-	AppendSubmenu(label string, submenu MenuModeler)
-	// Freeze marks menu as frozen.
-	Freeze()
-	// Insert: convenience function for inserting a normal menu item into menu.
-	Insert(position int, label string, detailedAction string)
-	// InsertItem inserts item into menu.
-	InsertItem(position int, item *MenuItem)
-	// InsertSection: convenience function for inserting a section menu item
-	// into menu.
-	InsertSection(position int, label string, section MenuModeler)
-	// InsertSubmenu: convenience function for inserting a submenu menu item
-	// into menu.
-	InsertSubmenu(position int, label string, submenu MenuModeler)
-	// Prepend: convenience function for prepending a normal menu item to the
-	// start of menu.
-	Prepend(label string, detailedAction string)
-	// PrependItem prepends item to the start of menu.
-	PrependItem(item *MenuItem)
-	// PrependSection: convenience function for prepending a section menu item
-	// to the start of menu.
-	PrependSection(label string, section MenuModeler)
-	// PrependSubmenu: convenience function for prepending a submenu menu item
-	// to the start of menu.
-	PrependSubmenu(label string, submenu MenuModeler)
-	// Remove removes an item from the menu.
-	Remove(position int)
-	// RemoveAll removes all items in the menu.
-	RemoveAll()
-}
-
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
 // Item instances to it.
 //
@@ -3282,10 +2921,7 @@ type Menu struct {
 	MenuModel
 }
 
-var (
-	_ Menuer          = (*Menu)(nil)
-	_ gextras.Nativer = (*Menu)(nil)
-)
+var _ gextras.Nativer = (*Menu)(nil)
 
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
@@ -3347,7 +2983,7 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 // AppendSection: convenience function for appending a section menu item to the
 // end of menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSection(label string, section MenuModeler) {
+func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3362,7 +2998,7 @@ func (menu *Menu) AppendSection(label string, section MenuModeler) {
 // AppendSubmenu: convenience function for appending a submenu menu item to the
 // end of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSubmenu(label string, submenu MenuModeler) {
+func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3437,7 +3073,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 // InsertSection: convenience function for inserting a section menu item into
 // menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSection(position int, label string, section MenuModeler) {
+func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3454,7 +3090,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeler)
 // InsertSubmenu: convenience function for inserting a submenu menu item into
 // menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeler) {
+func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3499,7 +3135,7 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 // PrependSection: convenience function for prepending a section menu item to
 // the start of menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSection(label string, section MenuModeler) {
+func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3514,7 +3150,7 @@ func (menu *Menu) PrependSection(label string, section MenuModeler) {
 // PrependSubmenu: convenience function for prepending a submenu menu item to
 // the start of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSubmenu(label string, submenu MenuModeler) {
+func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3555,42 +3191,13 @@ func (menu *Menu) RemoveAll() {
 	C.g_menu_remove_all(_arg0)
 }
 
-// MenuItemer describes MenuItem's methods.
-type MenuItemer interface {
-	// AttributeValue queries the named attribute on menu_item.
-	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
-	// Link queries the named link on menu_item.
-	Link(link string) *MenuModel
-	// SetActionAndTargetValue sets or unsets the "action" and "target"
-	// attributes of menu_item.
-	SetActionAndTargetValue(action string, targetValue *glib.Variant)
-	// SetAttributeValue sets or unsets an attribute on menu_item.
-	SetAttributeValue(attribute string, value *glib.Variant)
-	// SetDetailedAction sets the "action" and possibly the "target" attribute
-	// of menu_item.
-	SetDetailedAction(detailedAction string)
-	// SetIcon sets (or unsets) the icon on menu_item.
-	SetIcon(icon Iconer)
-	// SetLabel sets or unsets the "label" attribute of menu_item.
-	SetLabel(label string)
-	// SetLink creates a link from menu_item to model if non-NULL, or unsets it.
-	SetLink(link string, model MenuModeler)
-	// SetSection sets or unsets the "section" link of menu_item to section.
-	SetSection(section MenuModeler)
-	// SetSubmenu sets or unsets the "submenu" link of menu_item to submenu.
-	SetSubmenu(submenu MenuModeler)
-}
-
 // MenuItem is an opaque structure type. You must access it using the functions
 // below.
 type MenuItem struct {
 	*externglib.Object
 }
 
-var (
-	_ MenuItemer      = (*MenuItem)(nil)
-	_ gextras.Nativer = (*MenuItem)(nil)
-)
+var _ gextras.Nativer = (*MenuItem)(nil)
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
@@ -3598,7 +3205,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemer(p uintptr) (interface{}, error) {
+func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil
@@ -3633,7 +3240,7 @@ func NewMenuItem(label string, detailedAction string) *MenuItem {
 //
 // item_index must be valid (ie: be sure to call g_menu_model_get_n_items()
 // first).
-func NewMenuItemFromModel(model MenuModeler, itemIndex int) *MenuItem {
+func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
@@ -3707,7 +3314,7 @@ func NewMenuItemFromModel(model MenuModeler, itemIndex int) *MenuItem {
 //        </link>
 //      </item>
 //    </menu>
-func NewMenuItemSection(label string, section MenuModeler) *MenuItem {
+func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3728,7 +3335,7 @@ func NewMenuItemSection(label string, section MenuModeler) *MenuItem {
 //
 // This is a convenience API around g_menu_item_new() and
 // g_menu_item_set_submenu().
-func NewMenuItemSubmenu(label string, submenu MenuModeler) *MenuItem {
+func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3898,7 +3505,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 // corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 //
 // If icon is NULL then the icon is unset.
-func (menuItem *MenuItem) SetIcon(icon Iconer) {
+func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
@@ -3932,7 +3539,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 // lowercase characters, numbers and '-'. Furthermore, the names must begin with
 // a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
-func (menuItem *MenuItem) SetLink(link string, model MenuModeler) {
+func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3950,7 +3557,7 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeler) {
 // sounds: the items from section become a direct part of the menu that
 // menu_item is added to. See g_menu_item_new_section() for more information
 // about what it means for a menu item to be a section.
-func (menuItem *MenuItem) SetSection(section MenuModeler) {
+func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3967,7 +3574,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeler) {
 //
 // The effect of having one menu appear as a submenu of another is exactly as it
 // sounds.
-func (menuItem *MenuItem) SetSubmenu(submenu MenuModeler) {
+func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3975,32 +3582,6 @@ func (menuItem *MenuItem) SetSubmenu(submenu MenuModeler) {
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer((submenu).(gextras.Nativer).Native()))
 
 	C.g_menu_item_set_submenu(_arg0, _arg1)
-}
-
-// Notificationer describes Notification's methods.
-type Notificationer interface {
-	// AddButton adds a button to notification that activates the action in
-	// detailed_action when clicked.
-	AddButton(label string, detailedAction string)
-	// AddButtonWithTargetValue adds a button to notification that activates
-	// action when clicked.
-	AddButtonWithTargetValue(label string, action string, target *glib.Variant)
-	// SetBody sets the body of notification to body.
-	SetBody(body string)
-	// SetDefaultAction sets the default action of notification to
-	// detailed_action.
-	SetDefaultAction(detailedAction string)
-	// SetDefaultActionAndTargetValue sets the default action of notification to
-	// action.
-	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
-	// SetIcon sets the icon of notification to icon.
-	SetIcon(icon Iconer)
-	// SetPriority sets the priority of notification to priority.
-	SetPriority(priority NotificationPriority)
-	// SetTitle sets the title of notification to title.
-	SetTitle(title string)
-	// SetUrgent: deprecated in favor of g_notification_set_priority().
-	SetUrgent(urgent bool)
 }
 
 // Notification is a mechanism for creating a notification to be shown to the
@@ -4027,10 +3608,7 @@ type Notification struct {
 	*externglib.Object
 }
 
-var (
-	_ Notificationer  = (*Notification)(nil)
-	_ gextras.Nativer = (*Notification)(nil)
-)
+var _ gextras.Nativer = (*Notification)(nil)
 
 func wrapNotification(obj *externglib.Object) *Notification {
 	return &Notification{
@@ -4155,7 +3733,7 @@ func (notification *Notification) SetDefaultActionAndTargetValue(action string, 
 }
 
 // SetIcon sets the icon of notification to icon.
-func (notification *Notification) SetIcon(icon Iconer) {
+func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
@@ -4202,11 +3780,6 @@ func (notification *Notification) SetUrgent(urgent bool) {
 	}
 
 	C.g_notification_set_urgent(_arg0, _arg1)
-}
-
-// PropertyActioner describes PropertyAction's methods.
-type PropertyActioner interface {
-	privatePropertyAction()
 }
 
 // PropertyAction is a way to get a #GAction with a state value reflecting and
@@ -4263,10 +3836,7 @@ type PropertyAction struct {
 	Action
 }
 
-var (
-	_ PropertyActioner = (*PropertyAction)(nil)
-	_ gextras.Nativer  = (*PropertyAction)(nil)
-)
+var _ gextras.Nativer = (*PropertyAction)(nil)
 
 func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 	return &PropertyAction{
@@ -4312,16 +3882,6 @@ func NewPropertyAction(name string, object *externglib.Object, propertyName stri
 
 func (*PropertyAction) privatePropertyAction() {}
 
-// SimpleActioner describes SimpleAction's methods.
-type SimpleActioner interface {
-	// SetEnabled sets the action as enabled or not.
-	SetEnabled(enabled bool)
-	// SetState sets the state of the action.
-	SetState(value *glib.Variant)
-	// SetStateHint sets the state hint for the action.
-	SetStateHint(stateHint *glib.Variant)
-}
-
 // SimpleAction is the obvious simple implementation of the #GAction interface.
 // This is the easiest way to create an action for purposes of adding it to a
 // ActionGroup.
@@ -4333,10 +3893,7 @@ type SimpleAction struct {
 	Action
 }
 
-var (
-	_ SimpleActioner  = (*SimpleAction)(nil)
-	_ gextras.Nativer = (*SimpleAction)(nil)
-)
+var _ gextras.Nativer = (*SimpleAction)(nil)
 
 func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 	return &SimpleAction{
@@ -4449,11 +4006,6 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	C.g_simple_action_set_state_hint(_arg0, _arg1)
 }
 
-// SimpleIOStreamer describes SimpleIOStream's methods.
-type SimpleIOStreamer interface {
-	privateSimpleIOStream()
-}
-
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This
 // allows any pair of input and output streams to be used with OStream methods.
 //
@@ -4465,10 +4017,7 @@ type SimpleIOStream struct {
 	IOStream
 }
 
-var (
-	_ SimpleIOStreamer = (*SimpleIOStream)(nil)
-	_ gextras.Nativer  = (*SimpleIOStream)(nil)
-)
+var _ gextras.Nativer = (*SimpleIOStream)(nil)
 
 func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 	return &SimpleIOStream{
@@ -4505,11 +4054,6 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 
 func (*SimpleIOStream) privateSimpleIOStream() {}
 
-// SimplePermissioner describes SimplePermission's methods.
-type SimplePermissioner interface {
-	privateSimplePermission()
-}
-
 // SimplePermission is a trivial implementation of #GPermission that represents
 // a permission that is either always or never allowed. The value is given at
 // construction and doesn't change.
@@ -4519,10 +4063,7 @@ type SimplePermission struct {
 	Permission
 }
 
-var (
-	_ SimplePermissioner = (*SimplePermission)(nil)
-	_ gextras.Nativer    = (*SimplePermission)(nil)
-)
+var _ gextras.Nativer = (*SimplePermission)(nil)
 
 func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 	return &SimplePermission{
@@ -4558,68 +4099,6 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 }
 
 func (*SimplePermission) privateSimplePermission() {}
-
-// Subprocesser describes Subprocess's methods.
-type Subprocesser interface {
-	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
-	// output of the process as UTF-8, and returns it as a regular NUL
-	// terminated string.
-	CommunicateUTF8(stdinBuf string, cancellable *Cancellable) (stdoutBuf string, stderrBuf string, goerr error)
-	// CommunicateUTF8Async asynchronous version of
-	// g_subprocess_communicate_utf8().
-	CommunicateUTF8Async(stdinBuf string, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CommunicateUTF8Finish: complete an invocation of
-	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(result AsyncResulter) (stdoutBuf string, stderrBuf string, goerr error)
-	// ForceExit: use an operating-system specific method to attempt an
-	// immediate, forceful termination of the process.
-	ForceExit()
-	// ExitStatus: check the exit status of the subprocess, given that it exited
-	// normally.
-	ExitStatus() int
-	// Identifier: on UNIX, returns the process ID as a decimal string.
-	Identifier() string
-	// IfExited: check if the given subprocess exited normally (ie: by way of
-	// exit() or return from main()).
-	IfExited() bool
-	// IfSignaled: check if the given subprocess terminated in response to a
-	// signal.
-	IfSignaled() bool
-	// Status gets the raw status code of the process, as from waitpid().
-	Status() int
-	// StderrPipe gets the Stream from which to read the stderr output of
-	// subprocess.
-	StderrPipe() *InputStream
-	// StdinPipe gets the Stream that you can write to in order to give data to
-	// the stdin of subprocess.
-	StdinPipe() *OutputStream
-	// StdoutPipe gets the Stream from which to read the stdout output of
-	// subprocess.
-	StdoutPipe() *InputStream
-	// Successful checks if the process was "successful".
-	Successful() bool
-	// TermSig: get the signal number that caused the subprocess to terminate,
-	// given that it terminated due to a signal.
-	TermSig() int
-	// SendSignal sends the UNIX signal signal_num to the subprocess, if it is
-	// still running.
-	SendSignal(signalNum int)
-	// Wait: synchronously wait for the subprocess to terminate.
-	Wait(cancellable *Cancellable) error
-	// WaitAsync: wait for the subprocess to terminate.
-	WaitAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-	WaitCheck(cancellable *Cancellable) error
-	// WaitCheckAsync combines g_subprocess_wait_async() with
-	// g_spawn_check_exit_status().
-	WaitCheckAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// WaitCheckFinish collects the result of a previous call to
-	// g_subprocess_wait_check_async().
-	WaitCheckFinish(result AsyncResulter) error
-	// WaitFinish collects the result of a previous call to
-	// g_subprocess_wait_async().
-	WaitFinish(result AsyncResulter) error
-}
 
 // Subprocess allows the creation of and interaction with child processes.
 //
@@ -4675,10 +4154,7 @@ type Subprocess struct {
 	Initable
 }
 
-var (
-	_ Subprocesser    = (*Subprocess)(nil)
-	_ gextras.Nativer = (*Subprocess)(nil)
-)
+var _ gextras.Nativer = (*Subprocess)(nil)
 
 func wrapSubprocess(obj *externglib.Object) *Subprocess {
 	return &Subprocess{
@@ -5170,54 +4646,6 @@ func (subprocess *Subprocess) WaitFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// SubprocessLauncherer describes SubprocessLauncher's methods.
-type SubprocessLauncherer interface {
-	// Close closes all the file descriptors previously passed to the object
-	// with g_subprocess_launcher_take_fd(),
-	// g_subprocess_launcher_take_stderr_fd(), etc.
-	Close()
-	// Env returns the value of the environment variable variable in the
-	// environment of processes launched from this launcher.
-	env(variable string) string
-	// SetCwd sets the current working directory that processes will be launched
-	// with.
-	SetCwd(cwd string)
-	// SetEnviron: replace the entire environment of processes launched from
-	// this launcher with the given 'environ' variable.
-	SetEnviron(env []string)
-	// SetFlags sets the flags on the launcher.
-	SetFlags(flags SubprocessFlags)
-	// SetStderrFilePath sets the file path to use as the stderr for spawned
-	// processes.
-	SetStderrFilePath(path string)
-	// SetStdinFilePath sets the file path to use as the stdin for spawned
-	// processes.
-	SetStdinFilePath(path string)
-	// SetStdoutFilePath sets the file path to use as the stdout for spawned
-	// processes.
-	SetStdoutFilePath(path string)
-	// Setenv sets the environment variable variable in the environment of
-	// processes launched from this launcher.
-	Setenv(variable string, value string, overwrite bool)
-	// Spawnv creates a #GSubprocess given a provided array of arguments.
-	Spawnv(argv []string) (*Subprocess, error)
-	// TakeFd: transfer an arbitrary file descriptor from parent process to the
-	// child.
-	TakeFd(sourceFd int, targetFd int)
-	// TakeStderrFd sets the file descriptor to use as the stderr for spawned
-	// processes.
-	TakeStderrFd(fd int)
-	// TakeStdinFd sets the file descriptor to use as the stdin for spawned
-	// processes.
-	TakeStdinFd(fd int)
-	// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
-	// processes.
-	TakeStdoutFd(fd int)
-	// Unsetenv removes the environment variable variable from the environment
-	// of processes launched from this launcher.
-	Unsetenv(variable string)
-}
-
 // SubprocessLauncher: this class contains a set of options for launching child
 // processes, such as where its standard input and output will be directed, the
 // argument list, the environment, and more.
@@ -5229,10 +4657,7 @@ type SubprocessLauncher struct {
 	*externglib.Object
 }
 
-var (
-	_ SubprocessLauncherer = (*SubprocessLauncher)(nil)
-	_ gextras.Nativer      = (*SubprocessLauncher)(nil)
-)
+var _ gextras.Nativer = (*SubprocessLauncher)(nil)
 
 func wrapSubprocessLauncher(obj *externglib.Object) *SubprocessLauncher {
 	return &SubprocessLauncher{
@@ -5621,22 +5046,6 @@ func (self *SubprocessLauncher) Unsetenv(variable string) {
 	C.g_subprocess_launcher_unsetenv(_arg0, _arg1)
 }
 
-// TestDBuser describes TestDBus's methods.
-type TestDBuser interface {
-	// AddServiceDir: add a path where dbus-daemon will look up .service files.
-	AddServiceDir(path string)
-	// Down: stop the session bus started by g_test_dbus_up().
-	Down()
-	// BusAddress: get the address on which dbus-daemon is running.
-	BusAddress() string
-	// Flags: get the flags of the DBus object.
-	Flags() TestDBusFlags
-	// Stop the session bus started by g_test_dbus_up().
-	Stop()
-	// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS.
-	Up()
-}
-
 // TestDBus: helper class for testing code which uses D-Bus without touching the
 // user's session bus.
 //
@@ -5712,10 +5121,7 @@ type TestDBus struct {
 	*externglib.Object
 }
 
-var (
-	_ TestDBuser      = (*TestDBus)(nil)
-	_ gextras.Nativer = (*TestDBus)(nil)
-)
+var _ gextras.Nativer = (*TestDBus)(nil)
 
 func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	return &TestDBus{
@@ -5723,7 +5129,7 @@ func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	}
 }
 
-func marshalTestDBuser(p uintptr) (interface{}, error) {
+func marshalTestDBusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTestDBus(obj), nil

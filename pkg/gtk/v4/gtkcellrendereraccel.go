@@ -18,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceler},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
 	})
 }
 
@@ -39,11 +39,6 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CellRendererAcceler describes CellRendererAccel's methods.
-type CellRendererAcceler interface {
-	privateCellRendererAccel()
-}
-
 // CellRendererAccel renders a keyboard accelerator in a cell
 //
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
@@ -53,10 +48,7 @@ type CellRendererAccel struct {
 	CellRendererText
 }
 
-var (
-	_ CellRendererAcceler = (*CellRendererAccel)(nil)
-	_ gextras.Nativer     = (*CellRendererAccel)(nil)
-)
+var _ gextras.Nativer = (*CellRendererAccel)(nil)
 
 func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	return &CellRendererAccel{
@@ -70,7 +62,7 @@ func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	}
 }
 
-func marshalCellRendererAcceler(p uintptr) (interface{}, error) {
+func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererAccel(obj), nil

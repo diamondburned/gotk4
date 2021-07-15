@@ -20,6 +20,8 @@ func CanGenerate(gen types.FileGenerator, v interface{}) bool {
 }
 
 type Generator struct {
+	root interface{}
+
 	Name         string
 	CType        string
 	GLibGetType  string
@@ -34,6 +36,10 @@ type Generator struct {
 	Constructors Methods
 
 	Tree types.Tree
+
+	// Abstract is true if the generator is generating an interface or abstract
+	// class.
+	Abstract bool
 
 	methods  []gir.Method
 	virtuals []gir.VirtualMethod
@@ -92,12 +98,14 @@ func (g *Generator) init(typ interface{}) bool {
 		return false
 	}
 
+	g.root = typ
 	g.CType = resolved.CType
 	g.StructName = resolved.ImplName()
 	g.InterfaceName = resolved.PublicName()
 
 	switch typ := typ.(type) {
 	case *gir.Class:
+		g.Abstract = typ.Abstract
 		g.Name = typ.Name
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
@@ -128,6 +136,7 @@ func (g *Generator) init(typ interface{}) bool {
 		}
 
 	case *gir.Interface:
+		g.Abstract = true
 		g.Name = typ.Name
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs

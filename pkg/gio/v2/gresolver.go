@@ -96,7 +96,21 @@ type ResolverOverrider interface {
 	Reload()
 }
 
-// Resolverer describes Resolver's methods.
+// Resolver provides cancellable synchronous and asynchronous DNS resolution,
+// for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
+// and their async variants) and SRV (service) records
+// (g_resolver_lookup_service()).
+//
+// Address and Service provide wrappers around #GResolver functionality that
+// also implement Connectable, making it easy to connect to a remote
+// host/service.
+type Resolver struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Resolver)(nil)
+
+// Resolverer describes Resolver's abstract methods.
 type Resolverer interface {
 	// LookupByAddress: synchronously reverse-resolves address to determine its
 	// associated hostname.
@@ -131,22 +145,7 @@ type Resolverer interface {
 	SetDefault()
 }
 
-// Resolver provides cancellable synchronous and asynchronous DNS resolution,
-// for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
-// and their async variants) and SRV (service) records
-// (g_resolver_lookup_service()).
-//
-// Address and Service provide wrappers around #GResolver functionality that
-// also implement Connectable, making it easy to connect to a remote
-// host/service.
-type Resolver struct {
-	*externglib.Object
-}
-
-var (
-	_ Resolverer      = (*Resolver)(nil)
-	_ gextras.Nativer = (*Resolver)(nil)
-)
+var _ Resolverer = (*Resolver)(nil)
 
 func wrapResolver(obj *externglib.Object) *Resolver {
 	return &Resolver{

@@ -51,25 +51,6 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 	C.gtk_accessible_state_init_value(_arg1, _arg2)
 }
 
-// Accessibler describes Accessible's methods.
-type Accessibler interface {
-	// AccessibleRole retrieves the GtkAccessibleRole for the given
-	// GtkAccessible.
-	AccessibleRole() AccessibleRole
-	// ResetProperty resets the accessible property to its default value.
-	ResetProperty(property AccessibleProperty)
-	// ResetRelation resets the accessible relation to its default value.
-	ResetRelation(relation AccessibleRelation)
-	// ResetState resets the accessible state to its default value.
-	ResetState(state AccessibleState)
-	// UpdatePropertyValue updates an array of accessible properties.
-	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
-	// UpdateRelationValue updates an array of accessible relations.
-	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
-	// UpdateStateValue updates an array of accessible states.
-	UpdateStateValue(states []AccessibleState, values []externglib.Value)
-}
-
 // Accessible: GtkAccessible is an interface for describing UI elements for
 // Assistive Technologies.
 //
@@ -91,10 +72,28 @@ type Accessible struct {
 	*externglib.Object
 }
 
-var (
-	_ Accessibler     = (*Accessible)(nil)
-	_ gextras.Nativer = (*Accessible)(nil)
-)
+var _ gextras.Nativer = (*Accessible)(nil)
+
+// Accessibler describes Accessible's abstract methods.
+type Accessibler interface {
+	// AccessibleRole retrieves the GtkAccessibleRole for the given
+	// GtkAccessible.
+	AccessibleRole() AccessibleRole
+	// ResetProperty resets the accessible property to its default value.
+	ResetProperty(property AccessibleProperty)
+	// ResetRelation resets the accessible relation to its default value.
+	ResetRelation(relation AccessibleRelation)
+	// ResetState resets the accessible state to its default value.
+	ResetState(state AccessibleState)
+	// UpdatePropertyValue updates an array of accessible properties.
+	UpdatePropertyValue(properties []AccessibleProperty, values []externglib.Value)
+	// UpdateRelationValue updates an array of accessible relations.
+	UpdateRelationValue(relations []AccessibleRelation, values []externglib.Value)
+	// UpdateStateValue updates an array of accessible states.
+	UpdateStateValue(states []AccessibleState, values []externglib.Value)
+}
+
+var _ Accessibler = (*Accessible)(nil)
 
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{

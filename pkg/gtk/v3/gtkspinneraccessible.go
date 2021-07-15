@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// SpinnerAccessibler describes SpinnerAccessible's methods.
-type SpinnerAccessibler interface {
-	privateSpinnerAccessible()
-}
-
 type SpinnerAccessible struct {
 	WidgetAccessible
 
 	atk.Image
 }
 
-var (
-	_ SpinnerAccessibler = (*SpinnerAccessible)(nil)
-	_ gextras.Nativer    = (*SpinnerAccessible)(nil)
-)
+var _ gextras.Nativer = (*SpinnerAccessible)(nil)
 
 func wrapSpinnerAccessible(obj *externglib.Object) *SpinnerAccessible {
 	return &SpinnerAccessible{

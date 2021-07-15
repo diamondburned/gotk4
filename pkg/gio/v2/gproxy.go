@@ -58,7 +58,18 @@ type ProxyOverrider interface {
 	SupportsHostname() bool
 }
 
-// Proxier describes Proxy's methods.
+// Proxy handles connecting to a remote host via a given type of proxy server.
+// It is implemented by the 'gio-proxy' extension point. The extensions are
+// named after their proxy protocol name. As an example, a SOCKS5 proxy
+// implementation can be retrieved with the name 'socks5' using the function
+// g_io_extension_point_get_extension_by_name().
+type Proxy struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Proxy)(nil)
+
+// Proxier describes Proxy's abstract methods.
 type Proxier interface {
 	// ConnectProxier: given connection to communicate with a proxy (eg, a
 	// Connection that is connected to the proxy server), this does the
@@ -74,19 +85,7 @@ type Proxier interface {
 	SupportsHostname() bool
 }
 
-// Proxy handles connecting to a remote host via a given type of proxy server.
-// It is implemented by the 'gio-proxy' extension point. The extensions are
-// named after their proxy protocol name. As an example, a SOCKS5 proxy
-// implementation can be retrieved with the name 'socks5' using the function
-// g_io_extension_point_get_extension_by_name().
-type Proxy struct {
-	*externglib.Object
-}
-
-var (
-	_ Proxier         = (*Proxy)(nil)
-	_ gextras.Nativer = (*Proxy)(nil)
-)
+var _ Proxier = (*Proxy)(nil)
 
 func wrapProxy(obj *externglib.Object) *Proxy {
 	return &Proxy{

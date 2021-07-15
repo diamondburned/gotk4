@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymaper},
+		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymapper},
 	})
 }
 
@@ -181,36 +181,6 @@ func UnicodeToKeyval(wc uint32) uint {
 	return _guint
 }
 
-// Keymaper describes Keymap's methods.
-type Keymaper interface {
-	// CapsLockState returns whether the Caps Lock modifer is locked.
-	CapsLockState() bool
-	// Direction returns the direction of effective layout of the keymap.
-	Direction() pango.Direction
-	// EntriesForKeycode returns the keyvals bound to hardware_keycode.
-	EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool)
-	// EntriesForKeyval obtains a list of keycode/group/level combinations that
-	// will generate keyval.
-	EntriesForKeyval(keyval uint) ([]KeymapKey, bool)
-	// ModifierMask returns the modifier mask the keymap’s windowing system
-	// backend uses for a particular purpose.
-	ModifierMask(intent ModifierIntent) ModifierType
-	// ModifierState returns the current modifier state.
-	ModifierState() uint
-	// NumLockState returns whether the Num Lock modifer is locked.
-	NumLockState() bool
-	// ScrollLockState returns whether the Scroll Lock modifer is locked.
-	ScrollLockState() bool
-	// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
-	// left-to-right languages are in use.
-	HaveBidiLayouts() bool
-	// LookupKey looks up the keyval mapped to a keycode/group/level triplet.
-	LookupKey(key *KeymapKey) uint
-	// TranslateKeyboardState translates the contents of a EventKey into a
-	// keyval, effective group, and level.
-	TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool)
-}
-
 // Keymap defines the translation from keyboard state (including a hardware key,
 // a modifier mask, and active keyboard group) to a keyval. This translation has
 // two phases. The first phase is to determine the effective keyboard group and
@@ -221,10 +191,7 @@ type Keymap struct {
 	*externglib.Object
 }
 
-var (
-	_ Keymaper        = (*Keymap)(nil)
-	_ gextras.Nativer = (*Keymap)(nil)
-)
+var _ gextras.Nativer = (*Keymap)(nil)
 
 func wrapKeymap(obj *externglib.Object) *Keymap {
 	return &Keymap{
@@ -232,7 +199,7 @@ func wrapKeymap(obj *externglib.Object) *Keymap {
 	}
 }
 
-func marshalKeymaper(p uintptr) (interface{}, error) {
+func marshalKeymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapKeymap(obj), nil

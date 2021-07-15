@@ -20,61 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetuper},
+		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetupper},
 	})
-}
-
-// PageSetuper describes PageSetup's methods.
-type PageSetuper interface {
-	// Copy copies a GtkPageSetup.
-	Copy() *PageSetup
-	// BottomMargin gets the bottom margin in units of unit.
-	BottomMargin(unit Unit) float64
-	// LeftMargin gets the left margin in units of unit.
-	LeftMargin(unit Unit) float64
-	// Orientation gets the page orientation of the GtkPageSetup.
-	Orientation() PageOrientation
-	// PageHeight returns the page height in units of unit.
-	PageHeight(unit Unit) float64
-	// PageWidth returns the page width in units of unit.
-	PageWidth(unit Unit) float64
-	// PaperHeight returns the paper height in units of unit.
-	PaperHeight(unit Unit) float64
-	// PaperSize gets the paper size of the GtkPageSetup.
-	PaperSize() *PaperSize
-	// PaperWidth returns the paper width in units of unit.
-	PaperWidth(unit Unit) float64
-	// RightMargin gets the right margin in units of unit.
-	RightMargin(unit Unit) float64
-	// TopMargin gets the top margin in units of unit.
-	TopMargin(unit Unit) float64
-	// LoadFile reads the page setup from the file file_name.
-	LoadFile(fileName string) error
-	// LoadKeyFile reads the page setup from the group group_name in the key
-	// file key_file.
-	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
-	// SetBottomMargin sets the bottom margin of the GtkPageSetup.
-	SetBottomMargin(margin float64, unit Unit)
-	// SetLeftMargin sets the left margin of the GtkPageSetup.
-	SetLeftMargin(margin float64, unit Unit)
-	// SetOrientation sets the page orientation of the GtkPageSetup.
-	SetOrientation(orientation PageOrientation)
-	// SetPaperSize sets the paper size of the GtkPageSetup without changing the
-	// margins.
-	SetPaperSize(size *PaperSize)
-	// SetPaperSizeAndDefaultMargins sets the paper size of the GtkPageSetup and
-	// modifies the margins according to the new paper size.
-	SetPaperSizeAndDefaultMargins(size *PaperSize)
-	// SetRightMargin sets the right margin of the GtkPageSetup.
-	SetRightMargin(margin float64, unit Unit)
-	// SetTopMargin sets the top margin of the GtkPageSetup.
-	SetTopMargin(margin float64, unit Unit)
-	// ToFile: this function saves the information from setup to file_name.
-	ToFile(fileName string) error
-	// ToGVariant: serialize page setup to an a{sv} variant.
-	ToGVariant() *glib.Variant
-	// ToKeyFile: this function adds the page setup from setup to key_file.
-	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
 
 // PageSetup: GtkPageSetup object stores the page size, orientation and margins.
@@ -121,10 +68,7 @@ type PageSetup struct {
 	*externglib.Object
 }
 
-var (
-	_ PageSetuper     = (*PageSetup)(nil)
-	_ gextras.Nativer = (*PageSetup)(nil)
-)
+var _ gextras.Nativer = (*PageSetup)(nil)
 
 func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	return &PageSetup{
@@ -132,7 +76,7 @@ func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	}
 }
 
-func marshalPageSetuper(p uintptr) (interface{}, error) {
+func marshalPageSetupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPageSetup(obj), nil

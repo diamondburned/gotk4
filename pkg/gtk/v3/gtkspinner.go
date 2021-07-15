@@ -24,14 +24,6 @@ func init() {
 	})
 }
 
-// Spinnerer describes Spinner's methods.
-type Spinnerer interface {
-	// Start starts the animation of the spinner.
-	Start()
-	// Stop stops the animation of the spinner.
-	Stop()
-}
-
 // Spinner widget displays an icon-size spinning animation. It is often used as
 // an alternative to a ProgressBar for displaying indefinite activity, instead
 // of actual progress.
@@ -48,10 +40,7 @@ type Spinner struct {
 	Widget
 }
 
-var (
-	_ Spinnerer       = (*Spinner)(nil)
-	_ gextras.Nativer = (*Spinner)(nil)
-)
+var _ gextras.Nativer = (*Spinner)(nil)
 
 func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{

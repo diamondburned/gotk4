@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialoger},
+		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialogger},
 	})
-}
-
-// FileChooserDialoger describes FileChooserDialog's methods.
-type FileChooserDialoger interface {
-	privateFileChooserDialog()
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
@@ -183,10 +178,7 @@ type FileChooserDialog struct {
 	FileChooser
 }
 
-var (
-	_ FileChooserDialoger = (*FileChooserDialog)(nil)
-	_ gextras.Nativer     = (*FileChooserDialog)(nil)
-)
+var _ gextras.Nativer = (*FileChooserDialog)(nil)
 
 func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	return &FileChooserDialog{
@@ -215,7 +207,7 @@ func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
 	}
 }
 
-func marshalFileChooserDialoger(p uintptr) (interface{}, error) {
+func marshalFileChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserDialog(obj), nil

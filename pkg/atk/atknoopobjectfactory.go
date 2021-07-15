@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// NoOpObjectFactorier describes NoOpObjectFactory's methods.
-type NoOpObjectFactorier interface {
-	privateNoOpObjectFactory()
-}
-
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
 // instance of this is created by an AtkRegistry if no factory type has not been
 // specified to create an accessible object of a particular type.
@@ -33,10 +28,7 @@ type NoOpObjectFactory struct {
 	ObjectFactory
 }
 
-var (
-	_ NoOpObjectFactorier = (*NoOpObjectFactory)(nil)
-	_ gextras.Nativer     = (*NoOpObjectFactory)(nil)
-)
+var _ gextras.Nativer = (*NoOpObjectFactory)(nil)
 
 func wrapNoOpObjectFactory(obj *externglib.Object) *NoOpObjectFactory {
 	return &NoOpObjectFactory{

@@ -72,21 +72,6 @@ type SeekableOverrider interface {
 	TruncateFn(offset int64, cancellable *Cancellable) error
 }
 
-// Seekabler describes Seekable's methods.
-type Seekabler interface {
-	// CanSeek tests if the stream supports the Iface.
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	CanTruncate() bool
-	// Seek seeks in the stream by the given offset, modified by type.
-	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
-	// Tell tells the current position within the stream.
-	Tell() int64
-	// Truncate sets the length of the stream to offset.
-	Truncate(offset int64, cancellable *Cancellable) error
-}
-
 // Seekable is implemented by streams (implementations of Stream or Stream) that
 // support seeking.
 //
@@ -103,10 +88,24 @@ type Seekable struct {
 	*externglib.Object
 }
 
-var (
-	_ Seekabler       = (*Seekable)(nil)
-	_ gextras.Nativer = (*Seekable)(nil)
-)
+var _ gextras.Nativer = (*Seekable)(nil)
+
+// Seekabler describes Seekable's abstract methods.
+type Seekabler interface {
+	// CanSeek tests if the stream supports the Iface.
+	CanSeek() bool
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
+	CanTruncate() bool
+	// Seek seeks in the stream by the given offset, modified by type.
+	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
+	// Tell tells the current position within the stream.
+	Tell() int64
+	// Truncate sets the length of the stream to offset.
+	Truncate(offset int64, cancellable *Cancellable) error
+}
+
+var _ Seekabler = (*Seekable)(nil)
 
 func wrapSeekable(obj *externglib.Object) *Seekable {
 	return &Seekable{

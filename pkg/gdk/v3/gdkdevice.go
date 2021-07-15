@@ -99,7 +99,18 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Devicer describes Device's methods.
+// Device object represents a single input device, such as a keyboard, a mouse,
+// a touchpad, etc.
+//
+// See the DeviceManager documentation for more information about the various
+// kinds of master and slave devices, and their relationships.
+type Device struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Device)(nil)
+
+// Devicer describes Device's abstract methods.
 type Devicer interface {
 	// AssociatedDevice returns the associated device to device, if device is of
 	// type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
@@ -153,7 +164,7 @@ type Devicer interface {
 	// Grab grabs the device so that all events coming from this device are
 	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable.
-	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus
+	Grab(window Windowwer, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
 	// SetAxisUse specifies how an axis of a device is used.
 	SetAxisUse(index_ uint, use AxisUse)
 	// SetKey specifies the X key event to generate when a macro button of a
@@ -169,19 +180,7 @@ type Devicer interface {
 	Warp(screen *Screen, x int, y int)
 }
 
-// Device object represents a single input device, such as a keyboard, a mouse,
-// a touchpad, etc.
-//
-// See the DeviceManager documentation for more information about the various
-// kinds of master and slave devices, and their relationships.
-type Device struct {
-	*externglib.Object
-}
-
-var (
-	_ Devicer         = (*Device)(nil)
-	_ gextras.Nativer = (*Device)(nil)
-)
+var _ Devicer = (*Device)(nil)
 
 func wrapDevice(obj *externglib.Object) *Device {
 	return &Device{
@@ -633,7 +632,7 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_seat_grab() instead.
-func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus {
+func (device *Device) Grab(window Windowwer, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.GdkGrabOwnership // out

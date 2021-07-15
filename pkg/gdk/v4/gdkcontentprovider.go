@@ -57,22 +57,6 @@ type ContentProviderOverrider interface {
 	WriteMIMETypeFinish(result gio.AsyncResulter) error
 }
 
-// ContentProviderer describes ContentProvider's methods.
-type ContentProviderer interface {
-	// ContentChanged emits the ::content-changed signal.
-	ContentChanged()
-	// Value gets the contents of provider stored in value.
-	Value(value *externglib.Value) error
-	// RefFormats gets the formats that the provider can provide its current
-	// contents in.
-	RefFormats() *ContentFormats
-	// RefStorableFormats gets the formats that the provider suggests other
-	// applications to store the data in.
-	RefStorableFormats() *ContentFormats
-	// WriteMIMETypeFinish finishes an asynchronous write operation.
-	WriteMIMETypeFinish(result gio.AsyncResulter) error
-}
-
 // ContentProvider: GdkContentProvider is used to provide content for the
 // clipboard or for drag-and-drop operations in a number of formats.
 //
@@ -86,10 +70,7 @@ type ContentProvider struct {
 	*externglib.Object
 }
 
-var (
-	_ ContentProviderer = (*ContentProvider)(nil)
-	_ gextras.Nativer   = (*ContentProvider)(nil)
-)
+var _ gextras.Nativer = (*ContentProvider)(nil)
 
 func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{

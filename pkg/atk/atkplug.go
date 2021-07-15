@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPluger},
+		{T: externglib.Type(C.atk_plug_get_type()), F: marshalPlugger},
 	})
 }
 
@@ -29,16 +29,6 @@ type PlugOverrider interface {
 	ObjectID() string
 }
 
-// Pluger describes Plug's methods.
-type Pluger interface {
-	// ID gets the unique ID of an Plug object, which can be used to embed
-	// inside of an Socket using atk_socket_embed().
-	ID() string
-	// SetChild sets child as accessible child of plug and plug as accessible
-	// parent of child.
-	SetChild(child *ObjectClass)
-}
-
 // Plug: see Socket
 type Plug struct {
 	ObjectClass
@@ -46,10 +36,7 @@ type Plug struct {
 	Component
 }
 
-var (
-	_ Pluger          = (*Plug)(nil)
-	_ gextras.Nativer = (*Plug)(nil)
-)
+var _ gextras.Nativer = (*Plug)(nil)
 
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
@@ -62,7 +49,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 	}
 }
 
-func marshalPluger(p uintptr) (interface{}, error) {
+func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlug(obj), nil

@@ -24,31 +24,6 @@ func init() {
 	})
 }
 
-// TreeModelSorter describes TreeModelSort's methods.
-type TreeModelSorter interface {
-	// ClearCache: this function should almost never be called.
-	ClearCache()
-	// ConvertChildIterToIter sets sort_iter to point to the row in
-	// tree_model_sort that corresponds to the row pointed at by child_iter.
-	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
-	// ConvertChildPathToPath converts child_path to a path relative to
-	// tree_model_sort.
-	ConvertChildPathToPath(childPath *TreePath) *TreePath
-	// ConvertIterToChildIter sets child_iter to point to the row pointed to by
-	// sorted_iter.
-	ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
-	// ConvertPathToChildPath converts sorted_path to a path on the child model
-	// of tree_model_sort.
-	ConvertPathToChildPath(sortedPath *TreePath) *TreePath
-	// Model returns the model the TreeModelSort is sorting.
-	Model() *TreeModel
-	// IterIsValid: > This function is slow.
-	IterIsValid(iter *TreeIter) bool
-	// ResetDefaultSortFunc: this resets the default sort function to be in the
-	// “unsorted” state.
-	ResetDefaultSortFunc()
-}
-
 // TreeModelSort is a model which implements the TreeSortable interface. It does
 // not hold any data itself, but rather is created with a child model and
 // proxies its data. It has identical column types to this child model, and the
@@ -111,10 +86,7 @@ type TreeModelSort struct {
 	TreeSortable
 }
 
-var (
-	_ TreeModelSorter = (*TreeModelSort)(nil)
-	_ gextras.Nativer = (*TreeModelSort)(nil)
-)
+var _ gextras.Nativer = (*TreeModelSort)(nil)
 
 func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
 	return &TreeModelSort{
@@ -138,7 +110,7 @@ func marshalTreeModelSorter(p uintptr) (interface{}, error) {
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with child_model as
 // the child model.
-func NewTreeModelSortWithModel(childModel TreeModeler) *TreeModelSort {
+func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 

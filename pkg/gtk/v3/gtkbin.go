@@ -20,15 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBiner},
+		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBinner},
 	})
-}
-
-// Biner describes Bin's methods.
-type Biner interface {
-	// Child gets the child of the Bin, or NULL if the bin contains no child
-	// widget.
-	Child() *Widget
 }
 
 // Bin widget is a container with just one child. It is not very useful itself,
@@ -41,10 +34,16 @@ type Bin struct {
 	Container
 }
 
-var (
-	_ Biner           = (*Bin)(nil)
-	_ gextras.Nativer = (*Bin)(nil)
-)
+var _ gextras.Nativer = (*Bin)(nil)
+
+// Binner describes Bin's abstract methods.
+type Binner interface {
+	// Child gets the child of the Bin, or NULL if the bin contains no child
+	// widget.
+	Child() *Widget
+}
+
+var _ Binner = (*Bin)(nil)
 
 func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{
@@ -64,7 +63,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 	}
 }
 
-func marshalBiner(p uintptr) (interface{}, error) {
+func marshalBinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBin(obj), nil

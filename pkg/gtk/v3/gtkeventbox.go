@@ -20,23 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBoxer},
+		{T: externglib.Type(C.gtk_event_box_get_type()), F: marshalEventBoxxer},
 	})
-}
-
-// EventBoxer describes EventBox's methods.
-type EventBoxer interface {
-	// AboveChild returns whether the event box window is above or below the
-	// windows of its child.
-	AboveChild() bool
-	// VisibleWindow returns whether the event box has a visible window.
-	VisibleWindow() bool
-	// SetAboveChild: set whether the event box window is positioned above the
-	// windows of its child, as opposed to below it.
-	SetAboveChild(aboveChild bool)
-	// SetVisibleWindow: set whether the event box uses a visible or invisible
-	// child window.
-	SetVisibleWindow(visibleWindow bool)
 }
 
 // EventBox widget is a subclass of Bin which also has its own window. It is
@@ -46,10 +31,7 @@ type EventBox struct {
 	Bin
 }
 
-var (
-	_ EventBoxer      = (*EventBox)(nil)
-	_ gextras.Nativer = (*EventBox)(nil)
-)
+var _ gextras.Nativer = (*EventBox)(nil)
 
 func wrapEventBox(obj *externglib.Object) *EventBox {
 	return &EventBox{
@@ -71,7 +53,7 @@ func wrapEventBox(obj *externglib.Object) *EventBox {
 	}
 }
 
-func marshalEventBoxer(p uintptr) (interface{}, error) {
+func marshalEventBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventBox(obj), nil

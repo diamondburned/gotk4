@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// CellRendererCombor describes CellRendererCombo's methods.
-type CellRendererCombor interface {
-	privateCellRendererCombo()
-}
-
 // CellRendererCombo renders a combobox in a cell
 //
 // CellRendererCombo renders text in a cell like CellRendererText from which it
@@ -42,10 +37,7 @@ type CellRendererCombo struct {
 	CellRendererText
 }
 
-var (
-	_ CellRendererCombor = (*CellRendererCombo)(nil)
-	_ gextras.Nativer    = (*CellRendererCombo)(nil)
-)
+var _ gextras.Nativer = (*CellRendererCombo)(nil)
 
 func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
 	return &CellRendererCombo{

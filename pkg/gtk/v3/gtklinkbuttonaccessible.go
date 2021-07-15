@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// LinkButtonAccessibler describes LinkButtonAccessible's methods.
-type LinkButtonAccessibler interface {
-	privateLinkButtonAccessible()
-}
-
 type LinkButtonAccessible struct {
 	ButtonAccessible
 
 	atk.HyperlinkImpl
 }
 
-var (
-	_ LinkButtonAccessibler = (*LinkButtonAccessible)(nil)
-	_ gextras.Nativer       = (*LinkButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*LinkButtonAccessible)(nil)
 
 func wrapLinkButtonAccessible(obj *externglib.Object) *LinkButtonAccessible {
 	return &LinkButtonAccessible{

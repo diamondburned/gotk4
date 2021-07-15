@@ -34,65 +34,6 @@ type RangeOverrider interface {
 	ValueChanged()
 }
 
-// Ranger describes Range's methods.
-type Ranger interface {
-	// Adjustment: get the adjustment which is the “model” object for GtkRange.
-	Adjustment() *Adjustment
-	// FillLevel gets the current position of the fill level indicator.
-	FillLevel() float64
-	// Flippable gets whether the GtkRange respects text direction.
-	Flippable() bool
-	// Inverted gets whether the range is inverted.
-	Inverted() bool
-	// RangeRect: this function returns the area that contains the range’s
-	// trough, in coordinates relative to range's origin.
-	RangeRect() gdk.Rectangle
-	// RestrictToFillLevel gets whether the range is restricted to the fill
-	// level.
-	RestrictToFillLevel() bool
-	// RoundDigits gets the number of digits to round the value to when it
-	// changes.
-	RoundDigits() int
-	// ShowFillLevel gets whether the range displays the fill level graphically.
-	ShowFillLevel() bool
-	// SliderRange: this function returns sliders range along the long
-	// dimension, in widget->window coordinates.
-	SliderRange() (sliderStart int, sliderEnd int)
-	// SliderSizeFixed: this function is useful mainly for GtkRange subclasses.
-	SliderSizeFixed() bool
-	// Value gets the current value of the range.
-	Value() float64
-	// SetAdjustment sets the adjustment to be used as the “model” object for
-	// the GtkRange The adjustment indicates the current range value, the
-	// minimum and maximum range values, the step/page increments used for
-	// keybindings and scrolling, and the page size.
-	SetAdjustment(adjustment *Adjustment)
-	// SetFillLevel: set the new position of the fill level indicator.
-	SetFillLevel(fillLevel float64)
-	// SetFlippable sets whether the GtkRange respects text direction.
-	SetFlippable(flippable bool)
-	// SetIncrements sets the step and page sizes for the range.
-	SetIncrements(step float64, page float64)
-	// SetInverted sets whether to invert the range.
-	SetInverted(setting bool)
-	// SetRange sets the allowable values in the GtkRange.
-	SetRange(min float64, max float64)
-	// SetRestrictToFillLevel sets whether the slider is restricted to the fill
-	// level.
-	SetRestrictToFillLevel(restrictToFillLevel bool)
-	// SetRoundDigits sets the number of digits to round the value to when it
-	// changes.
-	SetRoundDigits(roundDigits int)
-	// SetShowFillLevel sets whether a graphical fill level is show on the
-	// trough.
-	SetShowFillLevel(showFillLevel bool)
-	// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
-	// size that depends on its adjustment’s page size.
-	SetSliderSizeFixed(sizeFixed bool)
-	// SetValue sets the current value of the range.
-	SetValue(value float64)
-}
-
 // Range: GtkRange is the common base class for widgets which visualize an
 // adjustment.
 //
@@ -107,10 +48,7 @@ type Range struct {
 	Orientable
 }
 
-var (
-	_ Ranger          = (*Range)(nil)
-	_ gextras.Nativer = (*Range)(nil)
-)
+var _ gextras.Nativer = (*Range)(nil)
 
 func wrapRange(obj *externglib.Object) *Range {
 	return &Range{

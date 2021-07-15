@@ -117,7 +117,37 @@ type TableOverrider interface {
 	SetSummary(accessible *ObjectClass)
 }
 
-// Tabler describes Table's methods.
+// Table should be implemented by components which present elements ordered via
+// rows and columns. It may also be used to present tree-structured information
+// if the nodes of the trees can be said to contain multiple "columns".
+// Individual elements of an Table are typically referred to as "cells". Those
+// cells should implement the interface TableCell, but #Atk doesn't require them
+// to be direct children of the current Table. They can be grand-children,
+// grand-grand-children etc. Table provides the API needed to get a individual
+// cell based on the row and column numbers.
+//
+// Children of Table are frequently "lightweight" objects, that is, they may not
+// have backing widgets in the host UI toolkit. They are therefore often
+// transient.
+//
+// Since tables are often very complex, Table includes provision for offering
+// simplified summary information, as well as row and column headers and
+// captions. Headers and captions are Objects which may implement other
+// interfaces (Text, Image, etc.) as appropriate. Table summaries may themselves
+// be (simplified) Tables, etc.
+//
+// Note for implementors: in the past, Table required that all the cells should
+// be direct children of Table, and provided some index based methods to request
+// the cells. The practice showed that that forcing made Table implementation
+// complex, and hard to expose other kind of children, like rows or captions.
+// Right now, index-based methods are deprecated.
+type Table struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Table)(nil)
+
+// Tabler describes Table's abstract methods.
 type Tabler interface {
 	// AddColumnSelection adds the specified column to the selection.
 	AddColumnSelection(column int) bool
@@ -193,38 +223,7 @@ type Tabler interface {
 	SetSummary(accessible *ObjectClass)
 }
 
-// Table should be implemented by components which present elements ordered via
-// rows and columns. It may also be used to present tree-structured information
-// if the nodes of the trees can be said to contain multiple "columns".
-// Individual elements of an Table are typically referred to as "cells". Those
-// cells should implement the interface TableCell, but #Atk doesn't require them
-// to be direct children of the current Table. They can be grand-children,
-// grand-grand-children etc. Table provides the API needed to get a individual
-// cell based on the row and column numbers.
-//
-// Children of Table are frequently "lightweight" objects, that is, they may not
-// have backing widgets in the host UI toolkit. They are therefore often
-// transient.
-//
-// Since tables are often very complex, Table includes provision for offering
-// simplified summary information, as well as row and column headers and
-// captions. Headers and captions are Objects which may implement other
-// interfaces (Text, Image, etc.) as appropriate. Table summaries may themselves
-// be (simplified) Tables, etc.
-//
-// Note for implementors: in the past, Table required that all the cells should
-// be direct children of Table, and provided some index based methods to request
-// the cells. The practice showed that that forcing made Table implementation
-// complex, and hard to expose other kind of children, like rows or captions.
-// Right now, index-based methods are deprecated.
-type Table struct {
-	*externglib.Object
-}
-
-var (
-	_ Tabler          = (*Table)(nil)
-	_ gextras.Nativer = (*Table)(nil)
-)
+var _ Tabler = (*Table)(nil)
 
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{

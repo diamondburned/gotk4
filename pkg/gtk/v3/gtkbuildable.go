@@ -66,7 +66,25 @@ type BuildableOverrider interface {
 	SetName(name string)
 }
 
-// Buildabler describes Buildable's methods.
+// Buildable allows objects to extend and customize their deserialization from
+// [GtkBuilder UI descriptions][BUILDER-UI]. The interface includes methods for
+// setting names and properties of objects, parsing custom tags and constructing
+// child objects.
+//
+// The GtkBuildable interface is implemented by all widgets and many of the
+// non-widget objects that are provided by GTK+. The main user of this interface
+// is Builder. There should be very little need for applications to call any of
+// these functions directly.
+//
+// An object only needs to implement this interface if it needs to extend the
+// Builder format or run any extra routines at deserialization time.
+type Buildable struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Buildable)(nil)
+
+// Buildabler describes Buildable's abstract methods.
 type Buildabler interface {
 	// AddChild adds a child to buildable.
 	AddChild(builder *Builder, child *externglib.Object, typ string)
@@ -95,26 +113,7 @@ type Buildabler interface {
 	SetName(name string)
 }
 
-// Buildable allows objects to extend and customize their deserialization from
-// [GtkBuilder UI descriptions][BUILDER-UI]. The interface includes methods for
-// setting names and properties of objects, parsing custom tags and constructing
-// child objects.
-//
-// The GtkBuildable interface is implemented by all widgets and many of the
-// non-widget objects that are provided by GTK+. The main user of this interface
-// is Builder. There should be very little need for applications to call any of
-// these functions directly.
-//
-// An object only needs to implement this interface if it needs to extend the
-// Builder format or run any extra routines at deserialization time.
-type Buildable struct {
-	*externglib.Object
-}
-
-var (
-	_ Buildabler      = (*Buildable)(nil)
-	_ gextras.Nativer = (*Buildable)(nil)
-)
+var _ Buildabler = (*Buildable)(nil)
 
 func wrapBuildable(obj *externglib.Object) *Buildable {
 	return &Buildable{

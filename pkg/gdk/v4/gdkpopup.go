@@ -17,12 +17,24 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopuper},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopupper},
 	})
 }
 
-// Popuper describes Popup's methods.
-type Popuper interface {
+// Popup: GdkPopup is a surface that is attached to another surface.
+//
+// The GdkPopup is positioned relative to its parent surface.
+//
+// GdkPopups are typically used to implement menus and similar popups. They can
+// be modal, which is indicated by the gdkpopup:autohide property.
+type Popup struct {
+	Surface
+}
+
+var _ gextras.Nativer = (*Popup)(nil)
+
+// Popupper describes Popup's abstract methods.
+type Popupper interface {
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
 	// Parent returns the parent surface of a popup.
@@ -39,20 +51,7 @@ type Popuper interface {
 	Present(width int, height int, layout *PopupLayout) bool
 }
 
-// Popup: GdkPopup is a surface that is attached to another surface.
-//
-// The GdkPopup is positioned relative to its parent surface.
-//
-// GdkPopups are typically used to implement menus and similar popups. They can
-// be modal, which is indicated by the gdkpopup:autohide property.
-type Popup struct {
-	Surface
-}
-
-var (
-	_ Popuper         = (*Popup)(nil)
-	_ gextras.Nativer = (*Popup)(nil)
-)
+var _ Popupper = (*Popup)(nil)
 
 func wrapPopup(obj *externglib.Object) *Popup {
 	return &Popup{
@@ -62,7 +61,7 @@ func wrapPopup(obj *externglib.Object) *Popup {
 	}
 }
 
-func marshalPopuper(p uintptr) (interface{}, error) {
+func marshalPopupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPopup(obj), nil

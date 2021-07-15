@@ -31,24 +31,6 @@ func init() {
 	})
 }
 
-// DBusObjectManagerServerer describes DBusObjectManagerServer's methods.
-type DBusObjectManagerServerer interface {
-	// Export exports object on manager.
-	Export(object *DBusObjectSkeleton)
-	// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
-	// string of the form _N (with N being a natural number) to object's object
-	// path if an object with the given path already exists.
-	ExportUniquely(object *DBusObjectSkeleton)
-	// Connection gets the BusConnection used by manager.
-	Connection() *DBusConnection
-	// IsExported returns whether object is currently exported on manager.
-	IsExported(object *DBusObjectSkeleton) bool
-	// SetConnection exports all objects managed by manager on connection.
-	SetConnection(connection *DBusConnection)
-	// Unexport: if manager has an object at path, removes the object.
-	Unexport(objectPath string) bool
-}
-
 // DBusObjectManagerServer is used to export BusObject instances using the
 // standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
@@ -75,10 +57,7 @@ type DBusObjectManagerServer struct {
 	DBusObjectManager
 }
 
-var (
-	_ DBusObjectManagerServerer = (*DBusObjectManagerServer)(nil)
-	_ gextras.Nativer           = (*DBusObjectManagerServer)(nil)
-)
+var _ gextras.Nativer = (*DBusObjectManagerServer)(nil)
 
 func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServer {
 	return &DBusObjectManagerServer{

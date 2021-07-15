@@ -54,32 +54,6 @@ type EntryBufferOverrider interface {
 	InsertedText(position uint, chars string, nChars uint)
 }
 
-// EntryBufferer describes EntryBuffer's methods.
-type EntryBufferer interface {
-	// DeleteText deletes a sequence of characters from the buffer.
-	DeleteText(position uint, nChars int) uint
-	// EmitDeletedText: used when subclassing EntryBuffer
-	EmitDeletedText(position uint, nChars uint)
-	// EmitInsertedText: used when subclassing EntryBuffer
-	EmitInsertedText(position uint, chars string, nChars uint)
-	// Bytes retrieves the length in bytes of the buffer.
-	Bytes() uint
-	// Length retrieves the length in characters of the buffer.
-	Length() uint
-	// MaxLength retrieves the maximum allowed length of the text in buffer.
-	MaxLength() int
-	// Text retrieves the contents of the buffer.
-	Text() string
-	// InsertText inserts n_chars characters of chars into the contents of the
-	// buffer, at position position.
-	InsertText(position uint, chars string, nChars int) uint
-	// SetMaxLength sets the maximum allowed length of the contents of the
-	// buffer.
-	SetMaxLength(maxLength int)
-	// SetText sets the text in the buffer.
-	SetText(chars string, nChars int)
-}
-
 // EntryBuffer class contains the actual text displayed in a Entry widget.
 //
 // A single EntryBuffer object can be shared by multiple Entry widgets which
@@ -94,10 +68,7 @@ type EntryBuffer struct {
 	*externglib.Object
 }
 
-var (
-	_ EntryBufferer   = (*EntryBuffer)(nil)
-	_ gextras.Nativer = (*EntryBuffer)(nil)
-)
+var _ gextras.Nativer = (*EntryBuffer)(nil)
 
 func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
 	return &EntryBuffer{

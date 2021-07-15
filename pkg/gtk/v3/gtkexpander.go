@@ -32,54 +32,6 @@ type ExpanderOverrider interface {
 	Activate()
 }
 
-// Expanderer describes Expander's methods.
-type Expanderer interface {
-	// Expanded queries a Expander and returns its current state.
-	Expanded() bool
-	// Label fetches the text from a label widget including any embedded
-	// underlines indicating mnemonics and Pango markup, as set by
-	// gtk_expander_set_label().
-	Label() string
-	// LabelFill returns whether the label widget will fill all available
-	// horizontal space allocated to expander.
-	LabelFill() bool
-	// LabelWidget retrieves the label widget for the frame.
-	LabelWidget() *Widget
-	// ResizeToplevel returns whether the expander will resize the toplevel
-	// widget containing the expander upon resizing and collpasing.
-	ResizeToplevel() bool
-	// Spacing gets the value set by gtk_expander_set_spacing().
-	Spacing() int
-	// UseMarkup returns whether the label’s text is interpreted as marked up
-	// with the [Pango text markup language][PangoMarkupFormat].
-	UseMarkup() bool
-	// UseUnderline returns whether an embedded underline in the expander label
-	// indicates a mnemonic.
-	UseUnderline() bool
-	// SetExpanded sets the state of the expander.
-	SetExpanded(expanded bool)
-	// SetLabel sets the text of the label of the expander to label.
-	SetLabel(label string)
-	// SetLabelFill sets whether the label widget should fill all available
-	// horizontal space allocated to expander.
-	SetLabelFill(labelFill bool)
-	// SetLabelWidget: set the label widget for the expander.
-	SetLabelWidget(labelWidget Widgeter)
-	// SetResizeToplevel sets whether the expander will resize the toplevel
-	// widget containing the expander upon resizing and collpasing.
-	SetResizeToplevel(resizeToplevel bool)
-	// SetSpacing sets the spacing field of expander, which is the number of
-	// pixels to place between expander and the child.
-	SetSpacing(spacing int)
-	// SetUseMarkup sets whether the text of the label contains markup in
-	// [Pango’s text markup language][PangoMarkupFormat].
-	SetUseMarkup(useMarkup bool)
-	// SetUseUnderline: if true, an underline in the text of the expander label
-	// indicates the next character should be used for the mnemonic accelerator
-	// key.
-	SetUseUnderline(useUnderline bool)
-}
-
 // Expander allows the user to hide or show its child by clicking on an expander
 // triangle similar to the triangles used in a TreeView.
 //
@@ -111,10 +63,7 @@ type Expander struct {
 	Bin
 }
 
-var (
-	_ Expanderer      = (*Expander)(nil)
-	_ gextras.Nativer = (*Expander)(nil)
-)
+var _ gextras.Nativer = (*Expander)(nil)
 
 func wrapExpander(obj *externglib.Object) *Expander {
 	return &Expander{
@@ -383,7 +332,7 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 
 // SetLabelWidget: set the label widget for the expander. This is the widget
 // that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

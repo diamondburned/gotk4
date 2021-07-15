@@ -19,20 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrager},
+		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDragger},
 	})
-}
-
-// GestureDrager describes GestureDrag's methods.
-type GestureDrager interface {
-	// Offset: if the gesture is active, this function returns TRUE and fills in
-	// x and y with the coordinates of the current point, as an offset to the
-	// starting drag point.
-	Offset() (x float64, y float64, ok bool)
-	// StartPoint: if the gesture is active, this function returns TRUE and
-	// fills in x and y with the drag start coordinates, in window-relative
-	// coordinates.
-	StartPoint() (x float64, y float64, ok bool)
 }
 
 // GestureDrag is a Gesture implementation that recognizes drag operations. The
@@ -44,10 +32,7 @@ type GestureDrag struct {
 	GestureSingle
 }
 
-var (
-	_ GestureDrager   = (*GestureDrag)(nil)
-	_ gextras.Nativer = (*GestureDrag)(nil)
-)
+var _ gextras.Nativer = (*GestureDrag)(nil)
 
 func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	return &GestureDrag{
@@ -61,14 +46,14 @@ func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	}
 }
 
-func marshalGestureDrager(p uintptr) (interface{}, error) {
+func marshalGestureDragger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGestureDrag(obj), nil
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
-func NewGestureDrag(widget Widgeter) *GestureDrag {
+func NewGestureDrag(widget Widgetter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

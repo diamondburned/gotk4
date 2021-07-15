@@ -37,7 +37,7 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-	ConnectProxy(proxy Widgeter)
+	ConnectProxy(proxy Widgetter)
 	// CreateMenu: if action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
@@ -57,121 +57,7 @@ type ActionOverrider interface {
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
 	CreateToolItem() *Widget
-	DisconnectProxy(proxy Widgeter)
-}
-
-// Actioner describes Action's methods.
-type Actioner interface {
-	// Activate emits the “activate” signal on the specified action, if it isn't
-	// insensitive.
-	Activate()
-	// BlockActivate: disable activation signals from the action This is needed
-	// when updating the state of your proxy Activatable widget could result in
-	// calling gtk_action_activate(), this is a convenience function to avoid
-	// recursing in those cases (updating toggle state for instance).
-	BlockActivate()
-	// ConnectAccelerator installs the accelerator for action if action has an
-	// accel path and group.
-	ConnectAccelerator()
-	// CreateIcon: this function is intended for use by action implementations
-	// to create icons displayed in the proxy widgets.
-	CreateIcon(iconSize int) *Widget
-	// CreateMenu: if action provides a Menu widget as a submenu for the menu
-	// item or the toolbar item it creates, this function returns an instance of
-	// that menu.
-	CreateMenu() *Widget
-	// CreateMenuItem creates a menu item widget that proxies for the given
-	// action.
-	CreateMenuItem() *Widget
-	// CreateToolItem creates a toolbar item widget that proxies for the given
-	// action.
-	CreateToolItem() *Widget
-	// DisconnectAccelerator undoes the effect of one call to
-	// gtk_action_connect_accelerator().
-	DisconnectAccelerator()
-	// AccelPath returns the accel path for this action.
-	AccelPath() string
-	// AlwaysShowImage returns whether action's menu item proxies will always
-	// show their image, if available.
-	AlwaysShowImage() bool
-	// GIcon gets the gicon of action.
-	GIcon() *gio.Icon
-	// IconName gets the icon name of action.
-	IconName() string
-	// IsImportant checks whether action is important or not Deprecated: Use
-	// #GAction instead, and control and monitor whether labels are shown
-	// directly.
-	IsImportant() bool
-	// Label gets the label text of action.
-	Label() string
-	// Name returns the name of the action.
-	Name() string
-	// Sensitive returns whether the action itself is sensitive.
-	Sensitive() bool
-	// ShortLabel gets the short label text of action.
-	ShortLabel() string
-	// StockID gets the stock id of action.
-	StockID() string
-	// Tooltip gets the tooltip text of action.
-	Tooltip() string
-	// Visible returns whether the action itself is visible.
-	Visible() bool
-	// VisibleHorizontal checks whether action is visible when horizontal
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	VisibleHorizontal() bool
-	// VisibleVertical checks whether action is visible when horizontal
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	VisibleVertical() bool
-	// IsSensitive returns whether the action is effectively sensitive.
-	IsSensitive() bool
-	// IsVisible returns whether the action is effectively visible.
-	IsVisible() bool
-	// SetAccelGroup sets the AccelGroup in which the accelerator for this
-	// action will be installed.
-	SetAccelGroup(accelGroup *AccelGroup)
-	// SetAccelPath sets the accel path for this action.
-	SetAccelPath(accelPath string)
-	// SetAlwaysShowImage sets whether action's menu item proxies will ignore
-	// the Settings:gtk-menu-images setting and always show their image, if
-	// available.
-	SetAlwaysShowImage(alwaysShow bool)
-	// SetGIcon sets the icon of action.
-	SetGIcon(icon gio.Iconer)
-	// SetIconName sets the icon name on action Deprecated: Use #GAction
-	// instead, and g_menu_item_set_icon() to set an icon on a Item associated
-	// with a #GAction, or gtk_container_add() to add a Image to a Button.
-	SetIconName(iconName string)
-	// SetIsImportant sets whether the action is important, this attribute is
-	// used primarily by toolbar items to decide whether to show a label or not.
-	SetIsImportant(isImportant bool)
-	// SetLabel sets the label of action.
-	SetLabel(label string)
-	// SetSensitive sets the :sensitive property of the action to sensitive.
-	SetSensitive(sensitive bool)
-	// SetShortLabel sets a shorter label text on action.
-	SetShortLabel(shortLabel string)
-	// SetStockID sets the stock id on action Deprecated: Use #GAction instead,
-	// which has no equivalent of stock items.
-	SetStockID(stockId string)
-	// SetTooltip sets the tooltip text on action Deprecated: Use #GAction
-	// instead, and set tooltips on associated Actionable widgets with
-	// gtk_widget_set_tooltip_text().
-	SetTooltip(tooltip string)
-	// SetVisible sets the :visible property of the action to visible.
-	SetVisible(visible bool)
-	// SetVisibleHorizontal sets whether action is visible when horizontal
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	SetVisibleHorizontal(visibleHorizontal bool)
-	// SetVisibleVertical sets whether action is visible when vertical
-	// Deprecated: Use #GAction instead, and control and monitor the visibility
-	// of associated widgets and menu items directly.
-	SetVisibleVertical(visibleVertical bool)
-	// UnblockActivate: reenable activation signals from the action Deprecated:
-	// Use g_simple_action_set_enabled() to enable the Action instead.
-	UnblockActivate()
+	DisconnectProxy(proxy Widgetter)
 }
 
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
@@ -223,10 +109,7 @@ type Action struct {
 	Buildable
 }
 
-var (
-	_ Actioner        = (*Action)(nil)
-	_ gextras.Nativer = (*Action)(nil)
-)
+var _ gextras.Nativer = (*Action)(nil)
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{
@@ -798,7 +681,7 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
-func (action *Action) SetGIcon(icon gio.Iconer) {
+func (action *Action) SetGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
 

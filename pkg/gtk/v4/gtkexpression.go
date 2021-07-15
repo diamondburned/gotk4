@@ -105,20 +105,12 @@ func ValueTakeExpression(value *externglib.Value, expression Expressioner) {
 	C.gtk_value_take_expression(_arg1, _arg2)
 }
 
-// CClosureExpressioner describes CClosureExpression's methods.
-type CClosureExpressioner interface {
-	privateCClosureExpression()
-}
-
 // CClosureExpression: variant of GtkClosureExpression using a C closure.
 type CClosureExpression struct {
 	Expression
 }
 
-var (
-	_ CClosureExpressioner = (*CClosureExpression)(nil)
-	_ gextras.Nativer      = (*CClosureExpression)(nil)
-)
+var _ gextras.Nativer = (*CClosureExpression)(nil)
 
 func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
 	return &CClosureExpression{
@@ -136,21 +128,13 @@ func marshalCClosureExpressioner(p uintptr) (interface{}, error) {
 
 func (*CClosureExpression) privateCClosureExpression() {}
 
-// ClosureExpressioner describes ClosureExpression's methods.
-type ClosureExpressioner interface {
-	privateClosureExpression()
-}
-
 // ClosureExpression: expression using a custom GClosure to compute the value
 // from its parameters.
 type ClosureExpression struct {
 	Expression
 }
 
-var (
-	_ ClosureExpressioner = (*ClosureExpression)(nil)
-	_ gextras.Nativer     = (*ClosureExpression)(nil)
-)
+var _ gextras.Nativer = (*ClosureExpression)(nil)
 
 func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
 	return &ClosureExpression{
@@ -168,21 +152,12 @@ func marshalClosureExpressioner(p uintptr) (interface{}, error) {
 
 func (*ClosureExpression) privateClosureExpression() {}
 
-// ConstantExpressioner describes ConstantExpression's methods.
-type ConstantExpressioner interface {
-	// Value gets the value that a constant expression evaluates to.
-	Value() *externglib.Value
-}
-
 // ConstantExpression: constant value in a GtkExpression.
 type ConstantExpression struct {
 	Expression
 }
 
-var (
-	_ ConstantExpressioner = (*ConstantExpression)(nil)
-	_ gextras.Nativer      = (*ConstantExpression)(nil)
-)
+var _ gextras.Nativer = (*ConstantExpression)(nil)
 
 func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
 	return &ConstantExpression{
@@ -229,26 +204,6 @@ func (expression *ConstantExpression) Value() *externglib.Value {
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
 	return _value
-}
-
-// Expressioner describes Expression's methods.
-type Expressioner interface {
-	// Bind target's property named property to self.
-	Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch
-	// Evaluate evaluates the given expression and on success stores the result
-	// in value.
-	Evaluate(this_ *externglib.Object, value *externglib.Value) bool
-	// ValueType gets the GType that this expression evaluates to.
-	ValueType() externglib.Type
-	// IsStatic checks if the expression is static.
-	IsStatic() bool
-	// Ref acquires a reference on the given GtkExpression.
-	ref() *Expression
-	// Unref releases a reference on the given GtkExpression.
-	unref()
-	// Watch installs a watch for the given expression that calls the notify
-	// function whenever the evaluation of self may have changed.
-	Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch
 }
 
 // Expression: GtkExpression provides a way to describe references to values.
@@ -376,10 +331,29 @@ type Expression struct {
 	*externglib.Object
 }
 
-var (
-	_ Expressioner    = (*Expression)(nil)
-	_ gextras.Nativer = (*Expression)(nil)
-)
+var _ gextras.Nativer = (*Expression)(nil)
+
+// Expressioner describes Expression's abstract methods.
+type Expressioner interface {
+	// Bind target's property named property to self.
+	Bind(target *externglib.Object, property string, this_ *externglib.Object) *ExpressionWatch
+	// Evaluate evaluates the given expression and on success stores the result
+	// in value.
+	Evaluate(this_ *externglib.Object, value *externglib.Value) bool
+	// ValueType gets the GType that this expression evaluates to.
+	ValueType() externglib.Type
+	// IsStatic checks if the expression is static.
+	IsStatic() bool
+	// Ref acquires a reference on the given GtkExpression.
+	ref() *Expression
+	// Unref releases a reference on the given GtkExpression.
+	unref()
+	// Watch installs a watch for the given expression that calls the notify
+	// function whenever the evaluation of self may have changed.
+	Watch(this_ *externglib.Object, notify ExpressionNotify) *ExpressionWatch
+}
+
+var _ Expressioner = (*Expression)(nil)
 
 func wrapExpression(obj *externglib.Object) *Expression {
 	return &Expression{
@@ -560,21 +534,12 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 	return _expressionWatch
 }
 
-// ObjectExpressioner describes ObjectExpression's methods.
-type ObjectExpressioner interface {
-	// Object gets the object that the expression evaluates to.
-	Object() *externglib.Object
-}
-
 // ObjectExpression: GObject value in a GtkExpression.
 type ObjectExpression struct {
 	Expression
 }
 
-var (
-	_ ObjectExpressioner = (*ObjectExpression)(nil)
-	_ gextras.Nativer    = (*ObjectExpression)(nil)
-)
+var _ gextras.Nativer = (*ObjectExpression)(nil)
 
 func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
 	return &ObjectExpression{
@@ -629,22 +594,12 @@ func (expression *ObjectExpression) Object() *externglib.Object {
 	return _object
 }
 
-// PropertyExpressioner describes PropertyExpression's methods.
-type PropertyExpressioner interface {
-	// GetExpression gets the expression specifying the object of a property
-	// expression.
-	GetExpression() *Expression
-}
-
 // PropertyExpression: GObject property value in a GtkExpression.
 type PropertyExpression struct {
 	Expression
 }
 
-var (
-	_ PropertyExpressioner = (*PropertyExpression)(nil)
-	_ gextras.Nativer      = (*PropertyExpression)(nil)
-)
+var _ gextras.Nativer = (*PropertyExpression)(nil)
 
 func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
 	return &PropertyExpression{

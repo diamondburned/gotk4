@@ -18,19 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStyluser},
+		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylusser},
 	})
-}
-
-// GestureStyluser describes GestureStylus's methods.
-type GestureStyluser interface {
-	// Axis returns the current value for the requested axis.
-	Axis(axis gdk.AxisUse) (float64, bool)
-	// Backlog returns the accumulated backlog of tracking information.
-	Backlog() ([]gdk.TimeCoord, bool)
-	// DeviceTool returns the GdkDeviceTool currently driving input through this
-	// gesture.
-	DeviceTool() *gdk.DeviceTool
 }
 
 // GestureStylus: GtkGestureStylus is a GtkGesture specific to stylus input.
@@ -40,10 +29,7 @@ type GestureStylus struct {
 	GestureSingle
 }
 
-var (
-	_ GestureStyluser = (*GestureStylus)(nil)
-	_ gextras.Nativer = (*GestureStylus)(nil)
-)
+var _ gextras.Nativer = (*GestureStylus)(nil)
 
 func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	return &GestureStylus{
@@ -57,7 +43,7 @@ func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
 	}
 }
 
-func marshalGestureStyluser(p uintptr) (interface{}, error) {
+func marshalGestureStylusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGestureStylus(obj), nil

@@ -24,12 +24,6 @@ func init() {
 	})
 }
 
-// PopoverMenuer describes PopoverMenu's methods.
-type PopoverMenuer interface {
-	// OpenSubmenu opens a submenu of the popover.
-	OpenSubmenu(name string)
-}
-
 // PopoverMenu is a subclass of Popover that treats its children like menus and
 // allows switching between them. It is meant to be used primarily together with
 // ModelButton, but any widget can be used, such as SpinButton or Scale. In this
@@ -102,10 +96,7 @@ type PopoverMenu struct {
 	Popover
 }
 
-var (
-	_ PopoverMenuer   = (*PopoverMenu)(nil)
-	_ gextras.Nativer = (*PopoverMenu)(nil)
-)
+var _ gextras.Nativer = (*PopoverMenu)(nil)
 
 func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
 	return &PopoverMenu{

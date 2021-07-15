@@ -23,14 +23,6 @@ func init() {
 	})
 }
 
-// GestureSwiper describes GestureSwipe's methods.
-type GestureSwiper interface {
-	// Velocity: if the gesture is recognized, this function returns TRUE and
-	// fill in velocity_x and velocity_y with the recorded velocity, as per the
-	// last event(s) processed.
-	Velocity() (velocityX float64, velocityY float64, ok bool)
-}
-
 // GestureSwipe is a Gesture implementation able to recognize swipes, after a
 // press/move/.../move/release sequence happens, the GestureSwipe::swipe signal
 // will be emitted, providing the velocity and directionality of the sequence at
@@ -45,10 +37,7 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
-var (
-	_ GestureSwiper   = (*GestureSwipe)(nil)
-	_ gextras.Nativer = (*GestureSwipe)(nil)
-)
+var _ gextras.Nativer = (*GestureSwipe)(nil)
 
 func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	return &GestureSwipe{
@@ -69,7 +58,7 @@ func marshalGestureSwiper(p uintptr) (interface{}, error) {
 }
 
 // NewGestureSwipe returns a newly created Gesture that recognizes swipes.
-func NewGestureSwipe(widget Widgeter) *GestureSwipe {
+func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

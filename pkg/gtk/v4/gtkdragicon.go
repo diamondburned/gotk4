@@ -18,16 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconer},
+		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconner},
 	})
-}
-
-// DragIconer describes DragIcon's methods.
-type DragIconer interface {
-	// Child gets the widget currently used as drag icon.
-	Child() *Widget
-	// SetChild sets the widget to display as the drag icon.
-	SetChild(child Widgeter)
 }
 
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
@@ -47,10 +39,7 @@ type DragIcon struct {
 	Root
 }
 
-var (
-	_ DragIconer      = (*DragIcon)(nil)
-	_ gextras.Nativer = (*DragIcon)(nil)
-)
+var _ gextras.Nativer = (*DragIcon)(nil)
 
 func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	return &DragIcon{
@@ -89,7 +78,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	}
 }
 
-func marshalDragIconer(p uintptr) (interface{}, error) {
+func marshalDragIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDragIcon(obj), nil
@@ -118,7 +107,7 @@ func (self *DragIcon) Child() *Widget {
 }
 
 // SetChild sets the widget to display as the drag icon.
-func (self *DragIcon) SetChild(child Widgeter) {
+func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -155,7 +144,7 @@ func DragIconCreateWidgetForValue(value *externglib.Value) *Widget {
 // DragIconGetForDrag gets the GtkDragIcon in use with drag.
 //
 // If no drag icon exists yet, a new one will be created and shown.
-func DragIconGetForDrag(drag gdk.Drager) *Widget {
+func DragIconGetForDrag(drag gdk.Dragger) *Widget {
 	var _arg1 *C.GdkDrag   // out
 	var _cret *C.GtkWidget // in
 
@@ -175,7 +164,7 @@ func DragIconGetForDrag(drag gdk.Drager) *Widget {
 //
 // The hotspot position on the paintable is aligned with the hotspot of the
 // cursor.
-func DragIconSetFromPaintable(drag gdk.Drager, paintable gdk.Paintabler, hotX int, hotY int) {
+func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX int, hotY int) {
 	var _arg1 *C.GdkDrag      // out
 	var _arg2 *C.GdkPaintable // out
 	var _arg3 C.int           // out

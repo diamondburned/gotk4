@@ -31,38 +31,12 @@ func init() {
 	})
 }
 
-// ProxyAddresser describes ProxyAddress's methods.
-type ProxyAddresser interface {
-	// DestinationHostname gets proxy's destination hostname; that is, the name
-	// of the host that will be connected to via the proxy, not the name of the
-	// proxy itself.
-	DestinationHostname() string
-	// DestinationPort gets proxy's destination port; that is, the port on the
-	// destination host that will be connected to via the proxy, not the port
-	// number of the proxy itself.
-	DestinationPort() uint16
-	// DestinationProtocol gets the protocol that is being spoken to the
-	// destination server; eg, "http" or "ftp".
-	DestinationProtocol() string
-	// Password gets proxy's password.
-	Password() string
-	// Protocol gets proxy's protocol.
-	Protocol() string
-	// URI gets the proxy URI that proxy was constructed from.
-	URI() string
-	// Username gets proxy's username.
-	Username() string
-}
-
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	InetSocketAddress
 }
 
-var (
-	_ ProxyAddresser  = (*ProxyAddress)(nil)
-	_ gextras.Nativer = (*ProxyAddress)(nil)
-)
+var _ gextras.Nativer = (*ProxyAddress)(nil)
 
 func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{

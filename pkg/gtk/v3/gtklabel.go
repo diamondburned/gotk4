@@ -22,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeler},
+		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeller},
 	})
 }
 
@@ -35,135 +35,6 @@ type LabelOverrider interface {
 	CopyClipboard()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PopulatePopup(menu *Menu)
-}
-
-// Labeler describes Label's methods.
-type Labeler interface {
-	// Angle gets the angle of rotation for the label.
-	Angle() float64
-	// Attributes gets the attribute list that was set on the label using
-	// gtk_label_set_attributes(), if any.
-	Attributes() *pango.AttrList
-	// CurrentURI returns the URI for the currently active link in the label.
-	CurrentURI() string
-	// Ellipsize returns the ellipsizing position of the label.
-	Ellipsize() pango.EllipsizeMode
-	// Justify returns the justification of the label.
-	Justify() Justification
-	// Label fetches the text from a label widget including any embedded
-	// underlines indicating mnemonics and Pango markup.
-	Label() string
-	// Layout gets the Layout used to display the label.
-	Layout() *pango.Layout
-	// LayoutOffsets obtains the coordinates where the label will draw the
-	// Layout representing the text in the label; useful to convert mouse events
-	// into coordinates inside the Layout, e.g.
-	LayoutOffsets() (x int, y int)
-	// LineWrap returns whether lines in the label are automatically wrapped.
-	LineWrap() bool
-	// LineWrapMode returns line wrap mode used by the label.
-	LineWrapMode() pango.WrapMode
-	// Lines gets the number of lines to which an ellipsized, wrapping label
-	// should be limited.
-	Lines() int
-	// MaxWidthChars retrieves the desired maximum width of label, in
-	// characters.
-	MaxWidthChars() int
-	// MnemonicKeyval: if the label has been set so that it has an mnemonic key
-	// this function returns the keyval used for the mnemonic accelerator.
-	MnemonicKeyval() uint
-	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
-	// of this label.
-	MnemonicWidget() *Widget
-	// Selectable gets the value set by gtk_label_set_selectable().
-	Selectable() bool
-	// SelectionBounds gets the selected range of characters in the label,
-	// returning TRUE if there’s a selection.
-	SelectionBounds() (start int, end int, ok bool)
-	// SingleLineMode returns whether the label is in single line mode.
-	SingleLineMode() bool
-	// Text fetches the text from a label widget, as displayed on the screen.
-	Text() string
-	// TrackVisitedLinks returns whether the label is currently keeping track of
-	// clicked links.
-	TrackVisitedLinks() bool
-	// UseMarkup returns whether the label’s text is interpreted as marked up
-	// with the [Pango text markup language][PangoMarkupFormat].
-	UseMarkup() bool
-	// UseUnderline returns whether an embedded underline in the label indicates
-	// a mnemonic.
-	UseUnderline() bool
-	// WidthChars retrieves the desired width of label, in characters.
-	WidthChars() int
-	// XAlign gets the Label:xalign property for label.
-	XAlign() float32
-	// YAlign gets the Label:yalign property for label.
-	YAlign() float32
-	// SelectRegion selects a range of characters in the label, if the label is
-	// selectable.
-	SelectRegion(startOffset int, endOffset int)
-	// SetAngle sets the angle of rotation for the label.
-	SetAngle(angle float64)
-	// SetAttributes sets a AttrList; the attributes in the list are applied to
-	// the label text.
-	SetAttributes(attrs *pango.AttrList)
-	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
-	// the text if there is not enough space to render the entire string.
-	SetEllipsize(mode pango.EllipsizeMode)
-	// SetJustify sets the alignment of the lines in the text of the label
-	// relative to each other.
-	SetJustify(jtype Justification)
-	// SetLabel sets the text of the label.
-	SetLabel(str string)
-	// SetLineWrap toggles line wrapping within the Label widget.
-	SetLineWrap(wrap bool)
-	// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap())
-	// this controls how the line wrapping is done.
-	SetLineWrapMode(wrapMode pango.WrapMode)
-	// SetLines sets the number of lines to which an ellipsized, wrapping label
-	// should be limited.
-	SetLines(lines int)
-	// SetMarkup parses str which is marked up with the [Pango text markup
-	// language][PangoMarkupFormat], setting the label’s text and attribute list
-	// based on the parse results.
-	SetMarkup(str string)
-	// SetMarkupWithMnemonic parses str which is marked up with the [Pango text
-	// markup language][PangoMarkupFormat], setting the label’s text and
-	// attribute list based on the parse results.
-	SetMarkupWithMnemonic(str string)
-	// SetMaxWidthChars sets the desired maximum width in characters of label to
-	// n_chars.
-	SetMaxWidthChars(nChars int)
-	// SetMnemonicWidget: if the label has been set so that it has an mnemonic
-	// key (using i.e.
-	SetMnemonicWidget(widget Widgeter)
-	// SetPattern: pattern of underlines you want under the existing text within
-	// the Label widget.
-	SetPattern(pattern string)
-	// SetSelectable: selectable labels allow the user to select text from the
-	// label, for copy-and-paste.
-	SetSelectable(setting bool)
-	// SetSingleLineMode sets whether the label is in single line mode.
-	SetSingleLineMode(singleLineMode bool)
-	// SetText sets the text within the Label widget.
-	SetText(str string)
-	// SetTextWithMnemonic sets the label’s text from the string str.
-	SetTextWithMnemonic(str string)
-	// SetTrackVisitedLinks sets whether the label should keep track of clicked
-	// links (and use a different color for them).
-	SetTrackVisitedLinks(trackLinks bool)
-	// SetUseMarkup sets whether the text of the label contains markup in
-	// [Pango’s text markup language][PangoMarkupFormat].
-	SetUseMarkup(setting bool)
-	// SetUseUnderline: if true, an underline in the text indicates the next
-	// character should be used for the mnemonic accelerator key.
-	SetUseUnderline(setting bool)
-	// SetWidthChars sets the desired width in characters of label to n_chars.
-	SetWidthChars(nChars int)
-	// SetXAlign sets the Label:xalign property for label.
-	SetXAlign(xalign float32)
-	// SetYAlign sets the Label:yalign property for label.
-	SetYAlign(yalign float32)
 }
 
 // Label widget displays a small amount of text. As the name implies, most
@@ -185,10 +56,7 @@ type Label struct {
 	Misc
 }
 
-var (
-	_ Labeler         = (*Label)(nil)
-	_ gextras.Nativer = (*Label)(nil)
-)
+var _ gextras.Nativer = (*Label)(nil)
 
 func wrapLabel(obj *externglib.Object) *Label {
 	return &Label{
@@ -208,7 +76,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 	}
 }
 
-func marshalLabeler(p uintptr) (interface{}, error) {
+func marshalLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLabel(obj), nil
@@ -922,7 +790,7 @@ func (label *Label) SetMaxWidthChars(nChars int) {
 // GtkWidget::mnemonic-activate signal on it. The default handler for this
 // signal will activate the widget if there are no mnemonic collisions and
 // toggle focus between the colliding widgets otherwise.
-func (label *Label) SetMnemonicWidget(widget Widgeter) {
+func (label *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg0 *C.GtkLabel  // out
 	var _arg1 *C.GtkWidget // out
 

@@ -21,15 +21,6 @@ func init() {
 	})
 }
 
-// BuilderListItemFactorier describes BuilderListItemFactory's methods.
-type BuilderListItemFactorier interface {
-	// Resource: if the data references a resource, gets the path of that
-	// resource.
-	Resource() string
-	// Scope gets the scope used when constructing listitems.
-	Scope() *BuilderScope
-}
-
 // BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
 // that creates widgets by instantiating GtkBuilder UI templates.
 //
@@ -56,10 +47,7 @@ type BuilderListItemFactory struct {
 	ListItemFactory
 }
 
-var (
-	_ BuilderListItemFactorier = (*BuilderListItemFactory)(nil)
-	_ gextras.Nativer          = (*BuilderListItemFactory)(nil)
-)
+var _ gextras.Nativer = (*BuilderListItemFactory)(nil)
 
 func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{

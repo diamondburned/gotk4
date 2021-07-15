@@ -42,20 +42,6 @@ func _gotk4_gtk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	fn(tag)
 }
 
-// TextTagTabler describes TextTagTable's methods.
-type TextTagTabler interface {
-	// Add a tag to the table.
-	Add(tag *TextTag) bool
-	// Foreach calls func on each tag in table, with user data data.
-	Foreach(fn TextTagTableForeach)
-	// Size returns the size of the table (number of tags)
-	Size() int
-	// Lookup: look up a named tag.
-	Lookup(name string) *TextTag
-	// Remove a tag from the table.
-	Remove(tag *TextTag)
-}
-
 // TextTagTable: collection of tags in a GtkTextBuffer
 //
 // You may wish to begin by reading the text widget conceptual overview
@@ -81,10 +67,7 @@ type TextTagTable struct {
 	Buildable
 }
 
-var (
-	_ TextTagTabler   = (*TextTagTable)(nil)
-	_ gextras.Nativer = (*TextTagTable)(nil)
-)
+var _ gextras.Nativer = (*TextTagTable)(nil)
 
 func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
 	return &TextTagTable{

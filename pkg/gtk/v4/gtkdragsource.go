@@ -22,24 +22,6 @@ func init() {
 	})
 }
 
-// DragSourcer describes DragSource's methods.
-type DragSourcer interface {
-	// DragCancel cancels a currently ongoing drag operation.
-	DragCancel()
-	// Actions gets the actions that are currently set on the GtkDragSource.
-	Actions() gdk.DragAction
-	// Content gets the current content provider of a GtkDragSource.
-	Content() *gdk.ContentProvider
-	// Drag returns the underlying GdkDrag object for an ongoing drag.
-	Drag() *gdk.Drag
-	// SetActions sets the actions on the GtkDragSource.
-	SetActions(actions gdk.DragAction)
-	// SetContent sets a content provider on a GtkDragSource.
-	SetContent(content *gdk.ContentProvider)
-	// SetIcon sets a paintable to use as icon during DND operations.
-	SetIcon(paintable gdk.Paintabler, hotX int, hotY int)
-}
-
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop
 // operations.
 //
@@ -114,10 +96,7 @@ type DragSource struct {
 	GestureSingle
 }
 
-var (
-	_ DragSourcer     = (*DragSource)(nil)
-	_ gextras.Nativer = (*DragSource)(nil)
-)
+var _ gextras.Nativer = (*DragSource)(nil)
 
 func wrapDragSource(obj *externglib.Object) *DragSource {
 	return &DragSource{

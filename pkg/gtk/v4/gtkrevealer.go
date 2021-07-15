@@ -53,31 +53,6 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Revealerer describes Revealer's methods.
-type Revealerer interface {
-	// Child gets the child widget of revealer.
-	Child() *Widget
-	// ChildRevealed returns whether the child is fully revealed.
-	ChildRevealed() bool
-	// RevealChild returns whether the child is currently revealed.
-	RevealChild() bool
-	// TransitionDuration returns the amount of time (in milliseconds) that
-	// transitions will take.
-	TransitionDuration() uint
-	// TransitionType gets the type of animation that will be used for
-	// transitions in revealer.
-	TransitionType() RevealerTransitionType
-	// SetChild sets the child widget of revealer.
-	SetChild(child Widgeter)
-	// SetRevealChild tells the GtkRevealer to reveal or conceal its child.
-	SetRevealChild(revealChild bool)
-	// SetTransitionDuration sets the duration that transitions will take.
-	SetTransitionDuration(duration uint)
-	// SetTransitionType sets the type of animation that will be used for
-	// transitions in revealer.
-	SetTransitionType(transition RevealerTransitionType)
-}
-
 // Revealer: GtkRevealer animates the transition of its child from invisible to
 // visible.
 //
@@ -105,10 +80,7 @@ type Revealer struct {
 	Widget
 }
 
-var (
-	_ Revealerer      = (*Revealer)(nil)
-	_ gextras.Nativer = (*Revealer)(nil)
-)
+var _ gextras.Nativer = (*Revealer)(nil)
 
 func wrapRevealer(obj *externglib.Object) *Revealer {
 	return &Revealer{
@@ -242,7 +214,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 }
 
 // SetChild sets the child widget of revealer.
-func (revealer *Revealer) SetChild(child Widgeter) {
+func (revealer *Revealer) SetChild(child Widgetter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 

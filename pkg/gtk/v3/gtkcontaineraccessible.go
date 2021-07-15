@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// ContainerAccessibler describes ContainerAccessible's methods.
-type ContainerAccessibler interface {
-	privateContainerAccessible()
-}
-
 type ContainerAccessible struct {
 	WidgetAccessible
 }
 
-var (
-	_ ContainerAccessibler = (*ContainerAccessible)(nil)
-	_ gextras.Nativer      = (*ContainerAccessible)(nil)
-)
+var _ gextras.Nativer = (*ContainerAccessible)(nil)
 
 func wrapContainerAccessible(obj *externglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{

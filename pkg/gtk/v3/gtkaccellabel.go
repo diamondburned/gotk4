@@ -21,26 +21,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_label_get_type()), F: marshalAccelLabeler},
+		{T: externglib.Type(C.gtk_accel_label_get_type()), F: marshalAccelLabeller},
 	})
-}
-
-// AccelLabeler describes AccelLabel's methods.
-type AccelLabeler interface {
-	// Accel gets the keyval and modifier mask set with
-	// gtk_accel_label_set_accel().
-	Accel() (uint, gdk.ModifierType)
-	// AccelWidget fetches the widget monitored by this accelerator label.
-	AccelWidget() *Widget
-	// AccelWidth returns the width needed to display the accelerator key(s).
-	AccelWidth() uint
-	// Refetch recreates the string representing the accelerator keys.
-	Refetch() bool
-	// SetAccel: manually sets a keyval and modifier mask as the accelerator
-	// rendered by accel_label.
-	SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
-	// SetAccelWidget sets the widget to be monitored by this accelerator label.
-	SetAccelWidget(accelWidget Widgeter)
 }
 
 // AccelLabel widget is a subclass of Label that also displays an accelerator
@@ -79,10 +61,7 @@ type AccelLabel struct {
 	Label
 }
 
-var (
-	_ AccelLabeler    = (*AccelLabel)(nil)
-	_ gextras.Nativer = (*AccelLabel)(nil)
-)
+var _ gextras.Nativer = (*AccelLabel)(nil)
 
 func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	return &AccelLabel{
@@ -104,7 +83,7 @@ func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	}
 }
 
-func marshalAccelLabeler(p uintptr) (interface{}, error) {
+func marshalAccelLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAccelLabel(obj), nil
@@ -222,7 +201,7 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing NULL for accel_widget will dissociate accel_label from its current
 // widget, if any.
-func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgeter) {
+func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 

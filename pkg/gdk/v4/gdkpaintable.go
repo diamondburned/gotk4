@@ -106,35 +106,7 @@ type PaintableOverrider interface {
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
 	// width and height are not larger than zero, this function will do nothing.
-	Snapshot(snapshot Snapshoter, width float64, height float64)
-}
-
-// Paintabler describes Paintable's methods.
-type Paintabler interface {
-	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
-	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
-	// CurrentImage gets an immutable paintable for the current contents
-	// displayed by paintable.
-	CurrentImage() *Paintable
-	// Flags: get flags for the paintable.
-	Flags() PaintableFlags
-	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
-	// like to be displayed at.
-	IntrinsicAspectRatio() float64
-	// IntrinsicHeight gets the preferred height the paintable would like to be
-	// displayed at.
-	IntrinsicHeight() int
-	// IntrinsicWidth gets the preferred width the paintable would like to be
-	// displayed at.
-	IntrinsicWidth() int
-	// InvalidateContents: called by implementations of GdkPaintable to
-	// invalidate their contents.
-	InvalidateContents()
-	// InvalidateSize: called by implementations of GdkPaintable to invalidate
-	// their size.
-	InvalidateSize()
-	// Snapshot snapshots the given paintable with the given width and height.
-	Snapshot(snapshot Snapshoter, width float64, height float64)
+	Snapshot(snapshot Snapshotter, width float64, height float64)
 }
 
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
@@ -185,10 +157,37 @@ type Paintable struct {
 	*externglib.Object
 }
 
-var (
-	_ Paintabler      = (*Paintable)(nil)
-	_ gextras.Nativer = (*Paintable)(nil)
-)
+var _ gextras.Nativer = (*Paintable)(nil)
+
+// Paintabler describes Paintable's abstract methods.
+type Paintabler interface {
+	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
+	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by paintable.
+	CurrentImage() *Paintable
+	// Flags: get flags for the paintable.
+	Flags() PaintableFlags
+	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
+	// like to be displayed at.
+	IntrinsicAspectRatio() float64
+	// IntrinsicHeight gets the preferred height the paintable would like to be
+	// displayed at.
+	IntrinsicHeight() int
+	// IntrinsicWidth gets the preferred width the paintable would like to be
+	// displayed at.
+	IntrinsicWidth() int
+	// InvalidateContents: called by implementations of GdkPaintable to
+	// invalidate their contents.
+	InvalidateContents()
+	// InvalidateSize: called by implementations of GdkPaintable to invalidate
+	// their size.
+	InvalidateSize()
+	// Snapshot snapshots the given paintable with the given width and height.
+	Snapshot(snapshot Snapshotter, width float64, height float64)
+}
+
+var _ Paintabler = (*Paintable)(nil)
 
 func wrapPaintable(obj *externglib.Object) *Paintable {
 	return &Paintable{
@@ -404,7 +403,7 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the snapshot. If width
 // and height are not larger than zero, this function will do nothing.
-func (paintable *Paintable) Snapshot(snapshot Snapshoter, width float64, height float64) {
+func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out
 	var _arg2 C.double        // out

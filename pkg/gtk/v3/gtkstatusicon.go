@@ -22,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconer},
+		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconner},
 	})
 }
 
@@ -38,73 +38,6 @@ type StatusIconOverrider interface {
 	QueryTooltip(x int, y int, keyboardMode bool, tooltip *Tooltip) bool
 	ScrollEvent(event *gdk.EventScroll) bool
 	SizeChanged(size int) bool
-}
-
-// StatusIconer describes StatusIcon's methods.
-type StatusIconer interface {
-	// Geometry obtains information about the location of the status icon on
-	// screen.
-	Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool)
-	// GIcon retrieves the #GIcon being displayed by the StatusIcon.
-	GIcon() *gio.Icon
-	// HasTooltip returns the current value of the has-tooltip property.
-	HasTooltip() bool
-	// IconName gets the name of the icon being displayed by the StatusIcon.
-	IconName() string
-	// Pixbuf gets the Pixbuf being displayed by the StatusIcon.
-	Pixbuf() *gdkpixbuf.Pixbuf
-	// Screen returns the Screen associated with status_icon.
-	Screen() *gdk.Screen
-	// Size gets the size in pixels that is available for the image.
-	Size() int
-	// Stock gets the id of the stock icon being displayed by the StatusIcon.
-	Stock() string
-	// StorageType gets the type of representation being used by the StatusIcon
-	// to store image data.
-	StorageType() ImageType
-	// Title gets the title of this tray icon.
-	Title() string
-	// TooltipMarkup gets the contents of the tooltip for status_icon.
-	TooltipMarkup() string
-	// TooltipText gets the contents of the tooltip for status_icon.
-	TooltipText() string
-	// Visible returns whether the status icon is visible or not.
-	Visible() bool
-	// X11WindowID: this function is only useful on the X11/freedesktop.org
-	// platform.
-	X11WindowID() uint32
-	// IsEmbedded returns whether the status icon is embedded in a notification
-	// area.
-	IsEmbedded() bool
-	// SetFromFile makes status_icon display the file filename.
-	SetFromFile(filename string)
-	// SetFromGIcon makes status_icon display the #GIcon.
-	SetFromGIcon(icon gio.Iconer)
-	// SetFromIconName makes status_icon display the icon named icon_name from
-	// the current icon theme.
-	SetFromIconName(iconName string)
-	// SetFromPixbuf makes status_icon display pixbuf.
-	SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf)
-	// SetFromStock makes status_icon display the stock icon with the id
-	// stock_id.
-	SetFromStock(stockId string)
-	// SetHasTooltip sets the has-tooltip property on status_icon to
-	// has_tooltip.
-	SetHasTooltip(hasTooltip bool)
-	// SetName sets the name of this tray icon.
-	SetName(name string)
-	// SetScreen sets the Screen where status_icon is displayed; if the icon is
-	// already mapped, it will be unmapped, and then remapped on the new screen.
-	SetScreen(screen *gdk.Screen)
-	// SetTitle sets the title of this tray icon.
-	SetTitle(title string)
-	// SetTooltipMarkup sets markup as the contents of the tooltip, which is
-	// marked up with the [Pango text markup language][PangoMarkupFormat].
-	SetTooltipMarkup(markup string)
-	// SetTooltipText sets text as the contents of the tooltip.
-	SetTooltipText(text string)
-	// SetVisible shows or hides a status icon.
-	SetVisible(visible bool)
 }
 
 // StatusIcon: “system tray” or notification area is normally used for transient
@@ -145,10 +78,7 @@ type StatusIcon struct {
 	*externglib.Object
 }
 
-var (
-	_ StatusIconer    = (*StatusIcon)(nil)
-	_ gextras.Nativer = (*StatusIcon)(nil)
-)
+var _ gextras.Nativer = (*StatusIcon)(nil)
 
 func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	return &StatusIcon{
@@ -156,7 +86,7 @@ func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	}
 }
 
-func marshalStatusIconer(p uintptr) (interface{}, error) {
+func marshalStatusIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusIcon(obj), nil
@@ -205,7 +135,7 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
+func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -683,7 +613,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 

@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// FlowBoxAccessibler describes FlowBoxAccessible's methods.
-type FlowBoxAccessibler interface {
-	privateFlowBoxAccessible()
-}
-
 type FlowBoxAccessible struct {
 	ContainerAccessible
 
 	atk.Selection
 }
 
-var (
-	_ FlowBoxAccessibler = (*FlowBoxAccessible)(nil)
-	_ gextras.Nativer    = (*FlowBoxAccessible)(nil)
-)
+var _ gextras.Nativer = (*FlowBoxAccessible)(nil)
 
 func wrapFlowBoxAccessible(obj *externglib.Object) *FlowBoxAccessible {
 	return &FlowBoxAccessible{

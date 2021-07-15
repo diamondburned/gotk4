@@ -20,34 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemer},
+		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemmer},
 	})
-}
-
-// ImageMenuItemer describes ImageMenuItem's methods.
-type ImageMenuItemer interface {
-	// AlwaysShowImage returns whether the menu item will ignore the
-	// Settings:gtk-menu-images setting and always show the image, if available.
-	AlwaysShowImage() bool
-	// Image gets the widget that is currently set as the image of
-	// image_menu_item.
-	Image() *Widget
-	// UseStock checks whether the label set in the menuitem is used as a stock
-	// id to select the stock item for the item.
-	UseStock() bool
-	// SetAccelGroup specifies an accel_group to add the menu items accelerator
-	// to (this only applies to stock items so a stock item must already be set,
-	// make sure to call gtk_image_menu_item_set_use_stock() and
-	// gtk_menu_item_set_label() with a valid stock item first).
-	SetAccelGroup(accelGroup *AccelGroup)
-	// SetAlwaysShowImage: if TRUE, the menu item will ignore the
-	// Settings:gtk-menu-images setting and always show the image, if available.
-	SetAlwaysShowImage(alwaysShow bool)
-	// SetImage sets the image of image_menu_item to the given widget.
-	SetImage(image Widgeter)
-	// SetUseStock: if TRUE, the label set in the menuitem is used as a stock id
-	// to select the stock item for the item.
-	SetUseStock(useStock bool)
 }
 
 // ImageMenuItem is a menu item which has an icon next to the text label.
@@ -78,10 +52,7 @@ type ImageMenuItem struct {
 	MenuItem
 }
 
-var (
-	_ ImageMenuItemer = (*ImageMenuItem)(nil)
-	_ gextras.Nativer = (*ImageMenuItem)(nil)
-)
+var _ gextras.Nativer = (*ImageMenuItem)(nil)
 
 func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	return &ImageMenuItem{
@@ -121,7 +92,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	}
 }
 
-func marshalImageMenuItemer(p uintptr) (interface{}, error) {
+func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapImageMenuItem(obj), nil
@@ -312,7 +283,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 // or not.
 //
 // Deprecated: since version 3.10.
-func (imageMenuItem *ImageMenuItem) SetImage(image Widgeter) {
+func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 

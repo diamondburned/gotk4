@@ -136,7 +136,19 @@ type RecentChooserOverrider interface {
 	UnselectURI(uri string)
 }
 
-// RecentChooserer describes RecentChooser's methods.
+// RecentChooser is an interface that can be implemented by widgets displaying
+// the list of recently used files. In GTK+, the main objects that implement
+// this interface are RecentChooserWidget, RecentChooserDialog and
+// RecentChooserMenu.
+//
+// Recently used files are supported since GTK+ 2.10.
+type RecentChooser struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*RecentChooser)(nil)
+
+// RecentChooserer describes RecentChooser's abstract methods.
 type RecentChooserer interface {
 	// AddFilter adds filter to the list of RecentFilter objects held by
 	// chooser.
@@ -216,20 +228,7 @@ type RecentChooserer interface {
 	UnselectURI(uri string)
 }
 
-// RecentChooser is an interface that can be implemented by widgets displaying
-// the list of recently used files. In GTK+, the main objects that implement
-// this interface are RecentChooserWidget, RecentChooserDialog and
-// RecentChooserMenu.
-//
-// Recently used files are supported since GTK+ 2.10.
-type RecentChooser struct {
-	*externglib.Object
-}
-
-var (
-	_ RecentChooserer = (*RecentChooser)(nil)
-	_ gextras.Nativer = (*RecentChooser)(nil)
-)
+var _ RecentChooserer = (*RecentChooser)(nil)
 
 func wrapRecentChooser(obj *externglib.Object) *RecentChooser {
 	return &RecentChooser{

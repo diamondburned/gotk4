@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// EntryAccessibler describes EntryAccessible's methods.
-type EntryAccessibler interface {
-	privateEntryAccessible()
-}
-
 type EntryAccessible struct {
 	WidgetAccessible
 
@@ -37,10 +32,7 @@ type EntryAccessible struct {
 	atk.Text
 }
 
-var (
-	_ EntryAccessibler = (*EntryAccessible)(nil)
-	_ gextras.Nativer  = (*EntryAccessible)(nil)
-)
+var _ gextras.Nativer = (*EntryAccessible)(nil)
 
 func wrapEntryAccessible(obj *externglib.Object) *EntryAccessible {
 	return &EntryAccessible{

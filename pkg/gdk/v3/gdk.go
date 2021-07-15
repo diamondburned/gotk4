@@ -37,25 +37,11 @@ func marshalStatus(p uintptr) (interface{}, error) {
 	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceTooler describes DeviceTool's methods.
-type DeviceTooler interface {
-	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
-	HardwareID() uint64
-	// Serial gets the serial of this tool, this value can be used to identify a
-	// physical tool (eg.
-	Serial() uint64
-	// ToolType gets the DeviceToolType of the tool.
-	ToolType() DeviceToolType
-}
-
 type DeviceTool struct {
 	*externglib.Object
 }
 
-var (
-	_ DeviceTooler    = (*DeviceTool)(nil)
-	_ gextras.Nativer = (*DeviceTool)(nil)
-)
+var _ gextras.Nativer = (*DeviceTool)(nil)
 
 func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{
@@ -126,44 +112,11 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	return _deviceToolType
 }
 
-// DragContexter describes DragContext's methods.
-type DragContexter interface {
-	// Actions determines the bitmask of actions proposed by the source if
-	// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
-	Actions() DragAction
-	// DestWindow returns the destination window for the DND operation.
-	DestWindow() *Window
-	// Device returns the Device associated to the drag context.
-	Device() *Device
-	// DragWindow returns the window on which the drag icon should be rendered
-	// during the drag operation.
-	DragWindow() *Window
-	// Protocol returns the drag protocol that is used by this context.
-	Protocol() DragProtocol
-	// SelectedAction determines the action chosen by the drag destination.
-	SelectedAction() DragAction
-	// SourceWindow returns the Window where the DND operation started.
-	SourceWindow() *Window
-	// SuggestedAction determines the suggested drag action of the context.
-	SuggestedAction() DragAction
-	// ManageDnd requests the drag and drop operation to be managed by context.
-	ManageDnd(ipcWindow Windower, actions DragAction) bool
-	// SetDevice associates a Device to context, so all Drag and Drop events for
-	// context are emitted as if they came from this device.
-	SetDevice(device Devicer)
-	// SetHotspot sets the position of the drag window that will be kept under
-	// the cursor hotspot.
-	SetHotspot(hotX int, hotY int)
-}
-
 type DragContext struct {
 	*externglib.Object
 }
 
-var (
-	_ DragContexter   = (*DragContext)(nil)
-	_ gextras.Nativer = (*DragContext)(nil)
-)
+var _ gextras.Nativer = (*DragContext)(nil)
 
 func wrapDragContext(obj *externglib.Object) *DragContext {
 	return &DragContext{
@@ -330,7 +283,7 @@ func (context *DragContext) SuggestedAction() DragAction {
 // - The DragContext::cancel signal if the drag and drop operation is finished
 // but doesn't happen over an accepting destination, or is cancelled through
 // other means.
-func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
+func (context *DragContext) ManageDnd(ipcWindow Windowwer, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out

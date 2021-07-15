@@ -22,49 +22,6 @@ func init() {
 	})
 }
 
-// ColumnViewColumner describes ColumnViewColumn's methods.
-type ColumnViewColumner interface {
-	// ColumnView gets the column view that's currently displaying this column.
-	ColumnView() *ColumnView
-	// Expand returns whether this column should expand.
-	Expand() bool
-	// Factory gets the factory that's currently used to populate list items for
-	// this column.
-	Factory() *ListItemFactory
-	// FixedWidth gets the fixed width of the column.
-	FixedWidth() int
-	// HeaderMenu gets the menu model that is used to create the context menu
-	// for the column header.
-	HeaderMenu() *gio.MenuModel
-	// Resizable returns whether this column is resizable.
-	Resizable() bool
-	// Sorter returns the sorter that is associated with the column.
-	Sorter() *Sorter
-	// Title returns the title set with gtk_column_view_column_set_title().
-	Title() string
-	// Visible returns whether this column is visible.
-	Visible() bool
-	// SetExpand sets the column to take available extra space.
-	SetExpand(expand bool)
-	// SetFactory sets the GtkListItemFactory to use for populating list items
-	// for this column.
-	SetFactory(factory *ListItemFactory)
-	// SetFixedWidth: if fixed_width is not -1, sets the fixed width of column;
-	// otherwise unsets it.
-	SetFixedWidth(fixedWidth int)
-	// SetHeaderMenu sets the menu model that is used to create the context menu
-	// for the column header.
-	SetHeaderMenu(menu gio.MenuModeler)
-	// SetResizable sets whether this column should be resizable by dragging.
-	SetResizable(resizable bool)
-	// SetSorter associates a sorter with the column.
-	SetSorter(sorter *Sorter)
-	// SetTitle sets the title of this column.
-	SetTitle(title string)
-	// SetVisible sets whether this column should be visible in views.
-	SetVisible(visible bool)
-}
-
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to
 // GtkColumnView.
 //
@@ -82,10 +39,7 @@ type ColumnViewColumn struct {
 	*externglib.Object
 }
 
-var (
-	_ ColumnViewColumner = (*ColumnViewColumn)(nil)
-	_ gextras.Nativer    = (*ColumnViewColumn)(nil)
-)
+var _ gextras.Nativer = (*ColumnViewColumn)(nil)
 
 func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{
@@ -329,7 +283,7 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for
 // the column header.
-func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeler) {
+func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GMenuModel          // out
 

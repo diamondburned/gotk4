@@ -47,14 +47,6 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventControllerScroller describes EventControllerScroll's methods.
-type EventControllerScroller interface {
-	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags() EventControllerScrollFlags
-	// SetFlags sets the flags conditioning scroll controller behavior.
-	SetFlags(flags EventControllerScrollFlags)
-}
-
 // EventControllerScroll: GtkEventControllerScroll is an event controller that
 // handles scroll events.
 //
@@ -94,10 +86,7 @@ type EventControllerScroll struct {
 	EventController
 }
 
-var (
-	_ EventControllerScroller = (*EventControllerScroll)(nil)
-	_ gextras.Nativer         = (*EventControllerScroll)(nil)
-)
+var _ gextras.Nativer = (*EventControllerScroll)(nil)
 
 func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{

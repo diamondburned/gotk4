@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorer},
+		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorrer},
 	})
 }
 
@@ -39,19 +39,6 @@ type FileMonitorOverrider interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
 	Changed(file Filer, otherFile Filer, eventType FileMonitorEvent)
-}
-
-// FileMonitorer describes FileMonitor's methods.
-type FileMonitorer interface {
-	// Cancel cancels a file monitor.
-	Cancel() bool
-	// EmitEvent emits the Monitor::changed signal if a change has taken place.
-	EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent)
-	// IsCancelled returns whether the monitor is canceled.
-	IsCancelled() bool
-	// SetRateLimit sets the rate limit to which the monitor will report
-	// consecutive change events to the same file.
-	SetRateLimit(limitMsecs int)
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -69,10 +56,22 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
-var (
-	_ FileMonitorer   = (*FileMonitor)(nil)
-	_ gextras.Nativer = (*FileMonitor)(nil)
-)
+var _ gextras.Nativer = (*FileMonitor)(nil)
+
+// FileMonitorrer describes FileMonitor's abstract methods.
+type FileMonitorrer interface {
+	// Cancel cancels a file monitor.
+	Cancel() bool
+	// EmitEvent emits the Monitor::changed signal if a change has taken place.
+	EmitEvent(child Filer, otherFile Filer, eventType FileMonitorEvent)
+	// IsCancelled returns whether the monitor is canceled.
+	IsCancelled() bool
+	// SetRateLimit sets the rate limit to which the monitor will report
+	// consecutive change events to the same file.
+	SetRateLimit(limitMsecs int)
+}
+
+var _ FileMonitorrer = (*FileMonitor)(nil)
 
 func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	return &FileMonitor{
@@ -80,7 +79,7 @@ func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	}
 }
 
-func marshalFileMonitorer(p uintptr) (interface{}, error) {
+func marshalFileMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileMonitor(obj), nil

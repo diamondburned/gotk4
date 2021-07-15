@@ -23,102 +23,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbufer},
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuffer},
 	})
-}
-
-// Pixbufer describes Pixbuf's methods.
-type Pixbufer interface {
-	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
-	AddAlpha(substituteColor bool, r byte, g byte, b byte) *Pixbuf
-	// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
-	// presence of an associated "orientation" option.
-	ApplyEmbeddedOrientation() *Pixbuf
-	// Composite creates a transformation of the source image src by scaling by
-	// scale_x and scale_y then translating by offset_x and offset_y.
-	Composite(dest *Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
-	// CompositeColor creates a transformation of the source image src by
-	// scaling by scale_x and scale_y then translating by offset_x and offset_y,
-	// then alpha blends the rectangle (dest_x ,dest_y, dest_width, dest_height)
-	// of the resulting image with a checkboard of the colors color1 and color2
-	// and renders it onto the destination image.
-	CompositeColor(dest *Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
-	// CompositeColorSimple creates a new pixbuf by scaling src to dest_width x
-	// dest_height and alpha blending the result with a checkboard of colors
-	// color1 and color2.
-	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) *Pixbuf
-	// Copy creates a new GdkPixbuf with a copy of the information in the
-	// specified pixbuf.
-	Copy() *Pixbuf
-	// CopyArea copies a rectangular area from src_pixbuf to dest_pixbuf.
-	CopyArea(srcX int, srcY int, width int, height int, destPixbuf *Pixbuf, destX int, destY int)
-	// CopyOptions copies the key/value pair options attached to a GdkPixbuf to
-	// another GdkPixbuf.
-	CopyOptions(destPixbuf *Pixbuf) bool
-	// Fill clears a pixbuf to the given RGBA value, converting the RGBA value
-	// into the pixbuf's pixel format.
-	Fill(pixel uint32)
-	// Flip flips a pixbuf horizontally or vertically and returns the result in
-	// a new pixbuf.
-	Flip(horizontal bool) *Pixbuf
-	// BitsPerSample queries the number of bits per color sample in a pixbuf.
-	BitsPerSample() int
-	// ByteLength returns the length of the pixel data, in bytes.
-	ByteLength() uint
-	// Colorspace queries the color space of a pixbuf.
-	Colorspace() Colorspace
-	// HasAlpha queries whether a pixbuf has an alpha channel (opacity
-	// information).
-	HasAlpha() bool
-	// Height queries the height of a pixbuf.
-	Height() int
-	// NChannels queries the number of channels of a pixbuf.
-	NChannels() int
-	// Option looks up key in the list of options that may have been attached to
-	// the pixbuf when it was loaded, or that may have been attached by another
-	// function using gdk_pixbuf_set_option().
-	Option(key string) string
-	// Options returns a GHashTable with a list of all the options that may have
-	// been attached to the pixbuf when it was loaded, or that may have been
-	// attached by another function using gdkpixbuf.Pixbuf.SetOption().
-	Options() *glib.HashTable
-	// Rowstride queries the rowstride of a pixbuf, which is the number of bytes
-	// between the start of a row and the start of the next row.
-	Rowstride() int
-	// Width queries the width of a pixbuf.
-	Width() int
-	// NewSubpixbuf creates a new pixbuf which represents a sub-region of
-	// src_pixbuf.
-	NewSubpixbuf(srcX int, srcY int, width int, height int) *Pixbuf
-	// ReadPixels provides a read-only pointer to the raw pixel data.
-	ReadPixels() *byte
-	// RemoveOption removes the key/value pair option attached to a GdkPixbuf.
-	RemoveOption(key string) bool
-	// RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
-	// the result in a new pixbuf.
-	RotateSimple(angle PixbufRotation) *Pixbuf
-	// SaturateAndPixelate modifies saturation and optionally pixelates src,
-	// placing the result in dest.
-	SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelate bool)
-	// SaveToBufferv: vector version of gdk_pixbuf_save_to_buffer().
-	SaveToBufferv(typ string, optionKeys []string, optionValues []string) ([]byte, error)
-	// SaveToCallbackv: vector version of gdk_pixbuf_save_to_callback().
-	SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys []string, optionValues []string) error
-	// SaveToStreamv saves pixbuf to an output stream.
-	SaveToStreamv(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable *gio.Cancellable) error
-	// Savev: vector version of gdk_pixbuf_save().
-	Savev(filename string, typ string, optionKeys []string, optionValues []string) error
-	// Scale creates a transformation of the source image src by scaling by
-	// scale_x and scale_y then translating by offset_x and offset_y, then
-	// renders the rectangle (dest_x, dest_y, dest_width, dest_height) of the
-	// resulting image onto the destination image replacing the previous
-	// contents.
-	Scale(dest *Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
-	// ScaleSimple: create a new pixbuf containing a copy of src scaled to
-	// dest_width x dest_height.
-	ScaleSimple(destWidth int, destHeight int, interpType InterpType) *Pixbuf
-	// SetOption attaches a key/value pair as an option to a GdkPixbuf.
-	SetOption(key string, value string) bool
 }
 
 // Pixbuf: pixel buffer.
@@ -257,10 +163,7 @@ type Pixbuf struct {
 	gio.Icon
 }
 
-var (
-	_ Pixbufer        = (*Pixbuf)(nil)
-	_ gextras.Nativer = (*Pixbuf)(nil)
-)
+var _ gextras.Nativer = (*Pixbuf)(nil)
 
 func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	return &Pixbuf{
@@ -271,7 +174,7 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	}
 }
 
-func marshalPixbufer(p uintptr) (interface{}, error) {
+func marshalPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPixbuf(obj), nil

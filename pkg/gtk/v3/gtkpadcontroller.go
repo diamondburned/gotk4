@@ -42,15 +42,6 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PadControllerer describes PadController's methods.
-type PadControllerer interface {
-	// SetAction adds an individual action to controller.
-	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntries: this is a convenience function to add a group of action
-	// entries on controller.
-	SetActionEntries(entries []PadActionEntry)
-}
-
 // PadController is an event controller for the pads found in drawing tablets
 // (The collection of buttons and tactile sensors often found around the
 // stylus-sensitive area).
@@ -95,10 +86,7 @@ type PadController struct {
 	EventController
 }
 
-var (
-	_ PadControllerer = (*PadController)(nil)
-	_ gextras.Nativer = (*PadController)(nil)
-)
+var _ gextras.Nativer = (*PadController)(nil)
 
 func wrapPadController(obj *externglib.Object) *PadController {
 	return &PadController{

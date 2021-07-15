@@ -32,20 +32,12 @@ func init() {
 	})
 }
 
-// NativeSocketAddresser describes NativeSocketAddress's methods.
-type NativeSocketAddresser interface {
-	privateNativeSocketAddress()
-}
-
 // NativeSocketAddress: socket address of some unknown native type.
 type NativeSocketAddress struct {
 	SocketAddress
 }
 
-var (
-	_ NativeSocketAddresser = (*NativeSocketAddress)(nil)
-	_ gextras.Nativer       = (*NativeSocketAddress)(nil)
-)
+var _ gextras.Nativer = (*NativeSocketAddress)(nil)
 
 func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 	return &NativeSocketAddress{

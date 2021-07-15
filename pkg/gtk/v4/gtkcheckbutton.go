@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtoner},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
 	})
 }
 
@@ -28,29 +28,6 @@ func init() {
 type CheckButtonOverrider interface {
 	Activate()
 	Toggled()
-}
-
-// CheckButtoner describes CheckButton's methods.
-type CheckButtoner interface {
-	// Active returns whether the check button is active.
-	Active() bool
-	// Inconsistent returns whether the check button is in an inconsistent
-	// state.
-	Inconsistent() bool
-	// Label returns the label of the check button.
-	Label() string
-	// UseUnderline returns whether underlines in the label indicate mnemonics.
-	UseUnderline() bool
-	// SetActive changes the check buttons active state.
-	SetActive(setting bool)
-	// SetGroup adds self to the group of group.
-	SetGroup(group *CheckButton)
-	// SetInconsistent sets the GtkCheckButton to inconsistent state.
-	SetInconsistent(inconsistent bool)
-	// SetLabel sets the text of self.
-	SetLabel(label string)
-	// SetUseUnderline sets whether underlines in the label indicate mnemonics.
-	SetUseUnderline(setting bool)
 }
 
 // CheckButton: GtkCheckButton places a label next to an indicator.
@@ -111,10 +88,7 @@ type CheckButton struct {
 	Actionable
 }
 
-var (
-	_ CheckButtoner   = (*CheckButton)(nil)
-	_ gextras.Nativer = (*CheckButton)(nil)
-)
+var _ gextras.Nativer = (*CheckButton)(nil)
 
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
@@ -151,7 +125,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	}
 }
 
-func marshalCheckButtoner(p uintptr) (interface{}, error) {
+func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckButton(obj), nil

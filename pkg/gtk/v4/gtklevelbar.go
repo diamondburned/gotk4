@@ -17,40 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarer},
+		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarrer},
 	})
-}
-
-// LevelBarer describes LevelBar's methods.
-type LevelBarer interface {
-	// AddOffsetValue adds a new offset marker on self at the position specified
-	// by value.
-	AddOffsetValue(name string, value float64)
-	// Inverted returns whether the levelbar is inverted.
-	Inverted() bool
-	// MaxValue returns the max-value of the GtkLevelBar.
-	MaxValue() float64
-	// MinValue returns the min-value of the GtkLevelBar`.
-	MinValue() float64
-	// Mode returns the mode of the GtkLevelBar.
-	Mode() LevelBarMode
-	// OffsetValue fetches the value specified for the offset marker name in
-	// self.
-	OffsetValue(name string) (float64, bool)
-	// Value returns the value of the GtkLevelBar.
-	Value() float64
-	// RemoveOffsetValue removes an offset marker from a GtkLevelBar.
-	RemoveOffsetValue(name string)
-	// SetInverted sets whether the GtkLevelBar is inverted.
-	SetInverted(inverted bool)
-	// SetMaxValue sets the max-value of the GtkLevelBar.
-	SetMaxValue(value float64)
-	// SetMinValue sets the min-value of the GtkLevelBar.
-	SetMinValue(value float64)
-	// SetMode sets the mode of the GtkLevelBar.
-	SetMode(mode LevelBarMode)
-	// SetValue sets the value of the GtkLevelBar.
-	SetValue(value float64)
 }
 
 // LevelBar: GtkLevelBar is a widget that can be used as a level indicator.
@@ -155,10 +123,7 @@ type LevelBar struct {
 	Orientable
 }
 
-var (
-	_ LevelBarer      = (*LevelBar)(nil)
-	_ gextras.Nativer = (*LevelBar)(nil)
-)
+var _ gextras.Nativer = (*LevelBar)(nil)
 
 func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{
@@ -182,7 +147,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	}
 }
 
-func marshalLevelBarer(p uintptr) (interface{}, error) {
+func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLevelBar(obj), nil

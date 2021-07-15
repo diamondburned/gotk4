@@ -17,13 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialoger},
+		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialogger},
 	})
-}
-
-// FontChooserDialoger describes FontChooserDialog's methods.
-type FontChooserDialoger interface {
-	privateFontChooserDialog()
 }
 
 // FontChooserDialog: GtkFontChooserDialog widget is a dialog for selecting a
@@ -47,10 +42,7 @@ type FontChooserDialog struct {
 	FontChooser
 }
 
-var (
-	_ FontChooserDialoger = (*FontChooserDialog)(nil)
-	_ gextras.Nativer     = (*FontChooserDialog)(nil)
-)
+var _ gextras.Nativer = (*FontChooserDialog)(nil)
 
 func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	return &FontChooserDialog{
@@ -99,7 +91,7 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	}
 }
 
-func marshalFontChooserDialoger(p uintptr) (interface{}, error) {
+func marshalFontChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontChooserDialog(obj), nil

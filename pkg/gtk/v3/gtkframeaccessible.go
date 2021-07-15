@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// FrameAccessibler describes FrameAccessible's methods.
-type FrameAccessibler interface {
-	privateFrameAccessible()
-}
-
 type FrameAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ FrameAccessibler = (*FrameAccessible)(nil)
-	_ gextras.Nativer  = (*FrameAccessible)(nil)
-)
+var _ gextras.Nativer = (*FrameAccessible)(nil)
 
 func wrapFrameAccessible(obj *externglib.Object) *FrameAccessible {
 	return &FrameAccessible{

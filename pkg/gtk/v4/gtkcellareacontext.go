@@ -70,39 +70,6 @@ type CellAreaContextOverrider interface {
 	Reset()
 }
 
-// CellAreaContexter describes CellAreaContext's methods.
-type CellAreaContexter interface {
-	// Allocate allocates a width and/or a height for all rows which are to be
-	// rendered with context.
-	Allocate(width int, height int)
-	// Allocation fetches the current allocation size for context.
-	Allocation() (width int, height int)
-	// Area fetches the CellArea this context was created by.
-	Area() *CellArea
-	// PreferredHeight gets the accumulative preferred height for all rows which
-	// have been requested with this context.
-	PreferredHeight() (minimumHeight int, naturalHeight int)
-	// PreferredHeightForWidth gets the accumulative preferred height for width
-	// for all rows which have been requested for the same said width with this
-	// context.
-	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
-	// PreferredWidth gets the accumulative preferred width for all rows which
-	// have been requested with this context.
-	PreferredWidth() (minimumWidth int, naturalWidth int)
-	// PreferredWidthForHeight gets the accumulative preferred width for height
-	// for all rows which have been requested for the same said height with this
-	// context.
-	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
-	// PushPreferredHeight causes the minimum and/or natural height to grow if
-	// the new proposed sizes exceed the current minimum and natural height.
-	PushPreferredHeight(minimumHeight int, naturalHeight int)
-	// PushPreferredWidth causes the minimum and/or natural width to grow if the
-	// new proposed sizes exceed the current minimum and natural width.
-	PushPreferredWidth(minimumWidth int, naturalWidth int)
-	// Reset resets any previously cached request and allocation data.
-	Reset()
-}
-
 // CellAreaContext stores geometrical information for a series of rows in a
 // GtkCellArea
 //
@@ -120,10 +87,7 @@ type CellAreaContext struct {
 	*externglib.Object
 }
 
-var (
-	_ CellAreaContexter = (*CellAreaContext)(nil)
-	_ gextras.Nativer   = (*CellAreaContext)(nil)
-)
+var _ gextras.Nativer = (*CellAreaContext)(nil)
 
 func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
 	return &CellAreaContext{

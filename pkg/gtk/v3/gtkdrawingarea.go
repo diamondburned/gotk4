@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// DrawingAreaer describes DrawingArea's methods.
-type DrawingAreaer interface {
-	privateDrawingArea()
-}
-
 // DrawingArea widget is used for creating custom user interface elements. It’s
 // essentially a blank widget; you can draw on it. After creating a drawing
 // area, the application may want to connect to:
@@ -109,10 +104,7 @@ type DrawingArea struct {
 	Widget
 }
 
-var (
-	_ DrawingAreaer   = (*DrawingArea)(nil)
-	_ gextras.Nativer = (*DrawingArea)(nil)
-)
+var _ gextras.Nativer = (*DrawingArea)(nil)
 
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{

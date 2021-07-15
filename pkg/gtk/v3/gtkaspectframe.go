@@ -24,12 +24,6 @@ func init() {
 	})
 }
 
-// AspectFramer describes AspectFrame's methods.
-type AspectFramer interface {
-	// Set parameters for an existing AspectFrame.
-	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
-}
-
 // AspectFrame is useful when you want pack a widget so that it can resize but
 // always retains the same aspect ratio. For instance, one might be drawing a
 // small preview of a larger image. AspectFrame derives from Frame, so it can
@@ -44,10 +38,7 @@ type AspectFrame struct {
 	Frame
 }
 
-var (
-	_ AspectFramer    = (*AspectFrame)(nil)
-	_ gextras.Nativer = (*AspectFrame)(nil)
-)
+var _ gextras.Nativer = (*AspectFrame)(nil)
 
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{

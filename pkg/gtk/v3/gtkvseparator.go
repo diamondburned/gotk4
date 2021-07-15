@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparatorer},
+		{T: externglib.Type(C.gtk_vseparator_get_type()), F: marshalVSeparatorrer},
 	})
-}
-
-// VSeparatorer describes VSeparator's methods.
-type VSeparatorer interface {
-	privateVSeparator()
 }
 
 // VSeparator widget is a vertical separator, used to group the widgets within a
@@ -38,10 +33,7 @@ type VSeparator struct {
 	Separator
 }
 
-var (
-	_ VSeparatorer    = (*VSeparator)(nil)
-	_ gextras.Nativer = (*VSeparator)(nil)
-)
+var _ gextras.Nativer = (*VSeparator)(nil)
 
 func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	return &VSeparator{
@@ -64,7 +56,7 @@ func wrapVSeparator(obj *externglib.Object) *VSeparator {
 	}
 }
 
-func marshalVSeparatorer(p uintptr) (interface{}, error) {
+func marshalVSeparatorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVSeparator(obj), nil

@@ -17,44 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
 	})
-}
-
-// InfoBarer describes InfoBar's methods.
-type InfoBarer interface {
-	// AddActionWidget: add an activatable widget to the action area of a
-	// GtkInfoBar.
-	AddActionWidget(child Widgeter, responseId int)
-	// AddButton adds a button with the given text.
-	AddButton(buttonText string, responseId int) *Button
-	// AddChild adds a widget to the content area of the info bar.
-	AddChild(widget Widgeter)
-	// MessageType returns the message type of the message area.
-	MessageType() MessageType
-	// Revealed returns whether the info bar is currently revealed.
-	Revealed() bool
-	// ShowCloseButton returns whether the widget will display a standard close
-	// button.
-	ShowCloseButton() bool
-	// RemoveActionWidget removes a widget from the action area of info_bar.
-	RemoveActionWidget(widget Widgeter)
-	// RemoveChild removes a widget from the content area of the info bar.
-	RemoveChild(widget Widgeter)
-	// Response emits the “response” signal with the given response_id.
-	Response(responseId int)
-	// SetDefaultResponse sets the last widget in the info bar’s action area
-	// with the given response_id as the default widget for the dialog.
-	SetDefaultResponse(responseId int)
-	// SetMessageType sets the message type of the message area.
-	SetMessageType(messageType MessageType)
-	// SetResponseSensitive sets the sensitivity of action widgets for
-	// response_id.
-	SetResponseSensitive(responseId int, setting bool)
-	// SetRevealed sets whether the GtkInfoBar is revealed.
-	SetRevealed(revealed bool)
-	// SetShowCloseButton: if true, a standard close button is shown.
-	SetShowCloseButton(setting bool)
 }
 
 // InfoBar: GtkInfoBar can be show messages to the user without a dialog.
@@ -134,10 +98,7 @@ type InfoBar struct {
 	Widget
 }
 
-var (
-	_ InfoBarer       = (*InfoBar)(nil)
-	_ gextras.Nativer = (*InfoBar)(nil)
-)
+var _ gextras.Nativer = (*InfoBar)(nil)
 
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
@@ -158,7 +119,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	}
 }
 
-func marshalInfoBarer(p uintptr) (interface{}, error) {
+func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -183,7 +144,7 @@ func NewInfoBar() *InfoBar {
 // This also connects a signal handler that will emit the gtk.InfoBar::response
 // signal on the message area when the widget is activated. The widget is
 // appended to the end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -220,7 +181,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 }
 
 // AddChild adds a widget to the content area of the info bar.
-func (infoBar *InfoBar) AddChild(widget Widgeter) {
+func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -287,7 +248,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 // The widget must have been put there by a call to
 // gtk.InfoBar.AddActionWidget() or gtk.InfoBar.AddButton().
-func (infoBar *InfoBar) RemoveActionWidget(widget Widgeter) {
+func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -298,7 +259,7 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgeter) {
 }
 
 // RemoveChild removes a widget from the content area of the info bar.
-func (infoBar *InfoBar) RemoveChild(widget Widgeter) {
+func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 

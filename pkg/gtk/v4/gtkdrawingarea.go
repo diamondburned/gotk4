@@ -66,23 +66,6 @@ type DrawingAreaOverrider interface {
 	Resize(width int, height int)
 }
 
-// DrawingAreaer describes DrawingArea's methods.
-type DrawingAreaer interface {
-	// ContentHeight retrieves the content height of the GtkDrawingArea.
-	ContentHeight() int
-	// ContentWidth retrieves the content width of the GtkDrawingArea.
-	ContentWidth() int
-	// SetContentHeight sets the desired height of the contents of the drawing
-	// area.
-	SetContentHeight(height int)
-	// SetContentWidth sets the desired width of the contents of the drawing
-	// area.
-	SetContentWidth(width int)
-	// SetDrawFunc: setting a draw function is the main thing you want to do
-	// when using a drawing area.
-	SetDrawFunc(drawFunc DrawingAreaDrawFunc)
-}
-
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
 //
 // !An example GtkDrawingArea (drawingarea.png)
@@ -164,10 +147,7 @@ type DrawingArea struct {
 	Widget
 }
 
-var (
-	_ DrawingAreaer   = (*DrawingArea)(nil)
-	_ gextras.Nativer = (*DrawingArea)(nil)
-)
+var _ gextras.Nativer = (*DrawingArea)(nil)
 
 func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
 	return &DrawingArea{

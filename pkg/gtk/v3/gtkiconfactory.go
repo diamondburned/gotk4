@@ -163,21 +163,6 @@ func IconSizeRegisterAlias(alias string, target int) {
 	C.gtk_icon_size_register_alias(_arg1, _arg2)
 }
 
-// IconFactorier describes IconFactory's methods.
-type IconFactorier interface {
-	// Add adds the given icon_set to the icon factory, under the name stock_id.
-	Add(stockId string, iconSet *IconSet)
-	// AddDefault adds an icon factory to the list of icon factories searched by
-	// gtk_style_lookup_icon_set().
-	AddDefault()
-	// Lookup looks up stock_id in the icon factory, returning an icon set if
-	// found, otherwise NULL.
-	Lookup(stockId string) *IconSet
-	// RemoveDefault removes an icon factory from the list of default icon
-	// factories.
-	RemoveDefault()
-}
-
 // IconFactory: icon factory manages a collection of IconSet; a IconSet manages
 // a set of variants of a particular icon (i.e. a IconSet contains variants for
 // different sizes and widget states). Icons in an icon factory are named by a
@@ -252,10 +237,7 @@ type IconFactory struct {
 	Buildable
 }
 
-var (
-	_ IconFactorier   = (*IconFactory)(nil)
-	_ gextras.Nativer = (*IconFactory)(nil)
-)
+var _ gextras.Nativer = (*IconFactory)(nil)
 
 func wrapIconFactory(obj *externglib.Object) *IconFactory {
 	return &IconFactory{

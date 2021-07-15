@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// ShortcutsSectioner describes ShortcutsSection's methods.
-type ShortcutsSectioner interface {
-	privateShortcutsSection()
-}
-
 // ShortcutsSection collects all the keyboard shortcuts and gestures for a major
 // application mode. If your application needs multiple sections, you should
 // give each section a unique ShortcutsSection:section-name and a
@@ -43,10 +38,7 @@ type ShortcutsSection struct {
 	Box
 }
 
-var (
-	_ ShortcutsSectioner = (*ShortcutsSection)(nil)
-	_ gextras.Nativer    = (*ShortcutsSection)(nil)
-)
+var _ gextras.Nativer = (*ShortcutsSection)(nil)
 
 func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{

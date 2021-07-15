@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButtoner},
+		{T: externglib.Type(C.gtk_file_chooser_button_get_type()), F: marshalFileChooserButtonner},
 	})
 }
 
@@ -30,26 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type FileChooserButtonOverrider interface {
 	FileSet()
-}
-
-// FileChooserButtoner describes FileChooserButton's methods.
-type FileChooserButtoner interface {
-	// FocusOnClick returns whether the button grabs focus when it is clicked
-	// with the mouse.
-	FocusOnClick() bool
-	// Title retrieves the title of the browse dialog used by button.
-	Title() string
-	// WidthChars retrieves the width in characters of the button widget’s entry
-	// and/or label.
-	WidthChars() int
-	// SetFocusOnClick sets whether the button will grab focus when it is
-	// clicked with the mouse.
-	SetFocusOnClick(focusOnClick bool)
-	// SetTitle modifies the title of the browse dialog used by button.
-	SetTitle(title string)
-	// SetWidthChars sets the width (in characters) that button will use to
-	// n_chars.
-	SetWidthChars(nChars int)
 }
 
 // FileChooserButton is a widget that lets the user select a file. It implements
@@ -89,10 +69,7 @@ type FileChooserButton struct {
 	FileChooser
 }
 
-var (
-	_ FileChooserButtoner = (*FileChooserButton)(nil)
-	_ gextras.Nativer     = (*FileChooserButton)(nil)
-)
+var _ gextras.Nativer = (*FileChooserButton)(nil)
 
 func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	return &FileChooserButton{
@@ -120,7 +97,7 @@ func wrapFileChooserButton(obj *externglib.Object) *FileChooserButton {
 	}
 }
 
-func marshalFileChooserButtoner(p uintptr) (interface{}, error) {
+func marshalFileChooserButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserButton(obj), nil

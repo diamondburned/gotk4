@@ -38,17 +38,6 @@ type AccessibleOverrider interface {
 	WidgetUnset()
 }
 
-// Accessibler describes Accessible's methods.
-type Accessibler interface {
-	// ConnectWidgetDestroyed: this function specifies the callback function to
-	// be called when the widget corresponding to a GtkAccessible is destroyed.
-	ConnectWidgetDestroyed()
-	// Widget gets the Widget corresponding to the Accessible.
-	Widget() *Widget
-	// SetWidget sets the Widget corresponding to the Accessible.
-	SetWidget(widget Widgeter)
-}
-
 // Accessible class is the base class for accessible implementations for Widget
 // subclasses. It is a thin wrapper around Object, which adds facilities for
 // associating a widget with its accessible object.
@@ -62,10 +51,7 @@ type Accessible struct {
 	atk.ObjectClass
 }
 
-var (
-	_ Accessibler     = (*Accessible)(nil)
-	_ gextras.Nativer = (*Accessible)(nil)
-)
+var _ gextras.Nativer = (*Accessible)(nil)
 
 func wrapAccessible(obj *externglib.Object) *Accessible {
 	return &Accessible{
@@ -115,7 +101,7 @@ func (accessible *Accessible) Widget() *Widget {
 // accessible will not hold a reference to widget. It is the caller’s
 // responsibility to ensure that when widget is destroyed, the widget is unset
 // by calling this function again with widget set to NULL.
-func (accessible *Accessible) SetWidget(widget Widgeter) {
+func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 

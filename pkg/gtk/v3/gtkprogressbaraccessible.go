@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ProgressBarAccessibler describes ProgressBarAccessible's methods.
-type ProgressBarAccessibler interface {
-	privateProgressBarAccessible()
-}
-
 type ProgressBarAccessible struct {
 	WidgetAccessible
 
 	atk.Value
 }
 
-var (
-	_ ProgressBarAccessibler = (*ProgressBarAccessible)(nil)
-	_ gextras.Nativer        = (*ProgressBarAccessible)(nil)
-)
+var _ gextras.Nativer = (*ProgressBarAccessible)(nil)
 
 func wrapProgressBarAccessible(obj *externglib.Object) *ProgressBarAccessible {
 	return &ProgressBarAccessible{

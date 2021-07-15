@@ -21,12 +21,6 @@ func init() {
 	})
 }
 
-// GestureRotater describes GestureRotate's methods.
-type GestureRotater interface {
-	// AngleDelta gets the angle delta in radians.
-	AngleDelta() float64
-}
-
 // GestureRotate: GtkGestureRotate is a GtkGesture for 2-finger rotations.
 //
 // Whenever the angle between both handled sequences changes, the
@@ -35,10 +29,7 @@ type GestureRotate struct {
 	Gesture
 }
 
-var (
-	_ GestureRotater  = (*GestureRotate)(nil)
-	_ gextras.Nativer = (*GestureRotate)(nil)
-)
+var _ gextras.Nativer = (*GestureRotate)(nil)
 
 func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{

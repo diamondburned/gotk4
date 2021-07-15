@@ -124,15 +124,6 @@ type ConverterOverrider interface {
 	Reset()
 }
 
-// Converterer describes Converter's methods.
-type Converterer interface {
-	// Convert: this is the main operation used when converting data.
-	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
-	// Reset resets all internal state in the converter, making it behave as if
-	// it was just created.
-	Reset()
-}
-
 // Converter is implemented by objects that convert binary data in various ways.
 // The conversion can be stateful and may fail at any place.
 //
@@ -142,10 +133,18 @@ type Converter struct {
 	*externglib.Object
 }
 
-var (
-	_ Converterer     = (*Converter)(nil)
-	_ gextras.Nativer = (*Converter)(nil)
-)
+var _ gextras.Nativer = (*Converter)(nil)
+
+// Converterer describes Converter's abstract methods.
+type Converterer interface {
+	// Convert: this is the main operation used when converting data.
+	Convert(inbuf []byte, outbuf []byte, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult, goerr error)
+	// Reset resets all internal state in the converter, making it behave as if
+	// it was just created.
+	Reset()
+}
+
+var _ Converterer = (*Converter)(nil)
 
 func wrapConverter(obj *externglib.Object) *Converter {
 	return &Converter{

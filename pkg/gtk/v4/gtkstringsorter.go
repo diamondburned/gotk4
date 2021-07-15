@@ -21,20 +21,6 @@ func init() {
 	})
 }
 
-// StringSorterer describes StringSorter's methods.
-type StringSorterer interface {
-	// Expression gets the expression that is evaluated to obtain strings from
-	// items.
-	Expression() *Expression
-	// IgnoreCase gets whether the sorter ignores case differences.
-	IgnoreCase() bool
-	// SetExpression sets the expression that is evaluated to obtain strings
-	// from items.
-	SetExpression(expression Expressioner)
-	// SetIgnoreCase sets whether the sorter will ignore case differences.
-	SetIgnoreCase(ignoreCase bool)
-}
-
 // StringSorter: GtkStringSorter is a GtkSorter that compares strings.
 //
 // It does the comparison in a linguistically correct way using the current
@@ -46,10 +32,7 @@ type StringSorter struct {
 	Sorter
 }
 
-var (
-	_ StringSorterer  = (*StringSorter)(nil)
-	_ gextras.Nativer = (*StringSorter)(nil)
-)
+var _ gextras.Nativer = (*StringSorter)(nil)
 
 func wrapStringSorter(obj *externglib.Object) *StringSorter {
 	return &StringSorter{

@@ -202,7 +202,7 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 // yet, so the interface currently has no use.
 type PrintOperationOverrider interface {
 	BeginPrint(context *PrintContext)
-	CustomWidgetApply(widget Widgeter)
+	CustomWidgetApply(widget Widgetter)
 	Done(result PrintOperationResult)
 	DrawPage(context *PrintContext, pageNr int)
 	EndPrint(context *PrintContext)
@@ -210,85 +210,7 @@ type PrintOperationOverrider interface {
 	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	StatusChanged()
-	UpdateCustomWidget(widget Widgeter, setup *PageSetup, settings *PrintSettings)
-}
-
-// PrintOperationer describes PrintOperation's methods.
-type PrintOperationer interface {
-	// Cancel cancels a running print operation.
-	Cancel()
-	// DrawPageFinish: signal that drawing of particular page is complete.
-	DrawPageFinish()
-	// DefaultPageSetup returns the default page setup.
-	DefaultPageSetup() *PageSetup
-	// EmbedPageSetup gets whether page setup selection combos are embedded
-	EmbedPageSetup() bool
-	// Error: call this when the result of a print operation is
-	// GTK_PRINT_OPERATION_RESULT_ERROR.
-	Error() error
-	// HasSelection gets whether there is a selection.
-	HasSelection() bool
-	// NPagesToPrint returns the number of pages that will be printed.
-	NPagesToPrint() int
-	// PrintSettings returns the current print settings.
-	PrintSettings() *PrintSettings
-	// Status returns the status of the print operation.
-	Status() PrintStatus
-	// StatusString returns a string representation of the status of the print
-	// operation.
-	StatusString() string
-	// SupportSelection gets whether the application supports print of selection
-	SupportSelection() bool
-	// IsFinished: convenience function to find out if the print operation is
-	// finished.
-	IsFinished() bool
-	// Run runs the print operation.
-	Run(action PrintOperationAction, parent *Window) (PrintOperationResult, error)
-	// SetAllowAsync sets whether gtk_print_operation_run() may return before
-	// the print operation is completed.
-	SetAllowAsync(allowAsync bool)
-	// SetCurrentPage sets the current page.
-	SetCurrentPage(currentPage int)
-	// SetCustomTabLabel sets the label for the tab holding custom widgets.
-	SetCustomTabLabel(label string)
-	// SetDefaultPageSetup makes default_page_setup the default page setup for
-	// op.
-	SetDefaultPageSetup(defaultPageSetup *PageSetup)
-	// SetDeferDrawing sets up the GtkPrintOperation to wait for calling of
-	// [methodGtk.PrintOperation.draw_page_finish from application.
-	SetDeferDrawing()
-	// SetEmbedPageSetup: embed page size combo box and orientation combo box
-	// into page setup page.
-	SetEmbedPageSetup(embed bool)
-	// SetExportFilename sets up the GtkPrintOperation to generate a file
-	// instead of showing the print dialog.
-	SetExportFilename(filename string)
-	// SetHasSelection sets whether there is a selection to print.
-	SetHasSelection(hasSelection bool)
-	// SetJobName sets the name of the print job.
-	SetJobName(jobName string)
-	// SetNPages sets the number of pages in the document.
-	SetNPages(nPages int)
-	// SetPrintSettings sets the print settings for op.
-	SetPrintSettings(printSettings *PrintSettings)
-	// SetShowProgress: if show_progress is TRUE, the print operation will show
-	// a progress dialog during the print operation.
-	SetShowProgress(showProgress bool)
-	// SetSupportSelection sets whether selection is supported by
-	// GtkPrintOperation.
-	SetSupportSelection(supportSelection bool)
-	// SetTrackPrintStatus: if track_status is TRUE, the print operation will
-	// try to continue report on the status of the print job in the printer
-	// queues and printer.
-	SetTrackPrintStatus(trackStatus bool)
-	// SetUnit sets up the transformation for the cairo context obtained from
-	// GtkPrintContext in such a way that distances are measured in units of
-	// unit.
-	SetUnit(unit Unit)
-	// SetUseFullPage: if full_page is TRUE, the transformation for the cairo
-	// context obtained from GtkPrintContext puts the origin at the top left
-	// corner of the page.
-	SetUseFullPage(fullPage bool)
+	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 }
 
 // PrintOperation: GtkPrintOperation is the high-level, portable printing API.
@@ -356,10 +278,7 @@ type PrintOperation struct {
 	PrintOperationPreview
 }
 
-var (
-	_ PrintOperationer = (*PrintOperation)(nil)
-	_ gextras.Nativer  = (*PrintOperation)(nil)
-)
+var _ gextras.Nativer = (*PrintOperation)(nil)
 
 func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
 	return &PrintOperation{

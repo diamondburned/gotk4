@@ -31,29 +31,13 @@ type RadioActionOverrider interface {
 	Changed(current *RadioAction)
 }
 
-// RadioActioner describes RadioAction's methods.
-type RadioActioner interface {
-	// CurrentValue obtains the value property of the currently active member of
-	// the group to which action belongs.
-	CurrentValue() int
-	// JoinGroup joins a radio action object to the group of another radio
-	// action object.
-	JoinGroup(groupSource *RadioAction)
-	// SetCurrentValue sets the currently active group member to the member with
-	// value property current_value.
-	SetCurrentValue(currentValue int)
-}
-
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
 type RadioAction struct {
 	ToggleAction
 }
 
-var (
-	_ RadioActioner   = (*RadioAction)(nil)
-	_ gextras.Nativer = (*RadioAction)(nil)
-)
+var _ gextras.Nativer = (*RadioAction)(nil)
 
 func wrapRadioAction(obj *externglib.Object) *RadioAction {
 	return &RadioAction{

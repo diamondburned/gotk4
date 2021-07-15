@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// MenuButtonAccessibler describes MenuButtonAccessible's methods.
-type MenuButtonAccessibler interface {
-	privateMenuButtonAccessible()
-}
-
 type MenuButtonAccessible struct {
 	ToggleButtonAccessible
 }
 
-var (
-	_ MenuButtonAccessibler = (*MenuButtonAccessible)(nil)
-	_ gextras.Nativer       = (*MenuButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*MenuButtonAccessible)(nil)
 
 func wrapMenuButtonAccessible(obj *externglib.Object) *MenuButtonAccessible {
 	return &MenuButtonAccessible{

@@ -31,7 +31,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconer},
+		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconner},
 	})
 }
 
@@ -41,7 +41,7 @@ func init() {
 // yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Iconer) bool
+	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
 	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -51,18 +51,6 @@ type IconOverrider interface {
 	// machine, (as opposed to over the network), and within the same file
 	// system namespace.
 	Serialize() *glib.Variant
-}
-
-// Iconer describes Icon's methods.
-type Iconer interface {
-	// Equal checks if two icons are equal.
-	Equal(icon2 Iconer) bool
-	// Serialize serializes a #GIcon into a #GVariant.
-	Serialize() *glib.Variant
-	// String generates a textual representation of icon that can be used for
-	// serialization such as when passing icon to a different process or saving
-	// it to persistent storage.
-	String() string
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -94,10 +82,21 @@ type Icon struct {
 	*externglib.Object
 }
 
-var (
-	_ Iconer          = (*Icon)(nil)
-	_ gextras.Nativer = (*Icon)(nil)
-)
+var _ gextras.Nativer = (*Icon)(nil)
+
+// Iconner describes Icon's abstract methods.
+type Iconner interface {
+	// Equal checks if two icons are equal.
+	Equal(icon2 Iconner) bool
+	// Serialize serializes a #GIcon into a #GVariant.
+	Serialize() *glib.Variant
+	// String generates a textual representation of icon that can be used for
+	// serialization such as when passing icon to a different process or saving
+	// it to persistent storage.
+	String() string
+}
+
+var _ Iconner = (*Icon)(nil)
 
 func wrapIcon(obj *externglib.Object) *Icon {
 	return &Icon{
@@ -105,14 +104,14 @@ func wrapIcon(obj *externglib.Object) *Icon {
 	}
 }
 
-func marshalIconer(p uintptr) (interface{}, error) {
+func marshalIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapIcon(obj), nil
 }
 
 // Equal checks if two icons are equal.
-func (icon1 *Icon) Equal(icon2 Iconer) bool {
+func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in

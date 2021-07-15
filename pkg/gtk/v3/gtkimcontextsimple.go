@@ -23,12 +23,6 @@ func init() {
 	})
 }
 
-// IMContextSimpler describes IMContextSimple's methods.
-type IMContextSimpler interface {
-	// AddComposeFile adds an additional table from the X11 compose file.
-	AddComposeFile(composeFile string)
-}
-
 // IMContextSimple is a simple input method context supporting table-based input
 // methods. It has a built-in table of compose sequences that is derived from
 // the X11 Compose files.
@@ -50,10 +44,7 @@ type IMContextSimple struct {
 	IMContext
 }
 
-var (
-	_ IMContextSimpler = (*IMContextSimple)(nil)
-	_ gextras.Nativer  = (*IMContextSimple)(nil)
-)
+var _ gextras.Nativer = (*IMContextSimple)(nil)
 
 func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
 	return &IMContextSimple{

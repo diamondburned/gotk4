@@ -82,44 +82,6 @@ func _gotk4_gtk3_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) 
 	return cret
 }
 
-// RecentFilterer describes RecentFilter's methods.
-type RecentFilterer interface {
-	// AddAge adds a rule that allows resources based on their age - that is,
-	// the number of days elapsed since they were last modified.
-	AddAge(days int)
-	// AddApplication adds a rule that allows resources based on the name of the
-	// application that has registered them.
-	AddApplication(application string)
-	// AddCustom adds a rule to a filter that allows resources based on a custom
-	// callback function.
-	AddCustom(needed RecentFilterFlags, fn RecentFilterFunc)
-	// AddGroup adds a rule that allows resources based on the name of the group
-	// to which they belong
-	AddGroup(group string)
-	// AddMIMEType adds a rule that allows resources based on their registered
-	// MIME type.
-	AddMIMEType(mimeType string)
-	// AddPattern adds a rule that allows resources based on a pattern matching
-	// their display name.
-	AddPattern(pattern string)
-	// AddPixbufFormats adds a rule allowing image files in the formats
-	// supported by GdkPixbuf.
-	AddPixbufFormats()
-	// Filter tests whether a file should be displayed according to filter.
-	Filter(filterInfo *RecentFilterInfo) bool
-	// Name gets the human-readable name for the filter.
-	Name() string
-	// Needed gets the fields that need to be filled in for the RecentFilterInfo
-	// passed to gtk_recent_filter_filter() This function will not typically be
-	// used by applications; it is intended principally for use in the
-	// implementation of RecentChooser.
-	Needed() RecentFilterFlags
-	// SetName sets the human-readable name of the filter; this is the string
-	// that will be displayed in the recently used resources selector user
-	// interface if there is a selectable list of filters.
-	SetName(name string)
-}
-
 // RecentFilter can be used to restrict the files being shown in a
 // RecentChooser. Files can be filtered based on their name (with
 // gtk_recent_filter_add_pattern()), on their mime type (with
@@ -172,10 +134,7 @@ type RecentFilter struct {
 	Buildable
 }
 
-var (
-	_ RecentFilterer  = (*RecentFilter)(nil)
-	_ gextras.Nativer = (*RecentFilter)(nil)
-)
+var _ gextras.Nativer = (*RecentFilter)(nil)
 
 func wrapRecentFilter(obj *externglib.Object) *RecentFilter {
 	return &RecentFilter{

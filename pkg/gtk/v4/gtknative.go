@@ -23,20 +23,6 @@ func init() {
 	})
 }
 
-// NativeSurfacer describes NativeSurface's methods.
-type NativeSurfacer interface {
-	// Renderer returns the renderer that is used for this GtkNative.
-	Renderer() *gsk.Renderer
-	// Surface returns the surface of this GtkNative.
-	Surface() *gdk.Surface
-	// SurfaceTransform retrieves the surface transform of self.
-	SurfaceTransform() (x float64, y float64)
-	// Realize realizes a GtkNative.
-	Realize()
-	// Unrealize unrealizes a GtkNative.
-	Unrealize()
-}
-
 // NativeSurface: GtkNative is the interface implemented by all widgets that
 // have their own GdkSurface.
 //
@@ -57,10 +43,23 @@ type NativeSurface struct {
 	Widget
 }
 
-var (
-	_ NativeSurfacer  = (*NativeSurface)(nil)
-	_ gextras.Nativer = (*NativeSurface)(nil)
-)
+var _ gextras.Nativer = (*NativeSurface)(nil)
+
+// NativeSurfacer describes NativeSurface's abstract methods.
+type NativeSurfacer interface {
+	// Renderer returns the renderer that is used for this GtkNative.
+	Renderer() *gsk.Renderer
+	// Surface returns the surface of this GtkNative.
+	Surface() *gdk.Surface
+	// SurfaceTransform retrieves the surface transform of self.
+	SurfaceTransform() (x float64, y float64)
+	// Realize realizes a GtkNative.
+	Realize()
+	// Unrealize unrealizes a GtkNative.
+	Unrealize()
+}
+
+var _ NativeSurfacer = (*NativeSurface)(nil)
 
 func wrapNativeSurface(obj *externglib.Object) *NativeSurface {
 	return &NativeSurface{

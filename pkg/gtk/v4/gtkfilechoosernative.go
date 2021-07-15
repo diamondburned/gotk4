@@ -21,18 +21,6 @@ func init() {
 	})
 }
 
-// FileChooserNativer describes FileChooserNative's methods.
-type FileChooserNativer interface {
-	// AcceptLabel retrieves the custom label text for the accept button.
-	AcceptLabel() string
-	// CancelLabel retrieves the custom label text for the cancel button.
-	CancelLabel() string
-	// SetAcceptLabel sets the custom label text for the accept button.
-	SetAcceptLabel(acceptLabel string)
-	// SetCancelLabel sets the custom label text for the cancel button.
-	SetCancelLabel(cancelLabel string)
-}
-
 // FileChooserNative: GtkFileChooserNative is an abstraction of a dialog
 // suitable for use with “File Open” or “File Save as” commands.
 //
@@ -186,10 +174,7 @@ type FileChooserNative struct {
 	FileChooser
 }
 
-var (
-	_ FileChooserNativer = (*FileChooserNative)(nil)
-	_ gextras.Nativer    = (*FileChooserNative)(nil)
-)
+var _ gextras.Nativer = (*FileChooserNative)(nil)
 
 func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
 	return &FileChooserNative{

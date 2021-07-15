@@ -21,20 +21,6 @@ func init() {
 	})
 }
 
-// NumericSorterer describes NumericSorter's methods.
-type NumericSorterer interface {
-	// Expression gets the expression that is evaluated to obtain numbers from
-	// items.
-	Expression() *Expression
-	// SortOrder gets whether this sorter will sort smaller numbers first.
-	SortOrder() SortType
-	// SetExpression sets the expression that is evaluated to obtain numbers
-	// from items.
-	SetExpression(expression Expressioner)
-	// SetSortOrder sets whether to sort smaller numbers before larger ones.
-	SetSortOrder(sortOrder SortType)
-}
-
 // NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.
 //
 // To obtain the numbers to compare, this sorter evaluates a gtk.Expression.
@@ -42,10 +28,7 @@ type NumericSorter struct {
 	Sorter
 }
 
-var (
-	_ NumericSorterer = (*NumericSorter)(nil)
-	_ gextras.Nativer = (*NumericSorter)(nil)
-)
+var _ gextras.Nativer = (*NumericSorter)(nil)
 
 func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
 	return &NumericSorter{

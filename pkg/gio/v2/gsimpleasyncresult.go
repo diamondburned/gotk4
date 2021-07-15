@@ -54,39 +54,6 @@ func SimpleAsyncReportGErrorInIdle(object *externglib.Object, callback AsyncRead
 	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
 }
 
-// SimpleAsyncResulter describes SimpleAsyncResult's methods.
-type SimpleAsyncResulter interface {
-	// Complete completes an asynchronous I/O job immediately.
-	Complete()
-	// CompleteInIdle completes an asynchronous function in an idle handler in
-	// the [thread-default main context][g-main-context-push-thread-default] of
-	// the thread that simple was initially created in (and re-pushes that
-	// context around the invocation of the callback).
-	CompleteInIdle()
-	// OpResGboolean gets the operation result boolean from within the
-	// asynchronous result.
-	OpResGboolean() bool
-	// OpResGssize gets a gssize from the asynchronous result.
-	OpResGssize() int
-	// PropagateError propagates an error from within the simple asynchronous
-	// result to a given destination.
-	PropagateError() error
-	// SetCheckCancellable sets a #GCancellable to check before dispatching
-	// results.
-	SetCheckCancellable(checkCancellable *Cancellable)
-	// SetFromError sets the result from a #GError.
-	SetFromError(err error)
-	// SetHandleCancellation sets whether to handle cancellation within the
-	// asynchronous operation.
-	SetHandleCancellation(handleCancellation bool)
-	// SetOpResGboolean sets the operation result to a boolean within the
-	// asynchronous result.
-	SetOpResGboolean(opRes bool)
-	// SetOpResGssize sets the operation result within the asynchronous result
-	// to the given op_res.
-	SetOpResGssize(opRes int)
-}
-
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
 // #GTask, which provides a simpler API.
 //
@@ -250,10 +217,7 @@ type SimpleAsyncResult struct {
 	AsyncResult
 }
 
-var (
-	_ SimpleAsyncResulter = (*SimpleAsyncResult)(nil)
-	_ gextras.Nativer     = (*SimpleAsyncResult)(nil)
-)
+var _ gextras.Nativer = (*SimpleAsyncResult)(nil)
 
 func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{

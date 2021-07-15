@@ -93,7 +93,82 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FileChooserer describes FileChooser's methods.
+// FileChooser is an interface that can be implemented by file selection
+// widgets. In GTK+, the main objects that implement this interface are
+// FileChooserWidget, FileChooserDialog, and FileChooserButton. You do not need
+// to write an object that implements the FileChooser interface unless you are
+// trying to adapt an existing file selector to expose a standard programming
+// interface.
+//
+// FileChooser allows for shortcuts to various places in the filesystem. In the
+// default implementation these are displayed in the left pane. It may be a bit
+// confusing at first that these shortcuts come from various sources and in
+// various flavours, so lets explain the terminology here:
+//
+// - Bookmarks: are created by the user, by dragging folders from the right pane
+// to the left pane, or by using the “Add”. Bookmarks can be renamed and deleted
+// by the user.
+//
+// - Shortcuts: can be provided by the application. For example, a Paint program
+// may want to add a shortcut for a Clipart folder. Shortcuts cannot be modified
+// by the user.
+//
+// - Volumes: are provided by the underlying filesystem abstraction. They are
+// the “roots” of the filesystem.
+//
+//
+// File Names and Encodings
+//
+// When the user is finished selecting files in a FileChooser, your program can
+// get the selected names either as filenames or as URIs. For URIs, the normal
+// escaping rules are applied if the URI contains non-ASCII characters. However,
+// filenames are always returned in the character set specified by the
+// G_FILENAME_ENCODING environment variable. Please see the GLib documentation
+// for more details about this variable.
+//
+// This means that while you can pass the result of
+// gtk_file_chooser_get_filename() to g_open() or g_fopen(), you may not be able
+// to directly set it as the text of a Label widget unless you convert it first
+// to UTF-8, which all GTK+ widgets expect. You should use g_filename_to_utf8()
+// to convert filenames into strings that can be passed to GTK+ widgets.
+//
+//
+// Adding a Preview Widget
+//
+// You can add a custom preview widget to a file chooser and then get
+// notification about when the preview needs to be updated. To install a preview
+// widget, use gtk_file_chooser_set_preview_widget(). Then, connect to the
+// FileChooser::update-preview signal to get notified when you need to update
+// the contents of the preview.
+//
+// Your callback should use gtk_file_chooser_get_preview_filename() to see what
+// needs previewing. Once you have generated the preview for the corresponding
+// file, you must call gtk_file_chooser_set_preview_widget_active() with a
+// boolean flag that indicates whether your callback could successfully generate
+// a preview.
+//
+// Example: Using a Preview Widget
+//
+//
+//      GtkWidget *toggle;
+//
+//      ...
+//
+//      toggle = gtk_check_button_new_with_label ("Open file read-only");
+//      gtk_widget_show (toggle);
+//      gtk_file_chooser_set_extra_widget (my_file_chooser, toggle);
+//    }
+//
+// If you want to set more than one extra widget in the file chooser, you can a
+// container such as a Box or a Grid and include your widgets in it. Then, set
+// the container as the whole extra widget.
+type FileChooser struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*FileChooser)(nil)
+
+// FileChooserer describes FileChooser's abstract methods.
 type FileChooserer interface {
 	// AddChoice adds a 'choice' to the file chooser.
 	AddChoice(id string, label string, options []string, optionLabels []string)
@@ -212,7 +287,7 @@ type FileChooserer interface {
 	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
 	// SetExtraWidget sets an application-supplied widget to provide extra
 	// options to the user.
-	SetExtraWidget(extraWidget Widgeter)
+	SetExtraWidget(extraWidget Widgetter)
 	// SetFile sets file as the current filename for the file chooser, by
 	// changing to the file’s parent folder and actually selecting the file in
 	// list.
@@ -229,7 +304,7 @@ type FileChooserer interface {
 	SetLocalOnly(localOnly bool)
 	// SetPreviewWidget sets an application-supplied widget to use to display a
 	// custom preview of the currently selected file.
-	SetPreviewWidget(previewWidget Widgeter)
+	SetPreviewWidget(previewWidget Widgetter)
 	// SetPreviewWidgetActive sets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename.
@@ -259,83 +334,7 @@ type FileChooserer interface {
 	UnselectURI(uri string)
 }
 
-// FileChooser is an interface that can be implemented by file selection
-// widgets. In GTK+, the main objects that implement this interface are
-// FileChooserWidget, FileChooserDialog, and FileChooserButton. You do not need
-// to write an object that implements the FileChooser interface unless you are
-// trying to adapt an existing file selector to expose a standard programming
-// interface.
-//
-// FileChooser allows for shortcuts to various places in the filesystem. In the
-// default implementation these are displayed in the left pane. It may be a bit
-// confusing at first that these shortcuts come from various sources and in
-// various flavours, so lets explain the terminology here:
-//
-// - Bookmarks: are created by the user, by dragging folders from the right pane
-// to the left pane, or by using the “Add”. Bookmarks can be renamed and deleted
-// by the user.
-//
-// - Shortcuts: can be provided by the application. For example, a Paint program
-// may want to add a shortcut for a Clipart folder. Shortcuts cannot be modified
-// by the user.
-//
-// - Volumes: are provided by the underlying filesystem abstraction. They are
-// the “roots” of the filesystem.
-//
-//
-// File Names and Encodings
-//
-// When the user is finished selecting files in a FileChooser, your program can
-// get the selected names either as filenames or as URIs. For URIs, the normal
-// escaping rules are applied if the URI contains non-ASCII characters. However,
-// filenames are always returned in the character set specified by the
-// G_FILENAME_ENCODING environment variable. Please see the GLib documentation
-// for more details about this variable.
-//
-// This means that while you can pass the result of
-// gtk_file_chooser_get_filename() to g_open() or g_fopen(), you may not be able
-// to directly set it as the text of a Label widget unless you convert it first
-// to UTF-8, which all GTK+ widgets expect. You should use g_filename_to_utf8()
-// to convert filenames into strings that can be passed to GTK+ widgets.
-//
-//
-// Adding a Preview Widget
-//
-// You can add a custom preview widget to a file chooser and then get
-// notification about when the preview needs to be updated. To install a preview
-// widget, use gtk_file_chooser_set_preview_widget(). Then, connect to the
-// FileChooser::update-preview signal to get notified when you need to update
-// the contents of the preview.
-//
-// Your callback should use gtk_file_chooser_get_preview_filename() to see what
-// needs previewing. Once you have generated the preview for the corresponding
-// file, you must call gtk_file_chooser_set_preview_widget_active() with a
-// boolean flag that indicates whether your callback could successfully generate
-// a preview.
-//
-// Example: Using a Preview Widget
-//
-//
-//      GtkWidget *toggle;
-//
-//      ...
-//
-//      toggle = gtk_check_button_new_with_label ("Open file read-only");
-//      gtk_widget_show (toggle);
-//      gtk_file_chooser_set_extra_widget (my_file_chooser, toggle);
-//    }
-//
-// If you want to set more than one extra widget in the file chooser, you can a
-// container such as a Box or a Grid and include your widgets in it. Then, set
-// the container as the whole extra widget.
-type FileChooser struct {
-	*externglib.Object
-}
-
-var (
-	_ FileChooserer   = (*FileChooser)(nil)
-	_ gextras.Nativer = (*FileChooser)(nil)
-)
+var _ FileChooserer = (*FileChooser)(nil)
 
 func wrapFileChooser(obj *externglib.Object) *FileChooser {
 	return &FileChooser{
@@ -1188,7 +1187,7 @@ func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation b
 
 // SetExtraWidget sets an application-supplied widget to provide extra options
 // to the user.
-func (chooser *FileChooser) SetExtraWidget(extraWidget Widgeter) {
+func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 
@@ -1343,7 +1342,7 @@ func (chooser *FileChooser) SetLocalOnly(localOnly bool) {
 // When there is no application-supplied preview widget, or the
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
-func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgeter) {
+func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 

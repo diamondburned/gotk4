@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// StatusbarAccessibler describes StatusbarAccessible's methods.
-type StatusbarAccessibler interface {
-	privateStatusbarAccessible()
-}
-
 type StatusbarAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ StatusbarAccessibler = (*StatusbarAccessible)(nil)
-	_ gextras.Nativer      = (*StatusbarAccessible)(nil)
-)
+var _ gextras.Nativer = (*StatusbarAccessible)(nil)
 
 func wrapStatusbarAccessible(obj *externglib.Object) *StatusbarAccessible {
 	return &StatusbarAccessible{

@@ -23,16 +23,6 @@ func init() {
 	})
 }
 
-// RecentActioner describes RecentAction's methods.
-type RecentActioner interface {
-	// ShowNumbers returns the value set by
-	// gtk_recent_chooser_menu_set_show_numbers().
-	ShowNumbers() bool
-	// SetShowNumbers sets whether a number should be added to the items shown
-	// by the widgets representing action.
-	SetShowNumbers(showNumbers bool)
-}
-
 // RecentAction represents a list of recently used files, which can be shown by
 // widgets such as RecentChooserDialog or RecentChooserMenu.
 //
@@ -46,10 +36,7 @@ type RecentAction struct {
 	RecentChooser
 }
 
-var (
-	_ RecentActioner  = (*RecentAction)(nil)
-	_ gextras.Nativer = (*RecentAction)(nil)
-)
+var _ gextras.Nativer = (*RecentAction)(nil)
 
 func wrapRecentAction(obj *externglib.Object) *RecentAction {
 	return &RecentAction{

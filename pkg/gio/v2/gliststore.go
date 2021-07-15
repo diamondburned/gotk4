@@ -34,29 +34,6 @@ func init() {
 	})
 }
 
-// ListStorer describes ListStore's methods.
-type ListStorer interface {
-	// Append appends item to store.
-	Append(item *externglib.Object)
-	// Find looks up the given item in the list store by looping over the items
-	// until the first occurrence of item.
-	Find(item *externglib.Object) (uint, bool)
-	// Insert inserts item into store at position.
-	Insert(position uint, item *externglib.Object)
-	// InsertSorted inserts item into store at a position to be determined by
-	// the compare_func.
-	InsertSorted(item *externglib.Object, compareFunc glib.CompareDataFunc) uint
-	// Remove removes the item from store that is at position.
-	Remove(position uint)
-	// RemoveAll removes all items from store.
-	RemoveAll()
-	// Sort the items in store according to compare_func.
-	Sort(compareFunc glib.CompareDataFunc)
-	// Splice changes store by removing n_removals items and adding n_additions
-	// items to it.
-	Splice(position uint, nRemovals uint, additions []*externglib.Object)
-}
-
 // ListStore is a simple implementation of Model that stores all items in
 // memory.
 //
@@ -68,10 +45,7 @@ type ListStore struct {
 	ListModel
 }
 
-var (
-	_ ListStorer      = (*ListStore)(nil)
-	_ gextras.Nativer = (*ListStore)(nil)
-)
+var _ gextras.Nativer = (*ListStore)(nil)
 
 func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{

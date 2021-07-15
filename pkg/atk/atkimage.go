@@ -47,21 +47,6 @@ type ImageOverrider interface {
 	SetImageDescription(description string) bool
 }
 
-// Imager describes Image's methods.
-type Imager interface {
-	// ImageDescription: get a textual description of this image.
-	ImageDescription() string
-	// ImageLocale retrieves the locale identifier associated to the Image.
-	ImageLocale() string
-	// ImagePosition gets the position of the image in the form of a point
-	// specifying the images top-left corner.
-	ImagePosition(coordType CoordType) (x int, y int)
-	// ImageSize: get the width and height in pixels for the specified image.
-	ImageSize() (width int, height int)
-	// SetImageDescription sets the textual description for this image.
-	SetImageDescription(description string) bool
-}
-
 // Image should be implemented by Object subtypes on behalf of components which
 // display image/pixmap information onscreen, and which provide information
 // (other than just widget borders, etc.) via that image content. For instance,
@@ -77,10 +62,24 @@ type Image struct {
 	*externglib.Object
 }
 
-var (
-	_ Imager          = (*Image)(nil)
-	_ gextras.Nativer = (*Image)(nil)
-)
+var _ gextras.Nativer = (*Image)(nil)
+
+// Imager describes Image's abstract methods.
+type Imager interface {
+	// ImageDescription: get a textual description of this image.
+	ImageDescription() string
+	// ImageLocale retrieves the locale identifier associated to the Image.
+	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	ImagePosition(coordType CoordType) (x int, y int)
+	// ImageSize: get the width and height in pixels for the specified image.
+	ImageSize() (width int, height int)
+	// SetImageDescription sets the textual description for this image.
+	SetImageDescription(description string) bool
+}
+
+var _ Imager = (*Image)(nil)
 
 func wrapImage(obj *externglib.Object) *Image {
 	return &Image{

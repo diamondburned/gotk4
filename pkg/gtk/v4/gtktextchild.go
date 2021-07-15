@@ -17,15 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorer},
+		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorrer},
 	})
-}
-
-// TextChildAnchorer describes TextChildAnchor's methods.
-type TextChildAnchorer interface {
-	// Deleted determines whether a child anchor has been deleted from the
-	// buffer.
-	Deleted() bool
 }
 
 // TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child
@@ -36,10 +29,7 @@ type TextChildAnchor struct {
 	*externglib.Object
 }
 
-var (
-	_ TextChildAnchorer = (*TextChildAnchor)(nil)
-	_ gextras.Nativer   = (*TextChildAnchor)(nil)
-)
+var _ gextras.Nativer = (*TextChildAnchor)(nil)
 
 func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
@@ -47,7 +37,7 @@ func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	}
 }
 
-func marshalTextChildAnchorer(p uintptr) (interface{}, error) {
+func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextChildAnchor(obj), nil

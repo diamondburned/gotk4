@@ -31,12 +31,6 @@ func init() {
 	})
 }
 
-// DBusObjectProxier describes DBusObjectProxy's methods.
-type DBusObjectProxier interface {
-	// Connection gets the connection that proxy is for.
-	Connection() *DBusConnection
-}
-
 // DBusObjectProxy is an object used to represent a remote object with one or
 // more D-Bus interfaces. Normally, you don't instantiate a BusObjectProxy
 // yourself - typically BusObjectManagerClient is used to obtain it.
@@ -46,10 +40,7 @@ type DBusObjectProxy struct {
 	DBusObject
 }
 
-var (
-	_ DBusObjectProxier = (*DBusObjectProxy)(nil)
-	_ gextras.Nativer   = (*DBusObjectProxy)(nil)
-)
+var _ gextras.Nativer = (*DBusObjectProxy)(nil)
 
 func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{

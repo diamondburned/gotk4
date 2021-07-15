@@ -22,22 +22,6 @@ func init() {
 	})
 }
 
-// AppLaunchContexter describes AppLaunchContext's methods.
-type AppLaunchContexter interface {
-	// Display gets the GdkDisplay that context is for.
-	Display() *Display
-	// SetDesktop sets the workspace on which applications will be launched.
-	SetDesktop(desktop int)
-	// SetIcon sets the icon for applications that are launched with this
-	// context.
-	SetIcon(icon gio.Iconer)
-	// SetIconName sets the icon for applications that are launched with this
-	// context.
-	SetIconName(iconName string)
-	// SetTimestamp sets the timestamp of context.
-	SetTimestamp(timestamp uint32)
-}
-
 // AppLaunchContext: GdkAppLaunchContext handles launching an application in a
 // graphical context.
 //
@@ -62,10 +46,7 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-var (
-	_ AppLaunchContexter = (*AppLaunchContext)(nil)
-	_ gextras.Nativer    = (*AppLaunchContext)(nil)
-)
+var _ gextras.Nativer = (*AppLaunchContext)(nil)
 
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{
@@ -121,7 +102,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // notification.
 //
 // See also gdk.AppLaunchContext.SetIconName().
-func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
+func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

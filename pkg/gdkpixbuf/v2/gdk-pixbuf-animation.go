@@ -84,20 +84,6 @@ type PixbufAnimationOverrider interface {
 	IsStaticImage() bool
 }
 
-// PixbufAnimationer describes PixbufAnimation's methods.
-type PixbufAnimationer interface {
-	// Height queries the height of the bounding box of a pixbuf animation.
-	Height() int
-	// Iter: get an iterator for displaying an animation.
-	Iter(startTime *glib.TimeVal) *PixbufAnimationIter
-	// StaticImage retrieves a static image for the animation.
-	StaticImage() *Pixbuf
-	// Width queries the width of the bounding box of a pixbuf animation.
-	Width() int
-	// IsStaticImage checks whether the animation is a static image.
-	IsStaticImage() bool
-}
-
 // PixbufAnimation: opaque object representing an animation.
 //
 // The GdkPixBuf library provides a simple mechanism to load and represent
@@ -115,10 +101,7 @@ type PixbufAnimation struct {
 	*externglib.Object
 }
 
-var (
-	_ PixbufAnimationer = (*PixbufAnimation)(nil)
-	_ gextras.Nativer   = (*PixbufAnimation)(nil)
-)
+var _ gextras.Nativer = (*PixbufAnimation)(nil)
 
 func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{
@@ -421,30 +404,13 @@ type PixbufAnimationIterOverrider interface {
 	OnCurrentlyLoadingFrame() bool
 }
 
-// PixbufAnimationIterer describes PixbufAnimationIter's methods.
-type PixbufAnimationIterer interface {
-	// Advance: possibly advances an animation to a new frame.
-	Advance(currentTime *glib.TimeVal) bool
-	// DelayTime gets the number of milliseconds the current pixbuf should be
-	// displayed, or -1 if the current pixbuf should be displayed forever.
-	DelayTime() int
-	// Pixbuf gets the current pixbuf which should be displayed.
-	Pixbuf() *Pixbuf
-	// OnCurrentlyLoadingFrame: used to determine how to respond to the
-	// area_updated signal on PixbufLoader when loading an animation.
-	OnCurrentlyLoadingFrame() bool
-}
-
 // PixbufAnimationIter: opaque object representing an iterator which points to a
 // certain position in an animation.
 type PixbufAnimationIter struct {
 	*externglib.Object
 }
 
-var (
-	_ PixbufAnimationIterer = (*PixbufAnimationIter)(nil)
-	_ gextras.Nativer       = (*PixbufAnimationIter)(nil)
-)
+var _ gextras.Nativer = (*PixbufAnimationIter)(nil)
 
 func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{

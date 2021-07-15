@@ -30,46 +30,6 @@ type GLAreaOverrider interface {
 	Resize(width int, height int)
 }
 
-// GLAreaer describes GLArea's methods.
-type GLAreaer interface {
-	// AttachBuffers binds buffers to the framebuffer.
-	AttachBuffers()
-	// AutoRender returns whether the area is in auto render mode or not.
-	AutoRender() bool
-	// Error gets the current error set on the area.
-	Error() error
-	// HasDepthBuffer returns whether the area has a depth buffer.
-	HasDepthBuffer() bool
-	// HasStencilBuffer returns whether the area has a stencil buffer.
-	HasStencilBuffer() bool
-	// RequiredVersion retrieves the required version of OpenGL.
-	RequiredVersion() (major int, minor int)
-	// UseES returns whether the GtkGLArea should use OpenGL ES.
-	UseES() bool
-	// MakeCurrent ensures that the GdkGLContext used by area is associated with
-	// the GtkGLArea.
-	MakeCurrent()
-	// QueueRender marks the currently rendered data (if any) as invalid, and
-	// queues a redraw of the widget.
-	QueueRender()
-	// SetAutoRender sets whether the GtkGLArea is in auto render mode.
-	SetAutoRender(autoRender bool)
-	// SetError sets an error on the area which will be shown instead of the GL
-	// rendering.
-	SetError(err error)
-	// SetHasDepthBuffer sets whether the GtkGLArea should use a depth buffer.
-	SetHasDepthBuffer(hasDepthBuffer bool)
-	// SetHasStencilBuffer sets whether the GtkGLArea should use a stencil
-	// buffer.
-	SetHasStencilBuffer(hasStencilBuffer bool)
-	// SetRequiredVersion sets the required version of OpenGL to be used when
-	// creating the context for the widget.
-	SetRequiredVersion(major int, minor int)
-	// SetUseES sets whether the area should create an OpenGL or an OpenGL ES
-	// context.
-	SetUseES(useEs bool)
-}
-
 // GLArea: GtkGLArea is a widget that allows drawing with OpenGL.
 //
 // !An example GtkGLArea (glarea.png)
@@ -174,10 +134,7 @@ type GLArea struct {
 	Widget
 }
 
-var (
-	_ GLAreaer        = (*GLArea)(nil)
-	_ gextras.Nativer = (*GLArea)(nil)
-)
+var _ gextras.Nativer = (*GLArea)(nil)
 
 func wrapGLArea(obj *externglib.Object) *GLArea {
 	return &GLArea{

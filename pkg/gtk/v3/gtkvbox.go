@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxer},
+		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxxer},
 	})
-}
-
-// VBoxer describes VBox's methods.
-type VBoxer interface {
-	privateVBox()
 }
 
 // VBox is a container that organizes child widgets into a single column.
@@ -56,10 +51,7 @@ type VBox struct {
 	Box
 }
 
-var (
-	_ VBoxer          = (*VBox)(nil)
-	_ gextras.Nativer = (*VBox)(nil)
-)
+var _ gextras.Nativer = (*VBox)(nil)
 
 func wrapVBox(obj *externglib.Object) *VBox {
 	return &VBox{
@@ -84,7 +76,7 @@ func wrapVBox(obj *externglib.Object) *VBox {
 	}
 }
 
-func marshalVBoxer(p uintptr) (interface{}, error) {
+func marshalVBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVBox(obj), nil

@@ -23,33 +23,6 @@ func init() {
 	})
 }
 
-// CellViewer describes CellView's methods.
-type CellViewer interface {
-	// DisplayedRow returns a TreePath referring to the currently displayed row.
-	DisplayedRow() *TreePath
-	// DrawSensitive gets whether cell_view is configured to draw all of its
-	// cells in a sensitive state.
-	DrawSensitive() bool
-	// FitModel gets whether cell_view is configured to request space to fit the
-	// entire TreeModel.
-	FitModel() bool
-	// Model returns the model for cell_view.
-	Model() *TreeModel
-	// SetDisplayedRow sets the row of the model that is currently displayed by
-	// the CellView.
-	SetDisplayedRow(path *TreePath)
-	// SetDrawSensitive sets whether cell_view should draw all of its cells in a
-	// sensitive state, this is used by ComboBox menus to ensure that rows with
-	// insensitive cells that contain children appear sensitive in the parent
-	// menu item.
-	SetDrawSensitive(drawSensitive bool)
-	// SetFitModel sets whether cell_view should request space to fit the entire
-	// TreeModel.
-	SetFitModel(fitModel bool)
-	// SetModel sets the model for cell_view.
-	SetModel(model TreeModeler)
-}
-
 // CellView: widget displaying a single row of a GtkTreeModel
 //
 // A CellView displays a single row of a TreeModel using a CellArea and
@@ -76,10 +49,7 @@ type CellView struct {
 	Orientable
 }
 
-var (
-	_ CellViewer      = (*CellView)(nil)
-	_ gextras.Nativer = (*CellView)(nil)
-)
+var _ gextras.Nativer = (*CellView)(nil)
 
 func wrapCellView(obj *externglib.Object) *CellView {
 	return &CellView{
@@ -332,7 +302,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 // SetModel sets the model for cell_view. If cell_view already has a model set,
 // it will remove it before setting the new model. If model is NULL, then it
 // will unset the old model.
-func (cellView *CellView) SetModel(model TreeModeler) {
+func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 

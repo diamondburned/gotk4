@@ -22,50 +22,15 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelectioner},
-		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialoger},
+		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialogger},
 	})
-}
-
-// FontSelectioner describes FontSelection's methods.
-type FontSelectioner interface {
-	// Face gets the FontFace representing the selected font group details (i.e.
-	Face() *pango.FontFace
-	// FaceList: this returns the TreeView which lists all styles available for
-	// the selected font.
-	FaceList() *Widget
-	// Family gets the FontFamily representing the selected font family.
-	Family() *pango.FontFamily
-	// FamilyList: this returns the TreeView that lists font families, for
-	// example, “Sans”, “Serif”, etc.
-	FamilyList() *Widget
-	// FontName gets the currently-selected font name.
-	FontName() string
-	// PreviewEntry: this returns the Entry used to display the font as a
-	// preview.
-	PreviewEntry() *Widget
-	// PreviewText gets the text displayed in the preview area.
-	PreviewText() string
-	// Size: selected font size.
-	Size() int
-	// SizeEntry: this returns the Entry used to allow the user to edit the font
-	// number manually instead of selecting it from the list of font sizes.
-	SizeEntry() *Widget
-	// SizeList: this returns the TreeView used to list font sizes.
-	SizeList() *Widget
-	// SetFontName sets the currently-selected font.
-	SetFontName(fontname string) bool
-	// SetPreviewText sets the text displayed in the preview area.
-	SetPreviewText(text string)
 }
 
 type FontSelection struct {
 	Box
 }
 
-var (
-	_ FontSelectioner = (*FontSelection)(nil)
-	_ gextras.Nativer = (*FontSelection)(nil)
-)
+var _ gextras.Nativer = (*FontSelection)(nil)
 
 func wrapFontSelection(obj *externglib.Object) *FontSelection {
 	return &FontSelection{
@@ -353,32 +318,11 @@ func (fontsel *FontSelection) SetPreviewText(text string) {
 	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 }
 
-// FontSelectionDialoger describes FontSelectionDialog's methods.
-type FontSelectionDialoger interface {
-	// CancelButton gets the “Cancel” button.
-	CancelButton() *Widget
-	// FontName gets the currently-selected font name.
-	FontName() string
-	// FontSelection retrieves the FontSelection widget embedded in the dialog.
-	FontSelection() *Widget
-	// OkButton gets the “OK” button.
-	OkButton() *Widget
-	// PreviewText gets the text displayed in the preview area.
-	PreviewText() string
-	// SetFontName sets the currently selected font.
-	SetFontName(fontname string) bool
-	// SetPreviewText sets the text displayed in the preview area.
-	SetPreviewText(text string)
-}
-
 type FontSelectionDialog struct {
 	Dialog
 }
 
-var (
-	_ FontSelectionDialoger = (*FontSelectionDialog)(nil)
-	_ gextras.Nativer       = (*FontSelectionDialog)(nil)
-)
+var _ gextras.Nativer = (*FontSelectionDialog)(nil)
 
 func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	return &FontSelectionDialog{
@@ -404,7 +348,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	}
 }
 
-func marshalFontSelectionDialoger(p uintptr) (interface{}, error) {
+func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontSelectionDialog(obj), nil

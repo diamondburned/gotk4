@@ -21,27 +21,6 @@ func init() {
 	})
 }
 
-// Framer describes Frame's methods.
-type Framer interface {
-	// Child gets the child widget of frame.
-	Child() *Widget
-	// Label returns the frame labels text.
-	Label() string
-	// LabelAlign retrieves the X alignment of the frame’s label.
-	LabelAlign() float32
-	// LabelWidget retrieves the label widget for the frame.
-	LabelWidget() *Widget
-	// SetChild sets the child widget of frame.
-	SetChild(child Widgeter)
-	// SetLabel creates a new GtkLabel with the label and sets it as the frame's
-	// label widget.
-	SetLabel(label string)
-	// SetLabelAlign sets the X alignment of the frame widget’s label.
-	SetLabelAlign(xalign float32)
-	// SetLabelWidget sets the label widget for the frame.
-	SetLabelWidget(labelWidget Widgeter)
-}
-
 // Frame: GtkFrame is a widget that surrounds its child with a decorative frame
 // and an optional label.
 //
@@ -88,10 +67,7 @@ type Frame struct {
 	Widget
 }
 
-var (
-	_ Framer          = (*Frame)(nil)
-	_ gextras.Nativer = (*Frame)(nil)
-)
+var _ gextras.Nativer = (*Frame)(nil)
 
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
@@ -203,7 +179,7 @@ func (frame *Frame) LabelWidget() *Widget {
 }
 
 // SetChild sets the child widget of frame.
-func (frame *Frame) SetChild(child Widgeter) {
+func (frame *Frame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -242,7 +218,7 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 //
 // This is the widget that will appear embedded in the top edge of the frame as
 // a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

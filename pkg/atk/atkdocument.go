@@ -59,7 +59,19 @@ type DocumentOverrider interface {
 	SetDocumentAttribute(attributeName string, attributeValue string) bool
 }
 
-// Documenter describes Document's methods.
+// Document interface should be supported by any object whose content is a
+// representation or view of a document. The AtkDocument interface should appear
+// on the toplevel container for the document content; however AtkDocument
+// instances may be nested (i.e. an AtkDocument may be a descendant of another
+// AtkDocument) in those cases where one document contains "embedded content"
+// which can reasonably be considered a document in its own right.
+type Document struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Document)(nil)
+
+// Documenter describes Document's abstract methods.
 type Documenter interface {
 	// AttributeValue retrieves the value of the given attribute_name inside
 	// document.
@@ -80,20 +92,7 @@ type Documenter interface {
 	SetAttributeValue(attributeName string, attributeValue string) bool
 }
 
-// Document interface should be supported by any object whose content is a
-// representation or view of a document. The AtkDocument interface should appear
-// on the toplevel container for the document content; however AtkDocument
-// instances may be nested (i.e. an AtkDocument may be a descendant of another
-// AtkDocument) in those cases where one document contains "embedded content"
-// which can reasonably be considered a document in its own right.
-type Document struct {
-	*externglib.Object
-}
-
-var (
-	_ Documenter      = (*Document)(nil)
-	_ gextras.Nativer = (*Document)(nil)
-)
+var _ Documenter = (*Document)(nil)
 
 func wrapDocument(obj *externglib.Object) *Document {
 	return &Document{

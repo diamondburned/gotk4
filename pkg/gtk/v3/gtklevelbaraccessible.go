@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// LevelBarAccessibler describes LevelBarAccessible's methods.
-type LevelBarAccessibler interface {
-	privateLevelBarAccessible()
-}
-
 type LevelBarAccessible struct {
 	WidgetAccessible
 
 	atk.Value
 }
 
-var (
-	_ LevelBarAccessibler = (*LevelBarAccessible)(nil)
-	_ gextras.Nativer     = (*LevelBarAccessible)(nil)
-)
+var _ gextras.Nativer = (*LevelBarAccessible)(nil)
 
 func wrapLevelBarAccessible(obj *externglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{

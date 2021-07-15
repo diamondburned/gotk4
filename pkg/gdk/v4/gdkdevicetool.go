@@ -49,27 +49,12 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceTooler describes DeviceTool's methods.
-type DeviceTooler interface {
-	// Axes gets the axes of the tool.
-	Axes() AxisFlags
-	// HardwareID gets the hardware ID of this tool, or 0 if it's not known.
-	HardwareID() uint64
-	// Serial gets the serial number of this tool.
-	Serial() uint64
-	// ToolType gets the GdkDeviceToolType of the tool.
-	ToolType() DeviceToolType
-}
-
 // DeviceTool: physical tool associated to a GdkDevice.
 type DeviceTool struct {
 	*externglib.Object
 }
 
-var (
-	_ DeviceTooler    = (*DeviceTool)(nil)
-	_ gextras.Nativer = (*DeviceTool)(nil)
-)
+var _ gextras.Nativer = (*DeviceTool)(nil)
 
 func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{

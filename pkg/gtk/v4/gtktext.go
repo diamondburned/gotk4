@@ -24,94 +24,6 @@ func init() {
 	})
 }
 
-// Texter describes Text's methods.
-type Texter interface {
-	// ActivatesDefault retrieves the value set by
-	// gtk_text_set_activates_default().
-	ActivatesDefault() bool
-	// Attributes gets the attribute list that was set on the GtkText using
-	// gtk_text_set_attributes().
-	Attributes() *pango.AttrList
-	// Buffer: get the GtkEntryBuffer object which holds the text for this self.
-	Buffer() *EntryBuffer
-	// EnableEmojiCompletion returns whether Emoji completion is enabled for
-	// this GtkText widget.
-	EnableEmojiCompletion() bool
-	// ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
-	ExtraMenu() *gio.MenuModel
-	// InputHints gets the input hints of the GtkText.
-	InputHints() InputHints
-	// InputPurpose gets the input purpose of the GtkText.
-	InputPurpose() InputPurpose
-	// InvisibleChar retrieves the character displayed in place of the real
-	// characters for entries with visibility set to false.
-	InvisibleChar() uint32
-	// MaxLength retrieves the maximum allowed length of the text in self.
-	MaxLength() int
-	// OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
-	OverwriteMode() bool
-	// PlaceholderText retrieves the text that will be displayed when self is
-	// empty and unfocused
-	PlaceholderText() string
-	// PropagateTextWidth returns whether the GtkText will grow and shrink with
-	// the content.
-	PropagateTextWidth() bool
-	// Tabs gets the tabstops that were set on the GtkText using
-	// gtk_text_set_tabs().
-	Tabs() *pango.TabArray
-	// TextLength retrieves the current length of the text in self.
-	TextLength() uint16
-	// TruncateMultiline returns whether the GtkText will truncate multi-line
-	// text that is pasted into the widget
-	TruncateMultiline() bool
-	// Visibility retrieves whether the text in self is visible.
-	Visibility() bool
-	// GrabFocusWithoutSelecting causes self to have keyboard focus.
-	GrabFocusWithoutSelecting() bool
-	// SetActivatesDefault: if activates is TRUE, pressing Enter in the self
-	// will activate the default widget for the window containing self.
-	SetActivatesDefault(activates bool)
-	// SetAttributes sets attributes that are applied to the text.
-	SetAttributes(attrs *pango.AttrList)
-	// SetBuffer: set the GtkEntryBuffer object which holds the text for this
-	// widget.
-	SetBuffer(buffer *EntryBuffer)
-	// SetEnableEmojiCompletion sets whether Emoji completion is enabled.
-	SetEnableEmojiCompletion(enableEmojiCompletion bool)
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for self.
-	SetExtraMenu(model gio.MenuModeler)
-	// SetInputHints sets input hints that allow input methods to fine-tune
-	// their behaviour.
-	SetInputHints(hints InputHints)
-	// SetInputPurpose sets the input purpose of the GtkText.
-	SetInputPurpose(purpose InputPurpose)
-	// SetInvisibleChar sets the character to use in place of the actual text
-	// when in “password mode”.
-	SetInvisibleChar(ch uint32)
-	// SetMaxLength sets the maximum allowed length of the contents of the
-	// widget.
-	SetMaxLength(length int)
-	// SetOverwriteMode sets whether the text is overwritten when typing in the
-	// GtkText.
-	SetOverwriteMode(overwrite bool)
-	// SetPlaceholderText sets text to be displayed in self when it is empty.
-	SetPlaceholderText(text string)
-	// SetPropagateTextWidth sets whether the GtkText should grow and shrink
-	// with the content.
-	SetPropagateTextWidth(propagateTextWidth bool)
-	// SetTabs sets tabstops that are applied to the text.
-	SetTabs(tabs *pango.TabArray)
-	// SetTruncateMultiline sets whether the GtkText should truncate multi-line
-	// text that is pasted into the widget.
-	SetTruncateMultiline(truncateMultiline bool)
-	// SetVisibility sets whether the contents of the GtkText are visible or
-	// not.
-	SetVisibility(visible bool)
-	// UnsetInvisibleChar unsets the invisible char.
-	UnsetInvisibleChar()
-}
-
 // Text: GtkText widget is a single-line text entry widget.
 //
 // GtkText is the common implementation of single-line text editing that is
@@ -179,10 +91,7 @@ type Text struct {
 	Editable
 }
 
-var (
-	_ Texter          = (*Text)(nil)
-	_ gextras.Nativer = (*Text)(nil)
-)
+var _ gextras.Nativer = (*Text)(nil)
 
 func wrapText(obj *externglib.Object) *Text {
 	return &Text{
@@ -636,7 +545,7 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // self.
-func (self *Text) SetExtraMenu(model gio.MenuModeler) {
+func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkText    // out
 	var _arg1 *C.GMenuModel // out
 

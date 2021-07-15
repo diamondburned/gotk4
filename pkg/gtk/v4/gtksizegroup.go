@@ -21,18 +21,6 @@ func init() {
 	})
 }
 
-// SizeGrouper describes SizeGroup's methods.
-type SizeGrouper interface {
-	// AddWidget adds a widget to a GtkSizeGroup.
-	AddWidget(widget Widgeter)
-	// Mode gets the current mode of the size group.
-	Mode() SizeGroupMode
-	// RemoveWidget removes a widget from a GtkSizeGroup.
-	RemoveWidget(widget Widgeter)
-	// SetMode sets the GtkSizeGroupMode of the size group.
-	SetMode(mode SizeGroupMode)
-}
-
 // SizeGroup: GtkSizeGroup groups widgets together so they all request the same
 // size.
 //
@@ -102,10 +90,7 @@ type SizeGroup struct {
 	Buildable
 }
 
-var (
-	_ SizeGrouper     = (*SizeGroup)(nil)
-	_ gextras.Nativer = (*SizeGroup)(nil)
-)
+var _ gextras.Nativer = (*SizeGroup)(nil)
 
 func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{
@@ -148,7 +133,7 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (sizeGroup *SizeGroup) AddWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -175,7 +160,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a GtkSizeGroup.
-func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 

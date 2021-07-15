@@ -29,38 +29,18 @@ type LayoutManagerOverrider interface {
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.
-	Allocate(widget Widgeter, width int, height int, baseline int)
+	Allocate(widget Widgetter, width int, height int, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given for_child
 	// widget.
-	CreateLayoutChild(widget Widgeter, forChild Widgeter) *LayoutChild
-	RequestMode(widget Widgeter) SizeRequestMode
+	CreateLayoutChild(widget Widgetter, forChild Widgetter) *LayoutChild
+	RequestMode(widget Widgetter) SizeRequestMode
 	// Measure measures the size of the widget using manager, for the given
 	// orientation and size.
 	//
 	// See the gtk.Widget documentation on layout management for more details.
-	Measure(widget Widgeter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 	Root()
 	Unroot()
-}
-
-// LayoutManagerer describes LayoutManager's methods.
-type LayoutManagerer interface {
-	// Allocate assigns the given width, height, and baseline to a widget, and
-	// computes the position and sizes of the children of the widget using the
-	// layout management policy of manager.
-	Allocate(widget Widgeter, width int, height int, baseline int)
-	// LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,
-	// creating one if necessary.
-	LayoutChild(child Widgeter) *LayoutChild
-	// RequestMode retrieves the request mode of manager.
-	RequestMode() SizeRequestMode
-	// Widget retrieves the GtkWidget using the given GtkLayoutManager.
-	Widget() *Widget
-	// LayoutChanged queues a resize on the GtkWidget using manager, if any.
-	LayoutChanged()
-	// Measure measures the size of the widget using manager, for the given
-	// orientation and size.
-	Measure(widget Widgeter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
@@ -114,10 +94,29 @@ type LayoutManager struct {
 	*externglib.Object
 }
 
-var (
-	_ LayoutManagerer = (*LayoutManager)(nil)
-	_ gextras.Nativer = (*LayoutManager)(nil)
-)
+var _ gextras.Nativer = (*LayoutManager)(nil)
+
+// LayoutManagerer describes LayoutManager's abstract methods.
+type LayoutManagerer interface {
+	// Allocate assigns the given width, height, and baseline to a widget, and
+	// computes the position and sizes of the children of the widget using the
+	// layout management policy of manager.
+	Allocate(widget Widgetter, width int, height int, baseline int)
+	// LayoutChild retrieves a GtkLayoutChild instance for the GtkLayoutManager,
+	// creating one if necessary.
+	LayoutChild(child Widgetter) *LayoutChild
+	// RequestMode retrieves the request mode of manager.
+	RequestMode() SizeRequestMode
+	// Widget retrieves the GtkWidget using the given GtkLayoutManager.
+	Widget() *Widget
+	// LayoutChanged queues a resize on the GtkWidget using manager, if any.
+	LayoutChanged()
+	// Measure measures the size of the widget using manager, for the given
+	// orientation and size.
+	Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+}
+
+var _ LayoutManagerer = (*LayoutManager)(nil)
 
 func wrapLayoutManager(obj *externglib.Object) *LayoutManager {
 	return &LayoutManager{
@@ -134,7 +133,7 @@ func marshalLayoutManagerer(p uintptr) (interface{}, error) {
 // Allocate assigns the given width, height, and baseline to a widget, and
 // computes the position and sizes of the children of the widget using the
 // layout management policy of manager.
-func (manager *LayoutManager) Allocate(widget Widgeter, width int, height int, baseline int) {
+func (manager *LayoutManager) Allocate(widget Widgetter, width int, height int, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.int               // out
@@ -158,7 +157,7 @@ func (manager *LayoutManager) Allocate(widget Widgeter, width int, height int, b
 // The GtkLayoutChild instance is owned by the GtkLayoutManager, and is
 // guaranteed to exist as long as child is a child of the GtkWidget using the
 // given GtkLayoutManager.
-func (manager *LayoutManager) LayoutChild(child Widgeter) *LayoutChild {
+func (manager *LayoutManager) LayoutChild(child Widgetter) *LayoutChild {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkLayoutChild   // in
@@ -223,7 +222,7 @@ func (manager *LayoutManager) LayoutChanged() {
 // orientation and size.
 //
 // See the gtk.Widget documentation on layout management for more details.
-func (manager *LayoutManager) Measure(widget Widgeter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out

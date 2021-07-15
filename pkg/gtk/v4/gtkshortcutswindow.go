@@ -17,13 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindower},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindowwer},
 	})
-}
-
-// ShortcutsWindower describes ShortcutsWindow's methods.
-type ShortcutsWindower interface {
-	privateShortcutsWindow()
 }
 
 // ShortcutsWindow: GtkShortcutsWindow shows information about the keyboard
@@ -74,10 +69,7 @@ type ShortcutsWindow struct {
 	Window
 }
 
-var (
-	_ ShortcutsWindower = (*ShortcutsWindow)(nil)
-	_ gextras.Nativer   = (*ShortcutsWindow)(nil)
-)
+var _ gextras.Nativer = (*ShortcutsWindow)(nil)
 
 func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	return &ShortcutsWindow{
@@ -121,7 +113,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	}
 }
 
-func marshalShortcutsWindower(p uintptr) (interface{}, error) {
+func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutsWindow(obj), nil

@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorer},
+		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorrer},
 	})
 }
 
@@ -55,15 +55,6 @@ type VolumeMonitorOverrider interface {
 	VolumeRemoved(volume Volumer)
 }
 
-// VolumeMonitorer describes VolumeMonitor's methods.
-type VolumeMonitorer interface {
-	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuid string) *Mount
-	// VolumeForUUID finds a #GVolume object by its UUID (see
-	// g_volume_get_uuid())
-	VolumeForUUID(uuid string) *Volume
-}
-
 // VolumeMonitor is for listing the user interesting devices and volumes on the
 // computer. In other words, what a file selector or file manager would show in
 // a sidebar.
@@ -78,10 +69,7 @@ type VolumeMonitor struct {
 	*externglib.Object
 }
 
-var (
-	_ VolumeMonitorer = (*VolumeMonitor)(nil)
-	_ gextras.Nativer = (*VolumeMonitor)(nil)
-)
+var _ gextras.Nativer = (*VolumeMonitor)(nil)
 
 func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	return &VolumeMonitor{
@@ -89,7 +77,7 @@ func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	}
 }
 
-func marshalVolumeMonitorer(p uintptr) (interface{}, error) {
+func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVolumeMonitor(obj), nil

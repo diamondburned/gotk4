@@ -20,7 +20,7 @@ func init() {
 		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
 		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
-		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveler},
+		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveller},
 	})
 }
 
@@ -114,8 +114,19 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 	return ToplevelState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Topleveler describes Toplevel's methods.
-type Topleveler interface {
+// Toplevel: GdkToplevel is a freestanding toplevel surface.
+//
+// The GdkToplevel interface provides useful APIs for interacting with the
+// windowing system, such as controlling maximization and size of the surface,
+// setting icons and transient parents for dialogs.
+type Toplevel struct {
+	Surface
+}
+
+var _ gextras.Nativer = (*Toplevel)(nil)
+
+// Topleveller describes Toplevel's abstract methods.
+type Topleveller interface {
 	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
@@ -156,19 +167,7 @@ type Topleveler interface {
 	SupportsEdgeConstraints() bool
 }
 
-// Toplevel: GdkToplevel is a freestanding toplevel surface.
-//
-// The GdkToplevel interface provides useful APIs for interacting with the
-// windowing system, such as controlling maximization and size of the surface,
-// setting icons and transient parents for dialogs.
-type Toplevel struct {
-	Surface
-}
-
-var (
-	_ Topleveler      = (*Toplevel)(nil)
-	_ gextras.Nativer = (*Toplevel)(nil)
-)
+var _ Topleveller = (*Toplevel)(nil)
 
 func wrapToplevel(obj *externglib.Object) *Toplevel {
 	return &Toplevel{
@@ -178,7 +177,7 @@ func wrapToplevel(obj *externglib.Object) *Toplevel {
 	}
 }
 
-func marshalTopleveler(p uintptr) (interface{}, error) {
+func marshalTopleveller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToplevel(obj), nil

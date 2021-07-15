@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorer},
+		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorrer},
 	})
 }
 
@@ -93,37 +93,6 @@ type FileEnumeratorOverrider interface {
 	NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
 }
 
-// FileEnumeratorer describes FileEnumerator's methods.
-type FileEnumeratorer interface {
-	// Close releases all resources used by this enumerator, making the
-	// enumerator return G_IO_ERROR_CLOSED on all calls.
-	Close(cancellable *Cancellable) error
-	// CloseAsync: asynchronously closes the file enumerator.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CloseFinish finishes closing a file enumerator, started from
-	// g_file_enumerator_close_async().
-	CloseFinish(result AsyncResulter) error
-	// Child: return a new #GFile which refers to the file named by info in the
-	// source directory of enumerator.
-	Child(info *FileInfo) *File
-	// Container: get the #GFile container which is being enumerated.
-	Container() *File
-	// HasPending checks if the file enumerator has pending operations.
-	HasPending() bool
-	// IsClosed checks if the file enumerator has been closed.
-	IsClosed() bool
-	// Iterate: this is a version of g_file_enumerator_next_file() that's easier
-	// to use correctly from C programs.
-	Iterate(cancellable *Cancellable) (*FileInfo, *File, error)
-	// NextFile returns information for the next file in the enumerated object.
-	NextFile(cancellable *Cancellable) (*FileInfo, error)
-	// NextFilesAsync: request information for a number of files from the
-	// enumerator asynchronously.
-	NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// SetPending sets the file enumerator as having pending operations.
-	SetPending(pending bool)
-}
-
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
 // structure for each file enumerated (e.g. g_file_enumerate_children() will
 // return a Enumerator for each of the children within a directory).
@@ -151,10 +120,7 @@ type FileEnumerator struct {
 	*externglib.Object
 }
 
-var (
-	_ FileEnumeratorer = (*FileEnumerator)(nil)
-	_ gextras.Nativer  = (*FileEnumerator)(nil)
-)
+var _ gextras.Nativer = (*FileEnumerator)(nil)
 
 func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{
@@ -162,7 +128,7 @@ func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	}
 }
 
-func marshalFileEnumeratorer(p uintptr) (interface{}, error) {
+func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileEnumerator(obj), nil

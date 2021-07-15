@@ -24,31 +24,6 @@ func init() {
 	})
 }
 
-// ComboBoxTexter describes ComboBoxText's methods.
-type ComboBoxTexter interface {
-	// Append appends text to the list of strings stored in combo_box.
-	Append(id string, text string)
-	// AppendText appends text to the list of strings stored in combo_box.
-	AppendText(text string)
-	// ActiveText returns the currently active string in combo_box, or NULL if
-	// none is selected.
-	ActiveText() string
-	// Insert inserts text at position in the list of strings stored in
-	// combo_box.
-	Insert(position int, id string, text string)
-	// InsertText inserts text at position in the list of strings stored in
-	// combo_box.
-	InsertText(position int, text string)
-	// Prepend prepends text to the list of strings stored in combo_box.
-	Prepend(id string, text string)
-	// PrependText prepends text to the list of strings stored in combo_box.
-	PrependText(text string)
-	// Remove removes the string at position from combo_box.
-	Remove(position int)
-	// RemoveAll removes all the text entries from the combo box.
-	RemoveAll()
-}
-
 // ComboBoxText is a simple variant of ComboBox that hides the model-view
 // complexity for simple text-only use cases.
 //
@@ -100,10 +75,7 @@ type ComboBoxText struct {
 	ComboBox
 }
 
-var (
-	_ ComboBoxTexter  = (*ComboBoxText)(nil)
-	_ gextras.Nativer = (*ComboBoxText)(nil)
-)
+var _ gextras.Nativer = (*ComboBoxText)(nil)
 
 func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
 	return &ComboBoxText{

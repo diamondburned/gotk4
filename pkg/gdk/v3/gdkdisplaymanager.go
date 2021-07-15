@@ -21,16 +21,6 @@ func init() {
 	})
 }
 
-// DisplayManagerer describes DisplayManager's methods.
-type DisplayManagerer interface {
-	// DefaultDisplay gets the default Display.
-	DefaultDisplay() *Display
-	// OpenDisplay opens a display.
-	OpenDisplay(name string) *Display
-	// SetDefaultDisplay sets display as the default display.
-	SetDefaultDisplay(display *Display)
-}
-
 // DisplayManager: purpose of the DisplayManager singleton object is to offer
 // notification when displays appear or disappear or the default display
 // changes.
@@ -70,10 +60,7 @@ type DisplayManager struct {
 	*externglib.Object
 }
 
-var (
-	_ DisplayManagerer = (*DisplayManager)(nil)
-	_ gextras.Nativer  = (*DisplayManager)(nil)
-)
+var _ gextras.Nativer = (*DisplayManager)(nil)
 
 func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	return &DisplayManager{

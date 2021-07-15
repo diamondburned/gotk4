@@ -32,14 +32,6 @@ func init() {
 	})
 }
 
-// UnixFDMessager describes UnixFDMessage's methods.
-type UnixFDMessager interface {
-	// AppendFd adds a file descriptor to message.
-	AppendFd(fd int) error
-	// FdList gets the FDList contained in message.
-	FdList() *UnixFDList
-}
-
 // UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
 // g_socket_send_message() and received using g_socket_receive_message() over
 // UNIX sockets (ie: sockets in the G_SOCKET_FAMILY_UNIX family). The file
@@ -55,10 +47,7 @@ type UnixFDMessage struct {
 	SocketControlMessage
 }
 
-var (
-	_ UnixFDMessager  = (*UnixFDMessage)(nil)
-	_ gextras.Nativer = (*UnixFDMessage)(nil)
-)
+var _ gextras.Nativer = (*UnixFDMessage)(nil)
 
 func wrapUnixFDMessage(obj *externglib.Object) *UnixFDMessage {
 	return &UnixFDMessage{

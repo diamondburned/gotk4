@@ -38,33 +38,6 @@ type ActivatableOverrider interface {
 	Update(action *Action, propertyName string)
 }
 
-// Activatabler describes Activatable's methods.
-type Activatabler interface {
-	// DoSetRelatedAction: this is a utility function for Activatable
-	// implementors.
-	DoSetRelatedAction(action *Action)
-	// RelatedAction gets the related Action for activatable.
-	RelatedAction() *Action
-	// UseActionAppearance gets whether this activatable should reset its layout
-	// and appearance when setting the related action or when the action changes
-	// appearance.
-	UseActionAppearance() bool
-	// SetRelatedAction sets the related action on the activatable object.
-	SetRelatedAction(action *Action)
-	// SetUseActionAppearance sets whether this activatable should reset its
-	// layout and appearance when setting the related action or when the action
-	// changes appearance > Activatable implementors need to handle the >
-	// Activatable:use-action-appearance property and call >
-	// gtk_activatable_sync_action_properties() to update activatable > if
-	// needed.
-	SetUseActionAppearance(useAppearance bool)
-	// SyncActionProperties: this is called to update the activatable
-	// completely, this is called internally when the Activatable:related-action
-	// property is set or unset and by the implementing class when
-	// Activatable:use-action-appearance changes.
-	SyncActionProperties(action *Action)
-}
-
 // Activatable widgets can be connected to a Action and reflects the state of
 // its action. A Activatable can also provide feedback through its action, as
 // they are responsible for activating their related actions.
@@ -300,10 +273,36 @@ type Activatable struct {
 	*externglib.Object
 }
 
-var (
-	_ Activatabler    = (*Activatable)(nil)
-	_ gextras.Nativer = (*Activatable)(nil)
-)
+var _ gextras.Nativer = (*Activatable)(nil)
+
+// Activatabler describes Activatable's abstract methods.
+type Activatabler interface {
+	// DoSetRelatedAction: this is a utility function for Activatable
+	// implementors.
+	DoSetRelatedAction(action *Action)
+	// RelatedAction gets the related Action for activatable.
+	RelatedAction() *Action
+	// UseActionAppearance gets whether this activatable should reset its layout
+	// and appearance when setting the related action or when the action changes
+	// appearance.
+	UseActionAppearance() bool
+	// SetRelatedAction sets the related action on the activatable object.
+	SetRelatedAction(action *Action)
+	// SetUseActionAppearance sets whether this activatable should reset its
+	// layout and appearance when setting the related action or when the action
+	// changes appearance > Activatable implementors need to handle the >
+	// Activatable:use-action-appearance property and call >
+	// gtk_activatable_sync_action_properties() to update activatable > if
+	// needed.
+	SetUseActionAppearance(useAppearance bool)
+	// SyncActionProperties: this is called to update the activatable
+	// completely, this is called internally when the Activatable:related-action
+	// property is set or unset and by the implementing class when
+	// Activatable:use-action-appearance changes.
+	SyncActionProperties(action *Action)
+}
+
+var _ Activatabler = (*Activatable)(nil)
 
 func wrapActivatable(obj *externglib.Object) *Activatable {
 	return &Activatable{

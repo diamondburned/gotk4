@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbarer},
+		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbarrer},
 	})
-}
-
-// VScrollbarer describes VScrollbar's methods.
-type VScrollbarer interface {
-	privateVScrollbar()
 }
 
 // VScrollbar widget is a widget arranged vertically creating a scrollbar. See
@@ -40,10 +35,7 @@ type VScrollbar struct {
 	Scrollbar
 }
 
-var (
-	_ VScrollbarer    = (*VScrollbar)(nil)
-	_ gextras.Nativer = (*VScrollbar)(nil)
-)
+var _ gextras.Nativer = (*VScrollbar)(nil)
 
 func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	return &VScrollbar{
@@ -68,7 +60,7 @@ func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	}
 }
 
-func marshalVScrollbarer(p uintptr) (interface{}, error) {
+func marshalVScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVScrollbar(obj), nil

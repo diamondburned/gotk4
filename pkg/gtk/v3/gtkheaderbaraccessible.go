@@ -15,19 +15,11 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// HeaderBarAccessibler describes HeaderBarAccessible's methods.
-type HeaderBarAccessibler interface {
-	privateHeaderBarAccessible()
-}
-
 type HeaderBarAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ HeaderBarAccessibler = (*HeaderBarAccessible)(nil)
-	_ gextras.Nativer      = (*HeaderBarAccessible)(nil)
-)
+var _ gextras.Nativer = (*HeaderBarAccessible)(nil)
 
 func wrapHeaderBarAccessible(obj *externglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{

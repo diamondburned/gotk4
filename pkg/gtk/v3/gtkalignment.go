@@ -24,16 +24,6 @@ func init() {
 	})
 }
 
-// Alignmenter describes Alignment's methods.
-type Alignmenter interface {
-	// Padding gets the padding on the different sides of the widget.
-	Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
-	// Set sets the Alignment values.
-	Set(xalign float32, yalign float32, xscale float32, yscale float32)
-	// SetPadding sets the padding on the different sides of the widget.
-	SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint)
-}
-
 // Alignment widget controls the alignment and size of its child widget. It has
 // four settings: xscale, yscale, xalign, and yalign.
 //
@@ -55,10 +45,7 @@ type Alignment struct {
 	Bin
 }
 
-var (
-	_ Alignmenter     = (*Alignment)(nil)
-	_ gextras.Nativer = (*Alignment)(nil)
-)
+var _ gextras.Nativer = (*Alignment)(nil)
 
 func wrapAlignment(obj *externglib.Object) *Alignment {
 	return &Alignment{

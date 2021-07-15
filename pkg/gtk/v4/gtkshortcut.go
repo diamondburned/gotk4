@@ -19,25 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcuter},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcutter},
 	})
-}
-
-// Shortcuter describes Shortcut's methods.
-type Shortcuter interface {
-	// Action gets the action that is activated by this shortcut.
-	Action() *ShortcutAction
-	// Arguments gets the arguments that are passed when activating the
-	// shortcut.
-	Arguments() *glib.Variant
-	// Trigger gets the trigger used to trigger self.
-	Trigger() *ShortcutTrigger
-	// SetAction sets the new action for self to be action.
-	SetAction(action ShortcutActioner)
-	// SetArguments sets the arguments to pass when activating the shortcut.
-	SetArguments(args *glib.Variant)
-	// SetTrigger sets the new trigger for self to be trigger.
-	SetTrigger(trigger ShortcutTriggerer)
 }
 
 // Shortcut: GtkShortcut describes a keyboard shortcut.
@@ -58,10 +41,7 @@ type Shortcut struct {
 	*externglib.Object
 }
 
-var (
-	_ Shortcuter      = (*Shortcut)(nil)
-	_ gextras.Nativer = (*Shortcut)(nil)
-)
+var _ gextras.Nativer = (*Shortcut)(nil)
 
 func wrapShortcut(obj *externglib.Object) *Shortcut {
 	return &Shortcut{
@@ -69,7 +49,7 @@ func wrapShortcut(obj *externglib.Object) *Shortcut {
 	}
 }
 
-func marshalShortcuter(p uintptr) (interface{}, error) {
+func marshalShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcut(obj), nil

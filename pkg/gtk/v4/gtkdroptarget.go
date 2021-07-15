@@ -19,30 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargeter},
+		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargetter},
 	})
-}
-
-// DropTargeter describes DropTarget's methods.
-type DropTargeter interface {
-	// Actions gets the actions that this drop target supports.
-	Actions() gdk.DragAction
-	// Drop gets the currently handled drop operation.
-	Drop() *gdk.Drop
-	// Formats gets the data formats that this drop target accepts.
-	Formats() *gdk.ContentFormats
-	// Preload gets whether data should be preloaded on hover.
-	Preload() bool
-	// Value gets the current drop data, as a GValue.
-	Value() *externglib.Value
-	// Reject rejects the ongoing drop operation.
-	Reject()
-	// SetActions sets the actions that this drop target supports.
-	SetActions(actions gdk.DragAction)
-	// SetGTypes sets the supported GTypes for this drop target.
-	SetGTypes(types []externglib.Type)
-	// SetPreload sets whether data should be preloaded on hover.
-	SetPreload(preload bool)
 }
 
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop
@@ -118,10 +96,7 @@ type DropTarget struct {
 	EventController
 }
 
-var (
-	_ DropTargeter    = (*DropTarget)(nil)
-	_ gextras.Nativer = (*DropTarget)(nil)
-)
+var _ gextras.Nativer = (*DropTarget)(nil)
 
 func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	return &DropTarget{
@@ -131,7 +106,7 @@ func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	}
 }
 
-func marshalDropTargeter(p uintptr) (interface{}, error) {
+func marshalDropTargetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDropTarget(obj), nil

@@ -42,7 +42,21 @@ type EditableTextOverrider interface {
 	SetTextContents(_string string)
 }
 
-// EditableTexter describes EditableText's methods.
+// EditableText should be implemented by UI components which contain text which
+// the user can edit, via the Object corresponding to that component (see
+// Object).
+//
+// EditableText is a subclass of Text, and as such, an object which implements
+// EditableText is by definition an Text implementor as well.
+//
+// See also: Text
+type EditableText struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*EditableText)(nil)
+
+// EditableTexter describes EditableText's abstract methods.
 type EditableTexter interface {
 	// CopyText: copy text from start_pos up to, but not including end_pos to
 	// the clipboard.
@@ -60,22 +74,7 @@ type EditableTexter interface {
 	SetTextContents(_string string)
 }
 
-// EditableText should be implemented by UI components which contain text which
-// the user can edit, via the Object corresponding to that component (see
-// Object).
-//
-// EditableText is a subclass of Text, and as such, an object which implements
-// EditableText is by definition an Text implementor as well.
-//
-// See also: Text
-type EditableText struct {
-	*externglib.Object
-}
-
-var (
-	_ EditableTexter  = (*EditableText)(nil)
-	_ gextras.Nativer = (*EditableText)(nil)
-)
+var _ EditableTexter = (*EditableText)(nil)
 
 func wrapEditableText(obj *externglib.Object) *EditableText {
 	return &EditableText{

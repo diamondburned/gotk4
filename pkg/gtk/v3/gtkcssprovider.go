@@ -56,25 +56,6 @@ type CSSProviderOverrider interface {
 	ParsingError(section *CSSSection, err error)
 }
 
-// CSSProviderer describes CSSProvider's methods.
-type CSSProviderer interface {
-	// LoadFromData loads data into css_provider, and by doing so clears any
-	// previously loaded information.
-	LoadFromData(data []byte) error
-	// LoadFromFile loads the data contained in file into css_provider, making
-	// it clear any previously loaded information.
-	LoadFromFile(file gio.Filer) error
-	// LoadFromPath loads the data contained in path into css_provider, making
-	// it clear any previously loaded information.
-	LoadFromPath(path string) error
-	// LoadFromResource loads the data contained in the resource at
-	// resource_path into the CssProvider, clearing any previously loaded
-	// information.
-	LoadFromResource(resourcePath string)
-	// String converts the provider into a string representation in CSS format.
-	String() string
-}
-
 // CSSProvider is an object implementing the StyleProvider interface. It is able
 // to parse [CSS-like][css-overview] input in order to style widgets.
 //
@@ -104,10 +85,7 @@ type CSSProvider struct {
 	StyleProvider
 }
 
-var (
-	_ CSSProviderer   = (*CSSProvider)(nil)
-	_ gextras.Nativer = (*CSSProvider)(nil)
-)
+var _ gextras.Nativer = (*CSSProvider)(nil)
 
 func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
 	return &CSSProvider{

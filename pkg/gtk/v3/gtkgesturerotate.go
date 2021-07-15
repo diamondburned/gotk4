@@ -23,13 +23,6 @@ func init() {
 	})
 }
 
-// GestureRotater describes GestureRotate's methods.
-type GestureRotater interface {
-	// AngleDelta: if gesture is active, this function returns the angle
-	// difference in radians since the gesture was first recognized.
-	AngleDelta() float64
-}
-
 // GestureRotate is a Gesture implementation able to recognize 2-finger
 // rotations, whenever the angle between both handled sequences changes, the
 // GestureRotate::angle-changed signal is emitted.
@@ -37,10 +30,7 @@ type GestureRotate struct {
 	Gesture
 }
 
-var (
-	_ GestureRotater  = (*GestureRotate)(nil)
-	_ gextras.Nativer = (*GestureRotate)(nil)
-)
+var _ gextras.Nativer = (*GestureRotate)(nil)
 
 func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
 	return &GestureRotate{
@@ -60,7 +50,7 @@ func marshalGestureRotater(p uintptr) (interface{}, error) {
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
 // rotation gestures.
-func NewGestureRotate(widget Widgeter) *GestureRotate {
+func NewGestureRotate(widget Widgetter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

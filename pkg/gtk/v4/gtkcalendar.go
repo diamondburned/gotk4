@@ -17,33 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarer},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
 	})
-}
-
-// Calendarer describes Calendar's methods.
-type Calendarer interface {
-	// ClearMarks: remove all visual markers.
-	ClearMarks()
-	// DayIsMarked returns if the day of the calendar is already marked.
-	DayIsMarked(day uint) bool
-	// ShowDayNames returns whether self is currently showing the names of the
-	// week days.
-	ShowDayNames() bool
-	// ShowHeading returns whether self is currently showing the heading.
-	ShowHeading() bool
-	// ShowWeekNumbers returns whether self is showing week numbers right now.
-	ShowWeekNumbers() bool
-	// MarkDay places a visual marker on a particular day.
-	MarkDay(day uint)
-	// SetShowDayNames sets whether the calendar shows day names.
-	SetShowDayNames(value bool)
-	// SetShowHeading sets whether the calendar should show a heading.
-	SetShowHeading(value bool)
-	// SetShowWeekNumbers sets whether week numbers are shown in the calendar.
-	SetShowWeekNumbers(value bool)
-	// UnmarkDay removes the visual marker from a particular day.
-	UnmarkDay(day uint)
 }
 
 // Calendar: GtkCalendar is a widget that displays a Gregorian calendar, one
@@ -96,10 +71,7 @@ type Calendar struct {
 	Widget
 }
 
-var (
-	_ Calendarer      = (*Calendar)(nil)
-	_ gextras.Nativer = (*Calendar)(nil)
-)
+var _ gextras.Nativer = (*Calendar)(nil)
 
 func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
@@ -120,7 +92,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 	}
 }
 
-func marshalCalendarer(p uintptr) (interface{}, error) {
+func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCalendar(obj), nil

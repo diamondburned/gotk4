@@ -50,26 +50,13 @@ func init() {
 	})
 }
 
-// BlendNoder describes BlendNode's methods.
-type BlendNoder interface {
-	// BlendMode retrieves the blend mode used by node.
-	BlendMode() BlendMode
-	// BottomChild retrieves the bottom GskRenderNode child of the node.
-	BottomChild() *RenderNode
-	// TopChild retrieves the top GskRenderNode child of the node.
-	TopChild() *RenderNode
-}
-
 // BlendNode: render node applying a blending function between its two child
 // nodes.
 type BlendNode struct {
 	RenderNode
 }
 
-var (
-	_ BlendNoder      = (*BlendNode)(nil)
-	_ gextras.Nativer = (*BlendNode)(nil)
-)
+var _ gextras.Nativer = (*BlendNode)(nil)
 
 func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	return &BlendNode{
@@ -154,23 +141,12 @@ func (node *BlendNode) TopChild() *RenderNode {
 	return _renderNode
 }
 
-// BlurNoder describes BlurNode's methods.
-type BlurNoder interface {
-	// Child retrieves the child GskRenderNode of the blur node.
-	Child() *RenderNode
-	// Radius retrieves the blur radius of the node.
-	Radius() float32
-}
-
 // BlurNode: render node applying a blur effect to its single child.
 type BlurNode struct {
 	RenderNode
 }
 
-var (
-	_ BlurNoder       = (*BlurNode)(nil)
-	_ gextras.Nativer = (*BlurNode)(nil)
-)
+var _ gextras.Nativer = (*BlurNode)(nil)
 
 func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	return &BlurNode{
@@ -236,25 +212,12 @@ func (node *BlurNode) Radius() float32 {
 	return _gfloat
 }
 
-// BorderNoder describes BorderNode's methods.
-type BorderNoder interface {
-	// Colors retrieves the colors of the border.
-	Colors() *gdk.RGBA
-	// Outline retrieves the outline of the border.
-	Outline() *RoundedRect
-	// Widths retrieves the stroke widths of the border.
-	Widths() [4]float32
-}
-
 // BorderNode: render node for a border.
 type BorderNode struct {
 	RenderNode
 }
 
-var (
-	_ BorderNoder     = (*BorderNode)(nil)
-	_ gextras.Nativer = (*BorderNode)(nil)
-)
+var _ gextras.Nativer = (*BorderNode)(nil)
 
 func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	return &BorderNode{
@@ -341,24 +304,12 @@ func (node *BorderNode) Widths() [4]float32 {
 	return _gfloats
 }
 
-// CairoNoder describes CairoNode's methods.
-type CairoNoder interface {
-	// DrawContext creates a Cairo context for drawing using the surface
-	// associated to the render node.
-	DrawContext() *cairo.Context
-	// Surface retrieves the Cairo surface used by the render node.
-	Surface() *cairo.Surface
-}
-
 // CairoNode: render node for a Cairo surface.
 type CairoNode struct {
 	RenderNode
 }
 
-var (
-	_ CairoNoder      = (*CairoNode)(nil)
-	_ gextras.Nativer = (*CairoNode)(nil)
-)
+var _ gextras.Nativer = (*CairoNode)(nil)
 
 func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	return &CairoNode{
@@ -436,23 +387,12 @@ func (node *CairoNode) Surface() *cairo.Surface {
 	return _surface
 }
 
-// ClipNoder describes ClipNode's methods.
-type ClipNoder interface {
-	// Child gets the child node that is getting clipped by the given node.
-	Child() *RenderNode
-	// Clip retrieves the clip rectangle for node.
-	Clip() *graphene.Rect
-}
-
 // ClipNode: render node applying a rectangular clip to its single child node.
 type ClipNode struct {
 	RenderNode
 }
 
-var (
-	_ ClipNoder       = (*ClipNode)(nil)
-	_ gextras.Nativer = (*ClipNode)(nil)
-)
+var _ gextras.Nativer = (*ClipNode)(nil)
 
 func wrapClipNode(obj *externglib.Object) *ClipNode {
 	return &ClipNode{
@@ -519,27 +459,13 @@ func (node *ClipNode) Clip() *graphene.Rect {
 	return _rect
 }
 
-// ColorMatrixNoder describes ColorMatrixNode's methods.
-type ColorMatrixNoder interface {
-	// Child gets the child node that is getting its colors modified by the
-	// given node.
-	Child() *RenderNode
-	// ColorMatrix retrieves the color matrix used by the node.
-	ColorMatrix() *graphene.Matrix
-	// ColorOffset retrieves the color offset used by the node.
-	ColorOffset() *graphene.Vec4
-}
-
 // ColorMatrixNode: render node controlling the color matrix of its single child
 // node.
 type ColorMatrixNode struct {
 	RenderNode
 }
 
-var (
-	_ ColorMatrixNoder = (*ColorMatrixNode)(nil)
-	_ gextras.Nativer  = (*ColorMatrixNode)(nil)
-)
+var _ gextras.Nativer = (*ColorMatrixNode)(nil)
 
 func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{
@@ -631,21 +557,12 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 	return _vec4
 }
 
-// ColorNoder describes ColorNode's methods.
-type ColorNoder interface {
-	// Color retrieves the color of the given node.
-	Color() *gdk.RGBA
-}
-
 // ColorNode: render node for a solid color.
 type ColorNode struct {
 	RenderNode
 }
 
-var (
-	_ ColorNoder      = (*ColorNode)(nil)
-	_ gextras.Nativer = (*ColorNode)(nil)
-)
+var _ gextras.Nativer = (*ColorNode)(nil)
 
 func wrapColorNode(obj *externglib.Object) *ColorNode {
 	return &ColorNode{
@@ -696,28 +613,12 @@ func (node *ColorNode) Color() *gdk.RGBA {
 	return _rgbA
 }
 
-// ConicGradientNoder describes ConicGradientNode's methods.
-type ConicGradientNoder interface {
-	// Angle retrieves the angle for the gradient in radians, normalized in [0,
-	// 2 * PI].
-	Angle() float32
-	// Center retrieves the center pointer for the gradient.
-	Center() *graphene.Point
-	// NColorStops retrieves the number of color stops in the gradient.
-	NColorStops() uint
-	// Rotation retrieves the rotation for the gradient in degrees.
-	Rotation() float32
-}
-
 // ConicGradientNode: render node for a conic gradient.
 type ConicGradientNode struct {
 	RenderNode
 }
 
-var (
-	_ ConicGradientNoder = (*ConicGradientNode)(nil)
-	_ gextras.Nativer    = (*ConicGradientNode)(nil)
-)
+var _ gextras.Nativer = (*ConicGradientNode)(nil)
 
 func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{
@@ -833,23 +734,12 @@ func (node *ConicGradientNode) Rotation() float32 {
 	return _gfloat
 }
 
-// ContainerNoder describes ContainerNode's methods.
-type ContainerNoder interface {
-	// Child gets one of the children of container.
-	Child(idx uint) *RenderNode
-	// NChildren retrieves the number of direct children of node.
-	NChildren() uint
-}
-
 // ContainerNode: render node that can contain other render nodes.
 type ContainerNode struct {
 	RenderNode
 }
 
-var (
-	_ ContainerNoder  = (*ContainerNode)(nil)
-	_ gextras.Nativer = (*ContainerNode)(nil)
-)
+var _ gextras.Nativer = (*ContainerNode)(nil)
 
 func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	return &ContainerNode{
@@ -926,26 +816,12 @@ func (node *ContainerNode) NChildren() uint {
 	return _guint
 }
 
-// CrossFadeNoder describes CrossFadeNode's methods.
-type CrossFadeNoder interface {
-	// EndChild retrieves the child GskRenderNode at the end of the cross-fade.
-	EndChild() *RenderNode
-	// Progress retrieves the progress value of the cross fade.
-	Progress() float32
-	// StartChild retrieves the child GskRenderNode at the beginning of the
-	// cross-fade.
-	StartChild() *RenderNode
-}
-
 // CrossFadeNode: render node cross fading between two child nodes.
 type CrossFadeNode struct {
 	RenderNode
 }
 
-var (
-	_ CrossFadeNoder  = (*CrossFadeNode)(nil)
-	_ gextras.Nativer = (*CrossFadeNode)(nil)
-)
+var _ gextras.Nativer = (*CrossFadeNode)(nil)
 
 func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{
@@ -1031,24 +907,13 @@ func (node *CrossFadeNode) StartChild() *RenderNode {
 	return _renderNode
 }
 
-// DebugNoder describes DebugNode's methods.
-type DebugNoder interface {
-	// Child gets the child node that is getting drawn by the given node.
-	Child() *RenderNode
-	// Message gets the debug message that was set on this node
-	Message() string
-}
-
 // DebugNode: render node that emits a debugging message when drawing its child
 // node.
 type DebugNode struct {
 	RenderNode
 }
 
-var (
-	_ DebugNoder      = (*DebugNode)(nil)
-	_ gextras.Nativer = (*DebugNode)(nil)
-)
+var _ gextras.Nativer = (*DebugNode)(nil)
 
 func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	return &DebugNode{
@@ -1118,25 +983,12 @@ func (node *DebugNode) Message() string {
 	return _utf8
 }
 
-// GLShaderNoder describes GLShaderNode's methods.
-type GLShaderNoder interface {
-	// Child gets one of the children.
-	Child(idx uint) *RenderNode
-	// NChildren returns the number of children
-	NChildren() uint
-	// Shader gets shader code for the node.
-	Shader() *GLShader
-}
-
 // GLShaderNode: render node using a GL shader when drawing its children nodes.
 type GLShaderNode struct {
 	RenderNode
 }
 
-var (
-	_ GLShaderNoder   = (*GLShaderNode)(nil)
-	_ gextras.Nativer = (*GLShaderNode)(nil)
-)
+var _ gextras.Nativer = (*GLShaderNode)(nil)
 
 func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	return &GLShaderNode{
@@ -1202,31 +1054,12 @@ func (node *GLShaderNode) Shader() *GLShader {
 	return _glShader
 }
 
-// InsetShadowNoder describes InsetShadowNode's methods.
-type InsetShadowNoder interface {
-	// BlurRadius retrieves the blur radius to apply to the shadow.
-	BlurRadius() float32
-	// Color retrieves the color of the inset shadow.
-	Color() *gdk.RGBA
-	// Dx retrieves the horizontal offset of the inset shadow.
-	Dx() float32
-	// Dy retrieves the vertical offset of the inset shadow.
-	Dy() float32
-	// Outline retrieves the outline rectangle of the inset shadow.
-	Outline() *RoundedRect
-	// Spread retrieves how much the shadow spreads inwards.
-	Spread() float32
-}
-
 // InsetShadowNode: render node for an inset shadow.
 type InsetShadowNode struct {
 	RenderNode
 }
 
-var (
-	_ InsetShadowNoder = (*InsetShadowNode)(nil)
-	_ gextras.Nativer  = (*InsetShadowNode)(nil)
-)
+var _ gextras.Nativer = (*InsetShadowNode)(nil)
 
 func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{
@@ -1365,25 +1198,12 @@ func (node *InsetShadowNode) Spread() float32 {
 	return _gfloat
 }
 
-// LinearGradientNoder describes LinearGradientNode's methods.
-type LinearGradientNoder interface {
-	// End retrieves the final point of the linear gradient.
-	End() *graphene.Point
-	// NColorStops retrieves the number of color stops in the gradient.
-	NColorStops() uint
-	// Start retrieves the initial point of the linear gradient.
-	Start() *graphene.Point
-}
-
 // LinearGradientNode: render node for a linear gradient.
 type LinearGradientNode struct {
 	RenderNode
 }
 
-var (
-	_ LinearGradientNoder = (*LinearGradientNode)(nil)
-	_ gextras.Nativer     = (*LinearGradientNode)(nil)
-)
+var _ gextras.Nativer = (*LinearGradientNode)(nil)
 
 func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{
@@ -1475,23 +1295,12 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 	return _point
 }
 
-// OpacityNoder describes OpacityNode's methods.
-type OpacityNoder interface {
-	// Child gets the child node that is getting opacityed by the given node.
-	Child() *RenderNode
-	// Opacity gets the transparency factor for an opacity node.
-	Opacity() float32
-}
-
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode struct {
 	RenderNode
 }
 
-var (
-	_ OpacityNoder    = (*OpacityNode)(nil)
-	_ gextras.Nativer = (*OpacityNode)(nil)
-)
+var _ gextras.Nativer = (*OpacityNode)(nil)
 
 func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	return &OpacityNode{
@@ -1558,31 +1367,12 @@ func (node *OpacityNode) Opacity() float32 {
 	return _gfloat
 }
 
-// OutsetShadowNoder describes OutsetShadowNode's methods.
-type OutsetShadowNoder interface {
-	// BlurRadius retrieves the blur radius of the shadow.
-	BlurRadius() float32
-	// Color retrieves the color of the outset shadow.
-	Color() *gdk.RGBA
-	// Dx retrieves the horizontal offset of the outset shadow.
-	Dx() float32
-	// Dy retrieves the vertical offset of the outset shadow.
-	Dy() float32
-	// Outline retrieves the outline rectangle of the outset shadow.
-	Outline() *RoundedRect
-	// Spread retrieves how much the shadow spreads outwards.
-	Spread() float32
-}
-
 // OutsetShadowNode: render node for an outset shadow.
 type OutsetShadowNode struct {
 	RenderNode
 }
 
-var (
-	_ OutsetShadowNoder = (*OutsetShadowNode)(nil)
-	_ gextras.Nativer   = (*OutsetShadowNode)(nil)
-)
+var _ gextras.Nativer = (*OutsetShadowNode)(nil)
 
 func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{
@@ -1721,31 +1511,12 @@ func (node *OutsetShadowNode) Spread() float32 {
 	return _gfloat
 }
 
-// RadialGradientNoder describes RadialGradientNode's methods.
-type RadialGradientNoder interface {
-	// Center retrieves the center pointer for the gradient.
-	Center() *graphene.Point
-	// End retrieves the end value for the gradient.
-	End() float32
-	// Hradius retrieves the horizonal radius for the gradient.
-	Hradius() float32
-	// NColorStops retrieves the number of color stops in the gradient.
-	NColorStops() uint
-	// Start retrieves the start value for the gradient.
-	Start() float32
-	// Vradius retrieves the vertical radius for the gradient.
-	Vradius() float32
-}
-
 // RadialGradientNode: render node for a radial gradient.
 type RadialGradientNode struct {
 	RenderNode
 }
 
-var (
-	_ RadialGradientNoder = (*RadialGradientNode)(nil)
-	_ gextras.Nativer     = (*RadialGradientNode)(nil)
-)
+var _ gextras.Nativer = (*RadialGradientNode)(nil)
 
 func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{
@@ -1893,23 +1664,12 @@ func (node *RadialGradientNode) Vradius() float32 {
 	return _gfloat
 }
 
-// RepeatNoder describes RepeatNode's methods.
-type RepeatNoder interface {
-	// Child retrieves the child of node.
-	Child() *RenderNode
-	// ChildBounds retrieves the bounding rectangle of the child of node.
-	ChildBounds() *graphene.Rect
-}
-
 // RepeatNode: render node repeating its single child node.
 type RepeatNode struct {
 	RenderNode
 }
 
-var (
-	_ RepeatNoder     = (*RepeatNode)(nil)
-	_ gextras.Nativer = (*RepeatNode)(nil)
-)
+var _ gextras.Nativer = (*RepeatNode)(nil)
 
 func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	return &RepeatNode{
@@ -1978,20 +1738,12 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 	return _rect
 }
 
-// RepeatingLinearGradientNoder describes RepeatingLinearGradientNode's methods.
-type RepeatingLinearGradientNoder interface {
-	privateRepeatingLinearGradientNode()
-}
-
 // RepeatingLinearGradientNode: render node for a repeating linear gradient.
 type RepeatingLinearGradientNode struct {
 	RenderNode
 }
 
-var (
-	_ RepeatingLinearGradientNoder = (*RepeatingLinearGradientNode)(nil)
-	_ gextras.Nativer              = (*RepeatingLinearGradientNode)(nil)
-)
+var _ gextras.Nativer = (*RepeatingLinearGradientNode)(nil)
 
 func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{
@@ -2037,20 +1789,12 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 
 func (*RepeatingLinearGradientNode) privateRepeatingLinearGradientNode() {}
 
-// RepeatingRadialGradientNoder describes RepeatingRadialGradientNode's methods.
-type RepeatingRadialGradientNoder interface {
-	privateRepeatingRadialGradientNode()
-}
-
 // RepeatingRadialGradientNode: render node for a repeating radial gradient.
 type RepeatingRadialGradientNode struct {
 	RenderNode
 }
 
-var (
-	_ RepeatingRadialGradientNoder = (*RepeatingRadialGradientNode)(nil)
-	_ gextras.Nativer              = (*RepeatingRadialGradientNode)(nil)
-)
+var _ gextras.Nativer = (*RepeatingRadialGradientNode)(nil)
 
 func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{
@@ -2105,25 +1849,13 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 
 func (*RepeatingRadialGradientNode) privateRepeatingRadialGradientNode() {}
 
-// RoundedClipNoder describes RoundedClipNode's methods.
-type RoundedClipNoder interface {
-	// Child gets the child node that is getting clipped by the given node.
-	Child() *RenderNode
-	// Clip retrieves the rounded rectangle used to clip the contents of the
-	// node.
-	Clip() *RoundedRect
-}
-
 // RoundedClipNode: render node applying a rounded rectangle clip to its single
 // child.
 type RoundedClipNode struct {
 	RenderNode
 }
 
-var (
-	_ RoundedClipNoder = (*RoundedClipNode)(nil)
-	_ gextras.Nativer  = (*RoundedClipNode)(nil)
-)
+var _ gextras.Nativer = (*RoundedClipNode)(nil)
 
 func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{
@@ -2190,26 +1922,13 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 	return _roundedRect
 }
 
-// ShadowNoder describes ShadowNode's methods.
-type ShadowNoder interface {
-	// Child retrieves the child GskRenderNode of the shadow node.
-	Child() *RenderNode
-	// NShadows retrieves the number of shadows in the node.
-	NShadows() uint
-	// Shadow retrieves the shadow data at the given index i.
-	Shadow(i uint) *Shadow
-}
-
 // ShadowNode: render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode struct {
 	RenderNode
 }
 
-var (
-	_ ShadowNoder     = (*ShadowNode)(nil)
-	_ gextras.Nativer = (*ShadowNode)(nil)
-)
+var _ gextras.Nativer = (*ShadowNode)(nil)
 
 func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	return &ShadowNode{
@@ -2298,29 +2017,12 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 	return _shadow
 }
 
-// TextNoder describes TextNode's methods.
-type TextNoder interface {
-	// Color retrieves the color used by the text node.
-	Color() *gdk.RGBA
-	// Font returns the font used by the text node.
-	Font() *pango.Font
-	// NumGlyphs retrieves the number of glyphs in the text node.
-	NumGlyphs() uint
-	// Offset retrieves the offset applied to the text.
-	Offset() *graphene.Point
-	// HasColorGlyphs checks whether the text node has color glyphs.
-	HasColorGlyphs() bool
-}
-
 // TextNode: render node drawing a set of glyphs.
 type TextNode struct {
 	RenderNode
 }
 
-var (
-	_ TextNoder       = (*TextNode)(nil)
-	_ gextras.Nativer = (*TextNode)(nil)
-)
+var _ gextras.Nativer = (*TextNode)(nil)
 
 func wrapTextNode(obj *externglib.Object) *TextNode {
 	return &TextNode{
@@ -2447,21 +2149,12 @@ func (node *TextNode) HasColorGlyphs() bool {
 	return _ok
 }
 
-// TextureNoder describes TextureNode's methods.
-type TextureNoder interface {
-	// Texture retrieves the GdkTexture used when creating this GskRenderNode.
-	Texture() *gdk.Texture
-}
-
 // TextureNode: render node for a Texture.
 type TextureNode struct {
 	RenderNode
 }
 
-var (
-	_ TextureNoder    = (*TextureNode)(nil)
-	_ gextras.Nativer = (*TextureNode)(nil)
-)
+var _ gextras.Nativer = (*TextureNode)(nil)
 
 func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	return &TextureNode{
@@ -2520,23 +2213,12 @@ func (node *TextureNode) Texture() *gdk.Texture {
 	return _texture
 }
 
-// TransformNoder describes TransformNode's methods.
-type TransformNoder interface {
-	// Child gets the child node that is getting transformed by the given node.
-	Child() *RenderNode
-	// Transform retrieves the GskTransform used by the node.
-	Transform() *Transform
-}
-
 // TransformNode: render node applying a GskTransform to its single child node.
 type TransformNode struct {
 	RenderNode
 }
 
-var (
-	_ TransformNoder  = (*TransformNode)(nil)
-	_ gextras.Nativer = (*TransformNode)(nil)
-)
+var _ gextras.Nativer = (*TransformNode)(nil)
 
 func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	return &TransformNode{

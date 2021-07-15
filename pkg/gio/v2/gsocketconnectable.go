@@ -55,18 +55,6 @@ type SocketConnectableOverrider interface {
 	String() string
 }
 
-// SocketConnectabler describes SocketConnectable's methods.
-type SocketConnectabler interface {
-	// Enumerate creates a AddressEnumerator for connectable.
-	Enumerate() *SocketAddressEnumerator
-	// ProxyEnumerate creates a AddressEnumerator for connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	ProxyEnumerate() *SocketAddressEnumerator
-	// String: format a Connectable as a string.
-	String() string
-}
-
 // SocketConnectable objects that describe one or more potential socket
 // endpoints implement Connectable. Callers can then use
 // g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
@@ -125,10 +113,21 @@ type SocketConnectable struct {
 	*externglib.Object
 }
 
-var (
-	_ SocketConnectabler = (*SocketConnectable)(nil)
-	_ gextras.Nativer    = (*SocketConnectable)(nil)
-)
+var _ gextras.Nativer = (*SocketConnectable)(nil)
+
+// SocketConnectabler describes SocketConnectable's abstract methods.
+type SocketConnectabler interface {
+	// Enumerate creates a AddressEnumerator for connectable.
+	Enumerate() *SocketAddressEnumerator
+	// ProxyEnumerate creates a AddressEnumerator for connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	ProxyEnumerate() *SocketAddressEnumerator
+	// String: format a Connectable as a string.
+	String() string
+}
+
+var _ SocketConnectabler = (*SocketConnectable)(nil)
 
 func wrapSocketConnectable(obj *externglib.Object) *SocketConnectable {
 	return &SocketConnectable{

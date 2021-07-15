@@ -68,7 +68,28 @@ type MediaStreamOverrider interface {
 	UpdateAudio(muted bool, volume float64)
 }
 
-// MediaStreamer describes MediaStream's methods.
+// MediaStream: GtkMediaStream is the integration point for media playback
+// inside GTK.
+//
+// GTK provides an implementation of the GtkMediaStream interface that is called
+// gtk.MediaFile.
+//
+// Apart from application-facing API for stream playback, GtkMediaStream has a
+// number of APIs that are only useful for implementations and should not be
+// used in applications: gtk.MediaStream.Prepared(),
+// gtk.MediaStream.Unprepared(), gtk.MediaStream.Update(),
+// gtk.MediaStream.Ended(), gtk.MediaStream.SeekSuccess(),
+// gtk.MediaStream.SeekFailed(), gtk.MediaStream.GError(),
+// gtk.MediaStream.Error(), gtk.MediaStream.ErrorValist().
+type MediaStream struct {
+	*externglib.Object
+
+	gdk.Paintable
+}
+
+var _ gextras.Nativer = (*MediaStream)(nil)
+
+// MediaStreamer describes MediaStream's abstract methods.
 type MediaStreamer interface {
 	// Ended pauses the media stream and marks it as ended.
 	Ended()
@@ -136,29 +157,7 @@ type MediaStreamer interface {
 	Update(timestamp int64)
 }
 
-// MediaStream: GtkMediaStream is the integration point for media playback
-// inside GTK.
-//
-// GTK provides an implementation of the GtkMediaStream interface that is called
-// gtk.MediaFile.
-//
-// Apart from application-facing API for stream playback, GtkMediaStream has a
-// number of APIs that are only useful for implementations and should not be
-// used in applications: gtk.MediaStream.Prepared(),
-// gtk.MediaStream.Unprepared(), gtk.MediaStream.Update(),
-// gtk.MediaStream.Ended(), gtk.MediaStream.SeekSuccess(),
-// gtk.MediaStream.SeekFailed(), gtk.MediaStream.GError(),
-// gtk.MediaStream.Error(), gtk.MediaStream.ErrorValist().
-type MediaStream struct {
-	*externglib.Object
-
-	gdk.Paintable
-}
-
-var (
-	_ MediaStreamer   = (*MediaStream)(nil)
-	_ gextras.Nativer = (*MediaStream)(nil)
-)
+var _ MediaStreamer = (*MediaStream)(nil)
 
 func wrapMediaStream(obj *externglib.Object) *MediaStream {
 	return &MediaStream{

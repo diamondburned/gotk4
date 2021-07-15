@@ -79,7 +79,19 @@ type TLSConnectionOverrider interface {
 	HandshakeFinish(result AsyncResulter) error
 }
 
-// TLSConnectioner describes TLSConnection's methods.
+// TLSConnection is the base TLS connection class type, which wraps a OStream
+// and provides TLS encryption on top of it. Its subclasses, ClientConnection
+// and ServerConnection, implement client-side and server-side TLS,
+// respectively.
+//
+// For DTLS (Datagram TLS) support, see Connection.
+type TLSConnection struct {
+	IOStream
+}
+
+var _ gextras.Nativer = (*TLSConnection)(nil)
+
+// TLSConnectioner describes TLSConnection's abstract methods.
 type TLSConnectioner interface {
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
@@ -141,20 +153,7 @@ type TLSConnectioner interface {
 	SetUseSystemCertDB(useSystemCertdb bool)
 }
 
-// TLSConnection is the base TLS connection class type, which wraps a OStream
-// and provides TLS encryption on top of it. Its subclasses, ClientConnection
-// and ServerConnection, implement client-side and server-side TLS,
-// respectively.
-//
-// For DTLS (Datagram TLS) support, see Connection.
-type TLSConnection struct {
-	IOStream
-}
-
-var (
-	_ TLSConnectioner = (*TLSConnection)(nil)
-	_ gextras.Nativer = (*TLSConnection)(nil)
-)
+var _ TLSConnectioner = (*TLSConnection)(nil)
 
 func wrapTLSConnection(obj *externglib.Object) *TLSConnection {
 	return &TLSConnection{

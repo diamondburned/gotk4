@@ -25,30 +25,6 @@ func init() {
 	})
 }
 
-// GestureSingler describes GestureSingle's methods.
-type GestureSingler interface {
-	// Button returns the button number gesture listens for, or 0 if gesture
-	// reacts to any button press.
-	Button() uint
-	// CurrentButton returns the button number currently interacting with
-	// gesture, or 0 if there is none.
-	CurrentButton() uint
-	// CurrentSequence returns the event sequence currently interacting with
-	// gesture.
-	CurrentSequence() *gdk.EventSequence
-	// Exclusive gets whether a gesture is exclusive.
-	Exclusive() bool
-	// TouchOnly returns TRUE if the gesture is only triggered by touch events.
-	TouchOnly() bool
-	// SetButton sets the button number gesture listens to.
-	SetButton(button uint)
-	// SetExclusive sets whether gesture is exclusive.
-	SetExclusive(exclusive bool)
-	// SetTouchOnly: if touch_only is TRUE, gesture will only handle events of
-	// type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END.
-	SetTouchOnly(touchOnly bool)
-}
-
 // GestureSingle is a subclass of Gesture, optimized (although not restricted)
 // for dealing with mouse and single-touch gestures. Under interaction, these
 // gestures stick to the first interacting sequence, which is accessible through
@@ -65,10 +41,7 @@ type GestureSingle struct {
 	Gesture
 }
 
-var (
-	_ GestureSingler  = (*GestureSingle)(nil)
-	_ gextras.Nativer = (*GestureSingle)(nil)
-)
+var _ gextras.Nativer = (*GestureSingle)(nil)
 
 func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
 	return &GestureSingle{

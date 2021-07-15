@@ -17,37 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSeter},
+		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSetter},
 	})
-}
-
-// StateSeter describes StateSet's methods.
-type StateSeter interface {
-	// AddState adds the state of the specified type to the state set if it is
-	// not already present.
-	AddState(typ StateType) bool
-	// AddStates adds the states of the specified types to the state set.
-	AddStates(types []StateType)
-	// AndSets constructs the intersection of the two sets, returning NULL if
-	// the intersection is empty.
-	AndSets(compareSet *StateSet) *StateSet
-	// ClearStates removes all states from the state set.
-	ClearStates()
-	// ContainsState checks whether the state for the specified type is in the
-	// specified set.
-	ContainsState(typ StateType) bool
-	// ContainsStates checks whether the states for all the specified types are
-	// in the specified set.
-	ContainsStates(types []StateType) bool
-	// IsEmpty checks whether the state set is empty, i.e.
-	IsEmpty() bool
-	// OrSets constructs the union of the two sets.
-	OrSets(compareSet *StateSet) *StateSet
-	// RemoveState removes the state for the specified type from the state set.
-	RemoveState(typ StateType) bool
-	// XorSets constructs the exclusive-or of the two sets, returning NULL is
-	// empty.
-	XorSets(compareSet *StateSet) *StateSet
 }
 
 // StateSet is a read-only representation of the full set of States that apply
@@ -57,10 +28,7 @@ type StateSet struct {
 	*externglib.Object
 }
 
-var (
-	_ StateSeter      = (*StateSet)(nil)
-	_ gextras.Nativer = (*StateSet)(nil)
-)
+var _ gextras.Nativer = (*StateSet)(nil)
 
 func wrapStateSet(obj *externglib.Object) *StateSet {
 	return &StateSet{
@@ -68,7 +36,7 @@ func wrapStateSet(obj *externglib.Object) *StateSet {
 	}
 }
 
-func marshalStateSeter(p uintptr) (interface{}, error) {
+func marshalStateSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStateSet(obj), nil

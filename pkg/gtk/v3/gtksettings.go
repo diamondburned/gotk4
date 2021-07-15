@@ -24,21 +24,6 @@ func init() {
 	})
 }
 
-// Settingser describes Settings's methods.
-type Settingser interface {
-	// ResetProperty undoes the effect of calling g_object_set() to install an
-	// application-specific value for a setting.
-	ResetProperty(name string)
-	// SetDoubleProperty: deprecated: Use g_object_set() instead.
-	SetDoubleProperty(name string, vDouble float64, origin string)
-	// SetLongProperty: deprecated: Use g_object_set() instead.
-	SetLongProperty(name string, vLong int32, origin string)
-	// SetPropertyValue: deprecated: Use g_object_set() instead.
-	SetPropertyValue(name string, svalue *SettingsValue)
-	// SetStringProperty: deprecated: Use g_object_set() instead.
-	SetStringProperty(name string, vString string, origin string)
-}
-
 // Settings provide a mechanism to share global settings between applications.
 //
 // On the X window system, this sharing is realized by an XSettings
@@ -75,10 +60,7 @@ type Settings struct {
 	StyleProvider
 }
 
-var (
-	_ Settingser      = (*Settings)(nil)
-	_ gextras.Nativer = (*Settings)(nil)
-)
+var _ gextras.Nativer = (*Settings)(nil)
 
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{

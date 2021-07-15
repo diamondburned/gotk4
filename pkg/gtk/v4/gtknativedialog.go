@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialoger},
+		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialogger},
 	})
 }
 
@@ -44,8 +44,28 @@ type NativeDialogOverrider interface {
 	Show()
 }
 
-// NativeDialoger describes NativeDialog's methods.
-type NativeDialoger interface {
+// NativeDialog: native dialogs are platform dialogs that don't use GtkDialog.
+//
+// They are used in order to integrate better with a platform, by looking the
+// same as other native applications and supporting platform specific features.
+//
+// The gtk.Dialog functions cannot be used on such objects, but we need a
+// similar API in order to drive them. The GtkNativeDialog object is an API that
+// allows you to do this. It allows you to set various common properties on the
+// dialog, as well as show and hide it and get a gtk.NativeDialog::response
+// signal when the user finished with the dialog.
+//
+// Note that unlike GtkDialog, GtkNativeDialog objects are not toplevel widgets,
+// and GTK does not keep them alive. It is your responsibility to keep a
+// reference until you are done with the object.
+type NativeDialog struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*NativeDialog)(nil)
+
+// NativeDialogger describes NativeDialog's abstract methods.
+type NativeDialogger interface {
 	// Destroy destroys a dialog.
 	Destroy()
 	// Modal returns whether the dialog is modal.
@@ -69,28 +89,7 @@ type NativeDialoger interface {
 	Show()
 }
 
-// NativeDialog: native dialogs are platform dialogs that don't use GtkDialog.
-//
-// They are used in order to integrate better with a platform, by looking the
-// same as other native applications and supporting platform specific features.
-//
-// The gtk.Dialog functions cannot be used on such objects, but we need a
-// similar API in order to drive them. The GtkNativeDialog object is an API that
-// allows you to do this. It allows you to set various common properties on the
-// dialog, as well as show and hide it and get a gtk.NativeDialog::response
-// signal when the user finished with the dialog.
-//
-// Note that unlike GtkDialog, GtkNativeDialog objects are not toplevel widgets,
-// and GTK does not keep them alive. It is your responsibility to keep a
-// reference until you are done with the object.
-type NativeDialog struct {
-	*externglib.Object
-}
-
-var (
-	_ NativeDialoger  = (*NativeDialog)(nil)
-	_ gextras.Nativer = (*NativeDialog)(nil)
-)
+var _ NativeDialogger = (*NativeDialog)(nil)
 
 func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	return &NativeDialog{
@@ -98,7 +97,7 @@ func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	}
 }
 
-func marshalNativeDialoger(p uintptr) (interface{}, error) {
+func marshalNativeDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeDialog(obj), nil

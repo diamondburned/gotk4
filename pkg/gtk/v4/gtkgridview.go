@@ -21,38 +21,6 @@ func init() {
 	})
 }
 
-// GridViewer describes GridView's methods.
-type GridViewer interface {
-	// EnableRubberband returns whether rows can be selected by dragging with
-	// the mouse.
-	EnableRubberband() bool
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() *ListItemFactory
-	// MaxColumns gets the maximum number of columns that the grid will use.
-	MaxColumns() uint
-	// MinColumns gets the minimum number of columns that the grid will use.
-	MinColumns() uint
-	// Model gets the model that's currently used to read the items displayed.
-	Model() *SelectionModel
-	// SingleClickActivate returns whether items will be activated on single
-	// click and selected on hover.
-	SingleClickActivate() bool
-	// SetEnableRubberband sets whether selections can be changed by dragging
-	// with the mouse.
-	SetEnableRubberband(enableRubberband bool)
-	// SetFactory sets the GtkListItemFactory to use for populating list items.
-	SetFactory(factory *ListItemFactory)
-	// SetMaxColumns sets the maximum number of columns to use.
-	SetMaxColumns(maxColumns uint)
-	// SetMinColumns sets the minimum number of columns to use.
-	SetMinColumns(minColumns uint)
-	// SetModel sets the imodel to use.
-	SetModel(model SelectionModeler)
-	// SetSingleClickActivate sets whether items should be activated on single
-	// click and selected on hover.
-	SetSingleClickActivate(singleClickActivate bool)
-}
-
 // GridView: GtkGridView presents a large dynamic grid of items.
 //
 // GtkGridView uses its factory to generate one child widget for each visible
@@ -91,10 +59,7 @@ type GridView struct {
 	ListBase
 }
 
-var (
-	_ GridViewer      = (*GridView)(nil)
-	_ gextras.Nativer = (*GridView)(nil)
-)
+var _ gextras.Nativer = (*GridView)(nil)
 
 func wrapGridView(obj *externglib.Object) *GridView {
 	return &GridView{
@@ -136,7 +101,7 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 //
 //    grid_view = gtk_grid_view_new (create_model (),
 //      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
-func NewGridView(model SelectionModeler, factory *ListItemFactory) *GridView {
+func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -315,7 +280,7 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 // SetModel sets the imodel to use.
 //
 // This must be a gtk.SelectionModel.
-func (self *GridView) SetModel(model SelectionModeler) {
+func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkGridView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

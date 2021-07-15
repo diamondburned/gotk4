@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// X11DeviceManagerXI2er describes X11DeviceManagerXI2's methods.
-type X11DeviceManagerXI2er interface {
-	privateX11DeviceManagerXI2()
-}
-
 type X11DeviceManagerXI2 struct {
 	X11DeviceManagerCore
 }
 
-var (
-	_ X11DeviceManagerXI2er = (*X11DeviceManagerXI2)(nil)
-	_ gextras.Nativer       = (*X11DeviceManagerXI2)(nil)
-)
+var _ gextras.Nativer = (*X11DeviceManagerXI2)(nil)
 
 func wrapX11DeviceManagerXI2(obj *externglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{

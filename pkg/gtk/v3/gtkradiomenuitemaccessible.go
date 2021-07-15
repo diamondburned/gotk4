@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// RadioMenuItemAccessibler describes RadioMenuItemAccessible's methods.
-type RadioMenuItemAccessibler interface {
-	privateRadioMenuItemAccessible()
-}
-
 type RadioMenuItemAccessible struct {
 	CheckMenuItemAccessible
 }
 
-var (
-	_ RadioMenuItemAccessibler = (*RadioMenuItemAccessible)(nil)
-	_ gextras.Nativer          = (*RadioMenuItemAccessible)(nil)
-)
+var _ gextras.Nativer = (*RadioMenuItemAccessible)(nil)
 
 func wrapRadioMenuItemAccessible(obj *externglib.Object) *RadioMenuItemAccessible {
 	return &RadioMenuItemAccessible{

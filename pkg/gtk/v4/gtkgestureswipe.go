@@ -21,12 +21,6 @@ func init() {
 	})
 }
 
-// GestureSwiper describes GestureSwipe's methods.
-type GestureSwiper interface {
-	// Velocity gets the current velocity.
-	Velocity() (velocityX float64, velocityY float64, ok bool)
-}
-
 // GestureSwipe: GtkGestureSwipe is a GtkGesture for swipe gestures.
 //
 // After a press/move/.../move/release sequence happens, the
@@ -42,10 +36,7 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
-var (
-	_ GestureSwiper   = (*GestureSwipe)(nil)
-	_ gextras.Nativer = (*GestureSwipe)(nil)
-)
+var _ gextras.Nativer = (*GestureSwipe)(nil)
 
 func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
 	return &GestureSwipe{

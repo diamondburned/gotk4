@@ -33,22 +33,6 @@ type HSVOverrider interface {
 	Move(typ DirectionType)
 }
 
-// HSVer describes HSV's methods.
-type HSVer interface {
-	// Color queries the current color in an HSV color selector.
-	Color() (h float64, s float64, v float64)
-	// Metrics queries the size and ring width of an HSV color selector.
-	Metrics() (size int, ringWidth int)
-	// IsAdjusting: HSV color selector can be said to be adjusting if multiple
-	// rapid changes are being made to its value, for example, when the user is
-	// adjusting the value with the mouse.
-	IsAdjusting() bool
-	// SetColor sets the current color in an HSV color selector.
-	SetColor(h float64, s float64, v float64)
-	// SetMetrics sets the size and ring width of an HSV color selector.
-	SetMetrics(size int, ringWidth int)
-}
-
 // HSV is the “color wheel” part of a complete color selector widget. It allows
 // to select a color by determining its HSV components in an intuitive way.
 // Moving the selection around the outer ring changes the hue, and moving the
@@ -59,10 +43,7 @@ type HSV struct {
 	Widget
 }
 
-var (
-	_ HSVer           = (*HSV)(nil)
-	_ gextras.Nativer = (*HSV)(nil)
-)
+var _ gextras.Nativer = (*HSV)(nil)
 
 func wrapHSV(obj *externglib.Object) *HSV {
 	return &HSV{

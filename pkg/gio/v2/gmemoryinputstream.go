@@ -31,11 +31,6 @@ func init() {
 	})
 }
 
-// MemoryInputStreamer describes MemoryInputStream's methods.
-type MemoryInputStreamer interface {
-	privateMemoryInputStream()
-}
-
 // MemoryInputStream is a class for using arbitrary memory chunks as input for
 // GIO streaming input operations.
 //
@@ -47,10 +42,7 @@ type MemoryInputStream struct {
 	Seekable
 }
 
-var (
-	_ MemoryInputStreamer = (*MemoryInputStream)(nil)
-	_ gextras.Nativer     = (*MemoryInputStream)(nil)
-)
+var _ gextras.Nativer = (*MemoryInputStream)(nil)
 
 func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	return &MemoryInputStream{

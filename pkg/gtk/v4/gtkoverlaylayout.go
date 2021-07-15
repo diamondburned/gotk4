@@ -22,11 +22,6 @@ func init() {
 	})
 }
 
-// OverlayLayouter describes OverlayLayout's methods.
-type OverlayLayouter interface {
-	privateOverlayLayout()
-}
-
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
 //
 // It places widgets as overlays on top of the main child.
@@ -37,10 +32,7 @@ type OverlayLayout struct {
 	LayoutManager
 }
 
-var (
-	_ OverlayLayouter = (*OverlayLayout)(nil)
-	_ gextras.Nativer = (*OverlayLayout)(nil)
-)
+var _ gextras.Nativer = (*OverlayLayout)(nil)
 
 func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
 	return &OverlayLayout{
@@ -71,28 +63,13 @@ func NewOverlayLayout() *OverlayLayout {
 
 func (*OverlayLayout) privateOverlayLayout() {}
 
-// OverlayLayoutChilder describes OverlayLayoutChild's methods.
-type OverlayLayoutChilder interface {
-	// ClipOverlay retrieves whether the child is clipped.
-	ClipOverlay() bool
-	// Measure retrieves whether the child is measured.
-	Measure() bool
-	// SetClipOverlay sets whether to clip this child.
-	SetClipOverlay(clipOverlay bool)
-	// SetMeasure sets whether to measure this child.
-	SetMeasure(measure bool)
-}
-
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {
 	LayoutChild
 }
 
-var (
-	_ OverlayLayoutChilder = (*OverlayLayoutChild)(nil)
-	_ gextras.Nativer      = (*OverlayLayoutChild)(nil)
-)
+var _ gextras.Nativer = (*OverlayLayoutChild)(nil)
 
 func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{

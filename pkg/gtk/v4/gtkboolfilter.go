@@ -21,30 +21,13 @@ func init() {
 	})
 }
 
-// BoolFilterer describes BoolFilter's methods.
-type BoolFilterer interface {
-	// Expression gets the expression that the filter uses to evaluate if an
-	// item should be filtered.
-	Expression() *Expression
-	// Invert returns whether the filter inverts the expression.
-	Invert() bool
-	// SetExpression sets the expression that the filter uses to check if items
-	// should be filtered.
-	SetExpression(expression Expressioner)
-	// SetInvert sets whether the filter should invert the expression.
-	SetInvert(invert bool)
-}
-
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
 // whether to include items.
 type BoolFilter struct {
 	Filter
 }
 
-var (
-	_ BoolFilterer    = (*BoolFilter)(nil)
-	_ gextras.Nativer = (*BoolFilter)(nil)
-)
+var _ gextras.Nativer = (*BoolFilter)(nil)
 
 func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
 	return &BoolFilter{

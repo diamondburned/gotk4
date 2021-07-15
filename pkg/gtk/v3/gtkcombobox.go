@@ -24,7 +24,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxer},
+		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBoxxer},
 	})
 }
 
@@ -35,103 +35,6 @@ func init() {
 type ComboBoxOverrider interface {
 	Changed()
 	FormatEntryText(path string) string
-}
-
-// ComboBoxer describes ComboBox's methods.
-type ComboBoxer interface {
-	// Active returns the index of the currently active item, or -1 if there’s
-	// no active item.
-	Active() int
-	// ActiveID returns the ID of the active row of combo_box.
-	ActiveID() string
-	// ActiveIter sets iter to point to the currently active item, if any item
-	// is active.
-	ActiveIter() (TreeIter, bool)
-	// AddTearoffs gets the current value of the :add-tearoffs property.
-	AddTearoffs() bool
-	// ButtonSensitivity returns whether the combo box sets the dropdown button
-	// sensitive or not when there are no items in the model.
-	ButtonSensitivity() SensitivityType
-	// ColumnSpanColumn returns the column with column span information for
-	// combo_box.
-	ColumnSpanColumn() int
-	// EntryTextColumn returns the column which combo_box is using to get the
-	// strings from to display in the internal entry.
-	EntryTextColumn() int
-	// FocusOnClick returns whether the combo box grabs focus when it is clicked
-	// with the mouse.
-	FocusOnClick() bool
-	// HasEntry returns whether the combo box has an entry.
-	HasEntry() bool
-	// IDColumn returns the column which combo_box is using to get string IDs
-	// for values from.
-	IDColumn() int
-	// Model returns the TreeModel which is acting as data source for combo_box.
-	Model() *TreeModel
-	// PopupAccessible gets the accessible object corresponding to the combo
-	// box’s popup.
-	PopupAccessible() *atk.ObjectClass
-	// PopupFixedWidth gets whether the popup uses a fixed width matching the
-	// allocated width of the combo box.
-	PopupFixedWidth() bool
-	// RowSpanColumn returns the column with row span information for combo_box.
-	RowSpanColumn() int
-	// Title gets the current title of the menu in tearoff mode.
-	Title() string
-	// WrapWidth returns the wrap width which is used to determine the number of
-	// columns for the popup menu.
-	WrapWidth() int
-	// Popdown hides the menu or dropdown list of combo_box.
-	Popdown()
-	// Popup pops up the menu or dropdown list of combo_box.
-	Popup()
-	// PopupForDevice pops up the menu or dropdown list of combo_box, the popup
-	// window will be grabbed so only device and its associated pointer/keyboard
-	// are the only Devices able to send events to it.
-	PopupForDevice(device gdk.Devicer)
-	// SetActive sets the active item of combo_box to be the item at index.
-	SetActive(index_ int)
-	// SetActiveID changes the active row of combo_box to the one that has an ID
-	// equal to active_id, or unsets the active row if active_id is NULL.
-	SetActiveID(activeId string) bool
-	// SetActiveIter sets the current active item to be the one referenced by
-	// iter, or unsets the active item if iter is NULL.
-	SetActiveIter(iter *TreeIter)
-	// SetAddTearoffs sets whether the popup menu should have a tearoff menu
-	// item.
-	SetAddTearoffs(addTearoffs bool)
-	// SetButtonSensitivity sets whether the dropdown button of the combo box
-	// should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
-	// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
-	// (GTK_SENSITIVITY_AUTO).
-	SetButtonSensitivity(sensitivity SensitivityType)
-	// SetColumnSpanColumn sets the column with column span information for
-	// combo_box to be column_span.
-	SetColumnSpanColumn(columnSpan int)
-	// SetEntryTextColumn sets the model column which combo_box should use to
-	// get strings from to be text_column.
-	SetEntryTextColumn(textColumn int)
-	// SetFocusOnClick sets whether the combo box will grab focus when it is
-	// clicked with the mouse.
-	SetFocusOnClick(focusOnClick bool)
-	// SetIDColumn sets the model column which combo_box should use to get
-	// string IDs for values from.
-	SetIDColumn(idColumn int)
-	// SetModel sets the model used by combo_box to be model.
-	SetModel(model TreeModeler)
-	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
-	// width matching the allocated width of the combo box.
-	SetPopupFixedWidth(fixed bool)
-	// SetRowSeparatorFunc sets the row separator function, which is used to
-	// determine whether a row should be drawn as a separator.
-	SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc)
-	// SetRowSpanColumn sets the column with row span information for combo_box
-	// to be row_span.
-	SetRowSpanColumn(rowSpan int)
-	// SetTitle sets the menu’s title in tearoff mode.
-	SetTitle(title string)
-	// SetWrapWidth sets the wrap width of combo_box to be width.
-	SetWrapWidth(width int)
 }
 
 // ComboBox is a widget that allows the user to choose from a list of valid
@@ -178,10 +81,7 @@ type ComboBox struct {
 	CellLayout
 }
 
-var (
-	_ ComboBoxer      = (*ComboBox)(nil)
-	_ gextras.Nativer = (*ComboBox)(nil)
-)
+var _ gextras.Nativer = (*ComboBox)(nil)
 
 func wrapComboBox(obj *externglib.Object) *ComboBox {
 	return &ComboBox{
@@ -219,7 +119,7 @@ func wrapComboBox(obj *externglib.Object) *ComboBox {
 	}
 }
 
-func marshalComboBoxer(p uintptr) (interface{}, error) {
+func marshalComboBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapComboBox(obj), nil
@@ -287,7 +187,7 @@ func NewComboBoxWithEntry() *ComboBox {
 
 // NewComboBoxWithModel creates a new ComboBox with the model initialized to
 // model.
-func NewComboBoxWithModel(model TreeModeler) *ComboBox {
+func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -304,7 +204,7 @@ func NewComboBoxWithModel(model TreeModeler) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty ComboBox with an entry and
 // with the model initialized to model.
-func NewComboBoxWithModelAndEntry(model TreeModeler) *ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -814,7 +714,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 // Note that this function does not clear the cell renderers, you have to call
 // gtk_cell_layout_clear() yourself if you need to set up different cell
 // renderers for the new model.
-func (comboBox *ComboBox) SetModel(model TreeModeler) {
+func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 

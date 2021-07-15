@@ -183,99 +183,6 @@ type SettingsOverrider interface {
 	WritableChanged(key string)
 }
 
-// Settingser describes Settings's methods.
-type Settingser interface {
-	// Apply applies any changes that have been made to the settings.
-	Apply()
-	// Bind: create a binding between the key in the settings object and the
-	// property property of object.
-	Bind(key string, object *externglib.Object, property string, flags SettingsBindFlags)
-	// BindWritable: create a binding between the writability of key in the
-	// settings object and the property property of object.
-	BindWritable(key string, object *externglib.Object, property string, inverted bool)
-	// CreateAction creates a #GAction corresponding to a given #GSettings key.
-	CreateAction(key string) *Action
-	// Delay changes the #GSettings object into 'delay-apply' mode.
-	Delay()
-	// Boolean gets the value that is stored at key in settings.
-	Boolean(key string) bool
-	// Child creates a child settings object which has a base path of
-	// base-path/name, where base-path is the base path of settings.
-	Child(name string) *Settings
-	// DefaultValue gets the "default value" of a key.
-	DefaultValue(key string) *glib.Variant
-	// Double gets the value that is stored at key in settings.
-	Double(key string) float64
-	// Enum gets the value that is stored in settings for key and converts it to
-	// the enum value that it represents.
-	Enum(key string) int
-	// Flags gets the value that is stored in settings for key and converts it
-	// to the flags value that it represents.
-	Flags(key string) uint
-	// HasUnapplied returns whether the #GSettings object has any unapplied
-	// changes.
-	HasUnapplied() bool
-	// Int gets the value that is stored at key in settings.
-	Int(key string) int
-	// Int64 gets the value that is stored at key in settings.
-	Int64(key string) int64
-	// Mapped gets the value that is stored at key in settings, subject to
-	// application-level validation/mapping.
-	Mapped(key string, mapping SettingsGetMapping) cgo.Handle
-	// Range queries the range of a key.
-	Range(key string) *glib.Variant
-	// String gets the value that is stored at key in settings.
-	String(key string) string
-	// Strv: convenience variant of g_settings_get() for string arrays.
-	Strv(key string) []string
-	// Uint gets the value that is stored at key in settings.
-	Uint(key string) uint
-	// Uint64 gets the value that is stored at key in settings.
-	Uint64(key string) uint64
-	// UserValue checks the "user value" of a key, if there is one.
-	UserValue(key string) *glib.Variant
-	// Value gets the value that is stored in settings for key.
-	Value(key string) *glib.Variant
-	// IsWritable finds out if a key can be written or not
-	IsWritable(name string) bool
-	// ListChildren gets the list of children on settings.
-	ListChildren() []string
-	// ListKeys introspects the list of keys on settings.
-	ListKeys() []string
-	// RangeCheck checks if the given value is of the correct type and within
-	// the permitted range for key.
-	RangeCheck(key string, value *glib.Variant) bool
-	// Reset resets key to its default value.
-	Reset(key string)
-	// Revert reverts all non-applied changes to the settings.
-	Revert()
-	// SetBoolean sets key in settings to value.
-	SetBoolean(key string, value bool) bool
-	// SetDouble sets key in settings to value.
-	SetDouble(key string, value float64) bool
-	// SetEnum looks up the enumerated type nick for value and writes it to key,
-	// within settings.
-	SetEnum(key string, value int) bool
-	// SetFlags looks up the flags type nicks for the bits specified by value,
-	// puts them in an array of strings and writes the array to key, within
-	// settings.
-	SetFlags(key string, value uint) bool
-	// SetInt sets key in settings to value.
-	SetInt(key string, value int) bool
-	// SetInt64 sets key in settings to value.
-	SetInt64(key string, value int64) bool
-	// SetString sets key in settings to value.
-	SetString(key string, value string) bool
-	// SetStrv sets key in settings to value.
-	SetStrv(key string, value []string) bool
-	// SetUint sets key in settings to value.
-	SetUint(key string, value uint) bool
-	// SetUint64 sets key in settings to value.
-	SetUint64(key string, value uint64) bool
-	// SetValue sets key in settings to value.
-	SetValue(key string, value *glib.Variant) bool
-}
-
 // Settings class provides a convenient API for storing and retrieving
 // application settings.
 //
@@ -553,10 +460,7 @@ type Settings struct {
 	*externglib.Object
 }
 
-var (
-	_ Settingser      = (*Settings)(nil)
-	_ gextras.Nativer = (*Settings)(nil)
-)
+var _ gextras.Nativer = (*Settings)(nil)
 
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{

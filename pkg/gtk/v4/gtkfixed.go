@@ -19,27 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixeder},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
 	})
-}
-
-// Fixeder describes Fixed's methods.
-type Fixeder interface {
-	// ChildPosition retrieves the translation transformation of the given child
-	// GtkWidget in the GtkFixed.
-	ChildPosition(widget Widgeter) (x float64, y float64)
-	// ChildTransform retrieves the transformation for widget set using
-	// gtk_fixed_set_child_transform().
-	ChildTransform(widget Widgeter) *gsk.Transform
-	// Move sets a translation transformation to the given x and y coordinates
-	// to the child widget of the GtkFixed.
-	Move(widget Widgeter, x float64, y float64)
-	// Put adds a widget to a GtkFixed at the given position.
-	Put(widget Widgeter, x float64, y float64)
-	// Remove removes a child from fixed.
-	Remove(widget Widgeter)
-	// SetChildTransform sets the transformation for widget.
-	SetChildTransform(widget Widgeter, transform *gsk.Transform)
 }
 
 // Fixed: GtkFixed places its child widgets at fixed positions and with fixed
@@ -81,10 +62,7 @@ type Fixed struct {
 	Widget
 }
 
-var (
-	_ Fixeder         = (*Fixed)(nil)
-	_ gextras.Nativer = (*Fixed)(nil)
-)
+var _ gextras.Nativer = (*Fixed)(nil)
 
 func wrapFixed(obj *externglib.Object) *Fixed {
 	return &Fixed{
@@ -105,7 +83,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 	}
 }
 
-func marshalFixeder(p uintptr) (interface{}, error) {
+func marshalFixedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFixed(obj), nil
@@ -128,7 +106,7 @@ func NewFixed() *Fixed {
 // GtkWidget in the GtkFixed.
 //
 // See also: gtk.Fixed.GetChildTransform().
-func (fixed *Fixed) ChildPosition(widget Widgeter) (x float64, y float64) {
+func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // in
@@ -150,7 +128,7 @@ func (fixed *Fixed) ChildPosition(widget Widgeter) (x float64, y float64) {
 
 // ChildTransform retrieves the transformation for widget set using
 // gtk_fixed_set_child_transform().
-func (fixed *Fixed) ChildTransform(widget Widgeter) *gsk.Transform {
+func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GskTransform // in
@@ -172,7 +150,7 @@ func (fixed *Fixed) ChildTransform(widget Widgeter) *gsk.Transform {
 
 // Move sets a translation transformation to the given x and y coordinates to
 // the child widget of the GtkFixed.
-func (fixed *Fixed) Move(widget Widgeter, x float64, y float64) {
+func (fixed *Fixed) Move(widget Widgetter, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -187,7 +165,7 @@ func (fixed *Fixed) Move(widget Widgeter, x float64, y float64) {
 }
 
 // Put adds a widget to a GtkFixed at the given position.
-func (fixed *Fixed) Put(widget Widgeter, x float64, y float64) {
+func (fixed *Fixed) Put(widget Widgetter, x float64, y float64) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -202,7 +180,7 @@ func (fixed *Fixed) Put(widget Widgeter, x float64, y float64) {
 }
 
 // Remove removes a child from fixed.
-func (fixed *Fixed) Remove(widget Widgeter) {
+func (fixed *Fixed) Remove(widget Widgetter) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -216,7 +194,7 @@ func (fixed *Fixed) Remove(widget Widgeter) {
 //
 // This is a convenience function that retrieves the gtk.FixedLayoutChild
 // instance associated to widget and calls gtk.FixedLayoutChild.SetTransform().
-func (fixed *Fixed) SetChildTransform(widget Widgeter, transform *gsk.Transform) {
+func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.GskTransform // out

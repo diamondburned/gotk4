@@ -23,16 +23,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 	{{ end }}
 
-	// {{ .InterfaceName }} describes {{ .StructName }}'s methods.
-	type {{ .InterfaceName }} interface {
-		{{ range .Methods -}}
-		{{- Synopsis . 1 TrailingNewLine -}}
-		{{- .Name }}{{ .Tail }}
-		{{ else }}
-		private{{ .StructName }}()
-		{{ end -}}
-	}
-
 	{{ GoDoc . 0 (OverrideSelfName .StructName) }}
 	type {{ .StructName }} struct {
 		{{ index .Tree.ImplTypes 0 }}
@@ -42,10 +32,21 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ end }}
 	}
 
-	var (
-		_ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
-		_ gextras.Nativer = (*{{ .StructName }})(nil)
-	)
+	var _ gextras.Nativer = (*{{ .StructName }})(nil)
+
+	{{ if .Abstract }}
+	// {{ .InterfaceName }} describes {{ .StructName }}'s abstract methods.
+	type {{ .InterfaceName }} interface {
+		{{ range .Methods -}}
+		{{- Synopsis . 1 TrailingNewLine -}}
+		{{- .Name }}{{ .Tail }}
+		{{ else }}
+		private{{ .StructName }}()
+		{{ end -}}
+	}
+
+	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
+	{{ end }}
 
 	{{ $wrapper := .Tree.WrapName false }}
 	func {{ $wrapper }}(obj *externglib.Object) *{{ .StructName }} {

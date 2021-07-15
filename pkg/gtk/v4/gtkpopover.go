@@ -31,55 +31,6 @@ type PopoverOverrider interface {
 	Closed()
 }
 
-// Popoverer describes Popover's methods.
-type Popoverer interface {
-	// Autohide returns whether the popover is modal.
-	Autohide() bool
-	// CascadePopdown returns whether the popover will close after a modal child
-	// is closed.
-	CascadePopdown() bool
-	// Child gets the child widget of popover.
-	Child() *Widget
-	// HasArrow gets whether this popover is showing an arrow pointing at the
-	// widget that it is relative to.
-	HasArrow() bool
-	// MnemonicsVisible gets whether mnemonics are visible.
-	MnemonicsVisible() bool
-	// Offset gets the offset previous set with gtk_popover_set_offset().
-	Offset() (xOffset int, yOffset int)
-	// PointingTo gets the rectangle that the popover points to.
-	PointingTo() (gdk.Rectangle, bool)
-	// Position returns the preferred position of popover.
-	Position() PositionType
-	// Popdown pops popover down.
-	Popdown()
-	// Popup pops popover up.
-	Popup()
-	// Present presents the popover to the user.
-	Present()
-	// SetAutohide sets whether popover is modal.
-	SetAutohide(autohide bool)
-	// SetCascadePopdown: if cascade_popdown is TRUE, the popover will be closed
-	// when a child modal popover is closed.
-	SetCascadePopdown(cascadePopdown bool)
-	// SetChild sets the child widget of popover.
-	SetChild(child Widgeter)
-	// SetDefaultWidget sets the default widget of a GtkPopover.
-	SetDefaultWidget(widget Widgeter)
-	// SetHasArrow sets whether this popover should draw an arrow pointing at
-	// the widget it is relative to.
-	SetHasArrow(hasArrow bool)
-	// SetMnemonicsVisible sets whether mnemonics should be visible.
-	SetMnemonicsVisible(mnemonicsVisible bool)
-	// SetOffset sets the offset to use when calculating the position of the
-	// popover.
-	SetOffset(xOffset int, yOffset int)
-	// SetPointingTo sets the rectangle that popover points to.
-	SetPointingTo(rect *gdk.Rectangle)
-	// SetPosition sets the preferred position for popover to appear.
-	SetPosition(position PositionType)
-}
-
 // Popover: GtkPopover is a bubble-like context popup.
 //
 // !An example GtkPopover (popover.png)
@@ -160,10 +111,7 @@ type Popover struct {
 	ShortcutManager
 }
 
-var (
-	_ Popoverer       = (*Popover)(nil)
-	_ gextras.Nativer = (*Popover)(nil)
-)
+var _ gextras.Nativer = (*Popover)(nil)
 
 func wrapPopover(obj *externglib.Object) *Popover {
 	return &Popover{
@@ -451,7 +399,7 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 }
 
 // SetChild sets the child widget of popover.
-func (popover *Popover) SetChild(child Widgeter) {
+func (popover *Popover) SetChild(child Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -466,7 +414,7 @@ func (popover *Popover) SetChild(child Widgeter) {
 // The default widget is the widget that’s activated when the user presses Enter
 // in a dialog (for example). This function sets or unsets the default widget
 // for a GtkPopover.
-func (popover *Popover) SetDefaultWidget(widget Widgeter) {
+func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 

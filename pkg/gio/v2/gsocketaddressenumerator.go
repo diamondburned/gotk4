@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorer},
+		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorrer},
 	})
 }
 
@@ -65,19 +65,6 @@ type SocketAddressEnumeratorOverrider interface {
 	NextFinish(result AsyncResulter) (*SocketAddress, error)
 }
 
-// SocketAddressEnumeratorer describes SocketAddressEnumerator's methods.
-type SocketAddressEnumeratorer interface {
-	// Next retrieves the next Address from enumerator.
-	Next(cancellable *Cancellable) (*SocketAddress, error)
-	// NextAsync: asynchronously retrieves the next Address from enumerator and
-	// then calls callback, which must call
-	// g_socket_address_enumerator_next_finish() to get the result.
-	NextAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async().
-	NextFinish(result AsyncResulter) (*SocketAddress, error)
-}
-
 // SocketAddressEnumerator is an enumerator type for Address instances. It is
 // returned by enumeration functions such as g_socket_connectable_enumerate(),
 // which returns a AddressEnumerator to list each Address which could be used to
@@ -94,10 +81,22 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
-var (
-	_ SocketAddressEnumeratorer = (*SocketAddressEnumerator)(nil)
-	_ gextras.Nativer           = (*SocketAddressEnumerator)(nil)
-)
+var _ gextras.Nativer = (*SocketAddressEnumerator)(nil)
+
+// SocketAddressEnumeratorrer describes SocketAddressEnumerator's abstract methods.
+type SocketAddressEnumeratorrer interface {
+	// Next retrieves the next Address from enumerator.
+	Next(cancellable *Cancellable) (*SocketAddress, error)
+	// NextAsync: asynchronously retrieves the next Address from enumerator and
+	// then calls callback, which must call
+	// g_socket_address_enumerator_next_finish() to get the result.
+	NextAsync(cancellable *Cancellable, callback AsyncReadyCallback)
+	// NextFinish retrieves the result of a completed call to
+	// g_socket_address_enumerator_next_async().
+	NextFinish(result AsyncResulter) (*SocketAddress, error)
+}
+
+var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
 
 func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerator {
 	return &SocketAddressEnumerator{
@@ -105,7 +104,7 @@ func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerato
 	}
 }
 
-func marshalSocketAddressEnumeratorer(p uintptr) (interface{}, error) {
+func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocketAddressEnumerator(obj), nil

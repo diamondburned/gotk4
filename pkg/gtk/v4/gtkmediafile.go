@@ -32,7 +32,21 @@ type MediaFileOverrider interface {
 	Open()
 }
 
-// MediaFiler describes MediaFile's methods.
+// MediaFile: GtkMediaFile implements GtkMediaStream for files.
+//
+// This provides a simple way to play back video files with GTK.
+//
+// GTK provides a GIO extension point for GtkMediaFile implementations to allow
+// for external implementations using various media frameworks.
+//
+// GTK itself includes implementations using GStreamer and ffmpeg.
+type MediaFile struct {
+	MediaStream
+}
+
+var _ gextras.Nativer = (*MediaFile)(nil)
+
+// MediaFiler describes MediaFile's abstract methods.
 type MediaFiler interface {
 	// Clear resets the media file to be empty.
 	Clear()
@@ -50,22 +64,7 @@ type MediaFiler interface {
 	SetResource(resourcePath string)
 }
 
-// MediaFile: GtkMediaFile implements GtkMediaStream for files.
-//
-// This provides a simple way to play back video files with GTK.
-//
-// GTK provides a GIO extension point for GtkMediaFile implementations to allow
-// for external implementations using various media frameworks.
-//
-// GTK itself includes implementations using GStreamer and ffmpeg.
-type MediaFile struct {
-	MediaStream
-}
-
-var (
-	_ MediaFiler      = (*MediaFile)(nil)
-	_ gextras.Nativer = (*MediaFile)(nil)
-)
+var _ MediaFiler = (*MediaFile)(nil)
 
 func wrapMediaFile(obj *externglib.Object) *MediaFile {
 	return &MediaFile{

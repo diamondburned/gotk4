@@ -77,7 +77,16 @@ type PollableInputStreamOverrider interface {
 	ReadNonblocking(buffer []byte) (int, error)
 }
 
-// PollableInputStreamer describes PollableInputStream's methods.
+// PollableInputStream is implemented by Streams that can be polled for
+// readiness to read. This can be used when interfacing with a non-GIO API that
+// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
+type PollableInputStream struct {
+	InputStream
+}
+
+var _ gextras.Nativer = (*PollableInputStream)(nil)
+
+// PollableInputStreamer describes PollableInputStream's abstract methods.
 type PollableInputStreamer interface {
 	// CanPoll checks if stream is actually pollable.
 	CanPoll() bool
@@ -91,17 +100,7 @@ type PollableInputStreamer interface {
 	ReadNonblocking(buffer []byte, cancellable *Cancellable) (int, error)
 }
 
-// PollableInputStream is implemented by Streams that can be polled for
-// readiness to read. This can be used when interfacing with a non-GIO API that
-// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
-type PollableInputStream struct {
-	InputStream
-}
-
-var (
-	_ PollableInputStreamer = (*PollableInputStream)(nil)
-	_ gextras.Nativer       = (*PollableInputStream)(nil)
-)
+var _ PollableInputStreamer = (*PollableInputStream)(nil)
 
 func wrapPollableInputStream(obj *externglib.Object) *PollableInputStream {
 	return &PollableInputStream{

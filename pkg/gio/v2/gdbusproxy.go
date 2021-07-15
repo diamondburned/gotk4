@@ -44,59 +44,6 @@ type DBusProxyOverrider interface {
 	GSignal(senderName string, signalName string, parameters *glib.Variant)
 }
 
-// DBusProxier describes DBusProxy's methods.
-type DBusProxier interface {
-	// Call: asynchronously invokes the method_name method on proxy.
-	Call(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CallFinish finishes an operation started with g_dbus_proxy_call().
-	CallFinish(res AsyncResulter) (*glib.Variant, error)
-	// CallSync: synchronously invokes the method_name method on proxy.
-	CallSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable) (*glib.Variant, error)
-	// CallWithUnixFdList: like g_dbus_proxy_call() but also takes a FDList
-	// object.
-	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable, callback AsyncReadyCallback)
-	// CallWithUnixFdListFinish finishes an operation started with
-	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResulter) (*UnixFDList, *glib.Variant, error)
-	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
-	// returns FDList objects.
-	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable) (*UnixFDList, *glib.Variant, error)
-	// CachedProperty looks up the value for a property from the cache.
-	CachedProperty(propertyName string) *glib.Variant
-	// CachedPropertyNames gets the names of all cached properties on proxy.
-	CachedPropertyNames() []string
-	// Connection gets the connection proxy is for.
-	Connection() *DBusConnection
-	// DefaultTimeout gets the timeout to use if -1 (specifying default timeout)
-	// is passed as timeout_msec in the g_dbus_proxy_call() and
-	// g_dbus_proxy_call_sync() functions.
-	DefaultTimeout() int
-	// Flags gets the flags that proxy was constructed with.
-	Flags() DBusProxyFlags
-	// InterfaceInfo returns the BusInterfaceInfo, if any, specifying the
-	// interface that proxy conforms to.
-	InterfaceInfo() *DBusInterfaceInfo
-	// InterfaceName gets the D-Bus interface name proxy is for.
-	InterfaceName() string
-	// Name gets the name that proxy was constructed for.
-	Name() string
-	// NameOwner: unique name that owns the name that proxy is for or NULL if
-	// no-one currently owns that name.
-	NameOwner() string
-	// ObjectPath gets the object path proxy is for.
-	ObjectPath() string
-	// SetCachedProperty: if value is not NULL, sets the cached value for the
-	// property with name property_name to the value in value.
-	SetCachedProperty(propertyName string, value *glib.Variant)
-	// SetDefaultTimeout sets the timeout to use if -1 (specifying default
-	// timeout) is passed as timeout_msec in the g_dbus_proxy_call() and
-	// g_dbus_proxy_call_sync() functions.
-	SetDefaultTimeout(timeoutMsec int)
-	// SetInterfaceInfo: ensure that interactions with proxy conform to the
-	// given interface.
-	SetInterfaceInfo(info *DBusInterfaceInfo)
-}
-
 // DBusProxy is a base class used for proxies to access a D-Bus interface on a
 // remote object. A BusProxy can be constructed for both well-known and unique
 // names.
@@ -141,10 +88,7 @@ type DBusProxy struct {
 	Initable
 }
 
-var (
-	_ DBusProxier     = (*DBusProxy)(nil)
-	_ gextras.Nativer = (*DBusProxy)(nil)
-)
+var _ gextras.Nativer = (*DBusProxy)(nil)
 
 func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{

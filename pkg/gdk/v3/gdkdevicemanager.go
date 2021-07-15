@@ -21,15 +21,6 @@ func init() {
 	})
 }
 
-// DeviceManagerer describes DeviceManager's methods.
-type DeviceManagerer interface {
-	// ClientPointer returns the client pointer, that is, the master pointer
-	// that acts as the core pointer for this application.
-	ClientPointer() *Device
-	// Display gets the Display associated to device_manager.
-	Display() *Display
-}
-
 // DeviceManager: in addition to a single pointer and keyboard for user
 // interface input, GDK contains support for a variety of input devices,
 // including graphics tablets, touchscreens and multiple pointers/keyboards
@@ -138,10 +129,18 @@ type DeviceManager struct {
 	*externglib.Object
 }
 
-var (
-	_ DeviceManagerer = (*DeviceManager)(nil)
-	_ gextras.Nativer = (*DeviceManager)(nil)
-)
+var _ gextras.Nativer = (*DeviceManager)(nil)
+
+// DeviceManagerer describes DeviceManager's abstract methods.
+type DeviceManagerer interface {
+	// ClientPointer returns the client pointer, that is, the master pointer
+	// that acts as the core pointer for this application.
+	ClientPointer() *Device
+	// Display gets the Display associated to device_manager.
+	Display() *Display
+}
+
+var _ DeviceManagerer = (*DeviceManager)(nil)
 
 func wrapDeviceManager(obj *externglib.Object) *DeviceManager {
 	return &DeviceManager{

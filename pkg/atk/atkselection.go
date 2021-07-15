@@ -59,7 +59,22 @@ type SelectionOverrider interface {
 	SelectionChanged()
 }
 
-// Selectioner describes Selection's methods.
+// Selection should be implemented by UI components with children which are
+// exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
+// of the parent UI component ordinarily involves selection of one or more of
+// the objects corresponding to those Object children - for example, selectable
+// lists.
+//
+// Note that other types of "selection" (for instance text selection) are
+// accomplished a other ATK interfaces - Selection is limited to the
+// selection/deselection of children.
+type Selection struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Selection)(nil)
+
+// Selectioner describes Selection's abstract methods.
 type Selectioner interface {
 	// AddSelection adds the specified accessible child of the object to the
 	// object's selection.
@@ -86,23 +101,7 @@ type Selectioner interface {
 	SelectAllSelection() bool
 }
 
-// Selection should be implemented by UI components with children which are
-// exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
-// of the parent UI component ordinarily involves selection of one or more of
-// the objects corresponding to those Object children - for example, selectable
-// lists.
-//
-// Note that other types of "selection" (for instance text selection) are
-// accomplished a other ATK interfaces - Selection is limited to the
-// selection/deselection of children.
-type Selection struct {
-	*externglib.Object
-}
-
-var (
-	_ Selectioner     = (*Selection)(nil)
-	_ gextras.Nativer = (*Selection)(nil)
-)
+var _ Selectioner = (*Selection)(nil)
 
 func wrapSelection(obj *externglib.Object) *Selection {
 	return &Selection{

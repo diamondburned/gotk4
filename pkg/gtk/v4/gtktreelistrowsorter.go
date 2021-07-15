@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// TreeListRowSorterer describes TreeListRowSorter's methods.
-type TreeListRowSorterer interface {
-	// GetSorter returns the sorter used by self.
-	GetSorter() *Sorter
-	// SetSorter sets the sorter to use for items with the same parent.
-	SetSorter(sorter *Sorter)
-}
-
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will
 // apply a given sorter to the levels in a tree.
 //
@@ -44,10 +36,7 @@ type TreeListRowSorter struct {
 	Sorter
 }
 
-var (
-	_ TreeListRowSorterer = (*TreeListRowSorter)(nil)
-	_ gextras.Nativer     = (*TreeListRowSorter)(nil)
-)
+var _ gextras.Nativer = (*TreeListRowSorter)(nil)
 
 func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{

@@ -31,7 +31,17 @@ func init() {
 	})
 }
 
-// FilterOutputStreamer describes FilterOutputStream's methods.
+// FilterOutputStream: base class for output stream implementations that perform
+// some kind of filtering operation on a base stream. Typical examples of
+// filtering operations are character set conversion, compression and byte order
+// flipping.
+type FilterOutputStream struct {
+	OutputStream
+}
+
+var _ gextras.Nativer = (*FilterOutputStream)(nil)
+
+// FilterOutputStreamer describes FilterOutputStream's abstract methods.
 type FilterOutputStreamer interface {
 	// BaseStream gets the base stream for the filter stream.
 	BaseStream() *OutputStream
@@ -43,18 +53,7 @@ type FilterOutputStreamer interface {
 	SetCloseBaseStream(closeBase bool)
 }
 
-// FilterOutputStream: base class for output stream implementations that perform
-// some kind of filtering operation on a base stream. Typical examples of
-// filtering operations are character set conversion, compression and byte order
-// flipping.
-type FilterOutputStream struct {
-	OutputStream
-}
-
-var (
-	_ FilterOutputStreamer = (*FilterOutputStream)(nil)
-	_ gextras.Nativer      = (*FilterOutputStream)(nil)
-)
+var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
 
 func wrapFilterOutputStream(obj *externglib.Object) *FilterOutputStream {
 	return &FilterOutputStream{

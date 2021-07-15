@@ -27,13 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorer},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumeratorrer},
 	})
-}
-
-// ProxyAddressEnumeratorer describes ProxyAddressEnumerator's methods.
-type ProxyAddressEnumeratorer interface {
-	privateProxyAddressEnumerator()
 }
 
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
@@ -48,10 +43,7 @@ type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
-var (
-	_ ProxyAddressEnumeratorer = (*ProxyAddressEnumerator)(nil)
-	_ gextras.Nativer          = (*ProxyAddressEnumerator)(nil)
-)
+var _ gextras.Nativer = (*ProxyAddressEnumerator)(nil)
 
 func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
 	return &ProxyAddressEnumerator{
@@ -61,7 +53,7 @@ func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator 
 	}
 }
 
-func marshalProxyAddressEnumeratorer(p uintptr) (interface{}, error) {
+func marshalProxyAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapProxyAddressEnumerator(obj), nil

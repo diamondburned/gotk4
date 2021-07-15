@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaneder},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
 	})
 }
 
@@ -36,32 +36,6 @@ type PanedOverrider interface {
 	CycleHandleFocus(reverse bool) bool
 	MoveHandle(scroll ScrollType) bool
 	ToggleHandleFocus() bool
-}
-
-// Paneder describes Paned's methods.
-type Paneder interface {
-	// Add1 adds a child to the top or left pane with default parameters.
-	Add1(child Widgeter)
-	// Add2 adds a child to the bottom or right pane with default parameters.
-	Add2(child Widgeter)
-	// Child1 obtains the first child of the paned widget.
-	Child1() *Widget
-	// Child2 obtains the second child of the paned widget.
-	Child2() *Widget
-	// HandleWindow returns the Window of the handle.
-	HandleWindow() *gdk.Window
-	// Position obtains the position of the divider between the two panes.
-	Position() int
-	// WideHandle gets the Paned:wide-handle property.
-	WideHandle() bool
-	// Pack1 adds a child to the top or left pane.
-	Pack1(child Widgeter, resize bool, shrink bool)
-	// Pack2 adds a child to the bottom or right pane.
-	Pack2(child Widgeter, resize bool, shrink bool)
-	// SetPosition sets the position of the divider between the two panes.
-	SetPosition(position int)
-	// SetWideHandle sets the Paned:wide-handle property.
-	SetWideHandle(wide bool)
 }
 
 // Paned has two panes, arranged either horizontally or vertically. The division
@@ -109,10 +83,7 @@ type Paned struct {
 	Orientable
 }
 
-var (
-	_ Paneder         = (*Paned)(nil)
-	_ gextras.Nativer = (*Paned)(nil)
-)
+var _ gextras.Nativer = (*Paned)(nil)
 
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
@@ -135,7 +106,7 @@ func wrapPaned(obj *externglib.Object) *Paned {
 	}
 }
 
-func marshalPaneder(p uintptr) (interface{}, error) {
+func marshalPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPaned(obj), nil
@@ -165,7 +136,7 @@ func (v *Paned) Native() uintptr {
 
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to gtk_paned_pack1 (paned, child, FALSE, TRUE).
-func (paned *Paned) Add1(child Widgeter) {
+func (paned *Paned) Add1(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -177,7 +148,7 @@ func (paned *Paned) Add1(child Widgeter) {
 
 // Add2 adds a child to the bottom or right pane with default parameters. This
 // is equivalent to gtk_paned_pack2 (paned, child, TRUE, TRUE).
-func (paned *Paned) Add2(child Widgeter) {
+func (paned *Paned) Add2(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -277,7 +248,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // Pack1 adds a child to the top or left pane.
-func (paned *Paned) Pack1(child Widgeter, resize bool, shrink bool) {
+func (paned *Paned) Pack1(child Widgetter, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -296,7 +267,7 @@ func (paned *Paned) Pack1(child Widgeter, resize bool, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
-func (paned *Paned) Pack2(child Widgeter, resize bool, shrink bool) {
+func (paned *Paned) Pack2(child Widgetter, resize bool, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out

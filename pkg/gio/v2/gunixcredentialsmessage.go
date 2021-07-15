@@ -31,12 +31,6 @@ func init() {
 	})
 }
 
-// UnixCredentialsMessager describes UnixCredentialsMessage's methods.
-type UnixCredentialsMessager interface {
-	// Credentials gets the credentials stored in message.
-	Credentials() *Credentials
-}
-
 // UnixCredentialsMessage: this ControlMessage contains a #GCredentials
 // instance. It may be sent using g_socket_send_message() and received using
 // g_socket_receive_message() over UNIX sockets (ie: sockets in the
@@ -50,10 +44,7 @@ type UnixCredentialsMessage struct {
 	SocketControlMessage
 }
 
-var (
-	_ UnixCredentialsMessager = (*UnixCredentialsMessage)(nil)
-	_ gextras.Nativer         = (*UnixCredentialsMessage)(nil)
-)
+var _ gextras.Nativer = (*UnixCredentialsMessage)(nil)
 
 func wrapUnixCredentialsMessage(obj *externglib.Object) *UnixCredentialsMessage {
 	return &UnixCredentialsMessage{

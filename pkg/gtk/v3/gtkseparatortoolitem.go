@@ -20,16 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemer},
+		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemmer},
 	})
-}
-
-// SeparatorToolItemer describes SeparatorToolItem's methods.
-type SeparatorToolItemer interface {
-	// Draw returns whether item is drawn as a line, or just blank.
-	Draw() bool
-	// SetDraw: whether item is drawn as a vertical line, or just blank.
-	SetDraw(draw bool)
 }
 
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
@@ -50,10 +42,7 @@ type SeparatorToolItem struct {
 	ToolItem
 }
 
-var (
-	_ SeparatorToolItemer = (*SeparatorToolItem)(nil)
-	_ gextras.Nativer     = (*SeparatorToolItem)(nil)
-)
+var _ gextras.Nativer = (*SeparatorToolItem)(nil)
 
 func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	return &SeparatorToolItem{
@@ -80,7 +69,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	}
 }
 
-func marshalSeparatorToolItemer(p uintptr) (interface{}, error) {
+func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparatorToolItem(obj), nil

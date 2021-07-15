@@ -78,39 +78,6 @@ type EditableOverrider interface {
 	SetSelectionBounds(startPos int, endPos int)
 }
 
-// Editabler describes Editable's methods.
-type Editabler interface {
-	// CopyClipboard copies the contents of the currently selected content in
-	// the editable and puts it on the clipboard.
-	CopyClipboard()
-	// CutClipboard removes the contents of the currently selected content in
-	// the editable and puts it on the clipboard.
-	CutClipboard()
-	// DeleteSelection deletes the currently selected text of the editable.
-	DeleteSelection()
-	// DeleteText deletes a sequence of characters.
-	DeleteText(startPos int, endPos int)
-	// Chars retrieves a sequence of characters.
-	Chars(startPos int, endPos int) string
-	// Editable retrieves whether editable is editable.
-	Editable() bool
-	// Position retrieves the current position of the cursor relative to the
-	// start of the content of the editable.
-	Position() int
-	// SelectionBounds retrieves the selection bound of the editable.
-	SelectionBounds() (startPos int, endPos int, ok bool)
-	// PasteClipboard pastes the content of the clipboard to the current
-	// position of the cursor in the editable.
-	PasteClipboard()
-	// SelectRegion selects a region of text.
-	SelectRegion(startPos int, endPos int)
-	// SetEditable determines if the user can edit the text in the editable
-	// widget or not.
-	SetEditable(isEditable bool)
-	// SetPosition sets the cursor position in the editable to the given value.
-	SetPosition(position int)
-}
-
 // Editable interface is an interface which should be implemented by text
 // editing widgets, such as Entry and SpinButton. It contains functions for
 // generically manipulating an editable widget, a large number of action signals
@@ -148,10 +115,42 @@ type Editable struct {
 	*externglib.Object
 }
 
-var (
-	_ Editabler       = (*Editable)(nil)
-	_ gextras.Nativer = (*Editable)(nil)
-)
+var _ gextras.Nativer = (*Editable)(nil)
+
+// Editabler describes Editable's abstract methods.
+type Editabler interface {
+	// CopyClipboard copies the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
+	CopyClipboard()
+	// CutClipboard removes the contents of the currently selected content in
+	// the editable and puts it on the clipboard.
+	CutClipboard()
+	// DeleteSelection deletes the currently selected text of the editable.
+	DeleteSelection()
+	// DeleteText deletes a sequence of characters.
+	DeleteText(startPos int, endPos int)
+	// Chars retrieves a sequence of characters.
+	Chars(startPos int, endPos int) string
+	// Editable retrieves whether editable is editable.
+	Editable() bool
+	// Position retrieves the current position of the cursor relative to the
+	// start of the content of the editable.
+	Position() int
+	// SelectionBounds retrieves the selection bound of the editable.
+	SelectionBounds() (startPos int, endPos int, ok bool)
+	// PasteClipboard pastes the content of the clipboard to the current
+	// position of the cursor in the editable.
+	PasteClipboard()
+	// SelectRegion selects a region of text.
+	SelectRegion(startPos int, endPos int)
+	// SetEditable determines if the user can edit the text in the editable
+	// widget or not.
+	SetEditable(isEditable bool)
+	// SetPosition sets the cursor position in the editable to the given value.
+	SetPosition(position int)
+}
+
+var _ Editabler = (*Editable)(nil)
 
 func wrapEditable(obj *externglib.Object) *Editable {
 	return &Editable{

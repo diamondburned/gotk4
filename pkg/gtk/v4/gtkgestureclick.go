@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// GestureClicker describes GestureClick's methods.
-type GestureClicker interface {
-	privateGestureClick()
-}
-
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.
 //
 // It is able to recognize multiple clicks on a nearby zone, which can be
@@ -36,10 +31,7 @@ type GestureClick struct {
 	GestureSingle
 }
 
-var (
-	_ GestureClicker  = (*GestureClick)(nil)
-	_ gextras.Nativer = (*GestureClick)(nil)
-)
+var _ gextras.Nativer = (*GestureClick)(nil)
 
 func wrapGestureClick(obj *externglib.Object) *GestureClick {
 	return &GestureClick{

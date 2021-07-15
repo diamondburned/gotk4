@@ -23,25 +23,6 @@ func init() {
 	})
 }
 
-// ShortcutControllerer describes ShortcutController's methods.
-type ShortcutControllerer interface {
-	// AddShortcut adds shortcut to the list of shortcuts handled by self.
-	AddShortcut(shortcut *Shortcut)
-	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-	// activates its shortcuts.
-	MnemonicsModifiers() gdk.ModifierType
-	// Scope gets the scope for when this controller activates its shortcuts.
-	Scope() ShortcutScope
-	// RemoveShortcut removes shortcut from the list of shortcuts handled by
-	// self.
-	RemoveShortcut(shortcut *Shortcut)
-	// SetMnemonicsModifiers sets the controller to have the given
-	// mnemonics_modifiers.
-	SetMnemonicsModifiers(modifiers gdk.ModifierType)
-	// SetScope sets the controller to have the given scope.
-	SetScope(scope ShortcutScope)
-}
-
 // ShortcutController: GtkShortcutController is an event controller that manages
 // shortcuts.
 //
@@ -90,10 +71,7 @@ type ShortcutController struct {
 	Buildable
 }
 
-var (
-	_ ShortcutControllerer = (*ShortcutController)(nil)
-	_ gextras.Nativer      = (*ShortcutController)(nil)
-)
+var _ gextras.Nativer = (*ShortcutController)(nil)
 
 func wrapShortcutController(obj *externglib.Object) *ShortcutController {
 	return &ShortcutController{
@@ -134,7 +112,7 @@ func NewShortcutController() *ShortcutController {
 // A controller created by this function does not let you add or remove
 // individual shortcuts using the shortcut controller api, but you can change
 // the contents of the model.
-func NewShortcutControllerForModel(model gio.ListModeler) *ShortcutController {
+func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkEventController // in
 

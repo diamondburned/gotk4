@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// WidgetAccessibler describes WidgetAccessible's methods.
-type WidgetAccessibler interface {
-	privateWidgetAccessible()
-}
-
 type WidgetAccessible struct {
 	Accessible
 
 	atk.Component
 }
 
-var (
-	_ WidgetAccessibler = (*WidgetAccessible)(nil)
-	_ gextras.Nativer   = (*WidgetAccessible)(nil)
-)
+var _ gextras.Nativer = (*WidgetAccessible)(nil)
 
 func wrapWidgetAccessible(obj *externglib.Object) *WidgetAccessible {
 	return &WidgetAccessible{

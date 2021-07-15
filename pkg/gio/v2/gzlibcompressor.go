@@ -27,16 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressorer},
+		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressorrer},
 	})
-}
-
-// ZlibCompressorer describes ZlibCompressor's methods.
-type ZlibCompressorer interface {
-	// FileInfo returns the Compressor:file-info property.
-	FileInfo() *FileInfo
-	// SetFileInfo sets file_info in compressor.
-	SetFileInfo(fileInfo *FileInfo)
 }
 
 // ZlibCompressor: zlib decompression
@@ -46,10 +38,7 @@ type ZlibCompressor struct {
 	Converter
 }
 
-var (
-	_ ZlibCompressorer = (*ZlibCompressor)(nil)
-	_ gextras.Nativer  = (*ZlibCompressor)(nil)
-)
+var _ gextras.Nativer = (*ZlibCompressor)(nil)
 
 func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	return &ZlibCompressor{
@@ -60,7 +49,7 @@ func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	}
 }
 
-func marshalZlibCompressorer(p uintptr) (interface{}, error) {
+func marshalZlibCompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapZlibCompressor(obj), nil

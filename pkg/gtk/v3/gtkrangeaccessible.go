@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// RangeAccessibler describes RangeAccessible's methods.
-type RangeAccessibler interface {
-	privateRangeAccessible()
-}
-
 type RangeAccessible struct {
 	WidgetAccessible
 
 	atk.Value
 }
 
-var (
-	_ RangeAccessibler = (*RangeAccessible)(nil)
-	_ gextras.Nativer  = (*RangeAccessible)(nil)
-)
+var _ gextras.Nativer = (*RangeAccessible)(nil)
 
 func wrapRangeAccessible(obj *externglib.Object) *RangeAccessible {
 	return &RangeAccessible{

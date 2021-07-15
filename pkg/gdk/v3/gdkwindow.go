@@ -33,7 +33,7 @@ func init() {
 		{T: externglib.Type(C.gdk_wm_function_get_type()), F: marshalWMFunction},
 		{T: externglib.Type(C.gdk_window_attributes_type_get_type()), F: marshalWindowAttributesType},
 		{T: externglib.Type(C.gdk_window_hints_get_type()), F: marshalWindowHints},
-		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindower},
+		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindowwer},
 	})
 }
 
@@ -360,7 +360,7 @@ func GetDefaultRootWindow() *Window {
 }
 
 // OffscreenWindowGetEmbedder gets the window that window is embedded in.
-func OffscreenWindowGetEmbedder(window Windower) *Window {
+func OffscreenWindowGetEmbedder(window Windowwer) *Window {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -378,7 +378,7 @@ func OffscreenWindowGetEmbedder(window Windower) *Window {
 // OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
 // renders into. If you need to keep this around over window resizes, you need
 // to add a reference to it.
-func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
+func OffscreenWindowGetSurface(window Windowwer) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
@@ -402,7 +402,7 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 // is also necessary to handle the Window::pick-embedded-child signal on the
 // embedder and the Window::to-embedder and Window::from-embedder signals on
 // window.
-func OffscreenWindowSetEmbedder(window Windower, embedder Windower) {
+func OffscreenWindowSetEmbedder(window Windowwer, embedder Windowwer) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 *C.GdkWindow // out
 
@@ -422,8 +422,14 @@ type WindowOverrider interface {
 	ToEmbedder(offscreenX float64, offscreenY float64, embedderX *float64, embedderY *float64)
 }
 
-// Windower describes Window's methods.
-type Windower interface {
+type Window struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Window)(nil)
+
+// Windowwer describes Window's abstract methods.
+type Windowwer interface {
 	// Beep emits a short beep associated to window in the appropriate display,
 	// if supported.
 	Beep()
@@ -679,14 +685,14 @@ type Windower interface {
 	// RegisterDnd registers a window as a potential drop destination.
 	RegisterDnd()
 	// Reparent reparents window into the given new_parent.
-	Reparent(newParent Windower, x int, y int)
+	Reparent(newParent Windowwer, x int, y int)
 	// Resize resizes window; for toplevel windows, asks the window manager to
 	// resize the window.
 	Resize(width int, height int)
 	// Restack changes the position of window in the Z-order (stacking order),
 	// so that it is above sibling (if above is TRUE) or below sibling (if above
 	// is FALSE).
-	Restack(sibling Windower, above bool)
+	Restack(sibling Windowwer, above bool)
 	// Scroll the contents of window, both pixels and children, by the given
 	// amount.
 	Scroll(dx int, dy int)
@@ -709,13 +715,13 @@ type Windower interface {
 	// SetComposited sets a Window as composited, or unsets it.
 	SetComposited(composited bool)
 	// SetCursor sets the default mouse pointer for a Window.
-	SetCursor(cursor Cursorer)
+	SetCursor(cursor Cursorrer)
 	// SetDecorations: “Decorations” are the features the window manager adds to
 	// a toplevel Window.
 	SetDecorations(decorations WMDecoration)
 	// SetDeviceCursor sets a specific Cursor for a given device when it gets
 	// inside window.
-	SetDeviceCursor(device Devicer, cursor Cursorer)
+	SetDeviceCursor(device Devicer, cursor Cursorrer)
 	// SetDeviceEvents sets the event mask for a given device (Normally a
 	// floating device, not attached to any visible pointer) to window.
 	SetDeviceEvents(device Devicer, eventMask EventMask)
@@ -739,7 +745,7 @@ type Windower interface {
 	// SetGeometryHints sets the geometry hints for window.
 	SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 	// SetGroup sets the group leader window for window.
-	SetGroup(leader Windower)
+	SetGroup(leader Windowwer)
 	// SetIconName windows may have a name used while minimized, distinct from
 	// the name they display in their titlebar.
 	SetIconName(name string)
@@ -793,7 +799,7 @@ type Windower interface {
 	SetTitle(title string)
 	// SetTransientFor indicates to the window manager that window is a
 	// transient dialog associated with the application window parent.
-	SetTransientFor(parent Windower)
+	SetTransientFor(parent Windowwer)
 	// SetTypeHint: application can use this call to provide a hint to the
 	// window manager about the functionality of a window.
 	SetTypeHint(hint WindowTypeHint)
@@ -833,14 +839,7 @@ type Windower interface {
 	Withdraw()
 }
 
-type Window struct {
-	*externglib.Object
-}
-
-var (
-	_ Windower        = (*Window)(nil)
-	_ gextras.Nativer = (*Window)(nil)
-)
+var _ Windowwer = (*Window)(nil)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -848,7 +847,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil
@@ -857,7 +856,7 @@ func marshalWindower(p uintptr) (interface{}, error) {
 // NewWindow creates a new Window using the attributes from attributes. See
 // WindowAttr and WindowAttributesType for more details. Note: to use this on
 // displays other than the default display, parent must be specified.
-func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
+func NewWindow(parent Windowwer, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 *C.GdkWindowAttr // out
 	var _arg3 C.gint           // out
@@ -2875,7 +2874,7 @@ func (window *Window) RegisterDnd() {
 
 // Reparent reparents window into the given new_parent. The window being
 // reparented will be unmapped as a side effect.
-func (window *Window) Reparent(newParent Windower, x int, y int) {
+func (window *Window) Reparent(newParent Windowwer, x int, y int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out
@@ -2919,7 +2918,7 @@ func (window *Window) Resize(width int, height int) {
 // If window is a toplevel, the window manager may choose to deny the request to
 // move the window in the Z-order, gdk_window_restack() only requests the
 // restack, does not guarantee it.
-func (window *Window) Restack(sibling Windower, above bool) {
+func (window *Window) Restack(sibling Windowwer, above bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gboolean   // out
@@ -3088,7 +3087,7 @@ func (window *Window) SetComposited(composited bool) {
 // the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR. Passing NULL
 // for the cursor argument to gdk_window_set_cursor() means that window will use
 // the cursor of its parent window. Most windows should use this default.
-func (window *Window) SetCursor(cursor Cursorer) {
+func (window *Window) SetCursor(cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkCursor // out
 
@@ -3127,7 +3126,7 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 // Passing NULL for the cursor argument to gdk_window_set_cursor() means that
 // window will use the cursor of its parent window. Most windows should use this
 // default.
-func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorer) {
+func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _arg2 *C.GdkCursor // out
@@ -3302,7 +3301,7 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 // minimize/unminimize all windows belonging to an application at once. You
 // should only set a non-default group window if your application pretends to be
 // multiple applications.
-func (window *Window) SetGroup(leader Windower) {
+func (window *Window) SetGroup(leader Windowwer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 
@@ -3666,7 +3665,7 @@ func (window *Window) SetTitle(title string) {
 // parent.
 //
 // See gtk_window_set_transient_for() if you’re using Window or Dialog.
-func (window *Window) SetTransientFor(parent Windower) {
+func (window *Window) SetTransientFor(parent Windowwer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 

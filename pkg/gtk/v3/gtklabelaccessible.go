@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// LabelAccessibler describes LabelAccessible's methods.
-type LabelAccessibler interface {
-	privateLabelAccessible()
-}
-
 type LabelAccessible struct {
 	WidgetAccessible
 
@@ -36,10 +31,7 @@ type LabelAccessible struct {
 	atk.Text
 }
 
-var (
-	_ LabelAccessibler = (*LabelAccessible)(nil)
-	_ gextras.Nativer  = (*LabelAccessible)(nil)
-)
+var _ gextras.Nativer = (*LabelAccessible)(nil)
 
 func wrapLabelAccessible(obj *externglib.Object) *LabelAccessible {
 	return &LabelAccessible{

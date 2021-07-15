@@ -33,55 +33,11 @@ type ColorSelectionOverrider interface {
 	ColorChanged()
 }
 
-// ColorSelectioner describes ColorSelection's methods.
-type ColorSelectioner interface {
-	// CurrentAlpha returns the current alpha value.
-	CurrentAlpha() uint16
-	// CurrentColor sets color to be the current color in the GtkColorSelection
-	// widget.
-	CurrentColor() gdk.Color
-	// CurrentRGBA sets rgba to be the current color in the GtkColorSelection
-	// widget.
-	CurrentRGBA() gdk.RGBA
-	// HasOpacityControl determines whether the colorsel has an opacity control.
-	HasOpacityControl() bool
-	// HasPalette determines whether the color selector has a color palette.
-	HasPalette() bool
-	// PreviousAlpha returns the previous alpha value.
-	PreviousAlpha() uint16
-	// PreviousColor fills color in with the original color value.
-	PreviousColor() gdk.Color
-	// PreviousRGBA fills rgba in with the original color value.
-	PreviousRGBA() gdk.RGBA
-	// IsAdjusting gets the current state of the colorsel.
-	IsAdjusting() bool
-	// SetCurrentAlpha sets the current opacity to be alpha.
-	SetCurrentAlpha(alpha uint16)
-	// SetCurrentColor sets the current color to be color.
-	SetCurrentColor(color *gdk.Color)
-	// SetCurrentRGBA sets the current color to be rgba.
-	SetCurrentRGBA(rgba *gdk.RGBA)
-	// SetHasOpacityControl sets the colorsel to use or not use opacity.
-	SetHasOpacityControl(hasOpacity bool)
-	// SetHasPalette shows and hides the palette based upon the value of
-	// has_palette.
-	SetHasPalette(hasPalette bool)
-	// SetPreviousAlpha sets the “previous” alpha to be alpha.
-	SetPreviousAlpha(alpha uint16)
-	// SetPreviousColor sets the “previous” color to be color.
-	SetPreviousColor(color *gdk.Color)
-	// SetPreviousRGBA sets the “previous” color to be rgba.
-	SetPreviousRGBA(rgba *gdk.RGBA)
-}
-
 type ColorSelection struct {
 	Box
 }
 
-var (
-	_ ColorSelectioner = (*ColorSelection)(nil)
-	_ gextras.Nativer  = (*ColorSelection)(nil)
-)
+var _ gextras.Nativer = (*ColorSelection)(nil)
 
 func wrapColorSelection(obj *externglib.Object) *ColorSelection {
 	return &ColorSelection{

@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidgeter},
+		{T: externglib.Type(C.gtk_recent_chooser_widget_get_type()), F: marshalRecentChooserWidgetter},
 	})
-}
-
-// RecentChooserWidgeter describes RecentChooserWidget's methods.
-type RecentChooserWidgeter interface {
-	privateRecentChooserWidget()
 }
 
 // RecentChooserWidget is a widget suitable for selecting recently used files.
@@ -44,10 +39,7 @@ type RecentChooserWidget struct {
 	RecentChooser
 }
 
-var (
-	_ RecentChooserWidgeter = (*RecentChooserWidget)(nil)
-	_ gextras.Nativer       = (*RecentChooserWidget)(nil)
-)
+var _ gextras.Nativer = (*RecentChooserWidget)(nil)
 
 func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	return &RecentChooserWidget{
@@ -75,7 +67,7 @@ func wrapRecentChooserWidget(obj *externglib.Object) *RecentChooserWidget {
 	}
 }
 
-func marshalRecentChooserWidgeter(p uintptr) (interface{}, error) {
+func marshalRecentChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRecentChooserWidget(obj), nil

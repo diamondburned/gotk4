@@ -56,40 +56,6 @@ type ApplicationOverrider interface {
 	WindowRemoved(window *Window)
 }
 
-// Applicationer describes Application's methods.
-type Applicationer interface {
-	// AddWindow adds a window to application.
-	AddWindow(window *Window)
-	// AccelsForAction gets the accelerators that are currently associated with
-	// the given action.
-	AccelsForAction(detailedActionName string) []string
-	// ActionsForAccel returns the list of actions (possibly empty) that accel
-	// maps to.
-	ActionsForAccel(accel string) []string
-	// ActiveWindow gets the “active” window for the application.
-	ActiveWindow() *Window
-	// Menubar returns the menu model that has been set with
-	// gtk.Application.SetMenubar().
-	Menubar() *gio.MenuModel
-	// WindowByID returns the gtk.ApplicationWindow with the given ID.
-	WindowByID(id uint) *Window
-	// Inhibit: inform the session manager that certain types of actions should
-	// be inhibited.
-	Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint
-	// ListActionDescriptions lists the detailed action names which have
-	// associated accelerators.
-	ListActionDescriptions() []string
-	// RemoveWindow: remove a window from application.
-	RemoveWindow(window *Window)
-	// SetAccelsForAction sets zero or more keyboard accelerators that will
-	// trigger the given action.
-	SetAccelsForAction(detailedActionName string, accels []string)
-	// SetMenubar sets or unsets the menubar for windows of application.
-	SetMenubar(menubar gio.MenuModeler)
-	// Uninhibit removes an inhibitor that has been previously established.
-	Uninhibit(cookie uint)
-}
-
 // Application: GtkApplication is a high-level API for writing applications.
 //
 // It supports many aspects of writing a GTK application in a convenient
@@ -156,10 +122,7 @@ type Application struct {
 	gio.Application
 }
 
-var (
-	_ Applicationer   = (*Application)(nil)
-	_ gextras.Nativer = (*Application)(nil)
-)
+var _ gextras.Nativer = (*Application)(nil)
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
@@ -521,7 +484,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // Use the base GActionMap interface to add actions, to respond to the user
 // selecting these menu items.
-func (application *Application) SetMenubar(menubar gio.MenuModeler) {
+func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 

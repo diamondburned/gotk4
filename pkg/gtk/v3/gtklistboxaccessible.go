@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ListBoxAccessibler describes ListBoxAccessible's methods.
-type ListBoxAccessibler interface {
-	privateListBoxAccessible()
-}
-
 type ListBoxAccessible struct {
 	ContainerAccessible
 
 	atk.Selection
 }
 
-var (
-	_ ListBoxAccessibler = (*ListBoxAccessible)(nil)
-	_ gextras.Nativer    = (*ListBoxAccessible)(nil)
-)
+var _ gextras.Nativer = (*ListBoxAccessible)(nil)
 
 func wrapListBoxAccessible(obj *externglib.Object) *ListBoxAccessible {
 	return &ListBoxAccessible{

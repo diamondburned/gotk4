@@ -87,7 +87,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 // DragSetIconGIcon sets the icon for a given drag from the given icon. See the
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconer, hotX int, hotY int) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out
@@ -171,7 +171,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
-func DragSetIconWidget(context *gdk.DragContext, widget Widgeter, hotX int, hotY int) {
+func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out

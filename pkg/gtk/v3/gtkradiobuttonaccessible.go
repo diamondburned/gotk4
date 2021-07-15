@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// RadioButtonAccessibler describes RadioButtonAccessible's methods.
-type RadioButtonAccessibler interface {
-	privateRadioButtonAccessible()
-}
-
 type RadioButtonAccessible struct {
 	ToggleButtonAccessible
 }
 
-var (
-	_ RadioButtonAccessibler = (*RadioButtonAccessible)(nil)
-	_ gextras.Nativer        = (*RadioButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*RadioButtonAccessible)(nil)
 
 func wrapRadioButtonAccessible(obj *externglib.Object) *RadioButtonAccessible {
 	return &RadioButtonAccessible{

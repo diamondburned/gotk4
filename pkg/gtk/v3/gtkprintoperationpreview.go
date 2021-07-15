@@ -48,7 +48,13 @@ type PrintOperationPreviewOverrider interface {
 	RenderPage(pageNr int)
 }
 
-// PrintOperationPreviewer describes PrintOperationPreview's methods.
+type PrintOperationPreview struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*PrintOperationPreview)(nil)
+
+// PrintOperationPreviewer describes PrintOperationPreview's abstract methods.
 type PrintOperationPreviewer interface {
 	// EndPreview ends a preview.
 	EndPreview()
@@ -60,14 +66,7 @@ type PrintOperationPreviewer interface {
 	RenderPage(pageNr int)
 }
 
-type PrintOperationPreview struct {
-	*externglib.Object
-}
-
-var (
-	_ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
-	_ gextras.Nativer         = (*PrintOperationPreview)(nil)
-)
+var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
 
 func wrapPrintOperationPreview(obj *externglib.Object) *PrintOperationPreview {
 	return &PrintOperationPreview{

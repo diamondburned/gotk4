@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// VScaler describes VScale's methods.
-type VScaler interface {
-	privateVScale()
-}
-
 // VScale widget is used to allow the user to select a value using a vertical
 // slider. To create one, use gtk_hscale_new_with_range().
 //
@@ -40,10 +35,7 @@ type VScale struct {
 	Scale
 }
 
-var (
-	_ VScaler         = (*VScale)(nil)
-	_ gextras.Nativer = (*VScale)(nil)
-)
+var _ gextras.Nativer = (*VScale)(nil)
 
 func wrapVScale(obj *externglib.Object) *VScale {
 	return &VScale{

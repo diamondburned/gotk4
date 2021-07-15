@@ -60,16 +60,6 @@ func SetAllowedBackends(backends string) {
 	C.gdk_set_allowed_backends(_arg1)
 }
 
-// DisplayManagerer describes DisplayManager's methods.
-type DisplayManagerer interface {
-	// DefaultDisplay gets the default GdkDisplay.
-	DefaultDisplay() *Display
-	// OpenDisplay opens a display.
-	OpenDisplay(name string) *Display
-	// SetDefaultDisplay sets display as the default display.
-	SetDefaultDisplay(display *Display)
-}
-
 // DisplayManager: singleton object that offers notification when displays
 // appear or disappear.
 //
@@ -114,10 +104,7 @@ type DisplayManager struct {
 	*externglib.Object
 }
 
-var (
-	_ DisplayManagerer = (*DisplayManager)(nil)
-	_ gextras.Nativer  = (*DisplayManager)(nil)
-)
+var _ gextras.Nativer = (*DisplayManager)(nil)
 
 func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	return &DisplayManager{

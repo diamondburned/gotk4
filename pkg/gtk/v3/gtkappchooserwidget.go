@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgeter},
+		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
 	})
 }
 
@@ -33,46 +33,6 @@ type AppChooserWidgetOverrider interface {
 	ApplicationActivated(appInfo gio.AppInfor)
 	ApplicationSelected(appInfo gio.AppInfor)
 	PopulatePopup(menu *Menu, appInfo gio.AppInfor)
-}
-
-// AppChooserWidgeter describes AppChooserWidget's methods.
-type AppChooserWidgeter interface {
-	// DefaultText returns the text that is shown if there are not applications
-	// that can handle the content type.
-	DefaultText() string
-	// ShowAll returns the current value of the AppChooserWidget:show-all
-	// property.
-	ShowAll() bool
-	// ShowDefault returns the current value of the
-	// AppChooserWidget:show-default property.
-	ShowDefault() bool
-	// ShowFallback returns the current value of the
-	// AppChooserWidget:show-fallback property.
-	ShowFallback() bool
-	// ShowOther returns the current value of the AppChooserWidget:show-other
-	// property.
-	ShowOther() bool
-	// ShowRecommended returns the current value of the
-	// AppChooserWidget:show-recommended property.
-	ShowRecommended() bool
-	// SetDefaultText sets the text that is shown if there are not applications
-	// that can handle the content type.
-	SetDefaultText(text string)
-	// SetShowAll sets whether the app chooser should show all applications in a
-	// flat list.
-	SetShowAll(setting bool)
-	// SetShowDefault sets whether the app chooser should show the default
-	// handler for the content type in a separate section.
-	SetShowDefault(setting bool)
-	// SetShowFallback sets whether the app chooser should show related
-	// applications for the content type in a separate section.
-	SetShowFallback(setting bool)
-	// SetShowOther sets whether the app chooser should show applications which
-	// are unrelated to the content type.
-	SetShowOther(setting bool)
-	// SetShowRecommended sets whether the app chooser should show recommended
-	// applications for the content type in a separate section.
-	SetShowRecommended(setting bool)
 }
 
 // AppChooserWidget is a widget for selecting applications. It is the main
@@ -100,10 +60,7 @@ type AppChooserWidget struct {
 	AppChooser
 }
 
-var (
-	_ AppChooserWidgeter = (*AppChooserWidget)(nil)
-	_ gextras.Nativer    = (*AppChooserWidget)(nil)
-)
+var _ gextras.Nativer = (*AppChooserWidget)(nil)
 
 func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	return &AppChooserWidget{
@@ -141,7 +98,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	}
 }
 
-func marshalAppChooserWidgeter(p uintptr) (interface{}, error) {
+func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserWidget(obj), nil

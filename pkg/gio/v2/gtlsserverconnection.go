@@ -32,21 +32,20 @@ func init() {
 	})
 }
 
-// TLSServerConnectioner describes TLSServerConnection's methods.
-type TLSServerConnectioner interface {
-	privateTLSServerConnection()
-}
-
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection struct {
 	TLSConnection
 }
 
-var (
-	_ TLSServerConnectioner = (*TLSServerConnection)(nil)
-	_ gextras.Nativer       = (*TLSServerConnection)(nil)
-)
+var _ gextras.Nativer = (*TLSServerConnection)(nil)
+
+// TLSServerConnectioner describes TLSServerConnection's abstract methods.
+type TLSServerConnectioner interface {
+	privateTLSServerConnection()
+}
+
+var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
 
 func wrapTLSServerConnection(obj *externglib.Object) *TLSServerConnection {
 	return &TLSServerConnection{

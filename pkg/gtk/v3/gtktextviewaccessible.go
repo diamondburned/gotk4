@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// TextViewAccessibler describes TextViewAccessible's methods.
-type TextViewAccessibler interface {
-	privateTextViewAccessible()
-}
-
 type TextViewAccessible struct {
 	ContainerAccessible
 
@@ -37,10 +32,7 @@ type TextViewAccessible struct {
 	atk.Text
 }
 
-var (
-	_ TextViewAccessibler = (*TextViewAccessible)(nil)
-	_ gextras.Nativer     = (*TextViewAccessible)(nil)
-)
+var _ gextras.Nativer = (*TextViewAccessible)(nil)
 
 func wrapTextViewAccessible(obj *externglib.Object) *TextViewAccessible {
 	return &TextViewAccessible{

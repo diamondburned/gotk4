@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ScaleButtonAccessibler describes ScaleButtonAccessible's methods.
-type ScaleButtonAccessibler interface {
-	privateScaleButtonAccessible()
-}
-
 type ScaleButtonAccessible struct {
 	ButtonAccessible
 
 	atk.Value
 }
 
-var (
-	_ ScaleButtonAccessibler = (*ScaleButtonAccessible)(nil)
-	_ gextras.Nativer        = (*ScaleButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*ScaleButtonAccessible)(nil)
 
 func wrapScaleButtonAccessible(obj *externglib.Object) *ScaleButtonAccessible {
 	return &ScaleButtonAccessible{

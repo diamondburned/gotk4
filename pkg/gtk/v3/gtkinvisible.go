@@ -25,14 +25,6 @@ func init() {
 	})
 }
 
-// Invisibler describes Invisible's methods.
-type Invisibler interface {
-	// Screen returns the Screen object associated with invisible
-	Screen() *gdk.Screen
-	// SetScreen sets the Screen where the Invisible object will be displayed.
-	SetScreen(screen *gdk.Screen)
-}
-
 // Invisible widget is used internally in GTK+, and is probably not very useful
 // for application developers.
 //
@@ -42,10 +34,7 @@ type Invisible struct {
 	Widget
 }
 
-var (
-	_ Invisibler      = (*Invisible)(nil)
-	_ gextras.Nativer = (*Invisible)(nil)
-)
+var _ gextras.Nativer = (*Invisible)(nil)
 
 func wrapInvisible(obj *externglib.Object) *Invisible {
 	return &Invisible{

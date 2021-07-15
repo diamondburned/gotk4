@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ArrowAccessibler describes ArrowAccessible's methods.
-type ArrowAccessibler interface {
-	privateArrowAccessible()
-}
-
 type ArrowAccessible struct {
 	WidgetAccessible
 
 	atk.Image
 }
 
-var (
-	_ ArrowAccessibler = (*ArrowAccessible)(nil)
-	_ gextras.Nativer  = (*ArrowAccessible)(nil)
-)
+var _ gextras.Nativer = (*ArrowAccessible)(nil)
 
 func wrapArrowAccessible(obj *externglib.Object) *ArrowAccessible {
 	return &ArrowAccessible{

@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPaneder},
+		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPanedder},
 	})
-}
-
-// VPaneder describes VPaned's methods.
-type VPaneder interface {
-	privateVPaned()
 }
 
 // VPaned widget is a container widget with two children arranged vertically.
@@ -38,10 +33,7 @@ type VPaned struct {
 	Paned
 }
 
-var (
-	_ VPaneder        = (*VPaned)(nil)
-	_ gextras.Nativer = (*VPaned)(nil)
-)
+var _ gextras.Nativer = (*VPaned)(nil)
 
 func wrapVPaned(obj *externglib.Object) *VPaned {
 	return &VPaned{
@@ -66,7 +58,7 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 	}
 }
 
-func marshalVPaneder(p uintptr) (interface{}, error) {
+func marshalVPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVPaned(obj), nil

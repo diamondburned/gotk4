@@ -320,8 +320,8 @@ func Interfacify(word string) string {
 		return word + "or"
 
 	// CVC form is bad. It's ugly.
-	// case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
-	// 	return word + string(word[len(word)-1]) + "er"
+	case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
+		return word + string(word[len(word)-1]) + "er"
 
 	case wordEndsInConsonant(word):
 		fallthrough

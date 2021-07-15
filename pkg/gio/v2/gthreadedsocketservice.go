@@ -39,11 +39,6 @@ type ThreadedSocketServiceOverrider interface {
 	Run(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
-// ThreadedSocketServicer describes ThreadedSocketService's methods.
-type ThreadedSocketServicer interface {
-	privateThreadedSocketService()
-}
-
 // ThreadedSocketService is a simple subclass of Service that handles incoming
 // connections by creating a worker thread and dispatching the connection to it
 // by emitting the SocketService::run signal in the new thread.
@@ -61,10 +56,7 @@ type ThreadedSocketService struct {
 	SocketService
 }
 
-var (
-	_ ThreadedSocketServicer = (*ThreadedSocketService)(nil)
-	_ gextras.Nativer        = (*ThreadedSocketService)(nil)
-)
+var _ gextras.Nativer = (*ThreadedSocketService)(nil)
 
 func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{

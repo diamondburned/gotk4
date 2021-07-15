@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// NoOpObjector describes NoOpObject's methods.
-type NoOpObjector interface {
-	privateNoOpObject()
-}
-
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
 // is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
@@ -46,10 +41,7 @@ type NoOpObject struct {
 	Window
 }
 
-var (
-	_ NoOpObjector    = (*NoOpObject)(nil)
-	_ gextras.Nativer = (*NoOpObject)(nil)
-)
+var _ gextras.Nativer = (*NoOpObject)(nil)
 
 func wrapNoOpObject(obj *externglib.Object) *NoOpObject {
 	return &NoOpObject{

@@ -104,42 +104,12 @@ func QueryVisualTypes() []VisualType {
 	return _visualTypes
 }
 
-// Visualer describes Visual's methods.
-type Visualer interface {
-	// BitsPerRGB returns the number of significant bits per red, green and blue
-	// value.
-	BitsPerRGB() int
-	// BluePixelDetails obtains values that are needed to calculate blue pixel
-	// values in TrueColor and DirectColor.
-	BluePixelDetails() (mask uint32, shift int, precision int)
-	// ByteOrder returns the byte order of this visual.
-	ByteOrder() ByteOrder
-	// ColormapSize returns the size of a colormap for this visual.
-	ColormapSize() int
-	// Depth returns the bit depth of this visual.
-	Depth() int
-	// GreenPixelDetails obtains values that are needed to calculate green pixel
-	// values in TrueColor and DirectColor.
-	GreenPixelDetails() (mask uint32, shift int, precision int)
-	// RedPixelDetails obtains values that are needed to calculate red pixel
-	// values in TrueColor and DirectColor.
-	RedPixelDetails() (mask uint32, shift int, precision int)
-	// Screen gets the screen to which this visual belongs
-	Screen() *Screen
-	// VisualType returns the type of visual this is (PseudoColor, TrueColor,
-	// etc).
-	VisualType() VisualType
-}
-
 // Visual contains information about a particular visual.
 type Visual struct {
 	*externglib.Object
 }
 
-var (
-	_ Visualer        = (*Visual)(nil)
-	_ gextras.Nativer = (*Visual)(nil)
-)
+var _ gextras.Nativer = (*Visual)(nil)
 
 func wrapVisual(obj *externglib.Object) *Visual {
 	return &Visual{

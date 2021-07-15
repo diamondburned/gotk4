@@ -575,11 +575,6 @@ func _gotk4_atk1_Function(arg0 C.gpointer) (cret C.gboolean) {
 	return cret
 }
 
-// ImplementorIfacer describes ImplementorIface's methods.
-type ImplementorIfacer interface {
-	privateImplementorIface()
-}
-
 // ImplementorIface: atkImplementor interface is implemented by objects for
 // which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);
@@ -587,10 +582,14 @@ type ImplementorIface struct {
 	*externglib.Object
 }
 
-var (
-	_ ImplementorIfacer = (*ImplementorIface)(nil)
-	_ gextras.Nativer   = (*ImplementorIface)(nil)
-)
+var _ gextras.Nativer = (*ImplementorIface)(nil)
+
+// ImplementorIfacer describes ImplementorIface's abstract methods.
+type ImplementorIfacer interface {
+	privateImplementorIface()
+}
+
+var _ ImplementorIfacer = (*ImplementorIface)(nil)
 
 func wrapImplementorIface(obj *externglib.Object) *ImplementorIface {
 	return &ImplementorIface{
@@ -679,65 +678,6 @@ type ObjectClassOverrider interface {
 	VisibleDataChanged()
 }
 
-// ObjectClasser describes ObjectClass's methods.
-type ObjectClasser interface {
-	// AddRelationship adds a relationship of the specified type with the
-	// specified target.
-	AddRelationship(relationship RelationType, target *ObjectClass) bool
-	// AccessibleID gets the accessible id of the accessible.
-	AccessibleID() string
-	// Description gets the accessible description of the accessible.
-	Description() string
-	// IndexInParent gets the 0-based index of this accessible in its parent;
-	// returns -1 if the accessible does not have an accessible parent.
-	IndexInParent() int
-	// Layer gets the layer of the accessible.
-	Layer() Layer
-	// MDIZOrder gets the zorder of the accessible.
-	MDIZOrder() int
-	// NAccessibleChildren gets the number of accessible children of the
-	// accessible.
-	NAccessibleChildren() int
-	// Name gets the accessible name of the accessible.
-	Name() string
-	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-	// locale of accessible.
-	ObjectLocale() string
-	// Parent gets the accessible parent of the accessible.
-	Parent() *ObjectClass
-	// Role gets the role of the accessible.
-	Role() Role
-	// Initialize: this function is called when implementing subclasses of
-	// Object.
-	Initialize(data cgo.Handle)
-	// PeekParent gets the accessible parent of the accessible, if it has been
-	// manually assigned with atk_object_set_parent.
-	PeekParent() *ObjectClass
-	// RefAccessibleChild gets a reference to the specified accessible child of
-	// the object.
-	RefAccessibleChild(i int) *ObjectClass
-	// RefRelationSet gets the RelationSet associated with the object.
-	RefRelationSet() *RelationSet
-	// RefStateSet gets a reference to the state set of the accessible; the
-	// caller must unreference it when it is no longer needed.
-	RefStateSet() *StateSet
-	// RemovePropertyChangeHandler removes a property change handler.
-	RemovePropertyChangeHandler(handlerId uint)
-	// RemoveRelationship removes a relationship of the specified type with the
-	// specified target.
-	RemoveRelationship(relationship RelationType, target *ObjectClass) bool
-	// SetAccessibleID sets the accessible ID of the accessible.
-	SetAccessibleID(name string)
-	// SetDescription sets the accessible description of the accessible.
-	SetDescription(description string)
-	// SetName sets the accessible name of the accessible.
-	SetName(name string)
-	// SetParent sets the accessible parent of the accessible.
-	SetParent(parent *ObjectClass)
-	// SetRole sets the role of the accessible.
-	SetRole(role Role)
-}
-
 // ObjectClass: this class is the primary class for accessibility support via
 // the Accessibility ToolKit (ATK). Objects which are instances of Object (or
 // instances of AtkObject-derived types) are queried for properties which relate
@@ -758,10 +698,7 @@ type ObjectClass struct {
 	*externglib.Object
 }
 
-var (
-	_ ObjectClasser   = (*ObjectClass)(nil)
-	_ gextras.Nativer = (*ObjectClass)(nil)
-)
+var _ gextras.Nativer = (*ObjectClass)(nil)
 
 func wrapObject(obj *externglib.Object) *ObjectClass {
 	return &ObjectClass{

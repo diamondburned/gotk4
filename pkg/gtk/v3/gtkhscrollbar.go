@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarer},
+		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarrer},
 	})
-}
-
-// HScrollbarer describes HScrollbar's methods.
-type HScrollbarer interface {
-	privateHScrollbar()
 }
 
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
@@ -40,10 +35,7 @@ type HScrollbar struct {
 	Scrollbar
 }
 
-var (
-	_ HScrollbarer    = (*HScrollbar)(nil)
-	_ gextras.Nativer = (*HScrollbar)(nil)
-)
+var _ gextras.Nativer = (*HScrollbar)(nil)
 
 func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	return &HScrollbar{
@@ -68,7 +60,7 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	}
 }
 
-func marshalHScrollbarer(p uintptr) (interface{}, error) {
+func marshalHScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHScrollbar(obj), nil

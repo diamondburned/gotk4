@@ -32,21 +32,20 @@ func init() {
 	})
 }
 
-// DTLSServerConnectioner describes DTLSServerConnection's methods.
-type DTLSServerConnectioner interface {
-	privateDTLSServerConnection()
-}
-
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection struct {
 	DTLSConnection
 }
 
-var (
-	_ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
-	_ gextras.Nativer        = (*DTLSServerConnection)(nil)
-)
+var _ gextras.Nativer = (*DTLSServerConnection)(nil)
+
+// DTLSServerConnectioner describes DTLSServerConnection's abstract methods.
+type DTLSServerConnectioner interface {
+	privateDTLSServerConnection()
+}
+
+var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
 
 func wrapDTLSServerConnection(obj *externglib.Object) *DTLSServerConnection {
 	return &DTLSServerConnection{
@@ -67,7 +66,7 @@ func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 func (*DTLSServerConnection) privateDTLSServerConnection() {}
 
 // NewDTLSServerConnection creates a new ServerConnection wrapping base_socket.
-func DtlsServerConnectionNew(baseSocket DatagramBaseder, certificate TLSCertificater) (*DTLSServerConnection, error) {
+func DtlsServerConnectionNew(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GDatagramBased  // in

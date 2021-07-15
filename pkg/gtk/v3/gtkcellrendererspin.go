@@ -19,19 +19,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpinButtoner},
+		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpinner},
 	})
 }
 
-// CellRendererSpinButtoner describes CellRendererSpinButton's methods.
-type CellRendererSpinButtoner interface {
-	privateCellRendererSpinButton()
-}
-
-// CellRendererSpinButton renders text in a cell like CellRendererText from
-// which it is derived. But while CellRendererText offers a simple entry to edit
-// the text, CellRendererSpin offers a SpinButton widget. Of course, that means
-// that the text has to be parseable as a floating point number.
+// CellRendererSpin renders text in a cell like CellRendererText from which it
+// is derived. But while CellRendererText offers a simple entry to edit the
+// text, CellRendererSpin offers a SpinButton widget. Of course, that means that
+// the text has to be parseable as a floating point number.
 //
 // The range of the spinbutton is taken from the adjustment property of the cell
 // renderer, which can be set explicitly or mapped to a column in the tree
@@ -41,19 +36,14 @@ type CellRendererSpinButtoner interface {
 // a handler for the CellRenderer::editing-started signal.
 //
 // The CellRendererSpin cell renderer was added in GTK+ 2.10.
-//
-// This type has been renamed from CellRendererSpin.
-type CellRendererSpinButton struct {
+type CellRendererSpin struct {
 	CellRendererText
 }
 
-var (
-	_ CellRendererSpinButtoner = (*CellRendererSpinButton)(nil)
-	_ gextras.Nativer          = (*CellRendererSpinButton)(nil)
-)
+var _ gextras.Nativer = (*CellRendererSpin)(nil)
 
-func wrapCellRendererSpinButton(obj *externglib.Object) *CellRendererSpinButton {
-	return &CellRendererSpinButton{
+func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
+	return &CellRendererSpin{
 		CellRendererText: CellRendererText{
 			CellRenderer: CellRenderer{
 				InitiallyUnowned: externglib.InitiallyUnowned{
@@ -64,23 +54,23 @@ func wrapCellRendererSpinButton(obj *externglib.Object) *CellRendererSpinButton 
 	}
 }
 
-func marshalCellRendererSpinButtoner(p uintptr) (interface{}, error) {
+func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapCellRendererSpinButton(obj), nil
+	return wrapCellRendererSpin(obj), nil
 }
 
-// NewCellRendererSpinButton creates a new CellRendererSpin.
-func NewCellRendererSpinButton() *CellRendererSpinButton {
+// NewCellRendererSpin creates a new CellRendererSpin.
+func NewCellRendererSpin() *CellRendererSpin {
 	var _cret *C.GtkCellRenderer // in
 
 	_cret = C.gtk_cell_renderer_spin_new()
 
-	var _cellRendererSpinButton *CellRendererSpinButton // out
+	var _cellRendererSpin *CellRendererSpin // out
 
-	_cellRendererSpinButton = wrapCellRendererSpinButton(externglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererSpin = wrapCellRendererSpin(externglib.Take(unsafe.Pointer(_cret)))
 
-	return _cellRendererSpinButton
+	return _cellRendererSpin
 }
 
-func (*CellRendererSpinButton) privateCellRendererSpinButton() {}
+func (*CellRendererSpin) privateCellRendererSpin() {}

@@ -21,21 +21,12 @@ func init() {
 	})
 }
 
-// GLTexturer describes GLTexture's methods.
-type GLTexturer interface {
-	// Release releases the GL resources held by a GdkGLTexture.
-	Release()
-}
-
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
 	Texture
 }
 
-var (
-	_ GLTexturer      = (*GLTexture)(nil)
-	_ gextras.Nativer = (*GLTexture)(nil)
-)
+var _ gextras.Nativer = (*GLTexture)(nil)
 
 func wrapGLTexture(obj *externglib.Object) *GLTexture {
 	return &GLTexture{

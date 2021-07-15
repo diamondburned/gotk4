@@ -140,31 +140,6 @@ type ValueOverrider interface {
 	SetValue(newValue float64)
 }
 
-// Valueer describes Value's methods.
-type Valueer interface {
-	// CurrentValue gets the value of this object.
-	CurrentValue() externglib.Value
-	// Increment gets the minimum increment by which the value of this object
-	// may be changed.
-	Increment() float64
-	// MaximumValue gets the maximum value of this object.
-	MaximumValue() externglib.Value
-	// MinimumIncrement gets the minimum increment by which the value of this
-	// object may be changed.
-	MinimumIncrement() externglib.Value
-	// MinimumValue gets the minimum value of this object.
-	MinimumValue() externglib.Value
-	// Range gets the range of this object.
-	Range() *Range
-	// ValueAndText gets the current value and the human readable text
-	// alternative of obj.
-	ValueAndText() (float64, string)
-	// SetCurrentValue sets the value of this object.
-	SetCurrentValue(value *externglib.Value) bool
-	// SetValue sets the value of this object.
-	SetValue(newValue float64)
-}
-
 // Value should be implemented for components which either display a value from
 // a bounded range, or which allow the user to specify a value from a bounded
 // range, or both. For instance, most sliders and range controls, as well as
@@ -260,10 +235,34 @@ type Value struct {
 	*externglib.Object
 }
 
-var (
-	_ Valueer         = (*Value)(nil)
-	_ gextras.Nativer = (*Value)(nil)
-)
+var _ gextras.Nativer = (*Value)(nil)
+
+// Valueer describes Value's abstract methods.
+type Valueer interface {
+	// CurrentValue gets the value of this object.
+	CurrentValue() externglib.Value
+	// Increment gets the minimum increment by which the value of this object
+	// may be changed.
+	Increment() float64
+	// MaximumValue gets the maximum value of this object.
+	MaximumValue() externglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed.
+	MinimumIncrement() externglib.Value
+	// MinimumValue gets the minimum value of this object.
+	MinimumValue() externglib.Value
+	// Range gets the range of this object.
+	Range() *Range
+	// ValueAndText gets the current value and the human readable text
+	// alternative of obj.
+	ValueAndText() (float64, string)
+	// SetCurrentValue sets the value of this object.
+	SetCurrentValue(value *externglib.Value) bool
+	// SetValue sets the value of this object.
+	SetValue(newValue float64)
+}
+
+var _ Valueer = (*Value)(nil)
 
 func wrapValue(obj *externglib.Object) *Value {
 	return &Value{

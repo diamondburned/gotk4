@@ -18,41 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarer},
+		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarrer},
 	})
-}
-
-// ProgressBarer describes ProgressBar's methods.
-type ProgressBarer interface {
-	// Ellipsize returns the ellipsizing position of the progress bar.
-	Ellipsize() pango.EllipsizeMode
-	// Fraction returns the current fraction of the task that’s been completed.
-	Fraction() float64
-	// Inverted returns whether the progress bar is inverted.
-	Inverted() bool
-	// PulseStep retrieves the pulse step.
-	PulseStep() float64
-	// ShowText returns whether the GtkProgressBar shows text.
-	ShowText() bool
-	// Text retrieves the text that is displayed with the progress bar.
-	Text() string
-	// Pulse indicates that some progress has been made, but you don’t know how
-	// much.
-	Pulse()
-	// SetEllipsize sets the mode used to ellipsize the text.
-	SetEllipsize(mode pango.EllipsizeMode)
-	// SetFraction causes the progress bar to “fill in” the given fraction of
-	// the bar.
-	SetFraction(fraction float64)
-	// SetInverted sets whether the progress bar is inverted.
-	SetInverted(inverted bool)
-	// SetPulseStep sets the fraction of total progress bar length to move the
-	// bouncing block.
-	SetPulseStep(fraction float64)
-	// SetShowText sets whether the progress bar will show text next to the bar.
-	SetShowText(showText bool)
-	// SetText causes the given text to appear next to the progress bar.
-	SetText(text string)
 }
 
 // ProgressBar: GtkProgressBar is typically used to display the progress of a
@@ -107,10 +74,7 @@ type ProgressBar struct {
 	Orientable
 }
 
-var (
-	_ ProgressBarer   = (*ProgressBar)(nil)
-	_ gextras.Nativer = (*ProgressBar)(nil)
-)
+var _ gextras.Nativer = (*ProgressBar)(nil)
 
 func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	return &ProgressBar{
@@ -134,7 +98,7 @@ func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	}
 }
 
-func marshalProgressBarer(p uintptr) (interface{}, error) {
+func marshalProgressBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapProgressBar(obj), nil

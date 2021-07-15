@@ -25,33 +25,13 @@ func init() {
 	})
 }
 
-// MountOperationer describes MountOperation's methods.
-type MountOperationer interface {
-	// Parent gets the transient parent used by the MountOperation
-	Parent() *Window
-	// Screen gets the screen on which windows of the MountOperation will be
-	// shown.
-	Screen() *gdk.Screen
-	// IsShowing returns whether the MountOperation is currently displaying a
-	// window.
-	IsShowing() bool
-	// SetParent sets the transient parent for windows shown by the
-	// MountOperation.
-	SetParent(parent *Window)
-	// SetScreen sets the screen to show windows of the MountOperation on.
-	SetScreen(screen *gdk.Screen)
-}
-
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation struct {
 	gio.MountOperation
 }
 
-var (
-	_ MountOperationer = (*MountOperation)(nil)
-	_ gextras.Nativer  = (*MountOperation)(nil)
-)
+var _ gextras.Nativer = (*MountOperation)(nil)
 
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{

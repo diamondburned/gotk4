@@ -17,22 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
-}
-
-// Cursorer describes Cursor's methods.
-type Cursorer interface {
-	// Fallback returns the fallback for this cursor.
-	Fallback() *Cursor
-	// HotspotX returns the horizontal offset of the hotspot.
-	HotspotX() int
-	// HotspotY returns the vertical offset of the hotspot.
-	HotspotY() int
-	// Name returns the name of the cursor.
-	Name() string
-	// Texture returns the texture for the cursor.
-	Texture() *Texture
 }
 
 // Cursor: GdkCursor is used to create and destroy cursors.
@@ -71,10 +57,7 @@ type Cursor struct {
 	*externglib.Object
 }
 
-var (
-	_ Cursorer        = (*Cursor)(nil)
-	_ gextras.Nativer = (*Cursor)(nil)
-)
+var _ gextras.Nativer = (*Cursor)(nil)
 
 func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
@@ -82,7 +65,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 	}
 }
 
-func marshalCursorer(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil

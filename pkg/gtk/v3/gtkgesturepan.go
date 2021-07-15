@@ -19,17 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePaner},
+		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePanner},
 	})
-}
-
-// GesturePaner describes GesturePan's methods.
-type GesturePaner interface {
-	// Orientation returns the orientation of the pan gestures that this gesture
-	// expects.
-	Orientation() Orientation
-	// SetOrientation sets the orientation to be expected on pan gestures.
-	SetOrientation(orientation Orientation)
 }
 
 // GesturePan is a Gesture implementation able to recognize pan gestures, those
@@ -48,10 +39,7 @@ type GesturePan struct {
 	GestureDrag
 }
 
-var (
-	_ GesturePaner    = (*GesturePan)(nil)
-	_ gextras.Nativer = (*GesturePan)(nil)
-)
+var _ gextras.Nativer = (*GesturePan)(nil)
 
 func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	return &GesturePan{
@@ -67,14 +55,14 @@ func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	}
 }
 
-func marshalGesturePaner(p uintptr) (interface{}, error) {
+func marshalGesturePanner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGesturePan(obj), nil
 }
 
 // NewGesturePan returns a newly created Gesture that recognizes pan gestures.
-func NewGesturePan(widget Widgeter, orientation Orientation) *GesturePan {
+func NewGesturePan(widget Widgetter, orientation Orientation) *GesturePan {
 	var _arg1 *C.GtkWidget     // out
 	var _arg2 C.GtkOrientation // out
 	var _cret *C.GtkGesture    // in

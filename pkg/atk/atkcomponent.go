@@ -131,7 +131,23 @@ type ComponentOverrider interface {
 	SetSize(width int, height int) bool
 }
 
-// Componenter describes Component's methods.
+// Component should be implemented by most if not all UI elements with an actual
+// on-screen presence, i.e. components which can be said to have a
+// screen-coordinate bounding box. Virtually all widgets will need to have
+// Component implementations provided for their corresponding Object class. In
+// short, only UI elements which are *not* GUI elements will omit this ATK
+// interface.
+//
+// A possible exception might be textual information with a transparent
+// background, in which case text glyph bounding box information is provided by
+// Text.
+type Component struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Component)(nil)
+
+// Componenter describes Component's abstract methods.
 type Componenter interface {
 	// Contains checks whether the specified point is within the extent of the
 	// component.
@@ -172,24 +188,7 @@ type Componenter interface {
 	SetSize(width int, height int) bool
 }
 
-// Component should be implemented by most if not all UI elements with an actual
-// on-screen presence, i.e. components which can be said to have a
-// screen-coordinate bounding box. Virtually all widgets will need to have
-// Component implementations provided for their corresponding Object class. In
-// short, only UI elements which are *not* GUI elements will omit this ATK
-// interface.
-//
-// A possible exception might be textual information with a transparent
-// background, in which case text glyph bounding box information is provided by
-// Text.
-type Component struct {
-	*externglib.Object
-}
-
-var (
-	_ Componenter     = (*Component)(nil)
-	_ gextras.Nativer = (*Component)(nil)
-)
+var _ Componenter = (*Component)(nil)
 
 func wrapComponent(obj *externglib.Object) *Component {
 	return &Component{

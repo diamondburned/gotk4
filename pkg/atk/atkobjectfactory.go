@@ -33,19 +33,6 @@ type ObjectFactoryOverrider interface {
 	Invalidate()
 }
 
-// ObjectFactorier describes ObjectFactory's methods.
-type ObjectFactorier interface {
-	// CreateAccessible provides an Object that implements an accessibility
-	// interface on behalf of obj
-	CreateAccessible(obj *externglib.Object) *ObjectClass
-	// AccessibleType gets the GType of the accessible which is created by the
-	// factory.
-	AccessibleType() externglib.Type
-	// Invalidate: inform factory that it is no longer being used to create
-	// accessibles.
-	Invalidate()
-}
-
 // ObjectFactory: this class is the base object class for a factory used to
 // create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry
@@ -54,10 +41,7 @@ type ObjectFactory struct {
 	*externglib.Object
 }
 
-var (
-	_ ObjectFactorier = (*ObjectFactory)(nil)
-	_ gextras.Nativer = (*ObjectFactory)(nil)
-)
+var _ gextras.Nativer = (*ObjectFactory)(nil)
 
 func wrapObjectFactory(obj *externglib.Object) *ObjectFactory {
 	return &ObjectFactory{

@@ -22,45 +22,6 @@ func init() {
 	})
 }
 
-// GridLayouter describes GridLayout's methods.
-type GridLayouter interface {
-	// BaselineRow retrieves the row set with
-	// gtk_grid_layout_set_baseline_row().
-	BaselineRow() int
-	// ColumnHomogeneous checks whether all columns of grid should have the same
-	// width.
-	ColumnHomogeneous() bool
-	// ColumnSpacing retrieves the spacing set with
-	// gtk_grid_layout_set_column_spacing().
-	ColumnSpacing() uint
-	// RowBaselinePosition returns the baseline position of row.
-	RowBaselinePosition(row int) BaselinePosition
-	// RowHomogeneous checks whether all rows of grid should have the same
-	// height.
-	RowHomogeneous() bool
-	// RowSpacing retrieves the spacing set with
-	// gtk_grid_layout_set_row_spacing().
-	RowSpacing() uint
-	// SetBaselineRow sets which row defines the global baseline for the entire
-	// grid.
-	SetBaselineRow(row int)
-	// SetColumnHomogeneous sets whether all columns of grid should have the
-	// same width.
-	SetColumnHomogeneous(homogeneous bool)
-	// SetColumnSpacing sets the amount of space to insert between consecutive
-	// columns.
-	SetColumnSpacing(spacing uint)
-	// SetRowBaselinePosition sets how the baseline should be positioned on row
-	// of the grid, in case that row is assigned more space than is requested.
-	SetRowBaselinePosition(row int, pos BaselinePosition)
-	// SetRowHomogeneous sets whether all rows of grid should have the same
-	// height.
-	SetRowHomogeneous(homogeneous bool)
-	// SetRowSpacing sets the amount of space to insert between consecutive
-	// rows.
-	SetRowSpacing(spacing uint)
-}
-
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns.
 //
@@ -79,10 +40,7 @@ type GridLayout struct {
 	LayoutManager
 }
 
-var (
-	_ GridLayouter    = (*GridLayout)(nil)
-	_ gextras.Nativer = (*GridLayout)(nil)
-)
+var _ gextras.Nativer = (*GridLayout)(nil)
 
 func wrapGridLayout(obj *externglib.Object) *GridLayout {
 	return &GridLayout{
@@ -297,35 +255,12 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
 }
 
-// GridLayoutChilder describes GridLayoutChild's methods.
-type GridLayoutChilder interface {
-	// Column retrieves the column number to which child attaches its left side.
-	Column() int
-	// ColumnSpan retrieves the number of columns that child spans to.
-	ColumnSpan() int
-	// Row retrieves the row number to which child attaches its top side.
-	Row() int
-	// RowSpan retrieves the number of rows that child spans to.
-	RowSpan() int
-	// SetColumn sets the column number to attach the left side of child.
-	SetColumn(column int)
-	// SetColumnSpan sets the number of columns child spans to.
-	SetColumnSpan(span int)
-	// SetRow sets the row to place child in.
-	SetRow(row int)
-	// SetRowSpan sets the number of rows child spans to.
-	SetRowSpan(span int)
-}
-
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
 type GridLayoutChild struct {
 	LayoutChild
 }
 
-var (
-	_ GridLayoutChilder = (*GridLayoutChild)(nil)
-	_ gextras.Nativer   = (*GridLayoutChild)(nil)
-)
+var _ gextras.Nativer = (*GridLayoutChild)(nil)
 
 func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
 	return &GridLayoutChild{

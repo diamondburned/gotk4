@@ -45,7 +45,16 @@ type DBusObjectOverrider interface {
 	InterfaceRemoved(interface_ DBusInterfacer)
 }
 
-// DBusObjector describes DBusObject's methods.
+// DBusObject type is the base type for D-Bus objects on both the service side
+// (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
+// essentially just a container of interfaces.
+type DBusObject struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*DBusObject)(nil)
+
+// DBusObjector describes DBusObject's abstract methods.
 type DBusObjector interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
@@ -54,17 +63,7 @@ type DBusObjector interface {
 	ObjectPath() string
 }
 
-// DBusObject type is the base type for D-Bus objects on both the service side
-// (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
-// essentially just a container of interfaces.
-type DBusObject struct {
-	*externglib.Object
-}
-
-var (
-	_ DBusObjector    = (*DBusObject)(nil)
-	_ gextras.Nativer = (*DBusObject)(nil)
-)
+var _ DBusObjector = (*DBusObject)(nil)
 
 func wrapDBusObject(obj *externglib.Object) *DBusObject {
 	return &DBusObject{

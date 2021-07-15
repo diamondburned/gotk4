@@ -199,7 +199,24 @@ type OutputStreamOverrider interface {
 	WritevFn(vectors []OutputVector, cancellable *Cancellable) (uint, error)
 }
 
-// OutputStreamer describes OutputStream's methods.
+// OutputStream has functions to write to a stream (g_output_stream_write()), to
+// close a stream (g_output_stream_close()) and to flush pending writes
+// (g_output_stream_flush()).
+//
+// To copy the content of an input stream to an output stream without manually
+// handling the reads and writes, use g_output_stream_splice().
+//
+// See the documentation for OStream for details of thread safety of streaming
+// APIs.
+//
+// All of these functions have async variants too.
+type OutputStream struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*OutputStream)(nil)
+
+// OutputStreamer describes OutputStream's abstract methods.
 type OutputStreamer interface {
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
@@ -268,25 +285,7 @@ type OutputStreamer interface {
 	WritevFinish(result AsyncResulter) (uint, error)
 }
 
-// OutputStream has functions to write to a stream (g_output_stream_write()), to
-// close a stream (g_output_stream_close()) and to flush pending writes
-// (g_output_stream_flush()).
-//
-// To copy the content of an input stream to an output stream without manually
-// handling the reads and writes, use g_output_stream_splice().
-//
-// See the documentation for OStream for details of thread safety of streaming
-// APIs.
-//
-// All of these functions have async variants too.
-type OutputStream struct {
-	*externglib.Object
-}
-
-var (
-	_ OutputStreamer  = (*OutputStream)(nil)
-	_ gextras.Nativer = (*OutputStream)(nil)
-)
+var _ OutputStreamer = (*OutputStream)(nil)
 
 func wrapOutputStream(obj *externglib.Object) *OutputStream {
 	return &OutputStream{

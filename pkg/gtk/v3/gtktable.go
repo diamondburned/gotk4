@@ -43,48 +43,6 @@ func marshalAttachOptions(p uintptr) (interface{}, error) {
 	return AttachOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Tabler describes Table's methods.
-type Tabler interface {
-	// Attach adds a widget to a table.
-	Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint)
-	// AttachDefaults as there are many options associated with
-	// gtk_table_attach(), this convenience function provides the programmer
-	// with a means to add children to a table with identical padding and
-	// expansion options.
-	AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-	// ColSpacing gets the amount of space between column col, and column col +
-	// 1.
-	ColSpacing(column uint) uint
-	// DefaultColSpacing gets the default column spacing for the table.
-	DefaultColSpacing() uint
-	// DefaultRowSpacing gets the default row spacing for the table.
-	DefaultRowSpacing() uint
-	// Homogeneous returns whether the table cells are all constrained to the
-	// same width and height.
-	Homogeneous() bool
-	// RowSpacing gets the amount of space between row row, and row row + 1.
-	RowSpacing(row uint) uint
-	// Size gets the number of rows and columns in the table.
-	Size() (rows uint, columns uint)
-	// Resize: if you need to change a table’s size after it has been created,
-	// this function allows you to do so.
-	Resize(rows uint, columns uint)
-	// SetColSpacing alters the amount of space between a given table column and
-	// the following column.
-	SetColSpacing(column uint, spacing uint)
-	// SetColSpacings sets the space between every column in table equal to
-	// spacing.
-	SetColSpacings(spacing uint)
-	// SetHomogeneous changes the homogenous property of table cells, ie.
-	SetHomogeneous(homogeneous bool)
-	// SetRowSpacing changes the space between a given table row and the
-	// subsequent row.
-	SetRowSpacing(row uint, spacing uint)
-	// SetRowSpacings sets the space between every row in table equal to
-	// spacing.
-	SetRowSpacings(spacing uint)
-}
-
 // Table functions allow the programmer to arrange widgets in rows and columns,
 // making it easy to align many widgets next to each other, horizontally and
 // vertically.
@@ -112,10 +70,7 @@ type Table struct {
 	Container
 }
 
-var (
-	_ Tabler          = (*Table)(nil)
-	_ gextras.Nativer = (*Table)(nil)
-)
+var _ gextras.Nativer = (*Table)(nil)
 
 func wrapTable(obj *externglib.Object) *Table {
 	return &Table{
@@ -188,7 +143,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -222,7 +177,7 @@ func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, to
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out

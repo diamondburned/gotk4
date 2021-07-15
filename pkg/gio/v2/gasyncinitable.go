@@ -81,19 +81,6 @@ type AsyncInitableOverrider interface {
 	InitFinish(res AsyncResulter) error
 }
 
-// AsyncInitabler describes AsyncInitable's methods.
-type AsyncInitabler interface {
-	// InitAsync starts asynchronous initialization of the object implementing
-	// the interface.
-	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// InitFinish finishes asynchronous initialization and returns the result.
-	InitFinish(res AsyncResulter) error
-	// NewFinish finishes the async construction for the various
-	// g_async_initable_new calls, returning the created object or NULL on
-	// error.
-	NewFinish(res AsyncResulter) (*externglib.Object, error)
-}
-
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
 // same in all ways except that initialization is asynchronous. For more details
 // see the descriptions on #GInitable.
@@ -195,10 +182,22 @@ type AsyncInitable struct {
 	*externglib.Object
 }
 
-var (
-	_ AsyncInitabler  = (*AsyncInitable)(nil)
-	_ gextras.Nativer = (*AsyncInitable)(nil)
-)
+var _ gextras.Nativer = (*AsyncInitable)(nil)
+
+// AsyncInitabler describes AsyncInitable's abstract methods.
+type AsyncInitabler interface {
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface.
+	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	// InitFinish finishes asynchronous initialization and returns the result.
+	InitFinish(res AsyncResulter) error
+	// NewFinish finishes the async construction for the various
+	// g_async_initable_new calls, returning the created object or NULL on
+	// error.
+	NewFinish(res AsyncResulter) (*externglib.Object, error)
+}
+
+var _ AsyncInitabler = (*AsyncInitable)(nil)
 
 func wrapAsyncInitable(obj *externglib.Object) *AsyncInitable {
 	return &AsyncInitable{

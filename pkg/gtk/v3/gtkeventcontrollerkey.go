@@ -19,17 +19,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyyer},
 	})
-}
-
-// EventControllerKeyer describes EventControllerKey's methods.
-type EventControllerKeyer interface {
-	Forward(widget Widgeter) bool
-	Group() uint
-	// ImContext gets the IM context of a key controller.
-	ImContext() *IMContext
-	SetImContext(imContext IMContexter)
 }
 
 // EventControllerKey is an event controller meant for situations where you need
@@ -40,10 +31,7 @@ type EventControllerKey struct {
 	EventController
 }
 
-var (
-	_ EventControllerKeyer = (*EventControllerKey)(nil)
-	_ gextras.Nativer      = (*EventControllerKey)(nil)
-)
+var _ gextras.Nativer = (*EventControllerKey)(nil)
 
 func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	return &EventControllerKey{
@@ -53,13 +41,13 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	}
 }
 
-func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerKey(obj), nil
 }
 
-func NewEventControllerKey(widget Widgeter) *EventControllerKey {
+func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 
@@ -74,7 +62,7 @@ func NewEventControllerKey(widget Widgeter) *EventControllerKey {
 	return _eventControllerKey
 }
 
-func (controller *EventControllerKey) Forward(widget Widgeter) bool {
+func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in

@@ -59,16 +59,6 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconPaintabler describes IconPaintable's methods.
-type IconPaintabler interface {
-	// File gets the GFile that was used to load the icon.
-	File() *gio.File
-	// IconName: get the icon name being used for this icon.
-	IconName() string
-	// IsSymbolic checks if the icon is symbolic or not.
-	IsSymbolic() bool
-}
-
 // IconPaintable contains information found when looking up an icon in
 // GtkIconTheme.
 //
@@ -79,10 +69,7 @@ type IconPaintable struct {
 	gdk.Paintable
 }
 
-var (
-	_ IconPaintabler  = (*IconPaintable)(nil)
-	_ gextras.Nativer = (*IconPaintable)(nil)
-)
+var _ gextras.Nativer = (*IconPaintable)(nil)
 
 func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
 	return &IconPaintable{
@@ -192,44 +179,6 @@ func (self *IconPaintable) IsSymbolic() bool {
 	return _ok
 }
 
-// IconThemer describes IconTheme's methods.
-type IconThemer interface {
-	// AddResourcePath adds a resource path that will be looked at when looking
-	// for icons, similar to search paths.
-	AddResourcePath(path string)
-	// AddSearchPath appends a directory to the search path.
-	AddSearchPath(path string)
-	// Display returns the display that the GtkIconTheme object was created for.
-	Display() *gdk.Display
-	// IconNames lists the names of icons in the current icon theme.
-	IconNames() []string
-	// IconSizes returns an array of integers describing the sizes at which the
-	// icon is available without scaling.
-	IconSizes(iconName string) []int
-	// ResourcePath gets the current resource path.
-	ResourcePath() []string
-	// SearchPath gets the current search path.
-	SearchPath() []string
-	// ThemeName gets the current icon theme name.
-	ThemeName() string
-	// HasGIcon checks whether an icon theme includes an icon for a particular
-	// GIcon.
-	HasGIcon(gicon gio.Iconer) bool
-	// HasIcon checks whether an icon theme includes an icon for a particular
-	// name.
-	HasIcon(iconName string) bool
-	// LookupByGIcon looks up a icon for a desired size and window scale.
-	LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
-	// LookupIcon looks up a named icon for a desired size and window scale,
-	// returning a GtkIconPaintable.
-	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable
-	// SetSearchPath sets the search path for the icon theme object.
-	SetSearchPath(path []string)
-	// SetThemeName sets the name of the icon theme that the GtkIconTheme object
-	// uses overriding system configuration.
-	SetThemeName(themeName string)
-}
-
 // IconTheme: GtkIconTheme provides a facility for loading themed icons.
 //
 // The main reason for using a name rather than simply providing a filename is
@@ -265,10 +214,7 @@ type IconTheme struct {
 	*externglib.Object
 }
 
-var (
-	_ IconThemer      = (*IconTheme)(nil)
-	_ gextras.Nativer = (*IconTheme)(nil)
-)
+var _ gextras.Nativer = (*IconTheme)(nil)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{
@@ -493,7 +439,7 @@ func (self *IconTheme) ThemeName() string {
 
 // HasGIcon checks whether an icon theme includes an icon for a particular
 // GIcon.
-func (self *IconTheme) HasGIcon(gicon gio.Iconer) bool {
+func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
@@ -536,7 +482,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
-func (self *IconTheme) LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out

@@ -17,28 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBarer},
+		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBarrer},
 	})
-}
-
-// ActionBarer describes ActionBar's methods.
-type ActionBarer interface {
-	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget() *Widget
-	// Revealed gets whether the contents of the action bar are revealed.
-	Revealed() bool
-	// PackEnd adds child to action_bar, packed with reference to the end of the
-	// action_bar.
-	PackEnd(child Widgeter)
-	// PackStart adds child to action_bar, packed with reference to the start of
-	// the action_bar.
-	PackStart(child Widgeter)
-	// Remove removes a child from action_bar.
-	Remove(child Widgeter)
-	// SetCenterWidget sets the center widget for the GtkActionBar.
-	SetCenterWidget(centerWidget Widgeter)
-	// SetRevealed reveals or conceals the content of the action bar.
-	SetRevealed(revealed bool)
 }
 
 // ActionBar: GtkActionBar is designed to present contextual actions.
@@ -61,10 +41,7 @@ type ActionBar struct {
 	Widget
 }
 
-var (
-	_ ActionBarer     = (*ActionBar)(nil)
-	_ gextras.Nativer = (*ActionBar)(nil)
-)
+var _ gextras.Nativer = (*ActionBar)(nil)
 
 func wrapActionBar(obj *externglib.Object) *ActionBar {
 	return &ActionBar{
@@ -85,7 +62,7 @@ func wrapActionBar(obj *externglib.Object) *ActionBar {
 	}
 }
 
-func marshalActionBarer(p uintptr) (interface{}, error) {
+func marshalActionBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapActionBar(obj), nil
@@ -140,7 +117,7 @@ func (actionBar *ActionBar) Revealed() bool {
 
 // PackEnd adds child to action_bar, packed with reference to the end of the
 // action_bar.
-func (actionBar *ActionBar) PackEnd(child Widgeter) {
+func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -152,7 +129,7 @@ func (actionBar *ActionBar) PackEnd(child Widgeter) {
 
 // PackStart adds child to action_bar, packed with reference to the start of the
 // action_bar.
-func (actionBar *ActionBar) PackStart(child Widgeter) {
+func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -163,7 +140,7 @@ func (actionBar *ActionBar) PackStart(child Widgeter) {
 }
 
 // Remove removes a child from action_bar.
-func (actionBar *ActionBar) Remove(child Widgeter) {
+func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -174,7 +151,7 @@ func (actionBar *ActionBar) Remove(child Widgeter) {
 }
 
 // SetCenterWidget sets the center widget for the GtkActionBar.
-func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgeter) {
+func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
 	var _arg1 *C.GtkWidget    // out
 

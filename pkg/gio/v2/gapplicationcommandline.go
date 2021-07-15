@@ -52,37 +52,6 @@ type ApplicationCommandLineOverrider interface {
 	PrinterrLiteral(message string)
 }
 
-// ApplicationCommandLiner describes ApplicationCommandLine's methods.
-type ApplicationCommandLiner interface {
-	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of cmdline.
-	CreateFileForArg(arg string) *File
-	// Cwd gets the working directory of the command line invocation.
-	Cwd() string
-	// Environ gets the contents of the 'environ' variable of the command line
-	// invocation, as would be returned by g_get_environ(), ie as a
-	// NULL-terminated list of strings in the form 'NAME=VALUE'.
-	Environ() []string
-	// ExitStatus gets the exit status of cmdline.
-	ExitStatus() int
-	// IsRemote determines if cmdline represents a remote invocation.
-	IsRemote() bool
-	// OptionsDict gets the options there were passed to
-	// g_application_command_line().
-	OptionsDict() *glib.VariantDict
-	// PlatformData gets the platform data associated with the invocation of
-	// cmdline.
-	PlatformData() *glib.Variant
-	// Stdin gets the stdin of the invoking process.
-	Stdin() *InputStream
-	// Env gets the value of a particular environment variable of the command
-	// line invocation, as would be returned by g_getenv().
-	env(name string) string
-	// SetExitStatus sets the exit status that will be used when the invoking
-	// process exits.
-	SetExitStatus(exitStatus int)
-}
-
 // ApplicationCommandLine represents a command-line invocation of an
 // application. It is created by #GApplication and emitted in the
 // #GApplication::command-line signal and virtual function.
@@ -158,10 +127,7 @@ type ApplicationCommandLine struct {
 	*externglib.Object
 }
 
-var (
-	_ ApplicationCommandLiner = (*ApplicationCommandLine)(nil)
-	_ gextras.Nativer         = (*ApplicationCommandLine)(nil)
-)
+var _ gextras.Nativer = (*ApplicationCommandLine)(nil)
 
 func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{

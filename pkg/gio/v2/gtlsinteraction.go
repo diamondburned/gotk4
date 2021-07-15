@@ -125,31 +125,6 @@ type TLSInteractionOverrider interface {
 	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 }
 
-// TLSInteractioner describes TLSInteraction's methods.
-type TLSInteractioner interface {
-	// AskPassword: run synchronous interaction to ask the user for a password.
-	AskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error)
-	// AskPasswordAsync: run asynchronous interaction to ask the user for a
-	// password.
-	AskPasswordAsync(password *TLSPassword, cancellable *Cancellable, callback AsyncReadyCallback)
-	// AskPasswordFinish: complete an ask password user interaction request.
-	AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
-	// InvokeAskPassword: invoke the interaction to ask the user for a password.
-	InvokeAskPassword(password *TLSPassword, cancellable *Cancellable) (TLSInteractionResult, error)
-	// InvokeRequestCertificate: invoke the interaction to ask the user to
-	// choose a certificate to use with the connection.
-	InvokeRequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error)
-	// RequestCertificate: run synchronous interaction to ask the user to choose
-	// a certificate to use with the connection.
-	RequestCertificate(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable) (TLSInteractionResult, error)
-	// RequestCertificateAsync: run asynchronous interaction to ask the user for
-	// a certificate to use with the connection.
-	RequestCertificateAsync(connection TLSConnectioner, flags TLSCertificateRequestFlags, cancellable *Cancellable, callback AsyncReadyCallback)
-	// RequestCertificateFinish: complete a request certificate user interaction
-	// request.
-	RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
-}
-
 // TLSInteraction provides a mechanism for the TLS connection and database code
 // to interact with the user. It can be used to ask the user for passwords.
 //
@@ -173,10 +148,7 @@ type TLSInteraction struct {
 	*externglib.Object
 }
 
-var (
-	_ TLSInteractioner = (*TLSInteraction)(nil)
-	_ gextras.Nativer  = (*TLSInteraction)(nil)
-)
+var _ gextras.Nativer = (*TLSInteraction)(nil)
 
 func wrapTLSInteraction(obj *externglib.Object) *TLSInteraction {
 	return &TLSInteraction{

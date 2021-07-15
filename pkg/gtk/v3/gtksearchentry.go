@@ -35,11 +35,6 @@ type SearchEntryOverrider interface {
 	StopSearch()
 }
 
-// SearchEntrier describes SearchEntry's methods.
-type SearchEntrier interface {
-	privateSearchEntry()
-}
-
 // SearchEntry is a subclass of Entry that has been tailored for use as a search
 // entry.
 //
@@ -67,10 +62,7 @@ type SearchEntry struct {
 	Entry
 }
 
-var (
-	_ SearchEntrier   = (*SearchEntry)(nil)
-	_ gextras.Nativer = (*SearchEntry)(nil)
-)
+var _ gextras.Nativer = (*SearchEntry)(nil)
 
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{

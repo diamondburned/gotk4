@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// MenuAccessibler describes MenuAccessible's methods.
-type MenuAccessibler interface {
-	privateMenuAccessible()
-}
-
 type MenuAccessible struct {
 	MenuShellAccessible
 }
 
-var (
-	_ MenuAccessibler = (*MenuAccessible)(nil)
-	_ gextras.Nativer = (*MenuAccessible)(nil)
-)
+var _ gextras.Nativer = (*MenuAccessible)(nil)
 
 func wrapMenuAccessible(obj *externglib.Object) *MenuAccessible {
 	return &MenuAccessible{

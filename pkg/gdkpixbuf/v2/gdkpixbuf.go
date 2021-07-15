@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// PixbufSimpleAnimIterer describes PixbufSimpleAnimIter's methods.
-type PixbufSimpleAnimIterer interface {
-	privatePixbufSimpleAnimIter()
-}
-
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }
 
-var (
-	_ PixbufSimpleAnimIterer = (*PixbufSimpleAnimIter)(nil)
-	_ gextras.Nativer        = (*PixbufSimpleAnimIter)(nil)
-)
+var _ gextras.Nativer = (*PixbufSimpleAnimIter)(nil)
 
 func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 	return &PixbufSimpleAnimIter{

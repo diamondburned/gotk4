@@ -75,29 +75,6 @@ type BufferedInputStreamOverrider interface {
 	FillFinish(result AsyncResulter) (int, error)
 }
 
-// BufferedInputStreamer describes BufferedInputStream's methods.
-type BufferedInputStreamer interface {
-	// Fill tries to read count bytes from the stream into the buffer.
-	Fill(count int, cancellable *Cancellable) (int, error)
-	// FillAsync reads data into stream's buffer asynchronously, up to count
-	// size.
-	FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// FillFinish finishes an asynchronous read.
-	FillFinish(result AsyncResulter) (int, error)
-	// Available gets the size of the available data within the stream.
-	Available() uint
-	// BufferSize gets the size of the input buffer.
-	BufferSize() uint
-	// Peek peeks in the buffer, copying data of size count into buffer, offset
-	// offset bytes.
-	Peek(buffer []byte, offset uint) uint
-	// ReadByte tries to read a single byte from the stream or the buffer.
-	ReadByte(cancellable *Cancellable) (int, error)
-	// SetBufferSize sets the size of the internal buffer of stream to size, or
-	// to the size of the contents of the buffer.
-	SetBufferSize(size uint)
-}
-
 // BufferedInputStream: buffered input stream implements InputStream and
 // provides for buffered reads.
 //
@@ -118,10 +95,7 @@ type BufferedInputStream struct {
 	Seekable
 }
 
-var (
-	_ BufferedInputStreamer = (*BufferedInputStream)(nil)
-	_ gextras.Nativer       = (*BufferedInputStream)(nil)
-)
+var _ gextras.Nativer = (*BufferedInputStream)(nil)
 
 func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 	return &BufferedInputStream{

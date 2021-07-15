@@ -22,17 +22,6 @@ func init() {
 	})
 }
 
-// AppChooserer describes AppChooser's methods.
-type AppChooserer interface {
-	// AppInfo returns the currently selected application.
-	AppInfo() *gio.AppInfo
-	// ContentType returns the content type for which the GtkAppChooser shows
-	// applications.
-	ContentType() string
-	// Refresh reloads the list of applications.
-	Refresh()
-}
-
 // AppChooser: GtkAppChooser is an interface for widgets which allow the user to
 // choose an application.
 //
@@ -54,10 +43,20 @@ type AppChooser struct {
 	Widget
 }
 
-var (
-	_ AppChooserer    = (*AppChooser)(nil)
-	_ gextras.Nativer = (*AppChooser)(nil)
-)
+var _ gextras.Nativer = (*AppChooser)(nil)
+
+// AppChooserer describes AppChooser's abstract methods.
+type AppChooserer interface {
+	// AppInfo returns the currently selected application.
+	AppInfo() *gio.AppInfo
+	// ContentType returns the content type for which the GtkAppChooser shows
+	// applications.
+	ContentType() string
+	// Refresh reloads the list of applications.
+	Refresh()
+}
+
+var _ AppChooserer = (*AppChooser)(nil)
 
 func wrapAppChooser(obj *externglib.Object) *AppChooser {
 	return &AppChooser{

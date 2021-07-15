@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// X11DragContexter describes X11DragContext's methods.
-type X11DragContexter interface {
-	privateX11DragContext()
-}
-
 type X11DragContext struct {
 	gdk.DragContext
 }
 
-var (
-	_ X11DragContexter = (*X11DragContext)(nil)
-	_ gextras.Nativer  = (*X11DragContext)(nil)
-)
+var _ gextras.Nativer = (*X11DragContext)(nil)
 
 func wrapX11DragContext(obj *externglib.Object) *X11DragContext {
 	return &X11DragContext{

@@ -27,16 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblemer},
+		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblemmer},
 	})
-}
-
-// Emblemer describes Emblem's methods.
-type Emblemer interface {
-	// GetIcon gives back the icon from emblem.
-	GetIcon() *Icon
-	// Origin gets the origin of the emblem.
-	Origin() EmblemOrigin
 }
 
 // Emblem is an implementation of #GIcon that supports having an emblem, which
@@ -50,10 +42,7 @@ type Emblem struct {
 	Icon
 }
 
-var (
-	_ Emblemer        = (*Emblem)(nil)
-	_ gextras.Nativer = (*Emblem)(nil)
-)
+var _ gextras.Nativer = (*Emblem)(nil)
 
 func wrapEmblem(obj *externglib.Object) *Emblem {
 	return &Emblem{
@@ -64,14 +53,14 @@ func wrapEmblem(obj *externglib.Object) *Emblem {
 	}
 }
 
-func marshalEmblemer(p uintptr) (interface{}, error) {
+func marshalEmblemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEmblem(obj), nil
 }
 
 // NewEmblem creates a new emblem for icon.
-func NewEmblem(icon Iconer) *Emblem {
+func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
 
@@ -87,7 +76,7 @@ func NewEmblem(icon Iconer) *Emblem {
 }
 
 // NewEmblemWithOrigin creates a new emblem for icon.
-func NewEmblemWithOrigin(icon Iconer, origin EmblemOrigin) *Emblem {
+func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
 	var _cret *C.GEmblem      // in

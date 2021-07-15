@@ -42,82 +42,6 @@ type SocketClientOverrider interface {
 	Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 }
 
-// SocketClienter describes SocketClient's methods.
-type SocketClienter interface {
-	// AddApplicationProxy: enable proxy protocols to be handled by the
-	// application.
-	AddApplicationProxy(protocol string)
-	// ConnectSocketClienter tries to resolve the connectable and make a network
-	// connection to it.
-	ConnectSocketClienter(connectable SocketConnectabler, cancellable *Cancellable) (*SocketConnection, error)
-	// ConnectAsync: this is the asynchronous version of
-	// g_socket_client_connect().
-	ConnectAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ConnectFinish finishes an async connect operation.
-	ConnectFinish(result AsyncResulter) (*SocketConnection, error)
-	// ConnectToHost: this is a helper function for g_socket_client_connect().
-	ConnectToHost(hostAndPort string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error)
-	// ConnectToHostAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_host().
-	ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ConnectToHostFinish finishes an async connect operation.
-	ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error)
-	// ConnectToService attempts to create a TCP connection to a service.
-	ConnectToService(domain string, service string, cancellable *Cancellable) (*SocketConnection, error)
-	// ConnectToServiceAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_service().
-	ConnectToServiceAsync(domain string, service string, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ConnectToServiceFinish finishes an async connect operation.
-	ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error)
-	// ConnectToURI: this is a helper function for g_socket_client_connect().
-	ConnectToURI(uri string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error)
-	// ConnectToURIAsync: this is the asynchronous version of
-	// g_socket_client_connect_to_uri().
-	ConnectToURIAsync(uri string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback)
-	// ConnectToURIFinish finishes an async connect operation.
-	ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error)
-	// EnableProxy gets the proxy enable state; see
-	// g_socket_client_set_enable_proxy()
-	EnableProxy() bool
-	// Family gets the socket family of the socket client.
-	Family() SocketFamily
-	// LocalAddress gets the local address of the socket client.
-	LocalAddress() *SocketAddress
-	// Protocol gets the protocol name type of the socket client.
-	Protocol() SocketProtocol
-	// ProxyResolver gets the Resolver being used by client.
-	ProxyResolver() *ProxyResolver
-	// SocketType gets the socket type of the socket client.
-	SocketType() SocketType
-	// Timeout gets the I/O timeout time for sockets created by client.
-	Timeout() uint
-	// TLS gets whether client creates TLS connections.
-	TLS() bool
-	// TLSValidationFlags gets the TLS validation flags used creating TLS
-	// connections via client.
-	TLSValidationFlags() TLSCertificateFlags
-	// SetEnableProxy sets whether or not client attempts to make connections
-	// via a proxy server.
-	SetEnableProxy(enable bool)
-	// SetFamily sets the socket family of the socket client.
-	SetFamily(family SocketFamily)
-	// SetLocalAddress sets the local address of the socket client.
-	SetLocalAddress(address SocketAddresser)
-	// SetProtocol sets the protocol of the socket client.
-	SetProtocol(protocol SocketProtocol)
-	// SetProxyResolver overrides the Resolver used by client.
-	SetProxyResolver(proxyResolver ProxyResolverer)
-	// SetSocketType sets the socket type of the socket client.
-	SetSocketType(typ SocketType)
-	// SetTimeout sets the I/O timeout for sockets created by client.
-	SetTimeout(timeout uint)
-	// SetTLS sets whether client creates TLS (aka SSL) connections.
-	SetTLS(tls bool)
-	// SetTLSValidationFlags sets the TLS validation flags used when creating
-	// TLS connections via client.
-	SetTLSValidationFlags(flags TLSCertificateFlags)
-}
-
 // SocketClient is a lightweight high-level utility class for connecting to a
 // network host using a connection oriented socket type.
 //
@@ -134,10 +58,7 @@ type SocketClient struct {
 	*externglib.Object
 }
 
-var (
-	_ SocketClienter  = (*SocketClient)(nil)
-	_ gextras.Nativer = (*SocketClient)(nil)
-)
+var _ gextras.Nativer = (*SocketClient)(nil)
 
 func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	return &SocketClient{

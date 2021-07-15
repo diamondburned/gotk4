@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// CheckMenuItemAccessibler describes CheckMenuItemAccessible's methods.
-type CheckMenuItemAccessibler interface {
-	privateCheckMenuItemAccessible()
-}
-
 type CheckMenuItemAccessible struct {
 	MenuItemAccessible
 }
 
-var (
-	_ CheckMenuItemAccessibler = (*CheckMenuItemAccessible)(nil)
-	_ gextras.Nativer          = (*CheckMenuItemAccessible)(nil)
-)
+var _ gextras.Nativer = (*CheckMenuItemAccessible)(nil)
 
 func wrapCheckMenuItemAccessible(obj *externglib.Object) *CheckMenuItemAccessible {
 	return &CheckMenuItemAccessible{

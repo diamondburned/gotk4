@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtoner},
+		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtonner},
 	})
 }
 
@@ -30,14 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type ToggleToolButtonOverrider interface {
 	Toggled()
-}
-
-// ToggleToolButtoner describes ToggleToolButton's methods.
-type ToggleToolButtoner interface {
-	// Active queries a ToggleToolButton and returns its current state.
-	Active() bool
-	// SetActive sets the status of the toggle tool button.
-	SetActive(isActive bool)
 }
 
 // ToggleToolButton is a ToolItem that contains a toggle button.
@@ -52,10 +44,7 @@ type ToggleToolButton struct {
 	ToolButton
 }
 
-var (
-	_ ToggleToolButtoner = (*ToggleToolButton)(nil)
-	_ gextras.Nativer    = (*ToggleToolButton)(nil)
-)
+var _ gextras.Nativer = (*ToggleToolButton)(nil)
 
 func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	return &ToggleToolButton{
@@ -97,7 +86,7 @@ func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	}
 }
 
-func marshalToggleToolButtoner(p uintptr) (interface{}, error) {
+func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleToolButton(obj), nil

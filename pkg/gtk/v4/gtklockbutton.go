@@ -18,16 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtoner},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
 	})
-}
-
-// LockButtoner describes LockButton's methods.
-type LockButtoner interface {
-	// Permission obtains the GPermission object that controls button.
-	Permission() *gio.Permission
-	// SetPermission sets the GPermission object that controls button.
-	SetPermission(permission gio.Permissioner)
 }
 
 // LockButton: GtkLockButton is a widget to obtain and revoke authorizations
@@ -69,10 +61,7 @@ type LockButton struct {
 	Button
 }
 
-var (
-	_ LockButtoner    = (*LockButton)(nil)
-	_ gextras.Nativer = (*LockButton)(nil)
-)
+var _ gextras.Nativer = (*LockButton)(nil)
 
 func wrapLockButton(obj *externglib.Object) *LockButton {
 	return &LockButton{
@@ -111,7 +100,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 	}
 }
 
-func marshalLockButtoner(p uintptr) (interface{}, error) {
+func marshalLockButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLockButton(obj), nil

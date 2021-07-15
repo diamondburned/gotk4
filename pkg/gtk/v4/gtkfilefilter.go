@@ -23,26 +23,6 @@ func init() {
 	})
 }
 
-// FileFilterer describes FileFilter's methods.
-type FileFilterer interface {
-	// AddMIMEType adds a rule allowing a given mime type to filter.
-	AddMIMEType(mimeType string)
-	// AddPattern adds a rule allowing a shell style glob to a filter.
-	AddPattern(pattern string)
-	// AddPixbufFormats adds a rule allowing image files in the formats
-	// supported by GdkPixbuf.
-	AddPixbufFormats()
-	// Attributes gets the attributes that need to be filled in for the
-	// GFileInfo passed to this filter.
-	Attributes() []string
-	// Name gets the human-readable name for the filter.
-	Name() string
-	// SetName sets a human-readable name of the filter.
-	SetName(name string)
-	// ToGVariant: serialize a file filter to an a{sv} variant.
-	ToGVariant() *glib.Variant
-}
-
 // FileFilter: GtkFileFilter filters files by name or mime type.
 //
 // GtkFileFilter can be used to restrict the files being shown in a
@@ -87,10 +67,7 @@ type FileFilter struct {
 	Buildable
 }
 
-var (
-	_ FileFilterer    = (*FileFilter)(nil)
-	_ gextras.Nativer = (*FileFilter)(nil)
-)
+var _ gextras.Nativer = (*FileFilter)(nil)
 
 func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{

@@ -162,7 +162,7 @@ func GetProgramClass() string {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
-func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
+func KeyboardGrab(window Windowwer, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.guint32       // out
@@ -242,7 +242,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
-func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confineTo Windower, cursor Cursorer, time_ uint32) GrabStatus {
+func PointerGrab(window Windowwer, ownerEvents bool, eventMask EventMask, confineTo Windowwer, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.GdkEventMask  // out

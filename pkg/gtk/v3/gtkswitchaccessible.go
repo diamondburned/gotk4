@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// SwitchAccessibler describes SwitchAccessible's methods.
-type SwitchAccessibler interface {
-	privateSwitchAccessible()
-}
-
 type SwitchAccessible struct {
 	WidgetAccessible
 
 	atk.Action
 }
 
-var (
-	_ SwitchAccessibler = (*SwitchAccessible)(nil)
-	_ gextras.Nativer   = (*SwitchAccessible)(nil)
-)
+var _ gextras.Nativer = (*SwitchAccessible)(nil)
 
 func wrapSwitchAccessible(obj *externglib.Object) *SwitchAccessible {
 	return &SwitchAccessible{

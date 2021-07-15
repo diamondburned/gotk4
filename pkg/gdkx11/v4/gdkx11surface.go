@@ -38,53 +38,11 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 	return _guint32
 }
 
-// X11Surfacer describes X11Surface's methods.
-type X11Surfacer interface {
-	// Desktop gets the number of the workspace surface is on.
-	Desktop() uint32
-	// Group returns the group this surface belongs to.
-	Group() *gdk.Surface
-	// MoveToCurrentDesktop moves the surface to the correct workspace when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	MoveToCurrentDesktop()
-	// MoveToDesktop moves the surface to the given workspace when running unde
-	// a window manager that supports multiple workspaces, as described in the
-	// Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	MoveToDesktop(desktop uint32)
-	// SetFrameSyncEnabled: this function can be used to disable frame
-	// synchronization for a surface.
-	SetFrameSyncEnabled(frameSyncEnabled bool)
-	// SetGroup sets the group leader of surface to be leader.
-	SetGroup(leader gdk.Surfacer)
-	// SetSkipPagerHint sets a hint on surface that pagers should not display
-	// it.
-	SetSkipPagerHint(skipsPager bool)
-	// SetSkipTaskbarHint sets a hint on surface that taskbars should not
-	// display it.
-	SetSkipTaskbarHint(skipsTaskbar bool)
-	// SetThemeVariant: GTK applications can request a dark theme variant.
-	SetThemeVariant(variant string)
-	// SetUrgencyHint sets a hint on surface that it needs user attention.
-	SetUrgencyHint(urgent bool)
-	// SetUserTime: application can use this call to update the
-	// _NET_WM_USER_TIME property on a toplevel surface.
-	SetUserTime(timestamp uint32)
-	// SetUTF8Property: this function modifies or removes an arbitrary X11
-	// window property of type UTF8_STRING.
-	SetUTF8Property(name string, value string)
-}
-
 type X11Surface struct {
 	gdk.Surface
 }
 
-var (
-	_ X11Surfacer     = (*X11Surface)(nil)
-	_ gextras.Nativer = (*X11Surface)(nil)
-)
+var _ gextras.Nativer = (*X11Surface)(nil)
 
 func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{

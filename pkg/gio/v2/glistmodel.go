@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeler},
+		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeller},
 	})
 }
 
@@ -54,18 +54,6 @@ type ListModelOverrider interface {
 	// efficient than iterating the list with increasing values for position
 	// until g_list_model_get_item() returns NULL.
 	NItems() uint
-}
-
-// ListModeler describes ListModel's methods.
-type ListModeler interface {
-	// ItemType gets the type of the items in list.
-	ItemType() externglib.Type
-	// NItems gets the number of items in list.
-	NItems() uint
-	// GetObject: get the item at position.
-	GetObject(position uint) *externglib.Object
-	// ItemsChanged emits the Model::items-changed signal on list.
-	ItemsChanged(position uint, removed uint, added uint)
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -114,10 +102,21 @@ type ListModel struct {
 	*externglib.Object
 }
 
-var (
-	_ ListModeler     = (*ListModel)(nil)
-	_ gextras.Nativer = (*ListModel)(nil)
-)
+var _ gextras.Nativer = (*ListModel)(nil)
+
+// ListModeller describes ListModel's abstract methods.
+type ListModeller interface {
+	// ItemType gets the type of the items in list.
+	ItemType() externglib.Type
+	// NItems gets the number of items in list.
+	NItems() uint
+	// GetObject: get the item at position.
+	GetObject(position uint) *externglib.Object
+	// ItemsChanged emits the Model::items-changed signal on list.
+	ItemsChanged(position uint, removed uint, added uint)
+}
+
+var _ ListModeller = (*ListModel)(nil)
 
 func wrapListModel(obj *externglib.Object) *ListModel {
 	return &ListModel{
@@ -125,7 +124,7 @@ func wrapListModel(obj *externglib.Object) *ListModel {
 	}
 }
 
-func marshalListModeler(p uintptr) (interface{}, error) {
+func marshalListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListModel(obj), nil

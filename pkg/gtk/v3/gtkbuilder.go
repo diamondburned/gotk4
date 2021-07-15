@@ -79,59 +79,6 @@ type BuilderOverrider interface {
 	TypeFromName(typeName string) externglib.Type
 }
 
-// Builderer describes Builder's methods.
-type Builderer interface {
-	// AddFromFile parses a file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// builder.
-	AddFromFile(filename string) (uint, error)
-	// AddFromResource parses a resource file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// builder.
-	AddFromResource(resourcePath string) (uint, error)
-	// AddFromString parses a string containing a [GtkBuilder UI
-	// definition][BUILDER-UI] and merges it with the current contents of
-	// builder.
-	AddFromString(buffer string, length uint) (uint, error)
-	// AddObjectsFromFile parses a file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of builder.
-	AddObjectsFromFile(filename string, objectIds []string) (uint, error)
-	// AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of builder.
-	AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error)
-	// AddObjectsFromString parses a string containing a [GtkBuilder UI
-	// definition][BUILDER-UI] building only the requested objects and merges
-	// them with the current contents of builder.
-	AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error)
-	// ConnectSignals: this method is a simpler variation of
-	// gtk_builder_connect_signals_full().
-	ConnectSignals(userData cgo.Handle)
-	// ExposeObject: add object to the builder object pool so it can be
-	// referenced just like any other object built by builder.
-	ExposeObject(name string, object *externglib.Object)
-	// ExtendWithTemplate: main private entry point for building composite
-	// container components from template XML.
-	ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error)
-	// Application gets the Application associated with the builder.
-	Application() *Application
-	// GetObject gets the object named name.
-	GetObject(name string) *externglib.Object
-	// TranslationDomain gets the translation domain of builder.
-	TranslationDomain() string
-	// TypeFromName looks up a type by name, using the virtual function that
-	// Builder has for that purpose.
-	TypeFromName(typeName string) externglib.Type
-	// SetApplication sets the application associated with builder.
-	SetApplication(application *Application)
-	// SetTranslationDomain sets the translation domain of builder.
-	SetTranslationDomain(domain string)
-	// ValueFromStringType: like gtk_builder_value_from_string(), this function
-	// demarshals a value from a string, but takes a #GType instead of Spec.
-	ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error)
-}
-
 // Builder is an auxiliary object that reads textual descriptions of a user
 // interface and instantiates the described objects. To create a GtkBuilder from
 // a user interface description, call gtk_builder_new_from_file(),
@@ -307,10 +254,7 @@ type Builder struct {
 	*externglib.Object
 }
 
-var (
-	_ Builderer       = (*Builder)(nil)
-	_ gextras.Nativer = (*Builder)(nil)
-)
+var _ gextras.Nativer = (*Builder)(nil)
 
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{
@@ -686,7 +630,7 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
-func (builder *Builder) ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error) {
+func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.GType       // out

@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// X11Visualer describes X11Visual's methods.
-type X11Visualer interface {
-	privateX11Visual()
-}
-
 type X11Visual struct {
 	gdk.Visual
 }
 
-var (
-	_ X11Visualer     = (*X11Visual)(nil)
-	_ gextras.Nativer = (*X11Visual)(nil)
-)
+var _ gextras.Nativer = (*X11Visual)(nil)
 
 func wrapX11Visual(obj *externglib.Object) *X11Visual {
 	return &X11Visual{

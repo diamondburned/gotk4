@@ -46,19 +46,11 @@ func X11DisplayGetGlxVersion(display *gdk.Display) (major int, minor int, ok boo
 	return _major, _minor, _ok
 }
 
-// X11GLContexter describes X11GLContext's methods.
-type X11GLContexter interface {
-	privateX11GLContext()
-}
-
 type X11GLContext struct {
 	gdk.GLContext
 }
 
-var (
-	_ X11GLContexter  = (*X11GLContext)(nil)
-	_ gextras.Nativer = (*X11GLContext)(nil)
-)
+var _ gextras.Nativer = (*X11GLContext)(nil)
 
 func wrapX11GLContext(obj *externglib.Object) *X11GLContext {
 	return &X11GLContext{

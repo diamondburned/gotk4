@@ -21,24 +21,6 @@ func init() {
 	})
 }
 
-// BoxLayouter describes BoxLayout's methods.
-type BoxLayouter interface {
-	// BaselinePosition gets the value set by
-	// gtk_box_layout_set_baseline_position().
-	BaselinePosition() BaselinePosition
-	// Homogeneous returns whether the layout is set to be homogeneous.
-	Homogeneous() bool
-	// Spacing returns the space that box_layout puts between children.
-	Spacing() uint
-	// SetBaselinePosition sets the baseline position of a box layout.
-	SetBaselinePosition(position BaselinePosition)
-	// SetHomogeneous sets whether the box layout will allocate the same size to
-	// all children.
-	SetHomogeneous(homogeneous bool)
-	// SetSpacing sets how much spacing to put between children.
-	SetSpacing(spacing uint)
-}
-
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
 // single row or column.
 //
@@ -58,10 +40,7 @@ type BoxLayout struct {
 	Orientable
 }
 
-var (
-	_ BoxLayouter     = (*BoxLayout)(nil)
-	_ gextras.Nativer = (*BoxLayout)(nil)
-)
+var _ gextras.Nativer = (*BoxLayout)(nil)
 
 func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
 	return &BoxLayout{

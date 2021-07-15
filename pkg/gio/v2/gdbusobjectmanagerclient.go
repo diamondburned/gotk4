@@ -45,20 +45,6 @@ type DBusObjectManagerClientOverrider interface {
 	InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName string, signalName string, parameters *glib.Variant)
 }
 
-// DBusObjectManagerClienter describes DBusObjectManagerClient's methods.
-type DBusObjectManagerClienter interface {
-	// Connection gets the BusConnection used by manager.
-	Connection() *DBusConnection
-	// Flags gets the flags that manager was constructed with.
-	Flags() DBusObjectManagerClientFlags
-	// Name gets the name that manager is for, or NULL if not a message bus
-	// connection.
-	Name() string
-	// NameOwner: unique name that owns the name that manager is for or NULL if
-	// no-one currently owns that name.
-	NameOwner() string
-}
-
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
 // for remote objects exported by a BusObjectManagerServer (or any code
 // implementing the org.freedesktop.DBus.ObjectManager
@@ -130,10 +116,7 @@ type DBusObjectManagerClient struct {
 	Initable
 }
 
-var (
-	_ DBusObjectManagerClienter = (*DBusObjectManagerClient)(nil)
-	_ gextras.Nativer           = (*DBusObjectManagerClient)(nil)
-)
+var _ gextras.Nativer = (*DBusObjectManagerClient)(nil)
 
 func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClient {
 	return &DBusObjectManagerClient{

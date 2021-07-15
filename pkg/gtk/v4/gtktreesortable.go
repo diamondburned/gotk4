@@ -109,7 +109,18 @@ type TreeSortableOverrider interface {
 	SortColumnChanged()
 }
 
-// TreeSortabler describes TreeSortable's methods.
+// TreeSortable: interface for sortable models used by GtkTreeView
+//
+// TreeSortable is an interface to be implemented by tree models which support
+// sorting. The TreeView uses the methods provided by this interface to sort the
+// model.
+type TreeSortable struct {
+	TreeModel
+}
+
+var _ gextras.Nativer = (*TreeSortable)(nil)
+
+// TreeSortabler describes TreeSortable's abstract methods.
 type TreeSortabler interface {
 	// SortColumnID fills in sort_column_id and order with the current sort
 	// column and the order.
@@ -129,19 +140,7 @@ type TreeSortabler interface {
 	SortColumnChanged()
 }
 
-// TreeSortable: interface for sortable models used by GtkTreeView
-//
-// TreeSortable is an interface to be implemented by tree models which support
-// sorting. The TreeView uses the methods provided by this interface to sort the
-// model.
-type TreeSortable struct {
-	TreeModel
-}
-
-var (
-	_ TreeSortabler   = (*TreeSortable)(nil)
-	_ gextras.Nativer = (*TreeSortable)(nil)
-)
+var _ TreeSortabler = (*TreeSortable)(nil)
 
 func wrapTreeSortable(obj *externglib.Object) *TreeSortable {
 	return &TreeSortable{

@@ -17,18 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocuser},
+		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocusser},
 	})
-}
-
-// EventControllerFocuser describes EventControllerFocus's methods.
-type EventControllerFocuser interface {
-	// ContainsFocus returns TRUE if focus is within self or one of its
-	// children.
-	ContainsFocus() bool
-	// IsFocus returns TRUE if focus is within self, but not one of its
-	// children.
-	IsFocus() bool
 }
 
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep
@@ -43,10 +33,7 @@ type EventControllerFocus struct {
 	EventController
 }
 
-var (
-	_ EventControllerFocuser = (*EventControllerFocus)(nil)
-	_ gextras.Nativer        = (*EventControllerFocus)(nil)
-)
+var _ gextras.Nativer = (*EventControllerFocus)(nil)
 
 func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{
@@ -56,7 +43,7 @@ func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
 	}
 }
 
-func marshalEventControllerFocuser(p uintptr) (interface{}, error) {
+func marshalEventControllerFocusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerFocus(obj), nil

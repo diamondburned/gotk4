@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// X11DisplayManagerer describes X11DisplayManager's methods.
-type X11DisplayManagerer interface {
-	privateX11DisplayManager()
-}
-
 type X11DisplayManager struct {
 	gdk.DisplayManager
 }
 
-var (
-	_ X11DisplayManagerer = (*X11DisplayManager)(nil)
-	_ gextras.Nativer     = (*X11DisplayManager)(nil)
-)
+var _ gextras.Nativer = (*X11DisplayManager)(nil)
 
 func wrapX11DisplayManager(obj *externglib.Object) *X11DisplayManager {
 	return &X11DisplayManager{

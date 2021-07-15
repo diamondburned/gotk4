@@ -90,7 +90,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // associated pointer or keyboard (if any) are delivered to widget. If the
 // block_others parameter is TRUE, any other devices will be unable to interact
 // with widget during the grab.
-func DeviceGrabAdd(widget Widgeter, device gdk.Devicer, blockOthers bool) {
+func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 	var _arg3 C.gboolean   // out
@@ -107,7 +107,7 @@ func DeviceGrabAdd(widget Widgeter, device gdk.Devicer, blockOthers bool) {
 // DeviceGrabRemove removes a device grab from the given widget.
 //
 // You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
-func DeviceGrabRemove(widget Widgeter, device gdk.Devicer) {
+func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GdkDevice // out
 

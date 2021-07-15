@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// NotebookAccessibler describes NotebookAccessible's methods.
-type NotebookAccessibler interface {
-	privateNotebookAccessible()
-}
-
 type NotebookAccessible struct {
 	ContainerAccessible
 
 	atk.Selection
 }
 
-var (
-	_ NotebookAccessibler = (*NotebookAccessible)(nil)
-	_ gextras.Nativer     = (*NotebookAccessible)(nil)
-)
+var _ gextras.Nativer = (*NotebookAccessible)(nil)
 
 func wrapNotebookAccessible(obj *externglib.Object) *NotebookAccessible {
 	return &NotebookAccessible{

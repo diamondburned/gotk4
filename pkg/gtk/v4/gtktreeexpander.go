@@ -21,20 +21,6 @@ func init() {
 	})
 }
 
-// TreeExpanderer describes TreeExpander's methods.
-type TreeExpanderer interface {
-	// Child gets the child widget displayed by self.
-	Child() *Widget
-	// Item forwards the item set on the GtkTreeListRow that self is managing.
-	Item() *externglib.Object
-	// ListRow gets the list row managed by self.
-	ListRow() *TreeListRow
-	// SetChild sets the content widget to display.
-	SetChild(child Widgeter)
-	// SetListRow sets the tree list row that this expander should manage.
-	SetListRow(listRow *TreeListRow)
-}
-
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a
 // list.
 //
@@ -78,10 +64,7 @@ type TreeExpander struct {
 	Widget
 }
 
-var (
-	_ TreeExpanderer  = (*TreeExpander)(nil)
-	_ gextras.Nativer = (*TreeExpander)(nil)
-)
+var _ gextras.Nativer = (*TreeExpander)(nil)
 
 func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
 	return &TreeExpander{
@@ -174,7 +157,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 }
 
 // SetChild sets the content widget to display.
-func (self *TreeExpander) SetChild(child Widgeter) {
+func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 

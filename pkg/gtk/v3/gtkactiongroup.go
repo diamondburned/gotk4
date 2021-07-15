@@ -37,45 +37,6 @@ type ActionGroupOverrider interface {
 	Action(actionName string) *Action
 }
 
-// ActionGrouper describes ActionGroup's methods.
-type ActionGrouper interface {
-	// AddAction adds an action object to the action group.
-	AddAction(action *Action)
-	// AddActionWithAccel adds an action object to the action group and sets up
-	// the accelerator.
-	AddActionWithAccel(action *Action, accelerator string)
-	// AccelGroup gets the accelerator group.
-	AccelGroup() *AccelGroup
-	// Action looks up an action in the action group by name.
-	Action(actionName string) *Action
-	// Name gets the name of the action group.
-	Name() string
-	// Sensitive returns TRUE if the group is sensitive.
-	Sensitive() bool
-	// Visible returns TRUE if the group is visible.
-	Visible() bool
-	// RemoveAction removes an action object from the action group.
-	RemoveAction(action *Action)
-	// SetAccelGroup sets the accelerator group to be used by every action in
-	// this group.
-	SetAccelGroup(accelGroup *AccelGroup)
-	// SetSensitive changes the sensitivity of action_group Deprecated: since
-	// version 3.10.
-	SetSensitive(sensitive bool)
-	// SetTranslateFunc sets a function to be used for translating the label and
-	// tooltip of ActionEntrys added by gtk_action_group_add_actions().
-	SetTranslateFunc(fn TranslateFunc)
-	// SetTranslationDomain sets the translation domain and uses g_dgettext()
-	// for translating the label and tooltip of ActionEntrys added by
-	// gtk_action_group_add_actions().
-	SetTranslationDomain(domain string)
-	// SetVisible changes the visible of action_group.
-	SetVisible(visible bool)
-	// TranslateString translates a string using the function set with
-	// gtk_action_group_set_translate_func().
-	TranslateString(_string string) string
-}
-
 // ActionGroup actions are organised into groups. An action group is essentially
 // a map from names to Action objects.
 //
@@ -131,10 +92,7 @@ type ActionGroup struct {
 	Buildable
 }
 
-var (
-	_ ActionGrouper   = (*ActionGroup)(nil)
-	_ gextras.Nativer = (*ActionGroup)(nil)
-)
+var _ gextras.Nativer = (*ActionGroup)(nil)
 
 func wrapActionGroup(obj *externglib.Object) *ActionGroup {
 	return &ActionGroup{

@@ -31,7 +31,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_menu_attribute_iter_get_type()), F: marshalMenuAttributeIterer},
 		{T: externglib.Type(C.g_menu_link_iter_get_type()), F: marshalMenuLinkIterer},
-		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModeler},
+		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModeller},
 	})
 }
 
@@ -57,7 +57,15 @@ type MenuAttributeIterOverrider interface {
 	Next() (string, *glib.Variant, bool)
 }
 
-// MenuAttributeIterer describes MenuAttributeIter's methods.
+// MenuAttributeIter is an opaque structure type. You must access it using the
+// functions below.
+type MenuAttributeIter struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*MenuAttributeIter)(nil)
+
+// MenuAttributeIterer describes MenuAttributeIter's abstract methods.
 type MenuAttributeIterer interface {
 	// Name gets the name of the attribute at the current iterator position, as
 	// a string.
@@ -72,16 +80,7 @@ type MenuAttributeIterer interface {
 	Next() bool
 }
 
-// MenuAttributeIter is an opaque structure type. You must access it using the
-// functions below.
-type MenuAttributeIter struct {
-	*externglib.Object
-}
-
-var (
-	_ MenuAttributeIterer = (*MenuAttributeIter)(nil)
-	_ gextras.Nativer     = (*MenuAttributeIter)(nil)
-)
+var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
 
 func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 	return &MenuAttributeIter{
@@ -222,7 +221,15 @@ type MenuLinkIterOverrider interface {
 	Next() (string, *MenuModel, bool)
 }
 
-// MenuLinkIterer describes MenuLinkIter's methods.
+// MenuLinkIter is an opaque structure type. You must access it using the
+// functions below.
+type MenuLinkIter struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*MenuLinkIter)(nil)
+
+// MenuLinkIterer describes MenuLinkIter's abstract methods.
 type MenuLinkIterer interface {
 	// Name gets the name of the link at the current iterator position.
 	Name() string
@@ -235,16 +242,7 @@ type MenuLinkIterer interface {
 	Next() bool
 }
 
-// MenuLinkIter is an opaque structure type. You must access it using the
-// functions below.
-type MenuLinkIter struct {
-	*externglib.Object
-}
-
-var (
-	_ MenuLinkIterer  = (*MenuLinkIter)(nil)
-	_ gextras.Nativer = (*MenuLinkIter)(nil)
-)
+var _ MenuLinkIterer = (*MenuLinkIter)(nil)
 
 func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 	return &MenuLinkIter{
@@ -400,29 +398,6 @@ type MenuModelOverrider interface {
 	IterateItemLinks(itemIndex int) *MenuLinkIter
 }
 
-// MenuModeler describes MenuModel's methods.
-type MenuModeler interface {
-	// ItemAttributeValue queries the item at position item_index in model for
-	// the attribute specified by attribute.
-	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// ItemLink queries the item at position item_index in model for the link
-	// specified by link.
-	ItemLink(itemIndex int, link string) *MenuModel
-	// NItems: query the number of items in model.
-	NItems() int
-	// IsMutable queries if model is mutable.
-	IsMutable() bool
-	// ItemsChanged requests emission of the Model::items-changed signal on
-	// model.
-	ItemsChanged(position int, removed int, added int)
-	// IterateItemAttributes creates a AttributeIter to iterate over the
-	// attributes of the item at position item_index in model.
-	IterateItemAttributes(itemIndex int) *MenuAttributeIter
-	// IterateItemLinks creates a LinkIter to iterate over the links of the item
-	// at position item_index in model.
-	IterateItemLinks(itemIndex int) *MenuLinkIter
-}
-
 // MenuModel represents the contents of a menu -- an ordered list of menu items.
 // The items are associated with actions, which can be activated through them.
 // Items can be grouped in sections, and may have submenus associated with them.
@@ -550,10 +525,32 @@ type MenuModel struct {
 	*externglib.Object
 }
 
-var (
-	_ MenuModeler     = (*MenuModel)(nil)
-	_ gextras.Nativer = (*MenuModel)(nil)
-)
+var _ gextras.Nativer = (*MenuModel)(nil)
+
+// MenuModeller describes MenuModel's abstract methods.
+type MenuModeller interface {
+	// ItemAttributeValue queries the item at position item_index in model for
+	// the attribute specified by attribute.
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	// ItemLink queries the item at position item_index in model for the link
+	// specified by link.
+	ItemLink(itemIndex int, link string) *MenuModel
+	// NItems: query the number of items in model.
+	NItems() int
+	// IsMutable queries if model is mutable.
+	IsMutable() bool
+	// ItemsChanged requests emission of the Model::items-changed signal on
+	// model.
+	ItemsChanged(position int, removed int, added int)
+	// IterateItemAttributes creates a AttributeIter to iterate over the
+	// attributes of the item at position item_index in model.
+	IterateItemAttributes(itemIndex int) *MenuAttributeIter
+	// IterateItemLinks creates a LinkIter to iterate over the links of the item
+	// at position item_index in model.
+	IterateItemLinks(itemIndex int) *MenuLinkIter
+}
+
+var _ MenuModeller = (*MenuModel)(nil)
 
 func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	return &MenuModel{
@@ -561,7 +558,7 @@ func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	}
 }
 
-func marshalMenuModeler(p uintptr) (interface{}, error) {
+func marshalMenuModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuModel(obj), nil

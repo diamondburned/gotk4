@@ -21,7 +21,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_coord_type_get_type()), F: marshalCoordType},
 		{T: externglib.Type(C.atk_key_event_type_get_type()), F: marshalKeyEventType},
-		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiler},
+		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiller},
 	})
 }
 
@@ -215,11 +215,6 @@ func RemoveKeyEventListener(listenerId uint) {
 	C.atk_remove_key_event_listener(_arg1)
 }
 
-// Utiler describes Util's methods.
-type Utiler interface {
-	privateUtil()
-}
-
 // Util: set of ATK utility functions which are used to support event
 // registration of various types, and obtaining the 'root' accessible of a
 // process and information about the current ATK implementation and toolkit
@@ -228,10 +223,7 @@ type Util struct {
 	*externglib.Object
 }
 
-var (
-	_ Utiler          = (*Util)(nil)
-	_ gextras.Nativer = (*Util)(nil)
-)
+var _ gextras.Nativer = (*Util)(nil)
 
 func wrapUtil(obj *externglib.Object) *Util {
 	return &Util{
@@ -239,7 +231,7 @@ func wrapUtil(obj *externglib.Object) *Util {
 	}
 }
 
-func marshalUtiler(p uintptr) (interface{}, error) {
+func marshalUtiller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUtil(obj), nil

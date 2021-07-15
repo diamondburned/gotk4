@@ -17,19 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTager},
+		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTagger},
 	})
-}
-
-// TextTager describes TextTag's methods.
-type TextTager interface {
-	// Changed emits the gtk.TextTagTable::tag-changed signal on the
-	// GtkTextTagTable where the tag is included.
-	Changed(sizeChanged bool)
-	// Priority: get the tag priority.
-	Priority() int
-	// SetPriority sets the priority of a GtkTextTag.
-	SetPriority(priority int)
 }
 
 // TextTag: tag that can be applied to text contained in a GtkTextBuffer.
@@ -53,10 +42,7 @@ type TextTag struct {
 	*externglib.Object
 }
 
-var (
-	_ TextTager       = (*TextTag)(nil)
-	_ gextras.Nativer = (*TextTag)(nil)
-)
+var _ gextras.Nativer = (*TextTag)(nil)
 
 func wrapTextTag(obj *externglib.Object) *TextTag {
 	return &TextTag{
@@ -64,7 +50,7 @@ func wrapTextTag(obj *externglib.Object) *TextTag {
 	}
 }
 
-func marshalTextTager(p uintptr) (interface{}, error) {
+func marshalTextTagger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextTag(obj), nil

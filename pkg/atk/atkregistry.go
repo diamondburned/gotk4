@@ -39,18 +39,6 @@ func GetDefaultRegistry() *Registry {
 	return _registry
 }
 
-// Registrier describes Registry's methods.
-type Registrier interface {
-	// Factory gets an ObjectFactory appropriate for creating Objects
-	// appropriate for type.
-	Factory(typ externglib.Type) *ObjectFactory
-	// FactoryType provides a #GType indicating the ObjectFactory subclass
-	// associated with type.
-	FactoryType(typ externglib.Type) externglib.Type
-	// SetFactoryType: associate an ObjectFactory subclass with a #GType.
-	SetFactoryType(typ externglib.Type, factoryType externglib.Type)
-}
-
 // Registry is normally used to create appropriate ATK "peers" for user
 // interface components. Application developers usually need only interact with
 // the AtkRegistry by associating appropriate ATK implementation classes with
@@ -60,10 +48,7 @@ type Registry struct {
 	*externglib.Object
 }
 
-var (
-	_ Registrier      = (*Registry)(nil)
-	_ gextras.Nativer = (*Registry)(nil)
-)
+var _ gextras.Nativer = (*Registry)(nil)
 
 func wrapRegistry(obj *externglib.Object) *Registry {
 	return &Registry{

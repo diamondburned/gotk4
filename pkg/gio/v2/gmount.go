@@ -153,7 +153,31 @@ type MountOverrider interface {
 	Unmounted()
 }
 
-// Mounter describes Mount's methods.
+// Mount interface represents user-visible mounts. Note, when porting from
+// GnomeVFS, #GMount is the moral equivalent of VFSVolume.
+//
+// #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
+// because it's not the same as a unix mount, it might be a gvfs mount, but you
+// can still access the files on it if you use GIO. Might or might not be
+// related to a volume object.
+//
+// Unmounting a #GMount instance is an asynchronous operation. For more
+// information about asynchronous operations, see Result and #GTask. To unmount
+// a #GMount instance, first call g_mount_unmount_with_operation() with (at
+// least) the #GMount instance and a ReadyCallback. The callback will be fired
+// when the operation has resolved (either with success or failure), and a
+// Result structure will be passed to the callback. That callback should then
+// call g_mount_unmount_with_operation_finish() with the #GMount and the Result
+// data to see if the operation was completed successfully. If an error is
+// present when g_mount_unmount_with_operation_finish() is called, then it will
+// be filled with any error information.
+type Mount struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Mount)(nil)
+
+// Mounter describes Mount's abstract methods.
 type Mounter interface {
 	// CanEject checks if mount can be ejected.
 	CanEject() bool
@@ -211,32 +235,7 @@ type Mounter interface {
 	Unshadow()
 }
 
-// Mount interface represents user-visible mounts. Note, when porting from
-// GnomeVFS, #GMount is the moral equivalent of VFSVolume.
-//
-// #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
-// because it's not the same as a unix mount, it might be a gvfs mount, but you
-// can still access the files on it if you use GIO. Might or might not be
-// related to a volume object.
-//
-// Unmounting a #GMount instance is an asynchronous operation. For more
-// information about asynchronous operations, see Result and #GTask. To unmount
-// a #GMount instance, first call g_mount_unmount_with_operation() with (at
-// least) the #GMount instance and a ReadyCallback. The callback will be fired
-// when the operation has resolved (either with success or failure), and a
-// Result structure will be passed to the callback. That callback should then
-// call g_mount_unmount_with_operation_finish() with the #GMount and the Result
-// data to see if the operation was completed successfully. If an error is
-// present when g_mount_unmount_with_operation_finish() is called, then it will
-// be filled with any error information.
-type Mount struct {
-	*externglib.Object
-}
-
-var (
-	_ Mounter         = (*Mount)(nil)
-	_ gextras.Nativer = (*Mount)(nil)
-)
+var _ Mounter = (*Mount)(nil)
 
 func wrapMount(obj *externglib.Object) *Mount {
 	return &Mount{

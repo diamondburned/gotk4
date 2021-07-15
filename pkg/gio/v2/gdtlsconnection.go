@@ -118,7 +118,30 @@ type DTLSConnectionOverrider interface {
 	ShutdownFinish(result AsyncResulter) error
 }
 
-// DTLSConnectioner describes DTLSConnection's methods.
+// DTLSConnection is the base DTLS connection class type, which wraps a Based
+// and provides DTLS encryption on top of it. Its subclasses, ClientConnection
+// and ServerConnection, implement client-side and server-side DTLS,
+// respectively.
+//
+// For TLS support, see Connection.
+//
+// As DTLS is datagram based, Connection implements Based, presenting a
+// datagram-socket-like API for the encrypted connection. This operates over a
+// base datagram connection, which is also a Based (Connection:base-socket).
+//
+// To close a DTLS connection, use g_dtls_connection_close().
+//
+// Neither ServerConnection or ClientConnection set the peer address on their
+// base Based if it is a #GSocket — it is up to the caller to do that if they
+// wish. If they do not, and g_socket_close() is called on the base socket, the
+// Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
+type DTLSConnection struct {
+	DatagramBased
+}
+
+var _ gextras.Nativer = (*DTLSConnection)(nil)
+
+// DTLSConnectioner describes DTLSConnection's abstract methods.
 type DTLSConnectioner interface {
 	// Close the DTLS connection.
 	Close(cancellable *Cancellable) error
@@ -187,31 +210,7 @@ type DTLSConnectioner interface {
 	ShutdownFinish(result AsyncResulter) error
 }
 
-// DTLSConnection is the base DTLS connection class type, which wraps a Based
-// and provides DTLS encryption on top of it. Its subclasses, ClientConnection
-// and ServerConnection, implement client-side and server-side DTLS,
-// respectively.
-//
-// For TLS support, see Connection.
-//
-// As DTLS is datagram based, Connection implements Based, presenting a
-// datagram-socket-like API for the encrypted connection. This operates over a
-// base datagram connection, which is also a Based (Connection:base-socket).
-//
-// To close a DTLS connection, use g_dtls_connection_close().
-//
-// Neither ServerConnection or ClientConnection set the peer address on their
-// base Based if it is a #GSocket — it is up to the caller to do that if they
-// wish. If they do not, and g_socket_close() is called on the base socket, the
-// Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
-type DTLSConnection struct {
-	DatagramBased
-}
-
-var (
-	_ DTLSConnectioner = (*DTLSConnection)(nil)
-	_ gextras.Nativer  = (*DTLSConnection)(nil)
-)
+var _ DTLSConnectioner = (*DTLSConnection)(nil)
 
 func wrapDTLSConnection(obj *externglib.Object) *DTLSConnection {
 	return &DTLSConnection{

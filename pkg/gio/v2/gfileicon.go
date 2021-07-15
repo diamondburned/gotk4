@@ -27,14 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconer},
+		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconner},
 	})
-}
-
-// FileIconer describes FileIcon's methods.
-type FileIconer interface {
-	// File gets the #GFile associated with the given icon.
-	File() *File
 }
 
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
@@ -44,10 +38,7 @@ type FileIcon struct {
 	LoadableIcon
 }
 
-var (
-	_ FileIconer      = (*FileIcon)(nil)
-	_ gextras.Nativer = (*FileIcon)(nil)
-)
+var _ gextras.Nativer = (*FileIcon)(nil)
 
 func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	return &FileIcon{
@@ -60,7 +51,7 @@ func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	}
 }
 
-func marshalFileIconer(p uintptr) (interface{}, error) {
+func marshalFileIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileIcon(obj), nil

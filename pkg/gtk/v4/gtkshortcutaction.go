@@ -79,20 +79,12 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	return cret
 }
 
-// ActivateActioner describes ActivateAction's methods.
-type ActivateActioner interface {
-	privateActivateAction()
-}
-
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	ShortcutAction
 }
 
-var (
-	_ ActivateActioner = (*ActivateAction)(nil)
-	_ gextras.Nativer  = (*ActivateAction)(nil)
-)
+var _ gextras.Nativer = (*ActivateAction)(nil)
 
 func wrapActivateAction(obj *externglib.Object) *ActivateAction {
 	return &ActivateAction{
@@ -126,20 +118,12 @@ func ActivateActionGet() *ActivateAction {
 	return _activateAction
 }
 
-// CallbackActioner describes CallbackAction's methods.
-type CallbackActioner interface {
-	privateCallbackAction()
-}
-
 // CallbackAction: GtkShortcutAction that invokes a callback.
 type CallbackAction struct {
 	ShortcutAction
 }
 
-var (
-	_ CallbackActioner = (*CallbackAction)(nil)
-	_ gextras.Nativer  = (*CallbackAction)(nil)
-)
+var _ gextras.Nativer = (*CallbackAction)(nil)
 
 func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
 	return &CallbackAction{
@@ -178,20 +162,12 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 
 func (*CallbackAction) privateCallbackAction() {}
 
-// MnemonicActioner describes MnemonicAction's methods.
-type MnemonicActioner interface {
-	privateMnemonicAction()
-}
-
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	ShortcutAction
 }
 
-var (
-	_ MnemonicActioner = (*MnemonicAction)(nil)
-	_ gextras.Nativer  = (*MnemonicAction)(nil)
-)
+var _ gextras.Nativer = (*MnemonicAction)(nil)
 
 func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
 	return &MnemonicAction{
@@ -225,21 +201,12 @@ func MnemonicActionGet() *MnemonicAction {
 	return _mnemonicAction
 }
 
-// NamedActioner describes NamedAction's methods.
-type NamedActioner interface {
-	// ActionName returns the name of the action that will be activated.
-	ActionName() string
-}
-
 // NamedAction: GtkShortcutAction that activates an action by name.
 type NamedAction struct {
 	ShortcutAction
 }
 
-var (
-	_ NamedActioner   = (*NamedAction)(nil)
-	_ gextras.Nativer = (*NamedAction)(nil)
-)
+var _ gextras.Nativer = (*NamedAction)(nil)
 
 func wrapNamedAction(obj *externglib.Object) *NamedAction {
 	return &NamedAction{
@@ -292,20 +259,12 @@ func (self *NamedAction) ActionName() string {
 	return _utf8
 }
 
-// NothingActioner describes NothingAction's methods.
-type NothingActioner interface {
-	privateNothingAction()
-}
-
 // NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
 	ShortcutAction
 }
 
-var (
-	_ NothingActioner = (*NothingAction)(nil)
-	_ gextras.Nativer = (*NothingAction)(nil)
-)
+var _ gextras.Nativer = (*NothingAction)(nil)
 
 func wrapNothingAction(obj *externglib.Object) *NothingAction {
 	return &NothingAction{
@@ -336,14 +295,6 @@ func NothingActionGet() *NothingAction {
 	_nothingAction = wrapNothingAction(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _nothingAction
-}
-
-// ShortcutActioner describes ShortcutAction's methods.
-type ShortcutActioner interface {
-	// Activate activates the action on the widget with the given args.
-	Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool
-	// String prints the given action into a human-readable string.
-	String() string
 }
 
 // ShortcutAction: GtkShortcutAction encodes an action that can be triggered by
@@ -377,10 +328,17 @@ type ShortcutAction struct {
 	*externglib.Object
 }
 
-var (
-	_ ShortcutActioner = (*ShortcutAction)(nil)
-	_ gextras.Nativer  = (*ShortcutAction)(nil)
-)
+var _ gextras.Nativer = (*ShortcutAction)(nil)
+
+// ShortcutActioner describes ShortcutAction's abstract methods.
+type ShortcutActioner interface {
+	// Activate activates the action on the widget with the given args.
+	Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool
+	// String prints the given action into a human-readable string.
+	String() string
+}
+
+var _ ShortcutActioner = (*ShortcutAction)(nil)
 
 func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
 	return &ShortcutAction{
@@ -432,7 +390,7 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 // Activation of an action can fail for various reasons. If the action is not
 // supported by the widget, if the args don't match the action or if the
 // activation otherwise had no effect, FALSE will be returned.
-func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool {
+func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out
@@ -475,12 +433,6 @@ func (self *ShortcutAction) String() string {
 	return _utf8
 }
 
-// SignalActioner describes SignalAction's methods.
-type SignalActioner interface {
-	// SignalName returns the name of the signal that will be emitted.
-	SignalName() string
-}
-
 // SignalAction: GtkShortcutAction that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
@@ -489,10 +441,7 @@ type SignalAction struct {
 	ShortcutAction
 }
 
-var (
-	_ SignalActioner  = (*SignalAction)(nil)
-	_ gextras.Nativer = (*SignalAction)(nil)
-)
+var _ gextras.Nativer = (*SignalAction)(nil)
 
 func wrapSignalAction(obj *externglib.Object) *SignalAction {
 	return &SignalAction{

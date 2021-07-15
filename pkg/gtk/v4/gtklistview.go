@@ -21,36 +21,6 @@ func init() {
 	})
 }
 
-// ListViewer describes ListView's methods.
-type ListViewer interface {
-	// EnableRubberband returns whether rows can be selected by dragging with
-	// the mouse.
-	EnableRubberband() bool
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() *ListItemFactory
-	// Model gets the model that's currently used to read the items displayed.
-	Model() *SelectionModel
-	// ShowSeparators returns whether the list box should show separators
-	// between rows.
-	ShowSeparators() bool
-	// SingleClickActivate returns whether rows will be activated on single
-	// click and selected on hover.
-	SingleClickActivate() bool
-	// SetEnableRubberband sets whether selections can be changed by dragging
-	// with the mouse.
-	SetEnableRubberband(enableRubberband bool)
-	// SetFactory sets the GtkListItemFactory to use for populating list items.
-	SetFactory(factory *ListItemFactory)
-	// SetModel sets the model to use.
-	SetModel(model SelectionModeler)
-	// SetShowSeparators sets whether the list box should show separators
-	// between rows.
-	SetShowSeparators(showSeparators bool)
-	// SetSingleClickActivate sets whether rows should be activated on single
-	// click and selected on hover.
-	SetSingleClickActivate(singleClickActivate bool)
-}
-
 // ListView: GtkListView presents a large dynamic list of items.
 //
 // GtkListView uses its factory to generate one row widget for each visible item
@@ -150,10 +120,7 @@ type ListView struct {
 	ListBase
 }
 
-var (
-	_ ListViewer      = (*ListView)(nil)
-	_ gextras.Nativer = (*ListView)(nil)
-)
+var _ gextras.Nativer = (*ListView)(nil)
 
 func wrapListView(obj *externglib.Object) *ListView {
 	return &ListView{
@@ -195,7 +162,7 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 //
 //    list_view = gtk_list_view_new (create_model (),
 //      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
-func NewListView(model SelectionModeler, factory *ListItemFactory) *ListView {
+func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -329,7 +296,7 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 // SetModel sets the model to use.
 //
 // This must be a gtk.SelectionModel to use.
-func (self *ListView) SetModel(model SelectionModeler) {
+func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

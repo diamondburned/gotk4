@@ -31,19 +31,6 @@ func init() {
 	})
 }
 
-// BufferedOutputStreamer describes BufferedOutputStream's methods.
-type BufferedOutputStreamer interface {
-	// AutoGrow checks if the buffer automatically grows as data is added.
-	AutoGrow() bool
-	// BufferSize gets the size of the buffer in the stream.
-	BufferSize() uint
-	// SetAutoGrow sets whether or not the stream's buffer should automatically
-	// grow.
-	SetAutoGrow(autoGrow bool)
-	// SetBufferSize sets the size of the internal buffer to size.
-	SetBufferSize(size uint)
-}
-
 // BufferedOutputStream: buffered output stream implements OutputStream and
 // provides for buffered writes.
 //
@@ -64,10 +51,7 @@ type BufferedOutputStream struct {
 	Seekable
 }
 
-var (
-	_ BufferedOutputStreamer = (*BufferedOutputStream)(nil)
-	_ gextras.Nativer        = (*BufferedOutputStream)(nil)
-)
+var _ gextras.Nativer = (*BufferedOutputStream)(nil)
 
 func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{

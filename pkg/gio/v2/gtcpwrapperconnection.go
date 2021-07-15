@@ -31,12 +31,6 @@ func init() {
 	})
 }
 
-// TCPWrapperConnectioner describes TCPWrapperConnection's methods.
-type TCPWrapperConnectioner interface {
-	// BaseIOStream gets conn's base OStream
-	BaseIOStream() *IOStream
-}
-
 // TCPWrapperConnection can be used to wrap a OStream that is based on a
 // #GSocket, but which is not actually a Connection. This is used by Client so
 // that it can always return a Connection, even when the connection it has
@@ -45,10 +39,7 @@ type TCPWrapperConnection struct {
 	TCPConnection
 }
 
-var (
-	_ TCPWrapperConnectioner = (*TCPWrapperConnection)(nil)
-	_ gextras.Nativer        = (*TCPWrapperConnection)(nil)
-)
+var _ gextras.Nativer = (*TCPWrapperConnection)(nil)
 
 func wrapTCPWrapperConnection(obj *externglib.Object) *TCPWrapperConnection {
 	return &TCPWrapperConnection{

@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// TextCellAccessibler describes TextCellAccessible's methods.
-type TextCellAccessibler interface {
-	privateTextCellAccessible()
-}
-
 type TextCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Text
 }
 
-var (
-	_ TextCellAccessibler = (*TextCellAccessible)(nil)
-	_ gextras.Nativer     = (*TextCellAccessible)(nil)
-)
+var _ gextras.Nativer = (*TextCellAccessible)(nil)
 
 func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 	return &TextCellAccessible{

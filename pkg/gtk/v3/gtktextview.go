@@ -107,198 +107,9 @@ type TextViewOverrider interface {
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	PopulatePopup(popup Widgeter)
+	PopulatePopup(popup Widgetter)
 	SetAnchor()
 	ToggleOverwrite()
-}
-
-// TextViewer describes TextView's methods.
-type TextViewer interface {
-	// AddChildAtAnchor adds a child widget in the text buffer, at the given
-	// anchor.
-	AddChildAtAnchor(child Widgeter, anchor *TextChildAnchor)
-	// AddChildInWindow adds a child at fixed coordinates in one of the text
-	// widget's windows.
-	AddChildInWindow(child Widgeter, whichWindow TextWindowType, xpos int, ypos int)
-	// BackwardDisplayLine moves the given iter backward by one display
-	// (wrapped) line.
-	BackwardDisplayLine(iter *TextIter) bool
-	// BackwardDisplayLineStart moves the given iter backward to the next
-	// display line start.
-	BackwardDisplayLineStart(iter *TextIter) bool
-	// BufferToWindowCoords converts coordinate (buffer_x, buffer_y) to
-	// coordinates for the window win, and stores the result in (window_x,
-	// window_y).
-	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
-	// ForwardDisplayLine moves the given iter forward by one display (wrapped)
-	// line.
-	ForwardDisplayLine(iter *TextIter) bool
-	// ForwardDisplayLineEnd moves the given iter forward to the next display
-	// line end.
-	ForwardDisplayLineEnd(iter *TextIter) bool
-	// AcceptsTab returns whether pressing the Tab key inserts a tab characters.
-	AcceptsTab() bool
-	// BorderWindowSize gets the width of the specified border window.
-	BorderWindowSize(typ TextWindowType) int
-	// BottomMargin gets the bottom margin for text in the text_view.
-	BottomMargin() int
-	// Buffer returns the TextBuffer being displayed by this text view.
-	Buffer() *TextBuffer
-	// CursorLocations: given an iter within a text layout, determine the
-	// positions of the strong and weak cursors if the insertion point is at
-	// that iterator.
-	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
-	// CursorVisible: find out whether the cursor should be displayed.
-	CursorVisible() bool
-	// DefaultAttributes obtains a copy of the default text attributes.
-	DefaultAttributes() *TextAttributes
-	// Editable returns the default editability of the TextView.
-	Editable() bool
-	// HAdjustment gets the horizontal-scrolling Adjustment.
-	HAdjustment() *Adjustment
-	// Indent gets the default indentation of paragraphs in text_view.
-	Indent() int
-	// InputHints gets the value of the TextView:input-hints property.
-	InputHints() InputHints
-	// InputPurpose gets the value of the TextView:input-purpose property.
-	InputPurpose() InputPurpose
-	// IterAtLocation retrieves the iterator at buffer coordinates x and y.
-	IterAtLocation(x int, y int) (TextIter, bool)
-	// IterAtPosition retrieves the iterator pointing to the character at buffer
-	// coordinates x and y.
-	IterAtPosition(x int, y int) (TextIter, int, bool)
-	// IterLocation gets a rectangle which roughly contains the character at
-	// iter.
-	IterLocation(iter *TextIter) gdk.Rectangle
-	// Justification gets the default justification of paragraphs in text_view.
-	Justification() Justification
-	// LeftMargin gets the default left margin size of paragraphs in the
-	// text_view.
-	LeftMargin() int
-	// LineAtY gets the TextIter at the start of the line containing the
-	// coordinate y.
-	LineAtY(y int) (TextIter, int)
-	// LineYrange gets the y coordinate of the top of the line containing iter,
-	// and the height of the line.
-	LineYrange(iter *TextIter) (y int, height int)
-	// Monospace gets the value of the TextView:monospace property.
-	Monospace() bool
-	// Overwrite returns whether the TextView is in overwrite mode or not.
-	Overwrite() bool
-	// PixelsAboveLines gets the default number of pixels to put above
-	// paragraphs.
-	PixelsAboveLines() int
-	// PixelsBelowLines gets the value set by
-	// gtk_text_view_set_pixels_below_lines().
-	PixelsBelowLines() int
-	// PixelsInsideWrap gets the value set by
-	// gtk_text_view_set_pixels_inside_wrap().
-	PixelsInsideWrap() int
-	// RightMargin gets the default right margin for text in text_view.
-	RightMargin() int
-	// Tabs gets the default tabs for text_view.
-	Tabs() *pango.TabArray
-	// TopMargin gets the top margin for text in the text_view.
-	TopMargin() int
-	// VAdjustment gets the vertical-scrolling Adjustment.
-	VAdjustment() *Adjustment
-	// VisibleRect fills visible_rect with the currently-visible region of the
-	// buffer, in buffer coordinates.
-	VisibleRect() gdk.Rectangle
-	// Window retrieves the Window corresponding to an area of the text view;
-	// possible windows include the overall widget window, child windows on the
-	// left, right, top, bottom, and the window that displays the text buffer.
-	Window(win TextWindowType) *gdk.Window
-	// WindowType: usually used to find out which window an event corresponds
-	// to.
-	WindowType(window gdk.Windower) TextWindowType
-	// WrapMode gets the line wrapping for the view.
-	WrapMode() WrapMode
-	// ImContextFilterKeypress: allow the TextView input method to internally
-	// handle key press and release events.
-	ImContextFilterKeypress(event *gdk.EventKey) bool
-	// MoveChild updates the position of a child, as for
-	// gtk_text_view_add_child_in_window().
-	MoveChild(child Widgeter, xpos int, ypos int)
-	// MoveMarkOnscreen moves a mark within the buffer so that it's located
-	// within the currently-visible text area.
-	MoveMarkOnscreen(mark *TextMark) bool
-	// MoveVisually: move the iterator a given number of characters visually,
-	// treating it as the strong cursor position.
-	MoveVisually(iter *TextIter, count int) bool
-	// PlaceCursorOnscreen moves the cursor to the currently visible region of
-	// the buffer, it it isn’t there already.
-	PlaceCursorOnscreen() bool
-	// ResetCursorBlink ensures that the cursor is shown (i.e.
-	ResetCursorBlink()
-	// ResetImContext: reset the input method context of the text view if
-	// needed.
-	ResetImContext()
-	// ScrollMarkOnscreen scrolls text_view the minimum distance such that mark
-	// is contained within the visible area of the widget.
-	ScrollMarkOnscreen(mark *TextMark)
-	// ScrollToIter scrolls text_view so that iter is on the screen in the
-	// position indicated by xalign and yalign.
-	ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
-	// ScrollToMark scrolls text_view so that mark is on the screen in the
-	// position indicated by xalign and yalign.
-	ScrollToMark(mark *TextMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
-	// SetAcceptsTab sets the behavior of the text widget when the Tab key is
-	// pressed.
-	SetAcceptsTab(acceptsTab bool)
-	// SetBorderWindowSize sets the width of GTK_TEXT_WINDOW_LEFT or
-	// GTK_TEXT_WINDOW_RIGHT, or the height of GTK_TEXT_WINDOW_TOP or
-	// GTK_TEXT_WINDOW_BOTTOM.
-	SetBorderWindowSize(typ TextWindowType, size int)
-	// SetBottomMargin sets the bottom margin for text in text_view.
-	SetBottomMargin(bottomMargin int)
-	// SetBuffer sets buffer as the buffer being displayed by text_view.
-	SetBuffer(buffer *TextBuffer)
-	// SetCursorVisible toggles whether the insertion point should be displayed.
-	SetCursorVisible(setting bool)
-	// SetEditable sets the default editability of the TextView.
-	SetEditable(setting bool)
-	// SetIndent sets the default indentation for paragraphs in text_view.
-	SetIndent(indent int)
-	// SetInputHints sets the TextView:input-hints property, which allows input
-	// methods to fine-tune their behaviour.
-	SetInputHints(hints InputHints)
-	// SetInputPurpose sets the TextView:input-purpose property which can be
-	// used by on-screen keyboards and other input methods to adjust their
-	// behaviour.
-	SetInputPurpose(purpose InputPurpose)
-	// SetJustification sets the default justification of text in text_view.
-	SetJustification(justification Justification)
-	// SetLeftMargin sets the default left margin for text in text_view.
-	SetLeftMargin(leftMargin int)
-	// SetMonospace sets the TextView:monospace property, which indicates that
-	// the text view should use monospace fonts.
-	SetMonospace(monospace bool)
-	// SetOverwrite changes the TextView overwrite mode.
-	SetOverwrite(overwrite bool)
-	// SetPixelsAboveLines sets the default number of blank pixels above
-	// paragraphs in text_view.
-	SetPixelsAboveLines(pixelsAboveLines int)
-	// SetPixelsBelowLines sets the default number of pixels of blank space to
-	// put below paragraphs in text_view.
-	SetPixelsBelowLines(pixelsBelowLines int)
-	// SetPixelsInsideWrap sets the default number of pixels of blank space to
-	// leave between display/wrapped lines within a paragraph.
-	SetPixelsInsideWrap(pixelsInsideWrap int)
-	// SetRightMargin sets the default right margin for text in the text view.
-	SetRightMargin(rightMargin int)
-	// SetTabs sets the default tab stops for paragraphs in text_view.
-	SetTabs(tabs *pango.TabArray)
-	// SetTopMargin sets the top margin for text in text_view.
-	SetTopMargin(topMargin int)
-	// SetWrapMode sets the line wrapping for the view.
-	SetWrapMode(wrapMode WrapMode)
-	// StartsDisplayLine determines whether iter is at the start of a display
-	// line.
-	StartsDisplayLine(iter *TextIter) bool
-	// WindowToBufferCoords converts coordinates on the window identified by win
-	// to buffer coordinates, storing the result in (buffer_x,buffer_y).
-	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
 // TextView: you may wish to begin by reading the [text widget conceptual
@@ -331,10 +142,7 @@ type TextView struct {
 	Scrollable
 }
 
-var (
-	_ TextViewer      = (*TextView)(nil)
-	_ gextras.Nativer = (*TextView)(nil)
-)
+var _ gextras.Nativer = (*TextView)(nil)
 
 func wrapTextView(obj *externglib.Object) *TextView {
 	return &TextView{
@@ -407,7 +215,7 @@ func (v *TextView) Native() uintptr {
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
-func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnchor) {
+func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -428,7 +236,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnch
 // scrolling is irrelevant, the child floats above all scrollable areas. But
 // when placing a child in one of the scrollable windows (border windows or text
 // window) it will move with the scrolling as needed.
-func (textView *TextView) AddChildInWindow(child Widgeter, whichWindow TextWindowType, xpos int, ypos int) {
+func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWindowType, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkTextWindowType // out
@@ -1195,7 +1003,7 @@ func (textView *TextView) Window(win TextWindowType) *gdk.Window {
 //
 // If you connect to an event signal on text_view, this function should be
 // called on event->window to see which window it was.
-func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
+func (textView *TextView) WindowType(window gdk.Windowwer) TextWindowType {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GdkWindow        // out
 	var _cret C.GtkTextWindowType // in
@@ -1277,7 +1085,7 @@ func (textView *TextView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 
 // MoveChild updates the position of a child, as for
 // gtk_text_view_add_child_in_window().
-func (textView *TextView) MoveChild(child Widgeter, xpos int, ypos int) {
+func (textView *TextView) MoveChild(child Widgetter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gint         // out

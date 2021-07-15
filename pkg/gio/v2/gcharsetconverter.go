@@ -32,17 +32,6 @@ func init() {
 	})
 }
 
-// CharsetConverterer describes CharsetConverter's methods.
-type CharsetConverterer interface {
-	// NumFallbacks gets the number of fallbacks that converter has applied so
-	// far.
-	NumFallbacks() uint
-	// UseFallback gets the Converter:use-fallback property.
-	UseFallback() bool
-	// SetUseFallback sets the Converter:use-fallback property.
-	SetUseFallback(useFallback bool)
-}
-
 // CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
 	*externglib.Object
@@ -51,10 +40,7 @@ type CharsetConverter struct {
 	Initable
 }
 
-var (
-	_ CharsetConverterer = (*CharsetConverter)(nil)
-	_ gextras.Nativer    = (*CharsetConverter)(nil)
-)
+var _ gextras.Nativer = (*CharsetConverter)(nil)
 
 func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	return &CharsetConverter{

@@ -35,14 +35,6 @@ type CellEditableOverrider interface {
 	RemoveWidget()
 }
 
-// CellEditabler describes CellEditable's methods.
-type CellEditabler interface {
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-}
-
 // CellEditable interface must be implemented for widgets to be usable to edit
 // the contents of a TreeView cell. It provides a way to specify how temporary
 // widgets should be configured for editing, get the new value, etc.
@@ -50,10 +42,17 @@ type CellEditable struct {
 	Widget
 }
 
-var (
-	_ CellEditabler   = (*CellEditable)(nil)
-	_ gextras.Nativer = (*CellEditable)(nil)
-)
+var _ gextras.Nativer = (*CellEditable)(nil)
+
+// CellEditabler describes CellEditable's abstract methods.
+type CellEditabler interface {
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
+}
+
+var _ CellEditabler = (*CellEditable)(nil)
 
 func wrapCellEditable(obj *externglib.Object) *CellEditable {
 	return &CellEditable{

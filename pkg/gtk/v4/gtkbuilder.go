@@ -69,56 +69,6 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Builderer describes Builder's methods.
-type Builderer interface {
-	// AddFromFile parses a file containing a UI definition and merges it with
-	// the current contents of builder.
-	AddFromFile(filename string) error
-	// AddFromResource parses a resource file containing a UI definition and
-	// merges it with the current contents of builder.
-	AddFromResource(resourcePath string) error
-	// AddFromString parses a string containing a UI definition and merges it
-	// with the current contents of builder.
-	AddFromString(buffer string, length int) error
-	// AddObjectsFromFile parses a file containing a UI definition building only
-	// the requested objects and merges them with the current contents of
-	// builder.
-	AddObjectsFromFile(filename string, objectIds []string) error
-	// AddObjectsFromResource parses a resource file containing a UI definition,
-	// building only the requested objects and merges them with the current
-	// contents of builder.
-	AddObjectsFromResource(resourcePath string, objectIds []string) error
-	// AddObjectsFromString parses a string containing a UI definition, building
-	// only the requested objects and merges them with the current contents of
-	// builder.
-	AddObjectsFromString(buffer string, length int, objectIds []string) error
-	// ExposeObject: add object to the builder object pool so it can be
-	// referenced just like any other object built by builder.
-	ExposeObject(name string, object *externglib.Object)
-	// ExtendWithTemplate: main private entry point for building composite
-	// components from template XML.
-	ExtendWithTemplate(object *externglib.Object, templateType externglib.Type, buffer string, length int) error
-	// CurrentObject gets the current object set via
-	// gtk_builder_set_current_object().
-	CurrentObject() *externglib.Object
-	// GetObject gets the object named name.
-	GetObject(name string) *externglib.Object
-	// Scope gets the scope in use that was set via gtk_builder_set_scope().
-	Scope() *BuilderScope
-	// TranslationDomain gets the translation domain of builder.
-	TranslationDomain() string
-	// TypeFromName looks up a type by name.
-	TypeFromName(typeName string) externglib.Type
-	// SetCurrentObject sets the current object for the builder.
-	SetCurrentObject(currentObject *externglib.Object)
-	// SetScope sets the scope the builder should operate in.
-	SetScope(scope BuilderScoper)
-	// SetTranslationDomain sets the translation domain of builder.
-	SetTranslationDomain(domain string)
-	// ValueFromStringType demarshals a value from a string.
-	ValueFromStringType(typ externglib.Type, _string string) (externglib.Value, error)
-}
-
 // Builder: GtkBuilder reads XML descriptions of a user interface and
 // instantiates the described objects.
 //
@@ -294,10 +244,7 @@ type Builder struct {
 	*externglib.Object
 }
 
-var (
-	_ Builderer       = (*Builder)(nil)
-	_ gextras.Nativer = (*Builder)(nil)
-)
+var _ gextras.Nativer = (*Builder)(nil)
 
 func wrapBuilder(obj *externglib.Object) *Builder {
 	return &Builder{

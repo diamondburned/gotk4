@@ -61,7 +61,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (*TreeModel, *TreePath, bo
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
-func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeler, path *TreePath) bool {
+func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, path *TreePath) bool {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // out
 	var _arg3 *C.GtkTreePath      // out
@@ -102,7 +102,13 @@ type TreeDragDestOverrider interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
-// TreeDragDester describes TreeDragDest's methods.
+type TreeDragDest struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TreeDragDest)(nil)
+
+// TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from selection_data.
@@ -112,14 +118,7 @@ type TreeDragDester interface {
 	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
-type TreeDragDest struct {
-	*externglib.Object
-}
-
-var (
-	_ TreeDragDester  = (*TreeDragDest)(nil)
-	_ gextras.Nativer = (*TreeDragDest)(nil)
-)
+var _ TreeDragDester = (*TreeDragDest)(nil)
 
 func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	return &TreeDragDest{
@@ -206,7 +205,13 @@ type TreeDragSourceOverrider interface {
 	RowDraggable(path *TreePath) bool
 }
 
-// TreeDragSourcer describes TreeDragSource's methods.
+type TreeDragSource struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TreeDragSource)(nil)
+
+// TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.
@@ -219,14 +224,7 @@ type TreeDragSourcer interface {
 	RowDraggable(path *TreePath) bool
 }
 
-type TreeDragSource struct {
-	*externglib.Object
-}
-
-var (
-	_ TreeDragSourcer = (*TreeDragSource)(nil)
-	_ gextras.Nativer = (*TreeDragSource)(nil)
-)
+var _ TreeDragSourcer = (*TreeDragSource)(nil)
 
 func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	return &TreeDragSource{

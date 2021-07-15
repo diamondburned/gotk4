@@ -119,7 +119,7 @@ type IMContextOverrider interface {
 	// This is the GtkWidget holding the input focus. This widget is used in
 	// order to correctly position status windows, and may also be used for
 	// purposes internal to the input method.
-	SetClientWidget(widget Widgeter)
+	SetClientWidget(widget Widgetter)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	//
@@ -145,50 +145,6 @@ type IMContextOverrider interface {
 	// If use_preedit is FALSE (default is TRUE), then the IM context may use
 	// some other method to display feedback, such as displaying it in a child
 	// of the root window.
-	SetUsePreedit(usePreedit bool)
-}
-
-// IMContexter describes IMContext's methods.
-type IMContexter interface {
-	// DeleteSurrounding asks the widget that the input context is attached to
-	// delete characters around the cursor position by emitting the
-	// GtkIMContext::delete_surrounding signal.
-	DeleteSurrounding(offset int, nChars int) bool
-	// FilterKey: allow an input method to forward key press and release events
-	// to another input methodm without necessarily having a GdkEvent available.
-	FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool
-	// FilterKeypress: allow an input method to internally handle key press and
-	// release events.
-	FilterKeypress(event gdk.Eventer) bool
-	// FocusIn: notify the input method that the widget to which this input
-	// context corresponds has gained focus.
-	FocusIn()
-	// FocusOut: notify the input method that the widget to which this input
-	// context corresponds has lost focus.
-	FocusOut()
-	// PreeditString: retrieve the current preedit string for the input context,
-	// and a list of attributes to apply to the string.
-	PreeditString() (string, *pango.AttrList, int)
-	// Surrounding retrieves context around the insertion point.
-	Surrounding() (string, int, bool)
-	// SurroundingWithSelection retrieves context around the insertion point.
-	SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool)
-	// Reset: notify the input method that a change such as a change in cursor
-	// position has been made.
-	Reset()
-	// SetClientWidget: set the client widget for the input context.
-	SetClientWidget(widget Widgeter)
-	// SetCursorLocation: notify the input method that a change in cursor
-	// position has been made.
-	SetCursorLocation(area *gdk.Rectangle)
-	// SetSurrounding sets surrounding context around the insertion point and
-	// preedit string.
-	SetSurrounding(text string, len int, cursorIndex int)
-	// SetSurroundingWithSelection sets surrounding context around the insertion
-	// point and preedit string.
-	SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int)
-	// SetUsePreedit sets whether the IM context should use the preedit string
-	// to display feedback.
 	SetUsePreedit(usePreedit bool)
 }
 
@@ -231,10 +187,53 @@ type IMContext struct {
 	*externglib.Object
 }
 
-var (
-	_ IMContexter     = (*IMContext)(nil)
-	_ gextras.Nativer = (*IMContext)(nil)
-)
+var _ gextras.Nativer = (*IMContext)(nil)
+
+// IMContexter describes IMContext's abstract methods.
+type IMContexter interface {
+	// DeleteSurrounding asks the widget that the input context is attached to
+	// delete characters around the cursor position by emitting the
+	// GtkIMContext::delete_surrounding signal.
+	DeleteSurrounding(offset int, nChars int) bool
+	// FilterKey: allow an input method to forward key press and release events
+	// to another input methodm without necessarily having a GdkEvent available.
+	FilterKey(press bool, surface gdk.Surfacer, device gdk.Devicer, time uint32, keycode uint, state gdk.ModifierType, group int) bool
+	// FilterKeypress: allow an input method to internally handle key press and
+	// release events.
+	FilterKeypress(event gdk.Eventer) bool
+	// FocusIn: notify the input method that the widget to which this input
+	// context corresponds has gained focus.
+	FocusIn()
+	// FocusOut: notify the input method that the widget to which this input
+	// context corresponds has lost focus.
+	FocusOut()
+	// PreeditString: retrieve the current preedit string for the input context,
+	// and a list of attributes to apply to the string.
+	PreeditString() (string, *pango.AttrList, int)
+	// Surrounding retrieves context around the insertion point.
+	Surrounding() (string, int, bool)
+	// SurroundingWithSelection retrieves context around the insertion point.
+	SurroundingWithSelection() (text string, cursorIndex int, anchorIndex int, ok bool)
+	// Reset: notify the input method that a change such as a change in cursor
+	// position has been made.
+	Reset()
+	// SetClientWidget: set the client widget for the input context.
+	SetClientWidget(widget Widgetter)
+	// SetCursorLocation: notify the input method that a change in cursor
+	// position has been made.
+	SetCursorLocation(area *gdk.Rectangle)
+	// SetSurrounding sets surrounding context around the insertion point and
+	// preedit string.
+	SetSurrounding(text string, len int, cursorIndex int)
+	// SetSurroundingWithSelection sets surrounding context around the insertion
+	// point and preedit string.
+	SetSurroundingWithSelection(text string, len int, cursorIndex int, anchorIndex int)
+	// SetUsePreedit sets whether the IM context should use the preedit string
+	// to display feedback.
+	SetUsePreedit(usePreedit bool)
+}
+
+var _ IMContexter = (*IMContext)(nil)
 
 func wrapIMContext(obj *externglib.Object) *IMContext {
 	return &IMContext{
@@ -500,7 +499,7 @@ func (context *IMContext) Reset() {
 // This is the GtkWidget holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
-func (context *IMContext) SetClientWidget(widget Widgeter) {
+func (context *IMContext) SetClientWidget(widget Widgetter) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GtkWidget    // out
 

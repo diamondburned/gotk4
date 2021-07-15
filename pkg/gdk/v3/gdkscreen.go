@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,72 +20,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_screen_get_type()), F: marshalScreener},
 	})
-}
-
-// Screener describes Screen's methods.
-type Screener interface {
-	// ActiveWindow returns the screen’s currently active window.
-	ActiveWindow() *Window
-	// Display gets the display to which the screen belongs.
-	Display() *Display
-	// Height gets the height of screen in pixels.
-	Height() int
-	// HeightMm returns the height of screen in millimeters.
-	HeightMm() int
-	// MonitorAtPoint returns the monitor number in which the point (x,y) is
-	// located.
-	MonitorAtPoint(x int, y int) int
-	// MonitorAtWindow returns the number of the monitor in which the largest
-	// area of the bounding rectangle of window resides.
-	MonitorAtWindow(window Windower) int
-	// MonitorGeometry retrieves the Rectangle representing the size and
-	// position of the individual monitor within the entire screen area.
-	MonitorGeometry(monitorNum int) Rectangle
-	// MonitorHeightMm gets the height in millimeters of the specified monitor.
-	MonitorHeightMm(monitorNum int) int
-	// MonitorPlugName returns the output name of the specified monitor.
-	MonitorPlugName(monitorNum int) string
-	// MonitorScaleFactor returns the internal scale factor that maps from
-	// monitor coordinates to the actual device pixels.
-	MonitorScaleFactor(monitorNum int) int
-	// MonitorWidthMm gets the width in millimeters of the specified monitor, if
-	// available.
-	MonitorWidthMm(monitorNum int) int
-	// MonitorWorkarea retrieves the Rectangle representing the size and
-	// position of the “work area” on a monitor within the entire screen area.
-	MonitorWorkarea(monitorNum int) Rectangle
-	// NMonitors returns the number of monitors which screen consists of.
-	NMonitors() int
-	// Number gets the index of screen among the screens in the display to which
-	// it belongs.
-	Number() int
-	// PrimaryMonitor gets the primary monitor for screen.
-	PrimaryMonitor() int
-	// Resolution gets the resolution for font handling on the screen; see
-	// gdk_screen_set_resolution() for full details.
-	Resolution() float64
-	// RGBAVisual gets a visual to use for creating windows with an alpha
-	// channel.
-	RGBAVisual() *Visual
-	// RootWindow gets the root window of screen.
-	RootWindow() *Window
-	// Setting retrieves a desktop-wide setting such as double-click time for
-	// the Screen screen.
-	Setting(name string, value *externglib.Value) bool
-	// SystemVisual: get the system’s default visual for screen.
-	SystemVisual() *Visual
-	// Width gets the width of screen in pixels.
-	Width() int
-	// WidthMm gets the width of screen in millimeters.
-	WidthMm() int
-	// IsComposited returns whether windows with an RGBA visual can reasonably
-	// be expected to have their alpha channel drawn correctly on the screen.
-	IsComposited() bool
-	// MakeDisplayName determines the name to pass to gdk_display_open() to get
-	// a Display with this screen as the default screen.
-	MakeDisplayName() string
-	// SetResolution sets the resolution for font handling on the screen.
-	SetResolution(dpi float64)
 }
 
 // Screen objects are the GDK representation of the screen on which windows can
@@ -101,10 +36,7 @@ type Screen struct {
 	*externglib.Object
 }
 
-var (
-	_ Screener        = (*Screen)(nil)
-	_ gextras.Nativer = (*Screen)(nil)
-)
+var _ gextras.Nativer = (*Screen)(nil)
 
 func wrapScreen(obj *externglib.Object) *Screen {
 	return &Screen{
@@ -162,6 +94,23 @@ func (screen *Screen) Display() *Display {
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
+}
+
+// FontOptions gets any options previously set with
+// gdk_screen_set_font_options().
+func (screen *Screen) FontOptions() *cairo.FontOptions {
+	var _arg0 *C.GdkScreen            // out
+	var _cret *C.cairo_font_options_t // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	_cret = C.gdk_screen_get_font_options(_arg0)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _fontOptions
 }
 
 // Height gets the height of screen in pixels. The returned size is in
@@ -233,7 +182,7 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 // of the bounding rectangle of window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
-func (screen *Screen) MonitorAtWindow(window Windower) int {
+func (screen *Screen) MonitorAtWindow(window Windowwer) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.GdkWindow // out
 	var _cret C.gint       // in
@@ -648,6 +597,20 @@ func (screen *Screen) MakeDisplayName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// SetFontOptions sets the default font options for the screen. These options
+// will be set on any Context’s newly created with
+// gdk_pango_context_get_for_screen(). Changing the default set of font options
+// does not affect contexts that have already been created.
+func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
+	var _arg0 *C.GdkScreen            // out
+	var _arg1 *C.cairo_font_options_t // out
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+
+	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This is a

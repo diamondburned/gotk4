@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialoger},
+		{T: externglib.Type(C.gtk_recent_chooser_dialog_get_type()), F: marshalRecentChooserDialogger},
 	})
-}
-
-// RecentChooserDialoger describes RecentChooserDialog's methods.
-type RecentChooserDialoger interface {
-	privateRecentChooserDialog()
 }
 
 // RecentChooserDialog is a dialog box suitable for displaying the recently used
@@ -75,10 +70,7 @@ type RecentChooserDialog struct {
 	RecentChooser
 }
 
-var (
-	_ RecentChooserDialoger = (*RecentChooserDialog)(nil)
-	_ gextras.Nativer       = (*RecentChooserDialog)(nil)
-)
+var _ gextras.Nativer = (*RecentChooserDialog)(nil)
 
 func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	return &RecentChooserDialog{
@@ -107,7 +99,7 @@ func wrapRecentChooserDialog(obj *externglib.Object) *RecentChooserDialog {
 	}
 }
 
-func marshalRecentChooserDialoger(p uintptr) (interface{}, error) {
+func marshalRecentChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRecentChooserDialog(obj), nil

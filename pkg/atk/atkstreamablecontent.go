@@ -46,20 +46,6 @@ type StreamableContentOverrider interface {
 	URI(mimeType string) string
 }
 
-// StreamableContenter describes StreamableContent's methods.
-type StreamableContenter interface {
-	// MIMEType gets the character string of the specified mime type.
-	MIMEType(i int) string
-	// NMIMETypes gets the number of mime types supported by this object.
-	NMIMETypes() int
-	// Stream gets the content in the specified mime type.
-	Stream(mimeType string) *glib.IOChannel
-	// URI: get a string representing a URI in IETF standard format (see
-	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
-	// be streamed in the specified mime-type, if one is available.
-	URI(mimeType string) string
-}
-
 // StreamableContent: interface whereby an object allows its backing content to
 // be streamed to clients. Typical implementors would be images or icons, HTML
 // content, or multimedia display/rendering widgets.
@@ -79,10 +65,23 @@ type StreamableContent struct {
 	*externglib.Object
 }
 
-var (
-	_ StreamableContenter = (*StreamableContent)(nil)
-	_ gextras.Nativer     = (*StreamableContent)(nil)
-)
+var _ gextras.Nativer = (*StreamableContent)(nil)
+
+// StreamableContenter describes StreamableContent's abstract methods.
+type StreamableContenter interface {
+	// MIMEType gets the character string of the specified mime type.
+	MIMEType(i int) string
+	// NMIMETypes gets the number of mime types supported by this object.
+	NMIMETypes() int
+	// Stream gets the content in the specified mime type.
+	Stream(mimeType string) *glib.IOChannel
+	// URI: get a string representing a URI in IETF standard format (see
+	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
+	// be streamed in the specified mime-type, if one is available.
+	URI(mimeType string) string
+}
+
+var _ StreamableContenter = (*StreamableContent)(nil)
 
 func wrapStreamableContent(obj *externglib.Object) *StreamableContent {
 	return &StreamableContent{

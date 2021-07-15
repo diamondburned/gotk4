@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// ButtonAccessibler describes ButtonAccessible's methods.
-type ButtonAccessibler interface {
-	privateButtonAccessible()
-}
-
 type ButtonAccessible struct {
 	ContainerAccessible
 
@@ -36,10 +31,7 @@ type ButtonAccessible struct {
 	atk.Image
 }
 
-var (
-	_ ButtonAccessibler = (*ButtonAccessible)(nil)
-	_ gextras.Nativer   = (*ButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*ButtonAccessible)(nil)
 
 func wrapButtonAccessible(obj *externglib.Object) *ButtonAccessible {
 	return &ButtonAccessible{

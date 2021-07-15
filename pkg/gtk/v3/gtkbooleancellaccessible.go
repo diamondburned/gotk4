@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// BooleanCellAccessibler describes BooleanCellAccessible's methods.
-type BooleanCellAccessibler interface {
-	privateBooleanCellAccessible()
-}
-
 type BooleanCellAccessible struct {
 	RendererCellAccessible
 }
 
-var (
-	_ BooleanCellAccessibler = (*BooleanCellAccessible)(nil)
-	_ gextras.Nativer        = (*BooleanCellAccessible)(nil)
-)
+var _ gextras.Nativer = (*BooleanCellAccessible)(nil)
 
 func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 	return &BooleanCellAccessible{

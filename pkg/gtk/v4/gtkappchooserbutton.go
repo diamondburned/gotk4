@@ -18,40 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtoner},
+		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtonner},
 	})
-}
-
-// AppChooserButtoner describes AppChooserButton's methods.
-type AppChooserButtoner interface {
-	// AppendCustomItem appends a custom item to the list of applications that
-	// is shown in the popup.
-	AppendCustomItem(name string, label string, icon gio.Iconer)
-	// AppendSeparator appends a separator to the list of applications that is
-	// shown in the popup.
-	AppendSeparator()
-	// Heading returns the text to display at the top of the dialog.
-	Heading() string
-	// Modal gets whether the dialog is modal.
-	Modal() bool
-	// ShowDefaultItem returns whether the dropdown menu should show the default
-	// application at the top.
-	ShowDefaultItem() bool
-	// ShowDialogItem returns whether the dropdown menu shows an item for a
-	// GtkAppChooserDialog.
-	ShowDialogItem() bool
-	// SetActiveCustomItem selects a custom item.
-	SetActiveCustomItem(name string)
-	// SetHeading sets the text to display at the top of the dialog.
-	SetHeading(heading string)
-	// SetModal sets whether the dialog should be modal.
-	SetModal(modal bool)
-	// SetShowDefaultItem sets whether the dropdown menu of this button should
-	// show the default application for the given content type at top.
-	SetShowDefaultItem(setting bool)
-	// SetShowDialogItem sets whether the dropdown menu of this button should
-	// show an entry to trigger a GtkAppChooserDialog.
-	SetShowDialogItem(setting bool)
 }
 
 // AppChooserButton: GtkAppChooserButton lets the user select an application.
@@ -87,10 +55,7 @@ type AppChooserButton struct {
 	AppChooser
 }
 
-var (
-	_ AppChooserButtoner = (*AppChooserButton)(nil)
-	_ gextras.Nativer    = (*AppChooserButton)(nil)
-)
+var _ gextras.Nativer = (*AppChooserButton)(nil)
 
 func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	return &AppChooserButton{
@@ -127,7 +92,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	}
 }
 
-func marshalAppChooserButtoner(p uintptr) (interface{}, error) {
+func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserButton(obj), nil
@@ -164,7 +129,7 @@ func (v *AppChooserButton) Native() uintptr {
 // callback for the activation of a particular custom item in the list.
 //
 // See also gtk.AppChooserButton.AppendSeparator().
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconer) {
+func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 	var _arg2 *C.char                // out

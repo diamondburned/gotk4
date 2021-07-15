@@ -23,14 +23,6 @@ func init() {
 	})
 }
 
-// Orientabler describes Orientable's methods.
-type Orientabler interface {
-	// Orientation retrieves the orientation of the orientable.
-	Orientation() Orientation
-	// SetOrientation sets the orientation of the orientable.
-	SetOrientation(orientation Orientation)
-}
-
 // Orientable interface is implemented by all widgets that can be oriented
 // horizontally or vertically. Historically, such widgets have been realized as
 // subclasses of a common base class (e.g Box/HBox/VBox or Scale/HScale/VScale).
@@ -42,10 +34,17 @@ type Orientable struct {
 	*externglib.Object
 }
 
-var (
-	_ Orientabler     = (*Orientable)(nil)
-	_ gextras.Nativer = (*Orientable)(nil)
-)
+var _ gextras.Nativer = (*Orientable)(nil)
+
+// Orientabler describes Orientable's abstract methods.
+type Orientabler interface {
+	// Orientation retrieves the orientation of the orientable.
+	Orientation() Orientation
+	// SetOrientation sets the orientation of the orientable.
+	SetOrientation(orientation Orientation)
+}
+
+var _ Orientabler = (*Orientable)(nil)
 
 func wrapOrientable(obj *externglib.Object) *Orientable {
 	return &Orientable{

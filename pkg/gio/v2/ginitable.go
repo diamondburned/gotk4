@@ -78,12 +78,6 @@ type InitableOverrider interface {
 	Init(cancellable *Cancellable) error
 }
 
-// Initabler describes Initable's methods.
-type Initabler interface {
-	// Init initializes the object implementing the interface.
-	Init(cancellable *Cancellable) error
-}
-
 // Initable is implemented by objects that can fail during initialization. If an
 // object implements this interface then it must be initialized as the first
 // thing after construction, either via g_initable_init() or
@@ -110,10 +104,15 @@ type Initable struct {
 	*externglib.Object
 }
 
-var (
-	_ Initabler       = (*Initable)(nil)
-	_ gextras.Nativer = (*Initable)(nil)
-)
+var _ gextras.Nativer = (*Initable)(nil)
+
+// Initabler describes Initable's abstract methods.
+type Initabler interface {
+	// Init initializes the object implementing the interface.
+	Init(cancellable *Cancellable) error
+}
+
+var _ Initabler = (*Initable)(nil)
 
 func wrapInitable(obj *externglib.Object) *Initable {
 	return &Initable{

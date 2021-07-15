@@ -71,22 +71,6 @@ type ActionableOverrider interface {
 	SetActionTargetValue(targetValue *glib.Variant)
 }
 
-// Actionabler describes Actionable's methods.
-type Actionabler interface {
-	// ActionName gets the action name for actionable.
-	ActionName() string
-	// ActionTargetValue gets the current target value of actionable.
-	ActionTargetValue() *glib.Variant
-	// SetActionName specifies the name of the action with which this widget
-	// should be associated.
-	SetActionName(actionName string)
-	// SetActionTargetValue sets the target value of an actionable widget.
-	SetActionTargetValue(targetValue *glib.Variant)
-	// SetDetailedActionName sets the action-name and associated string target
-	// value of an actionable widget.
-	SetDetailedActionName(detailedActionName string)
-}
-
 // Actionable: this interface provides a convenient way of associating widgets
 // with actions on a ApplicationWindow or Application.
 //
@@ -103,10 +87,25 @@ type Actionable struct {
 	Widget
 }
 
-var (
-	_ Actionabler     = (*Actionable)(nil)
-	_ gextras.Nativer = (*Actionable)(nil)
-)
+var _ gextras.Nativer = (*Actionable)(nil)
+
+// Actionabler describes Actionable's abstract methods.
+type Actionabler interface {
+	// ActionName gets the action name for actionable.
+	ActionName() string
+	// ActionTargetValue gets the current target value of actionable.
+	ActionTargetValue() *glib.Variant
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated.
+	SetActionName(actionName string)
+	// SetActionTargetValue sets the target value of an actionable widget.
+	SetActionTargetValue(targetValue *glib.Variant)
+	// SetDetailedActionName sets the action-name and associated string target
+	// value of an actionable widget.
+	SetDetailedActionName(detailedActionName string)
+}
+
+var _ Actionabler = (*Actionable)(nil)
 
 func wrapActionable(obj *externglib.Object) *Actionable {
 	return &Actionable{

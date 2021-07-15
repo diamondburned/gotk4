@@ -28,25 +28,6 @@ func init() {
 	})
 }
 
-// StylePropertieser describes StyleProperties's methods.
-type StylePropertieser interface {
-	// Clear clears all style information from props.
-	Clear()
-	// Property gets a style property from props for the given state.
-	Property(property string, state StateFlags) (externglib.Value, bool)
-	// LookupColor returns the symbolic color that is mapped to name.
-	LookupColor(name string) *SymbolicColor
-	// MapColor maps color so it can be referenced by name.
-	MapColor(name string, color *SymbolicColor)
-	// Merge merges into props all the style information contained in
-	// props_to_merge.
-	Merge(propsToMerge *StyleProperties, replace bool)
-	// SetPropertyStylePropertieser sets a styling property in props.
-	SetPropertyStylePropertieser(property string, state StateFlags, value *externglib.Value)
-	// UnsetProperty unsets a style property in props.
-	UnsetProperty(property string, state StateFlags)
-}
-
 // StyleProperties provides the storage for style information that is used by
 // StyleContext and other StyleProvider implementations.
 //
@@ -67,10 +48,7 @@ type StyleProperties struct {
 	StyleProvider
 }
 
-var (
-	_ StylePropertieser = (*StyleProperties)(nil)
-	_ gextras.Nativer   = (*StyleProperties)(nil)
-)
+var _ gextras.Nativer = (*StyleProperties)(nil)
 
 func wrapStyleProperties(obj *externglib.Object) *StyleProperties {
 	return &StyleProperties{

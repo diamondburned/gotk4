@@ -24,17 +24,6 @@ func init() {
 	})
 }
 
-// GestureMultiPresser describes GestureMultiPress's methods.
-type GestureMultiPresser interface {
-	// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-	// function will return TRUE and fill in rect with the press area.
-	Area() (gdk.Rectangle, bool)
-	// SetArea: if rect is non-NULL, the press area will be checked to be
-	// confined within the rectangle, otherwise the button count will be reset
-	// so the press is seen as being the first one.
-	SetArea(rect *gdk.Rectangle)
-}
-
 // GestureMultiPress is a Gesture implementation able to recognize multiple
 // clicks on a nearby zone, which can be listened for through the
 // GestureMultiPress::pressed signal. Whenever time or distance between clicks
@@ -48,10 +37,7 @@ type GestureMultiPress struct {
 	GestureSingle
 }
 
-var (
-	_ GestureMultiPresser = (*GestureMultiPress)(nil)
-	_ gextras.Nativer     = (*GestureMultiPress)(nil)
-)
+var _ gextras.Nativer = (*GestureMultiPress)(nil)
 
 func wrapGestureMultiPress(obj *externglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{
@@ -73,7 +59,7 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
-func NewGestureMultiPress(widget Widgeter) *GestureMultiPress {
+func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

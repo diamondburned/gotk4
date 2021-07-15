@@ -17,16 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarer},
+		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbarrer},
 	})
-}
-
-// Scrollbarer describes Scrollbar's methods.
-type Scrollbarer interface {
-	// Adjustment returns the scrollbar's adjustment.
-	Adjustment() *Adjustment
-	// SetAdjustment makes the scrollbar use the given adjustment.
-	SetAdjustment(adjustment *Adjustment)
 }
 
 // Scrollbar: GtkScrollbar widget is a horizontal or vertical scrollbar.
@@ -75,10 +67,7 @@ type Scrollbar struct {
 	Orientable
 }
 
-var (
-	_ Scrollbarer     = (*Scrollbar)(nil)
-	_ gextras.Nativer = (*Scrollbar)(nil)
-)
+var _ gextras.Nativer = (*Scrollbar)(nil)
 
 func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	return &Scrollbar{
@@ -102,7 +91,7 @@ func wrapScrollbar(obj *externglib.Object) *Scrollbar {
 	}
 }
 
-func marshalScrollbarer(p uintptr) (interface{}, error) {
+func marshalScrollbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScrollbar(obj), nil

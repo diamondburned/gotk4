@@ -18,23 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_monitor_get_type()), F: marshalX11Monitorer},
+		{T: externglib.Type(C.gdk_x11_monitor_get_type()), F: marshalX11Monitorrer},
 	})
-}
-
-// X11Monitorer describes X11Monitor's methods.
-type X11Monitorer interface {
-	privateX11Monitor()
 }
 
 type X11Monitor struct {
 	gdk.Monitor
 }
 
-var (
-	_ X11Monitorer    = (*X11Monitor)(nil)
-	_ gextras.Nativer = (*X11Monitor)(nil)
-)
+var _ gextras.Nativer = (*X11Monitor)(nil)
 
 func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 	return &X11Monitor{
@@ -44,7 +36,7 @@ func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 	}
 }
 
-func marshalX11Monitorer(p uintptr) (interface{}, error) {
+func marshalX11Monitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Monitor(obj), nil

@@ -25,32 +25,6 @@ func init() {
 	})
 }
 
-// Layouter describes Layout's methods.
-type Layouter interface {
-	// BinWindow: retrieve the bin window of the layout used for drawing
-	// operations.
-	BinWindow() *gdk.Window
-	// HAdjustment: this function should only be called after the layout has
-	// been placed in a ScrolledWindow or otherwise configured for scrolling.
-	HAdjustment() *Adjustment
-	// Size gets the size that has been set on the layout, and that determines
-	// the total extents of the layout’s scrollbar area.
-	Size() (width uint, height uint)
-	// VAdjustment: this function should only be called after the layout has
-	// been placed in a ScrolledWindow or otherwise configured for scrolling.
-	VAdjustment() *Adjustment
-	// Move moves a current child of layout to a new position.
-	Move(childWidget Widgeter, x int, y int)
-	// Put adds child_widget to layout, at position (x,y).
-	Put(childWidget Widgeter, x int, y int)
-	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
-	SetHAdjustment(adjustment *Adjustment)
-	// SetSize sets the size of the scrollable area of the layout.
-	SetSize(width uint, height uint)
-	// SetVAdjustment sets the vertical scroll adjustment for the layout.
-	SetVAdjustment(adjustment *Adjustment)
-}
-
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
 // anything except paint a blank background by default. It’s different in that
 // it supports scrolling natively due to implementing Scrollable, and can
@@ -69,10 +43,7 @@ type Layout struct {
 	Scrollable
 }
 
-var (
-	_ Layouter        = (*Layout)(nil)
-	_ gextras.Nativer = (*Layout)(nil)
-)
+var _ gextras.Nativer = (*Layout)(nil)
 
 func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{
@@ -215,7 +186,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of layout to a new position.
-func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
+func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -231,7 +202,7 @@ func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
 // parent container of child_widget.
-func (layout *Layout) Put(childWidget Widgeter, x int, y int) {
+func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

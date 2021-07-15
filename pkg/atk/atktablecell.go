@@ -44,7 +44,18 @@ type TableCellOverrider interface {
 	Table() *ObjectClass
 }
 
-// TableCeller describes TableCell's methods.
+// TableCell: being Table a component which present elements ordered via rows
+// and columns, an TableCell is the interface which each of those elements, so
+// "cells" should implement.
+//
+// See also Table.
+type TableCell struct {
+	ObjectClass
+}
+
+var _ gextras.Nativer = (*TableCell)(nil)
+
+// TableCeller describes TableCell's abstract methods.
 type TableCeller interface {
 	// ColumnSpan returns the number of columns occupied by this cell
 	// accessible.
@@ -60,19 +71,7 @@ type TableCeller interface {
 	Table() *ObjectClass
 }
 
-// TableCell: being Table a component which present elements ordered via rows
-// and columns, an TableCell is the interface which each of those elements, so
-// "cells" should implement.
-//
-// See also Table.
-type TableCell struct {
-	ObjectClass
-}
-
-var (
-	_ TableCeller     = (*TableCell)(nil)
-	_ gextras.Nativer = (*TableCell)(nil)
-)
+var _ TableCeller = (*TableCell)(nil)
 
 func wrapTableCell(obj *externglib.Object) *TableCell {
 	return &TableCell{

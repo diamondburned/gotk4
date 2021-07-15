@@ -136,11 +136,6 @@ func marshalDebugFlag(p uintptr) (interface{}, error) {
 	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EntryIconAccessibler describes EntryIconAccessible's methods.
-type EntryIconAccessibler interface {
-	privateEntryIconAccessible()
-}
-
 type EntryIconAccessible struct {
 	atk.ObjectClass
 
@@ -148,10 +143,7 @@ type EntryIconAccessible struct {
 	atk.Component
 }
 
-var (
-	_ EntryIconAccessibler = (*EntryIconAccessible)(nil)
-	_ gextras.Nativer      = (*EntryIconAccessible)(nil)
-)
+var _ gextras.Nativer = (*EntryIconAccessible)(nil)
 
 func wrapEntryIconAccessible(obj *externglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{

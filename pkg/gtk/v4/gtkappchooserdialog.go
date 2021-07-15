@@ -18,18 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialoger},
+		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialogger},
 	})
-}
-
-// AppChooserDialoger describes AppChooserDialog's methods.
-type AppChooserDialoger interface {
-	// Heading returns the text to display at the top of the dialog.
-	Heading() string
-	// Widget returns the GtkAppChooserWidget of this dialog.
-	Widget() *Widget
-	// SetHeading sets the text to display at the top of the dialog.
-	SetHeading(heading string)
 }
 
 // AppChooserDialog: GtkAppChooserDialog shows a GtkAppChooserWidget inside a
@@ -50,10 +40,7 @@ type AppChooserDialog struct {
 	AppChooser
 }
 
-var (
-	_ AppChooserDialoger = (*AppChooserDialog)(nil)
-	_ gextras.Nativer    = (*AppChooserDialog)(nil)
-)
+var _ gextras.Nativer = (*AppChooserDialog)(nil)
 
 func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	return &AppChooserDialog{
@@ -115,7 +102,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	}
 }
 
-func marshalAppChooserDialoger(p uintptr) (interface{}, error) {
+func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserDialog(obj), nil

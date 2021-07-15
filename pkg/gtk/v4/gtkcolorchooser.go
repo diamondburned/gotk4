@@ -51,7 +51,21 @@ type ColorChooserOverrider interface {
 	SetRGBA(color *gdk.RGBA)
 }
 
-// ColorChooserer describes ColorChooser's methods.
+// ColorChooser: GtkColorChooser is an interface that is implemented by widgets
+// for choosing colors.
+//
+// Depending on the situation, colors may be allowed to have alpha
+// (translucency).
+//
+// In GTK, the main widgets that implement this interface are
+// gtk.ColorChooserWidget, gtk.ColorChooserDialog and gtk.ColorButton.
+type ColorChooser struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*ColorChooser)(nil)
+
+// ColorChooserer describes ColorChooser's abstract methods.
 type ColorChooserer interface {
 	// AddPalette adds a palette to the color chooser.
 	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
@@ -66,22 +80,7 @@ type ColorChooserer interface {
 	SetUseAlpha(useAlpha bool)
 }
 
-// ColorChooser: GtkColorChooser is an interface that is implemented by widgets
-// for choosing colors.
-//
-// Depending on the situation, colors may be allowed to have alpha
-// (translucency).
-//
-// In GTK, the main widgets that implement this interface are
-// gtk.ColorChooserWidget, gtk.ColorChooserDialog and gtk.ColorButton.
-type ColorChooser struct {
-	*externglib.Object
-}
-
-var (
-	_ ColorChooserer  = (*ColorChooser)(nil)
-	_ gextras.Nativer = (*ColorChooser)(nil)
-)
+var _ ColorChooserer = (*ColorChooser)(nil)
 
 func wrapColorChooser(obj *externglib.Object) *ColorChooser {
 	return &ColorChooser{

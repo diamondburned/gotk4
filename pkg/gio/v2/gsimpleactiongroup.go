@@ -32,19 +32,6 @@ func init() {
 	})
 }
 
-// SimpleActionGrouper describes SimpleActionGroup's methods.
-type SimpleActionGrouper interface {
-	// AddEntries: convenience function for creating multiple Action instances
-	// and adding them to the action group.
-	AddEntries(entries []ActionEntry, userData cgo.Handle)
-	// Insert adds an action to the action group.
-	Insert(action Actioner)
-	// Lookup looks up the action with the name action_name in the group.
-	Lookup(actionName string) *Action
-	// Remove removes the named action from the action group.
-	Remove(actionName string)
-}
-
 // SimpleActionGroup is a hash table filled with #GAction objects, implementing
 // the Group and Map interfaces.
 type SimpleActionGroup struct {
@@ -54,10 +41,7 @@ type SimpleActionGroup struct {
 	ActionMap
 }
 
-var (
-	_ SimpleActionGrouper = (*SimpleActionGroup)(nil)
-	_ gextras.Nativer     = (*SimpleActionGroup)(nil)
-)
+var _ gextras.Nativer = (*SimpleActionGroup)(nil)
 
 func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{

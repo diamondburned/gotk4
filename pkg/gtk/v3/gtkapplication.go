@@ -57,59 +57,6 @@ type ApplicationOverrider interface {
 	WindowRemoved(window *Window)
 }
 
-// Applicationer describes Application's methods.
-type Applicationer interface {
-	// AddAccelerator installs an accelerator that will cause the named action
-	// to be activated when the key combination specificed by accelerator is
-	// pressed.
-	AddAccelerator(accelerator string, actionName string, parameter *glib.Variant)
-	// AddWindow adds a window to application.
-	AddWindow(window *Window)
-	// AccelsForAction gets the accelerators that are currently associated with
-	// the given action.
-	AccelsForAction(detailedActionName string) []string
-	// ActionsForAccel returns the list of actions (possibly empty) that accel
-	// maps to.
-	ActionsForAccel(accel string) []string
-	// ActiveWindow gets the “active” window for the application.
-	ActiveWindow() *Window
-	// AppMenu returns the menu model that has been set with
-	// gtk_application_set_app_menu().
-	AppMenu() *gio.MenuModel
-	// Menubar returns the menu model that has been set with
-	// gtk_application_set_menubar().
-	Menubar() *gio.MenuModel
-	// WindowByID returns the ApplicationWindow with the given ID.
-	WindowByID(id uint) *Window
-	// Inhibit: inform the session manager that certain types of actions should
-	// be inhibited.
-	Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint
-	// IsInhibited determines if any of the actions specified in flags are
-	// currently inhibited (possibly by another application).
-	IsInhibited(flags ApplicationInhibitFlags) bool
-	// ListActionDescriptions lists the detailed action names which have
-	// associated accelerators.
-	ListActionDescriptions() []string
-	// PrefersAppMenu determines if the desktop environment in which the
-	// application is running would prefer an application menu be shown.
-	PrefersAppMenu() bool
-	// RemoveAccelerator removes an accelerator that has been previously added
-	// with gtk_application_add_accelerator().
-	RemoveAccelerator(actionName string, parameter *glib.Variant)
-	// RemoveWindow: remove a window from application.
-	RemoveWindow(window *Window)
-	// SetAccelsForAction sets zero or more keyboard accelerators that will
-	// trigger the given action.
-	SetAccelsForAction(detailedActionName string, accels []string)
-	// SetAppMenu sets or unsets the application menu for application.
-	SetAppMenu(appMenu gio.MenuModeler)
-	// SetMenubar sets or unsets the menubar for windows of application.
-	SetMenubar(menubar gio.MenuModeler)
-	// Uninhibit removes an inhibitor that has been established with
-	// gtk_application_inhibit().
-	Uninhibit(cookie uint)
-}
-
 // Application is a class that handles many important aspects of a GTK+
 // application in a convenient fashion, without enforcing a one-size-fits-all
 // application model.
@@ -191,10 +138,7 @@ type Application struct {
 	gio.Application
 }
 
-var (
-	_ Applicationer   = (*Application)(nil)
-	_ gextras.Nativer = (*Application)(nil)
-)
+var _ gextras.Nativer = (*Application)(nil)
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{
@@ -688,7 +632,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetAppMenu(appMenu gio.MenuModeler) {
+func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -715,7 +659,7 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeler) {
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetMenubar(menubar gio.MenuModeler) {
+func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 

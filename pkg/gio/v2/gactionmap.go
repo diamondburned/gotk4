@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMaper},
+		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
 	})
 }
 
@@ -54,8 +54,20 @@ type ActionMapOverrider interface {
 	RemoveAction(actionName string)
 }
 
-// ActionMaper describes ActionMap's methods.
-type ActionMaper interface {
+// ActionMap interface is implemented by Group implementations that operate by
+// containing a number of named #GAction instances, such as ActionGroup.
+//
+// One useful application of this interface is to map the names of actions from
+// various action groups to unique, prefixed names (e.g. by prepending "app." or
+// "win."). This is the motivation for the 'Map' part of the interface name.
+type ActionMap struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*ActionMap)(nil)
+
+// ActionMapper describes ActionMap's abstract methods.
+type ActionMapper interface {
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
@@ -67,20 +79,7 @@ type ActionMaper interface {
 	RemoveAction(actionName string)
 }
 
-// ActionMap interface is implemented by Group implementations that operate by
-// containing a number of named #GAction instances, such as ActionGroup.
-//
-// One useful application of this interface is to map the names of actions from
-// various action groups to unique, prefixed names (e.g. by prepending "app." or
-// "win."). This is the motivation for the 'Map' part of the interface name.
-type ActionMap struct {
-	*externglib.Object
-}
-
-var (
-	_ ActionMaper     = (*ActionMap)(nil)
-	_ gextras.Nativer = (*ActionMap)(nil)
-)
+var _ ActionMapper = (*ActionMap)(nil)
 
 func wrapActionMap(obj *externglib.Object) *ActionMap {
 	return &ActionMap{
@@ -88,7 +87,7 @@ func wrapActionMap(obj *externglib.Object) *ActionMap {
 	}
 }
 
-func marshalActionMaper(p uintptr) (interface{}, error) {
+func marshalActionMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapActionMap(obj), nil

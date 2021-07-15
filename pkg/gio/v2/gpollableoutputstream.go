@@ -98,7 +98,16 @@ type PollableOutputStreamOverrider interface {
 	WritevNonblocking(vectors []OutputVector) (uint, PollableReturn, error)
 }
 
-// PollableOutputStreamer describes PollableOutputStream's methods.
+// PollableOutputStream is implemented by Streams that can be polled for
+// readiness to write. This can be used when interfacing with a non-GIO API that
+// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
+type PollableOutputStream struct {
+	OutputStream
+}
+
+var _ gextras.Nativer = (*PollableOutputStream)(nil)
+
+// PollableOutputStreamer describes PollableOutputStream's abstract methods.
 type PollableOutputStreamer interface {
 	// CanPoll checks if stream is actually pollable.
 	CanPoll() bool
@@ -115,17 +124,7 @@ type PollableOutputStreamer interface {
 	WritevNonblocking(vectors []OutputVector, cancellable *Cancellable) (uint, PollableReturn, error)
 }
 
-// PollableOutputStream is implemented by Streams that can be polled for
-// readiness to write. This can be used when interfacing with a non-GIO API that
-// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
-type PollableOutputStream struct {
-	OutputStream
-}
-
-var (
-	_ PollableOutputStreamer = (*PollableOutputStream)(nil)
-	_ gextras.Nativer        = (*PollableOutputStream)(nil)
-)
+var _ PollableOutputStreamer = (*PollableOutputStream)(nil)
 
 func wrapPollableOutputStream(obj *externglib.Object) *PollableOutputStream {
 	return &PollableOutputStream{

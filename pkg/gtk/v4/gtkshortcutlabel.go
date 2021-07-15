@@ -17,22 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabeler},
+		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabeller},
 	})
-}
-
-// ShortcutLabeler describes ShortcutLabel's methods.
-type ShortcutLabeler interface {
-	// Accelerator retrieves the current accelerator of self.
-	Accelerator() string
-	// DisabledText retrieves the text that is displayed when no accelerator is
-	// set.
-	DisabledText() string
-	// SetAccelerator sets the accelerator to be displayed by self.
-	SetAccelerator(accelerator string)
-	// SetDisabledText sets the text to be displayed by self when no accelerator
-	// is set.
-	SetDisabledText(disabledText string)
 }
 
 // ShortcutLabel: GtkShortcutLabel displays a single keyboard shortcut or
@@ -43,10 +29,7 @@ type ShortcutLabel struct {
 	Widget
 }
 
-var (
-	_ ShortcutLabeler = (*ShortcutLabel)(nil)
-	_ gextras.Nativer = (*ShortcutLabel)(nil)
-)
+var _ gextras.Nativer = (*ShortcutLabel)(nil)
 
 func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	return &ShortcutLabel{
@@ -67,7 +50,7 @@ func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
 	}
 }
 
-func marshalShortcutLabeler(p uintptr) (interface{}, error) {
+func marshalShortcutLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutLabel(obj), nil

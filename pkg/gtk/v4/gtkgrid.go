@@ -17,63 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGrider},
+		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGridder},
 	})
-}
-
-// Grider describes Grid's methods.
-type Grider interface {
-	// Attach adds a widget to the grid.
-	Attach(child Widgeter, column int, row int, width int, height int)
-	// AttachNextTo adds a widget to the grid.
-	AttachNextTo(child Widgeter, sibling Widgeter, side PositionType, width int, height int)
-	// BaselineRow returns which row defines the global baseline of grid.
-	BaselineRow() int
-	// ChildAt gets the child of grid whose area covers the grid cell at column,
-	// row.
-	ChildAt(column int, row int) *Widget
-	// ColumnHomogeneous returns whether all columns of grid have the same
-	// width.
-	ColumnHomogeneous() bool
-	// ColumnSpacing returns the amount of space between the columns of grid.
-	ColumnSpacing() uint
-	// RowBaselinePosition returns the baseline position of row.
-	RowBaselinePosition(row int) BaselinePosition
-	// RowHomogeneous returns whether all rows of grid have the same height.
-	RowHomogeneous() bool
-	// RowSpacing returns the amount of space between the rows of grid.
-	RowSpacing() uint
-	// InsertColumn inserts a column at the specified position.
-	InsertColumn(position int)
-	// InsertNextTo inserts a row or column at the specified position.
-	InsertNextTo(sibling Widgeter, side PositionType)
-	// InsertRow inserts a row at the specified position.
-	InsertRow(position int)
-	// QueryChild queries the attach points and spans of child inside the given
-	// GtkGrid.
-	QueryChild(child Widgeter) (column int, row int, width int, height int)
-	// Remove removes a child from grid.
-	Remove(child Widgeter)
-	// RemoveColumn removes a column from the grid.
-	RemoveColumn(position int)
-	// RemoveRow removes a row from the grid.
-	RemoveRow(position int)
-	// SetBaselineRow sets which row defines the global baseline for the entire
-	// grid.
-	SetBaselineRow(row int)
-	// SetColumnHomogeneous sets whether all columns of grid will have the same
-	// width.
-	SetColumnHomogeneous(homogeneous bool)
-	// SetColumnSpacing sets the amount of space between columns of grid.
-	SetColumnSpacing(spacing uint)
-	// SetRowBaselinePosition sets how the baseline should be positioned on row
-	// of the grid, in case that row is assigned more space than is requested.
-	SetRowBaselinePosition(row int, pos BaselinePosition)
-	// SetRowHomogeneous sets whether all rows of grid will have the same
-	// height.
-	SetRowHomogeneous(homogeneous bool)
-	// SetRowSpacing sets the amount of space between rows of grid.
-	SetRowSpacing(spacing uint)
 }
 
 // Grid: GtkGrid is a container which arranges its child widgets in rows and
@@ -165,10 +110,7 @@ type Grid struct {
 	Orientable
 }
 
-var (
-	_ Grider          = (*Grid)(nil)
-	_ gextras.Nativer = (*Grid)(nil)
-)
+var _ gextras.Nativer = (*Grid)(nil)
 
 func wrapGrid(obj *externglib.Object) *Grid {
 	return &Grid{
@@ -192,7 +134,7 @@ func wrapGrid(obj *externglib.Object) *Grid {
 	}
 }
 
-func marshalGrider(p uintptr) (interface{}, error) {
+func marshalGridder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGrid(obj), nil
@@ -221,7 +163,7 @@ func (v *Grid) Native() uintptr {
 //
 // The position of child is determined by column and row. The number of “cells”
 // that child will occupy is determined by width and height.
-func (grid *Grid) Attach(child Widgeter, column int, row int, width int, height int) {
+func (grid *Grid) Attach(child Widgetter, column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -247,7 +189,7 @@ func (grid *Grid) Attach(child Widgeter, column int, row int, width int, height 
 //
 // Attaching widgets labeled [1], [2], [3] with sibling == NULL and side ==
 // GTK_POS_LEFT yields a layout of [3][2][1].
-func (grid *Grid) AttachNextTo(child Widgeter, sibling Widgeter, side PositionType, width int, height int) {
+func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side PositionType, width int, height int) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.GtkWidget      // out
@@ -410,7 +352,7 @@ func (grid *Grid) InsertColumn(position int) {
 // The new row or column is placed next to sibling, on the side determined by
 // side. If side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted. If side is
 // GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
-func (grid *Grid) InsertNextTo(sibling Widgeter, side PositionType) {
+func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.GtkPositionType // out
@@ -438,7 +380,7 @@ func (grid *Grid) InsertRow(position int) {
 
 // QueryChild queries the attach points and spans of child inside the given
 // GtkGrid.
-func (grid *Grid) QueryChild(child Widgeter) (column int, row int, width int, height int) {
+func (grid *Grid) QueryChild(child Widgetter) (column int, row int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // in
@@ -468,7 +410,7 @@ func (grid *Grid) QueryChild(child Widgeter) (column int, row int, width int, he
 //
 // The child must have been added with gtk.Grid.Attach() or
 // gtk.Grid.AttachNextTo().
-func (grid *Grid) Remove(child Widgeter) {
+func (grid *Grid) Remove(child Widgetter) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 

@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtoner},
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButtonner},
 	})
 }
 
@@ -30,20 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type LinkButtonOverrider interface {
 	ActivateLink() bool
-}
-
-// LinkButtoner describes LinkButton's methods.
-type LinkButtoner interface {
-	// URI retrieves the URI set using gtk_link_button_set_uri().
-	URI() string
-	// Visited retrieves the “visited” state of the URI where the LinkButton
-	// points.
-	Visited() bool
-	// SetURI sets uri as the URI where the LinkButton points.
-	SetURI(uri string)
-	// SetVisited sets the “visited” state of the URI where the LinkButton
-	// points.
-	SetVisited(visited bool)
 }
 
 // LinkButton is a Button with a hyperlink, similar to the one used by web
@@ -70,10 +56,7 @@ type LinkButton struct {
 	Button
 }
 
-var (
-	_ LinkButtoner    = (*LinkButton)(nil)
-	_ gextras.Nativer = (*LinkButton)(nil)
-)
+var _ gextras.Nativer = (*LinkButton)(nil)
 
 func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	return &LinkButton{
@@ -113,7 +96,7 @@ func wrapLinkButton(obj *externglib.Object) *LinkButton {
 	}
 }
 
-func marshalLinkButtoner(p uintptr) (interface{}, error) {
+func marshalLinkButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLinkButton(obj), nil

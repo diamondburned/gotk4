@@ -52,7 +52,18 @@ type SocketAddressOverrider interface {
 	ToNative(dest cgo.Handle, destlen uint) error
 }
 
-// SocketAddresser describes SocketAddress's methods.
+// SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
+// This is an abstract class; use SocketAddress for internet sockets, or
+// SocketAddress for UNIX domain sockets.
+type SocketAddress struct {
+	*externglib.Object
+
+	SocketConnectable
+}
+
+var _ gextras.Nativer = (*SocketAddress)(nil)
+
+// SocketAddresser describes SocketAddress's abstract methods.
 type SocketAddresser interface {
 	// Family gets the socket family type of address.
 	Family() SocketFamily
@@ -63,19 +74,7 @@ type SocketAddresser interface {
 	ToNative(dest cgo.Handle, destlen uint) error
 }
 
-// SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
-// This is an abstract class; use SocketAddress for internet sockets, or
-// SocketAddress for UNIX domain sockets.
-type SocketAddress struct {
-	*externglib.Object
-
-	SocketConnectable
-}
-
-var (
-	_ SocketAddresser = (*SocketAddress)(nil)
-	_ gextras.Nativer = (*SocketAddress)(nil)
-)
+var _ SocketAddresser = (*SocketAddress)(nil)
 
 func wrapSocketAddress(obj *externglib.Object) *SocketAddress {
 	return &SocketAddress{

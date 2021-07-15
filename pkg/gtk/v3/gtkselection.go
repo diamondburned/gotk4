@@ -51,7 +51,7 @@ func marshalTargetFlags(p uintptr) (interface{}, error) {
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
-func SelectionRemoveAll(widget Widgeter) {
+func SelectionRemoveAll(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))

@@ -24,16 +24,6 @@ func init() {
 	})
 }
 
-// RecentChooserMenuer describes RecentChooserMenu's methods.
-type RecentChooserMenuer interface {
-	// ShowNumbers returns the value set by
-	// gtk_recent_chooser_menu_set_show_numbers().
-	ShowNumbers() bool
-	// SetShowNumbers sets whether a number should be added to the items of
-	// menu.
-	SetShowNumbers(showNumbers bool)
-}
-
 // RecentChooserMenu is a widget suitable for displaying recently used files
 // inside a menu. It can be used to set a sub-menu of a MenuItem using
 // gtk_menu_item_set_submenu(), or as the menu of a MenuToolButton.
@@ -59,10 +49,7 @@ type RecentChooserMenu struct {
 	RecentChooser
 }
 
-var (
-	_ RecentChooserMenuer = (*RecentChooserMenu)(nil)
-	_ gextras.Nativer     = (*RecentChooserMenu)(nil)
-)
+var _ gextras.Nativer = (*RecentChooserMenu)(nil)
 
 func wrapRecentChooserMenu(obj *externglib.Object) *RecentChooserMenu {
 	return &RecentChooserMenu{

@@ -32,17 +32,6 @@ func init() {
 	})
 }
 
-// UnixFDLister describes UnixFDList's methods.
-type UnixFDLister interface {
-	// Append adds a file descriptor to list.
-	Append(fd int) (int, error)
-	// Get gets a file descriptor out of list.
-	Get(index_ int) (int, error)
-	// Length gets the length of list (ie: the number of file descriptors
-	// contained within).
-	Length() int
-}
-
 // UnixFDList contains a list of file descriptors. It owns the file descriptors
 // that it contains, closing them when finalized.
 //
@@ -56,10 +45,7 @@ type UnixFDList struct {
 	*externglib.Object
 }
 
-var (
-	_ UnixFDLister    = (*UnixFDList)(nil)
-	_ gextras.Nativer = (*UnixFDList)(nil)
-)
+var _ gextras.Nativer = (*UnixFDList)(nil)
 
 func wrapUnixFDList(obj *externglib.Object) *UnixFDList {
 	return &UnixFDList{

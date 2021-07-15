@@ -23,23 +23,6 @@ func init() {
 	})
 }
 
-// MountOperationer describes MountOperation's methods.
-type MountOperationer interface {
-	// Display gets the display on which windows of the GtkMountOperation will
-	// be shown.
-	Display() *gdk.Display
-	// Parent gets the transient parent used by the GtkMountOperation.
-	Parent() *Window
-	// IsShowing returns whether the GtkMountOperation is currently displaying a
-	// window.
-	IsShowing() bool
-	// SetDisplay sets the display to show windows of the GtkMountOperation on.
-	SetDisplay(display *gdk.Display)
-	// SetParent sets the transient parent for windows shown by the
-	// GtkMountOperation.
-	SetParent(parent *Window)
-}
-
 // MountOperation: GtkMountOperation is an implementation of GMountOperation.
 //
 // The functions and objects described here make working with GTK and GIO more
@@ -56,10 +39,7 @@ type MountOperation struct {
 	gio.MountOperation
 }
 
-var (
-	_ MountOperationer = (*MountOperation)(nil)
-	_ gextras.Nativer  = (*MountOperation)(nil)
-)
+var _ gextras.Nativer = (*MountOperation)(nil)
 
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{

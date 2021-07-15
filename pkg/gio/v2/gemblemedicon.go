@@ -27,18 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconer},
+		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconner},
 	})
-}
-
-// EmblemedIconer describes EmblemedIcon's methods.
-type EmblemedIconer interface {
-	// AddEmblem adds emblem to the #GList of #GEmblems.
-	AddEmblem(emblem *Emblem)
-	// ClearEmblems removes all the emblems from icon.
-	ClearEmblems()
-	// GetIcon gets the main icon for emblemed.
-	GetIcon() *Icon
 }
 
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
@@ -53,10 +43,7 @@ type EmblemedIcon struct {
 	Icon
 }
 
-var (
-	_ EmblemedIconer  = (*EmblemedIcon)(nil)
-	_ gextras.Nativer = (*EmblemedIcon)(nil)
-)
+var _ gextras.Nativer = (*EmblemedIcon)(nil)
 
 func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	return &EmblemedIcon{
@@ -67,14 +54,14 @@ func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	}
 }
 
-func marshalEmblemedIconer(p uintptr) (interface{}, error) {
+func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEmblemedIcon(obj), nil
 }
 
 // NewEmblemedIcon creates a new emblemed icon for icon with the emblem emblem.
-func NewEmblemedIcon(icon Iconer, emblem *Emblem) *EmblemedIcon {
+func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in

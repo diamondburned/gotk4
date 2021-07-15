@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// NotebookPageAccessibler describes NotebookPageAccessible's methods.
-type NotebookPageAccessibler interface {
-	Invalidate()
-}
-
 type NotebookPageAccessible struct {
 	atk.ObjectClass
 
 	atk.Component
 }
 
-var (
-	_ NotebookPageAccessibler = (*NotebookPageAccessible)(nil)
-	_ gextras.Nativer         = (*NotebookPageAccessible)(nil)
-)
+var _ gextras.Nativer = (*NotebookPageAccessible)(nil)
 
 func wrapNotebookPageAccessible(obj *externglib.Object) *NotebookPageAccessible {
 	return &NotebookPageAccessible{
@@ -57,7 +49,7 @@ func marshalNotebookPageAccessibler(p uintptr) (interface{}, error) {
 	return wrapNotebookPageAccessible(obj), nil
 }
 
-func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgeter) *NotebookPageAccessible {
+func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *NotebookPageAccessible {
 	var _arg1 *C.GtkNotebookAccessible // out
 	var _arg2 *C.GtkWidget             // out
 	var _cret *C.AtkObject             // in

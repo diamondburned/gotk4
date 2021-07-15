@@ -18,26 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModeler},
+		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModeller},
 	})
-}
-
-// FilterListModeler describes FilterListModel's methods.
-type FilterListModeler interface {
-	// Filter gets the GtkFilter currently set on self.
-	Filter() *Filter
-	// Incremental returns whether incremental filtering is enabled.
-	Incremental() bool
-	// Model gets the model currently filtered or NULL if none.
-	Model() *gio.ListModel
-	// Pending returns the number of items that have not been filtered yet.
-	Pending() uint
-	// SetFilter sets the filter used to filter items.
-	SetFilter(filter *Filter)
-	// SetIncremental sets the filter model to do an incremental sort.
-	SetIncremental(incremental bool)
-	// SetModel sets the model to be filtered.
-	SetModel(model gio.ListModeler)
 }
 
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
@@ -55,10 +37,7 @@ type FilterListModel struct {
 	gio.ListModel
 }
 
-var (
-	_ FilterListModeler = (*FilterListModel)(nil)
-	_ gextras.Nativer   = (*FilterListModel)(nil)
-)
+var _ gextras.Nativer = (*FilterListModel)(nil)
 
 func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	return &FilterListModel{
@@ -69,7 +48,7 @@ func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	}
 }
 
-func marshalFilterListModeler(p uintptr) (interface{}, error) {
+func marshalFilterListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFilterListModel(obj), nil
@@ -77,7 +56,7 @@ func marshalFilterListModeler(p uintptr) (interface{}, error) {
 
 // NewFilterListModel creates a new GtkFilterListModel that will filter model
 // using the given filter.
-func NewFilterListModel(model gio.ListModeler, filter *Filter) *FilterListModel {
+func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
 	var _arg1 *C.GListModel         // out
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
@@ -224,7 +203,7 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 // Note that GTK makes no effort to ensure that model conforms to the item type
 // of self. It assumes that the caller knows what they are doing and have set up
 // an appropriate filter to ensure that item types match.
-func (self *FilterListModel) SetModel(model gio.ListModeler) {
+func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GListModel         // out
 

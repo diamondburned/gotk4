@@ -48,14 +48,6 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventControllerScroller describes EventControllerScroll's methods.
-type EventControllerScroller interface {
-	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags() EventControllerScrollFlags
-	// SetFlags sets the flags conditioning scroll controller behavior.
-	SetFlags(flags EventControllerScrollFlags)
-}
-
 // EventControllerScroll is an event controller meant to handle scroll events
 // from mice and touchpads. It is capable of handling both discrete and
 // continuous scroll events, abstracting them both on the
@@ -94,10 +86,7 @@ type EventControllerScroll struct {
 	EventController
 }
 
-var (
-	_ EventControllerScroller = (*EventControllerScroll)(nil)
-	_ gextras.Nativer         = (*EventControllerScroll)(nil)
-)
+var _ gextras.Nativer = (*EventControllerScroll)(nil)
 
 func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{
@@ -115,7 +104,7 @@ func marshalEventControllerScroller(p uintptr) (interface{}, error) {
 
 // NewEventControllerScroll creates a new event controller that will handle
 // scroll events for the given widget.
-func NewEventControllerScroll(widget Widgeter, flags EventControllerScrollFlags) *EventControllerScroll {
+func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 *C.GtkWidget                    // out
 	var _arg2 C.GtkEventControllerScrollFlags // out
 	var _cret *C.GtkEventController           // in

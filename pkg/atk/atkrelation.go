@@ -71,18 +71,6 @@ func RelationTypeRegister(name string) RelationType {
 	return _relationType
 }
 
-// Relationer describes Relation's methods.
-type Relationer interface {
-	// AddTarget adds the specified AtkObject to the target for the relation, if
-	// it is not already present.
-	AddTarget(target *ObjectClass)
-	// RelationType gets the type of relation
-	RelationType() RelationType
-	// RemoveTarget: remove the specified AtkObject from the target for the
-	// relation.
-	RemoveTarget(target *ObjectClass) bool
-}
-
 // Relation describes a relation between an object and one or more other
 // objects. The actual relations that an object has with other objects are
 // defined as an AtkRelationSet, which is a set of AtkRelations.
@@ -90,10 +78,7 @@ type Relation struct {
 	*externglib.Object
 }
 
-var (
-	_ Relationer      = (*Relation)(nil)
-	_ gextras.Nativer = (*Relation)(nil)
-)
+var _ gextras.Nativer = (*Relation)(nil)
 
 func wrapRelation(obj *externglib.Object) *Relation {
 	return &Relation{

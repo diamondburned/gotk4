@@ -70,33 +70,6 @@ type HyperlinkOverrider interface {
 	LinkState() uint
 }
 
-// Hyperlinker describes Hyperlink's methods.
-type Hyperlinker interface {
-	// EndIndex gets the index with the hypertext document at which this link
-	// ends.
-	EndIndex() int
-	// NAnchors gets the number of anchors associated with this hyperlink.
-	NAnchors() int
-	// GetObject returns the item associated with this hyperlinks nth anchor.
-	GetObject(i int) *ObjectClass
-	// StartIndex gets the index with the hypertext document at which this link
-	// begins.
-	StartIndex() int
-	// URI: get a the URI associated with the anchor specified by i of link_.
-	URI(i int) string
-	// IsInline indicates whether the link currently displays some or all of its
-	// content inline.
-	IsInline() bool
-	// IsSelectedLink determines whether this AtkHyperlink is selected
-	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
-	// ATK_STATE_FOCUSED for focused links.
-	IsSelectedLink() bool
-	// IsValid: since the document that a link is associated with may have
-	// changed this method returns TRUE if the link is still valid (with respect
-	// to the document it references) and FALSE otherwise.
-	IsValid() bool
-}
-
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
 // in the case of client-side image maps) in a hypertext document. It may
 // implement the AtkAction interface. AtkHyperlink may also be used to refer to
@@ -108,10 +81,7 @@ type Hyperlink struct {
 	Action
 }
 
-var (
-	_ Hyperlinker     = (*Hyperlink)(nil)
-	_ gextras.Nativer = (*Hyperlink)(nil)
-)
+var _ gextras.Nativer = (*Hyperlink)(nil)
 
 func wrapHyperlink(obj *externglib.Object) *Hyperlink {
 	return &Hyperlink{

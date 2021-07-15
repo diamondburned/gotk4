@@ -603,12 +603,10 @@ var BuiltinHandledTypes = []FilterMatcher{
 	// Ignore generating everything in GObject, but allow resolving its
 	// types.
 	RegexFilter("GObject..*"),
-
 	// This is not supported by Go. We might be able to support it in
 	// the future using a 16-byte data structure, but the actual size
 	// isn't well defined as far as I know.
 	AbsoluteFilter("*.long double"),
-
 	// Special marking for internal types from GLib (apparently for
 	// glib:get-type).
 	AbsoluteFilter("C.intern"),

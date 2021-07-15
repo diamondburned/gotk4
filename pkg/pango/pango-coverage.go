@@ -48,26 +48,6 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Coverager describes Coverage's methods.
-type Coverager interface {
-	// Copy an existing PangoCoverage.
-	Copy() *Coverage
-	// Get: determine whether a particular index is covered by coverage.
-	Get(index_ int) CoverageLevel
-	// Max: set the coverage for each index in coverage to be the max (better)
-	// value of the current coverage for the index and the coverage for the
-	// corresponding index in other.
-	Max(other *Coverage)
-	// Ref: increase the reference count on the PangoCoverage by one.
-	ref() *Coverage
-	// Set: modify a particular index within coverage
-	Set(index_ int, level CoverageLevel)
-	// ToBytes: convert a PangoCoverage structure into a flat binary format.
-	ToBytes() []byte
-	// Unref: decrease the reference count on the PangoCoverage by one.
-	unref()
-}
-
 // Coverage structure is a map from Unicode characters to CoverageLevel values.
 //
 // It is often necessary in Pango to determine if a particular font can
@@ -78,10 +58,7 @@ type Coverage struct {
 	*externglib.Object
 }
 
-var (
-	_ Coverager       = (*Coverage)(nil)
-	_ gextras.Nativer = (*Coverage)(nil)
-)
+var _ gextras.Nativer = (*Coverage)(nil)
 
 func wrapCoverage(obj *externglib.Object) *Coverage {
 	return &Coverage{

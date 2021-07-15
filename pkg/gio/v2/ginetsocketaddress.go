@@ -31,30 +31,13 @@ func init() {
 	})
 }
 
-// InetSocketAddresser describes InetSocketAddress's methods.
-type InetSocketAddresser interface {
-	// Address gets address's Address.
-	Address() *InetAddress
-	// Flowinfo gets the sin6_flowinfo field from address, which must be an IPv6
-	// address.
-	Flowinfo() uint32
-	// Port gets address's port.
-	Port() uint16
-	// ScopeID gets the sin6_scope_id field from address, which must be an IPv6
-	// address.
-	ScopeID() uint32
-}
-
 // InetSocketAddress: IPv4 or IPv6 socket address; that is, the combination of a
 // Address and a port number.
 type InetSocketAddress struct {
 	SocketAddress
 }
 
-var (
-	_ InetSocketAddresser = (*InetSocketAddress)(nil)
-	_ gextras.Nativer     = (*InetSocketAddress)(nil)
-)
+var _ gextras.Nativer = (*InetSocketAddress)(nil)
 
 func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{

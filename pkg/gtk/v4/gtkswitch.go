@@ -21,18 +21,6 @@ func init() {
 	})
 }
 
-// Switcher describes Switch's methods.
-type Switcher interface {
-	// Active gets whether the GtkSwitch is in its “on” or “off” state.
-	Active() bool
-	// State gets the underlying state of the GtkSwitch.
-	State() bool
-	// SetActive changes the state of self to the desired one.
-	SetActive(isActive bool)
-	// SetState sets the underlying state of the GtkSwitch.
-	SetState(state bool)
-}
-
 // Switch: GtkSwitch is a "light switch" that has two states: on or off.
 //
 // !An example GtkSwitch (switch.png)
@@ -65,10 +53,7 @@ type Switch struct {
 	Actionable
 }
 
-var (
-	_ Switcher        = (*Switch)(nil)
-	_ gextras.Nativer = (*Switch)(nil)
-)
+var _ gextras.Nativer = (*Switch)(nil)
 
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{

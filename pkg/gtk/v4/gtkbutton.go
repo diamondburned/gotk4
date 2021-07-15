@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
 	})
 }
 
@@ -28,30 +28,6 @@ func init() {
 type ButtonOverrider interface {
 	Activate()
 	Clicked()
-}
-
-// Buttoner describes Button's methods.
-type Buttoner interface {
-	// Child gets the child widget of button.
-	Child() *Widget
-	// HasFrame returns whether the button has a frame.
-	HasFrame() bool
-	// IconName returns the icon name of the button.
-	IconName() string
-	// Label fetches the text from the label of the button.
-	Label() string
-	// UseUnderline gets whether underlines are interpreted as mnemonics.
-	UseUnderline() bool
-	// SetChild sets the child widget of button.
-	SetChild(child Widgeter)
-	// SetHasFrame sets the style of the button.
-	SetHasFrame(hasFrame bool)
-	// SetIconName adds a GtkImage with the given icon name as a child.
-	SetIconName(iconName string)
-	// SetLabel sets the text of the label of the button to label.
-	SetLabel(label string)
-	// SetUseUnderline sets whether to use underlines as mnemonics.
-	SetUseUnderline(useUnderline bool)
 }
 
 // Button: GtkButton widget is generally used to trigger a callback function
@@ -91,10 +67,7 @@ type Button struct {
 	Actionable
 }
 
-var (
-	_ Buttoner        = (*Button)(nil)
-	_ gextras.Nativer = (*Button)(nil)
-)
+var _ gextras.Nativer = (*Button)(nil)
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
@@ -131,7 +104,7 @@ func wrapButton(obj *externglib.Object) *Button {
 	}
 }
 
-func marshalButtoner(p uintptr) (interface{}, error) {
+func marshalButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -312,7 +285,7 @@ func (button *Button) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of button.
-func (button *Button) SetChild(child Widgeter) {
+func (button *Button) SetChild(child Widgetter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 

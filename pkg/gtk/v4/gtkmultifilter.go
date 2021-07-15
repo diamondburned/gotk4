@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// AnyFilterer describes AnyFilter's methods.
-type AnyFilterer interface {
-	privateAnyFilter()
-}
-
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters
 // matches.
 //
@@ -37,10 +32,7 @@ type AnyFilter struct {
 	MultiFilter
 }
 
-var (
-	_ AnyFilterer     = (*AnyFilter)(nil)
-	_ gextras.Nativer = (*AnyFilter)(nil)
-)
+var _ gextras.Nativer = (*AnyFilter)(nil)
 
 func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
 	return &AnyFilter{
@@ -85,11 +77,6 @@ func NewAnyFilter() *AnyFilter {
 
 func (*AnyFilter) privateAnyFilter() {}
 
-// EveryFilterer describes EveryFilter's methods.
-type EveryFilterer interface {
-	privateEveryFilter()
-}
-
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
 //
 // To add filters to a GtkEveryFilter, use gtk.MultiFilter.Append().
@@ -97,10 +84,7 @@ type EveryFilter struct {
 	MultiFilter
 }
 
-var (
-	_ EveryFilterer   = (*EveryFilter)(nil)
-	_ gextras.Nativer = (*EveryFilter)(nil)
-)
+var _ gextras.Nativer = (*EveryFilter)(nil)
 
 func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
 	return &EveryFilter{
@@ -145,15 +129,6 @@ func NewEveryFilter() *EveryFilter {
 
 func (*EveryFilter) privateEveryFilter() {}
 
-// MultiFilterer describes MultiFilter's methods.
-type MultiFilterer interface {
-	// Append adds a filter to self to use for matching.
-	Append(filter *Filter)
-	// Remove removes the filter at the given position from the list of filters
-	// used by self.
-	Remove(position uint)
-}
-
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
 // multiple filters.
 type MultiFilter struct {
@@ -163,10 +138,18 @@ type MultiFilter struct {
 	Buildable
 }
 
-var (
-	_ MultiFilterer   = (*MultiFilter)(nil)
-	_ gextras.Nativer = (*MultiFilter)(nil)
-)
+var _ gextras.Nativer = (*MultiFilter)(nil)
+
+// MultiFilterer describes MultiFilter's abstract methods.
+type MultiFilterer interface {
+	// Append adds a filter to self to use for matching.
+	Append(filter *Filter)
+	// Remove removes the filter at the given position from the list of filters
+	// used by self.
+	Remove(position uint)
+}
+
+var _ MultiFilterer = (*MultiFilter)(nil)
 
 func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
 	return &MultiFilter{

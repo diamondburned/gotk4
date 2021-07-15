@@ -69,7 +69,15 @@ type ToolShellOverrider interface {
 	RebuildMenu()
 }
 
-// ToolSheller describes ToolShell's methods.
+// ToolShell interface allows container widgets to provide additional
+// information when embedding ToolItem widgets.
+type ToolShell struct {
+	Widget
+}
+
+var _ gextras.Nativer = (*ToolShell)(nil)
+
+// ToolSheller describes ToolShell's abstract methods.
 type ToolSheller interface {
 	// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
 	EllipsizeMode() pango.EllipsizeMode
@@ -93,16 +101,7 @@ type ToolSheller interface {
 	RebuildMenu()
 }
 
-// ToolShell interface allows container widgets to provide additional
-// information when embedding ToolItem widgets.
-type ToolShell struct {
-	Widget
-}
-
-var (
-	_ ToolSheller     = (*ToolShell)(nil)
-	_ gextras.Nativer = (*ToolShell)(nil)
-)
+var _ ToolSheller = (*ToolShell)(nil)
 
 func wrapToolShell(obj *externglib.Object) *ToolShell {
 	return &ToolShell{

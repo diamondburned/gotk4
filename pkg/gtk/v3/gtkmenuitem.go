@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemer},
+		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemmer},
 	})
 }
 
@@ -40,54 +40,6 @@ type MenuItemOverrider interface {
 	Select()
 	// SetLabel sets text on the menu_item label
 	SetLabel(label string)
-	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
-	// given item.
-	ToggleSizeAllocate(allocation int)
-}
-
-// MenuItemer describes MenuItem's methods.
-type MenuItemer interface {
-	// Activate emits the MenuItem::activate signal on the given item
-	Activate()
-	// Deselect emits the MenuItem::deselect signal on the given item.
-	Deselect()
-	// AccelPath: retrieve the accelerator path that was previously set on
-	// menu_item.
-	AccelPath() string
-	// Label sets text on the menu_item label
-	Label() string
-	// ReserveIndicator returns whether the menu_item reserves space for the
-	// submenu indicator, regardless if it has a submenu or not.
-	ReserveIndicator() bool
-	// RightJustified gets whether the menu item appears justified at the right
-	// side of the menu bar.
-	RightJustified() bool
-	// Submenu gets the submenu underneath this menu item, if any.
-	Submenu() *Widget
-	// UseUnderline checks if an underline in the text indicates the next
-	// character should be used for the mnemonic accelerator key.
-	UseUnderline() bool
-	// Select emits the MenuItem::select signal on the given item.
-	Select()
-	// SetAccelPath: set the accelerator path on menu_item, through which
-	// runtime changes of the menu item’s accelerator caused by the user can be
-	// identified and saved to persistent storage (see gtk_accel_map_save() on
-	// this).
-	SetAccelPath(accelPath string)
-	// SetLabel sets text on the menu_item label
-	SetLabel(label string)
-	// SetReserveIndicator sets whether the menu_item should reserve space for
-	// the submenu indicator, regardless if it actually has a submenu or not.
-	SetReserveIndicator(reserve bool)
-	// SetRightJustified sets whether the menu item appears justified at the
-	// right side of a menu bar.
-	SetRightJustified(rightJustified bool)
-	// SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
-	// NULL submenu is passed.
-	SetSubmenu(submenu *Menu)
-	// SetUseUnderline: if true, an underline in the text indicates the next
-	// character should be used for the mnemonic accelerator key.
-	SetUseUnderline(setting bool)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
 	ToggleSizeAllocate(allocation int)
@@ -120,10 +72,7 @@ type MenuItem struct {
 	Activatable
 }
 
-var (
-	_ MenuItemer      = (*MenuItem)(nil)
-	_ gextras.Nativer = (*MenuItem)(nil)
-)
+var _ gextras.Nativer = (*MenuItem)(nil)
 
 func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{
@@ -161,7 +110,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemer(p uintptr) (interface{}, error) {
+func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil

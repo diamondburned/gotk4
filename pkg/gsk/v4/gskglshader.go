@@ -25,34 +25,6 @@ func init() {
 	})
 }
 
-// GLShaderer describes GLShader's methods.
-type GLShaderer interface {
-	// Compile tries to compile the shader for the given renderer.
-	Compile(renderer Rendererer) error
-	// FindUniformByName looks for a uniform by the name name, and returns the
-	// index of the uniform, or -1 if it was not found.
-	FindUniformByName(name string) int
-	// ArgsSize: get the size of the data block used to specify arguments for
-	// this shader.
-	ArgsSize() uint
-	// NTextures returns the number of textures that the shader requires.
-	NTextures() int
-	// NUniforms: get the number of declared uniforms for this shader.
-	NUniforms() int
-	// Resource gets the resource path for the GLSL sourcecode being used to
-	// render this shader.
-	Resource() string
-	// UniformName: get the name of the declared uniform for this shader at
-	// index idx.
-	UniformName(idx int) string
-	// UniformOffset: get the offset into the data block where data for this
-	// uniforms is stored.
-	UniformOffset(idx int) int
-	// UniformType: get the type of the declared uniform for this shader at
-	// index idx.
-	UniformType(idx int) GLUniformType
-}
-
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
 // fragment shader of the rendering pipeline.
 //
@@ -159,10 +131,7 @@ type GLShader struct {
 	*externglib.Object
 }
 
-var (
-	_ GLShaderer      = (*GLShader)(nil)
-	_ gextras.Nativer = (*GLShader)(nil)
-)
+var _ gextras.Nativer = (*GLShader)(nil)
 
 func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{

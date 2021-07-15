@@ -21,12 +21,6 @@ func init() {
 	})
 }
 
-// GObjectAccessibler describes GObjectAccessible's methods.
-type GObjectAccessibler interface {
-	// Object gets the GObject for which obj is the accessible object.
-	Object() *externglib.Object
-}
-
 // GObjectAccessible: this object class is derived from AtkObject. It can be
 // used as a basis for implementing accessible objects for GObjects which are
 // not derived from GtkWidget. One example of its use is in providing an
@@ -35,10 +29,7 @@ type GObjectAccessible struct {
 	ObjectClass
 }
 
-var (
-	_ GObjectAccessibler = (*GObjectAccessible)(nil)
-	_ gextras.Nativer    = (*GObjectAccessible)(nil)
-)
+var _ gextras.Nativer = (*GObjectAccessible)(nil)
 
 func wrapGObjectAccessible(obj *externglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{

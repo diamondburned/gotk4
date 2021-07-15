@@ -339,21 +339,12 @@ func EventsGetDistance(event1 Eventer, event2 Eventer) (float64, bool) {
 	return _distance, _ok
 }
 
-// ButtonEventer describes ButtonEvent's methods.
-type ButtonEventer interface {
-	// Button: extract the button number from a button event.
-	Button() uint
-}
-
 // ButtonEvent: event related to a button on a pointer device.
 type ButtonEvent struct {
 	Event
 }
 
-var (
-	_ ButtonEventer   = (*ButtonEvent)(nil)
-	_ gextras.Nativer = (*ButtonEvent)(nil)
-)
+var _ gextras.Nativer = (*ButtonEvent)(nil)
 
 func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	return &ButtonEvent{
@@ -385,25 +376,12 @@ func (event *ButtonEvent) Button() uint {
 	return _guint
 }
 
-// CrossingEventer describes CrossingEvent's methods.
-type CrossingEventer interface {
-	// Detail extracts the notify detail from a crossing event.
-	Detail() NotifyType
-	// Focus checks if the event surface is the focus surface.
-	Focus() bool
-	// Mode extracts the crossing mode from a crossing event.
-	Mode() CrossingMode
-}
-
 // CrossingEvent: event caused by a pointing device moving between surfaces.
 type CrossingEvent struct {
 	Event
 }
 
-var (
-	_ CrossingEventer = (*CrossingEvent)(nil)
-	_ gextras.Nativer = (*CrossingEvent)(nil)
-)
+var _ gextras.Nativer = (*CrossingEvent)(nil)
 
 func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	return &CrossingEvent{
@@ -469,21 +447,12 @@ func (event *CrossingEvent) Mode() CrossingMode {
 	return _crossingMode
 }
 
-// DNDEventer describes DNDEvent's methods.
-type DNDEventer interface {
-	// Drop gets the GdkDrop object from a DND event.
-	Drop() *Drop
-}
-
 // DNDEvent: event related to drag and drop operations.
 type DNDEvent struct {
 	Event
 }
 
-var (
-	_ DNDEventer      = (*DNDEvent)(nil)
-	_ gextras.Nativer = (*DNDEvent)(nil)
-)
+var _ gextras.Nativer = (*DNDEvent)(nil)
 
 func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	return &DNDEvent{
@@ -515,20 +484,12 @@ func (event *DNDEvent) Drop() *Drop {
 	return _drop
 }
 
-// DeleteEventer describes DeleteEvent's methods.
-type DeleteEventer interface {
-	privateDeleteEvent()
-}
-
 // DeleteEvent: event related to closing a top-level surface.
 type DeleteEvent struct {
 	Event
 }
 
-var (
-	_ DeleteEventer   = (*DeleteEvent)(nil)
-	_ gextras.Nativer = (*DeleteEvent)(nil)
-)
+var _ gextras.Nativer = (*DeleteEvent)(nil)
 
 func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	return &DeleteEvent{
@@ -546,7 +507,19 @@ func marshalDeleteEventer(p uintptr) (interface{}, error) {
 
 func (*DeleteEvent) privateDeleteEvent() {}
 
-// Eventer describes Event's methods.
+// Event GdkEvents are immutable data structures, created by GDK to represent
+// windowing system events.
+//
+// In GTK applications the events are handled automatically by toplevel widgets
+// and passed on to the event controllers of appropriate widgets, so using
+// GdkEvent and its related API is rarely needed.
+type Event struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Event)(nil)
+
+// Eventer describes Event's abstract methods.
 type Eventer interface {
 	// Axes extracts all axis values from an event.
 	Axes() ([]float64, bool)
@@ -587,20 +560,7 @@ type Eventer interface {
 	unref()
 }
 
-// Event GdkEvents are immutable data structures, created by GDK to represent
-// windowing system events.
-//
-// In GTK applications the events are handled automatically by toplevel widgets
-// and passed on to the event controllers of appropriate widgets, so using
-// GdkEvent and its related API is rarely needed.
-type Event struct {
-	*externglib.Object
-}
-
-var (
-	_ Eventer         = (*Event)(nil)
-	_ gextras.Nativer = (*Event)(nil)
-)
+var _ Eventer = (*Event)(nil)
 
 func wrapEvent(obj *externglib.Object) *Event {
 	return &Event{
@@ -916,22 +876,12 @@ func (event *Event) unref() {
 	C.gdk_event_unref(_arg0)
 }
 
-// FocusEventer describes FocusEvent's methods.
-type FocusEventer interface {
-	// In extracts whether this event is about focus entering or leaving the
-	// surface.
-	In() bool
-}
-
 // FocusEvent: event related to a keyboard focus change.
 type FocusEvent struct {
 	Event
 }
 
-var (
-	_ FocusEventer    = (*FocusEvent)(nil)
-	_ gextras.Nativer = (*FocusEvent)(nil)
-)
+var _ gextras.Nativer = (*FocusEvent)(nil)
 
 func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	return &FocusEvent{
@@ -966,23 +916,12 @@ func (event *FocusEvent) In() bool {
 	return _ok
 }
 
-// GrabBrokenEventer describes GrabBrokenEvent's methods.
-type GrabBrokenEventer interface {
-	// GrabSurface extracts the grab surface from a grab broken event.
-	GrabSurface() *Surface
-	// Implicit checks whether the grab broken event is for an implicit grab.
-	Implicit() bool
-}
-
 // GrabBrokenEvent: event related to a broken windowing system grab.
 type GrabBrokenEvent struct {
 	Event
 }
 
-var (
-	_ GrabBrokenEventer = (*GrabBrokenEvent)(nil)
-	_ gextras.Nativer   = (*GrabBrokenEvent)(nil)
-)
+var _ gextras.Nativer = (*GrabBrokenEvent)(nil)
 
 func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	return &GrabBrokenEvent{
@@ -1032,35 +971,12 @@ func (event *GrabBrokenEvent) Implicit() bool {
 	return _ok
 }
 
-// KeyEventer describes KeyEvent's methods.
-type KeyEventer interface {
-	// ConsumedModifiers extracts the consumed modifiers from a key event.
-	ConsumedModifiers() ModifierType
-	// Keycode extracts the keycode from a key event.
-	Keycode() uint
-	// Keyval extracts the keyval from a key event.
-	Keyval() uint
-	// Layout extracts the layout from a key event.
-	Layout() uint
-	// Level extracts the shift level from a key event.
-	Level() uint
-	// Match gets a keyval and modifier combination that will match the event.
-	Match() (uint, ModifierType, bool)
-	// IsModifier extracts whether the key event is for a modifier key.
-	IsModifier() bool
-	// Matches a key event against a keyval and modifiers.
-	Matches(keyval uint, modifiers ModifierType) KeyMatch
-}
-
 // KeyEvent: event related to a key-based device.
 type KeyEvent struct {
 	Event
 }
 
-var (
-	_ KeyEventer      = (*KeyEvent)(nil)
-	_ gextras.Nativer = (*KeyEvent)(nil)
-)
+var _ gextras.Nativer = (*KeyEvent)(nil)
 
 func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	return &KeyEvent{
@@ -1227,20 +1143,12 @@ func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	return _keyMatch
 }
 
-// MotionEventer describes MotionEvent's methods.
-type MotionEventer interface {
-	privateMotionEvent()
-}
-
 // MotionEvent: event related to a pointer or touch device motion.
 type MotionEvent struct {
 	Event
 }
 
-var (
-	_ MotionEventer   = (*MotionEvent)(nil)
-	_ gextras.Nativer = (*MotionEvent)(nil)
-)
+var _ gextras.Nativer = (*MotionEvent)(nil)
 
 func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	return &MotionEvent{
@@ -1258,25 +1166,12 @@ func marshalMotionEventer(p uintptr) (interface{}, error) {
 
 func (*MotionEvent) privateMotionEvent() {}
 
-// PadEventer describes PadEvent's methods.
-type PadEventer interface {
-	// AxisValue extracts the information from a pad strip or ring event.
-	AxisValue() (uint, float64)
-	// Button extracts information about the pressed button from a pad event.
-	Button() uint
-	// GroupMode extracts group and mode information from a pad event.
-	GroupMode() (group uint, mode uint)
-}
-
 // PadEvent: event related to a pad-based device.
 type PadEvent struct {
 	Event
 }
 
-var (
-	_ PadEventer      = (*PadEvent)(nil)
-	_ gextras.Nativer = (*PadEvent)(nil)
-)
+var _ gextras.Nativer = (*PadEvent)(nil)
 
 func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	return &PadEvent{
@@ -1346,20 +1241,12 @@ func (event *PadEvent) GroupMode() (group uint, mode uint) {
 	return _group, _mode
 }
 
-// ProximityEventer describes ProximityEvent's methods.
-type ProximityEventer interface {
-	privateProximityEvent()
-}
-
 // ProximityEvent: event related to the proximity of a tool to a device.
 type ProximityEvent struct {
 	Event
 }
 
-var (
-	_ ProximityEventer = (*ProximityEvent)(nil)
-	_ gextras.Nativer  = (*ProximityEvent)(nil)
-)
+var _ gextras.Nativer = (*ProximityEvent)(nil)
 
 func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	return &ProximityEvent{
@@ -1377,25 +1264,12 @@ func marshalProximityEventer(p uintptr) (interface{}, error) {
 
 func (*ProximityEvent) privateProximityEvent() {}
 
-// ScrollEventer describes ScrollEvent's methods.
-type ScrollEventer interface {
-	// Deltas extracts the scroll deltas of a scroll event.
-	Deltas() (deltaX float64, deltaY float64)
-	// Direction extracts the direction of a scroll event.
-	Direction() ScrollDirection
-	// IsStop: check whether a scroll event is a stop scroll event.
-	IsStop() bool
-}
-
 // ScrollEvent: event related to a scrolling motion.
 type ScrollEvent struct {
 	Event
 }
 
-var (
-	_ ScrollEventer   = (*ScrollEvent)(nil)
-	_ gextras.Nativer = (*ScrollEvent)(nil)
-)
+var _ gextras.Nativer = (*ScrollEvent)(nil)
 
 func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	return &ScrollEvent{
@@ -1473,22 +1347,12 @@ func (event *ScrollEvent) IsStop() bool {
 	return _ok
 }
 
-// TouchEventer describes TouchEvent's methods.
-type TouchEventer interface {
-	// EmulatingPointer extracts whether a touch event is emulating a pointer
-	// event.
-	EmulatingPointer() bool
-}
-
 // TouchEvent: event related to a touch-based device.
 type TouchEvent struct {
 	Event
 }
 
-var (
-	_ TouchEventer    = (*TouchEvent)(nil)
-	_ gextras.Nativer = (*TouchEvent)(nil)
-)
+var _ gextras.Nativer = (*TouchEvent)(nil)
 
 func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	return &TouchEvent{
@@ -1522,20 +1386,6 @@ func (event *TouchEvent) EmulatingPointer() bool {
 	return _ok
 }
 
-// TouchpadEventer describes TouchpadEvent's methods.
-type TouchpadEventer interface {
-	// Deltas extracts delta information from a touchpad event.
-	Deltas() (dx float64, dy float64)
-	// GesturePhase extracts the touchpad gesture phase from a touchpad event.
-	GesturePhase() TouchpadGesturePhase
-	// NFingers extracts the number of fingers from a touchpad event.
-	NFingers() uint
-	// PinchAngleDelta extracts the angle delta from a touchpad pinch event.
-	PinchAngleDelta() float64
-	// PinchScale extracts the scale from a touchpad pinch event.
-	PinchScale() float64
-}
-
 // TouchpadEvent: event related to a gesture on a touchpad device.
 //
 // Unlike touchscreens, where the windowing system sends basic sequences of
@@ -1546,10 +1396,7 @@ type TouchpadEvent struct {
 	Event
 }
 
-var (
-	_ TouchpadEventer = (*TouchpadEvent)(nil)
-	_ gextras.Nativer = (*TouchpadEvent)(nil)
-)
+var _ gextras.Nativer = (*TouchpadEvent)(nil)
 
 func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	return &TouchpadEvent{

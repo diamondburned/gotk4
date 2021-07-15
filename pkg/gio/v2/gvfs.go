@@ -91,38 +91,12 @@ type VFSOverrider interface {
 	ParseName(parseName string) *File
 }
 
-// VFSer describes VFS's methods.
-type VFSer interface {
-	// FileForPath gets a #GFile for path.
-	FileForPath(path string) *File
-	// FileForURI gets a #GFile for uri.
-	FileForURI(uri string) *File
-	// SupportedURISchemes gets a list of URI schemes supported by vfs.
-	SupportedURISchemes() []string
-	// IsActive checks if the VFS is active.
-	IsActive() bool
-	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the parse_name cannot be parsed by the
-	// #GVfs module.
-	ParseName(parseName string) *File
-	// RegisterURIScheme registers uri_func and parse_name_func as the #GFile
-	// URI and parse name lookup functions for URIs with a scheme matching
-	// scheme.
-	RegisterURIScheme(scheme string, uriFunc VFSFileLookupFunc, parseNameFunc VFSFileLookupFunc) bool
-	// UnregisterURIScheme unregisters the URI handler for scheme previously
-	// registered with g_vfs_register_uri_scheme().
-	UnregisterURIScheme(scheme string) bool
-}
-
 // VFS: entry point for using GIO functionality.
 type VFS struct {
 	*externglib.Object
 }
 
-var (
-	_ VFSer           = (*VFS)(nil)
-	_ gextras.Nativer = (*VFS)(nil)
-)
+var _ gextras.Nativer = (*VFS)(nil)
 
 func wrapVFS(obj *externglib.Object) *VFS {
 	return &VFS{

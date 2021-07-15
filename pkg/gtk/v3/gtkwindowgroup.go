@@ -24,20 +24,6 @@ func init() {
 	})
 }
 
-// WindowGrouper describes WindowGroup's methods.
-type WindowGrouper interface {
-	// AddWindow adds a window to a WindowGroup.
-	AddWindow(window *Window)
-	// CurrentDeviceGrab returns the current grab widget for device, or NULL if
-	// none.
-	CurrentDeviceGrab(device gdk.Devicer) *Widget
-	// CurrentGrab gets the current grab widget of the given group, see
-	// gtk_grab_add().
-	CurrentGrab() *Widget
-	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(window *Window)
-}
-
 // WindowGroup restricts the effect of grabs to windows in the same group,
 // thereby making window groups almost behave like separate applications.
 //
@@ -55,10 +41,7 @@ type WindowGroup struct {
 	*externglib.Object
 }
 
-var (
-	_ WindowGrouper   = (*WindowGroup)(nil)
-	_ gextras.Nativer = (*WindowGroup)(nil)
-)
+var _ gextras.Nativer = (*WindowGroup)(nil)
 
 func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
 	return &WindowGroup{

@@ -56,23 +56,6 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 	fn(start, end, err)
 }
 
-// RenderNoder describes RenderNode's methods.
-type RenderNoder interface {
-	// Draw the contents of node to the given cairo context.
-	Draw(cr *cairo.Context)
-	// Bounds retrieves the boundaries of the node.
-	Bounds() graphene.Rect
-	// NodeType returns the type of the node.
-	NodeType() RenderNodeType
-	// Ref acquires a reference on the given GskRenderNode.
-	ref() *RenderNode
-	// Unref releases a reference on the given GskRenderNode.
-	unref()
-	// WriteToFile: this function is equivalent to calling
-	// gsk_render_node_serialize() followed by g_file_set_contents().
-	WriteToFile(filename string) error
-}
-
 // RenderNode: GskRenderNode is the basic block in a scene graph to be rendered
 // using GskRenderer.
 //
@@ -90,10 +73,26 @@ type RenderNode struct {
 	*externglib.Object
 }
 
-var (
-	_ RenderNoder     = (*RenderNode)(nil)
-	_ gextras.Nativer = (*RenderNode)(nil)
-)
+var _ gextras.Nativer = (*RenderNode)(nil)
+
+// RenderNoder describes RenderNode's abstract methods.
+type RenderNoder interface {
+	// Draw the contents of node to the given cairo context.
+	Draw(cr *cairo.Context)
+	// Bounds retrieves the boundaries of the node.
+	Bounds() graphene.Rect
+	// NodeType returns the type of the node.
+	NodeType() RenderNodeType
+	// Ref acquires a reference on the given GskRenderNode.
+	ref() *RenderNode
+	// Unref releases a reference on the given GskRenderNode.
+	unref()
+	// WriteToFile: this function is equivalent to calling
+	// gsk_render_node_serialize() followed by g_file_set_contents().
+	WriteToFile(filename string) error
+}
+
+var _ RenderNoder = (*RenderNode)(nil)
 
 func wrapRenderNode(obj *externglib.Object) *RenderNode {
 	return &RenderNode{

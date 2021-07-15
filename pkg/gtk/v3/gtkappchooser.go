@@ -25,17 +25,6 @@ func init() {
 	})
 }
 
-// AppChooserer describes AppChooser's methods.
-type AppChooserer interface {
-	// AppInfo returns the currently selected application.
-	AppInfo() *gio.AppInfo
-	// ContentType returns the current value of the AppChooser:content-type
-	// property.
-	ContentType() string
-	// Refresh reloads the list of applications.
-	Refresh()
-}
-
 // AppChooser is an interface that can be implemented by widgets which allow the
 // user to choose an application (typically for the purpose of opening a file).
 // The main objects that implement this interface are AppChooserWidget,
@@ -56,10 +45,20 @@ type AppChooser struct {
 	Widget
 }
 
-var (
-	_ AppChooserer    = (*AppChooser)(nil)
-	_ gextras.Nativer = (*AppChooser)(nil)
-)
+var _ gextras.Nativer = (*AppChooser)(nil)
+
+// AppChooserer describes AppChooser's abstract methods.
+type AppChooserer interface {
+	// AppInfo returns the currently selected application.
+	AppInfo() *gio.AppInfo
+	// ContentType returns the current value of the AppChooser:content-type
+	// property.
+	ContentType() string
+	// Refresh reloads the list of applications.
+	Refresh()
+}
+
+var _ AppChooserer = (*AppChooser)(nil)
 
 func wrapAppChooser(obj *externglib.Object) *AppChooser {
 	return &AppChooser{

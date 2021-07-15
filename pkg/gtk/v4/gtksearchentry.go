@@ -21,15 +21,6 @@ func init() {
 	})
 }
 
-// SearchEntrier describes SearchEntry's methods.
-type SearchEntrier interface {
-	// KeyCaptureWidget gets the widget that entry is capturing key events from.
-	KeyCaptureWidget() *Widget
-	// SetKeyCaptureWidget sets widget as the widget that entry will capture key
-	// events from.
-	SetKeyCaptureWidget(widget Widgeter)
-}
-
 // SearchEntry: GtkSearchEntry is an entry widget that has been tailored for use
 // as a search entry.
 //
@@ -78,10 +69,7 @@ type SearchEntry struct {
 	Editable
 }
 
-var (
-	_ SearchEntrier   = (*SearchEntry)(nil)
-	_ gextras.Nativer = (*SearchEntry)(nil)
-)
+var _ gextras.Nativer = (*SearchEntry)(nil)
 
 func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
 	return &SearchEntry{
@@ -173,7 +161,7 @@ func (entry *SearchEntry) KeyCaptureWidget() *Widget {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
-func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgeter) {
+func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 

@@ -21,24 +21,6 @@ func init() {
 	})
 }
 
-// CellRendererToggler describes CellRendererToggle's methods.
-type CellRendererToggler interface {
-	// Activatable returns whether the cell renderer is activatable.
-	Activatable() bool
-	// Active returns whether the cell renderer is active.
-	Active() bool
-	// Radio returns whether we’re rendering radio toggles rather than
-	// checkboxes.
-	Radio() bool
-	// SetActivatable makes the cell renderer activatable.
-	SetActivatable(setting bool)
-	// SetActive activates or deactivates a cell renderer.
-	SetActive(setting bool)
-	// SetRadio: if radio is TRUE, the cell renderer renders a radio toggle
-	// (i.e.
-	SetRadio(radio bool)
-}
-
 // CellRendererToggle renders a toggle button in a cell
 //
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
@@ -48,10 +30,7 @@ type CellRendererToggle struct {
 	CellRenderer
 }
 
-var (
-	_ CellRendererToggler = (*CellRendererToggle)(nil)
-	_ gextras.Nativer     = (*CellRendererToggle)(nil)
-)
+var _ gextras.Nativer = (*CellRendererToggle)(nil)
 
 func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
 	return &CellRendererToggle{

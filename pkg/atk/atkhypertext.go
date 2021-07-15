@@ -36,17 +36,6 @@ type HypertextOverrider interface {
 	LinkSelected(linkIndex int)
 }
 
-// Hypertexter describes Hypertext's methods.
-type Hypertexter interface {
-	// Link gets the link in this hypertext document at index link_index
-	Link(linkIndex int) *Hyperlink
-	// LinkIndex gets the index into the array of hyperlinks that is associated
-	// with the character specified by char_index.
-	LinkIndex(charIndex int) int
-	// NLinks gets the number of links within this hypertext document.
-	NLinks() int
-}
-
 // Hypertext: interface used for objects which implement linking between
 // multiple resource or content locations, or multiple 'markers' within a single
 // document. A Hypertext instance is associated with one or more Hyperlinks,
@@ -58,10 +47,20 @@ type Hypertext struct {
 	*externglib.Object
 }
 
-var (
-	_ Hypertexter     = (*Hypertext)(nil)
-	_ gextras.Nativer = (*Hypertext)(nil)
-)
+var _ gextras.Nativer = (*Hypertext)(nil)
+
+// Hypertexter describes Hypertext's abstract methods.
+type Hypertexter interface {
+	// Link gets the link in this hypertext document at index link_index
+	Link(linkIndex int) *Hyperlink
+	// LinkIndex gets the index into the array of hyperlinks that is associated
+	// with the character specified by char_index.
+	LinkIndex(charIndex int) int
+	// NLinks gets the number of links within this hypertext document.
+	NLinks() int
+}
+
+var _ Hypertexter = (*Hypertext)(nil)
 
 func wrapHypertext(obj *externglib.Object) *Hypertext {
 	return &Hypertext{

@@ -24,7 +24,22 @@ func init() {
 	})
 }
 
-// Surfacer describes Surface's methods.
+// Surface: GdkSurface is a rectangular region on the screen.
+//
+// It’s a low-level object, used to implement high-level objects such as
+// gtk.Window or gtk.Dialog in GTK.
+//
+// The surfaces you see in practice are either gdk.Toplevel or gdk.Popup, and
+// those interfaces provide much of the required API to interact with these
+// surfaces. Other, more specialized surface types exist, but you will rarely
+// interact with them directly.
+type Surface struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Surface)(nil)
+
+// Surfacer describes Surface's abstract methods.
 type Surfacer interface {
 	// Beep emits a short beep associated to surface.
 	Beep()
@@ -84,23 +99,7 @@ type Surfacer interface {
 	SetOpaqueRegion(region *cairo.Region)
 }
 
-// Surface: GdkSurface is a rectangular region on the screen.
-//
-// It’s a low-level object, used to implement high-level objects such as
-// gtk.Window or gtk.Dialog in GTK.
-//
-// The surfaces you see in practice are either gdk.Toplevel or gdk.Popup, and
-// those interfaces provide much of the required API to interact with these
-// surfaces. Other, more specialized surface types exist, but you will rarely
-// interact with them directly.
-type Surface struct {
-	*externglib.Object
-}
-
-var (
-	_ Surfacer        = (*Surface)(nil)
-	_ gextras.Nativer = (*Surface)(nil)
-)
+var _ Surfacer = (*Surface)(nil)
 
 func wrapSurface(obj *externglib.Object) *Surface {
 	return &Surface{

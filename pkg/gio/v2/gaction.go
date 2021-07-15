@@ -116,28 +116,6 @@ type ActionOverrider interface {
 	StateType() *glib.VariantType
 }
 
-// Actioner describes Action's methods.
-type Actioner interface {
-	// Activate activates the action.
-	Activate(parameter *glib.Variant)
-	// ChangeState: request for the state of action to be changed to value.
-	ChangeState(value *glib.Variant)
-	// Enabled checks if action is currently enabled.
-	Enabled() bool
-	// Name queries the name of action.
-	Name() string
-	// ParameterType queries the type of the parameter that must be given when
-	// activating action.
-	ParameterType() *glib.VariantType
-	// State queries the current state of action.
-	State() *glib.Variant
-	// StateHint requests a hint about the valid range of values for the state
-	// of action.
-	StateHint() *glib.Variant
-	// StateType queries the type of the state of action.
-	StateType() *glib.VariantType
-}
-
 // Action represents a single named action.
 //
 // The main interface to an action is that it can be activated with
@@ -168,10 +146,31 @@ type Action struct {
 	*externglib.Object
 }
 
-var (
-	_ Actioner        = (*Action)(nil)
-	_ gextras.Nativer = (*Action)(nil)
-)
+var _ gextras.Nativer = (*Action)(nil)
+
+// Actioner describes Action's abstract methods.
+type Actioner interface {
+	// Activate activates the action.
+	Activate(parameter *glib.Variant)
+	// ChangeState: request for the state of action to be changed to value.
+	ChangeState(value *glib.Variant)
+	// Enabled checks if action is currently enabled.
+	Enabled() bool
+	// Name queries the name of action.
+	Name() string
+	// ParameterType queries the type of the parameter that must be given when
+	// activating action.
+	ParameterType() *glib.VariantType
+	// State queries the current state of action.
+	State() *glib.Variant
+	// StateHint requests a hint about the valid range of values for the state
+	// of action.
+	StateHint() *glib.Variant
+	// StateType queries the type of the state of action.
+	StateType() *glib.VariantType
+}
+
+var _ Actioner = (*Action)(nil)
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{

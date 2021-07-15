@@ -17,13 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgeter},
+		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgetter},
 	})
-}
-
-// FileChooserWidgeter describes FileChooserWidget's methods.
-type FileChooserWidgeter interface {
-	privateFileChooserWidget()
 }
 
 // FileChooserWidget: GtkFileChooserWidget is a widget for choosing files.
@@ -41,10 +36,7 @@ type FileChooserWidget struct {
 	FileChooser
 }
 
-var (
-	_ FileChooserWidgeter = (*FileChooserWidget)(nil)
-	_ gextras.Nativer     = (*FileChooserWidget)(nil)
-)
+var _ gextras.Nativer = (*FileChooserWidget)(nil)
 
 func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	return &FileChooserWidget{
@@ -68,7 +60,7 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	}
 }
 
-func marshalFileChooserWidgeter(p uintptr) (interface{}, error) {
+func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserWidget(obj), nil

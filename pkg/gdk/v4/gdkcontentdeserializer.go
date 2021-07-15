@@ -42,32 +42,6 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *externglib.Value)
 	return _goerr
 }
 
-// ContentDeserializerer describes ContentDeserializer's methods.
-type ContentDeserializerer interface {
-	// Cancellable gets the cancellable for the current operation.
-	Cancellable() *gio.Cancellable
-	// GType gets the GType to create an instance of.
-	GType() externglib.Type
-	// InputStream gets the input stream for the current operation.
-	InputStream() *gio.InputStream
-	// MIMEType gets the mime type to deserialize from.
-	MIMEType() string
-	// Priority gets the I/O priority for the current operation.
-	Priority() int
-	// TaskData gets the data that was associated with the current operation.
-	TaskData() cgo.Handle
-	// UserData gets the user data that was passed when the deserializer was
-	// registered.
-	UserData() cgo.Handle
-	// Value gets the GValue to store the deserialized object in.
-	Value() *externglib.Value
-	// ReturnError: indicate that the deserialization has ended with an error.
-	ReturnError(err error)
-	// ReturnSuccess: indicate that the deserialization has been successfully
-	// completed.
-	ReturnSuccess()
-}
-
 // ContentDeserializer: GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
 //
@@ -85,10 +59,7 @@ type ContentDeserializer struct {
 	gio.AsyncResult
 }
 
-var (
-	_ ContentDeserializerer = (*ContentDeserializer)(nil)
-	_ gextras.Nativer       = (*ContentDeserializer)(nil)
-)
+var _ gextras.Nativer = (*ContentDeserializer)(nil)
 
 func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	return &ContentDeserializer{

@@ -19,7 +19,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
 		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
-		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialoger},
+		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialogger},
 	})
 }
 
@@ -88,33 +88,6 @@ type DialogOverrider interface {
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
 	Response(responseId int)
-}
-
-// Dialoger describes Dialog's methods.
-type Dialoger interface {
-	// AddActionWidget adds an activatable widget to the action area of a
-	// GtkDialog.
-	AddActionWidget(child Widgeter, responseId int)
-	// AddButton adds a button with the given text.
-	AddButton(buttonText string, responseId int) *Widget
-	// ContentArea returns the content area of dialog.
-	ContentArea() *Box
-	// HeaderBar returns the header bar of dialog.
-	HeaderBar() *HeaderBar
-	// ResponseForWidget gets the response id of a widget in the action area of
-	// a dialog.
-	ResponseForWidget(widget Widgeter) int
-	// WidgetForResponse gets the widget button that uses the given response ID
-	// in the action area of a dialog.
-	WidgetForResponse(responseId int) *Widget
-	// Response emits the ::response signal with the given response ID.
-	Response(responseId int)
-	// SetDefaultResponse sets the default widget for the dialog based on the
-	// response ID.
-	SetDefaultResponse(responseId int)
-	// SetResponseSensitive: convenient way to sensitize/desensitize dialog
-	// buttons.
-	SetResponseSensitive(responseId int, setting bool)
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
@@ -238,10 +211,7 @@ type Dialog struct {
 	Window
 }
 
-var (
-	_ Dialoger        = (*Dialog)(nil)
-	_ gextras.Nativer = (*Dialog)(nil)
-)
+var _ gextras.Nativer = (*Dialog)(nil)
 
 func wrapDialog(obj *externglib.Object) *Dialog {
 	return &Dialog{
@@ -285,7 +255,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 	}
 }
 
-func marshalDialoger(p uintptr) (interface{}, error) {
+func marshalDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDialog(obj), nil
@@ -315,7 +285,7 @@ func NewDialog() *Dialog {
 //
 // If you want to add a non-activatable widget, simply pack it into the
 // action_area field of the GtkDialog struct.
-func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -389,7 +359,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *Dialog) ResponseForWidget(widget Widgeter) int {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.int        // in

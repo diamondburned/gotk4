@@ -29,143 +29,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketer},
+		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketter},
 	})
-}
-
-// Socketer describes Socket's methods.
-type Socketer interface {
-	// Accept incoming connections on a connection-based socket.
-	Accept(cancellable *Cancellable) (*Socket, error)
-	// Bind: when a socket is created it is attached to an address family, but
-	// it doesn't have an address in this family.
-	Bind(address SocketAddresser, allowReuse bool) error
-	// CheckConnectResult checks and resets the pending connect error for the
-	// socket.
-	CheckConnectResult() error
-	// Close closes the socket, shutting down any active connection.
-	Close() error
-	// ConditionCheck checks on the readiness of socket to perform operations.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	// ConditionTimedWait waits for up to timeout_us microseconds for condition
-	// to become true on socket.
-	ConditionTimedWait(condition glib.IOCondition, timeoutUs int64, cancellable *Cancellable) error
-	// ConditionWait waits for condition to become true on socket.
-	ConditionWait(condition glib.IOCondition, cancellable *Cancellable) error
-	// ConnectSocketer: connect the socket to the specified remote address.
-	ConnectSocketer(address SocketAddresser, cancellable *Cancellable) error
-	// ConnectionFactoryCreateConnection creates a Connection subclass of the
-	// right type for socket.
-	ConnectionFactoryCreateConnection() *SocketConnection
-	// AvailableBytes: get the amount of data pending in the OS input buffer,
-	// without blocking.
-	AvailableBytes() int
-	// Blocking gets the blocking mode of the socket.
-	Blocking() bool
-	// Broadcast gets the broadcast setting on socket; if TRUE, it is possible
-	// to send packets to broadcast addresses.
-	Broadcast() bool
-	// Credentials returns the credentials of the foreign process connected to
-	// this socket, if any (e.g.
-	Credentials() (*Credentials, error)
-	// Family gets the socket family of the socket.
-	Family() SocketFamily
-	// Fd returns the underlying OS socket object.
-	Fd() int
-	// Keepalive gets the keepalive mode of the socket.
-	Keepalive() bool
-	// ListenBacklog gets the listen backlog setting of the socket.
-	ListenBacklog() int
-	// LocalAddress: try to get the local address of a bound socket.
-	LocalAddress() (*SocketAddress, error)
-	// MulticastLoopback gets the multicast loopback setting on socket; if TRUE
-	// (the default), outgoing multicast packets will be looped back to
-	// multicast listeners on the same host.
-	MulticastLoopback() bool
-	// MulticastTTL gets the multicast time-to-live setting on socket; see
-	// g_socket_set_multicast_ttl() for more details.
-	MulticastTTL() uint
-	// Option gets the value of an integer-valued option on socket, as with
-	// getsockopt().
-	Option(level int, optname int) (int, error)
-	// Protocol gets the socket protocol id the socket was created with.
-	Protocol() SocketProtocol
-	// RemoteAddress: try to get the remote address of a connected socket.
-	RemoteAddress() (*SocketAddress, error)
-	// SocketType gets the socket type of the socket.
-	SocketType() SocketType
-	// Timeout gets the timeout setting of the socket.
-	Timeout() uint
-	// TTL gets the unicast time-to-live setting on socket; see
-	// g_socket_set_ttl() for more details.
-	TTL() uint
-	// IsClosed checks whether a socket is closed.
-	IsClosed() bool
-	// IsConnected: check whether the socket is connected.
-	IsConnected() bool
-	// JoinMulticastGroup registers socket to receive multicast messages sent to
-	// group.
-	JoinMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error
-	// JoinMulticastGroupSSM registers socket to receive multicast messages sent
-	// to group.
-	JoinMulticastGroupSSM(group *InetAddress, sourceSpecific *InetAddress, iface string) error
-	// LeaveMulticastGroup removes socket from the multicast group defined by
-	// group, iface, and source_specific (which must all have the same values
-	// they had when you joined the group).
-	LeaveMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error
-	// LeaveMulticastGroupSSM removes socket from the multicast group defined by
-	// group, iface, and source_specific (which must all have the same values
-	// they had when you joined the group).
-	LeaveMulticastGroupSSM(group *InetAddress, sourceSpecific *InetAddress, iface string) error
-	// Listen marks the socket as a server socket, i.e.
-	Listen() error
-	// ReceiveMessages: receive multiple data messages from socket in one go.
-	ReceiveMessages(messages []InputMessage, flags int, cancellable *Cancellable) (int, error)
-	// Send tries to send size bytes from buffer on the socket.
-	Send(buffer []byte, cancellable *Cancellable) (int, error)
-	// SendMessage: send data to address on socket.
-	SendMessage(address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, cancellable *Cancellable) (int, error)
-	// SendMessageWithTimeout: this behaves exactly the same as
-	// g_socket_send_message(), except that the choice of timeout behavior is
-	// determined by the timeout_us argument rather than by socket's properties.
-	SendMessageWithTimeout(address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64, cancellable *Cancellable) (uint, PollableReturn, error)
-	// SendMessages: send multiple data messages from socket in one go.
-	SendMessages(messages []OutputMessage, flags int, cancellable *Cancellable) (int, error)
-	// SendTo tries to send size bytes from buffer to address.
-	SendTo(address SocketAddresser, buffer []byte, cancellable *Cancellable) (int, error)
-	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
-	// except that the choice of blocking or non-blocking behavior is determined
-	// by the blocking argument rather than by socket's properties.
-	SendWithBlocking(buffer []byte, blocking bool, cancellable *Cancellable) (int, error)
-	// SetBlocking sets the blocking mode of the socket.
-	SetBlocking(blocking bool)
-	// SetBroadcast sets whether socket should allow sending to broadcast
-	// addresses.
-	SetBroadcast(broadcast bool)
-	// SetKeepalive sets or unsets the SO_KEEPALIVE flag on the underlying
-	// socket.
-	SetKeepalive(keepalive bool)
-	// SetListenBacklog sets the maximum number of outstanding connections
-	// allowed when listening on this socket.
-	SetListenBacklog(backlog int)
-	// SetMulticastLoopback sets whether outgoing multicast packets will be
-	// received by sockets listening on that multicast address on the same host.
-	SetMulticastLoopback(loopback bool)
-	// SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
-	// socket.
-	SetMulticastTTL(ttl uint)
-	// SetOption sets the value of an integer-valued option on socket, as with
-	// setsockopt().
-	SetOption(level int, optname int, value int) error
-	// SetTimeout sets the time in seconds after which I/O operations on socket
-	// will time out if they have not yet completed.
-	SetTimeout(timeout uint)
-	// SetTTL sets the time-to-live for outgoing unicast packets on socket.
-	SetTTL(ttl uint)
-	// Shutdown: shut down part or all of a full-duplex connection.
-	Shutdown(shutdownRead bool, shutdownWrite bool) error
-	// SpeaksIPv4 checks if a socket is capable of speaking IPv4.
-	SpeaksIPv4() bool
 }
 
 // Socket is a low-level networking primitive. It is a more or less direct
@@ -224,10 +89,7 @@ type Socket struct {
 	Initable
 }
 
-var (
-	_ Socketer        = (*Socket)(nil)
-	_ gextras.Nativer = (*Socket)(nil)
-)
+var _ gextras.Nativer = (*Socket)(nil)
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
@@ -241,7 +103,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketer(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil
@@ -537,7 +399,7 @@ func (socket *Socket) ConditionWait(condition glib.IOCondition, cancellable *Can
 	return _goerr
 }
 
-// ConnectSocketer: connect the socket to the specified remote address.
+// ConnectSocketter: connect the socket to the specified remote address.
 //
 // For connection oriented socket this generally means we attempt to make a
 // connection to the address. For a connection-less socket it sets the default
@@ -553,7 +415,7 @@ func (socket *Socket) ConditionWait(condition glib.IOCondition, cancellable *Can
 // can be notified of the connection finishing by waiting for the G_IO_OUT
 // condition. The result of the connection must then be checked with
 // g_socket_check_connect_result().
-func (socket *Socket) ConnectSocketer(address SocketAddresser, cancellable *Cancellable) error {
+func (socket *Socket) ConnectSocketter(address SocketAddresser, cancellable *Cancellable) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
 	var _arg2 *C.GCancellable   // out

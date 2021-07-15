@@ -52,22 +52,13 @@ func _gotk4_gtk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) (cret C.gboo
 	return cret
 }
 
-// CustomFilterer describes CustomFilter's methods.
-type CustomFilterer interface {
-	// SetFilterFunc sets the function used for filtering items.
-	SetFilterFunc(matchFunc CustomFilterFunc)
-}
-
 // CustomFilter: GtkCustomFilter determines whether to include items with a
 // callback.
 type CustomFilter struct {
 	Filter
 }
 
-var (
-	_ CustomFilterer  = (*CustomFilter)(nil)
-	_ gextras.Nativer = (*CustomFilter)(nil)
-)
+var _ gextras.Nativer = (*CustomFilter)(nil)
 
 func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
 	return &CustomFilter{

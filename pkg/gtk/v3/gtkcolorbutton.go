@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtoner},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
 	})
 }
 
@@ -31,28 +31,6 @@ func init() {
 // yet, so the interface currently has no use.
 type ColorButtonOverrider interface {
 	ColorSet()
-}
-
-// ColorButtoner describes ColorButton's methods.
-type ColorButtoner interface {
-	// Alpha returns the current alpha value.
-	Alpha() uint16
-	// Color sets color to be the current color in the ColorButton widget.
-	Color() gdk.Color
-	// Title gets the title of the color selection dialog.
-	Title() string
-	// UseAlpha does the color selection dialog use the alpha channel ?
-	// Deprecated: Use gtk_color_chooser_get_use_alpha() instead.
-	UseAlpha() bool
-	// SetAlpha sets the current opacity to be alpha.
-	SetAlpha(alpha uint16)
-	// SetColor sets the current color to be color.
-	SetColor(color *gdk.Color)
-	// SetTitle sets the title for the color selection dialog.
-	SetTitle(title string)
-	// SetUseAlpha sets whether or not the color button should use the alpha
-	// channel.
-	SetUseAlpha(useAlpha bool)
 }
 
 // ColorButton is a button which displays the currently selected color and
@@ -70,10 +48,7 @@ type ColorButton struct {
 	ColorChooser
 }
 
-var (
-	_ ColorButtoner   = (*ColorButton)(nil)
-	_ gextras.Nativer = (*ColorButton)(nil)
-)
+var _ gextras.Nativer = (*ColorButton)(nil)
 
 func wrapColorButton(obj *externglib.Object) *ColorButton {
 	return &ColorButton{
@@ -116,7 +91,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 	}
 }
 
-func marshalColorButtoner(p uintptr) (interface{}, error) {
+func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorButton(obj), nil

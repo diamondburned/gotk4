@@ -17,13 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbufer},
+		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuffer},
 	})
-}
-
-// CellRendererPixbufer describes CellRendererPixbuf's methods.
-type CellRendererPixbufer interface {
-	privateCellRendererPixbuf()
 }
 
 // CellRendererPixbuf renders a pixbuf in a cell
@@ -43,10 +38,7 @@ type CellRendererPixbuf struct {
 	CellRenderer
 }
 
-var (
-	_ CellRendererPixbufer = (*CellRendererPixbuf)(nil)
-	_ gextras.Nativer      = (*CellRendererPixbuf)(nil)
-)
+var _ gextras.Nativer = (*CellRendererPixbuf)(nil)
 
 func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	return &CellRendererPixbuf{
@@ -58,7 +50,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	}
 }
 
-func marshalCellRendererPixbufer(p uintptr) (interface{}, error) {
+func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererPixbuf(obj), nil

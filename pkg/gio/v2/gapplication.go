@@ -74,94 +74,6 @@ type ApplicationOverrider interface {
 	Startup()
 }
 
-// Applicationer describes Application's methods.
-type Applicationer interface {
-	// Activate activates the application.
-	Activate()
-	// AddMainOption: add an option to be handled by application.
-	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-	// AddMainOptionEntries adds main option entries to be handled by
-	// application.
-	AddMainOptionEntries(entries []glib.OptionEntry)
-	// AddOptionGroup adds a Group to the commandline handling of application.
-	AddOptionGroup(group *glib.OptionGroup)
-	// BindBusyProperty marks application as busy (see
-	// g_application_mark_busy()) while property on object is TRUE.
-	BindBusyProperty(object *externglib.Object, property string)
-	// ApplicationID gets the unique identifier for application.
-	ApplicationID() string
-	// DBusConnection gets the BusConnection being used by the application, or
-	// NULL.
-	DBusConnection() *DBusConnection
-	// DBusObjectPath gets the D-Bus object path being used by the application,
-	// or NULL.
-	DBusObjectPath() string
-	// Flags gets the flags for application.
-	Flags() ApplicationFlags
-	// InactivityTimeout gets the current inactivity timeout for the
-	// application.
-	InactivityTimeout() uint
-	// IsBusy gets the application's current busy state, as set through
-	// g_application_mark_busy() or g_application_bind_busy_property().
-	IsBusy() bool
-	// IsRegistered checks if application is registered.
-	IsRegistered() bool
-	// IsRemote checks if application is remote.
-	IsRemote() bool
-	// ResourceBasePath gets the resource base path of application.
-	ResourceBasePath() string
-	// Hold increases the use count of application.
-	Hold()
-	// MarkBusy increases the busy count of application.
-	MarkBusy()
-	// Open opens the given files.
-	Open(files []Filer, hint string)
-	// Quit: immediately quits the application.
-	Quit()
-	// Register attempts registration of the application.
-	Register(cancellable *Cancellable) error
-	// Release: decrease the use count of application.
-	Release()
-	// Run runs the application.
-	Run(argv []string) int
-	// SendNotification sends a notification on behalf of application to the
-	// desktop shell.
-	SendNotification(id string, notification *Notification)
-	// SetActionGroup: this used to be how actions were associated with a
-	// #GApplication.
-	SetActionGroup(actionGroup ActionGrouper)
-	// SetApplicationID sets the unique identifier for application.
-	SetApplicationID(applicationId string)
-	// SetDefault sets or unsets the default application for the process, as
-	// returned by g_application_get_default().
-	SetDefault()
-	// SetFlags sets the flags for application.
-	SetFlags(flags ApplicationFlags)
-	// SetInactivityTimeout sets the current inactivity timeout for the
-	// application.
-	SetInactivityTimeout(inactivityTimeout uint)
-	// SetOptionContextDescription adds a description to the application option
-	// context.
-	SetOptionContextDescription(description string)
-	// SetOptionContextParameterString sets the parameter string to be used by
-	// the commandline handling of application.
-	SetOptionContextParameterString(parameterString string)
-	// SetOptionContextSummary adds a summary to the application option context.
-	SetOptionContextSummary(summary string)
-	// SetResourceBasePath sets (or unsets) the base resource path of
-	// application.
-	SetResourceBasePath(resourcePath string)
-	// UnbindBusyProperty destroys a binding between property and the busy state
-	// of application that was previously created with
-	// g_application_bind_busy_property().
-	UnbindBusyProperty(object *externglib.Object, property string)
-	// UnmarkBusy decreases the busy count of application.
-	UnmarkBusy()
-	// WithdrawNotification withdraws a notification that was sent with
-	// g_application_send_notification().
-	WithdrawNotification(id string)
-}
-
 // Application is the foundation of an application. It wraps some low-level
 // platform-specific services and is intended to act as the foundation for
 // higher-level application classes such as Application or Application. In
@@ -277,10 +189,7 @@ type Application struct {
 	ActionMap
 }
 
-var (
-	_ Applicationer   = (*Application)(nil)
-	_ gextras.Nativer = (*Application)(nil)
-)
+var _ gextras.Nativer = (*Application)(nil)
 
 func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{

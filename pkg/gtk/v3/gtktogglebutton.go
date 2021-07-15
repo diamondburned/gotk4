@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtoner},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButtonner},
 	})
 }
 
@@ -31,29 +31,6 @@ func init() {
 type ToggleButtonOverrider interface {
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
-	Toggled()
-}
-
-// ToggleButtoner describes ToggleButton's methods.
-type ToggleButtoner interface {
-	// Active queries a ToggleButton and returns its current state.
-	Active() bool
-	// Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
-	Inconsistent() bool
-	// Mode retrieves whether the button is displayed as a separate indicator
-	// and label.
-	Mode() bool
-	// SetActive sets the status of the toggle button.
-	SetActive(isActive bool)
-	// SetInconsistent: if the user has selected a range of elements (such as
-	// some text or spreadsheet cells) that are affected by a toggle button, and
-	// the current values in that range are inconsistent, you may want to
-	// display the toggle in an “in between” state.
-	SetInconsistent(setting bool)
-	// SetMode sets whether the button is displayed as a separate indicator and
-	// label.
-	SetMode(drawIndicator bool)
-	// Toggled emits the ToggleButton::toggled signal on the ToggleButton.
 	Toggled()
 }
 
@@ -120,10 +97,7 @@ type ToggleButton struct {
 	Button
 }
 
-var (
-	_ ToggleButtoner  = (*ToggleButton)(nil)
-	_ gextras.Nativer = (*ToggleButton)(nil)
-)
+var _ gextras.Nativer = (*ToggleButton)(nil)
 
 func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	return &ToggleButton{
@@ -163,7 +137,7 @@ func wrapToggleButton(obj *externglib.Object) *ToggleButton {
 	}
 }
 
-func marshalToggleButtoner(p uintptr) (interface{}, error) {
+func marshalToggleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleButton(obj), nil

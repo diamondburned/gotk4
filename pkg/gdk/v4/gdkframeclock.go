@@ -57,34 +57,6 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FrameClocker describes FrameClock's methods.
-type FrameClocker interface {
-	// BeginUpdating starts updates for an animation.
-	BeginUpdating()
-	// EndUpdating stops updates for an animation.
-	EndUpdating()
-	// CurrentTimings gets the frame timings for the current frame.
-	CurrentTimings() *FrameTimings
-	// Fps calculates the current frames-per-second, based on the frame timings
-	// of frame_clock.
-	Fps() float64
-	// FrameCounter: GdkFrameClock maintains a 64-bit counter that increments
-	// for each frame drawn.
-	FrameCounter() int64
-	// FrameTime gets the time that should currently be used for animations.
-	FrameTime() int64
-	// HistoryStart returns the frame counter for the oldest frame available in
-	// history.
-	HistoryStart() int64
-	// RefreshInfo predicts a presentation time, based on history.
-	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
-	// Timings retrieves a GdkFrameTimings object holding timing information for
-	// the current frame or a recent frame.
-	Timings(frameCounter int64) *FrameTimings
-	// RequestPhase asks the frame clock to run a particular phase.
-	RequestPhase(phase FrameClockPhase)
-}
-
 // FrameClock: GdkFrameClock tells the application when to update and repaint a
 // surface.
 //
@@ -121,10 +93,37 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-var (
-	_ FrameClocker    = (*FrameClock)(nil)
-	_ gextras.Nativer = (*FrameClock)(nil)
-)
+var _ gextras.Nativer = (*FrameClock)(nil)
+
+// FrameClocker describes FrameClock's abstract methods.
+type FrameClocker interface {
+	// BeginUpdating starts updates for an animation.
+	BeginUpdating()
+	// EndUpdating stops updates for an animation.
+	EndUpdating()
+	// CurrentTimings gets the frame timings for the current frame.
+	CurrentTimings() *FrameTimings
+	// Fps calculates the current frames-per-second, based on the frame timings
+	// of frame_clock.
+	Fps() float64
+	// FrameCounter: GdkFrameClock maintains a 64-bit counter that increments
+	// for each frame drawn.
+	FrameCounter() int64
+	// FrameTime gets the time that should currently be used for animations.
+	FrameTime() int64
+	// HistoryStart returns the frame counter for the oldest frame available in
+	// history.
+	HistoryStart() int64
+	// RefreshInfo predicts a presentation time, based on history.
+	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
+	// Timings retrieves a GdkFrameTimings object holding timing information for
+	// the current frame or a recent frame.
+	Timings(frameCounter int64) *FrameTimings
+	// RequestPhase asks the frame clock to run a particular phase.
+	RequestPhase(phase FrameClockPhase)
+}
+
+var _ FrameClocker = (*FrameClock)(nil)
 
 func wrapFrameClock(obj *externglib.Object) *FrameClock {
 	return &FrameClock{

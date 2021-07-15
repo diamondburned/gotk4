@@ -32,7 +32,15 @@ func init() {
 	})
 }
 
-// DTLSClientConnectioner describes DTLSClientConnection's methods.
+// DTLSClientConnection is the client-side subclass of Connection, representing
+// a client-side DTLS connection.
+type DTLSClientConnection struct {
+	DTLSConnection
+}
+
+var _ gextras.Nativer = (*DTLSClientConnection)(nil)
+
+// DTLSClientConnectioner describes DTLSClientConnection's abstract methods.
 type DTLSClientConnectioner interface {
 	// ServerIdentity gets conn's expected server identity
 	ServerIdentity() *SocketConnectable
@@ -48,16 +56,7 @@ type DTLSClientConnectioner interface {
 	SetValidationFlags(flags TLSCertificateFlags)
 }
 
-// DTLSClientConnection is the client-side subclass of Connection, representing
-// a client-side DTLS connection.
-type DTLSClientConnection struct {
-	DTLSConnection
-}
-
-var (
-	_ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
-	_ gextras.Nativer        = (*DTLSClientConnection)(nil)
-)
+var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
 
 func wrapDTLSClientConnection(obj *externglib.Object) *DTLSClientConnection {
 	return &DTLSClientConnection{
@@ -137,7 +136,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 // NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
 // which is assumed to communicate with the server identified by
 // server_identity.
-func DtlsClientConnectionNew(baseSocket DatagramBaseder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
+func DtlsClientConnectionNew(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GDatagramBased     // in

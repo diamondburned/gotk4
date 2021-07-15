@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
 	})
 }
 
@@ -49,72 +49,6 @@ type ButtonOverrider interface {
 	//
 	// Deprecated: Use the Widget::button-release-event signal.
 	Released()
-}
-
-// Buttoner describes Button's methods.
-type Buttoner interface {
-	// Clicked emits a Button::clicked signal to the given Button.
-	Clicked()
-	// Enter emits a Button::enter signal to the given Button.
-	Enter()
-	// Alignment gets the alignment of the child in the button.
-	Alignment() (xalign float32, yalign float32)
-	// AlwaysShowImage returns whether the button will ignore the
-	// Settings:gtk-button-images setting and always show the image, if
-	// available.
-	AlwaysShowImage() bool
-	// EventWindow returns the button’s event window if it is realized, NULL
-	// otherwise.
-	EventWindow() *gdk.Window
-	// FocusOnClick returns whether the button grabs focus when it is clicked
-	// with the mouse.
-	FocusOnClick() bool
-	// Image gets the widget that is currenty set as the image of button.
-	Image() *Widget
-	// ImagePosition gets the position of the image relative to the text inside
-	// the button.
-	ImagePosition() PositionType
-	// Label fetches the text from the label of the button, as set by
-	// gtk_button_set_label().
-	Label() string
-	// Relief returns the current relief style of the given Button.
-	Relief() ReliefStyle
-	// UseStock returns whether the button label is a stock item.
-	UseStock() bool
-	// UseUnderline returns whether an embedded underline in the button label
-	// indicates a mnemonic.
-	UseUnderline() bool
-	// Leave emits a Button::leave signal to the given Button.
-	Leave()
-	// Pressed emits a Button::pressed signal to the given Button.
-	Pressed()
-	// Released emits a Button::released signal to the given Button.
-	Released()
-	// SetAlignment sets the alignment of the child.
-	SetAlignment(xalign float32, yalign float32)
-	// SetAlwaysShowImage: if TRUE, the button will ignore the
-	// Settings:gtk-button-images setting and always show the image, if
-	// available.
-	SetAlwaysShowImage(alwaysShow bool)
-	// SetFocusOnClick sets whether the button will grab focus when it is
-	// clicked with the mouse.
-	SetFocusOnClick(focusOnClick bool)
-	// SetImage: set the image of button to the given widget.
-	SetImage(image Widgeter)
-	// SetImagePosition sets the position of the image relative to the text
-	// inside the button.
-	SetImagePosition(position PositionType)
-	// SetLabel sets the text of the label of the button to str.
-	SetLabel(label string)
-	// SetRelief sets the relief style of the edges of the given Button widget.
-	SetRelief(relief ReliefStyle)
-	// SetUseStock: if TRUE, the label set on the button is used as a stock id
-	// to select the stock item for the button.
-	SetUseStock(useStock bool)
-	// SetUseUnderline: if true, an underline in the text of the button label
-	// indicates the next character should be used for the mnemonic accelerator
-	// key.
-	SetUseUnderline(useUnderline bool)
 }
 
 // Button widget is generally used to trigger a callback function that is called
@@ -146,10 +80,7 @@ type Button struct {
 	Activatable
 }
 
-var (
-	_ Buttoner        = (*Button)(nil)
-	_ gextras.Nativer = (*Button)(nil)
-)
+var _ gextras.Nativer = (*Button)(nil)
 
 func wrapButton(obj *externglib.Object) *Button {
 	return &Button{
@@ -187,7 +118,7 @@ func wrapButton(obj *externglib.Object) *Button {
 	}
 }
 
-func marshalButtoner(p uintptr) (interface{}, error) {
+func marshalButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -601,7 +532,7 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of button to the given widget. The image will be
 // displayed if the label text is NULL or if Button:always-show-image is TRUE.
 // You don’t have to call gtk_widget_show() on image yourself.
-func (button *Button) SetImage(image Widgeter) {
+func (button *Button) SetImage(image Widgetter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 

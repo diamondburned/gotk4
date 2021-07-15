@@ -60,216 +60,8 @@ type EntryOverrider interface {
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	PopulatePopup(popup Widgeter)
+	PopulatePopup(popup Widgetter)
 	ToggleOverwrite()
-}
-
-// Entrier describes Entry's methods.
-type Entrier interface {
-	// ActivatesDefault retrieves the value set by
-	// gtk_entry_set_activates_default().
-	ActivatesDefault() bool
-	// Alignment gets the value set by gtk_entry_set_alignment().
-	Alignment() float32
-	// Attributes gets the attribute list that was set on the entry using
-	// gtk_entry_set_attributes(), if any.
-	Attributes() *pango.AttrList
-	// Buffer: get the EntryBuffer object which holds the text for this widget.
-	Buffer() *EntryBuffer
-	// Completion returns the auxiliary completion object currently in use by
-	// entry.
-	Completion() *EntryCompletion
-	// CurrentIconDragSource returns the index of the icon which is the source
-	// of the current DND operation, or -1.
-	CurrentIconDragSource() int
-	// CursorHAdjustment retrieves the horizontal cursor adjustment for the
-	// entry.
-	CursorHAdjustment() *Adjustment
-	// HasFrame gets the value set by gtk_entry_set_has_frame().
-	HasFrame() bool
-	// IconActivatable returns whether the icon is activatable.
-	IconActivatable(iconPos EntryIconPosition) bool
-	// IconArea gets the area where entry’s icon at icon_pos is drawn.
-	IconArea(iconPos EntryIconPosition) gdk.Rectangle
-	// IconAtPos finds the icon at the given position and return its index.
-	IconAtPos(x int, y int) int
-	// IconGIcon retrieves the #GIcon used for the icon, or NULL if there is no
-	// icon or if the icon was set by some other method (e.g., by stock, pixbuf,
-	// or icon name).
-	IconGIcon(iconPos EntryIconPosition) *gio.Icon
-	// IconName retrieves the icon name used for the icon, or NULL if there is
-	// no icon or if the icon was set by some other method (e.g., by pixbuf,
-	// stock or gicon).
-	IconName(iconPos EntryIconPosition) string
-	// IconPixbuf retrieves the image used for the icon.
-	IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf
-	// IconSensitive returns whether the icon appears sensitive or insensitive.
-	IconSensitive(iconPos EntryIconPosition) bool
-	// IconStock retrieves the stock id used for the icon, or NULL if there is
-	// no icon or if the icon was set by some other method (e.g., by pixbuf,
-	// icon name or gicon).
-	IconStock(iconPos EntryIconPosition) string
-	// IconStorageType gets the type of representation being used by the icon to
-	// store image data.
-	IconStorageType(iconPos EntryIconPosition) ImageType
-	// IconTooltipMarkup gets the contents of the tooltip on the icon at the
-	// specified position in entry.
-	IconTooltipMarkup(iconPos EntryIconPosition) string
-	// IconTooltipText gets the contents of the tooltip on the icon at the
-	// specified position in entry.
-	IconTooltipText(iconPos EntryIconPosition) string
-	// InnerBorder: this function returns the entry’s Entry:inner-border
-	// property.
-	InnerBorder() *Border
-	// InputHints gets the value of the Entry:input-hints property.
-	InputHints() InputHints
-	// InputPurpose gets the value of the Entry:input-purpose property.
-	InputPurpose() InputPurpose
-	// InvisibleChar retrieves the character displayed in place of the real
-	// characters for entries with visibility set to false.
-	InvisibleChar() uint32
-	// Layout gets the Layout used to display the entry.
-	Layout() *pango.Layout
-	// LayoutOffsets obtains the position of the Layout used to render text in
-	// the entry, in widget coordinates.
-	LayoutOffsets() (x int, y int)
-	// MaxLength retrieves the maximum allowed length of the text in entry.
-	MaxLength() int
-	// MaxWidthChars retrieves the desired maximum width of entry, in
-	// characters.
-	MaxWidthChars() int
-	// OverwriteMode gets the value set by gtk_entry_set_overwrite_mode().
-	OverwriteMode() bool
-	// PlaceholderText retrieves the text that will be displayed when entry is
-	// empty and unfocused
-	PlaceholderText() string
-	// ProgressFraction returns the current fraction of the task that’s been
-	// completed.
-	ProgressFraction() float64
-	// ProgressPulseStep retrieves the pulse step set with
-	// gtk_entry_set_progress_pulse_step().
-	ProgressPulseStep() float64
-	// Tabs gets the tabstops that were set on the entry using
-	// gtk_entry_set_tabs(), if any.
-	Tabs() *pango.TabArray
-	// Text retrieves the contents of the entry widget.
-	Text() string
-	// TextArea gets the area where the entry’s text is drawn.
-	TextArea() gdk.Rectangle
-	// TextLength retrieves the current length of the text in entry.
-	TextLength() uint16
-	// Visibility retrieves whether the text in entry is visible.
-	Visibility() bool
-	// WidthChars gets the value set by gtk_entry_set_width_chars().
-	WidthChars() int
-	// GrabFocusWithoutSelecting causes entry to have keyboard focus.
-	GrabFocusWithoutSelecting()
-	// ImContextFilterKeypress: allow the Entry input method to internally
-	// handle key press and release events.
-	ImContextFilterKeypress(event *gdk.EventKey) bool
-	// LayoutIndexToTextIndex converts from a position in the entry’s Layout
-	// (returned by gtk_entry_get_layout()) to a position in the entry contents
-	// (returned by gtk_entry_get_text()).
-	LayoutIndexToTextIndex(layoutIndex int) int
-	// ProgressPulse indicates that some progress is made, but you don’t know
-	// how much.
-	ProgressPulse()
-	// ResetImContext: reset the input method context of the entry if needed.
-	ResetImContext()
-	// SetActivatesDefault: if setting is TRUE, pressing Enter in the entry will
-	// activate the default widget for the window containing the entry.
-	SetActivatesDefault(setting bool)
-	// SetAlignment sets the alignment for the contents of the entry.
-	SetAlignment(xalign float32)
-	// SetAttributes sets a AttrList; the attributes in the list are applied to
-	// the entry text.
-	SetAttributes(attrs *pango.AttrList)
-	// SetBuffer: set the EntryBuffer object which holds the text for this
-	// widget.
-	SetBuffer(buffer *EntryBuffer)
-	// SetCompletion sets completion to be the auxiliary completion object to
-	// use with entry.
-	SetCompletion(completion *EntryCompletion)
-	// SetCursorHAdjustment hooks up an adjustment to the cursor position in an
-	// entry, so that when the cursor is moved, the adjustment is scrolled to
-	// show that position.
-	SetCursorHAdjustment(adjustment *Adjustment)
-	// SetHasFrame sets whether the entry has a beveled frame around it.
-	SetHasFrame(setting bool)
-	// SetIconActivatable sets whether the icon is activatable.
-	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
-	// SetIconDragSource sets up the icon at the given position so that GTK+
-	// will start a drag operation when the user clicks and drags the icon.
-	SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction)
-	// SetIconFromGIcon sets the icon shown in the entry at the specified
-	// position from the current icon theme.
-	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer)
-	// SetIconFromIconName sets the icon shown in the entry at the specified
-	// position from the current icon theme.
-	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
-	// SetIconFromPixbuf sets the icon shown in the specified position using a
-	// pixbuf.
-	SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixbuf.Pixbuf)
-	// SetIconFromStock sets the icon shown in the entry at the specified
-	// position from a stock image.
-	SetIconFromStock(iconPos EntryIconPosition, stockId string)
-	// SetIconSensitive sets the sensitivity for the specified icon.
-	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
-	// SetIconTooltipMarkup sets tooltip as the contents of the tooltip for the
-	// icon at the specified position.
-	SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
-	// SetIconTooltipText sets tooltip as the contents of the tooltip for the
-	// icon at the specified position.
-	SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
-	// SetInnerBorder sets entry’s inner-border property to border, or clears it
-	// if NULL is passed.
-	SetInnerBorder(border *Border)
-	// SetInputHints sets the Entry:input-hints property, which allows input
-	// methods to fine-tune their behaviour.
-	SetInputHints(hints InputHints)
-	// SetInputPurpose sets the Entry:input-purpose property which can be used
-	// by on-screen keyboards and other input methods to adjust their behaviour.
-	SetInputPurpose(purpose InputPurpose)
-	// SetInvisibleChar sets the character to use in place of the actual text
-	// when gtk_entry_set_visibility() has been called to set text visibility to
-	// FALSE.
-	SetInvisibleChar(ch uint32)
-	// SetMaxLength sets the maximum allowed length of the contents of the
-	// widget.
-	SetMaxLength(max int)
-	// SetMaxWidthChars sets the desired maximum width in characters of entry.
-	SetMaxWidthChars(nChars int)
-	// SetOverwriteMode sets whether the text is overwritten when typing in the
-	// Entry.
-	SetOverwriteMode(overwrite bool)
-	// SetPlaceholderText sets text to be displayed in entry when it is empty
-	// and unfocused.
-	SetPlaceholderText(text string)
-	// SetProgressFraction causes the entry’s progress indicator to “fill in”
-	// the given fraction of the bar.
-	SetProgressFraction(fraction float64)
-	// SetProgressPulseStep sets the fraction of total entry width to move the
-	// progress bouncing block for each call to gtk_entry_progress_pulse().
-	SetProgressPulseStep(fraction float64)
-	// SetTabs sets a TabArray; the tabstops in the array are applied to the
-	// entry text.
-	SetTabs(tabs *pango.TabArray)
-	// SetText sets the text in the widget to the given value, replacing the
-	// current contents.
-	SetText(text string)
-	// SetVisibility sets whether the contents of the entry are visible or not.
-	SetVisibility(visible bool)
-	// SetWidthChars changes the size request of the entry to be about the right
-	// size for n_chars characters.
-	SetWidthChars(nChars int)
-	// TextIndexToLayoutIndex converts from a position in the entry contents
-	// (returned by gtk_entry_get_text()) to a position in the entry’s Layout
-	// (returned by gtk_entry_get_layout(), with text retrieved via
-	// pango_layout_get_text()).
-	TextIndexToLayoutIndex(textIndex int) int
-	// UnsetInvisibleChar unsets the invisible char previously set with
-	// gtk_entry_set_invisible_char().
-	UnsetInvisibleChar()
 }
 
 // Entry widget is a single line text entry widget. A fairly large set of key
@@ -346,10 +138,7 @@ type Entry struct {
 	Editable
 }
 
-var (
-	_ Entrier         = (*Entry)(nil)
-	_ gextras.Nativer = (*Entry)(nil)
-)
+var _ gextras.Nativer = (*Entry)(nil)
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
@@ -1397,7 +1186,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 // will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

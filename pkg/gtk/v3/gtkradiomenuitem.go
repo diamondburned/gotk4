@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemer},
+		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemmer},
 	})
 }
 
@@ -30,13 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type RadioMenuItemOverrider interface {
 	GroupChanged()
-}
-
-// RadioMenuItemer describes RadioMenuItem's methods.
-type RadioMenuItemer interface {
-	// JoinGroup joins a RadioMenuItem object to the group of another
-	// RadioMenuItem object.
-	JoinGroup(groupSource *RadioMenuItem)
 }
 
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
@@ -60,10 +53,7 @@ type RadioMenuItem struct {
 	CheckMenuItem
 }
 
-var (
-	_ RadioMenuItemer = (*RadioMenuItem)(nil)
-	_ gextras.Nativer = (*RadioMenuItem)(nil)
-)
+var _ gextras.Nativer = (*RadioMenuItem)(nil)
 
 func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	return &RadioMenuItem{
@@ -105,7 +95,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	}
 }
 
-func marshalRadioMenuItemer(p uintptr) (interface{}, error) {
+func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioMenuItem(obj), nil

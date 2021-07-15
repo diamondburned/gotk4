@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtoner},
+		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtonner},
 	})
 }
 
@@ -46,49 +46,6 @@ func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointe
 
 	fn := v.(MenuButtonCreatePopupFunc)
 	fn(menuButton)
-}
-
-// MenuButtoner describes MenuButton's methods.
-type MenuButtoner interface {
-	// Direction returns the direction the popup will be pointing at when popped
-	// up.
-	Direction() ArrowType
-	// HasFrame returns whether the button has a frame.
-	HasFrame() bool
-	// IconName gets the name of the icon shown in the button.
-	IconName() string
-	// Label gets the label shown in the button
-	Label() string
-	// MenuModel returns the GMenuModel used to generate the popup.
-	MenuModel() *gio.MenuModel
-	// Popover returns the GtkPopover that pops out of the button.
-	Popover() *Popover
-	// UseUnderline returns whether an embedded underline in the text indicates
-	// a mnemonic.
-	UseUnderline() bool
-	// Popdown dismiss the menu.
-	Popdown()
-	// Popup: pop up the menu.
-	Popup()
-	// SetCreatePopupFunc sets func to be called when a popup is about to be
-	// shown.
-	SetCreatePopupFunc(fn MenuButtonCreatePopupFunc)
-	// SetDirection sets the direction in which the popup will be popped up.
-	SetDirection(direction ArrowType)
-	// SetHasFrame sets the style of the button.
-	SetHasFrame(hasFrame bool)
-	// SetIconName sets the name of an icon to show inside the menu button.
-	SetIconName(iconName string)
-	// SetLabel sets the label to show inside the menu button.
-	SetLabel(label string)
-	// SetMenuModel sets the GMenuModel from which the popup will be
-	// constructed.
-	SetMenuModel(menuModel gio.MenuModeler)
-	// SetPopover sets the GtkPopover that will be popped up when the
-	// menu_button is clicked.
-	SetPopover(popover Widgeter)
-	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
-	SetUseUnderline(useUnderline bool)
 }
 
 // MenuButton: GtkMenuButton widget is used to display a popup when clicked.
@@ -151,10 +108,7 @@ type MenuButton struct {
 	Widget
 }
 
-var (
-	_ MenuButtoner    = (*MenuButton)(nil)
-	_ gextras.Nativer = (*MenuButton)(nil)
-)
+var _ gextras.Nativer = (*MenuButton)(nil)
 
 func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	return &MenuButton{
@@ -175,7 +129,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	}
 }
 
-func marshalMenuButtoner(p uintptr) (interface{}, error) {
+func marshalMenuButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuButton(obj), nil
@@ -430,7 +384,7 @@ func (menuButton *MenuButton) SetLabel(label string) {
 //
 // If gtk.MenuButton:popover is already set, it will be dissociated from the
 // menu_button, and the property is set to NULL.
-func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
+func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
@@ -447,7 +401,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 //
 // If gtk.MenuButton:menu-model is set, the menu model is dissociated from the
 // menu_button, and the property is set to NULL.
-func (menuButton *MenuButton) SetPopover(popover Widgeter) {
+func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 

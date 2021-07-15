@@ -22,19 +22,11 @@ func init() {
 	})
 }
 
-// X11DeviceCorer describes X11DeviceCore's methods.
-type X11DeviceCorer interface {
-	privateX11DeviceCore()
-}
-
 type X11DeviceCore struct {
 	gdk.Device
 }
 
-var (
-	_ X11DeviceCorer  = (*X11DeviceCore)(nil)
-	_ gextras.Nativer = (*X11DeviceCore)(nil)
-)
+var _ gextras.Nativer = (*X11DeviceCore)(nil)
 
 func wrapX11DeviceCore(obj *externglib.Object) *X11DeviceCore {
 	return &X11DeviceCore{

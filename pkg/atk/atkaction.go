@@ -80,7 +80,27 @@ type ActionOverrider interface {
 	SetDescription(i int, desc string) bool
 }
 
-// Actioner describes Action's methods.
+// Action should be implemented by instances of Object classes with which the
+// user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
+// components which are not "passive" providers of UI information.
+//
+// Exceptions: when the user interaction is already covered by another
+// appropriate interface such as EditableText (insert/delete text, etc.) or
+// Value (set value) then these actions should not be exposed by Action as well.
+//
+// Though most UI interactions on components should be invocable via keyboard as
+// well as mouse, there will generally be a close mapping between "mouse
+// actions" that are possible on a component and the AtkActions. Where mouse and
+// keyboard actions are redundant in effect, Action should expose only one
+// action rather than exposing redundant actions if possible. By convention we
+// have been using "mouse centric" terminology for Action names.
+type Action struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Action)(nil)
+
+// Actioner describes Action's abstract methods.
 type Actioner interface {
 	// DoAction: perform the specified action on the object.
 	DoAction(i int) bool
@@ -101,28 +121,7 @@ type Actioner interface {
 	SetDescription(i int, desc string) bool
 }
 
-// Action should be implemented by instances of Object classes with which the
-// user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
-// components which are not "passive" providers of UI information.
-//
-// Exceptions: when the user interaction is already covered by another
-// appropriate interface such as EditableText (insert/delete text, etc.) or
-// Value (set value) then these actions should not be exposed by Action as well.
-//
-// Though most UI interactions on components should be invocable via keyboard as
-// well as mouse, there will generally be a close mapping between "mouse
-// actions" that are possible on a component and the AtkActions. Where mouse and
-// keyboard actions are redundant in effect, Action should expose only one
-// action rather than exposing redundant actions if possible. By convention we
-// have been using "mouse centric" terminology for Action names.
-type Action struct {
-	*externglib.Object
-}
-
-var (
-	_ Actioner        = (*Action)(nil)
-	_ gextras.Nativer = (*Action)(nil)
-)
+var _ Actioner = (*Action)(nil)
 
 func wrapAction(obj *externglib.Object) *Action {
 	return &Action{

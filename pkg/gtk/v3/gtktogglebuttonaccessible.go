@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// ToggleButtonAccessibler describes ToggleButtonAccessible's methods.
-type ToggleButtonAccessibler interface {
-	privateToggleButtonAccessible()
-}
-
 type ToggleButtonAccessible struct {
 	ButtonAccessible
 }
 
-var (
-	_ ToggleButtonAccessibler = (*ToggleButtonAccessible)(nil)
-	_ gextras.Nativer         = (*ToggleButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*ToggleButtonAccessible)(nil)
 
 func wrapToggleButtonAccessible(obj *externglib.Object) *ToggleButtonAccessible {
 	return &ToggleButtonAccessible{

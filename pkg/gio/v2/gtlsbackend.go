@@ -46,7 +46,14 @@ type TLSBackendOverrider interface {
 	SupportsTLS() bool
 }
 
-// TLSBackender describes TLSBackend's methods.
+// TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
+type TLSBackend struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TLSBackend)(nil)
+
+// TLSBackender describes TLSBackend's abstract methods.
 type TLSBackender interface {
 	// CertificateType gets the #GType of backend's Certificate implementation.
 	CertificateType() externglib.Type
@@ -78,15 +85,7 @@ type TLSBackender interface {
 	SupportsTLS() bool
 }
 
-// TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
-type TLSBackend struct {
-	*externglib.Object
-}
-
-var (
-	_ TLSBackender    = (*TLSBackend)(nil)
-	_ gextras.Nativer = (*TLSBackend)(nil)
-)
+var _ TLSBackender = (*TLSBackend)(nil)
 
 func wrapTLSBackend(obj *externglib.Object) *TLSBackend {
 	return &TLSBackend{

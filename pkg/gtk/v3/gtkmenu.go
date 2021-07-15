@@ -44,60 +44,6 @@ func marshalArrowPlacement(p uintptr) (interface{}, error) {
 	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Menuer describes Menu's methods.
-type Menuer interface {
-	// Attach adds a new MenuItem to a (table) menu.
-	Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
-	// Detach detaches the menu from the widget to which it had been attached.
-	Detach()
-	// AccelGroup gets the AccelGroup which holds global accelerators for the
-	// menu.
-	AccelGroup() *AccelGroup
-	// AccelPath retrieves the accelerator path set on the menu.
-	AccelPath() string
-	// Active returns the selected menu item from the menu.
-	Active() *Widget
-	// AttachWidget returns the Widget that the menu is attached to.
-	AttachWidget() *Widget
-	// Monitor retrieves the number of the monitor on which to show the menu.
-	Monitor() int
-	// ReserveToggleSize returns whether the menu reserves space for toggles and
-	// icons, regardless of their actual presence.
-	ReserveToggleSize() bool
-	// TearoffState returns whether the menu is torn off.
-	TearoffState() bool
-	// Title returns the title of the menu.
-	Title() string
-	// PlaceOnMonitor places menu on the given monitor.
-	PlaceOnMonitor(monitor *gdk.Monitor)
-	// Popdown removes the menu from the screen.
-	Popdown()
-	// ReorderChild moves child to a new position in the list of menu children.
-	ReorderChild(child Widgeter, position int)
-	// Reposition repositions the menu according to its position function.
-	Reposition()
-	// SetAccelGroup: set the AccelGroup which holds global accelerators for the
-	// menu.
-	SetAccelGroup(accelGroup *AccelGroup)
-	// SetAccelPath sets an accelerator path for this menu from which
-	// accelerator paths for its immediate children, its menu items, can be
-	// constructed.
-	SetAccelPath(accelPath string)
-	// SetActive selects the specified menu item within the menu.
-	SetActive(index uint)
-	// SetMonitor informs GTK+ on which monitor a menu should be popped up.
-	SetMonitor(monitorNum int)
-	// SetReserveToggleSize sets whether the menu should reserve space for
-	// drawing toggles or icons, regardless of their actual presence.
-	SetReserveToggleSize(reserveToggleSize bool)
-	// SetScreen sets the Screen on which the menu will be displayed.
-	SetScreen(screen *gdk.Screen)
-	// SetTearoffState changes the tearoff state of the menu.
-	SetTearoffState(tornOff bool)
-	// SetTitle sets the title string for the menu.
-	SetTitle(title string)
-}
-
 // Menu is a MenuShell that implements a drop down menu consisting of a list of
 // MenuItem objects which can be navigated and activated by the user to perform
 // application functions.
@@ -128,10 +74,7 @@ type Menu struct {
 	MenuShell
 }
 
-var (
-	_ Menuer          = (*Menu)(nil)
-	_ gextras.Nativer = (*Menu)(nil)
-)
+var _ gextras.Nativer = (*Menu)(nil)
 
 func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{
@@ -182,7 +125,7 @@ func NewMenu() *Menu {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the
 // menu's attach widget or on any of its parent widgets.
-func NewMenuFromModel(model gio.MenuModeler) *Menu {
+func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -204,7 +147,7 @@ func NewMenuFromModel(model gio.MenuModeler) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (menu *Menu) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -394,7 +337,7 @@ func (menu *Menu) Popdown() {
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
-func (menu *Menu) ReorderChild(child Widgeter, position int) {
+func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

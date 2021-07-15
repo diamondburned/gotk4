@@ -23,25 +23,6 @@ func init() {
 	})
 }
 
-// TextMarker describes TextMark's methods.
-type TextMarker interface {
-	// Buffer gets the buffer this mark is located inside, or NULL if the mark
-	// is deleted.
-	Buffer() *TextBuffer
-	// Deleted returns TRUE if the mark has been removed from its buffer with
-	// gtk_text_buffer_delete_mark().
-	Deleted() bool
-	// LeftGravity determines whether the mark has left gravity.
-	LeftGravity() bool
-	// Name returns the mark name; returns NULL for anonymous marks.
-	Name() string
-	// Visible returns TRUE if the mark is visible (i.e.
-	Visible() bool
-	// SetVisible sets the visibility of mark; the insertion point is normally
-	// visible, i.e.
-	SetVisible(setting bool)
-}
-
 // TextMark: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -73,10 +54,7 @@ type TextMark struct {
 	*externglib.Object
 }
 
-var (
-	_ TextMarker      = (*TextMark)(nil)
-	_ gextras.Nativer = (*TextMark)(nil)
-)
+var _ gextras.Nativer = (*TextMark)(nil)
 
 func wrapTextMark(obj *externglib.Object) *TextMark {
 	return &TextMark{

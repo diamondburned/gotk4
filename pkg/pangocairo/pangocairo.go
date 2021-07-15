@@ -25,7 +25,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_cairo_font_get_type()), F: marshalFonter},
-		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshalFontMaper},
+		{T: externglib.Type(C.pango_cairo_font_map_get_type()), F: marshalFontMapper},
 	})
 }
 
@@ -61,6 +61,26 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	fn(cr, attr, doPath)
 }
 
+// ContextGetFontOptions retrieves any font rendering options previously set
+// with pangocairo.ContextSetFontOptions().
+//
+// This function does not report options that are derived from the target
+// surface by update_context.
+func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
+	var _arg1 *C.PangoContext         // out
+	var _cret *C.cairo_font_options_t // in
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+
+	_cret = C.pango_cairo_context_get_font_options(_arg1)
+
+	var _fontOptions *cairo.FontOptions // out
+
+	_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _fontOptions
+}
+
 // ContextGetResolution gets the resolution for the context. See
 // pangocairo.ContextSetResolution()
 func ContextGetResolution(context *pango.Context) float64 {
@@ -76,6 +96,21 @@ func ContextGetResolution(context *pango.Context) float64 {
 	_gdouble = float64(_cret)
 
 	return _gdouble
+}
+
+// ContextSetFontOptions sets the font options used when rendering text with
+// this context.
+//
+// These options override any options that update_context derives from the
+// target surface.
+func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
+	var _arg1 *C.PangoContext         // out
+	var _arg2 *C.cairo_font_options_t // out
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+
+	C.pango_cairo_context_set_font_options(_arg1, _arg2)
 }
 
 // ContextSetResolution sets the resolution for the context.
@@ -358,12 +393,6 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	C.pango_cairo_update_layout(_arg1, _arg2)
 }
 
-// Fonter describes Font's methods.
-type Fonter interface {
-	// ScaledFont gets the cairo_scaled_font_t used by font.
-	ScaledFont() *cairo.ScaledFont
-}
-
 // Font: PangoCairoFont is an interface exported by fonts for use with Cairo.
 //
 // The actual type of the font will depend on the particular font technology
@@ -372,10 +401,15 @@ type Font struct {
 	pango.Font
 }
 
-var (
-	_ Fonter          = (*Font)(nil)
-	_ gextras.Nativer = (*Font)(nil)
-)
+var _ gextras.Nativer = (*Font)(nil)
+
+// Fonter describes Font's abstract methods.
+type Fonter interface {
+	// ScaledFont gets the cairo_scaled_font_t used by font.
+	ScaledFont() *cairo.ScaledFont
+}
+
+var _ Fonter = (*Font)(nil)
 
 func wrapFont(obj *externglib.Object) *Font {
 	return &Font{
@@ -408,8 +442,19 @@ func (font *Font) ScaledFont() *cairo.ScaledFont {
 	return _scaledFont
 }
 
-// FontMaper describes FontMap's methods.
-type FontMaper interface {
+// FontMap: PangoCairoFontMap is an interface exported by font maps for use with
+// Cairo.
+//
+// The actual type of the font map will depend on the particular font technology
+// Cairo was compiled to use.
+type FontMap struct {
+	pango.FontMap
+}
+
+var _ gextras.Nativer = (*FontMap)(nil)
+
+// FontMapper describes FontMap's abstract methods.
+type FontMapper interface {
 	// FontType gets the type of Cairo font backend that fontmap uses.
 	FontType() cairo.FontType
 	// Resolution gets the resolution for the fontmap.
@@ -420,19 +465,7 @@ type FontMaper interface {
 	SetResolution(dpi float64)
 }
 
-// FontMap: PangoCairoFontMap is an interface exported by font maps for use with
-// Cairo.
-//
-// The actual type of the font map will depend on the particular font technology
-// Cairo was compiled to use.
-type FontMap struct {
-	pango.FontMap
-}
-
-var (
-	_ FontMaper       = (*FontMap)(nil)
-	_ gextras.Nativer = (*FontMap)(nil)
-)
+var _ FontMapper = (*FontMap)(nil)
 
 func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{
@@ -442,7 +475,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 	}
 }
 
-func marshalFontMaper(p uintptr) (interface{}, error) {
+func marshalFontMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontMap(obj), nil

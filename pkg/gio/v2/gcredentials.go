@@ -33,24 +33,6 @@ func init() {
 	})
 }
 
-// Credentialser describes Credentials's methods.
-type Credentialser interface {
-	// UnixPid tries to get the UNIX process identifier from credentials.
-	UnixPid() (int, error)
-	// UnixUser tries to get the UNIX user identifier from credentials.
-	UnixUser() (uint, error)
-	// IsSameUser checks if credentials and other_credentials is the same user.
-	IsSameUser(otherCredentials *Credentials) error
-	// SetNative copies the native credentials of type native_type from native
-	// into credentials.
-	SetNative(nativeType CredentialsType, native cgo.Handle)
-	// SetUnixUser tries to set the UNIX user identifier on credentials.
-	SetUnixUser(uid uint) error
-	// String creates a human-readable textual representation of credentials
-	// that can be used in logging and debug messages.
-	String() string
-}
-
 // Credentials type is a reference-counted wrapper for native credentials. This
 // information is typically used for identifying, authenticating and authorizing
 // other processes.
@@ -85,10 +67,7 @@ type Credentials struct {
 	*externglib.Object
 }
 
-var (
-	_ Credentialser   = (*Credentials)(nil)
-	_ gextras.Nativer = (*Credentials)(nil)
-)
+var _ gextras.Nativer = (*Credentials)(nil)
 
 func wrapCredentials(obj *externglib.Object) *Credentials {
 	return &Credentials{

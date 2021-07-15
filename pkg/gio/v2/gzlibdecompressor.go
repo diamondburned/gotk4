@@ -27,18 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorer},
+		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorrer},
 	})
-}
-
-// ZlibDecompressorer describes ZlibDecompressor's methods.
-type ZlibDecompressorer interface {
-	// FileInfo retrieves the Info constructed from the GZIP header data of
-	// compressed data processed by compressor, or NULL if decompressor's
-	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
-	// header data was not fully processed yet, or it not present in the data
-	// stream at all.
-	FileInfo() *FileInfo
 }
 
 // ZlibDecompressor: zlib decompression
@@ -48,10 +38,7 @@ type ZlibDecompressor struct {
 	Converter
 }
 
-var (
-	_ ZlibDecompressorer = (*ZlibDecompressor)(nil)
-	_ gextras.Nativer    = (*ZlibDecompressor)(nil)
-)
+var _ gextras.Nativer = (*ZlibDecompressor)(nil)
 
 func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	return &ZlibDecompressor{
@@ -62,7 +49,7 @@ func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	}
 }
 
-func marshalZlibDecompressorer(p uintptr) (interface{}, error) {
+func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapZlibDecompressor(obj), nil

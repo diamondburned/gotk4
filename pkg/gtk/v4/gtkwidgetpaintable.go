@@ -22,14 +22,6 @@ func init() {
 	})
 }
 
-// WidgetPaintabler describes WidgetPaintable's methods.
-type WidgetPaintabler interface {
-	// Widget returns the widget that is observed or NULL if none.
-	Widget() *Widget
-	// SetWidget sets the widget that should be observed.
-	SetWidget(widget Widgeter)
-}
-
 // WidgetPaintable: GtkWidgetPaintable is a GdkPaintable that displays the
 // contents of a widget.
 //
@@ -55,10 +47,7 @@ type WidgetPaintable struct {
 	gdk.Paintable
 }
 
-var (
-	_ WidgetPaintabler = (*WidgetPaintable)(nil)
-	_ gextras.Nativer  = (*WidgetPaintable)(nil)
-)
+var _ gextras.Nativer = (*WidgetPaintable)(nil)
 
 func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
@@ -76,7 +65,7 @@ func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
-func NewWidgetPaintable(widget Widgeter) *WidgetPaintable {
+func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
@@ -108,7 +97,7 @@ func (self *WidgetPaintable) Widget() *Widget {
 }
 
 // SetWidget sets the widget that should be observed.
-func (self *WidgetPaintable) SetWidget(widget Widgeter) {
+func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

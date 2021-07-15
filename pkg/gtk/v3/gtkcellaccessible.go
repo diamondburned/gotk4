@@ -32,11 +32,6 @@ type CellAccessibleOverrider interface {
 	UpdateCache(emitSignal bool)
 }
 
-// CellAccessibler describes CellAccessible's methods.
-type CellAccessibler interface {
-	privateCellAccessible()
-}
-
 type CellAccessible struct {
 	Accessible
 
@@ -44,10 +39,7 @@ type CellAccessible struct {
 	atk.Component
 }
 
-var (
-	_ CellAccessibler = (*CellAccessible)(nil)
-	_ gextras.Nativer = (*CellAccessible)(nil)
-)
+var _ gextras.Nativer = (*CellAccessible)(nil)
 
 func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 	return &CellAccessible{

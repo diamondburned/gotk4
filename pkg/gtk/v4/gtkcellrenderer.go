@@ -75,24 +75,24 @@ type CellRendererOverrider interface {
 	// Activate passes an activate event to the cell renderer for possible
 	// processing. Some cell renderers may use events; for example,
 	// CellRendererToggle toggles when it gets a mouse click.
-	Activate(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	EditingCanceled()
 	EditingStarted(editable CellEditabler, path string)
 	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
 	// finding the appropriate edit and focus rectangle.
-	AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// PreferredHeight retrieves a renderer’s natural size when rendered to
 	// widget.
-	PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int)
+	PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int)
 	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 	// height if it were rendered to widget with the specified width.
-	PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int)
+	PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a renderer’s natural size when rendered to
 	// widget.
-	PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int)
+	PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int)
 	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 	// width if it were rendered to widget with the specified height.
-	PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int)
+	PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -103,81 +103,11 @@ type CellRendererOverrider interface {
 	// includes the blank space around the cell, and also the area containing
 	// the tree expander; so the background_area rectangles for all cells tile
 	// to cover the entire window.
-	Snapshot(snapshot *Snapshot, widget Widgeter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
 	// StartEditing starts editing the contents of this cell, through a new
 	// CellEditable widget created by the CellRendererClass.start_editing
 	// virtual function.
-	StartEditing(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
-}
-
-// CellRendererer describes CellRenderer's methods.
-type CellRendererer interface {
-	// Activate passes an activate event to the cell renderer for possible
-	// processing.
-	Activate(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
-	// AlignedArea gets the aligned area used by cell inside cell_area.
-	AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
-	// Alignment fills in xalign and yalign with the appropriate values of cell.
-	Alignment() (xalign float32, yalign float32)
-	// FixedSize fills in width and height with the appropriate size of cell.
-	FixedSize() (width int, height int)
-	// IsExpanded checks whether the given CellRenderer is expanded.
-	IsExpanded() bool
-	// IsExpander checks whether the given CellRenderer is an expander.
-	IsExpander() bool
-	// Padding fills in xpad and ypad with the appropriate values of cell.
-	Padding() (xpad int, ypad int)
-	// PreferredHeight retrieves a renderer’s natural size when rendered to
-	// widget.
-	PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int)
-	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
-	// height if it were rendered to widget with the specified width.
-	PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int)
-	// PreferredSize retrieves the minimum and natural size of a cell taking
-	// into account the widget’s preference for height-for-width management.
-	PreferredSize(widget Widgeter) (minimumSize Requisition, naturalSize Requisition)
-	// PreferredWidth retrieves a renderer’s natural size when rendered to
-	// widget.
-	PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int)
-	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
-	// width if it were rendered to widget with the specified height.
-	PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int)
-	// RequestMode gets whether the cell renderer prefers a height-for-width
-	// layout or a width-for-height layout.
-	RequestMode() SizeRequestMode
-	// Sensitive returns the cell renderer’s sensitivity.
-	Sensitive() bool
-	// State translates the cell renderer state to StateFlags, based on the cell
-	// renderer and widget sensitivity, and the given CellRendererState.
-	State(widget Widgeter, cellState CellRendererState) StateFlags
-	// Visible returns the cell renderer’s visibility.
-	Visible() bool
-	// IsActivatable checks whether the cell renderer can do something when
-	// activated.
-	IsActivatable() bool
-	// SetAlignment sets the renderer’s alignment within its available space.
-	SetAlignment(xalign float32, yalign float32)
-	// SetFixedSize sets the renderer size to be explicit, independent of the
-	// properties set.
-	SetFixedSize(width int, height int)
-	// SetIsExpanded sets whether the given CellRenderer is expanded.
-	SetIsExpanded(isExpanded bool)
-	// SetIsExpander sets whether the given CellRenderer is an expander.
-	SetIsExpander(isExpander bool)
-	// SetPadding sets the renderer’s padding.
-	SetPadding(xpad int, ypad int)
-	// SetSensitive sets the cell renderer’s sensitivity.
-	SetSensitive(sensitive bool)
-	// SetVisible sets the cell renderer’s visibility.
-	SetVisible(visible bool)
-	// Snapshot invokes the virtual render function of the CellRenderer.
-	Snapshot(snapshot *Snapshot, widget Widgeter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
-	// StartEditing starts editing the contents of this cell, through a new
-	// CellEditable widget created by the CellRendererClass.start_editing
-	// virtual function.
-	StartEditing(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
-	// StopEditing informs the cell renderer that the editing is stopped.
-	StopEditing(canceled bool)
+	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
 }
 
 // CellRenderer: object for rendering a single cell
@@ -218,10 +148,79 @@ type CellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-var (
-	_ CellRendererer  = (*CellRenderer)(nil)
-	_ gextras.Nativer = (*CellRenderer)(nil)
-)
+var _ gextras.Nativer = (*CellRenderer)(nil)
+
+// CellRendererer describes CellRenderer's abstract methods.
+type CellRendererer interface {
+	// Activate passes an activate event to the cell renderer for possible
+	// processing.
+	Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	// AlignedArea gets the aligned area used by cell inside cell_area.
+	AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+	// Alignment fills in xalign and yalign with the appropriate values of cell.
+	Alignment() (xalign float32, yalign float32)
+	// FixedSize fills in width and height with the appropriate size of cell.
+	FixedSize() (width int, height int)
+	// IsExpanded checks whether the given CellRenderer is expanded.
+	IsExpanded() bool
+	// IsExpander checks whether the given CellRenderer is an expander.
+	IsExpander() bool
+	// Padding fills in xpad and ypad with the appropriate values of cell.
+	Padding() (xpad int, ypad int)
+	// PreferredHeight retrieves a renderer’s natural size when rendered to
+	// widget.
+	PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int)
+	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
+	// height if it were rendered to widget with the specified width.
+	PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int)
+	// PreferredSize retrieves the minimum and natural size of a cell taking
+	// into account the widget’s preference for height-for-width management.
+	PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition)
+	// PreferredWidth retrieves a renderer’s natural size when rendered to
+	// widget.
+	PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int)
+	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
+	// width if it were rendered to widget with the specified height.
+	PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int)
+	// RequestMode gets whether the cell renderer prefers a height-for-width
+	// layout or a width-for-height layout.
+	RequestMode() SizeRequestMode
+	// Sensitive returns the cell renderer’s sensitivity.
+	Sensitive() bool
+	// State translates the cell renderer state to StateFlags, based on the cell
+	// renderer and widget sensitivity, and the given CellRendererState.
+	State(widget Widgetter, cellState CellRendererState) StateFlags
+	// Visible returns the cell renderer’s visibility.
+	Visible() bool
+	// IsActivatable checks whether the cell renderer can do something when
+	// activated.
+	IsActivatable() bool
+	// SetAlignment sets the renderer’s alignment within its available space.
+	SetAlignment(xalign float32, yalign float32)
+	// SetFixedSize sets the renderer size to be explicit, independent of the
+	// properties set.
+	SetFixedSize(width int, height int)
+	// SetIsExpanded sets whether the given CellRenderer is expanded.
+	SetIsExpanded(isExpanded bool)
+	// SetIsExpander sets whether the given CellRenderer is an expander.
+	SetIsExpander(isExpander bool)
+	// SetPadding sets the renderer’s padding.
+	SetPadding(xpad int, ypad int)
+	// SetSensitive sets the cell renderer’s sensitivity.
+	SetSensitive(sensitive bool)
+	// SetVisible sets the cell renderer’s visibility.
+	SetVisible(visible bool)
+	// Snapshot invokes the virtual render function of the CellRenderer.
+	Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing starts editing the contents of this cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
+	// StopEditing informs the cell renderer that the editing is stopped.
+	StopEditing(canceled bool)
+}
+
+var _ CellRendererer = (*CellRenderer)(nil)
 
 func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
 	return &CellRenderer{
@@ -240,7 +239,7 @@ func marshalCellRendererer(p uintptr) (interface{}, error) {
 // Activate passes an activate event to the cell renderer for possible
 // processing. Some cell renderers may use events; for example,
 // CellRendererToggle toggles when it gets a mouse click.
-func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out
@@ -271,7 +270,7 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgeter, path stri
 
 // AlignedArea gets the aligned area used by cell inside cell_area. Used for
 // finding the appropriate edit and focus rectangle.
-func (cell *CellRenderer) AlignedArea(widget Widgeter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
+func (cell *CellRenderer) AlignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
@@ -386,7 +385,7 @@ func (cell *CellRenderer) Padding() (xpad int, ypad int) {
 }
 
 // PreferredHeight retrieves a renderer’s natural size when rendered to widget.
-func (cell *CellRenderer) PreferredHeight(widget Widgeter) (minimumSize int, naturalSize int) {
+func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // in
@@ -408,7 +407,7 @@ func (cell *CellRenderer) PreferredHeight(widget Widgeter) (minimumSize int, nat
 
 // PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 // height if it were rendered to widget with the specified width.
-func (cell *CellRenderer) PreferredHeightForWidth(widget Widgeter, width int) (minimumHeight int, naturalHeight int) {
+func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight int, naturalHeight int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
@@ -432,7 +431,7 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgeter, width int) (m
 
 // PreferredSize retrieves the minimum and natural size of a cell taking into
 // account the widget’s preference for height-for-width management.
-func (cell *CellRenderer) PreferredSize(widget Widgeter) (minimumSize Requisition, naturalSize Requisition) {
+func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.GtkRequisition   // in
@@ -453,7 +452,7 @@ func (cell *CellRenderer) PreferredSize(widget Widgeter) (minimumSize Requisitio
 }
 
 // PreferredWidth retrieves a renderer’s natural size when rendered to widget.
-func (cell *CellRenderer) PreferredWidth(widget Widgeter) (minimumSize int, naturalSize int) {
+func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // in
@@ -475,7 +474,7 @@ func (cell *CellRenderer) PreferredWidth(widget Widgeter) (minimumSize int, natu
 
 // PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 // width if it were rendered to widget with the specified height.
-func (cell *CellRenderer) PreferredWidthForHeight(widget Widgeter, height int) (minimumWidth int, naturalWidth int) {
+func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth int, naturalWidth int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
@@ -534,7 +533,7 @@ func (cell *CellRenderer) Sensitive() bool {
 
 // State translates the cell renderer state to StateFlags, based on the cell
 // renderer and widget sensitivity, and the given CellRendererState.
-func (cell *CellRenderer) State(widget Widgeter, cellState CellRendererState) StateFlags {
+func (cell *CellRenderer) State(widget Widgetter, cellState CellRendererState) StateFlags {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
@@ -689,7 +688,7 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 // blank space around the cell, and also the area containing the tree expander;
 // so the background_area rectangles for all cells tile to cover the entire
 // window.
-func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgeter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GtkSnapshot         // out
 	var _arg2 *C.GtkWidget           // out
@@ -710,7 +709,7 @@ func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgeter, backgrou
 // StartEditing starts editing the contents of this cell, through a new
 // CellEditable widget created by the CellRendererClass.start_editing virtual
 // function.
-func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgeter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable {
+func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable {
 	var _arg0 *C.GtkCellRenderer     // out
 	var _arg1 *C.GdkEvent            // out
 	var _arg2 *C.GtkWidget           // out

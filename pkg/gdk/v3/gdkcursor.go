@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
 }
 
@@ -202,8 +202,15 @@ func marshalCursorType(p uintptr) (interface{}, error) {
 	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Cursorer describes Cursor's methods.
-type Cursorer interface {
+// Cursor represents a cursor. Its contents are private.
+type Cursor struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Cursor)(nil)
+
+// Cursorrer describes Cursor's abstract methods.
+type Cursorrer interface {
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
 	// Display returns the display on which the Cursor is defined.
@@ -220,15 +227,7 @@ type Cursorer interface {
 	unref()
 }
 
-// Cursor represents a cursor. Its contents are private.
-type Cursor struct {
-	*externglib.Object
-}
-
-var (
-	_ Cursorer        = (*Cursor)(nil)
-	_ gextras.Nativer = (*Cursor)(nil)
-)
+var _ Cursorrer = (*Cursor)(nil)
 
 func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
@@ -236,7 +235,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 	}
 }
 
-func marshalCursorer(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil

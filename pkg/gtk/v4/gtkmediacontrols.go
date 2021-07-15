@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// MediaControlser describes MediaControls's methods.
-type MediaControlser interface {
-	// MediaStream gets the media stream managed by controls or NULL if none.
-	MediaStream() *MediaStream
-	// SetMediaStream sets the stream that is controlled by controls.
-	SetMediaStream(stream MediaStreamer)
-}
-
 // MediaControls: GtkMediaControls is a widget to show controls for a video.
 //
 // !An example GtkMediaControls (media-controls.png)
@@ -38,10 +30,7 @@ type MediaControls struct {
 	Widget
 }
 
-var (
-	_ MediaControlser = (*MediaControls)(nil)
-	_ gextras.Nativer = (*MediaControls)(nil)
-)
+var _ gextras.Nativer = (*MediaControls)(nil)
 
 func wrapMediaControls(obj *externglib.Object) *MediaControls {
 	return &MediaControls{

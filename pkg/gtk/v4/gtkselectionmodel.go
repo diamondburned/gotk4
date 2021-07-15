@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeler},
+		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeller},
 	})
 }
 
@@ -83,34 +83,6 @@ type SelectionModelOverrider interface {
 	UnselectRange(position uint, nItems uint) bool
 }
 
-// SelectionModeler describes SelectionModel's methods.
-type SelectionModeler interface {
-	// Selection gets the set containing all currently selected items in the
-	// model.
-	Selection() *Bitset
-	// SelectionInRange gets the set of selected items in a range.
-	SelectionInRange(position uint, nItems uint) *Bitset
-	// IsSelected checks if the given item is selected.
-	IsSelected(position uint) bool
-	// SelectAll requests to select all items in the model.
-	SelectAll() bool
-	// SelectItem requests to select an item in the model.
-	SelectItem(position uint, unselectRest bool) bool
-	// SelectRange requests to select a range of items in the model.
-	SelectRange(position uint, nItems uint, unselectRest bool) bool
-	// SelectionChanged: helper function for implementations of
-	// GtkSelectionModel.
-	SelectionChanged(position uint, nItems uint)
-	// SetSelection: make selection changes.
-	SetSelection(selected *Bitset, mask *Bitset) bool
-	// UnselectAll requests to unselect all items in the model.
-	UnselectAll() bool
-	// UnselectItem requests to unselect an item in the model.
-	UnselectItem(position uint) bool
-	// UnselectRange requests to unselect a range of items in the model.
-	UnselectRange(position uint, nItems uint) bool
-}
-
 // SelectionModel: GtkSelectionModel is an interface that add support for
 // selection to list models.
 //
@@ -152,10 +124,37 @@ type SelectionModel struct {
 	gio.ListModel
 }
 
-var (
-	_ SelectionModeler = (*SelectionModel)(nil)
-	_ gextras.Nativer  = (*SelectionModel)(nil)
-)
+var _ gextras.Nativer = (*SelectionModel)(nil)
+
+// SelectionModeller describes SelectionModel's abstract methods.
+type SelectionModeller interface {
+	// Selection gets the set containing all currently selected items in the
+	// model.
+	Selection() *Bitset
+	// SelectionInRange gets the set of selected items in a range.
+	SelectionInRange(position uint, nItems uint) *Bitset
+	// IsSelected checks if the given item is selected.
+	IsSelected(position uint) bool
+	// SelectAll requests to select all items in the model.
+	SelectAll() bool
+	// SelectItem requests to select an item in the model.
+	SelectItem(position uint, unselectRest bool) bool
+	// SelectRange requests to select a range of items in the model.
+	SelectRange(position uint, nItems uint, unselectRest bool) bool
+	// SelectionChanged: helper function for implementations of
+	// GtkSelectionModel.
+	SelectionChanged(position uint, nItems uint)
+	// SetSelection: make selection changes.
+	SetSelection(selected *Bitset, mask *Bitset) bool
+	// UnselectAll requests to unselect all items in the model.
+	UnselectAll() bool
+	// UnselectItem requests to unselect an item in the model.
+	UnselectItem(position uint) bool
+	// UnselectRange requests to unselect a range of items in the model.
+	UnselectRange(position uint, nItems uint) bool
+}
+
+var _ SelectionModeller = (*SelectionModel)(nil)
 
 func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	return &SelectionModel{
@@ -165,7 +164,7 @@ func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	}
 }
 
-func marshalSelectionModeler(p uintptr) (interface{}, error) {
+func marshalSelectionModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSelectionModel(obj), nil

@@ -21,18 +21,6 @@ func init() {
 	})
 }
 
-// Spinnerer describes Spinner's methods.
-type Spinnerer interface {
-	// Spinning returns whether the spinner is spinning.
-	Spinning() bool
-	// SetSpinning sets the activity of the spinner.
-	SetSpinning(spinning bool)
-	// Start starts the animation of the spinner.
-	Start()
-	// Stop stops the animation of the spinner.
-	Stop()
-}
-
 // Spinner: GtkSpinner widget displays an icon-size spinning animation.
 //
 // It is often used as an alternative to a gtk.ProgressBar for displaying
@@ -52,10 +40,7 @@ type Spinner struct {
 	Widget
 }
 
-var (
-	_ Spinnerer       = (*Spinner)(nil)
-	_ gextras.Nativer = (*Spinner)(nil)
-)
+var _ gextras.Nativer = (*Spinner)(nil)
 
 func wrapSpinner(obj *externglib.Object) *Spinner {
 	return &Spinner{

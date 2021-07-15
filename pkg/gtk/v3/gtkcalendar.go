@@ -24,7 +24,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_calendar_display_options_get_type()), F: marshalCalendarDisplayOptions},
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarer},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
 	})
 }
 
@@ -99,40 +99,6 @@ type CalendarOverrider interface {
 	PrevYear()
 }
 
-// Calendarer describes Calendar's methods.
-type Calendarer interface {
-	// ClearMarks: remove all visual markers.
-	ClearMarks()
-	// Date obtains the selected date from a Calendar.
-	Date() (year uint, month uint, day uint)
-	// DayIsMarked returns if the day of the calendar is already marked.
-	DayIsMarked(day uint) bool
-	// DetailHeightRows queries the height of detail cells, in rows.
-	DetailHeightRows() int
-	// DetailWidthChars queries the width of detail cells, in characters.
-	DetailWidthChars() int
-	// DisplayOptions returns the current display options of calendar.
-	DisplayOptions() CalendarDisplayOptions
-	// MarkDay places a visual marker on a particular day.
-	MarkDay(day uint)
-	// SelectDay selects a day from the current month.
-	SelectDay(day uint)
-	// SelectMonth shifts the calendar to a different month.
-	SelectMonth(month uint, year uint)
-	// SetDetailFunc installs a function which provides Pango markup with detail
-	// information for each day.
-	SetDetailFunc(fn CalendarDetailFunc)
-	// SetDetailHeightRows updates the height of detail cells.
-	SetDetailHeightRows(rows int)
-	// SetDetailWidthChars updates the width of detail cells.
-	SetDetailWidthChars(chars int)
-	// SetDisplayOptions sets display options (whether to display the heading
-	// and the month headings).
-	SetDisplayOptions(flags CalendarDisplayOptions)
-	// UnmarkDay removes the visual marker from a particular day.
-	UnmarkDay(day uint)
-}
-
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
 //
@@ -157,10 +123,7 @@ type Calendar struct {
 	Widget
 }
 
-var (
-	_ Calendarer      = (*Calendar)(nil)
-	_ gextras.Nativer = (*Calendar)(nil)
-)
+var _ gextras.Nativer = (*Calendar)(nil)
 
 func wrapCalendar(obj *externglib.Object) *Calendar {
 	return &Calendar{
@@ -178,7 +141,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 	}
 }
 
-func marshalCalendarer(p uintptr) (interface{}, error) {
+func marshalCalendarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCalendar(obj), nil

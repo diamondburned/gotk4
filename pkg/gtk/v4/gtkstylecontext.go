@@ -55,51 +55,6 @@ type StyleContextOverrider interface {
 	Changed()
 }
 
-// StyleContexter describes StyleContext's methods.
-type StyleContexter interface {
-	// AddClass adds a style class to context, so later uses of the style
-	// context will make use of this new class for styling.
-	AddClass(className string)
-	// AddProvider adds a style provider to context, to be used in style
-	// construction.
-	AddProvider(provider StyleProviderer, priority uint)
-	// Border gets the border for a given state as a GtkBorder.
-	Border() Border
-	// Color gets the foreground color for a given state.
-	Color() gdk.RGBA
-	// Display returns the GdkDisplay to which context is attached.
-	Display() *gdk.Display
-	// Margin gets the margin for a given state as a GtkBorder.
-	Margin() Border
-	// Padding gets the padding for a given state as a GtkBorder.
-	Padding() Border
-	// Scale returns the scale used for assets.
-	Scale() int
-	// State returns the state used for style matching.
-	State() StateFlags
-	// HasClass returns TRUE if context currently has defined the given class
-	// name.
-	HasClass(className string) bool
-	// LookupColor looks up and resolves a color name in the context color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
-	// RemoveClass removes class_name from context.
-	RemoveClass(className string)
-	// RemoveProvider removes provider from the style providers list in context.
-	RemoveProvider(provider StyleProviderer)
-	// Restore restores context state to a previous stage.
-	Restore()
-	// Save saves the context state.
-	Save()
-	// SetDisplay attaches context to the given display.
-	SetDisplay(display *gdk.Display)
-	// SetScale sets the scale to use when getting image assets for the style.
-	SetScale(scale int)
-	// SetState sets the state to be used for style matching.
-	SetState(flags StateFlags)
-	// String converts the style context into a string representation.
-	String(flags StyleContextPrintFlags) string
-}
-
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
 //
 // In order to construct the final style information, GtkStyleContext queries
@@ -142,10 +97,7 @@ type StyleContext struct {
 	*externglib.Object
 }
 
-var (
-	_ StyleContexter  = (*StyleContext)(nil)
-	_ gextras.Nativer = (*StyleContext)(nil)
-)
+var _ gextras.Nativer = (*StyleContext)(nil)
 
 func wrapStyleContext(obj *externglib.Object) *StyleContext {
 	return &StyleContext{

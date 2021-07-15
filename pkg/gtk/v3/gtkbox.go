@@ -20,43 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxer},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxxer},
 	})
-}
-
-// Boxer describes Box's methods.
-type Boxer interface {
-	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition() BaselinePosition
-	// CenterWidget retrieves the center widget of the box.
-	CenterWidget() *Widget
-	// Homogeneous returns whether the box is homogeneous (all children are the
-	// same size).
-	Homogeneous() bool
-	// Spacing gets the value set by gtk_box_set_spacing().
-	Spacing() int
-	// PackEnd adds child to box, packed with reference to the end of box.
-	PackEnd(child Widgeter, expand bool, fill bool, padding uint)
-	// PackStart adds child to box, packed with reference to the start of box.
-	PackStart(child Widgeter, expand bool, fill bool, padding uint)
-	// QueryChildPacking obtains information about how child is packed into box.
-	QueryChildPacking(child Widgeter) (expand bool, fill bool, padding uint, packType PackType)
-	// ReorderChild moves child to a new position in the list of box children.
-	ReorderChild(child Widgeter, position int)
-	// SetBaselinePosition sets the baseline position of a box.
-	SetBaselinePosition(position BaselinePosition)
-	// SetCenterWidget sets a center widget; that is a child widget that will be
-	// centered with respect to the full width of the box, even if the children
-	// at either side take up different amounts of space.
-	SetCenterWidget(widget Widgeter)
-	// SetChildPacking sets the way child is packed into box.
-	SetChildPacking(child Widgeter, expand bool, fill bool, padding uint, packType PackType)
-	// SetHomogeneous sets the Box:homogeneous property of box, controlling
-	// whether or not all children of box are given equal space in the box.
-	SetHomogeneous(homogeneous bool)
-	// SetSpacing sets the Box:spacing property of box, which is the number of
-	// pixels to place between children of box.
-	SetSpacing(spacing int)
 }
 
 // Box widget arranges child widgets into a single row or column, depending upon
@@ -110,10 +75,7 @@ type Box struct {
 	Orientable
 }
 
-var (
-	_ Boxer           = (*Box)(nil)
-	_ gextras.Nativer = (*Box)(nil)
-)
+var _ gextras.Nativer = (*Box)(nil)
 
 func wrapBox(obj *externglib.Object) *Box {
 	return &Box{
@@ -136,7 +98,7 @@ func wrapBox(obj *externglib.Object) *Box {
 	}
 }
 
-func marshalBoxer(p uintptr) (interface{}, error) {
+func marshalBoxxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBox(obj), nil
@@ -236,7 +198,7 @@ func (box *Box) Spacing() int {
 // PackEnd adds child to box, packed with reference to the end of box. The child
 // is packed after (away from end of) any other child packed with reference to
 // the end of box.
-func (box *Box) PackEnd(child Widgeter, expand bool, fill bool, padding uint) {
+func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -259,7 +221,7 @@ func (box *Box) PackEnd(child Widgeter, expand bool, fill bool, padding uint) {
 // PackStart adds child to box, packed with reference to the start of box. The
 // child is packed after any other child packed with reference to the start of
 // box.
-func (box *Box) PackStart(child Widgeter, expand bool, fill bool, padding uint) {
+func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -280,7 +242,7 @@ func (box *Box) PackStart(child Widgeter, expand bool, fill bool, padding uint) 
 }
 
 // QueryChildPacking obtains information about how child is packed into box.
-func (box *Box) QueryChildPacking(child Widgeter) (expand bool, fill bool, padding uint, packType PackType) {
+func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // in
@@ -318,7 +280,7 @@ func (box *Box) QueryChildPacking(child Widgeter) (expand bool, fill bool, paddi
 // packed into box. A child widget at some position in the list will be packed
 // just after all other widgets of the same packing type that appear earlier in
 // the list.
-func (box *Box) ReorderChild(child Widgeter, position int) {
+func (box *Box) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -348,7 +310,7 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 // SetCenterWidget sets a center widget; that is a child widget that will be
 // centered with respect to the full width of the box, even if the children at
 // either side take up different amounts of space.
-func (box *Box) SetCenterWidget(widget Widgeter) {
+func (box *Box) SetCenterWidget(widget Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -359,7 +321,7 @@ func (box *Box) SetCenterWidget(widget Widgeter) {
 }
 
 // SetChildPacking sets the way child is packed into box.
-func (box *Box) SetChildPacking(child Widgeter, expand bool, fill bool, padding uint, packType PackType) {
+func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out

@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// SignalListItemFactorier describes SignalListItemFactory's methods.
-type SignalListItemFactorier interface {
-	privateSignalListItemFactory()
-}
-
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that
 // emits signals to to manage listitems.
 //
@@ -70,10 +65,7 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
-var (
-	_ SignalListItemFactorier = (*SignalListItemFactory)(nil)
-	_ gextras.Nativer         = (*SignalListItemFactory)(nil)
-)
+var _ gextras.Nativer = (*SignalListItemFactory)(nil)
 
 func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{

@@ -24,14 +24,6 @@ func init() {
 	})
 }
 
-// StackSwitcherer describes StackSwitcher's methods.
-type StackSwitcherer interface {
-	// Stack retrieves the stack.
-	Stack() *Stack
-	// SetStack sets the stack to control.
-	SetStack(stack *Stack)
-}
-
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of
 // buttons to switch between the various pages of the associated stack widget.
 //
@@ -56,10 +48,7 @@ type StackSwitcher struct {
 	Box
 }
 
-var (
-	_ StackSwitcherer = (*StackSwitcher)(nil)
-	_ gextras.Nativer = (*StackSwitcher)(nil)
-)
+var _ gextras.Nativer = (*StackSwitcher)(nil)
 
 func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
 	return &StackSwitcher{

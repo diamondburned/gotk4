@@ -48,155 +48,6 @@ type EntryOverrider interface {
 	Activate()
 }
 
-// Entrier describes Entry's methods.
-type Entrier interface {
-	// ActivatesDefault retrieves the value set by
-	// gtk_entry_set_activates_default().
-	ActivatesDefault() bool
-	// Alignment gets the value set by gtk_entry_set_alignment().
-	Alignment() float32
-	// Attributes gets the attribute list of the GtkEntry.
-	Attributes() *pango.AttrList
-	// Buffer: get the GtkEntryBuffer object which holds the text for this
-	// widget.
-	Buffer() *EntryBuffer
-	// Completion returns the auxiliary completion object currently in use by
-	// entry.
-	Completion() *EntryCompletion
-	// CurrentIconDragSource returns the index of the icon which is the source
-	// of the current DND operation, or -1.
-	CurrentIconDragSource() int
-	// ExtraMenu gets the menu model set with gtk_entry_set_extra_menu().
-	ExtraMenu() *gio.MenuModel
-	// HasFrame gets the value set by gtk_entry_set_has_frame().
-	HasFrame() bool
-	// IconActivatable returns whether the icon is activatable.
-	IconActivatable(iconPos EntryIconPosition) bool
-	// IconArea gets the area where entry’s icon at icon_pos is drawn.
-	IconArea(iconPos EntryIconPosition) gdk.Rectangle
-	// IconAtPos finds the icon at the given position and return its index.
-	IconAtPos(x int, y int) int
-	// IconGIcon retrieves the GIcon used for the icon.
-	IconGIcon(iconPos EntryIconPosition) *gio.Icon
-	// IconName retrieves the icon name used for the icon.
-	IconName(iconPos EntryIconPosition) string
-	// IconPaintable retrieves the GdkPaintable used for the icon.
-	IconPaintable(iconPos EntryIconPosition) *gdk.Paintable
-	// IconSensitive returns whether the icon appears sensitive or insensitive.
-	IconSensitive(iconPos EntryIconPosition) bool
-	// IconStorageType gets the type of representation being used by the icon to
-	// store image data.
-	IconStorageType(iconPos EntryIconPosition) ImageType
-	// IconTooltipMarkup gets the contents of the tooltip on the icon at the
-	// specified position in entry.
-	IconTooltipMarkup(iconPos EntryIconPosition) string
-	// IconTooltipText gets the contents of the tooltip on the icon at the
-	// specified position in entry.
-	IconTooltipText(iconPos EntryIconPosition) string
-	// InputHints gets the input hints of this GtkEntry.
-	InputHints() InputHints
-	// InputPurpose gets the input purpose of the GtkEntry.
-	InputPurpose() InputPurpose
-	// InvisibleChar retrieves the character displayed in place of the actual
-	// text in “password mode”.
-	InvisibleChar() uint32
-	// MaxLength retrieves the maximum allowed length of the text in entry.
-	MaxLength() int
-	// OverwriteMode gets whether the GtkEntry is in overwrite mode.
-	OverwriteMode() bool
-	// PlaceholderText retrieves the text that will be displayed when entry is
-	// empty and unfocused
-	PlaceholderText() string
-	// ProgressFraction returns the current fraction of the task that’s been
-	// completed.
-	ProgressFraction() float64
-	// ProgressPulseStep retrieves the pulse step set with
-	// gtk_entry_set_progress_pulse_step().
-	ProgressPulseStep() float64
-	// Tabs gets the tabstops of the `GtkEntry.
-	Tabs() *pango.TabArray
-	// TextLength retrieves the current length of the text in entry.
-	TextLength() uint16
-	// Visibility retrieves whether the text in entry is visible.
-	Visibility() bool
-	// GrabFocusWithoutSelecting causes entry to have keyboard focus.
-	GrabFocusWithoutSelecting() bool
-	// ProgressPulse indicates that some progress is made, but you don’t know
-	// how much.
-	ProgressPulse()
-	// ResetImContext: reset the input method context of the entry if needed.
-	ResetImContext()
-	// SetActivatesDefault sets whether pressing Enter in the entry will
-	// activate the default widget for the window containing the entry.
-	SetActivatesDefault(setting bool)
-	// SetAlignment sets the alignment for the contents of the entry.
-	SetAlignment(xalign float32)
-	// SetAttributes sets a PangoAttrList.
-	SetAttributes(attrs *pango.AttrList)
-	// SetBuffer: set the GtkEntryBuffer object which holds the text for this
-	// widget.
-	SetBuffer(buffer *EntryBuffer)
-	// SetCompletion sets completion to be the auxiliary completion object to
-	// use with entry.
-	SetCompletion(completion *EntryCompletion)
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for entry.
-	SetExtraMenu(model gio.MenuModeler)
-	// SetHasFrame sets whether the entry has a beveled frame around it.
-	SetHasFrame(setting bool)
-	// SetIconActivatable sets whether the icon is activatable.
-	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
-	// SetIconDragSource sets up the icon at the given position as drag source.
-	SetIconDragSource(iconPos EntryIconPosition, provider *gdk.ContentProvider, actions gdk.DragAction)
-	// SetIconFromGIcon sets the icon shown in the entry at the specified
-	// position from the current icon theme.
-	SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer)
-	// SetIconFromIconName sets the icon shown in the entry at the specified
-	// position from the current icon theme.
-	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
-	// SetIconFromPaintable sets the icon shown in the specified position using
-	// a GdkPaintable.
-	SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintabler)
-	// SetIconSensitive sets the sensitivity for the specified icon.
-	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
-	// SetIconTooltipMarkup sets tooltip as the contents of the tooltip for the
-	// icon at the specified position.
-	SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
-	// SetIconTooltipText sets tooltip as the contents of the tooltip for the
-	// icon at the specified position.
-	SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
-	// SetInputHints: set additional hints which allow input methods to
-	// fine-tune their behavior.
-	SetInputHints(hints InputHints)
-	// SetInputPurpose sets the input purpose which can be used by input methods
-	// to adjust their behavior.
-	SetInputPurpose(purpose InputPurpose)
-	// SetInvisibleChar sets the character to use in place of the actual text in
-	// “password mode”.
-	SetInvisibleChar(ch uint32)
-	// SetMaxLength sets the maximum allowed length of the contents of the
-	// widget.
-	SetMaxLength(max int)
-	// SetOverwriteMode sets whether the text is overwritten when typing in the
-	// GtkEntry.
-	SetOverwriteMode(overwrite bool)
-	// SetPlaceholderText sets text to be displayed in entry when it is empty.
-	SetPlaceholderText(text string)
-	// SetProgressFraction causes the entry’s progress indicator to “fill in”
-	// the given fraction of the bar.
-	SetProgressFraction(fraction float64)
-	// SetProgressPulseStep sets the fraction of total entry width to move the
-	// progress bouncing block for each pulse.
-	SetProgressPulseStep(fraction float64)
-	// SetTabs sets a PangoTabArray.
-	SetTabs(tabs *pango.TabArray)
-	// SetVisibility sets whether the contents of the entry are visible or not.
-	SetVisibility(visible bool)
-	// UnsetInvisibleChar unsets the invisible char, so that the default
-	// invisible char is used again.
-	UnsetInvisibleChar()
-}
-
 // Entry: GtkEntry is a single line text entry widget.
 //
 // !An example GtkEntry (entry.png)
@@ -287,10 +138,7 @@ type Entry struct {
 	Editable
 }
 
-var (
-	_ Entrier         = (*Entry)(nil)
-	_ gextras.Nativer = (*Entry)(nil)
-)
+var _ gextras.Nativer = (*Entry)(nil)
 
 func wrapEntry(obj *externglib.Object) *Entry {
 	return &Entry{
@@ -1076,7 +924,7 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // entry.
-func (entry *Entry) SetExtraMenu(model gio.MenuModeler) {
+func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkEntry   // out
 	var _arg1 *C.GMenuModel // out
 
@@ -1138,7 +986,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, provider *gdk.C
 // If the icon isn’t known, a “broken image” icon will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

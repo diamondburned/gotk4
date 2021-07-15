@@ -21,20 +21,6 @@ func init() {
 	})
 }
 
-// Viewporter describes Viewport's methods.
-type Viewporter interface {
-	// Child gets the child widget of viewport.
-	Child() *Widget
-	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
-	// child in view.
-	ScrollToFocus() bool
-	// SetChild sets the child widget of viewport.
-	SetChild(child Widgeter)
-	// SetScrollToFocus sets whether the viewport should automatically scroll to
-	// keep the focused child in view.
-	SetScrollToFocus(scrollToFocus bool)
-}
-
 // Viewport: GtkViewport implements scrollability for widgets that lack their
 // own scrolling capabilities.
 //
@@ -58,10 +44,7 @@ type Viewport struct {
 	Scrollable
 }
 
-var (
-	_ Viewporter      = (*Viewport)(nil)
-	_ gextras.Nativer = (*Viewport)(nil)
-)
+var _ gextras.Nativer = (*Viewport)(nil)
 
 func wrapViewport(obj *externglib.Object) *Viewport {
 	return &Viewport{
@@ -154,7 +137,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 }
 
 // SetChild sets the child widget of viewport.
-func (viewport *Viewport) SetChild(child Widgeter) {
+func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 

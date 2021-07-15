@@ -30,11 +30,6 @@ type ShortcutManagerOverrider interface {
 	RemoveController(controller *ShortcutController)
 }
 
-// ShortcutManagerer describes ShortcutManager's methods.
-type ShortcutManagerer interface {
-	privateShortcutManager()
-}
-
 // ShortcutManager: GtkShortcutManager interface is used to implement shortcut
 // scopes.
 //
@@ -51,10 +46,14 @@ type ShortcutManager struct {
 	*externglib.Object
 }
 
-var (
-	_ ShortcutManagerer = (*ShortcutManager)(nil)
-	_ gextras.Nativer   = (*ShortcutManager)(nil)
-)
+var _ gextras.Nativer = (*ShortcutManager)(nil)
+
+// ShortcutManagerer describes ShortcutManager's abstract methods.
+type ShortcutManagerer interface {
+	privateShortcutManager()
+}
+
+var _ ShortcutManagerer = (*ShortcutManager)(nil)
 
 func wrapShortcutManager(obj *externglib.Object) *ShortcutManager {
 	return &ShortcutManager{

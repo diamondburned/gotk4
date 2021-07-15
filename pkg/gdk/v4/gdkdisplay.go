@@ -18,71 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
 	})
-}
-
-// Displayer describes Display's methods.
-type Displayer interface {
-	// Beep emits a short beep on display
-	Beep()
-	// Close closes the connection to the windowing system for the given
-	// display.
-	Close()
-	// DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
-	// display.
-	DeviceIsGrabbed(device Devicer) bool
-	// Flush flushes any requests queued for the windowing system.
-	Flush()
-	// AppLaunchContext returns a GdkAppLaunchContext suitable for launching
-	// applications on the given display.
-	AppLaunchContext() *AppLaunchContext
-	// Clipboard gets the clipboard used for copy/paste operations.
-	Clipboard() *Clipboard
-	// DefaultSeat returns the default GdkSeat for this display.
-	DefaultSeat() *Seat
-	// MonitorAtSurface gets the monitor in which the largest area of surface
-	// resides.
-	MonitorAtSurface(surface Surfacer) *Monitor
-	// Monitors gets the list of monitors associated with this display.
-	Monitors() *gio.ListModel
-	// Name gets the name of the display.
-	Name() string
-	// PrimaryClipboard gets the clipboard used for the primary selection.
-	PrimaryClipboard() *Clipboard
-	// Setting retrieves a desktop-wide setting such as double-click time for
-	// the display.
-	Setting(name string, value *externglib.Value) bool
-	// StartupNotificationID gets the startup notification ID for a Wayland
-	// display, or NULL if no ID has been defined.
-	StartupNotificationID() string
-	// IsClosed finds out if the display has been closed.
-	IsClosed() bool
-	// IsComposited returns whether surfaces can reasonably be expected to have
-	// their alpha channel drawn correctly on the screen.
-	IsComposited() bool
-	// IsRGBA returns whether surfaces on this display are created with an alpha
-	// channel.
-	IsRGBA() bool
-	// MapKeycode returns the keyvals bound to keycode.
-	MapKeycode(keycode uint) ([]KeymapKey, []uint, bool)
-	// MapKeyval obtains a list of keycode/group/level combinations that will
-	// generate keyval.
-	MapKeyval(keyval uint) ([]KeymapKey, bool)
-	// NotifyStartupComplete indicates to the GUI environment that the
-	// application has finished loading, using a given identifier.
-	NotifyStartupComplete(startupId string)
-	// PutEvent appends the given event onto the front of the event queue for
-	// display.
-	PutEvent(event Eventer)
-	// SupportsInputShapes returns TRUE if the display supports input shapes.
-	SupportsInputShapes() bool
-	// Sync flushes any requests queued for the windowing system and waits until
-	// all requests have been handled.
-	Sync()
-	// TranslateKey translates the contents of a GdkEventKey into a keyval,
-	// effective group, and level.
-	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
 // Display: GdkDisplay objects are the GDK representation of a workstation.
@@ -105,10 +42,7 @@ type Display struct {
 	*externglib.Object
 }
 
-var (
-	_ Displayer       = (*Display)(nil)
-	_ gextras.Nativer = (*Display)(nil)
-)
+var _ gextras.Nativer = (*Display)(nil)
 
 func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
@@ -116,7 +50,7 @@ func wrapDisplay(obj *externglib.Object) *Display {
 	}
 }
 
-func marshalDisplayer(p uintptr) (interface{}, error) {
+func marshalDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDisplay(obj), nil

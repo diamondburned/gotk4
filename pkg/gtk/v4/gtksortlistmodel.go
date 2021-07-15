@@ -18,26 +18,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModeler},
+		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModeller},
 	})
-}
-
-// SortListModeler describes SortListModel's methods.
-type SortListModeler interface {
-	// Incremental returns whether incremental sorting is enabled.
-	Incremental() bool
-	// Model gets the model currently sorted or NULL if none.
-	Model() *gio.ListModel
-	// Pending estimates progress of an ongoing sorting operation.
-	Pending() uint
-	// Sorter gets the sorter that is used to sort self.
-	Sorter() *Sorter
-	// SetIncremental sets the sort model to do an incremental sort.
-	SetIncremental(incremental bool)
-	// SetModel sets the model to be sorted.
-	SetModel(model gio.ListModeler)
-	// SetSorter sets a new sorter on self.
-	SetSorter(sorter *Sorter)
 }
 
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
@@ -56,10 +38,7 @@ type SortListModel struct {
 	gio.ListModel
 }
 
-var (
-	_ SortListModeler = (*SortListModel)(nil)
-	_ gextras.Nativer = (*SortListModel)(nil)
-)
+var _ gextras.Nativer = (*SortListModel)(nil)
 
 func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	return &SortListModel{
@@ -70,7 +49,7 @@ func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	}
 }
 
-func marshalSortListModeler(p uintptr) (interface{}, error) {
+func marshalSortListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSortListModel(obj), nil
@@ -78,7 +57,7 @@ func marshalSortListModeler(p uintptr) (interface{}, error) {
 
 // NewSortListModel creates a new sort list model that uses the sorter to sort
 // model.
-func NewSortListModel(model gio.ListModeler, sorter *Sorter) *SortListModel {
+func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 	var _arg1 *C.GListModel       // out
 	var _arg2 *C.GtkSorter        // out
 	var _cret *C.GtkSortListModel // in
@@ -213,7 +192,7 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 // SetModel sets the model to be sorted.
 //
 // The model's item type must conform to the item type of self.
-func (self *SortListModel) SetModel(model gio.ListModeler) {
+func (self *SortListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GListModel       // out
 

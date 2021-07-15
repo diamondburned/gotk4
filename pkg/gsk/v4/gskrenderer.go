@@ -25,7 +25,22 @@ func init() {
 	})
 }
 
-// Rendererer describes Renderer's methods.
+// Renderer: GskRenderer is a class that renders a scene graph defined via a
+// tree of gsk.RenderNode instances.
+//
+// Typically you will use a GskRenderer instance to repeatedly call
+// gsk.Renderer.Render() to update the contents of its associated gdk.Surface.
+//
+// It is necessary to realize a GskRenderer instance using
+// gsk.Renderer.Realize() before calling gsk.Renderer.Render(), in order to
+// create the appropriate windowing system resources needed to render the scene.
+type Renderer struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Renderer)(nil)
+
+// Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
 	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
 	Surface() *gdk.Surface
@@ -44,23 +59,7 @@ type Rendererer interface {
 	Unrealize()
 }
 
-// Renderer: GskRenderer is a class that renders a scene graph defined via a
-// tree of gsk.RenderNode instances.
-//
-// Typically you will use a GskRenderer instance to repeatedly call
-// gsk.Renderer.Render() to update the contents of its associated gdk.Surface.
-//
-// It is necessary to realize a GskRenderer instance using
-// gsk.Renderer.Realize() before calling gsk.Renderer.Render(), in order to
-// create the appropriate windowing system resources needed to render the scene.
-type Renderer struct {
-	*externglib.Object
-}
-
-var (
-	_ Rendererer      = (*Renderer)(nil)
-	_ gextras.Nativer = (*Renderer)(nil)
-)
+var _ Rendererer = (*Renderer)(nil)
 
 func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{

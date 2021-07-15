@@ -34,31 +34,6 @@ func init() {
 	})
 }
 
-// UnixConnectioner describes UnixConnection's methods.
-type UnixConnectioner interface {
-	// ReceiveCredentials receives credentials from the sending end of the
-	// connection.
-	ReceiveCredentials(cancellable *Cancellable) (*Credentials, error)
-	// ReceiveCredentialsAsync: asynchronously receive credentials.
-	ReceiveCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResulter) (*Credentials, error)
-	// ReceiveFd receives a file descriptor from the sending end of the
-	// connection.
-	ReceiveFd(cancellable *Cancellable) (int, error)
-	// SendCredentials passes the credentials of the current user the receiving
-	// side of the connection.
-	SendCredentials(cancellable *Cancellable) error
-	// SendCredentialsAsync: asynchronously send credentials.
-	SendCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// SendCredentialsFinish finishes an asynchronous send credentials operation
-	// started with g_unix_connection_send_credentials_async().
-	SendCredentialsFinish(result AsyncResulter) error
-	// SendFd passes a file descriptor to the receiving side of the connection.
-	SendFd(fd int, cancellable *Cancellable) error
-}
-
 // UnixConnection: this is the subclass of Connection that is created for UNIX
 // domain sockets.
 //
@@ -72,10 +47,7 @@ type UnixConnection struct {
 	SocketConnection
 }
 
-var (
-	_ UnixConnectioner = (*UnixConnection)(nil)
-	_ gextras.Nativer  = (*UnixConnection)(nil)
-)
+var _ gextras.Nativer = (*UnixConnection)(nil)
 
 func wrapUnixConnection(obj *externglib.Object) *UnixConnection {
 	return &UnixConnection{

@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialoger},
+		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialogger},
 	})
 }
 
@@ -51,19 +51,6 @@ const (
 
 func marshalButtonsType(p uintptr) (interface{}, error) {
 	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// MessageDialoger describes MessageDialog's methods.
-type MessageDialoger interface {
-	// Image gets the dialog’s image.
-	Image() *Widget
-	// MessageArea returns the message area of the dialog.
-	MessageArea() *Widget
-	// SetImage sets the dialog’s image to image.
-	SetImage(image Widgeter)
-	// SetMarkup sets the text of the message dialog to be str, which is marked
-	// up with the [Pango text markup language][PangoMarkupFormat].
-	SetMarkup(str string)
 }
 
 // MessageDialog presents a dialog with some message text. It’s simply a
@@ -106,10 +93,7 @@ type MessageDialog struct {
 	Dialog
 }
 
-var (
-	_ MessageDialoger = (*MessageDialog)(nil)
-	_ gextras.Nativer = (*MessageDialog)(nil)
-)
+var _ gextras.Nativer = (*MessageDialog)(nil)
 
 func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	return &MessageDialog{
@@ -135,7 +119,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	}
 }
 
-func marshalMessageDialoger(p uintptr) (interface{}, error) {
+func marshalMessageDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMessageDialog(obj), nil
@@ -182,7 +166,7 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 // SetImage sets the dialog’s image to image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
-func (dialog *MessageDialog) SetImage(image Widgeter) {
+func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 

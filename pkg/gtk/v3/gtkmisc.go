@@ -24,18 +24,6 @@ func init() {
 	})
 }
 
-// Miscer describes Misc's methods.
-type Miscer interface {
-	// Alignment gets the X and Y alignment of the widget within its allocation.
-	Alignment() (xalign float32, yalign float32)
-	// Padding gets the padding in the X and Y directions of the widget.
-	Padding() (xpad int, ypad int)
-	// SetAlignment sets the alignment of the widget.
-	SetAlignment(xalign float32, yalign float32)
-	// SetPadding sets the amount of space to add around the widget.
-	SetPadding(xpad int, ypad int)
-}
-
 // Misc widget is an abstract widget which is not useful itself, but is used to
 // derive subclasses which have alignment and padding attributes.
 //
@@ -55,10 +43,21 @@ type Misc struct {
 	Widget
 }
 
-var (
-	_ Miscer          = (*Misc)(nil)
-	_ gextras.Nativer = (*Misc)(nil)
-)
+var _ gextras.Nativer = (*Misc)(nil)
+
+// Miscer describes Misc's abstract methods.
+type Miscer interface {
+	// Alignment gets the X and Y alignment of the widget within its allocation.
+	Alignment() (xalign float32, yalign float32)
+	// Padding gets the padding in the X and Y directions of the widget.
+	Padding() (xpad int, ypad int)
+	// SetAlignment sets the alignment of the widget.
+	SetAlignment(xalign float32, yalign float32)
+	// SetPadding sets the amount of space to add around the widget.
+	SetPadding(xpad int, ypad int)
+}
+
+var _ Miscer = (*Misc)(nil)
 
 func wrapMisc(obj *externglib.Object) *Misc {
 	return &Misc{

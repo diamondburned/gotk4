@@ -27,18 +27,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconer},
+		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconner},
 	})
-}
-
-// ThemedIconer describes ThemedIcon's methods.
-type ThemedIconer interface {
-	// AppendName: append a name to the list of icons from within icon.
-	AppendName(iconname string)
-	// Names gets the names of icons from within icon.
-	Names() []string
-	// PrependName: prepend a name to the list of icons from within icon.
-	PrependName(iconname string)
 }
 
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon
@@ -53,10 +43,7 @@ type ThemedIcon struct {
 	Icon
 }
 
-var (
-	_ ThemedIconer    = (*ThemedIcon)(nil)
-	_ gextras.Nativer = (*ThemedIcon)(nil)
-)
+var _ gextras.Nativer = (*ThemedIcon)(nil)
 
 func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	return &ThemedIcon{
@@ -67,7 +54,7 @@ func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	}
 }
 
-func marshalThemedIconer(p uintptr) (interface{}, error) {
+func marshalThemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapThemedIcon(obj), nil

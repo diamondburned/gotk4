@@ -47,12 +47,6 @@ type BuildableOverrider interface {
 	SetID(id string)
 }
 
-// Buildabler describes Buildable's methods.
-type Buildabler interface {
-	// BuildableID gets the ID of the buildable object.
-	BuildableID() string
-}
-
 // Buildable: GtkBuildable allows objects to extend and customize their
 // deserialization from ui files.
 //
@@ -70,10 +64,15 @@ type Buildable struct {
 	*externglib.Object
 }
 
-var (
-	_ Buildabler      = (*Buildable)(nil)
-	_ gextras.Nativer = (*Buildable)(nil)
-)
+var _ gextras.Nativer = (*Buildable)(nil)
+
+// Buildabler describes Buildable's abstract methods.
+type Buildabler interface {
+	// BuildableID gets the ID of the buildable object.
+	BuildableID() string
+}
+
+var _ Buildabler = (*Buildable)(nil)
 
 func wrapBuildable(obj *externglib.Object) *Buildable {
 	return &Buildable{

@@ -74,160 +74,6 @@ func _gotk4_gtk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, a
 	fn(iconView, path)
 }
 
-// IconViewer describes IconView's methods.
-type IconViewer interface {
-	// CreateDragIcon creates a #cairo_surface_t representation of the item at
-	// path.
-	CreateDragIcon(path *TreePath) *gdk.Paintable
-	// EnableModelDragDest turns icon_view into a drop destination for automatic
-	// DND.
-	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
-	// EnableModelDragSource turns icon_view into a drag source for automatic
-	// DND.
-	EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
-	// ActivateOnSingleClick gets the setting set by
-	// gtk_icon_view_set_activate_on_single_click().
-	ActivateOnSingleClick() bool
-	// CellRect fills the bounding rectangle in widget coordinates for the cell
-	// specified by path and cell.
-	CellRect(path *TreePath, cell CellRendererer) (gdk.Rectangle, bool)
-	// ColumnSpacing returns the value of the ::column-spacing property.
-	ColumnSpacing() int
-	// Columns returns the value of the ::columns property.
-	Columns() int
-	// Cursor fills in path and cell with the current cursor path and cell.
-	Cursor() (*TreePath, *CellRenderer, bool)
-	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
-	// DragDestItem gets information about the item that is highlighted for
-	// feedback.
-	DragDestItem() (*TreePath, IconViewDropPosition)
-	// ItemAtPos gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (*TreePath, *CellRenderer, bool)
-	// ItemColumn gets the column in which the item path is currently displayed.
-	ItemColumn(path *TreePath) int
-	// ItemOrientation returns the value of the ::item-orientation property
-	// which determines whether the labels are drawn beside the icons instead of
-	// below.
-	ItemOrientation() Orientation
-	// ItemPadding returns the value of the ::item-padding property.
-	ItemPadding() int
-	// ItemRow gets the row in which the item path is currently displayed.
-	ItemRow(path *TreePath) int
-	// ItemWidth returns the value of the ::item-width property.
-	ItemWidth() int
-	// Margin returns the value of the ::margin property.
-	Margin() int
-	// MarkupColumn returns the column with markup text for icon_view.
-	MarkupColumn() int
-	// Model returns the model the IconView is based on.
-	Model() *TreeModel
-	// PathAtPos gets the path for the icon at the given position.
-	PathAtPos(x int, y int) *TreePath
-	// PixbufColumn returns the column with pixbufs for icon_view.
-	PixbufColumn() int
-	// Reorderable retrieves whether the user can reorder the list via
-	// drag-and-drop.
-	Reorderable() bool
-	// RowSpacing returns the value of the ::row-spacing property.
-	RowSpacing() int
-	// SelectionMode gets the selection mode of the icon_view.
-	SelectionMode() SelectionMode
-	// Spacing returns the value of the ::spacing property.
-	Spacing() int
-	// TextColumn returns the column with text for icon_view.
-	TextColumn() int
-	// TooltipColumn returns the column of icon_view’s model which is being used
-	// for displaying tooltips on icon_view’s rows.
-	TooltipColumn() int
-	// TooltipContext: this function is supposed to be used in a
-	// Widget::query-tooltip signal handler for IconView.
-	TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool)
-	// VisibleRange sets start_path and end_path to be the first and last
-	// visible path.
-	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
-	// ItemActivated activates the item determined by path.
-	ItemActivated(path *TreePath)
-	// PathIsSelected returns TRUE if the icon pointed to by path is currently
-	// selected.
-	PathIsSelected(path *TreePath) bool
-	// ScrollToPath moves the alignments of icon_view to the position specified
-	// by path.
-	ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32)
-	// SelectAll selects all the icons.
-	SelectAll()
-	// SelectPath selects the row at path.
-	SelectPath(path *TreePath)
-	// SelectedForeach calls a function for each selected icon.
-	SelectedForeach(fn IconViewForeachFunc)
-	// SetActivateOnSingleClick causes the IconView::item-activated signal to be
-	// emitted on a single click instead of a double click.
-	SetActivateOnSingleClick(single bool)
-	// SetColumnSpacing sets the ::column-spacing property which specifies the
-	// space which is inserted between the columns of the icon view.
-	SetColumnSpacing(columnSpacing int)
-	// SetColumns sets the ::columns property which determines in how many
-	// columns the icons are arranged.
-	SetColumns(columns int)
-	// SetCursor sets the current keyboard focus to be at path, and selects it.
-	SetCursor(path *TreePath, cell CellRendererer, startEditing bool)
-	// SetDragDestItem sets the item that is highlighted for feedback.
-	SetDragDestItem(path *TreePath, pos IconViewDropPosition)
-	// SetItemOrientation sets the ::item-orientation property which determines
-	// whether the labels are drawn beside the icons instead of below.
-	SetItemOrientation(orientation Orientation)
-	// SetItemPadding sets the IconView:item-padding property which specifies
-	// the padding around each of the icon view’s items.
-	SetItemPadding(itemPadding int)
-	// SetItemWidth sets the ::item-width property which specifies the width to
-	// use for each item.
-	SetItemWidth(itemWidth int)
-	// SetMargin sets the ::margin property which specifies the space which is
-	// inserted at the top, bottom, left and right of the icon view.
-	SetMargin(margin int)
-	// SetMarkupColumn sets the column with markup information for icon_view to
-	// be column.
-	SetMarkupColumn(column int)
-	// SetModel sets the model for a IconView.
-	SetModel(model TreeModeler)
-	// SetPixbufColumn sets the column with pixbufs for icon_view to be column.
-	SetPixbufColumn(column int)
-	// SetReorderable: this function is a convenience function to allow you to
-	// reorder models that support the TreeDragSourceIface and the
-	// TreeDragDestIface.
-	SetReorderable(reorderable bool)
-	// SetRowSpacing sets the ::row-spacing property which specifies the space
-	// which is inserted between the rows of the icon view.
-	SetRowSpacing(rowSpacing int)
-	// SetSelectionMode sets the selection mode of the icon_view.
-	SetSelectionMode(mode SelectionMode)
-	// SetSpacing sets the ::spacing property which specifies the space which is
-	// inserted between the cells (i.e.
-	SetSpacing(spacing int)
-	// SetTextColumn sets the column with text for icon_view to be column.
-	SetTextColumn(column int)
-	// SetTooltipCell sets the tip area of tooltip to the area which cell
-	// occupies in the item pointed to by path.
-	SetTooltipCell(tooltip *Tooltip, path *TreePath, cell CellRendererer)
-	// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
-	// full items, you can use this function to have IconView handle these
-	// automatically for you.
-	SetTooltipColumn(column int)
-	// SetTooltipItem sets the tip area of tooltip to be the area covered by the
-	// item at path.
-	SetTooltipItem(tooltip *Tooltip, path *TreePath)
-	// UnselectAll unselects all the icons.
-	UnselectAll()
-	// UnselectPath unselects the row at path.
-	UnselectPath(path *TreePath)
-	// UnsetModelDragDest undoes the effect of
-	// gtk_icon_view_enable_model_drag_dest().
-	UnsetModelDragDest()
-	// UnsetModelDragSource undoes the effect of
-	// gtk_icon_view_enable_model_drag_source().
-	UnsetModelDragSource()
-}
-
 // IconView: GtkIconView is a widget which displays data in a grid of icons.
 //
 // GtkIconView provides an alternative view on a GtkTreeModel. It displays the
@@ -256,10 +102,7 @@ type IconView struct {
 	Scrollable
 }
 
-var (
-	_ IconViewer      = (*IconView)(nil)
-	_ gextras.Nativer = (*IconView)(nil)
-)
+var _ gextras.Nativer = (*IconView)(nil)
 
 func wrapIconView(obj *externglib.Object) *IconView {
 	return &IconView{
@@ -323,7 +166,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 }
 
 // NewIconViewWithModel creates a new IconView widget with the model model.
-func NewIconViewWithModel(model TreeModeler) *IconView {
+func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -1190,7 +1033,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 // SetModel sets the model for a IconView. If the icon_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
-func (iconView *IconView) SetModel(model TreeModeler) {
+func (iconView *IconView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreeModel // out
 

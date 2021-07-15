@@ -39,17 +39,6 @@ type FilenameCompleterOverrider interface {
 	GotCompletionData()
 }
 
-// FilenameCompleterer describes FilenameCompleter's methods.
-type FilenameCompleterer interface {
-	// CompletionSuffix obtains a completion for initial_text from completer.
-	CompletionSuffix(initialText string) string
-	// Completions gets an array of completion strings for a given initial text.
-	Completions(initialText string) []string
-	// SetDirsOnly: if dirs_only is TRUE, completer will only complete directory
-	// names, and not file names.
-	SetDirsOnly(dirsOnly bool)
-}
-
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.
@@ -57,10 +46,7 @@ type FilenameCompleter struct {
 	*externglib.Object
 }
 
-var (
-	_ FilenameCompleterer = (*FilenameCompleter)(nil)
-	_ gextras.Nativer     = (*FilenameCompleter)(nil)
-)
+var _ gextras.Nativer = (*FilenameCompleter)(nil)
 
 func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 	return &FilenameCompleter{

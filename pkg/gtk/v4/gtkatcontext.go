@@ -22,14 +22,6 @@ func init() {
 	})
 }
 
-// ATContexter describes ATContext's methods.
-type ATContexter interface {
-	// Accessible retrieves the GtkAccessible using this context.
-	Accessible() *Accessible
-	// AccessibleRole retrieves the accessible role of this context.
-	AccessibleRole() AccessibleRole
-}
-
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
@@ -40,10 +32,17 @@ type ATContext struct {
 	*externglib.Object
 }
 
-var (
-	_ ATContexter     = (*ATContext)(nil)
-	_ gextras.Nativer = (*ATContext)(nil)
-)
+var _ gextras.Nativer = (*ATContext)(nil)
+
+// ATContexter describes ATContext's abstract methods.
+type ATContexter interface {
+	// Accessible retrieves the GtkAccessible using this context.
+	Accessible() *Accessible
+	// AccessibleRole retrieves the accessible role of this context.
+	AccessibleRole() AccessibleRole
+}
+
+var _ ATContexter = (*ATContext)(nil)
 
 func wrapATContext(obj *externglib.Object) *ATContext {
 	return &ATContext{

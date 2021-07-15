@@ -35,33 +35,6 @@ type ScrollableOverrider interface {
 	Border() (Border, bool)
 }
 
-// Scrollabler describes Scrollable's methods.
-type Scrollabler interface {
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable.
-	Border() (Border, bool)
-	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
-	HAdjustment() *Adjustment
-	// HscrollPolicy gets the horizontal ScrollablePolicy.
-	HscrollPolicy() ScrollablePolicy
-	// VAdjustment retrieves the Adjustment used for vertical scrolling.
-	VAdjustment() *Adjustment
-	// VscrollPolicy gets the vertical ScrollablePolicy.
-	VscrollPolicy() ScrollablePolicy
-	// SetHAdjustment sets the horizontal adjustment of the Scrollable.
-	SetHAdjustment(hadjustment *Adjustment)
-	// SetHscrollPolicy sets the ScrollablePolicy to determine whether
-	// horizontal scrolling should start below the minimum width or below the
-	// natural width.
-	SetHscrollPolicy(policy ScrollablePolicy)
-	// SetVAdjustment sets the vertical adjustment of the Scrollable.
-	SetVAdjustment(vadjustment *Adjustment)
-	// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
-	// scrolling should start below the minimum height or below the natural
-	// height.
-	SetVscrollPolicy(policy ScrollablePolicy)
-}
-
 // Scrollable is an interface that is implemented by widgets with native
 // scrolling ability.
 //
@@ -91,10 +64,36 @@ type Scrollable struct {
 	*externglib.Object
 }
 
-var (
-	_ Scrollabler     = (*Scrollable)(nil)
-	_ gextras.Nativer = (*Scrollable)(nil)
-)
+var _ gextras.Nativer = (*Scrollable)(nil)
+
+// Scrollabler describes Scrollable's abstract methods.
+type Scrollabler interface {
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
+	Border() (Border, bool)
+	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
+	HAdjustment() *Adjustment
+	// HscrollPolicy gets the horizontal ScrollablePolicy.
+	HscrollPolicy() ScrollablePolicy
+	// VAdjustment retrieves the Adjustment used for vertical scrolling.
+	VAdjustment() *Adjustment
+	// VscrollPolicy gets the vertical ScrollablePolicy.
+	VscrollPolicy() ScrollablePolicy
+	// SetHAdjustment sets the horizontal adjustment of the Scrollable.
+	SetHAdjustment(hadjustment *Adjustment)
+	// SetHscrollPolicy sets the ScrollablePolicy to determine whether
+	// horizontal scrolling should start below the minimum width or below the
+	// natural width.
+	SetHscrollPolicy(policy ScrollablePolicy)
+	// SetVAdjustment sets the vertical adjustment of the Scrollable.
+	SetVAdjustment(vadjustment *Adjustment)
+	// SetVscrollPolicy sets the ScrollablePolicy to determine whether vertical
+	// scrolling should start below the minimum height or below the natural
+	// height.
+	SetVscrollPolicy(policy ScrollablePolicy)
+}
+
+var _ Scrollabler = (*Scrollable)(nil)
 
 func wrapScrollable(obj *externglib.Object) *Scrollable {
 	return &Scrollable{

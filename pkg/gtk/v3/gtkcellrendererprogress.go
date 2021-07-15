@@ -23,11 +23,6 @@ func init() {
 	})
 }
 
-// CellRendererProgresser describes CellRendererProgress's methods.
-type CellRendererProgresser interface {
-	privateCellRendererProgress()
-}
-
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 //
@@ -38,10 +33,7 @@ type CellRendererProgress struct {
 	Orientable
 }
 
-var (
-	_ CellRendererProgresser = (*CellRendererProgress)(nil)
-	_ gextras.Nativer        = (*CellRendererProgress)(nil)
-)
+var _ gextras.Nativer = (*CellRendererProgress)(nil)
 
 func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
 	return &CellRendererProgress{

@@ -153,7 +153,22 @@ type TLSDatabaseOverrider interface {
 	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
-// TLSDatabaser describes TLSDatabase's methods.
+// TLSDatabase is used to look up certificates and other information from a
+// certificate or key store. It is an abstract base class which TLS library
+// specific subtypes override.
+//
+// A Database may be accessed from multiple threads by the TLS backend. All
+// implementations are required to be fully thread-safe.
+//
+// Most common client applications will not directly interact with Database. It
+// is used internally by Connection.
+type TLSDatabase struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TLSDatabase)(nil)
+
+// TLSDatabaser describes TLSDatabase's abstract methods.
 type TLSDatabaser interface {
 	// CreateCertificateHandle: create a handle string for the certificate.
 	CreateCertificateHandle(certificate TLSCertificater) string
@@ -187,23 +202,7 @@ type TLSDatabaser interface {
 	VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
-// TLSDatabase is used to look up certificates and other information from a
-// certificate or key store. It is an abstract base class which TLS library
-// specific subtypes override.
-//
-// A Database may be accessed from multiple threads by the TLS backend. All
-// implementations are required to be fully thread-safe.
-//
-// Most common client applications will not directly interact with Database. It
-// is used internally by Connection.
-type TLSDatabase struct {
-	*externglib.Object
-}
-
-var (
-	_ TLSDatabaser    = (*TLSDatabase)(nil)
-	_ gextras.Nativer = (*TLSDatabase)(nil)
-)
+var _ TLSDatabaser = (*TLSDatabase)(nil)
 
 func wrapTLSDatabase(obj *externglib.Object) *TLSDatabase {
 	return &TLSDatabase{

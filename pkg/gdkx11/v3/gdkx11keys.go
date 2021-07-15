@@ -18,28 +18,15 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymaper},
+		{T: externglib.Type(C.gdk_x11_keymap_get_type()), F: marshalX11Keymapper},
 	})
-}
-
-// X11Keymaper describes X11Keymap's methods.
-type X11Keymaper interface {
-	// GroupForState extracts the group from the state field sent in an X Key
-	// event.
-	GroupForState(state uint) int
-	// KeyIsModifier determines whether a particular key code represents a key
-	// that is a modifier.
-	KeyIsModifier(keycode uint) bool
 }
 
 type X11Keymap struct {
 	gdk.Keymap
 }
 
-var (
-	_ X11Keymaper     = (*X11Keymap)(nil)
-	_ gextras.Nativer = (*X11Keymap)(nil)
-)
+var _ gextras.Nativer = (*X11Keymap)(nil)
 
 func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 	return &X11Keymap{
@@ -49,7 +36,7 @@ func wrapX11Keymap(obj *externglib.Object) *X11Keymap {
 	}
 }
 
-func marshalX11Keymaper(p uintptr) (interface{}, error) {
+func marshalX11Keymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Keymap(obj), nil

@@ -67,20 +67,12 @@ func marshalMemoryFormat(p uintptr) (interface{}, error) {
 	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MemoryTexturer describes MemoryTexture's methods.
-type MemoryTexturer interface {
-	privateMemoryTexture()
-}
-
 // MemoryTexture: GdkTexture representing image data in memory.
 type MemoryTexture struct {
 	Texture
 }
 
-var (
-	_ MemoryTexturer  = (*MemoryTexture)(nil)
-	_ gextras.Nativer = (*MemoryTexture)(nil)
-)
+var _ gextras.Nativer = (*MemoryTexture)(nil)
 
 func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	return &MemoryTexture{

@@ -31,12 +31,6 @@ func init() {
 	})
 }
 
-// ConverterInputStreamer describes ConverterInputStream's methods.
-type ConverterInputStreamer interface {
-	// Converter gets the #GConverter that is used by converter_stream.
-	Converter() *Converter
-}
-
 // ConverterInputStream: converter input stream implements Stream and allows
 // conversion of data of various types during reading.
 //
@@ -47,10 +41,7 @@ type ConverterInputStream struct {
 	PollableInputStream
 }
 
-var (
-	_ ConverterInputStreamer = (*ConverterInputStream)(nil)
-	_ gextras.Nativer        = (*ConverterInputStream)(nil)
-)
+var _ gextras.Nativer = (*ConverterInputStream)(nil)
 
 func wrapConverterInputStream(obj *externglib.Object) *ConverterInputStream {
 	return &ConverterInputStream{

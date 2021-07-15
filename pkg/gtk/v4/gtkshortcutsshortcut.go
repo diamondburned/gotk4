@@ -18,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
-		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcuter},
+		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcutter},
 	})
 }
 
@@ -64,11 +64,6 @@ func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutsShortcuter describes ShortcutsShortcut's methods.
-type ShortcutsShortcuter interface {
-	privateShortcutsShortcut()
-}
-
 // ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut
 // or gesture with a short text.
 //
@@ -77,10 +72,7 @@ type ShortcutsShortcut struct {
 	Widget
 }
 
-var (
-	_ ShortcutsShortcuter = (*ShortcutsShortcut)(nil)
-	_ gextras.Nativer     = (*ShortcutsShortcut)(nil)
-)
+var _ gextras.Nativer = (*ShortcutsShortcut)(nil)
 
 func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{
@@ -101,7 +93,7 @@ func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
 	}
 }
 
-func marshalShortcutsShortcuter(p uintptr) (interface{}, error) {
+func marshalShortcutsShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutsShortcut(obj), nil

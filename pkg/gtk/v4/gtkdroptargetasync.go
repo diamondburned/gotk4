@@ -23,20 +23,6 @@ func init() {
 	})
 }
 
-// DropTargetAsyncer describes DropTargetAsync's methods.
-type DropTargetAsyncer interface {
-	// Actions gets the actions that this drop target supports.
-	Actions() gdk.DragAction
-	// Formats gets the data formats that this drop target accepts.
-	Formats() *gdk.ContentFormats
-	// RejectDrop sets the drop as not accepted on this drag site.
-	RejectDrop(drop gdk.Droper)
-	// SetActions sets the actions that this drop target supports.
-	SetActions(actions gdk.DragAction)
-	// SetFormats sets the data formats that this drop target will accept.
-	SetFormats(formats *gdk.ContentFormats)
-}
-
 // DropTargetAsync: GtkDropTargetAsync is an event controller to receive
 // Drag-and-Drop operations, asynchronously.
 //
@@ -73,10 +59,7 @@ type DropTargetAsync struct {
 	EventController
 }
 
-var (
-	_ DropTargetAsyncer = (*DropTargetAsync)(nil)
-	_ gextras.Nativer   = (*DropTargetAsync)(nil)
-)
+var _ gextras.Nativer = (*DropTargetAsync)(nil)
 
 func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{
@@ -152,7 +135,7 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (self *DropTargetAsync) RejectDrop(drop gdk.Droper) {
+func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 

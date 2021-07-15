@@ -47,20 +47,6 @@ type AsyncResultOverrider interface {
 	IsTagged(sourceTag cgo.Handle) bool
 }
 
-// AsyncResulter describes AsyncResult's methods.
-type AsyncResulter interface {
-	// SourceObject gets the source object from a Result.
-	SourceObject() *externglib.Object
-	// UserData gets the user data from a Result.
-	UserData() cgo.Handle
-	// IsTagged checks if res has the given source_tag (generally a function
-	// pointer indicating the function res was created by).
-	IsTagged(sourceTag cgo.Handle) bool
-	// LegacyPropagateError: if res is a AsyncResult, this is equivalent to
-	// g_simple_async_result_propagate_error().
-	LegacyPropagateError() error
-}
-
 // AsyncResult provides a base class for implementing asynchronous function
 // results.
 //
@@ -145,10 +131,23 @@ type AsyncResult struct {
 	*externglib.Object
 }
 
-var (
-	_ AsyncResulter   = (*AsyncResult)(nil)
-	_ gextras.Nativer = (*AsyncResult)(nil)
-)
+var _ gextras.Nativer = (*AsyncResult)(nil)
+
+// AsyncResulter describes AsyncResult's abstract methods.
+type AsyncResulter interface {
+	// SourceObject gets the source object from a Result.
+	SourceObject() *externglib.Object
+	// UserData gets the user data from a Result.
+	UserData() cgo.Handle
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
+	IsTagged(sourceTag cgo.Handle) bool
+	// LegacyPropagateError: if res is a AsyncResult, this is equivalent to
+	// g_simple_async_result_propagate_error().
+	LegacyPropagateError() error
+}
+
+var _ AsyncResulter = (*AsyncResult)(nil)
 
 func wrapAsyncResult(obj *externglib.Object) *AsyncResult {
 	return &AsyncResult{

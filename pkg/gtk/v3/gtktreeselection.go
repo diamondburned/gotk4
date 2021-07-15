@@ -104,49 +104,6 @@ type TreeSelectionOverrider interface {
 	Changed()
 }
 
-// TreeSelectioner describes TreeSelection's methods.
-type TreeSelectioner interface {
-	// CountSelectedRows returns the number of rows that have been selected in
-	// tree.
-	CountSelectedRows() int
-	// Mode gets the selection mode for selection.
-	Mode() SelectionMode
-	// Selected sets iter to the currently selected node if selection is set to
-	// K_SELECTION_SINGLE or K_SELECTION_BROWSE.
-	Selected() (*TreeModel, TreeIter, bool)
-	// TreeView returns the tree view associated with selection.
-	TreeView() *TreeView
-	// IterIsSelected returns TRUE if the row at iter is currently selected.
-	IterIsSelected(iter *TreeIter) bool
-	// PathIsSelected returns TRUE if the row pointed to by path is currently
-	// selected.
-	PathIsSelected(path *TreePath) bool
-	// SelectAll selects all the nodes.
-	SelectAll()
-	// SelectIter selects the specified iterator.
-	SelectIter(iter *TreeIter)
-	// SelectPath: select the row at path.
-	SelectPath(path *TreePath)
-	// SelectRange selects a range of nodes, determined by start_path and
-	// end_path inclusive.
-	SelectRange(startPath *TreePath, endPath *TreePath)
-	// SelectedForeach calls a function for each selected node.
-	SelectedForeach(fn TreeSelectionForeachFunc)
-	// SetMode sets the selection mode of the selection.
-	SetMode(typ SelectionMode)
-	// SetSelectFunction sets the selection function.
-	SetSelectFunction(fn TreeSelectionFunc)
-	// UnselectAll unselects all the nodes.
-	UnselectAll()
-	// UnselectIter unselects the specified iterator.
-	UnselectIter(iter *TreeIter)
-	// UnselectPath unselects the row at path.
-	UnselectPath(path *TreePath)
-	// UnselectRange unselects a range of nodes, determined by start_path and
-	// end_path inclusive.
-	UnselectRange(startPath *TreePath, endPath *TreePath)
-}
-
 // TreeSelection object is a helper object to manage the selection for a
 // TreeView widget. The TreeSelection object is automatically created when a new
 // TreeView widget is created, and cannot exist independently of this widget.
@@ -172,10 +129,7 @@ type TreeSelection struct {
 	*externglib.Object
 }
 
-var (
-	_ TreeSelectioner = (*TreeSelection)(nil)
-	_ gextras.Nativer = (*TreeSelection)(nil)
-)
+var _ gextras.Nativer = (*TreeSelection)(nil)
 
 func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
 	return &TreeSelection{

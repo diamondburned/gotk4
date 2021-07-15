@@ -24,18 +24,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindower},
+		{T: externglib.Type(C.gtk_offscreen_window_get_type()), F: marshalOffscreenWindowwer},
 	})
-}
-
-// OffscreenWindower describes OffscreenWindow's methods.
-type OffscreenWindower interface {
-	// Pixbuf retrieves a snapshot of the contained widget in the form of a
-	// Pixbuf.
-	Pixbuf() *gdkpixbuf.Pixbuf
-	// Surface retrieves a snapshot of the contained widget in the form of a
-	// #cairo_surface_t.
-	Surface() *cairo.Surface
 }
 
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of
@@ -57,10 +47,7 @@ type OffscreenWindow struct {
 	Window
 }
 
-var (
-	_ OffscreenWindower = (*OffscreenWindow)(nil)
-	_ gextras.Nativer   = (*OffscreenWindow)(nil)
-)
+var _ gextras.Nativer = (*OffscreenWindow)(nil)
 
 func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	return &OffscreenWindow{
@@ -84,7 +71,7 @@ func wrapOffscreenWindow(obj *externglib.Object) *OffscreenWindow {
 	}
 }
 
-func marshalOffscreenWindower(p uintptr) (interface{}, error) {
+func marshalOffscreenWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapOffscreenWindow(obj), nil

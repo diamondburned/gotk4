@@ -21,12 +21,6 @@ func init() {
 	})
 }
 
-// GestureZoomer describes GestureZoom's methods.
-type GestureZoomer interface {
-	// ScaleDelta gets the scale delta.
-	ScaleDelta() float64
-}
-
 // GestureZoom: GtkGestureZoom is a GtkGesture for 2-finger pinch/zoom gestures.
 //
 // Whenever the distance between both tracked sequences changes, the
@@ -35,10 +29,7 @@ type GestureZoom struct {
 	Gesture
 }
 
-var (
-	_ GestureZoomer   = (*GestureZoom)(nil)
-	_ gextras.Nativer = (*GestureZoom)(nil)
-)
+var _ gextras.Nativer = (*GestureZoom)(nil)
 
 func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
 	return &GestureZoom{

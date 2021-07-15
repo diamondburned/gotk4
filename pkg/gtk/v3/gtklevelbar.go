@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarer},
+		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarrer},
 	})
 }
 
@@ -30,39 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type LevelBarOverrider interface {
 	OffsetChanged(name string)
-}
-
-// LevelBarer describes LevelBar's methods.
-type LevelBarer interface {
-	// AddOffsetValue adds a new offset marker on self at the position specified
-	// by value.
-	AddOffsetValue(name string, value float64)
-	// Inverted: return the value of the LevelBar:inverted property.
-	Inverted() bool
-	// MaxValue returns the value of the LevelBar:max-value property.
-	MaxValue() float64
-	// MinValue returns the value of the LevelBar:min-value property.
-	MinValue() float64
-	// Mode returns the value of the LevelBar:mode property.
-	Mode() LevelBarMode
-	// OffsetValue fetches the value specified for the offset marker name in
-	// self, returning TRUE in case an offset named name was found.
-	OffsetValue(name string) (float64, bool)
-	// Value returns the value of the LevelBar:value property.
-	Value() float64
-	// RemoveOffsetValue removes an offset marker previously added with
-	// gtk_level_bar_add_offset_value().
-	RemoveOffsetValue(name string)
-	// SetInverted sets the value of the LevelBar:inverted property.
-	SetInverted(inverted bool)
-	// SetMaxValue sets the value of the LevelBar:max-value property.
-	SetMaxValue(value float64)
-	// SetMinValue sets the value of the LevelBar:min-value property.
-	SetMinValue(value float64)
-	// SetMode sets the value of the LevelBar:mode property.
-	SetMode(mode LevelBarMode)
-	// SetValue sets the value of the LevelBar:value property.
-	SetValue(value float64)
 }
 
 // LevelBar is a bar widget that can be used as a level indicator. Typical use
@@ -104,10 +71,7 @@ type LevelBar struct {
 	Orientable
 }
 
-var (
-	_ LevelBarer      = (*LevelBar)(nil)
-	_ gextras.Nativer = (*LevelBar)(nil)
-)
+var _ gextras.Nativer = (*LevelBar)(nil)
 
 func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	return &LevelBar{
@@ -128,7 +92,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	}
 }
 
-func marshalLevelBarer(p uintptr) (interface{}, error) {
+func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLevelBar(obj), nil

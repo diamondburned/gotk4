@@ -26,7 +26,7 @@ func init() {
 
 // TreeCreateRowDragContent creates a content provider for dragging path from
 // tree_model.
-func TreeCreateRowDragContent(treeModel TreeModeler, path *TreePath) *gdk.ContentProvider {
+func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
@@ -98,7 +98,14 @@ type TreeDragDestOverrider interface {
 	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
 }
 
-// TreeDragDester describes TreeDragDest's methods.
+// TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
+type TreeDragDest struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TreeDragDest)(nil)
+
+// TreeDragDester describes TreeDragDest's abstract methods.
 type TreeDragDester interface {
 	// DragDataReceived asks the TreeDragDest to insert a row before the path
 	// dest, deriving the contents of the row from value.
@@ -108,15 +115,7 @@ type TreeDragDester interface {
 	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
 }
 
-// TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
-type TreeDragDest struct {
-	*externglib.Object
-}
-
-var (
-	_ TreeDragDester  = (*TreeDragDest)(nil)
-	_ gextras.Nativer = (*TreeDragDest)(nil)
-)
+var _ TreeDragDester = (*TreeDragDest)(nil)
 
 func wrapTreeDragDest(obj *externglib.Object) *TreeDragDest {
 	return &TreeDragDest{
@@ -202,7 +201,14 @@ type TreeDragSourceOverrider interface {
 	RowDraggable(path *TreePath) bool
 }
 
-// TreeDragSourcer describes TreeDragSource's methods.
+// TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
+type TreeDragSource struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TreeDragSource)(nil)
+
+// TreeDragSourcer describes TreeDragSource's abstract methods.
 type TreeDragSourcer interface {
 	// DragDataDelete asks the TreeDragSource to delete the row at path, because
 	// it was moved somewhere else via drag-and-drop.
@@ -215,15 +221,7 @@ type TreeDragSourcer interface {
 	RowDraggable(path *TreePath) bool
 }
 
-// TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
-type TreeDragSource struct {
-	*externglib.Object
-}
-
-var (
-	_ TreeDragSourcer = (*TreeDragSource)(nil)
-	_ gextras.Nativer = (*TreeDragSource)(nil)
-)
+var _ TreeDragSourcer = (*TreeDragSource)(nil)
 
 func wrapTreeDragSource(obj *externglib.Object) *TreeDragSource {
 	return &TreeDragSource{

@@ -22,11 +22,6 @@ func init() {
 	})
 }
 
-// VulkanContexter describes VulkanContext's methods.
-type VulkanContexter interface {
-	privateVulkanContext()
-}
-
 // VulkanContext: GdkVulkanContext is an object representing the
 // platform-specific Vulkan draw context.
 //
@@ -42,10 +37,14 @@ type VulkanContext struct {
 	gio.Initable
 }
 
-var (
-	_ VulkanContexter = (*VulkanContext)(nil)
-	_ gextras.Nativer = (*VulkanContext)(nil)
-)
+var _ gextras.Nativer = (*VulkanContext)(nil)
+
+// VulkanContexter describes VulkanContext's abstract methods.
+type VulkanContexter interface {
+	privateVulkanContext()
+}
+
+var _ VulkanContexter = (*VulkanContext)(nil)
 
 func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 	return &VulkanContext{

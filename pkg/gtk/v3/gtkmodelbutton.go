@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
-		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtoner},
+		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtonner},
 	})
 }
 
@@ -39,11 +39,6 @@ const (
 
 func marshalButtonRole(p uintptr) (interface{}, error) {
 	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// ModelButtoner describes ModelButton's methods.
-type ModelButtoner interface {
-	privateModelButton()
 }
 
 // ModelButton is a button class that can use a #GAction as its model. In
@@ -119,10 +114,7 @@ type ModelButton struct {
 	Button
 }
 
-var (
-	_ ModelButtoner   = (*ModelButton)(nil)
-	_ gextras.Nativer = (*ModelButton)(nil)
-)
+var _ gextras.Nativer = (*ModelButton)(nil)
 
 func wrapModelButton(obj *externglib.Object) *ModelButton {
 	return &ModelButton{
@@ -162,7 +154,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 	}
 }
 
-func marshalModelButtoner(p uintptr) (interface{}, error) {
+func marshalModelButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapModelButton(obj), nil

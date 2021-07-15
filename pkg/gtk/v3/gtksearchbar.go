@@ -20,23 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarer},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
 	})
-}
-
-// SearchBarer describes SearchBar's methods.
-type SearchBarer interface {
-	// ConnectEntry connects the Entry widget passed as the one to be used in
-	// this search bar.
-	ConnectEntry(entry *Entry)
-	// SearchMode returns whether the search mode is on or off.
-	SearchMode() bool
-	// ShowCloseButton returns whether the close button is shown.
-	ShowCloseButton() bool
-	// SetSearchMode switches the search mode on or off.
-	SetSearchMode(searchMode bool)
-	// SetShowCloseButton shows or hides the close button.
-	SetShowCloseButton(visible bool)
 }
 
 // SearchBar is a container made to have a search entry (possibly with
@@ -67,10 +52,7 @@ type SearchBar struct {
 	Bin
 }
 
-var (
-	_ SearchBarer     = (*SearchBar)(nil)
-	_ gextras.Nativer = (*SearchBar)(nil)
-)
+var _ gextras.Nativer = (*SearchBar)(nil)
 
 func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	return &SearchBar{
@@ -92,7 +74,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	}
 }
 
-func marshalSearchBarer(p uintptr) (interface{}, error) {
+func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSearchBar(obj), nil

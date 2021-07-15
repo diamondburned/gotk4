@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButtoner},
+		{T: externglib.Type(C.gtk_radio_button_get_type()), F: marshalRadioButtonner},
 	})
 }
 
@@ -30,19 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type RadioButtonOverrider interface {
 	GroupChanged()
-}
-
-// RadioButtoner describes RadioButton's methods.
-type RadioButtoner interface {
-	// JoinGroup joins a RadioButton object to the group of another RadioButton
-	// object Use this in language bindings instead of the
-	// gtk_radio_button_get_group() and gtk_radio_button_set_group() methods A
-	// common way to set up a group of radio buttons is the following:
-	// GtkRadioButton *radio_button; GtkRadioButton *last_button; while
-	// (some_condition) { radio_button = gtk_radio_button_new (NULL);
-	// gtk_radio_button_join_group (radio_button, last_button); last_button =
-	// radio_button; }
-	JoinGroup(groupSource *RadioButton)
 }
 
 // RadioButton: single radio button performs the same basic function as a
@@ -109,10 +96,7 @@ type RadioButton struct {
 	CheckButton
 }
 
-var (
-	_ RadioButtoner   = (*RadioButton)(nil)
-	_ gextras.Nativer = (*RadioButton)(nil)
-)
+var _ gextras.Nativer = (*RadioButton)(nil)
 
 func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	return &RadioButton{
@@ -156,7 +140,7 @@ func wrapRadioButton(obj *externglib.Object) *RadioButton {
 	}
 }
 
-func marshalRadioButtoner(p uintptr) (interface{}, error) {
+func marshalRadioButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioButton(obj), nil

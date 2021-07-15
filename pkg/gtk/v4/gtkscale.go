@@ -64,41 +64,6 @@ type ScaleOverrider interface {
 	LayoutOffsets() (x int, y int)
 }
 
-// Scaler describes Scale's methods.
-type Scaler interface {
-	// AddMark adds a mark at value.
-	AddMark(value float64, position PositionType, markup string)
-	// ClearMarks removes any marks that have been added.
-	ClearMarks()
-	// Digits gets the number of decimal places that are displayed in the value.
-	Digits() int
-	// DrawValue returns whether the current value is displayed as a string next
-	// to the slider.
-	DrawValue() bool
-	// HasOrigin returns whether the scale has an origin.
-	HasOrigin() bool
-	// Layout gets the PangoLayout used to display the scale.
-	Layout() *pango.Layout
-	// LayoutOffsets obtains the coordinates where the scale will draw the
-	// PangoLayout representing the text in the scale.
-	LayoutOffsets() (x int, y int)
-	// ValuePos gets the position in which the current value is displayed.
-	ValuePos() PositionType
-	// SetDigits sets the number of decimal places that are displayed in the
-	// value.
-	SetDigits(digits int)
-	// SetDrawValue specifies whether the current value is displayed as a string
-	// next to the slider.
-	SetDrawValue(drawValue bool)
-	// SetFormatValueFunc: func allows you to change how the scale value is
-	// displayed.
-	SetFormatValueFunc(fn ScaleFormatValueFunc)
-	// SetHasOrigin sets whether the scale has an origin.
-	SetHasOrigin(hasOrigin bool)
-	// SetValuePos sets the position in which the current value is displayed.
-	SetValuePos(pos PositionType)
-}
-
 // Scale: GtkScale is a slider control used to select a numeric value.
 //
 // !An example GtkScale (scales.png)
@@ -182,10 +147,7 @@ type Scale struct {
 	Range
 }
 
-var (
-	_ Scaler          = (*Scale)(nil)
-	_ gextras.Nativer = (*Scale)(nil)
-)
+var _ gextras.Nativer = (*Scale)(nil)
 
 func wrapScale(obj *externglib.Object) *Scale {
 	return &Scale{

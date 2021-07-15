@@ -17,44 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaneder},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
 	})
-}
-
-// Paneder describes Paned's methods.
-type Paneder interface {
-	// EndChild retrieves the end child of the given GtkPaned.
-	EndChild() *Widget
-	// Position obtains the position of the divider between the two panes.
-	Position() int
-	// ResizeEndChild returns whether the end child can be resized.
-	ResizeEndChild() bool
-	// ResizeStartChild returns whether the start child can be resized.
-	ResizeStartChild() bool
-	// ShrinkEndChild returns whether the end child can be shrunk.
-	ShrinkEndChild() bool
-	// ShrinkStartChild returns whether the start child can be shrunk.
-	ShrinkStartChild() bool
-	// StartChild retrieves the start child of the given GtkPaned.
-	StartChild() *Widget
-	// WideHandle gets whether the separator should be wide.
-	WideHandle() bool
-	// SetEndChild sets the end child of paned to child.
-	SetEndChild(child Widgeter)
-	// SetPosition sets the position of the divider between the two panes.
-	SetPosition(position int)
-	// SetResizeEndChild sets the GtkPaned:resize-end-child property
-	SetResizeEndChild(resize bool)
-	// SetResizeStartChild sets the GtkPaned:resize-start-child property
-	SetResizeStartChild(resize bool)
-	// SetShrinkEndChild sets the GtkPaned:shrink-end-child property
-	SetShrinkEndChild(resize bool)
-	// SetShrinkStartChild sets the GtkPaned:shrink-start-child property
-	SetShrinkStartChild(resize bool)
-	// SetStartChild sets the start child of paned to child.
-	SetStartChild(child Widgeter)
-	// SetWideHandle sets whether the separator should be wide.
-	SetWideHandle(wide bool)
 }
 
 // Paned: GtkPaned has two panes, arranged either horizontally or vertically.
@@ -125,10 +89,7 @@ type Paned struct {
 	Orientable
 }
 
-var (
-	_ Paneder         = (*Paned)(nil)
-	_ gextras.Nativer = (*Paned)(nil)
-)
+var _ gextras.Nativer = (*Paned)(nil)
 
 func wrapPaned(obj *externglib.Object) *Paned {
 	return &Paned{
@@ -152,7 +113,7 @@ func wrapPaned(obj *externglib.Object) *Paned {
 	}
 }
 
-func marshalPaneder(p uintptr) (interface{}, error) {
+func marshalPanedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPaned(obj), nil
@@ -323,7 +284,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // SetEndChild sets the end child of paned to child.
-func (paned *Paned) SetEndChild(child Widgeter) {
+func (paned *Paned) SetEndChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -397,7 +358,7 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 }
 
 // SetStartChild sets the start child of paned to child.
-func (paned *Paned) SetStartChild(child Widgeter) {
+func (paned *Paned) SetStartChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 

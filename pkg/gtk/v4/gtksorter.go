@@ -91,18 +91,6 @@ type SorterOverrider interface {
 	Order() SorterOrder
 }
 
-// Sorterer describes Sorter's methods.
-type Sorterer interface {
-	// Changed emits the gtk.Sorter::changed signal to notify all users of the
-	// sorter that it has changed.
-	Changed(change SorterChange)
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	Compare(item1 *externglib.Object, item2 *externglib.Object) Ordering
-	// Order gets the order that self conforms to.
-	Order() SorterOrder
-}
-
 // Sorter: GtkSorter is an object to describe sorting criteria.
 //
 //
@@ -127,10 +115,7 @@ type Sorter struct {
 	*externglib.Object
 }
 
-var (
-	_ Sorterer        = (*Sorter)(nil)
-	_ gextras.Nativer = (*Sorter)(nil)
-)
+var _ gextras.Nativer = (*Sorter)(nil)
 
 func wrapSorter(obj *externglib.Object) *Sorter {
 	return &Sorter{

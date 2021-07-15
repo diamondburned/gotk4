@@ -62,32 +62,6 @@ type RecentManagerOverrider interface {
 	Changed()
 }
 
-// RecentManagerer describes RecentManager's methods.
-type RecentManagerer interface {
-	// AddFull adds a new resource, pointed by uri, into the recently used
-	// resources list, using the metadata specified inside the RecentData-struct
-	// passed in recent_data.
-	AddFull(uri string, recentData *RecentData) bool
-	// AddItem adds a new resource, pointed by uri, into the recently used
-	// resources list.
-	AddItem(uri string) bool
-	// HasItem checks whether there is a recently used resource registered with
-	// uri inside the recent manager.
-	HasItem(uri string) bool
-	// LookupItem searches for a URI inside the recently used resources list,
-	// and returns a RecentInfo-struct containing informations about the
-	// resource like its MIME type, or its display name.
-	LookupItem(uri string) (*RecentInfo, error)
-	// MoveItem changes the location of a recently used resource from uri to
-	// new_uri.
-	MoveItem(uri string, newUri string) error
-	// PurgeItems purges every item from the recently used resources list.
-	PurgeItems() (int, error)
-	// RemoveItem removes a resource pointed by uri from the recently used
-	// resources list handled by a recent manager.
-	RemoveItem(uri string) error
-}
-
 // RecentManager provides a facility for adding, removing and looking up
 // recently used files. Each recently used file is identified by its URI, and
 // has meta-data associated to it, like the names and command lines of the
@@ -134,10 +108,7 @@ type RecentManager struct {
 	*externglib.Object
 }
 
-var (
-	_ RecentManagerer = (*RecentManager)(nil)
-	_ gextras.Nativer = (*RecentManager)(nil)
-)
+var _ gextras.Nativer = (*RecentManager)(nil)
 
 func wrapRecentManager(obj *externglib.Object) *RecentManager {
 	return &RecentManager{

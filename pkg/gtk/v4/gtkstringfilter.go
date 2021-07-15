@@ -39,28 +39,6 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StringFilterer describes StringFilter's methods.
-type StringFilterer interface {
-	// Expression gets the expression that the string filter uses to obtain
-	// strings from items.
-	Expression() *Expression
-	// IgnoreCase returns whether the filter ignores case differences.
-	IgnoreCase() bool
-	// MatchMode returns the match mode that the filter is using.
-	MatchMode() StringFilterMatchMode
-	// Search gets the search term.
-	Search() string
-	// SetExpression sets the expression that the string filter uses to obtain
-	// strings from items.
-	SetExpression(expression Expressioner)
-	// SetIgnoreCase sets whether the filter ignores case differences.
-	SetIgnoreCase(ignoreCase bool)
-	// SetMatchMode sets the match mode for the filter.
-	SetMatchMode(mode StringFilterMatchMode)
-	// SetSearch sets the string to search for.
-	SetSearch(search string)
-}
-
 // StringFilter: GtkStringFilter determines whether to include items by
 // comparing strings to a fixed search term.
 //
@@ -78,10 +56,7 @@ type StringFilter struct {
 	Filter
 }
 
-var (
-	_ StringFilterer  = (*StringFilter)(nil)
-	_ gextras.Nativer = (*StringFilter)(nil)
-)
+var _ gextras.Nativer = (*StringFilter)(nil)
 
 func wrapStringFilter(obj *externglib.Object) *StringFilter {
 	return &StringFilter{

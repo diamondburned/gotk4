@@ -32,16 +32,6 @@ func init() {
 	})
 }
 
-// NetworkAddresser describes NetworkAddress's methods.
-type NetworkAddresser interface {
-	// Hostname gets addr's hostname.
-	Hostname() string
-	// Port gets addr's port number
-	Port() uint16
-	// Scheme gets addr's scheme
-	Scheme() string
-}
-
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
 // connect to that host, handling the possibility of multiple IP addresses and
 // multiple address families.
@@ -56,10 +46,7 @@ type NetworkAddress struct {
 	SocketConnectable
 }
 
-var (
-	_ NetworkAddresser = (*NetworkAddress)(nil)
-	_ gextras.Nativer  = (*NetworkAddress)(nil)
-)
+var _ gextras.Nativer = (*NetworkAddress)(nil)
 
 func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{

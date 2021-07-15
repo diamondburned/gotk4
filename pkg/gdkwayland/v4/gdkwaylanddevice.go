@@ -22,12 +22,6 @@ func init() {
 	})
 }
 
-// WaylandDevicer describes WaylandDevice's methods.
-type WaylandDevicer interface {
-	// NodePath returns the /dev/input/event* path of this device.
-	NodePath() string
-}
-
 // WaylandDevice: wayland implementation of GdkDevice.
 //
 // Beyond the regular gdk.Device API, the Wayland implementation provides access
@@ -39,10 +33,7 @@ type WaylandDevice struct {
 	gdk.Device
 }
 
-var (
-	_ WaylandDevicer  = (*WaylandDevice)(nil)
-	_ gextras.Nativer = (*WaylandDevice)(nil)
-)
+var _ gextras.Nativer = (*WaylandDevice)(nil)
 
 func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
 	return &WaylandDevice{

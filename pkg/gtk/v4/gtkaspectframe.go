@@ -21,36 +21,6 @@ func init() {
 	})
 }
 
-// AspectFramer describes AspectFrame's methods.
-type AspectFramer interface {
-	// Child gets the child widget of self.
-	Child() *Widget
-	// ObeyChild returns whether the child's size request should override the
-	// set aspect ratio of the GtkAspectFrame.
-	ObeyChild() bool
-	// Ratio returns the desired aspect ratio of the child.
-	Ratio() float32
-	// XAlign returns the horizontal alignment of the child within the
-	// allocation of the GtkAspectFrame.
-	XAlign() float32
-	// YAlign returns the vertical alignment of the child within the allocation
-	// of the GtkAspectFrame.
-	YAlign() float32
-	// SetChild sets the child widget of self.
-	SetChild(child Widgeter)
-	// SetObeyChild sets whether the aspect ratio of the child's size request
-	// should override the set aspect ratio of the GtkAspectFrame.
-	SetObeyChild(obeyChild bool)
-	// SetRatio sets the desired aspect ratio of the child.
-	SetRatio(ratio float32)
-	// SetXAlign sets the horizontal alignment of the child within the
-	// allocation of the GtkAspectFrame.
-	SetXAlign(xalign float32)
-	// SetYAlign sets the vertical alignment of the child within the allocation
-	// of the GtkAspectFrame.
-	SetYAlign(yalign float32)
-}
-
 // AspectFrame: GtkAspectFrame preserves the aspect ratio of its child.
 //
 // The frame can respect the aspect ratio of the child widget, or use its own
@@ -64,10 +34,7 @@ type AspectFrame struct {
 	Widget
 }
 
-var (
-	_ AspectFramer    = (*AspectFrame)(nil)
-	_ gextras.Nativer = (*AspectFrame)(nil)
-)
+var _ gextras.Nativer = (*AspectFrame)(nil)
 
 func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
 	return &AspectFrame{
@@ -204,7 +171,7 @@ func (self *AspectFrame) YAlign() float32 {
 }
 
 // SetChild sets the child widget of self.
-func (self *AspectFrame) SetChild(child Widgeter) {
+func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 

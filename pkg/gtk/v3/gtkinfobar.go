@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
 	})
 }
 
@@ -32,42 +32,6 @@ type InfoBarOverrider interface {
 	Close()
 	// Response emits the “response” signal with the given response_id.
 	Response(responseId int)
-}
-
-// InfoBarer describes InfoBar's methods.
-type InfoBarer interface {
-	// AddActionWidget: add an activatable widget to the action area of a
-	// InfoBar, connecting a signal handler that will emit the InfoBar::response
-	// signal on the message area when the widget is activated.
-	AddActionWidget(child Widgeter, responseId int)
-	// AddButton adds a button with the given text and sets things up so that
-	// clicking the button will emit the “response” signal with the given
-	// response_id.
-	AddButton(buttonText string, responseId int) *Button
-	// ActionArea returns the action area of info_bar.
-	ActionArea() *Box
-	// ContentArea returns the content area of info_bar.
-	ContentArea() *Box
-	// MessageType returns the message type of the message area.
-	MessageType() MessageType
-	Revealed() bool
-	// ShowCloseButton returns whether the widget will display a standard close
-	// button.
-	ShowCloseButton() bool
-	// Response emits the “response” signal with the given response_id.
-	Response(responseId int)
-	// SetDefaultResponse sets the last widget in the info bar’s action area
-	// with the given response_id as the default widget for the dialog.
-	SetDefaultResponse(responseId int)
-	// SetMessageType sets the message type of the message area.
-	SetMessageType(messageType MessageType)
-	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
-	// each widget in the info bars’s action area with the given response_id.
-	SetResponseSensitive(responseId int, setting bool)
-	// SetRevealed sets the GtkInfoBar:revealed property to revealed.
-	SetRevealed(revealed bool)
-	// SetShowCloseButton: if true, a standard close button is shown.
-	SetShowCloseButton(setting bool)
 }
 
 // InfoBar is a widget that can be used to show messages to the user without
@@ -144,10 +108,7 @@ type InfoBar struct {
 	Box
 }
 
-var (
-	_ InfoBarer       = (*InfoBar)(nil)
-	_ gextras.Nativer = (*InfoBar)(nil)
-)
+var _ gextras.Nativer = (*InfoBar)(nil)
 
 func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	return &InfoBar{
@@ -172,7 +133,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	}
 }
 
-func marshalInfoBarer(p uintptr) (interface{}, error) {
+func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -195,7 +156,7 @@ func NewInfoBar() *InfoBar {
 // connecting a signal handler that will emit the InfoBar::response signal on
 // the message area when the widget is activated. The widget is appended to the
 // end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out

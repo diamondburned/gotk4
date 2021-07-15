@@ -48,10 +48,7 @@ var GenerateExceptions = []string{
 // because it's tedious or impossible to generate.
 //
 // Not included: externglib (gotk3/gotk3/glib).
-var ImportOverrides = map[string]string{
-	// Just manually generate Cairo bindings.
-	"cairo-1": "github.com/gotk3/gotk3/cairo",
-}
+var ImportOverrides = map[string]string{}
 
 // Packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
@@ -78,10 +75,6 @@ var Packages = []Package{
 var Preprocessors = []Preprocessor{
 	// Collision due to case conversions.
 	TypeRenamer("GLib-2.file_test", "test_file"),
-	// CellRendererSpinner (generated interface) collides with an actual
-	// CellRendererSpinner class.
-	TypeRenamer("Gtk-3.CellRendererSpin", "CellRendererSpinButton"),
-	TypeRenamer("Gtk-4.CellRendererSpin", "CellRendererSpinButton"),
 	// This collides with Native().
 	TypeRenamer("Gtk-4.Native", "NativeSurface"),
 
@@ -115,9 +108,6 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.domain"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
-
-	// TODO: remove this once https://github.com/gotk3/gotk3/pull/804 is merged.
-	AbsoluteFilter("cairo.FontOptions"),
 
 	FileFilter("garray."),
 	FileFilter("gasyncqueue."),

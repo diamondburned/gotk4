@@ -32,22 +32,6 @@ func init() {
 	})
 }
 
-// InetAddressMasker describes InetAddressMask's methods.
-type InetAddressMasker interface {
-	// Equal tests if mask and mask2 are the same mask.
-	Equal(mask2 *InetAddressMask) bool
-	// Address gets mask's base address
-	Address() *InetAddress
-	// Family gets the Family of mask's address
-	Family() SocketFamily
-	// Length gets mask's length
-	Length() uint
-	// Matches tests if address falls within the range described by mask.
-	Matches(address *InetAddress) bool
-	// String converts mask back to its corresponding string form.
-	String() string
-}
-
 // InetAddressMask represents a range of IPv4 or IPv6 addresses described by a
 // base address and a length indicating how many bits of the base address are
 // relevant for matching purposes. These are often given in string form. Eg,
@@ -58,10 +42,7 @@ type InetAddressMask struct {
 	Initable
 }
 
-var (
-	_ InetAddressMasker = (*InetAddressMask)(nil)
-	_ gextras.Nativer   = (*InetAddressMask)(nil)
-)
+var _ gextras.Nativer = (*InetAddressMask)(nil)
 
 func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 	return &InetAddressMask{

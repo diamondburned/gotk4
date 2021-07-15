@@ -22,7 +22,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
 		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtoner},
+		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtonner},
 	})
 }
 
@@ -80,63 +80,6 @@ type SpinButtonOverrider interface {
 	Wrapped()
 }
 
-// SpinButtoner describes SpinButton's methods.
-type SpinButtoner interface {
-	// Configure changes the properties of an existing spin button.
-	Configure(adjustment *Adjustment, climbRate float64, digits uint)
-	// Adjustment: get the adjustment associated with a SpinButton
-	Adjustment() *Adjustment
-	// Digits fetches the precision of spin_button.
-	Digits() uint
-	// Increments gets the current step and page the increments used by
-	// spin_button.
-	Increments() (step float64, page float64)
-	// Numeric returns whether non-numeric text can be typed into the spin
-	// button.
-	Numeric() bool
-	// Range gets the range allowed for spin_button.
-	Range() (min float64, max float64)
-	// SnapToTicks returns whether the values are corrected to the nearest step.
-	SnapToTicks() bool
-	// UpdatePolicy gets the update behavior of a spin button.
-	UpdatePolicy() SpinButtonUpdatePolicy
-	// Value: get the value in the spin_button.
-	Value() float64
-	// ValueAsInt: get the value spin_button represented as an integer.
-	ValueAsInt() int
-	// Wrap returns whether the spin button’s value wraps around to the opposite
-	// limit when the upper or lower limit of the range is exceeded.
-	Wrap() bool
-	// SetAdjustment replaces the Adjustment associated with spin_button.
-	SetAdjustment(adjustment *Adjustment)
-	// SetDigits: set the precision to be displayed by spin_button.
-	SetDigits(digits uint)
-	// SetIncrements sets the step and page increments for spin_button.
-	SetIncrements(step float64, page float64)
-	// SetNumeric sets the flag that determines if non-numeric text can be typed
-	// into the spin button.
-	SetNumeric(numeric bool)
-	// SetRange sets the minimum and maximum allowable values for spin_button.
-	SetRange(min float64, max float64)
-	// SetSnapToTicks sets the policy as to whether values are corrected to the
-	// nearest step increment when a spin button is activated after providing an
-	// invalid value.
-	SetSnapToTicks(snapToTicks bool)
-	// SetUpdatePolicy sets the update behavior of a spin button.
-	SetUpdatePolicy(policy SpinButtonUpdatePolicy)
-	// SetValue sets the value of spin_button.
-	SetValue(value float64)
-	// SetWrap sets the flag that determines if a spin button value wraps around
-	// to the opposite limit when the upper or lower limit of the range is
-	// exceeded.
-	SetWrap(wrap bool)
-	// Spin: increment or decrement a spin button’s value in a specified
-	// direction by a specified amount.
-	Spin(direction SpinType, increment float64)
-	// Update: manually force an update of the spin button.
-	Update()
-}
-
 // SpinButton is an ideal way to allow the user to set the value of some
 // attribute. Rather than having to directly type a number into a Entry,
 // GtkSpinButton allows the user to click on one of two arrows to increment or
@@ -186,10 +129,7 @@ type SpinButton struct {
 	Orientable
 }
 
-var (
-	_ SpinButtoner    = (*SpinButton)(nil)
-	_ gextras.Nativer = (*SpinButton)(nil)
-)
+var _ gextras.Nativer = (*SpinButton)(nil)
 
 func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	return &SpinButton{
@@ -228,7 +168,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	}
 }
 
-func marshalSpinButtoner(p uintptr) (interface{}, error) {
+func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSpinButton(obj), nil

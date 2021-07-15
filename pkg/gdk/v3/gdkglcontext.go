@@ -22,46 +22,6 @@ func init() {
 	})
 }
 
-// GLContexter describes GLContext's methods.
-type GLContexter interface {
-	// DebugEnabled retrieves the value set using
-	// gdk_gl_context_set_debug_enabled().
-	DebugEnabled() bool
-	// Display retrieves the Display the context is created for
-	Display() *Display
-	// ForwardCompatible retrieves the value set using
-	// gdk_gl_context_set_forward_compatible().
-	ForwardCompatible() bool
-	// RequiredVersion retrieves the major and minor version requested by
-	// calling gdk_gl_context_set_required_version().
-	RequiredVersion() (major int, minor int)
-	// SharedContext retrieves the GLContext that this context share data with.
-	SharedContext() *GLContext
-	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
-	UseES() bool
-	// Version retrieves the OpenGL version of the context.
-	Version() (major int, minor int)
-	// Window retrieves the Window used by the context.
-	Window() *Window
-	// IsLegacy: whether the GLContext is in legacy mode or not.
-	IsLegacy() bool
-	// MakeCurrent makes the context the current one.
-	MakeCurrent()
-	// Realize realizes the given GLContext.
-	Realize() error
-	// SetDebugEnabled sets whether the GLContext should perform extra
-	// validations and run time checking.
-	SetDebugEnabled(enabled bool)
-	// SetForwardCompatible sets whether the GLContext should be forward
-	// compatible.
-	SetForwardCompatible(compatible bool)
-	// SetRequiredVersion sets the major and minor version of OpenGL to request.
-	SetRequiredVersion(major int, minor int)
-	// SetUseES requests that GDK create a OpenGL ES context instead of an
-	// OpenGL one, if the platform and windowing system allows it.
-	SetUseES(useEs int)
-}
-
 // GLContext is an object representing the platform-specific OpenGL drawing
 // context.
 //
@@ -112,10 +72,49 @@ type GLContext struct {
 	*externglib.Object
 }
 
-var (
-	_ GLContexter     = (*GLContext)(nil)
-	_ gextras.Nativer = (*GLContext)(nil)
-)
+var _ gextras.Nativer = (*GLContext)(nil)
+
+// GLContexter describes GLContext's abstract methods.
+type GLContexter interface {
+	// DebugEnabled retrieves the value set using
+	// gdk_gl_context_set_debug_enabled().
+	DebugEnabled() bool
+	// Display retrieves the Display the context is created for
+	Display() *Display
+	// ForwardCompatible retrieves the value set using
+	// gdk_gl_context_set_forward_compatible().
+	ForwardCompatible() bool
+	// RequiredVersion retrieves the major and minor version requested by
+	// calling gdk_gl_context_set_required_version().
+	RequiredVersion() (major int, minor int)
+	// SharedContext retrieves the GLContext that this context share data with.
+	SharedContext() *GLContext
+	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
+	UseES() bool
+	// Version retrieves the OpenGL version of the context.
+	Version() (major int, minor int)
+	// Window retrieves the Window used by the context.
+	Window() *Window
+	// IsLegacy: whether the GLContext is in legacy mode or not.
+	IsLegacy() bool
+	// MakeCurrent makes the context the current one.
+	MakeCurrent()
+	// Realize realizes the given GLContext.
+	Realize() error
+	// SetDebugEnabled sets whether the GLContext should perform extra
+	// validations and run time checking.
+	SetDebugEnabled(enabled bool)
+	// SetForwardCompatible sets whether the GLContext should be forward
+	// compatible.
+	SetForwardCompatible(compatible bool)
+	// SetRequiredVersion sets the major and minor version of OpenGL to request.
+	SetRequiredVersion(major int, minor int)
+	// SetUseES requests that GDK create a OpenGL ES context instead of an
+	// OpenGL one, if the platform and windowing system allows it.
+	SetUseES(useEs int)
+}
+
+var _ GLContexter = (*GLContext)(nil)
 
 func wrapGLContext(obj *externglib.Object) *GLContext {
 	return &GLContext{

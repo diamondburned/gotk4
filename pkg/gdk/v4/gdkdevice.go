@@ -51,7 +51,18 @@ func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Devicer describes Device's methods.
+// Device: GdkDevice object represents an input device, such as a keyboard, a
+// mouse, or a touchpad.
+//
+// See the gdk.Seat documentation for more information about the various kinds
+// of devices, and their relationships.
+type Device struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Device)(nil)
+
+// Devicer describes Device's abstract methods.
 type Devicer interface {
 	// CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
 	// locked.
@@ -96,19 +107,7 @@ type Devicer interface {
 	HasBidiLayouts() bool
 }
 
-// Device: GdkDevice object represents an input device, such as a keyboard, a
-// mouse, or a touchpad.
-//
-// See the gdk.Seat documentation for more information about the various kinds
-// of devices, and their relationships.
-type Device struct {
-	*externglib.Object
-}
-
-var (
-	_ Devicer         = (*Device)(nil)
-	_ gextras.Nativer = (*Device)(nil)
-)
+var _ Devicer = (*Device)(nil)
 
 func wrapDevice(obj *externglib.Object) *Device {
 	return &Device{

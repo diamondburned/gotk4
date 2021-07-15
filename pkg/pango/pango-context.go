@@ -22,66 +22,6 @@ func init() {
 	})
 }
 
-// Contexter describes Context's methods.
-type Contexter interface {
-	// Changed forces a change in the context, which will cause any PangoLayout
-	// using this context to re-layout.
-	Changed()
-	// BaseDir retrieves the base direction for the context.
-	BaseDir() Direction
-	// BaseGravity retrieves the base gravity for the context.
-	BaseGravity() Gravity
-	// FontDescription: retrieve the default font description for the context.
-	FontDescription() *FontDescription
-	// FontMap gets the PangoFontMap used to look up fonts for this context.
-	FontMap() *FontMap
-	// Gravity retrieves the gravity for the context.
-	Gravity() Gravity
-	// GravityHint retrieves the gravity hint for the context.
-	GravityHint() GravityHint
-	// Language retrieves the global language tag for the context.
-	Language() *Language
-	// Matrix gets the transformation matrix that will be applied when rendering
-	// with this context.
-	Matrix() *Matrix
-	// Metrics: get overall metric information for a particular font
-	// description.
-	Metrics(desc *FontDescription, language *Language) *FontMetrics
-	// RoundGlyphPositions returns whether font rendering with this context
-	// should round glyph positions and widths.
-	RoundGlyphPositions() bool
-	// Serial returns the current serial number of context.
-	Serial() uint
-	// ListFamilies: list all families for a context.
-	ListFamilies() []*FontFamily
-	// LoadFont loads the font in one of the fontmaps in the context that is the
-	// closest match for desc.
-	LoadFont(desc *FontDescription) *Font
-	// LoadFontset: load a set of fonts in the context that can be used to
-	// render a font matching desc.
-	LoadFontset(desc *FontDescription, language *Language) *Fontset
-	// SetBaseDir sets the base direction for the context.
-	SetBaseDir(direction Direction)
-	// SetBaseGravity sets the base gravity for the context.
-	SetBaseGravity(gravity Gravity)
-	// SetFontDescription: set the default font description for the context
-	SetFontDescription(desc *FontDescription)
-	// SetFontMap sets the font map to be searched when fonts are looked-up in
-	// this context.
-	SetFontMap(fontMap FontMaper)
-	// SetGravityHint sets the gravity hint for the context.
-	SetGravityHint(hint GravityHint)
-	// SetLanguage sets the global language tag for the context.
-	SetLanguage(language *Language)
-	// SetMatrix sets the transformation matrix that will be applied when
-	// rendering with this context.
-	SetMatrix(matrix *Matrix)
-	// SetRoundGlyphPositions sets whether font rendering with this context
-	// should round glyph positions and widths to integral positions, in device
-	// units.
-	SetRoundGlyphPositions(roundPositions bool)
-}
-
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //
@@ -94,10 +34,7 @@ type Context struct {
 	*externglib.Object
 }
 
-var (
-	_ Contexter       = (*Context)(nil)
-	_ gextras.Nativer = (*Context)(nil)
-)
+var _ gextras.Nativer = (*Context)(nil)
 
 func wrapContext(obj *externglib.Object) *Context {
 	return &Context{
@@ -481,7 +418,7 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 //
 // This is only for internal use by Pango backends, a PangoContext obtained via
 // one of the recommended methods should already have a suitable font map.
-func (context *Context) SetFontMap(fontMap FontMaper) {
+func (context *Context) SetFontMap(fontMap FontMapper) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
 

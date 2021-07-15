@@ -22,41 +22,6 @@ func init() {
 	})
 }
 
-// DropDowner describes DropDown's methods.
-type DropDowner interface {
-	// EnableSearch returns whether search is enabled.
-	EnableSearch() bool
-	// Expression gets the expression set that is used to obtain strings from
-	// items.
-	Expression() *Expression
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() *ListItemFactory
-	// ListFactory gets the factory that's currently used to populate list items
-	// in the popup.
-	ListFactory() *ListItemFactory
-	// Model gets the model that provides the displayed items.
-	Model() *gio.ListModel
-	// Selected gets the position of the selected item.
-	Selected() uint
-	// SelectedItem gets the selected item.
-	SelectedItem() *externglib.Object
-	// SetEnableSearch sets whether a search entry will be shown in the popup
-	// that allows to search for items in the list.
-	SetEnableSearch(enableSearch bool)
-	// SetExpression sets the expression that gets evaluated to obtain strings
-	// from items.
-	SetExpression(expression Expressioner)
-	// SetFactory sets the GtkListItemFactory to use for populating list items.
-	SetFactory(factory *ListItemFactory)
-	// SetListFactory sets the GtkListItemFactory to use for populating list
-	// items in the popup.
-	SetListFactory(factory *ListItemFactory)
-	// SetModel sets the GListModel to use.
-	SetModel(model gio.ListModeler)
-	// SetSelected selects the item at the given position.
-	SetSelected(position uint)
-}
-
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
 // a list of options.
 //
@@ -90,10 +55,7 @@ type DropDown struct {
 	Widget
 }
 
-var (
-	_ DropDowner      = (*DropDown)(nil)
-	_ gextras.Nativer = (*DropDown)(nil)
-)
+var _ gextras.Nativer = (*DropDown)(nil)
 
 func wrapDropDown(obj *externglib.Object) *DropDown {
 	return &DropDown{
@@ -124,7 +86,7 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // You may want to call gtk.DropDown.SetFactory() to set up a way to map its
 // items to widgets.
-func NewDropDown(model gio.ListModeler, expression Expressioner) *DropDown {
+func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
@@ -350,7 +312,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 }
 
 // SetModel sets the GListModel to use.
-func (self *DropDown) SetModel(model gio.ListModeler) {
+func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 

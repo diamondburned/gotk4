@@ -190,7 +190,15 @@ type FontOverrider interface {
 	Metrics(language *Language) *FontMetrics
 }
 
-// Fonter describes Font's methods.
+// Font: PangoFont is used to represent a font in a rendering-system-independent
+// manner.
+type Font struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Font)(nil)
+
+// Fonter describes Font's abstract methods.
 type Fonter interface {
 	// Describe returns a description of the font, with font size set in points.
 	Describe() *FontDescription
@@ -209,16 +217,7 @@ type Fonter interface {
 	HasChar(wc uint32) bool
 }
 
-// Font: PangoFont is used to represent a font in a rendering-system-independent
-// manner.
-type Font struct {
-	*externglib.Object
-}
-
-var (
-	_ Fonter          = (*Font)(nil)
-	_ gextras.Nativer = (*Font)(nil)
-)
+var _ Fonter = (*Font)(nil)
 
 func wrapFont(obj *externglib.Object) *Font {
 	return &Font{
@@ -432,7 +431,15 @@ type FontFaceOverrider interface {
 	ListSizes() []int
 }
 
-// FontFacer describes FontFace's methods.
+// FontFace: PangoFontFace is used to represent a group of fonts with the same
+// family, slant, weight, and width, but varying sizes.
+type FontFace struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*FontFace)(nil)
+
+// FontFacer describes FontFace's abstract methods.
 type FontFacer interface {
 	// Describe returns the family, style, variant, weight and stretch of a
 	// PangoFontFace.
@@ -450,16 +457,7 @@ type FontFacer interface {
 	ListSizes() []int
 }
 
-// FontFace: PangoFontFace is used to represent a group of fonts with the same
-// family, slant, weight, and width, but varying sizes.
-type FontFace struct {
-	*externglib.Object
-}
-
-var (
-	_ FontFacer       = (*FontFace)(nil)
-	_ gextras.Nativer = (*FontFace)(nil)
-)
+var _ FontFacer = (*FontFace)(nil)
 
 func wrapFontFace(obj *externglib.Object) *FontFace {
 	return &FontFace{
@@ -608,7 +606,18 @@ type FontFamilyOverrider interface {
 	ListFaces() []*FontFace
 }
 
-// FontFamilier describes FontFamily's methods.
+// FontFamily: PangoFontFamily is used to represent a family of related font
+// faces.
+//
+// The font faces in a family share a common design, but differ in slant,
+// weight, width or other aspects.
+type FontFamily struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*FontFamily)(nil)
+
+// FontFamilier describes FontFamily's abstract methods.
 type FontFamilier interface {
 	// Face gets the PangoFontFace of family with the given name.
 	Face(name string) *FontFace
@@ -624,19 +633,7 @@ type FontFamilier interface {
 	ListFaces() []*FontFace
 }
 
-// FontFamily: PangoFontFamily is used to represent a family of related font
-// faces.
-//
-// The font faces in a family share a common design, but differ in slant,
-// weight, width or other aspects.
-type FontFamily struct {
-	*externglib.Object
-}
-
-var (
-	_ FontFamilier    = (*FontFamily)(nil)
-	_ gextras.Nativer = (*FontFamily)(nil)
-)
+var _ FontFamilier = (*FontFamily)(nil)
 
 func wrapFontFamily(obj *externglib.Object) *FontFamily {
 	return &FontFamily{

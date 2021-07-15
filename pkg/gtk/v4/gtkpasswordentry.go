@@ -22,22 +22,6 @@ func init() {
 	})
 }
 
-// PasswordEntrier describes PasswordEntry's methods.
-type PasswordEntrier interface {
-	// ExtraMenu gets the menu model set with
-	// gtk_password_entry_set_extra_menu().
-	ExtraMenu() *gio.MenuModel
-	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
-	// contents.
-	ShowPeekIcon() bool
-	// SetExtraMenu sets a menu model to add when constructing the context menu
-	// for entry.
-	SetExtraMenu(model gio.MenuModeler)
-	// SetShowPeekIcon sets whether the entry should have a clickable icon to
-	// reveal the contents.
-	SetShowPeekIcon(showPeekIcon bool)
-}
-
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for
 // entering secrets.
 //
@@ -77,10 +61,7 @@ type PasswordEntry struct {
 	Editable
 }
 
-var (
-	_ PasswordEntrier = (*PasswordEntry)(nil)
-	_ gextras.Nativer = (*PasswordEntry)(nil)
-)
+var _ gextras.Nativer = (*PasswordEntry)(nil)
 
 func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
 	return &PasswordEntry{
@@ -184,7 +165,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // entry.
-func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeler) {
+func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 

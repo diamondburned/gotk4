@@ -21,15 +21,10 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_popup_get_type()), F: marshalWaylandPopuper},
+		{T: externglib.Type(C.gdk_wayland_popup_get_type()), F: marshalWaylandPopupper},
 		{T: externglib.Type(C.gdk_wayland_surface_get_type()), F: marshalWaylandSurfacer},
-		{T: externglib.Type(C.gdk_wayland_toplevel_get_type()), F: marshalWaylandTopleveler},
+		{T: externglib.Type(C.gdk_wayland_toplevel_get_type()), F: marshalWaylandTopleveller},
 	})
-}
-
-// WaylandPopuper describes WaylandPopup's methods.
-type WaylandPopuper interface {
-	privateWaylandPopup()
 }
 
 // WaylandPopup: wayland implementation of GdkPopup.
@@ -37,10 +32,7 @@ type WaylandPopup struct {
 	WaylandSurface
 }
 
-var (
-	_ WaylandPopuper  = (*WaylandPopup)(nil)
-	_ gextras.Nativer = (*WaylandPopup)(nil)
-)
+var _ gextras.Nativer = (*WaylandPopup)(nil)
 
 func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	return &WaylandPopup{
@@ -52,18 +44,13 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	}
 }
 
-func marshalWaylandPopuper(p uintptr) (interface{}, error) {
+func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandPopup(obj), nil
 }
 
 func (*WaylandPopup) privateWaylandPopup() {}
-
-// WaylandSurfacer describes WaylandSurface's methods.
-type WaylandSurfacer interface {
-	privateWaylandSurface()
-}
 
 // WaylandSurface: wayland implementation of GdkSurface.
 //
@@ -73,10 +60,7 @@ type WaylandSurface struct {
 	gdk.Surface
 }
 
-var (
-	_ WaylandSurfacer = (*WaylandSurface)(nil)
-	_ gextras.Nativer = (*WaylandSurface)(nil)
-)
+var _ gextras.Nativer = (*WaylandSurface)(nil)
 
 func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
 	return &WaylandSurface{
@@ -94,21 +78,6 @@ func marshalWaylandSurfacer(p uintptr) (interface{}, error) {
 
 func (*WaylandSurface) privateWaylandSurface() {}
 
-// WaylandTopleveler describes WaylandToplevel's methods.
-type WaylandTopleveler interface {
-	// ExportHandle: asynchronously obtains a handle for a surface that can be
-	// passed to other processes.
-	ExportHandle(callback WaylandToplevelExported) bool
-	// SetApplicationID sets the application id on a GdkToplevel.
-	SetApplicationID(applicationId string)
-	// SetTransientForExported marks toplevel as transient for the surface to
-	// which the given parent_handle_str refers.
-	SetTransientForExported(parentHandleStr string) bool
-	// UnexportHandle destroys the handle that was obtained with
-	// gdk_wayland_toplevel_export_handle().
-	UnexportHandle()
-}
-
 // WaylandToplevel: wayland implementation of GdkToplevel.
 //
 // Beyond the gdk.Toplevel API, the Wayland implementation has API to set up
@@ -119,10 +88,7 @@ type WaylandToplevel struct {
 	WaylandSurface
 }
 
-var (
-	_ WaylandTopleveler = (*WaylandToplevel)(nil)
-	_ gextras.Nativer   = (*WaylandToplevel)(nil)
-)
+var _ gextras.Nativer = (*WaylandToplevel)(nil)
 
 func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	return &WaylandToplevel{
@@ -134,7 +100,7 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	}
 }
 
-func marshalWaylandTopleveler(p uintptr) (interface{}, error) {
+func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandToplevel(obj), nil

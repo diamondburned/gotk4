@@ -46,16 +46,6 @@ type CellEditableOverrider interface {
 	StartEditing(event gdk.Eventer)
 }
 
-// CellEditabler describes CellEditable's methods.
-type CellEditabler interface {
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-	// StartEditing begins editing on a cell_editable.
-	StartEditing(event gdk.Eventer)
-}
-
 // CellEditable: interface for widgets that can be used for editing cells
 //
 // The CellEditable interface must be implemented for widgets to be usable to
@@ -65,10 +55,19 @@ type CellEditable struct {
 	Widget
 }
 
-var (
-	_ CellEditabler   = (*CellEditable)(nil)
-	_ gextras.Nativer = (*CellEditable)(nil)
-)
+var _ gextras.Nativer = (*CellEditable)(nil)
+
+// CellEditabler describes CellEditable's abstract methods.
+type CellEditabler interface {
+	// EditingDone emits the CellEditable::editing-done signal.
+	EditingDone()
+	// RemoveWidget emits the CellEditable::remove-widget signal.
+	RemoveWidget()
+	// StartEditing begins editing on a cell_editable.
+	StartEditing(event gdk.Eventer)
+}
+
+var _ CellEditabler = (*CellEditable)(nil)
 
 func wrapCellEditable(obj *externglib.Object) *CellEditable {
 	return &CellEditable{

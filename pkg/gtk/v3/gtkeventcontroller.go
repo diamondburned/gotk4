@@ -23,7 +23,16 @@ func init() {
 	})
 }
 
-// EventControllerer describes EventController's methods.
+// EventController is a base, low-level implementation for event controllers.
+// Those react to a series of Events, and possibly trigger actions as a
+// consequence of those.
+type EventController struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*EventController)(nil)
+
+// EventControllerer describes EventController's abstract methods.
 type EventControllerer interface {
 	// PropagationPhase gets the propagation phase at which controller handles
 	// events.
@@ -37,17 +46,7 @@ type EventControllerer interface {
 	SetPropagationPhase(phase PropagationPhase)
 }
 
-// EventController is a base, low-level implementation for event controllers.
-// Those react to a series of Events, and possibly trigger actions as a
-// consequence of those.
-type EventController struct {
-	*externglib.Object
-}
-
-var (
-	_ EventControllerer = (*EventController)(nil)
-	_ gextras.Nativer   = (*EventController)(nil)
-)
+var _ EventControllerer = (*EventController)(nil)
 
 func wrapEventController(obj *externglib.Object) *EventController {
 	return &EventController{

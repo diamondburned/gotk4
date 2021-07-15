@@ -77,35 +77,6 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 	return cret
 }
 
-// FileFilterer describes FileFilter's methods.
-type FileFilterer interface {
-	// AddCustom adds rule to a filter that allows files based on a custom
-	// callback function.
-	AddCustom(needed FileFilterFlags, fn FileFilterFunc)
-	// AddMIMEType adds a rule allowing a given mime type to filter.
-	AddMIMEType(mimeType string)
-	// AddPattern adds a rule allowing a shell style glob to a filter.
-	AddPattern(pattern string)
-	// AddPixbufFormats adds a rule allowing image files in the formats
-	// supported by GdkPixbuf.
-	AddPixbufFormats()
-	// Filter tests whether a file should be displayed according to filter.
-	Filter(filterInfo *FileFilterInfo) bool
-	// Name gets the human-readable name for the filter.
-	Name() string
-	// Needed gets the fields that need to be filled in for the FileFilterInfo
-	// passed to gtk_file_filter_filter() This function will not typically be
-	// used by applications; it is intended principally for use in the
-	// implementation of FileChooser.
-	Needed() FileFilterFlags
-	// SetName sets the human-readable name of the filter; this is the string
-	// that will be displayed in the file selector user interface if there is a
-	// selectable list of filters.
-	SetName(name string)
-	// ToGVariant: serialize a file filter to an a{sv} variant.
-	ToGVariant() *glib.Variant
-}
-
 // FileFilter can be used to restrict the files being shown in a FileChooser.
 // Files can be filtered based on their name (with
 // gtk_file_filter_add_pattern()), on their mime type (with
@@ -149,10 +120,7 @@ type FileFilter struct {
 	Buildable
 }
 
-var (
-	_ FileFilterer    = (*FileFilter)(nil)
-	_ gextras.Nativer = (*FileFilter)(nil)
-)
+var _ gextras.Nativer = (*FileFilter)(nil)
 
 func wrapFileFilter(obj *externglib.Object) *FileFilter {
 	return &FileFilter{

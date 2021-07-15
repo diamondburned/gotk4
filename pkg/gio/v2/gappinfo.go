@@ -120,7 +120,55 @@ type AppInfoOverrider interface {
 	SupportsUris() bool
 }
 
-// AppInfor describes AppInfo's methods.
+// AppInfo and LaunchContext are used for describing and launching applications
+// installed on the system.
+//
+// As of GLib 2.20, URIs will always be converted to POSIX paths (using
+// g_file_get_path()) when using g_app_info_launch() even if the application
+// requested an URI and not a POSIX path. For example for a desktop-file based
+// application with Exec key totem U and a single URI, sftp://foo/file.avi, then
+// /home/user/.gvfs/sftp on foo/file.avi will be passed. This will only work if
+// a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE
+// support), is available and operational; if this is not the case, the URI will
+// be passed unmodified to the application. Some URIs, such as mailto:, of
+// course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
+// it); such URIs will be passed unmodified to the application.
+//
+// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
+// the GIO URI in the #GFile constructors (since gvfs implements the #GVfs
+// extension point). As such, if the application needs to examine the URI, it
+// needs to use g_file_get_uri() or similar on #GFile. In other words, an
+// application cannot assume that the URI passed to e.g.
+// g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
+// The following snippet illustrates this:
+//
+//    GFile *f;
+//    char *uri;
+//
+//    file = g_file_new_for_commandline_arg (uri_from_commandline);
+//
+//    uri = g_file_get_uri (file);
+//    strcmp (uri, uri_from_commandline) == 0;
+//    g_free (uri);
+//
+//    if (g_file_has_uri_scheme (file, "cdda"))
+//      {
+//        // do something special with uri
+//      }
+//    g_object_unref (file);
+//
+// This code will work when both cdda://sr0/Track 1.wav and
+// /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application. It
+// should be noted that it's generally not safe for applications to rely on the
+// format of a particular URIs. Different launcher applications (e.g. file
+// managers) may have different ideas of what a given URI means.
+type AppInfo struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*AppInfo)(nil)
+
+// AppInfor describes AppInfo's abstract methods.
 type AppInfor interface {
 	// AddSupportsType adds a content type to the application information to
 	// indicate the application is capable of opening files with the given
@@ -180,56 +228,7 @@ type AppInfor interface {
 	SupportsUris() bool
 }
 
-// AppInfo and LaunchContext are used for describing and launching applications
-// installed on the system.
-//
-// As of GLib 2.20, URIs will always be converted to POSIX paths (using
-// g_file_get_path()) when using g_app_info_launch() even if the application
-// requested an URI and not a POSIX path. For example for a desktop-file based
-// application with Exec key totem U and a single URI, sftp://foo/file.avi, then
-// /home/user/.gvfs/sftp on foo/file.avi will be passed. This will only work if
-// a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE
-// support), is available and operational; if this is not the case, the URI will
-// be passed unmodified to the application. Some URIs, such as mailto:, of
-// course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
-// it); such URIs will be passed unmodified to the application.
-//
-// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
-// the GIO URI in the #GFile constructors (since gvfs implements the #GVfs
-// extension point). As such, if the application needs to examine the URI, it
-// needs to use g_file_get_uri() or similar on #GFile. In other words, an
-// application cannot assume that the URI passed to e.g.
-// g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
-// The following snippet illustrates this:
-//
-//    GFile *f;
-//    char *uri;
-//
-//    file = g_file_new_for_commandline_arg (uri_from_commandline);
-//
-//    uri = g_file_get_uri (file);
-//    strcmp (uri, uri_from_commandline) == 0;
-//    g_free (uri);
-//
-//    if (g_file_has_uri_scheme (file, "cdda"))
-//      {
-//        // do something special with uri
-//      }
-//    g_object_unref (file);
-//
-// This code will work when both cdda://sr0/Track 1.wav and
-// /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application. It
-// should be noted that it's generally not safe for applications to rely on the
-// format of a particular URIs. Different launcher applications (e.g. file
-// managers) may have different ideas of what a given URI means.
-type AppInfo struct {
-	*externglib.Object
-}
-
-var (
-	_ AppInfor        = (*AppInfo)(nil)
-	_ gextras.Nativer = (*AppInfo)(nil)
-)
+var _ AppInfor = (*AppInfo)(nil)
 
 func wrapAppInfo(obj *externglib.Object) *AppInfo {
 	return &AppInfo{
@@ -845,23 +844,6 @@ type AppLaunchContextOverrider interface {
 	Launched(info AppInfor, platformData *glib.Variant)
 }
 
-// AppLaunchContexter describes AppLaunchContext's methods.
-type AppLaunchContexter interface {
-	// Environment gets the complete environment variable list to be passed to
-	// the child process when context is used to launch an application.
-	Environment() []string
-	// LaunchFailed: called when an application has failed to launch, so that it
-	// can cancel the application startup notification started in
-	// g_app_launch_context_get_startup_notify_id().
-	LaunchFailed(startupNotifyId string)
-	// Setenv arranges for variable to be set to value in the child's
-	// environment when context is used to launch an application.
-	Setenv(variable string, value string)
-	// Unsetenv arranges for variable to be unset in the child's environment
-	// when context is used to launch an application.
-	Unsetenv(variable string)
-}
-
 // AppLaunchContext: integrating the launch with the launching application. This
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
@@ -869,10 +851,7 @@ type AppLaunchContext struct {
 	*externglib.Object
 }
 
-var (
-	_ AppLaunchContexter = (*AppLaunchContext)(nil)
-	_ gextras.Nativer    = (*AppLaunchContext)(nil)
-)
+var _ gextras.Nativer = (*AppLaunchContext)(nil)
 
 func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{

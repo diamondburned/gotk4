@@ -52,20 +52,6 @@ type SocketControlMessageOverrider interface {
 	Serialize(data cgo.Handle)
 }
 
-// SocketControlMessager describes SocketControlMessage's methods.
-type SocketControlMessager interface {
-	// Level returns the "level" (i.e.
-	Level() int
-	// MsgType returns the protocol specific type of the control message.
-	MsgType() int
-	// Size returns the space required for the control message, not including
-	// headers or alignment.
-	Size() uint
-	// Serialize converts the data in the message to bytes placed in the
-	// message.
-	Serialize(data cgo.Handle)
-}
-
 // SocketControlMessage is a special-purpose utility message that can be sent to
 // or received from a #GSocket. These types of messages are often called
 // "ancillary data".
@@ -88,10 +74,23 @@ type SocketControlMessage struct {
 	*externglib.Object
 }
 
-var (
-	_ SocketControlMessager = (*SocketControlMessage)(nil)
-	_ gextras.Nativer       = (*SocketControlMessage)(nil)
-)
+var _ gextras.Nativer = (*SocketControlMessage)(nil)
+
+// SocketControlMessager describes SocketControlMessage's abstract methods.
+type SocketControlMessager interface {
+	// Level returns the "level" (i.e.
+	Level() int
+	// MsgType returns the protocol specific type of the control message.
+	MsgType() int
+	// Size returns the space required for the control message, not including
+	// headers or alignment.
+	Size() uint
+	// Serialize converts the data in the message to bytes placed in the
+	// message.
+	Serialize(data cgo.Handle)
+}
+
+var _ SocketControlMessager = (*SocketControlMessage)(nil)
 
 func wrapSocketControlMessage(obj *externglib.Object) *SocketControlMessage {
 	return &SocketControlMessage{

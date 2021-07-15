@@ -51,51 +51,6 @@ type ThemingEngineOverrider interface {
 	RenderSlider(cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation)
 }
 
-// ThemingEnginer describes ThemingEngine's methods.
-type ThemingEnginer interface {
-	// BackgroundColor gets the background color for a given state.
-	BackgroundColor(state StateFlags) gdk.RGBA
-	// Border gets the border for a given state as a Border.
-	Border(state StateFlags) Border
-	// BorderColor gets the border color for a given state.
-	BorderColor(state StateFlags) gdk.RGBA
-	// Color gets the foreground color for a given state.
-	Color(state StateFlags) gdk.RGBA
-	// Direction returns the widget direction used for rendering.
-	Direction() TextDirection
-	// Font returns the font description for a given state.
-	Font(state StateFlags) *pango.FontDescription
-	// JunctionSides returns the widget direction used for rendering.
-	JunctionSides() JunctionSides
-	// Margin gets the margin for a given state as a Border.
-	Margin(state StateFlags) Border
-	// Padding gets the padding for a given state as a Border.
-	Padding(state StateFlags) Border
-	// Path returns the widget path used for style matching.
-	Path() *WidgetPath
-	// Property gets a property value as retrieved from the style settings that
-	// apply to the currently rendered element.
-	Property(property string, state StateFlags) externglib.Value
-	// Screen returns the Screen to which engine currently rendering to.
-	Screen() *gdk.Screen
-	// State returns the state used when rendering.
-	State() StateFlags
-	// StyleProperty gets the value for a widget style property.
-	StyleProperty(propertyName string) externglib.Value
-	// HasClass returns TRUE if the currently rendered contents have defined the
-	// given class name.
-	HasClass(styleClass string) bool
-	// HasRegion returns TRUE if the currently rendered contents have the region
-	// defined.
-	HasRegion(styleRegion string) (RegionFlags, bool)
-	// LookupColor looks up and resolves a color name in the current style’s
-	// color map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
-	// StateIsRunning returns TRUE if there is a transition animation running
-	// for the current region (see gtk_style_context_push_animatable_region()).
-	StateIsRunning(state StateType) (float64, bool)
-}
-
 // ThemingEngine was the object used for rendering themed content in GTK+
 // widgets. It used to allow overriding GTK+'s default implementation of
 // rendering functions by allowing engines to be loaded as modules.
@@ -107,10 +62,7 @@ type ThemingEngine struct {
 	*externglib.Object
 }
 
-var (
-	_ ThemingEnginer  = (*ThemingEngine)(nil)
-	_ gextras.Nativer = (*ThemingEngine)(nil)
-)
+var _ gextras.Nativer = (*ThemingEngine)(nil)
 
 func wrapThemingEngine(obj *externglib.Object) *ThemingEngine {
 	return &ThemingEngine{

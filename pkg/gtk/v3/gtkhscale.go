@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// HScaler describes HScale's methods.
-type HScaler interface {
-	privateHScale()
-}
-
 // HScale widget is used to allow the user to select a value using a horizontal
 // slider. To create one, use gtk_hscale_new_with_range().
 //
@@ -40,10 +35,7 @@ type HScale struct {
 	Scale
 }
 
-var (
-	_ HScaler         = (*HScale)(nil)
-	_ gextras.Nativer = (*HScale)(nil)
-)
+var _ gextras.Nativer = (*HScale)(nil)
 
 func wrapHScale(obj *externglib.Object) *HScale {
 	return &HScale{

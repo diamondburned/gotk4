@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// StackAccessibler describes StackAccessible's methods.
-type StackAccessibler interface {
-	privateStackAccessible()
-}
-
 type StackAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ StackAccessibler = (*StackAccessible)(nil)
-	_ gextras.Nativer  = (*StackAccessible)(nil)
-)
+var _ gextras.Nativer = (*StackAccessible)(nil)
 
 func wrapStackAccessible(obj *externglib.Object) *StackAccessible {
 	return &StackAccessible{

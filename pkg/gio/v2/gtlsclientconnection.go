@@ -67,7 +67,15 @@ type TLSClientConnectionOverrider interface {
 	CopySessionState(source TLSClientConnectioner)
 }
 
-// TLSClientConnectioner describes TLSClientConnection's methods.
+// TLSClientConnection is the client-side subclass of Connection, representing a
+// client-side TLS connection.
+type TLSClientConnection struct {
+	TLSConnection
+}
+
+var _ gextras.Nativer = (*TLSClientConnection)(nil)
+
+// TLSClientConnectioner describes TLSClientConnection's abstract methods.
 type TLSClientConnectioner interface {
 	// CopySessionState: possibly copies session state from one connection to
 	// another, for use in TLS session resumption.
@@ -90,16 +98,7 @@ type TLSClientConnectioner interface {
 	SetValidationFlags(flags TLSCertificateFlags)
 }
 
-// TLSClientConnection is the client-side subclass of Connection, representing a
-// client-side TLS connection.
-type TLSClientConnection struct {
-	TLSConnection
-}
-
-var (
-	_ TLSClientConnectioner = (*TLSClientConnection)(nil)
-	_ gextras.Nativer       = (*TLSClientConnection)(nil)
-)
+var _ TLSClientConnectioner = (*TLSClientConnection)(nil)
 
 func wrapTLSClientConnection(obj *externglib.Object) *TLSClientConnection {
 	return &TLSClientConnection{

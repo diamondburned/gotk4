@@ -121,7 +121,45 @@ type VolumeOverrider interface {
 	ShouldAutomount() bool
 }
 
-// Volumer describes Volume's methods.
+// Volume interface represents user-visible objects that can be mounted. Note,
+// when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.
+//
+// Mounting a #GVolume instance is an asynchronous operation. For more
+// information about asynchronous operations, see Result and #GTask. To mount a
+// #GVolume, first call g_volume_mount() with (at least) the #GVolume instance,
+// optionally a Operation object and a ReadyCallback.
+//
+// Typically, one will only want to pass NULL for the Operation if automounting
+// all volumes when a desktop session starts since it's not desirable to put up
+// a lot of dialogs asking for credentials.
+//
+// The callback will be fired when the operation has resolved (either with
+// success or failure), and a Result instance will be passed to the callback.
+// That callback should then call g_volume_mount_finish() with the #GVolume
+// instance and the Result data to see if the operation was completed
+// successfully. If an error is present when g_volume_mount_finish() is called,
+// then it will be filled with any error information.
+//
+//
+// Volume Identifiers
+//
+// It is sometimes necessary to directly access the underlying operating system
+// object behind a volume (e.g. for passing a volume to an application via the
+// commandline). For this purpose, GIO allows to obtain an 'identifier' for the
+// volume. There can be different kinds of identifiers, such as Hal UDIs,
+// filesystem labels, traditional Unix devices (e.g. /dev/sda2), UUIDs. GIO uses
+// predefined strings as names for the different kinds of identifiers:
+// VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
+// g_volume_get_identifier() to obtain an identifier for a volume.
+//
+//    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
+type Volume struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Volume)(nil)
+
+// Volumer describes Volume's abstract methods.
 type Volumer interface {
 	// CanEject checks if a volume can be ejected.
 	CanEject() bool
@@ -166,46 +204,7 @@ type Volumer interface {
 	ShouldAutomount() bool
 }
 
-// Volume interface represents user-visible objects that can be mounted. Note,
-// when porting from GnomeVFS, #GVolume is the moral equivalent of VFSDrive.
-//
-// Mounting a #GVolume instance is an asynchronous operation. For more
-// information about asynchronous operations, see Result and #GTask. To mount a
-// #GVolume, first call g_volume_mount() with (at least) the #GVolume instance,
-// optionally a Operation object and a ReadyCallback.
-//
-// Typically, one will only want to pass NULL for the Operation if automounting
-// all volumes when a desktop session starts since it's not desirable to put up
-// a lot of dialogs asking for credentials.
-//
-// The callback will be fired when the operation has resolved (either with
-// success or failure), and a Result instance will be passed to the callback.
-// That callback should then call g_volume_mount_finish() with the #GVolume
-// instance and the Result data to see if the operation was completed
-// successfully. If an error is present when g_volume_mount_finish() is called,
-// then it will be filled with any error information.
-//
-//
-// Volume Identifiers
-//
-// It is sometimes necessary to directly access the underlying operating system
-// object behind a volume (e.g. for passing a volume to an application via the
-// commandline). For this purpose, GIO allows to obtain an 'identifier' for the
-// volume. There can be different kinds of identifiers, such as Hal UDIs,
-// filesystem labels, traditional Unix devices (e.g. /dev/sda2), UUIDs. GIO uses
-// predefined strings as names for the different kinds of identifiers:
-// VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
-// g_volume_get_identifier() to obtain an identifier for a volume.
-//
-//    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
-type Volume struct {
-	*externglib.Object
-}
-
-var (
-	_ Volumer         = (*Volume)(nil)
-	_ gextras.Nativer = (*Volume)(nil)
-)
+var _ Volumer = (*Volume)(nil)
 
 func wrapVolume(obj *externglib.Object) *Volume {
 	return &Volume{

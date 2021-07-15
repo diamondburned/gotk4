@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtoner},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
 	})
 }
 
@@ -31,11 +31,6 @@ func init() {
 // yet, so the interface currently has no use.
 type CheckButtonOverrider interface {
 	DrawIndicator(cr *cairo.Context)
-}
-
-// CheckButtoner describes CheckButton's methods.
-type CheckButtoner interface {
-	privateCheckButton()
 }
 
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
@@ -58,10 +53,7 @@ type CheckButton struct {
 	ToggleButton
 }
 
-var (
-	_ CheckButtoner   = (*CheckButton)(nil)
-	_ gextras.Nativer = (*CheckButton)(nil)
-)
+var _ gextras.Nativer = (*CheckButton)(nil)
 
 func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	return &CheckButton{
@@ -103,7 +95,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	}
 }
 
-func marshalCheckButtoner(p uintptr) (interface{}, error) {
+func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckButton(obj), nil

@@ -24,27 +24,6 @@ func init() {
 	})
 }
 
-// Framer describes Frame's methods.
-type Framer interface {
-	// Label: if the frame’s label widget is a Label, returns the text in the
-	// label widget.
-	Label() string
-	// LabelAlign retrieves the X and Y alignment of the frame’s label.
-	LabelAlign() (xalign float32, yalign float32)
-	// LabelWidget retrieves the label widget for the frame.
-	LabelWidget() *Widget
-	// ShadowType retrieves the shadow type of the frame.
-	ShadowType() ShadowType
-	// SetLabel removes the current Frame:label-widget.
-	SetLabel(label string)
-	// SetLabelAlign sets the alignment of the frame widget’s label.
-	SetLabelAlign(xalign float32, yalign float32)
-	// SetLabelWidget sets the Frame:label-widget for the frame.
-	SetLabelWidget(labelWidget Widgeter)
-	// SetShadowType sets the Frame:shadow-type for frame, i.e.
-	SetShadowType(typ ShadowType)
-}
-
 // Frame: frame widget is a bin that surrounds its child with a decorative frame
 // and an optional label. If present, the label is drawn in a gap in the top
 // side of the frame. The position of the label can be controlled with
@@ -88,10 +67,7 @@ type Frame struct {
 	Bin
 }
 
-var (
-	_ Framer          = (*Frame)(nil)
-	_ gextras.Nativer = (*Frame)(nil)
-)
+var _ gextras.Nativer = (*Frame)(nil)
 
 func wrapFrame(obj *externglib.Object) *Frame {
 	return &Frame{
@@ -236,7 +212,7 @@ func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
 // that will appear embedded in the top edge of the frame as a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

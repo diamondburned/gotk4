@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketer},
+		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketter},
 	})
 }
 
@@ -35,14 +35,6 @@ type SocketOverrider interface {
 	// It is the responsibility of the application to pass the plug id on to the
 	// process implementing the Socket as needed.
 	Embed(plugId string)
-}
-
-// Socketer describes Socket's methods.
-type Socketer interface {
-	// Embed embeds the children of an Plug as the children of the Socket.
-	Embed(plugId string)
-	// IsOccupied determines whether or not the socket has an embedded plug.
-	IsOccupied() bool
 }
 
 // Socket: together with Plug, Socket provides the ability to embed accessibles
@@ -71,10 +63,7 @@ type Socket struct {
 	Component
 }
 
-var (
-	_ Socketer        = (*Socket)(nil)
-	_ gextras.Nativer = (*Socket)(nil)
-)
+var _ gextras.Nativer = (*Socket)(nil)
 
 func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{
@@ -87,7 +76,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketer(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil

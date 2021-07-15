@@ -42,7 +42,13 @@ type CellAccessibleParentOverrider interface {
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
 }
 
-// CellAccessibleParenter describes CellAccessibleParent's methods.
+type CellAccessibleParent struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*CellAccessibleParent)(nil)
+
+// CellAccessibleParenter describes CellAccessibleParent's abstract methods.
 type CellAccessibleParenter interface {
 	Activate(cell *CellAccessible)
 	Edit(cell *CellAccessible)
@@ -56,14 +62,7 @@ type CellAccessibleParenter interface {
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
 }
 
-type CellAccessibleParent struct {
-	*externglib.Object
-}
-
-var (
-	_ CellAccessibleParenter = (*CellAccessibleParent)(nil)
-	_ gextras.Nativer        = (*CellAccessibleParent)(nil)
-)
+var _ CellAccessibleParenter = (*CellAccessibleParent)(nil)
 
 func wrapCellAccessibleParent(obj *externglib.Object) *CellAccessibleParent {
 	return &CellAccessibleParent{

@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// ListBaser describes ListBase's methods.
-type ListBaser interface {
-	privateListBase()
-}
-
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	Widget
@@ -34,10 +29,14 @@ type ListBase struct {
 	Scrollable
 }
 
-var (
-	_ ListBaser       = (*ListBase)(nil)
-	_ gextras.Nativer = (*ListBase)(nil)
-)
+var _ gextras.Nativer = (*ListBase)(nil)
+
+// ListBaser describes ListBase's abstract methods.
+type ListBaser interface {
+	privateListBase()
+}
+
+var _ ListBaser = (*ListBase)(nil)
 
 func wrapListBase(obj *externglib.Object) *ListBase {
 	return &ListBase{

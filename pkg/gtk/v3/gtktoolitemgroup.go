@@ -25,44 +25,6 @@ func init() {
 	})
 }
 
-// ToolItemGrouper describes ToolItemGroup's methods.
-type ToolItemGrouper interface {
-	// Collapsed gets whether group is collapsed or expanded.
-	Collapsed() bool
-	// DropItem gets the tool item at position (x, y).
-	DropItem(x int, y int) *ToolItem
-	// Ellipsize gets the ellipsization mode of group.
-	Ellipsize() pango.EllipsizeMode
-	// HeaderRelief gets the relief mode of the header button of group.
-	HeaderRelief() ReliefStyle
-	// ItemPosition gets the position of item in group as index.
-	ItemPosition(item *ToolItem) int
-	// Label gets the label of group.
-	Label() string
-	// LabelWidget gets the label widget of group.
-	LabelWidget() *Widget
-	// NItems gets the number of tool items in group.
-	NItems() uint
-	// NthItem gets the tool item at index in group.
-	NthItem(index uint) *ToolItem
-	// Insert inserts item at position in the list of children of group.
-	Insert(item *ToolItem, position int)
-	// SetCollapsed sets whether the group should be collapsed or expanded.
-	SetCollapsed(collapsed bool)
-	// SetEllipsize sets the ellipsization mode which should be used by labels
-	// in group.
-	SetEllipsize(ellipsize pango.EllipsizeMode)
-	// SetHeaderRelief: set the button relief of the group header.
-	SetHeaderRelief(style ReliefStyle)
-	// SetItemPosition sets the position of item in the list of children of
-	// group.
-	SetItemPosition(item *ToolItem, position int)
-	// SetLabel sets the label of the tool item group.
-	SetLabel(label string)
-	// SetLabelWidget sets the label of the tool item group.
-	SetLabelWidget(labelWidget Widgeter)
-}
-
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
 // like container with different categories and drag and drop support.
 //
@@ -76,10 +38,7 @@ type ToolItemGroup struct {
 	ToolShell
 }
 
-var (
-	_ ToolItemGrouper = (*ToolItemGroup)(nil)
-	_ gextras.Nativer = (*ToolItemGroup)(nil)
-)
+var _ gextras.Nativer = (*ToolItemGroup)(nil)
 
 func wrapToolItemGroup(obj *externglib.Object) *ToolItemGroup {
 	return &ToolItemGroup{
@@ -372,7 +331,7 @@ func (group *ToolItemGroup) SetLabel(label string) {
 
 // SetLabelWidget sets the label of the tool item group. The label widget is
 // displayed in the header of the group, in place of the usual label.
-func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgeter) {
+func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkWidget        // out
 

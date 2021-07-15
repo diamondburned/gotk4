@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// WindowAccessibler describes WindowAccessible's methods.
-type WindowAccessibler interface {
-	privateWindowAccessible()
-}
-
 type WindowAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ WindowAccessibler = (*WindowAccessible)(nil)
-	_ gextras.Nativer   = (*WindowAccessible)(nil)
-)
+var _ gextras.Nativer = (*WindowAccessible)(nil)
 
 func wrapWindowAccessible(obj *externglib.Object) *WindowAccessible {
 	return &WindowAccessible{

@@ -19,7 +19,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
 		{T: externglib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
-		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindower},
+		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindowwer},
 	})
 }
 
@@ -67,92 +67,6 @@ const (
 
 func marshalPolicyType(p uintptr) (interface{}, error) {
 	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// ScrolledWindower describes ScrolledWindow's methods.
-type ScrolledWindower interface {
-	// Child gets the child widget of scrolled_window.
-	Child() *Widget
-	// HAdjustment returns the horizontal scrollbar’s adjustment.
-	HAdjustment() *Adjustment
-	// HasFrame gets whether the scrolled window draws a frame.
-	HasFrame() bool
-	// Hscrollbar returns the horizontal scrollbar of scrolled_window.
-	Hscrollbar() *Widget
-	// KineticScrolling returns the specified kinetic scrolling behavior.
-	KineticScrolling() bool
-	// MaxContentHeight returns the maximum content height set.
-	MaxContentHeight() int
-	// MaxContentWidth returns the maximum content width set.
-	MaxContentWidth() int
-	// MinContentHeight gets the minimal content height of scrolled_window.
-	MinContentHeight() int
-	// MinContentWidth gets the minimum content width of scrolled_window.
-	MinContentWidth() int
-	// OverlayScrolling returns whether overlay scrolling is enabled for this
-	// scrolled window.
-	OverlayScrolling() bool
-	// Placement gets the placement of the contents with respect to the
-	// scrollbars.
-	Placement() CornerType
-	// Policy retrieves the current policy values for the horizontal and
-	// vertical scrollbars.
-	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// PropagateNaturalHeight reports whether the natural height of the child
-	// will be calculated and propagated through the scrolled window’s requested
-	// natural height.
-	PropagateNaturalHeight() bool
-	// PropagateNaturalWidth reports whether the natural width of the child will
-	// be calculated and propagated through the scrolled window’s requested
-	// natural width.
-	PropagateNaturalWidth() bool
-	// VAdjustment returns the vertical scrollbar’s adjustment.
-	VAdjustment() *Adjustment
-	// Vscrollbar returns the vertical scrollbar of scrolled_window.
-	Vscrollbar() *Widget
-	// SetChild sets the child widget of scrolled_window.
-	SetChild(child Widgeter)
-	// SetHAdjustment sets the GtkAdjustment for the horizontal scrollbar.
-	SetHAdjustment(hadjustment *Adjustment)
-	// SetHasFrame changes the frame drawn around the contents of
-	// scrolled_window.
-	SetHasFrame(hasFrame bool)
-	// SetKineticScrolling turns kinetic scrolling on or off.
-	SetKineticScrolling(kineticScrolling bool)
-	// SetMaxContentHeight sets the maximum height that scrolled_window should
-	// keep visible.
-	SetMaxContentHeight(height int)
-	// SetMaxContentWidth sets the maximum width that scrolled_window should
-	// keep visible.
-	SetMaxContentWidth(width int)
-	// SetMinContentHeight sets the minimum height that scrolled_window should
-	// keep visible.
-	SetMinContentHeight(height int)
-	// SetMinContentWidth sets the minimum width that scrolled_window should
-	// keep visible.
-	SetMinContentWidth(width int)
-	// SetOverlayScrolling enables or disables overlay scrolling for this
-	// scrolled window.
-	SetOverlayScrolling(overlayScrolling bool)
-	// SetPlacement sets the placement of the contents with respect to the
-	// scrollbars for the scrolled window.
-	SetPlacement(windowPlacement CornerType)
-	// SetPolicy sets the scrollbar policy for the horizontal and vertical
-	// scrollbars.
-	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
-	// SetPropagateNaturalHeight sets whether the natural height of the child
-	// should be calculated and propagated through the scrolled window’s
-	// requested natural height.
-	SetPropagateNaturalHeight(propagate bool)
-	// SetPropagateNaturalWidth sets whether the natural width of the child
-	// should be calculated and propagated through the scrolled window’s
-	// requested natural width.
-	SetPropagateNaturalWidth(propagate bool)
-	// SetVAdjustment sets the GtkAdjustment for the vertical scrollbar.
-	SetVAdjustment(vadjustment *Adjustment)
-	// UnsetPlacement unsets the placement of the contents with respect to the
-	// scrollbars.
-	UnsetPlacement()
 }
 
 // ScrolledWindow: GtkScrolledWindow is a container that makes its child
@@ -243,10 +157,7 @@ type ScrolledWindow struct {
 	Widget
 }
 
-var (
-	_ ScrolledWindower = (*ScrolledWindow)(nil)
-	_ gextras.Nativer  = (*ScrolledWindow)(nil)
-)
+var _ gextras.Nativer = (*ScrolledWindow)(nil)
 
 func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	return &ScrolledWindow{
@@ -267,7 +178,7 @@ func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
 	}
 }
 
-func marshalScrolledWindower(p uintptr) (interface{}, error) {
+func marshalScrolledWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScrolledWindow(obj), nil
@@ -570,7 +481,7 @@ func (scrolledWindow *ScrolledWindow) Vscrollbar() *Widget {
 }
 
 // SetChild sets the child widget of scrolled_window.
-func (scrolledWindow *ScrolledWindow) SetChild(child Widgeter) {
+func (scrolledWindow *ScrolledWindow) SetChild(child Widgetter) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkWidget         // out
 

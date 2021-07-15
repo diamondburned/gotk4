@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// CustomLayouter describes CustomLayout's methods.
-type CustomLayouter interface {
-	privateCustomLayout()
-}
-
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.
 //
 // A GtkCustomLayout uses closures matching to the old GtkWidget virtual
@@ -35,10 +30,7 @@ type CustomLayout struct {
 	LayoutManager
 }
 
-var (
-	_ CustomLayouter  = (*CustomLayout)(nil)
-	_ gextras.Nativer = (*CustomLayout)(nil)
-)
+var _ gextras.Nativer = (*CustomLayout)(nil)
 
 func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
 	return &CustomLayout{

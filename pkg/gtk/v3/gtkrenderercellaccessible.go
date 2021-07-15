@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// RendererCellAccessibler describes RendererCellAccessible's methods.
-type RendererCellAccessibler interface {
-	privateRendererCellAccessible()
-}
-
 type RendererCellAccessible struct {
 	CellAccessible
 }
 
-var (
-	_ RendererCellAccessibler = (*RendererCellAccessible)(nil)
-	_ gextras.Nativer         = (*RendererCellAccessible)(nil)
-)
+var _ gextras.Nativer = (*RendererCellAccessible)(nil)
 
 func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{

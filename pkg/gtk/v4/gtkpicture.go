@@ -24,41 +24,6 @@ func init() {
 	})
 }
 
-// Picturer describes Picture's methods.
-type Picturer interface {
-	// AlternativeText gets the alternative textual description of the picture.
-	AlternativeText() string
-	// CanShrink returns whether the GtkPicture respects its contents size.
-	CanShrink() bool
-	// File gets the GFile currently displayed if self is displaying a file.
-	File() *gio.File
-	// KeepAspectRatio returns whether the GtkPicture preserves its contents
-	// aspect ratio.
-	KeepAspectRatio() bool
-	// Paintable gets the GdkPaintable being displayed by the GtkPicture.
-	Paintable() *gdk.Paintable
-	// SetAlternativeText sets an alternative textual description for the
-	// picture contents.
-	SetAlternativeText(alternativeText string)
-	// SetCanShrink: if set to TRUE, the self can be made smaller than its
-	// contents.
-	SetCanShrink(canShrink bool)
-	// SetFile makes self load and display file.
-	SetFile(file gio.Filer)
-	// SetFilename makes self load and display the given filename.
-	SetFilename(filename string)
-	// SetKeepAspectRatio: if set to TRUE, the self will render its contents
-	// according to their aspect ratio.
-	SetKeepAspectRatio(keepAspectRatio bool)
-	// SetPaintable makes self display the given paintable.
-	SetPaintable(paintable gdk.Paintabler)
-	// SetPixbuf sets a GtkPicture to show a GdkPixbuf.
-	SetPixbuf(pixbuf *gdkpixbuf.Pixbuf)
-	// SetResource makes self load and display the resource at the given
-	// resource_path.
-	SetResource(resourcePath string)
-}
-
 // Picture: GtkPicture widget displays a GdkPaintable.
 //
 // !An example GtkPicture (picture.png)
@@ -110,10 +75,7 @@ type Picture struct {
 	Widget
 }
 
-var (
-	_ Picturer        = (*Picture)(nil)
-	_ gextras.Nativer = (*Picture)(nil)
-)
+var _ gextras.Nativer = (*Picture)(nil)
 
 func wrapPicture(obj *externglib.Object) *Picture {
 	return &Picture{

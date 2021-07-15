@@ -17,33 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarer},
+		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarrer},
 	})
-}
-
-// HeaderBarer describes HeaderBar's methods.
-type HeaderBarer interface {
-	// DecorationLayout gets the decoration layout of the GtkHeaderBar.
-	DecorationLayout() string
-	// ShowTitleButtons returns whether this header bar shows the standard
-	// window title buttons.
-	ShowTitleButtons() bool
-	// TitleWidget retrieves the title widget of the header.
-	TitleWidget() *Widget
-	// PackEnd adds child to bar, packed with reference to the end of the bar.
-	PackEnd(child Widgeter)
-	// PackStart adds child to bar, packed with reference to the start of the
-	// bar.
-	PackStart(child Widgeter)
-	// Remove removes a child from the GtkHeaderBar.
-	Remove(child Widgeter)
-	// SetDecorationLayout sets the decoration layout for this header bar.
-	SetDecorationLayout(layout string)
-	// SetShowTitleButtons sets whether this header bar shows the standard
-	// window title buttons.
-	SetShowTitleButtons(setting bool)
-	// SetTitleWidget sets the title for the GtkHeaderBar.
-	SetTitleWidget(titleWidget Widgeter)
 }
 
 // HeaderBar: GtkHeaderBar is a widget for creating custom title bars for
@@ -120,10 +95,7 @@ type HeaderBar struct {
 	Widget
 }
 
-var (
-	_ HeaderBarer     = (*HeaderBar)(nil)
-	_ gextras.Nativer = (*HeaderBar)(nil)
-)
+var _ gextras.Nativer = (*HeaderBar)(nil)
 
 func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	return &HeaderBar{
@@ -144,7 +116,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	}
 }
 
-func marshalHeaderBarer(p uintptr) (interface{}, error) {
+func marshalHeaderBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHeaderBar(obj), nil
@@ -217,7 +189,7 @@ func (bar *HeaderBar) TitleWidget() *Widget {
 }
 
 // PackEnd adds child to bar, packed with reference to the end of the bar.
-func (bar *HeaderBar) PackEnd(child Widgeter) {
+func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -228,7 +200,7 @@ func (bar *HeaderBar) PackEnd(child Widgeter) {
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
-func (bar *HeaderBar) PackStart(child Widgeter) {
+func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -242,7 +214,7 @@ func (bar *HeaderBar) PackStart(child Widgeter) {
 //
 // The child must have been added with gtk.HeaderBar.PackStart(),
 // gtk.HeaderBar.PackEnd() or gtk.HeaderBar.SetTitleWidget().
-func (bar *HeaderBar) Remove(child Widgeter) {
+func (bar *HeaderBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -302,7 +274,7 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //
 // You should set the title widget to NULL, for the window title label to be
 // visible again.
-func (bar *HeaderBar) SetTitleWidget(titleWidget Widgeter) {
+func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 

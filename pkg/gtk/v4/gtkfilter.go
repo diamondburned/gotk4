@@ -85,17 +85,6 @@ type FilterOverrider interface {
 	Match(item *externglib.Object) bool
 }
 
-// Filterer describes Filter's methods.
-type Filterer interface {
-	// Changed emits the Filter::changed signal to notify all users of the
-	// filter that the filter changed.
-	Changed(change FilterChange)
-	// Strictness gets the known strictness of filters.
-	Strictness() FilterMatch
-	// Match checks if the given item is matched by the filter or not.
-	Match(item *externglib.Object) bool
-}
-
 // Filter: GtkFilter object describes the filtering to be performed by a
 // GtkFilterListModel.
 //
@@ -118,10 +107,7 @@ type Filter struct {
 	*externglib.Object
 }
 
-var (
-	_ Filterer        = (*Filter)(nil)
-	_ gextras.Nativer = (*Filter)(nil)
-)
+var _ gextras.Nativer = (*Filter)(nil)
 
 func wrapFilter(obj *externglib.Object) *Filter {
 	return &Filter{

@@ -31,24 +31,13 @@ func init() {
 	})
 }
 
-// TCPConnectioner describes TCPConnection's methods.
-type TCPConnectioner interface {
-	// GracefulDisconnect checks if graceful disconnects are used.
-	GracefulDisconnect() bool
-	// SetGracefulDisconnect: this enables graceful disconnects on close.
-	SetGracefulDisconnect(gracefulDisconnect bool)
-}
-
 // TCPConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
 type TCPConnection struct {
 	SocketConnection
 }
 
-var (
-	_ TCPConnectioner = (*TCPConnection)(nil)
-	_ gextras.Nativer = (*TCPConnection)(nil)
-)
+var _ gextras.Nativer = (*TCPConnection)(nil)
 
 func wrapTCPConnection(obj *externglib.Object) *TCPConnection {
 	return &TCPConnection{

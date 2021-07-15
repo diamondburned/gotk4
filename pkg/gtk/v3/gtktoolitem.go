@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemer},
+		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemmer},
 	})
 }
 
@@ -34,76 +34,6 @@ type ToolItemOverrider interface {
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// tool_item. Toolbar and other ToolShell implementations use this function
 	// to notify children, when some aspect of their configuration changes.
-	ToolbarReconfigured()
-}
-
-// ToolItemer describes ToolItem's methods.
-type ToolItemer interface {
-	// EllipsizeMode returns the ellipsize mode used for tool_item.
-	EllipsizeMode() pango.EllipsizeMode
-	// Expand returns whether tool_item is allocated extra space.
-	Expand() bool
-	// Homogeneous returns whether tool_item is the same size as other
-	// homogeneous items.
-	Homogeneous() bool
-	// IconSize returns the icon size used for tool_item.
-	IconSize() int
-	// IsImportant returns whether tool_item is considered important.
-	IsImportant() bool
-	// Orientation returns the orientation used for tool_item.
-	Orientation() Orientation
-	// ProxyMenuItem: if menu_item_id matches the string passed to
-	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
-	ProxyMenuItem(menuItemId string) *Widget
-	// ReliefStyle returns the relief style of tool_item.
-	ReliefStyle() ReliefStyle
-	// TextAlignment returns the text alignment used for tool_item.
-	TextAlignment() float32
-	// TextOrientation returns the text orientation used for tool_item.
-	TextOrientation() Orientation
-	// TextSizeGroup returns the size group used for labels in tool_item.
-	TextSizeGroup() *SizeGroup
-	// ToolbarStyle returns the toolbar style used for tool_item.
-	ToolbarStyle() ToolbarStyle
-	// UseDragWindow returns whether tool_item has a drag window.
-	UseDragWindow() bool
-	// VisibleHorizontal returns whether the tool_item is visible on toolbars
-	// that are docked horizontally.
-	VisibleHorizontal() bool
-	// VisibleVertical returns whether tool_item is visible when the toolbar is
-	// docked vertically.
-	VisibleVertical() bool
-	// RebuildMenu: calling this function signals to the toolbar that the
-	// overflow menu item for tool_item has changed.
-	RebuildMenu()
-	// RetrieveProxyMenuItem returns the MenuItem that was last set by
-	// gtk_tool_item_set_proxy_menu_item(), ie.
-	RetrieveProxyMenuItem() *Widget
-	// SetExpand sets whether tool_item is allocated extra space when there is
-	// more room on the toolbar then needed for the items.
-	SetExpand(expand bool)
-	// SetHomogeneous sets whether tool_item is to be allocated the same size as
-	// other homogeneous items.
-	SetHomogeneous(homogeneous bool)
-	// SetIsImportant sets whether tool_item should be considered important.
-	SetIsImportant(isImportant bool)
-	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu.
-	SetProxyMenuItem(menuItemId string, menuItem Widgeter)
-	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
-	// item.
-	SetTooltipMarkup(markup string)
-	// SetTooltipText sets the text to be displayed as tooltip on the item.
-	SetTooltipText(text string)
-	// SetUseDragWindow sets whether tool_item has a drag window.
-	SetUseDragWindow(useDragWindow bool)
-	// SetVisibleHorizontal sets whether tool_item is visible when the toolbar
-	// is docked horizontally.
-	SetVisibleHorizontal(visibleHorizontal bool)
-	// SetVisibleVertical sets whether tool_item is visible when the toolbar is
-	// docked vertically.
-	SetVisibleVertical(visibleVertical bool)
-	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
-	// tool_item.
 	ToolbarReconfigured()
 }
 
@@ -122,10 +52,7 @@ type ToolItem struct {
 	Activatable
 }
 
-var (
-	_ ToolItemer      = (*ToolItem)(nil)
-	_ gextras.Nativer = (*ToolItem)(nil)
-)
+var _ gextras.Nativer = (*ToolItem)(nil)
 
 func wrapToolItem(obj *externglib.Object) *ToolItem {
 	return &ToolItem{
@@ -150,7 +77,7 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 	}
 }
 
-func marshalToolItemer(p uintptr) (interface{}, error) {
+func marshalToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolItem(obj), nil
@@ -556,7 +483,7 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 // be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgeter) {
+func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out

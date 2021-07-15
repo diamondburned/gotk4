@@ -78,19 +78,6 @@ type FileIOStreamOverrider interface {
 	TruncateFn(size int64, cancellable *Cancellable) error
 }
 
-// FileIOStreamer describes FileIOStream's methods.
-type FileIOStreamer interface {
-	// Etag gets the entity tag for the file when it has been written.
-	Etag() string
-	// QueryInfo queries a file io stream for the given attributes.
-	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
-	// QueryInfoAsync: asynchronously queries the stream for a Info.
-	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-}
-
 // FileIOStream provides io streams that both read and write to the same file
 // handle.
 //
@@ -114,10 +101,7 @@ type FileIOStream struct {
 	Seekable
 }
 
-var (
-	_ FileIOStreamer  = (*FileIOStream)(nil)
-	_ gextras.Nativer = (*FileIOStream)(nil)
-)
+var _ gextras.Nativer = (*FileIOStream)(nil)
 
 func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 	return &FileIOStream{

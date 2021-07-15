@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// EmojiChooserer describes EmojiChooser's methods.
-type EmojiChooserer interface {
-	privateEmojiChooser()
-}
-
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or
 // GtkTextView to let users insert Emoji characters.
 //
@@ -55,10 +50,7 @@ type EmojiChooser struct {
 	Popover
 }
 
-var (
-	_ EmojiChooserer  = (*EmojiChooser)(nil)
-	_ gextras.Nativer = (*EmojiChooser)(nil)
-)
+var _ gextras.Nativer = (*EmojiChooser)(nil)
 
 func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
 	return &EmojiChooser{

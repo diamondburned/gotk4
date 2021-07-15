@@ -103,29 +103,6 @@ type CellLayoutOverrider interface {
 	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
 
-// CellLayouter describes CellLayout's methods.
-type CellLayouter interface {
-	// AddAttribute adds an attribute mapping to the list in cell_layout.
-	AddAttribute(cell CellRendererer, attribute string, column int)
-	// Clear unsets all the mappings on all renderers on cell_layout and removes
-	// all renderers from cell_layout.
-	Clear()
-	// ClearAttributes clears all existing attributes previously set with
-	// gtk_cell_layout_set_attributes().
-	ClearAttributes(cell CellRendererer)
-	// Area returns the underlying CellArea which might be cell_layout if called
-	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
-	Area() *CellArea
-	// PackEnd adds the cell to the end of cell_layout.
-	PackEnd(cell CellRendererer, expand bool)
-	// PackStart packs the cell into the beginning of cell_layout.
-	PackStart(cell CellRendererer, expand bool)
-	// Reorder re-inserts cell at position.
-	Reorder(cell CellRendererer, position int)
-	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
-	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
-}
-
 // CellLayout is an interface to be implemented by all objects which want to
 // provide a TreeViewColumn like API for packing cells, setting attributes and
 // data funcs.
@@ -216,10 +193,32 @@ type CellLayout struct {
 	*externglib.Object
 }
 
-var (
-	_ CellLayouter    = (*CellLayout)(nil)
-	_ gextras.Nativer = (*CellLayout)(nil)
-)
+var _ gextras.Nativer = (*CellLayout)(nil)
+
+// CellLayouter describes CellLayout's abstract methods.
+type CellLayouter interface {
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
+	AddAttribute(cell CellRendererer, attribute string, column int)
+	// Clear unsets all the mappings on all renderers on cell_layout and removes
+	// all renderers from cell_layout.
+	Clear()
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	ClearAttributes(cell CellRendererer)
+	// Area returns the underlying CellArea which might be cell_layout if called
+	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
+	Area() *CellArea
+	// PackEnd adds the cell to the end of cell_layout.
+	PackEnd(cell CellRendererer, expand bool)
+	// PackStart packs the cell into the beginning of cell_layout.
+	PackStart(cell CellRendererer, expand bool)
+	// Reorder re-inserts cell at position.
+	Reorder(cell CellRendererer, position int)
+	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
+}
+
+var _ CellLayouter = (*CellLayout)(nil)
 
 func wrapCellLayout(obj *externglib.Object) *CellLayout {
 	return &CellLayout{

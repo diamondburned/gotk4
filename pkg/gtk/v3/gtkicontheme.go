@@ -87,67 +87,12 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconInfor describes IconInfo's methods.
-type IconInfor interface {
-	// AttachPoints: this function is deprecated and always returns FALSE.
-	AttachPoints() ([]gdk.Point, bool)
-	// BaseScale gets the base scale for the icon.
-	BaseScale() int
-	// BaseSize gets the base size for the icon.
-	BaseSize() int
-	// BuiltinPixbuf gets the built-in image for this icon, if any.
-	BuiltinPixbuf() *gdkpixbuf.Pixbuf
-	// DisplayName: this function is deprecated and always returns NULL.
-	DisplayName() string
-	// EmbeddedRect: this function is deprecated and always returns FALSE.
-	EmbeddedRect() (gdk.Rectangle, bool)
-	// Filename gets the filename for the icon.
-	Filename() string
-	// IsSymbolic checks if the icon is symbolic or not.
-	IsSymbolic() bool
-	// LoadIcon renders an icon previously looked up in an icon theme using
-	// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-	// to gtk_icon_theme_lookup_icon().
-	LoadIcon() (*gdkpixbuf.Pixbuf, error)
-	// LoadIconFinish finishes an async icon load, see
-	// gtk_icon_info_load_icon_async().
-	LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixbuf, error)
-	// LoadSurface renders an icon previously looked up in an icon theme using
-	// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-	// to gtk_icon_theme_lookup_icon().
-	LoadSurface(forWindow gdk.Windower) (*cairo.Surface, error)
-	// LoadSymbolic loads an icon, modifying it to match the system colours for
-	// the foreground, success, warning and error colors provided.
-	LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA) (bool, *gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicFinish finishes an async icon load, see
-	// gtk_icon_info_load_symbolic_async().
-	LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicForContext loads an icon, modifying it to match the system
-	// colors for the foreground, success, warning and error colors provided.
-	LoadSymbolicForContext(context *StyleContext) (bool, *gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicForContextFinish finishes an async icon load, see
-	// gtk_icon_info_load_symbolic_for_context_async().
-	LoadSymbolicForContextFinish(res gio.AsyncResulter) (bool, *gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicForStyle loads an icon, modifying it to match the system
-	// colours for the foreground, success, warning and error colors provided.
-	LoadSymbolicForStyle(style *Style, state StateType) (bool, *gdkpixbuf.Pixbuf, error)
-	// SetRawCoordinates sets whether the coordinates returned by
-	// gtk_icon_info_get_embedded_rect() and gtk_icon_info_get_attach_points()
-	// should be returned in their original form as specified in the icon theme,
-	// instead of scaled appropriately for the pixbuf returned by
-	// gtk_icon_info_load_icon().
-	SetRawCoordinates(rawCoordinates bool)
-}
-
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	*externglib.Object
 }
 
-var (
-	_ IconInfor       = (*IconInfo)(nil)
-	_ gextras.Nativer = (*IconInfo)(nil)
-)
+var _ gextras.Nativer = (*IconInfo)(nil)
 
 func wrapIconInfo(obj *externglib.Object) *IconInfo {
 	return &IconInfo{
@@ -431,7 +376,7 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 // behaviour can be changed by passing the GTK_ICON_LOOKUP_FORCE_SIZE flag when
 // obtaining the IconInfo. If this flag has been specified, the pixbuf returned
 // by this function will be scaled to the exact size.
-func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, error) {
+func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windowwer) (*cairo.Surface, error) {
 	var _arg0 *C.GtkIconInfo     // out
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
@@ -706,71 +651,6 @@ type IconThemeOverrider interface {
 	Changed()
 }
 
-// IconThemer describes IconTheme's methods.
-type IconThemer interface {
-	// AddResourcePath adds a resource path that will be looked at when looking
-	// for icons, similar to search paths.
-	AddResourcePath(path string)
-	// AppendSearchPath appends a directory to the search path.
-	AppendSearchPath(path string)
-	// ChooseIcon looks up a named icon and returns a IconInfo containing
-	// information such as the filename of the icon.
-	ChooseIcon(iconNames []string, size int, flags IconLookupFlags) *IconInfo
-	// ChooseIconForScale looks up a named icon for a particular window scale
-	// and returns a IconInfo containing information such as the filename of the
-	// icon.
-	ChooseIconForScale(iconNames []string, size int, scale int, flags IconLookupFlags) *IconInfo
-	// ExampleIconName gets the name of an icon that is representative of the
-	// current theme (for instance, to use when presenting a list of themes to
-	// the user.)
-	ExampleIconName() string
-	// IconSizes returns an array of integers describing the sizes at which the
-	// icon is available without scaling.
-	IconSizes(iconName string) []int
-	// SearchPath gets the current search path.
-	SearchPath() []string
-	// HasIcon checks whether an icon theme includes an icon for a particular
-	// name.
-	HasIcon(iconName string) bool
-	// LoadIcon looks up an icon in an icon theme, scales it to the given size
-	// and renders it into a pixbuf.
-	LoadIcon(iconName string, size int, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error)
-	// LoadIconForScale looks up an icon in an icon theme for a particular
-	// window scale, scales it to the given size and renders it into a pixbuf.
-	LoadIconForScale(iconName string, size int, scale int, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error)
-	// LoadSurface looks up an icon in an icon theme for a particular window
-	// scale, scales it to the given size and renders it into a cairo surface.
-	LoadSurface(iconName string, size int, scale int, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error)
-	// LookupByGIcon looks up an icon and returns a IconInfo containing
-	// information such as the filename of the icon.
-	LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo
-	// LookupByGIconForScale looks up an icon and returns a IconInfo containing
-	// information such as the filename of the icon.
-	LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo
-	// LookupIcon looks up a named icon and returns a IconInfo containing
-	// information such as the filename of the icon.
-	LookupIcon(iconName string, size int, flags IconLookupFlags) *IconInfo
-	// LookupIconForScale looks up a named icon for a particular window scale
-	// and returns a IconInfo containing information such as the filename of the
-	// icon.
-	LookupIconForScale(iconName string, size int, scale int, flags IconLookupFlags) *IconInfo
-	// PrependSearchPath prepends a directory to the search path.
-	PrependSearchPath(path string)
-	// RescanIfNeeded checks to see if the icon theme has changed; if it has,
-	// any currently cached information is discarded and will be reloaded next
-	// time icon_theme is accessed.
-	RescanIfNeeded() bool
-	// SetCustomTheme sets the name of the icon theme that the IconTheme object
-	// uses overriding system configuration.
-	SetCustomTheme(themeName string)
-	// SetScreen sets the screen for an icon theme; the screen is used to track
-	// the user’s currently configured icon theme, which might be different for
-	// different screens.
-	SetScreen(screen *gdk.Screen)
-	// SetSearchPath sets the search path for the icon theme object.
-	SetSearchPath(path []string)
-}
-
 // IconTheme provides a facility for looking up icons by name and size. The main
 // reason for using a name rather than simply providing a filename is to allow
 // different icons to be used depending on what “icon theme” is selected by the
@@ -835,10 +715,7 @@ type IconTheme struct {
 	*externglib.Object
 }
 
-var (
-	_ IconThemer      = (*IconTheme)(nil)
-	_ gextras.Nativer = (*IconTheme)(nil)
-)
+var _ gextras.Nativer = (*IconTheme)(nil)
 
 func wrapIconTheme(obj *externglib.Object) *IconTheme {
 	return &IconTheme{
@@ -1171,7 +1048,7 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 //
 // Note that you probably want to listen for icon theme changes and update the
 // icon. This is usually done by connecting to the GtkWidget::style-set signal.
-func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error) {
+func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, forWindow gdk.Windowwer, flags IconLookupFlags) (*cairo.Surface, error) {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -1212,7 +1089,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 // gdk_window_get_scale_factor(). Instead, you should use
 // gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a given
 // scaling factor may be different.
-func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1236,7 +1113,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconL
 // LookupByGIconForScale looks up an icon and returns a IconInfo containing
 // information such as the filename of the icon. The icon can then be rendered
 // into a pixbuf using gtk_icon_info_load_icon().
-func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out

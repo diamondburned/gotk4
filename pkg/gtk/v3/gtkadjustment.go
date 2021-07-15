@@ -44,46 +44,6 @@ type AdjustmentOverrider interface {
 	ValueChanged()
 }
 
-// Adjustmenter describes Adjustment's methods.
-type Adjustmenter interface {
-	// Changed emits a Adjustment::changed signal from the Adjustment.
-	Changed()
-	// ClampPage updates the Adjustment:value property to ensure that the range
-	// between lower and upper is in the current page (i.e.
-	ClampPage(lower float64, upper float64)
-	// Configure sets all properties of the adjustment at once.
-	Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
-	// Lower retrieves the minimum value of the adjustment.
-	Lower() float64
-	// MinimumIncrement gets the smaller of step increment and page increment.
-	MinimumIncrement() float64
-	// PageIncrement retrieves the page increment of the adjustment.
-	PageIncrement() float64
-	// PageSize retrieves the page size of the adjustment.
-	PageSize() float64
-	// StepIncrement retrieves the step increment of the adjustment.
-	StepIncrement() float64
-	// Upper retrieves the maximum value of the adjustment.
-	Upper() float64
-	// Value gets the current value of the adjustment.
-	Value() float64
-	// SetLower sets the minimum value of the adjustment.
-	SetLower(lower float64)
-	// SetPageIncrement sets the page increment of the adjustment.
-	SetPageIncrement(pageIncrement float64)
-	// SetPageSize sets the page size of the adjustment.
-	SetPageSize(pageSize float64)
-	// SetStepIncrement sets the step increment of the adjustment.
-	SetStepIncrement(stepIncrement float64)
-	// SetUpper sets the maximum value of the adjustment.
-	SetUpper(upper float64)
-	// SetValue sets the Adjustment value.
-	SetValue(value float64)
-	// ValueChanged emits a Adjustment::value-changed signal from the
-	// Adjustment.
-	ValueChanged()
-}
-
 // Adjustment object represents a value which has an associated lower and upper
 // bound, together with step and page increments, and a page size. It is used
 // within several GTK+ widgets, including SpinButton, Viewport, and Range (which
@@ -95,10 +55,7 @@ type Adjustment struct {
 	externglib.InitiallyUnowned
 }
 
-var (
-	_ Adjustmenter    = (*Adjustment)(nil)
-	_ gextras.Nativer = (*Adjustment)(nil)
-)
+var _ gextras.Nativer = (*Adjustment)(nil)
 
 func wrapAdjustment(obj *externglib.Object) *Adjustment {
 	return &Adjustment{

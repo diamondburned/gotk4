@@ -22,17 +22,6 @@ func init() {
 	})
 }
 
-// Rooter describes Root's methods.
-type Rooter interface {
-	// Display returns the display that this GtkRoot is on.
-	Display() *gdk.Display
-	// Focus retrieves the current focused widget within the root.
-	Focus() *Widget
-	// SetFocus: if focus is not the current focus widget, and is focusable,
-	// sets it as the focus widget for the root.
-	SetFocus(focus Widgeter)
-}
-
 // Root: GtkRoot is the interface implemented by all widgets that can act as a
 // toplevel widget.
 //
@@ -50,10 +39,20 @@ type Root struct {
 	NativeSurface
 }
 
-var (
-	_ Rooter          = (*Root)(nil)
-	_ gextras.Nativer = (*Root)(nil)
-)
+var _ gextras.Nativer = (*Root)(nil)
+
+// Rooter describes Root's abstract methods.
+type Rooter interface {
+	// Display returns the display that this GtkRoot is on.
+	Display() *gdk.Display
+	// Focus retrieves the current focused widget within the root.
+	Focus() *Widget
+	// SetFocus: if focus is not the current focus widget, and is focusable,
+	// sets it as the focus widget for the root.
+	SetFocus(focus Widgetter)
+}
+
+var _ Rooter = (*Root)(nil)
 
 func wrapRoot(obj *externglib.Object) *Root {
 	return &Root{
@@ -130,7 +129,7 @@ func (self *Root) Focus() *Widget {
 //
 // To set the focus to a particular widget in the root, it is usually more
 // convenient to use gtk.Widget.GrabFocus() instead of this function.
-func (self *Root) SetFocus(focus Widgeter) {
+func (self *Root) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkRoot   // out
 	var _arg1 *C.GtkWidget // out
 

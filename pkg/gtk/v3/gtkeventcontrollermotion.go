@@ -23,11 +23,6 @@ func init() {
 	})
 }
 
-// EventControllerMotioner describes EventControllerMotion's methods.
-type EventControllerMotioner interface {
-	privateEventControllerMotion()
-}
-
 // EventControllerMotion is an event controller meant for situations where you
 // need to track the position of the pointer.
 //
@@ -36,10 +31,7 @@ type EventControllerMotion struct {
 	EventController
 }
 
-var (
-	_ EventControllerMotioner = (*EventControllerMotion)(nil)
-	_ gextras.Nativer         = (*EventControllerMotion)(nil)
-)
+var _ gextras.Nativer = (*EventControllerMotion)(nil)
 
 func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
@@ -57,7 +49,7 @@ func marshalEventControllerMotioner(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion creates a new event controller that will handle
 // motion events for the given widget.
-func NewEventControllerMotion(widget Widgeter) *EventControllerMotion {
+func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out
 	var _cret *C.GtkEventController // in
 

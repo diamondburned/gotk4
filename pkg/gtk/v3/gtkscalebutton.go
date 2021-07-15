@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtoner},
+		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtonner},
 	})
 }
 
@@ -30,28 +30,6 @@ func init() {
 // yet, so the interface currently has no use.
 type ScaleButtonOverrider interface {
 	ValueChanged(value float64)
-}
-
-// ScaleButtoner describes ScaleButton's methods.
-type ScaleButtoner interface {
-	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-	Adjustment() *Adjustment
-	// MinusButton retrieves the minus button of the ScaleButton.
-	MinusButton() *Button
-	// PlusButton retrieves the plus button of the ScaleButton.
-	PlusButton() *Button
-	// Popup retrieves the popup of the ScaleButton.
-	Popup() *Widget
-	// Value gets the current value of the scale button.
-	Value() float64
-	// SetAdjustment sets the Adjustment to be used as a model for the
-	// ScaleButton’s scale.
-	SetAdjustment(adjustment *Adjustment)
-	// SetIcons sets the icons to be used by the scale button.
-	SetIcons(icons []string)
-	// SetValue sets the current value of the scale; if the value is outside the
-	// minimum or maximum range values, it will be clamped to fit inside them.
-	SetValue(value float64)
 }
 
 // ScaleButton provides a button which pops up a scale widget. This kind of
@@ -71,10 +49,7 @@ type ScaleButton struct {
 	Orientable
 }
 
-var (
-	_ ScaleButtoner   = (*ScaleButton)(nil)
-	_ gextras.Nativer = (*ScaleButton)(nil)
-)
+var _ gextras.Nativer = (*ScaleButton)(nil)
 
 func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	return &ScaleButton{
@@ -117,7 +92,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	}
 }
 
-func marshalScaleButtoner(p uintptr) (interface{}, error) {
+func marshalScaleButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScaleButton(obj), nil

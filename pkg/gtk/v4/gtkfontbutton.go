@@ -17,30 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtoner},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
 	})
-}
-
-// FontButtoner describes FontButton's methods.
-type FontButtoner interface {
-	// Modal gets whether the dialog is modal.
-	Modal() bool
-	// Title retrieves the title of the font chooser dialog.
-	Title() string
-	// UseFont returns whether the selected font is used in the label.
-	UseFont() bool
-	// UseSize returns whether the selected size is used in the label.
-	UseSize() bool
-	// SetModal sets whether the dialog should be modal.
-	SetModal(modal bool)
-	// SetTitle sets the title for the font chooser dialog.
-	SetTitle(title string)
-	// SetUseFont: if use_font is TRUE, the font name will be written using the
-	// selected font.
-	SetUseFont(useFont bool)
-	// SetUseSize: if use_size is TRUE, the font name will be written using the
-	// selected size.
-	SetUseSize(useSize bool)
 }
 
 // FontButton: GtkFontButton allows to open a font chooser dialog to change the
@@ -65,10 +43,7 @@ type FontButton struct {
 	FontChooser
 }
 
-var (
-	_ FontButtoner    = (*FontButton)(nil)
-	_ gextras.Nativer = (*FontButton)(nil)
-)
+var _ gextras.Nativer = (*FontButton)(nil)
 
 func wrapFontButton(obj *externglib.Object) *FontButton {
 	return &FontButton{
@@ -92,7 +67,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 	}
 }
 
-func marshalFontButtoner(p uintptr) (interface{}, error) {
+func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontButton(obj), nil

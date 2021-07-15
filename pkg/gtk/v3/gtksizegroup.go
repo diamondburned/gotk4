@@ -23,24 +23,6 @@ func init() {
 	})
 }
 
-// SizeGrouper describes SizeGroup's methods.
-type SizeGrouper interface {
-	// AddWidget adds a widget to a SizeGroup.
-	AddWidget(widget Widgeter)
-	// IgnoreHidden returns if invisible widgets are ignored when calculating
-	// the size.
-	IgnoreHidden() bool
-	// Mode gets the current mode of the size group.
-	Mode() SizeGroupMode
-	// RemoveWidget removes a widget from a SizeGroup.
-	RemoveWidget(widget Widgeter)
-	// SetIgnoreHidden sets whether unmapped widgets should be ignored when
-	// calculating the size.
-	SetIgnoreHidden(ignoreHidden bool)
-	// SetMode sets the SizeGroupMode of the size group.
-	SetMode(mode SizeGroupMode)
-}
-
 // SizeGroup provides a mechanism for grouping a number of widgets together so
 // they all request the same amount of space. This is typically useful when you
 // want a column of widgets to have the same size, but you can’t use a Grid
@@ -110,10 +92,7 @@ type SizeGroup struct {
 	Buildable
 }
 
-var (
-	_ SizeGrouper     = (*SizeGroup)(nil)
-	_ gextras.Nativer = (*SizeGroup)(nil)
-)
+var _ gextras.Nativer = (*SizeGroup)(nil)
 
 func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
 	return &SizeGroup{
@@ -154,7 +133,7 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (sizeGroup *SizeGroup) AddWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -206,7 +185,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a SizeGroup.
-func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 

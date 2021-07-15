@@ -70,81 +70,10 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 // yet, so the interface currently has no use.
 type EntryCompletionOverrider interface {
 	ActionActivated(index_ int)
-	CursorOnMatch(model TreeModeler, iter *TreeIter) bool
+	CursorOnMatch(model TreeModeller, iter *TreeIter) bool
 	InsertPrefix(prefix string) bool
-	MatchSelected(model TreeModeler, iter *TreeIter) bool
+	MatchSelected(model TreeModeller, iter *TreeIter) bool
 	NoMatches()
-}
-
-// EntryCompletioner describes EntryCompletion's methods.
-type EntryCompletioner interface {
-	// Complete requests a completion operation, or in other words a refiltering
-	// of the current list with completions, using the current key.
-	Complete()
-	// ComputePrefix computes the common prefix that is shared by all rows in
-	// completion that start with key.
-	ComputePrefix(key string) string
-	// DeleteAction deletes the action at index_ from completion’s action list.
-	DeleteAction(index_ int)
-	// CompletionPrefix: get the original text entered by the user that
-	// triggered the completion or NULL if there’s no completion ongoing.
-	CompletionPrefix() string
-	// Entry gets the entry completion has been attached to.
-	Entry() *Widget
-	// InlineCompletion returns whether the common prefix of the possible
-	// completions should be automatically inserted in the entry.
-	InlineCompletion() bool
-	// InlineSelection returns TRUE if inline-selection mode is turned on.
-	InlineSelection() bool
-	// MinimumKeyLength returns the minimum key length as set for completion.
-	MinimumKeyLength() int
-	// Model returns the model the EntryCompletion is using as data source.
-	Model() *TreeModel
-	// PopupCompletion returns whether the completions should be presented in a
-	// popup window.
-	PopupCompletion() bool
-	// PopupSetWidth returns whether the completion popup window will be resized
-	// to the width of the entry.
-	PopupSetWidth() bool
-	// PopupSingleMatch returns whether the completion popup window will appear
-	// even if there is only a single match.
-	PopupSingleMatch() bool
-	// TextColumn returns the column in the model of completion to get strings
-	// from.
-	TextColumn() int
-	// InsertActionMarkup inserts an action in completion’s action item list at
-	// position index_ with markup markup.
-	InsertActionMarkup(index_ int, markup string)
-	// InsertActionText inserts an action in completion’s action item list at
-	// position index_ with text text.
-	InsertActionText(index_ int, text string)
-	// InsertPrefix requests a prefix insertion.
-	InsertPrefix()
-	// SetInlineCompletion sets whether the common prefix of the possible
-	// completions should be automatically inserted in the entry.
-	SetInlineCompletion(inlineCompletion bool)
-	// SetInlineSelection sets whether it is possible to cycle through the
-	// possible completions inside the entry.
-	SetInlineSelection(inlineSelection bool)
-	// SetMatchFunc sets the match function for completion to be func.
-	SetMatchFunc(fn EntryCompletionMatchFunc)
-	// SetMinimumKeyLength requires the length of the search key for completion
-	// to be at least length.
-	SetMinimumKeyLength(length int)
-	// SetModel sets the model for a EntryCompletion.
-	SetModel(model TreeModeler)
-	// SetPopupCompletion sets whether the completions should be presented in a
-	// popup window.
-	SetPopupCompletion(popupCompletion bool)
-	// SetPopupSetWidth sets whether the completion popup window will be resized
-	// to be the same width as the entry.
-	SetPopupSetWidth(popupSetWidth bool)
-	// SetPopupSingleMatch sets whether the completion popup window will appear
-	// even if there is only a single match.
-	SetPopupSingleMatch(popupSingleMatch bool)
-	// SetTextColumn: convenience function for setting up the most used case of
-	// this code: a completion list with just strings.
-	SetTextColumn(column int)
 }
 
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
@@ -192,10 +121,7 @@ type EntryCompletion struct {
 	CellLayout
 }
 
-var (
-	_ EntryCompletioner = (*EntryCompletion)(nil)
-	_ gextras.Nativer   = (*EntryCompletion)(nil)
-)
+var _ gextras.Nativer = (*EntryCompletion)(nil)
 
 func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
 	return &EntryCompletion{
@@ -572,7 +498,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 // SetModel sets the model for a EntryCompletion. If completion already has a
 // model set, it will remove it before setting the new model. If model is NULL,
 // then it will unset the model.
-func (completion *EntryCompletion) SetModel(model TreeModeler) {
+func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 

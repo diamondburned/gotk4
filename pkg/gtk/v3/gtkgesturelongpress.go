@@ -23,11 +23,6 @@ func init() {
 	})
 }
 
-// GestureLongPresser describes GestureLongPress's methods.
-type GestureLongPresser interface {
-	privateGestureLongPress()
-}
-
 // GestureLongPress is a Gesture implementation able to recognize long presses,
 // triggering the GestureLongPress::pressed after the timeout is exceeded.
 //
@@ -38,10 +33,7 @@ type GestureLongPress struct {
 	GestureSingle
 }
 
-var (
-	_ GestureLongPresser = (*GestureLongPress)(nil)
-	_ gextras.Nativer    = (*GestureLongPress)(nil)
-)
+var _ gextras.Nativer = (*GestureLongPress)(nil)
 
 func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
 	return &GestureLongPress{
@@ -63,7 +55,7 @@ func marshalGestureLongPresser(p uintptr) (interface{}, error) {
 
 // NewGestureLongPress returns a newly created Gesture that recognizes long
 // presses.
-func NewGestureLongPress(widget Widgeter) *GestureLongPress {
+func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

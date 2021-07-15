@@ -17,117 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
 	})
-}
-
-// Displayer describes Display's methods.
-type Displayer interface {
-	// Beep emits a short beep on display
-	Beep()
-	// Close closes the connection to the windowing system for the given
-	// display, and cleans up associated resources.
-	Close()
-	// DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
-	// display.
-	DeviceIsGrabbed(device Devicer) bool
-	// Flush flushes any requests queued for the windowing system; this happens
-	// automatically when the main loop blocks waiting for new events, but if
-	// your application is drawing without returning control to the main loop,
-	// you may need to call this function explicitly.
-	Flush()
-	// AppLaunchContext returns a AppLaunchContext suitable for launching
-	// applications on the given display.
-	AppLaunchContext() *AppLaunchContext
-	// DefaultCursorSize returns the default size to use for cursors on display.
-	DefaultCursorSize() uint
-	// DefaultGroup returns the default group leader window for all toplevel
-	// windows on display.
-	DefaultGroup() *Window
-	// DefaultScreen: get the default Screen for display.
-	DefaultScreen() *Screen
-	// DefaultSeat returns the default Seat for this display.
-	DefaultSeat() *Seat
-	// DeviceManager returns the DeviceManager associated to display.
-	DeviceManager() *DeviceManager
-	// MaximalCursorSize gets the maximal size to use for cursors on display.
-	MaximalCursorSize() (width uint, height uint)
-	// Monitor gets a monitor associated with this display.
-	Monitor(monitorNum int) *Monitor
-	// MonitorAtPoint gets the monitor in which the point (x, y) is located, or
-	// a nearby monitor if the point is not in any monitor.
-	MonitorAtPoint(x int, y int) *Monitor
-	// MonitorAtWindow gets the monitor in which the largest area of window
-	// resides, or a monitor close to window if it is outside of all monitors.
-	MonitorAtWindow(window Windower) *Monitor
-	// NMonitors gets the number of monitors that belong to display.
-	NMonitors() int
-	// NScreens gets the number of screen managed by the display.
-	NScreens() int
-	// Name gets the name of the display.
-	Name() string
-	// Pointer gets the current location of the pointer and the current modifier
-	// mask for a given display.
-	Pointer() (screen *Screen, x int, y int, mask ModifierType)
-	// PrimaryMonitor gets the primary monitor for the display.
-	PrimaryMonitor() *Monitor
-	// Screen returns a screen object for one of the screens of the display.
-	Screen(screenNum int) *Screen
-	// WindowAtPointer obtains the window underneath the mouse pointer,
-	// returning the location of the pointer in that window in win_x, win_y for
-	// screen.
-	WindowAtPointer() (winX int, winY int, window *Window)
-	// HasPending returns whether the display has events that are waiting to be
-	// processed.
-	HasPending() bool
-	// IsClosed finds out if the display has been closed.
-	IsClosed() bool
-	// KeyboardUngrab: release any keyboard grab Deprecated: Use
-	// gdk_device_ungrab(), together with gdk_device_grab() instead.
-	KeyboardUngrab(time_ uint32)
-	// NotifyStartupComplete indicates to the GUI environment that the
-	// application has finished loading, using a given identifier.
-	NotifyStartupComplete(startupId string)
-	// PointerIsGrabbed: test if the pointer is grabbed.
-	PointerIsGrabbed() bool
-	// PointerUngrab: release any pointer grab.
-	PointerUngrab(time_ uint32)
-	// SetDoubleClickDistance sets the double click distance (two clicks within
-	// this distance count as a double click and result in a K_2BUTTON_PRESS
-	// event).
-	SetDoubleClickDistance(distance uint)
-	// SetDoubleClickTime sets the double click time (two clicks within this
-	// time interval count as a double click and result in a K_2BUTTON_PRESS
-	// event).
-	SetDoubleClickTime(msec uint)
-	// SupportsClipboardPersistence returns whether the speicifed display
-	// supports clipboard persistance; i.e.
-	SupportsClipboardPersistence() bool
-	// SupportsComposite returns TRUE if gdk_window_set_composited() can be used
-	// to redirect drawing on the window using compositing.
-	SupportsComposite() bool
-	// SupportsCursorAlpha returns TRUE if cursors can use an 8bit alpha channel
-	// on display.
-	SupportsCursorAlpha() bool
-	// SupportsCursorColor returns TRUE if multicolored cursors are supported on
-	// display.
-	SupportsCursorColor() bool
-	// SupportsInputShapes returns TRUE if gdk_window_input_shape_combine_mask()
-	// can be used to modify the input shape of windows on display.
-	SupportsInputShapes() bool
-	// SupportsSelectionNotification returns whether EventOwnerChange events
-	// will be sent when the owner of a selection changes.
-	SupportsSelectionNotification() bool
-	// SupportsShapes returns TRUE if gdk_window_shape_combine_mask() can be
-	// used to create shaped windows on display.
-	SupportsShapes() bool
-	// Sync flushes any requests queued for the windowing system and waits until
-	// all requests have been handled.
-	Sync()
-	// WarpPointer warps the pointer of display to the point x,y on the screen
-	// screen, unless the pointer is confined to a window by a grab, in which
-	// case it will be moved as far as allowed by the grab.
-	WarpPointer(screen *Screen, x int, y int)
 }
 
 // Display objects purpose are two fold:
@@ -150,10 +41,7 @@ type Display struct {
 	*externglib.Object
 }
 
-var (
-	_ Displayer       = (*Display)(nil)
-	_ gextras.Nativer = (*Display)(nil)
-)
+var _ gextras.Nativer = (*Display)(nil)
 
 func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{
@@ -161,7 +49,7 @@ func wrapDisplay(obj *externglib.Object) *Display {
 	}
 }
 
-func marshalDisplayer(p uintptr) (interface{}, error) {
+func marshalDisplayyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDisplay(obj), nil
@@ -385,7 +273,7 @@ func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 
 // MonitorAtWindow gets the monitor in which the largest area of window resides,
 // or a monitor close to window if it is outside of all monitors.
-func (display *Display) MonitorAtWindow(window Windower) *Monitor {
+func (display *Display) MonitorAtWindow(window Windowwer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
 	var _cret *C.GdkMonitor // in

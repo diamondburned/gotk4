@@ -39,16 +39,6 @@ type SocketServiceOverrider interface {
 	Incoming(connection *SocketConnection, sourceObject *externglib.Object) bool
 }
 
-// SocketServicer describes SocketService's methods.
-type SocketServicer interface {
-	// IsActive: check whether the service is active or not.
-	IsActive() bool
-	// Start restarts the service, i.e.
-	Start()
-	// Stop stops the service, i.e.
-	Stop()
-}
-
 // SocketService is an object that represents a service that is provided to the
 // network or over local sockets. When a new connection is made to the service
 // the Service::incoming signal is emitted.
@@ -75,10 +65,7 @@ type SocketService struct {
 	SocketListener
 }
 
-var (
-	_ SocketServicer  = (*SocketService)(nil)
-	_ gextras.Nativer = (*SocketService)(nil)
-)
+var _ gextras.Nativer = (*SocketService)(nil)
 
 func wrapSocketService(obj *externglib.Object) *SocketService {
 	return &SocketService{

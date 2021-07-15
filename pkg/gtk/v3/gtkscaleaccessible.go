@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// ScaleAccessibler describes ScaleAccessible's methods.
-type ScaleAccessibler interface {
-	privateScaleAccessible()
-}
-
 type ScaleAccessible struct {
 	RangeAccessible
 }
 
-var (
-	_ ScaleAccessibler = (*ScaleAccessible)(nil)
-	_ gextras.Nativer  = (*ScaleAccessible)(nil)
-)
+var _ gextras.Nativer = (*ScaleAccessible)(nil)
 
 func wrapScaleAccessible(obj *externglib.Object) *ScaleAccessible {
 	return &ScaleAccessible{

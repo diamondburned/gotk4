@@ -41,7 +41,16 @@ type StyleProviderOverrider interface {
 	Style(path *WidgetPath) *StyleProperties
 }
 
-// StyleProviderer describes StyleProvider's methods.
+// StyleProvider is an interface used to provide style information to a
+// StyleContext. See gtk_style_context_add_provider() and
+// gtk_style_context_add_provider_for_screen().
+type StyleProvider struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*StyleProvider)(nil)
+
+// StyleProviderer describes StyleProvider's abstract methods.
 type StyleProviderer interface {
 	// IconFactory returns the IconFactory defined to be in use for path, or
 	// NULL if none is defined.
@@ -51,17 +60,7 @@ type StyleProviderer interface {
 	Style(path *WidgetPath) *StyleProperties
 }
 
-// StyleProvider is an interface used to provide style information to a
-// StyleContext. See gtk_style_context_add_provider() and
-// gtk_style_context_add_provider_for_screen().
-type StyleProvider struct {
-	*externglib.Object
-}
-
-var (
-	_ StyleProviderer = (*StyleProvider)(nil)
-	_ gextras.Nativer = (*StyleProvider)(nil)
-)
+var _ StyleProviderer = (*StyleProvider)(nil)
 
 func wrapStyleProvider(obj *externglib.Object) *StyleProvider {
 	return &StyleProvider{

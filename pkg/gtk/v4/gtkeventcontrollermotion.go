@@ -21,16 +21,6 @@ func init() {
 	})
 }
 
-// EventControllerMotioner describes EventControllerMotion's methods.
-type EventControllerMotioner interface {
-	// ContainsPointer returns if a pointer is within self or one of its
-	// children.
-	ContainsPointer() bool
-	// IsPointer returns if a pointer is within self, but not one of its
-	// children.
-	IsPointer() bool
-}
-
 // EventControllerMotion: GtkEventControllerMotion is an event controller
 // tracking the pointer position.
 //
@@ -43,10 +33,7 @@ type EventControllerMotion struct {
 	EventController
 }
 
-var (
-	_ EventControllerMotioner = (*EventControllerMotion)(nil)
-	_ gextras.Nativer         = (*EventControllerMotion)(nil)
-)
+var _ gextras.Nativer = (*EventControllerMotion)(nil)
 
 func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{

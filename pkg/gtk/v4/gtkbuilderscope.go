@@ -51,11 +51,6 @@ type BuilderScopeOverrider interface {
 	TypeFromName(builder *Builder, typeName string) externglib.Type
 }
 
-// BuilderScoper describes BuilderScope's methods.
-type BuilderScoper interface {
-	privateBuilderScope()
-}
-
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
 // support to GtkBuilder.
 //
@@ -74,10 +69,14 @@ type BuilderScope struct {
 	*externglib.Object
 }
 
-var (
-	_ BuilderScoper   = (*BuilderScope)(nil)
-	_ gextras.Nativer = (*BuilderScope)(nil)
-)
+var _ gextras.Nativer = (*BuilderScope)(nil)
+
+// BuilderScoper describes BuilderScope's abstract methods.
+type BuilderScoper interface {
+	privateBuilderScope()
+}
+
+var _ BuilderScoper = (*BuilderScope)(nil)
 
 func wrapBuilderScope(obj *externglib.Object) *BuilderScope {
 	return &BuilderScope{
@@ -92,11 +91,6 @@ func marshalBuilderScoper(p uintptr) (interface{}, error) {
 }
 
 func (*BuilderScope) privateBuilderScope() {}
-
-// BuilderCScoper describes BuilderCScope's methods.
-type BuilderCScoper interface {
-	privateBuilderCScope()
-}
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.
 //
@@ -118,10 +112,7 @@ type BuilderCScope struct {
 	BuilderScope
 }
 
-var (
-	_ BuilderCScoper  = (*BuilderCScope)(nil)
-	_ gextras.Nativer = (*BuilderCScope)(nil)
-)
+var _ gextras.Nativer = (*BuilderCScope)(nil)
 
 func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
 	return &BuilderCScope{

@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// IMMulticontexter describes IMMulticontext's methods.
-type IMMulticontexter interface {
-	// ContextID gets the id of the currently active delegate of the context.
-	ContextID() string
-	// SetContextID sets the context id for context.
-	SetContextID(contextId string)
-}
-
 // IMMulticontext: GtkIMMulticontext is input method supporting multiple,
 // switchable input methods.
 //
@@ -39,10 +31,7 @@ type IMMulticontext struct {
 	IMContext
 }
 
-var (
-	_ IMMulticontexter = (*IMMulticontext)(nil)
-	_ gextras.Nativer  = (*IMMulticontext)(nil)
-)
+var _ gextras.Nativer = (*IMMulticontext)(nil)
 
 func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
 	return &IMMulticontext{

@@ -21,7 +21,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_toolbar_space_style_get_type()), F: marshalToolbarSpaceStyle},
-		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbarer},
+		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbarrer},
 	})
 }
 
@@ -49,49 +49,6 @@ type ToolbarOverrider interface {
 	OrientationChanged(orientation Orientation)
 	PopupContextMenu(x int, y int, buttonNumber int) bool
 	StyleChanged(style ToolbarStyle)
-}
-
-// Toolbarer describes Toolbar's methods.
-type Toolbarer interface {
-	// DropIndex returns the position corresponding to the indicated point on
-	// toolbar.
-	DropIndex(x int, y int) int
-	// IconSize retrieves the icon size for the toolbar.
-	IconSize() IconSize
-	// ItemIndex returns the position of item on the toolbar, starting from 0.
-	ItemIndex(item *ToolItem) int
-	// NItems returns the number of items on the toolbar.
-	NItems() int
-	// NthItem returns the n'th item on toolbar, or NULL if the toolbar does not
-	// contain an n'th item.
-	NthItem(n int) *ToolItem
-	// ReliefStyle returns the relief style of buttons on toolbar.
-	ReliefStyle() ReliefStyle
-	// ShowArrow returns whether the toolbar has an overflow menu.
-	ShowArrow() bool
-	// Style retrieves whether the toolbar has text, icons, or both .
-	Style() ToolbarStyle
-	// Insert a ToolItem into the toolbar at position pos.
-	Insert(item *ToolItem, pos int)
-	// SetDropHighlightItem highlights toolbar to give an idea of what it would
-	// look like if item was added to toolbar at the position indicated by
-	// index_.
-	SetDropHighlightItem(toolItem *ToolItem, index_ int)
-	// SetIconSize: this function sets the size of stock icons in the toolbar.
-	SetIconSize(iconSize IconSize)
-	// SetShowArrow sets whether to show an overflow menu when toolbar isn’t
-	// allocated enough size to show all of its items.
-	SetShowArrow(showArrow bool)
-	// SetStyle alters the view of toolbar to display either icons only, text
-	// only, or both.
-	SetStyle(style ToolbarStyle)
-	// UnsetIconSize unsets toolbar icon size set with
-	// gtk_toolbar_set_icon_size(), so that user preferences will be used to
-	// determine the icon size.
-	UnsetIconSize()
-	// UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so
-	// that user preferences will be used to determine the toolbar style.
-	UnsetStyle()
 }
 
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().
@@ -125,10 +82,7 @@ type Toolbar struct {
 	ToolShell
 }
 
-var (
-	_ Toolbarer       = (*Toolbar)(nil)
-	_ gextras.Nativer = (*Toolbar)(nil)
-)
+var _ gextras.Nativer = (*Toolbar)(nil)
 
 func wrapToolbar(obj *externglib.Object) *Toolbar {
 	return &Toolbar{
@@ -164,7 +118,7 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 	}
 }
 
-func marshalToolbarer(p uintptr) (interface{}, error) {
+func marshalToolbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolbar(obj), nil

@@ -171,7 +171,7 @@ func DragDropSucceeded(context *DragContext) bool {
 //
 // This function is called by the drag source to obtain the dest_window and
 // protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot int, yRoot int) (*Window, DragProtocol) {
+func DragFindWindowForScreen(context *DragContext, dragWindow Windowwer, screen *Screen, xRoot int, yRoot int) (*Window, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 *C.GdkScreen      // out
@@ -204,7 +204,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 //
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
-func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool {
+func DragMotion(context *DragContext, destWindow Windowwer, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 C.GdkDragProtocol // out

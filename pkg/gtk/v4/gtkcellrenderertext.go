@@ -29,13 +29,6 @@ type CellRendererTextOverrider interface {
 	Edited(path string, newText string)
 }
 
-// CellRendererTexter describes CellRendererText's methods.
-type CellRendererTexter interface {
-	// SetFixedHeightFromFont sets the height of a renderer to explicitly be
-	// determined by the “font” and “y_pad” property set on it.
-	SetFixedHeightFromFont(numberOfRows int)
-}
-
 // CellRendererText renders text in a cell
 //
 // A CellRendererText renders a given text in its cell, using the font, color
@@ -48,10 +41,7 @@ type CellRendererText struct {
 	CellRenderer
 }
 
-var (
-	_ CellRendererTexter = (*CellRendererText)(nil)
-	_ gextras.Nativer    = (*CellRendererText)(nil)
-)
+var _ gextras.Nativer = (*CellRendererText)(nil)
 
 func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
 	return &CellRendererText{

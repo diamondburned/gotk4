@@ -23,7 +23,22 @@ func init() {
 	})
 }
 
-// DrawContexter describes DrawContext's methods.
+// DrawContext: base class for objects implementing different rendering methods.
+//
+// GdkDrawContext is the base object used by contexts implementing different
+// rendering methods, such as gdk.CairoContext or gdk.GLContext. It provides
+// shared functionality between those contexts.
+//
+// You will always interact with one of those subclasses.
+//
+// A GdkDrawContext is always associated with a single toplevel surface.
+type DrawContext struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*DrawContext)(nil)
+
+// DrawContexter describes DrawContext's abstract methods.
 type DrawContexter interface {
 	// BeginFrame indicates that you are beginning the process of redrawing
 	// region on the context's surface.
@@ -42,23 +57,7 @@ type DrawContexter interface {
 	IsInFrame() bool
 }
 
-// DrawContext: base class for objects implementing different rendering methods.
-//
-// GdkDrawContext is the base object used by contexts implementing different
-// rendering methods, such as gdk.CairoContext or gdk.GLContext. It provides
-// shared functionality between those contexts.
-//
-// You will always interact with one of those subclasses.
-//
-// A GdkDrawContext is always associated with a single toplevel surface.
-type DrawContext struct {
-	*externglib.Object
-}
-
-var (
-	_ DrawContexter   = (*DrawContext)(nil)
-	_ gextras.Nativer = (*DrawContext)(nil)
-)
+var _ DrawContexter = (*DrawContext)(nil)
 
 func wrapDrawContext(obj *externglib.Object) *DrawContext {
 	return &DrawContext{

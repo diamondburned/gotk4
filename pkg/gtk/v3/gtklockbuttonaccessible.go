@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// LockButtonAccessibler describes LockButtonAccessible's methods.
-type LockButtonAccessibler interface {
-	privateLockButtonAccessible()
-}
-
 type LockButtonAccessible struct {
 	ButtonAccessible
 }
 
-var (
-	_ LockButtonAccessibler = (*LockButtonAccessible)(nil)
-	_ gextras.Nativer       = (*LockButtonAccessible)(nil)
-)
+var _ gextras.Nativer = (*LockButtonAccessible)(nil)
 
 func wrapLockButtonAccessible(obj *externglib.Object) *LockButtonAccessible {
 	return &LockButtonAccessible{

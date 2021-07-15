@@ -18,7 +18,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePader},
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePadder},
 	})
 }
 
@@ -36,18 +36,6 @@ const (
 
 func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// DevicePader describes DevicePad's methods.
-type DevicePader interface {
-	// FeatureGroup returns the group the given feature and idx belong to.
-	FeatureGroup(feature DevicePadFeature, featureIdx int) int
-	// GroupNModes returns the number of modes that group may have.
-	GroupNModes(groupIdx int) int
-	// NFeatures returns the number of features a tablet pad has.
-	NFeatures(feature DevicePadFeature) int
-	// NGroups returns the number of groups this pad device has.
-	NGroups() int
 }
 
 // DevicePad: GdkDevicePad is an interface implemented by devices of type
@@ -71,10 +59,21 @@ type DevicePad struct {
 	Device
 }
 
-var (
-	_ DevicePader     = (*DevicePad)(nil)
-	_ gextras.Nativer = (*DevicePad)(nil)
-)
+var _ gextras.Nativer = (*DevicePad)(nil)
+
+// DevicePadder describes DevicePad's abstract methods.
+type DevicePadder interface {
+	// FeatureGroup returns the group the given feature and idx belong to.
+	FeatureGroup(feature DevicePadFeature, featureIdx int) int
+	// GroupNModes returns the number of modes that group may have.
+	GroupNModes(groupIdx int) int
+	// NFeatures returns the number of features a tablet pad has.
+	NFeatures(feature DevicePadFeature) int
+	// NGroups returns the number of groups this pad device has.
+	NGroups() int
+}
+
+var _ DevicePadder = (*DevicePad)(nil)
 
 func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	return &DevicePad{
@@ -84,7 +83,7 @@ func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	}
 }
 
-func marshalDevicePader(p uintptr) (interface{}, error) {
+func marshalDevicePadder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDevicePad(obj), nil

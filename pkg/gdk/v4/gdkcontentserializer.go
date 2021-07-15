@@ -40,32 +40,6 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	return _goerr
 }
 
-// ContentSerializerer describes ContentSerializer's methods.
-type ContentSerializerer interface {
-	// Cancellable gets the cancellable for the current operation.
-	Cancellable() *gio.Cancellable
-	// GType gets the GType to of the object to serialize.
-	GType() externglib.Type
-	// MIMEType gets the mime type to serialize to.
-	MIMEType() string
-	// OutputStream gets the output stream for the current operation.
-	OutputStream() *gio.OutputStream
-	// Priority gets the I/O priority for the current operation.
-	Priority() int
-	// TaskData gets the data that was associated with the current operation.
-	TaskData() cgo.Handle
-	// UserData gets the user data that was passed when the serializer was
-	// registered.
-	UserData() cgo.Handle
-	// Value gets the GValue to read the object to serialize from.
-	Value() *externglib.Value
-	// ReturnError: indicate that the serialization has ended with an error.
-	ReturnError(err error)
-	// ReturnSuccess: indicate that the serialization has been successfully
-	// completed.
-	ReturnSuccess()
-}
-
 // ContentSerializer: GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
 //
@@ -84,10 +58,7 @@ type ContentSerializer struct {
 	gio.AsyncResult
 }
 
-var (
-	_ ContentSerializerer = (*ContentSerializer)(nil)
-	_ gextras.Nativer     = (*ContentSerializer)(nil)
-)
+var _ gextras.Nativer = (*ContentSerializer)(nil)
 
 func wrapContentSerializer(obj *externglib.Object) *ContentSerializer {
 	return &ContentSerializer{

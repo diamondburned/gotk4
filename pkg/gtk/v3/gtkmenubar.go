@@ -21,22 +21,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarer},
+		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarrer},
 	})
-}
-
-// MenuBarer describes MenuBar's methods.
-type MenuBarer interface {
-	// ChildPackDirection retrieves the current child pack direction of the
-	// menubar.
-	ChildPackDirection() PackDirection
-	// PackDirection retrieves the current pack direction of the menubar.
-	PackDirection() PackDirection
-	// SetChildPackDirection sets how widgets should be packed inside the
-	// children of a menubar.
-	SetChildPackDirection(childPackDir PackDirection)
-	// SetPackDirection sets how items should be packed inside a menubar.
-	SetPackDirection(packDir PackDirection)
 }
 
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
@@ -50,10 +36,7 @@ type MenuBar struct {
 	MenuShell
 }
 
-var (
-	_ MenuBarer       = (*MenuBar)(nil)
-	_ gextras.Nativer = (*MenuBar)(nil)
-)
+var _ gextras.Nativer = (*MenuBar)(nil)
 
 func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	return &MenuBar{
@@ -75,7 +58,7 @@ func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	}
 }
 
-func marshalMenuBarer(p uintptr) (interface{}, error) {
+func marshalMenuBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuBar(obj), nil
@@ -100,7 +83,7 @@ func NewMenuBar() *MenuBar {
 // The created menu items are connected to actions found in the
 // ApplicationWindow to which the menu bar belongs - typically by means of being
 // contained within the ApplicationWindows widget hierarchy.
-func NewMenuBarFromModel(model gio.MenuModeler) *MenuBar {
+func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 

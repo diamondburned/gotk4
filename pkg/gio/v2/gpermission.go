@@ -97,7 +97,26 @@ type PermissionOverrider interface {
 	ReleaseFinish(result AsyncResulter) error
 }
 
-// Permissioner describes Permission's methods.
+// Permission represents the status of the caller's permission to perform a
+// certain action.
+//
+// You can query if the action is currently allowed and if it is possible to
+// acquire the permission so that the action will be allowed in the future.
+//
+// There is also an API to actually acquire the permission and one to release
+// it.
+//
+// As an example, a #GPermission might represent the ability for the user to
+// write to a #GSettings object. This #GPermission object could then be used to
+// decide if it is appropriate to show a "Click here to unlock" button in a
+// dialog and to provide the mechanism to invoke when that button is clicked.
+type Permission struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Permission)(nil)
+
+// Permissioner describes Permission's abstract methods.
 type Permissioner interface {
 	// Acquire attempts to acquire the permission represented by permission.
 	Acquire(cancellable *Cancellable) error
@@ -126,27 +145,7 @@ type Permissioner interface {
 	ReleaseFinish(result AsyncResulter) error
 }
 
-// Permission represents the status of the caller's permission to perform a
-// certain action.
-//
-// You can query if the action is currently allowed and if it is possible to
-// acquire the permission so that the action will be allowed in the future.
-//
-// There is also an API to actually acquire the permission and one to release
-// it.
-//
-// As an example, a #GPermission might represent the ability for the user to
-// write to a #GSettings object. This #GPermission object could then be used to
-// decide if it is appropriate to show a "Click here to unlock" button in a
-// dialog and to provide the mechanism to invoke when that button is clicked.
-type Permission struct {
-	*externglib.Object
-}
-
-var (
-	_ Permissioner    = (*Permission)(nil)
-	_ gextras.Nativer = (*Permission)(nil)
-)
+var _ Permissioner = (*Permission)(nil)
 
 func wrapPermission(obj *externglib.Object) *Permission {
 	return &Permission{

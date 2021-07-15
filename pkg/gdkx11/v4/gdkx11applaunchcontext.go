@@ -23,19 +23,11 @@ func init() {
 	})
 }
 
-// X11AppLaunchContexter describes X11AppLaunchContext's methods.
-type X11AppLaunchContexter interface {
-	privateX11AppLaunchContext()
-}
-
 type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
-var (
-	_ X11AppLaunchContexter = (*X11AppLaunchContext)(nil)
-	_ gextras.Nativer       = (*X11AppLaunchContext)(nil)
-)
+var _ gextras.Nativer = (*X11AppLaunchContext)(nil)
 
 func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 	return &X11AppLaunchContext{

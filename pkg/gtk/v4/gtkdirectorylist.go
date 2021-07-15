@@ -23,35 +23,6 @@ func init() {
 	})
 }
 
-// DirectoryLister describes DirectoryList's methods.
-type DirectoryLister interface {
-	// Attributes gets the attributes queried on the children.
-	Attributes() string
-	// Error gets the loading error, if any.
-	Error() error
-	// File gets the file whose children are currently enumerated.
-	File() *gio.File
-	// IOPriority gets the IO priority set via
-	// gtk_directory_list_set_io_priority().
-	IOPriority() int
-	// Monitored returns whether the directory list is monitoring the directory
-	// for changes.
-	Monitored() bool
-	// IsLoading returns TRUE if the children enumeration is currently in
-	// progress.
-	IsLoading() bool
-	// SetAttributes sets the attributes to be enumerated and starts the
-	// enumeration.
-	SetAttributes(attributes string)
-	// SetFile sets the file to be enumerated and starts the enumeration.
-	SetFile(file gio.Filer)
-	// SetIOPriority sets the IO priority to use while loading directories.
-	SetIOPriority(ioPriority int)
-	// SetMonitored sets whether the directory list will monitor the directory
-	// for changes.
-	SetMonitored(monitored bool)
-}
-
 // DirectoryList: GtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async().
 //
@@ -80,10 +51,7 @@ type DirectoryList struct {
 	gio.ListModel
 }
 
-var (
-	_ DirectoryLister = (*DirectoryList)(nil)
-	_ gextras.Nativer = (*DirectoryList)(nil)
-)
+var _ gextras.Nativer = (*DirectoryList)(nil)
 
 func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
 	return &DirectoryList{

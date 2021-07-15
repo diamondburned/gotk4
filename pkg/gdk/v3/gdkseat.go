@@ -69,7 +69,14 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 	fn(seat, window)
 }
 
-// Seater describes Seat's methods.
+// Seat object represents a collection of input devices that belong to a user.
+type Seat struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Seat)(nil)
+
+// Seater describes Seat's abstract methods.
 type Seater interface {
 	// Capabilities returns the capabilities this Seat currently has.
 	Capabilities() SeatCapabilities
@@ -83,15 +90,7 @@ type Seater interface {
 	Ungrab()
 }
 
-// Seat object represents a collection of input devices that belong to a user.
-type Seat struct {
-	*externglib.Object
-}
-
-var (
-	_ Seater          = (*Seat)(nil)
-	_ gextras.Nativer = (*Seat)(nil)
-)
+var _ Seater = (*Seat)(nil)
 
 func wrapSeat(obj *externglib.Object) *Seat {
 	return &Seat{

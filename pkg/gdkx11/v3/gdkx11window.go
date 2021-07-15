@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windower},
+		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windowwer},
 	})
 }
 
@@ -38,48 +38,11 @@ func X11GetServerTime(window *X11Window) uint32 {
 	return _guint32
 }
 
-// X11Windower describes X11Window's methods.
-type X11Windower interface {
-	// Desktop gets the number of the workspace window is on.
-	Desktop() uint32
-	// MoveToCurrentDesktop moves the window to the correct workspace when
-	// running under a window manager that supports multiple workspaces, as
-	// described in the Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	MoveToCurrentDesktop()
-	// MoveToDesktop moves the window to the given workspace when running unde a
-	// window manager that supports multiple workspaces, as described in the
-	// Extended Window Manager Hints
-	// (http://www.freedesktop.org/Standards/wm-spec) specification.
-	MoveToDesktop(desktop uint32)
-	// SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
-	// only works on GdkX11Window.
-	SetFrameExtents(left int, right int, top int, bottom int)
-	// SetFrameSyncEnabled: this function can be used to disable frame
-	// synchronization for a window.
-	SetFrameSyncEnabled(frameSyncEnabled bool)
-	// SetHideTitlebarWhenMaximized: set a hint for the window manager,
-	// requesting that the titlebar should be hidden when the window is
-	// maximized.
-	SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool)
-	// SetThemeVariant: GTK+ applications can request a dark theme variant.
-	SetThemeVariant(variant string)
-	// SetUserTime: application can use this call to update the
-	// _NET_WM_USER_TIME property on a toplevel window.
-	SetUserTime(timestamp uint32)
-	// SetUTF8Property: this function modifies or removes an arbitrary X11
-	// window property of type UTF8_STRING.
-	SetUTF8Property(name string, value string)
-}
-
 type X11Window struct {
 	gdk.Window
 }
 
-var (
-	_ X11Windower     = (*X11Window)(nil)
-	_ gextras.Nativer = (*X11Window)(nil)
-)
+var _ gextras.Nativer = (*X11Window)(nil)
 
 func wrapX11Window(obj *externglib.Object) *X11Window {
 	return &X11Window{
@@ -89,7 +52,7 @@ func wrapX11Window(obj *externglib.Object) *X11Window {
 	}
 }
 
-func marshalX11Windower(p uintptr) (interface{}, error) {
+func marshalX11Windowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Window(obj), nil

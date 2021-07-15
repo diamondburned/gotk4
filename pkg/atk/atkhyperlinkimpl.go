@@ -30,12 +30,6 @@ type HyperlinkImplOverrider interface {
 	Hyperlink() *Hyperlink
 }
 
-// HyperlinkImpler describes HyperlinkImpl's methods.
-type HyperlinkImpler interface {
-	// Hyperlink gets the hyperlink associated with this object.
-	Hyperlink() *Hyperlink
-}
-
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
 // instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
 // AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type. The
@@ -64,10 +58,15 @@ type HyperlinkImpl struct {
 	*externglib.Object
 }
 
-var (
-	_ HyperlinkImpler = (*HyperlinkImpl)(nil)
-	_ gextras.Nativer = (*HyperlinkImpl)(nil)
-)
+var _ gextras.Nativer = (*HyperlinkImpl)(nil)
+
+// HyperlinkImpler describes HyperlinkImpl's abstract methods.
+type HyperlinkImpler interface {
+	// Hyperlink gets the hyperlink associated with this object.
+	Hyperlink() *Hyperlink
+}
+
+var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
 
 func wrapHyperlinkImpl(obj *externglib.Object) *HyperlinkImpl {
 	return &HyperlinkImpl{

@@ -22,31 +22,6 @@ func init() {
 	})
 }
 
-// Videoer describes Video's methods.
-type Videoer interface {
-	// Autoplay returns TRUE if videos have been set to loop.
-	Autoplay() bool
-	// File gets the file played by self or NULL if not playing back a file.
-	File() *gio.File
-	// Loop returns TRUE if videos have been set to loop.
-	Loop() bool
-	// MediaStream gets the media stream managed by self or NULL if none.
-	MediaStream() *MediaStream
-	// SetAutoplay sets whether self automatically starts playback when it
-	// becomes visible or when a new file gets loaded.
-	SetAutoplay(autoplay bool)
-	// SetFile makes self play the given file.
-	SetFile(file gio.Filer)
-	// SetFilename makes self play the given filename.
-	SetFilename(filename string)
-	// SetLoop sets whether new files loaded by self should be set to loop.
-	SetLoop(loop bool)
-	// SetMediaStream sets the media stream to be played back.
-	SetMediaStream(stream MediaStreamer)
-	// SetResource makes self play the resource at the given resource_path.
-	SetResource(resourcePath string)
-}
-
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
 //
 // !An example GtkVideo (video.png)
@@ -64,10 +39,7 @@ type Video struct {
 	Widget
 }
 
-var (
-	_ Videoer         = (*Video)(nil)
-	_ gextras.Nativer = (*Video)(nil)
-)
+var _ gextras.Nativer = (*Video)(nil)
 
 func wrapVideo(obj *externglib.Object) *Video {
 	return &Video{

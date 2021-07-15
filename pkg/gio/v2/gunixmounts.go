@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorer},
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorrer},
 		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
 		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
 	})
@@ -455,21 +455,12 @@ func UnixMountsChangedSince(time uint64) bool {
 	return _ok
 }
 
-// UnixMountMonitorer describes UnixMountMonitor's methods.
-type UnixMountMonitorer interface {
-	// SetRateLimit: this function does nothing.
-	SetRateLimit(limitMsec int)
-}
-
 // UnixMountMonitor watches Mounts for changes.
 type UnixMountMonitor struct {
 	*externglib.Object
 }
 
-var (
-	_ UnixMountMonitorer = (*UnixMountMonitor)(nil)
-	_ gextras.Nativer    = (*UnixMountMonitor)(nil)
-)
+var _ gextras.Nativer = (*UnixMountMonitor)(nil)
 
 func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	return &UnixMountMonitor{
@@ -477,7 +468,7 @@ func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	}
 }
 
-func marshalUnixMountMonitorer(p uintptr) (interface{}, error) {
+func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUnixMountMonitor(obj), nil

@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// IconViewAccessibler describes IconViewAccessible's methods.
-type IconViewAccessibler interface {
-	privateIconViewAccessible()
-}
-
 type IconViewAccessible struct {
 	ContainerAccessible
 
 	atk.Selection
 }
 
-var (
-	_ IconViewAccessibler = (*IconViewAccessible)(nil)
-	_ gextras.Nativer     = (*IconViewAccessible)(nil)
-)
+var _ gextras.Nativer = (*IconViewAccessible)(nil)
 
 func wrapIconViewAccessible(obj *externglib.Object) *IconViewAccessible {
 	return &IconViewAccessible{

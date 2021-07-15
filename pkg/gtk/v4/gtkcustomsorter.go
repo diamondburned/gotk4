@@ -25,22 +25,13 @@ func init() {
 	})
 }
 
-// CustomSorterer describes CustomSorter's methods.
-type CustomSorterer interface {
-	// SetSortFunc sets (or unsets) the function used for sorting items.
-	SetSortFunc(sortFunc glib.CompareDataFunc)
-}
-
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
 // callback function.
 type CustomSorter struct {
 	Sorter
 }
 
-var (
-	_ CustomSorterer  = (*CustomSorter)(nil)
-	_ gextras.Nativer = (*CustomSorter)(nil)
-)
+var _ gextras.Nativer = (*CustomSorter)(nil)
 
 func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
 	return &CustomSorter{

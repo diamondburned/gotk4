@@ -17,35 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSeter},
+		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSetter},
 	})
-}
-
-// RelationSeter describes RelationSet's methods.
-type RelationSeter interface {
-	// Add a new relation to the current relation set if it is not already
-	// present.
-	Add(relation *Relation)
-	// AddRelationByType: add a new relation of the specified type with the
-	// specified target to the current relation set if the relation set does not
-	// contain a relation of that type.
-	AddRelationByType(relationship RelationType, target *ObjectClass)
-	// Contains determines whether the relation set contains a relation that
-	// matches the specified type.
-	Contains(relationship RelationType) bool
-	// ContainsTarget determines whether the relation set contains a relation
-	// that matches the specified pair formed by type relationship and object
-	// target.
-	ContainsTarget(relationship RelationType, target *ObjectClass) bool
-	// NRelations determines the number of relations in a relation set.
-	NRelations() int
-	// Relation determines the relation at the specified position in the
-	// relation set.
-	Relation(i int) *Relation
-	// RelationByType finds a relation that matches the specified type.
-	RelationByType(relationship RelationType) *Relation
-	// Remove removes a relation from the relation set.
-	Remove(relation *Relation)
 }
 
 // RelationSet held by an object establishes its relationships with objects
@@ -58,10 +31,7 @@ type RelationSet struct {
 	*externglib.Object
 }
 
-var (
-	_ RelationSeter   = (*RelationSet)(nil)
-	_ gextras.Nativer = (*RelationSet)(nil)
-)
+var _ gextras.Nativer = (*RelationSet)(nil)
 
 func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	return &RelationSet{
@@ -69,7 +39,7 @@ func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	}
 }
 
-func marshalRelationSeter(p uintptr) (interface{}, error) {
+func marshalRelationSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRelationSet(obj), nil

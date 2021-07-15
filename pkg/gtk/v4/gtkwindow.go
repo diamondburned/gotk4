@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindower},
+		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindowwer},
 	})
 }
 
@@ -33,131 +33,6 @@ type WindowOverrider interface {
 	CloseRequest() bool
 	EnableDebugging(toggle bool) bool
 	KeysChanged()
-}
-
-// Windower describes Window's methods.
-type Windower interface {
-	// Close requests that the window is closed.
-	Close()
-	// Destroy: drop the internal reference GTK holds on toplevel windows.
-	Destroy()
-	// Fullscreen asks to place window in the fullscreen state.
-	Fullscreen()
-	// FullscreenOnMonitor asks to place window in the fullscreen state on the
-	// given monitor.
-	FullscreenOnMonitor(monitor *gdk.Monitor)
-	// Application gets the GtkApplication associated with the window.
-	Application() *Application
-	// Child gets the child widget of window.
-	Child() *Widget
-	// Decorated returns whether the window has been set to have decorations.
-	Decorated() bool
-	// DefaultSize gets the default size of the window.
-	DefaultSize() (width int, height int)
-	// DefaultWidget returns the default widget for window.
-	DefaultWidget() *Widget
-	// Deletable returns whether the window has been set to have a close button.
-	Deletable() bool
-	// DestroyWithParent returns whether the window will be destroyed with its
-	// transient parent.
-	DestroyWithParent() bool
-	// Focus retrieves the current focused widget within the window.
-	Focus() *Widget
-	// FocusVisible gets whether “focus rectangles” are supposed to be visible.
-	FocusVisible() bool
-	// Group returns the group for window.
-	Group() *WindowGroup
-	// HandleMenubarAccel returns whether this window reacts to F10 key presses
-	// by activating a menubar it contains.
-	HandleMenubarAccel() bool
-	// HideOnClose returns whether the window will be hidden when the close
-	// button is clicked.
-	HideOnClose() bool
-	// IconName returns the name of the themed icon for the window.
-	IconName() string
-	// MnemonicsVisible gets whether mnemonics are supposed to be visible.
-	MnemonicsVisible() bool
-	// Modal returns whether the window is modal.
-	Modal() bool
-	// Resizable gets the value set by gtk_window_set_resizable().
-	Resizable() bool
-	// Title retrieves the title of the window.
-	Title() string
-	// Titlebar returns the custom titlebar that has been set with
-	// gtk_window_set_titlebar().
-	Titlebar() *Widget
-	// TransientFor fetches the transient parent for this window.
-	TransientFor() *Window
-	// HasGroup returns whether window has an explicit window group.
-	HasGroup() bool
-	// IsActive returns whether the window is part of the current active
-	// toplevel.
-	IsActive() bool
-	// IsFullscreen retrieves the current fullscreen state of window.
-	IsFullscreen() bool
-	// IsMaximized retrieves the current maximized state of window.
-	IsMaximized() bool
-	// Maximize asks to maximize window, so that it fills the screen.
-	Maximize()
-	// Minimize asks to minimize the specified window.
-	Minimize()
-	// Present presents a window to the user.
-	Present()
-	// PresentWithTime presents a window to the user.
-	PresentWithTime(timestamp uint32)
-	// SetApplication sets or unsets the GtkApplication associated with the
-	// window.
-	SetApplication(application *Application)
-	// SetChild sets the child widget of window.
-	SetChild(child Widgeter)
-	// SetDecorated sets whether the window should be decorated.
-	SetDecorated(setting bool)
-	// SetDefaultSize sets the default size of a window.
-	SetDefaultSize(width int, height int)
-	// SetDefaultWidget sets the default widget.
-	SetDefaultWidget(defaultWidget Widgeter)
-	// SetDeletable sets whether the window should be deletable.
-	SetDeletable(setting bool)
-	// SetDestroyWithParent: if setting is TRUE, then destroying the transient
-	// parent of window will also destroy window itself.
-	SetDestroyWithParent(setting bool)
-	// SetDisplay sets the GdkDisplay where the window is displayed.
-	SetDisplay(display *gdk.Display)
-	// SetFocus sets the focus widget.
-	SetFocus(focus Widgeter)
-	// SetFocusVisible sets whether “focus rectangles” are supposed to be
-	// visible.
-	SetFocusVisible(setting bool)
-	// SetHandleMenubarAccel sets whether this window should react to F10 key
-	// presses by activating a menubar it contains.
-	SetHandleMenubarAccel(handleMenubarAccel bool)
-	// SetHideOnClose: if setting is TRUE, then clicking the close button on the
-	// window will not destroy it, but only hide it.
-	SetHideOnClose(setting bool)
-	// SetIconName sets the icon for the window from a named themed icon.
-	SetIconName(name string)
-	// SetMnemonicsVisible sets whether mnemonics are supposed to be visible.
-	SetMnemonicsVisible(setting bool)
-	// SetModal sets a window modal or non-modal.
-	SetModal(modal bool)
-	// SetResizable sets whether the user can resize a window.
-	SetResizable(resizable bool)
-	// SetStartupID sets the startup notification ID.
-	SetStartupID(startupId string)
-	// SetTitle sets the title of the GtkWindow.
-	SetTitle(title string)
-	// SetTitlebar sets a custom titlebar for window.
-	SetTitlebar(titlebar Widgeter)
-	// SetTransientFor: dialog windows should be set transient for the main
-	// application window they were spawned from.
-	SetTransientFor(parent *Window)
-	// Unfullscreen asks to remove the fullscreen state for window, and return
-	// to its previous state.
-	Unfullscreen()
-	// Unmaximize asks to unmaximize window.
-	Unmaximize()
-	// Unminimize asks to unminimize the specified window.
-	Unminimize()
 }
 
 // Window: GtkWindow is a toplevel window which can contain other widgets.
@@ -215,10 +90,7 @@ type Window struct {
 	ShortcutManager
 }
 
-var (
-	_ Windower        = (*Window)(nil)
-	_ gextras.Nativer = (*Window)(nil)
-)
+var _ gextras.Nativer = (*Window)(nil)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -260,7 +132,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindower(p uintptr) (interface{}, error) {
+func marshalWindowwer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil
@@ -891,7 +763,7 @@ func (window *Window) SetApplication(application *Application) {
 }
 
 // SetChild sets the child widget of window.
-func (window *Window) SetChild(child Widgeter) {
+func (window *Window) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -964,7 +836,7 @@ func (window *Window) SetDefaultSize(width int, height int) {
 //
 // The default widget is the widget that is activated when the user presses
 // Enter in a dialog (for example).
-func (window *Window) SetDefaultWidget(defaultWidget Widgeter) {
+func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1035,7 +907,7 @@ func (window *Window) SetDisplay(display *gdk.Display) {
 // this window. To set the focus to a particular widget in the toplevel, it is
 // usually more convenient to use gtk.Widget.GrabFocus() instead of this
 // function.
-func (window *Window) SetFocus(focus Widgeter) {
+func (window *Window) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1200,7 +1072,7 @@ func (window *Window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the system,
 // this function may not work for a window that is already visible, so you set
 // the titlebar before calling gtk.Widget.Show().
-func (window *Window) SetTitlebar(titlebar Widgeter) {
+func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 

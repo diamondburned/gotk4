@@ -17,33 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemer},
+		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemmer},
 	})
-}
-
-// ListItemer describes ListItem's methods.
-type ListItemer interface {
-	// Activatable checks if a list item has been set to be activatable via
-	// gtk_list_item_set_activatable().
-	Activatable() bool
-	// Child gets the child previously set via gtk_list_item_set_child() or NULL
-	// if none was set.
-	Child() *Widget
-	// Item gets the model item that associated with self.
-	Item() *externglib.Object
-	// Position gets the position in the model that self currently displays.
-	Position() uint
-	// Selectable checks if a list item has been set to be selectable via
-	// gtk_list_item_set_selectable().
-	Selectable() bool
-	// Selected checks if the item is displayed as selected.
-	Selected() bool
-	// SetActivatable sets self to be activatable.
-	SetActivatable(activatable bool)
-	// SetChild sets the child to be used for this listitem.
-	SetChild(child Widgeter)
-	// SetSelectable sets self to be selectable.
-	SetSelectable(selectable bool)
 }
 
 // ListItem: GtkListItem is used by list widgets to represent items in a
@@ -64,10 +39,7 @@ type ListItem struct {
 	*externglib.Object
 }
 
-var (
-	_ ListItemer      = (*ListItem)(nil)
-	_ gextras.Nativer = (*ListItem)(nil)
-)
+var _ gextras.Nativer = (*ListItem)(nil)
 
 func wrapListItem(obj *externglib.Object) *ListItem {
 	return &ListItem{
@@ -75,7 +47,7 @@ func wrapListItem(obj *externglib.Object) *ListItem {
 	}
 }
 
-func marshalListItemer(p uintptr) (interface{}, error) {
+func marshalListItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListItem(obj), nil
@@ -219,7 +191,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // This function is typically called by applications when setting up a listitem
 // so that the widget can be reused when binding it multiple times.
-func (self *ListItem) SetChild(child Widgeter) {
+func (self *ListItem) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 

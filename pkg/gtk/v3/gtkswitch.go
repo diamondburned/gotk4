@@ -33,18 +33,6 @@ type SwitchOverrider interface {
 	StateSet(state bool) bool
 }
 
-// Switcher describes Switch's methods.
-type Switcher interface {
-	// Active gets whether the Switch is in its “on” or “off” state.
-	Active() bool
-	// State gets the underlying state of the Switch.
-	State() bool
-	// SetActive changes the state of sw to the desired one.
-	SetActive(isActive bool)
-	// SetState sets the underlying state of the Switch.
-	SetState(state bool)
-}
-
 // Switch is a widget that has two states: on or off. The user can control which
 // state should be active by clicking the empty area, or by dragging the handle.
 //
@@ -65,10 +53,7 @@ type Switch struct {
 	Activatable
 }
 
-var (
-	_ Switcher        = (*Switch)(nil)
-	_ gextras.Nativer = (*Switch)(nil)
-)
+var _ gextras.Nativer = (*Switch)(nil)
 
 func wrapSwitch(obj *externglib.Object) *Switch {
 	return &Switch{

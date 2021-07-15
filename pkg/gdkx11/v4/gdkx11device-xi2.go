@@ -30,19 +30,11 @@ const (
 	X11DeviceTypeFloating
 )
 
-// X11DeviceXI2er describes X11DeviceXI2's methods.
-type X11DeviceXI2er interface {
-	privateX11DeviceXI2()
-}
-
 type X11DeviceXI2 struct {
 	gdk.Device
 }
 
-var (
-	_ X11DeviceXI2er  = (*X11DeviceXI2)(nil)
-	_ gextras.Nativer = (*X11DeviceXI2)(nil)
-)
+var _ gextras.Nativer = (*X11DeviceXI2)(nil)
 
 func wrapX11DeviceXI2(obj *externglib.Object) *X11DeviceXI2 {
 	return &X11DeviceXI2{

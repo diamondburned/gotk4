@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPluger},
+		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlugger},
 	})
 }
 
@@ -31,14 +31,6 @@ func init() {
 // yet, so the interface currently has no use.
 type PlugOverrider interface {
 	Embedded()
-}
-
-// Pluger describes Plug's methods.
-type Pluger interface {
-	// Embedded determines whether the plug is embedded in a socket.
-	Embedded() bool
-	// SocketWindow retrieves the socket the plug is embedded in.
-	SocketWindow() *gdk.Window
 }
 
 // Plug: together with Socket, Plug provides the ability to embed widgets from
@@ -61,10 +53,7 @@ type Plug struct {
 	Window
 }
 
-var (
-	_ Pluger          = (*Plug)(nil)
-	_ gextras.Nativer = (*Plug)(nil)
-)
+var _ gextras.Nativer = (*Plug)(nil)
 
 func wrapPlug(obj *externglib.Object) *Plug {
 	return &Plug{
@@ -88,7 +77,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 	}
 }
 
-func marshalPluger(p uintptr) (interface{}, error) {
+func marshalPlugger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlug(obj), nil

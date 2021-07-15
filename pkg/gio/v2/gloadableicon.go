@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconer},
+		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconner},
 	})
 }
 
@@ -51,8 +51,16 @@ type LoadableIconOverrider interface {
 	LoadFinish(res AsyncResulter) (string, *InputStream, error)
 }
 
-// LoadableIconer describes LoadableIcon's methods.
-type LoadableIconer interface {
+// LoadableIcon extends the #GIcon interface and adds the ability to load icons
+// from streams.
+type LoadableIcon struct {
+	Icon
+}
+
+var _ gextras.Nativer = (*LoadableIcon)(nil)
+
+// LoadableIconner describes LoadableIcon's abstract methods.
+type LoadableIconner interface {
 	// Load loads a loadable icon.
 	Load(size int, cancellable *Cancellable) (string, *InputStream, error)
 	// LoadAsync loads an icon asynchronously.
@@ -62,16 +70,7 @@ type LoadableIconer interface {
 	LoadFinish(res AsyncResulter) (string, *InputStream, error)
 }
 
-// LoadableIcon extends the #GIcon interface and adds the ability to load icons
-// from streams.
-type LoadableIcon struct {
-	Icon
-}
-
-var (
-	_ LoadableIconer  = (*LoadableIcon)(nil)
-	_ gextras.Nativer = (*LoadableIcon)(nil)
-)
+var _ LoadableIconner = (*LoadableIcon)(nil)
 
 func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	return &LoadableIcon{
@@ -81,7 +80,7 @@ func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	}
 }
 
-func marshalLoadableIconer(p uintptr) (interface{}, error) {
+func marshalLoadableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLoadableIcon(obj), nil

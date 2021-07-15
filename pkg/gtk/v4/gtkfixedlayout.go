@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// FixedLayouter describes FixedLayout's methods.
-type FixedLayouter interface {
-	privateFixedLayout()
-}
-
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
 // at fixed positions.
 //
@@ -62,10 +57,7 @@ type FixedLayout struct {
 	LayoutManager
 }
 
-var (
-	_ FixedLayouter   = (*FixedLayout)(nil)
-	_ gextras.Nativer = (*FixedLayout)(nil)
-)
+var _ gextras.Nativer = (*FixedLayout)(nil)
 
 func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
 	return &FixedLayout{
@@ -96,23 +88,12 @@ func NewFixedLayout() *FixedLayout {
 
 func (*FixedLayout) privateFixedLayout() {}
 
-// FixedLayoutChilder describes FixedLayoutChild's methods.
-type FixedLayoutChilder interface {
-	// Transform retrieves the transformation of the child.
-	Transform() *gsk.Transform
-	// SetTransform sets the transformation of the child of a GtkFixedLayout.
-	SetTransform(transform *gsk.Transform)
-}
-
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	LayoutChild
 }
 
-var (
-	_ FixedLayoutChilder = (*FixedLayoutChild)(nil)
-	_ gextras.Nativer    = (*FixedLayoutChild)(nil)
-)
+var _ gextras.Nativer = (*FixedLayoutChild)(nil)
 
 func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{

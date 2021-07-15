@@ -138,10 +138,21 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMaper)
+	SetFontMap(fontmap pango.FontMapper)
 }
 
-// FontChooserer describes FontChooser's methods.
+// FontChooser: GtkFontChooser is an interface that can be implemented by
+// widgets for choosing fonts.
+//
+// In GTK, the main objects that implement this interface are
+// gtk.FontChooserWidget, gtk.FontChooserDialog and gtk.FontButton.
+type FontChooser struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*FontChooser)(nil)
+
+// FontChooserer describes FontChooser's abstract methods.
 type FontChooserer interface {
 	// Font gets the currently-selected font name.
 	Font() string
@@ -176,7 +187,7 @@ type FontChooserer interface {
 	// SetFontDesc sets the currently-selected font from font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget.
-	SetFontMap(fontmap pango.FontMaper)
+	SetFontMap(fontmap pango.FontMapper)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -187,19 +198,7 @@ type FontChooserer interface {
 	SetShowPreviewEntry(showPreviewEntry bool)
 }
 
-// FontChooser: GtkFontChooser is an interface that can be implemented by
-// widgets for choosing fonts.
-//
-// In GTK, the main objects that implement this interface are
-// gtk.FontChooserWidget, gtk.FontChooserDialog and gtk.FontButton.
-type FontChooser struct {
-	*externglib.Object
-}
-
-var (
-	_ FontChooserer   = (*FontChooser)(nil)
-	_ gextras.Nativer = (*FontChooser)(nil)
-)
+var _ FontChooserer = (*FontChooser)(nil)
 
 func wrapFontChooser(obj *externglib.Object) *FontChooser {
 	return &FontChooser{
@@ -497,7 +496,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMaper) {
+func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
 

@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMaper},
+		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMapper},
 	})
 }
 
@@ -58,8 +58,19 @@ type FontMapOverrider interface {
 	LoadFontset(context *Context, desc *FontDescription, language *Language) *Fontset
 }
 
-// FontMaper describes FontMap's methods.
-type FontMaper interface {
+// FontMap: PangoFontMap represents the set of fonts available for a particular
+// rendering system.
+//
+// This is a virtual object with implementations being specific to particular
+// rendering systems.
+type FontMap struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*FontMap)(nil)
+
+// FontMapper describes FontMap's abstract methods.
+type FontMapper interface {
 	// Changed forces a change in the context, which will cause any PangoContext
 	// using this fontmap to change.
 	Changed()
@@ -79,19 +90,7 @@ type FontMaper interface {
 	LoadFontset(context *Context, desc *FontDescription, language *Language) *Fontset
 }
 
-// FontMap: PangoFontMap represents the set of fonts available for a particular
-// rendering system.
-//
-// This is a virtual object with implementations being specific to particular
-// rendering systems.
-type FontMap struct {
-	*externglib.Object
-}
-
-var (
-	_ FontMaper       = (*FontMap)(nil)
-	_ gextras.Nativer = (*FontMap)(nil)
-)
+var _ FontMapper = (*FontMap)(nil)
 
 func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{
@@ -99,7 +98,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 	}
 }
 
-func marshalFontMaper(p uintptr) (interface{}, error) {
+func marshalFontMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontMap(obj), nil

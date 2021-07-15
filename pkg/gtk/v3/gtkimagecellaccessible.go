@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ImageCellAccessibler describes ImageCellAccessible's methods.
-type ImageCellAccessibler interface {
-	privateImageCellAccessible()
-}
-
 type ImageCellAccessible struct {
 	RendererCellAccessible
 
 	atk.Image
 }
 
-var (
-	_ ImageCellAccessibler = (*ImageCellAccessible)(nil)
-	_ gextras.Nativer      = (*ImageCellAccessible)(nil)
-)
+var _ gextras.Nativer = (*ImageCellAccessible)(nil)
 
 func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 	return &ImageCellAccessible{

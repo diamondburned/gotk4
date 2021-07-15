@@ -66,16 +66,6 @@ type FileInputStreamOverrider interface {
 	Tell() int64
 }
 
-// FileInputStreamer describes FileInputStream's methods.
-type FileInputStreamer interface {
-	// QueryInfo queries a file input stream the given attributes.
-	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
-	// QueryInfoAsync queries the stream information asynchronously.
-	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
-	// QueryInfoFinish finishes an asynchronous info query operation.
-	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-}
-
 // FileInputStream provides input streams that take their content from a file.
 //
 // GFileInputStream implements #GSeekable, which allows the input stream to jump
@@ -90,10 +80,7 @@ type FileInputStream struct {
 	Seekable
 }
 
-var (
-	_ FileInputStreamer = (*FileInputStream)(nil)
-	_ gextras.Nativer   = (*FileInputStream)(nil)
-)
+var _ gextras.Nativer = (*FileInputStream)(nil)
 
 func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 	return &FileInputStream{

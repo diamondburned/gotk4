@@ -57,7 +57,17 @@ type TLSCertificateOverrider interface {
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
-// TLSCertificater describes TLSCertificate's methods.
+// TLSCertificate: certificate used for TLS authentication and encryption. This
+// can represent either a certificate only (eg, the certificate received by a
+// client from a server), or the combination of a certificate and a private key
+// (which is needed when acting as a ServerConnection).
+type TLSCertificate struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*TLSCertificate)(nil)
+
+// TLSCertificater describes TLSCertificate's abstract methods.
 type TLSCertificater interface {
 	// Issuer gets the Certificate representing cert's issuer, if known
 	Issuer() *TLSCertificate
@@ -68,18 +78,7 @@ type TLSCertificater interface {
 	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
-// TLSCertificate: certificate used for TLS authentication and encryption. This
-// can represent either a certificate only (eg, the certificate received by a
-// client from a server), or the combination of a certificate and a private key
-// (which is needed when acting as a ServerConnection).
-type TLSCertificate struct {
-	*externglib.Object
-}
-
-var (
-	_ TLSCertificater = (*TLSCertificate)(nil)
-	_ gextras.Nativer = (*TLSCertificate)(nil)
-)
+var _ TLSCertificater = (*TLSCertificate)(nil)
 
 func wrapTLSCertificate(obj *externglib.Object) *TLSCertificate {
 	return &TLSCertificate{

@@ -24,54 +24,6 @@ func init() {
 	})
 }
 
-// Gesturer describes Gesture's methods.
-type Gesturer interface {
-	// BoundingBox: if there are touch sequences being currently handled by
-	// gesture, this function returns TRUE and fills in rect with the bounding
-	// box containing all active touches.
-	BoundingBox() (gdk.Rectangle, bool)
-	// BoundingBoxCenter: if there are touch sequences being currently handled
-	// by gesture, this function returns TRUE and fills in x and y with the
-	// center of the bounding box containing all active touches.
-	BoundingBoxCenter() (x float64, y float64, ok bool)
-	// Device returns the master Device that is currently operating on gesture,
-	// or NULL if the gesture is not being interacted.
-	Device() *gdk.Device
-	// LastUpdatedSequence returns the EventSequence that was last updated on
-	// gesture.
-	LastUpdatedSequence() *gdk.EventSequence
-	// Point: if sequence is currently being interpreted by gesture, this
-	// function returns TRUE and fills in x and y with the last coordinates
-	// stored for that event sequence.
-	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
-	// SequenceState returns the sequence state, as seen by gesture.
-	SequenceState(sequence *gdk.EventSequence) EventSequenceState
-	// Window returns the user-defined window that receives the events handled
-	// by gesture.
-	Window() *gdk.Window
-	// Group adds gesture to the same group than group_gesture.
-	Group(gesture Gesturer)
-	// HandlesSequence returns TRUE if gesture is currently handling events
-	// corresponding to sequence.
-	HandlesSequence(sequence *gdk.EventSequence) bool
-	// IsActive returns TRUE if the gesture is currently active.
-	IsActive() bool
-	// IsGroupedWith returns TRUE if both gestures pertain to the same group.
-	IsGroupedWith(other Gesturer) bool
-	// IsRecognized returns TRUE if the gesture is currently recognized.
-	IsRecognized() bool
-	// SetSequenceState sets the state of sequence in gesture.
-	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
-	// SetState sets the state of all sequences that gesture is currently
-	// interacting with.
-	SetState(state EventSequenceState) bool
-	// SetWindow sets a specific window to receive events about, so gesture will
-	// effectively handle only events targeting window, or a child of it.
-	SetWindow(window gdk.Windower)
-	// Ungroup separates gesture into an isolated group.
-	Ungroup()
-}
-
 // Gesture is the base object for gesture recognition, although this object is
 // quite generalized to serve as a base for multi-touch gestures, it is suitable
 // to implement single-touch and pointer-based gestures (using the special NULL
@@ -174,10 +126,57 @@ type Gesture struct {
 	EventController
 }
 
-var (
-	_ Gesturer        = (*Gesture)(nil)
-	_ gextras.Nativer = (*Gesture)(nil)
-)
+var _ gextras.Nativer = (*Gesture)(nil)
+
+// Gesturer describes Gesture's abstract methods.
+type Gesturer interface {
+	// BoundingBox: if there are touch sequences being currently handled by
+	// gesture, this function returns TRUE and fills in rect with the bounding
+	// box containing all active touches.
+	BoundingBox() (gdk.Rectangle, bool)
+	// BoundingBoxCenter: if there are touch sequences being currently handled
+	// by gesture, this function returns TRUE and fills in x and y with the
+	// center of the bounding box containing all active touches.
+	BoundingBoxCenter() (x float64, y float64, ok bool)
+	// Device returns the master Device that is currently operating on gesture,
+	// or NULL if the gesture is not being interacted.
+	Device() *gdk.Device
+	// LastUpdatedSequence returns the EventSequence that was last updated on
+	// gesture.
+	LastUpdatedSequence() *gdk.EventSequence
+	// Point: if sequence is currently being interpreted by gesture, this
+	// function returns TRUE and fills in x and y with the last coordinates
+	// stored for that event sequence.
+	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
+	// SequenceState returns the sequence state, as seen by gesture.
+	SequenceState(sequence *gdk.EventSequence) EventSequenceState
+	// Window returns the user-defined window that receives the events handled
+	// by gesture.
+	Window() *gdk.Window
+	// Group adds gesture to the same group than group_gesture.
+	Group(gesture Gesturer)
+	// HandlesSequence returns TRUE if gesture is currently handling events
+	// corresponding to sequence.
+	HandlesSequence(sequence *gdk.EventSequence) bool
+	// IsActive returns TRUE if the gesture is currently active.
+	IsActive() bool
+	// IsGroupedWith returns TRUE if both gestures pertain to the same group.
+	IsGroupedWith(other Gesturer) bool
+	// IsRecognized returns TRUE if the gesture is currently recognized.
+	IsRecognized() bool
+	// SetSequenceState sets the state of sequence in gesture.
+	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
+	// SetState sets the state of all sequences that gesture is currently
+	// interacting with.
+	SetState(state EventSequenceState) bool
+	// SetWindow sets a specific window to receive events about, so gesture will
+	// effectively handle only events targeting window, or a child of it.
+	SetWindow(window gdk.Windowwer)
+	// Ungroup separates gesture into an isolated group.
+	Ungroup()
+}
+
+var _ Gesturer = (*Gesture)(nil)
 
 func wrapGesture(obj *externglib.Object) *Gesture {
 	return &Gesture{
@@ -537,7 +536,7 @@ func (gesture *Gesture) SetState(state EventSequenceState) bool {
 // SetWindow sets a specific window to receive events about, so gesture will
 // effectively handle only events targeting window, or a child of it. window
 // must pertain to gtk_event_controller_get_widget().
-func (gesture *Gesture) SetWindow(window gdk.Windower) {
+func (gesture *Gesture) SetWindow(window gdk.Windowwer) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GdkWindow  // out
 

@@ -21,11 +21,6 @@ func init() {
 	})
 }
 
-// ListItemFactorier describes ListItemFactory's methods.
-type ListItemFactorier interface {
-	privateListItemFactory()
-}
-
 // ListItemFactory: GtkListItemFactory creates widgets for the items taken from
 // a GListModel.
 //
@@ -78,10 +73,7 @@ type ListItemFactory struct {
 	*externglib.Object
 }
 
-var (
-	_ ListItemFactorier = (*ListItemFactory)(nil)
-	_ gextras.Nativer   = (*ListItemFactory)(nil)
-)
+var _ gextras.Nativer = (*ListItemFactory)(nil)
 
 func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
 	return &ListItemFactory{

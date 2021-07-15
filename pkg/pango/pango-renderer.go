@@ -105,7 +105,19 @@ type RendererOverrider interface {
 	PartChanged(part RenderPart)
 }
 
-// Rendererer describes Renderer's methods.
+// Renderer: PangoRenderer is a base class for objects that can render text
+// provided as PangoGlyphString or PangoLayout.
+//
+// By subclassing PangoRenderer and overriding operations such as draw_glyphs
+// and draw_rectangle, renderers for particular font backends and destinations
+// can be created.
+type Renderer struct {
+	*externglib.Object
+}
+
+var _ gextras.Nativer = (*Renderer)(nil)
+
+// Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
 	// Activate does initial setup before rendering operations on renderer.
 	Activate()
@@ -154,20 +166,7 @@ type Rendererer interface {
 	SetMatrix(matrix *Matrix)
 }
 
-// Renderer: PangoRenderer is a base class for objects that can render text
-// provided as PangoGlyphString or PangoLayout.
-//
-// By subclassing PangoRenderer and overriding operations such as draw_glyphs
-// and draw_rectangle, renderers for particular font backends and destinations
-// can be created.
-type Renderer struct {
-	*externglib.Object
-}
-
-var (
-	_ Rendererer      = (*Renderer)(nil)
-	_ gextras.Nativer = (*Renderer)(nil)
-)
+var _ Rendererer = (*Renderer)(nil)
 
 func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{

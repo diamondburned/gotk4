@@ -24,11 +24,6 @@ func init() {
 	})
 }
 
-// ShortcutsGrouper describes ShortcutsGroup's methods.
-type ShortcutsGrouper interface {
-	privateShortcutsGroup()
-}
-
 // ShortcutsGroup represents a group of related keyboard shortcuts or gestures.
 // The group has a title. It may optionally be associated with a view of the
 // application, which can be used to show only relevant shortcuts depending on
@@ -39,10 +34,7 @@ type ShortcutsGroup struct {
 	Box
 }
 
-var (
-	_ ShortcutsGrouper = (*ShortcutsGroup)(nil)
-	_ gextras.Nativer  = (*ShortcutsGroup)(nil)
-)
+var _ gextras.Nativer = (*ShortcutsGroup)(nil)
 
 func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{

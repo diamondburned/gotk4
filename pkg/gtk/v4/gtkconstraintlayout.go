@@ -23,28 +23,6 @@ func init() {
 	})
 }
 
-// ConstraintLayouter describes ConstraintLayout's methods.
-type ConstraintLayouter interface {
-	// AddConstraint adds a constraint to the layout manager.
-	AddConstraint(constraint *Constraint)
-	// AddGuide adds a guide to layout.
-	AddGuide(guide *ConstraintGuide)
-	// ObserveConstraints returns a GListModel to track the constraints that are
-	// part of the layout.
-	ObserveConstraints() *gio.ListModel
-	// ObserveGuides returns a GListModel to track the guides that are part of
-	// the layout.
-	ObserveGuides() *gio.ListModel
-	// RemoveAllConstraints removes all constraints from the layout manager.
-	RemoveAllConstraints()
-	// RemoveConstraint removes constraint from the layout manager, so that it
-	// no longer influences the layout.
-	RemoveConstraint(constraint *Constraint)
-	// RemoveGuide removes guide from the layout manager, so that it no longer
-	// influences the layout.
-	RemoveGuide(guide *ConstraintGuide)
-}
-
 // ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
@@ -209,10 +187,7 @@ type ConstraintLayout struct {
 	Buildable
 }
 
-var (
-	_ ConstraintLayouter = (*ConstraintLayout)(nil)
-	_ gextras.Nativer    = (*ConstraintLayout)(nil)
-)
+var _ gextras.Nativer = (*ConstraintLayout)(nil)
 
 func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
@@ -379,21 +354,13 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 }
 
-// ConstraintLayoutChilder describes ConstraintLayoutChild's methods.
-type ConstraintLayoutChilder interface {
-	privateConstraintLayoutChild()
-}
-
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
 // GtkConstraintLayout.
 type ConstraintLayoutChild struct {
 	LayoutChild
 }
 
-var (
-	_ ConstraintLayoutChilder = (*ConstraintLayoutChild)(nil)
-	_ gextras.Nativer         = (*ConstraintLayoutChild)(nil)
-)
+var _ gextras.Nativer = (*ConstraintLayoutChild)(nil)
 
 func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{

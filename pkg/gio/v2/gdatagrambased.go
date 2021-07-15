@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBaseder},
+		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBasedder},
 	})
 }
 
@@ -196,25 +196,6 @@ type DatagramBasedOverrider interface {
 	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
 }
 
-// DatagramBaseder describes DatagramBased's methods.
-type DatagramBaseder interface {
-	// ConditionCheck checks on the readiness of datagram_based to perform
-	// operations.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
-	// ConditionWait waits for up to timeout microseconds for condition to
-	// become true on datagram_based.
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) error
-	// CreateSource creates a #GSource that can be attached to a Context to
-	// monitor for the availability of the specified condition on the Based.
-	CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source
-	// ReceiveMessages: receive one or more data messages from datagram_based in
-	// one go.
-	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
-	// SendMessages: send one or more data messages from datagram_based in one
-	// go.
-	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
-}
-
 // DatagramBased is a networking interface for representing datagram-based
 // communications. It is a more or less direct mapping of the core parts of the
 // BSD socket API in a portable GObject interface. It is implemented by
@@ -264,10 +245,28 @@ type DatagramBased struct {
 	*externglib.Object
 }
 
-var (
-	_ DatagramBaseder = (*DatagramBased)(nil)
-	_ gextras.Nativer = (*DatagramBased)(nil)
-)
+var _ gextras.Nativer = (*DatagramBased)(nil)
+
+// DatagramBasedder describes DatagramBased's abstract methods.
+type DatagramBasedder interface {
+	// ConditionCheck checks on the readiness of datagram_based to perform
+	// operations.
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	// ConditionWait waits for up to timeout microseconds for condition to
+	// become true on datagram_based.
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) error
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified condition on the Based.
+	CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source
+	// ReceiveMessages: receive one or more data messages from datagram_based in
+	// one go.
+	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+	// SendMessages: send one or more data messages from datagram_based in one
+	// go.
+	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+}
+
+var _ DatagramBasedder = (*DatagramBased)(nil)
 
 func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	return &DatagramBased{
@@ -275,7 +274,7 @@ func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	}
 }
 
-func marshalDatagramBaseder(p uintptr) (interface{}, error) {
+func marshalDatagramBasedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDatagramBased(obj), nil

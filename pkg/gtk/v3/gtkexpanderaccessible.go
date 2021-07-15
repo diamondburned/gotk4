@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ExpanderAccessibler describes ExpanderAccessible's methods.
-type ExpanderAccessibler interface {
-	privateExpanderAccessible()
-}
-
 type ExpanderAccessible struct {
 	ContainerAccessible
 
 	atk.Action
 }
 
-var (
-	_ ExpanderAccessibler = (*ExpanderAccessible)(nil)
-	_ gextras.Nativer     = (*ExpanderAccessible)(nil)
-)
+var _ gextras.Nativer = (*ExpanderAccessible)(nil)
 
 func wrapExpanderAccessible(obj *externglib.Object) *ExpanderAccessible {
 	return &ExpanderAccessible{

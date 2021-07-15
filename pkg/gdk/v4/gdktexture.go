@@ -24,16 +24,6 @@ func init() {
 	})
 }
 
-// Texturer describes Texture's methods.
-type Texturer interface {
-	// Height returns the height of the texture, in pixels.
-	Height() int
-	// Width returns the width of texture, in pixels.
-	Width() int
-	// SaveToPng: store the given texture to the filename as a PNG file.
-	SaveToPng(filename string) bool
-}
-
 // Texture: GdkTexture is the basic element used to refer to pixel data.
 //
 // It is primarily meant for pixel data that will not change over multiple
@@ -53,10 +43,19 @@ type Texture struct {
 	Paintable
 }
 
-var (
-	_ Texturer        = (*Texture)(nil)
-	_ gextras.Nativer = (*Texture)(nil)
-)
+var _ gextras.Nativer = (*Texture)(nil)
+
+// Texturer describes Texture's abstract methods.
+type Texturer interface {
+	// Height returns the height of the texture, in pixels.
+	Height() int
+	// Width returns the width of texture, in pixels.
+	Width() int
+	// SaveToPng: store the given texture to the filename as a PNG file.
+	SaveToPng(filename string) bool
+}
+
+var _ Texturer = (*Texture)(nil)
 
 func wrapTexture(obj *externglib.Object) *Texture {
 	return &Texture{

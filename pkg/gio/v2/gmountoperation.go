@@ -45,55 +45,6 @@ type MountOperationOverrider interface {
 	ShowUnmountProgress(message string, timeLeft int64, bytesLeft int64)
 }
 
-// MountOperationer describes MountOperation's methods.
-type MountOperationer interface {
-	// Anonymous: check to see whether the mount operation is being used for an
-	// anonymous user.
-	Anonymous() bool
-	// Choice gets a choice from the mount operation.
-	Choice() int
-	// Domain gets the domain of the mount operation.
-	Domain() string
-	// IsTcryptHiddenVolume: check to see whether the mount operation is being
-	// used for a TCRYPT hidden volume.
-	IsTcryptHiddenVolume() bool
-	// IsTcryptSystemVolume: check to see whether the mount operation is being
-	// used for a TCRYPT system volume.
-	IsTcryptSystemVolume() bool
-	// Password gets a password from the mount operation.
-	Password() string
-	// PasswordSave gets the state of saving passwords for the mount operation.
-	PasswordSave() PasswordSave
-	// Pim gets a PIM from the mount operation.
-	Pim() uint
-	// Username: get the user name from the mount operation.
-	Username() string
-	// Reply emits the Operation::reply signal.
-	Reply(result MountOperationResult)
-	// SetAnonymous sets the mount operation to use an anonymous user if
-	// anonymous is TRUE.
-	SetAnonymous(anonymous bool)
-	// SetChoice sets a default choice for the mount operation.
-	SetChoice(choice int)
-	// SetDomain sets the mount operation's domain.
-	SetDomain(domain string)
-	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
-	// if hidden_volume is TRUE.
-	SetIsTcryptHiddenVolume(hiddenVolume bool)
-	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
-	// if system_volume is TRUE.
-	SetIsTcryptSystemVolume(systemVolume bool)
-	// SetPassword sets the mount operation's password to password.
-	SetPassword(password string)
-	// SetPasswordSave sets the state of saving passwords for the mount
-	// operation.
-	SetPasswordSave(save PasswordSave)
-	// SetPim sets the mount operation's PIM to pim.
-	SetPim(pim uint)
-	// SetUsername sets the user name within op to username.
-	SetUsername(username string)
-}
-
 // MountOperation provides a mechanism for interacting with the user. It can be
 // used for authenticating mountable operations, such as loop mounting files,
 // hard drive partitions or server locations. It can also be used to ask the
@@ -118,10 +69,7 @@ type MountOperation struct {
 	*externglib.Object
 }
 
-var (
-	_ MountOperationer = (*MountOperation)(nil)
-	_ gextras.Nativer  = (*MountOperation)(nil)
-)
+var _ gextras.Nativer = (*MountOperation)(nil)
 
 func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{

@@ -32,30 +32,6 @@ func init() {
 	})
 }
 
-// DataOutputStreamer describes DataOutputStream's methods.
-type DataOutputStreamer interface {
-	// ByteOrder gets the byte order for the stream.
-	ByteOrder() DataStreamByteOrder
-	// PutByte puts a byte into the output stream.
-	PutByte(data byte, cancellable *Cancellable) error
-	// PutInt16 puts a signed 16-bit integer into the output stream.
-	PutInt16(data int16, cancellable *Cancellable) error
-	// PutInt32 puts a signed 32-bit integer into the output stream.
-	PutInt32(data int32, cancellable *Cancellable) error
-	// PutInt64 puts a signed 64-bit integer into the stream.
-	PutInt64(data int64, cancellable *Cancellable) error
-	// PutString puts a string into the output stream.
-	PutString(str string, cancellable *Cancellable) error
-	// PutUint16 puts an unsigned 16-bit integer into the output stream.
-	PutUint16(data uint16, cancellable *Cancellable) error
-	// PutUint32 puts an unsigned 32-bit integer into the stream.
-	PutUint32(data uint32, cancellable *Cancellable) error
-	// PutUint64 puts an unsigned 64-bit integer into the stream.
-	PutUint64(data uint64, cancellable *Cancellable) error
-	// SetByteOrder sets the byte order of the data output stream to order.
-	SetByteOrder(order DataStreamByteOrder)
-}
-
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
 type DataOutputStream struct {
@@ -64,10 +40,7 @@ type DataOutputStream struct {
 	Seekable
 }
 
-var (
-	_ DataOutputStreamer = (*DataOutputStream)(nil)
-	_ gextras.Nativer    = (*DataOutputStream)(nil)
-)
+var _ gextras.Nativer = (*DataOutputStream)(nil)
 
 func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{

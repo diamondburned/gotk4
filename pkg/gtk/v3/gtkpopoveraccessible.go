@@ -24,19 +24,11 @@ func init() {
 	})
 }
 
-// PopoverAccessibler describes PopoverAccessible's methods.
-type PopoverAccessibler interface {
-	privatePopoverAccessible()
-}
-
 type PopoverAccessible struct {
 	ContainerAccessible
 }
 
-var (
-	_ PopoverAccessibler = (*PopoverAccessible)(nil)
-	_ gextras.Nativer    = (*PopoverAccessible)(nil)
-)
+var _ gextras.Nativer = (*PopoverAccessible)(nil)
 
 func wrapPopoverAccessible(obj *externglib.Object) *PopoverAccessible {
 	return &PopoverAccessible{

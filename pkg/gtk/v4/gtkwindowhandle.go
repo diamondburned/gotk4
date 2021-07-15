@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// WindowHandler describes WindowHandle's methods.
-type WindowHandler interface {
-	// Child gets the child widget of self.
-	Child() *Widget
-	// SetChild sets the child widget of self.
-	SetChild(child Widgeter)
-}
-
 // WindowHandle: GtkWindowHandle is a titlebar area widget.
 //
 // When added into a window, it can be dragged to move the window, and handles
@@ -47,10 +39,7 @@ type WindowHandle struct {
 	Widget
 }
 
-var (
-	_ WindowHandler   = (*WindowHandle)(nil)
-	_ gextras.Nativer = (*WindowHandle)(nil)
-)
+var _ gextras.Nativer = (*WindowHandle)(nil)
 
 func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
 	return &WindowHandle{
@@ -107,7 +96,7 @@ func (self *WindowHandle) Child() *Widget {
 }
 
 // SetChild sets the child widget of self.
-func (self *WindowHandle) SetChild(child Widgeter) {
+func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 

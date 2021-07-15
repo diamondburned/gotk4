@@ -21,21 +21,20 @@ func init() {
 	})
 }
 
-// DragSurfacer describes DragSurface's methods.
-type DragSurfacer interface {
-	// Present drag_surface.
-	Present(width int, height int) bool
-}
-
 // DragSurface is an interface for surfaces used during DND.
 type DragSurface struct {
 	Surface
 }
 
-var (
-	_ DragSurfacer    = (*DragSurface)(nil)
-	_ gextras.Nativer = (*DragSurface)(nil)
-)
+var _ gextras.Nativer = (*DragSurface)(nil)
+
+// DragSurfacer describes DragSurface's abstract methods.
+type DragSurfacer interface {
+	// Present drag_surface.
+	Present(width int, height int) bool
+}
+
+var _ DragSurfacer = (*DragSurface)(nil)
 
 func wrapDragSurface(obj *externglib.Object) *DragSurface {
 	return &DragSurface{

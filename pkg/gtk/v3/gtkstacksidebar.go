@@ -20,16 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarer},
+		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarrer},
 	})
-}
-
-// StackSidebarer describes StackSidebar's methods.
-type StackSidebarer interface {
-	// Stack retrieves the stack.
-	Stack() *Stack
-	// SetStack: set the Stack associated with this StackSidebar.
-	SetStack(stack *Stack)
 }
 
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"
@@ -51,10 +43,7 @@ type StackSidebar struct {
 	Bin
 }
 
-var (
-	_ StackSidebarer  = (*StackSidebar)(nil)
-	_ gextras.Nativer = (*StackSidebar)(nil)
-)
+var _ gextras.Nativer = (*StackSidebar)(nil)
 
 func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	return &StackSidebar{
@@ -76,7 +65,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	}
 }
 
-func marshalStackSidebarer(p uintptr) (interface{}, error) {
+func marshalStackSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStackSidebar(obj), nil

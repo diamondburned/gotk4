@@ -34,32 +34,13 @@ type ToggleActionOverrider interface {
 	Toggled()
 }
 
-// ToggleActioner describes ToggleAction's methods.
-type ToggleActioner interface {
-	// Active returns the checked state of the toggle action.
-	Active() bool
-	// DrawAsRadio returns whether the action should have proxies like a radio
-	// action.
-	DrawAsRadio() bool
-	// SetActive sets the checked state on the toggle action.
-	SetActive(isActive bool)
-	// SetDrawAsRadio sets whether the action should have proxies like a radio
-	// action.
-	SetDrawAsRadio(drawAsRadio bool)
-	// Toggled emits the “toggled” signal on the toggle action.
-	Toggled()
-}
-
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
 type ToggleAction struct {
 	Action
 }
 
-var (
-	_ ToggleActioner  = (*ToggleAction)(nil)
-	_ gextras.Nativer = (*ToggleAction)(nil)
-)
+var _ gextras.Nativer = (*ToggleAction)(nil)
 
 func wrapToggleAction(obj *externglib.Object) *ToggleAction {
 	return &ToggleAction{

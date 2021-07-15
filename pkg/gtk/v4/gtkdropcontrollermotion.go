@@ -22,19 +22,6 @@ func init() {
 	})
 }
 
-// DropControllerMotioner describes DropControllerMotion's methods.
-type DropControllerMotioner interface {
-	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
-	// self or one of its children.
-	ContainsPointer() bool
-	// Drop returns the GdkDrop of a current Drag-and-Drop operation over the
-	// widget of self.
-	Drop() *gdk.Drop
-	// IsPointer returns if a Drag-and-Drop operation is within the widget self,
-	// not one of its children.
-	IsPointer() bool
-}
-
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
 // the pointer during Drag-and-Drop operations.
 //
@@ -47,10 +34,7 @@ type DropControllerMotion struct {
 	EventController
 }
 
-var (
-	_ DropControllerMotioner = (*DropControllerMotion)(nil)
-	_ gextras.Nativer        = (*DropControllerMotion)(nil)
-)
+var _ gextras.Nativer = (*DropControllerMotion)(nil)
 
 func wrapDropControllerMotion(obj *externglib.Object) *DropControllerMotion {
 	return &DropControllerMotion{

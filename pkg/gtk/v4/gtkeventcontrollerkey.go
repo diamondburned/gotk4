@@ -17,20 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyyer},
 	})
-}
-
-// EventControllerKeyer describes EventControllerKey's methods.
-type EventControllerKeyer interface {
-	// Forward forwards the current event of this controller to a widget.
-	Forward(widget Widgeter) bool
-	// Group gets the key group of the current event of this controller.
-	Group() uint
-	// ImContext gets the input method context of the key controller.
-	ImContext() *IMContext
-	// SetImContext sets the input method context of the key controller.
-	SetImContext(imContext IMContexter)
 }
 
 // EventControllerKey: GtkEventControllerKey is an event controller that
@@ -39,10 +27,7 @@ type EventControllerKey struct {
 	EventController
 }
 
-var (
-	_ EventControllerKeyer = (*EventControllerKey)(nil)
-	_ gextras.Nativer      = (*EventControllerKey)(nil)
-)
+var _ gextras.Nativer = (*EventControllerKey)(nil)
 
 func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	return &EventControllerKey{
@@ -52,7 +37,7 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	}
 }
 
-func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerKey(obj), nil
@@ -77,7 +62,7 @@ func NewEventControllerKey() *EventControllerKey {
 // This function can only be used in handlers for the
 // gtk.EventControllerKey::key-pressed, gtk.EventControllerKey::key-released or
 // gtk.EventControllerKey::modifiers signals.
-func (controller *EventControllerKey) Forward(widget Widgeter) bool {
+func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in

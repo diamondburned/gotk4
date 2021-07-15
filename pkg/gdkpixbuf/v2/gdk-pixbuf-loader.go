@@ -33,26 +33,6 @@ type PixbufLoaderOverrider interface {
 	SizePrepared(width int, height int)
 }
 
-// PixbufLoaderer describes PixbufLoader's methods.
-type PixbufLoaderer interface {
-	// Close informs a pixbuf loader that no further writes with
-	// gdk_pixbuf_loader_write() will occur, so that it can free its internal
-	// loading structures.
-	Close() error
-	// Animation queries the PixbufAnimation that a pixbuf loader is currently
-	// creating.
-	Animation() *PixbufAnimation
-	// Format obtains the available information about the format of the
-	// currently loading image file.
-	Format() *PixbufFormat
-	// Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
-	Pixbuf() *Pixbuf
-	// SetSize causes the image to be scaled while it is loaded.
-	SetSize(width int, height int)
-	// Write parses the next count bytes in the given image buffer.
-	Write(buf []byte) error
-}
-
 // PixbufLoader: incremental image loader.
 //
 // GdkPixbufLoader provides a way for applications to drive the process of
@@ -102,10 +82,7 @@ type PixbufLoader struct {
 	*externglib.Object
 }
 
-var (
-	_ PixbufLoaderer  = (*PixbufLoader)(nil)
-	_ gextras.Nativer = (*PixbufLoader)(nil)
-)
+var _ gextras.Nativer = (*PixbufLoader)(nil)
 
 func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	return &PixbufLoader{

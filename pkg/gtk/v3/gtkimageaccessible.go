@@ -24,21 +24,13 @@ func init() {
 	})
 }
 
-// ImageAccessibler describes ImageAccessible's methods.
-type ImageAccessibler interface {
-	privateImageAccessible()
-}
-
 type ImageAccessible struct {
 	WidgetAccessible
 
 	atk.Image
 }
 
-var (
-	_ ImageAccessibler = (*ImageAccessible)(nil)
-	_ gextras.Nativer  = (*ImageAccessible)(nil)
-)
+var _ gextras.Nativer = (*ImageAccessible)(nil)
 
 func wrapImageAccessible(obj *externglib.Object) *ImageAccessible {
 	return &ImageAccessible{

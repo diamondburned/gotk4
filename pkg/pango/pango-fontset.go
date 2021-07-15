@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontseter},
+		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontsetter},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimpler},
 	})
 }
@@ -70,18 +70,6 @@ type FontsetOverrider interface {
 	Metrics() *FontMetrics
 }
 
-// Fontseter describes Fontset's methods.
-type Fontseter interface {
-	// Foreach iterates through all the fonts in a fontset, calling func for
-	// each one.
-	Foreach(fn FontsetForeachFunc)
-	// Font returns the font in the fontset that contains the best glyph for a
-	// Unicode character.
-	Font(wc uint) *Font
-	// Metrics: get overall metric information for the fonts in the fontset.
-	Metrics() *FontMetrics
-}
-
 // Fontset: PangoFontset represents a set of PangoFont to use when rendering
 // text.
 //
@@ -93,10 +81,21 @@ type Fontset struct {
 	*externglib.Object
 }
 
-var (
-	_ Fontseter       = (*Fontset)(nil)
-	_ gextras.Nativer = (*Fontset)(nil)
-)
+var _ gextras.Nativer = (*Fontset)(nil)
+
+// Fontsetter describes Fontset's abstract methods.
+type Fontsetter interface {
+	// Foreach iterates through all the fonts in a fontset, calling func for
+	// each one.
+	Foreach(fn FontsetForeachFunc)
+	// Font returns the font in the fontset that contains the best glyph for a
+	// Unicode character.
+	Font(wc uint) *Font
+	// Metrics: get overall metric information for the fonts in the fontset.
+	Metrics() *FontMetrics
+}
+
+var _ Fontsetter = (*Fontset)(nil)
 
 func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{
@@ -104,7 +103,7 @@ func wrapFontset(obj *externglib.Object) *Fontset {
 	}
 }
 
-func marshalFontseter(p uintptr) (interface{}, error) {
+func marshalFontsetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontset(obj), nil
@@ -166,14 +165,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	return _fontMetrics
 }
 
-// FontsetSimpler describes FontsetSimple's methods.
-type FontsetSimpler interface {
-	// Append adds a font to the fontset.
-	Append(font Fonter)
-	// Size returns the number of fonts in the fontset.
-	Size() int
-}
-
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
 // PangoFontset base class as an array of fonts.
 //
@@ -183,10 +174,7 @@ type FontsetSimple struct {
 	Fontset
 }
 
-var (
-	_ FontsetSimpler  = (*FontsetSimple)(nil)
-	_ gextras.Nativer = (*FontsetSimple)(nil)
-)
+var _ gextras.Nativer = (*FontsetSimple)(nil)
 
 func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{

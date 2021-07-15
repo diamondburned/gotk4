@@ -22,13 +22,6 @@ func init() {
 	})
 }
 
-// Settingser describes Settings's methods.
-type Settingser interface {
-	// ResetProperty undoes the effect of calling g_object_set() to install an
-	// application-specific value for a setting.
-	ResetProperty(name string)
-}
-
 // Settings: GtkSettings provides a mechanism to share global settings between
 // applications.
 //
@@ -61,10 +54,7 @@ type Settings struct {
 	StyleProvider
 }
 
-var (
-	_ Settingser      = (*Settings)(nil)
-	_ gextras.Nativer = (*Settings)(nil)
-)
+var _ gextras.Nativer = (*Settings)(nil)
 
 func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{

@@ -43,44 +43,6 @@ type SocketListenerOverrider interface {
 	Event(event SocketListenerEvent, socket *Socket)
 }
 
-// SocketListenerer describes SocketListener's methods.
-type SocketListenerer interface {
-	// Accept blocks waiting for a client to connect to any of the sockets added
-	// to the listener.
-	Accept(cancellable *Cancellable) (*externglib.Object, *SocketConnection, error)
-	// AcceptAsync: this is the asynchronous version of
-	// g_socket_listener_accept().
-	AcceptAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// AcceptFinish finishes an async accept operation.
-	AcceptFinish(result AsyncResulter) (*externglib.Object, *SocketConnection, error)
-	// AcceptSocket blocks waiting for a client to connect to any of the sockets
-	// added to the listener.
-	AcceptSocket(cancellable *Cancellable) (*externglib.Object, *Socket, error)
-	// AcceptSocketAsync: this is the asynchronous version of
-	// g_socket_listener_accept_socket().
-	AcceptSocketAsync(cancellable *Cancellable, callback AsyncReadyCallback)
-	// AcceptSocketFinish finishes an async accept operation.
-	AcceptSocketFinish(result AsyncResulter) (*externglib.Object, *Socket, error)
-	// AddAddress creates a socket of type type and protocol protocol, binds it
-	// to address and adds it to the set of sockets we're accepting sockets
-	// from.
-	AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (*SocketAddress, error)
-	// AddAnyInetPort listens for TCP connections on any available port number
-	// for both IPv6 and IPv4 (if each is available).
-	AddAnyInetPort(sourceObject *externglib.Object) (uint16, error)
-	// AddInetPort: helper function for g_socket_listener_add_address() that
-	// creates a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the
-	// specified port on all interfaces.
-	AddInetPort(port uint16, sourceObject *externglib.Object) error
-	// AddSocket adds socket to the set of sockets that we try to accept new
-	// clients from.
-	AddSocket(socket *Socket, sourceObject *externglib.Object) error
-	// Close closes all the sockets in the listener.
-	Close()
-	// SetBacklog sets the listen backlog on the sockets in the listener.
-	SetBacklog(listenBacklog int)
-}
-
 // SocketListener is an object that keeps track of a set of server sockets and
 // helps you accept sockets from any of the socket, either sync or async.
 //
@@ -96,10 +58,7 @@ type SocketListener struct {
 	*externglib.Object
 }
 
-var (
-	_ SocketListenerer = (*SocketListener)(nil)
-	_ gextras.Nativer  = (*SocketListener)(nil)
-)
+var _ gextras.Nativer = (*SocketListener)(nil)
 
 func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	return &SocketListener{

@@ -44,37 +44,12 @@ type TLSPasswordOverrider interface {
 	Value(length *uint) *byte
 }
 
-// TLSPassworder describes TLSPassword's methods.
-type TLSPassworder interface {
-	// Description: get a description string about what the password will be
-	// used for.
-	Description() string
-	// Flags: get flags about the password.
-	Flags() TLSPasswordFlags
-	// Value: get the password value.
-	Value(length *uint) *byte
-	// Warning: get a user readable translated warning.
-	Warning() string
-	// SetDescription: set a description string about what the password will be
-	// used for.
-	SetDescription(description string)
-	// SetFlags: set flags about the password.
-	SetFlags(flags TLSPasswordFlags)
-	// SetValue: set the value for this password.
-	SetValue(value []byte)
-	// SetWarning: set a user readable translated warning.
-	SetWarning(warning string)
-}
-
 // TLSPassword holds a password used in TLS.
 type TLSPassword struct {
 	*externglib.Object
 }
 
-var (
-	_ TLSPassworder   = (*TLSPassword)(nil)
-	_ gextras.Nativer = (*TLSPassword)(nil)
-)
+var _ gextras.Nativer = (*TLSPassword)(nil)
 
 func wrapTLSPassword(obj *externglib.Object) *TLSPassword {
 	return &TLSPassword{

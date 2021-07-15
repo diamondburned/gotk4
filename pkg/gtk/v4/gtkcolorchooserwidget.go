@@ -17,13 +17,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgeter},
+		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidgetter},
 	})
-}
-
-// ColorChooserWidgeter describes ColorChooserWidget's methods.
-type ColorChooserWidgeter interface {
-	privateColorChooserWidget()
 }
 
 // ColorChooserWidget: GtkColorChooserWidget widget lets the user select a
@@ -57,10 +52,7 @@ type ColorChooserWidget struct {
 	ColorChooser
 }
 
-var (
-	_ ColorChooserWidgeter = (*ColorChooserWidget)(nil)
-	_ gextras.Nativer      = (*ColorChooserWidget)(nil)
-)
+var _ gextras.Nativer = (*ColorChooserWidget)(nil)
 
 func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	return &ColorChooserWidget{
@@ -84,7 +76,7 @@ func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
 	}
 }
 
-func marshalColorChooserWidgeter(p uintptr) (interface{}, error) {
+func marshalColorChooserWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooserWidget(obj), nil

@@ -20,13 +20,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialoger},
+		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialogger},
 	})
-}
-
-// ColorChooserDialoger describes ColorChooserDialog's methods.
-type ColorChooserDialoger interface {
-	privateColorChooserDialog()
 }
 
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the
@@ -37,10 +32,7 @@ type ColorChooserDialog struct {
 	ColorChooser
 }
 
-var (
-	_ ColorChooserDialoger = (*ColorChooserDialog)(nil)
-	_ gextras.Nativer      = (*ColorChooserDialog)(nil)
-)
+var _ gextras.Nativer = (*ColorChooserDialog)(nil)
 
 func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	return &ColorChooserDialog{
@@ -69,7 +61,7 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	}
 }
 
-func marshalColorChooserDialoger(p uintptr) (interface{}, error) {
+func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooserDialog(obj), nil

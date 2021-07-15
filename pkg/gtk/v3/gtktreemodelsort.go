@@ -172,17 +172,19 @@ func (treeModelSort *TreeModelSort) ClearCache() {
 // set, FALSE is returned. Note: a boolean is only returned since 2.14.
 func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _sortIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _cret C.gboolean     // in
+	var _arg1 C.GtkTreeIter       // in
+	var _arg2 *C.GtkTreeIter      // out
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(childIter)))
 
-	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_sortIter)), _arg2)
+	_cret = C.gtk_tree_model_sort_convert_child_iter_to_iter(_arg0, &_arg1, _arg2)
 
-	var _ok bool // out
+	var _sortIter TreeIter // out
+	var _ok bool           // out
 
+	_sortIter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -200,15 +202,15 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(childPath))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(childPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_child_path_to_path(_arg0, _arg1)
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _treePath
@@ -218,13 +220,17 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 // sorted_iter.
 func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
-	var _childIter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter       // in
+	var _arg2 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sortedIter))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sortedIter)))
 
-	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_childIter)), _arg2)
+	C.gtk_tree_model_sort_convert_iter_to_child_iter(_arg0, &_arg1, _arg2)
+
+	var _childIter TreeIter // out
+
+	_childIter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _childIter
 }
@@ -240,15 +246,15 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 	var _cret *C.GtkTreePath      // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(sortedPath))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(sortedPath)))
 
 	_cret = C.gtk_tree_model_sort_convert_path_to_child_path(_arg0, _arg1)
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _treePath
@@ -280,7 +286,7 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(treeModelSort.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
 

@@ -110,9 +110,9 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(unsafe.Pointer(_cret))
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
-		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(unsafe.Pointer(v)))
+		C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _dBusInterfaceInfo

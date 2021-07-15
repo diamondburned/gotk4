@@ -5,6 +5,8 @@ package glib
 import (
 	"runtime/cgo"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -14,12 +16,8 @@ import "C"
 
 // Queue contains the public fields of a [Queue][glib-Double-ended-Queues].
 type Queue struct {
-	native C.GQueue
-}
-
-// Native returns the underlying C source pointer.
-func (q *Queue) Native() unsafe.Pointer {
-	return unsafe.Pointer(&q.native)
+	nocopy gextras.NoCopy
+	native *C.GQueue
 }
 
 // Clear removes all the elements in queue. If queue elements contain
@@ -27,7 +25,7 @@ func (q *Queue) Native() unsafe.Pointer {
 func (queue *Queue) Clear() {
 	var _arg0 *C.GQueue // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_clear(_arg0)
 }
@@ -41,7 +39,7 @@ func (queue *Queue) Clear() {
 func (queue *Queue) free() {
 	var _arg0 *C.GQueue // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_free(_arg0)
 }
@@ -51,7 +49,7 @@ func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_get_length(_arg0)
 
@@ -68,7 +66,7 @@ func (queue *Queue) Index(data cgo.Handle) int {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_index(_arg0, _arg1)
@@ -86,7 +84,7 @@ func (queue *Queue) Index(data cgo.Handle) int {
 func (queue *Queue) Init() {
 	var _arg0 *C.GQueue // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_init(_arg0)
 }
@@ -96,7 +94,7 @@ func (queue *Queue) IsEmpty() bool {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_is_empty(_arg0)
 
@@ -114,7 +112,7 @@ func (queue *Queue) PeekHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_peek_head(_arg0)
 
@@ -131,7 +129,7 @@ func (queue *Queue) PeekNth(n uint) cgo.Handle {
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = C.guint(n)
 
 	_cret = C.g_queue_peek_nth(_arg0, _arg1)
@@ -148,7 +146,7 @@ func (queue *Queue) PeekTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_peek_tail(_arg0)
 
@@ -164,7 +162,7 @@ func (queue *Queue) PopHead() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_head(_arg0)
 
@@ -181,7 +179,7 @@ func (queue *Queue) PopNth(n uint) cgo.Handle {
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = C.guint(n)
 
 	_cret = C.g_queue_pop_nth(_arg0, _arg1)
@@ -198,7 +196,7 @@ func (queue *Queue) PopTail() cgo.Handle {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	_cret = C.g_queue_pop_tail(_arg0)
 
@@ -214,7 +212,7 @@ func (queue *Queue) PushHead(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_head(_arg0, _arg1)
@@ -226,7 +224,7 @@ func (queue *Queue) PushNth(data cgo.Handle, n int) {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gint     // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 	_arg2 = C.gint(n)
 
@@ -238,7 +236,7 @@ func (queue *Queue) PushTail(data cgo.Handle) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_queue_push_tail(_arg0, _arg1)
@@ -250,7 +248,7 @@ func (queue *Queue) Remove(data cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove(_arg0, _arg1)
@@ -270,7 +268,7 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_queue_remove_all(_arg0, _arg1)
@@ -286,7 +284,7 @@ func (queue *Queue) RemoveAll(data cgo.Handle) uint {
 func (queue *Queue) Reverse() {
 	var _arg0 *C.GQueue // out
 
-	_arg0 = (*C.GQueue)(unsafe.Pointer(queue))
+	_arg0 = (*C.GQueue)(gextras.StructNative(unsafe.Pointer(queue)))
 
 	C.g_queue_reverse(_arg0)
 }

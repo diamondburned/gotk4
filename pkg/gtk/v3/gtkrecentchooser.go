@@ -77,15 +77,15 @@ func _gotk4_gtk3_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, ar
 	var a *RecentInfo // out
 	var b *RecentInfo // out
 
-	a = (*RecentInfo)(unsafe.Pointer(arg0))
+	a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	C.gtk_recent_info_ref(arg0)
 	runtime.SetFinalizer(a, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	b = (*RecentInfo)(unsafe.Pointer(arg1))
+	b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_recent_info_ref(arg1)
 	runtime.SetFinalizer(b, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(RecentSortFunc)
@@ -268,10 +268,10 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _recentInfo

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -86,16 +87,18 @@ func StockAddStatic(items []StockItem) {
 //
 // Deprecated: since version 3.10.
 func StockLookup(stockId string) (StockItem, bool) {
-	var _arg1 *C.gchar // out
-	var _item StockItem
-	var _cret C.gboolean // in
+	var _arg1 *C.gchar       // out
+	var _arg2 C.GtkStockItem // in
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
 
-	_cret = C.gtk_stock_lookup(_arg1, (*C.GtkStockItem)(unsafe.Pointer(&_item)))
+	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _item StockItem // out
+	var _ok bool        // out
 
+	_item = *(*StockItem)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -151,12 +154,8 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 
 // StockItem: deprecated: since version 3.10.
 type StockItem struct {
-	native C.GtkStockItem
-}
-
-// Native returns the underlying C source pointer.
-func (s *StockItem) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GtkStockItem
 }
 
 // StockID: identifier.
@@ -202,7 +201,7 @@ func (s *StockItem) TranslationDomain() string {
 func (item *StockItem) free() {
 	var _arg0 *C.GtkStockItem // out
 
-	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(item))
+	_arg0 = (*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer(item)))
 
 	C.gtk_stock_item_free(_arg0)
 }

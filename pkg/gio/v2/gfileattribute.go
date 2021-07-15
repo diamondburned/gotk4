@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,12 +34,8 @@ func init() {
 
 // FileAttributeInfo: information about a specific attribute.
 type FileAttributeInfo struct {
-	native C.GFileAttributeInfo
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileAttributeInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	nocopy gextras.NoCopy
+	native *C.GFileAttributeInfo
 }
 
 // Name: name of the attribute.
@@ -65,12 +62,13 @@ func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 type FileAttributeInfoList struct {
-	native C.GFileAttributeInfoList
+	nocopy gextras.NoCopy
+	native *C.GFileAttributeInfoList
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*FileAttributeInfoList)(unsafe.Pointer(b)), nil
+	return &FileAttributeInfoList{native: (*C.GFileAttributeInfoList)(unsafe.Pointer(b))}, nil
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
@@ -81,24 +79,19 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
+		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeInfoList
 }
 
-// Native returns the underlying C source pointer.
-func (f *FileAttributeInfoList) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
-}
-
 // Infos: array of AttributeInfos.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(unsafe.Pointer(f.native.infos))
+	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(f.native.infos)))
 	return v
 }
 
@@ -116,7 +109,7 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 	var _arg2 C.GFileAttributeType      // out
 	var _arg3 C.GFileAttributeInfoFlags // out
 
-	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 	_arg2 = C.GFileAttributeType(typ)
 	_arg3 = C.GFileAttributeInfoFlags(flags)
@@ -129,16 +122,16 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
 
-	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = C.g_file_attribute_info_list_dup(_arg0)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
+		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeInfoList
@@ -150,14 +143,14 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg1 *C.char                   // out
 	var _cret *C.GFileAttributeInfo     // in
 
-	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_file_attribute_info_list_lookup(_arg0, _arg1)
 
 	var _fileAttributeInfo *FileAttributeInfo // out
 
-	_fileAttributeInfo = (*FileAttributeInfo)(unsafe.Pointer(_cret))
+	_fileAttributeInfo = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _fileAttributeInfo
 }
@@ -167,16 +160,16 @@ func (list *FileAttributeInfoList) ref() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
 
-	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = C.g_file_attribute_info_list_ref(_arg0)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(unsafe.Pointer(_cret))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_info_list_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeInfoList, func(v *FileAttributeInfoList) {
-		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(unsafe.Pointer(v)))
+		C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeInfoList
@@ -187,7 +180,7 @@ func (list *FileAttributeInfoList) ref() *FileAttributeInfoList {
 func (list *FileAttributeInfoList) unref() {
 	var _arg0 *C.GFileAttributeInfoList // out
 
-	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(list))
+	_arg0 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	C.g_file_attribute_info_list_unref(_arg0)
 }

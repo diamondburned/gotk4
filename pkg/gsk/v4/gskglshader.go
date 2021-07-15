@@ -368,17 +368,13 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
-	native C.GskShaderArgsBuilder
+	nocopy gextras.NoCopy
+	native *C.GskShaderArgsBuilder
 }
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*ShaderArgsBuilder)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return &ShaderArgsBuilder{native: (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))}, nil
 }
 
 // Ref increases the reference count of a GskShaderArgsBuilder by one.
@@ -386,16 +382,16 @@ func (builder *ShaderArgsBuilder) ref() *ShaderArgsBuilder {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GskShaderArgsBuilder // in
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = C.gsk_shader_args_builder_ref(_arg0)
 
 	var _shaderArgsBuilder *ShaderArgsBuilder // out
 
-	_shaderArgsBuilder = (*ShaderArgsBuilder)(unsafe.Pointer(_cret))
+	_shaderArgsBuilder = (*ShaderArgsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_shader_args_builder_ref(_cret)
 	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
-		C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(unsafe.Pointer(v)))
+		C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _shaderArgsBuilder
@@ -409,7 +405,7 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 	var _arg1 C.int                   // out
 	var _arg2 C.gboolean              // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	if value {
 		_arg2 = C.TRUE
@@ -426,7 +422,7 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 	var _arg1 C.int                   // out
 	var _arg2 C.float                 // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.float(value)
 
@@ -441,7 +437,7 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 	var _arg1 C.int                   // out
 	var _arg2 C.gint32                // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.gint32(value)
 
@@ -456,7 +452,7 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	var _arg1 C.int                   // out
 	var _arg2 C.guint32               // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
 	_arg2 = C.guint32(value)
 
@@ -471,9 +467,9 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec2_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
-	_arg2 = (*C.graphene_vec2_t)(unsafe.Pointer(value))
+	_arg2 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec2(_arg0, _arg1, _arg2)
 }
@@ -486,9 +482,9 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec3_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(value))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec3(_arg0, _arg1, _arg2)
 }
@@ -501,9 +497,9 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	var _arg1 C.int                   // out
 	var _arg2 *C.graphene_vec4_t      // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 	_arg1 = C.int(idx)
-	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(value))
+	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.gsk_shader_args_builder_set_vec4(_arg0, _arg1, _arg2)
 }
@@ -514,7 +510,7 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 func (builder *ShaderArgsBuilder) unref() {
 	var _arg0 *C.GskShaderArgsBuilder // out
 
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GskShaderArgsBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	C.gsk_shader_args_builder_unref(_arg0)
 }

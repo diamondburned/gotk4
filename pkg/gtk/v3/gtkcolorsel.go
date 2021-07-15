@@ -147,11 +147,15 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 // Deprecated: Use gtk_color_selection_get_current_rgba() instead.
 func (colorsel *ColorSelection) CurrentColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
-	var _color gdk.Color
+	var _arg1 C.GdkColor           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
-	C.gtk_color_selection_get_current_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	C.gtk_color_selection_get_current_color(_arg0, &_arg1)
+
+	var _color gdk.Color // out
+
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -160,11 +164,15 @@ func (colorsel *ColorSelection) CurrentColor() gdk.Color {
 // widget.
 func (colorsel *ColorSelection) CurrentRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
-	var _rgba gdk.RGBA
+	var _arg1 C.GdkRGBA            // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
-	C.gtk_color_selection_get_current_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_rgba)))
+	C.gtk_color_selection_get_current_rgba(_arg0, &_arg1)
+
+	var _rgba gdk.RGBA // out
+
+	_rgba = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rgba
 }
@@ -226,11 +234,15 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 // Deprecated: Use gtk_color_selection_get_previous_rgba() instead.
 func (colorsel *ColorSelection) PreviousColor() gdk.Color {
 	var _arg0 *C.GtkColorSelection // out
-	var _color gdk.Color
+	var _arg1 C.GdkColor           // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
-	C.gtk_color_selection_get_previous_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	C.gtk_color_selection_get_previous_color(_arg0, &_arg1)
+
+	var _color gdk.Color // out
+
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -238,11 +250,15 @@ func (colorsel *ColorSelection) PreviousColor() gdk.Color {
 // PreviousRGBA fills rgba in with the original color value.
 func (colorsel *ColorSelection) PreviousRGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorSelection // out
-	var _rgba gdk.RGBA
+	var _arg1 C.GdkRGBA            // in
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
 
-	C.gtk_color_selection_get_previous_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_rgba)))
+	C.gtk_color_selection_get_previous_rgba(_arg0, &_arg1)
+
+	var _rgba gdk.RGBA // out
+
+	_rgba = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rgba
 }
@@ -290,7 +306,7 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	var _arg1 *C.GdkColor          // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_selection_set_current_color(_arg0, _arg1)
 }
@@ -304,7 +320,7 @@ func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 	var _arg1 *C.GdkRGBA           // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gtk_color_selection_set_current_rgba(_arg0, _arg1)
 }
@@ -363,7 +379,7 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	var _arg1 *C.GdkColor          // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_selection_set_previous_color(_arg0, _arg1)
 }
@@ -379,7 +395,7 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	var _arg1 *C.GdkRGBA           // out
 
 	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(colorsel.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
 }

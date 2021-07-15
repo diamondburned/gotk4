@@ -280,7 +280,7 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 	var _arg3 *C.GdkRGBA
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
 	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
 	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
 
@@ -304,7 +304,7 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
 }
@@ -320,7 +320,7 @@ func (node *BorderNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
 }
@@ -382,7 +382,7 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gsk_cairo_node_new(_arg1)
 
@@ -476,7 +476,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _cret *C.GskRenderNode   // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(clip))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	_cret = C.gsk_clip_node_new(_arg1, _arg2)
 
@@ -514,7 +514,7 @@ func (node *ClipNode) Clip() *graphene.Rect {
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(unsafe.Pointer(_cret))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rect
 }
@@ -570,8 +570,8 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 	var _cret *C.GskRenderNode     // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(colorMatrix))
-	_arg3 = (*C.graphene_vec4_t)(unsafe.Pointer(colorOffset))
+	_arg2 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
+	_arg3 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	_cret = C.gsk_color_matrix_node_new(_arg1, _arg2, _arg3)
 
@@ -610,7 +610,7 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 
 	var _matrix *graphene.Matrix // out
 
-	_matrix = (*graphene.Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -626,7 +626,7 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 	var _vec4 *graphene.Vec4 // out
 
-	_vec4 = (*graphene.Vec4)(unsafe.Pointer(_cret))
+	_vec4 = (*graphene.Vec4)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _vec4
 }
@@ -668,8 +668,8 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _arg2 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gsk_color_node_new(_arg1, _arg2)
 
@@ -691,7 +691,7 @@ func (node *ColorNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
 }
@@ -746,8 +746,8 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(rotation)
 	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
@@ -796,7 +796,7 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -1253,8 +1253,8 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy fl
 	var _arg6 C.float           // out
 	var _cret *C.GskRenderNode  // in
 
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg3 = C.float(dx)
 	_arg4 = C.float(dy)
 	_arg5 = C.float(spread)
@@ -1296,7 +1296,7 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
 }
@@ -1344,7 +1344,7 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
 }
@@ -1410,9 +1410,9 @@ func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *gr
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
@@ -1438,7 +1438,7 @@ func (node *LinearGradientNode) End() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -1470,7 +1470,7 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -1609,8 +1609,8 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy f
 	var _arg6 C.float           // out
 	var _cret *C.GskRenderNode  // in
 
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg3 = C.float(dx)
 	_arg4 = C.float(dy)
 	_arg5 = C.float(spread)
@@ -1652,7 +1652,7 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
 }
@@ -1700,7 +1700,7 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
 }
@@ -1777,8 +1777,8 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 	var _arg8 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(hradius)
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
@@ -1808,7 +1808,7 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -1933,9 +1933,9 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 	var _arg3 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg2 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg3 = (*C.graphene_rect_t)(unsafe.Pointer(childBounds))
+	_arg3 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
 
 	_cret = C.gsk_repeat_node_new(_arg1, _arg2, _arg3)
 
@@ -1973,7 +1973,7 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(unsafe.Pointer(_cret))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rect
 }
@@ -2018,9 +2018,9 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 	var _arg5 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(start))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(end))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(end)))
 	_arg5 = (C.gsize)(len(colorStops))
 	if len(colorStops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&colorStops[0]))
@@ -2083,8 +2083,8 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 	var _arg8 C.gsize
 	var _cret *C.GskRenderNode // in
 
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(hradius)
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
@@ -2147,7 +2147,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _cret *C.GskRenderNode  // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GskRoundedRect)(unsafe.Pointer(clip))
+	_arg2 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	_cret = C.gsk_rounded_clip_node_new(_arg1, _arg2)
 
@@ -2185,7 +2185,7 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(unsafe.Pointer(_cret))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _roundedRect
 }
@@ -2293,7 +2293,7 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 
 	var _shadow *Shadow // out
 
-	_shadow = (*Shadow)(unsafe.Pointer(_cret))
+	_shadow = (*Shadow)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _shadow
 }
@@ -2347,9 +2347,9 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	var _cret *C.GskRenderNode    // in
 
 	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
-	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(color))
-	_arg4 = (*C.graphene_point_t)(unsafe.Pointer(offset))
+	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg4 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(offset)))
 
 	_cret = C.gsk_text_node_new(_arg1, _arg2, _arg3, _arg4)
 
@@ -2371,7 +2371,7 @@ func (node *TextNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rgbA
 }
@@ -2424,7 +2424,7 @@ func (node *TextNode) Offset() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(unsafe.Pointer(_cret))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -2485,7 +2485,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _cret *C.GskRenderNode   // in
 
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gsk_texture_node_new(_arg1, _arg2)
 
@@ -2560,7 +2560,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _cret *C.GskRenderNode // in
 
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((child).(gextras.Nativer).Native()))
-	_arg2 = (*C.GskTransform)(unsafe.Pointer(transform))
+	_arg2 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	_cret = C.gsk_transform_node_new(_arg1, _arg2)
 
@@ -2598,9 +2598,9 @@ func (node *TransformNode) Transform() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,12 +30,13 @@ func init() {
 // Toplevel surfaces are sovereign windows that can be presented to the user in
 // various states (maximized, on all workspaces, etc).
 type ToplevelLayout struct {
-	native C.GdkToplevelLayout
+	nocopy gextras.NoCopy
+	native *C.GdkToplevelLayout
 }
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*ToplevelLayout)(unsafe.Pointer(b)), nil
+	return &ToplevelLayout{native: (*C.GdkToplevelLayout)(unsafe.Pointer(b))}, nil
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
@@ -45,18 +47,13 @@ func NewToplevelLayout() *ToplevelLayout {
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
+		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _toplevelLayout
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToplevelLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // Copy: create a new ToplevelLayout and copy the contents of layout into it.
@@ -64,16 +61,16 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_copy(_arg0)
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
+		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _toplevelLayout
@@ -85,8 +82,8 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg1 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
-	_arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(other))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gdk_toplevel_layout_equal(_arg0, _arg1)
 
@@ -107,7 +104,7 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen(_arg0, &_arg1)
 
@@ -130,7 +127,7 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkMonitor        // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
 
@@ -149,7 +146,7 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg1 C.gboolean           // in
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_maximized(_arg0, &_arg1)
 
@@ -172,7 +169,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_get_resizable(_arg0)
 
@@ -190,16 +187,16 @@ func (layout *ToplevelLayout) ref() *ToplevelLayout {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret *C.GdkToplevelLayout // in
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_toplevel_layout_ref(_arg0)
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(unsafe.Pointer(_cret))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_toplevel_layout_ref(_cret)
 	runtime.SetFinalizer(_toplevelLayout, func(v *ToplevelLayout) {
-		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(unsafe.Pointer(v)))
+		C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _toplevelLayout
@@ -212,7 +209,7 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	var _arg1 C.gboolean           // out
 	var _arg2 *C.GdkMonitor        // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if fullscreen {
 		_arg1 = C.TRUE
 	}
@@ -227,7 +224,7 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if maximized {
 		_arg1 = C.TRUE
 	}
@@ -241,7 +238,7 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if resizable {
 		_arg1 = C.TRUE
 	}
@@ -253,7 +250,7 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 func (layout *ToplevelLayout) unref() {
 	var _arg0 *C.GdkToplevelLayout // out
 
-	_arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_toplevel_layout_unref(_arg0)
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,12 +27,13 @@ func init() {
 // The contents of the graphene_plane_t are private, and should not be modified
 // directly.
 type Plane struct {
-	native C.graphene_plane_t
+	nocopy gextras.NoCopy
+	native *C.graphene_plane_t
 }
 
 func marshalPlane(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Plane)(unsafe.Pointer(b)), nil
+	return &Plane{native: (*C.graphene_plane_t)(unsafe.Pointer(b))}, nil
 }
 
 // NewPlaneAlloc constructs a struct Plane.
@@ -42,17 +44,12 @@ func NewPlaneAlloc() *Plane {
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_plane, func(v *Plane) {
-		C.graphene_plane_free((*C.graphene_plane_t)(unsafe.Pointer(v)))
+		C.graphene_plane_free((*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _plane
-}
-
-// Native returns the underlying C source pointer.
-func (p *Plane) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }
 
 // Distance computes the distance of point from a #graphene_plane_t.
@@ -61,8 +58,8 @@ func (p *Plane) Distance(point *Point3D) float32 {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C.float               // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_plane_distance(_arg0, _arg1)
 
@@ -79,8 +76,8 @@ func (a *Plane) Equal(b *Plane) bool {
 	var _arg1 *C.graphene_plane_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_plane_equal(_arg0, _arg1)
 
@@ -97,7 +94,7 @@ func (a *Plane) Equal(b *Plane) bool {
 func (p *Plane) free() {
 	var _arg0 *C.graphene_plane_t // out
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_plane_free(_arg0)
 }
@@ -108,7 +105,7 @@ func (p *Plane) Constant() float32 {
 	var _arg0 *C.graphene_plane_t // out
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_plane_get_constant(_arg0)
 
@@ -123,11 +120,15 @@ func (p *Plane) Constant() float32 {
 // #graphene_plane_t.
 func (p *Plane) Normal() Vec3 {
 	var _arg0 *C.graphene_plane_t // out
-	var _normal Vec3
+	var _arg1 C.graphene_vec3_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_plane_get_normal(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_normal)))
+	C.graphene_plane_get_normal(_arg0, &_arg1)
+
+	var _normal Vec3 // out
+
+	_normal = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _normal
 }
@@ -140,15 +141,15 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _arg2 C.float             // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(normal)))
 	_arg2 = C.float(constant)
 
 	_cret = C.graphene_plane_init(_arg0, _arg1, _arg2)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _plane
 }
@@ -160,14 +161,14 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var _arg1 *C.graphene_plane_t // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_plane_init_from_plane(_arg0, _arg1)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _plane
 }
@@ -180,15 +181,15 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var _arg2 *C.graphene_point3d_t // out
 	var _cret *C.graphene_plane_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(normal)))
+	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_plane_init_from_point(_arg0, _arg1, _arg2)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _plane
 }
@@ -205,16 +206,16 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_plane_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(a))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b))
-	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
+	_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(c)))
 
 	_cret = C.graphene_plane_init_from_points(_arg0, _arg1, _arg2, _arg3)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _plane
 }
@@ -226,14 +227,14 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var _arg1 *C.graphene_vec4_t  // out
 	var _cret *C.graphene_plane_t // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_plane_init_from_vec4(_arg0, _arg1)
 
 	var _plane *Plane // out
 
-	_plane = (*Plane)(unsafe.Pointer(_cret))
+	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _plane
 }
@@ -242,11 +243,15 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 // effectively mirroring the plane across the origin.
 func (p *Plane) Negate() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _res Plane
+	var _arg1 C.graphene_plane_t  // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_plane_negate(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_negate(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -255,11 +260,15 @@ func (p *Plane) Negate() Plane {
 // the constant accordingly.
 func (p *Plane) Normalize() Plane {
 	var _arg0 *C.graphene_plane_t // out
-	var _res Plane
+	var _arg1 C.graphene_plane_t  // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_plane_normalize(_arg0, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_normalize(_arg0, &_arg1)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -275,13 +284,17 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 *C.graphene_matrix_t // out
-	var _res Plane
+	var _arg3 C.graphene_plane_t   // in
 
-	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
-	_arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix))
+	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg2 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(normalMatrix)))
 
-	C.graphene_plane_transform(_arg0, _arg1, _arg2, (*C.graphene_plane_t)(unsafe.Pointer(&_res)))
+	C.graphene_plane_transform(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Plane // out
+
+	_res = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }

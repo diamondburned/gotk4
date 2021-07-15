@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,12 +60,13 @@ const (
 // KeyFile struct contains only private data and should not be accessed
 // directly.
 type KeyFile struct {
-	native C.GKeyFile
+	nocopy gextras.NoCopy
+	native *C.GKeyFile
 }
 
 func marshalKeyFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*KeyFile)(unsafe.Pointer(b)), nil
+	return &KeyFile{native: (*C.GKeyFile)(unsafe.Pointer(b))}, nil
 }
 
 // NewKeyFile constructs a struct KeyFile.
@@ -75,17 +77,12 @@ func NewKeyFile() *KeyFile {
 
 	var _keyFile *KeyFile // out
 
-	_keyFile = (*KeyFile)(unsafe.Pointer(_cret))
+	_keyFile = (*KeyFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	return _keyFile
-}
-
-// Native returns the underlying C source pointer.
-func (k *KeyFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(&k.native)
 }
 
 // Boolean returns the value associated with key under group_name as a boolean.
@@ -100,7 +97,7 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -127,7 +124,7 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -157,7 +154,7 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _cret C.gdouble   // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -179,7 +176,7 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _arg1 C.gsize     // in
 	var _cret **C.gchar
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_groups(_arg0, &_arg1)
 
@@ -214,7 +211,7 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _cret C.gint64    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -242,7 +239,7 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _cret C.gint      // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -268,7 +265,7 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	_cret = C.g_key_file_get_keys(_arg0, _arg1, &_arg2, &_cerr)
@@ -311,7 +308,7 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 	var _arg3 *C.gchar    // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
@@ -346,7 +343,7 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
@@ -368,7 +365,7 @@ func (keyFile *KeyFile) StartGroup() string {
 	var _arg0 *C.GKeyFile // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_get_start_group(_arg0)
 
@@ -393,7 +390,7 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -419,7 +416,7 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _cret C.guint64   // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -447,7 +444,7 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -469,7 +466,7 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	var _arg1 *C.gchar    // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	_cret = C.g_key_file_has_group(_arg0, _arg1)
@@ -492,7 +489,7 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 	var _arg3 C.GKeyFileFlags // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
 	_arg2 = C.gsize(length)
 	_arg3 = C.GKeyFileFlags(flags)
@@ -517,7 +514,7 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 	var _arg3 C.GKeyFileFlags // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
 	_arg3 = C.GKeyFileFlags(flags)
 
@@ -550,7 +547,7 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 	var _arg4 C.GKeyFileFlags // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
 	{
 		_arg2 = (**C.gchar)(C.malloc(C.ulong(len(searchDirs)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
@@ -591,7 +588,7 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg2 C.GKeyFileFlags // out
 	var _cerr *C.GError       // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
 	_arg2 = C.GKeyFileFlags(flags)
 
@@ -613,7 +610,7 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -632,7 +629,7 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	var _arg1 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	C.g_key_file_remove_group(_arg0, _arg1, &_cerr)
@@ -651,7 +648,7 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg2 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
@@ -676,7 +673,7 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 	var _arg1 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
 
 	C.g_key_file_save_to_file(_arg0, _arg1, &_cerr)
@@ -696,7 +693,7 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gboolean  // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	if value {
@@ -716,7 +713,7 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 	var _arg3 *C.gboolean
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg4 = (C.gsize)(len(list))
@@ -742,7 +739,7 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	var _arg3 *C.gchar    // out
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(comment)))
@@ -764,7 +761,7 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gdouble   // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = C.gdouble(value)
@@ -781,7 +778,7 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 	var _arg3 *C.gdouble
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg4 = (C.gsize)(len(list))
@@ -800,7 +797,7 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gint64    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = C.gint64(value)
@@ -816,7 +813,7 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gint      // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = C.gint(value)
@@ -833,7 +830,7 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	var _arg3 *C.gint
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg4 = (C.gsize)(len(list))
@@ -851,7 +848,7 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gchar     // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = C.gchar(separator)
 
 	C.g_key_file_set_list_separator(_arg0, _arg1)
@@ -866,7 +863,7 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 	var _arg3 *C.gchar    // out
 	var _arg4 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
@@ -886,7 +883,7 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	var _arg4 **C.gchar
 	var _arg5 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(locale)))
@@ -912,7 +909,7 @@ func (keyFile *KeyFile) SetString(groupName string, key string, _string string) 
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
@@ -930,7 +927,7 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	var _arg3 **C.gchar
 	var _arg4 C.gsize
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg4 = (C.gsize)(len(list))
@@ -953,7 +950,7 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	var _arg2 *C.gchar    // out
 	var _arg3 C.guint64   // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = C.guint64(value)
@@ -972,7 +969,7 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
@@ -990,7 +987,7 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _cret *C.gchar    // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_key_file_to_data(_arg0, &_arg1, &_cerr)
 
@@ -1011,7 +1008,7 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 func (keyFile *KeyFile) unref() {
 	var _arg0 *C.GKeyFile // out
 
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg0 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	C.g_key_file_unref(_arg0)
 }

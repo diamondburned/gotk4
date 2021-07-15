@@ -286,7 +286,7 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 	var _cret *C.GdkPixbufAnimationIter // in
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(startTime))
+	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(startTime)))
 
 	_cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
 
@@ -483,7 +483,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _cret C.gboolean                // in
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(iter.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(currentTime))
+	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(currentTime)))
 
 	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
 

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -180,12 +181,8 @@ func DBusErrorStripRemoteError(err error) bool {
 
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
 type DBusErrorEntry struct {
-	native C.GDBusErrorEntry
-}
-
-// Native returns the underlying C source pointer.
-func (d *DBusErrorEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	nocopy gextras.NoCopy
+	native *C.GDBusErrorEntry
 }
 
 // ErrorCode: error code.

@@ -110,12 +110,16 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) gdk.Rectangle {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
-	var _cellRect gdk.Rectangle
+	var _arg2 C.GdkRectangle             // in
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(parent.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_cellRect)))
+	C.gtk_cell_accessible_parent_get_cell_area(_arg0, _arg1, &_arg2)
+
+	var _cellRect gdk.Rectangle // out
+
+	_cellRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _cellRect
 }

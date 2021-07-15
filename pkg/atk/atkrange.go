@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,12 +27,13 @@ func init() {
 // individual subrange this full range is splitted if available. See Value
 // documentation for further details.
 type Range struct {
-	native C.AtkRange
+	nocopy gextras.NoCopy
+	native *C.AtkRange
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Range)(unsafe.Pointer(b)), nil
+	return &Range{native: (*C.AtkRange)(unsafe.Pointer(b))}, nil
 }
 
 // NewRange constructs a struct Range.
@@ -49,17 +51,12 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
+		C.atk_range_free((*C.AtkRange)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return __range
-}
-
-// Native returns the underlying C source pointer.
-func (r *Range) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }
 
 // Copy returns a new Range that is a exact copy of src
@@ -67,15 +64,15 @@ func (src *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(src))
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.atk_range_copy(_arg0)
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
+		C.atk_range_free((*C.AtkRange)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return __range
@@ -85,7 +82,7 @@ func (src *Range) Copy() *Range {
 func (_range *Range) free() {
 	var _arg0 *C.AtkRange // out
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	C.atk_range_free(_arg0)
 }
@@ -95,7 +92,7 @@ func (_range *Range) Description() string {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_description(_arg0)
 
@@ -111,7 +108,7 @@ func (_range *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_lower_limit(_arg0)
 
@@ -127,7 +124,7 @@ func (_range *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.AtkRange)(unsafe.Pointer(_range))
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = C.atk_range_get_upper_limit(_arg0)
 

@@ -218,9 +218,9 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _treePath
@@ -290,7 +290,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }

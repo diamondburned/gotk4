@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,12 +39,13 @@ func init() {
 // The main use case for GtkBitset is implementing complex selections for
 // gtk.SelectionModel.
 type Bitset struct {
-	native C.GtkBitset
+	nocopy gextras.NoCopy
+	native *C.GtkBitset
 }
 
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Bitset)(unsafe.Pointer(b)), nil
+	return &Bitset{native: (*C.GtkBitset)(unsafe.Pointer(b))}, nil
 }
 
 // NewBitsetEmpty constructs a struct Bitset.
@@ -54,10 +56,10 @@ func NewBitsetEmpty() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
@@ -76,18 +78,13 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
-}
-
-// Native returns the underlying C source pointer.
-func (b *Bitset) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
 }
 
 // Add adds value to self if it wasn't part of it before.
@@ -96,7 +93,7 @@ func (self *Bitset) Add(value uint) bool {
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_add(_arg0, _arg1)
@@ -117,7 +114,7 @@ func (self *Bitset) AddRange(start uint, nItems uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(nItems)
 
@@ -131,7 +128,7 @@ func (self *Bitset) AddRangeClosed(first uint, last uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
 
@@ -148,7 +145,7 @@ func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uin
 	var _arg3 C.guint      // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(width)
 	_arg3 = C.guint(height)
@@ -163,7 +160,7 @@ func (self *Bitset) Contains(value uint) bool {
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_contains(_arg0, _arg1)
@@ -182,16 +179,16 @@ func (self *Bitset) Copy() *Bitset {
 	var _arg0 *C.GtkBitset // out
 	var _cret *C.GtkBitset // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_copy(_arg0)
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
@@ -209,8 +206,8 @@ func (self *Bitset) Difference(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_difference(_arg0, _arg1)
 }
@@ -221,8 +218,8 @@ func (self *Bitset) Equals(other *Bitset) bool {
 	var _arg1 *C.GtkBitset // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gtk_bitset_equals(_arg0, _arg1)
 
@@ -242,7 +239,7 @@ func (self *Bitset) Maximum() uint {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_maximum(_arg0)
 
@@ -260,7 +257,7 @@ func (self *Bitset) Minimum() uint {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_minimum(_arg0)
 
@@ -279,7 +276,7 @@ func (self *Bitset) Nth(nth uint) uint {
 	var _arg1 C.guint      // out
 	var _cret C.guint      // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(nth)
 
 	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
@@ -302,7 +299,7 @@ func (self *Bitset) Size() uint64 {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.guint64    // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_get_size(_arg0)
 
@@ -325,7 +322,7 @@ func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 	var _arg2 C.guint      // out
 	var _cret C.guint64    // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
 
@@ -348,8 +345,8 @@ func (self *Bitset) Intersect(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_intersect(_arg0, _arg1)
 }
@@ -359,7 +356,7 @@ func (self *Bitset) IsEmpty() bool {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_is_empty(_arg0)
 
@@ -377,15 +374,15 @@ func (self *Bitset) ref() *Bitset {
 	var _arg0 *C.GtkBitset // out
 	var _cret *C.GtkBitset // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gtk_bitset_ref(_arg0)
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
@@ -397,7 +394,7 @@ func (self *Bitset) Remove(value uint) bool {
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(value)
 
 	_cret = C.gtk_bitset_remove(_arg0, _arg1)
@@ -415,7 +412,7 @@ func (self *Bitset) Remove(value uint) bool {
 func (self *Bitset) RemoveAll() {
 	var _arg0 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gtk_bitset_remove_all(_arg0)
 }
@@ -427,7 +424,7 @@ func (self *Bitset) RemoveRange(start uint, nItems uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(nItems)
 
@@ -441,7 +438,7 @@ func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
 
@@ -458,7 +455,7 @@ func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride 
 	var _arg3 C.guint      // out
 	var _arg4 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(start)
 	_arg2 = C.guint(width)
 	_arg3 = C.guint(height)
@@ -474,7 +471,7 @@ func (self *Bitset) ShiftLeft(amount uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_left(_arg0, _arg1)
@@ -487,7 +484,7 @@ func (self *Bitset) ShiftRight(amount uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(amount)
 
 	C.gtk_bitset_shift_right(_arg0, _arg1)
@@ -509,7 +506,7 @@ func (self *Bitset) Splice(position uint, removed uint, added uint) {
 	var _arg2 C.guint      // out
 	var _arg3 C.guint      // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 	_arg1 = C.guint(position)
 	_arg2 = C.guint(removed)
 	_arg3 = C.guint(added)
@@ -527,8 +524,8 @@ func (self *Bitset) Subtract(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_subtract(_arg0, _arg1)
 }
@@ -543,8 +540,8 @@ func (self *Bitset) Union(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
 	C.gtk_bitset_union(_arg0, _arg1)
 }
@@ -556,7 +553,7 @@ func (self *Bitset) Union(other *Bitset) {
 func (self *Bitset) unref() {
 	var _arg0 *C.GtkBitset // out
 
-	_arg0 = (*C.GtkBitset)(unsafe.Pointer(self))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gtk_bitset_unref(_arg0)
 }

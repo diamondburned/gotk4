@@ -534,7 +534,7 @@ func (window *Window) ActivateKey(event *gdk.EventKey) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_window_activate_key(_arg0, _arg1)
 
@@ -1141,16 +1141,18 @@ func (window *Window) Resizable() bool {
 //
 // Deprecated: Resize grips have been removed.
 func (window *Window) ResizeGripArea() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkWindow // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkWindow   // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	_cret = C.gtk_window_get_resize_grip_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_window_get_resize_grip_area(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1720,7 +1722,7 @@ func (window *Window) PropagateKeyEvent(event *gdk.EventKey) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_window_propagate_key_event(_arg0, _arg1)
 
@@ -2099,7 +2101,7 @@ func (window *Window) SetGeometryHints(geometryWidget Widgeter, geometry *gdk.Ge
 
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((geometryWidget).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkGeometry)(unsafe.Pointer(geometry))
+	_arg2 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
 	_arg3 = C.GdkWindowHints(geomMask)
 
 	C.gtk_window_set_geometry_hints(_arg0, _arg1, _arg2, _arg3)

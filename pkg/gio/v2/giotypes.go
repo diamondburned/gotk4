@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -307,12 +308,13 @@ func _gotk4_gio2_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.g
 
 // FileAttributeMatcher determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
-	native C.GFileAttributeMatcher
+	nocopy gextras.NoCopy
+	native *C.GFileAttributeMatcher
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*FileAttributeMatcher)(unsafe.Pointer(b)), nil
+	return &FileAttributeMatcher{native: (*C.GFileAttributeMatcher)(unsafe.Pointer(b))}, nil
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
@@ -326,18 +328,13 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
+		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeMatcher
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileAttributeMatcher) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
 }
 
 // EnumerateNamespace checks if the matcher will match all of the keys in a
@@ -351,7 +348,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(ns)))
 
 	_cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
@@ -370,7 +367,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	_cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
 
@@ -389,7 +386,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 
 	_cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
@@ -410,7 +407,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg1 *C.char                  // out
 	var _cret C.gboolean               // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 
 	_cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
@@ -429,16 +426,16 @@ func (matcher *FileAttributeMatcher) ref() *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	_cret = C.g_file_attribute_matcher_ref(_arg0)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
+		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeMatcher
@@ -456,17 +453,17 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 	var _arg1 *C.GFileAttributeMatcher // out
 	var _cret *C.GFileAttributeMatcher // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
-	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
+	_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(subtract)))
 
 	_cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	_fileAttributeMatcher = (*FileAttributeMatcher)(unsafe.Pointer(_cret))
+	_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_file_attribute_matcher_ref(_cret)
 	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
-		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(unsafe.Pointer(v)))
+		C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fileAttributeMatcher
@@ -480,7 +477,7 @@ func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	_cret = C.g_file_attribute_matcher_to_string(_arg0)
 
@@ -497,7 +494,7 @@ func (matcher *FileAttributeMatcher) String() string {
 func (matcher *FileAttributeMatcher) unref() {
 	var _arg0 *C.GFileAttributeMatcher // out
 
-	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(matcher))
+	_arg0 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	C.g_file_attribute_matcher_unref(_arg0)
 }
@@ -522,12 +519,8 @@ func (matcher *FileAttributeMatcher) unref() {
 // Flags relevant to this message will be returned in flags. For example,
 // MSG_EOR or MSG_TRUNC.
 type InputMessage struct {
-	native C.GInputMessage
-}
-
-// Native returns the underlying C source pointer.
-func (i *InputMessage) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	nocopy gextras.NoCopy
+	native *C.GInputMessage
 }
 
 // NumVectors: number of input vectors pointed to by vectors
@@ -563,12 +556,8 @@ func (i *InputMessage) NumControlMessages() *uint {
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
 type InputVector struct {
-	native C.GInputVector
-}
-
-// Native returns the underlying C source pointer.
-func (i *InputVector) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	nocopy gextras.NoCopy
+	native *C.GInputVector
 }
 
 // Buffer: pointer to a buffer where data will be written.
@@ -593,12 +582,8 @@ func (i *InputVector) Size() uint {
 // If address is NULL then the message is sent to the default receiver (as
 // previously set by g_socket_connect()).
 type OutputMessage struct {
-	native C.GOutputMessage
-}
-
-// Native returns the underlying C source pointer.
-func (o *OutputMessage) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	nocopy gextras.NoCopy
+	native *C.GOutputMessage
 }
 
 // Address or NULL
@@ -611,7 +596,7 @@ func (o *OutputMessage) Address() *SocketAddress {
 // Vectors: pointer to an array of output vectors
 func (o *OutputMessage) Vectors() *OutputVector {
 	var v *OutputVector // out
-	v = (*OutputVector)(unsafe.Pointer(o.native.vectors))
+	v = (*OutputVector)(gextras.NewStructNative(unsafe.Pointer(o.native.vectors)))
 	return v
 }
 
@@ -641,12 +626,8 @@ func (o *OutputMessage) NumControlMessages() uint {
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
 type OutputVector struct {
-	native C.GOutputVector
-}
-
-// Native returns the underlying C source pointer.
-func (o *OutputVector) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	nocopy gextras.NoCopy
+	native *C.GOutputVector
 }
 
 // Buffer: pointer to a buffer of data to read.
@@ -810,17 +791,13 @@ func (o *OutputVector) Size() uint {
 // is not strictly required. It is possible to overlay the location of a single
 // resource with an individual file.
 type Resource struct {
-	native C.GResource
+	nocopy gextras.NoCopy
+	native *C.GResource
 }
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Resource)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *Resource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return &Resource{native: (*C.GResource)(unsafe.Pointer(b))}, nil
 }
 
 // EnumerateChildren returns all the names of children at the specified path in
@@ -838,7 +815,7 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 	var _cret **C.char
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
@@ -877,7 +854,7 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 	var _arg4 C.guint32              // in
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
@@ -905,7 +882,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _cret *C.GInputStream        // in
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
 	_arg2 = C.GResourceLookupFlags(lookupFlags)
 
@@ -926,16 +903,16 @@ func (resource *Resource) ref() *Resource {
 	var _arg0 *C.GResource // out
 	var _cret *C.GResource // in
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	_cret = C.g_resource_ref(_arg0)
 
 	var _ret *Resource // out
 
-	_ret = (*Resource)(unsafe.Pointer(_cret))
+	_ret = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
+		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -947,7 +924,7 @@ func (resource *Resource) ref() *Resource {
 func (resource *Resource) unref() {
 	var _arg0 *C.GResource // out
 
-	_arg0 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg0 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	C.g_resource_unref(_arg0)
 }
@@ -965,12 +942,13 @@ func (resource *Resource) unref() {
 // to connect to the remote service, you can use Service's Connectable interface
 // and not need to worry about Target at all.
 type SrvTarget struct {
-	native C.GSrvTarget
+	nocopy gextras.NoCopy
+	native *C.GSrvTarget
 }
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*SrvTarget)(unsafe.Pointer(b)), nil
+	return &SrvTarget{native: (*C.GSrvTarget)(unsafe.Pointer(b))}, nil
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
@@ -990,17 +968,12 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	_srvTarget = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
+		C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _srvTarget
-}
-
-// Native returns the underlying C source pointer.
-func (s *SrvTarget) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // Copy copies target
@@ -1008,15 +981,15 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_copy(_arg0)
 
 	var _srvTarget *SrvTarget // out
 
-	_srvTarget = (*SrvTarget)(unsafe.Pointer(_cret))
+	_srvTarget = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
-		C.g_srv_target_free((*C.GSrvTarget)(unsafe.Pointer(v)))
+		C.g_srv_target_free((*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _srvTarget
@@ -1026,7 +999,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 func (target *SrvTarget) free() {
 	var _arg0 *C.GSrvTarget // out
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	C.g_srv_target_free(_arg0)
 }
@@ -1039,7 +1012,7 @@ func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_hostname(_arg0)
 
@@ -1055,7 +1028,7 @@ func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_port(_arg0)
 
@@ -1072,7 +1045,7 @@ func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_priority(_arg0)
 
@@ -1089,7 +1062,7 @@ func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
 
-	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(target))
+	_arg0 = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = C.g_srv_target_get_weight(_arg0)
 

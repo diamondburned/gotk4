@@ -144,10 +144,10 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 
 	var _ioChannel *glib.IOChannel // out
 
-	_ioChannel = (*glib.IOChannel)(unsafe.Pointer(_cret))
+	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_io_channel_ref(_cret)
 	runtime.SetFinalizer(_ioChannel, func(v *glib.IOChannel) {
-		C.g_io_channel_unref((*C.GIOChannel)(unsafe.Pointer(v)))
+		C.g_io_channel_unref((*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ioChannel

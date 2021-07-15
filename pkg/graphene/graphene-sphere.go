@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,12 +24,13 @@ func init() {
 
 // Sphere: sphere, represented by its center and radius.
 type Sphere struct {
-	native C.graphene_sphere_t
+	nocopy gextras.NoCopy
+	native *C.graphene_sphere_t
 }
 
 func marshalSphere(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Sphere)(unsafe.Pointer(b)), nil
+	return &Sphere{native: (*C.graphene_sphere_t)(unsafe.Pointer(b))}, nil
 }
 
 // NewSphereAlloc constructs a struct Sphere.
@@ -39,17 +41,12 @@ func NewSphereAlloc() *Sphere {
 
 	var _sphere *Sphere // out
 
-	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.graphene_sphere_free((*C.graphene_sphere_t)(unsafe.Pointer(v)))
+		C.graphene_sphere_free((*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _sphere
-}
-
-// Native returns the underlying C source pointer.
-func (s *Sphere) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // ContainsPoint checks whether the given point is contained in the volume of a
@@ -59,8 +56,8 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C._Bool               // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_sphere_contains_point(_arg0, _arg1)
 
@@ -80,8 +77,8 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret C.float               // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.graphene_sphere_distance(_arg0, _arg1)
 
@@ -98,8 +95,8 @@ func (a *Sphere) Equal(b *Sphere) bool {
 	var _arg1 *C.graphene_sphere_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_sphere_equal(_arg0, _arg1)
 
@@ -116,7 +113,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 func (s *Sphere) free() {
 	var _arg0 *C.graphene_sphere_t // out
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	C.graphene_sphere_free(_arg0)
 }
@@ -125,11 +122,15 @@ func (s *Sphere) free() {
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {
 	var _arg0 *C.graphene_sphere_t // out
-	var _box Box
+	var _arg1 C.graphene_box_t     // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
-	C.graphene_sphere_get_bounding_box(_arg0, (*C.graphene_box_t)(unsafe.Pointer(&_box)))
+	C.graphene_sphere_get_bounding_box(_arg0, &_arg1)
+
+	var _box Box // out
+
+	_box = *(*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _box
 }
@@ -137,11 +138,15 @@ func (s *Sphere) BoundingBox() Box {
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
 func (s *Sphere) Center() Point3D {
 	var _arg0 *C.graphene_sphere_t // out
-	var _center Point3D
+	var _arg1 C.graphene_point3d_t // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
-	C.graphene_sphere_get_center(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_center)))
+	C.graphene_sphere_get_center(_arg0, &_arg1)
+
+	var _center Point3D // out
+
+	_center = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _center
 }
@@ -151,7 +156,7 @@ func (s *Sphere) Radius() float32 {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_sphere_get_radius(_arg0)
 
@@ -170,15 +175,15 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var _arg2 C.float               // out
 	var _cret *C.graphene_sphere_t  // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg2 = C.float(radius)
 
 	_cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
 
 	var _sphere *Sphere // out
 
-	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _sphere
 }
@@ -195,18 +200,18 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_sphere_t  // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(points))
 	if len(points) > 0 {
 		_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(&points[0]))
 	}
-	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
+	_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(center)))
 
 	_cret = C.graphene_sphere_init_from_points(_arg0, _arg1, _arg2, _arg3)
 
 	var _sphere *Sphere // out
 
-	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _sphere
 }
@@ -223,18 +228,18 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg3 *C.graphene_point3d_t // out
 	var _cret *C.graphene_sphere_t  // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (C.uint)(len(vectors))
 	if len(vectors) > 0 {
 		_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(&vectors[0]))
 	}
-	_arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(center))
+	_arg3 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(center)))
 
 	_cret = C.graphene_sphere_init_from_vectors(_arg0, _arg1, _arg2, _arg3)
 
 	var _sphere *Sphere // out
 
-	_sphere = (*Sphere)(unsafe.Pointer(_cret))
+	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _sphere
 }
@@ -244,7 +249,7 @@ func (s *Sphere) IsEmpty() bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
 	_cret = C.graphene_sphere_is_empty(_arg0)
 
@@ -262,12 +267,16 @@ func (s *Sphere) IsEmpty() bool {
 func (s *Sphere) Translate(point *Point3D) Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Sphere
+	var _arg2 C.graphene_sphere_t   // in
 
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	C.graphene_sphere_translate(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
+	C.graphene_sphere_translate(_arg0, _arg1, &_arg2)
+
+	var _res Sphere // out
+
+	_res = *(*Sphere)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }

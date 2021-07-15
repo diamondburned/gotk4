@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -26,25 +27,21 @@ func init() {
 }
 
 type TextAppearance struct {
-	native C.GtkTextAppearance
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextAppearance) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GtkTextAppearance
 }
 
 // BgColor: background Color.
 func (t *TextAppearance) BgColor() gdk.Color {
 	var v gdk.Color // out
-	v = *(*gdk.Color)(unsafe.Pointer((&t.native.bg_color)))
+	v = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.bg_color))))
 	return v
 }
 
 // FgColor: foreground Color.
 func (t *TextAppearance) FgColor() gdk.Color {
 	var v gdk.Color // out
-	v = *(*gdk.Color)(unsafe.Pointer((&t.native.fg_color)))
+	v = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&t.native.fg_color))))
 	return v
 }
 
@@ -60,12 +57,13 @@ func (t *TextAppearance) Rise() int {
 // structs, the fields in this struct should only be read, never modified
 // directly.
 type TextAttributes struct {
-	native C.GtkTextAttributes
+	nocopy gextras.NoCopy
+	native *C.GtkTextAttributes
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TextAttributes)(unsafe.Pointer(b)), nil
+	return &TextAttributes{native: (*C.GtkTextAttributes)(unsafe.Pointer(b))}, nil
 }
 
 // NewTextAttributes constructs a struct TextAttributes.
@@ -76,24 +74,19 @@ func NewTextAttributes() *TextAttributes {
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _textAttributes
 }
 
-// Native returns the underlying C source pointer.
-func (t *TextAttributes) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
 // Appearance for text.
 func (t *TextAttributes) Appearance() TextAppearance {
 	var v TextAppearance // out
-	v = *(*TextAppearance)(unsafe.Pointer((&t.native.appearance)))
+	v = *(*TextAppearance)(gextras.NewStructNative(unsafe.Pointer((&t.native.appearance))))
 	return v
 }
 
@@ -114,7 +107,7 @@ func (t *TextAttributes) Direction() TextDirection {
 // Font for text.
 func (t *TextAttributes) Font() *pango.FontDescription {
 	var v *pango.FontDescription // out
-	v = (*pango.FontDescription)(unsafe.Pointer(t.native.font))
+	v = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(t.native.font)))
 	return v
 }
 
@@ -170,7 +163,7 @@ func (t *TextAttributes) PixelsInsideWrap() int {
 // Tabs: custom TabArray for this text.
 func (t *TextAttributes) Tabs() *pango.TabArray {
 	var v *pango.TabArray // out
-	v = (*pango.TabArray)(unsafe.Pointer(t.native.tabs))
+	v = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(t.native.tabs)))
 	return v
 }
 
@@ -184,7 +177,7 @@ func (t *TextAttributes) WrapMode() WrapMode {
 // Language for text.
 func (t *TextAttributes) Language() *pango.Language {
 	var v *pango.Language // out
-	v = (*pango.Language)(unsafe.Pointer(t.native.language))
+	v = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(t.native.language)))
 	return v
 }
 
@@ -200,16 +193,16 @@ func (src *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(src))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.gtk_text_attributes_copy(_arg0)
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _textAttributes
@@ -221,8 +214,8 @@ func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out
 	var _arg1 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(src))
-	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(src)))
+	_arg1 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(dest)))
 
 	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 }
@@ -232,16 +225,16 @@ func (values *TextAttributes) ref() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
 	var _cret *C.GtkTextAttributes // in
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(values))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(values)))
 
 	_cret = C.gtk_text_attributes_ref(_arg0)
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _textAttributes
@@ -252,7 +245,7 @@ func (values *TextAttributes) ref() *TextAttributes {
 func (values *TextAttributes) unref() {
 	var _arg0 *C.GtkTextAttributes // out
 
-	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(values))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(values)))
 
 	C.gtk_text_attributes_unref(_arg0)
 }

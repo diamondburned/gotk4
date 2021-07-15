@@ -4,6 +4,8 @@ package pango
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: pango
@@ -26,7 +28,7 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg5 = (C.int)(len(attrs))
 	if len(attrs) > 0 {
 		_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
@@ -50,8 +52,8 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
-	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(attrs))
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg4 = (*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer(attrs)))
 	_arg5 = C.int(attrsLen)
 
 	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
@@ -106,7 +108,7 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.int(length)
 	_arg3 = C.int(level)
-	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg4 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg6 = (C.int)(len(logAttrs))
 	if len(logAttrs) > 0 {
 		_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
@@ -131,7 +133,7 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis))
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
 	_arg4 = C.int(offset)
 	_arg6 = (C.int)(len(logAttrs))
 	if len(logAttrs) > 0 {
@@ -144,10 +146,6 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 // LogAttr: PangoLogAttr structure stores information about the attributes of a
 // single character.
 type LogAttr struct {
-	native C.PangoLogAttr
-}
-
-// Native returns the underlying C source pointer.
-func (l *LogAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
+	nocopy gextras.NoCopy
+	native *C.PangoLogAttr
 }

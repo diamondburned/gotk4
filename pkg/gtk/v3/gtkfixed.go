@@ -146,12 +146,8 @@ func (fixed *Fixed) Put(widget Widgeter, x int, y int) {
 }
 
 type FixedChild struct {
-	native C.GtkFixedChild
-}
-
-// Native returns the underlying C source pointer.
-func (f *FixedChild) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	nocopy gextras.NoCopy
+	native *C.GtkFixedChild
 }
 
 func (f *FixedChild) Widget() *Widget {

@@ -4,6 +4,8 @@ package pango
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: pango
@@ -35,8 +37,8 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 
-	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(inclusive))
-	_arg2 = (*C.PangoRectangle)(unsafe.Pointer(nearest))
+	_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inclusive)))
+	_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(nearest)))
 
 	C.pango_extents_to_pixels(_arg1, _arg2)
 }
@@ -84,12 +86,8 @@ func UnitsToDouble(i int) float64 {
 // a single glyph or section of text. (See, for instance,
 // pango.Font.GetGlyphExtents().)
 type Rectangle struct {
-	native C.PangoRectangle
-}
-
-// Native returns the underlying C source pointer.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	nocopy gextras.NoCopy
+	native *C.PangoRectangle
 }
 
 // X coordinate of the left side of the rectangle.

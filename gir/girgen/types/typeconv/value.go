@@ -371,6 +371,10 @@ func (value *ValueConverted) flush() {
 	value.Conversion = value.p.String()
 }
 
+func (value *ValueConverted) vtmpl(tmpl string) {
+	value.p.LineTmpl(value, tmpl)
+}
+
 func (value *ValueConverted) Logln(lvl logger.Level, v ...interface{}) {
 	value.log(lvl, logger.Prefix(v, value.logPrefix())...)
 }

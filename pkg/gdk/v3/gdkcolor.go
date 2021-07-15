@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,17 +27,13 @@ func init() {
 //
 // Deprecated: Use RGBA.
 type Color struct {
-	native C.GdkColor
+	nocopy gextras.NoCopy
+	native *C.GdkColor
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Color)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (c *Color) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+	return &Color{native: (*C.GdkColor)(unsafe.Pointer(b))}, nil
 }
 
 // Pixel: for allocated colors, the pixel value used to draw this color on the
@@ -78,15 +75,15 @@ func (color *Color) Copy() *Color {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.GdkColor // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_copy(_arg0)
 
 	var _ret *Color // out
 
-	_ret = (*Color)(unsafe.Pointer(_cret))
+	_ret = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.gdk_color_free((*C.GdkColor)(unsafe.Pointer(v)))
+		C.gdk_color_free((*C.GdkColor)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -100,8 +97,8 @@ func (colora *Color) Equal(colorb *Color) bool {
 	var _arg1 *C.GdkColor // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(colora))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(colorb))
+	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(colora)))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(colorb)))
 
 	_cret = C.gdk_color_equal(_arg0, _arg1)
 
@@ -120,7 +117,7 @@ func (colora *Color) Equal(colorb *Color) bool {
 func (color *Color) free() {
 	var _arg0 *C.GdkColor // out
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gdk_color_free(_arg0)
 }
@@ -132,7 +129,7 @@ func (color *Color) Hash() uint {
 	var _arg0 *C.GdkColor // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_hash(_arg0)
 
@@ -154,7 +151,7 @@ func (color *Color) String() string {
 	var _arg0 *C.GdkColor // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg0 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gdk_color_to_string(_arg0)
 
@@ -178,16 +175,18 @@ func (color *Color) String() string {
 //
 // Deprecated: Use RGBA.
 func ColorParse(spec string) (Color, bool) {
-	var _arg1 *C.gchar // out
-	var _color Color
+	var _arg1 *C.gchar   // out
+	var _arg2 C.GdkColor // in
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
 
-	_cret = C.gdk_color_parse(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	_cret = C.gdk_color_parse(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _color Color // out
+	var _ok bool     // out
 
+	_color = *(*Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

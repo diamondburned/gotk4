@@ -76,12 +76,13 @@ func TargetTableFree(targets []TargetEntry) {
 // TargetEntry represents a single type of data than can be supplied for by a
 // widget for a selection or for supplied or received during drag-and-drop.
 type TargetEntry struct {
-	native C.GtkTargetEntry
+	nocopy gextras.NoCopy
+	native *C.GtkTargetEntry
 }
 
 func marshalTargetEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TargetEntry)(unsafe.Pointer(b)), nil
+	return &TargetEntry{native: (*C.GtkTargetEntry)(unsafe.Pointer(b))}, nil
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
@@ -99,17 +100,12 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
+		C.gtk_target_entry_free((*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetEntry
-}
-
-// Native returns the underlying C source pointer.
-func (t *TargetEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // Target: string representation of the target type
@@ -140,15 +136,15 @@ func (data *TargetEntry) Copy() *TargetEntry {
 	var _arg0 *C.GtkTargetEntry // out
 	var _cret *C.GtkTargetEntry // in
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(data))
+	_arg0 = (*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = C.gtk_target_entry_copy(_arg0)
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
-		C.gtk_target_entry_free((*C.GtkTargetEntry)(unsafe.Pointer(v)))
+		C.gtk_target_entry_free((*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetEntry
@@ -159,7 +155,7 @@ func (data *TargetEntry) Copy() *TargetEntry {
 func (data *TargetEntry) free() {
 	var _arg0 *C.GtkTargetEntry // out
 
-	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(data))
+	_arg0 = (*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer(data)))
 
 	C.gtk_target_entry_free(_arg0)
 }
@@ -167,12 +163,13 @@ func (data *TargetEntry) free() {
 // TargetList is a reference counted list of TargetPair and should be treated as
 // opaque.
 type TargetList struct {
-	native C.GtkTargetList
+	nocopy gextras.NoCopy
+	native *C.GtkTargetList
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TargetList)(unsafe.Pointer(b)), nil
+	return &TargetList{native: (*C.GtkTargetList)(unsafe.Pointer(b))}, nil
 }
 
 // NewTargetList constructs a struct TargetList.
@@ -190,18 +187,13 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetList
-}
-
-// Native returns the underlying C source pointer.
-func (t *TargetList) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // AddImageTargets appends the image targets supported by SelectionData to the
@@ -211,7 +203,7 @@ func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 	if writable {
 		_arg2 = C.TRUE
@@ -230,7 +222,7 @@ func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffe
 	var _arg2 C.gboolean       // out
 	var _arg3 *C.GtkTextBuffer // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 	if deserializable {
 		_arg2 = C.TRUE
@@ -246,7 +238,7 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 	var _arg1 *C.GtkTargetEntry
 	var _arg2 C.guint
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg2 = (C.guint)(len(targets))
 	if len(targets) > 0 {
 		_arg1 = (*C.GtkTargetEntry)(unsafe.Pointer(&targets[0]))
@@ -261,7 +253,7 @@ func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_text_targets(_arg0, _arg1)
@@ -273,7 +265,7 @@ func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = C.guint(info)
 
 	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
@@ -284,16 +276,16 @@ func (list *TargetList) ref() *TargetList {
 	var _arg0 *C.GtkTargetList // out
 	var _cret *C.GtkTargetList // in
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = C.gtk_target_list_ref(_arg0)
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_target_list_ref(_cret)
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetList
@@ -304,7 +296,7 @@ func (list *TargetList) ref() *TargetList {
 func (list *TargetList) unref() {
 	var _arg0 *C.GtkTargetList // out
 
-	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(list))
+	_arg0 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(list)))
 
 	C.gtk_target_list_unref(_arg0)
 }
@@ -312,12 +304,8 @@ func (list *TargetList) unref() {
 // TargetPair is used to represent the same information as a table of
 // TargetEntry, but in an efficient form.
 type TargetPair struct {
-	native C.GtkTargetPair
-}
-
-// Native returns the underlying C source pointer.
-func (t *TargetPair) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GtkTargetPair
 }
 
 // Flags for DND

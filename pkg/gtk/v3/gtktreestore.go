@@ -160,13 +160,17 @@ func NewTreeStoreV(types []externglib.Type) *TreeStore {
 // call gtk_tree_store_set() or gtk_tree_store_set_value().
 func (treeStore *TreeStore) Append(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 
-	C.gtk_tree_store_append(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_tree_store_append(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -189,15 +193,19 @@ func (treeStore *TreeStore) Clear() {
 // gtk_tree_store_set_value().
 func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 C.gint         // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gint          // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	_arg3 = C.gint(position)
 
-	C.gtk_tree_store_insert(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -213,15 +221,19 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int) TreeIter {
 // gtk_tree_store_set() or gtk_tree_store_set_value().
 func (treeStore *TreeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
-	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
+	_arg3 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sibling)))
 
-	C.gtk_tree_store_insert_after(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert_after(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -237,15 +249,19 @@ func (treeStore *TreeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) Tre
 // gtk_tree_store_set() or gtk_tree_store_set_value().
 func (treeStore *TreeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
-	_arg3 = (*C.GtkTreeIter)(unsafe.Pointer(sibling))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
+	_arg3 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sibling)))
 
-	C.gtk_tree_store_insert_before(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	C.gtk_tree_store_insert_before(_arg0, &_arg1, _arg2, _arg3)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -255,15 +271,15 @@ func (treeStore *TreeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) Tr
 // mainly intended for language bindings.
 func (treeStore *TreeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
-	var _arg3 C.gint         // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gint          // out
 	var _arg4 *C.gint
 	var _arg6 C.gint
 	var _arg5 *C.GValue
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	_arg3 = C.gint(position)
 	_arg6 = (C.gint)(len(columns))
 	if len(columns) > 0 {
@@ -278,7 +294,11 @@ func (treeStore *TreeStore) InsertWithValuesv(parent *TreeIter, position int, co
 		}
 	}
 
-	C.gtk_tree_store_insert_with_valuesv(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, _arg4, _arg5, _arg6)
+	C.gtk_tree_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -292,8 +312,8 @@ func (treeStore *TreeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) boo
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(descendant))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
 
@@ -314,7 +334,7 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	var _cret C.gint          // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
 
@@ -335,7 +355,7 @@ func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
 
@@ -358,8 +378,8 @@ func (treeStore *TreeStore) MoveAfter(iter *TreeIter, position *TreeIter) {
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
 
 	C.gtk_tree_store_move_after(_arg0, _arg1, _arg2)
 }
@@ -374,8 +394,8 @@ func (treeStore *TreeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(position))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
 
 	C.gtk_tree_store_move_before(_arg0, _arg1, _arg2)
 }
@@ -387,13 +407,17 @@ func (treeStore *TreeStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 // you need to call gtk_tree_store_set() or gtk_tree_store_set_value().
 func (treeStore *TreeStore) Prepend(parent *TreeIter) TreeIter {
 	var _arg0 *C.GtkTreeStore // out
-	var _iter TreeIter
-	var _arg2 *C.GtkTreeIter // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 
-	C.gtk_tree_store_prepend(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)), _arg2)
+	C.gtk_tree_store_prepend(_arg0, &_arg1, _arg2)
+
+	var _iter TreeIter // out
+
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -407,7 +431,7 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
 
@@ -451,7 +475,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *externgl
 	var _arg3 *C.GValue       // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = C.gint(column)
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
@@ -470,7 +494,7 @@ func (treeStore *TreeStore) SetValuesv(iter *TreeIter, columns []int, values []e
 	var _arg3 *C.GValue
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg4 = (C.gint)(len(columns))
 	if len(columns) > 0 {
 		_arg2 = (*C.gint)(unsafe.Pointer(&columns[0]))
@@ -495,8 +519,8 @@ func (treeStore *TreeStore) Swap(a *TreeIter, b *TreeIter) {
 	var _arg2 *C.GtkTreeIter  // out
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(treeStore.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(a))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(b))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(b)))
 
 	C.gtk_tree_store_swap(_arg0, _arg1, _arg2)
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,12 +42,13 @@ const (
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
 type TimeZone struct {
-	native C.GTimeZone
+	nocopy gextras.NoCopy
+	native *C.GTimeZone
 }
 
 func marshalTimeZone(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TimeZone)(unsafe.Pointer(b)), nil
+	return &TimeZone{native: (*C.GTimeZone)(unsafe.Pointer(b))}, nil
 }
 
 // NewTimeZone constructs a struct TimeZone.
@@ -60,10 +62,10 @@ func NewTimeZone(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
@@ -80,10 +82,10 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
@@ -97,10 +99,10 @@ func NewTimeZoneLocal() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
@@ -117,10 +119,10 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
@@ -134,18 +136,13 @@ func NewTimeZoneUtc() *TimeZone {
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
-}
-
-// Native returns the underlying C source pointer.
-func (t *TimeZone) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // AdjustTime finds an interval within tz that corresponds to the given time_,
@@ -168,7 +165,7 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _arg2 *C.gint64    // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 	_arg1 = C.GTimeType(typ)
 	_arg2 = (*C.gint64)(unsafe.Pointer(time_))
 
@@ -203,7 +200,7 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _arg2 C.gint64     // out
 	var _cret C.gint       // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 	_arg1 = C.GTimeType(typ)
 	_arg2 = C.gint64(time_)
 
@@ -226,7 +223,7 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
@@ -250,7 +247,7 @@ func (tz *TimeZone) Identifier() string {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
 
@@ -272,7 +269,7 @@ func (tz *TimeZone) Offset(interval int) int32 {
 	var _arg1 C.gint       // out
 	var _cret C.gint32     // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
@@ -291,7 +288,7 @@ func (tz *TimeZone) IsDst(interval int) bool {
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 	_arg1 = C.gint(interval)
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
@@ -310,16 +307,16 @@ func (tz *TimeZone) ref() *TimeZone {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.GTimeZone // in
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 
 	_cret = C.g_time_zone_ref(_arg0)
 
 	var _timeZone *TimeZone // out
 
-	_timeZone = (*TimeZone)(unsafe.Pointer(_cret))
+	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
 	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
-		C.g_time_zone_unref((*C.GTimeZone)(unsafe.Pointer(v)))
+		C.g_time_zone_unref((*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _timeZone
@@ -329,7 +326,7 @@ func (tz *TimeZone) ref() *TimeZone {
 func (tz *TimeZone) unref() {
 	var _arg0 *C.GTimeZone // out
 
-	_arg0 = (*C.GTimeZone)(unsafe.Pointer(tz))
+	_arg0 = (*C.GTimeZone)(gextras.StructNative(unsafe.Pointer(tz)))
 
 	C.g_time_zone_unref(_arg0)
 }

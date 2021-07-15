@@ -432,12 +432,8 @@ func (actionGroup *ActionGroup) TranslateString(_string string) string {
 //
 // Deprecated: since version 3.10.
 type ActionEntry struct {
-	native C.GtkActionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
+	nocopy gextras.NoCopy
+	native *C.GtkActionEntry
 }
 
 // Name: name of the action.
@@ -484,12 +480,8 @@ func (a *ActionEntry) Tooltip() string {
 //
 // Deprecated: since version 3.10.
 type RadioActionEntry struct {
-	native C.GtkRadioActionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (r *RadioActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	nocopy gextras.NoCopy
+	native *C.GtkRadioActionEntry
 }
 
 // Name: name of the action.
@@ -543,12 +535,8 @@ func (r *RadioActionEntry) Value() int {
 //
 // Deprecated: since version 3.10.
 type ToggleActionEntry struct {
-	native C.GtkToggleActionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (t *ToggleActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GtkToggleActionEntry
 }
 
 // Name: name of the action.

@@ -5,6 +5,7 @@ package glib
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,7 +41,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var _arg3 C.gint     // out
 	var _cret C.gint     // in
 
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fds)))
 	_arg2 = C.guint(nfds)
 	_arg3 = C.gint(timeout)
 
@@ -56,17 +57,13 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
 type PollFD struct {
-	native C.GPollFD
+	nocopy gextras.NoCopy
+	native *C.GPollFD
 }
 
 func marshalPollFD(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*PollFD)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	return &PollFD{native: (*C.GPollFD)(unsafe.Pointer(b))}, nil
 }
 
 // Fd: file descriptor to poll (or a HANDLE on Win32)

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -265,12 +266,13 @@ func marshalModifierType(p uintptr) (interface{}, error) {
 // the types it represents. Instead, new GdkContentFormats have to be created.
 // The gdk.ContentFormatsBuilder` structure is meant to help in this endeavor.
 type ContentFormats struct {
-	native C.GdkContentFormats
+	nocopy gextras.NoCopy
+	native *C.GdkContentFormats
 }
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*ContentFormats)(unsafe.Pointer(b)), nil
+	return &ContentFormats{native: (*C.GdkContentFormats)(unsafe.Pointer(b))}, nil
 }
 
 // NewContentFormats constructs a struct ContentFormats.
@@ -292,10 +294,10 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -312,18 +314,13 @@ func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
-}
-
-// Native returns the underlying C source pointer.
-func (c *ContentFormats) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // ContainGType checks if a given GType is part of the given formats.
@@ -332,7 +329,7 @@ func (formats *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _arg1 C.GType              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 	_arg1 = C.GType(typ)
 
 	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
@@ -352,7 +349,7 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _arg1 *C.char              // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 
 	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
@@ -372,8 +369,8 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.gboolean           // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(first))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(first)))
+	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_match(_arg0, _arg1)
 
@@ -394,8 +391,8 @@ func (first *ContentFormats) MatchGType(second *ContentFormats) externglib.Type 
 	var _arg1 *C.GdkContentFormats // out
 	var _cret C.GType              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(first))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(first)))
+	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
 
@@ -415,8 +412,8 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(first))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(first)))
+	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
 
@@ -432,16 +429,16 @@ func (formats *ContentFormats) ref() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_ref(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -455,7 +452,7 @@ func (formats *ContentFormats) String() string {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.char              // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_to_string(_arg0)
 
@@ -474,17 +471,17 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _arg1 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(first))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(first)))
+	_arg1 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gdk_content_formats_union(_arg0, _arg1)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -496,16 +493,16 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_deserialize_gtypes(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -517,16 +514,16 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_deserialize_mime_types(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -538,16 +535,16 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_serialize_gtypes(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -559,16 +556,16 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GdkContentFormats // in
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = C.gdk_content_formats_union_serialize_mime_types(_arg0)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats
@@ -580,19 +577,15 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 func (formats *ContentFormats) unref() {
 	var _arg0 *C.GdkContentFormats // out
 
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(formats))
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	C.gdk_content_formats_unref(_arg0)
 }
 
 // KeymapKey: GdkKeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
-	native C.GdkKeymapKey
-}
-
-// Native returns the underlying C source pointer.
-func (k *KeymapKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&k.native)
+	nocopy gextras.NoCopy
+	native *C.GdkKeymapKey
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
@@ -640,17 +633,13 @@ func (k *KeymapKey) Level() int {
 // The Graphene library has a number of other data types for regions and volumes
 // in 2D and 3D.
 type Rectangle struct {
-	native C.GdkRectangle
+	nocopy gextras.NoCopy
+	native *C.GdkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Rectangle)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return &Rectangle{native: (*C.GdkRectangle)(unsafe.Pointer(b))}, nil
 }
 
 // X: x coordinate of the top left corner
@@ -688,7 +677,7 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg2 C.int           // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
@@ -709,8 +698,8 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg1 *C.GdkRectangle // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(rect1))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect2)))
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
@@ -733,16 +722,18 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _dest Rectangle
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
-	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _dest Rectangle // out
+	var _ok bool        // out
 
+	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -761,12 +752,16 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 func (src1 *Rectangle) Union(src2 *Rectangle) Rectangle {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 *C.GdkRectangle // out
-	var _dest Rectangle
+	var _arg2 C.GdkRectangle  // in
 
-	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(src1))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
-	C.gdk_rectangle_union(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

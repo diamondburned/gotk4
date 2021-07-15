@@ -5,6 +5,8 @@ package gtk
 import (
 	"runtime/cgo"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -43,12 +45,8 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().
 type RequestedSize struct {
-	native C.GtkRequestedSize
-}
-
-// Native returns the underlying C source pointer.
-func (r *RequestedSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	nocopy gextras.NoCopy
+	native *C.GtkRequestedSize
 }
 
 // Data: client pointer

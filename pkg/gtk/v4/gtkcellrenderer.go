@@ -254,8 +254,8 @@ func (cell *CellRenderer) Activate(event gdk.Eventer, widget Widgeter, path stri
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
-	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
@@ -276,14 +276,18 @@ func (cell *CellRenderer) AlignedArea(widget Widgeter, flags CellRendererState, 
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkCellRendererState // out
 	var _arg3 *C.GdkRectangle        // out
-	var _alignedArea gdk.Rectangle
+	var _arg4 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg2 = C.GtkCellRendererState(flags)
-	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
-	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, (*C.GdkRectangle)(unsafe.Pointer(&_alignedArea)))
+	C.gtk_cell_renderer_get_aligned_area(_arg0, _arg1, _arg2, _arg3, &_arg4)
+
+	var _alignedArea gdk.Rectangle // out
+
+	_alignedArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 
 	return _alignedArea
 }
@@ -431,13 +435,19 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgeter, width int) (m
 func (cell *CellRenderer) PreferredSize(widget Widgeter) (minimumSize Requisition, naturalSize Requisition) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
-	var _minimumSize Requisition
-	var _naturalSize Requisition
+	var _arg2 C.GtkRequisition   // in
+	var _arg3 C.GtkRequisition   // in
 
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 
-	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
+	C.gtk_cell_renderer_get_preferred_size(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _minimumSize Requisition // out
+	var _naturalSize Requisition // out
+
+	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _minimumSize, _naturalSize
 }
@@ -690,8 +700,8 @@ func (cell *CellRenderer) Snapshot(snapshot *Snapshot, widget Widgeter, backgrou
 	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	_arg1 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
-	_arg3 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
-	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg5 = C.GtkCellRendererState(flags)
 
 	C.gtk_cell_renderer_snapshot(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
@@ -714,8 +724,8 @@ func (cell *CellRenderer) StartEditing(event gdk.Eventer, widget Widgeter, path 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer((event).(gextras.Nativer).Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
 	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea))
-	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 	_arg6 = C.GtkCellRendererState(flags)
 
 	_cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)

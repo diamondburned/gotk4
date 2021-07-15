@@ -49,9 +49,9 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	defer C.free(unsafe.Pointer(arg1))
-	iter = (*TreeIter)(unsafe.Pointer(arg2))
+	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(EntryCompletionMatchFunc)

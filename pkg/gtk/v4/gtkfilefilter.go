@@ -138,7 +138,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
@@ -266,9 +266,9 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant

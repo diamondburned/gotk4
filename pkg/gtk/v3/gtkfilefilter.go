@@ -62,9 +62,9 @@ func _gotk4_gtk3_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) (cre
 
 	var filterInfo *FileFilterInfo // out
 
-	filterInfo = (*FileFilterInfo)(unsafe.Pointer(arg0))
+	filterInfo = (*FileFilterInfo)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	runtime.SetFinalizer(filterInfo, func(v *FileFilterInfo) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	fn := v.(FileFilterFunc)
@@ -196,7 +196,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
 	var _cret *C.GtkFileFilter // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_file_filter_new_from_gvariant(_arg1)
 
@@ -277,7 +277,7 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
-	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo))
+	_arg1 = (*C.GtkFileFilterInfo)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
 
@@ -351,9 +351,9 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -362,12 +362,8 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 // FileFilterInfo is used to pass information about the tested file to
 // gtk_file_filter_filter().
 type FileFilterInfo struct {
-	native C.GtkFileFilterInfo
-}
-
-// Native returns the underlying C source pointer.
-func (f *FileFilterInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	nocopy gextras.NoCopy
+	native *C.GtkFileFilterInfo
 }
 
 // Contains flags indicating which of the following fields need are filled

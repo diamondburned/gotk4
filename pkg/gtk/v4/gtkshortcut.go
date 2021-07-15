@@ -121,9 +121,9 @@ func (self *Shortcut) Arguments() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -162,7 +162,7 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 	var _arg1 *C.GVariant    // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(args))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 
 	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 }

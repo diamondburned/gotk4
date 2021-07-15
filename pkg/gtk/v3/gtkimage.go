@@ -320,7 +320,7 @@ func NewImageFromIconSet(iconSet *IconSet, size int) *Image {
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
 
-	_arg1 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
+	_arg1 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 	_arg2 = C.GtkIconSize(size)
 
 	_cret = C.gtk_image_new_from_icon_set(_arg1, _arg2)
@@ -524,9 +524,9 @@ func (image *Image) IconSet() (*IconSet, int) {
 	var _iconSet *IconSet // out
 	var _size int         // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_arg1))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_size = int(_arg2)
 
@@ -676,7 +676,7 @@ func (image *Image) SetFromIconSet(iconSet *IconSet, size int) {
 	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(image.Native()))
-	_arg1 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
+	_arg1 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 	_arg2 = C.GtkIconSize(size)
 
 	C.gtk_image_set_from_icon_set(_arg0, _arg1, _arg2)

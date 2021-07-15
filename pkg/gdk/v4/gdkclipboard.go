@@ -133,9 +133,9 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats

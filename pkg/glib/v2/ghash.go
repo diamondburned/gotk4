@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -288,17 +289,13 @@ func StrHash(v cgo.Handle) uint {
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
 type HashTable struct {
-	native C.GHashTable
+	nocopy gextras.NoCopy
+	native *C.GHashTable
 }
 
 func marshalHashTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*HashTable)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
+	return &HashTable{native: (*C.GHashTable)(unsafe.Pointer(b))}, nil
 }
 
 // HashTableAdd: this is a convenience function for using a Table as a set. It
@@ -320,7 +317,7 @@ func HashTableAdd(hashTable *HashTable, key cgo.Handle) bool {
 	var _arg2 C.gpointer    // out
 	var _cret C.gboolean    // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_add(_arg1, _arg2)
@@ -340,7 +337,7 @@ func HashTableContains(hashTable *HashTable, key cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_contains(_arg1, _arg2)
@@ -362,7 +359,7 @@ func HashTableContains(hashTable *HashTable, key cgo.Handle) bool {
 func HashTableDestroy(hashTable *HashTable) {
 	var _arg1 *C.GHashTable // out
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	C.g_hash_table_destroy(_arg1)
 }
@@ -382,7 +379,7 @@ func HashTableInsert(hashTable *HashTable, key cgo.Handle, value cgo.Handle) boo
 	var _arg3 C.gpointer    // out
 	var _cret C.gboolean    // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(key))
 	_arg3 = (C.gpointer)(unsafe.Pointer(value))
 
@@ -406,7 +403,7 @@ func HashTableLookup(hashTable *HashTable, key cgo.Handle) cgo.Handle {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gpointer      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_lookup(_arg1, _arg2)
@@ -432,7 +429,7 @@ func HashTableLookupExtended(hashTable *HashTable, lookupKey cgo.Handle) (origKe
 	var _arg4 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_hash_table_lookup_extended(_arg1, _arg2, &_arg3, &_arg4)
@@ -460,7 +457,7 @@ func HashTableRemove(hashTable *HashTable, key cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_remove(_arg1, _arg2)
@@ -482,7 +479,7 @@ func HashTableRemove(hashTable *HashTable, key cgo.Handle) bool {
 func HashTableRemoveAll(hashTable *HashTable) {
 	var _arg1 *C.GHashTable // out
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	C.g_hash_table_remove_all(_arg1)
 }
@@ -502,7 +499,7 @@ func HashTableReplace(hashTable *HashTable, key cgo.Handle, value cgo.Handle) bo
 	var _arg3 C.gpointer    // out
 	var _cret C.gboolean    // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(key))
 	_arg3 = (C.gpointer)(unsafe.Pointer(value))
 
@@ -522,7 +519,7 @@ func HashTableSize(hashTable *HashTable) uint {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	_cret = C.g_hash_table_size(_arg1)
 
@@ -540,7 +537,7 @@ func HashTableSteal(hashTable *HashTable, key cgo.Handle) bool {
 	var _arg2 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_hash_table_steal(_arg1, _arg2)
@@ -559,7 +556,7 @@ func HashTableSteal(hashTable *HashTable, key cgo.Handle) bool {
 func HashTableStealAll(hashTable *HashTable) {
 	var _arg1 *C.GHashTable // out
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	C.g_hash_table_steal_all(_arg1)
 }
@@ -581,7 +578,7 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey cgo.Handle) (stolenK
 	var _arg4 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_hash_table_steal_extended(_arg1, _arg2, &_arg3, &_arg4)
@@ -606,7 +603,7 @@ func HashTableStealExtended(hashTable *HashTable, lookupKey cgo.Handle) (stolenK
 func HashTableunref(hashTable *HashTable) {
 	var _arg1 *C.GHashTable // out
 
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	C.g_hash_table_unref(_arg1)
 }
@@ -618,12 +615,8 @@ func HashTableunref(hashTable *HashTable) {
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
 type HashTableIter struct {
-	native C.GHashTableIter
-}
-
-// Native returns the underlying C source pointer.
-func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&h.native)
+	nocopy gextras.NoCopy
+	native *C.GHashTableIter
 }
 
 // Init initializes a key/value pair iterator and associates it with hash_table.
@@ -645,8 +638,8 @@ func (iter *HashTableIter) Init(hashTable *HashTable) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
-	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable))
+	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg1 = (*C.GHashTable)(gextras.StructNative(unsafe.Pointer(hashTable)))
 
 	C.g_hash_table_iter_init(_arg0, _arg1)
 }
@@ -660,7 +653,7 @@ func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 	var _arg2 C.gpointer        // in
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
@@ -696,7 +689,7 @@ func (iter *HashTableIter) Next() (key cgo.Handle, value cgo.Handle, ok bool) {
 func (iter *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.g_hash_table_iter_remove(_arg0)
 }
@@ -711,7 +704,7 @@ func (iter *HashTableIter) Replace(value cgo.Handle) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(value))
 
 	C.g_hash_table_iter_replace(_arg0, _arg1)
@@ -724,7 +717,7 @@ func (iter *HashTableIter) Replace(value cgo.Handle) {
 func (iter *HashTableIter) Steal() {
 	var _arg0 *C.GHashTableIter // out
 
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.g_hash_table_iter_steal(_arg0)
 }

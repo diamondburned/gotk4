@@ -459,7 +459,10 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case *gir.Record:
 		value.header.Import("unsafe")
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>))")
+		value.header.ImportCore("gextras")
+		value.vtmpl(
+			"<.Out.Set> = <.OutCast 1>(gextras.StructNative(unsafe.Pointer(<.InNamePtr 1>)))",
+		)
 
 		// This code might trigger a double-free.
 		// // If ShouldFree is true, then ideally, we'll be freeing the C copy of

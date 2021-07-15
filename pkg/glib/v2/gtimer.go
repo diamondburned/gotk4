@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -44,16 +46,18 @@ func Usleep(microseconds uint32) {
 // Deprecated: Val is not year-2038-safe. Use g_date_time_new_from_iso8601()
 // instead.
 func TimeValFromISO8601(isoDate string) (TimeVal, bool) {
-	var _arg1 *C.gchar // out
-	var _time_ TimeVal
+	var _arg1 *C.gchar   // out
+	var _arg2 C.GTimeVal // in
 	var _cret C.gboolean // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(isoDate)))
 
-	_cret = C.g_time_val_from_iso8601(_arg1, (*C.GTimeVal)(unsafe.Pointer(&_time_)))
+	_cret = C.g_time_val_from_iso8601(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _time_ TimeVal // out
+	var _ok bool       // out
 
+	_time_ = *(*TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

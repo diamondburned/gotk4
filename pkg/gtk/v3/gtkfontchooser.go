@@ -250,9 +250,9 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_fontDescription, func(v *pango.FontDescription) {
-		C.pango_font_description_free((*C.PangoFontDescription)(unsafe.Pointer(v)))
+		C.pango_font_description_free((*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fontDescription
@@ -462,7 +462,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(fontchooser.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	C.gtk_font_chooser_set_font_desc(_arg0, _arg1)
 }

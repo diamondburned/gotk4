@@ -181,7 +181,7 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GtkPageSetup // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_page_setup_new_from_gvariant(_arg1)
 
@@ -201,7 +201,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _cret *C.GtkPageSetup // in
 	var _cerr *C.GError       // in
 
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	_cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, &_cerr)
@@ -357,7 +357,7 @@ func (setup *PageSetup) PaperSize() *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _paperSize
 }
@@ -447,7 +447,7 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
@@ -503,7 +503,7 @@ func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 	var _arg1 *C.GtkPaperSize // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size))
+	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	C.gtk_page_setup_set_paper_size(_arg0, _arg1)
 }
@@ -515,7 +515,7 @@ func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var _arg1 *C.GtkPaperSize // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size))
+	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
 	C.gtk_page_setup_set_paper_size_and_default_margins(_arg0, _arg1)
 }
@@ -575,9 +575,9 @@ func (setup *PageSetup) ToGVariant() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -590,7 +590,7 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(setup.Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	C.gtk_page_setup_to_key_file(_arg0, _arg1, _arg2)

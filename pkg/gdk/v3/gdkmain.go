@@ -21,7 +21,7 @@ import "C"
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.gdk_add_option_entries_libgtk_only(_arg1)
 }

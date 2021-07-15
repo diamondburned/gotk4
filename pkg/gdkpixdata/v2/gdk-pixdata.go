@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -99,7 +100,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	var _cret *C.GdkPixbuf  // in
 	var _cerr *C.GError     // in
 
-	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
+	_arg1 = (*C.GdkPixdata)(gextras.StructNative(unsafe.Pointer(pixdata)))
 	if copyPixels {
 		_arg2 = C.TRUE
 	}
@@ -136,12 +137,8 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 // Deprecated: GdkPixdata should not be used any more. GResource should be used
 // to save the original compressed images inside the program's binary.
 type Pixdata struct {
-	native C.GdkPixdata
-}
-
-// Native returns the underlying C source pointer.
-func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	nocopy gextras.NoCopy
+	native *C.GdkPixdata
 }
 
 // Magic: magic number. A valid GdkPixdata structure must have
@@ -209,7 +206,7 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg1 C.guint
 	var _cerr *C.GError // in
 
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(pixdata))
+	_arg0 = (*C.GdkPixdata)(gextras.StructNative(unsafe.Pointer(pixdata)))
 	_arg1 = (C.guint)(len(stream))
 	if len(stream) > 0 {
 		_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))

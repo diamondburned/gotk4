@@ -400,9 +400,9 @@ func (self *Label) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attrList
@@ -878,7 +878,7 @@ func (self *Label) SetAttributes(attrs *pango.AttrList) {
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
+	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 
 	C.gtk_label_set_attributes(_arg0, _arg1)
 }

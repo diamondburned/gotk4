@@ -202,16 +202,18 @@ func marshalGesturer(p uintptr) (interface{}, error) {
 // as if constrained in an infinitely small area, rect width and height will
 // thus be 0 regardless of the number of touchpoints.
 func (gesture *Gesture) BoundingBox() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGesture // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkGesture  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
 
-	_cret = C.gtk_gesture_get_bounding_box(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -280,7 +282,7 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 
 	var _eventSequence *gdk.EventSequence // out
 
-	_eventSequence = (*gdk.EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _eventSequence
 }
@@ -296,7 +298,7 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x float64, y float64
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 
 	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -320,7 +322,7 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 	var _cret C.GtkEventSequenceState // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 
 	_cret = C.gtk_gesture_get_sequence_state(_arg0, _arg1)
 
@@ -382,7 +384,7 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 
 	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
 
@@ -496,7 +498,7 @@ func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state Even
 	var _cret C.gboolean              // in
 
 	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
-	_arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 	_arg2 = C.GtkEventSequenceState(state)
 
 	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)

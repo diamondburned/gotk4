@@ -194,12 +194,8 @@ func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
-	native C.GtkPadActionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (p *PadActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	nocopy gextras.NoCopy
+	native *C.GtkPadActionEntry
 }
 
 // Type: type of pad feature that will trigger this action entry.

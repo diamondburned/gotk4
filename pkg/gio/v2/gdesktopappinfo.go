@@ -228,7 +228,7 @@ func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) *DesktopAppInfo {
 	var _arg1 *C.GKeyFile        // out
 	var _cret *C.GDesktopAppInfo // in
 
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 
 	_cret = C.g_desktop_app_info_new_from_keyfile(_arg1)
 

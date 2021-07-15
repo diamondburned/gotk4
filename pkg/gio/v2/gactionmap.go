@@ -204,12 +204,8 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 //
 // See g_action_map_add_action_entries() for an example.
 type ActionEntry struct {
-	native C.GActionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (a *ActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
+	nocopy gextras.NoCopy
+	native *C.GActionEntry
 }
 
 // Name: name of the action

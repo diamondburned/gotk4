@@ -702,8 +702,8 @@ func (connection *DBusConnection) Call(busName string, objectPath string, interf
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters))
-	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -728,10 +728,10 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -788,8 +788,8 @@ func (connection *DBusConnection) CallSync(busName string, objectPath string, in
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters))
-	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
@@ -799,10 +799,10 @@ func (connection *DBusConnection) CallSync(busName string, objectPath string, in
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -845,8 +845,8 @@ func (connection *DBusConnection) CallWithUnixFdList(busName string, objectPath 
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters))
-	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
@@ -886,10 +886,10 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 	var _goerr error           // out
 
 	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -922,8 +922,8 @@ func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectP
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
-	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters))
-	_arg6 = (*C.GVariantType)(unsafe.Pointer(replyType))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
@@ -936,10 +936,10 @@ func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectP
 	var _goerr error           // out
 
 	_outFdList = wrapUnixFDList(externglib.AssumeOwnership(unsafe.Pointer(_arg10)))
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1040,7 +1040,7 @@ func (connection *DBusConnection) EmitSignal(destinationBusName string, objectPa
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
 	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
-	_arg5 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 
 	C.g_dbus_connection_emit_signal(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -2062,9 +2062,9 @@ func (message *DBusMessage) Body() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2152,9 +2152,9 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2488,7 +2488,7 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _arg1 *C.GVariant     // out
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(body))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(body)))
 
 	C.g_dbus_message_set_body(_arg0, _arg1)
 }
@@ -2549,7 +2549,7 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 
 	_arg0 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 	_arg1 = C.GDBusMessageHeaderField(headerField)
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_dbus_message_set_header(_arg0, _arg1, _arg2)
 }
@@ -2840,9 +2840,9 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	_dBusMethodInfo = (*DBusMethodInfo)(unsafe.Pointer(_cret))
+	_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_dBusMethodInfo, func(v *DBusMethodInfo) {
-		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(unsafe.Pointer(v)))
+		C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _dBusMethodInfo
@@ -2893,9 +2893,9 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2922,9 +2922,9 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	_dBusPropertyInfo = (*DBusPropertyInfo)(unsafe.Pointer(_cret))
+	_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_dBusPropertyInfo, func(v *DBusPropertyInfo) {
-		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(unsafe.Pointer(v)))
+		C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _dBusPropertyInfo
@@ -3010,7 +3010,7 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg1 *C.GVariant              // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 
 	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 }
@@ -3028,7 +3028,7 @@ func (invocation *DBusMethodInvocation) ReturnValueWithUnixFdList(parameters *gl
 	var _arg2 *C.GUnixFDList           // out
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(invocation.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(parameters))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	_arg2 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
 	C.g_dbus_method_invocation_return_value_with_unix_fd_list(_arg0, _arg1, _arg2)
@@ -3757,16 +3757,16 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_menu_item_get_attribute_value(_arg0, _arg1, _arg2)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -3832,7 +3832,7 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(targetValue))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 
 	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
 }
@@ -3861,7 +3861,7 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 
 	_arg0 = (*C.GMenuItem)(unsafe.Pointer(menuItem.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 }
@@ -4097,7 +4097,7 @@ func (notification *Notification) AddButtonWithTargetValue(label string, action 
 	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(target))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
 
 	C.g_notification_add_button_with_target_value(_arg0, _arg1, _arg2, _arg3)
 }
@@ -4149,7 +4149,7 @@ func (notification *Notification) SetDefaultActionAndTargetValue(action string, 
 
 	_arg0 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(target))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
 
 	C.g_notification_set_default_action_and_target_value(_arg0, _arg1, _arg2)
 }
@@ -4363,7 +4363,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 	var _cret *C.GSimpleAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
 
 	_cret = C.g_simple_action_new(_arg1, _arg2)
 
@@ -4386,8 +4386,8 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	var _cret *C.GSimpleAction // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(state))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
 	_cret = C.g_simple_action_new_stateful(_arg1, _arg2, _arg3)
 
@@ -4431,7 +4431,7 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _arg1 *C.GVariant      // out
 
 	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_simple_action_set_state(_arg0, _arg1)
 }
@@ -4444,7 +4444,7 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg1 *C.GVariant      // out
 
 	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(stateHint))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
 
 	C.g_simple_action_set_state_hint(_arg0, _arg1)
 }

@@ -4,6 +4,8 @@ package gtk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk+-3.0
@@ -15,12 +17,8 @@ import "C"
 
 // IMContextInfo: bookkeeping information about a loadable input method.
 type IMContextInfo struct {
-	native C.GtkIMContextInfo
-}
-
-// Native returns the underlying C source pointer.
-func (i *IMContextInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&i.native)
+	nocopy gextras.NoCopy
+	native *C.GtkIMContextInfo
 }
 
 // ContextID: unique identification string of the input method.

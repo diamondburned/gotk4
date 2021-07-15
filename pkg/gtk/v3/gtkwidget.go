@@ -1638,9 +1638,9 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetList
@@ -1749,7 +1749,7 @@ func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 	var _arg1 *C.GtkTargetList // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(targetList))
+	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 
 	C.gtk_drag_dest_set_target_list(_arg0, _arg1)
 }
@@ -1841,9 +1841,9 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(unsafe.Pointer(_cret))
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_targetList, func(v *TargetList) {
-		C.gtk_target_list_unref((*C.GtkTargetList)(unsafe.Pointer(v)))
+		C.gtk_target_list_unref((*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _targetList
@@ -1929,7 +1929,7 @@ func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
 	var _arg1 *C.GtkTargetList // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(targetList))
+	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 
 	C.gtk_drag_source_set_target_list(_arg0, _arg1)
 }
@@ -2236,12 +2236,16 @@ func (widget *Widget) CanFocus() bool {
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
 func (widget *Widget) ChildRequisition() Requisition {
-	var _arg0 *C.GtkWidget // out
-	var _requisition Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_child_requisition(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
+	C.gtk_widget_get_child_requisition(_arg0, &_arg1)
+
+	var _requisition Requisition // out
+
+	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -2904,9 +2908,9 @@ func (widget *Widget) GetPath() *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _widgetPath
@@ -3042,13 +3046,19 @@ func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight int, nat
 // Use gtk_widget_get_preferred_height_and_baseline_for_width() if you want to
 // support baseline alignment.
 func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget // out
-	var _minimumSize Requisition
-	var _naturalSize Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_preferred_size(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
+	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
+
+	var _minimumSize Requisition // out
+	var _naturalSize Requisition // out
+
+	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _minimumSize, _naturalSize
 }
@@ -3180,12 +3190,16 @@ func (widget *Widget) RequestMode() SizeRequestMode {
 // cache sizes across requests and allocations, add an explicit cache to the
 // widget in question instead.
 func (widget *Widget) Requisition() Requisition {
-	var _arg0 *C.GtkWidget // out
-	var _requisition Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_requisition(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
+	C.gtk_widget_get_requisition(_arg0, &_arg1)
+
+	var _requisition Requisition // out
+
+	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -3995,16 +4009,18 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.GdkRectangle // out
-	var _intersection gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
 
-	_cret = C.gtk_widget_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_intersection)))
+	_cret = C.gtk_widget_intersect(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _intersection gdk.Rectangle // out
+	var _ok bool                    // out
 
+	_intersection = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -4285,7 +4301,7 @@ func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
 }
@@ -4311,7 +4327,7 @@ func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
 }
@@ -4329,8 +4345,8 @@ func (widget *Widget) ModifyCursor(primary *gdk.Color, secondary *gdk.Color) {
 	var _arg2 *C.GdkColor  // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(primary))
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(secondary))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(primary)))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(secondary)))
 
 	C.gtk_widget_modify_cursor(_arg0, _arg1, _arg2)
 }
@@ -4348,7 +4364,7 @@ func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
 }
@@ -4364,7 +4380,7 @@ func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	C.gtk_widget_modify_font(_arg0, _arg1)
 }
@@ -4411,7 +4427,7 @@ func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateType(state)
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
 }
@@ -4433,7 +4449,7 @@ func (widget *Widget) OverrideBackgroundColor(state StateFlags, color *gdk.RGBA)
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_override_background_color(_arg0, _arg1, _arg2)
 }
@@ -4469,7 +4485,7 @@ func (widget *Widget) OverrideColor(state StateFlags, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = C.GtkStateFlags(state)
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_override_color(_arg0, _arg1, _arg2)
 }
@@ -4491,8 +4507,8 @@ func (widget *Widget) OverrideCursor(cursor *gdk.RGBA, secondaryCursor *gdk.RGBA
 	var _arg2 *C.GdkRGBA   // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(cursor))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(secondaryCursor))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(cursor)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(secondaryCursor)))
 
 	C.gtk_widget_override_cursor(_arg0, _arg1, _arg2)
 }
@@ -4509,7 +4525,7 @@ func (widget *Widget) OverrideFont(fontDesc *pango.FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(fontDesc))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	C.gtk_widget_override_font(_arg0, _arg1)
 }
@@ -4530,7 +4546,7 @@ func (widget *Widget) OverrideSymbolicColor(name string, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_widget_override_symbolic_color(_arg0, _arg1, _arg2)
 }
@@ -4723,8 +4739,8 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 	var _ret *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_ret = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_ret = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Region) {
@@ -5881,12 +5897,16 @@ func (widget *Widget) ShowNow() {
 //
 // Deprecated: Use gtk_widget_get_preferred_size() instead.
 func (widget *Widget) SizeRequest() Requisition {
-	var _arg0 *C.GtkWidget // out
-	var _requisition Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_size_request(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
+	C.gtk_widget_size_request(_arg0, &_arg1)
+
+	var _requisition Requisition // out
+
+	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _requisition
 }
@@ -6089,12 +6109,13 @@ func WidgetSetDefaultDirection(dir TextDirection) {
 // Requisition represents the desired size of a widget. See [GtkWidget’s
 // geometry management section][geometry-management] for more information.
 type Requisition struct {
-	native C.GtkRequisition
+	nocopy gextras.NoCopy
+	native *C.GtkRequisition
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Requisition)(unsafe.Pointer(b)), nil
+	return &Requisition{native: (*C.GtkRequisition)(unsafe.Pointer(b))}, nil
 }
 
 // NewRequisition constructs a struct Requisition.
@@ -6105,17 +6126,12 @@ func NewRequisition() *Requisition {
 
 	var _requisition *Requisition // out
 
-	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _requisition
-}
-
-// Native returns the underlying C source pointer.
-func (r *Requisition) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }
 
 // Width widget’s desired width
@@ -6137,15 +6153,15 @@ func (requisition *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(requisition))
+	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	_cret = C.gtk_requisition_copy(_arg0)
 
 	var _ret *Requisition // out
 
-	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	_ret = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -6155,7 +6171,7 @@ func (requisition *Requisition) Copy() *Requisition {
 func (requisition *Requisition) free() {
 	var _arg0 *C.GtkRequisition // out
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(requisition))
+	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	C.gtk_requisition_free(_arg0)
 }

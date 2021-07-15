@@ -195,7 +195,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer((root).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 

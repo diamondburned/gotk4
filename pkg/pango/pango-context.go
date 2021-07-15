@@ -194,7 +194,7 @@ func (context *Context) FontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _fontDescription
 }
@@ -264,9 +264,9 @@ func (context *Context) Language() *Language {
 
 	var _language *Language // out
 
-	_language = (*Language)(unsafe.Pointer(_cret))
+	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_language, func(v *Language) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	return _language
@@ -286,7 +286,7 @@ func (context *Context) Matrix() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -309,17 +309,17 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	var _cret *C.PangoFontMetrics     // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg2 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_context_get_metrics(_arg0, _arg1, _arg2)
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
+		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fontMetrics
@@ -402,7 +402,7 @@ func (context *Context) LoadFont(desc *FontDescription) *Font {
 	var _cret *C.PangoFont            // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 
 	_cret = C.pango_context_load_font(_arg0, _arg1)
 
@@ -422,8 +422,8 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) *
 	var _cret *C.PangoFontset         // in
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg2 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_context_load_fontset(_arg0, _arg1, _arg2)
 
@@ -471,7 +471,7 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 
 	C.pango_context_set_font_description(_arg0, _arg1)
 }
@@ -515,7 +515,7 @@ func (context *Context) SetLanguage(language *Language) {
 	var _arg1 *C.PangoLanguage // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	C.pango_context_set_language(_arg0, _arg1)
 }
@@ -533,7 +533,7 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 	var _arg1 *C.PangoMatrix  // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.pango_context_set_matrix(_arg0, _arg1)
 }

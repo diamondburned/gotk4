@@ -359,7 +359,7 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(state))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
 	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
 }
@@ -400,7 +400,7 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 
 	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
 }
@@ -423,7 +423,7 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
 }
@@ -477,7 +477,7 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _variantType
 }
@@ -503,10 +503,10 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -541,10 +541,10 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -577,7 +577,7 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _variantType
 }
@@ -663,25 +663,45 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gboolean      // in
-	var _parameterType *glib.VariantType
-	var _stateType *glib.VariantType
-	var _stateHint *glib.Variant
-	var _state *glib.Variant
-	var _cret C.gboolean // in
+	var _arg3 *C.GVariantType // in
+	var _arg4 *C.GVariantType // in
+	var _arg5 *C.GVariant     // in
+	var _arg6 *C.GVariant     // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 
-	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
+	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
-	var _enabled bool // out
-
-	var _ok bool // out
+	var _enabled bool                    // out
+	var _parameterType *glib.VariantType // out
+	var _stateType *glib.VariantType     // out
+	var _stateHint *glib.Variant         // out
+	var _state *glib.Variant             // out
+	var _ok bool                         // out
 
 	if _arg2 != 0 {
 		_enabled = true
 	}
-
+	_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	runtime.SetFinalizer(_parameterType, func(v *glib.VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
+	})
+	_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	runtime.SetFinalizer(_stateType, func(v *glib.VariantType) {
+		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
+	})
+	_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
+	C.g_variant_ref(_arg5)
+	runtime.SetFinalizer(_stateHint, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+	})
+	_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
+	C.g_variant_ref(_arg6)
+	runtime.SetFinalizer(_state, func(v *glib.Variant) {
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
+	})
 	if _cret != 0 {
 		_ok = true
 	}

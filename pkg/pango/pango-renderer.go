@@ -252,7 +252,7 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	_arg2 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
+	_arg2 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
 
@@ -269,7 +269,7 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x int, y 
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
-	_arg2 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	_arg3 = C.int(x)
 	_arg4 = C.int(y)
 
@@ -299,7 +299,7 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x int, y int) {
 	var _arg3 C.int              // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+	_arg1 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 	_arg2 = C.int(x)
 	_arg3 = C.int(y)
 
@@ -384,7 +384,7 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 
 	var _color *Color // out
 
-	_color = (*Color)(unsafe.Pointer(_cret))
+	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _color
 }
@@ -426,9 +426,9 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(unsafe.Pointer(_cret))
+	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_layoutLine, func(v *LayoutLine) {
-		C.pango_layout_line_unref((*C.PangoLayoutLine)(unsafe.Pointer(v)))
+		C.pango_layout_line_unref((*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _layoutLine
@@ -447,7 +447,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -502,7 +502,7 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg1 = C.PangoRenderPart(part)
-	_arg2 = (*C.PangoColor)(unsafe.Pointer(color))
+	_arg2 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
 }
@@ -513,7 +513,7 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg1 *C.PangoMatrix   // out
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(renderer.Native()))
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.pango_renderer_set_matrix(_arg0, _arg1)
 }

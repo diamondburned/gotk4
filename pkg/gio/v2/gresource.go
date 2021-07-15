@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -120,7 +121,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputSt
 func ResourcesRegister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
-	_arg1 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg1 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	C.g_resources_register(_arg1)
 }
@@ -130,7 +131,7 @@ func ResourcesRegister(resource *Resource) {
 func ResourcesUnregister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
-	_arg1 = (*C.GResource)(unsafe.Pointer(resource))
+	_arg1 = (*C.GResource)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	C.g_resources_unregister(_arg1)
 }
@@ -156,10 +157,10 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _resource *Resource // out
 	var _goerr error        // out
 
-	_resource = (*Resource)(unsafe.Pointer(_cret))
+	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_resource_ref(_cret)
 	runtime.SetFinalizer(_resource, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
+		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -169,12 +170,8 @@ func ResourceLoad(filename string) (*Resource, error) {
 // StaticResource is an opaque data structure and can only be accessed using the
 // following functions.
 type StaticResource struct {
-	native C.GStaticResource
-}
-
-// Native returns the underlying C source pointer.
-func (s *StaticResource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GStaticResource
 }
 
 // Fini: finalized a GResource initialized by g_static_resource_init().
@@ -185,7 +182,7 @@ func (s *StaticResource) Native() unsafe.Pointer {
 func (staticResource *StaticResource) Fini() {
 	var _arg0 *C.GStaticResource // out
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(staticResource))
+	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	C.g_static_resource_fini(_arg0)
 }
@@ -200,15 +197,15 @@ func (staticResource *StaticResource) Resource() *Resource {
 	var _arg0 *C.GStaticResource // out
 	var _cret *C.GResource       // in
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(staticResource))
+	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	_cret = C.g_static_resource_get_resource(_arg0)
 
 	var _resource *Resource // out
 
-	_resource = (*Resource)(unsafe.Pointer(_cret))
+	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_resource, func(v *Resource) {
-		C.g_resource_unref((*C.GResource)(unsafe.Pointer(v)))
+		C.g_resource_unref((*C.GResource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _resource
@@ -222,7 +219,7 @@ func (staticResource *StaticResource) Resource() *Resource {
 func (staticResource *StaticResource) Init() {
 	var _arg0 *C.GStaticResource // out
 
-	_arg0 = (*C.GStaticResource)(unsafe.Pointer(staticResource))
+	_arg0 = (*C.GStaticResource)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	C.g_static_resource_init(_arg0)
 }

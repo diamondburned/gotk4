@@ -864,7 +864,7 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 	var _cret *C.GdkWindow     // in
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer((parent).(gextras.Nativer).Native()))
-	_arg2 = (*C.GdkWindowAttr)(unsafe.Pointer(attributes))
+	_arg2 = (*C.GdkWindowAttr)(gextras.StructNative(unsafe.Pointer(attributes)))
 	_arg3 = C.gint(attributesMask)
 
 	_cret = C.gdk_window_new(_arg1, _arg2, _arg3)
@@ -983,7 +983,7 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rectangle))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_window_begin_paint_rect(_arg0, _arg1)
 }
@@ -1506,8 +1506,8 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 	var _pattern *cairo.Pattern // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_pattern = (*cairo.Pattern)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
@@ -1531,8 +1531,8 @@ func (window *Window) ClipRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -1857,12 +1857,16 @@ func (window *Window) FrameClock() *FrameClock {
 // coordinates. To get the position of the window itself (rather than the frame)
 // in root window coordinates, use gdk_window_get_origin().
 func (window *Window) FrameExtents() Rectangle {
-	var _arg0 *C.GdkWindow // out
-	var _rect Rectangle
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gdk_window_get_frame_extents(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	C.gdk_window_get_frame_extents(_arg0, &_arg1)
+
+	var _rect Rectangle // out
+
+	_rect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rect
 }
@@ -2302,8 +2306,8 @@ func (window *Window) UpdateArea() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -2344,8 +2348,8 @@ func (window *Window) VisibleRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -2515,7 +2519,7 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	if invalidateChildren {
 		_arg2 = C.TRUE
 	}
@@ -2813,7 +2817,7 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnch
 	var _arg6 C.gint           // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	_arg2 = C.GdkGravity(rectAnchor)
 	_arg3 = C.GdkGravity(windowAnchor)
 	_arg4 = C.GdkAnchorHints(anchorHints)
@@ -2979,7 +2983,7 @@ func (window *Window) SetBackground(color *Color) {
 	var _arg1 *C.GdkColor  // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gdk_window_set_background(_arg0, _arg1)
 }
@@ -3014,7 +3018,7 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	var _arg1 *C.GdkRGBA   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_window_set_background_rgba(_arg0, _arg1)
 }
@@ -3283,7 +3287,7 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 	var _arg2 C.GdkWindowHints // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg1 = (*C.GdkGeometry)(unsafe.Pointer(geometry))
+	_arg1 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
 	_arg2 = C.GdkWindowHints(geomMask)
 
 	C.gdk_window_set_geometry_hints(_arg0, _arg1, _arg2)
@@ -3907,7 +3911,7 @@ func WindowConstrainSize(geometry *Geometry, flags WindowHints, width int, heigh
 	var _arg5 C.gint           // in
 	var _arg6 C.gint           // in
 
-	_arg1 = (*C.GdkGeometry)(unsafe.Pointer(geometry))
+	_arg1 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
 	_arg2 = C.GdkWindowHints(flags)
 	_arg3 = C.gint(width)
 	_arg4 = C.gint(height)
@@ -4013,12 +4017,8 @@ func WindowSetDebugUpdates(setting bool) {
 // max_aspect to the same value, thus forcing the window to keep a constant
 // aspect ratio.
 type Geometry struct {
-	native C.GdkGeometry
-}
-
-// Native returns the underlying C source pointer.
-func (g *Geometry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&g.native)
+	nocopy gextras.NoCopy
+	native *C.GdkGeometry
 }
 
 // MinWidth: minimum width of window (or -1 to use requisition, with Window
@@ -4106,12 +4106,8 @@ func (g *Geometry) WinGravity() Gravity {
 
 // WindowAttr attributes to use for a newly-created window.
 type WindowAttr struct {
-	native C.GdkWindowAttr
-}
-
-// Native returns the underlying C source pointer.
-func (w *WindowAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(&w.native)
+	nocopy gextras.NoCopy
+	native *C.GdkWindowAttr
 }
 
 // Title: title of the window (for toplevel windows)

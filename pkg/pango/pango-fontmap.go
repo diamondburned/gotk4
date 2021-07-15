@@ -220,7 +220,7 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) *Font 
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
+	_arg2 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
@@ -242,8 +242,8 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(fontmap.Native()))
 	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc))
-	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg2 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg3 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
 

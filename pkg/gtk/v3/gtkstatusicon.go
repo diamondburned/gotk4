@@ -303,16 +303,16 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientation, bool) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GdkScreen     // in
-	var _area gdk.Rectangle
+	var _arg2 C.GdkRectangle   // in
 	var _arg3 C.GtkOrientation // in
 	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(statusIcon.Native()))
 
-	_cret = C.gtk_status_icon_get_geometry(_arg0, &_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_area)), &_arg3)
+	_cret = C.gtk_status_icon_get_geometry(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _screen *gdk.Screen // out
-
+	var _screen *gdk.Screen      // out
+	var _area gdk.Rectangle      // out
 	var _orientation Orientation // out
 	var _ok bool                 // out
 
@@ -322,7 +322,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 			Object: obj,
 		}
 	}
-
+	_area = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	_orientation = Orientation(_arg3)
 	if _cret != 0 {
 		_ok = true

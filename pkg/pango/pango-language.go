@@ -5,6 +5,7 @@ package pango
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,17 +26,13 @@ func init() {
 // PangoLanguage pointers can be efficiently copied and compared with each
 // other.
 type Language struct {
-	native C.PangoLanguage
+	nocopy gextras.NoCopy
+	native *C.PangoLanguage
 }
 
 func marshalLanguage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Language)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (l *Language) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
+	return &Language{native: (*C.PangoLanguage)(unsafe.Pointer(b))}, nil
 }
 
 // SampleString: get a string that is representative of the characters needed to
@@ -59,7 +56,7 @@ func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
@@ -85,7 +82,7 @@ func (language *Language) IncludesScript(script Script) bool {
 	var _arg1 C.PangoScript    // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg1 = C.PangoScript(script)
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
@@ -110,7 +107,7 @@ func (language *Language) Matches(rangeList string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
@@ -129,7 +126,7 @@ func (language *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_language_to_string(_arg0)
 
@@ -161,7 +158,7 @@ func LanguageFromString(language string) *Language {
 
 	var _ret *Language // out
 
-	_ret = (*Language)(unsafe.Pointer(_cret))
+	_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -197,7 +194,7 @@ func LanguageGetDefault() *Language {
 
 	var _language *Language // out
 
-	_language = (*Language)(unsafe.Pointer(_cret))
+	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _language
 }

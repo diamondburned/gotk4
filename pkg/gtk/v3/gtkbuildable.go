@@ -209,20 +209,22 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *externglib.O
 	var _arg1 *C.GtkBuilder   // out
 	var _arg2 *C.GObject      // out
 	var _arg3 *C.gchar        // out
-	var _parser glib.MarkupParser
-	var _arg5 C.gpointer // in
-	var _cret C.gboolean // in
+	var _arg4 C.GMarkupParser // in
+	var _arg5 C.gpointer      // in
+	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(buildable.Native()))
 	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
 
-	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, (*C.GMarkupParser)(unsafe.Pointer(&_parser)), &_arg5)
+	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
-	var _data cgo.Handle // out
-	var _ok bool         // out
+	var _parser glib.MarkupParser // out
+	var _data cgo.Handle          // out
+	var _ok bool                  // out
 
+	_parser = *(*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 	_data = (cgo.Handle)(unsafe.Pointer(_arg5))
 	if _cret != 0 {
 		_ok = true

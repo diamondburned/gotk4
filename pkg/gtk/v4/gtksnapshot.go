@@ -205,7 +205,7 @@ func (snapshot *Snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]
 	var _arg3 *C.GdkRGBA
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
 	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
 	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
 
@@ -220,7 +220,7 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _cret *C.cairo_t         // in
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_cret = C.gtk_snapshot_append_cairo(_arg0, _arg1)
 
@@ -245,8 +245,8 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_append_color(_arg0, _arg1, _arg2)
 }
@@ -262,8 +262,8 @@ func (snapshot *Snapshot) AppendConicGradient(bounds *graphene.Rect, center *gra
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(rotation)
 	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
@@ -284,8 +284,8 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	var _arg6 C.float           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg3 = C.float(dx)
 	_arg4 = C.float(dy)
 	_arg5 = C.float(spread)
@@ -301,7 +301,7 @@ func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_snapshot_append_layout(_arg0, _arg1, _arg2)
 }
@@ -317,9 +317,9 @@ func (snapshot *Snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(startPoint)))
+	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(endPoint)))
 	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
@@ -355,8 +355,8 @@ func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gd
 	var _arg6 C.float           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(outline)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 	_arg3 = C.float(dx)
 	_arg4 = C.float(dy)
 	_arg5 = C.float(spread)
@@ -379,8 +379,8 @@ func (snapshot *Snapshot) AppendRadialGradient(bounds *graphene.Rect, center *gr
 	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(hradius)
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
@@ -404,9 +404,9 @@ func (snapshot *Snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, s
 	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(startPoint)))
+	_arg3 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(endPoint)))
 	_arg5 = (C.gsize)(len(stops))
 	if len(stops) > 0 {
 		_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
@@ -429,8 +429,8 @@ func (snapshot *Snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, c
 	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
 	_arg3 = C.float(hradius)
 	_arg4 = C.float(vradius)
 	_arg5 = C.float(start)
@@ -452,7 +452,7 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer((texture).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_append_texture(_arg0, _arg1, _arg2)
 }
@@ -531,7 +531,7 @@ func (snapshot *Snapshot) PushClip(bounds *graphene.Rect) {
 	var _arg1 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_push_clip(_arg0, _arg1)
 }
@@ -546,8 +546,8 @@ func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOff
 	var _arg2 *C.graphene_vec4_t   // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(colorMatrix))
-	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(colorOffset))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
+	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	C.gtk_snapshot_push_color_matrix(_arg0, _arg1, _arg2)
 }
@@ -592,8 +592,8 @@ func (snapshot *Snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphen
 	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(childBounds))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
 
 	C.gtk_snapshot_push_repeat(_arg0, _arg1, _arg2)
 }
@@ -606,7 +606,7 @@ func (snapshot *Snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 	var _arg1 *C.GskRoundedRect // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(bounds))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	C.gtk_snapshot_push_rounded_clip(_arg0, _arg1)
 }
@@ -620,7 +620,7 @@ func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 	var _arg2 C.gsize        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskShadow)(unsafe.Pointer(shadow))
+	_arg1 = (*C.GskShadow)(gextras.StructNative(unsafe.Pointer(shadow)))
 	_arg2 = C.gsize(nShadows)
 
 	C.gtk_snapshot_push_shadow(_arg0, _arg1, _arg2)
@@ -764,7 +764,7 @@ func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
 	_arg1 = C.float(angle)
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	C.gtk_snapshot_rotate_3d(_arg0, _arg1, _arg2)
 }
@@ -855,7 +855,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 	var _cret *C.GdkPaintable    // in
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(size))
+	_arg1 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
 
@@ -877,7 +877,7 @@ func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 	var _arg1 *C.GskTransform // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform))
+	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	C.gtk_snapshot_transform(_arg0, _arg1)
 }
@@ -889,7 +889,7 @@ func (snapshot *Snapshot) TransformMatrix(matrix *graphene.Matrix) {
 	var _arg1 *C.graphene_matrix_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.gtk_snapshot_transform_matrix(_arg0, _arg1)
 }
@@ -901,7 +901,7 @@ func (snapshot *Snapshot) Translate(point *graphene.Point) {
 	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.gtk_snapshot_translate(_arg0, _arg1)
 }
@@ -912,7 +912,7 @@ func (snapshot *Snapshot) Translate3D(point *graphene.Point3D) {
 	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(snapshot.Native()))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	C.gtk_snapshot_translate_3d(_arg0, _arg1)
 }

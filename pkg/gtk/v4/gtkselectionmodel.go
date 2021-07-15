@@ -186,10 +186,10 @@ func (model *SelectionModel) Selection() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
@@ -214,10 +214,10 @@ func (model *SelectionModel) SelectionInRange(position uint, nItems uint) *Bitse
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(unsafe.Pointer(_cret))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_bitset_ref(_cret)
 	runtime.SetFinalizer(_bitset, func(v *Bitset) {
-		C.gtk_bitset_unref((*C.GtkBitset)(unsafe.Pointer(v)))
+		C.gtk_bitset_unref((*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _bitset
@@ -365,8 +365,8 @@ func (model *SelectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 	var _cret C.gboolean           // in
 
 	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg1 = (*C.GtkBitset)(unsafe.Pointer(selected))
-	_arg2 = (*C.GtkBitset)(unsafe.Pointer(mask))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(selected)))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(mask)))
 
 	_cret = C.gtk_selection_model_set_selection(_arg0, _arg1, _arg2)
 

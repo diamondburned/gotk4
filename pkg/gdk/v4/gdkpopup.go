@@ -197,7 +197,7 @@ func (popup *Popup) Present(width int, height int, layout *PopupLayout) bool {
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(popup.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
-	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg3 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
 

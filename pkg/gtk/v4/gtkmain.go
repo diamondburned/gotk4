@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -39,7 +40,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _language
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,17 +30,13 @@ func init() {
 //    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
 //    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
 type Matrix struct {
-	native C.PangoMatrix
+	nocopy gextras.NoCopy
+	native *C.PangoMatrix
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Matrix)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return &Matrix{native: (*C.PangoMatrix)(unsafe.Pointer(b))}, nil
 }
 
 // XX: 1st component of the transformation matrix
@@ -91,8 +88,8 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(newMatrix)))
 
 	C.pango_matrix_concat(_arg0, _arg1)
 }
@@ -102,15 +99,15 @@ func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.pango_matrix_copy(_arg0)
 
 	var _ret *Matrix // out
 
-	_ret = (*Matrix)(unsafe.Pointer(_cret))
+	_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.pango_matrix_free((*C.PangoMatrix)(unsafe.Pointer(v)))
+		C.pango_matrix_free((*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -120,7 +117,7 @@ func (matrix *Matrix) Copy() *Matrix {
 func (matrix *Matrix) free() {
 	var _arg0 *C.PangoMatrix // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.pango_matrix_free(_arg0)
 }
@@ -135,7 +132,7 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
@@ -159,7 +156,7 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg1 C.double       // in
 	var _arg2 C.double       // in
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
@@ -179,7 +176,7 @@ func (matrix *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	_arg1 = C.double(degrees)
 
 	C.pango_matrix_rotate(_arg0, _arg1)
@@ -193,7 +190,7 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	_arg1 = C.double(scaleX)
 	_arg2 = C.double(scaleY)
 
@@ -208,7 +205,7 @@ func (matrix *Matrix) Translate(tx float64, ty float64) {
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
 
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	_arg1 = C.double(tx)
 	_arg2 = C.double(ty)
 

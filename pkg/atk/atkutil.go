@@ -75,9 +75,9 @@ func _gotk4_atk1_KeySnoopFunc(arg0 *C.AtkKeyEventStruct, arg1 C.gpointer) (cret 
 
 	var event *KeyEventStruct // out
 
-	event = (*KeyEventStruct)(unsafe.Pointer(arg0))
+	event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	runtime.SetFinalizer(event, func(v *KeyEventStruct) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	fn := v.(KeySnoopFunc)
@@ -249,12 +249,8 @@ func (*Util) privateUtil() {}
 
 // KeyEventStruct encapsulates information about a key event.
 type KeyEventStruct struct {
-	native C.AtkKeyEventStruct
-}
-
-// Native returns the underlying C source pointer.
-func (k *KeyEventStruct) Native() unsafe.Pointer {
-	return unsafe.Pointer(&k.native)
+	nocopy gextras.NoCopy
+	native *C.AtkKeyEventStruct
 }
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,12 +27,13 @@ func init() {
 // Border: struct that specifies a border around a rectangular area that can be
 // of different width on each side.
 type Border struct {
-	native C.GtkBorder
+	nocopy gextras.NoCopy
+	native *C.GtkBorder
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Border)(unsafe.Pointer(b)), nil
+	return &Border{native: (*C.GtkBorder)(unsafe.Pointer(b))}, nil
 }
 
 // NewBorder constructs a struct Border.
@@ -42,17 +44,12 @@ func NewBorder() *Border {
 
 	var _border *Border // out
 
-	_border = (*Border)(unsafe.Pointer(_cret))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
+		C.gtk_border_free((*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _border
-}
-
-// Native returns the underlying C source pointer.
-func (b *Border) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
 }
 
 // Left: width of the left border
@@ -88,15 +85,15 @@ func (border_ *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out
 	var _cret *C.GtkBorder // in
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(border_))
+	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
 
 	_cret = C.gtk_border_copy(_arg0)
 
 	var _border *Border // out
 
-	_border = (*Border)(unsafe.Pointer(_cret))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_border, func(v *Border) {
-		C.gtk_border_free((*C.GtkBorder)(unsafe.Pointer(v)))
+		C.gtk_border_free((*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _border
@@ -106,7 +103,7 @@ func (border_ *Border) Copy() *Border {
 func (border_ *Border) free() {
 	var _arg0 *C.GtkBorder // out
 
-	_arg0 = (*C.GtkBorder)(unsafe.Pointer(border_))
+	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
 
 	C.gtk_border_free(_arg0)
 }

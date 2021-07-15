@@ -1112,9 +1112,9 @@ func (pixbuf *Pixbuf) Options() *glib.HashTable {
 
 	var _hashTable *glib.HashTable // out
 
-	_hashTable = (*glib.HashTable)(unsafe.Pointer(_cret))
+	_hashTable = (*glib.HashTable)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_hashTable, func(v *glib.HashTable) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	return _hashTable

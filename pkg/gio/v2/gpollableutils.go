@@ -42,10 +42,10 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -62,17 +62,17 @@ func PollableSourceNewFull(pollableStream *externglib.Object, childSource *glib.
 	var _cret *C.GSource      // in
 
 	_arg1 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
-	_arg2 = (*C.GSource)(unsafe.Pointer(childSource))
+	_arg2 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -342,17 +343,13 @@ const (
 
 // MatchInfo is an opaque struct used to return information about matches.
 type MatchInfo struct {
-	native C.GMatchInfo
+	nocopy gextras.NoCopy
+	native *C.GMatchInfo
 }
 
 func marshalMatchInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*MatchInfo)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MatchInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return &MatchInfo{native: (*C.GMatchInfo)(unsafe.Pointer(b))}, nil
 }
 
 // ExpandReferences returns a new string containing the text in string_to_expand
@@ -377,7 +374,7 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	var _cret *C.gchar      // in
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stringToExpand)))
 
 	_cret = C.g_match_info_expand_references(_arg0, _arg1, &_cerr)
@@ -411,7 +408,7 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 	var _arg1 C.gint        // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 	_arg1 = C.gint(matchNum)
 
 	_cret = C.g_match_info_fetch(_arg0, _arg1)
@@ -443,7 +440,7 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 	var _arg0 *C.GMatchInfo // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_fetch_all(_arg0)
 
@@ -479,7 +476,7 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 	var _arg1 *C.gchar      // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_match_info_fetch_named(_arg0, _arg1)
@@ -505,7 +502,7 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	var _arg3 C.gint        // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_match_info_fetch_named_pos(_arg0, _arg1, &_arg2, &_arg3)
@@ -542,7 +539,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 	var _arg3 C.gint        // in
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 	_arg1 = C.gint(matchNum)
 
 	_cret = C.g_match_info_fetch_pos(_arg0, _arg1, &_arg2, &_arg3)
@@ -565,7 +562,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 func (matchInfo *MatchInfo) free() {
 	var _arg0 *C.GMatchInfo // out
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	C.g_match_info_free(_arg0)
 }
@@ -582,7 +579,7 @@ func (matchInfo *MatchInfo) MatchCount() int {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gint        // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_get_match_count(_arg0)
 
@@ -600,16 +597,16 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GRegex     // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_get_regex(_arg0)
 
 	var _regex *Regex // out
 
-	_regex = (*Regex)(unsafe.Pointer(_cret))
+	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
+		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _regex
@@ -622,7 +619,7 @@ func (matchInfo *MatchInfo) String() string {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.gchar      // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_get_string(_arg0)
 
@@ -668,7 +665,7 @@ func (matchInfo *MatchInfo) IsPartialMatch() bool {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_is_partial_match(_arg0)
 
@@ -686,7 +683,7 @@ func (matchInfo *MatchInfo) Matches() bool {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gboolean    // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_matches(_arg0)
 
@@ -708,7 +705,7 @@ func (matchInfo *MatchInfo) Next() error {
 	var _arg0 *C.GMatchInfo // out
 	var _cerr *C.GError     // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	C.g_match_info_next(_arg0, &_cerr)
 
@@ -724,16 +721,16 @@ func (matchInfo *MatchInfo) ref() *MatchInfo {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GMatchInfo // in
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	_cret = C.g_match_info_ref(_arg0)
 
 	var _matchInfo *MatchInfo // out
 
-	_matchInfo = (*MatchInfo)(unsafe.Pointer(_cret))
+	_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_match_info_ref(_cret)
 	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
-		C.g_match_info_unref((*C.GMatchInfo)(unsafe.Pointer(v)))
+		C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _matchInfo
@@ -745,7 +742,7 @@ func (matchInfo *MatchInfo) ref() *MatchInfo {
 func (matchInfo *MatchInfo) unref() {
 	var _arg0 *C.GMatchInfo // out
 
-	_arg0 = (*C.GMatchInfo)(unsafe.Pointer(matchInfo))
+	_arg0 = (*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(matchInfo)))
 
 	C.g_match_info_unref(_arg0)
 }
@@ -809,12 +806,13 @@ func (matchInfo *MatchInfo) unref() {
 // The regular expressions low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
 type Regex struct {
-	native C.GRegex
+	nocopy gextras.NoCopy
+	native *C.GRegex
 }
 
 func marshalRegex(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Regex)(unsafe.Pointer(b)), nil
+	return &Regex{native: (*C.GRegex)(unsafe.Pointer(b))}, nil
 }
 
 // NewRegex constructs a struct Regex.
@@ -834,19 +832,14 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 	var _regex *Regex // out
 	var _goerr error  // out
 
-	_regex = (*Regex)(unsafe.Pointer(_cret))
+	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_regex, func(v *Regex) {
-		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
+		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _regex, _goerr
-}
-
-// Native returns the underlying C source pointer.
-func (r *Regex) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }
 
 // CaptureCount returns the number of capturing subpatterns in the pattern.
@@ -854,7 +847,7 @@ func (regex *Regex) CaptureCount() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_capture_count(_arg0)
 
@@ -874,7 +867,7 @@ func (regex *Regex) CompileFlags() RegexCompileFlags {
 	var _arg0 *C.GRegex            // out
 	var _cret C.GRegexCompileFlags // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_compile_flags(_arg0)
 
@@ -890,7 +883,7 @@ func (regex *Regex) HasCrOrLf() bool {
 	var _arg0 *C.GRegex  // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_has_cr_or_lf(_arg0)
 
@@ -908,7 +901,7 @@ func (regex *Regex) MatchFlags() RegexMatchFlags {
 	var _arg0 *C.GRegex          // out
 	var _cret C.GRegexMatchFlags // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_match_flags(_arg0)
 
@@ -925,7 +918,7 @@ func (regex *Regex) MaxBackref() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_max_backref(_arg0)
 
@@ -943,7 +936,7 @@ func (regex *Regex) MaxLookbehind() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_max_lookbehind(_arg0)
 
@@ -960,7 +953,7 @@ func (regex *Regex) Pattern() string {
 	var _arg0 *C.GRegex // out
 	var _cret *C.gchar  // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_get_pattern(_arg0)
 
@@ -977,7 +970,7 @@ func (regex *Regex) StringNumber(name string) int {
 	var _arg1 *C.gchar  // out
 	var _cret C.gint    // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_regex_get_string_number(_arg0, _arg1)
@@ -1030,17 +1023,23 @@ func (regex *Regex) Match(_string string, matchOptions RegexMatchFlags) (*MatchI
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cret C.gboolean // in
+	var _arg3 *C.GMatchInfo      // in
+	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
-	_cret = C.g_regex_match(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
+	_cret = C.g_regex_match(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _matchInfo *MatchInfo // out
+	var _ok bool              // out
 
+	_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	C.g_match_info_ref(_arg3)
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1065,17 +1064,23 @@ func (regex *Regex) MatchAll(_string string, matchOptions RegexMatchFlags) (*Mat
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
 	var _arg2 C.GRegexMatchFlags // out
-	var _matchInfo *MatchInfo
-	var _cret C.gboolean // in
+	var _arg3 *C.GMatchInfo      // in
+	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
-	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, (**C.GMatchInfo)(unsafe.Pointer(&_matchInfo)))
+	_cret = C.g_regex_match_all(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _matchInfo *MatchInfo // out
+	var _ok bool              // out
 
+	_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
+	C.g_match_info_ref(_arg3)
+	runtime.SetFinalizer(_matchInfo, func(v *MatchInfo) {
+		C.g_match_info_unref((*C.GMatchInfo)(gextras.StructNative(unsafe.Pointer(v))))
+	})
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1088,16 +1093,16 @@ func (regex *Regex) ref() *Regex {
 	var _arg0 *C.GRegex // out
 	var _cret *C.GRegex // in
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	_cret = C.g_regex_ref(_arg0)
 
 	var _ret *Regex // out
 
-	_ret = (*Regex)(unsafe.Pointer(_cret))
+	_ret = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_regex_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Regex) {
-		C.g_regex_unref((*C.GRegex)(unsafe.Pointer(v)))
+		C.g_regex_unref((*C.GRegex)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -1124,7 +1129,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 	var _arg2 C.GRegexMatchFlags // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_string)))
 	_arg2 = C.GRegexMatchFlags(matchOptions)
 
@@ -1154,7 +1159,7 @@ func (regex *Regex) Split(_string string, matchOptions RegexMatchFlags) []string
 func (regex *Regex) unref() {
 	var _arg0 *C.GRegex // out
 
-	_arg0 = (*C.GRegex)(unsafe.Pointer(regex))
+	_arg0 = (*C.GRegex)(gextras.StructNative(unsafe.Pointer(regex)))
 
 	C.g_regex_unref(_arg0)
 }

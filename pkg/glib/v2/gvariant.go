@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -339,12 +340,13 @@ const (
 // type, we would use more memory for the serialised data and buffer management
 // for those dictionaries, but the type information would be shared.
 type Variant struct {
-	native C.GVariant
+	nocopy gextras.NoCopy
+	native *C.GVariant
 }
 
 func marshalVariant(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Variant)(unsafe.Pointer(b)), nil
+	return &Variant{native: (*C.GVariant)(unsafe.Pointer(b))}, nil
 }
 
 // NewVariantArray constructs a struct Variant.
@@ -354,7 +356,7 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	var _arg3 C.gsize
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(childType))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
 	_arg3 = (C.gsize)(len(children))
 	if len(children) > 0 {
 		_arg2 = (**C.GVariant)(unsafe.Pointer(&children[0]))
@@ -364,9 +366,9 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -385,9 +387,9 @@ func NewVariantBoolean(value bool) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -404,9 +406,9 @@ func NewVariantByte(value byte) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -426,9 +428,9 @@ func NewVariantBytestring(_string []byte) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -453,9 +455,9 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -467,16 +469,16 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 	var _arg2 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(key))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(key)))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_new_dict_entry(_arg1, _arg2)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -493,9 +495,9 @@ func NewVariantDouble(value float64) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -509,7 +511,7 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 	var _arg4 C.gsize         // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(elementType))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(elementType)))
 	_arg2 = (C.gconstpointer)(unsafe.Pointer(elements))
 	_arg3 = C.gsize(nElements)
 	_arg4 = C.gsize(elementSize)
@@ -518,9 +520,9 @@ func NewVariantFixedArray(elementType *VariantType, elements cgo.Handle, nElemen
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -537,9 +539,9 @@ func NewVariantHandle(value int32) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -556,9 +558,9 @@ func NewVariantInt16(value int16) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -575,9 +577,9 @@ func NewVariantInt32(value int32) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -594,9 +596,9 @@ func NewVariantInt64(value int64) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -608,16 +610,16 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	var _arg2 *C.GVariant     // out
 	var _cret *C.GVariant     // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(childType))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(child))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(childType)))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(child)))
 
 	_cret = C.g_variant_new_maybe(_arg1, _arg2)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -634,9 +636,9 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -661,9 +663,9 @@ func NewVariantObjv(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -680,9 +682,9 @@ func NewVariantSignature(signature string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -699,9 +701,9 @@ func NewVariantString(_string string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -726,9 +728,9 @@ func NewVariantStrv(strv []string) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -749,9 +751,9 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -768,9 +770,9 @@ func NewVariantUint16(value uint16) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -787,9 +789,9 @@ func NewVariantUint32(value uint32) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -806,9 +808,9 @@ func NewVariantUint64(value uint64) *Variant {
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -819,23 +821,18 @@ func NewVariantVariant(value *Variant) *Variant {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_new_variant(_arg1)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
-}
-
-// Native returns the underlying C source pointer.
-func (v *Variant) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
 }
 
 // Byteswap performs a byteswapping operation on the contents of value. The
@@ -852,16 +849,16 @@ func (value *Variant) Byteswap() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_byteswap(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -887,7 +884,7 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 	var _arg2 C.gboolean  // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(formatString)))
 	if copyOnly {
 		_arg2 = C.TRUE
@@ -909,7 +906,7 @@ func (value *Variant) Classify() VariantClass {
 	var _arg0 *C.GVariant     // out
 	var _cret C.GVariantClass // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_classify(_arg0)
 
@@ -943,8 +940,8 @@ func (one *Variant) Compare(two *Variant) int {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(one))
-	_arg1 = C.gconstpointer(unsafe.Pointer(two))
+	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(one)))
+	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(two)))
 
 	_cret = C.g_variant_compare(_arg0, _arg1)
 
@@ -966,7 +963,7 @@ func (value *Variant) DupString() (uint, string) {
 	var _arg1 C.gsize     // in
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_dup_string(_arg0, &_arg1)
 
@@ -989,8 +986,8 @@ func (one *Variant) Equal(two *Variant) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(one))
-	_arg1 = C.gconstpointer(unsafe.Pointer(two))
+	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(one)))
+	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(two)))
 
 	_cret = C.g_variant_equal(_arg0, _arg1)
 
@@ -1011,7 +1008,7 @@ func (value *Variant) Boolean() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_boolean(_arg0)
 
@@ -1032,7 +1029,7 @@ func (value *Variant) Byte() byte {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint8    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_byte(_arg0)
 
@@ -1065,7 +1062,7 @@ func (value *Variant) Bytestring() []byte {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_bytestring(_arg0)
 
@@ -1115,17 +1112,17 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 	var _arg1 C.gsize     // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	_arg1 = C.gsize(index_)
 
 	_cret = C.g_variant_get_child_value(_arg0, _arg1)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1157,7 +1154,7 @@ func (value *Variant) Data() cgo.Handle {
 	var _arg0 *C.GVariant     // out
 	var _cret C.gconstpointer // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_data(_arg0)
 
@@ -1176,7 +1173,7 @@ func (value *Variant) Double() float64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gdouble   // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_double(_arg0)
 
@@ -1199,7 +1196,7 @@ func (value *Variant) Handle() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_handle(_arg0)
 
@@ -1218,7 +1215,7 @@ func (value *Variant) Int16() int16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint16    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_int16(_arg0)
 
@@ -1237,7 +1234,7 @@ func (value *Variant) Int32() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_int32(_arg0)
 
@@ -1256,7 +1253,7 @@ func (value *Variant) Int64() int64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint64    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_int64(_arg0)
 
@@ -1273,16 +1270,16 @@ func (value *Variant) Maybe() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_maybe(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1315,16 +1312,16 @@ func (value *Variant) NormalForm() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_normal_form(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1344,7 +1341,7 @@ func (value *Variant) Size() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_size(_arg0)
 
@@ -1377,7 +1374,7 @@ func (value *Variant) String() (uint, string) {
 	var _arg1 C.gsize     // in
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_string(_arg0, &_arg1)
 
@@ -1397,13 +1394,13 @@ func (value *Variant) Type() *VariantType {
 	var _arg0 *C.GVariant     // out
 	var _cret *C.GVariantType // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_type(_arg0)
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _variantType
 }
@@ -1415,7 +1412,7 @@ func (value *Variant) TypeString() string {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_type_string(_arg0)
 
@@ -1434,7 +1431,7 @@ func (value *Variant) Uint16() uint16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint16   // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_uint16(_arg0)
 
@@ -1453,7 +1450,7 @@ func (value *Variant) Uint32() uint32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint32   // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_uint32(_arg0)
 
@@ -1472,7 +1469,7 @@ func (value *Variant) Uint64() uint64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint64   // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_uint64(_arg0)
 
@@ -1489,16 +1486,16 @@ func (value *Variant) Variant() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_get_variant(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1517,7 +1514,7 @@ func (value *Variant) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(value))
+	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_hash(_arg0)
 
@@ -1533,7 +1530,7 @@ func (value *Variant) IsContainer() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_is_container(_arg0)
 
@@ -1559,7 +1556,7 @@ func (value *Variant) IsFloating() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_is_floating(_arg0)
 
@@ -1588,7 +1585,7 @@ func (value *Variant) IsNormalForm() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_is_normal_form(_arg0)
 
@@ -1607,8 +1604,8 @@ func (value *Variant) IsOfType(typ *VariantType) bool {
 	var _arg1 *C.GVariantType // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(typ))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_is_of_type(_arg0, _arg1)
 
@@ -1648,18 +1645,18 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(dictionary))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(dictionary)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_variant_lookup_value(_arg0, _arg1, _arg2)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1679,7 +1676,7 @@ func (value *Variant) NChildren() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_n_children(_arg0)
 
@@ -1700,7 +1697,7 @@ func (value *Variant) Print(typeAnnotate bool) string {
 	var _arg1 C.gboolean  // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	if typeAnnotate {
 		_arg1 = C.TRUE
 	}
@@ -1720,16 +1717,16 @@ func (value *Variant) ref() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_ref(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1759,16 +1756,16 @@ func (value *Variant) RefSink() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_ref_sink(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1790,7 +1787,7 @@ func (value *Variant) Store(data cgo.Handle) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gpointer  // out
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	C.g_variant_store(_arg0, _arg1)
@@ -1829,16 +1826,16 @@ func (value *Variant) TakeRef() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_take_ref(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1849,7 +1846,7 @@ func (value *Variant) TakeRef() *Variant {
 func (value *Variant) unref() {
 	var _arg0 *C.GVariant // out
 
-	_arg0 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_variant_unref(_arg0)
 }
@@ -1953,12 +1950,13 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 // Builder is not threadsafe in any way. Do not attempt to access it from more
 // than one thread.
 type VariantBuilder struct {
-	native C.GVariantBuilder
+	nocopy gextras.NoCopy
+	native *C.GVariantBuilder
 }
 
 func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*VariantBuilder)(unsafe.Pointer(b)), nil
+	return &VariantBuilder{native: (*C.GVariantBuilder)(unsafe.Pointer(b))}, nil
 }
 
 // NewVariantBuilder constructs a struct VariantBuilder.
@@ -1966,24 +1964,19 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	var _arg1 *C.GVariantType    // out
 	var _cret *C.GVariantBuilder // in
 
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(typ))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_builder_new(_arg1)
 
 	var _variantBuilder *VariantBuilder // out
 
-	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	_variantBuilder = (*VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_builder_ref(_cret)
 	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.g_variant_builder_unref((*C.GVariantBuilder)(unsafe.Pointer(v)))
+		C.g_variant_builder_unref((*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variantBuilder
-}
-
-// Native returns the underlying C source pointer.
-func (v *VariantBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
 }
 
 // AddValue adds value to builder.
@@ -1999,8 +1992,8 @@ func (builder *VariantBuilder) AddValue(value *Variant) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariant        // out
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_variant_builder_add_value(_arg0, _arg1)
 }
@@ -2014,7 +2007,7 @@ func (builder *VariantBuilder) AddValue(value *Variant) {
 func (builder *VariantBuilder) Close() {
 	var _arg0 *C.GVariantBuilder // out
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	C.g_variant_builder_close(_arg0)
 }
@@ -2038,15 +2031,15 @@ func (builder *VariantBuilder) End() *Variant {
 	var _arg0 *C.GVariantBuilder // out
 	var _cret *C.GVariant        // in
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = C.g_variant_builder_end(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2091,8 +2084,8 @@ func (builder *VariantBuilder) Open(typ *VariantType) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariantType    // out
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
-	_arg1 = (*C.GVariantType)(unsafe.Pointer(typ))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
+	_arg1 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	C.g_variant_builder_open(_arg0, _arg1)
 }
@@ -2105,16 +2098,16 @@ func (builder *VariantBuilder) ref() *VariantBuilder {
 	var _arg0 *C.GVariantBuilder // out
 	var _cret *C.GVariantBuilder // in
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = C.g_variant_builder_ref(_arg0)
 
 	var _variantBuilder *VariantBuilder // out
 
-	_variantBuilder = (*VariantBuilder)(unsafe.Pointer(_cret))
+	_variantBuilder = (*VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_builder_ref(_cret)
 	runtime.SetFinalizer(_variantBuilder, func(v *VariantBuilder) {
-		C.g_variant_builder_unref((*C.GVariantBuilder)(unsafe.Pointer(v)))
+		C.g_variant_builder_unref((*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variantBuilder
@@ -2130,7 +2123,7 @@ func (builder *VariantBuilder) ref() *VariantBuilder {
 func (builder *VariantBuilder) unref() {
 	var _arg0 *C.GVariantBuilder // out
 
-	_arg0 = (*C.GVariantBuilder)(unsafe.Pointer(builder))
+	_arg0 = (*C.GVariantBuilder)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	C.g_variant_builder_unref(_arg0)
 }
@@ -2193,12 +2186,13 @@ func (builder *VariantBuilder) unref() {
 //        return result;
 //      }
 type VariantDict struct {
-	native C.GVariantDict
+	nocopy gextras.NoCopy
+	native *C.GVariantDict
 }
 
 func marshalVariantDict(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*VariantDict)(unsafe.Pointer(b)), nil
+	return &VariantDict{native: (*C.GVariantDict)(unsafe.Pointer(b))}, nil
 }
 
 // NewVariantDict constructs a struct VariantDict.
@@ -2206,24 +2200,19 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var _arg1 *C.GVariant     // out
 	var _cret *C.GVariantDict // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(fromAsv))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fromAsv)))
 
 	_cret = C.g_variant_dict_new(_arg1)
 
 	var _variantDict *VariantDict // out
 
-	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	_variantDict = (*VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
+		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variantDict
-}
-
-// Native returns the underlying C source pointer.
-func (v *VariantDict) Native() unsafe.Pointer {
-	return unsafe.Pointer(&v.native)
 }
 
 // Clear releases all memory associated with a Dict without freeing the Dict
@@ -2241,7 +2230,7 @@ func (v *VariantDict) Native() unsafe.Pointer {
 func (dict *VariantDict) Clear() {
 	var _arg0 *C.GVariantDict // out
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 
 	C.g_variant_dict_clear(_arg0)
 }
@@ -2252,7 +2241,7 @@ func (dict *VariantDict) Contains(key string) bool {
 	var _arg1 *C.gchar        // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
 	_cret = C.g_variant_dict_contains(_arg0, _arg1)
@@ -2277,15 +2266,15 @@ func (dict *VariantDict) End() *Variant {
 	var _arg0 *C.GVariantDict // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 
 	_cret = C.g_variant_dict_end(_arg0)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2299,9 +2288,9 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.GVariant     // out
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_variant_dict_insert_value(_arg0, _arg1, _arg2)
 }
@@ -2322,18 +2311,18 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	var _arg2 *C.GVariantType // out
 	var _cret *C.GVariant     // in
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 
 	_cret = C.g_variant_dict_lookup_value(_arg0, _arg1, _arg2)
 
 	var _variant *Variant // out
 
-	_variant = (*Variant)(unsafe.Pointer(_cret))
+	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -2346,16 +2335,16 @@ func (dict *VariantDict) ref() *VariantDict {
 	var _arg0 *C.GVariantDict // out
 	var _cret *C.GVariantDict // in
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 
 	_cret = C.g_variant_dict_ref(_arg0)
 
 	var _variantDict *VariantDict // out
 
-	_variantDict = (*VariantDict)(unsafe.Pointer(_cret))
+	_variantDict = (*VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_dict_ref(_cret)
 	runtime.SetFinalizer(_variantDict, func(v *VariantDict) {
-		C.g_variant_dict_unref((*C.GVariantDict)(unsafe.Pointer(v)))
+		C.g_variant_dict_unref((*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variantDict
@@ -2367,7 +2356,7 @@ func (dict *VariantDict) Remove(key string) bool {
 	var _arg1 *C.gchar        // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 
 	_cret = C.g_variant_dict_remove(_arg0, _arg1)
@@ -2390,7 +2379,7 @@ func (dict *VariantDict) Remove(key string) bool {
 func (dict *VariantDict) unref() {
 	var _arg0 *C.GVariantDict // out
 
-	_arg0 = (*C.GVariantDict)(unsafe.Pointer(dict))
+	_arg0 = (*C.GVariantDict)(gextras.StructNative(unsafe.Pointer(dict)))
 
 	C.g_variant_dict_unref(_arg0)
 }

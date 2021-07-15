@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,12 +41,13 @@ func marshalTabAlign(p uintptr) (interface{}, error) {
 // PangoTabArray can be used to set tab stops in a PangoLayout. Each tab stop
 // has an alignment and a position.
 type TabArray struct {
-	native C.PangoTabArray
+	nocopy gextras.NoCopy
+	native *C.PangoTabArray
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TabArray)(unsafe.Pointer(b)), nil
+	return &TabArray{native: (*C.PangoTabArray)(unsafe.Pointer(b))}, nil
 }
 
 // NewTabArray constructs a struct TabArray.
@@ -63,17 +65,12 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _tabArray
-}
-
-// Native returns the underlying C source pointer.
-func (t *TabArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // Copy copies a PangoTabArray.
@@ -81,15 +78,15 @@ func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(src))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.pango_tab_array_copy(_arg0)
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_tabArray, func(v *TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _tabArray
@@ -99,7 +96,7 @@ func (src *TabArray) Copy() *TabArray {
 func (tabArray *TabArray) free() {
 	var _arg0 *C.PangoTabArray // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	C.pango_tab_array_free(_arg0)
 }
@@ -110,7 +107,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
@@ -128,7 +125,7 @@ func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
 	_cret = C.pango_tab_array_get_size(_arg0)
 
@@ -146,7 +143,7 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg2 C.PangoTabAlign  // in
 	var _arg3 C.gint           // in
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 	_arg1 = C.gint(tabIndex)
 
 	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
@@ -168,7 +165,7 @@ func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 	_arg1 = C.gint(newSize)
 
 	C.pango_tab_array_resize(_arg0, _arg1)
@@ -183,7 +180,7 @@ func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int)
 	var _arg2 C.PangoTabAlign  // out
 	var _arg3 C.gint           // out
 
-	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(tabArray))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 	_arg1 = C.gint(tabIndex)
 	_arg2 = C.PangoTabAlign(alignment)
 	_arg3 = C.gint(location)

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -143,17 +144,13 @@ func MarkupEscapeText(text string, length int) string {
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
 type MarkupParseContext struct {
-	native C.GMarkupParseContext
+	nocopy gextras.NoCopy
+	native *C.GMarkupParseContext
 }
 
 func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*MarkupParseContext)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	return &MarkupParseContext{native: (*C.GMarkupParseContext)(unsafe.Pointer(b))}, nil
 }
 
 // EndParse signals to the ParseContext that all data has been fed into the
@@ -165,7 +162,7 @@ func (context *MarkupParseContext) EndParse() error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
 
@@ -183,7 +180,7 @@ func (context *MarkupParseContext) EndParse() error {
 func (context *MarkupParseContext) free() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_free(_arg0)
 }
@@ -197,7 +194,7 @@ func (context *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.gchar               // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
@@ -217,7 +214,7 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg1 C.gint                 // in
 	var _arg2 C.gint                 // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
@@ -239,7 +236,7 @@ func (context *MarkupParseContext) UserData() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
@@ -265,7 +262,7 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg2 C.gssize               // out
 	var _cerr *C.GError              // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.gssize(textLen)
 
@@ -294,7 +291,7 @@ func (context *MarkupParseContext) Pop() cgo.Handle {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
 
@@ -353,8 +350,8 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData cgo.Handl
 	var _arg1 *C.GMarkupParser       // out
 	var _arg2 C.gpointer             // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
-	_arg1 = (*C.GMarkupParser)(unsafe.Pointer(parser))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = (*C.GMarkupParser)(gextras.StructNative(unsafe.Pointer(parser)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	C.g_markup_parse_context_push(_arg0, _arg1, _arg2)
@@ -365,16 +362,16 @@ func (context *MarkupParseContext) ref() *MarkupParseContext {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.GMarkupParseContext // in
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_markup_parse_context_ref(_arg0)
 
 	var _markupParseContext *MarkupParseContext // out
 
-	_markupParseContext = (*MarkupParseContext)(unsafe.Pointer(_cret))
+	_markupParseContext = (*MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_markup_parse_context_ref(_cret)
 	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
-		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(unsafe.Pointer(v)))
+		C.g_markup_parse_context_unref((*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _markupParseContext
@@ -385,7 +382,7 @@ func (context *MarkupParseContext) ref() *MarkupParseContext {
 func (context *MarkupParseContext) unref() {
 	var _arg0 *C.GMarkupParseContext // out
 
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_markup_parse_context_unref(_arg0)
 }
@@ -398,10 +395,6 @@ func (context *MarkupParseContext) unref() {
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
 type MarkupParser struct {
-	native C.GMarkupParser
-}
-
-// Native returns the underlying C source pointer.
-func (m *MarkupParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
+	nocopy gextras.NoCopy
+	native *C.GMarkupParser
 }

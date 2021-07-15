@@ -95,16 +95,18 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source int, sourceType 
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
 func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
-	var _arg1 *C.cairo_t // out
-	var _rect Rectangle
-	var _cret C.gboolean // in
+	var _arg1 *C.cairo_t     // out
+	var _arg2 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _rect Rectangle // out
+	var _ok bool        // out
 
+	_rect = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -135,7 +137,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg2 *C.GdkRectangle // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle))
+	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_cairo_rectangle(_arg1, _arg2)
 }
@@ -167,8 +169,8 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -186,7 +188,7 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	var _arg2 *C.GdkColor // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gdk_cairo_set_source_color(_arg1, _arg2)
 }
@@ -215,7 +217,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg2 *C.GdkRGBA // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
 }

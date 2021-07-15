@@ -5,6 +5,8 @@ package glib
 import (
 	"runtime/cgo"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -66,12 +68,8 @@ const (
 
 // Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
 type Node struct {
-	native C.GNode
-}
-
-// Native returns the underlying C source pointer.
-func (n *Node) Native() unsafe.Pointer {
-	return unsafe.Pointer(&n.native)
+	nocopy gextras.NoCopy
+	native *C.GNode
 }
 
 // Data contains the actual data of the node.
@@ -85,14 +83,14 @@ func (n *Node) Data() cgo.Handle {
 // same parent).
 func (n *Node) Next() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.next))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.next)))
 	return v
 }
 
 // Prev points to the node's previous sibling.
 func (n *Node) Prev() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.prev))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.prev)))
 	return v
 }
 
@@ -100,7 +98,7 @@ func (n *Node) Prev() *Node {
 // root of the tree.
 func (n *Node) Parent() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.parent))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.parent)))
 	return v
 }
 
@@ -108,7 +106,7 @@ func (n *Node) Parent() *Node {
 // accessed by using the next pointer of each child.
 func (n *Node) Children() *Node {
 	var v *Node // out
-	v = (*Node)(unsafe.Pointer(n.native.children))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.children)))
 	return v
 }
 
@@ -119,7 +117,7 @@ func (node *Node) ChildIndex(data cgo.Handle) int {
 	var _arg1 C.gpointer // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
@@ -139,8 +137,8 @@ func (node *Node) ChildPosition(child *Node) int {
 	var _arg1 *C.GNode // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
-	_arg1 = (*C.GNode)(unsafe.Pointer(child))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
+	_arg1 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(child)))
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
 
@@ -159,7 +157,7 @@ func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	_cret = C.g_node_depth(_arg0)
 
@@ -175,7 +173,7 @@ func (node *Node) Depth() uint {
 func (root *Node) Destroy() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(root))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
 
 	C.g_node_destroy(_arg0)
 }
@@ -188,8 +186,8 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 	var _arg1 *C.GNode   // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
-	_arg1 = (*C.GNode)(unsafe.Pointer(descendant))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
+	_arg1 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
 
@@ -211,7 +209,7 @@ func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(root))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
 
 	_cret = C.g_node_max_height(_arg0)
 
@@ -227,7 +225,7 @@ func (node *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	_cret = C.g_node_n_children(_arg0)
 
@@ -244,7 +242,7 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 	var _arg1 C.GTraverseFlags // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(root))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(root)))
 	_arg1 = C.GTraverseFlags(flags)
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
@@ -261,7 +259,7 @@ func (root *Node) NNodes(flags TraverseFlags) uint {
 func (node *Node) ReverseChildren() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	C.g_node_reverse_children(_arg0)
 }
@@ -270,7 +268,7 @@ func (node *Node) ReverseChildren() {
 func (node *Node) Unlink() {
 	var _arg0 *C.GNode // out
 
-	_arg0 = (*C.GNode)(unsafe.Pointer(node))
+	_arg0 = (*C.GNode)(gextras.StructNative(unsafe.Pointer(node)))
 
 	C.g_node_unlink(_arg0)
 }

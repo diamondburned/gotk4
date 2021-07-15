@@ -113,7 +113,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 

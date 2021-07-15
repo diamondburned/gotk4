@@ -1026,7 +1026,7 @@ func (widget *Widget) ActivateActionVariant(name string, args *glib.Variant) boo
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(args))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 
 	_cret = C.gtk_widget_activate_action_variant(_arg0, _arg1, _arg2)
 
@@ -1154,7 +1154,7 @@ func (widget *Widget) Allocate(width int, height int, baseline int, transform *g
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 	_arg3 = C.int(baseline)
-	_arg4 = (*C.GskTransform)(unsafe.Pointer(transform))
+	_arg4 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	C.gtk_widget_allocate(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
@@ -1210,18 +1210,20 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 //
 // It is valid for widget and target to be the same widget.
 func (widget *Widget) ComputeBounds(target Widgeter) (graphene.Rect, bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _outBounds graphene.Rect
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outBounds)))
+	_cret = C.gtk_widget_compute_bounds(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _outBounds graphene.Rect // out
+	var _ok bool                 // out
 
+	_outBounds = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1269,17 +1271,19 @@ func (widget *Widget) ComputePoint(target Widgeter, point *graphene.Point) (grap
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
-	var _outPoint graphene.Point
-	var _cret C.gboolean // in
+	var _arg3 C.graphene_point_t  // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(point))
+	_arg2 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
+	_cret = C.gtk_widget_compute_point(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _outPoint graphene.Point // out
+	var _ok bool                 // out
 
+	_outPoint = *(*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1290,18 +1294,20 @@ func (widget *Widget) ComputePoint(target Widgeter, point *graphene.Point) (grap
 // ComputeTransform computes a matrix suitable to describe a transformation from
 // widget's coordinate system into target's coordinate system.
 func (widget *Widget) ComputeTransform(target Widgeter) (graphene.Matrix, bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-	var _outTransform graphene.Matrix
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkWidget        // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.graphene_matrix_t // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((target).(gextras.Nativer).Native()))
 
-	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_outTransform)))
+	_cret = C.gtk_widget_compute_transform(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _outTransform graphene.Matrix // out
+	var _ok bool                      // out
 
+	_outTransform = *(*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2234,13 +2240,19 @@ func (widget *Widget) Parent() *Widget {
 //
 // Use gtk_widget_measure if you want to support baseline alignment.
 func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition) {
-	var _arg0 *C.GtkWidget // out
-	var _minimumSize Requisition
-	var _naturalSize Requisition
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkRequisition // in
+	var _arg2 C.GtkRequisition // in
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_get_preferred_size(_arg0, (*C.GtkRequisition)(unsafe.Pointer(&_minimumSize)), (*C.GtkRequisition)(unsafe.Pointer(&_naturalSize)))
+	C.gtk_widget_get_preferred_size(_arg0, &_arg1, &_arg2)
+
+	var _minimumSize Requisition // out
+	var _naturalSize Requisition // out
+
+	_minimumSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_naturalSize = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _minimumSize, _naturalSize
 }
@@ -4199,12 +4211,13 @@ func WidgetSetDefaultDirection(dir TextDirection) {
 // Requisition represents the desired size of a widget. See [GtkWidget’s
 // geometry management section][geometry-management] for more information.
 type Requisition struct {
-	native C.GtkRequisition
+	nocopy gextras.NoCopy
+	native *C.GtkRequisition
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Requisition)(unsafe.Pointer(b)), nil
+	return &Requisition{native: (*C.GtkRequisition)(unsafe.Pointer(b))}, nil
 }
 
 // NewRequisition constructs a struct Requisition.
@@ -4215,17 +4228,12 @@ func NewRequisition() *Requisition {
 
 	var _requisition *Requisition // out
 
-	_requisition = (*Requisition)(unsafe.Pointer(_cret))
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_requisition, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _requisition
-}
-
-// Native returns the underlying C source pointer.
-func (r *Requisition) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
 }
 
 // Width widget’s desired width
@@ -4247,15 +4255,15 @@ func (requisition *Requisition) Copy() *Requisition {
 	var _arg0 *C.GtkRequisition // out
 	var _cret *C.GtkRequisition // in
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(requisition))
+	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	_cret = C.gtk_requisition_copy(_arg0)
 
 	var _ret *Requisition // out
 
-	_ret = (*Requisition)(unsafe.Pointer(_cret))
+	_ret = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_ret, func(v *Requisition) {
-		C.gtk_requisition_free((*C.GtkRequisition)(unsafe.Pointer(v)))
+		C.gtk_requisition_free((*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -4265,7 +4273,7 @@ func (requisition *Requisition) Copy() *Requisition {
 func (requisition *Requisition) free() {
 	var _arg0 *C.GtkRequisition // out
 
-	_arg0 = (*C.GtkRequisition)(unsafe.Pointer(requisition))
+	_arg0 = (*C.GtkRequisition)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	C.gtk_requisition_free(_arg0)
 }

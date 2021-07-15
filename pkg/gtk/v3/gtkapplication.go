@@ -280,7 +280,7 @@ func (application *Application) AddAccelerator(accelerator string, actionName st
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(parameter))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 
 	C.gtk_application_add_accelerator(_arg0, _arg1, _arg2, _arg3)
 }
@@ -621,7 +621,7 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 
 	C.gtk_application_remove_accelerator(_arg0, _arg1, _arg2)
 }

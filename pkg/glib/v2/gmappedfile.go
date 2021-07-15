@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,12 +26,13 @@ func init() {
 // MappedFile represents a file mapping created with g_mapped_file_new(). It has
 // only private members and should not be accessed directly.
 type MappedFile struct {
-	native C.GMappedFile
+	nocopy gextras.NoCopy
+	native *C.GMappedFile
 }
 
 func marshalMappedFile(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*MappedFile)(unsafe.Pointer(b)), nil
+	return &MappedFile{native: (*C.GMappedFile)(unsafe.Pointer(b))}, nil
 }
 
 // NewMappedFile constructs a struct MappedFile.
@@ -50,10 +52,10 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
+		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -77,19 +79,14 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _mappedFile *MappedFile // out
 	var _goerr error            // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
+		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mappedFile, _goerr
-}
-
-// Native returns the underlying C source pointer.
-func (m *MappedFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // Free: this call existed before File had refcounting and is currently exactly
@@ -99,7 +96,7 @@ func (m *MappedFile) Native() unsafe.Pointer {
 func (file *MappedFile) free() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	C.g_mapped_file_free(_arg0)
 }
@@ -114,7 +111,7 @@ func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
 
@@ -131,7 +128,7 @@ func (file *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
 	var _cret C.gsize        // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	_cret = C.g_mapped_file_get_length(_arg0)
 
@@ -148,16 +145,16 @@ func (file *MappedFile) ref() *MappedFile {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GMappedFile // in
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	_cret = C.g_mapped_file_ref(_arg0)
 
 	var _mappedFile *MappedFile // out
 
-	_mappedFile = (*MappedFile)(unsafe.Pointer(_cret))
+	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_mapped_file_ref(_cret)
 	runtime.SetFinalizer(_mappedFile, func(v *MappedFile) {
-		C.g_mapped_file_unref((*C.GMappedFile)(unsafe.Pointer(v)))
+		C.g_mapped_file_unref((*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mappedFile
@@ -172,7 +169,7 @@ func (file *MappedFile) ref() *MappedFile {
 func (file *MappedFile) unref() {
 	var _arg0 *C.GMappedFile // out
 
-	_arg0 = (*C.GMappedFile)(unsafe.Pointer(file))
+	_arg0 = (*C.GMappedFile)(gextras.StructNative(unsafe.Pointer(file)))
 
 	C.g_mapped_file_unref(_arg0)
 }

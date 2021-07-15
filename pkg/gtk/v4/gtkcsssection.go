@@ -28,12 +28,13 @@ func init() {
 // Because sections are nested into one another, you can use
 // gtk_css_section_get_parent() to get the containing region.
 type CSSSection struct {
-	native C.GtkCssSection
+	nocopy gextras.NoCopy
+	native *C.GtkCssSection
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*CSSSection)(unsafe.Pointer(b)), nil
+	return &CSSSection{native: (*C.GtkCssSection)(unsafe.Pointer(b))}, nil
 }
 
 // NewCSSSection constructs a struct CSSSection.
@@ -44,25 +45,20 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _cret *C.GtkCssSection  // in
 
 	_arg1 = (*C.GFile)(unsafe.Pointer((file).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkCssLocation)(unsafe.Pointer(start))
-	_arg3 = (*C.GtkCssLocation)(unsafe.Pointer(end))
+	_arg2 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = C.gtk_css_section_new(_arg1, _arg2, _arg3)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
+		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _cssSection
-}
-
-// Native returns the underlying C source pointer.
-func (c *CSSSection) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // EndLocation returns the location in the CSS document where this section ends.
@@ -70,13 +66,13 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_end_location(_arg0)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _cssLocation
 }
@@ -89,7 +85,7 @@ func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_file(_arg0)
 
@@ -116,15 +112,15 @@ func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_parent(_arg0)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
+		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _cssSection
@@ -136,13 +132,13 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
 	var _cret *C.GtkCssLocation // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_get_start_location(_arg0)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(unsafe.Pointer(_cret))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _cssLocation
 }
@@ -152,16 +148,16 @@ func (section *CSSSection) ref() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GtkCssSection // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_ref(_arg0)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(unsafe.Pointer(_cret))
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_css_section_ref(_cret)
 	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.gtk_css_section_unref((*C.GtkCssSection)(unsafe.Pointer(v)))
+		C.gtk_css_section_unref((*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _cssSection
@@ -173,7 +169,7 @@ func (section *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = C.gtk_css_section_to_string(_arg0)
 
@@ -190,7 +186,7 @@ func (section *CSSSection) String() string {
 func (section *CSSSection) unref() {
 	var _arg0 *C.GtkCssSection // out
 
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(section))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
 	C.gtk_css_section_unref(_arg0)
 }

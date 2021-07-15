@@ -36,9 +36,9 @@ func _gotk4_gtk3_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpo
 	var event *gdk.EventKey // out
 
 	grabWidget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
-	event = (*gdk.EventKey)(unsafe.Pointer(arg1))
+	event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(event, func(v *gdk.EventKey) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	fn := v.(KeySnoopFunc)
@@ -252,7 +252,7 @@ func GetDefaultLanguage() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(unsafe.Pointer(_cret))
+	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _language
 }
@@ -377,10 +377,10 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 
 	var _optionGroup *glib.OptionGroup // out
 
-	_optionGroup = (*glib.OptionGroup)(unsafe.Pointer(_cret))
+	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
-		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
+		C.g_option_group_unref((*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _optionGroup

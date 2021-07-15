@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,12 +27,13 @@ func init() {
 // The contents of the #graphene_matrix_t structure are private and should never
 // be accessed directly.
 type Matrix struct {
-	native C.graphene_matrix_t
+	nocopy gextras.NoCopy
+	native *C.graphene_matrix_t
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Matrix)(unsafe.Pointer(b)), nil
+	return &Matrix{native: (*C.graphene_matrix_t)(unsafe.Pointer(b))}, nil
 }
 
 // NewMatrixAlloc constructs a struct Matrix.
@@ -42,17 +44,12 @@ func NewMatrixAlloc() *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_matrix, func(v *Matrix) {
-		C.graphene_matrix_free((*C.graphene_matrix_t)(unsafe.Pointer(v)))
+		C.graphene_matrix_free((*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _matrix
-}
-
-// Native returns the underlying C source pointer.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // Decompose decomposes a transformation matrix into its component
@@ -64,20 +61,30 @@ func (m *Matrix) Native() unsafe.Pointer {
 // Gems II", edited by Jim Arvo, and available online
 // (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
 func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, shear Vec3, perspective Vec4, ok bool) {
-	var _arg0 *C.graphene_matrix_t // out
-	var _translate Vec3
-	var _scale Vec3
-	var _rotate Quaternion
-	var _shear Vec3
-	var _perspective Vec4
-	var _cret C._Bool // in
+	var _arg0 *C.graphene_matrix_t    // out
+	var _arg1 C.graphene_vec3_t       // in
+	var _arg2 C.graphene_vec3_t       // in
+	var _arg3 C.graphene_quaternion_t // in
+	var _arg4 C.graphene_vec3_t       // in
+	var _arg5 C.graphene_vec4_t       // in
+	var _cret C._Bool                 // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
-	_cret = C.graphene_matrix_decompose(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_translate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_scale)), (*C.graphene_quaternion_t)(unsafe.Pointer(&_rotate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_shear)), (*C.graphene_vec4_t)(unsafe.Pointer(&_perspective)))
+	_cret = C.graphene_matrix_decompose(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
-	var _ok bool // out
+	var _translate Vec3    // out
+	var _scale Vec3        // out
+	var _rotate Quaternion // out
+	var _shear Vec3        // out
+	var _perspective Vec4  // out
+	var _ok bool           // out
 
+	_translate = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_scale = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_rotate = *(*Quaternion)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_shear = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_perspective = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
 	if _cret {
 		_ok = true
 	}
@@ -90,7 +97,7 @@ func (m *Matrix) Determinant() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_determinant(_arg0)
 
@@ -107,8 +114,8 @@ func (a *Matrix) Equal(b *Matrix) bool {
 	var _arg1 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_matrix_equal(_arg0, _arg1)
 
@@ -146,8 +153,8 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 	var _arg1 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_matrix_equal_fast(_arg0, _arg1)
 
@@ -164,7 +171,7 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 func (m *Matrix) free() {
 	var _arg0 *C.graphene_matrix_t // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	C.graphene_matrix_free(_arg0)
 }
@@ -173,12 +180,16 @@ func (m *Matrix) free() {
 func (m *Matrix) Row(index_ uint) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.uint(index_)
 
-	C.graphene_matrix_get_row(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_get_row(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	_res = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -190,7 +201,7 @@ func (m *Matrix) Value(row uint, col uint) float32 {
 	var _arg2 C.uint               // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.uint(row)
 	_arg2 = C.uint(col)
 
@@ -208,7 +219,7 @@ func (m *Matrix) XScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_x_scale(_arg0)
 
@@ -224,7 +235,7 @@ func (m *Matrix) XTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_x_translation(_arg0)
 
@@ -240,7 +251,7 @@ func (m *Matrix) YScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_y_scale(_arg0)
 
@@ -256,7 +267,7 @@ func (m *Matrix) YTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_y_translation(_arg0)
 
@@ -272,7 +283,7 @@ func (m *Matrix) ZScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_z_scale(_arg0)
 
@@ -288,7 +299,7 @@ func (m *Matrix) ZTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_get_z_translation(_arg0)
 
@@ -320,7 +331,7 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 	var _arg6 C.double             // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.double(xx)
 	_arg2 = C.double(yx)
 	_arg3 = C.double(xy)
@@ -332,7 +343,7 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -344,14 +355,14 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 	var _arg1 *C.float
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = (*C.float)(unsafe.Pointer(&v))
 
 	_cret = C.graphene_matrix_init_from_float(_arg0, _arg1)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -363,14 +374,14 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 	var _arg1 *C.graphene_matrix_t // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_matrix_init_from_matrix(_arg0, _arg1)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -385,17 +396,17 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 	var _arg4 *C.graphene_vec4_t   // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v0))
-	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(v1))
-	_arg3 = (*C.graphene_vec4_t)(unsafe.Pointer(v2))
-	_arg4 = (*C.graphene_vec4_t)(unsafe.Pointer(v3))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v0)))
+	_arg2 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v1)))
+	_arg3 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v2)))
+	_arg4 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v3)))
 
 	_cret = C.graphene_matrix_init_from_vec4(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -414,7 +425,7 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 	var _arg6 C.float              // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(left)
 	_arg2 = C.float(right)
 	_arg3 = C.float(bottom)
@@ -426,7 +437,7 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -436,13 +447,13 @@ func (m *Matrix) InitIdentity() *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_init_identity(_arg0)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -468,16 +479,16 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 	var _arg3 *C.graphene_vec3_t   // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(eye))
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(center))
-	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(up))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(eye)))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(center)))
+	_arg3 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(up)))
 
 	_cret = C.graphene_matrix_init_look_at(_arg0, _arg1, _arg2, _arg3)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -493,7 +504,7 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 	var _arg6 C.float              // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(left)
 	_arg2 = C.float(right)
 	_arg3 = C.float(top)
@@ -505,7 +516,7 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -520,7 +531,7 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 	var _arg4 C.float              // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(fovy)
 	_arg2 = C.float(aspect)
 	_arg3 = C.float(zNear)
@@ -530,7 +541,7 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -543,15 +554,15 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 	var _arg2 *C.graphene_vec3_t   // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(angle)
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_cret = C.graphene_matrix_init_rotate(_arg0, _arg1, _arg2)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -564,7 +575,7 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 	var _arg3 C.float              // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 	_arg3 = C.float(z)
@@ -573,7 +584,7 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -586,7 +597,7 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 	var _arg2 C.float              // out
 	var _cret *C.graphene_matrix_t // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(xSkew)
 	_arg2 = C.float(ySkew)
 
@@ -594,7 +605,7 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -606,14 +617,14 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret *C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.graphene_matrix_init_translate(_arg0, _arg1)
 
 	var _matrix *Matrix // out
 
-	_matrix = (*Matrix)(unsafe.Pointer(_cret))
+	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _matrix
 }
@@ -628,13 +639,17 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 C.double             // out
-	var _res Matrix
+	var _arg3 C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
 	_arg2 = C.double(factor)
 
-	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Matrix // out
+
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -642,15 +657,17 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
 // Inverse inverts the given matrix.
 func (m *Matrix) Inverse() (Matrix, bool) {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
-	var _cret C._Bool // in
+	var _arg1 C.graphene_matrix_t  // in
+	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
-	_cret = C.graphene_matrix_inverse(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_matrix_inverse(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _res Matrix // out
+	var _ok bool    // out
 
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret {
 		_ok = true
 	}
@@ -664,7 +681,7 @@ func (m *Matrix) Is2D() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_is_2d(_arg0)
 
@@ -683,7 +700,7 @@ func (m *Matrix) IsBackfaceVisible() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_is_backface_visible(_arg0)
 
@@ -702,7 +719,7 @@ func (m *Matrix) IsIdentity() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_is_identity(_arg0)
 
@@ -720,7 +737,7 @@ func (m *Matrix) IsSingular() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_is_singular(_arg0)
 
@@ -740,12 +757,16 @@ func (m *Matrix) IsSingular() bool {
 func (a *Matrix) Multiply(b *Matrix) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg2 C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
 
-	C.graphene_matrix_multiply(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_multiply(_arg0, _arg1, &_arg2)
+
+	var _res Matrix // out
+
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -758,8 +779,8 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 	var _arg2 C.float              // out
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_matrix_near(_arg0, _arg1, _arg2)
@@ -776,11 +797,15 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 // Normalize normalizes the given #graphene_matrix_t.
 func (m *Matrix) Normalize() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg1 C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
-	C.graphene_matrix_normalize(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_normalize(_arg0, &_arg1)
+
+	var _res Matrix // out
+
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -789,12 +814,16 @@ func (m *Matrix) Normalize() Matrix {
 func (m *Matrix) Perspective(depth float32) Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
-	var _res Matrix
+	var _arg2 C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(depth)
 
-	C.graphene_matrix_perspective(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_perspective(_arg0, _arg1, &_arg2)
+
+	var _res Matrix // out
+
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -806,7 +835,7 @@ func (m *Matrix) Perspective(depth float32) Matrix {
 func (m *Matrix) Print() {
 	var _arg0 *C.graphene_matrix_t // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	C.graphene_matrix_print(_arg0)
 }
@@ -815,12 +844,16 @@ func (m *Matrix) Print() {
 func (m *Matrix) ProjectPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _res Point
+	var _arg2 C.graphene_point_t   // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_matrix_project_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_point(_arg0, _arg1, &_arg2)
+
+	var _res Point // out
+
+	_res = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -832,12 +865,16 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 func (m *Matrix) ProjectRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Quad
+	var _arg2 C.graphene_quad_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
-	C.graphene_matrix_project_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_rect(_arg0, _arg1, &_arg2)
+
+	var _res Quad // out
+
+	_res = *(*Quad)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -849,12 +886,16 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
-	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	_res = *(*Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -869,9 +910,9 @@ func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 	var _arg1 C.float              // out
 	var _arg2 *C.graphene_vec3_t   // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(angle)
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	C.graphene_matrix_rotate(_arg0, _arg1, _arg2)
 }
@@ -882,8 +923,8 @@ func (m *Matrix) RotateEuler(e *Euler) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_euler_t  // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(e))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(e)))
 
 	C.graphene_matrix_rotate_euler(_arg0, _arg1)
 }
@@ -897,8 +938,8 @@ func (m *Matrix) RotateQuaternion(q *Quaternion) {
 	var _arg0 *C.graphene_matrix_t     // out
 	var _arg1 *C.graphene_quaternion_t // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(q))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(q)))
 
 	C.graphene_matrix_rotate_quaternion(_arg0, _arg1)
 }
@@ -911,7 +952,7 @@ func (m *Matrix) RotateX(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_x(_arg0, _arg1)
@@ -925,7 +966,7 @@ func (m *Matrix) RotateY(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_y(_arg0, _arg1)
@@ -939,7 +980,7 @@ func (m *Matrix) RotateZ(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(angle)
 
 	C.graphene_matrix_rotate_z(_arg0, _arg1)
@@ -955,7 +996,7 @@ func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 	var _arg2 C.float              // out
 	var _arg3 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(factorX)
 	_arg2 = C.float(factorY)
 	_arg3 = C.float(factorZ)
@@ -968,7 +1009,7 @@ func (m *Matrix) SkewXY(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_xy(_arg0, _arg1)
@@ -979,7 +1020,7 @@ func (m *Matrix) SkewXZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_xz(_arg0, _arg1)
@@ -990,7 +1031,7 @@ func (m *Matrix) SkewYZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = C.float(factor)
 
 	C.graphene_matrix_skew_yz(_arg0, _arg1)
@@ -1017,7 +1058,7 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 	var _arg6 C.double             // in
 	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	_cret = C.graphene_matrix_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
@@ -1047,7 +1088,7 @@ func (m *Matrix) ToFloat() [16]float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 [16]C.float
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
 	C.graphene_matrix_to_float(_arg0, &_arg1[0])
 
@@ -1068,12 +1109,16 @@ func (m *Matrix) ToFloat() [16]float32 {
 func (m *Matrix) TransformBounds(r *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg2 C.graphene_rect_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
-	C.graphene_matrix_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_bounds(_arg0, _arg1, &_arg2)
+
+	var _res Rect // out
+
+	_res = *(*Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1086,12 +1131,16 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 func (m *Matrix) TransformBox(b *Box) Box {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_box_t    // out
-	var _res Box
+	var _arg2 C.graphene_box_t     // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
 
-	C.graphene_matrix_transform_box(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_box(_arg0, _arg1, &_arg2)
+
+	var _res Box // out
+
+	_res = *(*Box)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1106,12 +1155,16 @@ func (m *Matrix) TransformBox(b *Box) Box {
 func (m *Matrix) TransformPoint(p *Point) Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
-	var _res Point
+	var _arg2 C.graphene_point_t   // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_matrix_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_point(_arg0, _arg1, &_arg2)
+
+	var _res Point // out
+
+	_res = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1126,12 +1179,16 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg2 C.graphene_point3d_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_matrix_transform_point3d(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_point3d(_arg0, _arg1, &_arg2)
+
+	var _res Point3D // out
+
+	_res = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1140,12 +1197,16 @@ func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
 func (m *Matrix) TransformRay(r *Ray) Ray {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_ray_t    // out
-	var _res Ray
+	var _arg2 C.graphene_ray_t     // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(r))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
 
-	C.graphene_matrix_transform_ray(_arg0, _arg1, (*C.graphene_ray_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_ray(_arg0, _arg1, &_arg2)
+
+	var _res Ray // out
+
+	_res = *(*Ray)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1159,12 +1220,16 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 func (m *Matrix) TransformRect(r *Rect) Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
-	var _res Quad
+	var _arg2 C.graphene_quad_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 
-	C.graphene_matrix_transform_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_rect(_arg0, _arg1, &_arg2)
+
+	var _res Quad // out
+
+	_res = *(*Quad)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1174,12 +1239,16 @@ func (m *Matrix) TransformRect(r *Rect) Quad {
 func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_sphere_t // out
-	var _res Sphere
+	var _arg2 C.graphene_sphere_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
-	C.graphene_matrix_transform_sphere(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_sphere(_arg0, _arg1, &_arg2)
+
+	var _res Sphere // out
+
+	_res = *(*Sphere)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1194,12 +1263,16 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
-	var _res Vec3
+	var _arg2 C.graphene_vec3_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v)))
 
-	C.graphene_matrix_transform_vec3(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_vec3(_arg0, _arg1, &_arg2)
+
+	var _res Vec3 // out
+
+	_res = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1210,12 +1283,16 @@ func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
-	var _res Vec4
+	var _arg2 C.graphene_vec4_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v)))
 
-	C.graphene_matrix_transform_vec4(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transform_vec4(_arg0, _arg1, &_arg2)
+
+	var _res Vec4 // out
+
+	_res = *(*Vec4)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _res
 }
@@ -1229,8 +1306,8 @@ func (m *Matrix) Translate(pos *Point3D) {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(pos))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(pos)))
 
 	C.graphene_matrix_translate(_arg0, _arg1)
 }
@@ -1238,11 +1315,15 @@ func (m *Matrix) Translate(pos *Point3D) {
 // Transpose transposes the given matrix.
 func (m *Matrix) Transpose() Matrix {
 	var _arg0 *C.graphene_matrix_t // out
-	var _res Matrix
+	var _arg1 C.graphene_matrix_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
-	C.graphene_matrix_transpose(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_transpose(_arg0, &_arg1)
+
+	var _res Matrix // out
+
+	_res = *(*Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _res
 }
@@ -1253,13 +1334,17 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Po
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
 	var _arg2 *C.graphene_point3d_t // out
-	var _res Point3D
+	var _arg3 C.graphene_point3d_t  // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(projection))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview))
-	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(projection)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(modelview)))
+	_arg2 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Point3D // out
+
+	_res = *(*Point3D)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -1271,13 +1356,17 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _res Rect
+	var _arg3 C.graphene_rect_t    // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
-	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
+	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Rect // out
+
+	_res = *(*Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -1288,17 +1377,19 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
 	var _arg2 *C.graphene_rect_t   // out
-	var _res Point
-	var _cret C._Bool // in
+	var _arg3 C.graphene_point_t   // in
+	var _cret C._Bool              // in
 
-	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds))
+	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
-	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	_cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, &_arg3)
 
-	var _ok bool // out
+	var _res Point // out
+	var _ok bool   // out
 
+	_res = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 	if _cret {
 		_ok = true
 	}

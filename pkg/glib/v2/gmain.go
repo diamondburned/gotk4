@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,7 +62,7 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(result))
+	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(result)))
 
 	C.g_get_current_time(_arg1)
 }
@@ -138,10 +139,10 @@ func NewIdleSource() *Source {
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -155,9 +156,9 @@ func MainCurrentSource() *Source {
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -249,10 +250,10 @@ func NewTimeoutSource(interval uint) *Source {
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -278,10 +279,10 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -290,12 +291,13 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 // MainContext: GMainContext struct is an opaque data type representing a set of
 // sources to be handled in a main loop.
 type MainContext struct {
-	native C.GMainContext
+	nocopy gextras.NoCopy
+	native *C.GMainContext
 }
 
 func marshalMainContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*MainContext)(unsafe.Pointer(b)), nil
+	return &MainContext{native: (*C.GMainContext)(unsafe.Pointer(b))}, nil
 }
 
 // NewMainContext constructs a struct MainContext.
@@ -306,18 +308,13 @@ func NewMainContext() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
-}
-
-// Native returns the underlying C source pointer.
-func (m *MainContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // Acquire tries to become the owner of the specified context. If some other
@@ -333,7 +330,7 @@ func (context *MainContext) Acquire() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_acquire(_arg0)
 
@@ -354,8 +351,8 @@ func (context *MainContext) AddPoll(fd *PollFD, priority int) {
 	var _arg1 *C.GPollFD      // out
 	var _arg2 C.gint          // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 	_arg2 = C.gint(priority)
 
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
@@ -375,7 +372,7 @@ func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 	var _arg3 C.gint
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 	_arg1 = C.gint(maxPriority)
 	_arg3 = (C.gint)(len(fds))
 	if len(fds) > 0 {
@@ -400,7 +397,7 @@ func (context *MainContext) Check(maxPriority int, fds []PollFD) bool {
 func (context *MainContext) Dispatch() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_dispatch(_arg0)
 }
@@ -414,17 +411,17 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	var _arg2 C.gpointer      // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
-	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_main_context_find_source_by_funcs_user_data(_arg0, _arg1, _arg2)
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -446,16 +443,16 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg1 C.guint         // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 	_arg1 = C.guint(sourceId)
 
 	_cret = C.g_main_context_find_source_by_id(_arg0, _arg1)
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -469,16 +466,16 @@ func (context *MainContext) FindSourceByUserData(userData cgo.Handle) *Source {
 	var _arg1 C.gpointer      // out
 	var _cret *C.GSource      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_main_context_find_source_by_user_data(_arg0, _arg1)
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
@@ -491,7 +488,7 @@ func (context *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_is_owner(_arg0)
 
@@ -520,7 +517,7 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg1 C.gboolean      // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 	if mayBlock {
 		_arg1 = C.TRUE
 	}
@@ -541,7 +538,7 @@ func (context *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_pending(_arg0)
 
@@ -559,7 +556,7 @@ func (context *MainContext) Pending() bool {
 func (context *MainContext) PopThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_pop_thread_default(_arg0)
 }
@@ -574,7 +571,7 @@ func (context *MainContext) Prepare() (int, bool) {
 	var _arg1 C.gint          // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_prepare(_arg0, &_arg1)
 
@@ -624,7 +621,7 @@ func (context *MainContext) Prepare() (int, bool) {
 func (context *MainContext) PushThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_push_thread_default(_arg0)
 }
@@ -634,16 +631,16 @@ func (context *MainContext) ref() *MainContext {
 	var _arg0 *C.GMainContext // out
 	var _cret *C.GMainContext // in
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_main_context_ref(_arg0)
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -656,7 +653,7 @@ func (context *MainContext) ref() *MainContext {
 func (context *MainContext) Release() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_release(_arg0)
 }
@@ -667,8 +664,8 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GPollFD      // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_main_context_remove_poll(_arg0, _arg1)
 }
@@ -678,7 +675,7 @@ func (context *MainContext) RemovePoll(fd *PollFD) {
 func (context *MainContext) unref() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_unref(_arg0)
 }
@@ -701,7 +698,7 @@ func (context *MainContext) unref() {
 func (context *MainContext) Wakeup() {
 	var _arg0 *C.GMainContext // out
 
-	_arg0 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	C.g_main_context_wakeup(_arg0)
 }
@@ -717,9 +714,9 @@ func MainContextDefault() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -742,9 +739,9 @@ func MainContextGetThreadDefault() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -763,10 +760,10 @@ func MainContextRefThreadDefault() *MainContext {
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -775,12 +772,13 @@ func MainContextRefThreadDefault() *MainContext {
 // MainLoop: GMainLoop struct is an opaque data type representing the main event
 // loop of a GLib or GTK+ application.
 type MainLoop struct {
-	native C.GMainLoop
+	nocopy gextras.NoCopy
+	native *C.GMainLoop
 }
 
 func marshalMainLoop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*MainLoop)(unsafe.Pointer(b)), nil
+	return &MainLoop{native: (*C.GMainLoop)(unsafe.Pointer(b))}, nil
 }
 
 // NewMainLoop constructs a struct MainLoop.
@@ -789,7 +787,7 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _arg2 C.gboolean      // out
 	var _cret *C.GMainLoop    // in
 
-	_arg1 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 	if isRunning {
 		_arg2 = C.TRUE
 	}
@@ -798,18 +796,13 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 
 	var _mainLoop *MainLoop // out
 
-	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_loop_ref(_cret)
 	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
+		C.g_main_loop_unref((*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainLoop
-}
-
-// Native returns the underlying C source pointer.
-func (m *MainLoop) Native() unsafe.Pointer {
-	return unsafe.Pointer(&m.native)
 }
 
 // Context returns the Context of loop.
@@ -817,15 +810,15 @@ func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	_cret = C.g_main_loop_get_context(_arg0)
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -837,7 +830,7 @@ func (loop *MainLoop) IsRunning() bool {
 	var _arg0 *C.GMainLoop // out
 	var _cret C.gboolean   // in
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	_cret = C.g_main_loop_is_running(_arg0)
 
@@ -858,7 +851,7 @@ func (loop *MainLoop) IsRunning() bool {
 func (loop *MainLoop) Quit() {
 	var _arg0 *C.GMainLoop // out
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_quit(_arg0)
 }
@@ -868,16 +861,16 @@ func (loop *MainLoop) ref() *MainLoop {
 	var _arg0 *C.GMainLoop // out
 	var _cret *C.GMainLoop // in
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	_cret = C.g_main_loop_ref(_arg0)
 
 	var _mainLoop *MainLoop // out
 
-	_mainLoop = (*MainLoop)(unsafe.Pointer(_cret))
+	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_loop_ref(_cret)
 	runtime.SetFinalizer(_mainLoop, func(v *MainLoop) {
-		C.g_main_loop_unref((*C.GMainLoop)(unsafe.Pointer(v)))
+		C.g_main_loop_unref((*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainLoop
@@ -889,7 +882,7 @@ func (loop *MainLoop) ref() *MainLoop {
 func (loop *MainLoop) Run() {
 	var _arg0 *C.GMainLoop // out
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_run(_arg0)
 }
@@ -899,19 +892,20 @@ func (loop *MainLoop) Run() {
 func (loop *MainLoop) unref() {
 	var _arg0 *C.GMainLoop // out
 
-	_arg0 = (*C.GMainLoop)(unsafe.Pointer(loop))
+	_arg0 = (*C.GMainLoop)(gextras.StructNative(unsafe.Pointer(loop)))
 
 	C.g_main_loop_unref(_arg0)
 }
 
 // Source: GSource struct is an opaque data type representing an event source.
 type Source struct {
-	native C.GSource
+	nocopy gextras.NoCopy
+	native *C.GSource
 }
 
 func marshalSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Source)(unsafe.Pointer(b)), nil
+	return &Source{native: (*C.GSource)(unsafe.Pointer(b))}, nil
 }
 
 // NewSource constructs a struct Source.
@@ -920,25 +914,20 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _arg2 C.guint         // out
 	var _cret *C.GSource      // in
 
-	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(sourceFuncs))
+	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(sourceFuncs)))
 	_arg2 = C.guint(structSize)
 
 	_cret = C.g_source_new(_arg1, _arg2)
 
 	var _source *Source // out
 
-	_source = (*Source)(unsafe.Pointer(_cret))
+	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source
-}
-
-// Native returns the underlying C source pointer.
-func (s *Source) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // AddChildSource adds child_source to source as a "polled" source; when source
@@ -961,8 +950,8 @@ func (source *Source) AddChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GSource)(unsafe.Pointer(childSource))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 
 	C.g_source_add_child_source(_arg0, _arg1)
 }
@@ -982,8 +971,8 @@ func (source *Source) AddPoll(fd *PollFD) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GPollFD // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_source_add_poll(_arg0, _arg1)
 }
@@ -1007,7 +996,7 @@ func (source *Source) AddUnixFd(fd int, events IOCondition) cgo.Handle {
 	var _arg2 C.GIOCondition // out
 	var _cret C.gpointer     // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = C.gint(fd)
 	_arg2 = C.GIOCondition(events)
 
@@ -1030,8 +1019,8 @@ func (source *Source) Attach(context *MainContext) uint {
 	var _arg1 *C.GMainContext // out
 	var _cret C.guint         // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GMainContext)(unsafe.Pointer(context))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GMainContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_cret = C.g_source_attach(_arg0, _arg1)
 
@@ -1054,7 +1043,7 @@ func (source *Source) Attach(context *MainContext) uint {
 func (source *Source) Destroy() {
 	var _arg0 *C.GSource // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	C.g_source_destroy(_arg0)
 }
@@ -1065,7 +1054,7 @@ func (source *Source) CanRecurse() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_can_recurse(_arg0)
 
@@ -1089,15 +1078,15 @@ func (source *Source) Context() *MainContext {
 	var _arg0 *C.GSource      // out
 	var _cret *C.GMainContext // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_context(_arg0)
 
 	var _mainContext *MainContext // out
 
-	_mainContext = (*MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_mainContext, func(v *MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext
@@ -1111,8 +1100,8 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 	var _arg0 *C.GSource  // out
 	var _arg1 *C.GTimeVal // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(timeval))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(timeval)))
 
 	C.g_source_get_current_time(_arg0, _arg1)
 }
@@ -1130,7 +1119,7 @@ func (source *Source) ID() uint {
 	var _arg0 *C.GSource // out
 	var _cret C.guint    // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_id(_arg0)
 
@@ -1147,7 +1136,7 @@ func (source *Source) Name() string {
 	var _arg0 *C.GSource // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_name(_arg0)
 
@@ -1163,7 +1152,7 @@ func (source *Source) Priority() int {
 	var _arg0 *C.GSource // out
 	var _cret C.gint     // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_priority(_arg0)
 
@@ -1183,7 +1172,7 @@ func (source *Source) ReadyTime() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_ready_time(_arg0)
 
@@ -1205,7 +1194,7 @@ func (source *Source) Time() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_get_time(_arg0)
 
@@ -1246,7 +1235,7 @@ func (source *Source) IsDestroyed() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_is_destroyed(_arg0)
 
@@ -1275,7 +1264,7 @@ func (source *Source) ModifyUnixFd(tag cgo.Handle, newEvents IOCondition) {
 	var _arg1 C.gpointer     // out
 	var _arg2 C.GIOCondition // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 	_arg2 = C.GIOCondition(newEvents)
 
@@ -1297,7 +1286,7 @@ func (source *Source) QueryUnixFd(tag cgo.Handle) IOCondition {
 	var _arg1 C.gpointer     // out
 	var _cret C.GIOCondition // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 
 	_cret = C.g_source_query_unix_fd(_arg0, _arg1)
@@ -1314,16 +1303,16 @@ func (source *Source) ref() *Source {
 	var _arg0 *C.GSource // out
 	var _cret *C.GSource // in
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_source_ref(_arg0)
 
 	var _ret *Source // out
 
-	_ret = (*Source)(unsafe.Pointer(_cret))
+	_ret = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -1337,8 +1326,8 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GSource)(unsafe.Pointer(childSource))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 
 	C.g_source_remove_child_source(_arg0, _arg1)
 }
@@ -1352,8 +1341,8 @@ func (source *Source) RemovePoll(fd *PollFD) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GPollFD // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(fd))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(fd)))
 
 	C.g_source_remove_poll(_arg0, _arg1)
 }
@@ -1373,7 +1362,7 @@ func (source *Source) RemoveUnixFd(tag cgo.Handle) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(tag))
 
 	C.g_source_remove_unix_fd(_arg0, _arg1)
@@ -1393,9 +1382,9 @@ func (source *Source) SetCallbackIndirect(callbackData cgo.Handle, callbackFuncs
 	var _arg1 C.gpointer              // out
 	var _arg2 *C.GSourceCallbackFuncs // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(callbackData))
-	_arg2 = (*C.GSourceCallbackFuncs)(unsafe.Pointer(callbackFuncs))
+	_arg2 = (*C.GSourceCallbackFuncs)(gextras.StructNative(unsafe.Pointer(callbackFuncs)))
 
 	C.g_source_set_callback_indirect(_arg0, _arg1, _arg2)
 }
@@ -1408,7 +1397,7 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if canRecurse {
 		_arg1 = C.TRUE
 	}
@@ -1422,8 +1411,8 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GSourceFuncs // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
-	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
 
 	C.g_source_set_funcs(_arg0, _arg1)
 }
@@ -1447,7 +1436,7 @@ func (source *Source) SetName(name string) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.char    // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
 
 	C.g_source_set_name(_arg0, _arg1)
@@ -1464,7 +1453,7 @@ func (source *Source) SetPriority(priority int) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint     // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = C.gint(priority)
 
 	C.g_source_set_priority(_arg0, _arg1)
@@ -1495,7 +1484,7 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint64   // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = C.gint64(readyTime)
 
 	C.g_source_set_ready_time(_arg0, _arg1)
@@ -1506,7 +1495,7 @@ func (source *Source) SetReadyTime(readyTime int64) {
 func (source *Source) unref() {
 	var _arg0 *C.GSource // out
 
-	_arg0 = (*C.GSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	C.g_source_unref(_arg0)
 }
@@ -1554,7 +1543,7 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData cgo.Handle) bool {
 	var _arg2 C.gpointer      // out
 	var _cret C.gboolean      // in
 
-	_arg1 = (*C.GSourceFuncs)(unsafe.Pointer(funcs))
+	_arg1 = (*C.GSourceFuncs)(gextras.StructNative(unsafe.Pointer(funcs)))
 	_arg2 = (C.gpointer)(unsafe.Pointer(userData))
 
 	_cret = C.g_source_remove_by_funcs_user_data(_arg1, _arg2)
@@ -1615,12 +1604,8 @@ func SourceSetNameByID(tag uint, name string) {
 // SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
-	native C.GSourceCallbackFuncs
-}
-
-// Native returns the underlying C source pointer.
-func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GSourceCallbackFuncs
 }
 
 // SourceFuncs: GSourceFuncs struct contains a table of functions used to handle
@@ -1644,10 +1629,6 @@ func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
 // it tests the results of the poll() call to see if the required condition has
 // been met, and returns TRUE if so.
 type SourceFuncs struct {
-	native C.GSourceFuncs
-}
-
-// Native returns the underlying C source pointer.
-func (s *SourceFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GSourceFuncs
 }

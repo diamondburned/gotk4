@@ -298,15 +298,17 @@ func (iconInfo *IconInfo) DisplayName() string {
 // Deprecated: Embedded rectangles are deprecated.
 func (iconInfo *IconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 	var _arg0 *C.GtkIconInfo // out
-	var _rectangle gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
 
-	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rectangle)))
+	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rectangle gdk.Rectangle // out
+	var _ok bool                 // out
 
+	_rectangle = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -481,10 +483,10 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(fg))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(successColor))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(warningColor))
-	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(errorColor))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
+	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
+	_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
 
 	_cret = C.gtk_icon_info_load_symbolic(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 

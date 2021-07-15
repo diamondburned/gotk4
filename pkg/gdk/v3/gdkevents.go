@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/gotk3/gotk3/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -498,12 +499,8 @@ func SettingGet(name string, value *externglib.Value) bool {
 // EventAny contains the fields which are common to all event structs. Any event
 // pointer can safely be cast to a pointer to a EventAny to access these fields.
 type EventAny struct {
-	native C.GdkEventAny
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventAny) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventAny
 }
 
 // Type: type of the event.
@@ -572,12 +569,8 @@ func (e *EventAny) SendEvent() int8 {
 // a second of the first. For a triple click to occur, the third button press
 // must also occur within 1/2 second of the first button press.
 type EventButton struct {
-	native C.GdkEventButton
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventButton) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventButton
 }
 
 // Type: type of the event (GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS,
@@ -672,12 +665,8 @@ func (e *EventButton) YRoot() float64 {
 
 // EventConfigure: generated when a window size or position has changed.
 type EventConfigure struct {
-	native C.GdkEventConfigure
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventConfigure) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventConfigure
 }
 
 // Type: type of the event (GDK_CONFIGURE).
@@ -731,12 +720,8 @@ func (e *EventConfigure) Height() int {
 
 // EventCrossing: generated when the pointer enters or leaves a window.
 type EventCrossing struct {
-	native C.GdkEventCrossing
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventCrossing) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventCrossing
 }
 
 // Type: type of the event (GDK_ENTER_NOTIFY or GDK_LEAVE_NOTIFY).
@@ -841,12 +826,8 @@ func (e *EventCrossing) State() ModifierType {
 
 // EventDND: generated during DND operations.
 type EventDND struct {
-	native C.GdkEventDND
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventDND) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventDND
 }
 
 // Type: type of the event (GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION,
@@ -904,12 +885,8 @@ func (e *EventDND) YRoot() int16 {
 // EventExpose: generated when all or part of a window becomes visible and needs
 // to be redrawn.
 type EventExpose struct {
-	native C.GdkEventExpose
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventExpose) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventExpose
 }
 
 // Type: type of the event (GDK_EXPOSE or GDK_DAMAGE).
@@ -936,7 +913,7 @@ func (e *EventExpose) SendEvent() int8 {
 // Area: bounding box of region.
 func (e *EventExpose) Area() Rectangle {
 	var v Rectangle // out
-	v = *(*Rectangle)(unsafe.Pointer((&e.native.area)))
+	v = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&e.native.area))))
 	return v
 }
 
@@ -944,8 +921,8 @@ func (e *EventExpose) Area() Rectangle {
 func (e *EventExpose) Region() *cairo.Region {
 	var v *cairo.Region // out
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(e.native.region)}
-		v = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(e.native.region)}
+		v = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(v, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
@@ -965,12 +942,8 @@ func (e *EventExpose) Count() int {
 
 // EventFocus describes a change of keyboard focus.
 type EventFocus struct {
-	native C.GdkEventFocus
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventFocus) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventFocus
 }
 
 // Type: type of the event (GDK_FOCUS_CHANGE).
@@ -1008,12 +981,8 @@ func (e *EventFocus) In() int16 {
 // keyboard again. Note that implicit grabs (which are initiated by button
 // presses) can also cause EventGrabBroken events.
 type EventGrabBroken struct {
-	native C.GdkEventGrabBroken
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventGrabBroken) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventGrabBroken
 }
 
 // Type: type of the event (GDK_GRAB_BROKEN)
@@ -1067,12 +1036,8 @@ func (e *EventGrabBroken) GrabWindow() *Window {
 
 // EventKey describes a key press or key release event.
 type EventKey struct {
-	native C.GdkEventKey
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventKey
 }
 
 // Type: type of the event (GDK_KEY_PRESS or GDK_KEY_RELEASE).
@@ -1157,12 +1122,8 @@ func (e *EventKey) Group() byte {
 
 // EventMotion: generated when the pointer moves.
 type EventMotion struct {
-	native C.GdkEventMotion
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventMotion) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventMotion
 }
 
 // Type: type of the event.
@@ -1256,12 +1217,8 @@ func (e *EventMotion) YRoot() float64 {
 // this information is only available if the X server supports the XFIXES
 // extension.
 type EventOwnerChange struct {
-	native C.GdkEventOwnerChange
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventOwnerChange) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventOwnerChange
 }
 
 // Type: type of the event (GDK_OWNER_CHANGE).
@@ -1316,12 +1273,8 @@ func (e *EventOwnerChange) SelectionTime() uint32 {
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
 // sensors.
 type EventPadAxis struct {
-	native C.GdkEventPadAxis
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventPadAxis) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventPadAxis
 }
 
 // Type: type of the event (GDK_PAD_RING or GDK_PAD_STRIP).
@@ -1385,12 +1338,8 @@ func (e *EventPadAxis) Value() float64 {
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
 // releases.
 type EventPadButton struct {
-	native C.GdkEventPadButton
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventPadButton) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventPadButton
 }
 
 // Type: type of the event (GDK_PAD_BUTTON_PRESS or GDK_PAD_BUTTON_RELEASE).
@@ -1447,12 +1396,8 @@ func (e *EventPadButton) Mode() uint {
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
 // group.
 type EventPadGroupMode struct {
-	native C.GdkEventPadGroupMode
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventPadGroupMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventPadGroupMode
 }
 
 // Type: type of the event (GDK_PAD_GROUP_MODE).
@@ -1501,12 +1446,8 @@ func (e *EventPadGroupMode) Mode() uint {
 
 // EventProperty describes a property change on a window.
 type EventProperty struct {
-	native C.GdkEventProperty
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventProperty) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventProperty
 }
 
 // Type: type of the event (GDK_PROPERTY_NOTIFY).
@@ -1555,12 +1496,8 @@ func (e *EventProperty) State() PropertyState {
 // This event type will be used pretty rarely. It only is important for XInput
 // aware programs that are drawing their own cursor.
 type EventProximity struct {
-	native C.GdkEventProximity
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventProximity) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventProximity
 }
 
 // Type: type of the event (GDK_PROXIMITY_IN or GDK_PROXIMITY_OUT).
@@ -1607,12 +1544,8 @@ func (e *EventProximity) Device() *Device {
 // recognized by the GDK_SCROLL_SMOOTH scroll direction. For these, the scroll
 // deltas can be obtained with gdk_event_get_scroll_deltas().
 type EventScroll struct {
-	native C.GdkEventScroll
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventScroll) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventScroll
 }
 
 // Type: type of the event (GDK_SCROLL).
@@ -1712,12 +1645,8 @@ func (e *EventScroll) DeltaY() float64 {
 // EventSelection: generated when a selection is requested or ownership of a
 // selection is taken over by another client application.
 type EventSelection struct {
-	native C.GdkEventSelection
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventSelection) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventSelection
 }
 
 // Type: type of the event (GDK_SELECTION_CLEAR, GDK_SELECTION_NOTIFY or
@@ -1757,27 +1686,19 @@ func (e *EventSelection) Requestor() *Window {
 }
 
 type EventSequence struct {
-	native C.GdkEventSequence
+	nocopy gextras.NoCopy
+	native *C.GdkEventSequence
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*EventSequence)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	return &EventSequence{native: (*C.GdkEventSequence)(unsafe.Pointer(b))}, nil
 }
 
 // EventSetting: generated when a setting is modified.
 type EventSetting struct {
-	native C.GdkEventSetting
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventSetting) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventSetting
 }
 
 // Type: type of the event (GDK_SETTING).
@@ -1826,12 +1747,8 @@ func (e *EventSetting) Name() string {
 // event. With multitouch devices, there may be several active sequences at the
 // same time.
 type EventTouch struct {
-	native C.GdkEventTouch
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventTouch) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventTouch
 }
 
 // Type: type of the event (GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE, GDK_TOUCH_END,
@@ -1895,7 +1812,7 @@ func (e *EventTouch) State() ModifierType {
 // Sequence: event sequence that the event belongs to
 func (e *EventTouch) Sequence() *EventSequence {
 	var v *EventSequence // out
-	v = (*EventSequence)(unsafe.Pointer(e.native.sequence))
+	v = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(e.native.sequence)))
 	return v
 }
 
@@ -1933,12 +1850,8 @@ func (e *EventTouch) YRoot() float64 {
 
 // EventTouchpadPinch: generated during touchpad swipe gestures.
 type EventTouchpadPinch struct {
-	native C.GdkEventTouchpadPinch
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventTouchpadPinch) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventTouchpadPinch
 }
 
 // Type: type of the event (GDK_TOUCHPAD_PINCH)
@@ -2051,12 +1964,8 @@ func (e *EventTouchpadPinch) State() ModifierType {
 
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
 type EventTouchpadSwipe struct {
-	native C.GdkEventTouchpadSwipe
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventTouchpadSwipe
 }
 
 // Type: type of the event (GDK_TOUCHPAD_SWIPE)
@@ -2157,12 +2066,8 @@ func (e *EventTouchpadSwipe) State() ModifierType {
 // make it impossible to track the visibility of a window reliably, so this
 // event can not be guaranteed to provide useful information.
 type EventVisibility struct {
-	native C.GdkEventVisibility
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventVisibility) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventVisibility
 }
 
 // Type: type of the event (GDK_VISIBILITY_NOTIFY).
@@ -2196,12 +2101,8 @@ func (e *EventVisibility) State() VisibilityState {
 
 // EventWindowState: generated when the state of a toplevel window changes.
 type EventWindowState struct {
-	native C.GdkEventWindowState
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventWindowState) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	nocopy gextras.NoCopy
+	native *C.GdkEventWindowState
 }
 
 // Type: type of the event (GDK_WINDOW_STATE).

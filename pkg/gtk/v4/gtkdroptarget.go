@@ -210,10 +210,10 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	_contentFormats = (*gdk.ContentFormats)(unsafe.Pointer(_cret))
+	_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(_contentFormats, func(v *gdk.ContentFormats) {
-		C.gdk_content_formats_unref((*C.GdkContentFormats)(unsafe.Pointer(v)))
+		C.gdk_content_formats_unref((*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _contentFormats

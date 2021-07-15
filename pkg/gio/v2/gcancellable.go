@@ -230,7 +230,7 @@ func (cancellable *Cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd))
+	_arg1 = (*C.GPollFD)(gextras.StructNative(unsafe.Pointer(pollfd)))
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
@@ -341,10 +341,10 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source

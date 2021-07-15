@@ -447,7 +447,7 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _cret C.guint         // in
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(keymap.Native()))
-	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key))
+	_arg1 = (*C.GdkKeymapKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
 
@@ -553,12 +553,8 @@ func KeymapGetForDisplay(display *Display) *Keymap {
 
 // KeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
-	native C.GdkKeymapKey
-}
-
-// Native returns the underlying C source pointer.
-func (k *KeymapKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&k.native)
+	nocopy gextras.NoCopy
+	native *C.GdkKeymapKey
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.

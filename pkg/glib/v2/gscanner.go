@@ -5,6 +5,8 @@ package glib
 import (
 	"runtime/cgo"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -100,12 +102,8 @@ const (
 // If you want to use your own message handler you can set the msg_handler
 // field. The type of the message handler function is declared by MsgFunc.
 type Scanner struct {
-	native C.GScanner
-}
-
-// Native returns the underlying C source pointer.
-func (s *Scanner) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GScanner
 }
 
 // UserData: unused
@@ -139,7 +137,7 @@ func (s *Scanner) InputName() string {
 // Config: link into the scanner configuration
 func (s *Scanner) Config() *ScannerConfig {
 	var v *ScannerConfig // out
-	v = (*ScannerConfig)(unsafe.Pointer(s.native.config))
+	v = (*ScannerConfig)(gextras.NewStructNative(unsafe.Pointer(s.native.config)))
 	return v
 }
 
@@ -184,7 +182,7 @@ func (scanner *Scanner) CurLine() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_line(_arg0)
 
@@ -202,7 +200,7 @@ func (scanner *Scanner) CurPosition() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_position(_arg0)
 
@@ -219,7 +217,7 @@ func (scanner *Scanner) CurToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_cur_token(_arg0)
 
@@ -234,7 +232,7 @@ func (scanner *Scanner) CurToken() TokenType {
 func (scanner *Scanner) Destroy() {
 	var _arg0 *C.GScanner // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.g_scanner_destroy(_arg0)
 }
@@ -245,7 +243,7 @@ func (scanner *Scanner) EOF() bool {
 	var _arg0 *C.GScanner // out
 	var _cret C.gboolean  // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_eof(_arg0)
 
@@ -265,7 +263,7 @@ func (scanner *Scanner) NextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_get_next_token(_arg0)
 
@@ -281,7 +279,7 @@ func (scanner *Scanner) InputFile(inputFd int) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.gint(inputFd)
 
 	C.g_scanner_input_file(_arg0, _arg1)
@@ -293,7 +291,7 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.guint     // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	_arg2 = C.guint(textLen)
 
@@ -307,7 +305,7 @@ func (scanner *Scanner) LookupSymbol(symbol string) cgo.Handle {
 	var _arg1 *C.gchar    // out
 	var _cret C.gpointer  // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
@@ -334,7 +332,7 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.g_scanner_peek_next_token(_arg0)
 
@@ -352,7 +350,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value cgo.Ha
 	var _arg2 *C.gchar    // out
 	var _arg3 C.gpointer  // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 	_arg3 = (C.gpointer)(unsafe.Pointer(value))
@@ -368,7 +366,7 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) cgo.Handl
 	var _arg2 *C.gchar    // out
 	var _cret C.gpointer  // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 
@@ -387,7 +385,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(symbol)))
 
@@ -400,7 +398,7 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.guint(scopeId)
 
 	_cret = C.g_scanner_set_scope(_arg0, _arg1)
@@ -418,7 +416,7 @@ func (scanner *Scanner) SetScope(scopeId uint) uint {
 func (scanner *Scanner) SyncFileOffset() {
 	var _arg0 *C.GScanner // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.g_scanner_sync_file_offset(_arg0)
 }
@@ -438,7 +436,7 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 	var _arg5 *C.gchar     // out
 	var _arg6 C.gint       // out
 
-	_arg0 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg0 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg1 = C.GTokenType(expectedToken)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(identifierSpec)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(symbolSpec)))
@@ -453,12 +451,8 @@ func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec strin
 // be changed during the parsing phase and will affect the lexical parsing of
 // the next unpeeked token.
 type ScannerConfig struct {
-	native C.GScannerConfig
-}
-
-// Native returns the underlying C source pointer.
-func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GScannerConfig
 }
 
 // CsetSkipCharacters specifies which characters should be skipped by the

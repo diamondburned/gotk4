@@ -716,11 +716,15 @@ func (info *FileInfo) IsSymlink() bool {
 // deprecated due to the year 2038 problem.
 func (info *FileInfo) ModificationTime() glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
-	var _result glib.TimeVal
+	var _arg1 C.GTimeVal   // in
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
 
-	C.g_file_info_get_modification_time(_arg0, (*C.GTimeVal)(unsafe.Pointer(&_result)))
+	C.g_file_info_get_modification_time(_arg0, &_arg1)
+
+	var _result glib.TimeVal // out
+
+	_result = *(*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _result
 }
@@ -971,7 +975,7 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	var _arg1 *C.GFileAttributeMatcher // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(mask))
+	_arg1 = (*C.GFileAttributeMatcher)(gextras.StructNative(unsafe.Pointer(mask)))
 
 	C.g_file_info_set_attribute_mask(_arg0, _arg1)
 }
@@ -1183,7 +1187,7 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	var _arg1 *C.GTimeVal  // out
 
 	_arg0 = (*C.GFileInfo)(unsafe.Pointer(info.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(mtime))
+	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(mtime)))
 
 	C.g_file_info_set_modification_time(_arg0, _arg1)
 }

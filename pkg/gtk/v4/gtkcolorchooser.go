@@ -132,11 +132,15 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 // RGBA gets the currently-selected color.
 func (chooser *ColorChooser) RGBA() gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
-	var _color gdk.RGBA
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
 
-	C.gtk_color_chooser_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_color_chooser_get_rgba(_arg0, &_arg1)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -165,7 +169,7 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg1 *C.GdkRGBA         // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(chooser.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
 }

@@ -517,7 +517,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 	var _cret **C.AtkTextRange
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
-	_arg1 = (*C.AtkTextRectangle)(unsafe.Pointer(rect))
+	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	_arg2 = C.AtkCoordType(coordType)
 	_arg3 = C.AtkTextClipType(xClipType)
 	_arg4 = C.AtkTextClipType(yClipType)
@@ -536,7 +536,7 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		src := unsafe.Slice(_cret, i)
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
-			_textRanges[i] = (*TextRange)(unsafe.Pointer(src[i]))
+			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
 		}
 	}
 
@@ -671,18 +671,22 @@ func (text *Text) OffsetAtPoint(x int, y int, coords CoordType) int {
 // If the extents can not be obtained (e.g. or missing support), the rectangle
 // fields are set to -1.
 func (text *Text) RangeExtents(startOffset int, endOffset int, coordType CoordType) TextRectangle {
-	var _arg0 *C.AtkText     // out
-	var _arg1 C.gint         // out
-	var _arg2 C.gint         // out
-	var _arg3 C.AtkCoordType // out
-	var _rect TextRectangle
+	var _arg0 *C.AtkText         // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _arg3 C.AtkCoordType     // out
+	var _arg4 C.AtkTextRectangle // in
 
 	_arg0 = (*C.AtkText)(unsafe.Pointer(text.Native()))
 	_arg1 = C.gint(startOffset)
 	_arg2 = C.gint(endOffset)
 	_arg3 = C.AtkCoordType(coordType)
 
-	C.atk_text_get_range_extents(_arg0, _arg1, _arg2, _arg3, (*C.AtkTextRectangle)(unsafe.Pointer(&_rect)))
+	C.atk_text_get_range_extents(_arg0, _arg1, _arg2, _arg3, &_arg4)
+
+	var _rect TextRectangle // out
+
+	_rect = *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
 
 	return _rect
 }
@@ -1034,23 +1038,19 @@ func (text *Text) SetSelection(selectionNum int, startOffset int, endOffset int)
 
 // TextRange: structure used to describe a text range.
 type TextRange struct {
-	native C.AtkTextRange
+	nocopy gextras.NoCopy
+	native *C.AtkTextRange
 }
 
 func marshalTextRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*TextRange)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return &TextRange{native: (*C.AtkTextRange)(unsafe.Pointer(b))}, nil
 }
 
 // Bounds: rectangle giving the bounds of the text range
 func (t *TextRange) Bounds() TextRectangle {
 	var v TextRectangle // out
-	v = *(*TextRectangle)(unsafe.Pointer((&t.native.bounds)))
+	v = *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&t.native.bounds))))
 	return v
 }
 
@@ -1077,12 +1077,8 @@ func (t *TextRange) Content() string {
 
 // TextRectangle: structure used to store a rectangle used by AtkText.
 type TextRectangle struct {
-	native C.AtkTextRectangle
-}
-
-// Native returns the underlying C source pointer.
-func (t *TextRectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.AtkTextRectangle
 }
 
 // X: horizontal coordinate of a rectangle

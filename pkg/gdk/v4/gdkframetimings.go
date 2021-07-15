@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,17 +31,13 @@ func init() {
 // and for measuring quality metrics for the application’s display, such as
 // latency and jitter.
 type FrameTimings struct {
-	native C.GdkFrameTimings
+	nocopy gextras.NoCopy
+	native *C.GdkFrameTimings
 }
 
 func marshalFrameTimings(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*FrameTimings)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (f *FrameTimings) Native() unsafe.Pointer {
-	return unsafe.Pointer(&f.native)
+	return &FrameTimings{native: (*C.GdkFrameTimings)(unsafe.Pointer(b))}, nil
 }
 
 // Complete returns whether timings are complete.
@@ -57,7 +54,7 @@ func (timings *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
@@ -76,7 +73,7 @@ func (timings *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
@@ -95,7 +92,7 @@ func (timings *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
@@ -122,7 +119,7 @@ func (timings *FrameTimings) PredictedPresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
@@ -140,7 +137,7 @@ func (timings *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
@@ -159,7 +156,7 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret C.gint64           // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
@@ -175,16 +172,16 @@ func (timings *FrameTimings) ref() *FrameTimings {
 	var _arg0 *C.GdkFrameTimings // out
 	var _cret *C.GdkFrameTimings // in
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	_cret = C.gdk_frame_timings_ref(_arg0)
 
 	var _frameTimings *FrameTimings // out
 
-	_frameTimings = (*FrameTimings)(unsafe.Pointer(_cret))
+	_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_frame_timings_ref(_cret)
 	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(unsafe.Pointer(v)))
+		C.gdk_frame_timings_unref((*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _frameTimings
@@ -196,7 +193,7 @@ func (timings *FrameTimings) ref() *FrameTimings {
 func (timings *FrameTimings) unref() {
 	var _arg0 *C.GdkFrameTimings // out
 
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(timings))
+	_arg0 = (*C.GdkFrameTimings)(gextras.StructNative(unsafe.Pointer(timings)))
 
 	C.gdk_frame_timings_unref(_arg0)
 }

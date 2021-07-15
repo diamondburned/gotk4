@@ -146,7 +146,7 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	_arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue))
+	_arg2 = (*C.GtkSettingsValue)(gextras.StructNative(unsafe.Pointer(svalue)))
 
 	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
 }
@@ -198,12 +198,8 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 }
 
 type SettingsValue struct {
-	native C.GtkSettingsValue
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GtkSettingsValue
 }
 
 // Origin should be something like “filename:linenumber” for rc files, or e.g.

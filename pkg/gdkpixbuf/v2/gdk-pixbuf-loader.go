@@ -259,7 +259,7 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 
 	var _pixbufFormat *PixbufFormat // out
 
-	_pixbufFormat = (*PixbufFormat)(unsafe.Pointer(_cret))
+	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _pixbufFormat
 }

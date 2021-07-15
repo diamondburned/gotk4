@@ -108,10 +108,6 @@ func (buildable *Buildable) BuildableID() string {
 
 // BuildableParser: sub-parser for GtkBuildable implementations.
 type BuildableParser struct {
-	native C.GtkBuildableParser
-}
-
-// Native returns the underlying C source pointer.
-func (b *BuildableParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBuildableParser
 }

@@ -156,8 +156,8 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))

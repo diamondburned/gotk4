@@ -457,7 +457,7 @@ func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_view_backward_display_line(_arg0, _arg1)
 
@@ -483,7 +483,7 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_view_backward_display_line_start(_arg0, _arg1)
 
@@ -538,7 +538,7 @@ func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_view_forward_display_line(_arg0, _arg1)
 
@@ -564,7 +564,7 @@ func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_view_forward_display_line_end(_arg0, _arg1)
 
@@ -670,13 +670,19 @@ func (textView *TextView) Buffer() *TextBuffer {
 func (textView *TextView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _strong gdk.Rectangle
-	var _weak gdk.Rectangle
+	var _arg2 C.GdkRectangle // in
+	var _arg3 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_strong)), (*C.GdkRectangle)(unsafe.Pointer(&_weak)))
+	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
+
+	var _strong gdk.Rectangle // out
+	var _weak gdk.Rectangle   // out
+
+	_strong = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_weak = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _strong, _weak
 }
@@ -716,10 +722,10 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(unsafe.Pointer(_cret))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_text_attributes_ref(_cret)
 	runtime.SetFinalizer(_textAttributes, func(v *TextAttributes) {
-		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(unsafe.Pointer(v)))
+		C.gtk_text_attributes_unref((*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _textAttributes
@@ -818,19 +824,21 @@ func (textView *TextView) InputPurpose() InputPurpose {
 // gtk_text_view_window_to_buffer_coords().
 func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _iter TextIter
-	var _arg2 C.gint     // out
-	var _arg3 C.gint     // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.gint         // out
+	var _arg3 C.gint         // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg2 = C.gint(x)
 	_arg3 = C.gint(y)
 
-	_cret = C.gtk_text_view_get_iter_at_location(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), _arg2, _arg3)
+	_cret = C.gtk_text_view_get_iter_at_location(_arg0, &_arg1, _arg2, _arg3)
 
-	var _ok bool // out
+	var _iter TextIter // out
+	var _ok bool       // out
 
+	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -848,21 +856,23 @@ func (textView *TextView) IterAtLocation(x int, y int) (TextIter, bool) {
 // returns cursor locations, i.e. positions between characters.
 func (textView *TextView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 	var _arg0 *C.GtkTextView // out
-	var _iter TextIter
-	var _arg2 C.gint     // in
-	var _arg3 C.gint     // out
-	var _arg4 C.gint     // out
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // out
+	var _arg4 C.gint         // out
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg3 = C.gint(x)
 	_arg4 = C.gint(y)
 
-	_cret = C.gtk_text_view_get_iter_at_position(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_iter)), &_arg2, _arg3, _arg4)
+	_cret = C.gtk_text_view_get_iter_at_position(_arg0, &_arg1, &_arg2, _arg3, _arg4)
 
-	var _trailing int // out
-	var _ok bool      // out
+	var _iter TextIter // out
+	var _trailing int  // out
+	var _ok bool       // out
 
+	_iter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_trailing = int(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -878,12 +888,16 @@ func (textView *TextView) IterAtPosition(x int, y int) (TextIter, int, bool) {
 func (textView *TextView) IterLocation(iter *TextIter) gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkTextIter // out
-	var _location gdk.Rectangle
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	C.gtk_text_view_get_iter_location(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_location)))
+	C.gtk_text_view_get_iter_location(_arg0, _arg1, &_arg2)
+
+	var _location gdk.Rectangle // out
+
+	_location = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _location
 }
@@ -928,17 +942,19 @@ func (textView *TextView) LeftMargin() int {
 // with the coordinate of the top edge of the line.
 func (textView *TextView) LineAtY(y int) (TextIter, int) {
 	var _arg0 *C.GtkTextView // out
-	var _targetIter TextIter
-	var _arg2 C.gint // out
-	var _arg3 C.gint // in
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.gint         // out
+	var _arg3 C.gint         // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 	_arg2 = C.gint(y)
 
-	C.gtk_text_view_get_line_at_y(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_targetIter)), _arg2, &_arg3)
+	C.gtk_text_view_get_line_at_y(_arg0, &_arg1, _arg2, &_arg3)
 
-	var _lineTop int // out
+	var _targetIter TextIter // out
+	var _lineTop int         // out
 
+	_targetIter = *(*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_lineTop = int(_arg3)
 
 	return _targetIter, _lineTop
@@ -954,7 +970,7 @@ func (textView *TextView) LineYrange(iter *TextIter) (y int, height int) {
 	var _arg3 C.gint         // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.gtk_text_view_get_line_yrange(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -1088,9 +1104,9 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_tabArray, func(v *pango.TabArray) {
-		C.pango_tab_array_free((*C.PangoTabArray)(unsafe.Pointer(v)))
+		C.pango_tab_array_free((*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _tabArray
@@ -1135,11 +1151,15 @@ func (textView *TextView) VAdjustment() *Adjustment {
 // gtk_text_view_buffer_to_window_coords().
 func (textView *TextView) VisibleRect() gdk.Rectangle {
 	var _arg0 *C.GtkTextView // out
-	var _visibleRect gdk.Rectangle
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
 
-	C.gtk_text_view_get_visible_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_visibleRect)))
+	C.gtk_text_view_get_visible_rect(_arg0, &_arg1)
+
+	var _visibleRect gdk.Rectangle // out
+
+	_visibleRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _visibleRect
 }
@@ -1242,7 +1262,7 @@ func (textView *TextView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_text_view_im_context_filter_keypress(_arg0, _arg1)
 
@@ -1308,7 +1328,7 @@ func (textView *TextView) MoveVisually(iter *TextIter, count int) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = C.gint(count)
 
 	_cret = C.gtk_text_view_move_visually(_arg0, _arg1, _arg2)
@@ -1401,7 +1421,7 @@ func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, use
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg2 = C.gdouble(withinMargin)
 	if useAlign {
 		_arg3 = C.TRUE
@@ -1692,7 +1712,7 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
+	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 
 	C.gtk_text_view_set_tabs(_arg0, _arg1)
 }
@@ -1731,7 +1751,7 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkTextView)(unsafe.Pointer(textView.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_text_view_starts_display_line(_arg0, _arg1)
 

@@ -56,12 +56,16 @@ func marshalX11Monitorer(p uintptr) (interface{}, error) {
 // within the display coordinate space. The returned geometry is in ”application
 // pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 func (monitor *X11Monitor) Workarea() gdk.Rectangle {
-	var _arg0 *C.GdkMonitor // out
-	var _workarea gdk.Rectangle
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gdk_x11_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
+	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
+
+	var _workarea gdk.Rectangle // out
+
+	_workarea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _workarea
 }

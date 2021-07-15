@@ -49,13 +49,13 @@ func _gotk4_gtk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 	var b *TreeIter      // out
 
 	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
-	a = (*TreeIter)(unsafe.Pointer(arg1))
+	a = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(a, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	b = (*TreeIter)(unsafe.Pointer(arg2))
+	b = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	runtime.SetFinalizer(b, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(TreeIterCompareFunc)

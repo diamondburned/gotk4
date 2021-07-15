@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,12 +24,13 @@ func init() {
 
 // Point: point with two coordinates.
 type Point struct {
-	native C.graphene_point_t
+	nocopy gextras.NoCopy
+	native *C.graphene_point_t
 }
 
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Point)(unsafe.Pointer(b)), nil
+	return &Point{native: (*C.graphene_point_t)(unsafe.Pointer(b))}, nil
 }
 
 // NewPointAlloc constructs a struct Point.
@@ -39,17 +41,12 @@ func NewPointAlloc() *Point {
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_point, func(v *Point) {
-		C.graphene_point_free((*C.graphene_point_t)(unsafe.Pointer(v)))
+		C.graphene_point_free((*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _point
-}
-
-// Native returns the underlying C source pointer.
-func (p *Point) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }
 
 // X coordinate of the point
@@ -74,8 +71,8 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg3 C.float             // in
 	var _cret C.float             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_point_distance(_arg0, _arg1, &_arg2, &_arg3)
 
@@ -100,8 +97,8 @@ func (a *Point) Equal(b *Point) bool {
 	var _arg1 *C.graphene_point_t // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = C.graphene_point_equal(_arg0, _arg1)
 
@@ -118,7 +115,7 @@ func (a *Point) Equal(b *Point) bool {
 func (p *Point) free() {
 	var _arg0 *C.graphene_point_t // out
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
 	C.graphene_point_free(_arg0)
 }
@@ -132,7 +129,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 	var _arg2 C.float             // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 	_arg1 = C.float(x)
 	_arg2 = C.float(y)
 
@@ -140,7 +137,7 @@ func (p *Point) Init(x float32, y float32) *Point {
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -151,14 +148,14 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg1 *C.graphene_point_t // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_point_init_from_point(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -170,14 +167,14 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg1 *C.graphene_vec2_t  // out
 	var _cret *C.graphene_point_t // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
-	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = C.graphene_point_init_from_vec2(_arg0, _arg1)
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }
@@ -188,13 +185,17 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.double            // out
-	var _res Point
+	var _arg3 C.graphene_point_t  // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
 	_arg2 = C.double(factor)
 
-	C.graphene_point_interpolate(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
+	C.graphene_point_interpolate(_arg0, _arg1, _arg2, &_arg3)
+
+	var _res Point // out
+
+	_res = *(*Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _res
 }
@@ -207,8 +208,8 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg2 C.float             // out
 	var _cret C._Bool             // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
 	_arg2 = C.float(epsilon)
 
 	_cret = C.graphene_point_near(_arg0, _arg1, _arg2)
@@ -226,11 +227,15 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 // #graphene_vec2_t.
 func (p *Point) ToVec2() Vec2 {
 	var _arg0 *C.graphene_point_t // out
-	var _v Vec2
+	var _arg1 C.graphene_vec2_t   // in
 
-	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p))
+	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
 
-	C.graphene_point_to_vec2(_arg0, (*C.graphene_vec2_t)(unsafe.Pointer(&_v)))
+	C.graphene_point_to_vec2(_arg0, &_arg1)
+
+	var _v Vec2 // out
+
+	_v = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _v
 }
@@ -243,7 +248,7 @@ func PointZero() *Point {
 
 	var _point *Point // out
 
-	_point = (*Point)(unsafe.Pointer(_cret))
+	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _point
 }

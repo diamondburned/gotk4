@@ -472,7 +472,7 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg1 *C.GOptionGroup // out
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg1 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.g_application_add_option_group(_arg0, _arg1)
 }

@@ -130,12 +130,16 @@ func marshalThemingEnginer(p uintptr) (interface{}, error) {
 func (engine *ThemingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _color gdk.RGBA
+	var _arg2 C.GdkRGBA           // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_background_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_theming_engine_get_background_color(_arg0, _arg1, &_arg2)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -146,12 +150,16 @@ func (engine *ThemingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 func (engine *ThemingEngine) Border(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _border Border
+	var _arg2 C.GtkBorder         // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_border(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_border)))
+	C.gtk_theming_engine_get_border(_arg0, _arg1, &_arg2)
+
+	var _border Border // out
+
+	_border = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _border
 }
@@ -162,12 +170,16 @@ func (engine *ThemingEngine) Border(state StateFlags) Border {
 func (engine *ThemingEngine) BorderColor(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _color gdk.RGBA
+	var _arg2 C.GdkRGBA           // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_border_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_theming_engine_get_border_color(_arg0, _arg1, &_arg2)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -178,12 +190,16 @@ func (engine *ThemingEngine) BorderColor(state StateFlags) gdk.RGBA {
 func (engine *ThemingEngine) Color(state StateFlags) gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _color gdk.RGBA
+	var _arg2 C.GdkRGBA           // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_theming_engine_get_color(_arg0, _arg1, &_arg2)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _color
 }
@@ -222,7 +238,7 @@ func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 
 	var _fontDescription *pango.FontDescription // out
 
-	_fontDescription = (*pango.FontDescription)(unsafe.Pointer(_cret))
+	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _fontDescription
 }
@@ -251,12 +267,16 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 func (engine *ThemingEngine) Margin(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _margin Border
+	var _arg2 C.GtkBorder         // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_margin(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
+	C.gtk_theming_engine_get_margin(_arg0, _arg1, &_arg2)
+
+	var _margin Border // out
+
+	_margin = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _margin
 }
@@ -267,12 +287,16 @@ func (engine *ThemingEngine) Margin(state StateFlags) Border {
 func (engine *ThemingEngine) Padding(state StateFlags) Border {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 C.GtkStateFlags     // out
-	var _padding Border
+	var _arg2 C.GtkBorder         // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = C.GtkStateFlags(state)
 
-	C.gtk_theming_engine_get_padding(_arg0, _arg1, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
+	C.gtk_theming_engine_get_padding(_arg0, _arg1, &_arg2)
+
+	var _padding Border // out
+
+	_padding = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _padding
 }
@@ -290,9 +314,9 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _widgetPath
@@ -442,16 +466,18 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 func (engine *ThemingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
 	var _arg1 *C.gchar            // out
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRGBA           // in
+	var _cret C.gboolean          // in
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(engine.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
 
-	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _color gdk.RGBA // out
+	var _ok bool        // out
 
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

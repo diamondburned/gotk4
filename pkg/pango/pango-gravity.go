@@ -5,6 +5,7 @@ package pango
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,7 +60,7 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
 	var _cret C.PangoGravity // in
 
-	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix))
+	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.pango_gravity_get_for_matrix(_arg1)
 

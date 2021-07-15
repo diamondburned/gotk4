@@ -785,12 +785,8 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow *Win
 
 // TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
-	native C.GdkTimeCoord
-}
-
-// Native returns the underlying C source pointer.
-func (t *TimeCoord) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GdkTimeCoord
 }
 
 // Time: timestamp for this event.

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -92,12 +93,8 @@ func _gotk4_glib2_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 //
 // Deprecated: Use Time or #guint64 instead.
 type TimeVal struct {
-	native C.GTimeVal
-}
-
-// Native returns the underlying C source pointer.
-func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GTimeVal
 }
 
 // TvSec: seconds
@@ -123,7 +120,7 @@ func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(time_))
+	_arg0 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(time_)))
 	_arg1 = C.glong(microseconds)
 
 	C.g_time_val_add(_arg0, _arg1)
@@ -167,7 +164,7 @@ func (time_ *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
 
-	_arg0 = (*C.GTimeVal)(unsafe.Pointer(time_))
+	_arg0 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(time_)))
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -138,16 +139,16 @@ func DBusGValueToGVariant(gvalue *externglib.Value, typ *glib.VariantType) *glib
 	var _cret *C.GVariant     // in
 
 	_arg1 = (*C.GValue)(unsafe.Pointer(&gvalue.GValue))
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -168,7 +169,7 @@ func DBusGVariantToGValue(value *glib.Variant) externglib.Value {
 	var _arg1 *C.GVariant // out
 	var _arg2 C.GValue    // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	C.g_dbus_gvariant_to_gvalue(_arg1, &_arg2)
 

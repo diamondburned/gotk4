@@ -139,9 +139,9 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	_transform = (*gsk.Transform)(unsafe.Pointer(_cret))
+	_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_transform, func(v *gsk.Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -153,7 +153,7 @@ func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg1 *C.GskTransform        // out
 
 	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(child.Native()))
-	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform))
+	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
 }

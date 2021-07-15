@@ -391,8 +391,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			unref = "cairo_pattern_destroy"
 			value.p.Descend()
 			// Hack to fit the Pattern type.
-			value.p.Linef("_p := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(_p))", value.Out.Set)
+			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(_pp))", value.Out.Set)
 			value.p.Ascend()
 
 		case "cairo.Region":
@@ -400,8 +400,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			unref = "cairo_region_destroy"
 			value.p.Descend()
 			// Hack to fit the Region type.
-			value.p.Linef("_p := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(_p))", value.Out.Set)
+			value.p.Linef("_pp:= &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(_pp))", value.Out.Set)
 			value.p.Ascend()
 		}
 
@@ -434,32 +434,19 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	switch v := value.Resolved.Extern.Type.(type) {
 	case *gir.Enum, *gir.Bitfield:
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
+		value.vtmpl("<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
 		return true
 
 	case *gir.Class, *gir.Interface:
 		return value.cgoSetObject(conv)
 
 	case *gir.Record:
-		// We can slightly cheat here. Since Go structs are declared by wrapping
-		// the C type, we can directly cast to the C type if this is an output
-		// parameter. This saves us a copy.
-		if value.Resolved.Ptr < 2 && value.outputAllocs() {
-			value.header.Import("unsafe")
-
-			value.outDecl.Reset()
-			value.inDecl.Reset()
-
-			// Write the Go type directly.
-			value.inDecl.Linef("var %s %s", value.OutName, value.Out.Type)
-			value.In.Call = fmt.Sprintf("(*%s)(unsafe.Pointer(&%s))", value.In.Type, value.OutName)
-
-			return true
-		}
-
 		value.header.Import("unsafe")
+		value.header.ImportCore("gextras")
+
 		// Require 1 pointer to avoid weird copies.
-		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 1>(unsafe.Pointer(<.InNamePtr 1>))")
+		value.vtmpl(
+			"<.Out.Set> = <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))")
 		if value.fail {
 			return false
 		}
@@ -482,17 +469,17 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// We can take ownership if the type can be reference-counted anyway.
 		if value.ShouldFree() || unref {
 			value.header.Import("runtime")
-			value.p.LineTmpl(value,
+			value.vtmpl(
 				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {")
-
 			if free != nil {
 				value.p.Linef(
-					"C.%s((%s%s)(unsafe.Pointer(v)))",
+					"C.%s((%s%s)(gextras.StructNative(unsafe.Pointer(v))))",
 					free.CIdentifier, value.OutPtr(1), value.In.Type)
 			} else {
-				value.p.Linef("C.free(unsafe.Pointer(v))")
+				value.p.Linef(
+					"C.free(gextras.StructNative(unsafe.Pointer(v)))",
+				)
 			}
-
 			value.p.Linef("})")
 		}
 

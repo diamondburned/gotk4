@@ -161,10 +161,10 @@ func (stream *PollableInputStream) CreateSource(cancellable *Cancellable) *glib.
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(unsafe.Pointer(_cret))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
 	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.g_source_unref((*C.GSource)(unsafe.Pointer(v)))
+		C.g_source_unref((*C.GSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _source

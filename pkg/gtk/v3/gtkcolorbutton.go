@@ -147,7 +147,7 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	var _arg1 *C.GdkColor  // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = C.gtk_color_button_new_with_color(_arg1)
 
@@ -163,7 +163,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
 	var _cret *C.GtkWidget // in
 
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gtk_color_button_new_with_rgba(_arg1)
 
@@ -203,11 +203,15 @@ func (button *ColorButton) Alpha() uint16 {
 // Deprecated: Use gtk_color_chooser_get_rgba() instead.
 func (button *ColorButton) Color() gdk.Color {
 	var _arg0 *C.GtkColorButton // out
-	var _color gdk.Color
+	var _arg1 C.GdkColor        // in
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
 
-	C.gtk_color_button_get_color(_arg0, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	C.gtk_color_button_get_color(_arg0, &_arg1)
+
+	var _color gdk.Color // out
+
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -269,7 +273,7 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 	var _arg1 *C.GdkColor       // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(button.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_color_button_set_color(_arg0, _arg1)
 }

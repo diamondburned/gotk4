@@ -49,9 +49,9 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShap
 	runtime.SetFinalizer(cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
-	attr = (*pango.AttrShape)(unsafe.Pointer(arg1))
+	attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(attr, func(v *pango.AttrShape) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 	if arg2 != 0 {
 		doPath = true
@@ -206,7 +206,7 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
-	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
 }
@@ -221,7 +221,7 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg2 *C.PangoLayoutLine // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
 	C.pango_cairo_layout_line_path(_arg1, _arg2)
 }
@@ -281,7 +281,7 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	_arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem))
+	_arg3 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 
 	C.pango_cairo_show_glyph_item(_arg1, _arg2, _arg3)
 }
@@ -297,7 +297,7 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.PangoFont)(unsafe.Pointer((font).(gextras.Nativer).Native()))
-	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs))
+	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
 	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
 }
@@ -325,7 +325,7 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg2 *C.PangoLayoutLine // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line))
+	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
 	C.pango_cairo_show_layout_line(_arg1, _arg2)
 }
@@ -403,7 +403,7 @@ func (font *Font) ScaledFont() *cairo.ScaledFont {
 
 	var _scaledFont *cairo.ScaledFont // out
 
-	_scaledFont = (*cairo.ScaledFont)(unsafe.Pointer(_cret))
+	_scaledFont = (*cairo.ScaledFont)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _scaledFont
 }

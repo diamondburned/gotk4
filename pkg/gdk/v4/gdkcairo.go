@@ -63,7 +63,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg2 *C.GdkRectangle // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle))
+	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	C.gdk_cairo_rectangle(_arg1, _arg2)
 }
@@ -95,8 +95,8 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(_p))
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -130,7 +130,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg2 *C.GdkRGBA // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
 }

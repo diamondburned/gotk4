@@ -380,9 +380,9 @@ func (obj *Value) Range() *Range {
 
 	var __range *Range // out
 
-	__range = (*Range)(unsafe.Pointer(_cret))
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(__range, func(v *Range) {
-		C.atk_range_free((*C.AtkRange)(unsafe.Pointer(v)))
+		C.atk_range_free((*C.AtkRange)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return __range

@@ -63,10 +63,10 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 	var args *glib.Variant // out
 
 	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
-	args = (*glib.Variant)(unsafe.Pointer(arg1))
+	args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(ShortcutFunc)
@@ -442,7 +442,7 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgeter,
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(self.Native()))
 	_arg1 = C.GtkShortcutActionFlags(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
-	_arg3 = (*C.GVariant)(unsafe.Pointer(args))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 

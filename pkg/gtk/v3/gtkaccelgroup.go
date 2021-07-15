@@ -447,27 +447,19 @@ func (accelGroup *AccelGroup) Unlock() {
 }
 
 type AccelGroupEntry struct {
-	native C.GtkAccelGroupEntry
-}
-
-// Native returns the underlying C source pointer.
-func (a *AccelGroupEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
+	nocopy gextras.NoCopy
+	native *C.GtkAccelGroupEntry
 }
 
 func (a *AccelGroupEntry) Key() AccelKey {
 	var v AccelKey // out
-	v = *(*AccelKey)(unsafe.Pointer((&a.native.key)))
+	v = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&a.native.key))))
 	return v
 }
 
 type AccelKey struct {
-	native C.GtkAccelKey
-}
-
-// Native returns the underlying C source pointer.
-func (a *AccelKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
+	nocopy gextras.NoCopy
+	native *C.GtkAccelKey
 }
 
 // AccelKey: accelerator keyval

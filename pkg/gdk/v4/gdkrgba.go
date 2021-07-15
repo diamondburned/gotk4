@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,17 +31,13 @@ func init() {
 // transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will
 // be clamped to this range when drawing.
 type RGBA struct {
-	native C.GdkRGBA
+	nocopy gextras.NoCopy
+	native *C.GdkRGBA
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*RGBA)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RGBA) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return &RGBA{native: (*C.GdkRGBA)(unsafe.Pointer(b))}, nil
 }
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive
@@ -79,15 +76,15 @@ func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.GdkRGBA // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_copy(_arg0)
 
 	var _rgbA *RGBA // out
 
-	_rgbA = (*RGBA)(unsafe.Pointer(_cret))
+	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.gdk_rgba_free((*C.GdkRGBA)(unsafe.Pointer(v)))
+		C.gdk_rgba_free((*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _rgbA
@@ -99,8 +96,8 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(p1))
-	_arg1 = C.gconstpointer(unsafe.Pointer(p2))
+	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p1)))
+	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p2)))
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
@@ -117,7 +114,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 func (rgba *RGBA) free() {
 	var _arg0 *C.GdkRGBA // out
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gdk_rgba_free(_arg0)
 }
@@ -127,7 +124,7 @@ func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(unsafe.Pointer(p))
+	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
@@ -145,7 +142,7 @@ func (rgba *RGBA) IsClear() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
@@ -166,7 +163,7 @@ func (rgba *RGBA) IsOpaque() bool {
 	var _arg0 *C.GdkRGBA // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
@@ -205,7 +202,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 	var _arg1 *C.char    // out
 	var _cret C.gboolean // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
@@ -235,7 +232,7 @@ func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out
 	var _cret *C.char    // in
 
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -240,17 +241,13 @@ const (
 // data:,foo and data:;base64,Zm9v resolve to the same thing according to the
 // data: URI specification which GLib does not handle.
 type URI struct {
-	native C.GUri
+	nocopy gextras.NoCopy
+	native *C.GUri
 }
 
 func marshalURI(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*URI)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	return &URI{native: (*C.GUri)(unsafe.Pointer(b))}, nil
 }
 
 // AuthParams gets uri's authentication parameters, which may contain
@@ -263,7 +260,7 @@ func (uri *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_auth_params(_arg0)
 
@@ -279,7 +276,7 @@ func (uri *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_flags(_arg0)
 
@@ -296,7 +293,7 @@ func (uri *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_fragment(_arg0)
 
@@ -320,7 +317,7 @@ func (uri *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_host(_arg0)
 
@@ -338,7 +335,7 @@ func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_password(_arg0)
 
@@ -355,7 +352,7 @@ func (uri *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_path(_arg0)
 
@@ -371,7 +368,7 @@ func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_port(_arg0)
 
@@ -391,7 +388,7 @@ func (uri *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_query(_arg0)
 
@@ -408,7 +405,7 @@ func (uri *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_scheme(_arg0)
 
@@ -427,7 +424,7 @@ func (uri *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_user(_arg0)
 
@@ -444,7 +441,7 @@ func (uri *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_get_userinfo(_arg0)
 
@@ -465,7 +462,7 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _cret *C.GUri     // in
 	var _cerr *C.GError   // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(baseUri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(baseUri)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriRef)))
 	_arg2 = C.GUriFlags(flags)
 
@@ -474,9 +471,9 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _uri *URI    // out
 	var _goerr error // out
 
-	_uri = (*URI)(unsafe.Pointer(_cret))
+	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -498,7 +495,7 @@ func (uri *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 
 	_cret = C.g_uri_to_string(_arg0)
 
@@ -517,7 +514,7 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	var _arg1 C.GUriHideFlags // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GUri)(unsafe.Pointer(uri))
+	_arg0 = (*C.GUri)(gextras.StructNative(unsafe.Pointer(uri)))
 	_arg1 = C.GUriHideFlags(flags)
 
 	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
@@ -558,9 +555,9 @@ func UriBuild(flags URIFlags, scheme string, userinfo string, host string, port 
 
 	var _uri *URI // out
 
-	_uri = (*URI)(unsafe.Pointer(_cret))
+	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	return _uri
@@ -602,9 +599,9 @@ func UriBuildWithUser(flags URIFlags, scheme string, user string, password strin
 
 	var _uri *URI // out
 
-	_uri = (*URI)(unsafe.Pointer(_cret))
+	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 
 	return _uri
@@ -799,9 +796,9 @@ func UriParse(uriString string, flags URIFlags) (*URI, error) {
 	var _uri *URI    // out
 	var _goerr error // out
 
-	_uri = (*URI)(unsafe.Pointer(_cret))
+	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -849,9 +846,9 @@ func UriParseParams(params string, length int, separators string, flags URIParam
 	var _hashTable *HashTable // out
 	var _goerr error          // out
 
-	_hashTable = (*HashTable)(unsafe.Pointer(_cret))
+	_hashTable = (*HashTable)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_hashTable, func(v *HashTable) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -1153,12 +1150,8 @@ func UriUnescapeString(escapedString string, illegalCharacters string) string {
 // g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
 // for a usage example.
 type URIParamsIter struct {
-	native C.GUriParamsIter
-}
-
-// Native returns the underlying C source pointer.
-func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&u.native)
+	nocopy gextras.NoCopy
+	native *C.GUriParamsIter
 }
 
 // Init initializes an attribute/value pair iterator.
@@ -1199,7 +1192,7 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 	var _arg3 *C.gchar          // out
 	var _arg4 C.GUriParamsFlags // out
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GUriParamsIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(params)))
 	_arg2 = C.gssize(length)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(separators)))
@@ -1222,7 +1215,7 @@ func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) 
 	var _arg2 *C.gchar          // in
 	var _cerr *C.GError         // in
 
-	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GUriParamsIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
 

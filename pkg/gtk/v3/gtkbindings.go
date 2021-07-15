@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -49,7 +50,7 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 	var _cret C.gboolean     // in
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg2 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
@@ -65,12 +66,8 @@ func BindingsActivateEvent(object *externglib.Object, event *gdk.EventKey) bool 
 // BindingArg holds the data associated with an argument for a key binding
 // signal emission as stored in BindingSignal.
 type BindingArg struct {
-	native C.GtkBindingArg
-}
-
-// Native returns the underlying C source pointer.
-func (b *BindingArg) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBindingArg
 }
 
 // ArgType: implementation detail
@@ -83,12 +80,8 @@ func (b *BindingArg) ArgType() externglib.Type {
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 type BindingEntry struct {
-	native C.GtkBindingEntry
-}
-
-// Native returns the underlying C source pointer.
-func (b *BindingEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBindingEntry
 }
 
 // Keyval: key value to match
@@ -108,28 +101,28 @@ func (b *BindingEntry) Modifiers() gdk.ModifierType {
 // BindingSet: binding set this entry belongs to
 func (b *BindingEntry) BindingSet() *BindingSet {
 	var v *BindingSet // out
-	v = (*BindingSet)(unsafe.Pointer(b.native.binding_set))
+	v = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(b.native.binding_set)))
 	return v
 }
 
 // SetNext: linked list of entries maintained by binding set
 func (b *BindingEntry) SetNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.set_next))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.set_next)))
 	return v
 }
 
 // HashNext: implementation detail
 func (b *BindingEntry) HashNext() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.hash_next))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.hash_next)))
 	return v
 }
 
 // Signals: action signals of this entry
 func (b *BindingEntry) Signals() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.signals))
+	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(b.native.signals)))
 	return v
 }
 
@@ -154,7 +147,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 	var _arg2 *C.gchar         // out
 	var _cret C.GTokenType     // in
 
-	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
 
 	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
@@ -173,7 +166,7 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
 
-	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
 	_arg2 = C.guint(keyval)
 	_arg3 = C.GdkModifierType(modifiers)
 
@@ -187,7 +180,7 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
 
-	_arg1 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
 	_arg2 = C.guint(keyval)
 	_arg3 = C.GdkModifierType(modifiers)
 
@@ -200,12 +193,8 @@ func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.Modifie
 // WidgetPath. When a binding within a set is matched upon activation, an action
 // signal is emitted on the target widget to carry out the actual activation.
 type BindingSet struct {
-	native C.GtkBindingSet
-}
-
-// Native returns the underlying C source pointer.
-func (b *BindingSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBindingSet
 }
 
 // SetName: unique name of this binding set
@@ -225,14 +214,14 @@ func (b *BindingSet) Priority() int {
 // Entries: key binding entries in this binding set
 func (b *BindingSet) Entries() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.entries))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.entries)))
 	return v
 }
 
 // Current: implementation detail
 func (b *BindingSet) Current() *BindingEntry {
 	var v *BindingEntry // out
-	v = (*BindingEntry)(unsafe.Pointer(b.native.current))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.current)))
 	return v
 }
 
@@ -245,7 +234,7 @@ func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, 
 	var _arg3 *C.GObject        // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg0 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
 	_arg1 = C.guint(keyval)
 	_arg2 = C.GdkModifierType(modifiers)
 	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
@@ -273,7 +262,7 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 	var _arg2 *C.gchar              // out
 	var _arg3 C.GtkPathPriorityType // out
 
-	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(bindingSet))
+	_arg0 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
 	_arg1 = C.GtkPathType(pathType)
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathPattern)))
 	_arg3 = C.GtkPathPriorityType(priority)
@@ -295,7 +284,7 @@ func BindingSetFind(setName string) *BindingSet {
 
 	var _bindingSet *BindingSet // out
 
-	_bindingSet = (*BindingSet)(unsafe.Pointer(_cret))
+	_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _bindingSet
 }
@@ -303,18 +292,14 @@ func BindingSetFind(setName string) *BindingSet {
 // BindingSignal stores the necessary information to activate a widget in
 // response to a key press via a signal emission.
 type BindingSignal struct {
-	native C.GtkBindingSignal
-}
-
-// Native returns the underlying C source pointer.
-func (b *BindingSignal) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBindingSignal
 }
 
 // Next: implementation detail
 func (b *BindingSignal) Next() *BindingSignal {
 	var v *BindingSignal // out
-	v = (*BindingSignal)(unsafe.Pointer(b.native.next))
+	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(b.native.next)))
 	return v
 }
 

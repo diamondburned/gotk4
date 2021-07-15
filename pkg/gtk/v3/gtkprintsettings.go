@@ -285,7 +285,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 	var _arg1 *C.GVariant         // out
 	var _cret *C.GtkPrintSettings // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = C.gtk_print_settings_new_from_gvariant(_arg1)
 
@@ -306,7 +306,7 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 	var _cret *C.GtkPrintSettings // in
 	var _cerr *C.GError           // in
 
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	_cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, &_cerr)
@@ -721,9 +721,9 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(unsafe.Pointer(_cret))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.gtk_paper_size_free((*C.GtkPaperSize)(unsafe.Pointer(v)))
+		C.gtk_paper_size_free((*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _paperSize
@@ -963,7 +963,7 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
@@ -1215,7 +1215,7 @@ func (settings *PrintSettings) SetPaperSize(paperSize *PaperSize) {
 	var _arg1 *C.GtkPaperSize     // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize))
+	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(paperSize)))
 
 	C.gtk_print_settings_set_paper_size(_arg0, _arg1)
 }
@@ -1372,9 +1372,9 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1387,7 +1387,7 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 	var _arg2 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 
 	C.gtk_print_settings_to_key_file(_arg0, _arg1, _arg2)
@@ -1407,12 +1407,8 @@ func (settings *PrintSettings) Unset(key string) {
 
 // PageRange: see also gtk_print_settings_set_page_ranges().
 type PageRange struct {
-	native C.GtkPageRange
-}
-
-// Native returns the underlying C source pointer.
-func (p *PageRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	nocopy gextras.NoCopy
+	native *C.GtkPageRange
 }
 
 // Start: start of page range.

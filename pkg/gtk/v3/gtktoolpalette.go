@@ -225,7 +225,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) *Widget {
 	var _cret *C.GtkWidget        // in
 
 	_arg0 = (*C.GtkToolPalette)(unsafe.Pointer(palette.Native()))
-	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection))
+	_arg1 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selection)))
 
 	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
 
@@ -518,7 +518,7 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _targetEntry
 }
@@ -531,7 +531,7 @@ func ToolPaletteGetDragTargetItem() *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(unsafe.Pointer(_cret))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _targetEntry
 }

@@ -576,10 +576,10 @@ func (container *Container) PathForChild(child Widgeter) *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(unsafe.Pointer(_cret))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
-		C.gtk_widget_path_unref((*C.GtkWidgetPath)(unsafe.Pointer(v)))
+		C.gtk_widget_path_unref((*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _widgetPath

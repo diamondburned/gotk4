@@ -4,6 +4,8 @@ package gtk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -18,12 +20,8 @@ import "C"
 // gtk.BitsetIter().InitFirst, gtk.BitsetIter().InitLast or
 // gtk.BitsetIter().InitAt.
 type BitsetIter struct {
-	native C.GtkBitsetIter
-}
-
-// Native returns the underlying C source pointer.
-func (b *BitsetIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(&b.native)
+	nocopy gextras.NoCopy
+	native *C.GtkBitsetIter
 }
 
 // Value gets the current value that iter points to.
@@ -34,7 +32,7 @@ func (iter *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.guint          // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_get_value(_arg0)
 
@@ -50,7 +48,7 @@ func (iter *BitsetIter) IsValid() bool {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_is_valid(_arg0)
 
@@ -72,7 +70,7 @@ func (iter *BitsetIter) Next() (uint, bool) {
 	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 
@@ -96,7 +94,7 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(iter))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 
@@ -116,20 +114,22 @@ func (iter *BitsetIter) Previous() (uint, bool) {
 // If target is not found, finds the next value after it. If no value >= target
 // exists in set, this function returns FALSE.
 func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
-	var _iter BitsetIter
-	var _arg2 *C.GtkBitset // out
-	var _arg3 C.guint      // out
-	var _arg4 C.guint      // in
-	var _cret C.gboolean   // in
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // out
+	var _arg4 C.guint         // in
+	var _cret C.gboolean      // in
 
-	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 	_arg3 = C.guint(target)
 
-	_cret = C.gtk_bitset_iter_init_at((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, _arg3, &_arg4)
+	_cret = C.gtk_bitset_iter_init_at(&_arg1, _arg2, _arg3, &_arg4)
 
-	var _value uint // out
-	var _ok bool    // out
+	var _iter BitsetIter // out
+	var _value uint      // out
+	var _ok bool         // out
 
+	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg4)
 	if _cret != 0 {
 		_ok = true
@@ -143,18 +143,20 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 //
 // If set is empty, FALSE is returned and value is set to G_MAXUINT.
 func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
-	var _iter BitsetIter
-	var _arg2 *C.GtkBitset // out
-	var _arg3 C.guint      // in
-	var _cret C.gboolean   // in
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // in
+	var _cret C.gboolean      // in
 
-	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_cret = C.gtk_bitset_iter_init_first((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, &_arg3)
+	_cret = C.gtk_bitset_iter_init_first(&_arg1, _arg2, &_arg3)
 
-	var _value uint // out
-	var _ok bool    // out
+	var _iter BitsetIter // out
+	var _value uint      // out
+	var _ok bool         // out
 
+	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -168,18 +170,20 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 //
 // If set is empty, FALSE is returned.
 func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
-	var _iter BitsetIter
-	var _arg2 *C.GtkBitset // out
-	var _arg3 C.guint      // in
-	var _cret C.gboolean   // in
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // in
+	var _cret C.gboolean      // in
 
-	_arg2 = (*C.GtkBitset)(unsafe.Pointer(set))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_cret = C.gtk_bitset_iter_init_last((*C.GtkBitsetIter)(unsafe.Pointer(&_iter)), _arg2, &_arg3)
+	_cret = C.gtk_bitset_iter_init_last(&_arg1, _arg2, &_arg3)
 
-	var _value uint // out
-	var _ok bool    // out
+	var _iter BitsetIter // out
+	var _value uint      // out
+	var _ok bool         // out
 
+	_iter = *(*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true

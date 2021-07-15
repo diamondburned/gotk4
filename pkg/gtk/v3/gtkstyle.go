@@ -880,16 +880,18 @@ func (style *Style) HasContext() bool {
 func (style *Style) LookupColor(colorName string) (gdk.Color, bool) {
 	var _arg0 *C.GtkStyle // out
 	var _arg1 *C.gchar    // out
-	var _color gdk.Color
-	var _cret C.gboolean // in
+	var _arg2 C.GdkColor  // in
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
 
-	_cret = C.gtk_style_lookup_color(_arg0, _arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _color gdk.Color // out
+	var _ok bool         // out
 
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -913,9 +915,9 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _iconSet
@@ -936,7 +938,7 @@ func (style *Style) RenderIcon(source *IconSource, direction TextDirection, stat
 	var _cret *C.GdkPixbuf       // in
 
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	_arg1 = (*C.GtkIconSource)(unsafe.Pointer(source))
+	_arg1 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg2 = C.GtkTextDirection(direction)
 	_arg3 = C.GtkStateType(state)
 	_arg4 = C.GtkIconSize(size)

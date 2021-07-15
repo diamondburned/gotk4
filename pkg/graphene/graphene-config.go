@@ -3,7 +3,7 @@
 package graphene
 
 import (
-	"unsafe"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
@@ -12,19 +12,11 @@ import (
 import "C"
 
 type SIMD4F struct {
-	native C.graphene_simd4f_t
-}
-
-// Native returns the underlying C source pointer.
-func (s *SIMD4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.graphene_simd4f_t
 }
 
 type SIMD4X4F struct {
-	native C.graphene_simd4x4f_t
-}
-
-// Native returns the underlying C source pointer.
-func (s *SIMD4X4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.graphene_simd4x4f_t
 }

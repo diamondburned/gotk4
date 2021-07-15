@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -249,7 +250,7 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _cret C.gboolean      // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
@@ -288,22 +289,26 @@ func (context *IMContext) FocusOut() {
 // a list of attributes to apply to the string. This string should be displayed
 // inserted at the insertion point.
 func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.gchar        // in
-	var _attrs *pango.AttrList
-	var _arg3 C.gint // in
+	var _arg0 *C.GtkIMContext  // out
+	var _arg1 *C.gchar         // in
+	var _arg2 *C.PangoAttrList // in
+	var _arg3 C.gint           // in
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrs)), &_arg3)
+	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _str string // out
-
-	var _cursorPos int // out
+	var _str string            // out
+	var _attrs *pango.AttrList // out
+	var _cursorPos int         // out
 
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
-
+	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+	C.pango_attr_list_ref(_arg2)
+	runtime.SetFinalizer(_attrs, func(v *pango.AttrList) {
+		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
+	})
 	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos
@@ -376,7 +381,7 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(context.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
 
 	C.gtk_im_context_set_cursor_location(_arg0, _arg1)
 }

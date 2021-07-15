@@ -89,10 +89,10 @@ func _gotk4_gio2_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
 	})
-	variant = (*glib.Variant)(unsafe.Pointer(arg1))
+	variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(SettingsBindGetMapping)
@@ -123,15 +123,15 @@ func _gotk4_gio2_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, ar
 	runtime.SetFinalizer(value, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.GValue)))
 	})
-	expectedType = (*glib.VariantType)(unsafe.Pointer(arg1))
+	expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(expectedType, func(v *glib.VariantType) {
-		C.g_variant_type_free((*C.GVariantType)(unsafe.Pointer(v)))
+		C.g_variant_type_free((*C.GVariantType)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(SettingsBindSetMapping)
 	variant := fn(value, expectedType)
 
-	cret = (*C.GVariant)(unsafe.Pointer(variant))
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
@@ -157,10 +157,10 @@ func _gotk4_gio2_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.g
 
 	var value *glib.Variant // out
 
-	value = (*glib.Variant)(unsafe.Pointer(arg0))
+	value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	C.g_variant_ref(arg0)
 	runtime.SetFinalizer(value, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(SettingsGetMapping)
@@ -824,10 +824,10 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1040,10 +1040,10 @@ func (settings *Settings) Range(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1181,10 +1181,10 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1206,10 +1206,10 @@ func (settings *Settings) Value(key string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -1320,7 +1320,7 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
 
@@ -1664,7 +1664,7 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(settings.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	_arg2 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
 

@@ -310,16 +310,18 @@ func (popover *Popover) Modal() bool {
 // return TRUE and fill in rect with such rectangle, otherwise it will return
 // FALSE and fill in rect with the attached widget coordinates.
 func (popover *Popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover // out
-	var _rect gdk.Rectangle
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
 
-	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _rect gdk.Rectangle // out
+	var _ok bool            // out
 
+	_rect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -455,7 +457,7 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(popover.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }

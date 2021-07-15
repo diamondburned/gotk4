@@ -42,13 +42,13 @@ func _gotk4_gsk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocati
 	var end *ParseLocation   // out
 	var err error            // out
 
-	start = (*ParseLocation)(unsafe.Pointer(arg0))
+	start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	runtime.SetFinalizer(start, func(v *ParseLocation) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
-	end = (*ParseLocation)(unsafe.Pointer(arg1))
+	end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(end, func(v *ParseLocation) {
-		C.free(unsafe.Pointer(v))
+		C.free(gextras.StructNative(unsafe.Pointer(v)))
 	})
 	err = gerror.Take(unsafe.Pointer(arg2))
 
@@ -129,12 +129,16 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 //
 // The node will not draw outside of its boundaries.
 func (node *RenderNode) Bounds() graphene.Rect {
-	var _arg0 *C.GskRenderNode // out
-	var _bounds graphene.Rect
+	var _arg0 *C.GskRenderNode  // out
+	var _arg1 C.graphene_rect_t // in
 
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
 
-	C.gsk_render_node_get_bounds(_arg0, (*C.graphene_rect_t)(unsafe.Pointer(&_bounds)))
+	C.gsk_render_node_get_bounds(_arg0, &_arg1)
+
+	var _bounds graphene.Rect // out
+
+	_bounds = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _bounds
 }
@@ -209,12 +213,8 @@ func (node *RenderNode) WriteToFile(filename string) error {
 
 // ColorStop: color stop in a gradient node.
 type ColorStop struct {
-	native C.GskColorStop
-}
-
-// Native returns the underlying C source pointer.
-func (c *ColorStop) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+	nocopy gextras.NoCopy
+	native *C.GskColorStop
 }
 
 // Offset: offset of the color stop
@@ -227,18 +227,14 @@ func (c *ColorStop) Offset() float32 {
 // Color: color at the given offset
 func (c *ColorStop) Color() gdk.RGBA {
 	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(unsafe.Pointer((&c.native.color)))
+	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&c.native.color))))
 	return v
 }
 
 // ParseLocation: location in a parse buffer.
 type ParseLocation struct {
-	native C.GskParseLocation
-}
-
-// Native returns the underlying C source pointer.
-func (p *ParseLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	nocopy gextras.NoCopy
+	native *C.GskParseLocation
 }
 
 // Bytes: offset of the location in the parse buffer, as bytes
@@ -278,18 +274,14 @@ func (p *ParseLocation) LineChars() uint {
 
 // Shadow: shadow parameters in a shadow node.
 type Shadow struct {
-	native C.GskShadow
-}
-
-// Native returns the underlying C source pointer.
-func (s *Shadow) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	nocopy gextras.NoCopy
+	native *C.GskShadow
 }
 
 // Color: color of the shadow
 func (s *Shadow) Color() gdk.RGBA {
 	var v gdk.RGBA // out
-	v = *(*gdk.RGBA)(unsafe.Pointer((&s.native.color)))
+	v = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&s.native.color))))
 	return v
 }
 

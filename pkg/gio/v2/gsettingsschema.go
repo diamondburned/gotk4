@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -64,17 +65,13 @@ func init() {
 // the plugin loading system must compile the schemas for itself before
 // attempting to create the settings source.
 type SettingsSchema struct {
-	native C.GSettingsSchema
+	nocopy gextras.NoCopy
+	native *C.GSettingsSchema
 }
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*SettingsSchema)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsSchema) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return &SettingsSchema{native: (*C.GSettingsSchema)(unsafe.Pointer(b))}, nil
 }
 
 // ID: get the ID of schema.
@@ -82,7 +79,7 @@ func (schema *SettingsSchema) ID() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_get_id(_arg0)
 
@@ -102,17 +99,17 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _arg1 *C.gchar              // out
 	var _cret *C.GSettingsSchemaKey // in
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_settings_schema_get_key(_arg0, _arg1)
 
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
-	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	_settingsSchemaKey = (*SettingsSchemaKey)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_key_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
-		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(unsafe.Pointer(v)))
+		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchemaKey
@@ -131,7 +128,7 @@ func (schema *SettingsSchema) Path() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_get_path(_arg0)
 
@@ -148,7 +145,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 	var _arg1 *C.gchar           // out
 	var _cret C.gboolean         // in
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 
 	_cret = C.g_settings_schema_has_key(_arg0, _arg1)
@@ -169,7 +166,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_children(_arg0)
 
@@ -201,7 +198,7 @@ func (schema *SettingsSchema) ListKeys() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_list_keys(_arg0)
 
@@ -229,16 +226,16 @@ func (schema *SettingsSchema) ref() *SettingsSchema {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.GSettingsSchema // in
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = C.g_settings_schema_ref(_arg0)
 
 	var _settingsSchema *SettingsSchema // out
 
-	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_ref(_cret)
 	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
-		C.g_settings_schema_unref((*C.GSettingsSchema)(unsafe.Pointer(v)))
+		C.g_settings_schema_unref((*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchema
@@ -248,7 +245,7 @@ func (schema *SettingsSchema) ref() *SettingsSchema {
 func (schema *SettingsSchema) unref() {
 	var _arg0 *C.GSettingsSchema // out
 
-	_arg0 = (*C.GSettingsSchema)(unsafe.Pointer(schema))
+	_arg0 = (*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	C.g_settings_schema_unref(_arg0)
 }
@@ -256,17 +253,13 @@ func (schema *SettingsSchema) unref() {
 // SettingsSchemaKey is an opaque data structure and can only be accessed using
 // the following functions.
 type SettingsSchemaKey struct {
-	native C.GSettingsSchemaKey
+	nocopy gextras.NoCopy
+	native *C.GSettingsSchemaKey
 }
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*SettingsSchemaKey)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsSchemaKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
+	return &SettingsSchemaKey{native: (*C.GSettingsSchemaKey)(unsafe.Pointer(b))}, nil
 }
 
 // DefaultValue gets the default value for key.
@@ -277,16 +270,16 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_default_value(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -308,7 +301,7 @@ func (key *SettingsSchemaKey) Description() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_description(_arg0)
 
@@ -324,7 +317,7 @@ func (key *SettingsSchemaKey) Name() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_name(_arg0)
 
@@ -373,16 +366,16 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_range(_arg0)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -403,7 +396,7 @@ func (key *SettingsSchemaKey) Summary() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_summary(_arg0)
 
@@ -419,13 +412,13 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariantType       // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_get_value_type(_arg0)
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(unsafe.Pointer(_cret))
+	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _variantType
 }
@@ -440,8 +433,8 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _arg1 *C.GVariant           // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_settings_schema_key_range_check(_arg0, _arg1)
 
@@ -459,16 +452,16 @@ func (key *SettingsSchemaKey) ref() *SettingsSchemaKey {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GSettingsSchemaKey // in
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = C.g_settings_schema_key_ref(_arg0)
 
 	var _settingsSchemaKey *SettingsSchemaKey // out
 
-	_settingsSchemaKey = (*SettingsSchemaKey)(unsafe.Pointer(_cret))
+	_settingsSchemaKey = (*SettingsSchemaKey)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_key_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaKey, func(v *SettingsSchemaKey) {
-		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(unsafe.Pointer(v)))
+		C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchemaKey
@@ -478,7 +471,7 @@ func (key *SettingsSchemaKey) ref() *SettingsSchemaKey {
 func (key *SettingsSchemaKey) unref() {
 	var _arg0 *C.GSettingsSchemaKey // out
 
-	_arg0 = (*C.GSettingsSchemaKey)(unsafe.Pointer(key))
+	_arg0 = (*C.GSettingsSchemaKey)(gextras.StructNative(unsafe.Pointer(key)))
 
 	C.g_settings_schema_key_unref(_arg0)
 }
@@ -486,12 +479,13 @@ func (key *SettingsSchemaKey) unref() {
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
 // directly.
 type SettingsSchemaSource struct {
-	native C.GSettingsSchemaSource
+	nocopy gextras.NoCopy
+	native *C.GSettingsSchemaSource
 }
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*SettingsSchemaSource)(unsafe.Pointer(b)), nil
+	return &SettingsSchemaSource{native: (*C.GSettingsSchemaSource)(unsafe.Pointer(b))}, nil
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
@@ -503,7 +497,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _cerr *C.GError                // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(directory)))
-	_arg2 = (*C.GSettingsSchemaSource)(unsafe.Pointer(parent))
+	_arg2 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(parent)))
 	if trusted {
 		_arg3 = C.TRUE
 	}
@@ -513,19 +507,14 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	var _settingsSchemaSource *SettingsSchemaSource // out
 	var _goerr error                                // out
 
-	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
+		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _settingsSchemaSource, _goerr
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsSchemaSource) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
 }
 
 // ListSchemas lists the schemas in a given source.
@@ -545,7 +534,7 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	var _arg2 **C.gchar
 	var _arg3 **C.gchar
 
-	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if recursive {
 		_arg1 = C.TRUE
 	}
@@ -603,7 +592,7 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 	var _arg2 C.gboolean               // out
 	var _cret *C.GSettingsSchema       // in
 
-	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
 	if recursive {
 		_arg2 = C.TRUE
@@ -613,10 +602,10 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 	var _settingsSchema *SettingsSchema // out
 
-	_settingsSchema = (*SettingsSchema)(unsafe.Pointer(_cret))
+	_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_ref(_cret)
 	runtime.SetFinalizer(_settingsSchema, func(v *SettingsSchema) {
-		C.g_settings_schema_unref((*C.GSettingsSchema)(unsafe.Pointer(v)))
+		C.g_settings_schema_unref((*C.GSettingsSchema)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchema
@@ -627,16 +616,16 @@ func (source *SettingsSchemaSource) ref() *SettingsSchemaSource {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _cret *C.GSettingsSchemaSource // in
 
-	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	_cret = C.g_settings_schema_source_ref(_arg0)
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
-	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_settings_schema_source_ref(_cret)
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
+		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchemaSource
@@ -646,7 +635,7 @@ func (source *SettingsSchemaSource) ref() *SettingsSchemaSource {
 func (source *SettingsSchemaSource) unref() {
 	var _arg0 *C.GSettingsSchemaSource // out
 
-	_arg0 = (*C.GSettingsSchemaSource)(unsafe.Pointer(source))
+	_arg0 = (*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(source)))
 
 	C.g_settings_schema_source_unref(_arg0)
 }
@@ -670,9 +659,9 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
-	_settingsSchemaSource = (*SettingsSchemaSource)(unsafe.Pointer(_cret))
+	_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_settingsSchemaSource, func(v *SettingsSchemaSource) {
-		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(unsafe.Pointer(v)))
+		C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _settingsSchemaSource

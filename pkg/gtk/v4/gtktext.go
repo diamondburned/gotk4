@@ -290,9 +290,9 @@ func (self *Text) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attrList
@@ -494,7 +494,7 @@ func (self *Text) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _tabArray
 }
@@ -601,7 +601,7 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
+	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 
 	C.gtk_text_set_attributes(_arg0, _arg1)
 }
@@ -753,7 +753,7 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.GtkText)(unsafe.Pointer(self.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
+	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 
 	C.gtk_text_set_tabs(_arg0, _arg1)
 }

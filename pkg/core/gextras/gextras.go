@@ -138,3 +138,45 @@ func CastObject(obj *glib.Object) interface{} {
 
 	return v
 }
+
+type record struct {
+	_ NoCopy
+	p unsafe.Pointer
+}
+
+// StructNative returns the underlying C pointer of the given Go record struct
+// pointer. It can be used like so:
+//
+//    rec := NewRecord(...) // T = *Record
+//    c := (*namespace_record)(StructPtr(unsafe.Pointer(rec)))
+//
+func StructNative(ptr unsafe.Pointer) unsafe.Pointer {
+	return (*record)(ptr).p
+}
+
+// SetStructNative sets the native value inside the Go struct value that the
+// given dst pointer points to. It can be used like so:
+//
+//    var rec Record
+//    SetStructNative(&rec, cvalue) // T(cvalue) = *namespace_record
+//
+func SetStructNative(dst, native unsafe.Pointer) {
+	(*record)(dst).p = native
+}
+
+// NewStructNative creates a new Go struct from the given native pointer. The
+// finalizer is NOT set.
+func NewStructNative(native unsafe.Pointer) unsafe.Pointer {
+	var r record
+	(*record)(&r).p = native
+	return unsafe.Pointer(&r)
+}
+
+// NoCopy is a zero-sized type that triggers a warning in go vet when a struct
+// containing this type is copied.
+//
+// See https://github.com/golang/go/issues/8005#issuecomment-190753527.
+type NoCopy struct{}
+
+func (*NoCopy) Lock()   {}
+func (*NoCopy) Unlock() {}

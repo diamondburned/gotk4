@@ -220,7 +220,7 @@ func AccelMapLoadFd(fd int) {
 func AccelMapLoadScanner(scanner *glib.Scanner) {
 	var _arg1 *C.GScanner // out
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	C.gtk_accel_map_load_scanner(_arg1)
 }
@@ -250,16 +250,18 @@ func AccelMapLockPath(accelPath string) {
 // AccelMapLookupEntry looks up the accelerator entry for accel_path and fills
 // in key.
 func AccelMapLookupEntry(accelPath string) (AccelKey, bool) {
-	var _arg1 *C.gchar // out
-	var _key AccelKey
-	var _cret C.gboolean // in
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkAccelKey // in
+	var _cret C.gboolean    // in
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 
-	_cret = C.gtk_accel_map_lookup_entry(_arg1, (*C.GtkAccelKey)(unsafe.Pointer(&_key)))
+	_cret = C.gtk_accel_map_lookup_entry(_arg1, &_arg2)
 
-	var _ok bool // out
+	var _key AccelKey // out
+	var _ok bool      // out
 
+	_key = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

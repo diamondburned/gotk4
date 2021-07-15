@@ -396,9 +396,9 @@ func (task *Task) Context() *glib.MainContext {
 
 	var _mainContext *glib.MainContext // out
 
-	_mainContext = (*glib.MainContext)(unsafe.Pointer(_cret))
+	_mainContext = (*glib.MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_mainContext, func(v *glib.MainContext) {
-		C.g_main_context_unref((*C.GMainContext)(unsafe.Pointer(v)))
+		C.g_main_context_unref((*C.GMainContext)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _mainContext

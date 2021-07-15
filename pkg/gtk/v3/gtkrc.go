@@ -228,7 +228,7 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	var _cret *C.gchar       // in
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
-	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg2 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(pixmapFile)))
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
@@ -418,15 +418,17 @@ func RCParse(filename string) {
 // Deprecated: Use CssProvider instead.
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
-	var _color gdk.Color
-	var _cret C.guint // in
+	var _arg2 C.GdkColor  // in
+	var _cret C.guint     // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
-	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_rc_parse_color(_arg1, &_arg2)
 
-	var _guint uint // out
+	var _color gdk.Color // out
+	var _guint uint      // out
 
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -439,16 +441,18 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
-	var _color gdk.Color
-	var _cret C.guint // in
+	var _arg3 C.GdkColor    // in
+	var _cret C.guint       // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
 
-	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
 
-	var _guint uint // out
+	var _color gdk.Color // out
+	var _guint uint      // out
 
+	_color = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 	_guint = uint(_cret)
 
 	return _color, _guint
@@ -463,7 +467,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg2 C.GtkStateType // in
 	var _cret C.guint        // in
 
-	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner))
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_cret = C.gtk_rc_parse_state(_arg1, &_arg2)
 
@@ -648,12 +652,8 @@ func (orig *RCStyle) Copy() *RCStyle {
 
 // RCProperty: deprecated
 type RCProperty struct {
-	native C.GtkRcProperty
-}
-
-// Native returns the underlying C source pointer.
-func (r *RCProperty) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	nocopy gextras.NoCopy
+	native *C.GtkRcProperty
 }
 
 // Origin: field similar to one found in SettingsValue

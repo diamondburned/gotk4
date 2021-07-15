@@ -550,17 +550,13 @@ func (component *Component) SetSize(width int, height int) bool {
 // Rectangle: data structure for holding a rectangle. Those coordinates are
 // relative to the component top-level parent.
 type Rectangle struct {
-	native C.AtkRectangle
+	nocopy gextras.NoCopy
+	native *C.AtkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Rectangle)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return &Rectangle{native: (*C.AtkRectangle)(unsafe.Pointer(b))}, nil
 }
 
 // X coordinate of the left side of the rectangle.

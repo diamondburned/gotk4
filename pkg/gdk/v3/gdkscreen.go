@@ -263,14 +263,18 @@ func (screen *Screen) MonitorAtWindow(window Windower) int {
 //
 // Deprecated: Use gdk_monitor_get_geometry() instead.
 func (screen *Screen) MonitorGeometry(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen // out
-	var _arg1 C.gint       // out
-	var _dest Rectangle
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg1 = C.gint(monitorNum)
 
-	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }
@@ -382,14 +386,18 @@ func (screen *Screen) MonitorWidthMm(monitorNum int) int {
 //
 // Deprecated: Use gdk_monitor_get_workarea() instead.
 func (screen *Screen) MonitorWorkarea(monitorNum int) Rectangle {
-	var _arg0 *C.GdkScreen // out
-	var _arg1 C.gint       // out
-	var _dest Rectangle
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg1 = C.gint(monitorNum)
 
-	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, &_arg2)
+
+	var _dest Rectangle // out
+
+	_dest = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

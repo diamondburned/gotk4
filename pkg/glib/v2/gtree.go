@@ -7,6 +7,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,17 +27,13 @@ func init() {
 // tree][glib-Balanced-Binary-Trees]. It should be accessed only by using the
 // following functions.
 type Tree struct {
-	native C.GTree
+	nocopy gextras.NoCopy
+	native *C.GTree
 }
 
 func marshalTree(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Tree)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *Tree) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	return &Tree{native: (*C.GTree)(unsafe.Pointer(b))}, nil
 }
 
 // Destroy removes all keys and values from the #GTree and decreases its
@@ -47,7 +44,7 @@ func (t *Tree) Native() unsafe.Pointer {
 func (tree *Tree) Destroy() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	C.g_tree_destroy(_arg0)
 }
@@ -61,7 +58,7 @@ func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_height(_arg0)
 
@@ -81,7 +78,7 @@ func (tree *Tree) Insert(key cgo.Handle, value cgo.Handle) {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(key))
 	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
@@ -96,7 +93,7 @@ func (tree *Tree) Lookup(key cgo.Handle) cgo.Handle {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gpointer      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
@@ -118,7 +115,7 @@ func (tree *Tree) LookupExtended(lookupKey cgo.Handle) (origKey cgo.Handle, valu
 	var _arg3 C.gpointer      // in
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
@@ -141,7 +138,7 @@ func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_nnodes(_arg0)
 
@@ -159,16 +156,16 @@ func (tree *Tree) ref() *Tree {
 	var _arg0 *C.GTree // out
 	var _cret *C.GTree // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	_cret = C.g_tree_ref(_arg0)
 
 	var _ret *Tree // out
 
-	_ret = (*Tree)(unsafe.Pointer(_cret))
+	_ret = (*Tree)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_tree_ref(_cret)
 	runtime.SetFinalizer(_ret, func(v *Tree) {
-		C.g_tree_unref((*C.GTree)(unsafe.Pointer(v)))
+		C.g_tree_unref((*C.GTree)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -188,7 +185,7 @@ func (tree *Tree) Remove(key cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
@@ -209,7 +206,7 @@ func (tree *Tree) Replace(key cgo.Handle, value cgo.Handle) {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gpointer)(unsafe.Pointer(key))
 	_arg2 = (C.gpointer)(unsafe.Pointer(value))
 
@@ -225,7 +222,7 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(key))
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
@@ -247,7 +244,7 @@ func (tree *Tree) Steal(key cgo.Handle) bool {
 func (tree *Tree) unref() {
 	var _arg0 *C.GTree // out
 
-	_arg0 = (*C.GTree)(unsafe.Pointer(tree))
+	_arg0 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
 
 	C.g_tree_unref(_arg0)
 }

@@ -157,10 +157,10 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(unsafe.Pointer(_cret))
+	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.pango_font_metrics_ref(_cret)
 	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
-		C.pango_font_metrics_unref((*C.PangoFontMetrics)(unsafe.Pointer(v)))
+		C.pango_font_metrics_unref((*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _fontMetrics
@@ -207,7 +207,7 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in
 
-	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language))
+	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_cret = C.pango_fontset_simple_new(_arg1)
 

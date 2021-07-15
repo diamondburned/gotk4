@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,12 +96,13 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 // new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
 type Checksum struct {
-	native C.GChecksum
+	nocopy gextras.NoCopy
+	native *C.GChecksum
 }
 
 func marshalChecksum(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Checksum)(unsafe.Pointer(b)), nil
+	return &Checksum{native: (*C.GChecksum)(unsafe.Pointer(b))}, nil
 }
 
 // NewChecksum constructs a struct Checksum.
@@ -114,17 +116,12 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	var _checksum *Checksum // out
 
-	_checksum = (*Checksum)(unsafe.Pointer(_cret))
+	_checksum = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_checksum, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
+		C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _checksum
-}
-
-// Native returns the underlying C source pointer.
-func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
 }
 
 // Copy copies a #GChecksum. If checksum has been closed, by calling
@@ -134,15 +131,15 @@ func (checksum *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
+	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	_cret = C.g_checksum_copy(_arg0)
 
 	var _ret *Checksum // out
 
-	_ret = (*Checksum)(unsafe.Pointer(_cret))
+	_ret = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_ret, func(v *Checksum) {
-		C.g_checksum_free((*C.GChecksum)(unsafe.Pointer(v)))
+		C.g_checksum_free((*C.GChecksum)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _ret
@@ -152,7 +149,7 @@ func (checksum *Checksum) Copy() *Checksum {
 func (checksum *Checksum) free() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
+	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	C.g_checksum_free(_arg0)
 }
@@ -167,7 +164,7 @@ func (checksum *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
+	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	_cret = C.g_checksum_get_string(_arg0)
 
@@ -182,7 +179,7 @@ func (checksum *Checksum) String() string {
 func (checksum *Checksum) Reset() {
 	var _arg0 *C.GChecksum // out
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
+	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 
 	C.g_checksum_reset(_arg0)
 }
@@ -195,7 +192,7 @@ func (checksum *Checksum) Update(data []byte) {
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 
-	_arg0 = (*C.GChecksum)(unsafe.Pointer(checksum))
+	_arg0 = (*C.GChecksum)(gextras.StructNative(unsafe.Pointer(checksum)))
 	_arg2 = (C.gssize)(len(data))
 	if len(data) > 0 {
 		_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))

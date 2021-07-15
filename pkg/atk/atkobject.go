@@ -1174,12 +1174,8 @@ func (accessible *ObjectClass) SetRole(role Role) {
 //
 // A string name/value pair representing a generic attribute.
 type Attribute struct {
-	native C.AtkAttribute
-}
-
-// Native returns the underlying C source pointer.
-func (a *Attribute) Native() unsafe.Pointer {
-	return unsafe.Pointer(&a.native)
+	nocopy gextras.NoCopy
+	native *C.AtkAttribute
 }
 
 // Name: attribute name.
@@ -1200,12 +1196,8 @@ func (a *Attribute) Value() string {
 // valid value. This is a field defined with the purpose of contain the previous
 // value of the property, but is not used anymore.
 type PropertyValues struct {
-	native C.AtkPropertyValues
-}
-
-// Native returns the underlying C source pointer.
-func (p *PropertyValues) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
+	nocopy gextras.NoCopy
+	native *C.AtkPropertyValues
 }
 
 // PropertyName: name of the ATK property which has changed.

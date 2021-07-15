@@ -75,9 +75,9 @@ func _gotk4_gtk3_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectio
 	var selectionData *SelectionData // out
 
 	clipboard = wrapClipboard(externglib.Take(unsafe.Pointer(arg0)))
-	selectionData = (*SelectionData)(unsafe.Pointer(arg1))
+	selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(selectionData, func(v *SelectionData) {
-		C.gtk_selection_data_free((*C.GtkSelectionData)(unsafe.Pointer(v)))
+		C.gtk_selection_data_free((*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(ClipboardReceivedFunc)

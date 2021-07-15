@@ -224,9 +224,9 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 
 	var _treePath *TreePath // out
 
-	_treePath = (*TreePath)(unsafe.Pointer(_cret))
+	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.gtk_tree_path_free((*C.GtkTreePath)(unsafe.Pointer(v)))
+		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _treePath
@@ -294,18 +294,20 @@ func (cellView *CellView) Model() *TreeModel {
 // property or by setting the currently displayed row of the CellView and using
 // gtk_widget_get_preferred_size().
 func (cellView *CellView) SizeOfRow(path *TreePath) (Requisition, bool) {
-	var _arg0 *C.GtkCellView // out
-	var _arg1 *C.GtkTreePath // out
-	var _requisition Requisition
-	var _cret C.gboolean // in
+	var _arg0 *C.GtkCellView   // out
+	var _arg1 *C.GtkTreePath   // out
+	var _arg2 C.GtkRequisition // in
+	var _cret C.gboolean       // in
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
+	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _requisition Requisition // out
+	var _ok bool                 // out
 
+	_requisition = *(*Requisition)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -321,7 +323,7 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 	var _arg1 *C.GdkColor    // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
 	C.gtk_cell_view_set_background_color(_arg0, _arg1)
 }
@@ -332,7 +334,7 @@ func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var _arg1 *C.GdkRGBA     // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	C.gtk_cell_view_set_background_rgba(_arg0, _arg1)
 }
@@ -347,7 +349,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(cellView.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	C.gtk_cell_view_set_displayed_row(_arg0, _arg1)
 }

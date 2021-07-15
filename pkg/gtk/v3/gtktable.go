@@ -461,12 +461,8 @@ func (table *Table) SetRowSpacings(spacing uint) {
 }
 
 type TableChild struct {
-	native C.GtkTableChild
-}
-
-// Native returns the underlying C source pointer.
-func (t *TableChild) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GtkTableChild
 }
 
 func (t *TableChild) Widget() *Widget {
@@ -512,12 +508,8 @@ func (t *TableChild) Ypadding() uint16 {
 }
 
 type TableRowCol struct {
-	native C.GtkTableRowCol
-}
-
-// Native returns the underlying C source pointer.
-func (t *TableRowCol) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
+	nocopy gextras.NoCopy
+	native *C.GtkTableRowCol
 }
 
 func (t *TableRowCol) Requisition() uint16 {

@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,12 +33,13 @@ func init() {
 // means code can safely expose them as properties of objects without having to
 // worry about others changing them.
 type Transform struct {
-	native C.GskTransform
+	nocopy gextras.NoCopy
+	native *C.GskTransform
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*Transform)(unsafe.Pointer(b)), nil
+	return &Transform{native: (*C.GskTransform)(unsafe.Pointer(b))}, nil
 }
 
 // NewTransform constructs a struct Transform.
@@ -48,18 +50,13 @@ func NewTransform() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
-}
-
-// Native returns the underlying C source pointer.
-func (t *Transform) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
 }
 
 // Equal checks two transforms for equality.
@@ -68,8 +65,8 @@ func (first *Transform) Equal(second *Transform) bool {
 	var _arg1 *C.GskTransform // out
 	var _cret C.gboolean      // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(first))
-	_arg1 = (*C.GskTransform)(unsafe.Pointer(second))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(first)))
+	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = C.gsk_transform_equal(_arg0, _arg1)
 
@@ -87,7 +84,7 @@ func (self *Transform) Category() TransformCategory {
 	var _arg0 *C.GskTransform        // out
 	var _cret C.GskTransformCategory // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gsk_transform_get_category(_arg0)
 
@@ -108,16 +105,16 @@ func (self *Transform) Invert() *Transform {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gsk_transform_invert(_arg0)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -129,17 +126,17 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _arg1 *C.graphene_matrix_t // out
 	var _cret *C.GskTransform      // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
-	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = C.gsk_transform_matrix(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -155,17 +152,17 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	var _arg1 C.float         // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	_arg1 = C.float(depth)
 
 	_cret = C.gsk_transform_perspective(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -176,15 +173,15 @@ func (self *Transform) ref() *Transform {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gsk_transform_ref(_arg0)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -196,17 +193,17 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	var _arg1 C.float         // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	_arg1 = C.float(angle)
 
 	_cret = C.gsk_transform_rotate(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -221,18 +218,18 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg2 *C.graphene_vec3_t // out
 	var _cret *C.GskTransform    // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	_arg1 = C.float(angle)
-	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis))
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_cret = C.gsk_transform_rotate_3d(_arg0, _arg1, _arg2)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -247,7 +244,7 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg2 C.float         // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	_arg1 = C.float(factorX)
 	_arg2 = C.float(factorY)
 
@@ -255,10 +252,10 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -272,7 +269,7 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	var _arg3 C.float         // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	_arg1 = C.float(factorX)
 	_arg2 = C.float(factorY)
 	_arg3 = C.float(factorZ)
@@ -281,10 +278,10 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -313,7 +310,7 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 	var _arg5 C.float         // in
 	var _arg6 C.float         // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
@@ -345,7 +342,7 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 	var _arg3 C.float         // in
 	var _arg4 C.float         // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -366,12 +363,16 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 //
 // The previous value of out_matrix will be ignored.
 func (self *Transform) ToMatrix() graphene.Matrix {
-	var _arg0 *C.GskTransform // out
-	var _outMatrix graphene.Matrix
+	var _arg0 *C.GskTransform     // out
+	var _arg1 C.graphene_matrix_t // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
-	C.gsk_transform_to_matrix(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_outMatrix)))
+	C.gsk_transform_to_matrix(_arg0, &_arg1)
+
+	var _outMatrix graphene.Matrix // out
+
+	_outMatrix = *(*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _outMatrix
 }
@@ -385,7 +386,7 @@ func (self *Transform) String() string {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.char         // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	_cret = C.gsk_transform_to_string(_arg0)
 
@@ -406,7 +407,7 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _arg1 C.float         // in
 	var _arg2 C.float         // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
 
@@ -425,17 +426,17 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	var _arg1 *C.GskTransform // out
 	var _cret *C.GskTransform // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
-	_arg1 = (*C.GskTransform)(unsafe.Pointer(other))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gsk_transform_transform(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -447,12 +448,16 @@ func (next *Transform) Transform(other *Transform) *Transform {
 func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 *C.graphene_rect_t // out
-	var _outRect graphene.Rect
+	var _arg2 C.graphene_rect_t  // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
-	C.gsk_transform_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_outRect)))
+	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
+
+	var _outRect graphene.Rect // out
+
+	_outRect = *(*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outRect
 }
@@ -461,12 +466,16 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 func (self *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
-	var _outPoint graphene.Point
+	var _arg2 C.graphene_point_t  // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	C.gsk_transform_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_outPoint)))
+	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
+
+	var _outPoint graphene.Point // out
+
+	_outPoint = *(*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outPoint
 }
@@ -477,17 +486,17 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg1 *C.graphene_point_t // out
 	var _cret *C.GskTransform     // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.gsk_transform_translate(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -499,17 +508,17 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _arg1 *C.graphene_point3d_t // out
 	var _cret *C.GskTransform       // in
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(next))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = C.gsk_transform_translate_3d(_arg0, _arg1)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(unsafe.Pointer(_cret))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
 	runtime.SetFinalizer(_transform, func(v *Transform) {
-		C.gsk_transform_unref((*C.GskTransform)(unsafe.Pointer(v)))
+		C.gsk_transform_unref((*C.GskTransform)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _transform
@@ -522,7 +531,7 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 func (self *Transform) unref() {
 	var _arg0 *C.GskTransform // out
 
-	_arg0 = (*C.GskTransform)(unsafe.Pointer(self))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
 	C.gsk_transform_unref(_arg0)
 }

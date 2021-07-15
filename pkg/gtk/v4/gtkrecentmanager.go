@@ -202,7 +202,7 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	_arg2 = (*C.GtkRecentData)(unsafe.Pointer(recentData))
+	_arg2 = (*C.GtkRecentData)(gextras.StructNative(unsafe.Pointer(recentData)))
 
 	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
 
@@ -281,10 +281,10 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
 
-	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -370,12 +370,8 @@ func RecentManagerGetDefault() *RecentManager {
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
 // registering a recently used resource.
 type RecentData struct {
-	native C.GtkRecentData
-}
-
-// Native returns the underlying C source pointer.
-func (r *RecentData) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	nocopy gextras.NoCopy
+	native *C.GtkRecentData
 }
 
 // DisplayName: UTF-8 encoded string, containing the name of the recently used
@@ -451,17 +447,13 @@ func (r *RecentData) IsPrivate() bool {
 // RecentInfo: GtkRecentInfo contains the metadata associated with an item in
 // the recently used files list.
 type RecentInfo struct {
-	native C.GtkRecentInfo
+	nocopy gextras.NoCopy
+	native *C.GtkRecentInfo
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*RecentInfo)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (r *RecentInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(&r.native)
+	return &RecentInfo{native: (*C.GtkRecentInfo)(unsafe.Pointer(b))}, nil
 }
 
 // CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo
@@ -471,7 +463,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _cret *C.GAppInfo      // in
 	var _cerr *C.GError        // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
@@ -496,7 +488,7 @@ func (info *RecentInfo) Exists() bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_exists(_arg0)
 
@@ -515,7 +507,7 @@ func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.int            // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_age(_arg0)
 
@@ -531,7 +523,7 @@ func (info *RecentInfo) Description() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_description(_arg0)
 
@@ -549,7 +541,7 @@ func (info *RecentInfo) DisplayName() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_display_name(_arg0)
 
@@ -565,7 +557,7 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_gicon(_arg0)
 
@@ -586,7 +578,7 @@ func (info *RecentInfo) MIMEType() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_mime_type(_arg0)
 
@@ -605,7 +597,7 @@ func (info *RecentInfo) PrivateHint() bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_private_hint(_arg0)
 
@@ -627,7 +619,7 @@ func (info *RecentInfo) ShortName() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_short_name(_arg0)
 
@@ -644,7 +636,7 @@ func (info *RecentInfo) URI() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_uri(_arg0)
 
@@ -663,7 +655,7 @@ func (info *RecentInfo) URIDisplay() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_get_uri_display(_arg0)
 
@@ -682,7 +674,7 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
 
 	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
@@ -703,7 +695,7 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _arg1 *C.char          // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
 
 	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
@@ -723,7 +715,7 @@ func (info *RecentInfo) IsLocal() bool {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_is_local(_arg0)
 
@@ -742,7 +734,7 @@ func (info *RecentInfo) LastApplication() string {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.char          // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_last_application(_arg0)
 
@@ -760,8 +752,8 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	var _arg1 *C.GtkRecentInfo // out
 	var _cret C.gboolean       // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(infoA))
-	_arg1 = (*C.GtkRecentInfo)(unsafe.Pointer(infoB))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(infoA)))
+	_arg1 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(infoB)))
 
 	_cret = C.gtk_recent_info_match(_arg0, _arg1)
 
@@ -779,16 +771,16 @@ func (info *RecentInfo) ref() *RecentInfo {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GtkRecentInfo // in
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = C.gtk_recent_info_ref(_arg0)
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(unsafe.Pointer(_cret))
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_recent_info_ref(_cret)
 	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _recentInfo
@@ -801,7 +793,7 @@ func (info *RecentInfo) ref() *RecentInfo {
 func (info *RecentInfo) unref() {
 	var _arg0 *C.GtkRecentInfo // out
 
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(info))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
 	C.gtk_recent_info_unref(_arg0)
 }

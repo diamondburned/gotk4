@@ -314,7 +314,7 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(factory.Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet))
+	_arg2 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
 	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
 }
@@ -353,9 +353,9 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _iconSet
@@ -391,9 +391,9 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(unsafe.Pointer(_cret))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
-		C.gtk_icon_set_unref((*C.GtkIconSet)(unsafe.Pointer(v)))
+		C.gtk_icon_set_unref((*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _iconSet

@@ -324,15 +324,17 @@ func (comboBox *ComboBox) ActiveID() string {
 // If no item is active, iter is left unchanged.
 func (comboBox *ComboBox) ActiveIter() (TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
-	var _iter TreeIter
-	var _cret C.gboolean // in
+	var _arg1 C.GtkTreeIter  // in
+	var _cret C.gboolean     // in
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
 
-	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_combo_box_get_active_iter(_arg0, &_arg1)
 
-	var _ok bool // out
+	var _iter TreeIter // out
+	var _ok bool       // out
 
+	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 	if _cret != 0 {
 		_ok = true
 	}
@@ -546,7 +548,7 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	var _arg1 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(comboBox.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	C.gtk_combo_box_set_active_iter(_arg0, _arg1)
 }

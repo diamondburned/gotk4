@@ -223,12 +223,16 @@ func (_range *Range) Inverted() bool {
 //
 // This function is useful mainly for GtkRange subclasses.
 func (_range *Range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange // out
-	var _rangeRect gdk.Rectangle
+	var _arg0 *C.GtkRange    // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(_range.Native()))
 
-	C.gtk_range_get_range_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rangeRect)))
+	C.gtk_range_get_range_rect(_arg0, &_arg1)
+
+	var _rangeRect gdk.Rectangle // out
+
+	_rangeRect = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rangeRect
 }

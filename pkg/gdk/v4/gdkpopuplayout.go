@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,12 +98,13 @@ func marshalAnchorHints(p uintptr) (interface{}, error) {
 // position accordingly. But you have to be careful avoid changing the size of
 // the popover, or it has to be presented again.
 type PopupLayout struct {
-	native C.GdkPopupLayout
+	nocopy gextras.NoCopy
+	native *C.GdkPopupLayout
 }
 
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*PopupLayout)(unsafe.Pointer(b)), nil
+	return &PopupLayout{native: (*C.GdkPopupLayout)(unsafe.Pointer(b))}, nil
 }
 
 // NewPopupLayout constructs a struct PopupLayout.
@@ -112,7 +114,7 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var _arg3 C.GdkGravity      // out
 	var _cret *C.GdkPopupLayout // in
 
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(anchorRect))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(anchorRect)))
 	_arg2 = C.GdkGravity(rectAnchor)
 	_arg3 = C.GdkGravity(surfaceAnchor)
 
@@ -120,18 +122,13 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 
 	var _popupLayout *PopupLayout // out
 
-	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
+		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _popupLayout
-}
-
-// Native returns the underlying C source pointer.
-func (p *PopupLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
 }
 
 // Copy makes a copy of layout.
@@ -139,16 +136,16 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_copy(_arg0)
 
 	var _popupLayout *PopupLayout // out
 
-	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
+		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _popupLayout
@@ -160,8 +157,8 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	var _arg1 *C.GdkPopupLayout // out
 	var _cret C.gboolean        // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
-	_arg1 = (*C.GdkPopupLayout)(unsafe.Pointer(other))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = C.gdk_popup_layout_equal(_arg0, _arg1)
 
@@ -179,7 +176,7 @@ func (layout *PopupLayout) AnchorHints() AnchorHints {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkAnchorHints  // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_anchor_hints(_arg0)
 
@@ -195,13 +192,13 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkRectangle   // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_anchor_rect(_arg0)
 
 	var _rectangle *Rectangle // out
 
-	_rectangle = (*Rectangle)(unsafe.Pointer(_cret))
+	_rectangle = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _rectangle
 }
@@ -212,7 +209,7 @@ func (layout *PopupLayout) Offset() (dx int, dy int) {
 	var _arg1 C.int             // in
 	var _arg2 C.int             // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_popup_layout_get_offset(_arg0, &_arg1, &_arg2)
 
@@ -230,7 +227,7 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_rect_anchor(_arg0)
 
@@ -249,7 +246,7 @@ func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom i
 	var _arg3 C.int             // in
 	var _arg4 C.int             // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_popup_layout_get_shadow_width(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
@@ -271,7 +268,7 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkGravity      // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_get_surface_anchor(_arg0)
 
@@ -287,16 +284,16 @@ func (layout *PopupLayout) ref() *PopupLayout {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret *C.GdkPopupLayout // in
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = C.gdk_popup_layout_ref(_arg0)
 
 	var _popupLayout *PopupLayout // out
 
-	_popupLayout = (*PopupLayout)(unsafe.Pointer(_cret))
+	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_popup_layout_ref(_cret)
 	runtime.SetFinalizer(_popupLayout, func(v *PopupLayout) {
-		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(unsafe.Pointer(v)))
+		C.gdk_popup_layout_unref((*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _popupLayout
@@ -312,7 +309,7 @@ func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkAnchorHints  // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.GdkAnchorHints(anchorHints)
 
 	C.gdk_popup_layout_set_anchor_hints(_arg0, _arg1)
@@ -323,8 +320,8 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkRectangle   // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(anchorRect))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(anchorRect)))
 
 	C.gdk_popup_layout_set_anchor_rect(_arg0, _arg1)
 }
@@ -335,7 +332,7 @@ func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.int(dx)
 	_arg2 = C.int(dy)
 
@@ -347,7 +344,7 @@ func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkGravity      // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.GdkGravity(anchor)
 
 	C.gdk_popup_layout_set_rect_anchor(_arg0, _arg1)
@@ -365,7 +362,7 @@ func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom i
 	var _arg3 C.int             // out
 	var _arg4 C.int             // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.int(left)
 	_arg2 = C.int(right)
 	_arg3 = C.int(top)
@@ -379,7 +376,7 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkGravity      // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	_arg1 = C.GdkGravity(anchor)
 
 	C.gdk_popup_layout_set_surface_anchor(_arg0, _arg1)
@@ -389,7 +386,7 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 func (layout *PopupLayout) unref() {
 	var _arg0 *C.GdkPopupLayout // out
 
-	_arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(layout))
+	_arg0 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_popup_layout_unref(_arg0)
 }

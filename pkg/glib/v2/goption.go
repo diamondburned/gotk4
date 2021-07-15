@@ -7,6 +7,7 @@ import (
 	"runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -109,12 +110,8 @@ const (
 // added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().
 type OptionEntry struct {
-	native C.GOptionEntry
-}
-
-// Native returns the underlying C source pointer.
-func (o *OptionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	nocopy gextras.NoCopy
+	native *C.GOptionEntry
 }
 
 // LongName: long name of an option can be used to specify it in a commandline
@@ -194,17 +191,13 @@ func (o *OptionEntry) ArgDescription() string {
 // getting a GOptionGroup holding their options, which the application can then
 // add to its Context.
 type OptionGroup struct {
-	native C.GOptionGroup
+	nocopy gextras.NoCopy
+	native *C.GOptionGroup
 }
 
 func marshalOptionGroup(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*OptionGroup)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (o *OptionGroup) Native() unsafe.Pointer {
-	return unsafe.Pointer(&o.native)
+	return &OptionGroup{native: (*C.GOptionGroup)(unsafe.Pointer(b))}, nil
 }
 
 // AddEntries adds the options specified in entries to group.
@@ -212,7 +205,7 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	{
 		var zero OptionEntry
 		entries = append(entries, zero)
@@ -229,7 +222,7 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 func (group *OptionGroup) free() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.g_option_group_free(_arg0)
 }
@@ -239,16 +232,16 @@ func (group *OptionGroup) ref() *OptionGroup {
 	var _arg0 *C.GOptionGroup // out
 	var _cret *C.GOptionGroup // in
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	_cret = C.g_option_group_ref(_arg0)
 
 	var _optionGroup *OptionGroup // out
 
-	_optionGroup = (*OptionGroup)(unsafe.Pointer(_cret))
+	_optionGroup = (*OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_option_group_ref(_cret)
 	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
-		C.g_option_group_unref((*C.GOptionGroup)(unsafe.Pointer(v)))
+		C.g_option_group_unref((*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _optionGroup
@@ -260,7 +253,7 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.gchar        // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 
 	C.g_option_group_set_translation_domain(_arg0, _arg1)
@@ -272,7 +265,7 @@ func (group *OptionGroup) SetTranslationDomain(domain string) {
 func (group *OptionGroup) unref() {
 	var _arg0 *C.GOptionGroup // out
 
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(group))
+	_arg0 = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	C.g_option_group_unref(_arg0)
 }

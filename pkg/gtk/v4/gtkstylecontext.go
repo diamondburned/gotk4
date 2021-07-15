@@ -206,11 +206,15 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 // Border gets the border for a given state as a GtkBorder.
 func (context *StyleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _border Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
+	C.gtk_style_context_get_border(_arg0, &_arg1)
+
+	var _border Border // out
+
+	_border = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _border
 }
@@ -218,11 +222,15 @@ func (context *StyleContext) Border() Border {
 // Color gets the foreground color for a given state.
 func (context *StyleContext) Color() gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
-	var _color gdk.RGBA
+	var _arg1 C.GdkRGBA          // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_color(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	C.gtk_style_context_get_color(_arg0, &_arg1)
+
+	var _color gdk.RGBA // out
+
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
 }
@@ -251,11 +259,15 @@ func (context *StyleContext) Display() *gdk.Display {
 // Margin gets the margin for a given state as a GtkBorder.
 func (context *StyleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _margin Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_margin(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_margin)))
+	C.gtk_style_context_get_margin(_arg0, &_arg1)
+
+	var _margin Border // out
+
+	_margin = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _margin
 }
@@ -263,11 +275,15 @@ func (context *StyleContext) Margin() Border {
 // Padding gets the padding for a given state as a GtkBorder.
 func (context *StyleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext // out
-	var _padding Border
+	var _arg1 C.GtkBorder        // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_style_context_get_padding(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_padding)))
+	C.gtk_style_context_get_padding(_arg0, &_arg1)
+
+	var _padding Border // out
+
+	_padding = *(*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _padding
 }
@@ -332,16 +348,18 @@ func (context *StyleContext) HasClass(className string) bool {
 func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.char            // out
-	var _color gdk.RGBA
-	var _cret C.gboolean // in
+	var _arg2 C.GdkRGBA          // in
+	var _cret C.gboolean         // in
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(colorName)))
 
-	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, &_arg2)
 
-	var _ok bool // out
+	var _color gdk.RGBA // out
+	var _ok bool        // out
 
+	_color = *(*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
 	}

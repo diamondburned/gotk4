@@ -220,7 +220,7 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(tooltip.Native()))
-	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
 }

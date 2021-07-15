@@ -70,9 +70,9 @@ func _gotk4_gtk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
 	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
 	treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(arg2)))
-	iter = (*TreeIter)(unsafe.Pointer(arg3))
+	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
-		C.gtk_tree_iter_free((*C.GtkTreeIter)(unsafe.Pointer(v)))
+		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(TreeCellDataFunc)
@@ -383,7 +383,7 @@ func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeler, iter *T
 
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(treeColumn.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer((treeModel).(gextras.Nativer).Native()))
-	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if isExpander {
 		_arg3 = C.TRUE
 	}

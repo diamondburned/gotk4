@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"unsafe"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: gtk4
@@ -23,12 +23,8 @@ import "C"
 // "\r", "\n" and "\f" as newlines.) If your document uses different rules for
 // line breaking, you might want run into problems here.
 type CSSLocation struct {
-	native C.GtkCssLocation
-}
-
-// Native returns the underlying C source pointer.
-func (c *CSSLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(&c.native)
+	nocopy gextras.NoCopy
+	native *C.GtkCssLocation
 }
 
 // Bytes: number of bytes parsed since the beginning

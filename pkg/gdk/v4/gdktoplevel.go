@@ -344,7 +344,7 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	var _arg1 *C.GdkToplevelLayout // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(toplevel.Native()))
-	_arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(layout))
+	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	C.gdk_toplevel_present(_arg0, _arg1)
 }

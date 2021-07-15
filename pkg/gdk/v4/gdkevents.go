@@ -733,7 +733,7 @@ func (event *Event) EventSequence() *EventSequence {
 
 	var _eventSequence *EventSequence // out
 
-	_eventSequence = (*EventSequence)(unsafe.Pointer(_cret))
+	_eventSequence = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _eventSequence
 }
@@ -1651,15 +1651,11 @@ func (event *TouchpadEvent) PinchScale() float64 {
 // EventSequence: GdkEventSequence is an opaque type representing a sequence of
 // related touch events.
 type EventSequence struct {
-	native C.GdkEventSequence
+	nocopy gextras.NoCopy
+	native *C.GdkEventSequence
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*EventSequence)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	return &EventSequence{native: (*C.GdkEventSequence)(unsafe.Pointer(b))}, nil
 }

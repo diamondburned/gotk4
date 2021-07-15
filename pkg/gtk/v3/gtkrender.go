@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -95,7 +96,7 @@ func RenderBackgroundGetClip(context *StyleContext, x float64, y float64, width 
 	var _arg3 C.gdouble          // out
 	var _arg4 C.gdouble          // out
 	var _arg5 C.gdouble          // out
-	var _outClip gdk.Rectangle
+	var _arg6 C.GdkRectangle     // in
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.gdouble(x)
@@ -103,7 +104,11 @@ func RenderBackgroundGetClip(context *StyleContext, x float64, y float64, width 
 	_arg4 = C.gdouble(width)
 	_arg5 = C.gdouble(height)
 
-	C.gtk_render_background_get_clip(_arg1, _arg2, _arg3, _arg4, _arg5, (*C.GdkRectangle)(unsafe.Pointer(&_outClip)))
+	C.gtk_render_background_get_clip(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
+
+	var _outClip gdk.Rectangle // out
+
+	_outClip = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 
 	return _outClip
 }
@@ -330,7 +335,7 @@ func RenderIconPixbuf(context *StyleContext, source *IconSource, size int) *gdkp
 	var _cret *C.GdkPixbuf       // in
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkIconSource)(unsafe.Pointer(source))
+	_arg2 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	_arg3 = C.GtkIconSize(size)
 
 	_cret = C.gtk_render_icon_pixbuf(_arg1, _arg2, _arg3)

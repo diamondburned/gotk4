@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -718,12 +720,8 @@ func SetPrgname(prgname string) {
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().
 type DebugKey struct {
-	native C.GDebugKey
-}
-
-// Native returns the underlying C source pointer.
-func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
+	nocopy gextras.NoCopy
+	native *C.GDebugKey
 }
 
 // Key: string

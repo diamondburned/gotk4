@@ -140,12 +140,16 @@ func (monitor *Monitor) Display() *Display {
 // The returned geometry is in ”application pixels”, not in ”device pixels” (see
 // gdk.Monitor.GetScaleFactor()).
 func (monitor *Monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor // out
-	var _geometry Rectangle
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(monitor.Native()))
 
-	C.gdk_monitor_get_geometry(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_geometry)))
+	C.gdk_monitor_get_geometry(_arg0, &_arg1)
+
+	var _geometry Rectangle // out
+
+	_geometry = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _geometry
 }

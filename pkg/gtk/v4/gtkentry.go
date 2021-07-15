@@ -434,9 +434,9 @@ func (entry *Entry) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	_attrList = (*pango.AttrList)(unsafe.Pointer(_cret))
+	_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attrList, func(v *pango.AttrList) {
-		C.pango_attr_list_unref((*C.PangoAttrList)(unsafe.Pointer(v)))
+		C.pango_attr_list_unref((*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attrList
@@ -561,12 +561,16 @@ func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
 func (entry *Entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
-	var _iconArea gdk.Rectangle
+	var _arg2 C.GdkRectangle         // in
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 	_arg1 = C.GtkEntryIconPosition(iconPos)
 
-	C.gtk_entry_get_icon_area(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_iconArea)))
+	C.gtk_entry_get_icon_area(_arg0, _arg1, &_arg2)
+
+	var _iconArea gdk.Rectangle // out
+
+	_iconArea = *(*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _iconArea
 }
@@ -899,7 +903,7 @@ func (entry *Entry) Tabs() *pango.TabArray {
 
 	var _tabArray *pango.TabArray // out
 
-	_tabArray = (*pango.TabArray)(unsafe.Pointer(_cret))
+	_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _tabArray
 }
@@ -1037,7 +1041,7 @@ func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
 	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs))
+	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 
 	C.gtk_entry_set_attributes(_arg0, _arg1)
 }
@@ -1363,7 +1367,7 @@ func (entry *Entry) SetTabs(tabs *pango.TabArray) {
 	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
-	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs))
+	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 
 	C.gtk_entry_set_tabs(_arg0, _arg1)
 }

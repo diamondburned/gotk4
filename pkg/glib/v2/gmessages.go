@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -311,7 +312,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(logDomain)))
 	_arg2 = C.GLogLevelFlags(logLevel)
-	_arg3 = (*C.GVariant)(unsafe.Pointer(fields))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(fields)))
 
 	C.g_log_variant(_arg1, _arg2, _arg3)
 }
@@ -574,12 +575,8 @@ func LogWriterSupportsColor(outputFd int) bool {
 // have a trailing nul byte. Otherwise, length must be set to a non-negative
 // value.
 type LogField struct {
-	native C.GLogField
-}
-
-// Native returns the underlying C source pointer.
-func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(&l.native)
+	nocopy gextras.NoCopy
+	native *C.GLogField
 }
 
 // Key: field name (UTF-8 string)

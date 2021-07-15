@@ -146,10 +146,10 @@ func (icon *Icon) Serialize() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(unsafe.Pointer(_cret))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.g_variant_unref((*C.GVariant)(unsafe.Pointer(v)))
+		C.g_variant_unref((*C.GVariant)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _variant
@@ -192,7 +192,7 @@ func IconDeserialize(value *glib.Variant) *Icon {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
 
-	_arg1 = (*C.GVariant)(unsafe.Pointer(value))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_icon_deserialize(_arg1)
 

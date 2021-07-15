@@ -420,9 +420,9 @@ func (self *Expression) Bind(target *externglib.Object, property string, this_ *
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _expressionWatch
@@ -552,9 +552,9 @@ func (self *Expression) Watch(this_ *externglib.Object, notify ExpressionNotify)
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _expressionWatch
@@ -709,17 +709,13 @@ func (expression *PropertyExpression) GetExpression() *Expression {
 // The contents of GtkExpressionWatch should only be accessed through the
 // provided API.
 type ExpressionWatch struct {
-	native C.GtkExpressionWatch
+	nocopy gextras.NoCopy
+	native *C.GtkExpressionWatch
 }
 
 func marshalExpressionWatch(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return (*ExpressionWatch)(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (e *ExpressionWatch) Native() unsafe.Pointer {
-	return unsafe.Pointer(&e.native)
+	return &ExpressionWatch{native: (*C.GtkExpressionWatch)(unsafe.Pointer(b))}, nil
 }
 
 // Evaluate evaluates the watched expression and on success stores the result in
@@ -732,7 +728,7 @@ func (watch *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 	var _arg1 *C.GValue             // out
 	var _cret C.gboolean            // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(watch))
+	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
 	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 
 	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
@@ -751,16 +747,16 @@ func (watch *ExpressionWatch) ref() *ExpressionWatch {
 	var _arg0 *C.GtkExpressionWatch // out
 	var _cret *C.GtkExpressionWatch // in
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(watch))
+	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
 
 	_cret = C.gtk_expression_watch_ref(_arg0)
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(unsafe.Pointer(_cret))
+	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_expression_watch_ref(_cret)
 	runtime.SetFinalizer(_expressionWatch, func(v *ExpressionWatch) {
-		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(unsafe.Pointer(v)))
+		C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _expressionWatch
@@ -772,7 +768,7 @@ func (watch *ExpressionWatch) ref() *ExpressionWatch {
 func (watch *ExpressionWatch) unref() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(watch))
+	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
 
 	C.gtk_expression_watch_unref(_arg0)
 }
@@ -783,7 +779,7 @@ func (watch *ExpressionWatch) unref() {
 func (watch *ExpressionWatch) Unwatch() {
 	var _arg0 *C.GtkExpressionWatch // out
 
-	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(watch))
+	_arg0 = (*C.GtkExpressionWatch)(gextras.StructNative(unsafe.Pointer(watch)))
 
 	C.gtk_expression_watch_unwatch(_arg0)
 }

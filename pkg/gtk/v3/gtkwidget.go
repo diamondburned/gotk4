@@ -4723,8 +4723,8 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 	var _ret *cairo.Region // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_ret = (*cairo.Region)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_ret = (*cairo.Region)(unsafe.Pointer(_p))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_ret, func(v *cairo.Region) {

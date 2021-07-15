@@ -944,8 +944,8 @@ func (e *EventExpose) Area() Rectangle {
 func (e *EventExpose) Region() *cairo.Region {
 	var v *cairo.Region // out
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(e.native.region)}
-		v = (*cairo.Region)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(e.native.region)}
+		v = (*cairo.Region)(unsafe.Pointer(_p))
 	}
 	runtime.SetFinalizer(v, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))

@@ -391,8 +391,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			unref = "cairo_pattern_destroy"
 			value.p.Descend()
 			// Hack to fit the Pattern type.
-			value.p.Linef("v := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(v))", value.Out.Set)
+			value.p.Linef("_p := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Pattern)(unsafe.Pointer(_p))", value.Out.Set)
 			value.p.Ascend()
 
 		case "cairo.Region":
@@ -400,8 +400,8 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			unref = "cairo_region_destroy"
 			value.p.Descend()
 			// Hack to fit the Region type.
-			value.p.Linef("v := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
-			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(v))", value.Out.Set)
+			value.p.Linef("_p := &struct{p unsafe.Pointer}{unsafe.Pointer(%s)}", value.InNamePtr(1))
+			value.p.Linef("%s = (*cairo.Region)(unsafe.Pointer(_p))", value.Out.Set)
 			value.p.Ascend()
 		}
 

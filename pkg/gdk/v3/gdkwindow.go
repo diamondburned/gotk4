@@ -1506,8 +1506,8 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 	var _pattern *cairo.Pattern // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_pattern = (*cairo.Pattern)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pattern = (*cairo.Pattern)(unsafe.Pointer(_p))
 	}
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
@@ -1531,8 +1531,8 @@ func (window *Window) ClipRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_p))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -2302,8 +2302,8 @@ func (window *Window) UpdateArea() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_p))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -2344,8 +2344,8 @@ func (window *Window) VisibleRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_region = (*cairo.Region)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_region = (*cairo.Region)(unsafe.Pointer(_p))
 	}
 	C.cairo_region_reference(_cret)
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {

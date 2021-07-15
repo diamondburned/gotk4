@@ -376,8 +376,8 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 	var _ok bool                         // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
-		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
+		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_p))
 	}
 	C.cairo_pattern_reference(_arg2)
 	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
@@ -403,8 +403,8 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 	var _pattern *cairo.Pattern // out
 
 	{
-		v := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
-		_pattern = (*cairo.Pattern)(unsafe.Pointer(v))
+		_p := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pattern = (*cairo.Pattern)(unsafe.Pointer(_p))
 	}
 	C.cairo_pattern_reference(_cret)
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {

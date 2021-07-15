@@ -1,5 +1,10 @@
 package gbox
 
+// #cgo pkg-config: glib-2.0
+// #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib.h>
+import "C"
+
 import (
 	"github.com/diamondburned/gotk4/pkg/core/slab"
 )
@@ -25,9 +30,12 @@ func Get(ptr uintptr) interface{} {
 
 // Delete deletes a boxed value. It is exposed to C under the name
 // "callbackDelete".
-//
-//export callbackDelete
 func Delete(ptr uintptr) {
+	registry.Delete(ptr)
+}
+
+//export callbackDelete
+func callbackDelete(ptr uintptr) {
 	registry.Delete(ptr)
 }
 

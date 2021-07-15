@@ -22,12 +22,15 @@ type Slab struct {
 // Put stores the entry inside the slab. If once is true, then when the entry is
 // retrieved using Get, it will also be wiped off the list.
 func (s *Slab) Put(entry interface{}, once bool) uintptr {
+	slabEntry := slabEntry{atomic.Value{}, 0, once}
+	slabEntry.Value.Store(entry)
+
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	if s.free == uintptr(len(s.list)) {
 		index := uintptr(len(s.list))
-		s.list = append(s.list, slabEntry{atomic.Value{}, 0, once})
+		s.list = append(s.list, slabEntry)
 		s.free++
 
 		return index
@@ -35,7 +38,7 @@ func (s *Slab) Put(entry interface{}, once bool) uintptr {
 
 	index := s.free
 	s.free = s.list[index].Index
-	s.list[index] = slabEntry{atomic.Value{}, 0, once}
+	s.list[index] = slabEntry
 
 	return index
 }

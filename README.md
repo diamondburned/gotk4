@@ -13,12 +13,10 @@ All generated packages are in `pkg/`. The generation code is in `gir/girgen/`.
 At the moment, the repository depends on gotk3's GLib. This may change in the
 future.
 
-As of the time this README was written, `gotk4/pkg/gtk4` is ready to be used for
-most purposes. However, memory leaks and sometimes crashes may occur in certain
-parts of the API, while other parts might be completely missing. In that case,
-an issue should be opened.
-
-`gotk4/pkg/gtk3` is currently not usable, since `gtk.Init()` is not generated.
+As of the time this README was written, most of `pkg/gtk4` and `pkg/gtk3` are
+ready to be used for most purposes. However, memory leaks and sometimes crashes
+may occur in certain parts of the API, while other parts might be completely
+missing. In that case, an issue should be opened.
 
 ## Contributing to gotk4
 

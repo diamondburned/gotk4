@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,22 +32,54 @@ func init() {
 type TargetFlags int
 
 const (
-	// TargetFlagsSameApp: if this is set, the target will only be selected for
-	// drags within a single application.
-	TargetFlagsSameApp TargetFlags = 0b1
-	// TargetFlagsSameWidget: if this is set, the target will only be selected
-	// for drags within a single widget.
-	TargetFlagsSameWidget TargetFlags = 0b10
-	// TargetFlagsOtherApp: if this is set, the target will not be selected for
-	// drags within a single application.
-	TargetFlagsOtherApp TargetFlags = 0b100
-	// TargetFlagsOtherWidget: if this is set, the target will not be selected
-	// for drags withing a single widget.
-	TargetFlagsOtherWidget TargetFlags = 0b1000
+	// TargetSameApp: if this is set, the target will only be selected for drags
+	// within a single application.
+	TargetSameApp TargetFlags = 0b1
+	// TargetSameWidget: if this is set, the target will only be selected for
+	// drags within a single widget.
+	TargetSameWidget TargetFlags = 0b10
+	// TargetOtherApp: if this is set, the target will not be selected for drags
+	// within a single application.
+	TargetOtherApp TargetFlags = 0b100
+	// TargetOtherWidget: if this is set, the target will not be selected for
+	// drags withing a single widget.
+	TargetOtherWidget TargetFlags = 0b1000
 )
 
 func marshalTargetFlags(p uintptr) (interface{}, error) {
 	return TargetFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for TargetFlags.
+func (t TargetFlags) String() string {
+	if t == 0 {
+		return "TargetFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(63)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TargetSameApp:
+			builder.WriteString("SameApp|")
+		case TargetSameWidget:
+			builder.WriteString("SameWidget|")
+		case TargetOtherApp:
+			builder.WriteString("OtherApp|")
+		case TargetOtherWidget:
+			builder.WriteString("OtherWidget|")
+		default:
+			builder.WriteString(fmt.Sprintf("TargetFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // SelectionRemoveAll removes all handlers and unsets ownership of all

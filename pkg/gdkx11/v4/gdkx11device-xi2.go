@@ -3,6 +3,7 @@
 package gdkx11
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,6 +30,20 @@ const (
 	X11DeviceTypePhysical
 	X11DeviceTypeFloating
 )
+
+// String returns the name in string for X11DeviceType.
+func (x X11DeviceType) String() string {
+	switch x {
+	case X11DeviceTypeLogical:
+		return "Logical"
+	case X11DeviceTypePhysical:
+		return "Physical"
+	case X11DeviceTypeFloating:
+		return "Floating"
+	default:
+		return fmt.Sprintf("X11DeviceType(%d)", x)
+	}
+}
 
 type X11DeviceXI2 struct {
 	gdk.Device

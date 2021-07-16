@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -42,30 +43,50 @@ func init() {
 type AssistantPageType int
 
 const (
-	// Content: page has regular contents. Both the Back and forward buttons
-	// will be shown.
-	AssistantPageTypeContent AssistantPageType = iota
-	// Intro: page contains an introduction to the assistant task. Only the
-	// Forward button will be shown if there is a next page.
-	AssistantPageTypeIntro
-	// Confirm: page lets the user confirm or deny the changes. The Back and
-	// Apply buttons will be shown.
-	AssistantPageTypeConfirm
-	// Summary: page informs the user of the changes done. Only the Close button
-	// will be shown.
-	AssistantPageTypeSummary
-	// Progress: used for tasks that take a long time to complete, blocks the
-	// assistant until the page is marked as complete. Only the back button will
-	// be shown.
-	AssistantPageTypeProgress
-	// Custom: used for when other page types are not appropriate. No buttons
-	// will be shown, and the application must add its own buttons through
-	// gtk_assistant_add_action_widget().
-	AssistantPageTypeCustom
+	// AssistantPageContent: page has regular contents. Both the Back and
+	// forward buttons will be shown.
+	AssistantPageContent AssistantPageType = iota
+	// AssistantPageIntro: page contains an introduction to the assistant task.
+	// Only the Forward button will be shown if there is a next page.
+	AssistantPageIntro
+	// AssistantPageConfirm: page lets the user confirm or deny the changes. The
+	// Back and Apply buttons will be shown.
+	AssistantPageConfirm
+	// AssistantPageSummary: page informs the user of the changes done. Only the
+	// Close button will be shown.
+	AssistantPageSummary
+	// AssistantPageProgress: used for tasks that take a long time to complete,
+	// blocks the assistant until the page is marked as complete. Only the back
+	// button will be shown.
+	AssistantPageProgress
+	// AssistantPageCustom: used for when other page types are not appropriate.
+	// No buttons will be shown, and the application must add its own buttons
+	// through gtk_assistant_add_action_widget().
+	AssistantPageCustom
 )
 
 func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AssistantPageType.
+func (a AssistantPageType) String() string {
+	switch a {
+	case AssistantPageContent:
+		return "Content"
+	case AssistantPageIntro:
+		return "Intro"
+	case AssistantPageConfirm:
+		return "Confirm"
+	case AssistantPageSummary:
+		return "Summary"
+	case AssistantPageProgress:
+		return "Progress"
+	case AssistantPageCustom:
+		return "Custom"
+	default:
+		return fmt.Sprintf("AssistantPageType(%d)", a)
+	}
 }
 
 // AssistantPageFunc: function used by gtk_assistant_set_forward_page_func() to

@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -27,28 +29,57 @@ func init() {
 type URIError int
 
 const (
-	// Failed: generic error if no more specific error is available. See the
-	// error message for details.
+	// URIErrorFailed: generic error if no more specific error is available. See
+	// the error message for details.
 	URIErrorFailed URIError = iota
-	// BadScheme: scheme of a URI could not be parsed.
+	// URIErrorBadScheme: scheme of a URI could not be parsed.
 	URIErrorBadScheme
-	// BadUser: user/userinfo of a URI could not be parsed.
+	// URIErrorBadUser: user/userinfo of a URI could not be parsed.
 	URIErrorBadUser
-	// BadPassword: password of a URI could not be parsed.
+	// URIErrorBadPassword: password of a URI could not be parsed.
 	URIErrorBadPassword
-	// BadAuthParams: authentication parameters of a URI could not be parsed.
+	// URIErrorBadAuthParams: authentication parameters of a URI could not be
+	// parsed.
 	URIErrorBadAuthParams
-	// BadHost: host of a URI could not be parsed.
+	// URIErrorBadHost: host of a URI could not be parsed.
 	URIErrorBadHost
-	// BadPort: port of a URI could not be parsed.
+	// URIErrorBadPort: port of a URI could not be parsed.
 	URIErrorBadPort
-	// BadPath: path of a URI could not be parsed.
+	// URIErrorBadPath: path of a URI could not be parsed.
 	URIErrorBadPath
-	// BadQuery: query of a URI could not be parsed.
+	// URIErrorBadQuery: query of a URI could not be parsed.
 	URIErrorBadQuery
-	// BadFragment: fragment of a URI could not be parsed.
+	// URIErrorBadFragment: fragment of a URI could not be parsed.
 	URIErrorBadFragment
 )
+
+// String returns the name in string for URIError.
+func (u URIError) String() string {
+	switch u {
+	case URIErrorFailed:
+		return "Failed"
+	case URIErrorBadScheme:
+		return "BadScheme"
+	case URIErrorBadUser:
+		return "BadUser"
+	case URIErrorBadPassword:
+		return "BadPassword"
+	case URIErrorBadAuthParams:
+		return "BadAuthParams"
+	case URIErrorBadHost:
+		return "BadHost"
+	case URIErrorBadPort:
+		return "BadPort"
+	case URIErrorBadPath:
+		return "BadPath"
+	case URIErrorBadQuery:
+		return "BadQuery"
+	case URIErrorBadFragment:
+		return "BadFragment"
+	default:
+		return fmt.Sprintf("URIError(%d)", u)
+	}
+}
 
 // URIFlags flags that describe a URI.
 //
@@ -97,6 +128,50 @@ const (
 	URIFlagsSchemeNormalize URIFlags = 0b100000000
 )
 
+// String returns the names in string for URIFlags.
+func (u URIFlags) String() string {
+	if u == 0 {
+		return "URIFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(195)
+
+	for u != 0 {
+		next := u & (u - 1)
+		bit := u - next
+
+		switch bit {
+		case URIFlagsNone:
+			builder.WriteString("None|")
+		case URIFlagsParseRelaxed:
+			builder.WriteString("ParseRelaxed|")
+		case URIFlagsHasPassword:
+			builder.WriteString("HasPassword|")
+		case URIFlagsHasAuthParams:
+			builder.WriteString("HasAuthParams|")
+		case URIFlagsEncoded:
+			builder.WriteString("Encoded|")
+		case URIFlagsNonDns:
+			builder.WriteString("NonDns|")
+		case URIFlagsEncodedQuery:
+			builder.WriteString("EncodedQuery|")
+		case URIFlagsEncodedPath:
+			builder.WriteString("EncodedPath|")
+		case URIFlagsEncodedFragment:
+			builder.WriteString("EncodedFragment|")
+		case URIFlagsSchemeNormalize:
+			builder.WriteString("SchemeNormalize|")
+		default:
+			builder.WriteString(fmt.Sprintf("URIFlags(0b%b)|", bit))
+		}
+
+		u = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // URIHideFlags flags describing what parts of the URI to hide in
 // g_uri_to_string_partial(). Note that G_URI_HIDE_PASSWORD and
 // G_URI_HIDE_AUTH_PARAMS will only work if the #GUri was parsed with the
@@ -104,35 +179,103 @@ const (
 type URIHideFlags int
 
 const (
-	// URIHideFlagsNone: no flags set.
-	URIHideFlagsNone URIHideFlags = 0b0
-	// URIHideFlagsUserinfo: hide the userinfo.
-	URIHideFlagsUserinfo URIHideFlags = 0b1
-	// URIHideFlagsPassword: hide the password.
-	URIHideFlagsPassword URIHideFlags = 0b10
-	// URIHideFlagsAuthParams: hide the auth_params.
-	URIHideFlagsAuthParams URIHideFlags = 0b100
-	// URIHideFlagsQuery: hide the query.
-	URIHideFlagsQuery URIHideFlags = 0b1000
-	// URIHideFlagsFragment: hide the fragment.
-	URIHideFlagsFragment URIHideFlags = 0b10000
+	// URIHideNone: no flags set.
+	URIHideNone URIHideFlags = 0b0
+	// URIHideUserinfo: hide the userinfo.
+	URIHideUserinfo URIHideFlags = 0b1
+	// URIHidePassword: hide the password.
+	URIHidePassword URIHideFlags = 0b10
+	// URIHideAuthParams: hide the auth_params.
+	URIHideAuthParams URIHideFlags = 0b100
+	// URIHideQuery: hide the query.
+	URIHideQuery URIHideFlags = 0b1000
+	// URIHideFragment: hide the fragment.
+	URIHideFragment URIHideFlags = 0b10000
 )
+
+// String returns the names in string for URIHideFlags.
+func (u URIHideFlags) String() string {
+	if u == 0 {
+		return "URIHideFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(90)
+
+	for u != 0 {
+		next := u & (u - 1)
+		bit := u - next
+
+		switch bit {
+		case URIHideNone:
+			builder.WriteString("None|")
+		case URIHideUserinfo:
+			builder.WriteString("Userinfo|")
+		case URIHidePassword:
+			builder.WriteString("Password|")
+		case URIHideAuthParams:
+			builder.WriteString("AuthParams|")
+		case URIHideQuery:
+			builder.WriteString("Query|")
+		case URIHideFragment:
+			builder.WriteString("Fragment|")
+		default:
+			builder.WriteString(fmt.Sprintf("URIHideFlags(0b%b)|", bit))
+		}
+
+		u = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // URIParamsFlags flags modifying the way parameters are handled by
 // g_uri_parse_params() and ParamsIter.
 type URIParamsFlags int
 
 const (
-	// URIParamsFlagsNone: no flags set.
-	URIParamsFlagsNone URIParamsFlags = 0b0
-	// URIParamsFlagsCaseInsensitive: parameter names are case insensitive.
-	URIParamsFlagsCaseInsensitive URIParamsFlags = 0b1
-	// URIParamsFlagsWwwForm: replace + with space character. Only useful for
-	// URLs on the web, using the https or http schemas.
-	URIParamsFlagsWwwForm URIParamsFlags = 0b10
-	// URIParamsFlagsParseRelaxed: see G_URI_FLAGS_PARSE_RELAXED.
-	URIParamsFlagsParseRelaxed URIParamsFlags = 0b100
+	// URIParamsNone: no flags set.
+	URIParamsNone URIParamsFlags = 0b0
+	// URIParamsCaseInsensitive: parameter names are case insensitive.
+	URIParamsCaseInsensitive URIParamsFlags = 0b1
+	// URIParamsWwwForm: replace + with space character. Only useful for URLs on
+	// the web, using the https or http schemas.
+	URIParamsWwwForm URIParamsFlags = 0b10
+	// URIParamsParseRelaxed: see G_URI_FLAGS_PARSE_RELAXED.
+	URIParamsParseRelaxed URIParamsFlags = 0b100
 )
+
+// String returns the names in string for URIParamsFlags.
+func (u URIParamsFlags) String() string {
+	if u == 0 {
+		return "URIParamsFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(77)
+
+	for u != 0 {
+		next := u & (u - 1)
+		bit := u - next
+
+		switch bit {
+		case URIParamsNone:
+			builder.WriteString("None|")
+		case URIParamsCaseInsensitive:
+			builder.WriteString("CaseInsensitive|")
+		case URIParamsWwwForm:
+			builder.WriteString("WwwForm|")
+		case URIParamsParseRelaxed:
+			builder.WriteString("ParseRelaxed|")
+		default:
+			builder.WriteString(fmt.Sprintf("URIParamsFlags(0b%b)|", bit))
+		}
+
+		u = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // URI type and related functions can be used to parse URIs into their
 // components, and build valid URIs from individual components.

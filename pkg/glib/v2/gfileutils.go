@@ -3,6 +3,8 @@
 package glib
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -28,116 +30,210 @@ import "C"
 type FileError int
 
 const (
-	// Exist: operation not permitted; only the owner of the file (or other
-	// resource) or processes with special privileges can perform the operation.
-	FileErrorExist FileError = iota
-	// Isdir: file is a directory; you cannot open a directory for writing, or
-	// create or remove hard links to it.
-	FileErrorIsdir
-	// Acces: permission denied; the file permissions do not allow the attempted
+	// FileErrorExist: operation not permitted; only the owner of the file (or
+	// other resource) or processes with special privileges can perform the
 	// operation.
+	FileErrorExist FileError = iota
+	// FileErrorIsdir: file is a directory; you cannot open a directory for
+	// writing, or create or remove hard links to it.
+	FileErrorIsdir
+	// FileErrorAcces: permission denied; the file permissions do not allow the
+	// attempted operation.
 	FileErrorAcces
-	// Nametoolong: filename too long.
+	// FileErrorNametoolong: filename too long.
 	FileErrorNametoolong
-	// Noent: no such file or directory. This is a "file doesn't exist" error
-	// for ordinary files that are referenced in contexts where they are
+	// FileErrorNoent: no such file or directory. This is a "file doesn't exist"
+	// error for ordinary files that are referenced in contexts where they are
 	// expected to already exist.
 	FileErrorNoent
-	// Notdir: file that isn't a directory was specified when a directory is
-	// required.
+	// FileErrorNotdir: file that isn't a directory was specified when a
+	// directory is required.
 	FileErrorNotdir
-	// Nxio: no such device or address. The system tried to use the device
-	// represented by a file you specified, and it couldn't find the device.
-	// This can mean that the device file was installed incorrectly, or that the
-	// physical device is missing or not correctly attached to the computer.
+	// FileErrorNxio: no such device or address. The system tried to use the
+	// device represented by a file you specified, and it couldn't find the
+	// device. This can mean that the device file was installed incorrectly, or
+	// that the physical device is missing or not correctly attached to the
+	// computer.
 	FileErrorNxio
-	// Nodev: underlying file system of the specified file does not support
-	// memory mapping.
+	// FileErrorNodev: underlying file system of the specified file does not
+	// support memory mapping.
 	FileErrorNodev
-	// Rofs: directory containing the new link can't be modified because it's on
-	// a read-only file system.
+	// FileErrorRofs: directory containing the new link can't be modified
+	// because it's on a read-only file system.
 	FileErrorRofs
-	// Txtbsy: text file busy.
+	// FileErrorTxtbsy: text file busy.
 	FileErrorTxtbsy
-	// Fault: you passed in a pointer to bad memory. (GLib won't reliably return
-	// this, don't pass in pointers to bad memory.)
+	// FileErrorFault: you passed in a pointer to bad memory. (GLib won't
+	// reliably return this, don't pass in pointers to bad memory.)
 	FileErrorFault
-	// Loop: too many levels of symbolic links were encountered in looking up a
-	// file name. This often indicates a cycle of symbolic links.
+	// FileErrorLoop: too many levels of symbolic links were encountered in
+	// looking up a file name. This often indicates a cycle of symbolic links.
 	FileErrorLoop
-	// Nospc: no space left on device; write operation on a file failed because
-	// the disk is full.
+	// FileErrorNospc: no space left on device; write operation on a file failed
+	// because the disk is full.
 	FileErrorNospc
-	// NOMEM: no memory available. The system cannot allocate more virtual
-	// memory because its capacity is full.
+	// FileErrorNOMEM: no memory available. The system cannot allocate more
+	// virtual memory because its capacity is full.
 	FileErrorNOMEM
-	// Mfile: current process has too many files open and can't open any more.
-	// Duplicate descriptors do count toward this limit.
+	// FileErrorMfile: current process has too many files open and can't open
+	// any more. Duplicate descriptors do count toward this limit.
 	FileErrorMfile
-	// Nfile: there are too many distinct file openings in the entire system.
+	// FileErrorNfile: there are too many distinct file openings in the entire
+	// system.
 	FileErrorNfile
-	// Badf: bad file descriptor; for example, I/O on a descriptor that has been
-	// closed or reading from a descriptor open only for writing (or vice
-	// versa).
+	// FileErrorBadf: bad file descriptor; for example, I/O on a descriptor that
+	// has been closed or reading from a descriptor open only for writing (or
+	// vice versa).
 	FileErrorBadf
-	// Inval: invalid argument. This is used to indicate various kinds of
-	// problems with passing the wrong argument to a library function.
+	// FileErrorInval: invalid argument. This is used to indicate various kinds
+	// of problems with passing the wrong argument to a library function.
 	FileErrorInval
-	// Pipe: broken pipe; there is no process reading from the other end of a
-	// pipe. Every library function that returns this error code also generates
-	// a 'SIGPIPE' signal; this signal terminates the program if not handled or
-	// blocked. Thus, your program will never actually see this code unless it
-	// has handled or blocked 'SIGPIPE'.
+	// FileErrorPipe: broken pipe; there is no process reading from the other
+	// end of a pipe. Every library function that returns this error code also
+	// generates a 'SIGPIPE' signal; this signal terminates the program if not
+	// handled or blocked. Thus, your program will never actually see this code
+	// unless it has handled or blocked 'SIGPIPE'.
 	FileErrorPipe
-	// Again: resource temporarily unavailable; the call might work if you try
-	// again later.
+	// FileErrorAgain: resource temporarily unavailable; the call might work if
+	// you try again later.
 	FileErrorAgain
-	// Intr: interrupted function call; an asynchronous signal occurred and
-	// prevented completion of the call. When this happens, you should try the
-	// call again.
+	// FileErrorIntr: interrupted function call; an asynchronous signal occurred
+	// and prevented completion of the call. When this happens, you should try
+	// the call again.
 	FileErrorIntr
-	// IO: input/output error; usually used for physical read or write errors.
-	// i.e. the disk or other physical device hardware is returning errors.
+	// FileErrorIO: input/output error; usually used for physical read or write
+	// errors. i.e. the disk or other physical device hardware is returning
+	// errors.
 	FileErrorIO
-	// Perm: operation not permitted; only the owner of the file (or other
-	// resource) or processes with special privileges can perform the operation.
+	// FileErrorPerm: operation not permitted; only the owner of the file (or
+	// other resource) or processes with special privileges can perform the
+	// operation.
 	FileErrorPerm
-	// Nosys: function not implemented; this indicates that the system is
-	// missing some functionality.
+	// FileErrorNosys: function not implemented; this indicates that the system
+	// is missing some functionality.
 	FileErrorNosys
-	// Failed does not correspond to a UNIX error code; this is the standard
-	// "failed for unspecified reason" error code present in all #GError error
-	// code enumerations. Returned if no specific code applies.
+	// FileErrorFailed does not correspond to a UNIX error code; this is the
+	// standard "failed for unspecified reason" error code present in all
+	// #GError error code enumerations. Returned if no specific code applies.
 	FileErrorFailed
 )
+
+// String returns the name in string for FileError.
+func (f FileError) String() string {
+	switch f {
+	case FileErrorExist:
+		return "Exist"
+	case FileErrorIsdir:
+		return "Isdir"
+	case FileErrorAcces:
+		return "Acces"
+	case FileErrorNametoolong:
+		return "Nametoolong"
+	case FileErrorNoent:
+		return "Noent"
+	case FileErrorNotdir:
+		return "Notdir"
+	case FileErrorNxio:
+		return "Nxio"
+	case FileErrorNodev:
+		return "Nodev"
+	case FileErrorRofs:
+		return "Rofs"
+	case FileErrorTxtbsy:
+		return "Txtbsy"
+	case FileErrorFault:
+		return "Fault"
+	case FileErrorLoop:
+		return "Loop"
+	case FileErrorNospc:
+		return "Nospc"
+	case FileErrorNOMEM:
+		return "NOMEM"
+	case FileErrorMfile:
+		return "Mfile"
+	case FileErrorNfile:
+		return "Nfile"
+	case FileErrorBadf:
+		return "Badf"
+	case FileErrorInval:
+		return "Inval"
+	case FileErrorPipe:
+		return "Pipe"
+	case FileErrorAgain:
+		return "Again"
+	case FileErrorIntr:
+		return "Intr"
+	case FileErrorIO:
+		return "IO"
+	case FileErrorPerm:
+		return "Perm"
+	case FileErrorNosys:
+		return "Nosys"
+	case FileErrorFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("FileError(%d)", f)
+	}
+}
 
 // FileSetContentsFlags flags to pass to g_file_set_contents_full() to affect
 // its safety and performance.
 type FileSetContentsFlags int
 
 const (
-	// FileSetContentsFlagsNone: no guarantees about file consistency or
-	// durability. The most dangerous setting, which is slightly faster than
-	// other settings.
-	FileSetContentsFlagsNone FileSetContentsFlags = 0b0
-	// FileSetContentsFlagsConsistent: guarantee file consistency: after a
-	// crash, either the old version of the file or the new version of the file
-	// will be available, but not a mixture. On Unix systems this equates to an
-	// fsync() on the file and use of an atomic rename() of the new version of
-	// the file over the old.
-	FileSetContentsFlagsConsistent FileSetContentsFlags = 0b1
-	// FileSetContentsFlagsDurable: guarantee file durability: after a crash,
-	// the new version of the file will be available. On Unix systems this
-	// equates to an fsync() on the file (if G_FILE_SET_CONTENTS_CONSISTENT is
-	// unset), or the effects of G_FILE_SET_CONTENTS_CONSISTENT plus an fsync()
-	// on the directory containing the file after calling rename().
-	FileSetContentsFlagsDurable FileSetContentsFlags = 0b10
-	// FileSetContentsFlagsOnlyExisting: only apply consistency and durability
+	// FileSetContentsNone: no guarantees about file consistency or durability.
+	// The most dangerous setting, which is slightly faster than other settings.
+	FileSetContentsNone FileSetContentsFlags = 0b0
+	// FileSetContentsConsistent: guarantee file consistency: after a crash,
+	// either the old version of the file or the new version of the file will be
+	// available, but not a mixture. On Unix systems this equates to an fsync()
+	// on the file and use of an atomic rename() of the new version of the file
+	// over the old.
+	FileSetContentsConsistent FileSetContentsFlags = 0b1
+	// FileSetContentsDurable: guarantee file durability: after a crash, the new
+	// version of the file will be available. On Unix systems this equates to an
+	// fsync() on the file (if G_FILE_SET_CONTENTS_CONSISTENT is unset), or the
+	// effects of G_FILE_SET_CONTENTS_CONSISTENT plus an fsync() on the
+	// directory containing the file after calling rename().
+	FileSetContentsDurable FileSetContentsFlags = 0b10
+	// FileSetContentsOnlyExisting: only apply consistency and durability
 	// guarantees if the file already exists. This may speed up file operations
 	// if the file doesn’t currently exist, but may result in a corrupted
 	// version of the new file if the system crashes while writing it.
-	FileSetContentsFlagsOnlyExisting FileSetContentsFlags = 0b100
+	FileSetContentsOnlyExisting FileSetContentsFlags = 0b100
 )
+
+// String returns the names in string for FileSetContentsFlags.
+func (f FileSetContentsFlags) String() string {
+	if f == 0 {
+		return "FileSetContentsFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(96)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileSetContentsNone:
+			builder.WriteString("None|")
+		case FileSetContentsConsistent:
+			builder.WriteString("Consistent|")
+		case FileSetContentsDurable:
+			builder.WriteString("Durable|")
+		case FileSetContentsOnlyExisting:
+			builder.WriteString("OnlyExisting|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileSetContentsFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // FileTest: test to perform on a file using g_file_test().
 type FileTest int
@@ -157,6 +253,40 @@ const (
 	// file.
 	FileTestExists FileTest = 0b10000
 )
+
+// String returns the names in string for FileTest.
+func (f FileTest) String() string {
+	if f == 0 {
+		return "FileTest(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(85)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileTestIsRegular:
+			builder.WriteString("IsRegular|")
+		case FileTestIsSymlink:
+			builder.WriteString("IsSymlink|")
+		case FileTestIsDir:
+			builder.WriteString("IsDir|")
+		case FileTestIsExecutable:
+			builder.WriteString("IsExecutable|")
+		case FileTestExists:
+			builder.WriteString("Exists|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileTest(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // Basename gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.

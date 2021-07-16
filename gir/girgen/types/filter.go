@@ -29,6 +29,14 @@ func ApplyPreprocessors(repos gir.Repositories, preprocs []Preprocessor) {
 	}
 }
 
+// PreprocessorFunc is a helper function to satisfy the Preprocessor interface.
+type PreprocessorFunc func(gir.Repositories)
+
+// Preprocess calls f.
+func (f PreprocessorFunc) Preprocess(repos gir.Repositories) {
+	f(repos)
+}
+
 func girTypeMustBeVersioned(girType string) {
 	namespace, _ := gir.SplitGIRType(girType)
 
@@ -37,6 +45,30 @@ func girTypeMustBeVersioned(girType string) {
 	if version == "" {
 		log.Panicf("girType %q missing version", girType)
 	}
+}
+
+// RenameEnumMembers renames all members of the matched enums. It is primarily
+// used to avoid collisions.
+func RenameEnumMembers(enum, regex, replace string) Preprocessor {
+	girTypeMustBeVersioned(enum)
+	re := regexp.MustCompile(regex)
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		result := repos.FindFullType(enum)
+		if result == nil {
+			log.Panicf("GIR enum %q not found", enum)
+		}
+
+		enum, ok := result.Type.(*gir.Enum)
+		if !ok {
+			log.Panicf("GIR type %T is not enum", result.Type)
+		}
+
+		for i, member := range enum.Members {
+			parts := strings.SplitN(member.CIdentifier, "_", 2)
+			parts[1] = re.ReplaceAllString(parts[1], replace)
+			enum.Members[i].CIdentifier = parts[0] + "_" + parts[1]
+		}
+	})
 }
 
 type typeRenamer struct {

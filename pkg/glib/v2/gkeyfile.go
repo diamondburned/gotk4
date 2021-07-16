@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -27,35 +29,85 @@ func init() {
 type KeyFileError int
 
 const (
-	// UnknownEncoding: text being parsed was in an unknown encoding
+	// KeyFileErrorUnknownEncoding: text being parsed was in an unknown encoding
 	KeyFileErrorUnknownEncoding KeyFileError = iota
-	// Parse: document was ill-formed
+	// KeyFileErrorParse: document was ill-formed
 	KeyFileErrorParse
-	// NotFound: file was not found
+	// KeyFileErrorNotFound: file was not found
 	KeyFileErrorNotFound
-	// KeyNotFound: requested key was not found
+	// KeyFileErrorKeyNotFound: requested key was not found
 	KeyFileErrorKeyNotFound
-	// GroupNotFound: requested group was not found
+	// KeyFileErrorGroupNotFound: requested group was not found
 	KeyFileErrorGroupNotFound
-	// InvalidValue: value could not be parsed
+	// KeyFileErrorInvalidValue: value could not be parsed
 	KeyFileErrorInvalidValue
 )
+
+// String returns the name in string for KeyFileError.
+func (k KeyFileError) String() string {
+	switch k {
+	case KeyFileErrorUnknownEncoding:
+		return "UnknownEncoding"
+	case KeyFileErrorParse:
+		return "Parse"
+	case KeyFileErrorNotFound:
+		return "NotFound"
+	case KeyFileErrorKeyNotFound:
+		return "KeyNotFound"
+	case KeyFileErrorGroupNotFound:
+		return "GroupNotFound"
+	case KeyFileErrorInvalidValue:
+		return "InvalidValue"
+	default:
+		return fmt.Sprintf("KeyFileError(%d)", k)
+	}
+}
 
 // KeyFileFlags flags which influence the parsing.
 type KeyFileFlags int
 
 const (
-	// KeyFileFlagsNone: no flags, default behaviour
-	KeyFileFlagsNone KeyFileFlags = 0b0
-	// KeyFileFlagsKeepComments: use this flag if you plan to write the
-	// (possibly modified) contents of the key file back to a file; otherwise
-	// all comments will be lost when the key file is written back.
-	KeyFileFlagsKeepComments KeyFileFlags = 0b1
-	// KeyFileFlagsKeepTranslations: use this flag if you plan to write the
-	// (possibly modified) contents of the key file back to a file; otherwise
-	// only the translations for the current language will be written back.
-	KeyFileFlagsKeepTranslations KeyFileFlags = 0b10
+	// KeyFileNone: no flags, default behaviour
+	KeyFileNone KeyFileFlags = 0b0
+	// KeyFileKeepComments: use this flag if you plan to write the (possibly
+	// modified) contents of the key file back to a file; otherwise all comments
+	// will be lost when the key file is written back.
+	KeyFileKeepComments KeyFileFlags = 0b1
+	// KeyFileKeepTranslations: use this flag if you plan to write the (possibly
+	// modified) contents of the key file back to a file; otherwise only the
+	// translations for the current language will be written back.
+	KeyFileKeepTranslations KeyFileFlags = 0b10
 )
+
+// String returns the names in string for KeyFileFlags.
+func (k KeyFileFlags) String() string {
+	if k == 0 {
+		return "KeyFileFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(55)
+
+	for k != 0 {
+		next := k & (k - 1)
+		bit := k - next
+
+		switch bit {
+		case KeyFileNone:
+			builder.WriteString("None|")
+		case KeyFileKeepComments:
+			builder.WriteString("KeepComments|")
+		case KeyFileKeepTranslations:
+			builder.WriteString("KeepTranslations|")
+		default:
+			builder.WriteString(fmt.Sprintf("KeyFileFlags(0b%b)|", bit))
+		}
+
+		k = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // KeyFile struct contains only private data and should not be accessed
 // directly.

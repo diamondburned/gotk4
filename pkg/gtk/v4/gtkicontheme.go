@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,33 +32,75 @@ func init() {
 type IconThemeError int
 
 const (
-	// NotFound: icon specified does not exist in the theme
-	IconThemeErrorNotFound IconThemeError = iota
-	// Failed: unspecified error occurred.
-	IconThemeErrorFailed
+	// IconThemeNotFound: icon specified does not exist in the theme
+	IconThemeNotFound IconThemeError = iota
+	// IconThemeFailed: unspecified error occurred.
+	IconThemeFailed
 )
 
 func marshalIconThemeError(p uintptr) (interface{}, error) {
 	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for IconThemeError.
+func (i IconThemeError) String() string {
+	switch i {
+	case IconThemeNotFound:
+		return "NotFound"
+	case IconThemeFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("IconThemeError(%d)", i)
+	}
+}
+
 // IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon().
 type IconLookupFlags int
 
 const (
-	// IconLookupFlagsForceRegular: try to always load regular icons, even when
+	// IconLookupForceRegular: try to always load regular icons, even when
 	// symbolic icon names are given
-	IconLookupFlagsForceRegular IconLookupFlags = 0b1
-	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
-	// when regular icon names are given
-	IconLookupFlagsForceSymbolic IconLookupFlags = 0b10
-	// IconLookupFlagsPreload starts loading the texture in the background so it
-	// is ready when later needed.
-	IconLookupFlagsPreload IconLookupFlags = 0b100
+	IconLookupForceRegular IconLookupFlags = 0b1
+	// IconLookupForceSymbolic: try to always load symbolic icons, even when
+	// regular icon names are given
+	IconLookupForceSymbolic IconLookupFlags = 0b10
+	// IconLookupPreload starts loading the texture in the background so it is
+	// ready when later needed.
+	IconLookupPreload IconLookupFlags = 0b100
 )
 
 func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for IconLookupFlags.
+func (i IconLookupFlags) String() string {
+	if i == 0 {
+		return "IconLookupFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(64)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case IconLookupForceRegular:
+			builder.WriteString("ForceRegular|")
+		case IconLookupForceSymbolic:
+			builder.WriteString("ForceSymbolic|")
+		case IconLookupPreload:
+			builder.WriteString("Preload|")
+		default:
+			builder.WriteString(fmt.Sprintf("IconLookupFlags(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // IconPaintable contains information found when looking up an icon in

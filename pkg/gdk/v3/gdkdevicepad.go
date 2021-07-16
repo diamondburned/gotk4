@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -26,16 +27,30 @@ func init() {
 type DevicePadFeature int
 
 const (
-	// Button: button
+	// DevicePadFeatureButton: button
 	DevicePadFeatureButton DevicePadFeature = iota
-	// Ring: ring-shaped interactive area
+	// DevicePadFeatureRing: ring-shaped interactive area
 	DevicePadFeatureRing
-	// Strip: straight interactive area
+	// DevicePadFeatureStrip: straight interactive area
 	DevicePadFeatureStrip
 )
 
 func marshalDevicePadFeature(p uintptr) (interface{}, error) {
 	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DevicePadFeature.
+func (d DevicePadFeature) String() string {
+	switch d {
+	case DevicePadFeatureButton:
+		return "Button"
+	case DevicePadFeatureRing:
+		return "Ring"
+	case DevicePadFeatureStrip:
+		return "Strip"
+	default:
+		return fmt.Sprintf("DevicePadFeature(%d)", d)
+	}
 }
 
 // DevicePad is an interface implemented by devices of type

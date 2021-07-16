@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -27,67 +29,139 @@ func init() {
 type IOChannelError int
 
 const (
-	// Fbig: file too large.
+	// IOChannelErrorFbig: file too large.
 	IOChannelErrorFbig IOChannelError = iota
-	// Inval: invalid argument.
+	// IOChannelErrorInval: invalid argument.
 	IOChannelErrorInval
-	// IO: IO error.
+	// IOChannelErrorIO: IO error.
 	IOChannelErrorIO
-	// Isdir: file is a directory.
+	// IOChannelErrorIsdir: file is a directory.
 	IOChannelErrorIsdir
-	// Nospc: no space left on device.
+	// IOChannelErrorNospc: no space left on device.
 	IOChannelErrorNospc
-	// Nxio: no such device or address.
+	// IOChannelErrorNxio: no such device or address.
 	IOChannelErrorNxio
-	// Overflow: value too large for defined datatype.
+	// IOChannelErrorOverflow: value too large for defined datatype.
 	IOChannelErrorOverflow
-	// Pipe: broken pipe.
+	// IOChannelErrorPipe: broken pipe.
 	IOChannelErrorPipe
-	// Failed: some other error.
+	// IOChannelErrorFailed: some other error.
 	IOChannelErrorFailed
 )
+
+// String returns the name in string for IOChannelError.
+func (i IOChannelError) String() string {
+	switch i {
+	case IOChannelErrorFbig:
+		return "Fbig"
+	case IOChannelErrorInval:
+		return "Inval"
+	case IOChannelErrorIO:
+		return "IO"
+	case IOChannelErrorIsdir:
+		return "Isdir"
+	case IOChannelErrorNospc:
+		return "Nospc"
+	case IOChannelErrorNxio:
+		return "Nxio"
+	case IOChannelErrorOverflow:
+		return "Overflow"
+	case IOChannelErrorPipe:
+		return "Pipe"
+	case IOChannelErrorFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("IOChannelError(%d)", i)
+	}
+}
 
 // IOError is only used by the deprecated functions g_io_channel_read(),
 // g_io_channel_write(), and g_io_channel_seek().
 type IOError int
 
 const (
-	// None: no error
+	// IOErrorNone: no error
 	IOErrorNone IOError = iota
-	// Again: EAGAIN error occurred
+	// IOErrorAgain: EAGAIN error occurred
 	IOErrorAgain
-	// Inval: EINVAL error occurred
+	// IOErrorInval: EINVAL error occurred
 	IOErrorInval
-	// Unknown: another error occurred
+	// IOErrorUnknown: another error occurred
 	IOErrorUnknown
 )
+
+// String returns the name in string for IOError.
+func (i IOError) String() string {
+	switch i {
+	case IOErrorNone:
+		return "None"
+	case IOErrorAgain:
+		return "Again"
+	case IOErrorInval:
+		return "Inval"
+	case IOErrorUnknown:
+		return "Unknown"
+	default:
+		return fmt.Sprintf("IOError(%d)", i)
+	}
+}
 
 // IOStatus statuses returned by most of the OFuncs functions.
 type IOStatus int
 
 const (
-	// Error occurred.
+	// IOStatusError occurred.
 	IOStatusError IOStatus = iota
-	// Normal: success.
+	// IOStatusNormal: success.
 	IOStatusNormal
-	// EOF: end of file.
+	// IOStatusEOF: end of file.
 	IOStatusEOF
-	// Again: resource temporarily unavailable.
+	// IOStatusAgain: resource temporarily unavailable.
 	IOStatusAgain
 )
+
+// String returns the name in string for IOStatus.
+func (i IOStatus) String() string {
+	switch i {
+	case IOStatusError:
+		return "Error"
+	case IOStatusNormal:
+		return "Normal"
+	case IOStatusEOF:
+		return "EOF"
+	case IOStatusAgain:
+		return "Again"
+	default:
+		return fmt.Sprintf("IOStatus(%d)", i)
+	}
+}
 
 // SeekType: enumeration specifying the base position for a
 // g_io_channel_seek_position() operation.
 type SeekType int
 
 const (
-	// Cur: current position in the file.
-	SeekTypeCur SeekType = iota
-	// Set: start of the file.
-	SeekTypeSet
-	// End of the file.
-	SeekTypeEnd
+	// SeekCur: current position in the file.
+	SeekCur SeekType = iota
+	// SeekSet: start of the file.
+	SeekSet
+	// SeekEnd of the file.
+	SeekEnd
 )
+
+// String returns the name in string for SeekType.
+func (s SeekType) String() string {
+	switch s {
+	case SeekCur:
+		return "Cur"
+	case SeekSet:
+		return "Set"
+	case SeekEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("SeekType(%d)", s)
+	}
+}
 
 // IOFlags specifies properties of a OChannel. Some of the flags can only be
 // read with g_io_channel_get_flags(), but not changed with
@@ -95,35 +169,73 @@ const (
 type IOFlags int
 
 const (
-	// IOFlagsAppend turns on append mode, corresponds to O_APPEND (see the
+	// IOFlagAppend turns on append mode, corresponds to O_APPEND (see the
 	// documentation of the UNIX open() syscall)
-	IOFlagsAppend IOFlags = 0b1
-	// IOFlagsNonblock turns on nonblocking mode, corresponds to
+	IOFlagAppend IOFlags = 0b1
+	// IOFlagNonblock turns on nonblocking mode, corresponds to
 	// O_NONBLOCK/O_NDELAY (see the documentation of the UNIX open() syscall)
-	IOFlagsNonblock IOFlags = 0b10
-	// IOFlagsIsReadable indicates that the io channel is readable. This flag
+	IOFlagNonblock IOFlags = 0b10
+	// IOFlagIsReadable indicates that the io channel is readable. This flag
 	// cannot be changed.
-	IOFlagsIsReadable IOFlags = 0b100
-	// IOFlagsIsWritable indicates that the io channel is writable. This flag
+	IOFlagIsReadable IOFlags = 0b100
+	// IOFlagIsWritable indicates that the io channel is writable. This flag
 	// cannot be changed.
-	IOFlagsIsWritable IOFlags = 0b1000
-	// IOFlagsIsWriteable: misspelled version of G_IO_FLAG_IS_WRITABLE that
+	IOFlagIsWritable IOFlags = 0b1000
+	// IOFlagIsWriteable: misspelled version of G_IO_FLAG_IS_WRITABLE that
 	// existed before the spelling was fixed in GLib 2.30. It is kept here for
 	// compatibility reasons. Deprecated since 2.30
-	IOFlagsIsWriteable IOFlags = 0b1000
-	// IOFlagsIsSeekable indicates that the io channel is seekable, i.e. that
+	IOFlagIsWriteable IOFlags = 0b1000
+	// IOFlagIsSeekable indicates that the io channel is seekable, i.e. that
 	// g_io_channel_seek_position() can be used on it. This flag cannot be
 	// changed.
-	IOFlagsIsSeekable IOFlags = 0b10000
-	// IOFlagsMask that specifies all the valid flags.
-	IOFlagsMask IOFlags = 0b11111
-	// IOFlagsGetMask: mask of the flags that are returned from
+	IOFlagIsSeekable IOFlags = 0b10000
+	// IOFlagMask that specifies all the valid flags.
+	IOFlagMask IOFlags = 0b11111
+	// IOFlagGetMask: mask of the flags that are returned from
 	// g_io_channel_get_flags()
-	IOFlagsGetMask IOFlags = 0b11111
-	// IOFlagsSetMask: mask of the flags that the user can modify with
+	IOFlagGetMask IOFlags = 0b11111
+	// IOFlagSetMask: mask of the flags that the user can modify with
 	// g_io_channel_set_flags()
-	IOFlagsSetMask IOFlags = 0b11
+	IOFlagSetMask IOFlags = 0b11
 )
+
+// String returns the names in string for IOFlags.
+func (i IOFlags) String() string {
+	if i == 0 {
+		return "IOFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(135)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case IOFlagAppend:
+			builder.WriteString("Append|")
+		case IOFlagNonblock:
+			builder.WriteString("Nonblock|")
+		case IOFlagIsReadable:
+			builder.WriteString("IsReadable|")
+		case IOFlagIsWritable:
+			builder.WriteString("IsWritable|")
+		case IOFlagIsSeekable:
+			builder.WriteString("IsSeekable|")
+		case IOFlagMask:
+			builder.WriteString("Mask|")
+		case IOFlagSetMask:
+			builder.WriteString("SetMask|")
+		default:
+			builder.WriteString(fmt.Sprintf("IOFlags(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // IOCreateWatch creates a #GSource that's dispatched when condition is met for
 // the given channel. For example, if condition is IO_IN, the source will be

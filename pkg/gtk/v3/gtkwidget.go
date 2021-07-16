@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -45,14 +46,26 @@ type Allocation = gdk.Rectangle
 type WidgetHelpType int
 
 const (
-	// Tooltip: tooltip.
-	WidgetHelpTypeTooltip WidgetHelpType = iota
-	// WhatsThis what’s this.
-	WidgetHelpTypeWhatsThis
+	// WidgetHelpTooltip: tooltip.
+	WidgetHelpTooltip WidgetHelpType = iota
+	// WidgetHelpWhatsThis what’s this.
+	WidgetHelpWhatsThis
 )
 
 func marshalWidgetHelpType(p uintptr) (interface{}, error) {
 	return WidgetHelpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WidgetHelpType.
+func (w WidgetHelpType) String() string {
+	switch w {
+	case WidgetHelpTooltip:
+		return "Tooltip"
+	case WidgetHelpWhatsThis:
+		return "WhatsThis"
+	default:
+		return fmt.Sprintf("WidgetHelpType(%d)", w)
+	}
 }
 
 // Callback: type of the callback functions used for e.g. iterating over the

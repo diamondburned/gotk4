@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,14 +32,42 @@ func init() {
 type ToolPaletteDragTargets int
 
 const (
-	// ToolPaletteDragTargetsItems: support drag of items.
-	ToolPaletteDragTargetsItems ToolPaletteDragTargets = 0b1
-	// ToolPaletteDragTargetsGroups: support drag of groups.
-	ToolPaletteDragTargetsGroups ToolPaletteDragTargets = 0b10
+	// ToolPaletteDragItems: support drag of items.
+	ToolPaletteDragItems ToolPaletteDragTargets = 0b1
+	// ToolPaletteDragGroups: support drag of groups.
+	ToolPaletteDragGroups ToolPaletteDragTargets = 0b10
 )
 
 func marshalToolPaletteDragTargets(p uintptr) (interface{}, error) {
 	return ToolPaletteDragTargets(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ToolPaletteDragTargets.
+func (t ToolPaletteDragTargets) String() string {
+	if t == 0 {
+		return "ToolPaletteDragTargets(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(42)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case ToolPaletteDragItems:
+			builder.WriteString("Items|")
+		case ToolPaletteDragGroups:
+			builder.WriteString("Groups|")
+		default:
+			builder.WriteString(fmt.Sprintf("ToolPaletteDragTargets(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ToolPalette allows you to add ToolItems to a palette-like container with

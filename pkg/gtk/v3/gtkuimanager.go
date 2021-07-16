@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -32,34 +34,79 @@ func init() {
 type UIManagerItemType int
 
 const (
-	// UIManagerItemTypeAuto: pick the type of the UI element according to
-	// context.
-	UIManagerItemTypeAuto UIManagerItemType = 0b0
-	// UIManagerItemTypeMenubar: create a menubar.
-	UIManagerItemTypeMenubar UIManagerItemType = 0b1
-	// UIManagerItemTypeMenu: create a menu.
-	UIManagerItemTypeMenu UIManagerItemType = 0b10
-	// UIManagerItemTypeToolbar: create a toolbar.
-	UIManagerItemTypeToolbar UIManagerItemType = 0b100
-	// UIManagerItemTypePlaceholder: insert a placeholder.
-	UIManagerItemTypePlaceholder UIManagerItemType = 0b1000
-	// UIManagerItemTypePopup: create a popup menu.
-	UIManagerItemTypePopup UIManagerItemType = 0b10000
-	// UIManagerItemTypeMenuitem: create a menuitem.
-	UIManagerItemTypeMenuitem UIManagerItemType = 0b100000
-	// UIManagerItemTypeToolitem: create a toolitem.
-	UIManagerItemTypeToolitem UIManagerItemType = 0b1000000
-	// UIManagerItemTypeSeparator: create a separator.
-	UIManagerItemTypeSeparator UIManagerItemType = 0b10000000
-	// UIManagerItemTypeAccelerator: install an accelerator.
-	UIManagerItemTypeAccelerator UIManagerItemType = 0b100000000
-	// UIManagerItemTypePopupWithAccels: same as GTK_UI_MANAGER_POPUP, but the
-	// actions’ accelerators are shown.
-	UIManagerItemTypePopupWithAccels UIManagerItemType = 0b1000000000
+	// UiManagerAuto: pick the type of the UI element according to context.
+	UiManagerAuto UIManagerItemType = 0b0
+	// UiManagerMenubar: create a menubar.
+	UiManagerMenubar UIManagerItemType = 0b1
+	// UiManagerMenu: create a menu.
+	UiManagerMenu UIManagerItemType = 0b10
+	// UiManagerToolbar: create a toolbar.
+	UiManagerToolbar UIManagerItemType = 0b100
+	// UiManagerPlaceholder: insert a placeholder.
+	UiManagerPlaceholder UIManagerItemType = 0b1000
+	// UiManagerPopup: create a popup menu.
+	UiManagerPopup UIManagerItemType = 0b10000
+	// UiManagerMenuitem: create a menuitem.
+	UiManagerMenuitem UIManagerItemType = 0b100000
+	// UiManagerToolitem: create a toolitem.
+	UiManagerToolitem UIManagerItemType = 0b1000000
+	// UiManagerSeparator: create a separator.
+	UiManagerSeparator UIManagerItemType = 0b10000000
+	// UiManagerAccelerator: install an accelerator.
+	UiManagerAccelerator UIManagerItemType = 0b100000000
+	// UiManagerPopupWithAccels: same as GTK_UI_MANAGER_POPUP, but the actions’
+	// accelerators are shown.
+	UiManagerPopupWithAccels UIManagerItemType = 0b1000000000
 )
 
 func marshalUIManagerItemType(p uintptr) (interface{}, error) {
 	return UIManagerItemType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for UIManagerItemType.
+func (u UIManagerItemType) String() string {
+	if u == 0 {
+		return "UIManagerItemType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(198)
+
+	for u != 0 {
+		next := u & (u - 1)
+		bit := u - next
+
+		switch bit {
+		case UiManagerAuto:
+			builder.WriteString("Auto|")
+		case UiManagerMenubar:
+			builder.WriteString("Menubar|")
+		case UiManagerMenu:
+			builder.WriteString("Menu|")
+		case UiManagerToolbar:
+			builder.WriteString("Toolbar|")
+		case UiManagerPlaceholder:
+			builder.WriteString("Placeholder|")
+		case UiManagerPopup:
+			builder.WriteString("Popup|")
+		case UiManagerMenuitem:
+			builder.WriteString("Menuitem|")
+		case UiManagerToolitem:
+			builder.WriteString("Toolitem|")
+		case UiManagerSeparator:
+			builder.WriteString("Separator|")
+		case UiManagerAccelerator:
+			builder.WriteString("Accelerator|")
+		case UiManagerPopupWithAccels:
+			builder.WriteString("PopupWithAccels|")
+		default:
+			builder.WriteString(fmt.Sprintf("UIManagerItemType(0b%b)|", bit))
+		}
+
+		u = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // UIManagerOverrider contains methods that are overridable.

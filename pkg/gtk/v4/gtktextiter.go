@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -35,19 +37,49 @@ func init() {
 type TextSearchFlags int
 
 const (
-	// TextSearchFlagsVisibleOnly: search only visible data. A search match may
-	// have invisible text interspersed.
-	TextSearchFlagsVisibleOnly TextSearchFlags = 0b1
-	// TextSearchFlagsTextOnly: search only text. A match may have paintables or
+	// TextSearchVisibleOnly: search only visible data. A search match may have
+	// invisible text interspersed.
+	TextSearchVisibleOnly TextSearchFlags = 0b1
+	// TextSearchTextOnly: search only text. A match may have paintables or
 	// child widgets mixed inside the matched range.
-	TextSearchFlagsTextOnly TextSearchFlags = 0b10
-	// TextSearchFlagsCaseInsensitive: text will be matched regardless of what
-	// case it is in.
-	TextSearchFlagsCaseInsensitive TextSearchFlags = 0b100
+	TextSearchTextOnly TextSearchFlags = 0b10
+	// TextSearchCaseInsensitive: text will be matched regardless of what case
+	// it is in.
+	TextSearchCaseInsensitive TextSearchFlags = 0b100
 )
 
 func marshalTextSearchFlags(p uintptr) (interface{}, error) {
 	return TextSearchFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for TextSearchFlags.
+func (t TextSearchFlags) String() string {
+	if t == 0 {
+		return "TextSearchFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(66)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TextSearchVisibleOnly:
+			builder.WriteString("VisibleOnly|")
+		case TextSearchTextOnly:
+			builder.WriteString("TextOnly|")
+		case TextSearchCaseInsensitive:
+			builder.WriteString("CaseInsensitive|")
+		default:
+			builder.WriteString(fmt.Sprintf("TextSearchFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // TextCharPredicate: predicate function used by

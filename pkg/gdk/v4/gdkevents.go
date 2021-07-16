@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -46,33 +47,59 @@ func init() {
 type CrossingMode int
 
 const (
-	// Normal: crossing because of pointer motion.
-	CrossingModeNormal CrossingMode = iota
-	// Grab: crossing because a grab is activated.
-	CrossingModeGrab
-	// Ungrab: crossing because a grab is deactivated.
-	CrossingModeUngrab
-	// GTKGrab: crossing because a GTK grab is activated.
-	CrossingModeGTKGrab
-	// GTKUngrab: crossing because a GTK grab is deactivated.
-	CrossingModeGTKUngrab
-	// StateChanged: crossing because a GTK widget changed state (e.g.
+	// CrossingNormal: crossing because of pointer motion.
+	CrossingNormal CrossingMode = iota
+	// CrossingGrab: crossing because a grab is activated.
+	CrossingGrab
+	// CrossingUngrab: crossing because a grab is deactivated.
+	CrossingUngrab
+	// CrossingGTKGrab: crossing because a GTK grab is activated.
+	CrossingGTKGrab
+	// CrossingGTKUngrab: crossing because a GTK grab is deactivated.
+	CrossingGTKUngrab
+	// CrossingStateChanged: crossing because a GTK widget changed state (e.g.
 	// sensitivity).
-	CrossingModeStateChanged
-	// TouchBegin: crossing because a touch sequence has begun, this event is
-	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchBegin
-	// TouchEnd: crossing because a touch sequence has ended, this event is
-	// synthetic as the pointer might have not left the surface.
-	CrossingModeTouchEnd
-	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
-	// control of the pointer after a touch device), this event is synthetic as
-	// the pointer didn’t leave the surface.
-	CrossingModeDeviceSwitch
+	CrossingStateChanged
+	// CrossingTouchBegin: crossing because a touch sequence has begun, this
+	// event is synthetic as the pointer might have not left the surface.
+	CrossingTouchBegin
+	// CrossingTouchEnd: crossing because a touch sequence has ended, this event
+	// is synthetic as the pointer might have not left the surface.
+	CrossingTouchEnd
+	// CrossingDeviceSwitch: crossing because of a device switch (i.e. a mouse
+	// taking control of the pointer after a touch device), this event is
+	// synthetic as the pointer didn’t leave the surface.
+	CrossingDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
 	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CrossingMode.
+func (c CrossingMode) String() string {
+	switch c {
+	case CrossingNormal:
+		return "Normal"
+	case CrossingGrab:
+		return "Grab"
+	case CrossingUngrab:
+		return "Ungrab"
+	case CrossingGTKGrab:
+		return "GTKGrab"
+	case CrossingGTKUngrab:
+		return "GTKUngrab"
+	case CrossingStateChanged:
+		return "StateChanged"
+	case CrossingTouchBegin:
+		return "TouchBegin"
+	case CrossingTouchEnd:
+		return "TouchEnd"
+	case CrossingDeviceSwitch:
+		return "DeviceSwitch"
+	default:
+		return fmt.Sprintf("CrossingMode(%d)", c)
+	}
 }
 
 // EventType specifies the type of the event.
@@ -82,71 +109,137 @@ const (
 	// Delete: window manager has requested that the toplevel surface be hidden
 	// or destroyed, usually when the user clicks on a special icon in the title
 	// bar.
-	EventTypeDelete EventType = iota
+	Delete EventType = iota
 	// MotionNotify: pointer (usually a mouse) has moved.
-	EventTypeMotionNotify
+	MotionNotify
 	// ButtonPress: mouse button has been pressed.
-	EventTypeButtonPress
+	ButtonPress
 	// ButtonRelease: mouse button has been released.
-	EventTypeButtonRelease
+	ButtonRelease
 	// KeyPress: key has been pressed.
-	EventTypeKeyPress
+	KeyPress
 	// KeyRelease: key has been released.
-	EventTypeKeyRelease
+	KeyRelease
 	// EnterNotify: pointer has entered the surface.
-	EventTypeEnterNotify
+	EnterNotify
 	// LeaveNotify: pointer has left the surface.
-	EventTypeLeaveNotify
+	LeaveNotify
 	// FocusChange: keyboard focus has entered or left the surface.
-	EventTypeFocusChange
+	FocusChange
 	// ProximityIn: input device has moved into contact with a sensing surface
 	// (e.g. a touchscreen or graphics tablet).
-	EventTypeProximityIn
+	ProximityIn
 	// ProximityOut: input device has moved out of contact with a sensing
 	// surface.
-	EventTypeProximityOut
+	ProximityOut
 	// DragEnter: mouse has entered the surface while a drag is in progress.
-	EventTypeDragEnter
+	DragEnter
 	// DragLeave: mouse has left the surface while a drag is in progress.
-	EventTypeDragLeave
+	DragLeave
 	// DragMotion: mouse has moved in the surface while a drag is in progress.
-	EventTypeDragMotion
+	DragMotion
 	// DropStart: drop operation onto the surface has started.
-	EventTypeDropStart
+	DropStart
 	// Scroll wheel was turned
-	EventTypeScroll
+	Scroll
 	// GrabBroken: pointer or keyboard grab was broken.
-	EventTypeGrabBroken
+	GrabBroken
 	// TouchBegin: new touch event sequence has just started.
-	EventTypeTouchBegin
+	TouchBegin
 	// TouchUpdate: touch event sequence has been updated.
-	EventTypeTouchUpdate
+	TouchUpdate
 	// TouchEnd: touch event sequence has finished.
-	EventTypeTouchEnd
+	TouchEnd
 	// TouchCancel: touch event sequence has been canceled.
-	EventTypeTouchCancel
+	TouchCancel
 	// TouchpadSwipe: touchpad swipe gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadSwipe
+	TouchpadSwipe
 	// TouchpadPinch: touchpad pinch gesture event, the current state is
 	// determined by its phase field.
-	EventTypeTouchpadPinch
+	TouchpadPinch
 	// PadButtonPress: tablet pad button press event.
-	EventTypePadButtonPress
+	PadButtonPress
 	// PadButtonRelease: tablet pad button release event.
-	EventTypePadButtonRelease
+	PadButtonRelease
 	// PadRing: tablet pad axis event from a "ring".
-	EventTypePadRing
+	PadRing
 	// PadStrip: tablet pad axis event from a "strip".
-	EventTypePadStrip
+	PadStrip
 	// PadGroupMode: tablet pad group mode change.
-	EventTypePadGroupMode
+	PadGroupMode
 	// EventLast marks the end of the GdkEventType enumeration.
-	EventTypeEventLast
+	EventLast
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
 	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for EventType.
+func (e EventType) String() string {
+	switch e {
+	case Delete:
+		return "Delete"
+	case MotionNotify:
+		return "MotionNotify"
+	case ButtonPress:
+		return "ButtonPress"
+	case ButtonRelease:
+		return "ButtonRelease"
+	case KeyPress:
+		return "KeyPress"
+	case KeyRelease:
+		return "KeyRelease"
+	case EnterNotify:
+		return "EnterNotify"
+	case LeaveNotify:
+		return "LeaveNotify"
+	case FocusChange:
+		return "FocusChange"
+	case ProximityIn:
+		return "ProximityIn"
+	case ProximityOut:
+		return "ProximityOut"
+	case DragEnter:
+		return "DragEnter"
+	case DragLeave:
+		return "DragLeave"
+	case DragMotion:
+		return "DragMotion"
+	case DropStart:
+		return "DropStart"
+	case Scroll:
+		return "Scroll"
+	case GrabBroken:
+		return "GrabBroken"
+	case TouchBegin:
+		return "TouchBegin"
+	case TouchUpdate:
+		return "TouchUpdate"
+	case TouchEnd:
+		return "TouchEnd"
+	case TouchCancel:
+		return "TouchCancel"
+	case TouchpadSwipe:
+		return "TouchpadSwipe"
+	case TouchpadPinch:
+		return "TouchpadPinch"
+	case PadButtonPress:
+		return "PadButtonPress"
+	case PadButtonRelease:
+		return "PadButtonRelease"
+	case PadRing:
+		return "PadRing"
+	case PadStrip:
+		return "PadStrip"
+	case PadGroupMode:
+		return "PadGroupMode"
+	case EventLast:
+		return "EventLast"
+	default:
+		return fmt.Sprintf("EventType(%d)", e)
+	}
 }
 
 // KeyMatch describes how well an event matches a given keyval and modifiers.
@@ -155,17 +248,31 @@ func marshalEventType(p uintptr) (interface{}, error) {
 type KeyMatch int
 
 const (
-	// None: key event does not match
+	// KeyMatchNone: key event does not match
 	KeyMatchNone KeyMatch = iota
-	// Partial: key event matches if keyboard state (specifically, the currently
-	// active group) is ignored
+	// KeyMatchPartial: key event matches if keyboard state (specifically, the
+	// currently active group) is ignored
 	KeyMatchPartial
-	// Exact: key event matches
+	// KeyMatchExact: key event matches
 	KeyMatchExact
 )
 
 func marshalKeyMatch(p uintptr) (interface{}, error) {
 	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for KeyMatch.
+func (k KeyMatch) String() string {
+	switch k {
+	case KeyMatchNone:
+		return "None"
+	case KeyMatchPartial:
+		return "Partial"
+	case KeyMatchExact:
+		return "Exact"
+	default:
+		return fmt.Sprintf("KeyMatch(%d)", k)
+	}
 }
 
 // NotifyType specifies the kind of crossing for enter and leave events.
@@ -175,49 +282,87 @@ func marshalKeyMatch(p uintptr) (interface{}, error) {
 type NotifyType int
 
 const (
-	// Ancestor: surface is entered from an ancestor or left towards an
+	// NotifyAncestor: surface is entered from an ancestor or left towards an
 	// ancestor.
-	NotifyTypeAncestor NotifyType = iota
-	// Virtual: pointer moves between an ancestor and an inferior of the
+	NotifyAncestor NotifyType = iota
+	// NotifyVirtual: pointer moves between an ancestor and an inferior of the
 	// surface.
-	NotifyTypeVirtual
-	// Inferior: surface is entered from an inferior or left towards an
+	NotifyVirtual
+	// NotifyInferior: surface is entered from an inferior or left towards an
 	// inferior.
-	NotifyTypeInferior
-	// Nonlinear: surface is entered from or left towards a surface which is
-	// neither an ancestor nor an inferior.
-	NotifyTypeNonlinear
-	// NonlinearVirtual: pointer moves between two surfaces which are not
+	NotifyInferior
+	// NotifyNonlinear: surface is entered from or left towards a surface which
+	// is neither an ancestor nor an inferior.
+	NotifyNonlinear
+	// NotifyNonlinearVirtual: pointer moves between two surfaces which are not
 	// ancestors of each other and the surface is part of the ancestor chain
 	// between one of these surfaces and their least common ancestor.
-	NotifyTypeNonlinearVirtual
-	// Unknown type of enter/leave event occurred.
-	NotifyTypeUnknown
+	NotifyNonlinearVirtual
+	// NotifyUnknown type of enter/leave event occurred.
+	NotifyUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
 	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for NotifyType.
+func (n NotifyType) String() string {
+	switch n {
+	case NotifyAncestor:
+		return "Ancestor"
+	case NotifyVirtual:
+		return "Virtual"
+	case NotifyInferior:
+		return "Inferior"
+	case NotifyNonlinear:
+		return "Nonlinear"
+	case NotifyNonlinearVirtual:
+		return "NonlinearVirtual"
+	case NotifyUnknown:
+		return "Unknown"
+	default:
+		return fmt.Sprintf("NotifyType(%d)", n)
+	}
+}
+
 // ScrollDirection specifies the direction for scroll events.
 type ScrollDirection int
 
 const (
-	// Up: surface is scrolled up.
-	ScrollDirectionUp ScrollDirection = iota
-	// Down: surface is scrolled down.
-	ScrollDirectionDown
-	// Left: surface is scrolled to the left.
-	ScrollDirectionLeft
-	// Right: surface is scrolled to the right.
-	ScrollDirectionRight
-	// Smooth: scrolling is determined by the delta values in scroll events. See
-	// gdk_scroll_event_get_deltas()
-	ScrollDirectionSmooth
+	// ScrollUp: surface is scrolled up.
+	ScrollUp ScrollDirection = iota
+	// ScrollDown: surface is scrolled down.
+	ScrollDown
+	// ScrollLeft: surface is scrolled to the left.
+	ScrollLeft
+	// ScrollRight: surface is scrolled to the right.
+	ScrollRight
+	// ScrollSmooth: scrolling is determined by the delta values in scroll
+	// events. See gdk_scroll_event_get_deltas()
+	ScrollSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
 	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ScrollDirection.
+func (s ScrollDirection) String() string {
+	switch s {
+	case ScrollUp:
+		return "Up"
+	case ScrollDown:
+		return "Down"
+	case ScrollLeft:
+		return "Left"
+	case ScrollRight:
+		return "Right"
+	case ScrollSmooth:
+		return "Smooth"
+	default:
+		return fmt.Sprintf("ScrollDirection(%d)", s)
+	}
 }
 
 // TouchpadGesturePhase specifies the current state of a touchpad gesture.
@@ -240,18 +385,36 @@ func marshalScrollDirection(p uintptr) (interface{}, error) {
 type TouchpadGesturePhase int
 
 const (
-	// Begin: gesture has begun.
+	// TouchpadGesturePhaseBegin: gesture has begun.
 	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
-	// Update: gesture has been updated.
+	// TouchpadGesturePhaseUpdate: gesture has been updated.
 	TouchpadGesturePhaseUpdate
-	// End: gesture was finished, changes should be permanently applied.
+	// TouchpadGesturePhaseEnd: gesture was finished, changes should be
+	// permanently applied.
 	TouchpadGesturePhaseEnd
-	// Cancel: gesture was cancelled, all changes should be undone.
+	// TouchpadGesturePhaseCancel: gesture was cancelled, all changes should be
+	// undone.
 	TouchpadGesturePhaseCancel
 )
 
 func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TouchpadGesturePhase.
+func (t TouchpadGesturePhase) String() string {
+	switch t {
+	case TouchpadGesturePhaseBegin:
+		return "Begin"
+	case TouchpadGesturePhaseUpdate:
+		return "Update"
+	case TouchpadGesturePhaseEnd:
+		return "End"
+	case TouchpadGesturePhaseCancel:
+		return "Cancel"
+	default:
+		return fmt.Sprintf("TouchpadGesturePhase(%d)", t)
+	}
 }
 
 // EventsGetAngle returns the relative angle from event1 to event2.

@@ -3,7 +3,9 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -42,28 +44,70 @@ func init() {
 type AnchorHints int
 
 const (
-	// AnchorHintsFlipX: allow flipping anchors horizontally
-	AnchorHintsFlipX AnchorHints = 0b1
-	// AnchorHintsFlipY: allow flipping anchors vertically
-	AnchorHintsFlipY AnchorHints = 0b10
-	// AnchorHintsSlideX: allow sliding surface horizontally
-	AnchorHintsSlideX AnchorHints = 0b100
-	// AnchorHintsSlideY: allow sliding surface vertically
-	AnchorHintsSlideY AnchorHints = 0b1000
-	// AnchorHintsResizeX: allow resizing surface horizontally
-	AnchorHintsResizeX AnchorHints = 0b10000
-	// AnchorHintsResizeY: allow resizing surface vertically
-	AnchorHintsResizeY AnchorHints = 0b100000
-	// AnchorHintsFlip: allow flipping anchors on both axes
-	AnchorHintsFlip AnchorHints = 0b11
-	// AnchorHintsSlide: allow sliding surface on both axes
-	AnchorHintsSlide AnchorHints = 0b1100
-	// AnchorHintsResize: allow resizing surface on both axes
-	AnchorHintsResize AnchorHints = 0b110000
+	// AnchorFlipX: allow flipping anchors horizontally
+	AnchorFlipX AnchorHints = 0b1
+	// AnchorFlipY: allow flipping anchors vertically
+	AnchorFlipY AnchorHints = 0b10
+	// AnchorSlideX: allow sliding surface horizontally
+	AnchorSlideX AnchorHints = 0b100
+	// AnchorSlideY: allow sliding surface vertically
+	AnchorSlideY AnchorHints = 0b1000
+	// AnchorResizeX: allow resizing surface horizontally
+	AnchorResizeX AnchorHints = 0b10000
+	// AnchorResizeY: allow resizing surface vertically
+	AnchorResizeY AnchorHints = 0b100000
+	// AnchorFlip: allow flipping anchors on both axes
+	AnchorFlip AnchorHints = 0b11
+	// AnchorSlide: allow sliding surface on both axes
+	AnchorSlide AnchorHints = 0b1100
+	// AnchorResize: allow resizing surface on both axes
+	AnchorResize AnchorHints = 0b110000
 )
 
 func marshalAnchorHints(p uintptr) (interface{}, error) {
 	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AnchorHints.
+func (a AnchorHints) String() string {
+	if a == 0 {
+		return "AnchorHints(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(113)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AnchorFlipX:
+			builder.WriteString("FlipX|")
+		case AnchorFlipY:
+			builder.WriteString("FlipY|")
+		case AnchorSlideX:
+			builder.WriteString("SlideX|")
+		case AnchorSlideY:
+			builder.WriteString("SlideY|")
+		case AnchorResizeX:
+			builder.WriteString("ResizeX|")
+		case AnchorResizeY:
+			builder.WriteString("ResizeY|")
+		case AnchorFlip:
+			builder.WriteString("Flip|")
+		case AnchorSlide:
+			builder.WriteString("Slide|")
+		case AnchorResize:
+			builder.WriteString("Resize|")
+		default:
+			builder.WriteString(fmt.Sprintf("AnchorHints(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // PopupLayout: GdkPopupLayout struct contains information that is necessary

@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -34,19 +36,51 @@ func init() {
 type FileFilterFlags int
 
 const (
-	// FileFilterFlagsFilename of the file being tested
-	FileFilterFlagsFilename FileFilterFlags = 0b1
-	// FileFilterFlagsURI: URI for the file being tested
-	FileFilterFlagsURI FileFilterFlags = 0b10
-	// FileFilterFlagsDisplayName: string that will be used to display the file
-	// in the file chooser
-	FileFilterFlagsDisplayName FileFilterFlags = 0b100
-	// FileFilterFlagsMIMEType: mime type of the file
-	FileFilterFlagsMIMEType FileFilterFlags = 0b1000
+	// FileFilterFilename of the file being tested
+	FileFilterFilename FileFilterFlags = 0b1
+	// FileFilterURI: URI for the file being tested
+	FileFilterURI FileFilterFlags = 0b10
+	// FileFilterDisplayName: string that will be used to display the file in
+	// the file chooser
+	FileFilterDisplayName FileFilterFlags = 0b100
+	// FileFilterMIMEType: mime type of the file
+	FileFilterMIMEType FileFilterFlags = 0b1000
 )
 
 func marshalFileFilterFlags(p uintptr) (interface{}, error) {
 	return FileFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for FileFilterFlags.
+func (f FileFilterFlags) String() string {
+	if f == 0 {
+		return "FileFilterFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(73)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileFilterFilename:
+			builder.WriteString("Filename|")
+		case FileFilterURI:
+			builder.WriteString("URI|")
+		case FileFilterDisplayName:
+			builder.WriteString("DisplayName|")
+		case FileFilterMIMEType:
+			builder.WriteString("MIMEType|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileFilterFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // FileFilterFunc: type of function that is used with custom filters, see

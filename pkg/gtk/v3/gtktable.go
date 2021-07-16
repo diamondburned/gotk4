@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,17 +32,47 @@ func init() {
 type AttachOptions int
 
 const (
-	// AttachOptionsExpand: widget should expand to take up any extra space in
-	// its container that has been allocated.
-	AttachOptionsExpand AttachOptions = 0b1
-	// AttachOptionsShrink: widget should shrink as and when possible.
-	AttachOptionsShrink AttachOptions = 0b10
-	// AttachOptionsFill: widget should fill the space allocated to it.
-	AttachOptionsFill AttachOptions = 0b100
+	// Expand: widget should expand to take up any extra space in its container
+	// that has been allocated.
+	Expand AttachOptions = 0b1
+	// Shrink: widget should shrink as and when possible.
+	Shrink AttachOptions = 0b10
+	// Fill: widget should fill the space allocated to it.
+	Fill AttachOptions = 0b100
 )
 
 func marshalAttachOptions(p uintptr) (interface{}, error) {
 	return AttachOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AttachOptions.
+func (a AttachOptions) String() string {
+	if a == 0 {
+		return "AttachOptions(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(18)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case Expand:
+			builder.WriteString("Expand|")
+		case Shrink:
+			builder.WriteString("Shrink|")
+		case Fill:
+			builder.WriteString("Fill|")
+		default:
+			builder.WriteString(fmt.Sprintf("AttachOptions(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // Table functions allow the programmer to arrange widgets in rows and columns,

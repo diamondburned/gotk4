@@ -2,6 +2,9 @@ package generators
 
 import (
 	"strconv"
+	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
@@ -10,25 +13,27 @@ import (
 )
 
 var enumTmpl = gotmpl.NewGoTemplate(`
-	{{ GoDoc . 0 }}
+	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
 	type {{ .GoName }} int
 
 	{{ if .IsIota }}
 	const (
 		{{ range $ix, $member := .Members }}
-		{{- GoDoc . 1 TrailingNewLine -}}
+		{{- $name := $.FormatMember $member -}}
+		{{- GoDoc . 1 TrailingNewLine (OverrideSelfName $name) -}}
 		{{- if (eq $ix 0) }}
-		{{- $.FormatMember $member }} {{ $.GoName }} = iota
+		{{- $name }} {{ $.GoName }} = iota
 		{{- else }}
-		{{- $.FormatMember $member }}
+		{{- $name }}
 		{{- end }}
 		{{ end }}
 	)
 	{{ else }}
 	const (
 		{{ range .Members -}}
-		{{- GoDoc . 1 TrailingNewLine -}}
-		{{- $.FormatMember . }} {{ $.GoName }} = {{ .Value }}
+		{{- $name := $.FormatMember . -}}
+		{{- GoDoc . 1 TrailingNewLine (OverrideSelfName $name) -}}
+		{{- $name }} {{ $.GoName }} = {{ .Value }}
 		{{ end -}}
 	)
 	{{ end }}
@@ -38,6 +43,17 @@ var enumTmpl = gotmpl.NewGoTemplate(`
 		return {{ .GoName }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 	}
 	{{ end }}
+
+	{{ $recv := FirstLetter .GoName }}
+	// String returns the name in string for {{ .GoName }}.
+	func ({{ $recv }} {{ .GoName }}) String() string {
+		switch {{ $recv }} {
+		{{- range .UniqueMembers }} {{ $name := $.FormatMember . }}
+		case {{ $name }}: return "{{ SnakeToGo true .Name }}"
+		{{- end }}
+		default: return fmt.Sprintf("{{ .GoName }}(%d)", {{ $recv }})
+		}
+	}
 `)
 
 type enumData struct {
@@ -60,23 +76,47 @@ var numberMap = map[rune]string{
 }
 
 func (eg *enumData) FormatMember(member gir.Member) string {
-	return eg.GoName + strcases.SnakeToGo(true, member.Name)
+	return FormatEnumMember(member)
+}
 
-	// This is a bad idea, since it collides with struct names.
-	// // Pop the namespace off. Probably works most of the time.
-	// if parts := strings.SplitN(member.CIdentifier, "_", 2); len(parts) == 2 {
-	// 	member.CIdentifier = parts[1]
-	// }
+func (eg *enumData) UniqueMembers() []gir.Member {
+	return UniqueEnumMembers(eg.Members)
+}
 
-	// memberName := strcases.SnakeToGo(true, strings.ToLower(member.CIdentifier))
+// FormatEnumMember returns the enum member's Go name.
+func FormatEnumMember(member gir.Member) string {
+	// Pop the namespace off. Probably works most of the time.
+	if parts := strings.SplitN(member.CIdentifier, "_", 2); len(parts) == 2 {
+		member.CIdentifier = parts[1]
+	}
 
-	// // TODO: prepend GoName instead.
-	// r, sz := utf8.DecodeRuneInString(memberName)
-	// if sz > 0 && unicode.IsNumber(r) {
-	// 	memberName = numberMap[r] + memberName[sz:]
-	// }
+	memberName := strcases.SnakeToGo(true, strings.ToLower(member.CIdentifier))
 
-	// return memberName
+	// TODO: prepend GoName instead.
+	r, sz := utf8.DecodeRuneInString(memberName)
+	if sz > 0 && unicode.IsNumber(r) {
+		memberName = numberMap[r] + memberName[sz:]
+	}
+
+	return memberName
+}
+
+// UniqueEnumMembers returns the enum members with unique values only.
+func UniqueEnumMembers(members []gir.Member) []gir.Member {
+	uniques := make([]gir.Member, 0, len(members))
+	known := make(map[string]struct{}, len(members))
+
+	for _, member := range members {
+		_, isKnown := known[member.Value]
+		if isKnown {
+			continue
+		}
+
+		uniques = append(uniques, member)
+		known[member.Value] = struct{}{}
+	}
+
+	return uniques
 }
 
 // CanGenerateEnum returns false if the given enum cannot be generated.
@@ -109,6 +149,7 @@ func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
 		}
 	}
 
+	writer.Header().Import("fmt")
 	writer.Pen().WriteTmpl(enumTmpl, &enumData{
 		Enum:   enum,
 		GoName: goName,

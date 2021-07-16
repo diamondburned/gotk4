@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -32,17 +33,32 @@ func init() {
 type TreeViewColumnSizing int
 
 const (
-	// GrowOnly columns only get bigger in reaction to changes in the model
-	TreeViewColumnSizingGrowOnly TreeViewColumnSizing = iota
-	// Autosize columns resize to be the optimal size every time the model
-	// changes.
-	TreeViewColumnSizingAutosize
-	// Fixed columns are a fixed numbers of pixels wide.
-	TreeViewColumnSizingFixed
+	// TreeViewColumnGrowOnly columns only get bigger in reaction to changes in
+	// the model
+	TreeViewColumnGrowOnly TreeViewColumnSizing = iota
+	// TreeViewColumnAutosize columns resize to be the optimal size every time
+	// the model changes.
+	TreeViewColumnAutosize
+	// TreeViewColumnFixed columns are a fixed numbers of pixels wide.
+	TreeViewColumnFixed
 )
 
 func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 	return TreeViewColumnSizing(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TreeViewColumnSizing.
+func (t TreeViewColumnSizing) String() string {
+	switch t {
+	case TreeViewColumnGrowOnly:
+		return "GrowOnly"
+	case TreeViewColumnAutosize:
+		return "Autosize"
+	case TreeViewColumnFixed:
+		return "Fixed"
+	default:
+		return fmt.Sprintf("TreeViewColumnSizing(%d)", t)
+	}
 }
 
 // TreeCellDataFunc: function to set the properties of a cell instead of just

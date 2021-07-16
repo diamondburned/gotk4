@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -33,50 +34,96 @@ func init() {
 type License int
 
 const (
-	// Unknown: no license specified
+	// LicenseUnknown: no license specified
 	LicenseUnknown License = iota
-	// Custom: license text is going to be specified by the developer
+	// LicenseCustom: license text is going to be specified by the developer
 	LicenseCustom
-	// GPL20: GNU General Public License, version 2.0 or later
+	// LicenseGPL20: GNU General Public License, version 2.0 or later
 	LicenseGPL20
-	// GPL30: GNU General Public License, version 3.0 or later
+	// LicenseGPL30: GNU General Public License, version 3.0 or later
 	LicenseGPL30
-	// LGPL21: GNU Lesser General Public License, version 2.1 or later
+	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later
 	LicenseLGPL21
-	// LGPL30: GNU Lesser General Public License, version 3.0 or later
+	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later
 	LicenseLGPL30
-	// BSD: BSD standard license
+	// LicenseBSD: BSD standard license
 	LicenseBSD
-	// MITX11: MIT/X11 standard license
+	// LicenseMITX11: MIT/X11 standard license
 	LicenseMITX11
-	// Artistic: artistic License, version 2.0
+	// LicenseArtistic: artistic License, version 2.0
 	LicenseArtistic
-	// GPL20Only: GNU General Public License, version 2.0 only. Since 3.12.
+	// LicenseGPL20Only: GNU General Public License, version 2.0 only. Since
+	// 3.12.
 	LicenseGPL20Only
-	// GPL30Only: GNU General Public License, version 3.0 only. Since 3.12.
+	// LicenseGPL30Only: GNU General Public License, version 3.0 only. Since
+	// 3.12.
 	LicenseGPL30Only
-	// LGPL21Only: GNU Lesser General Public License, version 2.1 only. Since
-	// 3.12.
+	// LicenseLGPL21Only: GNU Lesser General Public License, version 2.1 only.
+	// Since 3.12.
 	LicenseLGPL21Only
-	// LGPL30Only: GNU Lesser General Public License, version 3.0 only. Since
-	// 3.12.
+	// LicenseLGPL30Only: GNU Lesser General Public License, version 3.0 only.
+	// Since 3.12.
 	LicenseLGPL30Only
-	// AGPL30: GNU Affero General Public License, version 3.0 or later. Since:
-	// 3.22.
+	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later.
+	// Since: 3.22.
 	LicenseAGPL30
-	// AGPL30Only: GNU Affero General Public License, version 3.0 only. Since:
-	// 3.22.27.
+	// LicenseAGPL30Only: GNU Affero General Public License, version 3.0 only.
+	// Since: 3.22.27.
 	LicenseAGPL30Only
-	// BSD3: 3-clause BSD licence. Since: 3.24.20.
+	// LicenseBSD3: 3-clause BSD licence. Since: 3.24.20.
 	LicenseBSD3
-	// Apache20: apache License, version 2.0. Since: 3.24.20.
+	// LicenseApache20: apache License, version 2.0. Since: 3.24.20.
 	LicenseApache20
-	// MPL20: mozilla Public License, version 2.0. Since: 3.24.20.
+	// LicenseMPL20: mozilla Public License, version 2.0. Since: 3.24.20.
 	LicenseMPL20
 )
 
 func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for License.
+func (l License) String() string {
+	switch l {
+	case LicenseUnknown:
+		return "Unknown"
+	case LicenseCustom:
+		return "Custom"
+	case LicenseGPL20:
+		return "GPL20"
+	case LicenseGPL30:
+		return "GPL30"
+	case LicenseLGPL21:
+		return "LGPL21"
+	case LicenseLGPL30:
+		return "LGPL30"
+	case LicenseBSD:
+		return "BSD"
+	case LicenseMITX11:
+		return "MITX11"
+	case LicenseArtistic:
+		return "Artistic"
+	case LicenseGPL20Only:
+		return "GPL20Only"
+	case LicenseGPL30Only:
+		return "GPL30Only"
+	case LicenseLGPL21Only:
+		return "LGPL21Only"
+	case LicenseLGPL30Only:
+		return "LGPL30Only"
+	case LicenseAGPL30:
+		return "AGPL30"
+	case LicenseAGPL30Only:
+		return "AGPL30Only"
+	case LicenseBSD3:
+		return "BSD3"
+	case LicenseApache20:
+		return "Apache20"
+	case LicenseMPL20:
+		return "MPL20"
+	default:
+		return fmt.Sprintf("License(%d)", l)
+	}
 }
 
 // AboutDialogOverrider contains methods that are overridable.

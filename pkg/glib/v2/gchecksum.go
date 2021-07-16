@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -30,17 +31,35 @@ func init() {
 type ChecksumType int
 
 const (
-	// MD5: use the MD5 hashing algorithm
-	ChecksumTypeMD5 ChecksumType = iota
-	// SHA1: use the SHA-1 hashing algorithm
-	ChecksumTypeSHA1
-	// SHA256: use the SHA-256 hashing algorithm
-	ChecksumTypeSHA256
-	// SHA512: use the SHA-512 hashing algorithm (Since: 2.36)
-	ChecksumTypeSHA512
-	// SHA384: use the SHA-384 hashing algorithm (Since: 2.51)
-	ChecksumTypeSHA384
+	// ChecksumMD5: use the MD5 hashing algorithm
+	ChecksumMD5 ChecksumType = iota
+	// ChecksumSHA1: use the SHA-1 hashing algorithm
+	ChecksumSHA1
+	// ChecksumSHA256: use the SHA-256 hashing algorithm
+	ChecksumSHA256
+	// ChecksumSHA512: use the SHA-512 hashing algorithm (Since: 2.36)
+	ChecksumSHA512
+	// ChecksumSHA384: use the SHA-384 hashing algorithm (Since: 2.51)
+	ChecksumSHA384
 )
+
+// String returns the name in string for ChecksumType.
+func (c ChecksumType) String() string {
+	switch c {
+	case ChecksumMD5:
+		return "MD5"
+	case ChecksumSHA1:
+		return "SHA1"
+	case ChecksumSHA256:
+		return "SHA256"
+	case ChecksumSHA512:
+		return "SHA512"
+	case ChecksumSHA384:
+		return "SHA384"
+	default:
+		return fmt.Sprintf("ChecksumType(%d)", c)
+	}
+}
 
 // ComputeChecksumForData computes the checksum for a binary data of length.
 // This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()

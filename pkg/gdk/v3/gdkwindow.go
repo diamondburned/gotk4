@@ -3,8 +3,10 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -42,14 +44,26 @@ func init() {
 type FullscreenMode int
 
 const (
-	// CurrentMonitor: fullscreen on current monitor only.
-	FullscreenModeCurrentMonitor FullscreenMode = iota
-	// AllMonitors: span across all monitors when fullscreen.
-	FullscreenModeAllMonitors
+	// FullscreenOnCurrentMonitor: fullscreen on current monitor only.
+	FullscreenOnCurrentMonitor FullscreenMode = iota
+	// FullscreenOnAllMonitors: span across all monitors when fullscreen.
+	FullscreenOnAllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
 	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FullscreenMode.
+func (f FullscreenMode) String() string {
+	switch f {
+	case FullscreenOnCurrentMonitor:
+		return "CurrentMonitor"
+	case FullscreenOnAllMonitors:
+		return "AllMonitors"
+	default:
+		return fmt.Sprintf("FullscreenMode(%d)", f)
+	}
 }
 
 // Gravity defines the reference point of a window and the meaning of
@@ -60,26 +74,26 @@ func marshalFullscreenMode(p uintptr) (interface{}, error) {
 type Gravity int
 
 const (
-	// NorthWest: reference point is at the top left corner.
+	// GravityNorthWest: reference point is at the top left corner.
 	GravityNorthWest Gravity = 1
-	// North: reference point is in the middle of the top edge.
+	// GravityNorth: reference point is in the middle of the top edge.
 	GravityNorth Gravity = 2
-	// NorthEast: reference point is at the top right corner.
+	// GravityNorthEast: reference point is at the top right corner.
 	GravityNorthEast Gravity = 3
-	// West: reference point is at the middle of the left edge.
+	// GravityWest: reference point is at the middle of the left edge.
 	GravityWest Gravity = 4
-	// Center: reference point is at the center of the window.
+	// GravityCenter: reference point is at the center of the window.
 	GravityCenter Gravity = 5
-	// East: reference point is at the middle of the right edge.
+	// GravityEast: reference point is at the middle of the right edge.
 	GravityEast Gravity = 6
-	// SouthWest: reference point is at the lower left corner.
+	// GravitySouthWest: reference point is at the lower left corner.
 	GravitySouthWest Gravity = 7
-	// South: reference point is at the middle of the lower edge.
+	// GravitySouth: reference point is at the middle of the lower edge.
 	GravitySouth Gravity = 8
-	// SouthEast: reference point is at the lower right corner.
+	// GravitySouthEast: reference point is at the lower right corner.
 	GravitySouthEast Gravity = 9
-	// Static: reference point is at the top left corner of the window itself,
-	// ignoring window manager decorations.
+	// GravityStatic: reference point is at the top left corner of the window
+	// itself, ignoring window manager decorations.
 	GravityStatic Gravity = 10
 )
 
@@ -87,25 +101,53 @@ func marshalGravity(p uintptr) (interface{}, error) {
 	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Gravity.
+func (g Gravity) String() string {
+	switch g {
+	case GravityNorthWest:
+		return "NorthWest"
+	case GravityNorth:
+		return "North"
+	case GravityNorthEast:
+		return "NorthEast"
+	case GravityWest:
+		return "West"
+	case GravityCenter:
+		return "Center"
+	case GravityEast:
+		return "East"
+	case GravitySouthWest:
+		return "SouthWest"
+	case GravitySouth:
+		return "South"
+	case GravitySouthEast:
+		return "SouthEast"
+	case GravityStatic:
+		return "Static"
+	default:
+		return fmt.Sprintf("Gravity(%d)", g)
+	}
+}
+
 // WindowEdge determines a window edge or corner.
 type WindowEdge int
 
 const (
-	// NorthWest: top left corner.
+	// WindowEdgeNorthWest: top left corner.
 	WindowEdgeNorthWest WindowEdge = iota
-	// North: top edge.
+	// WindowEdgeNorth: top edge.
 	WindowEdgeNorth
-	// NorthEast: top right corner.
+	// WindowEdgeNorthEast: top right corner.
 	WindowEdgeNorthEast
-	// West: left edge.
+	// WindowEdgeWest: left edge.
 	WindowEdgeWest
-	// East: right edge.
+	// WindowEdgeEast: right edge.
 	WindowEdgeEast
-	// SouthWest: lower left corner.
+	// WindowEdgeSouthWest: lower left corner.
 	WindowEdgeSouthWest
-	// South: lower edge.
+	// WindowEdgeSouth: lower edge.
 	WindowEdgeSouth
-	// SouthEast: lower right corner.
+	// WindowEdgeSouthEast: lower right corner.
 	WindowEdgeSouthEast
 )
 
@@ -113,31 +155,78 @@ func marshalWindowEdge(p uintptr) (interface{}, error) {
 	return WindowEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for WindowEdge.
+func (w WindowEdge) String() string {
+	switch w {
+	case WindowEdgeNorthWest:
+		return "NorthWest"
+	case WindowEdgeNorth:
+		return "North"
+	case WindowEdgeNorthEast:
+		return "NorthEast"
+	case WindowEdgeWest:
+		return "West"
+	case WindowEdgeEast:
+		return "East"
+	case WindowEdgeSouthWest:
+		return "SouthWest"
+	case WindowEdgeSouth:
+		return "South"
+	case WindowEdgeSouthEast:
+		return "SouthEast"
+	default:
+		return fmt.Sprintf("WindowEdge(%d)", w)
+	}
+}
+
 // WindowType describes the kind of window.
 type WindowType int
 
 const (
-	// Root window; this window has no parent, covers the entire screen, and is
-	// created by the window system
-	WindowTypeRoot WindowType = iota
-	// Toplevel window (used to implement Window)
-	WindowTypeToplevel
-	// Child window (used to implement e.g. Entry)
-	WindowTypeChild
-	// Temp: override redirect temporary window (used to implement Menu)
-	WindowTypeTemp
-	// Foreign window (see gdk_window_foreign_new())
-	WindowTypeForeign
-	// Offscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]). Since 2.18
-	WindowTypeOffscreen
-	// Subsurface: subsurface-based window; This window is visually tied to a
-	// toplevel, and is moved/stacked with it. Currently this window type is
-	// only implemented in Wayland. Since 3.14
-	WindowTypeSubsurface
+	// WindowRoot window; this window has no parent, covers the entire screen,
+	// and is created by the window system
+	WindowRoot WindowType = iota
+	// WindowToplevel window (used to implement Window)
+	WindowToplevel
+	// WindowChild window (used to implement e.g. Entry)
+	WindowChild
+	// WindowTemp: override redirect temporary window (used to implement Menu)
+	WindowTemp
+	// WindowForeign window (see gdk_window_foreign_new())
+	WindowForeign
+	// WindowOffscreen window (see [Offscreen Windows][OFFSCREEN-WINDOWS]).
+	// Since 2.18
+	WindowOffscreen
+	// WindowSubsurface: subsurface-based window; This window is visually tied
+	// to a toplevel, and is moved/stacked with it. Currently this window type
+	// is only implemented in Wayland. Since 3.14
+	WindowSubsurface
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
 	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WindowType.
+func (w WindowType) String() string {
+	switch w {
+	case WindowRoot:
+		return "Root"
+	case WindowToplevel:
+		return "Toplevel"
+	case WindowChild:
+		return "Child"
+	case WindowTemp:
+		return "Temp"
+	case WindowForeign:
+		return "Foreign"
+	case WindowOffscreen:
+		return "Offscreen"
+	case WindowSubsurface:
+		return "Subsurface"
+	default:
+		return fmt.Sprintf("WindowType(%d)", w)
+	}
 }
 
 // WindowWindowClass: GDK_INPUT_OUTPUT windows are the standard kind of window
@@ -149,13 +238,25 @@ type WindowWindowClass int
 
 const (
 	// InputOutput: window for graphics and events
-	WindowWindowClassInputOutput WindowWindowClass = iota
+	InputOutput WindowWindowClass = iota
 	// InputOnly: window for events only
-	WindowWindowClassInputOnly
+	InputOnly
 )
 
 func marshalWindowWindowClass(p uintptr) (interface{}, error) {
 	return WindowWindowClass(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WindowWindowClass.
+func (w WindowWindowClass) String() string {
+	switch w {
+	case InputOutput:
+		return "InputOutput"
+	case InputOnly:
+		return "InputOnly"
+	default:
+		return fmt.Sprintf("WindowWindowClass(%d)", w)
+	}
 }
 
 // AnchorHints: positioning hints for aligning a window relative to a rectangle.
@@ -176,28 +277,70 @@ func marshalWindowWindowClass(p uintptr) (interface{}, error) {
 type AnchorHints int
 
 const (
-	// AnchorHintsFlipX: allow flipping anchors horizontally
-	AnchorHintsFlipX AnchorHints = 0b1
-	// AnchorHintsFlipY: allow flipping anchors vertically
-	AnchorHintsFlipY AnchorHints = 0b10
-	// AnchorHintsSlideX: allow sliding window horizontally
-	AnchorHintsSlideX AnchorHints = 0b100
-	// AnchorHintsSlideY: allow sliding window vertically
-	AnchorHintsSlideY AnchorHints = 0b1000
-	// AnchorHintsResizeX: allow resizing window horizontally
-	AnchorHintsResizeX AnchorHints = 0b10000
-	// AnchorHintsResizeY: allow resizing window vertically
-	AnchorHintsResizeY AnchorHints = 0b100000
-	// AnchorHintsFlip: allow flipping anchors on both axes
-	AnchorHintsFlip AnchorHints = 0b11
-	// AnchorHintsSlide: allow sliding window on both axes
-	AnchorHintsSlide AnchorHints = 0b1100
-	// AnchorHintsResize: allow resizing window on both axes
-	AnchorHintsResize AnchorHints = 0b110000
+	// AnchorFlipX: allow flipping anchors horizontally
+	AnchorFlipX AnchorHints = 0b1
+	// AnchorFlipY: allow flipping anchors vertically
+	AnchorFlipY AnchorHints = 0b10
+	// AnchorSlideX: allow sliding window horizontally
+	AnchorSlideX AnchorHints = 0b100
+	// AnchorSlideY: allow sliding window vertically
+	AnchorSlideY AnchorHints = 0b1000
+	// AnchorResizeX: allow resizing window horizontally
+	AnchorResizeX AnchorHints = 0b10000
+	// AnchorResizeY: allow resizing window vertically
+	AnchorResizeY AnchorHints = 0b100000
+	// AnchorFlip: allow flipping anchors on both axes
+	AnchorFlip AnchorHints = 0b11
+	// AnchorSlide: allow sliding window on both axes
+	AnchorSlide AnchorHints = 0b1100
+	// AnchorResize: allow resizing window on both axes
+	AnchorResize AnchorHints = 0b110000
 )
 
 func marshalAnchorHints(p uintptr) (interface{}, error) {
 	return AnchorHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AnchorHints.
+func (a AnchorHints) String() string {
+	if a == 0 {
+		return "AnchorHints(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(113)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AnchorFlipX:
+			builder.WriteString("FlipX|")
+		case AnchorFlipY:
+			builder.WriteString("FlipY|")
+		case AnchorSlideX:
+			builder.WriteString("SlideX|")
+		case AnchorSlideY:
+			builder.WriteString("SlideY|")
+		case AnchorResizeX:
+			builder.WriteString("ResizeX|")
+		case AnchorResizeY:
+			builder.WriteString("ResizeY|")
+		case AnchorFlip:
+			builder.WriteString("Flip|")
+		case AnchorSlide:
+			builder.WriteString("Slide|")
+		case AnchorResize:
+			builder.WriteString("Resize|")
+		default:
+			builder.WriteString(fmt.Sprintf("AnchorHints(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // WMDecoration: these are hints originally defined by the Motif toolkit. The
@@ -206,24 +349,62 @@ func marshalAnchorHints(p uintptr) (interface{}, error) {
 type WMDecoration int
 
 const (
-	// WMDecorationAll decorations should be applied.
-	WMDecorationAll WMDecoration = 0b1
-	// WMDecorationBorder: frame should be drawn around the window.
-	WMDecorationBorder WMDecoration = 0b10
-	// WMDecorationResizeh: frame should have resize handles.
-	WMDecorationResizeh WMDecoration = 0b100
-	// WMDecorationTitle: titlebar should be placed above the window.
-	WMDecorationTitle WMDecoration = 0b1000
-	// WMDecorationMenu: button for opening a menu should be included.
-	WMDecorationMenu WMDecoration = 0b10000
-	// WMDecorationMinimize button should be included.
-	WMDecorationMinimize WMDecoration = 0b100000
-	// WMDecorationMaximize button should be included.
-	WMDecorationMaximize WMDecoration = 0b1000000
+	// DecorAll decorations should be applied.
+	DecorAll WMDecoration = 0b1
+	// DecorBorder: frame should be drawn around the window.
+	DecorBorder WMDecoration = 0b10
+	// DecorResizeh: frame should have resize handles.
+	DecorResizeh WMDecoration = 0b100
+	// DecorTitle: titlebar should be placed above the window.
+	DecorTitle WMDecoration = 0b1000
+	// DecorMenu: button for opening a menu should be included.
+	DecorMenu WMDecoration = 0b10000
+	// DecorMinimize button should be included.
+	DecorMinimize WMDecoration = 0b100000
+	// DecorMaximize button should be included.
+	DecorMaximize WMDecoration = 0b1000000
 )
 
 func marshalWMDecoration(p uintptr) (interface{}, error) {
 	return WMDecoration(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for WMDecoration.
+func (w WMDecoration) String() string {
+	if w == 0 {
+		return "WMDecoration(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(82)
+
+	for w != 0 {
+		next := w & (w - 1)
+		bit := w - next
+
+		switch bit {
+		case DecorAll:
+			builder.WriteString("All|")
+		case DecorBorder:
+			builder.WriteString("Border|")
+		case DecorResizeh:
+			builder.WriteString("Resizeh|")
+		case DecorTitle:
+			builder.WriteString("Title|")
+		case DecorMenu:
+			builder.WriteString("Menu|")
+		case DecorMinimize:
+			builder.WriteString("Minimize|")
+		case DecorMaximize:
+			builder.WriteString("Maximize|")
+		default:
+			builder.WriteString(fmt.Sprintf("WMDecoration(0b%b)|", bit))
+		}
+
+		w = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // WMFunction: these are hints originally defined by the Motif toolkit. The
@@ -232,22 +413,58 @@ func marshalWMDecoration(p uintptr) (interface{}, error) {
 type WMFunction int
 
 const (
-	// WMFunctionAll functions should be offered.
-	WMFunctionAll WMFunction = 0b1
-	// WMFunctionResize: window should be resizable.
-	WMFunctionResize WMFunction = 0b10
-	// WMFunctionMove: window should be movable.
-	WMFunctionMove WMFunction = 0b100
-	// WMFunctionMinimize: window should be minimizable.
-	WMFunctionMinimize WMFunction = 0b1000
-	// WMFunctionMaximize: window should be maximizable.
-	WMFunctionMaximize WMFunction = 0b10000
-	// WMFunctionClose: window should be closable.
-	WMFunctionClose WMFunction = 0b100000
+	// FuncAll functions should be offered.
+	FuncAll WMFunction = 0b1
+	// FuncResize: window should be resizable.
+	FuncResize WMFunction = 0b10
+	// FuncMove: window should be movable.
+	FuncMove WMFunction = 0b100
+	// FuncMinimize: window should be minimizable.
+	FuncMinimize WMFunction = 0b1000
+	// FuncMaximize: window should be maximizable.
+	FuncMaximize WMFunction = 0b10000
+	// FuncClose: window should be closable.
+	FuncClose WMFunction = 0b100000
 )
 
 func marshalWMFunction(p uintptr) (interface{}, error) {
 	return WMFunction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for WMFunction.
+func (w WMFunction) String() string {
+	if w == 0 {
+		return "WMFunction(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(63)
+
+	for w != 0 {
+		next := w & (w - 1)
+		bit := w - next
+
+		switch bit {
+		case FuncAll:
+			builder.WriteString("All|")
+		case FuncResize:
+			builder.WriteString("Resize|")
+		case FuncMove:
+			builder.WriteString("Move|")
+		case FuncMinimize:
+			builder.WriteString("Minimize|")
+		case FuncMaximize:
+			builder.WriteString("Maximize|")
+		case FuncClose:
+			builder.WriteString("Close|")
+		default:
+			builder.WriteString(fmt.Sprintf("WMFunction(0b%b)|", bit))
+		}
+
+		w = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // WindowAttributesType: used to indicate which fields in the WindowAttr struct
@@ -259,27 +476,66 @@ func marshalWMFunction(p uintptr) (interface{}, error) {
 type WindowAttributesType int
 
 const (
-	// WindowAttributesTypeTitle: honor the title field
-	WindowAttributesTypeTitle WindowAttributesType = 0b10
-	// WindowAttributesTypeX: honor the X coordinate field
-	WindowAttributesTypeX WindowAttributesType = 0b100
-	// WindowAttributesTypeY: honor the Y coordinate field
-	WindowAttributesTypeY WindowAttributesType = 0b1000
-	// WindowAttributesTypeCursor: honor the cursor field
-	WindowAttributesTypeCursor WindowAttributesType = 0b10000
-	// WindowAttributesTypeVisual: honor the visual field
-	WindowAttributesTypeVisual WindowAttributesType = 0b100000
-	// WindowAttributesTypeWmclass: honor the wmclass_class and wmclass_name
-	// fields
-	WindowAttributesTypeWmclass WindowAttributesType = 0b1000000
-	// WindowAttributesTypeNoredir: honor the override_redirect field
-	WindowAttributesTypeNoredir WindowAttributesType = 0b10000000
-	// WindowAttributesTypeTypeHint: honor the type_hint field
-	WindowAttributesTypeTypeHint WindowAttributesType = 0b100000000
+	// WaTitle: honor the title field
+	WaTitle WindowAttributesType = 0b10
+	// WaX: honor the X coordinate field
+	WaX WindowAttributesType = 0b100
+	// WaY: honor the Y coordinate field
+	WaY WindowAttributesType = 0b1000
+	// WaCursor: honor the cursor field
+	WaCursor WindowAttributesType = 0b10000
+	// WaVisual: honor the visual field
+	WaVisual WindowAttributesType = 0b100000
+	// WaWmclass: honor the wmclass_class and wmclass_name fields
+	WaWmclass WindowAttributesType = 0b1000000
+	// WaNoredir: honor the override_redirect field
+	WaNoredir WindowAttributesType = 0b10000000
+	// WaTypeHint: honor the type_hint field
+	WaTypeHint WindowAttributesType = 0b100000000
 )
 
 func marshalWindowAttributesType(p uintptr) (interface{}, error) {
 	return WindowAttributesType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for WindowAttributesType.
+func (w WindowAttributesType) String() string {
+	if w == 0 {
+		return "WindowAttributesType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(64)
+
+	for w != 0 {
+		next := w & (w - 1)
+		bit := w - next
+
+		switch bit {
+		case WaTitle:
+			builder.WriteString("Title|")
+		case WaX:
+			builder.WriteString("X|")
+		case WaY:
+			builder.WriteString("Y|")
+		case WaCursor:
+			builder.WriteString("Cursor|")
+		case WaVisual:
+			builder.WriteString("Visual|")
+		case WaWmclass:
+			builder.WriteString("Wmclass|")
+		case WaNoredir:
+			builder.WriteString("Noredir|")
+		case WaTypeHint:
+			builder.WriteString("TypeHint|")
+		default:
+			builder.WriteString(fmt.Sprintf("WindowAttributesType(0b%b)|", bit))
+		}
+
+		w = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // WindowHints: used to indicate which fields of a Geometry struct should be
@@ -293,30 +549,72 @@ func marshalWindowAttributesType(p uintptr) (interface{}, error) {
 type WindowHints int
 
 const (
-	// WindowHintsPos indicates that the program has positioned the window
-	WindowHintsPos WindowHints = 0b1
-	// WindowHintsMinSize: min size fields are set
-	WindowHintsMinSize WindowHints = 0b10
-	// WindowHintsMaxSize: max size fields are set
-	WindowHintsMaxSize WindowHints = 0b100
-	// WindowHintsBaseSize: base size fields are set
-	WindowHintsBaseSize WindowHints = 0b1000
-	// WindowHintsAspect ratio fields are set
-	WindowHintsAspect WindowHints = 0b10000
-	// WindowHintsResizeInc: resize increment fields are set
-	WindowHintsResizeInc WindowHints = 0b100000
-	// WindowHintsWinGravity: window gravity field is set
-	WindowHintsWinGravity WindowHints = 0b1000000
-	// WindowHintsUserPos indicates that the window’s position was explicitly
-	// set by the user
-	WindowHintsUserPos WindowHints = 0b10000000
-	// WindowHintsUserSize indicates that the window’s size was explicitly set
-	// by the user
-	WindowHintsUserSize WindowHints = 0b100000000
+	// HintPos indicates that the program has positioned the window
+	HintPos WindowHints = 0b1
+	// HintMinSize: min size fields are set
+	HintMinSize WindowHints = 0b10
+	// HintMaxSize: max size fields are set
+	HintMaxSize WindowHints = 0b100
+	// HintBaseSize: base size fields are set
+	HintBaseSize WindowHints = 0b1000
+	// HintAspect ratio fields are set
+	HintAspect WindowHints = 0b10000
+	// HintResizeInc: resize increment fields are set
+	HintResizeInc WindowHints = 0b100000
+	// HintWinGravity: window gravity field is set
+	HintWinGravity WindowHints = 0b1000000
+	// HintUserPos indicates that the window’s position was explicitly set by
+	// the user
+	HintUserPos WindowHints = 0b10000000
+	// HintUserSize indicates that the window’s size was explicitly set by the
+	// user
+	HintUserSize WindowHints = 0b100000000
 )
 
 func marshalWindowHints(p uintptr) (interface{}, error) {
 	return WindowHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for WindowHints.
+func (w WindowHints) String() string {
+	if w == 0 {
+		return "WindowHints(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(109)
+
+	for w != 0 {
+		next := w & (w - 1)
+		bit := w - next
+
+		switch bit {
+		case HintPos:
+			builder.WriteString("Pos|")
+		case HintMinSize:
+			builder.WriteString("MinSize|")
+		case HintMaxSize:
+			builder.WriteString("MaxSize|")
+		case HintBaseSize:
+			builder.WriteString("BaseSize|")
+		case HintAspect:
+			builder.WriteString("Aspect|")
+		case HintResizeInc:
+			builder.WriteString("ResizeInc|")
+		case HintWinGravity:
+			builder.WriteString("WinGravity|")
+		case HintUserPos:
+			builder.WriteString("UserPos|")
+		case HintUserSize:
+			builder.WriteString("UserSize|")
+		default:
+			builder.WriteString(fmt.Sprintf("WindowHints(0b%b)|", bit))
+		}
+
+		w = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // WindowChildFunc: function of this type is passed to

@@ -3,8 +3,10 @@
 package gio
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -43,31 +45,67 @@ func init() {
 type SettingsBindFlags int
 
 const (
-	// SettingsBindFlagsDefault: equivalent to
+	// SettingsBindDefault: equivalent to
 	// G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET
-	SettingsBindFlagsDefault SettingsBindFlags = 0b0
-	// SettingsBindFlagsGet: update the #GObject property when the setting
-	// changes. It is an error to use this flag if the property is not writable.
-	SettingsBindFlagsGet SettingsBindFlags = 0b1
-	// SettingsBindFlagsSet: update the setting when the #GObject property
-	// changes. It is an error to use this flag if the property is not readable.
-	SettingsBindFlagsSet SettingsBindFlags = 0b10
-	// SettingsBindFlagsNoSensitivity: do not try to bind a "sensitivity"
-	// property to the writability of the setting
-	SettingsBindFlagsNoSensitivity SettingsBindFlags = 0b100
-	// SettingsBindFlagsGetNoChanges: when set in addition to SETTINGS_BIND_GET,
-	// set the #GObject property value initially from the setting, but do not
-	// listen for changes of the setting
-	SettingsBindFlagsGetNoChanges SettingsBindFlags = 0b1000
-	// SettingsBindFlagsInvertBoolean: when passed to g_settings_bind(), uses a
-	// pair of mapping functions that invert the boolean value when mapping
-	// between the setting and the property. The setting and property must both
-	// be booleans. You cannot pass this flag to g_settings_bind_with_mapping().
-	SettingsBindFlagsInvertBoolean SettingsBindFlags = 0b10000
+	SettingsBindDefault SettingsBindFlags = 0b0
+	// SettingsBindGet: update the #GObject property when the setting changes.
+	// It is an error to use this flag if the property is not writable.
+	SettingsBindGet SettingsBindFlags = 0b1
+	// SettingsBindSet: update the setting when the #GObject property changes.
+	// It is an error to use this flag if the property is not readable.
+	SettingsBindSet SettingsBindFlags = 0b10
+	// SettingsBindNoSensitivity: do not try to bind a "sensitivity" property to
+	// the writability of the setting
+	SettingsBindNoSensitivity SettingsBindFlags = 0b100
+	// SettingsBindGetNoChanges: when set in addition to SETTINGS_BIND_GET, set
+	// the #GObject property value initially from the setting, but do not listen
+	// for changes of the setting
+	SettingsBindGetNoChanges SettingsBindFlags = 0b1000
+	// SettingsBindInvertBoolean: when passed to g_settings_bind(), uses a pair
+	// of mapping functions that invert the boolean value when mapping between
+	// the setting and the property. The setting and property must both be
+	// booleans. You cannot pass this flag to g_settings_bind_with_mapping().
+	SettingsBindInvertBoolean SettingsBindFlags = 0b10000
 )
 
 func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
 	return SettingsBindFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for SettingsBindFlags.
+func (s SettingsBindFlags) String() string {
+	if s == 0 {
+		return "SettingsBindFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(128)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case SettingsBindDefault:
+			builder.WriteString("Default|")
+		case SettingsBindGet:
+			builder.WriteString("Get|")
+		case SettingsBindSet:
+			builder.WriteString("Set|")
+		case SettingsBindNoSensitivity:
+			builder.WriteString("NoSensitivity|")
+		case SettingsBindGetNoChanges:
+			builder.WriteString("GetNoChanges|")
+		case SettingsBindInvertBoolean:
+			builder.WriteString("InvertBoolean|")
+		default:
+			builder.WriteString(fmt.Sprintf("SettingsBindFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // SettingsBindGetMapping: type for the function that is used to convert from

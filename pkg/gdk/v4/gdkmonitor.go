@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -27,22 +28,42 @@ func init() {
 type SubpixelLayout int
 
 const (
-	// Unknown: layout is not known
+	// SubpixelLayoutUnknown: layout is not known
 	SubpixelLayoutUnknown SubpixelLayout = iota
-	// None: not organized in this way
+	// SubpixelLayoutNone: not organized in this way
 	SubpixelLayoutNone
-	// HorizontalRGB: layout is horizontal, the order is RGB
+	// SubpixelLayoutHorizontalRGB: layout is horizontal, the order is RGB
 	SubpixelLayoutHorizontalRGB
-	// HorizontalBGR: layout is horizontal, the order is BGR
+	// SubpixelLayoutHorizontalBGR: layout is horizontal, the order is BGR
 	SubpixelLayoutHorizontalBGR
-	// VerticalRGB: layout is vertical, the order is RGB
+	// SubpixelLayoutVerticalRGB: layout is vertical, the order is RGB
 	SubpixelLayoutVerticalRGB
-	// VerticalBGR: layout is vertical, the order is BGR
+	// SubpixelLayoutVerticalBGR: layout is vertical, the order is BGR
 	SubpixelLayoutVerticalBGR
 )
 
 func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SubpixelLayout.
+func (s SubpixelLayout) String() string {
+	switch s {
+	case SubpixelLayoutUnknown:
+		return "Unknown"
+	case SubpixelLayoutNone:
+		return "None"
+	case SubpixelLayoutHorizontalRGB:
+		return "HorizontalRGB"
+	case SubpixelLayoutHorizontalBGR:
+		return "HorizontalBGR"
+	case SubpixelLayoutVerticalRGB:
+		return "VerticalRGB"
+	case SubpixelLayoutVerticalBGR:
+		return "VerticalBGR"
+	default:
+		return fmt.Sprintf("SubpixelLayout(%d)", s)
+	}
 }
 
 // Monitor: GdkMonitor objects represent the individual outputs that are

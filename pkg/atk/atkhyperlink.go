@@ -3,6 +3,8 @@
 package atk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -26,12 +28,38 @@ func init() {
 type HyperlinkStateFlags int
 
 const (
-	// HyperlinkStateFlagsInline: link is inline
-	HyperlinkStateFlagsInline HyperlinkStateFlags = 0b1
+	// HyperlinkIsInline: link is inline
+	HyperlinkIsInline HyperlinkStateFlags = 0b1
 )
 
 func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
 	return HyperlinkStateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for HyperlinkStateFlags.
+func (h HyperlinkStateFlags) String() string {
+	if h == 0 {
+		return "HyperlinkStateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(17)
+
+	for h != 0 {
+		next := h & (h - 1)
+		bit := h - next
+
+		switch bit {
+		case HyperlinkIsInline:
+			builder.WriteString("Inline|")
+		default:
+			builder.WriteString(fmt.Sprintf("HyperlinkStateFlags(0b%b)|", bit))
+		}
+
+		h = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // HyperlinkOverrider contains methods that are overridable.

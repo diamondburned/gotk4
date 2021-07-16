@@ -10,27 +10,55 @@ import (
 )
 
 var bitfieldTmpl = gotmpl.NewGoTemplate(`
-	{{ GoDoc . 0 }}
+	{{ GoDoc . 0 (OverrideSelfName .GoName) }}
 	type {{ .GoName }} int
 
 	const (
 		{{ range .Members -}}
-		{{- $name := ($.FormatMember .Name) -}}
+		{{- $name := ($.FormatMember .) -}}
 		{{- GoDoc . 1 TrailingNewLine (OverrideSelfName $name) -}}
 		{{- $name }} {{ $.GoName }} = {{ $.Bits .Value }}
 		{{ end -}}
 	)
 
 	{{ if .GLibGetType }}
-	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
-		return {{ .GoName }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	func marshal{{.GoName}}(p uintptr) (interface{}, error) {
+		return {{.GoName}}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 	}
 	{{ end }}
+
+	{{ $recv := FirstLetter .GoName }}
+	// String returns the names in string for {{ .GoName }}.
+	func ({{$recv}} {{.GoName}}) String() string {
+		if {{$recv}} == 0 {
+			return "{{.GoName}}(0)"
+		}
+
+		var builder strings.Builder
+		builder.Grow({{.StrLen}})
+
+		for {{$recv}} != 0 {
+			next := {{$recv}} & ({{$recv}} - 1)
+			bit := {{$recv}} - next
+
+			switch bit {
+			{{- range .UniqueMembers }} {{ $name := $.FormatMember . }}
+			case {{$name}}: builder.WriteString("{{SnakeToGo true .Name}}|")
+			{{- end }}
+			default: builder.WriteString(fmt.Sprintf("{{.GoName}}(0b%b)|", bit))
+			}
+
+			{{$recv}} = next
+		}
+
+		return strings.TrimSuffix(builder.String(), "|")
+	}
 `)
 
 type bitfieldData struct {
 	*gir.Bitfield
 	GoName string
+	StrLen int // length of all enum strings concatenated
 
 	gen FileGenerator
 }
@@ -44,8 +72,12 @@ func (*bitfieldData) Bits(v string) string {
 	return "0b" + strconv.FormatUint(b, 2)
 }
 
-func (b *bitfieldData) FormatMember(memberName string) string {
-	return strcases.PascalToGo(b.Name) + strcases.SnakeToGo(true, memberName)
+func (b *bitfieldData) FormatMember(member gir.Member) string {
+	return FormatEnumMember(member)
+}
+
+func (b *bitfieldData) UniqueMembers() []gir.Member {
+	return UniqueEnumMembers(b.Members)
 }
 
 // CanGenerateBitfield returns false if the bitfield cannot be generated.
@@ -73,12 +105,24 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 
 	// Need GLibObject for g_value_*.
 	writer.Header().NeedsGLibObject()
+	// Need this for String().
+	writer.Header().Import("strings")
+	writer.Header().Import("fmt")
 
-	writer.Pen().WriteTmpl(bitfieldTmpl, &bitfieldData{
+	data := &bitfieldData{
 		Bitfield: bitfield,
 		GoName:   goName,
 		gen:      gen,
-	})
+	}
+
+	for i, member := range bitfield.Members {
+		data.StrLen += len(data.FormatMember(member))
+		if i > 0 {
+			data.StrLen++ // account for '|'
+		}
+	}
+
+	writer.Pen().WriteTmpl(bitfieldTmpl, data)
 
 	return true
 }

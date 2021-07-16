@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -41,18 +42,35 @@ func init() {
 type TreeViewDropPosition int
 
 const (
-	// Before: dropped row is inserted before
-	TreeViewDropPositionBefore TreeViewDropPosition = iota
-	// After: dropped row is inserted after
-	TreeViewDropPositionAfter
-	// IntoOrBefore: dropped row becomes a child or is inserted before
-	TreeViewDropPositionIntoOrBefore
-	// IntoOrAfter: dropped row becomes a child or is inserted after
-	TreeViewDropPositionIntoOrAfter
+	// TreeViewDropBefore: dropped row is inserted before
+	TreeViewDropBefore TreeViewDropPosition = iota
+	// TreeViewDropAfter: dropped row is inserted after
+	TreeViewDropAfter
+	// TreeViewDropIntoOrBefore: dropped row becomes a child or is inserted
+	// before
+	TreeViewDropIntoOrBefore
+	// TreeViewDropIntoOrAfter: dropped row becomes a child or is inserted after
+	TreeViewDropIntoOrAfter
 )
 
 func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
 	return TreeViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TreeViewDropPosition.
+func (t TreeViewDropPosition) String() string {
+	switch t {
+	case TreeViewDropBefore:
+		return "Before"
+	case TreeViewDropAfter:
+		return "After"
+	case TreeViewDropIntoOrBefore:
+		return "IntoOrBefore"
+	case TreeViewDropIntoOrAfter:
+		return "IntoOrAfter"
+	default:
+		return fmt.Sprintf("TreeViewDropPosition(%d)", t)
+	}
 }
 
 type TreeDestroyCountFunc func(treeView *TreeView, path *TreePath, children int)

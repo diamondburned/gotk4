@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,22 +42,46 @@ func init() {
 type Direction int
 
 const (
-	// LTR: strong left-to-right direction
+	// DirectionLTR: strong left-to-right direction
 	DirectionLTR Direction = iota
-	// RTL: strong right-to-left direction
+	// DirectionRTL: strong right-to-left direction
 	DirectionRTL
-	// TtbLTR: deprecated value; treated the same as PANGO_DIRECTION_RTL.
+	// DirectionTtbLTR: deprecated value; treated the same as
+	// PANGO_DIRECTION_RTL.
 	DirectionTtbLTR
-	// TtbRTL: deprecated value; treated the same as PANGO_DIRECTION_LTR
+	// DirectionTtbRTL: deprecated value; treated the same as
+	// PANGO_DIRECTION_LTR
 	DirectionTtbRTL
-	// WeakLTR: weak left-to-right direction
+	// DirectionWeakLTR: weak left-to-right direction
 	DirectionWeakLTR
-	// WeakRTL: weak right-to-left direction
+	// DirectionWeakRTL: weak right-to-left direction
 	DirectionWeakRTL
-	// Neutral: no direction specified
+	// DirectionNeutral: no direction specified
 	DirectionNeutral
 )
 
 func marshalDirection(p uintptr) (interface{}, error) {
 	return Direction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Direction.
+func (d Direction) String() string {
+	switch d {
+	case DirectionLTR:
+		return "LTR"
+	case DirectionRTL:
+		return "RTL"
+	case DirectionTtbLTR:
+		return "TtbLTR"
+	case DirectionTtbRTL:
+		return "TtbRTL"
+	case DirectionWeakLTR:
+		return "WeakLTR"
+	case DirectionWeakRTL:
+		return "WeakRTL"
+	case DirectionNeutral:
+		return "Neutral"
+	default:
+		return fmt.Sprintf("Direction(%d)", d)
+	}
 }

@@ -3,6 +3,8 @@
 package gio
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -50,6 +52,36 @@ const (
 
 func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
 	return ResolverNameLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ResolverNameLookupFlags.
+func (r ResolverNameLookupFlags) String() string {
+	if r == 0 {
+		return "ResolverNameLookupFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(94)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case ResolverNameLookupFlagsDefault:
+			builder.WriteString("Default|")
+		case ResolverNameLookupFlagsIPv4Only:
+			builder.WriteString("IPv4Only|")
+		case ResolverNameLookupFlagsIPv6Only:
+			builder.WriteString("IPv6Only|")
+		default:
+			builder.WriteString(fmt.Sprintf("ResolverNameLookupFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ResolverOverrider contains methods that are overridable.

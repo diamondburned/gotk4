@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -33,12 +34,22 @@ func init() {
 type Colorspace int
 
 const (
-	// RGB indicates a red/green/blue additive color space.
+	// ColorspaceRGB indicates a red/green/blue additive color space.
 	ColorspaceRGB Colorspace = iota
 )
 
 func marshalColorspace(p uintptr) (interface{}, error) {
 	return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Colorspace.
+func (c Colorspace) String() string {
+	switch c {
+	case ColorspaceRGB:
+		return "RGB"
+	default:
+		return fmt.Sprintf("Colorspace(%d)", c)
+	}
 }
 
 // PixbufAlphaMode: control the alpha channel for drawables.
@@ -59,17 +70,29 @@ func marshalColorspace(p uintptr) (interface{}, error) {
 type PixbufAlphaMode int
 
 const (
-	// Bilevel clipping mask (black and white) will be created and used to draw
-	// the image. Pixels below 0.5 opacity will be considered fully transparent,
-	// and all others will be considered fully opaque.
-	PixbufAlphaModeBilevel PixbufAlphaMode = iota
-	// Full: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the future it will
-	// do full alpha compositing.
-	PixbufAlphaModeFull
+	// PixbufAlphaBilevel clipping mask (black and white) will be created and
+	// used to draw the image. Pixels below 0.5 opacity will be considered fully
+	// transparent, and all others will be considered fully opaque.
+	PixbufAlphaBilevel PixbufAlphaMode = iota
+	// PixbufAlphaFull: for now falls back to K_PIXBUF_ALPHA_BILEVEL. In the
+	// future it will do full alpha compositing.
+	PixbufAlphaFull
 )
 
 func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
 	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PixbufAlphaMode.
+func (p PixbufAlphaMode) String() string {
+	switch p {
+	case PixbufAlphaBilevel:
+		return "Bilevel"
+	case PixbufAlphaFull:
+		return "Full"
+	default:
+		return fmt.Sprintf("PixbufAlphaMode(%d)", p)
+	}
 }
 
 // PixbufError: error code in the GDK_PIXBUF_ERROR domain.
@@ -79,25 +102,47 @@ func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
 type PixbufError int
 
 const (
-	// CorruptImage: image file was broken somehow.
+	// PixbufErrorCorruptImage: image file was broken somehow.
 	PixbufErrorCorruptImage PixbufError = iota
-	// InsufficientMemory: not enough memory.
+	// PixbufErrorInsufficientMemory: not enough memory.
 	PixbufErrorInsufficientMemory
-	// BadOption: bad option was passed to a pixbuf save module.
+	// PixbufErrorBadOption: bad option was passed to a pixbuf save module.
 	PixbufErrorBadOption
-	// UnknownType: unknown image type.
+	// PixbufErrorUnknownType: unknown image type.
 	PixbufErrorUnknownType
-	// UnsupportedOperation: don't know how to perform the given operation on
-	// the type of image at hand.
+	// PixbufErrorUnsupportedOperation: don't know how to perform the given
+	// operation on the type of image at hand.
 	PixbufErrorUnsupportedOperation
-	// Failed: generic failure code, something went wrong.
+	// PixbufErrorFailed: generic failure code, something went wrong.
 	PixbufErrorFailed
-	// IncompleteAnimation: only part of the animation was loaded.
+	// PixbufErrorIncompleteAnimation: only part of the animation was loaded.
 	PixbufErrorIncompleteAnimation
 )
 
 func marshalPixbufError(p uintptr) (interface{}, error) {
 	return PixbufError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PixbufError.
+func (p PixbufError) String() string {
+	switch p {
+	case PixbufErrorCorruptImage:
+		return "CorruptImage"
+	case PixbufErrorInsufficientMemory:
+		return "InsufficientMemory"
+	case PixbufErrorBadOption:
+		return "BadOption"
+	case PixbufErrorUnknownType:
+		return "UnknownType"
+	case PixbufErrorUnsupportedOperation:
+		return "UnsupportedOperation"
+	case PixbufErrorFailed:
+		return "Failed"
+	case PixbufErrorIncompleteAnimation:
+		return "IncompleteAnimation"
+	default:
+		return fmt.Sprintf("PixbufError(%d)", p)
+	}
 }
 
 // PixbufSaveFunc: save functions used by gdkpixbuf.Pixbuf.SaveToCallback().

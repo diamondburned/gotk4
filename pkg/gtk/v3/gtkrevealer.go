@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,22 +31,42 @@ func init() {
 type RevealerTransitionType int
 
 const (
-	// None: no transition
+	// RevealerTransitionTypeNone: no transition
 	RevealerTransitionTypeNone RevealerTransitionType = iota
-	// Crossfade: fade in
+	// RevealerTransitionTypeCrossfade: fade in
 	RevealerTransitionTypeCrossfade
-	// SlideRight: slide in from the left
+	// RevealerTransitionTypeSlideRight: slide in from the left
 	RevealerTransitionTypeSlideRight
-	// SlideLeft: slide in from the right
+	// RevealerTransitionTypeSlideLeft: slide in from the right
 	RevealerTransitionTypeSlideLeft
-	// SlideUp: slide in from the bottom
+	// RevealerTransitionTypeSlideUp: slide in from the bottom
 	RevealerTransitionTypeSlideUp
-	// SlideDown: slide in from the top
+	// RevealerTransitionTypeSlideDown: slide in from the top
 	RevealerTransitionTypeSlideDown
 )
 
 func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RevealerTransitionType.
+func (r RevealerTransitionType) String() string {
+	switch r {
+	case RevealerTransitionTypeNone:
+		return "None"
+	case RevealerTransitionTypeCrossfade:
+		return "Crossfade"
+	case RevealerTransitionTypeSlideRight:
+		return "SlideRight"
+	case RevealerTransitionTypeSlideLeft:
+		return "SlideLeft"
+	case RevealerTransitionTypeSlideUp:
+		return "SlideUp"
+	case RevealerTransitionTypeSlideDown:
+		return "SlideDown"
+	default:
+		return fmt.Sprintf("RevealerTransitionType(%d)", r)
+	}
 }
 
 // Revealer widget is a container which animates the transition of its child

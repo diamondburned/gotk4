@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -26,17 +27,31 @@ func init() {
 type StringFilterMatchMode int
 
 const (
-	// Exact: search string and text must match exactly.
+	// StringFilterMatchModeExact: search string and text must match exactly.
 	StringFilterMatchModeExact StringFilterMatchMode = iota
-	// Substring: search string must be contained as a substring inside the
-	// text.
+	// StringFilterMatchModeSubstring: search string must be contained as a
+	// substring inside the text.
 	StringFilterMatchModeSubstring
-	// Prefix: text must begin with the search string.
+	// StringFilterMatchModePrefix: text must begin with the search string.
 	StringFilterMatchModePrefix
 )
 
 func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for StringFilterMatchMode.
+func (s StringFilterMatchMode) String() string {
+	switch s {
+	case StringFilterMatchModeExact:
+		return "Exact"
+	case StringFilterMatchModeSubstring:
+		return "Substring"
+	case StringFilterMatchModePrefix:
+		return "Prefix"
+	default:
+		return fmt.Sprintf("StringFilterMatchMode(%d)", s)
+	}
 }
 
 // StringFilter: GtkStringFilter determines whether to include items by

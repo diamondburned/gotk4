@@ -3,7 +3,9 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -38,16 +40,44 @@ type GlyphUnit = int32
 type ShapeFlags int
 
 const (
-	// ShapeFlagsNone: default value.
-	ShapeFlagsNone ShapeFlags = 0b0
-	// ShapeFlagsRoundPositions: round glyph positions and widths to whole
-	// device units. This option should be set if the target renderer can't do
-	// subpixel positioning of glyphs.
-	ShapeFlagsRoundPositions ShapeFlags = 0b1
+	// ShapeNone: default value.
+	ShapeNone ShapeFlags = 0b0
+	// ShapeRoundPositions: round glyph positions and widths to whole device
+	// units. This option should be set if the target renderer can't do subpixel
+	// positioning of glyphs.
+	ShapeRoundPositions ShapeFlags = 0b1
 )
 
 func marshalShapeFlags(p uintptr) (interface{}, error) {
 	return ShapeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ShapeFlags.
+func (s ShapeFlags) String() string {
+	if s == 0 {
+		return "ShapeFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(29)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case ShapeNone:
+			builder.WriteString("None|")
+		case ShapeRoundPositions:
+			builder.WriteString("RoundPositions|")
+		default:
+			builder.WriteString(fmt.Sprintf("ShapeFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // Shape: convert the characters in text into glyphs.

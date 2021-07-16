@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -36,55 +38,109 @@ func init() {
 type IconThemeError int
 
 const (
-	// NotFound: icon specified does not exist in the theme
-	IconThemeErrorNotFound IconThemeError = iota
-	// Failed: unspecified error occurred.
-	IconThemeErrorFailed
+	// IconThemeNotFound: icon specified does not exist in the theme
+	IconThemeNotFound IconThemeError = iota
+	// IconThemeFailed: unspecified error occurred.
+	IconThemeFailed
 )
 
 func marshalIconThemeError(p uintptr) (interface{}, error) {
 	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for IconThemeError.
+func (i IconThemeError) String() string {
+	switch i {
+	case IconThemeNotFound:
+		return "NotFound"
+	case IconThemeFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("IconThemeError(%d)", i)
+	}
+}
+
 // IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
 type IconLookupFlags int
 
 const (
-	// IconLookupFlagsNoSvg: never get SVG icons, even if gdk-pixbuf supports
-	// them. Cannot be used together with GTK_ICON_LOOKUP_FORCE_SVG.
-	IconLookupFlagsNoSvg IconLookupFlags = 0b1
-	// IconLookupFlagsForceSvg: get SVG icons, even if gdk-pixbuf doesn’t
-	// support them. Cannot be used together with GTK_ICON_LOOKUP_NO_SVG.
-	IconLookupFlagsForceSvg IconLookupFlags = 0b10
-	// IconLookupFlagsUseBuiltin: when passed to gtk_icon_theme_lookup_icon()
+	// IconLookupNoSvg: never get SVG icons, even if gdk-pixbuf supports them.
+	// Cannot be used together with GTK_ICON_LOOKUP_FORCE_SVG.
+	IconLookupNoSvg IconLookupFlags = 0b1
+	// IconLookupForceSvg: get SVG icons, even if gdk-pixbuf doesn’t support
+	// them. Cannot be used together with GTK_ICON_LOOKUP_NO_SVG.
+	IconLookupForceSvg IconLookupFlags = 0b10
+	// IconLookupUseBuiltin: when passed to gtk_icon_theme_lookup_icon()
 	// includes builtin icons as well as files. For a builtin icon,
 	// gtk_icon_info_get_filename() is NULL and you need to call
 	// gtk_icon_info_get_builtin_pixbuf().
-	IconLookupFlagsUseBuiltin IconLookupFlags = 0b100
-	// IconLookupFlagsGenericFallback: try to shorten icon name at '-'
-	// characters before looking at inherited themes. This flag is only
-	// supported in functions that take a single icon name. For more general
-	// fallback, see gtk_icon_theme_choose_icon(). Since 2.12.
-	IconLookupFlagsGenericFallback IconLookupFlags = 0b1000
-	// IconLookupFlagsForceSize always get the icon scaled to the requested
-	// size. Since 2.14.
-	IconLookupFlagsForceSize IconLookupFlags = 0b10000
-	// IconLookupFlagsForceRegular: try to always load regular icons, even when
+	IconLookupUseBuiltin IconLookupFlags = 0b100
+	// IconLookupGenericFallback: try to shorten icon name at '-' characters
+	// before looking at inherited themes. This flag is only supported in
+	// functions that take a single icon name. For more general fallback, see
+	// gtk_icon_theme_choose_icon(). Since 2.12.
+	IconLookupGenericFallback IconLookupFlags = 0b1000
+	// IconLookupForceSize always get the icon scaled to the requested size.
+	// Since 2.14.
+	IconLookupForceSize IconLookupFlags = 0b10000
+	// IconLookupForceRegular: try to always load regular icons, even when
 	// symbolic icon names are given. Since 3.14.
-	IconLookupFlagsForceRegular IconLookupFlags = 0b100000
-	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
-	// when regular icon names are given. Since 3.14.
-	IconLookupFlagsForceSymbolic IconLookupFlags = 0b1000000
-	// IconLookupFlagsDirLTR: try to load a variant of the icon for
-	// left-to-right text direction. Since 3.14.
-	IconLookupFlagsDirLTR IconLookupFlags = 0b10000000
-	// IconLookupFlagsDirRTL: try to load a variant of the icon for
-	// right-to-left text direction. Since 3.14.
-	IconLookupFlagsDirRTL IconLookupFlags = 0b100000000
+	IconLookupForceRegular IconLookupFlags = 0b100000
+	// IconLookupForceSymbolic: try to always load symbolic icons, even when
+	// regular icon names are given. Since 3.14.
+	IconLookupForceSymbolic IconLookupFlags = 0b1000000
+	// IconLookupDirLTR: try to load a variant of the icon for left-to-right
+	// text direction. Since 3.14.
+	IconLookupDirLTR IconLookupFlags = 0b10000000
+	// IconLookupDirRTL: try to load a variant of the icon for right-to-left
+	// text direction. Since 3.14.
+	IconLookupDirRTL IconLookupFlags = 0b100000000
 )
 
 func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 	return IconLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for IconLookupFlags.
+func (i IconLookupFlags) String() string {
+	if i == 0 {
+		return "IconLookupFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(182)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case IconLookupNoSvg:
+			builder.WriteString("NoSvg|")
+		case IconLookupForceSvg:
+			builder.WriteString("ForceSvg|")
+		case IconLookupUseBuiltin:
+			builder.WriteString("UseBuiltin|")
+		case IconLookupGenericFallback:
+			builder.WriteString("GenericFallback|")
+		case IconLookupForceSize:
+			builder.WriteString("ForceSize|")
+		case IconLookupForceRegular:
+			builder.WriteString("ForceRegular|")
+		case IconLookupForceSymbolic:
+			builder.WriteString("ForceSymbolic|")
+		case IconLookupDirLTR:
+			builder.WriteString("DirLTR|")
+		case IconLookupDirRTL:
+			builder.WriteString("DirRTL|")
+		default:
+			builder.WriteString(fmt.Sprintf("IconLookupFlags(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // IconInfo contains information found when looking up an icon in an icon theme.

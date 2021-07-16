@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -21,29 +22,46 @@ import "C"
 type NormalizeMode int
 
 const (
-	// Default: standardize differences that do not affect the text content,
-	// such as the above-mentioned accent representation
-	NormalizeModeDefault NormalizeMode = 0
-	// NFD: another name for G_NORMALIZE_DEFAULT
-	NormalizeModeNFD NormalizeMode = 0
-	// DefaultCompose: like G_NORMALIZE_DEFAULT, but with composed forms rather
+	// NormalizeDefault: standardize differences that do not affect the text
+	// content, such as the above-mentioned accent representation
+	NormalizeDefault NormalizeMode = 0
+	// NormalizeNFD: another name for G_NORMALIZE_DEFAULT
+	NormalizeNFD NormalizeMode = 0
+	// NormalizeDefaultCompose: like G_NORMALIZE_DEFAULT, but with composed
+	// forms rather than a maximally decomposed form
+	NormalizeDefaultCompose NormalizeMode = 1
+	// NormalizeNFC: another name for G_NORMALIZE_DEFAULT_COMPOSE
+	NormalizeNFC NormalizeMode = 1
+	// NormalizeAll: beyond G_NORMALIZE_DEFAULT also standardize the
+	// "compatibility" characters in Unicode, such as SUPERSCRIPT THREE to the
+	// standard forms (in this case DIGIT THREE). Formatting information may be
+	// lost but for most text operations such characters should be considered
+	// the same
+	NormalizeAll NormalizeMode = 2
+	// NormalizeNFKD: another name for G_NORMALIZE_ALL
+	NormalizeNFKD NormalizeMode = 2
+	// NormalizeAllCompose: like G_NORMALIZE_ALL, but with composed forms rather
 	// than a maximally decomposed form
-	NormalizeModeDefaultCompose NormalizeMode = 1
-	// NFC: another name for G_NORMALIZE_DEFAULT_COMPOSE
-	NormalizeModeNFC NormalizeMode = 1
-	// All: beyond G_NORMALIZE_DEFAULT also standardize the "compatibility"
-	// characters in Unicode, such as SUPERSCRIPT THREE to the standard forms
-	// (in this case DIGIT THREE). Formatting information may be lost but for
-	// most text operations such characters should be considered the same
-	NormalizeModeAll NormalizeMode = 2
-	// NFKD: another name for G_NORMALIZE_ALL
-	NormalizeModeNFKD NormalizeMode = 2
-	// AllCompose: like G_NORMALIZE_ALL, but with composed forms rather than a
-	// maximally decomposed form
-	NormalizeModeAllCompose NormalizeMode = 3
-	// NFKC: another name for G_NORMALIZE_ALL_COMPOSE
-	NormalizeModeNFKC NormalizeMode = 3
+	NormalizeAllCompose NormalizeMode = 3
+	// NormalizeNFKC: another name for G_NORMALIZE_ALL_COMPOSE
+	NormalizeNFKC NormalizeMode = 3
 )
+
+// String returns the name in string for NormalizeMode.
+func (n NormalizeMode) String() string {
+	switch n {
+	case NormalizeDefault:
+		return "Default"
+	case NormalizeDefaultCompose:
+		return "DefaultCompose"
+	case NormalizeAll:
+		return "All"
+	case NormalizeAllCompose:
+		return "AllCompose"
+	default:
+		return fmt.Sprintf("NormalizeMode(%d)", n)
+	}
+}
 
 // UnicodeBreakType: these are the possible line break classifications.
 //
@@ -56,94 +74,189 @@ const (
 type UnicodeBreakType int
 
 const (
-	// Mandatory: mandatory Break (BK)
-	UnicodeBreakTypeMandatory UnicodeBreakType = iota
-	// CarriageReturn: carriage Return (CR)
-	UnicodeBreakTypeCarriageReturn
-	// LineFeed: line Feed (LF)
-	UnicodeBreakTypeLineFeed
-	// CombiningMark: attached Characters and Combining Marks (CM)
-	UnicodeBreakTypeCombiningMark
-	// Surrogate surrogates (SG)
-	UnicodeBreakTypeSurrogate
-	// ZeroWidthSpace: zero Width Space (ZW)
-	UnicodeBreakTypeZeroWidthSpace
-	// Inseparable: inseparable (IN)
-	UnicodeBreakTypeInseparable
-	// NonBreakingGlue: non-breaking ("Glue") (GL)
-	UnicodeBreakTypeNonBreakingGlue
-	// Contingent: contingent Break Opportunity (CB)
-	UnicodeBreakTypeContingent
-	// Space: space (SP)
-	UnicodeBreakTypeSpace
-	// After: break Opportunity After (BA)
-	UnicodeBreakTypeAfter
-	// Before: break Opportunity Before (BB)
-	UnicodeBreakTypeBefore
-	// BeforeAndAfter: break Opportunity Before and After (B2)
-	UnicodeBreakTypeBeforeAndAfter
-	// Hyphen: hyphen (HY)
-	UnicodeBreakTypeHyphen
-	// NonStarter: nonstarter (NS)
-	UnicodeBreakTypeNonStarter
-	// OpenPunctuation: opening Punctuation (OP)
-	UnicodeBreakTypeOpenPunctuation
-	// ClosePunctuation: closing Punctuation (CL)
-	UnicodeBreakTypeClosePunctuation
-	// Quotation ambiguous Quotation (QU)
-	UnicodeBreakTypeQuotation
-	// Exclamation: exclamation/Interrogation (EX)
-	UnicodeBreakTypeExclamation
-	// Ideographic: ideographic (ID)
-	UnicodeBreakTypeIdeographic
-	// Numeric: numeric (NU)
-	UnicodeBreakTypeNumeric
-	// InfixSeparator: infix Separator (Numeric) (IS)
-	UnicodeBreakTypeInfixSeparator
-	// Symbol symbols Allowing Break After (SY)
-	UnicodeBreakTypeSymbol
-	// Alphabetic: ordinary Alphabetic and Symbol Characters (AL)
-	UnicodeBreakTypeAlphabetic
-	// Prefix: prefix (Numeric) (PR)
-	UnicodeBreakTypePrefix
-	// Postfix: postfix (Numeric) (PO)
-	UnicodeBreakTypePostfix
-	// ComplexContext: complex Content Dependent (South East Asian) (SA)
-	UnicodeBreakTypeComplexContext
-	// Ambiguous ambiguous (Alphabetic or Ideographic) (AI)
-	UnicodeBreakTypeAmbiguous
-	// Unknown: unknown (XX)
-	UnicodeBreakTypeUnknown
-	// NextLine: next Line (NL)
-	UnicodeBreakTypeNextLine
-	// WordJoiner: word Joiner (WJ)
-	UnicodeBreakTypeWordJoiner
-	// HangulLJamo: hangul L Jamo (JL)
-	UnicodeBreakTypeHangulLJamo
-	// HangulVJamo: hangul V Jamo (JV)
-	UnicodeBreakTypeHangulVJamo
-	// HangulTJamo: hangul T Jamo (JT)
-	UnicodeBreakTypeHangulTJamo
-	// HangulLvSyllable: hangul LV Syllable (H2)
-	UnicodeBreakTypeHangulLvSyllable
-	// HangulLvtSyllable: hangul LVT Syllable (H3)
-	UnicodeBreakTypeHangulLvtSyllable
-	// CloseParanthesis: closing Parenthesis (CP). Since 2.28
-	UnicodeBreakTypeCloseParanthesis
-	// ConditionalJapaneseStarter: conditional Japanese Starter (CJ). Since:
-	// 2.32
-	UnicodeBreakTypeConditionalJapaneseStarter
-	// HebrewLetter: hebrew Letter (HL). Since: 2.32
-	UnicodeBreakTypeHebrewLetter
-	// RegionalIndicator: regional Indicator (RI). Since: 2.36
-	UnicodeBreakTypeRegionalIndicator
-	// EmojiBase: emoji Base (EB). Since: 2.50
-	UnicodeBreakTypeEmojiBase
-	// EmojiModifier: emoji Modifier (EM). Since: 2.50
-	UnicodeBreakTypeEmojiModifier
-	// ZeroWidthJoiner: zero Width Joiner (ZWJ). Since: 2.50
-	UnicodeBreakTypeZeroWidthJoiner
+	// UnicodeBreakMandatory: mandatory Break (BK)
+	UnicodeBreakMandatory UnicodeBreakType = iota
+	// UnicodeBreakCarriageReturn: carriage Return (CR)
+	UnicodeBreakCarriageReturn
+	// UnicodeBreakLineFeed: line Feed (LF)
+	UnicodeBreakLineFeed
+	// UnicodeBreakCombiningMark: attached Characters and Combining Marks (CM)
+	UnicodeBreakCombiningMark
+	// UnicodeBreakSurrogate surrogates (SG)
+	UnicodeBreakSurrogate
+	// UnicodeBreakZeroWidthSpace: zero Width Space (ZW)
+	UnicodeBreakZeroWidthSpace
+	// UnicodeBreakInseparable: inseparable (IN)
+	UnicodeBreakInseparable
+	// UnicodeBreakNonBreakingGlue: non-breaking ("Glue") (GL)
+	UnicodeBreakNonBreakingGlue
+	// UnicodeBreakContingent: contingent Break Opportunity (CB)
+	UnicodeBreakContingent
+	// UnicodeBreakSpace: space (SP)
+	UnicodeBreakSpace
+	// UnicodeBreakAfter: break Opportunity After (BA)
+	UnicodeBreakAfter
+	// UnicodeBreakBefore: break Opportunity Before (BB)
+	UnicodeBreakBefore
+	// UnicodeBreakBeforeAndAfter: break Opportunity Before and After (B2)
+	UnicodeBreakBeforeAndAfter
+	// UnicodeBreakHyphen: hyphen (HY)
+	UnicodeBreakHyphen
+	// UnicodeBreakNonStarter: nonstarter (NS)
+	UnicodeBreakNonStarter
+	// UnicodeBreakOpenPunctuation: opening Punctuation (OP)
+	UnicodeBreakOpenPunctuation
+	// UnicodeBreakClosePunctuation: closing Punctuation (CL)
+	UnicodeBreakClosePunctuation
+	// UnicodeBreakQuotation ambiguous Quotation (QU)
+	UnicodeBreakQuotation
+	// UnicodeBreakExclamation: exclamation/Interrogation (EX)
+	UnicodeBreakExclamation
+	// UnicodeBreakIdeographic: ideographic (ID)
+	UnicodeBreakIdeographic
+	// UnicodeBreakNumeric: numeric (NU)
+	UnicodeBreakNumeric
+	// UnicodeBreakInfixSeparator: infix Separator (Numeric) (IS)
+	UnicodeBreakInfixSeparator
+	// UnicodeBreakSymbol symbols Allowing Break After (SY)
+	UnicodeBreakSymbol
+	// UnicodeBreakAlphabetic: ordinary Alphabetic and Symbol Characters (AL)
+	UnicodeBreakAlphabetic
+	// UnicodeBreakPrefix: prefix (Numeric) (PR)
+	UnicodeBreakPrefix
+	// UnicodeBreakPostfix: postfix (Numeric) (PO)
+	UnicodeBreakPostfix
+	// UnicodeBreakComplexContext: complex Content Dependent (South East Asian)
+	// (SA)
+	UnicodeBreakComplexContext
+	// UnicodeBreakAmbiguous ambiguous (Alphabetic or Ideographic) (AI)
+	UnicodeBreakAmbiguous
+	// UnicodeBreakUnknown: unknown (XX)
+	UnicodeBreakUnknown
+	// UnicodeBreakNextLine: next Line (NL)
+	UnicodeBreakNextLine
+	// UnicodeBreakWordJoiner: word Joiner (WJ)
+	UnicodeBreakWordJoiner
+	// UnicodeBreakHangulLJamo: hangul L Jamo (JL)
+	UnicodeBreakHangulLJamo
+	// UnicodeBreakHangulVJamo: hangul V Jamo (JV)
+	UnicodeBreakHangulVJamo
+	// UnicodeBreakHangulTJamo: hangul T Jamo (JT)
+	UnicodeBreakHangulTJamo
+	// UnicodeBreakHangulLvSyllable: hangul LV Syllable (H2)
+	UnicodeBreakHangulLvSyllable
+	// UnicodeBreakHangulLvtSyllable: hangul LVT Syllable (H3)
+	UnicodeBreakHangulLvtSyllable
+	// UnicodeBreakCloseParanthesis: closing Parenthesis (CP). Since 2.28
+	UnicodeBreakCloseParanthesis
+	// UnicodeBreakConditionalJapaneseStarter: conditional Japanese Starter
+	// (CJ). Since: 2.32
+	UnicodeBreakConditionalJapaneseStarter
+	// UnicodeBreakHebrewLetter: hebrew Letter (HL). Since: 2.32
+	UnicodeBreakHebrewLetter
+	// UnicodeBreakRegionalIndicator: regional Indicator (RI). Since: 2.36
+	UnicodeBreakRegionalIndicator
+	// UnicodeBreakEmojiBase: emoji Base (EB). Since: 2.50
+	UnicodeBreakEmojiBase
+	// UnicodeBreakEmojiModifier: emoji Modifier (EM). Since: 2.50
+	UnicodeBreakEmojiModifier
+	// UnicodeBreakZeroWidthJoiner: zero Width Joiner (ZWJ). Since: 2.50
+	UnicodeBreakZeroWidthJoiner
 )
+
+// String returns the name in string for UnicodeBreakType.
+func (u UnicodeBreakType) String() string {
+	switch u {
+	case UnicodeBreakMandatory:
+		return "Mandatory"
+	case UnicodeBreakCarriageReturn:
+		return "CarriageReturn"
+	case UnicodeBreakLineFeed:
+		return "LineFeed"
+	case UnicodeBreakCombiningMark:
+		return "CombiningMark"
+	case UnicodeBreakSurrogate:
+		return "Surrogate"
+	case UnicodeBreakZeroWidthSpace:
+		return "ZeroWidthSpace"
+	case UnicodeBreakInseparable:
+		return "Inseparable"
+	case UnicodeBreakNonBreakingGlue:
+		return "NonBreakingGlue"
+	case UnicodeBreakContingent:
+		return "Contingent"
+	case UnicodeBreakSpace:
+		return "Space"
+	case UnicodeBreakAfter:
+		return "After"
+	case UnicodeBreakBefore:
+		return "Before"
+	case UnicodeBreakBeforeAndAfter:
+		return "BeforeAndAfter"
+	case UnicodeBreakHyphen:
+		return "Hyphen"
+	case UnicodeBreakNonStarter:
+		return "NonStarter"
+	case UnicodeBreakOpenPunctuation:
+		return "OpenPunctuation"
+	case UnicodeBreakClosePunctuation:
+		return "ClosePunctuation"
+	case UnicodeBreakQuotation:
+		return "Quotation"
+	case UnicodeBreakExclamation:
+		return "Exclamation"
+	case UnicodeBreakIdeographic:
+		return "Ideographic"
+	case UnicodeBreakNumeric:
+		return "Numeric"
+	case UnicodeBreakInfixSeparator:
+		return "InfixSeparator"
+	case UnicodeBreakSymbol:
+		return "Symbol"
+	case UnicodeBreakAlphabetic:
+		return "Alphabetic"
+	case UnicodeBreakPrefix:
+		return "Prefix"
+	case UnicodeBreakPostfix:
+		return "Postfix"
+	case UnicodeBreakComplexContext:
+		return "ComplexContext"
+	case UnicodeBreakAmbiguous:
+		return "Ambiguous"
+	case UnicodeBreakUnknown:
+		return "Unknown"
+	case UnicodeBreakNextLine:
+		return "NextLine"
+	case UnicodeBreakWordJoiner:
+		return "WordJoiner"
+	case UnicodeBreakHangulLJamo:
+		return "HangulLJamo"
+	case UnicodeBreakHangulVJamo:
+		return "HangulVJamo"
+	case UnicodeBreakHangulTJamo:
+		return "HangulTJamo"
+	case UnicodeBreakHangulLvSyllable:
+		return "HangulLvSyllable"
+	case UnicodeBreakHangulLvtSyllable:
+		return "HangulLvtSyllable"
+	case UnicodeBreakCloseParanthesis:
+		return "CloseParanthesis"
+	case UnicodeBreakConditionalJapaneseStarter:
+		return "ConditionalJapaneseStarter"
+	case UnicodeBreakHebrewLetter:
+		return "HebrewLetter"
+	case UnicodeBreakRegionalIndicator:
+		return "RegionalIndicator"
+	case UnicodeBreakEmojiBase:
+		return "EmojiBase"
+	case UnicodeBreakEmojiModifier:
+		return "EmojiModifier"
+	case UnicodeBreakZeroWidthJoiner:
+		return "ZeroWidthJoiner"
+	default:
+		return fmt.Sprintf("UnicodeBreakType(%d)", u)
+	}
+}
 
 // UnicodeScript enumeration identifies different writing systems. The values
 // correspond to the names as defined in the Unicode standard. The enumeration
@@ -155,324 +268,649 @@ const (
 type UnicodeScript int
 
 const (
-	// InvalidCode: value never returned from g_unichar_get_script()
+	// UnicodeScriptInvalidCode: value never returned from
+	// g_unichar_get_script()
 	UnicodeScriptInvalidCode UnicodeScript = -1
-	// Common: character used by multiple different scripts
+	// UnicodeScriptCommon: character used by multiple different scripts
 	UnicodeScriptCommon UnicodeScript = 0
-	// Inherited: mark glyph that takes its script from the base glyph to which
-	// it is attached
+	// UnicodeScriptInherited: mark glyph that takes its script from the base
+	// glyph to which it is attached
 	UnicodeScriptInherited UnicodeScript = 1
-	// Arabic: arabic
+	// UnicodeScriptArabic: arabic
 	UnicodeScriptArabic UnicodeScript = 2
-	// Armenian: armenian
+	// UnicodeScriptArmenian: armenian
 	UnicodeScriptArmenian UnicodeScript = 3
-	// Bengali: bengali
+	// UnicodeScriptBengali: bengali
 	UnicodeScriptBengali UnicodeScript = 4
-	// Bopomofo: bopomofo
+	// UnicodeScriptBopomofo: bopomofo
 	UnicodeScriptBopomofo UnicodeScript = 5
-	// Cherokee: cherokee
+	// UnicodeScriptCherokee: cherokee
 	UnicodeScriptCherokee UnicodeScript = 6
-	// Coptic: coptic
+	// UnicodeScriptCoptic: coptic
 	UnicodeScriptCoptic UnicodeScript = 7
-	// Cyrillic: cyrillic
+	// UnicodeScriptCyrillic: cyrillic
 	UnicodeScriptCyrillic UnicodeScript = 8
-	// Deseret: deseret
+	// UnicodeScriptDeseret: deseret
 	UnicodeScriptDeseret UnicodeScript = 9
-	// Devanagari: devanagari
+	// UnicodeScriptDevanagari: devanagari
 	UnicodeScriptDevanagari UnicodeScript = 10
-	// Ethiopic: ethiopic
+	// UnicodeScriptEthiopic: ethiopic
 	UnicodeScriptEthiopic UnicodeScript = 11
-	// Georgian: georgian
+	// UnicodeScriptGeorgian: georgian
 	UnicodeScriptGeorgian UnicodeScript = 12
-	// Gothic: gothic
+	// UnicodeScriptGothic: gothic
 	UnicodeScriptGothic UnicodeScript = 13
-	// Greek: greek
+	// UnicodeScriptGreek: greek
 	UnicodeScriptGreek UnicodeScript = 14
-	// Gujarati: gujarati
+	// UnicodeScriptGujarati: gujarati
 	UnicodeScriptGujarati UnicodeScript = 15
-	// Gurmukhi: gurmukhi
+	// UnicodeScriptGurmukhi: gurmukhi
 	UnicodeScriptGurmukhi UnicodeScript = 16
-	// Han: han
+	// UnicodeScriptHan: han
 	UnicodeScriptHan UnicodeScript = 17
-	// Hangul: hangul
+	// UnicodeScriptHangul: hangul
 	UnicodeScriptHangul UnicodeScript = 18
-	// Hebrew: hebrew
+	// UnicodeScriptHebrew: hebrew
 	UnicodeScriptHebrew UnicodeScript = 19
-	// Hiragana: hiragana
+	// UnicodeScriptHiragana: hiragana
 	UnicodeScriptHiragana UnicodeScript = 20
-	// Kannada: kannada
+	// UnicodeScriptKannada: kannada
 	UnicodeScriptKannada UnicodeScript = 21
-	// Katakana: katakana
+	// UnicodeScriptKatakana: katakana
 	UnicodeScriptKatakana UnicodeScript = 22
-	// Khmer: khmer
+	// UnicodeScriptKhmer: khmer
 	UnicodeScriptKhmer UnicodeScript = 23
-	// Lao: lao
+	// UnicodeScriptLao: lao
 	UnicodeScriptLao UnicodeScript = 24
-	// Latin: latin
+	// UnicodeScriptLatin: latin
 	UnicodeScriptLatin UnicodeScript = 25
-	// Malayalam: malayalam
+	// UnicodeScriptMalayalam: malayalam
 	UnicodeScriptMalayalam UnicodeScript = 26
-	// Mongolian: mongolian
+	// UnicodeScriptMongolian: mongolian
 	UnicodeScriptMongolian UnicodeScript = 27
-	// Myanmar: myanmar
+	// UnicodeScriptMyanmar: myanmar
 	UnicodeScriptMyanmar UnicodeScript = 28
-	// Ogham: ogham
+	// UnicodeScriptOgham: ogham
 	UnicodeScriptOgham UnicodeScript = 29
-	// OldItalic: old Italic
+	// UnicodeScriptOldItalic: old Italic
 	UnicodeScriptOldItalic UnicodeScript = 30
-	// Oriya: oriya
+	// UnicodeScriptOriya: oriya
 	UnicodeScriptOriya UnicodeScript = 31
-	// Runic: runic
+	// UnicodeScriptRunic: runic
 	UnicodeScriptRunic UnicodeScript = 32
-	// Sinhala: sinhala
+	// UnicodeScriptSinhala: sinhala
 	UnicodeScriptSinhala UnicodeScript = 33
-	// Syriac: syriac
+	// UnicodeScriptSyriac: syriac
 	UnicodeScriptSyriac UnicodeScript = 34
-	// Tamil: tamil
+	// UnicodeScriptTamil: tamil
 	UnicodeScriptTamil UnicodeScript = 35
-	// Telugu: telugu
+	// UnicodeScriptTelugu: telugu
 	UnicodeScriptTelugu UnicodeScript = 36
-	// Thaana: thaana
+	// UnicodeScriptThaana: thaana
 	UnicodeScriptThaana UnicodeScript = 37
-	// Thai: thai
+	// UnicodeScriptThai: thai
 	UnicodeScriptThai UnicodeScript = 38
-	// Tibetan: tibetan
+	// UnicodeScriptTibetan: tibetan
 	UnicodeScriptTibetan UnicodeScript = 39
-	// CanadianAboriginal: canadian Aboriginal
+	// UnicodeScriptCanadianAboriginal: canadian Aboriginal
 	UnicodeScriptCanadianAboriginal UnicodeScript = 40
-	// Yi: yi
+	// UnicodeScriptYi: yi
 	UnicodeScriptYi UnicodeScript = 41
-	// Tagalog: tagalog
+	// UnicodeScriptTagalog: tagalog
 	UnicodeScriptTagalog UnicodeScript = 42
-	// Hanunoo: hanunoo
+	// UnicodeScriptHanunoo: hanunoo
 	UnicodeScriptHanunoo UnicodeScript = 43
-	// Buhid: buhid
+	// UnicodeScriptBuhid: buhid
 	UnicodeScriptBuhid UnicodeScript = 44
-	// Tagbanwa: tagbanwa
+	// UnicodeScriptTagbanwa: tagbanwa
 	UnicodeScriptTagbanwa UnicodeScript = 45
-	// Braille: braille
+	// UnicodeScriptBraille: braille
 	UnicodeScriptBraille UnicodeScript = 46
-	// Cypriot: cypriot
+	// UnicodeScriptCypriot: cypriot
 	UnicodeScriptCypriot UnicodeScript = 47
-	// Limbu: limbu
+	// UnicodeScriptLimbu: limbu
 	UnicodeScriptLimbu UnicodeScript = 48
-	// Osmanya: osmanya
+	// UnicodeScriptOsmanya: osmanya
 	UnicodeScriptOsmanya UnicodeScript = 49
-	// Shavian: shavian
+	// UnicodeScriptShavian: shavian
 	UnicodeScriptShavian UnicodeScript = 50
-	// LinearB: linear B
+	// UnicodeScriptLinearB: linear B
 	UnicodeScriptLinearB UnicodeScript = 51
-	// TaiLe: tai Le
+	// UnicodeScriptTaiLe: tai Le
 	UnicodeScriptTaiLe UnicodeScript = 52
-	// Ugaritic: ugaritic
+	// UnicodeScriptUgaritic: ugaritic
 	UnicodeScriptUgaritic UnicodeScript = 53
-	// NewTaiLue: new Tai Lue
+	// UnicodeScriptNewTaiLue: new Tai Lue
 	UnicodeScriptNewTaiLue UnicodeScript = 54
-	// Buginese: buginese
+	// UnicodeScriptBuginese: buginese
 	UnicodeScriptBuginese UnicodeScript = 55
-	// Glagolitic: glagolitic
+	// UnicodeScriptGlagolitic: glagolitic
 	UnicodeScriptGlagolitic UnicodeScript = 56
-	// Tifinagh: tifinagh
+	// UnicodeScriptTifinagh: tifinagh
 	UnicodeScriptTifinagh UnicodeScript = 57
-	// SylotiNagri: syloti Nagri
+	// UnicodeScriptSylotiNagri: syloti Nagri
 	UnicodeScriptSylotiNagri UnicodeScript = 58
-	// OldPersian: old Persian
+	// UnicodeScriptOldPersian: old Persian
 	UnicodeScriptOldPersian UnicodeScript = 59
-	// Kharoshthi: kharoshthi
+	// UnicodeScriptKharoshthi: kharoshthi
 	UnicodeScriptKharoshthi UnicodeScript = 60
-	// Unknown: unassigned code point
+	// UnicodeScriptUnknown: unassigned code point
 	UnicodeScriptUnknown UnicodeScript = 61
-	// Balinese: balinese
+	// UnicodeScriptBalinese: balinese
 	UnicodeScriptBalinese UnicodeScript = 62
-	// Cuneiform: cuneiform
+	// UnicodeScriptCuneiform: cuneiform
 	UnicodeScriptCuneiform UnicodeScript = 63
-	// Phoenician: phoenician
+	// UnicodeScriptPhoenician: phoenician
 	UnicodeScriptPhoenician UnicodeScript = 64
-	// PhagsPa: phags-pa
+	// UnicodeScriptPhagsPa: phags-pa
 	UnicodeScriptPhagsPa UnicodeScript = 65
-	// Nko: n'Ko
+	// UnicodeScriptNko: n'Ko
 	UnicodeScriptNko UnicodeScript = 66
-	// KayahLi: kayah Li. Since 2.16.3
+	// UnicodeScriptKayahLi: kayah Li. Since 2.16.3
 	UnicodeScriptKayahLi UnicodeScript = 67
-	// Lepcha: lepcha. Since 2.16.3
+	// UnicodeScriptLepcha: lepcha. Since 2.16.3
 	UnicodeScriptLepcha UnicodeScript = 68
-	// Rejang: rejang. Since 2.16.3
+	// UnicodeScriptRejang: rejang. Since 2.16.3
 	UnicodeScriptRejang UnicodeScript = 69
-	// Sundanese: sundanese. Since 2.16.3
+	// UnicodeScriptSundanese: sundanese. Since 2.16.3
 	UnicodeScriptSundanese UnicodeScript = 70
-	// Saurashtra: saurashtra. Since 2.16.3
+	// UnicodeScriptSaurashtra: saurashtra. Since 2.16.3
 	UnicodeScriptSaurashtra UnicodeScript = 71
-	// Cham: cham. Since 2.16.3
+	// UnicodeScriptCham: cham. Since 2.16.3
 	UnicodeScriptCham UnicodeScript = 72
-	// OlChiki: ol Chiki. Since 2.16.3
+	// UnicodeScriptOlChiki: ol Chiki. Since 2.16.3
 	UnicodeScriptOlChiki UnicodeScript = 73
-	// Vai: vai. Since 2.16.3
+	// UnicodeScriptVai: vai. Since 2.16.3
 	UnicodeScriptVai UnicodeScript = 74
-	// Carian: carian. Since 2.16.3
+	// UnicodeScriptCarian: carian. Since 2.16.3
 	UnicodeScriptCarian UnicodeScript = 75
-	// Lycian: lycian. Since 2.16.3
+	// UnicodeScriptLycian: lycian. Since 2.16.3
 	UnicodeScriptLycian UnicodeScript = 76
-	// Lydian: lydian. Since 2.16.3
+	// UnicodeScriptLydian: lydian. Since 2.16.3
 	UnicodeScriptLydian UnicodeScript = 77
-	// Avestan: avestan. Since 2.26
+	// UnicodeScriptAvestan: avestan. Since 2.26
 	UnicodeScriptAvestan UnicodeScript = 78
-	// Bamum: bamum. Since 2.26
+	// UnicodeScriptBamum: bamum. Since 2.26
 	UnicodeScriptBamum UnicodeScript = 79
-	// EgyptianHieroglyphs: egyptian Hieroglpyhs. Since 2.26
+	// UnicodeScriptEgyptianHieroglyphs: egyptian Hieroglpyhs. Since 2.26
 	UnicodeScriptEgyptianHieroglyphs UnicodeScript = 80
-	// ImperialAramaic: imperial Aramaic. Since 2.26
+	// UnicodeScriptImperialAramaic: imperial Aramaic. Since 2.26
 	UnicodeScriptImperialAramaic UnicodeScript = 81
-	// InscriptionalPahlavi: inscriptional Pahlavi. Since 2.26
+	// UnicodeScriptInscriptionalPahlavi: inscriptional Pahlavi. Since 2.26
 	UnicodeScriptInscriptionalPahlavi UnicodeScript = 82
-	// InscriptionalParthian: inscriptional Parthian. Since 2.26
+	// UnicodeScriptInscriptionalParthian: inscriptional Parthian. Since 2.26
 	UnicodeScriptInscriptionalParthian UnicodeScript = 83
-	// Javanese: javanese. Since 2.26
+	// UnicodeScriptJavanese: javanese. Since 2.26
 	UnicodeScriptJavanese UnicodeScript = 84
-	// Kaithi: kaithi. Since 2.26
+	// UnicodeScriptKaithi: kaithi. Since 2.26
 	UnicodeScriptKaithi UnicodeScript = 85
-	// Lisu: lisu. Since 2.26
+	// UnicodeScriptLisu: lisu. Since 2.26
 	UnicodeScriptLisu UnicodeScript = 86
-	// MeeteiMayek: meetei Mayek. Since 2.26
+	// UnicodeScriptMeeteiMayek: meetei Mayek. Since 2.26
 	UnicodeScriptMeeteiMayek UnicodeScript = 87
-	// OldSouthArabian: old South Arabian. Since 2.26
+	// UnicodeScriptOldSouthArabian: old South Arabian. Since 2.26
 	UnicodeScriptOldSouthArabian UnicodeScript = 88
-	// OldTurkic: old Turkic. Since 2.28
+	// UnicodeScriptOldTurkic: old Turkic. Since 2.28
 	UnicodeScriptOldTurkic UnicodeScript = 89
-	// Samaritan: samaritan. Since 2.26
+	// UnicodeScriptSamaritan: samaritan. Since 2.26
 	UnicodeScriptSamaritan UnicodeScript = 90
-	// TaiTham: tai Tham. Since 2.26
+	// UnicodeScriptTaiTham: tai Tham. Since 2.26
 	UnicodeScriptTaiTham UnicodeScript = 91
-	// TaiViet: tai Viet. Since 2.26
+	// UnicodeScriptTaiViet: tai Viet. Since 2.26
 	UnicodeScriptTaiViet UnicodeScript = 92
-	// Batak: batak. Since 2.28
+	// UnicodeScriptBatak: batak. Since 2.28
 	UnicodeScriptBatak UnicodeScript = 93
-	// Brahmi: brahmi. Since 2.28
+	// UnicodeScriptBrahmi: brahmi. Since 2.28
 	UnicodeScriptBrahmi UnicodeScript = 94
-	// Mandaic: mandaic. Since 2.28
+	// UnicodeScriptMandaic: mandaic. Since 2.28
 	UnicodeScriptMandaic UnicodeScript = 95
-	// Chakma: chakma. Since: 2.32
+	// UnicodeScriptChakma: chakma. Since: 2.32
 	UnicodeScriptChakma UnicodeScript = 96
-	// MeroiticCursive: meroitic Cursive. Since: 2.32
+	// UnicodeScriptMeroiticCursive: meroitic Cursive. Since: 2.32
 	UnicodeScriptMeroiticCursive UnicodeScript = 97
-	// MeroiticHieroglyphs: meroitic Hieroglyphs. Since: 2.32
+	// UnicodeScriptMeroiticHieroglyphs: meroitic Hieroglyphs. Since: 2.32
 	UnicodeScriptMeroiticHieroglyphs UnicodeScript = 98
-	// Miao: miao. Since: 2.32
+	// UnicodeScriptMiao: miao. Since: 2.32
 	UnicodeScriptMiao UnicodeScript = 99
-	// Sharada: sharada. Since: 2.32
+	// UnicodeScriptSharada: sharada. Since: 2.32
 	UnicodeScriptSharada UnicodeScript = 100
-	// SoraSompeng: sora Sompeng. Since: 2.32
+	// UnicodeScriptSoraSompeng: sora Sompeng. Since: 2.32
 	UnicodeScriptSoraSompeng UnicodeScript = 101
-	// Takri: takri. Since: 2.32
+	// UnicodeScriptTakri: takri. Since: 2.32
 	UnicodeScriptTakri UnicodeScript = 102
-	// BassaVah: bassa. Since: 2.42
+	// UnicodeScriptBassaVah: bassa. Since: 2.42
 	UnicodeScriptBassaVah UnicodeScript = 103
-	// CaucasianAlbanian: caucasian Albanian. Since: 2.42
+	// UnicodeScriptCaucasianAlbanian: caucasian Albanian. Since: 2.42
 	UnicodeScriptCaucasianAlbanian UnicodeScript = 104
-	// Duployan: duployan. Since: 2.42
+	// UnicodeScriptDuployan: duployan. Since: 2.42
 	UnicodeScriptDuployan UnicodeScript = 105
-	// Elbasan: elbasan. Since: 2.42
+	// UnicodeScriptElbasan: elbasan. Since: 2.42
 	UnicodeScriptElbasan UnicodeScript = 106
-	// Grantha: grantha. Since: 2.42
+	// UnicodeScriptGrantha: grantha. Since: 2.42
 	UnicodeScriptGrantha UnicodeScript = 107
-	// Khojki: kjohki. Since: 2.42
+	// UnicodeScriptKhojki: kjohki. Since: 2.42
 	UnicodeScriptKhojki UnicodeScript = 108
-	// Khudawadi: khudawadi, Sindhi. Since: 2.42
+	// UnicodeScriptKhudawadi: khudawadi, Sindhi. Since: 2.42
 	UnicodeScriptKhudawadi UnicodeScript = 109
-	// LinearA: linear A. Since: 2.42
+	// UnicodeScriptLinearA: linear A. Since: 2.42
 	UnicodeScriptLinearA UnicodeScript = 110
-	// Mahajani: mahajani. Since: 2.42
+	// UnicodeScriptMahajani: mahajani. Since: 2.42
 	UnicodeScriptMahajani UnicodeScript = 111
-	// Manichaean: manichaean. Since: 2.42
+	// UnicodeScriptManichaean: manichaean. Since: 2.42
 	UnicodeScriptManichaean UnicodeScript = 112
-	// MendeKikakui: mende Kikakui. Since: 2.42
+	// UnicodeScriptMendeKikakui: mende Kikakui. Since: 2.42
 	UnicodeScriptMendeKikakui UnicodeScript = 113
-	// Modi: modi. Since: 2.42
+	// UnicodeScriptModi: modi. Since: 2.42
 	UnicodeScriptModi UnicodeScript = 114
-	// Mro: mro. Since: 2.42
+	// UnicodeScriptMro: mro. Since: 2.42
 	UnicodeScriptMro UnicodeScript = 115
-	// Nabataean: nabataean. Since: 2.42
+	// UnicodeScriptNabataean: nabataean. Since: 2.42
 	UnicodeScriptNabataean UnicodeScript = 116
-	// OldNorthArabian: old North Arabian. Since: 2.42
+	// UnicodeScriptOldNorthArabian: old North Arabian. Since: 2.42
 	UnicodeScriptOldNorthArabian UnicodeScript = 117
-	// OldPermic: old Permic. Since: 2.42
+	// UnicodeScriptOldPermic: old Permic. Since: 2.42
 	UnicodeScriptOldPermic UnicodeScript = 118
-	// PahawhHmong: pahawh Hmong. Since: 2.42
+	// UnicodeScriptPahawhHmong: pahawh Hmong. Since: 2.42
 	UnicodeScriptPahawhHmong UnicodeScript = 119
-	// Palmyrene: palmyrene. Since: 2.42
+	// UnicodeScriptPalmyrene: palmyrene. Since: 2.42
 	UnicodeScriptPalmyrene UnicodeScript = 120
-	// PauCinHau: pau Cin Hau. Since: 2.42
+	// UnicodeScriptPauCinHau: pau Cin Hau. Since: 2.42
 	UnicodeScriptPauCinHau UnicodeScript = 121
-	// PsalterPahlavi: psalter Pahlavi. Since: 2.42
+	// UnicodeScriptPsalterPahlavi: psalter Pahlavi. Since: 2.42
 	UnicodeScriptPsalterPahlavi UnicodeScript = 122
-	// Siddham: siddham. Since: 2.42
+	// UnicodeScriptSiddham: siddham. Since: 2.42
 	UnicodeScriptSiddham UnicodeScript = 123
-	// Tirhuta: tirhuta. Since: 2.42
+	// UnicodeScriptTirhuta: tirhuta. Since: 2.42
 	UnicodeScriptTirhuta UnicodeScript = 124
-	// WarangCiti: warang Citi. Since: 2.42
+	// UnicodeScriptWarangCiti: warang Citi. Since: 2.42
 	UnicodeScriptWarangCiti UnicodeScript = 125
-	// Ahom: ahom. Since: 2.48
+	// UnicodeScriptAhom: ahom. Since: 2.48
 	UnicodeScriptAhom UnicodeScript = 126
-	// AnatolianHieroglyphs: anatolian Hieroglyphs. Since: 2.48
+	// UnicodeScriptAnatolianHieroglyphs: anatolian Hieroglyphs. Since: 2.48
 	UnicodeScriptAnatolianHieroglyphs UnicodeScript = 127
-	// Hatran: hatran. Since: 2.48
+	// UnicodeScriptHatran: hatran. Since: 2.48
 	UnicodeScriptHatran UnicodeScript = 128
-	// Multani: multani. Since: 2.48
+	// UnicodeScriptMultani: multani. Since: 2.48
 	UnicodeScriptMultani UnicodeScript = 129
-	// OldHungarian: old Hungarian. Since: 2.48
+	// UnicodeScriptOldHungarian: old Hungarian. Since: 2.48
 	UnicodeScriptOldHungarian UnicodeScript = 130
-	// Signwriting: signwriting. Since: 2.48
+	// UnicodeScriptSignwriting: signwriting. Since: 2.48
 	UnicodeScriptSignwriting UnicodeScript = 131
-	// Adlam: adlam. Since: 2.50
+	// UnicodeScriptAdlam: adlam. Since: 2.50
 	UnicodeScriptAdlam UnicodeScript = 132
-	// Bhaiksuki: bhaiksuki. Since: 2.50
+	// UnicodeScriptBhaiksuki: bhaiksuki. Since: 2.50
 	UnicodeScriptBhaiksuki UnicodeScript = 133
-	// Marchen: marchen. Since: 2.50
+	// UnicodeScriptMarchen: marchen. Since: 2.50
 	UnicodeScriptMarchen UnicodeScript = 134
-	// Newa: newa. Since: 2.50
+	// UnicodeScriptNewa: newa. Since: 2.50
 	UnicodeScriptNewa UnicodeScript = 135
-	// Osage: osage. Since: 2.50
+	// UnicodeScriptOsage: osage. Since: 2.50
 	UnicodeScriptOsage UnicodeScript = 136
-	// Tangut: tangut. Since: 2.50
+	// UnicodeScriptTangut: tangut. Since: 2.50
 	UnicodeScriptTangut UnicodeScript = 137
-	// MasaramGondi: masaram Gondi. Since: 2.54
+	// UnicodeScriptMasaramGondi: masaram Gondi. Since: 2.54
 	UnicodeScriptMasaramGondi UnicodeScript = 138
-	// Nushu: nushu. Since: 2.54
+	// UnicodeScriptNushu: nushu. Since: 2.54
 	UnicodeScriptNushu UnicodeScript = 139
-	// Soyombo: soyombo. Since: 2.54
+	// UnicodeScriptSoyombo: soyombo. Since: 2.54
 	UnicodeScriptSoyombo UnicodeScript = 140
-	// ZanabazarSquare: zanabazar Square. Since: 2.54
+	// UnicodeScriptZanabazarSquare: zanabazar Square. Since: 2.54
 	UnicodeScriptZanabazarSquare UnicodeScript = 141
-	// Dogra: dogra. Since: 2.58
+	// UnicodeScriptDogra: dogra. Since: 2.58
 	UnicodeScriptDogra UnicodeScript = 142
-	// GunjalaGondi: gunjala Gondi. Since: 2.58
+	// UnicodeScriptGunjalaGondi: gunjala Gondi. Since: 2.58
 	UnicodeScriptGunjalaGondi UnicodeScript = 143
-	// HanifiRohingya: hanifi Rohingya. Since: 2.58
+	// UnicodeScriptHanifiRohingya: hanifi Rohingya. Since: 2.58
 	UnicodeScriptHanifiRohingya UnicodeScript = 144
-	// Makasar: makasar. Since: 2.58
+	// UnicodeScriptMakasar: makasar. Since: 2.58
 	UnicodeScriptMakasar UnicodeScript = 145
-	// Medefaidrin: medefaidrin. Since: 2.58
+	// UnicodeScriptMedefaidrin: medefaidrin. Since: 2.58
 	UnicodeScriptMedefaidrin UnicodeScript = 146
-	// OldSogdian: old Sogdian. Since: 2.58
+	// UnicodeScriptOldSogdian: old Sogdian. Since: 2.58
 	UnicodeScriptOldSogdian UnicodeScript = 147
-	// Sogdian: sogdian. Since: 2.58
+	// UnicodeScriptSogdian: sogdian. Since: 2.58
 	UnicodeScriptSogdian UnicodeScript = 148
-	// Elymaic: elym. Since: 2.62
+	// UnicodeScriptElymaic: elym. Since: 2.62
 	UnicodeScriptElymaic UnicodeScript = 149
-	// Nandinagari: nand. Since: 2.62
+	// UnicodeScriptNandinagari: nand. Since: 2.62
 	UnicodeScriptNandinagari UnicodeScript = 150
-	// NyiakengPuachueHmong: rohg. Since: 2.62
+	// UnicodeScriptNyiakengPuachueHmong: rohg. Since: 2.62
 	UnicodeScriptNyiakengPuachueHmong UnicodeScript = 151
-	// Wancho: wcho. Since: 2.62
+	// UnicodeScriptWancho: wcho. Since: 2.62
 	UnicodeScriptWancho UnicodeScript = 152
-	// Chorasmian: chorasmian. Since: 2.66
+	// UnicodeScriptChorasmian: chorasmian. Since: 2.66
 	UnicodeScriptChorasmian UnicodeScript = 153
-	// DivesAkuru dives Akuru. Since: 2.66
+	// UnicodeScriptDivesAkuru dives Akuru. Since: 2.66
 	UnicodeScriptDivesAkuru UnicodeScript = 154
-	// KhitanSmallScript: khitan small script. Since: 2.66
+	// UnicodeScriptKhitanSmallScript: khitan small script. Since: 2.66
 	UnicodeScriptKhitanSmallScript UnicodeScript = 155
-	// Yezidi: yezidi. Since: 2.66
+	// UnicodeScriptYezidi: yezidi. Since: 2.66
 	UnicodeScriptYezidi UnicodeScript = 156
 )
+
+// String returns the name in string for UnicodeScript.
+func (u UnicodeScript) String() string {
+	switch u {
+	case UnicodeScriptInvalidCode:
+		return "InvalidCode"
+	case UnicodeScriptCommon:
+		return "Common"
+	case UnicodeScriptInherited:
+		return "Inherited"
+	case UnicodeScriptArabic:
+		return "Arabic"
+	case UnicodeScriptArmenian:
+		return "Armenian"
+	case UnicodeScriptBengali:
+		return "Bengali"
+	case UnicodeScriptBopomofo:
+		return "Bopomofo"
+	case UnicodeScriptCherokee:
+		return "Cherokee"
+	case UnicodeScriptCoptic:
+		return "Coptic"
+	case UnicodeScriptCyrillic:
+		return "Cyrillic"
+	case UnicodeScriptDeseret:
+		return "Deseret"
+	case UnicodeScriptDevanagari:
+		return "Devanagari"
+	case UnicodeScriptEthiopic:
+		return "Ethiopic"
+	case UnicodeScriptGeorgian:
+		return "Georgian"
+	case UnicodeScriptGothic:
+		return "Gothic"
+	case UnicodeScriptGreek:
+		return "Greek"
+	case UnicodeScriptGujarati:
+		return "Gujarati"
+	case UnicodeScriptGurmukhi:
+		return "Gurmukhi"
+	case UnicodeScriptHan:
+		return "Han"
+	case UnicodeScriptHangul:
+		return "Hangul"
+	case UnicodeScriptHebrew:
+		return "Hebrew"
+	case UnicodeScriptHiragana:
+		return "Hiragana"
+	case UnicodeScriptKannada:
+		return "Kannada"
+	case UnicodeScriptKatakana:
+		return "Katakana"
+	case UnicodeScriptKhmer:
+		return "Khmer"
+	case UnicodeScriptLao:
+		return "Lao"
+	case UnicodeScriptLatin:
+		return "Latin"
+	case UnicodeScriptMalayalam:
+		return "Malayalam"
+	case UnicodeScriptMongolian:
+		return "Mongolian"
+	case UnicodeScriptMyanmar:
+		return "Myanmar"
+	case UnicodeScriptOgham:
+		return "Ogham"
+	case UnicodeScriptOldItalic:
+		return "OldItalic"
+	case UnicodeScriptOriya:
+		return "Oriya"
+	case UnicodeScriptRunic:
+		return "Runic"
+	case UnicodeScriptSinhala:
+		return "Sinhala"
+	case UnicodeScriptSyriac:
+		return "Syriac"
+	case UnicodeScriptTamil:
+		return "Tamil"
+	case UnicodeScriptTelugu:
+		return "Telugu"
+	case UnicodeScriptThaana:
+		return "Thaana"
+	case UnicodeScriptThai:
+		return "Thai"
+	case UnicodeScriptTibetan:
+		return "Tibetan"
+	case UnicodeScriptCanadianAboriginal:
+		return "CanadianAboriginal"
+	case UnicodeScriptYi:
+		return "Yi"
+	case UnicodeScriptTagalog:
+		return "Tagalog"
+	case UnicodeScriptHanunoo:
+		return "Hanunoo"
+	case UnicodeScriptBuhid:
+		return "Buhid"
+	case UnicodeScriptTagbanwa:
+		return "Tagbanwa"
+	case UnicodeScriptBraille:
+		return "Braille"
+	case UnicodeScriptCypriot:
+		return "Cypriot"
+	case UnicodeScriptLimbu:
+		return "Limbu"
+	case UnicodeScriptOsmanya:
+		return "Osmanya"
+	case UnicodeScriptShavian:
+		return "Shavian"
+	case UnicodeScriptLinearB:
+		return "LinearB"
+	case UnicodeScriptTaiLe:
+		return "TaiLe"
+	case UnicodeScriptUgaritic:
+		return "Ugaritic"
+	case UnicodeScriptNewTaiLue:
+		return "NewTaiLue"
+	case UnicodeScriptBuginese:
+		return "Buginese"
+	case UnicodeScriptGlagolitic:
+		return "Glagolitic"
+	case UnicodeScriptTifinagh:
+		return "Tifinagh"
+	case UnicodeScriptSylotiNagri:
+		return "SylotiNagri"
+	case UnicodeScriptOldPersian:
+		return "OldPersian"
+	case UnicodeScriptKharoshthi:
+		return "Kharoshthi"
+	case UnicodeScriptUnknown:
+		return "Unknown"
+	case UnicodeScriptBalinese:
+		return "Balinese"
+	case UnicodeScriptCuneiform:
+		return "Cuneiform"
+	case UnicodeScriptPhoenician:
+		return "Phoenician"
+	case UnicodeScriptPhagsPa:
+		return "PhagsPa"
+	case UnicodeScriptNko:
+		return "Nko"
+	case UnicodeScriptKayahLi:
+		return "KayahLi"
+	case UnicodeScriptLepcha:
+		return "Lepcha"
+	case UnicodeScriptRejang:
+		return "Rejang"
+	case UnicodeScriptSundanese:
+		return "Sundanese"
+	case UnicodeScriptSaurashtra:
+		return "Saurashtra"
+	case UnicodeScriptCham:
+		return "Cham"
+	case UnicodeScriptOlChiki:
+		return "OlChiki"
+	case UnicodeScriptVai:
+		return "Vai"
+	case UnicodeScriptCarian:
+		return "Carian"
+	case UnicodeScriptLycian:
+		return "Lycian"
+	case UnicodeScriptLydian:
+		return "Lydian"
+	case UnicodeScriptAvestan:
+		return "Avestan"
+	case UnicodeScriptBamum:
+		return "Bamum"
+	case UnicodeScriptEgyptianHieroglyphs:
+		return "EgyptianHieroglyphs"
+	case UnicodeScriptImperialAramaic:
+		return "ImperialAramaic"
+	case UnicodeScriptInscriptionalPahlavi:
+		return "InscriptionalPahlavi"
+	case UnicodeScriptInscriptionalParthian:
+		return "InscriptionalParthian"
+	case UnicodeScriptJavanese:
+		return "Javanese"
+	case UnicodeScriptKaithi:
+		return "Kaithi"
+	case UnicodeScriptLisu:
+		return "Lisu"
+	case UnicodeScriptMeeteiMayek:
+		return "MeeteiMayek"
+	case UnicodeScriptOldSouthArabian:
+		return "OldSouthArabian"
+	case UnicodeScriptOldTurkic:
+		return "OldTurkic"
+	case UnicodeScriptSamaritan:
+		return "Samaritan"
+	case UnicodeScriptTaiTham:
+		return "TaiTham"
+	case UnicodeScriptTaiViet:
+		return "TaiViet"
+	case UnicodeScriptBatak:
+		return "Batak"
+	case UnicodeScriptBrahmi:
+		return "Brahmi"
+	case UnicodeScriptMandaic:
+		return "Mandaic"
+	case UnicodeScriptChakma:
+		return "Chakma"
+	case UnicodeScriptMeroiticCursive:
+		return "MeroiticCursive"
+	case UnicodeScriptMeroiticHieroglyphs:
+		return "MeroiticHieroglyphs"
+	case UnicodeScriptMiao:
+		return "Miao"
+	case UnicodeScriptSharada:
+		return "Sharada"
+	case UnicodeScriptSoraSompeng:
+		return "SoraSompeng"
+	case UnicodeScriptTakri:
+		return "Takri"
+	case UnicodeScriptBassaVah:
+		return "BassaVah"
+	case UnicodeScriptCaucasianAlbanian:
+		return "CaucasianAlbanian"
+	case UnicodeScriptDuployan:
+		return "Duployan"
+	case UnicodeScriptElbasan:
+		return "Elbasan"
+	case UnicodeScriptGrantha:
+		return "Grantha"
+	case UnicodeScriptKhojki:
+		return "Khojki"
+	case UnicodeScriptKhudawadi:
+		return "Khudawadi"
+	case UnicodeScriptLinearA:
+		return "LinearA"
+	case UnicodeScriptMahajani:
+		return "Mahajani"
+	case UnicodeScriptManichaean:
+		return "Manichaean"
+	case UnicodeScriptMendeKikakui:
+		return "MendeKikakui"
+	case UnicodeScriptModi:
+		return "Modi"
+	case UnicodeScriptMro:
+		return "Mro"
+	case UnicodeScriptNabataean:
+		return "Nabataean"
+	case UnicodeScriptOldNorthArabian:
+		return "OldNorthArabian"
+	case UnicodeScriptOldPermic:
+		return "OldPermic"
+	case UnicodeScriptPahawhHmong:
+		return "PahawhHmong"
+	case UnicodeScriptPalmyrene:
+		return "Palmyrene"
+	case UnicodeScriptPauCinHau:
+		return "PauCinHau"
+	case UnicodeScriptPsalterPahlavi:
+		return "PsalterPahlavi"
+	case UnicodeScriptSiddham:
+		return "Siddham"
+	case UnicodeScriptTirhuta:
+		return "Tirhuta"
+	case UnicodeScriptWarangCiti:
+		return "WarangCiti"
+	case UnicodeScriptAhom:
+		return "Ahom"
+	case UnicodeScriptAnatolianHieroglyphs:
+		return "AnatolianHieroglyphs"
+	case UnicodeScriptHatran:
+		return "Hatran"
+	case UnicodeScriptMultani:
+		return "Multani"
+	case UnicodeScriptOldHungarian:
+		return "OldHungarian"
+	case UnicodeScriptSignwriting:
+		return "Signwriting"
+	case UnicodeScriptAdlam:
+		return "Adlam"
+	case UnicodeScriptBhaiksuki:
+		return "Bhaiksuki"
+	case UnicodeScriptMarchen:
+		return "Marchen"
+	case UnicodeScriptNewa:
+		return "Newa"
+	case UnicodeScriptOsage:
+		return "Osage"
+	case UnicodeScriptTangut:
+		return "Tangut"
+	case UnicodeScriptMasaramGondi:
+		return "MasaramGondi"
+	case UnicodeScriptNushu:
+		return "Nushu"
+	case UnicodeScriptSoyombo:
+		return "Soyombo"
+	case UnicodeScriptZanabazarSquare:
+		return "ZanabazarSquare"
+	case UnicodeScriptDogra:
+		return "Dogra"
+	case UnicodeScriptGunjalaGondi:
+		return "GunjalaGondi"
+	case UnicodeScriptHanifiRohingya:
+		return "HanifiRohingya"
+	case UnicodeScriptMakasar:
+		return "Makasar"
+	case UnicodeScriptMedefaidrin:
+		return "Medefaidrin"
+	case UnicodeScriptOldSogdian:
+		return "OldSogdian"
+	case UnicodeScriptSogdian:
+		return "Sogdian"
+	case UnicodeScriptElymaic:
+		return "Elymaic"
+	case UnicodeScriptNandinagari:
+		return "Nandinagari"
+	case UnicodeScriptNyiakengPuachueHmong:
+		return "NyiakengPuachueHmong"
+	case UnicodeScriptWancho:
+		return "Wancho"
+	case UnicodeScriptChorasmian:
+		return "Chorasmian"
+	case UnicodeScriptDivesAkuru:
+		return "DivesAkuru"
+	case UnicodeScriptKhitanSmallScript:
+		return "KhitanSmallScript"
+	case UnicodeScriptYezidi:
+		return "Yezidi"
+	default:
+		return fmt.Sprintf("UnicodeScript(%d)", u)
+	}
+}
 
 // UnicodeType: these are the possible character classifications from the
 // Unicode specification. See Unicode Character Database
@@ -480,67 +918,136 @@ const (
 type UnicodeType int
 
 const (
-	// Control: general category "Other, Control" (Cc)
-	UnicodeTypeControl UnicodeType = iota
-	// Format: general category "Other, Format" (Cf)
-	UnicodeTypeFormat
-	// Unassigned: general category "Other, Not Assigned" (Cn)
-	UnicodeTypeUnassigned
-	// PrivateUse: general category "Other, Private Use" (Co)
-	UnicodeTypePrivateUse
-	// Surrogate: general category "Other, Surrogate" (Cs)
-	UnicodeTypeSurrogate
-	// LowercaseLetter: general category "Letter, Lowercase" (Ll)
-	UnicodeTypeLowercaseLetter
-	// ModifierLetter: general category "Letter, Modifier" (Lm)
-	UnicodeTypeModifierLetter
-	// OtherLetter: general category "Letter, Other" (Lo)
-	UnicodeTypeOtherLetter
-	// TitlecaseLetter: general category "Letter, Titlecase" (Lt)
-	UnicodeTypeTitlecaseLetter
-	// UppercaseLetter: general category "Letter, Uppercase" (Lu)
-	UnicodeTypeUppercaseLetter
-	// SpacingMark: general category "Mark, Spacing" (Mc)
-	UnicodeTypeSpacingMark
-	// EnclosingMark: general category "Mark, Enclosing" (Me)
-	UnicodeTypeEnclosingMark
-	// NonSpacingMark: general category "Mark, Nonspacing" (Mn)
-	UnicodeTypeNonSpacingMark
-	// DecimalNumber: general category "Number, Decimal Digit" (Nd)
-	UnicodeTypeDecimalNumber
-	// LetterNumber: general category "Number, Letter" (Nl)
-	UnicodeTypeLetterNumber
-	// OtherNumber: general category "Number, Other" (No)
-	UnicodeTypeOtherNumber
-	// ConnectPunctuation: general category "Punctuation, Connector" (Pc)
-	UnicodeTypeConnectPunctuation
-	// DashPunctuation: general category "Punctuation, Dash" (Pd)
-	UnicodeTypeDashPunctuation
-	// ClosePunctuation: general category "Punctuation, Close" (Pe)
-	UnicodeTypeClosePunctuation
-	// FinalPunctuation: general category "Punctuation, Final quote" (Pf)
-	UnicodeTypeFinalPunctuation
-	// InitialPunctuation: general category "Punctuation, Initial quote" (Pi)
-	UnicodeTypeInitialPunctuation
-	// OtherPunctuation: general category "Punctuation, Other" (Po)
-	UnicodeTypeOtherPunctuation
-	// OpenPunctuation: general category "Punctuation, Open" (Ps)
-	UnicodeTypeOpenPunctuation
-	// CurrencySymbol: general category "Symbol, Currency" (Sc)
-	UnicodeTypeCurrencySymbol
-	// ModifierSymbol: general category "Symbol, Modifier" (Sk)
-	UnicodeTypeModifierSymbol
-	// MathSymbol: general category "Symbol, Math" (Sm)
-	UnicodeTypeMathSymbol
-	// OtherSymbol: general category "Symbol, Other" (So)
-	UnicodeTypeOtherSymbol
-	// LineSeparator: general category "Separator, Line" (Zl)
-	UnicodeTypeLineSeparator
-	// ParagraphSeparator: general category "Separator, Paragraph" (Zp)
-	UnicodeTypeParagraphSeparator
-	// SpaceSeparator: general category "Separator, Space" (Zs)
-	UnicodeTypeSpaceSeparator
+	// UnicodeControl: general category "Other, Control" (Cc)
+	UnicodeControl UnicodeType = iota
+	// UnicodeFormat: general category "Other, Format" (Cf)
+	UnicodeFormat
+	// UnicodeUnassigned: general category "Other, Not Assigned" (Cn)
+	UnicodeUnassigned
+	// UnicodePrivateUse: general category "Other, Private Use" (Co)
+	UnicodePrivateUse
+	// UnicodeSurrogate: general category "Other, Surrogate" (Cs)
+	UnicodeSurrogate
+	// UnicodeLowercaseLetter: general category "Letter, Lowercase" (Ll)
+	UnicodeLowercaseLetter
+	// UnicodeModifierLetter: general category "Letter, Modifier" (Lm)
+	UnicodeModifierLetter
+	// UnicodeOtherLetter: general category "Letter, Other" (Lo)
+	UnicodeOtherLetter
+	// UnicodeTitlecaseLetter: general category "Letter, Titlecase" (Lt)
+	UnicodeTitlecaseLetter
+	// UnicodeUppercaseLetter: general category "Letter, Uppercase" (Lu)
+	UnicodeUppercaseLetter
+	// UnicodeSpacingMark: general category "Mark, Spacing" (Mc)
+	UnicodeSpacingMark
+	// UnicodeEnclosingMark: general category "Mark, Enclosing" (Me)
+	UnicodeEnclosingMark
+	// UnicodeNonSpacingMark: general category "Mark, Nonspacing" (Mn)
+	UnicodeNonSpacingMark
+	// UnicodeDecimalNumber: general category "Number, Decimal Digit" (Nd)
+	UnicodeDecimalNumber
+	// UnicodeLetterNumber: general category "Number, Letter" (Nl)
+	UnicodeLetterNumber
+	// UnicodeOtherNumber: general category "Number, Other" (No)
+	UnicodeOtherNumber
+	// UnicodeConnectPunctuation: general category "Punctuation, Connector" (Pc)
+	UnicodeConnectPunctuation
+	// UnicodeDashPunctuation: general category "Punctuation, Dash" (Pd)
+	UnicodeDashPunctuation
+	// UnicodeClosePunctuation: general category "Punctuation, Close" (Pe)
+	UnicodeClosePunctuation
+	// UnicodeFinalPunctuation: general category "Punctuation, Final quote" (Pf)
+	UnicodeFinalPunctuation
+	// UnicodeInitialPunctuation: general category "Punctuation, Initial quote"
+	// (Pi)
+	UnicodeInitialPunctuation
+	// UnicodeOtherPunctuation: general category "Punctuation, Other" (Po)
+	UnicodeOtherPunctuation
+	// UnicodeOpenPunctuation: general category "Punctuation, Open" (Ps)
+	UnicodeOpenPunctuation
+	// UnicodeCurrencySymbol: general category "Symbol, Currency" (Sc)
+	UnicodeCurrencySymbol
+	// UnicodeModifierSymbol: general category "Symbol, Modifier" (Sk)
+	UnicodeModifierSymbol
+	// UnicodeMathSymbol: general category "Symbol, Math" (Sm)
+	UnicodeMathSymbol
+	// UnicodeOtherSymbol: general category "Symbol, Other" (So)
+	UnicodeOtherSymbol
+	// UnicodeLineSeparator: general category "Separator, Line" (Zl)
+	UnicodeLineSeparator
+	// UnicodeParagraphSeparator: general category "Separator, Paragraph" (Zp)
+	UnicodeParagraphSeparator
+	// UnicodeSpaceSeparator: general category "Separator, Space" (Zs)
+	UnicodeSpaceSeparator
 )
+
+// String returns the name in string for UnicodeType.
+func (u UnicodeType) String() string {
+	switch u {
+	case UnicodeControl:
+		return "Control"
+	case UnicodeFormat:
+		return "Format"
+	case UnicodeUnassigned:
+		return "Unassigned"
+	case UnicodePrivateUse:
+		return "PrivateUse"
+	case UnicodeSurrogate:
+		return "Surrogate"
+	case UnicodeLowercaseLetter:
+		return "LowercaseLetter"
+	case UnicodeModifierLetter:
+		return "ModifierLetter"
+	case UnicodeOtherLetter:
+		return "OtherLetter"
+	case UnicodeTitlecaseLetter:
+		return "TitlecaseLetter"
+	case UnicodeUppercaseLetter:
+		return "UppercaseLetter"
+	case UnicodeSpacingMark:
+		return "SpacingMark"
+	case UnicodeEnclosingMark:
+		return "EnclosingMark"
+	case UnicodeNonSpacingMark:
+		return "NonSpacingMark"
+	case UnicodeDecimalNumber:
+		return "DecimalNumber"
+	case UnicodeLetterNumber:
+		return "LetterNumber"
+	case UnicodeOtherNumber:
+		return "OtherNumber"
+	case UnicodeConnectPunctuation:
+		return "ConnectPunctuation"
+	case UnicodeDashPunctuation:
+		return "DashPunctuation"
+	case UnicodeClosePunctuation:
+		return "ClosePunctuation"
+	case UnicodeFinalPunctuation:
+		return "FinalPunctuation"
+	case UnicodeInitialPunctuation:
+		return "InitialPunctuation"
+	case UnicodeOtherPunctuation:
+		return "OtherPunctuation"
+	case UnicodeOpenPunctuation:
+		return "OpenPunctuation"
+	case UnicodeCurrencySymbol:
+		return "CurrencySymbol"
+	case UnicodeModifierSymbol:
+		return "ModifierSymbol"
+	case UnicodeMathSymbol:
+		return "MathSymbol"
+	case UnicodeOtherSymbol:
+		return "OtherSymbol"
+	case UnicodeLineSeparator:
+		return "LineSeparator"
+	case UnicodeParagraphSeparator:
+		return "ParagraphSeparator"
+	case UnicodeSpaceSeparator:
+		return "SpaceSeparator"
+	default:
+		return fmt.Sprintf("UnicodeType(%d)", u)
+	}
+}
 
 // UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.

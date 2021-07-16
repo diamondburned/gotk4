@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -39,14 +41,40 @@ func init() {
 type ShortcutActionFlags int
 
 const (
-	// ShortcutActionFlagsExclusive: action is the only action that can be
-	// activated. If this flag is not set, a future activation may select a
-	// different action.
-	ShortcutActionFlagsExclusive ShortcutActionFlags = 0b1
+	// ShortcutActionExclusive: action is the only action that can be activated.
+	// If this flag is not set, a future activation may select a different
+	// action.
+	ShortcutActionExclusive ShortcutActionFlags = 0b1
 )
 
 func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 	return ShortcutActionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ShortcutActionFlags.
+func (s ShortcutActionFlags) String() string {
+	if s == 0 {
+		return "ShortcutActionFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(23)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case ShortcutActionExclusive:
+			builder.WriteString("Exclusive|")
+		default:
+			builder.WriteString(fmt.Sprintf("ShortcutActionFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.

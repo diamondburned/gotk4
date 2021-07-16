@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,32 +29,54 @@ func init() {
 type ScrollType int
 
 const (
-	// TopLeft: scroll the object vertically and horizontally to bring its top
-	// left corner to the top left corner of the window.
-	ScrollTypeTopLeft ScrollType = iota
-	// BottomRight: scroll the object vertically and horizontally to bring its
-	// bottom right corner to the bottom right corner of the window.
-	ScrollTypeBottomRight
-	// TopEdge: scroll the object vertically to bring its top edge to the top
-	// edge of the window.
-	ScrollTypeTopEdge
-	// BottomEdge: scroll the object vertically to bring its bottom edge to the
-	// bottom edge of the window.
-	ScrollTypeBottomEdge
-	// LeftEdge: scroll the object vertically and horizontally to bring its left
-	// edge to the left edge of the window.
-	ScrollTypeLeftEdge
-	// RightEdge: scroll the object vertically and horizontally to bring its
-	// right edge to the right edge of the window.
-	ScrollTypeRightEdge
-	// Anywhere: scroll the object vertically and horizontally so that as much
-	// as possible of the object becomes visible. The exact placement is
+	// ScrollTopLeft: scroll the object vertically and horizontally to bring its
+	// top left corner to the top left corner of the window.
+	ScrollTopLeft ScrollType = iota
+	// ScrollBottomRight: scroll the object vertically and horizontally to bring
+	// its bottom right corner to the bottom right corner of the window.
+	ScrollBottomRight
+	// ScrollTopEdge: scroll the object vertically to bring its top edge to the
+	// top edge of the window.
+	ScrollTopEdge
+	// ScrollBottomEdge: scroll the object vertically to bring its bottom edge
+	// to the bottom edge of the window.
+	ScrollBottomEdge
+	// ScrollLeftEdge: scroll the object vertically and horizontally to bring
+	// its left edge to the left edge of the window.
+	ScrollLeftEdge
+	// ScrollRightEdge: scroll the object vertically and horizontally to bring
+	// its right edge to the right edge of the window.
+	ScrollRightEdge
+	// ScrollAnywhere: scroll the object vertically and horizontally so that as
+	// much as possible of the object becomes visible. The exact placement is
 	// determined by the application.
-	ScrollTypeAnywhere
+	ScrollAnywhere
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ScrollType.
+func (s ScrollType) String() string {
+	switch s {
+	case ScrollTopLeft:
+		return "TopLeft"
+	case ScrollBottomRight:
+		return "BottomRight"
+	case ScrollTopEdge:
+		return "TopEdge"
+	case ScrollBottomEdge:
+		return "BottomEdge"
+	case ScrollLeftEdge:
+		return "LeftEdge"
+	case ScrollRightEdge:
+		return "RightEdge"
+	case ScrollAnywhere:
+		return "Anywhere"
+	default:
+		return fmt.Sprintf("ScrollType(%d)", s)
+	}
 }
 
 // ComponentOverrider contains methods that are overridable.

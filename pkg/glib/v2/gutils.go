@@ -3,6 +3,8 @@
 package glib
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -24,45 +26,103 @@ import "C"
 type UserDirectory int
 
 const (
-	// DirectoryDesktop user's Desktop directory
-	UserDirectoryDirectoryDesktop UserDirectory = iota
-	// DirectoryDocuments user's Documents directory
-	UserDirectoryDirectoryDocuments
-	// DirectoryDownload user's Downloads directory
-	UserDirectoryDirectoryDownload
-	// DirectoryMusic user's Music directory
-	UserDirectoryDirectoryMusic
-	// DirectoryPictures user's Pictures directory
-	UserDirectoryDirectoryPictures
-	// DirectoryPublicShare user's shared directory
-	UserDirectoryDirectoryPublicShare
-	// DirectoryTemplates user's Templates directory
-	UserDirectoryDirectoryTemplates
-	// DirectoryVideos user's Movies directory
-	UserDirectoryDirectoryVideos
-	// NDirectories: number of enum values
-	UserDirectoryNDirectories
+	// UserDirectoryDesktop user's Desktop directory
+	UserDirectoryDesktop UserDirectory = iota
+	// UserDirectoryDocuments user's Documents directory
+	UserDirectoryDocuments
+	// UserDirectoryDownload user's Downloads directory
+	UserDirectoryDownload
+	// UserDirectoryMusic user's Music directory
+	UserDirectoryMusic
+	// UserDirectoryPictures user's Pictures directory
+	UserDirectoryPictures
+	// UserDirectoryPublicShare user's shared directory
+	UserDirectoryPublicShare
+	// UserDirectoryTemplates user's Templates directory
+	UserDirectoryTemplates
+	// UserDirectoryVideos user's Movies directory
+	UserDirectoryVideos
+	// UserNDirectories: number of enum values
+	UserNDirectories
 )
+
+// String returns the name in string for UserDirectory.
+func (u UserDirectory) String() string {
+	switch u {
+	case UserDirectoryDesktop:
+		return "DirectoryDesktop"
+	case UserDirectoryDocuments:
+		return "DirectoryDocuments"
+	case UserDirectoryDownload:
+		return "DirectoryDownload"
+	case UserDirectoryMusic:
+		return "DirectoryMusic"
+	case UserDirectoryPictures:
+		return "DirectoryPictures"
+	case UserDirectoryPublicShare:
+		return "DirectoryPublicShare"
+	case UserDirectoryTemplates:
+		return "DirectoryTemplates"
+	case UserDirectoryVideos:
+		return "DirectoryVideos"
+	case UserNDirectories:
+		return "NDirectories"
+	default:
+		return fmt.Sprintf("UserDirectory(%d)", u)
+	}
+}
 
 // FormatSizeFlags flags to modify the format of the string returned by
 // g_format_size_full().
 type FormatSizeFlags int
 
 const (
-	// FormatSizeFlagsDefault: behave the same as g_format_size()
-	FormatSizeFlagsDefault FormatSizeFlags = 0b0
-	// FormatSizeFlagsLongFormat: include the exact number of bytes as part of
-	// the returned string. For example, "45.6 kB (45,612 bytes)".
-	FormatSizeFlagsLongFormat FormatSizeFlags = 0b1
-	// FormatSizeFlagsIecUnits: use IEC (base 1024) units with "KiB"-style
-	// suffixes. IEC units should only be used for reporting things with a
-	// strong "power of 2" basis, like RAM sizes or RAID stripe sizes. Network
-	// and storage sizes should be reported in the normal SI units.
-	FormatSizeFlagsIecUnits FormatSizeFlags = 0b10
-	// FormatSizeFlagsBits: set the size as a quantity in bits, rather than
-	// bytes, and return units in bits. For example, ‘Mb’ rather than ‘MB’.
-	FormatSizeFlagsBits FormatSizeFlags = 0b100
+	// FormatSizeDefault: behave the same as g_format_size()
+	FormatSizeDefault FormatSizeFlags = 0b0
+	// FormatSizeLongFormat: include the exact number of bytes as part of the
+	// returned string. For example, "45.6 kB (45,612 bytes)".
+	FormatSizeLongFormat FormatSizeFlags = 0b1
+	// FormatSizeIecUnits: use IEC (base 1024) units with "KiB"-style suffixes.
+	// IEC units should only be used for reporting things with a strong "power
+	// of 2" basis, like RAM sizes or RAID stripe sizes. Network and storage
+	// sizes should be reported in the normal SI units.
+	FormatSizeIecUnits FormatSizeFlags = 0b10
+	// FormatSizeBits: set the size as a quantity in bits, rather than bytes,
+	// and return units in bits. For example, ‘Mb’ rather than ‘MB’.
+	FormatSizeBits FormatSizeFlags = 0b100
 )
+
+// String returns the names in string for FormatSizeFlags.
+func (f FormatSizeFlags) String() string {
+	if f == 0 {
+		return "FormatSizeFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(72)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FormatSizeDefault:
+			builder.WriteString("Default|")
+		case FormatSizeLongFormat:
+			builder.WriteString("LongFormat|")
+		case FormatSizeIecUnits:
+			builder.WriteString("IecUnits|")
+		case FormatSizeBits:
+			builder.WriteString("Bits|")
+		default:
+			builder.WriteString(fmt.Sprintf("FormatSizeFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // BitNthLSF: find the position of the first bit set in mask, searching from
 // (but not including) nth_bit upwards. Bits are numbered from 0 (least

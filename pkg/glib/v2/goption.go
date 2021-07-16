@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,81 +32,161 @@ func init() {
 type OptionArg int
 
 const (
-	// None: no extra argument. This is useful for simple flags.
+	// OptionArgNone: no extra argument. This is useful for simple flags.
 	OptionArgNone OptionArg = iota
-	// String: option takes a UTF-8 string argument.
+	// OptionArgString: option takes a UTF-8 string argument.
 	OptionArgString
-	// Int: option takes an integer argument.
+	// OptionArgInt: option takes an integer argument.
 	OptionArgInt
-	// Callback: option provides a callback (of type ArgFunc) to parse the extra
-	// argument.
+	// OptionArgCallback: option provides a callback (of type ArgFunc) to parse
+	// the extra argument.
 	OptionArgCallback
-	// Filename: option takes a filename as argument, which will be in the GLib
-	// filename encoding rather than UTF-8.
+	// OptionArgFilename: option takes a filename as argument, which will be in
+	// the GLib filename encoding rather than UTF-8.
 	OptionArgFilename
-	// StringArray: option takes a string argument, multiple uses of the option
-	// are collected into an array of strings.
+	// OptionArgStringArray: option takes a string argument, multiple uses of
+	// the option are collected into an array of strings.
 	OptionArgStringArray
-	// FilenameArray: option takes a filename as argument, multiple uses of the
-	// option are collected into an array of strings.
+	// OptionArgFilenameArray: option takes a filename as argument, multiple
+	// uses of the option are collected into an array of strings.
 	OptionArgFilenameArray
-	// Double: option takes a double argument. The argument can be formatted
-	// either for the user's locale or for the "C" locale. Since 2.12
+	// OptionArgDouble: option takes a double argument. The argument can be
+	// formatted either for the user's locale or for the "C" locale. Since 2.12
 	OptionArgDouble
-	// Int64: option takes a 64-bit integer. Like G_OPTION_ARG_INT but for
-	// larger numbers. The number can be in decimal base, or in hexadecimal
+	// OptionArgInt64: option takes a 64-bit integer. Like G_OPTION_ARG_INT but
+	// for larger numbers. The number can be in decimal base, or in hexadecimal
 	// (when prefixed with 0x, for example, 0xffffffff). Since 2.12
 	OptionArgInt64
 )
+
+// String returns the name in string for OptionArg.
+func (o OptionArg) String() string {
+	switch o {
+	case OptionArgNone:
+		return "None"
+	case OptionArgString:
+		return "String"
+	case OptionArgInt:
+		return "Int"
+	case OptionArgCallback:
+		return "Callback"
+	case OptionArgFilename:
+		return "Filename"
+	case OptionArgStringArray:
+		return "StringArray"
+	case OptionArgFilenameArray:
+		return "FilenameArray"
+	case OptionArgDouble:
+		return "Double"
+	case OptionArgInt64:
+		return "Int64"
+	default:
+		return fmt.Sprintf("OptionArg(%d)", o)
+	}
+}
 
 // OptionError: error codes returned by option parsing.
 type OptionError int
 
 const (
-	// UnknownOption: option was not known to the parser. This error will only
-	// be reported, if the parser hasn't been instructed to ignore unknown
-	// options, see g_option_context_set_ignore_unknown_options().
+	// OptionErrorUnknownOption: option was not known to the parser. This error
+	// will only be reported, if the parser hasn't been instructed to ignore
+	// unknown options, see g_option_context_set_ignore_unknown_options().
 	OptionErrorUnknownOption OptionError = iota
-	// BadValue: value couldn't be parsed.
+	// OptionErrorBadValue: value couldn't be parsed.
 	OptionErrorBadValue
-	// Failed callback failed.
+	// OptionErrorFailed callback failed.
 	OptionErrorFailed
 )
+
+// String returns the name in string for OptionError.
+func (o OptionError) String() string {
+	switch o {
+	case OptionErrorUnknownOption:
+		return "UnknownOption"
+	case OptionErrorBadValue:
+		return "BadValue"
+	case OptionErrorFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("OptionError(%d)", o)
+	}
+}
 
 // OptionFlags flags which modify individual options.
 type OptionFlags int
 
 const (
-	// OptionFlagsNone: no flags. Since: 2.42.
-	OptionFlagsNone OptionFlags = 0b0
-	// OptionFlagsHidden: option doesn't appear in --help output.
-	OptionFlagsHidden OptionFlags = 0b1
-	// OptionFlagsInMain: option appears in the main section of the --help
+	// OptionFlagNone: no flags. Since: 2.42.
+	OptionFlagNone OptionFlags = 0b0
+	// OptionFlagHidden: option doesn't appear in --help output.
+	OptionFlagHidden OptionFlags = 0b1
+	// OptionFlagInMain: option appears in the main section of the --help
 	// output, even if it is defined in a group.
-	OptionFlagsInMain OptionFlags = 0b10
-	// OptionFlagsReverse: for options of the G_OPTION_ARG_NONE kind, this flag
+	OptionFlagInMain OptionFlags = 0b10
+	// OptionFlagReverse: for options of the G_OPTION_ARG_NONE kind, this flag
 	// indicates that the sense of the option is reversed.
-	OptionFlagsReverse OptionFlags = 0b100
-	// OptionFlagsNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this
-	// flag indicates that the callback does not take any argument (like a
+	OptionFlagReverse OptionFlags = 0b100
+	// OptionFlagNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this flag
+	// indicates that the callback does not take any argument (like a
 	// G_OPTION_ARG_NONE option). Since 2.8
-	OptionFlagsNoArg OptionFlags = 0b1000
-	// OptionFlagsFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
+	OptionFlagNoArg OptionFlags = 0b1000
+	// OptionFlagFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
 	// flag indicates that the argument should be passed to the callback in the
 	// GLib filename encoding rather than UTF-8. Since 2.8
-	OptionFlagsFilename OptionFlags = 0b10000
-	// OptionFlagsOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
+	OptionFlagFilename OptionFlags = 0b10000
+	// OptionFlagOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
 	// this flag indicates that the argument supply is optional. If no argument
 	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8
-	OptionFlagsOptionalArg OptionFlags = 0b100000
-	// OptionFlagsNoalias: this flag turns off the automatic conflict resolution
+	OptionFlagOptionalArg OptionFlags = 0b100000
+	// OptionFlagNoalias: this flag turns off the automatic conflict resolution
 	// which prefixes long option names with groupname- if there is a conflict.
 	// This option should only be used in situations where aliasing is necessary
 	// to model some legacy commandline interface. It is not safe to use this
 	// option, unless all option groups are under your direct control. Since
 	// 2.8.
-	OptionFlagsNoalias OptionFlags = 0b1000000
+	OptionFlagNoalias OptionFlags = 0b1000000
 )
+
+// String returns the names in string for OptionFlags.
+func (o OptionFlags) String() string {
+	if o == 0 {
+		return "OptionFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(141)
+
+	for o != 0 {
+		next := o & (o - 1)
+		bit := o - next
+
+		switch bit {
+		case OptionFlagNone:
+			builder.WriteString("None|")
+		case OptionFlagHidden:
+			builder.WriteString("Hidden|")
+		case OptionFlagInMain:
+			builder.WriteString("InMain|")
+		case OptionFlagReverse:
+			builder.WriteString("Reverse|")
+		case OptionFlagNoArg:
+			builder.WriteString("NoArg|")
+		case OptionFlagFilename:
+			builder.WriteString("Filename|")
+		case OptionFlagOptionalArg:
+			builder.WriteString("OptionalArg|")
+		case OptionFlagNoalias:
+			builder.WriteString("Noalias|")
+		default:
+			builder.WriteString(fmt.Sprintf("OptionFlags(0b%b)|", bit))
+		}
+
+		o = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // OptionEntry struct defines a single option. To have an effect, they must be
 // added to a Group with g_option_context_add_main_entries() or

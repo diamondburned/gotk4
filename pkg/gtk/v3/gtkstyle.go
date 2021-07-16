@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -35,18 +36,34 @@ func init() {
 type ExpanderStyle int
 
 const (
-	// Collapsed: style used for a collapsed subtree.
-	ExpanderStyleCollapsed ExpanderStyle = iota
-	// SemiCollapsed: intermediate style used during animation.
-	ExpanderStyleSemiCollapsed
-	// SemiExpanded: intermediate style used during animation.
-	ExpanderStyleSemiExpanded
-	// Expanded: style used for an expanded subtree.
-	ExpanderStyleExpanded
+	// ExpanderCollapsed: style used for a collapsed subtree.
+	ExpanderCollapsed ExpanderStyle = iota
+	// ExpanderSemiCollapsed: intermediate style used during animation.
+	ExpanderSemiCollapsed
+	// ExpanderSemiExpanded: intermediate style used during animation.
+	ExpanderSemiExpanded
+	// ExpanderExpanded: style used for an expanded subtree.
+	ExpanderExpanded
 )
 
 func marshalExpanderStyle(p uintptr) (interface{}, error) {
 	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ExpanderStyle.
+func (e ExpanderStyle) String() string {
+	switch e {
+	case ExpanderCollapsed:
+		return "Collapsed"
+	case ExpanderSemiCollapsed:
+		return "SemiCollapsed"
+	case ExpanderSemiExpanded:
+		return "SemiExpanded"
+	case ExpanderExpanded:
+		return "Expanded"
+	default:
+		return fmt.Sprintf("ExpanderStyle(%d)", e)
+	}
 }
 
 // PaintArrow draws an arrow in the given rectangle on cr using the given

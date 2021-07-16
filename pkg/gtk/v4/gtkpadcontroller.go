@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,16 +29,30 @@ func init() {
 type PadActionType int
 
 const (
-	// Button: action is triggered by a pad button
-	PadActionTypeButton PadActionType = iota
-	// Ring: action is triggered by a pad ring
-	PadActionTypeRing
-	// Strip: action is triggered by a pad strip
-	PadActionTypeStrip
+	// PadActionButton: action is triggered by a pad button
+	PadActionButton PadActionType = iota
+	// PadActionRing: action is triggered by a pad ring
+	PadActionRing
+	// PadActionStrip: action is triggered by a pad strip
+	PadActionStrip
 )
 
 func marshalPadActionType(p uintptr) (interface{}, error) {
 	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PadActionType.
+func (p PadActionType) String() string {
+	switch p {
+	case PadActionButton:
+		return "Button"
+	case PadActionRing:
+		return "Ring"
+	case PadActionStrip:
+		return "Strip"
+	default:
+		return fmt.Sprintf("PadActionType(%d)", p)
+	}
 }
 
 // PadController: GtkPadController is an event controller for the pads found in

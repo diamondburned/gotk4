@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -33,26 +35,59 @@ func init() {
 type CalendarDisplayOptions int
 
 const (
-	// CalendarDisplayOptionsShowHeading specifies that the month and year
-	// should be displayed.
-	CalendarDisplayOptionsShowHeading CalendarDisplayOptions = 0b1
-	// CalendarDisplayOptionsShowDayNames specifies that three letter day
-	// descriptions should be present.
-	CalendarDisplayOptionsShowDayNames CalendarDisplayOptions = 0b10
-	// CalendarDisplayOptionsNoMonthChange prevents the user from switching
-	// months with the calendar.
-	CalendarDisplayOptionsNoMonthChange CalendarDisplayOptions = 0b100
-	// CalendarDisplayOptionsShowWeekNumbers displays each week numbers of the
-	// current year, down the left side of the calendar.
-	CalendarDisplayOptionsShowWeekNumbers CalendarDisplayOptions = 0b1000
-	// CalendarDisplayOptionsShowDetails: just show an indicator, not the full
-	// details text when details are provided. See
-	// gtk_calendar_set_detail_func().
-	CalendarDisplayOptionsShowDetails CalendarDisplayOptions = 0b100000
+	// CalendarShowHeading specifies that the month and year should be
+	// displayed.
+	CalendarShowHeading CalendarDisplayOptions = 0b1
+	// CalendarShowDayNames specifies that three letter day descriptions should
+	// be present.
+	CalendarShowDayNames CalendarDisplayOptions = 0b10
+	// CalendarNoMonthChange prevents the user from switching months with the
+	// calendar.
+	CalendarNoMonthChange CalendarDisplayOptions = 0b100
+	// CalendarShowWeekNumbers displays each week numbers of the current year,
+	// down the left side of the calendar.
+	CalendarShowWeekNumbers CalendarDisplayOptions = 0b1000
+	// CalendarShowDetails: just show an indicator, not the full details text
+	// when details are provided. See gtk_calendar_set_detail_func().
+	CalendarShowDetails CalendarDisplayOptions = 0b100000
 )
 
 func marshalCalendarDisplayOptions(p uintptr) (interface{}, error) {
 	return CalendarDisplayOptions(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for CalendarDisplayOptions.
+func (c CalendarDisplayOptions) String() string {
+	if c == 0 {
+		return "CalendarDisplayOptions(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(106)
+
+	for c != 0 {
+		next := c & (c - 1)
+		bit := c - next
+
+		switch bit {
+		case CalendarShowHeading:
+			builder.WriteString("ShowHeading|")
+		case CalendarShowDayNames:
+			builder.WriteString("ShowDayNames|")
+		case CalendarNoMonthChange:
+			builder.WriteString("NoMonthChange|")
+		case CalendarShowWeekNumbers:
+			builder.WriteString("ShowWeekNumbers|")
+		case CalendarShowDetails:
+			builder.WriteString("ShowDetails|")
+		default:
+			builder.WriteString(fmt.Sprintf("CalendarDisplayOptions(0b%b)|", bit))
+		}
+
+		c = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail

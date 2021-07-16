@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -38,20 +39,38 @@ func init() {
 type Gravity int
 
 const (
-	// South glyphs stand upright (default)
+	// GravitySouth glyphs stand upright (default)
 	GravitySouth Gravity = iota
-	// East glyphs are rotated 90 degrees clockwise
+	// GravityEast glyphs are rotated 90 degrees clockwise
 	GravityEast
-	// North glyphs are upside-down
+	// GravityNorth glyphs are upside-down
 	GravityNorth
-	// West glyphs are rotated 90 degrees counter-clockwise
+	// GravityWest glyphs are rotated 90 degrees counter-clockwise
 	GravityWest
-	// Auto: gravity is resolved from the context matrix
+	// GravityAuto: gravity is resolved from the context matrix
 	GravityAuto
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
 	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Gravity.
+func (g Gravity) String() string {
+	switch g {
+	case GravitySouth:
+		return "South"
+	case GravityEast:
+		return "East"
+	case GravityNorth:
+		return "North"
+	case GravityWest:
+		return "West"
+	case GravityAuto:
+		return "Auto"
+	default:
+		return fmt.Sprintf("Gravity(%d)", g)
+	}
 }
 
 // GravityGetForMatrix finds the gravity that best matches the rotation
@@ -164,18 +183,33 @@ func GravityToRotation(gravity Gravity) float64 {
 type GravityHint int
 
 const (
-	// Natural scripts will take their natural gravity based on the base gravity
-	// and the script. This is the default.
+	// GravityHintNatural scripts will take their natural gravity based on the
+	// base gravity and the script. This is the default.
 	GravityHintNatural GravityHint = iota
-	// Strong always use the base gravity set, regardless of the script.
+	// GravityHintStrong always use the base gravity set, regardless of the
+	// script.
 	GravityHintStrong
-	// Line: for scripts not in their natural direction (eg. Latin in East
-	// gravity), choose per-script gravity such that every script respects the
-	// line progression. This means, Latin and Arabic will take opposite
+	// GravityHintLine: for scripts not in their natural direction (eg. Latin in
+	// East gravity), choose per-script gravity such that every script respects
+	// the line progression. This means, Latin and Arabic will take opposite
 	// gravities and both flow top-to-bottom for example.
 	GravityHintLine
 )
 
 func marshalGravityHint(p uintptr) (interface{}, error) {
 	return GravityHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for GravityHint.
+func (g GravityHint) String() string {
+	switch g {
+	case GravityHintNatural:
+		return "Natural"
+	case GravityHintStrong:
+		return "Strong"
+	case GravityHintLine:
+		return "Line"
+	default:
+		return fmt.Sprintf("GravityHint(%d)", g)
+	}
 }

@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
@@ -29,90 +30,184 @@ func init() {
 type VariantClass int
 
 const (
-	// Boolean is a boolean.
+	// VariantClassBoolean is a boolean.
 	VariantClassBoolean VariantClass = 98
-	// Byte is a byte.
+	// VariantClassByte is a byte.
 	VariantClassByte VariantClass = 121
-	// Int16 is a signed 16 bit integer.
+	// VariantClassInt16 is a signed 16 bit integer.
 	VariantClassInt16 VariantClass = 110
-	// Uint16 is an unsigned 16 bit integer.
+	// VariantClassUint16 is an unsigned 16 bit integer.
 	VariantClassUint16 VariantClass = 113
-	// Int32 is a signed 32 bit integer.
+	// VariantClassInt32 is a signed 32 bit integer.
 	VariantClassInt32 VariantClass = 105
-	// Uint32 is an unsigned 32 bit integer.
+	// VariantClassUint32 is an unsigned 32 bit integer.
 	VariantClassUint32 VariantClass = 117
-	// Int64 is a signed 64 bit integer.
+	// VariantClassInt64 is a signed 64 bit integer.
 	VariantClassInt64 VariantClass = 120
-	// Uint64 is an unsigned 64 bit integer.
+	// VariantClassUint64 is an unsigned 64 bit integer.
 	VariantClassUint64 VariantClass = 116
-	// Handle is a file handle index.
+	// VariantClassHandle is a file handle index.
 	VariantClassHandle VariantClass = 104
-	// Double is a double precision floating point value.
+	// VariantClassDouble is a double precision floating point value.
 	VariantClassDouble VariantClass = 100
-	// String is a normal string.
+	// VariantClassString is a normal string.
 	VariantClassString VariantClass = 115
-	// ObjectPath is a D-Bus object path string.
+	// VariantClassObjectPath is a D-Bus object path string.
 	VariantClassObjectPath VariantClass = 111
-	// Signature is a D-Bus signature string.
+	// VariantClassSignature is a D-Bus signature string.
 	VariantClassSignature VariantClass = 103
-	// Variant is a variant.
+	// VariantClassVariant is a variant.
 	VariantClassVariant VariantClass = 118
-	// Maybe is a maybe-typed value.
+	// VariantClassMaybe is a maybe-typed value.
 	VariantClassMaybe VariantClass = 109
-	// Array is an array.
+	// VariantClassArray is an array.
 	VariantClassArray VariantClass = 97
-	// Tuple is a tuple.
+	// VariantClassTuple is a tuple.
 	VariantClassTuple VariantClass = 40
-	// DictEntry is a dictionary entry.
+	// VariantClassDictEntry is a dictionary entry.
 	VariantClassDictEntry VariantClass = 123
 )
+
+// String returns the name in string for VariantClass.
+func (v VariantClass) String() string {
+	switch v {
+	case VariantClassBoolean:
+		return "Boolean"
+	case VariantClassByte:
+		return "Byte"
+	case VariantClassInt16:
+		return "Int16"
+	case VariantClassUint16:
+		return "Uint16"
+	case VariantClassInt32:
+		return "Int32"
+	case VariantClassUint32:
+		return "Uint32"
+	case VariantClassInt64:
+		return "Int64"
+	case VariantClassUint64:
+		return "Uint64"
+	case VariantClassHandle:
+		return "Handle"
+	case VariantClassDouble:
+		return "Double"
+	case VariantClassString:
+		return "String"
+	case VariantClassObjectPath:
+		return "ObjectPath"
+	case VariantClassSignature:
+		return "Signature"
+	case VariantClassVariant:
+		return "Variant"
+	case VariantClassMaybe:
+		return "Maybe"
+	case VariantClassArray:
+		return "Array"
+	case VariantClassTuple:
+		return "Tuple"
+	case VariantClassDictEntry:
+		return "DictEntry"
+	default:
+		return fmt.Sprintf("VariantClass(%d)", v)
+	}
+}
 
 // VariantParseError: error codes returned by parsing text-format GVariants.
 type VariantParseError int
 
 const (
-	// Failed: generic error (unused)
+	// VariantParseErrorFailed: generic error (unused)
 	VariantParseErrorFailed VariantParseError = iota
-	// BasicTypeExpected: non-basic Type was given where a basic type was
-	// expected
+	// VariantParseErrorBasicTypeExpected: non-basic Type was given where a
+	// basic type was expected
 	VariantParseErrorBasicTypeExpected
-	// CannotInferType: cannot infer the Type
+	// VariantParseErrorCannotInferType: cannot infer the Type
 	VariantParseErrorCannotInferType
-	// DefiniteTypeExpected: indefinite Type was given where a definite type was
-	// expected
+	// VariantParseErrorDefiniteTypeExpected: indefinite Type was given where a
+	// definite type was expected
 	VariantParseErrorDefiniteTypeExpected
-	// InputNotAtEnd: extra data after parsing finished
+	// VariantParseErrorInputNotAtEnd: extra data after parsing finished
 	VariantParseErrorInputNotAtEnd
-	// InvalidCharacter: invalid character in number or unicode escape
+	// VariantParseErrorInvalidCharacter: invalid character in number or unicode
+	// escape
 	VariantParseErrorInvalidCharacter
-	// InvalidFormatString: not a valid #GVariant format string
+	// VariantParseErrorInvalidFormatString: not a valid #GVariant format string
 	VariantParseErrorInvalidFormatString
-	// InvalidObjectPath: not a valid object path
+	// VariantParseErrorInvalidObjectPath: not a valid object path
 	VariantParseErrorInvalidObjectPath
-	// InvalidSignature: not a valid type signature
+	// VariantParseErrorInvalidSignature: not a valid type signature
 	VariantParseErrorInvalidSignature
-	// InvalidTypeString: not a valid #GVariant type string
+	// VariantParseErrorInvalidTypeString: not a valid #GVariant type string
 	VariantParseErrorInvalidTypeString
-	// NoCommonType: could not find a common type for array entries
+	// VariantParseErrorNoCommonType: could not find a common type for array
+	// entries
 	VariantParseErrorNoCommonType
-	// NumberOutOfRange: numerical value is out of range of the given type
+	// VariantParseErrorNumberOutOfRange: numerical value is out of range of the
+	// given type
 	VariantParseErrorNumberOutOfRange
-	// NumberTooBig: numerical value is out of range for any type
+	// VariantParseErrorNumberTooBig: numerical value is out of range for any
+	// type
 	VariantParseErrorNumberTooBig
-	// TypeError: cannot parse as variant of the specified type
+	// VariantParseErrorTypeError: cannot parse as variant of the specified type
 	VariantParseErrorTypeError
-	// UnexpectedToken: unexpected token was encountered
+	// VariantParseErrorUnexpectedToken: unexpected token was encountered
 	VariantParseErrorUnexpectedToken
-	// UnknownKeyword: unknown keyword was encountered
+	// VariantParseErrorUnknownKeyword: unknown keyword was encountered
 	VariantParseErrorUnknownKeyword
-	// UnterminatedStringConstant: unterminated string constant
+	// VariantParseErrorUnterminatedStringConstant: unterminated string constant
 	VariantParseErrorUnterminatedStringConstant
-	// ValueExpected: no value given
+	// VariantParseErrorValueExpected: no value given
 	VariantParseErrorValueExpected
-	// Recursion: variant was too deeply nested; #GVariant is only guaranteed to
-	// handle nesting up to 64 levels (Since: 2.64)
+	// VariantParseErrorRecursion: variant was too deeply nested; #GVariant is
+	// only guaranteed to handle nesting up to 64 levels (Since: 2.64)
 	VariantParseErrorRecursion
 )
+
+// String returns the name in string for VariantParseError.
+func (v VariantParseError) String() string {
+	switch v {
+	case VariantParseErrorFailed:
+		return "Failed"
+	case VariantParseErrorBasicTypeExpected:
+		return "BasicTypeExpected"
+	case VariantParseErrorCannotInferType:
+		return "CannotInferType"
+	case VariantParseErrorDefiniteTypeExpected:
+		return "DefiniteTypeExpected"
+	case VariantParseErrorInputNotAtEnd:
+		return "InputNotAtEnd"
+	case VariantParseErrorInvalidCharacter:
+		return "InvalidCharacter"
+	case VariantParseErrorInvalidFormatString:
+		return "InvalidFormatString"
+	case VariantParseErrorInvalidObjectPath:
+		return "InvalidObjectPath"
+	case VariantParseErrorInvalidSignature:
+		return "InvalidSignature"
+	case VariantParseErrorInvalidTypeString:
+		return "InvalidTypeString"
+	case VariantParseErrorNoCommonType:
+		return "NoCommonType"
+	case VariantParseErrorNumberOutOfRange:
+		return "NumberOutOfRange"
+	case VariantParseErrorNumberTooBig:
+		return "NumberTooBig"
+	case VariantParseErrorTypeError:
+		return "TypeError"
+	case VariantParseErrorUnexpectedToken:
+		return "UnexpectedToken"
+	case VariantParseErrorUnknownKeyword:
+		return "UnknownKeyword"
+	case VariantParseErrorUnterminatedStringConstant:
+		return "UnterminatedStringConstant"
+	case VariantParseErrorValueExpected:
+		return "ValueExpected"
+	case VariantParseErrorRecursion:
+		return "Recursion"
+	default:
+		return fmt.Sprintf("VariantParseError(%d)", v)
+	}
+}
 
 // Variant is a variant datatype; it can contain one or more values along with
 // information about the type of the values.

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -37,18 +38,34 @@ func init() {
 type ImageType int
 
 const (
-	// Empty: there is no image displayed by the widget
-	ImageTypeEmpty ImageType = iota
-	// IconName: widget contains a named icon
-	ImageTypeIconName
-	// GIcon: widget contains a #GIcon
-	ImageTypeGIcon
-	// Paintable: widget contains a Paintable
-	ImageTypePaintable
+	// ImageEmpty: there is no image displayed by the widget
+	ImageEmpty ImageType = iota
+	// ImageIconName: widget contains a named icon
+	ImageIconName
+	// ImageGIcon: widget contains a #GIcon
+	ImageGIcon
+	// ImagePaintable: widget contains a Paintable
+	ImagePaintable
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ImageType.
+func (i ImageType) String() string {
+	switch i {
+	case ImageEmpty:
+		return "Empty"
+	case ImageIconName:
+		return "IconName"
+	case ImageGIcon:
+		return "GIcon"
+	case ImagePaintable:
+		return "Paintable"
+	default:
+		return fmt.Sprintf("ImageType(%d)", i)
+	}
 }
 
 // Image: GtkImage widget displays an image.

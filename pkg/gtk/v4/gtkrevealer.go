@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -27,30 +28,58 @@ func init() {
 type RevealerTransitionType int
 
 const (
-	// None: no transition
+	// RevealerTransitionTypeNone: no transition
 	RevealerTransitionTypeNone RevealerTransitionType = iota
-	// Crossfade: fade in
+	// RevealerTransitionTypeCrossfade: fade in
 	RevealerTransitionTypeCrossfade
-	// SlideRight: slide in from the left
+	// RevealerTransitionTypeSlideRight: slide in from the left
 	RevealerTransitionTypeSlideRight
-	// SlideLeft: slide in from the right
+	// RevealerTransitionTypeSlideLeft: slide in from the right
 	RevealerTransitionTypeSlideLeft
-	// SlideUp: slide in from the bottom
+	// RevealerTransitionTypeSlideUp: slide in from the bottom
 	RevealerTransitionTypeSlideUp
-	// SlideDown: slide in from the top
+	// RevealerTransitionTypeSlideDown: slide in from the top
 	RevealerTransitionTypeSlideDown
-	// SwingRight: floop in from the left
+	// RevealerTransitionTypeSwingRight: floop in from the left
 	RevealerTransitionTypeSwingRight
-	// SwingLeft: floop in from the right
+	// RevealerTransitionTypeSwingLeft: floop in from the right
 	RevealerTransitionTypeSwingLeft
-	// SwingUp: floop in from the bottom
+	// RevealerTransitionTypeSwingUp: floop in from the bottom
 	RevealerTransitionTypeSwingUp
-	// SwingDown: floop in from the top
+	// RevealerTransitionTypeSwingDown: floop in from the top
 	RevealerTransitionTypeSwingDown
 )
 
 func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RevealerTransitionType.
+func (r RevealerTransitionType) String() string {
+	switch r {
+	case RevealerTransitionTypeNone:
+		return "None"
+	case RevealerTransitionTypeCrossfade:
+		return "Crossfade"
+	case RevealerTransitionTypeSlideRight:
+		return "SlideRight"
+	case RevealerTransitionTypeSlideLeft:
+		return "SlideLeft"
+	case RevealerTransitionTypeSlideUp:
+		return "SlideUp"
+	case RevealerTransitionTypeSlideDown:
+		return "SlideDown"
+	case RevealerTransitionTypeSwingRight:
+		return "SwingRight"
+	case RevealerTransitionTypeSwingLeft:
+		return "SwingLeft"
+	case RevealerTransitionTypeSwingUp:
+		return "SwingUp"
+	case RevealerTransitionTypeSwingDown:
+		return "SwingDown"
+	default:
+		return fmt.Sprintf("RevealerTransitionType(%d)", r)
+	}
 }
 
 // Revealer: GtkRevealer animates the transition of its child from invisible to

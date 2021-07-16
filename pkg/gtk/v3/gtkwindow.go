@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -36,21 +37,39 @@ func init() {
 type WindowPosition int
 
 const (
-	// None: no influence is made on placement.
-	WindowPositionNone WindowPosition = iota
-	// Center windows should be placed in the center of the screen.
-	WindowPositionCenter
-	// Mouse windows should be placed at the current mouse position.
-	WindowPositionMouse
-	// CenterAlways: keep window centered as it changes size, etc.
-	WindowPositionCenterAlways
-	// CenterOnParent: center the window on its transient parent (see
+	// WinPosNone: no influence is made on placement.
+	WinPosNone WindowPosition = iota
+	// WinPosCenter windows should be placed in the center of the screen.
+	WinPosCenter
+	// WinPosMouse windows should be placed at the current mouse position.
+	WinPosMouse
+	// WinPosCenterAlways: keep window centered as it changes size, etc.
+	WinPosCenterAlways
+	// WinPosCenterOnParent: center the window on its transient parent (see
 	// gtk_window_set_transient_for()).
-	WindowPositionCenterOnParent
+	WinPosCenterOnParent
 )
 
 func marshalWindowPosition(p uintptr) (interface{}, error) {
 	return WindowPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WindowPosition.
+func (w WindowPosition) String() string {
+	switch w {
+	case WinPosNone:
+		return "None"
+	case WinPosCenter:
+		return "Center"
+	case WinPosMouse:
+		return "Mouse"
+	case WinPosCenterAlways:
+		return "CenterAlways"
+	case WinPosCenterOnParent:
+		return "CenterOnParent"
+	default:
+		return fmt.Sprintf("WindowPosition(%d)", w)
+	}
 }
 
 // WindowType can be one of these types. Most things you’d consider a “window”
@@ -68,14 +87,26 @@ func marshalWindowPosition(p uintptr) (interface{}, error) {
 type WindowType int
 
 const (
-	// Toplevel: regular window, such as a dialog.
-	WindowTypeToplevel WindowType = iota
-	// Popup: special window such as a tooltip.
-	WindowTypePopup
+	// WindowToplevel: regular window, such as a dialog.
+	WindowToplevel WindowType = iota
+	// WindowPopup: special window such as a tooltip.
+	WindowPopup
 )
 
 func marshalWindowType(p uintptr) (interface{}, error) {
 	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WindowType.
+func (w WindowType) String() string {
+	switch w {
+	case WindowToplevel:
+		return "Toplevel"
+	case WindowPopup:
+		return "Popup"
+	default:
+		return fmt.Sprintf("WindowType(%d)", w)
+	}
 }
 
 // WindowOverrider contains methods that are overridable.

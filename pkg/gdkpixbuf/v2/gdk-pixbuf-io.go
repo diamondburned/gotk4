@@ -3,7 +3,9 @@
 package gdkpixbuf
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -30,14 +32,44 @@ func init() {
 type PixbufFormatFlags int
 
 const (
-	// PixbufFormatFlagsWritable: module can write out images in the format.
-	PixbufFormatFlagsWritable PixbufFormatFlags = 0b1
-	// PixbufFormatFlagsScalable: image format is scalable
-	PixbufFormatFlagsScalable PixbufFormatFlags = 0b10
-	// PixbufFormatFlagsThreadsafe: module is threadsafe. gdk-pixbuf ignores
-	// modules that are not marked as threadsafe. (Since 2.28).
-	PixbufFormatFlagsThreadsafe PixbufFormatFlags = 0b100
+	// PixbufFormatWritable: module can write out images in the format.
+	PixbufFormatWritable PixbufFormatFlags = 0b1
+	// PixbufFormatScalable: image format is scalable
+	PixbufFormatScalable PixbufFormatFlags = 0b10
+	// PixbufFormatThreadsafe: module is threadsafe. gdk-pixbuf ignores modules
+	// that are not marked as threadsafe. (Since 2.28).
+	PixbufFormatThreadsafe PixbufFormatFlags = 0b100
 )
+
+// String returns the names in string for PixbufFormatFlags.
+func (p PixbufFormatFlags) String() string {
+	if p == 0 {
+		return "PixbufFormatFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(64)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PixbufFormatWritable:
+			builder.WriteString("Writable|")
+		case PixbufFormatScalable:
+			builder.WriteString("Scalable|")
+		case PixbufFormatThreadsafe:
+			builder.WriteString("Threadsafe|")
+		default:
+			builder.WriteString(fmt.Sprintf("PixbufFormatFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // PixbufModulePreparedFunc defines the type of the function that gets called
 // once the initial setup of pixbuf is done.

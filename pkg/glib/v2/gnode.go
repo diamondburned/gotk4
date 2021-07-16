@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -33,38 +35,84 @@ const (
 	// InOrder vists a node's left child first, then the node itself, then its
 	// right child. This is the one to use if you want the output sorted
 	// according to the compare function.
-	TraverseTypeInOrder TraverseType = iota
+	InOrder TraverseType = iota
 	// PreOrder visits a node, then its children.
-	TraverseTypePreOrder
+	PreOrder
 	// PostOrder visits the node's children, then the node itself.
-	TraverseTypePostOrder
+	PostOrder
 	// LevelOrder is not implemented for [balanced binary
 	// trees][glib-Balanced-Binary-Trees]. For [n-ary trees][glib-N-ary-Trees],
 	// it vists the root node first, then its children, then its grandchildren,
 	// and so on. Note that this is less efficient than the other orders.
-	TraverseTypeLevelOrder
+	LevelOrder
 )
+
+// String returns the name in string for TraverseType.
+func (t TraverseType) String() string {
+	switch t {
+	case InOrder:
+		return "InOrder"
+	case PreOrder:
+		return "PreOrder"
+	case PostOrder:
+		return "PostOrder"
+	case LevelOrder:
+		return "LevelOrder"
+	default:
+		return fmt.Sprintf("TraverseType(%d)", t)
+	}
+}
 
 // TraverseFlags specifies which nodes are visited during several of the tree
 // functions, including g_node_traverse() and g_node_find().
 type TraverseFlags int
 
 const (
-	// TraverseFlagsLeaves: only leaf nodes should be visited. This name has
-	// been introduced in 2.6, for older version use G_TRAVERSE_LEAFS.
-	TraverseFlagsLeaves TraverseFlags = 0b1
-	// TraverseFlagsNonLeaves: only non-leaf nodes should be visited. This name
-	// has been introduced in 2.6, for older version use G_TRAVERSE_NON_LEAFS.
-	TraverseFlagsNonLeaves TraverseFlags = 0b10
-	// TraverseFlagsAll nodes should be visited.
-	TraverseFlagsAll TraverseFlags = 0b11
-	// TraverseFlagsMask of all traverse flags.
-	TraverseFlagsMask TraverseFlags = 0b11
-	// TraverseFlagsLeafs: identical to G_TRAVERSE_LEAVES.
-	TraverseFlagsLeafs TraverseFlags = 0b1
-	// TraverseFlagsNonLeafs: identical to G_TRAVERSE_NON_LEAVES.
-	TraverseFlagsNonLeafs TraverseFlags = 0b10
+	// TraverseLeaves: only leaf nodes should be visited. This name has been
+	// introduced in 2.6, for older version use G_TRAVERSE_LEAFS.
+	TraverseLeaves TraverseFlags = 0b1
+	// TraverseNonLeaves: only non-leaf nodes should be visited. This name has
+	// been introduced in 2.6, for older version use G_TRAVERSE_NON_LEAFS.
+	TraverseNonLeaves TraverseFlags = 0b10
+	// TraverseAll nodes should be visited.
+	TraverseAll TraverseFlags = 0b11
+	// TraverseMask of all traverse flags.
+	TraverseMask TraverseFlags = 0b11
+	// TraverseLeafs: identical to G_TRAVERSE_LEAVES.
+	TraverseLeafs TraverseFlags = 0b1
+	// TraverseNonLeafs: identical to G_TRAVERSE_NON_LEAVES.
+	TraverseNonLeafs TraverseFlags = 0b10
 )
+
+// String returns the names in string for TraverseFlags.
+func (t TraverseFlags) String() string {
+	if t == 0 {
+		return "TraverseFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(88)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TraverseLeaves:
+			builder.WriteString("Leaves|")
+		case TraverseNonLeaves:
+			builder.WriteString("NonLeaves|")
+		case TraverseAll:
+			builder.WriteString("All|")
+		default:
+			builder.WriteString(fmt.Sprintf("TraverseFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
 type Node struct {

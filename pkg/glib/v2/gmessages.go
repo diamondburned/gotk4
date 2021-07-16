@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -24,11 +26,23 @@ import "C"
 type LogWriterOutput int
 
 const (
-	// Handled: log writer has handled the log entry.
-	LogWriterOutputHandled LogWriterOutput = 1
-	// Unhandled: log writer could not handle the log entry.
-	LogWriterOutputUnhandled LogWriterOutput = 0
+	// LogWriterHandled: log writer has handled the log entry.
+	LogWriterHandled LogWriterOutput = 1
+	// LogWriterUnhandled: log writer could not handle the log entry.
+	LogWriterUnhandled LogWriterOutput = 0
 )
+
+// String returns the name in string for LogWriterOutput.
+func (l LogWriterOutput) String() string {
+	switch l {
+	case LogWriterHandled:
+		return "Handled"
+	case LogWriterUnhandled:
+		return "Unhandled"
+	default:
+		return fmt.Sprintf("LogWriterOutput(%d)", l)
+	}
+}
 
 // LogLevelFlags flags specifying the level of log messages.
 //
@@ -37,29 +51,70 @@ const (
 type LogLevelFlags int
 
 const (
-	// LogLevelFlagsFlagRecursion: internal flag
-	LogLevelFlagsFlagRecursion LogLevelFlags = 0b1
-	// LogLevelFlagsFlagFatal: internal flag
-	LogLevelFlagsFlagFatal LogLevelFlags = 0b10
-	// LogLevelFlagsLevelError: log level for errors, see g_error(). This level
-	// is also used for messages produced by g_assert().
-	LogLevelFlagsLevelError LogLevelFlags = 0b100
-	// LogLevelFlagsLevelCritical: log level for critical warning messages, see
+	// LogFlagRecursion: internal flag
+	LogFlagRecursion LogLevelFlags = 0b1
+	// LogFlagFatal: internal flag
+	LogFlagFatal LogLevelFlags = 0b10
+	// LogLevelError: log level for errors, see g_error(). This level is also
+	// used for messages produced by g_assert().
+	LogLevelError LogLevelFlags = 0b100
+	// LogLevelCritical: log level for critical warning messages, see
 	// g_critical(). This level is also used for messages produced by
 	// g_return_if_fail() and g_return_val_if_fail().
-	LogLevelFlagsLevelCritical LogLevelFlags = 0b1000
-	// LogLevelFlagsLevelWarning: log level for warnings, see g_warning()
-	LogLevelFlagsLevelWarning LogLevelFlags = 0b10000
-	// LogLevelFlagsLevelMessage: log level for messages, see g_message()
-	LogLevelFlagsLevelMessage LogLevelFlags = 0b100000
-	// LogLevelFlagsLevelInfo: log level for informational messages, see
-	// g_info()
-	LogLevelFlagsLevelInfo LogLevelFlags = 0b1000000
-	// LogLevelFlagsLevelDebug: log level for debug messages, see g_debug()
-	LogLevelFlagsLevelDebug LogLevelFlags = 0b10000000
-	// LogLevelFlagsLevelMask: mask including all log levels
-	LogLevelFlagsLevelMask LogLevelFlags = -4
+	LogLevelCritical LogLevelFlags = 0b1000
+	// LogLevelWarning: log level for warnings, see g_warning()
+	LogLevelWarning LogLevelFlags = 0b10000
+	// LogLevelMessage: log level for messages, see g_message()
+	LogLevelMessage LogLevelFlags = 0b100000
+	// LogLevelInfo: log level for informational messages, see g_info()
+	LogLevelInfo LogLevelFlags = 0b1000000
+	// LogLevelDebug: log level for debug messages, see g_debug()
+	LogLevelDebug LogLevelFlags = 0b10000000
+	// LogLevelMask: mask including all log levels
+	LogLevelMask LogLevelFlags = -4
 )
+
+// String returns the names in string for LogLevelFlags.
+func (l LogLevelFlags) String() string {
+	if l == 0 {
+		return "LogLevelFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(132)
+
+	for l != 0 {
+		next := l & (l - 1)
+		bit := l - next
+
+		switch bit {
+		case LogFlagRecursion:
+			builder.WriteString("FlagRecursion|")
+		case LogFlagFatal:
+			builder.WriteString("FlagFatal|")
+		case LogLevelError:
+			builder.WriteString("LevelError|")
+		case LogLevelCritical:
+			builder.WriteString("LevelCritical|")
+		case LogLevelWarning:
+			builder.WriteString("LevelWarning|")
+		case LogLevelMessage:
+			builder.WriteString("LevelMessage|")
+		case LogLevelInfo:
+			builder.WriteString("LevelInfo|")
+		case LogLevelDebug:
+			builder.WriteString("LevelDebug|")
+		case LogLevelMask:
+			builder.WriteString("LevelMask|")
+		default:
+			builder.WriteString(fmt.Sprintf("LogLevelFlags(0b%b)|", bit))
+		}
+
+		l = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // LogFunc specifies the prototype of log handler functions.
 //

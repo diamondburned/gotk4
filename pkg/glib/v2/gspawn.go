@@ -3,6 +3,8 @@
 package glib
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -20,89 +22,182 @@ import "C"
 type SpawnError int
 
 const (
-	// Fork: fork failed due to lack of memory.
+	// SpawnErrorFork: fork failed due to lack of memory.
 	SpawnErrorFork SpawnError = 0
-	// Read: read or select on pipes failed.
+	// SpawnErrorRead: read or select on pipes failed.
 	SpawnErrorRead SpawnError = 1
-	// Chdir: changing to working directory failed.
+	// SpawnErrorChdir: changing to working directory failed.
 	SpawnErrorChdir SpawnError = 2
-	// Acces: execv() returned EACCES
+	// SpawnErrorAcces: execv() returned EACCES
 	SpawnErrorAcces SpawnError = 3
-	// Perm: execv() returned EPERM
+	// SpawnErrorPerm: execv() returned EPERM
 	SpawnErrorPerm SpawnError = 4
-	// TooBig: execv() returned E2BIG
+	// SpawnErrorTooBig: execv() returned E2BIG
 	SpawnErrorTooBig SpawnError = 5
-	// 2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated since GLib
-	// 2.32)
+	// SpawnError2Big: deprecated alias for G_SPAWN_ERROR_TOO_BIG (deprecated
+	// since GLib 2.32)
 	SpawnError2Big SpawnError = 5
-	// Noexec: execv() returned ENOEXEC
+	// SpawnErrorNoexec: execv() returned ENOEXEC
 	SpawnErrorNoexec SpawnError = 6
-	// Nametoolong: execv() returned ENAMETOOLONG
+	// SpawnErrorNametoolong: execv() returned ENAMETOOLONG
 	SpawnErrorNametoolong SpawnError = 7
-	// Noent: execv() returned ENOENT
+	// SpawnErrorNoent: execv() returned ENOENT
 	SpawnErrorNoent SpawnError = 8
-	// NOMEM: execv() returned ENOMEM
+	// SpawnErrorNOMEM: execv() returned ENOMEM
 	SpawnErrorNOMEM SpawnError = 9
-	// Notdir: execv() returned ENOTDIR
+	// SpawnErrorNotdir: execv() returned ENOTDIR
 	SpawnErrorNotdir SpawnError = 10
-	// Loop: execv() returned ELOOP
+	// SpawnErrorLoop: execv() returned ELOOP
 	SpawnErrorLoop SpawnError = 11
-	// Txtbusy: execv() returned ETXTBUSY
+	// SpawnErrorTxtbusy: execv() returned ETXTBUSY
 	SpawnErrorTxtbusy SpawnError = 12
-	// IO: execv() returned EIO
+	// SpawnErrorIO: execv() returned EIO
 	SpawnErrorIO SpawnError = 13
-	// Nfile: execv() returned ENFILE
+	// SpawnErrorNfile: execv() returned ENFILE
 	SpawnErrorNfile SpawnError = 14
-	// Mfile: execv() returned EMFILE
+	// SpawnErrorMfile: execv() returned EMFILE
 	SpawnErrorMfile SpawnError = 15
-	// Inval: execv() returned EINVAL
+	// SpawnErrorInval: execv() returned EINVAL
 	SpawnErrorInval SpawnError = 16
-	// Isdir: execv() returned EISDIR
+	// SpawnErrorIsdir: execv() returned EISDIR
 	SpawnErrorIsdir SpawnError = 17
-	// Libbad: execv() returned ELIBBAD
+	// SpawnErrorLibbad: execv() returned ELIBBAD
 	SpawnErrorLibbad SpawnError = 18
-	// Failed: some other fatal failure, error->message should explain.
+	// SpawnErrorFailed: some other fatal failure, error->message should
+	// explain.
 	SpawnErrorFailed SpawnError = 19
 )
+
+// String returns the name in string for SpawnError.
+func (s SpawnError) String() string {
+	switch s {
+	case SpawnErrorFork:
+		return "Fork"
+	case SpawnErrorRead:
+		return "Read"
+	case SpawnErrorChdir:
+		return "Chdir"
+	case SpawnErrorAcces:
+		return "Acces"
+	case SpawnErrorPerm:
+		return "Perm"
+	case SpawnErrorTooBig:
+		return "TooBig"
+	case SpawnErrorNoexec:
+		return "Noexec"
+	case SpawnErrorNametoolong:
+		return "Nametoolong"
+	case SpawnErrorNoent:
+		return "Noent"
+	case SpawnErrorNOMEM:
+		return "NOMEM"
+	case SpawnErrorNotdir:
+		return "Notdir"
+	case SpawnErrorLoop:
+		return "Loop"
+	case SpawnErrorTxtbusy:
+		return "Txtbusy"
+	case SpawnErrorIO:
+		return "IO"
+	case SpawnErrorNfile:
+		return "Nfile"
+	case SpawnErrorMfile:
+		return "Mfile"
+	case SpawnErrorInval:
+		return "Inval"
+	case SpawnErrorIsdir:
+		return "Isdir"
+	case SpawnErrorLibbad:
+		return "Libbad"
+	case SpawnErrorFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("SpawnError(%d)", s)
+	}
+}
 
 // SpawnFlags flags passed to g_spawn_sync(), g_spawn_async() and
 // g_spawn_async_with_pipes().
 type SpawnFlags int
 
 const (
-	// SpawnFlagsDefault: no flags, default behaviour
-	SpawnFlagsDefault SpawnFlags = 0b0
-	// SpawnFlagsLeaveDescriptorsOpen parent's open file descriptors will be
+	// SpawnDefault: no flags, default behaviour
+	SpawnDefault SpawnFlags = 0b0
+	// SpawnLeaveDescriptorsOpen parent's open file descriptors will be
 	// inherited by the child; otherwise all descriptors except stdin, stdout
 	// and stderr will be closed before calling exec() in the child.
-	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 0b1
-	// SpawnFlagsDoNotReapChild: child will not be automatically reaped; you
-	// must use g_child_watch_add() yourself (or call waitpid() or handle
-	// SIGCHLD yourself), or the child will become a zombie.
-	SpawnFlagsDoNotReapChild SpawnFlags = 0b10
-	// SpawnFlagsSearchPath: argv[0] need not be an absolute path, it will be
-	// looked for in the user's PATH.
-	SpawnFlagsSearchPath SpawnFlags = 0b100
-	// SpawnFlagsStdoutToDevNull child's standard output will be discarded,
-	// instead of going to the same location as the parent's standard output.
-	SpawnFlagsStdoutToDevNull SpawnFlags = 0b1000
-	// SpawnFlagsStderrToDevNull child's standard error will be discarded.
-	SpawnFlagsStderrToDevNull SpawnFlags = 0b10000
-	// SpawnFlagsChildInheritsStdin: child will inherit the parent's standard
-	// input (by default, the child's standard input is attached to /dev/null).
-	SpawnFlagsChildInheritsStdin SpawnFlags = 0b100000
-	// SpawnFlagsFileAndArgvZero: first element of argv is the file to execute,
-	// while the remaining elements are the actual argument vector to pass to
-	// the file. Normally g_spawn_async_with_pipes() uses argv[0] as the file to
+	SpawnLeaveDescriptorsOpen SpawnFlags = 0b1
+	// SpawnDoNotReapChild: child will not be automatically reaped; you must use
+	// g_child_watch_add() yourself (or call waitpid() or handle SIGCHLD
+	// yourself), or the child will become a zombie.
+	SpawnDoNotReapChild SpawnFlags = 0b10
+	// SpawnSearchPath: argv[0] need not be an absolute path, it will be looked
+	// for in the user's PATH.
+	SpawnSearchPath SpawnFlags = 0b100
+	// SpawnStdoutToDevNull child's standard output will be discarded, instead
+	// of going to the same location as the parent's standard output.
+	SpawnStdoutToDevNull SpawnFlags = 0b1000
+	// SpawnStderrToDevNull child's standard error will be discarded.
+	SpawnStderrToDevNull SpawnFlags = 0b10000
+	// SpawnChildInheritsStdin: child will inherit the parent's standard input
+	// (by default, the child's standard input is attached to /dev/null).
+	SpawnChildInheritsStdin SpawnFlags = 0b100000
+	// SpawnFileAndArgvZero: first element of argv is the file to execute, while
+	// the remaining elements are the actual argument vector to pass to the
+	// file. Normally g_spawn_async_with_pipes() uses argv[0] as the file to
 	// execute, and passes all of argv to the child.
-	SpawnFlagsFileAndArgvZero SpawnFlags = 0b1000000
-	// SpawnFlagsSearchPathFromEnvp: if argv[0] is not an absolute path, it will
-	// be looked for in the PATH from the passed child environment. Since: 2.34
-	SpawnFlagsSearchPathFromEnvp SpawnFlags = 0b10000000
-	// SpawnFlagsCloexecPipes: create all pipes with the O_CLOEXEC flag set.
-	// Since: 2.40
-	SpawnFlagsCloexecPipes SpawnFlags = 0b100000000
+	SpawnFileAndArgvZero SpawnFlags = 0b1000000
+	// SpawnSearchPathFromEnvp: if argv[0] is not an absolute path, it will be
+	// looked for in the PATH from the passed child environment. Since: 2.34
+	SpawnSearchPathFromEnvp SpawnFlags = 0b10000000
+	// SpawnCloexecPipes: create all pipes with the O_CLOEXEC flag set. Since:
+	// 2.40
+	SpawnCloexecPipes SpawnFlags = 0b100000000
 )
+
+// String returns the names in string for SpawnFlags.
+func (s SpawnFlags) String() string {
+	if s == 0 {
+		return "SpawnFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(203)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case SpawnDefault:
+			builder.WriteString("Default|")
+		case SpawnLeaveDescriptorsOpen:
+			builder.WriteString("LeaveDescriptorsOpen|")
+		case SpawnDoNotReapChild:
+			builder.WriteString("DoNotReapChild|")
+		case SpawnSearchPath:
+			builder.WriteString("SearchPath|")
+		case SpawnStdoutToDevNull:
+			builder.WriteString("StdoutToDevNull|")
+		case SpawnStderrToDevNull:
+			builder.WriteString("StderrToDevNull|")
+		case SpawnChildInheritsStdin:
+			builder.WriteString("ChildInheritsStdin|")
+		case SpawnFileAndArgvZero:
+			builder.WriteString("FileAndArgvZero|")
+		case SpawnSearchPathFromEnvp:
+			builder.WriteString("SearchPathFromEnvp|")
+		case SpawnCloexecPipes:
+			builder.WriteString("CloexecPipes|")
+		default:
+			builder.WriteString(fmt.Sprintf("SpawnFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // SpawnChildSetupFunc specifies the type of the setup function passed to
 // g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can, in

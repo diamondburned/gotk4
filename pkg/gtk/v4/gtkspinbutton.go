@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,15 +31,29 @@ func init() {
 type SpinButtonUpdatePolicy int
 
 const (
-	// Always: when refreshing your SpinButton, the value is always displayed
-	SpinButtonUpdatePolicyAlways SpinButtonUpdatePolicy = iota
-	// IfValid: when refreshing your SpinButton, the value is only displayed if
-	// it is valid within the bounds of the spin button's adjustment
-	SpinButtonUpdatePolicyIfValid
+	// UpdateAlways: when refreshing your SpinButton, the value is always
+	// displayed
+	UpdateAlways SpinButtonUpdatePolicy = iota
+	// UpdateIfValid: when refreshing your SpinButton, the value is only
+	// displayed if it is valid within the bounds of the spin button's
+	// adjustment
+	UpdateIfValid
 )
 
 func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
 	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SpinButtonUpdatePolicy.
+func (s SpinButtonUpdatePolicy) String() string {
+	switch s {
+	case UpdateAlways:
+		return "Always"
+	case UpdateIfValid:
+		return "IfValid"
+	default:
+		return fmt.Sprintf("SpinButtonUpdatePolicy(%d)", s)
+	}
 }
 
 // SpinType values of the GtkSpinType enumeration are used to specify the change
@@ -46,24 +61,46 @@ func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
 type SpinType int
 
 const (
-	// StepForward: increment by the adjustments step increment.
-	SpinTypeStepForward SpinType = iota
-	// StepBackward: decrement by the adjustments step increment.
-	SpinTypeStepBackward
-	// PageForward: increment by the adjustments page increment.
-	SpinTypePageForward
-	// PageBackward: decrement by the adjustments page increment.
-	SpinTypePageBackward
-	// Home: go to the adjustments lower bound.
-	SpinTypeHome
-	// End: go to the adjustments upper bound.
-	SpinTypeEnd
-	// UserDefined: change by a specified amount.
-	SpinTypeUserDefined
+	// SpinStepForward: increment by the adjustments step increment.
+	SpinStepForward SpinType = iota
+	// SpinStepBackward: decrement by the adjustments step increment.
+	SpinStepBackward
+	// SpinPageForward: increment by the adjustments page increment.
+	SpinPageForward
+	// SpinPageBackward: decrement by the adjustments page increment.
+	SpinPageBackward
+	// SpinHome: go to the adjustments lower bound.
+	SpinHome
+	// SpinEnd: go to the adjustments upper bound.
+	SpinEnd
+	// SpinUserDefined: change by a specified amount.
+	SpinUserDefined
 )
 
 func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SpinType.
+func (s SpinType) String() string {
+	switch s {
+	case SpinStepForward:
+		return "StepForward"
+	case SpinStepBackward:
+		return "StepBackward"
+	case SpinPageForward:
+		return "PageForward"
+	case SpinPageBackward:
+		return "PageBackward"
+	case SpinHome:
+		return "Home"
+	case SpinEnd:
+		return "End"
+	case SpinUserDefined:
+		return "UserDefined"
+	default:
+		return fmt.Sprintf("SpinType(%d)", s)
+	}
 }
 
 // SpinButton: GtkSpinButton is an ideal way to allow the user to set the value

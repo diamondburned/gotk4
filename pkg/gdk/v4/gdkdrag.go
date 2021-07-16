@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -27,16 +28,30 @@ func init() {
 type DragCancelReason int
 
 const (
-	// NoTarget: there is no suitable drop target.
-	DragCancelReasonNoTarget DragCancelReason = iota
-	// UserCancelled: drag cancelled by the user
-	DragCancelReasonUserCancelled
-	// Error: unspecified error.
-	DragCancelReasonError
+	// DragCancelNoTarget: there is no suitable drop target.
+	DragCancelNoTarget DragCancelReason = iota
+	// DragCancelUserCancelled: drag cancelled by the user
+	DragCancelUserCancelled
+	// DragCancelError: unspecified error.
+	DragCancelError
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DragCancelReason.
+func (d DragCancelReason) String() string {
+	switch d {
+	case DragCancelNoTarget:
+		return "NoTarget"
+	case DragCancelUserCancelled:
+		return "UserCancelled"
+	case DragCancelError:
+		return "Error"
+	default:
+		return fmt.Sprintf("DragCancelReason(%d)", d)
+	}
 }
 
 // DragActionIsUnique checks if action represents a single action or includes

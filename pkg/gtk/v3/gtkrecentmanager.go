@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -33,25 +34,50 @@ func init() {
 type RecentManagerError int
 
 const (
-	// NotFound: URI specified does not exists in the recently used resources
-	// list.
+	// RecentManagerErrorNotFound: URI specified does not exists in the recently
+	// used resources list.
 	RecentManagerErrorNotFound RecentManagerError = iota
-	// InvalidURI: URI specified is not valid.
+	// RecentManagerErrorInvalidURI: URI specified is not valid.
 	RecentManagerErrorInvalidURI
-	// InvalidEncoding: supplied string is not UTF-8 encoded.
+	// RecentManagerErrorInvalidEncoding: supplied string is not UTF-8 encoded.
 	RecentManagerErrorInvalidEncoding
-	// NotRegistered: no application has registered the specified item.
+	// RecentManagerErrorNotRegistered: no application has registered the
+	// specified item.
 	RecentManagerErrorNotRegistered
-	// Read: failure while reading the recently used resources file.
+	// RecentManagerErrorRead: failure while reading the recently used resources
+	// file.
 	RecentManagerErrorRead
-	// Write: failure while writing the recently used resources file.
+	// RecentManagerErrorWrite: failure while writing the recently used
+	// resources file.
 	RecentManagerErrorWrite
-	// Unknown: unspecified error.
+	// RecentManagerErrorUnknown: unspecified error.
 	RecentManagerErrorUnknown
 )
 
 func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RecentManagerError.
+func (r RecentManagerError) String() string {
+	switch r {
+	case RecentManagerErrorNotFound:
+		return "NotFound"
+	case RecentManagerErrorInvalidURI:
+		return "InvalidURI"
+	case RecentManagerErrorInvalidEncoding:
+		return "InvalidEncoding"
+	case RecentManagerErrorNotRegistered:
+		return "NotRegistered"
+	case RecentManagerErrorRead:
+		return "Read"
+	case RecentManagerErrorWrite:
+		return "Write"
+	case RecentManagerErrorUnknown:
+		return "Unknown"
+	default:
+		return fmt.Sprintf("RecentManagerError(%d)", r)
+	}
 }
 
 // RecentManagerOverrider contains methods that are overridable.

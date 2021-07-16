@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,21 +32,53 @@ func init() {
 type StyleContextPrintFlags int
 
 const (
-	// StyleContextPrintFlagsNone: default value.
-	StyleContextPrintFlagsNone StyleContextPrintFlags = 0b0
-	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
-	// starting at the style context's node
-	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 0b1
-	// StyleContextPrintFlagsShowStyle: show the values of the CSS properties
-	// for each node
-	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 0b10
-	// StyleContextPrintFlagsShowChange: show information about what changes
-	// affect the styles
-	StyleContextPrintFlagsShowChange StyleContextPrintFlags = 0b100
+	// StyleContextPrintNone: default value.
+	StyleContextPrintNone StyleContextPrintFlags = 0b0
+	// StyleContextPrintRecurse: print the entire tree of CSS nodes starting at
+	// the style context's node
+	StyleContextPrintRecurse StyleContextPrintFlags = 0b1
+	// StyleContextPrintShowStyle: show the values of the CSS properties for
+	// each node
+	StyleContextPrintShowStyle StyleContextPrintFlags = 0b10
+	// StyleContextPrintShowChange: show information about what changes affect
+	// the styles
+	StyleContextPrintShowChange StyleContextPrintFlags = 0b100
 )
 
 func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 	return StyleContextPrintFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for StyleContextPrintFlags.
+func (s StyleContextPrintFlags) String() string {
+	if s == 0 {
+		return "StyleContextPrintFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(101)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case StyleContextPrintNone:
+			builder.WriteString("None|")
+		case StyleContextPrintRecurse:
+			builder.WriteString("Recurse|")
+		case StyleContextPrintShowStyle:
+			builder.WriteString("ShowStyle|")
+		case StyleContextPrintShowChange:
+			builder.WriteString("ShowChange|")
+		default:
+			builder.WriteString(fmt.Sprintf("StyleContextPrintFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // StyleContextOverrider contains methods that are overridable.

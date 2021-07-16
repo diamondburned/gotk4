@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,14 +29,26 @@ func init() {
 type NotebookTab int
 
 const (
-	// First tab in the notebook
+	// NotebookTabFirst tab in the notebook
 	NotebookTabFirst NotebookTab = iota
-	// Last tab in the notebook
+	// NotebookTabLast tab in the notebook
 	NotebookTabLast
 )
 
 func marshalNotebookTab(p uintptr) (interface{}, error) {
 	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for NotebookTab.
+func (n NotebookTab) String() string {
+	switch n {
+	case NotebookTabFirst:
+		return "First"
+	case NotebookTabLast:
+		return "Last"
+	default:
+		return fmt.Sprintf("NotebookTab(%d)", n)
+	}
 }
 
 // Notebook: GtkNotebook is a container whose children are pages switched

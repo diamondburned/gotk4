@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,16 +31,46 @@ func init() {
 type AccelFlags int
 
 const (
-	// AccelFlagsVisible: accelerator is visible
-	AccelFlagsVisible AccelFlags = 0b1
-	// AccelFlagsLocked: accelerator not removable
-	AccelFlagsLocked AccelFlags = 0b10
-	// AccelFlagsMask: mask
-	AccelFlagsMask AccelFlags = 0b111
+	// AccelVisible: accelerator is visible
+	AccelVisible AccelFlags = 0b1
+	// AccelLocked: accelerator not removable
+	AccelLocked AccelFlags = 0b10
+	// AccelMask: mask
+	AccelMask AccelFlags = 0b111
 )
 
 func marshalAccelFlags(p uintptr) (interface{}, error) {
 	return AccelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AccelFlags.
+func (a AccelFlags) String() string {
+	if a == 0 {
+		return "AccelFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(34)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AccelVisible:
+			builder.WriteString("Visible|")
+		case AccelLocked:
+			builder.WriteString("Locked|")
+		case AccelMask:
+			builder.WriteString("Mask|")
+		default:
+			builder.WriteString(fmt.Sprintf("AccelFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // AccelGroupsActivate finds the first accelerator in any AccelGroup attached to

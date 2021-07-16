@@ -3,6 +3,8 @@
 package glib
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,21 +27,57 @@ func init() {
 type IOCondition int
 
 const (
-	// IOConditionIn: there is data to read.
-	IOConditionIn IOCondition = 0b1
-	// IOConditionOut: data can be written (without blocking).
-	IOConditionOut IOCondition = 0b100
-	// IOConditionPri: there is urgent data to read.
-	IOConditionPri IOCondition = 0b10
-	// IOConditionErr: error condition.
-	IOConditionErr IOCondition = 0b1000
-	// IOConditionHup: hung up (the connection has been broken, usually for
-	// pipes and sockets).
-	IOConditionHup IOCondition = 0b10000
-	// IOConditionNval: invalid request. The file descriptor is not open.
-	IOConditionNval IOCondition = 0b100000
+	// IOIn: there is data to read.
+	IOIn IOCondition = 0b1
+	// IOOut: data can be written (without blocking).
+	IOOut IOCondition = 0b100
+	// IOPri: there is urgent data to read.
+	IOPri IOCondition = 0b10
+	// IOErr: error condition.
+	IOErr IOCondition = 0b1000
+	// IOHup: hung up (the connection has been broken, usually for pipes and
+	// sockets).
+	IOHup IOCondition = 0b10000
+	// IONval: invalid request. The file descriptor is not open.
+	IONval IOCondition = 0b100000
 )
 
 func marshalIOCondition(p uintptr) (interface{}, error) {
 	return IOCondition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for IOCondition.
+func (i IOCondition) String() string {
+	if i == 0 {
+		return "IOCondition(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(35)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case IOIn:
+			builder.WriteString("In|")
+		case IOOut:
+			builder.WriteString("Out|")
+		case IOPri:
+			builder.WriteString("Pri|")
+		case IOErr:
+			builder.WriteString("Err|")
+		case IOHup:
+			builder.WriteString("Hup|")
+		case IONval:
+			builder.WriteString("Nval|")
+		default:
+			builder.WriteString(fmt.Sprintf("IOCondition(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }

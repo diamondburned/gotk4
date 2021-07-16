@@ -3,6 +3,8 @@
 package gdk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,16 +30,44 @@ func init() {
 type PaintableFlags int
 
 const (
-	// PaintableFlagsSize is immutable. The gdkpaintable::invalidate-size signal
-	// will never be emitted.
-	PaintableFlagsSize PaintableFlags = 0b1
-	// PaintableFlagsContents: content is immutable. The
+	// PaintableStaticSize is immutable. The gdkpaintable::invalidate-size
+	// signal will never be emitted.
+	PaintableStaticSize PaintableFlags = 0b1
+	// PaintableStaticContents: content is immutable. The
 	// gdkpaintable::invalidate-contents signal will never be emitted.
-	PaintableFlagsContents PaintableFlags = 0b10
+	PaintableStaticContents PaintableFlags = 0b10
 )
 
 func marshalPaintableFlags(p uintptr) (interface{}, error) {
 	return PaintableFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for PaintableFlags.
+func (p PaintableFlags) String() string {
+	if p == 0 {
+		return "PaintableFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(43)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PaintableStaticSize:
+			builder.WriteString("Size|")
+		case PaintableStaticContents:
+			builder.WriteString("Contents|")
+		default:
+			builder.WriteString(fmt.Sprintf("PaintableFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // PaintableOverrider contains methods that are overridable.

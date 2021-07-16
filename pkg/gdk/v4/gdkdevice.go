@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,27 +29,49 @@ func init() {
 type InputSource int
 
 const (
-	// Mouse: device is a mouse. (This will be reported for the core pointer,
-	// even if it is something else, such as a trackball.)
-	InputSourceMouse InputSource = iota
-	// Pen: device is a stylus of a graphics tablet or similar device.
-	InputSourcePen
-	// Keyboard: device is a keyboard.
-	InputSourceKeyboard
-	// Touchscreen: device is a direct-input touch device, such as a touchscreen
-	// or tablet
-	InputSourceTouchscreen
-	// Touchpad: device is an indirect touch device, such as a touchpad
-	InputSourceTouchpad
-	// Trackpoint: device is a trackpoint
-	InputSourceTrackpoint
-	// TabletPad: device is a "pad", a collection of buttons, rings and strips
-	// found in drawing tablets
-	InputSourceTabletPad
+	// SourceMouse: device is a mouse. (This will be reported for the core
+	// pointer, even if it is something else, such as a trackball.)
+	SourceMouse InputSource = iota
+	// SourcePen: device is a stylus of a graphics tablet or similar device.
+	SourcePen
+	// SourceKeyboard: device is a keyboard.
+	SourceKeyboard
+	// SourceTouchscreen: device is a direct-input touch device, such as a
+	// touchscreen or tablet
+	SourceTouchscreen
+	// SourceTouchpad: device is an indirect touch device, such as a touchpad
+	SourceTouchpad
+	// SourceTrackpoint: device is a trackpoint
+	SourceTrackpoint
+	// SourceTabletPad: device is a "pad", a collection of buttons, rings and
+	// strips found in drawing tablets
+	SourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for InputSource.
+func (i InputSource) String() string {
+	switch i {
+	case SourceMouse:
+		return "Mouse"
+	case SourcePen:
+		return "Pen"
+	case SourceKeyboard:
+		return "Keyboard"
+	case SourceTouchscreen:
+		return "Touchscreen"
+	case SourceTouchpad:
+		return "Touchpad"
+	case SourceTrackpoint:
+		return "Trackpoint"
+	case SourceTabletPad:
+		return "TabletPad"
+	default:
+		return fmt.Sprintf("InputSource(%d)", i)
+	}
 }
 
 // Device: GdkDevice object represents an input device, such as a keyboard, a

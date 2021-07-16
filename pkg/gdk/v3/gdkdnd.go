@@ -3,6 +3,8 @@
 package gdk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,16 +30,30 @@ func init() {
 type DragCancelReason int
 
 const (
-	// NoTarget: there is no suitable drop target.
-	DragCancelReasonNoTarget DragCancelReason = iota
-	// UserCancelled: drag cancelled by the user
-	DragCancelReasonUserCancelled
-	// Error: unspecified error.
-	DragCancelReasonError
+	// DragCancelNoTarget: there is no suitable drop target.
+	DragCancelNoTarget DragCancelReason = iota
+	// DragCancelUserCancelled: drag cancelled by the user
+	DragCancelUserCancelled
+	// DragCancelError: unspecified error.
+	DragCancelError
 )
 
 func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DragCancelReason.
+func (d DragCancelReason) String() string {
+	switch d {
+	case DragCancelNoTarget:
+		return "NoTarget"
+	case DragCancelUserCancelled:
+		return "UserCancelled"
+	case DragCancelError:
+		return "Error"
+	default:
+		return fmt.Sprintf("DragCancelReason(%d)", d)
+	}
 }
 
 // DragProtocol: used in DragContext to indicate the protocol according to which
@@ -45,26 +61,51 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 type DragProtocol int
 
 const (
-	// None: no protocol.
-	DragProtocolNone DragProtocol = iota
-	// Motif: motif DND protocol. No longer supported
-	DragProtocolMotif
-	// Xdnd: xdnd protocol.
-	DragProtocolXdnd
-	// Rootwin: extension to the Xdnd protocol for unclaimed root window drops.
-	DragProtocolRootwin
-	// Win32Dropfiles: simple WM_DROPFILES protocol.
-	DragProtocolWin32Dropfiles
-	// Ole2: complex OLE2 DND protocol (not implemented).
-	DragProtocolOle2
-	// Local: intra-application DND.
-	DragProtocolLocal
-	// Wayland: wayland DND protocol.
-	DragProtocolWayland
+	// DragProtoNone: no protocol.
+	DragProtoNone DragProtocol = iota
+	// DragProtoMotif: motif DND protocol. No longer supported
+	DragProtoMotif
+	// DragProtoXdnd: xdnd protocol.
+	DragProtoXdnd
+	// DragProtoRootwin: extension to the Xdnd protocol for unclaimed root
+	// window drops.
+	DragProtoRootwin
+	// DragProtoWin32Dropfiles: simple WM_DROPFILES protocol.
+	DragProtoWin32Dropfiles
+	// DragProtoOle2: complex OLE2 DND protocol (not implemented).
+	DragProtoOle2
+	// DragProtoLocal: intra-application DND.
+	DragProtoLocal
+	// DragProtoWayland: wayland DND protocol.
+	DragProtoWayland
 )
 
 func marshalDragProtocol(p uintptr) (interface{}, error) {
 	return DragProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DragProtocol.
+func (d DragProtocol) String() string {
+	switch d {
+	case DragProtoNone:
+		return "None"
+	case DragProtoMotif:
+		return "Motif"
+	case DragProtoXdnd:
+		return "Xdnd"
+	case DragProtoRootwin:
+		return "Rootwin"
+	case DragProtoWin32Dropfiles:
+		return "Win32Dropfiles"
+	case DragProtoOle2:
+		return "Ole2"
+	case DragProtoLocal:
+		return "Local"
+	case DragProtoWayland:
+		return "Wayland"
+	default:
+		return fmt.Sprintf("DragProtocol(%d)", d)
+	}
 }
 
 // DragAction: used in DragContext to indicate what the destination should do
@@ -72,25 +113,61 @@ func marshalDragProtocol(p uintptr) (interface{}, error) {
 type DragAction int
 
 const (
-	// DragActionDefault means nothing, and should not be used.
-	DragActionDefault DragAction = 0b1
-	// DragActionCopy: copy the data.
-	DragActionCopy DragAction = 0b10
-	// DragActionMove: move the data, i.e. first copy it, then delete it from
-	// the source using the DELETE target of the X selection protocol.
-	DragActionMove DragAction = 0b100
-	// DragActionLink: add a link to the data. Note that this is only useful if
+	// ActionDefault means nothing, and should not be used.
+	ActionDefault DragAction = 0b1
+	// ActionCopy: copy the data.
+	ActionCopy DragAction = 0b10
+	// ActionMove: move the data, i.e. first copy it, then delete it from the
+	// source using the DELETE target of the X selection protocol.
+	ActionMove DragAction = 0b100
+	// ActionLink: add a link to the data. Note that this is only useful if
 	// source and destination agree on what it means.
-	DragActionLink DragAction = 0b1000
-	// DragActionPrivate: special action which tells the source that the
-	// destination will do something that the source doesn’t understand.
-	DragActionPrivate DragAction = 0b10000
-	// DragActionAsk: ask the user what to do with the data.
-	DragActionAsk DragAction = 0b100000
+	ActionLink DragAction = 0b1000
+	// ActionPrivate: special action which tells the source that the destination
+	// will do something that the source doesn’t understand.
+	ActionPrivate DragAction = 0b10000
+	// ActionAsk: ask the user what to do with the data.
+	ActionAsk DragAction = 0b100000
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
 	return DragAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DragAction.
+func (d DragAction) String() string {
+	if d == 0 {
+		return "DragAction(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(70)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case ActionDefault:
+			builder.WriteString("Default|")
+		case ActionCopy:
+			builder.WriteString("Copy|")
+		case ActionMove:
+			builder.WriteString("Move|")
+		case ActionLink:
+			builder.WriteString("Link|")
+		case ActionPrivate:
+			builder.WriteString("Private|")
+		case ActionAsk:
+			builder.WriteString("Ask|")
+		default:
+			builder.WriteString(fmt.Sprintf("DragAction(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DragAbort aborts a drag without dropping.

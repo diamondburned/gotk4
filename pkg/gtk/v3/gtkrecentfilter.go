@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -33,25 +35,61 @@ func init() {
 type RecentFilterFlags int
 
 const (
-	// RecentFilterFlagsURI: URI of the file being tested
-	RecentFilterFlagsURI RecentFilterFlags = 0b1
-	// RecentFilterFlagsDisplayName: string that will be used to display the
-	// file in the recent chooser
-	RecentFilterFlagsDisplayName RecentFilterFlags = 0b10
-	// RecentFilterFlagsMIMEType: mime type of the file
-	RecentFilterFlagsMIMEType RecentFilterFlags = 0b100
-	// RecentFilterFlagsApplication: list of applications that have registered
-	// the file
-	RecentFilterFlagsApplication RecentFilterFlags = 0b1000
-	// RecentFilterFlagsGroup groups to which the file belongs to
-	RecentFilterFlagsGroup RecentFilterFlags = 0b10000
-	// RecentFilterFlagsAge: number of days elapsed since the file has been
+	// RecentFilterURI: URI of the file being tested
+	RecentFilterURI RecentFilterFlags = 0b1
+	// RecentFilterDisplayName: string that will be used to display the file in
+	// the recent chooser
+	RecentFilterDisplayName RecentFilterFlags = 0b10
+	// RecentFilterMIMEType: mime type of the file
+	RecentFilterMIMEType RecentFilterFlags = 0b100
+	// RecentFilterApplication: list of applications that have registered the
+	// file
+	RecentFilterApplication RecentFilterFlags = 0b1000
+	// RecentFilterGroup groups to which the file belongs to
+	RecentFilterGroup RecentFilterFlags = 0b10000
+	// RecentFilterAge: number of days elapsed since the file has been
 	// registered
-	RecentFilterFlagsAge RecentFilterFlags = 0b100000
+	RecentFilterAge RecentFilterFlags = 0b100000
 )
 
 func marshalRecentFilterFlags(p uintptr) (interface{}, error) {
 	return RecentFilterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for RecentFilterFlags.
+func (r RecentFilterFlags) String() string {
+	if r == 0 {
+		return "RecentFilterFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(118)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case RecentFilterURI:
+			builder.WriteString("URI|")
+		case RecentFilterDisplayName:
+			builder.WriteString("DisplayName|")
+		case RecentFilterMIMEType:
+			builder.WriteString("MIMEType|")
+		case RecentFilterApplication:
+			builder.WriteString("Application|")
+		case RecentFilterGroup:
+			builder.WriteString("Group|")
+		case RecentFilterAge:
+			builder.WriteString("Age|")
+		default:
+			builder.WriteString(fmt.Sprintf("RecentFilterFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // RecentFilterFunc: type of function that is used with custom filters, see

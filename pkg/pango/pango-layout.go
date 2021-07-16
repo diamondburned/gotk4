@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -41,16 +42,30 @@ type LayoutRun = GlyphItem
 type Alignment int
 
 const (
-	// Left: put all available space on the right
-	AlignmentLeft Alignment = iota
-	// Center: center the line within the available space
-	AlignmentCenter
-	// Right: put all available space on the left
-	AlignmentRight
+	// AlignLeft: put all available space on the right
+	AlignLeft Alignment = iota
+	// AlignCenter: center the line within the available space
+	AlignCenter
+	// AlignRight: put all available space on the left
+	AlignRight
 )
 
 func marshalAlignment(p uintptr) (interface{}, error) {
 	return Alignment(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Alignment.
+func (a Alignment) String() string {
+	switch a {
+	case AlignLeft:
+		return "Left"
+	case AlignCenter:
+		return "Center"
+	case AlignRight:
+		return "Right"
+	default:
+		return fmt.Sprintf("Alignment(%d)", a)
+	}
 }
 
 // EllipsizeMode: PangoEllipsizeMode describes what sort of ellipsization should
@@ -61,18 +76,34 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 type EllipsizeMode int
 
 const (
-	// None: no ellipsization
-	EllipsizeModeNone EllipsizeMode = iota
-	// Start: omit characters at the start of the text
-	EllipsizeModeStart
-	// Middle: omit characters in the middle of the text
-	EllipsizeModeMiddle
-	// End: omit characters at the end of the text
-	EllipsizeModeEnd
+	// EllipsizeNone: no ellipsization
+	EllipsizeNone EllipsizeMode = iota
+	// EllipsizeStart: omit characters at the start of the text
+	EllipsizeStart
+	// EllipsizeMiddle: omit characters in the middle of the text
+	EllipsizeMiddle
+	// EllipsizeEnd: omit characters at the end of the text
+	EllipsizeEnd
 )
 
 func marshalEllipsizeMode(p uintptr) (interface{}, error) {
 	return EllipsizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for EllipsizeMode.
+func (e EllipsizeMode) String() string {
+	switch e {
+	case EllipsizeNone:
+		return "None"
+	case EllipsizeStart:
+		return "Start"
+	case EllipsizeMiddle:
+		return "Middle"
+	case EllipsizeEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("EllipsizeMode(%d)", e)
+	}
 }
 
 // WrapMode: PangoWrapMode describes how to wrap the lines of a PangoLayout to
@@ -80,17 +111,31 @@ func marshalEllipsizeMode(p uintptr) (interface{}, error) {
 type WrapMode int
 
 const (
-	// Word: wrap lines at word boundaries.
-	WrapModeWord WrapMode = iota
-	// Char: wrap lines at character boundaries.
-	WrapModeChar
-	// WordChar: wrap lines at word boundaries, but fall back to character
+	// WrapWord: wrap lines at word boundaries.
+	WrapWord WrapMode = iota
+	// WrapChar: wrap lines at character boundaries.
+	WrapChar
+	// WrapWordChar: wrap lines at word boundaries, but fall back to character
 	// boundaries if there is not enough space for a full word.
-	WrapModeWordChar
+	WrapWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WrapMode.
+func (w WrapMode) String() string {
+	switch w {
+	case WrapWord:
+		return "Word"
+	case WrapChar:
+		return "Char"
+	case WrapWordChar:
+		return "WordChar"
+	default:
+		return fmt.Sprintf("WrapMode(%d)", w)
+	}
 }
 
 // Layout: PangoLayout structure represents an entire paragraph of text.

@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -31,21 +33,52 @@ func init() {
 type ApplicationInhibitFlags int
 
 const (
-	// ApplicationInhibitFlagsLogout: inhibit ending the user session by logging
-	// out or by shutting down the computer
-	ApplicationInhibitFlagsLogout ApplicationInhibitFlags = 0b1
-	// ApplicationInhibitFlagsSwitch: inhibit user switching
-	ApplicationInhibitFlagsSwitch ApplicationInhibitFlags = 0b10
-	// ApplicationInhibitFlagsSuspend: inhibit suspending the session or
-	// computer
-	ApplicationInhibitFlagsSuspend ApplicationInhibitFlags = 0b100
-	// ApplicationInhibitFlagsIdle: inhibit the session being marked as idle
-	// (and possibly locked)
-	ApplicationInhibitFlagsIdle ApplicationInhibitFlags = 0b1000
+	// ApplicationInhibitLogout: inhibit ending the user session by logging out
+	// or by shutting down the computer
+	ApplicationInhibitLogout ApplicationInhibitFlags = 0b1
+	// ApplicationInhibitSwitch: inhibit user switching
+	ApplicationInhibitSwitch ApplicationInhibitFlags = 0b10
+	// ApplicationInhibitSuspend: inhibit suspending the session or computer
+	ApplicationInhibitSuspend ApplicationInhibitFlags = 0b100
+	// ApplicationInhibitIdle: inhibit the session being marked as idle (and
+	// possibly locked)
+	ApplicationInhibitIdle ApplicationInhibitFlags = 0b1000
 )
 
 func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 	return ApplicationInhibitFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ApplicationInhibitFlags.
+func (a ApplicationInhibitFlags) String() string {
+	if a == 0 {
+		return "ApplicationInhibitFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(98)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case ApplicationInhibitLogout:
+			builder.WriteString("Logout|")
+		case ApplicationInhibitSwitch:
+			builder.WriteString("Switch|")
+		case ApplicationInhibitSuspend:
+			builder.WriteString("Suspend|")
+		case ApplicationInhibitIdle:
+			builder.WriteString("Idle|")
+		default:
+			builder.WriteString(fmt.Sprintf("ApplicationInhibitFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ApplicationOverrider contains methods that are overridable.

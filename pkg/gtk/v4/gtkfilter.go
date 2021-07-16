@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -31,19 +32,35 @@ func init() {
 type FilterChange int
 
 const (
-	// Different: filter change cannot be described with any of the other
-	// enumeration values.
+	// FilterChangeDifferent: filter change cannot be described with any of the
+	// other enumeration values.
 	FilterChangeDifferent FilterChange = iota
-	// LessStrict: filter is less strict than it was before: All items that it
-	// used to return TRUE for still return TRUE, others now may, too.
+	// FilterChangeLessStrict: filter is less strict than it was before: All
+	// items that it used to return TRUE for still return TRUE, others now may,
+	// too.
 	FilterChangeLessStrict
-	// MoreStrict: filter is more strict than it was before: All items that it
-	// used to return FALSE for still return FALSE, others now may, too.
+	// FilterChangeMoreStrict: filter is more strict than it was before: All
+	// items that it used to return FALSE for still return FALSE, others now
+	// may, too.
 	FilterChangeMoreStrict
 )
 
 func marshalFilterChange(p uintptr) (interface{}, error) {
 	return FilterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FilterChange.
+func (f FilterChange) String() string {
+	switch f {
+	case FilterChangeDifferent:
+		return "Different"
+	case FilterChangeLessStrict:
+		return "LessStrict"
+	case FilterChangeMoreStrict:
+		return "MoreStrict"
+	default:
+		return fmt.Sprintf("FilterChange(%d)", f)
+	}
 }
 
 // FilterMatch describes the known strictness of a filter.
@@ -54,18 +71,33 @@ func marshalFilterChange(p uintptr) (interface{}, error) {
 type FilterMatch int
 
 const (
-	// Some: filter matches some items, gtk_filter_match() may return TRUE or
-	// FALSE
+	// FilterMatchSome: filter matches some items, gtk_filter_match() may return
+	// TRUE or FALSE
 	FilterMatchSome FilterMatch = iota
-	// None: filter does not match any item, gtk_filter_match() will always
-	// return FALSE.
+	// FilterMatchNone: filter does not match any item, gtk_filter_match() will
+	// always return FALSE.
 	FilterMatchNone
-	// All: filter matches all items, gtk_filter_match() will alays return TRUE.
+	// FilterMatchAll: filter matches all items, gtk_filter_match() will alays
+	// return TRUE.
 	FilterMatchAll
 )
 
 func marshalFilterMatch(p uintptr) (interface{}, error) {
 	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FilterMatch.
+func (f FilterMatch) String() string {
+	switch f {
+	case FilterMatchSome:
+		return "Some"
+	case FilterMatchNone:
+		return "None"
+	case FilterMatchAll:
+		return "All"
+	default:
+		return fmt.Sprintf("FilterMatch(%d)", f)
+	}
 }
 
 // FilterOverrider contains methods that are overridable.

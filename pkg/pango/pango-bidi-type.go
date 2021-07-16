@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -29,48 +30,94 @@ func init() {
 type BidiType int
 
 const (
-	// L: left-to-Right
+	// BidiTypeL: left-to-Right
 	BidiTypeL BidiType = iota
-	// Lre: left-to-Right Embedding
+	// BidiTypeLre: left-to-Right Embedding
 	BidiTypeLre
-	// Lro: left-to-Right Override
+	// BidiTypeLro: left-to-Right Override
 	BidiTypeLro
-	// R: right-to-Left
+	// BidiTypeR: right-to-Left
 	BidiTypeR
-	// Al: right-to-Left Arabic
+	// BidiTypeAl: right-to-Left Arabic
 	BidiTypeAl
-	// Rle: right-to-Left Embedding
+	// BidiTypeRle: right-to-Left Embedding
 	BidiTypeRle
-	// Rlo: right-to-Left Override
+	// BidiTypeRlo: right-to-Left Override
 	BidiTypeRlo
-	// PDF: pop Directional Format
+	// BidiTypePDF: pop Directional Format
 	BidiTypePDF
-	// En: european Number
+	// BidiTypeEn: european Number
 	BidiTypeEn
-	// ES: european Number Separator
+	// BidiTypeES: european Number Separator
 	BidiTypeES
-	// Et: european Number Terminator
+	// BidiTypeEt: european Number Terminator
 	BidiTypeEt
-	// An: arabic Number
+	// BidiTypeAn: arabic Number
 	BidiTypeAn
-	// Cs: common Number Separator
+	// BidiTypeCs: common Number Separator
 	BidiTypeCs
-	// Nsm: nonspacing Mark
+	// BidiTypeNsm: nonspacing Mark
 	BidiTypeNsm
-	// Bn: boundary Neutral
+	// BidiTypeBn: boundary Neutral
 	BidiTypeBn
-	// B: paragraph Separator
+	// BidiTypeB: paragraph Separator
 	BidiTypeB
-	// S: segment Separator
+	// BidiTypeS: segment Separator
 	BidiTypeS
-	// Ws: whitespace
+	// BidiTypeWs: whitespace
 	BidiTypeWs
-	// On: other Neutrals
+	// BidiTypeOn: other Neutrals
 	BidiTypeOn
 )
 
 func marshalBidiType(p uintptr) (interface{}, error) {
 	return BidiType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for BidiType.
+func (b BidiType) String() string {
+	switch b {
+	case BidiTypeL:
+		return "L"
+	case BidiTypeLre:
+		return "Lre"
+	case BidiTypeLro:
+		return "Lro"
+	case BidiTypeR:
+		return "R"
+	case BidiTypeAl:
+		return "Al"
+	case BidiTypeRle:
+		return "Rle"
+	case BidiTypeRlo:
+		return "Rlo"
+	case BidiTypePDF:
+		return "PDF"
+	case BidiTypeEn:
+		return "En"
+	case BidiTypeES:
+		return "ES"
+	case BidiTypeEt:
+		return "Et"
+	case BidiTypeAn:
+		return "An"
+	case BidiTypeCs:
+		return "Cs"
+	case BidiTypeNsm:
+		return "Nsm"
+	case BidiTypeBn:
+		return "Bn"
+	case BidiTypeB:
+		return "B"
+	case BidiTypeS:
+		return "S"
+	case BidiTypeWs:
+		return "Ws"
+	case BidiTypeOn:
+		return "On"
+	default:
+		return fmt.Sprintf("BidiType(%d)", b)
+	}
 }
 
 // BidiTypeForUnichar determines the bidirectional type of a character.

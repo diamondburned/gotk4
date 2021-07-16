@@ -3,7 +3,9 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -42,33 +44,59 @@ type XEvent = C.void
 type CrossingMode int
 
 const (
-	// Normal: crossing because of pointer motion.
-	CrossingModeNormal CrossingMode = iota
-	// Grab: crossing because a grab is activated.
-	CrossingModeGrab
-	// Ungrab: crossing because a grab is deactivated.
-	CrossingModeUngrab
-	// GTKGrab: crossing because a GTK+ grab is activated.
-	CrossingModeGTKGrab
-	// GTKUngrab: crossing because a GTK+ grab is deactivated.
-	CrossingModeGTKUngrab
-	// StateChanged: crossing because a GTK+ widget changed state (e.g.
+	// CrossingNormal: crossing because of pointer motion.
+	CrossingNormal CrossingMode = iota
+	// CrossingGrab: crossing because a grab is activated.
+	CrossingGrab
+	// CrossingUngrab: crossing because a grab is deactivated.
+	CrossingUngrab
+	// CrossingGTKGrab: crossing because a GTK+ grab is activated.
+	CrossingGTKGrab
+	// CrossingGTKUngrab: crossing because a GTK+ grab is deactivated.
+	CrossingGTKUngrab
+	// CrossingStateChanged: crossing because a GTK+ widget changed state (e.g.
 	// sensitivity).
-	CrossingModeStateChanged
-	// TouchBegin: crossing because a touch sequence has begun, this event is
-	// synthetic as the pointer might have not left the window.
-	CrossingModeTouchBegin
-	// TouchEnd: crossing because a touch sequence has ended, this event is
-	// synthetic as the pointer might have not left the window.
-	CrossingModeTouchEnd
-	// DeviceSwitch: crossing because of a device switch (i.e. a mouse taking
-	// control of the pointer after a touch device), this event is synthetic as
-	// the pointer didn’t leave the window.
-	CrossingModeDeviceSwitch
+	CrossingStateChanged
+	// CrossingTouchBegin: crossing because a touch sequence has begun, this
+	// event is synthetic as the pointer might have not left the window.
+	CrossingTouchBegin
+	// CrossingTouchEnd: crossing because a touch sequence has ended, this event
+	// is synthetic as the pointer might have not left the window.
+	CrossingTouchEnd
+	// CrossingDeviceSwitch: crossing because of a device switch (i.e. a mouse
+	// taking control of the pointer after a touch device), this event is
+	// synthetic as the pointer didn’t leave the window.
+	CrossingDeviceSwitch
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
 	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CrossingMode.
+func (c CrossingMode) String() string {
+	switch c {
+	case CrossingNormal:
+		return "Normal"
+	case CrossingGrab:
+		return "Grab"
+	case CrossingUngrab:
+		return "Ungrab"
+	case CrossingGTKGrab:
+		return "GTKGrab"
+	case CrossingGTKUngrab:
+		return "GTKUngrab"
+	case CrossingStateChanged:
+		return "StateChanged"
+	case CrossingTouchBegin:
+		return "TouchBegin"
+	case CrossingTouchEnd:
+		return "TouchEnd"
+	case CrossingDeviceSwitch:
+		return "DeviceSwitch"
+	default:
+		return fmt.Sprintf("CrossingMode(%d)", c)
+	}
 }
 
 // EventType specifies the type of the event.
@@ -85,154 +113,278 @@ func marshalCrossingMode(p uintptr) (interface{}, error) {
 type EventType int
 
 const (
-	// Nothing: special code to indicate a null event.
-	EventTypeNothing EventType = -1
-	// Delete: window manager has requested that the toplevel window be hidden
-	// or destroyed, usually when the user clicks on a special icon in the title
-	// bar.
-	EventTypeDelete EventType = 0
-	// Destroy: window has been destroyed.
-	EventTypeDestroy EventType = 1
-	// Expose: all or part of the window has become visible and needs to be
+	// NothingType: special code to indicate a null event.
+	NothingType EventType = -1
+	// DeleteType: window manager has requested that the toplevel window be
+	// hidden or destroyed, usually when the user clicks on a special icon in
+	// the title bar.
+	DeleteType EventType = 0
+	// DestroyType: window has been destroyed.
+	DestroyType EventType = 1
+	// ExposeType: all or part of the window has become visible and needs to be
 	// redrawn.
-	EventTypeExpose EventType = 2
-	// MotionNotify: pointer (usually a mouse) has moved.
-	EventTypeMotionNotify EventType = 3
-	// ButtonPress: mouse button has been pressed.
-	EventTypeButtonPress EventType = 4
-	// 2ButtonPress: mouse button has been double-clicked (clicked twice within
-	// a short period of time). Note that each click also generates a
+	ExposeType EventType = 2
+	// MotionNotifyType: pointer (usually a mouse) has moved.
+	MotionNotifyType EventType = 3
+	// ButtonPressType: mouse button has been pressed.
+	ButtonPressType EventType = 4
+	// TwoButtonPressType: mouse button has been double-clicked (clicked twice
+	// within a short period of time). Note that each click also generates a
 	// GDK_BUTTON_PRESS event.
-	EventType2ButtonPress EventType = 5
-	// DoubleButtonPress alias for GDK_2BUTTON_PRESS, added in 3.6.
-	EventTypeDoubleButtonPress EventType = 5
-	// 3ButtonPress: mouse button has been clicked 3 times in a short period of
-	// time. Note that each click also generates a GDK_BUTTON_PRESS event.
-	EventType3ButtonPress EventType = 6
-	// TripleButtonPress alias for GDK_3BUTTON_PRESS, added in 3.6.
-	EventTypeTripleButtonPress EventType = 6
-	// ButtonRelease: mouse button has been released.
-	EventTypeButtonRelease EventType = 7
-	// KeyPress: key has been pressed.
-	EventTypeKeyPress EventType = 8
-	// KeyRelease: key has been released.
-	EventTypeKeyRelease EventType = 9
-	// EnterNotify: pointer has entered the window.
-	EventTypeEnterNotify EventType = 10
-	// LeaveNotify: pointer has left the window.
-	EventTypeLeaveNotify EventType = 11
-	// FocusChange: keyboard focus has entered or left the window.
-	EventTypeFocusChange EventType = 12
-	// Configure: size, position or stacking order of the window has changed.
-	// Note that GTK+ discards these events for GDK_WINDOW_CHILD windows.
-	EventTypeConfigure EventType = 13
-	// Map: window has been mapped.
-	EventTypeMap EventType = 14
-	// Unmap: window has been unmapped.
-	EventTypeUnmap EventType = 15
-	// PropertyNotify: property on the window has been changed or deleted.
-	EventTypePropertyNotify EventType = 16
-	// SelectionClear: application has lost ownership of a selection.
-	EventTypeSelectionClear EventType = 17
-	// SelectionRequest: another application has requested a selection.
-	EventTypeSelectionRequest EventType = 18
-	// SelectionNotify: selection has been received.
-	EventTypeSelectionNotify EventType = 19
-	// ProximityIn: input device has moved into contact with a sensing surface
-	// (e.g. a touchscreen or graphics tablet).
-	EventTypeProximityIn EventType = 20
-	// ProximityOut: input device has moved out of contact with a sensing
+	TwoButtonPressType EventType = 5
+	// DoubleButtonPressType alias for GDK_2BUTTON_PRESS, added in 3.6.
+	DoubleButtonPressType EventType = 5
+	// ThreeButtonPressType: mouse button has been clicked 3 times in a short
+	// period of time. Note that each click also generates a GDK_BUTTON_PRESS
+	// event.
+	ThreeButtonPressType EventType = 6
+	// TripleButtonPressType alias for GDK_3BUTTON_PRESS, added in 3.6.
+	TripleButtonPressType EventType = 6
+	// ButtonReleaseType: mouse button has been released.
+	ButtonReleaseType EventType = 7
+	// KeyPressType: key has been pressed.
+	KeyPressType EventType = 8
+	// KeyReleaseType: key has been released.
+	KeyReleaseType EventType = 9
+	// EnterNotifyType: pointer has entered the window.
+	EnterNotifyType EventType = 10
+	// LeaveNotifyType: pointer has left the window.
+	LeaveNotifyType EventType = 11
+	// FocusChangeType: keyboard focus has entered or left the window.
+	FocusChangeType EventType = 12
+	// ConfigureType: size, position or stacking order of the window has
+	// changed. Note that GTK+ discards these events for GDK_WINDOW_CHILD
+	// windows.
+	ConfigureType EventType = 13
+	// MapType: window has been mapped.
+	MapType EventType = 14
+	// UnmapType: window has been unmapped.
+	UnmapType EventType = 15
+	// PropertyNotifyType: property on the window has been changed or deleted.
+	PropertyNotifyType EventType = 16
+	// SelectionClearType: application has lost ownership of a selection.
+	SelectionClearType EventType = 17
+	// SelectionRequestType: another application has requested a selection.
+	SelectionRequestType EventType = 18
+	// SelectionNotifyType: selection has been received.
+	SelectionNotifyType EventType = 19
+	// ProximityInType: input device has moved into contact with a sensing
+	// surface (e.g. a touchscreen or graphics tablet).
+	ProximityInType EventType = 20
+	// ProximityOutType: input device has moved out of contact with a sensing
 	// surface.
-	EventTypeProximityOut EventType = 21
-	// DragEnter: mouse has entered the window while a drag is in progress.
-	EventTypeDragEnter EventType = 22
-	// DragLeave: mouse has left the window while a drag is in progress.
-	EventTypeDragLeave EventType = 23
-	// DragMotion: mouse has moved in the window while a drag is in progress.
-	EventTypeDragMotion EventType = 24
-	// DragStatus status of the drag operation initiated by the window has
+	ProximityOutType EventType = 21
+	// DragEnterType: mouse has entered the window while a drag is in progress.
+	DragEnterType EventType = 22
+	// DragLeaveType: mouse has left the window while a drag is in progress.
+	DragLeaveType EventType = 23
+	// DragMotionType: mouse has moved in the window while a drag is in
+	// progress.
+	DragMotionType EventType = 24
+	// DragStatusType status of the drag operation initiated by the window has
 	// changed.
-	EventTypeDragStatus EventType = 25
-	// DropStart: drop operation onto the window has started.
-	EventTypeDropStart EventType = 26
-	// DropFinished: drop operation initiated by the window has completed.
-	EventTypeDropFinished EventType = 27
-	// ClientEvent: message has been received from another application.
-	EventTypeClientEvent EventType = 28
-	// VisibilityNotify: window visibility status has changed.
-	EventTypeVisibilityNotify EventType = 29
-	// Scroll wheel was turned
-	EventTypeScroll EventType = 31
-	// WindowState: state of a window has changed. See WindowState for the
+	DragStatusType EventType = 25
+	// DropStartType: drop operation onto the window has started.
+	DropStartType EventType = 26
+	// DropFinishedType: drop operation initiated by the window has completed.
+	DropFinishedType EventType = 27
+	// ClientEventType: message has been received from another application.
+	ClientEventType EventType = 28
+	// VisibilityNotifyType: window visibility status has changed.
+	VisibilityNotifyType EventType = 29
+	// ScrollType wheel was turned
+	ScrollType EventType = 31
+	// WindowStateType: state of a window has changed. See WindowState for the
 	// possible window states
-	EventTypeWindowState EventType = 32
-	// Setting has been modified.
-	EventTypeSetting EventType = 33
-	// OwnerChange: owner of a selection has changed. This event type was added
-	// in 2.6
-	EventTypeOwnerChange EventType = 34
-	// GrabBroken: pointer or keyboard grab was broken. This event type was
+	WindowStateType EventType = 32
+	// SettingType has been modified.
+	SettingType EventType = 33
+	// OwnerChangeType: owner of a selection has changed. This event type was
+	// added in 2.6
+	OwnerChangeType EventType = 34
+	// GrabBrokenType: pointer or keyboard grab was broken. This event type was
 	// added in 2.8.
-	EventTypeGrabBroken EventType = 35
-	// Damage: content of the window has been changed. This event type was added
-	// in 2.14.
-	EventTypeDamage EventType = 36
-	// TouchBegin: new touch event sequence has just started. This event type
+	GrabBrokenType EventType = 35
+	// DamageType: content of the window has been changed. This event type was
+	// added in 2.14.
+	DamageType EventType = 36
+	// TouchBeginType: new touch event sequence has just started. This event
+	// type was added in 3.4.
+	TouchBeginType EventType = 37
+	// TouchUpdateType: touch event sequence has been updated. This event type
 	// was added in 3.4.
-	EventTypeTouchBegin EventType = 37
-	// TouchUpdate: touch event sequence has been updated. This event type was
+	TouchUpdateType EventType = 38
+	// TouchEndType: touch event sequence has finished. This event type was
 	// added in 3.4.
-	EventTypeTouchUpdate EventType = 38
-	// TouchEnd: touch event sequence has finished. This event type was added in
-	// 3.4.
-	EventTypeTouchEnd EventType = 39
-	// TouchCancel: touch event sequence has been canceled. This event type was
-	// added in 3.4.
-	EventTypeTouchCancel EventType = 40
-	// TouchpadSwipe: touchpad swipe gesture event, the current state is
+	TouchEndType EventType = 39
+	// TouchCancelType: touch event sequence has been canceled. This event type
+	// was added in 3.4.
+	TouchCancelType EventType = 40
+	// TouchpadSwipeType: touchpad swipe gesture event, the current state is
 	// determined by its phase field. This event type was added in 3.18.
-	EventTypeTouchpadSwipe EventType = 41
-	// TouchpadPinch: touchpad pinch gesture event, the current state is
+	TouchpadSwipeType EventType = 41
+	// TouchpadPinchType: touchpad pinch gesture event, the current state is
 	// determined by its phase field. This event type was added in 3.18.
-	EventTypeTouchpadPinch EventType = 42
-	// PadButtonPress: tablet pad button press event. This event type was added
-	// in 3.22.
-	EventTypePadButtonPress EventType = 43
-	// PadButtonRelease: tablet pad button release event. This event type was
+	TouchpadPinchType EventType = 42
+	// PadButtonPressType: tablet pad button press event. This event type was
 	// added in 3.22.
-	EventTypePadButtonRelease EventType = 44
-	// PadRing: tablet pad axis event from a "ring". This event type was added
+	PadButtonPressType EventType = 43
+	// PadButtonReleaseType: tablet pad button release event. This event type
+	// was added in 3.22.
+	PadButtonReleaseType EventType = 44
+	// PadRingType: tablet pad axis event from a "ring". This event type was
+	// added in 3.22.
+	PadRingType EventType = 45
+	// PadStripType: tablet pad axis event from a "strip". This event type was
+	// added in 3.22.
+	PadStripType EventType = 46
+	// PadGroupModeType: tablet pad group mode change. This event type was added
 	// in 3.22.
-	EventTypePadRing EventType = 45
-	// PadStrip: tablet pad axis event from a "strip". This event type was added
-	// in 3.22.
-	EventTypePadStrip EventType = 46
-	// PadGroupMode: tablet pad group mode change. This event type was added in
-	// 3.22.
-	EventTypePadGroupMode EventType = 47
-	// EventLast marks the end of the GdkEventType enumeration. Added in 2.18
-	EventTypeEventLast EventType = 48
+	PadGroupModeType EventType = 47
+	// EventLastType marks the end of the GdkEventType enumeration. Added in
+	// 2.18
+	EventLastType EventType = 48
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
 	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for EventType.
+func (e EventType) String() string {
+	switch e {
+	case NothingType:
+		return "Nothing"
+	case DeleteType:
+		return "Delete"
+	case DestroyType:
+		return "Destroy"
+	case ExposeType:
+		return "Expose"
+	case MotionNotifyType:
+		return "MotionNotify"
+	case ButtonPressType:
+		return "ButtonPress"
+	case TwoButtonPressType:
+		return "2ButtonPress"
+	case ThreeButtonPressType:
+		return "3ButtonPress"
+	case ButtonReleaseType:
+		return "ButtonRelease"
+	case KeyPressType:
+		return "KeyPress"
+	case KeyReleaseType:
+		return "KeyRelease"
+	case EnterNotifyType:
+		return "EnterNotify"
+	case LeaveNotifyType:
+		return "LeaveNotify"
+	case FocusChangeType:
+		return "FocusChange"
+	case ConfigureType:
+		return "Configure"
+	case MapType:
+		return "Map"
+	case UnmapType:
+		return "Unmap"
+	case PropertyNotifyType:
+		return "PropertyNotify"
+	case SelectionClearType:
+		return "SelectionClear"
+	case SelectionRequestType:
+		return "SelectionRequest"
+	case SelectionNotifyType:
+		return "SelectionNotify"
+	case ProximityInType:
+		return "ProximityIn"
+	case ProximityOutType:
+		return "ProximityOut"
+	case DragEnterType:
+		return "DragEnter"
+	case DragLeaveType:
+		return "DragLeave"
+	case DragMotionType:
+		return "DragMotion"
+	case DragStatusType:
+		return "DragStatus"
+	case DropStartType:
+		return "DropStart"
+	case DropFinishedType:
+		return "DropFinished"
+	case ClientEventType:
+		return "ClientEvent"
+	case VisibilityNotifyType:
+		return "VisibilityNotify"
+	case ScrollType:
+		return "Scroll"
+	case WindowStateType:
+		return "WindowState"
+	case SettingType:
+		return "Setting"
+	case OwnerChangeType:
+		return "OwnerChange"
+	case GrabBrokenType:
+		return "GrabBroken"
+	case DamageType:
+		return "Damage"
+	case TouchBeginType:
+		return "TouchBegin"
+	case TouchUpdateType:
+		return "TouchUpdate"
+	case TouchEndType:
+		return "TouchEnd"
+	case TouchCancelType:
+		return "TouchCancel"
+	case TouchpadSwipeType:
+		return "TouchpadSwipe"
+	case TouchpadPinchType:
+		return "TouchpadPinch"
+	case PadButtonPressType:
+		return "PadButtonPress"
+	case PadButtonReleaseType:
+		return "PadButtonRelease"
+	case PadRingType:
+		return "PadRing"
+	case PadStripType:
+		return "PadStrip"
+	case PadGroupModeType:
+		return "PadGroupMode"
+	case EventLastType:
+		return "EventLast"
+	default:
+		return fmt.Sprintf("EventType(%d)", e)
+	}
+}
+
 // FilterReturn specifies the result of applying a FilterFunc to a native event.
 type FilterReturn int
 
 const (
-	// Continue: event not handled, continue processing.
-	FilterReturnContinue FilterReturn = iota
-	// Translate: native event translated into a GDK event and stored in the
-	// event structure that was passed in.
-	FilterReturnTranslate
-	// Remove: event handled, terminate processing.
-	FilterReturnRemove
+	// FilterContinue: event not handled, continue processing.
+	FilterContinue FilterReturn = iota
+	// FilterTranslate: native event translated into a GDK event and stored in
+	// the event structure that was passed in.
+	FilterTranslate
+	// FilterRemove: event handled, terminate processing.
+	FilterRemove
 )
 
 func marshalFilterReturn(p uintptr) (interface{}, error) {
 	return FilterReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FilterReturn.
+func (f FilterReturn) String() string {
+	switch f {
+	case FilterContinue:
+		return "Continue"
+	case FilterTranslate:
+		return "Translate"
+	case FilterRemove:
+		return "Remove"
+	default:
+		return fmt.Sprintf("FilterReturn(%d)", f)
+	}
 }
 
 // NotifyType specifies the kind of crossing for EventCrossing.
@@ -242,36 +394,59 @@ func marshalFilterReturn(p uintptr) (interface{}, error) {
 type NotifyType int
 
 const (
-	// Ancestor: window is entered from an ancestor or left towards an ancestor.
-	NotifyTypeAncestor NotifyType = iota
-	// Virtual: pointer moves between an ancestor and an inferior of the window.
-	NotifyTypeVirtual
-	// Inferior: window is entered from an inferior or left towards an inferior.
-	NotifyTypeInferior
-	// Nonlinear: window is entered from or left towards a window which is
+	// NotifyAncestor: window is entered from an ancestor or left towards an
+	// ancestor.
+	NotifyAncestor NotifyType = iota
+	// NotifyVirtual: pointer moves between an ancestor and an inferior of the
+	// window.
+	NotifyVirtual
+	// NotifyInferior: window is entered from an inferior or left towards an
+	// inferior.
+	NotifyInferior
+	// NotifyNonlinear: window is entered from or left towards a window which is
 	// neither an ancestor nor an inferior.
-	NotifyTypeNonlinear
-	// NonlinearVirtual: pointer moves between two windows which are not
+	NotifyNonlinear
+	// NotifyNonlinearVirtual: pointer moves between two windows which are not
 	// ancestors of each other and the window is part of the ancestor chain
 	// between one of these windows and their least common ancestor.
-	NotifyTypeNonlinearVirtual
-	// Unknown type of enter/leave event occurred.
-	NotifyTypeUnknown
+	NotifyNonlinearVirtual
+	// NotifyUnknown type of enter/leave event occurred.
+	NotifyUnknown
 )
 
 func marshalNotifyType(p uintptr) (interface{}, error) {
 	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for NotifyType.
+func (n NotifyType) String() string {
+	switch n {
+	case NotifyAncestor:
+		return "Ancestor"
+	case NotifyVirtual:
+		return "Virtual"
+	case NotifyInferior:
+		return "Inferior"
+	case NotifyNonlinear:
+		return "Nonlinear"
+	case NotifyNonlinearVirtual:
+		return "NonlinearVirtual"
+	case NotifyUnknown:
+		return "Unknown"
+	default:
+		return fmt.Sprintf("NotifyType(%d)", n)
+	}
+}
+
 // OwnerChange specifies why a selection ownership was changed.
 type OwnerChange int
 
 const (
-	// NewOwner: some other app claimed the ownership
+	// OwnerChangeNewOwner: some other app claimed the ownership
 	OwnerChangeNewOwner OwnerChange = iota
-	// Destroy: window was destroyed
+	// OwnerChangeDestroy: window was destroyed
 	OwnerChangeDestroy
-	// Close: client was closed
+	// OwnerChangeClose: client was closed
 	OwnerChangeClose
 )
 
@@ -279,39 +454,83 @@ func marshalOwnerChange(p uintptr) (interface{}, error) {
 	return OwnerChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for OwnerChange.
+func (o OwnerChange) String() string {
+	switch o {
+	case OwnerChangeNewOwner:
+		return "NewOwner"
+	case OwnerChangeDestroy:
+		return "Destroy"
+	case OwnerChangeClose:
+		return "Close"
+	default:
+		return fmt.Sprintf("OwnerChange(%d)", o)
+	}
+}
+
 // PropertyState specifies the type of a property change for a EventProperty.
 type PropertyState int
 
 const (
-	// NewValue: property value was changed.
-	PropertyStateNewValue PropertyState = iota
-	// Delete: property was deleted.
-	PropertyStateDelete
+	// PropertyNewValue: property value was changed.
+	PropertyNewValue PropertyState = iota
+	// PropertyDelete: property was deleted.
+	PropertyDelete
 )
 
 func marshalPropertyState(p uintptr) (interface{}, error) {
 	return PropertyState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PropertyState.
+func (p PropertyState) String() string {
+	switch p {
+	case PropertyNewValue:
+		return "NewValue"
+	case PropertyDelete:
+		return "Delete"
+	default:
+		return fmt.Sprintf("PropertyState(%d)", p)
+	}
+}
+
 // ScrollDirection specifies the direction for EventScroll.
 type ScrollDirection int
 
 const (
-	// Up: window is scrolled up.
-	ScrollDirectionUp ScrollDirection = iota
-	// Down: window is scrolled down.
-	ScrollDirectionDown
-	// Left: window is scrolled to the left.
-	ScrollDirectionLeft
-	// Right: window is scrolled to the right.
-	ScrollDirectionRight
-	// Smooth: scrolling is determined by the delta values in EventScroll. See
-	// gdk_event_get_scroll_deltas(). Since: 3.4
-	ScrollDirectionSmooth
+	// ScrollUp: window is scrolled up.
+	ScrollUp ScrollDirection = iota
+	// ScrollDown: window is scrolled down.
+	ScrollDown
+	// ScrollLeft: window is scrolled to the left.
+	ScrollLeft
+	// ScrollRight: window is scrolled to the right.
+	ScrollRight
+	// ScrollSmooth: scrolling is determined by the delta values in EventScroll.
+	// See gdk_event_get_scroll_deltas(). Since: 3.4
+	ScrollSmooth
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
 	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ScrollDirection.
+func (s ScrollDirection) String() string {
+	switch s {
+	case ScrollUp:
+		return "Up"
+	case ScrollDown:
+		return "Down"
+	case ScrollLeft:
+		return "Left"
+	case ScrollRight:
+		return "Right"
+	case ScrollSmooth:
+		return "Smooth"
+	default:
+		return fmt.Sprintf("ScrollDirection(%d)", s)
+	}
 }
 
 // SettingAction specifies the kind of modification applied to a setting in a
@@ -319,16 +538,30 @@ func marshalScrollDirection(p uintptr) (interface{}, error) {
 type SettingAction int
 
 const (
-	// New: setting was added.
-	SettingActionNew SettingAction = iota
-	// Changed: setting was changed.
+	// NewSettingAction: setting was added.
+	NewSettingAction SettingAction = iota
+	// SettingActionChanged: setting was changed.
 	SettingActionChanged
-	// Deleted: setting was deleted.
+	// SettingActionDeleted: setting was deleted.
 	SettingActionDeleted
 )
 
 func marshalSettingAction(p uintptr) (interface{}, error) {
 	return SettingAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SettingAction.
+func (s SettingAction) String() string {
+	switch s {
+	case NewSettingAction:
+		return "New"
+	case SettingActionChanged:
+		return "Changed"
+	case SettingActionDeleted:
+		return "Deleted"
+	default:
+		return fmt.Sprintf("SettingAction(%d)", s)
+	}
 }
 
 // TouchpadGesturePhase specifies the current state of a touchpad gesture. All
@@ -352,13 +585,15 @@ func marshalSettingAction(p uintptr) (interface{}, error) {
 type TouchpadGesturePhase int
 
 const (
-	// Begin: gesture has begun.
+	// TouchpadGesturePhaseBegin: gesture has begun.
 	TouchpadGesturePhaseBegin TouchpadGesturePhase = iota
-	// Update: gesture has been updated.
+	// TouchpadGesturePhaseUpdate: gesture has been updated.
 	TouchpadGesturePhaseUpdate
-	// End: gesture was finished, changes should be permanently applied.
+	// TouchpadGesturePhaseEnd: gesture was finished, changes should be
+	// permanently applied.
 	TouchpadGesturePhaseEnd
-	// Cancel: gesture was cancelled, all changes should be undone.
+	// TouchpadGesturePhaseCancel: gesture was cancelled, all changes should be
+	// undone.
 	TouchpadGesturePhaseCancel
 )
 
@@ -366,21 +601,51 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TouchpadGesturePhase.
+func (t TouchpadGesturePhase) String() string {
+	switch t {
+	case TouchpadGesturePhaseBegin:
+		return "Begin"
+	case TouchpadGesturePhaseUpdate:
+		return "Update"
+	case TouchpadGesturePhaseEnd:
+		return "End"
+	case TouchpadGesturePhaseCancel:
+		return "Cancel"
+	default:
+		return fmt.Sprintf("TouchpadGesturePhase(%d)", t)
+	}
+}
+
 // VisibilityState specifies the visiblity status of a window for a
 // EventVisibility.
 type VisibilityState int
 
 const (
-	// Unobscured: window is completely visible.
-	VisibilityStateUnobscured VisibilityState = iota
-	// Partial: window is partially visible.
-	VisibilityStatePartial
-	// FullyObscured: window is not visible at all.
-	VisibilityStateFullyObscured
+	// VisibilityUnobscured: window is completely visible.
+	VisibilityUnobscured VisibilityState = iota
+	// VisibilityPartial: window is partially visible.
+	VisibilityPartial
+	// VisibilityFullyObscured: window is not visible at all.
+	VisibilityFullyObscured
 )
 
 func marshalVisibilityState(p uintptr) (interface{}, error) {
 	return VisibilityState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for VisibilityState.
+func (v VisibilityState) String() string {
+	switch v {
+	case VisibilityUnobscured:
+		return "Unobscured"
+	case VisibilityPartial:
+		return "Partial"
+	case VisibilityFullyObscured:
+		return "FullyObscured"
+	default:
+		return fmt.Sprintf("VisibilityState(%d)", v)
+	}
 }
 
 // WindowState specifies the state of a toplevel window.
@@ -430,6 +695,64 @@ const (
 
 func marshalWindowState(p uintptr) (interface{}, error) {
 	return WindowState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for WindowState.
+func (w WindowState) String() string {
+	if w == 0 {
+		return "WindowState(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(360)
+
+	for w != 0 {
+		next := w & (w - 1)
+		bit := w - next
+
+		switch bit {
+		case WindowStateWithdrawn:
+			builder.WriteString("Withdrawn|")
+		case WindowStateIconified:
+			builder.WriteString("Iconified|")
+		case WindowStateMaximized:
+			builder.WriteString("Maximized|")
+		case WindowStateSticky:
+			builder.WriteString("Sticky|")
+		case WindowStateFullscreen:
+			builder.WriteString("Fullscreen|")
+		case WindowStateAbove:
+			builder.WriteString("Above|")
+		case WindowStateBelow:
+			builder.WriteString("Below|")
+		case WindowStateFocused:
+			builder.WriteString("Focused|")
+		case WindowStateTiled:
+			builder.WriteString("Tiled|")
+		case WindowStateTopTiled:
+			builder.WriteString("TopTiled|")
+		case WindowStateTopResizable:
+			builder.WriteString("TopResizable|")
+		case WindowStateRightTiled:
+			builder.WriteString("RightTiled|")
+		case WindowStateRightResizable:
+			builder.WriteString("RightResizable|")
+		case WindowStateBottomTiled:
+			builder.WriteString("BottomTiled|")
+		case WindowStateBottomResizable:
+			builder.WriteString("BottomResizable|")
+		case WindowStateLeftTiled:
+			builder.WriteString("LeftTiled|")
+		case WindowStateLeftResizable:
+			builder.WriteString("LeftResizable|")
+		default:
+			builder.WriteString(fmt.Sprintf("WindowState(0b%b)|", bit))
+		}
+
+		w = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // EventsPending checks if any events are ready to be processed for any display.

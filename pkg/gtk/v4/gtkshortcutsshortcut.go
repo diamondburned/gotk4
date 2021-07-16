@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,40 +29,68 @@ func init() {
 type ShortcutType int
 
 const (
-	// Accelerator: shortcut is a keyboard accelerator. The
+	// ShortcutAccelerator: shortcut is a keyboard accelerator. The
 	// GtkShortcutsShortcut:accelerator property will be used.
-	ShortcutTypeAccelerator ShortcutType = iota
-	// GesturePinch: shortcut is a pinch gesture. GTK provides an icon and
-	// subtitle.
-	ShortcutTypeGesturePinch
-	// GestureStretch: shortcut is a stretch gesture. GTK provides an icon and
-	// subtitle.
-	ShortcutTypeGestureStretch
-	// GestureRotateClockwise: shortcut is a clockwise rotation gesture. GTK
-	// provides an icon and subtitle.
-	ShortcutTypeGestureRotateClockwise
-	// GestureRotateCounterclockwise: shortcut is a counterclockwise rotation
+	ShortcutAccelerator ShortcutType = iota
+	// ShortcutGesturePinch: shortcut is a pinch gesture. GTK provides an icon
+	// and subtitle.
+	ShortcutGesturePinch
+	// ShortcutGestureStretch: shortcut is a stretch gesture. GTK provides an
+	// icon and subtitle.
+	ShortcutGestureStretch
+	// ShortcutGestureRotateClockwise: shortcut is a clockwise rotation gesture.
+	// GTK provides an icon and subtitle.
+	ShortcutGestureRotateClockwise
+	// ShortcutGestureRotateCounterclockwise: shortcut is a counterclockwise
+	// rotation gesture. GTK provides an icon and subtitle.
+	ShortcutGestureRotateCounterclockwise
+	// ShortcutGestureTwoFingerSwipeLeft: shortcut is a two-finger swipe
 	// gesture. GTK provides an icon and subtitle.
-	ShortcutTypeGestureRotateCounterclockwise
-	// GestureTwoFingerSwipeLeft: shortcut is a two-finger swipe gesture. GTK
-	// provides an icon and subtitle.
-	ShortcutTypeGestureTwoFingerSwipeLeft
-	// GestureTwoFingerSwipeRight: shortcut is a two-finger swipe gesture. GTK
-	// provides an icon and subtitle.
-	ShortcutTypeGestureTwoFingerSwipeRight
-	// Gesture: shortcut is a gesture. The GtkShortcutsShortcut:icon property
-	// will be used.
-	ShortcutTypeGesture
-	// GestureSwipeLeft: shortcut is a swipe gesture. GTK provides an icon and
-	// subtitle.
-	ShortcutTypeGestureSwipeLeft
-	// GestureSwipeRight: shortcut is a swipe gesture. GTK provides an icon and
-	// subtitle.
-	ShortcutTypeGestureSwipeRight
+	ShortcutGestureTwoFingerSwipeLeft
+	// ShortcutGestureTwoFingerSwipeRight: shortcut is a two-finger swipe
+	// gesture. GTK provides an icon and subtitle.
+	ShortcutGestureTwoFingerSwipeRight
+	// ShortcutGesture: shortcut is a gesture. The GtkShortcutsShortcut:icon
+	// property will be used.
+	ShortcutGesture
+	// ShortcutGestureSwipeLeft: shortcut is a swipe gesture. GTK provides an
+	// icon and subtitle.
+	ShortcutGestureSwipeLeft
+	// ShortcutGestureSwipeRight: shortcut is a swipe gesture. GTK provides an
+	// icon and subtitle.
+	ShortcutGestureSwipeRight
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ShortcutType.
+func (s ShortcutType) String() string {
+	switch s {
+	case ShortcutAccelerator:
+		return "Accelerator"
+	case ShortcutGesturePinch:
+		return "GesturePinch"
+	case ShortcutGestureStretch:
+		return "GestureStretch"
+	case ShortcutGestureRotateClockwise:
+		return "GestureRotateClockwise"
+	case ShortcutGestureRotateCounterclockwise:
+		return "GestureRotateCounterclockwise"
+	case ShortcutGestureTwoFingerSwipeLeft:
+		return "GestureTwoFingerSwipeLeft"
+	case ShortcutGestureTwoFingerSwipeRight:
+		return "GestureTwoFingerSwipeRight"
+	case ShortcutGesture:
+		return "Gesture"
+	case ShortcutGestureSwipeLeft:
+		return "GestureSwipeLeft"
+	case ShortcutGestureSwipeRight:
+		return "GestureSwipeRight"
+	default:
+		return fmt.Sprintf("ShortcutType(%d)", s)
+	}
 }
 
 // ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut

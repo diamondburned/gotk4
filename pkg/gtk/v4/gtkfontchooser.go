@@ -3,7 +3,9 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -49,6 +51,40 @@ const (
 
 func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for FontChooserLevel.
+func (f FontChooserLevel) String() string {
+	if f == 0 {
+		return "FontChooserLevel(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(117)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FontChooserLevelFamily:
+			builder.WriteString("Family|")
+		case FontChooserLevelStyle:
+			builder.WriteString("Style|")
+		case FontChooserLevelSize:
+			builder.WriteString("Size|")
+		case FontChooserLevelVariations:
+			builder.WriteString("Variations|")
+		case FontChooserLevelFeatures:
+			builder.WriteString("Features|")
+		default:
+			builder.WriteString(fmt.Sprintf("FontChooserLevel(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // FontFilterFunc: type of function that is used for deciding what fonts get

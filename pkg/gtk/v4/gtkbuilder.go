@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -28,45 +29,90 @@ func init() {
 type BuilderError int
 
 const (
-	// InvalidTypeFunction: type-func attribute didn’t name a function that
-	// returns a #GType.
+	// BuilderErrorInvalidTypeFunction: type-func attribute didn’t name a
+	// function that returns a #GType.
 	BuilderErrorInvalidTypeFunction BuilderError = iota
-	// UnhandledTag: input contained a tag that Builder can’t handle.
+	// BuilderErrorUnhandledTag: input contained a tag that Builder can’t
+	// handle.
 	BuilderErrorUnhandledTag
-	// MissingAttribute: attribute that is required by Builder was missing.
+	// BuilderErrorMissingAttribute: attribute that is required by Builder was
+	// missing.
 	BuilderErrorMissingAttribute
-	// InvalidAttribute found an attribute that it doesn’t understand.
+	// BuilderErrorInvalidAttribute found an attribute that it doesn’t
+	// understand.
 	BuilderErrorInvalidAttribute
-	// InvalidTag found a tag that it doesn’t understand.
+	// BuilderErrorInvalidTag found a tag that it doesn’t understand.
 	BuilderErrorInvalidTag
-	// MissingPropertyValue: required property value was missing.
+	// BuilderErrorMissingPropertyValue: required property value was missing.
 	BuilderErrorMissingPropertyValue
-	// InvalidValue couldn’t parse some attribute value.
+	// BuilderErrorInvalidValue couldn’t parse some attribute value.
 	BuilderErrorInvalidValue
-	// VersionMismatch: input file requires a newer version of GTK.
+	// BuilderErrorVersionMismatch: input file requires a newer version of GTK.
 	BuilderErrorVersionMismatch
-	// DuplicateID: object id occurred twice.
+	// BuilderErrorDuplicateID: object id occurred twice.
 	BuilderErrorDuplicateID
-	// ObjectTypeRefused: specified object type is of the same type or derived
-	// from the type of the composite class being extended with builder XML.
+	// BuilderErrorObjectTypeRefused: specified object type is of the same type
+	// or derived from the type of the composite class being extended with
+	// builder XML.
 	BuilderErrorObjectTypeRefused
-	// TemplateMismatch: wrong type was specified in a composite class’s
-	// template XML
+	// BuilderErrorTemplateMismatch: wrong type was specified in a composite
+	// class’s template XML
 	BuilderErrorTemplateMismatch
-	// InvalidProperty: specified property is unknown for the object class.
+	// BuilderErrorInvalidProperty: specified property is unknown for the object
+	// class.
 	BuilderErrorInvalidProperty
-	// InvalidSignal: specified signal is unknown for the object class.
+	// BuilderErrorInvalidSignal: specified signal is unknown for the object
+	// class.
 	BuilderErrorInvalidSignal
-	// InvalidID: object id is unknown.
+	// BuilderErrorInvalidID: object id is unknown.
 	BuilderErrorInvalidID
-	// InvalidFunction: function could not be found. This often happens when
-	// symbols are set to be kept private. Compiling code with -rdynamic or
-	// using the gmodule-export-2.0 pkgconfig module can fix this problem.
+	// BuilderErrorInvalidFunction: function could not be found. This often
+	// happens when symbols are set to be kept private. Compiling code with
+	// -rdynamic or using the gmodule-export-2.0 pkgconfig module can fix this
+	// problem.
 	BuilderErrorInvalidFunction
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for BuilderError.
+func (b BuilderError) String() string {
+	switch b {
+	case BuilderErrorInvalidTypeFunction:
+		return "InvalidTypeFunction"
+	case BuilderErrorUnhandledTag:
+		return "UnhandledTag"
+	case BuilderErrorMissingAttribute:
+		return "MissingAttribute"
+	case BuilderErrorInvalidAttribute:
+		return "InvalidAttribute"
+	case BuilderErrorInvalidTag:
+		return "InvalidTag"
+	case BuilderErrorMissingPropertyValue:
+		return "MissingPropertyValue"
+	case BuilderErrorInvalidValue:
+		return "InvalidValue"
+	case BuilderErrorVersionMismatch:
+		return "VersionMismatch"
+	case BuilderErrorDuplicateID:
+		return "DuplicateID"
+	case BuilderErrorObjectTypeRefused:
+		return "ObjectTypeRefused"
+	case BuilderErrorTemplateMismatch:
+		return "TemplateMismatch"
+	case BuilderErrorInvalidProperty:
+		return "InvalidProperty"
+	case BuilderErrorInvalidSignal:
+		return "InvalidSignal"
+	case BuilderErrorInvalidID:
+		return "InvalidID"
+	case BuilderErrorInvalidFunction:
+		return "InvalidFunction"
+	default:
+		return fmt.Sprintf("BuilderError(%d)", b)
+	}
 }
 
 // Builder: GtkBuilder reads XML descriptions of a user interface and

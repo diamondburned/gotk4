@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,89 +31,162 @@ func init() {
 type TextAttribute int
 
 const (
-	// Invalid: invalid attribute, like bad spelling or grammar.
-	TextAttributeInvalid TextAttribute = iota
-	// LeftMargin: pixel width of the left margin
-	TextAttributeLeftMargin
-	// RightMargin: pixel width of the right margin
-	TextAttributeRightMargin
-	// Indent: number of pixels that the text is indented
-	TextAttributeIndent
-	// Invisible: either "true" or "false" indicating whether text is visible or
-	// not
-	TextAttributeInvisible
-	// Editable: either "true" or "false" indicating whether text is editable or
-	// not
-	TextAttributeEditable
-	// PixelsAboveLines pixels of blank space to leave above each
+	// TextAttrInvalid: invalid attribute, like bad spelling or grammar.
+	TextAttrInvalid TextAttribute = iota
+	// TextAttrLeftMargin: pixel width of the left margin
+	TextAttrLeftMargin
+	// TextAttrRightMargin: pixel width of the right margin
+	TextAttrRightMargin
+	// TextAttrIndent: number of pixels that the text is indented
+	TextAttrIndent
+	// TextAttrInvisible: either "true" or "false" indicating whether text is
+	// visible or not
+	TextAttrInvisible
+	// TextAttrEditable: either "true" or "false" indicating whether text is
+	// editable or not
+	TextAttrEditable
+	// TextAttrPixelsAboveLines pixels of blank space to leave above each
 	// newline-terminated line.
-	TextAttributePixelsAboveLines
-	// PixelsBelowLines pixels of blank space to leave below each
+	TextAttrPixelsAboveLines
+	// TextAttrPixelsBelowLines pixels of blank space to leave below each
 	// newline-terminated line.
-	TextAttributePixelsBelowLines
-	// PixelsInsideWrap pixels of blank space to leave between wrapped lines
-	// inside the same newline-terminated line (paragraph).
-	TextAttributePixelsInsideWrap
-	// BgFullHeight: "true" or "false" whether to make the background color for
-	// each character the height of the highest font used on the current line,
-	// or the height of the font used for the current character.
-	TextAttributeBgFullHeight
-	// Rise: number of pixels that the characters are risen above the baseline.
-	// See also ATK_TEXT_ATTR_TEXT_POSITION.
-	TextAttributeRise
-	// Underline: "none", "single", "double", "low", or "error"
-	TextAttributeUnderline
-	// Strikethrough: "true" or "false" whether the text is strikethrough
-	TextAttributeStrikethrough
-	// Size of the characters in points. eg: 10
-	TextAttributeSize
-	// Scale of the characters. The value is a string representation of a double
-	TextAttributeScale
-	// Weight of the characters.
-	TextAttributeWeight
-	// Language used
-	TextAttributeLanguage
-	// FamilyName: font family name
-	TextAttributeFamilyName
-	// BgColor: background color. The value is an RGB value of the format
-	// "u,u,u"
-	TextAttributeBgColor
-	// FgColor: foreground color. The value is an RGB value of the format
-	// "u,u,u"
-	TextAttributeFgColor
-	// BgStipple: "true" if a Bitmap is set for stippling the background color.
-	TextAttributeBgStipple
-	// FgStipple: "true" if a Bitmap is set for stippling the foreground color.
-	TextAttributeFgStipple
-	// WrapMode: wrap mode of the text, if any. Values are "none", "char",
-	// "word", or "word_char".
-	TextAttributeWrapMode
-	// Direction of the text, if set. Values are "none", "ltr" or "rtl"
-	TextAttributeDirection
-	// Justification of the text, if set. Values are "left", "right", "center"
-	// or "fill"
-	TextAttributeJustification
-	// Stretch of the text, if set. Values are "ultra_condensed",
+	TextAttrPixelsBelowLines
+	// TextAttrPixelsInsideWrap pixels of blank space to leave between wrapped
+	// lines inside the same newline-terminated line (paragraph).
+	TextAttrPixelsInsideWrap
+	// TextAttrBgFullHeight: "true" or "false" whether to make the background
+	// color for each character the height of the highest font used on the
+	// current line, or the height of the font used for the current character.
+	TextAttrBgFullHeight
+	// TextAttrRise: number of pixels that the characters are risen above the
+	// baseline. See also ATK_TEXT_ATTR_TEXT_POSITION.
+	TextAttrRise
+	// TextAttrUnderline: "none", "single", "double", "low", or "error"
+	TextAttrUnderline
+	// TextAttrStrikethrough: "true" or "false" whether the text is
+	// strikethrough
+	TextAttrStrikethrough
+	// TextAttrSize of the characters in points. eg: 10
+	TextAttrSize
+	// TextAttrScale of the characters. The value is a string representation of
+	// a double
+	TextAttrScale
+	// TextAttrWeight of the characters.
+	TextAttrWeight
+	// TextAttrLanguage used
+	TextAttrLanguage
+	// TextAttrFamilyName: font family name
+	TextAttrFamilyName
+	// TextAttrBgColor: background color. The value is an RGB value of the
+	// format "u,u,u"
+	TextAttrBgColor
+	// TextAttrFgColor: foreground color. The value is an RGB value of the
+	// format "u,u,u"
+	TextAttrFgColor
+	// TextAttrBgStipple: "true" if a Bitmap is set for stippling the background
+	// color.
+	TextAttrBgStipple
+	// TextAttrFgStipple: "true" if a Bitmap is set for stippling the foreground
+	// color.
+	TextAttrFgStipple
+	// TextAttrWrapMode: wrap mode of the text, if any. Values are "none",
+	// "char", "word", or "word_char".
+	TextAttrWrapMode
+	// TextAttrDirection of the text, if set. Values are "none", "ltr" or "rtl"
+	TextAttrDirection
+	// TextAttrJustification of the text, if set. Values are "left", "right",
+	// "center" or "fill"
+	TextAttrJustification
+	// TextAttrStretch of the text, if set. Values are "ultra_condensed",
 	// "extra_condensed", "condensed", "semi_condensed", "normal",
 	// "semi_expanded", "expanded", "extra_expanded" or "ultra_expanded"
-	TextAttributeStretch
-	// Variant: capitalization variant of the text, if set. Values are "normal"
-	// or "small_caps"
-	TextAttributeVariant
-	// Style: slant style of the text, if set. Values are "normal", "oblique" or
-	// "italic"
-	TextAttributeStyle
-	// TextPosition: vertical position with respect to the baseline. Values are
-	// "baseline", "super", or "sub". Note that a super or sub text attribute
-	// refers to position with respect to the baseline of the prior character.
-	TextAttributeTextPosition
-	// LastDefined: not a valid text attribute, used for finding end of
+	TextAttrStretch
+	// TextAttrVariant: capitalization variant of the text, if set. Values are
+	// "normal" or "small_caps"
+	TextAttrVariant
+	// TextAttrStyle: slant style of the text, if set. Values are "normal",
+	// "oblique" or "italic"
+	TextAttrStyle
+	// TextAttrTextPosition: vertical position with respect to the baseline.
+	// Values are "baseline", "super", or "sub". Note that a super or sub text
+	// attribute refers to position with respect to the baseline of the prior
+	// character.
+	TextAttrTextPosition
+	// TextAttrLastDefined: not a valid text attribute, used for finding end of
 	// enumeration
-	TextAttributeLastDefined
+	TextAttrLastDefined
 )
 
 func marshalTextAttribute(p uintptr) (interface{}, error) {
 	return TextAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextAttribute.
+func (t TextAttribute) String() string {
+	switch t {
+	case TextAttrInvalid:
+		return "Invalid"
+	case TextAttrLeftMargin:
+		return "LeftMargin"
+	case TextAttrRightMargin:
+		return "RightMargin"
+	case TextAttrIndent:
+		return "Indent"
+	case TextAttrInvisible:
+		return "Invisible"
+	case TextAttrEditable:
+		return "Editable"
+	case TextAttrPixelsAboveLines:
+		return "PixelsAboveLines"
+	case TextAttrPixelsBelowLines:
+		return "PixelsBelowLines"
+	case TextAttrPixelsInsideWrap:
+		return "PixelsInsideWrap"
+	case TextAttrBgFullHeight:
+		return "BgFullHeight"
+	case TextAttrRise:
+		return "Rise"
+	case TextAttrUnderline:
+		return "Underline"
+	case TextAttrStrikethrough:
+		return "Strikethrough"
+	case TextAttrSize:
+		return "Size"
+	case TextAttrScale:
+		return "Scale"
+	case TextAttrWeight:
+		return "Weight"
+	case TextAttrLanguage:
+		return "Language"
+	case TextAttrFamilyName:
+		return "FamilyName"
+	case TextAttrBgColor:
+		return "BgColor"
+	case TextAttrFgColor:
+		return "FgColor"
+	case TextAttrBgStipple:
+		return "BgStipple"
+	case TextAttrFgStipple:
+		return "FgStipple"
+	case TextAttrWrapMode:
+		return "WrapMode"
+	case TextAttrDirection:
+		return "Direction"
+	case TextAttrJustification:
+		return "Justification"
+	case TextAttrStretch:
+		return "Stretch"
+	case TextAttrVariant:
+		return "Variant"
+	case TextAttrStyle:
+		return "Style"
+	case TextAttrTextPosition:
+		return "TextPosition"
+	case TextAttrLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("TextAttribute(%d)", t)
+	}
 }
 
 // TextAttributeForName: get the TextAttribute type corresponding to a text
@@ -188,23 +262,26 @@ func TextAttributeRegister(name string) TextAttribute {
 type TextBoundary int
 
 const (
-	// Char: boundary is the boundary between characters (including non-printing
-	// characters)
+	// TextBoundaryChar: boundary is the boundary between characters (including
+	// non-printing characters)
 	TextBoundaryChar TextBoundary = iota
-	// WordStart: boundary is the start (i.e. first character) of a word.
+	// TextBoundaryWordStart: boundary is the start (i.e. first character) of a
+	// word.
 	TextBoundaryWordStart
-	// WordEnd: boundary is the end (i.e. last character) of a word.
+	// TextBoundaryWordEnd: boundary is the end (i.e. last character) of a word.
 	TextBoundaryWordEnd
-	// SentenceStart: boundary is the first character in a sentence.
+	// TextBoundarySentenceStart: boundary is the first character in a sentence.
 	TextBoundarySentenceStart
-	// SentenceEnd: boundary is the last (terminal) character in a sentence; in
-	// languages which use "sentence stop" punctuation such as English, the
-	// boundary is thus the '.', '?', or similar terminal punctuation character.
+	// TextBoundarySentenceEnd: boundary is the last (terminal) character in a
+	// sentence; in languages which use "sentence stop" punctuation such as
+	// English, the boundary is thus the '.', '?', or similar terminal
+	// punctuation character.
 	TextBoundarySentenceEnd
-	// LineStart: boundary is the initial character of the content or a
-	// character immediately following a newline, linefeed, or return character.
+	// TextBoundaryLineStart: boundary is the initial character of the content
+	// or a character immediately following a newline, linefeed, or return
+	// character.
 	TextBoundaryLineStart
-	// LineEnd: boundary is the linefeed, or return character.
+	// TextBoundaryLineEnd: boundary is the linefeed, or return character.
 	TextBoundaryLineEnd
 )
 
@@ -212,22 +289,60 @@ func marshalTextBoundary(p uintptr) (interface{}, error) {
 	return TextBoundary(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TextBoundary.
+func (t TextBoundary) String() string {
+	switch t {
+	case TextBoundaryChar:
+		return "Char"
+	case TextBoundaryWordStart:
+		return "WordStart"
+	case TextBoundaryWordEnd:
+		return "WordEnd"
+	case TextBoundarySentenceStart:
+		return "SentenceStart"
+	case TextBoundarySentenceEnd:
+		return "SentenceEnd"
+	case TextBoundaryLineStart:
+		return "LineStart"
+	case TextBoundaryLineEnd:
+		return "LineEnd"
+	default:
+		return fmt.Sprintf("TextBoundary(%d)", t)
+	}
+}
+
 // TextClipType describes the type of clipping required.
 type TextClipType int
 
 const (
-	// None: no clipping to be done
-	TextClipTypeNone TextClipType = iota
-	// Min: text clipped by min coordinate is omitted
-	TextClipTypeMin
-	// Max: text clipped by max coordinate is omitted
-	TextClipTypeMax
-	// Both: only text fully within mix/max bound is retained
-	TextClipTypeBoth
+	// TextClipNone: no clipping to be done
+	TextClipNone TextClipType = iota
+	// TextClipMin: text clipped by min coordinate is omitted
+	TextClipMin
+	// TextClipMax: text clipped by max coordinate is omitted
+	TextClipMax
+	// TextClipBoth: only text fully within mix/max bound is retained
+	TextClipBoth
 )
 
 func marshalTextClipType(p uintptr) (interface{}, error) {
 	return TextClipType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextClipType.
+func (t TextClipType) String() string {
+	switch t {
+	case TextClipNone:
+		return "None"
+	case TextClipMin:
+		return "Min"
+	case TextClipMax:
+		return "Max"
+	case TextClipBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("TextClipType(%d)", t)
+	}
 }
 
 // TextGranularity: text granularity types used for specifying the granularity
@@ -235,29 +350,47 @@ func marshalTextClipType(p uintptr) (interface{}, error) {
 type TextGranularity int
 
 const (
-	// Char: granularity is defined by the boundaries between characters
-	// (including non-printing characters)
+	// TextGranularityChar: granularity is defined by the boundaries between
+	// characters (including non-printing characters)
 	TextGranularityChar TextGranularity = iota
-	// Word: granularity is defined by the boundaries of a word, starting at the
-	// beginning of the current word and finishing at the beginning of the
-	// following one, if present.
+	// TextGranularityWord: granularity is defined by the boundaries of a word,
+	// starting at the beginning of the current word and finishing at the
+	// beginning of the following one, if present.
 	TextGranularityWord
-	// Sentence: granularity is defined by the boundaries of a sentence,
-	// starting at the beginning of the current sentence and finishing at the
-	// beginning of the following one, if present.
+	// TextGranularitySentence: granularity is defined by the boundaries of a
+	// sentence, starting at the beginning of the current sentence and finishing
+	// at the beginning of the following one, if present.
 	TextGranularitySentence
-	// Line: granularity is defined by the boundaries of a line, starting at the
-	// beginning of the current line and finishing at the beginning of the
-	// following one, if present.
-	TextGranularityLine
-	// Paragraph: granularity is defined by the boundaries of a paragraph,
-	// starting at the beginning of the current paragraph and finishing at the
+	// TextGranularityLine: granularity is defined by the boundaries of a line,
+	// starting at the beginning of the current line and finishing at the
 	// beginning of the following one, if present.
+	TextGranularityLine
+	// TextGranularityParagraph: granularity is defined by the boundaries of a
+	// paragraph, starting at the beginning of the current paragraph and
+	// finishing at the beginning of the following one, if present.
 	TextGranularityParagraph
 )
 
 func marshalTextGranularity(p uintptr) (interface{}, error) {
 	return TextGranularity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextGranularity.
+func (t TextGranularity) String() string {
+	switch t {
+	case TextGranularityChar:
+		return "Char"
+	case TextGranularityWord:
+		return "Word"
+	case TextGranularitySentence:
+		return "Sentence"
+	case TextGranularityLine:
+		return "Line"
+	case TextGranularityParagraph:
+		return "Paragraph"
+	default:
+		return fmt.Sprintf("TextGranularity(%d)", t)
+	}
 }
 
 // TextOverrider contains methods that are overridable.

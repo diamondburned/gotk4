@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -35,14 +36,14 @@ func init() {
 type PrintError int
 
 const (
-	// General: unspecified error occurred.
+	// PrintErrorGeneral: unspecified error occurred.
 	PrintErrorGeneral PrintError = iota
-	// InternalError: internal error occurred.
+	// PrintErrorInternalError: internal error occurred.
 	PrintErrorInternalError
-	// NOMEM: memory allocation failed.
+	// PrintErrorNOMEM: memory allocation failed.
 	PrintErrorNOMEM
-	// InvalidFile: error occurred while loading a page setup or paper size from
-	// a key file.
+	// PrintErrorInvalidFile: error occurred while loading a page setup or paper
+	// size from a key file.
 	PrintErrorInvalidFile
 )
 
@@ -50,20 +51,36 @@ func marshalPrintError(p uintptr) (interface{}, error) {
 	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintError.
+func (p PrintError) String() string {
+	switch p {
+	case PrintErrorGeneral:
+		return "General"
+	case PrintErrorInternalError:
+		return "InternalError"
+	case PrintErrorNOMEM:
+		return "NOMEM"
+	case PrintErrorInvalidFile:
+		return "InvalidFile"
+	default:
+		return fmt.Sprintf("PrintError(%d)", p)
+	}
+}
+
 // PrintOperationAction: action parameter to gtk_print_operation_run()
 // determines what action the print operation should perform.
 type PrintOperationAction int
 
 const (
-	// PrintDialog: show the print dialog.
+	// PrintOperationActionPrintDialog: show the print dialog.
 	PrintOperationActionPrintDialog PrintOperationAction = iota
-	// Print: start to print without showing the print dialog, based on the
-	// current print settings.
+	// PrintOperationActionPrint: start to print without showing the print
+	// dialog, based on the current print settings.
 	PrintOperationActionPrint
-	// Preview: show the print preview.
+	// PrintOperationActionPreview: show the print preview.
 	PrintOperationActionPreview
-	// Export: export to a file. This requires the export-filename property to
-	// be set.
+	// PrintOperationActionExport: export to a file. This requires the
+	// export-filename property to be set.
 	PrintOperationActionExport
 )
 
@@ -71,20 +88,36 @@ func marshalPrintOperationAction(p uintptr) (interface{}, error) {
 	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintOperationAction.
+func (p PrintOperationAction) String() string {
+	switch p {
+	case PrintOperationActionPrintDialog:
+		return "PrintDialog"
+	case PrintOperationActionPrint:
+		return "Print"
+	case PrintOperationActionPreview:
+		return "Preview"
+	case PrintOperationActionExport:
+		return "Export"
+	default:
+		return fmt.Sprintf("PrintOperationAction(%d)", p)
+	}
+}
+
 // PrintOperationResult: value of this type is returned by
 // gtk_print_operation_run().
 type PrintOperationResult int
 
 const (
-	// Error has occurred.
+	// PrintOperationResultError has occurred.
 	PrintOperationResultError PrintOperationResult = iota
-	// Apply: print settings should be stored.
+	// PrintOperationResultApply: print settings should be stored.
 	PrintOperationResultApply
-	// Cancel: print operation has been canceled, the print settings should not
-	// be stored.
+	// PrintOperationResultCancel: print operation has been canceled, the print
+	// settings should not be stored.
 	PrintOperationResultCancel
-	// InProgress: print operation is not complete yet. This value will only be
-	// returned when running asynchronously.
+	// PrintOperationResultInProgress: print operation is not complete yet. This
+	// value will only be returned when running asynchronously.
 	PrintOperationResultInProgress
 )
 
@@ -92,37 +125,80 @@ func marshalPrintOperationResult(p uintptr) (interface{}, error) {
 	return PrintOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintOperationResult.
+func (p PrintOperationResult) String() string {
+	switch p {
+	case PrintOperationResultError:
+		return "Error"
+	case PrintOperationResultApply:
+		return "Apply"
+	case PrintOperationResultCancel:
+		return "Cancel"
+	case PrintOperationResultInProgress:
+		return "InProgress"
+	default:
+		return fmt.Sprintf("PrintOperationResult(%d)", p)
+	}
+}
+
 // PrintStatus status gives a rough indication of the completion of a running
 // print operation.
 type PrintStatus int
 
 const (
-	// Initial: printing has not started yet; this status is set initially, and
-	// while the print dialog is shown.
+	// PrintStatusInitial: printing has not started yet; this status is set
+	// initially, and while the print dialog is shown.
 	PrintStatusInitial PrintStatus = iota
-	// Preparing: this status is set while the begin-print signal is emitted and
-	// during pagination.
+	// PrintStatusPreparing: this status is set while the begin-print signal is
+	// emitted and during pagination.
 	PrintStatusPreparing
-	// GeneratingData: this status is set while the pages are being rendered.
+	// PrintStatusGeneratingData: this status is set while the pages are being
+	// rendered.
 	PrintStatusGeneratingData
-	// SendingData: print job is being sent off to the printer.
+	// PrintStatusSendingData: print job is being sent off to the printer.
 	PrintStatusSendingData
-	// Pending: print job has been sent to the printer, but is not printed for
-	// some reason, e.g. the printer may be stopped.
+	// PrintStatusPending: print job has been sent to the printer, but is not
+	// printed for some reason, e.g. the printer may be stopped.
 	PrintStatusPending
-	// PendingIssue: some problem has occurred during printing, e.g. a paper
-	// jam.
+	// PrintStatusPendingIssue: some problem has occurred during printing, e.g.
+	// a paper jam.
 	PrintStatusPendingIssue
-	// Printing: printer is processing the print job.
+	// PrintStatusPrinting: printer is processing the print job.
 	PrintStatusPrinting
-	// Finished: printing has been completed successfully.
+	// PrintStatusFinished: printing has been completed successfully.
 	PrintStatusFinished
-	// FinishedAborted: printing has been aborted.
+	// PrintStatusFinishedAborted: printing has been aborted.
 	PrintStatusFinishedAborted
 )
 
 func marshalPrintStatus(p uintptr) (interface{}, error) {
 	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PrintStatus.
+func (p PrintStatus) String() string {
+	switch p {
+	case PrintStatusInitial:
+		return "Initial"
+	case PrintStatusPreparing:
+		return "Preparing"
+	case PrintStatusGeneratingData:
+		return "GeneratingData"
+	case PrintStatusSendingData:
+		return "SendingData"
+	case PrintStatusPending:
+		return "Pending"
+	case PrintStatusPendingIssue:
+		return "PendingIssue"
+	case PrintStatusPrinting:
+		return "Printing"
+	case PrintStatusFinished:
+		return "Finished"
+	case PrintStatusFinishedAborted:
+		return "FinishedAborted"
+	default:
+		return fmt.Sprintf("PrintStatus(%d)", p)
+	}
 }
 
 // PageSetupDoneFunc: type of function that is passed to

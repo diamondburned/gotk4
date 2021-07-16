@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -32,13 +33,27 @@ func init() {
 type TimeType int
 
 const (
-	// Standard: time is in local standard time
+	// TimeTypeStandard: time is in local standard time
 	TimeTypeStandard TimeType = iota
-	// Daylight: time is in local daylight time
+	// TimeTypeDaylight: time is in local daylight time
 	TimeTypeDaylight
-	// Universal: time is in UTC
+	// TimeTypeUniversal: time is in UTC
 	TimeTypeUniversal
 )
+
+// String returns the name in string for TimeType.
+func (t TimeType) String() string {
+	switch t {
+	case TimeTypeStandard:
+		return "Standard"
+	case TimeTypeDaylight:
+		return "Daylight"
+	case TimeTypeUniversal:
+		return "Universal"
+	default:
+		return fmt.Sprintf("TimeType(%d)", t)
+	}
+}
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
 type TimeZone struct {

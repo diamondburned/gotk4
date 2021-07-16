@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"fmt"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -11,20 +15,46 @@ import "C"
 type BookmarkFileError int
 
 const (
-	// InvalidURI: URI was ill-formed
+	// BookmarkFileErrorInvalidURI: URI was ill-formed
 	BookmarkFileErrorInvalidURI BookmarkFileError = iota
-	// InvalidValue: requested field was not found
+	// BookmarkFileErrorInvalidValue: requested field was not found
 	BookmarkFileErrorInvalidValue
-	// AppNotRegistered: requested application did not register a bookmark
+	// BookmarkFileErrorAppNotRegistered: requested application did not register
+	// a bookmark
 	BookmarkFileErrorAppNotRegistered
-	// URINotFound: requested URI was not found
+	// BookmarkFileErrorURINotFound: requested URI was not found
 	BookmarkFileErrorURINotFound
-	// Read: document was ill formed
+	// BookmarkFileErrorRead: document was ill formed
 	BookmarkFileErrorRead
-	// UnknownEncoding: text being parsed was in an unknown encoding
+	// BookmarkFileErrorUnknownEncoding: text being parsed was in an unknown
+	// encoding
 	BookmarkFileErrorUnknownEncoding
-	// Write: error occurred while writing
+	// BookmarkFileErrorWrite: error occurred while writing
 	BookmarkFileErrorWrite
-	// FileNotFound: requested file was not found
+	// BookmarkFileErrorFileNotFound: requested file was not found
 	BookmarkFileErrorFileNotFound
 )
+
+// String returns the name in string for BookmarkFileError.
+func (b BookmarkFileError) String() string {
+	switch b {
+	case BookmarkFileErrorInvalidURI:
+		return "InvalidURI"
+	case BookmarkFileErrorInvalidValue:
+		return "InvalidValue"
+	case BookmarkFileErrorAppNotRegistered:
+		return "AppNotRegistered"
+	case BookmarkFileErrorURINotFound:
+		return "URINotFound"
+	case BookmarkFileErrorRead:
+		return "Read"
+	case BookmarkFileErrorUnknownEncoding:
+		return "UnknownEncoding"
+	case BookmarkFileErrorWrite:
+		return "Write"
+	case BookmarkFileErrorFileNotFound:
+		return "FileNotFound"
+	default:
+		return fmt.Sprintf("BookmarkFileError(%d)", b)
+	}
+}

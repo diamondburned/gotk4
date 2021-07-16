@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,13 +30,39 @@ func init() {
 type PopoverMenuFlags int
 
 const (
-	// PopoverMenuFlagsNested: create submenus as nested popovers. Without this
-	// flag, submenus are created as sliding pages that replace the main menu.
-	PopoverMenuFlagsNested PopoverMenuFlags = 0b1
+	// PopoverMenuNested: create submenus as nested popovers. Without this flag,
+	// submenus are created as sliding pages that replace the main menu.
+	PopoverMenuNested PopoverMenuFlags = 0b1
 )
 
 func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 	return PopoverMenuFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for PopoverMenuFlags.
+func (p PopoverMenuFlags) String() string {
+	if p == 0 {
+		return "PopoverMenuFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(17)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PopoverMenuNested:
+			builder.WriteString("Nested|")
+		default:
+			builder.WriteString(fmt.Sprintf("PopoverMenuFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // PopoverMenu: GtkPopoverMenu is a subclass of GtkPopover that implements menu

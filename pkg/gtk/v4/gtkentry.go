@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -30,14 +31,28 @@ func init() {
 type EntryIconPosition int
 
 const (
-	// Primary: at the beginning of the entry (depending on the text direction).
-	EntryIconPositionPrimary EntryIconPosition = iota
-	// Secondary: at the end of the entry (depending on the text direction).
-	EntryIconPositionSecondary
+	// EntryIconPrimary: at the beginning of the entry (depending on the text
+	// direction).
+	EntryIconPrimary EntryIconPosition = iota
+	// EntryIconSecondary: at the end of the entry (depending on the text
+	// direction).
+	EntryIconSecondary
 )
 
 func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for EntryIconPosition.
+func (e EntryIconPosition) String() string {
+	switch e {
+	case EntryIconPrimary:
+		return "Primary"
+	case EntryIconSecondary:
+		return "Secondary"
+	default:
+		return fmt.Sprintf("EntryIconPosition(%d)", e)
+	}
 }
 
 // EntryOverrider contains methods that are overridable.

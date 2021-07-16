@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -26,15 +27,33 @@ func init() {
 type Status int
 
 const (
-	StatusOk         Status = 0
-	StatusError      Status = -1
-	StatusErrorParam Status = -2
-	StatusErrorFile  Status = -3
-	StatusErrorMem   Status = -4
+	Ok         Status = 0
+	Error      Status = -1
+	ErrorParam Status = -2
+	ErrorFile  Status = -3
+	ErrorMem   Status = -4
 )
 
 func marshalStatus(p uintptr) (interface{}, error) {
 	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Status.
+func (s Status) String() string {
+	switch s {
+	case Ok:
+		return "Ok"
+	case Error:
+		return "Error"
+	case ErrorParam:
+		return "ErrorParam"
+	case ErrorFile:
+		return "ErrorFile"
+	case ErrorMem:
+		return "ErrorMem"
+	default:
+		return fmt.Sprintf("Status(%d)", s)
+	}
 }
 
 type DeviceTool struct {

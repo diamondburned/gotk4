@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -33,13 +35,39 @@ func init() {
 type BuilderClosureFlags int
 
 const (
-	// BuilderClosureFlagsSwapped: closure should be created swapped. See
+	// BuilderClosureSwapped: closure should be created swapped. See
 	// g_cclosure_new_swap() for details.
-	BuilderClosureFlagsSwapped BuilderClosureFlags = 0b1
+	BuilderClosureSwapped BuilderClosureFlags = 0b1
 )
 
 func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
 	return BuilderClosureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for BuilderClosureFlags.
+func (b BuilderClosureFlags) String() string {
+	if b == 0 {
+		return "BuilderClosureFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(21)
+
+	for b != 0 {
+		next := b & (b - 1)
+		bit := b - next
+
+		switch bit {
+		case BuilderClosureSwapped:
+			builder.WriteString("Swapped|")
+		default:
+			builder.WriteString(fmt.Sprintf("BuilderClosureFlags(0b%b)|", bit))
+		}
+
+		b = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // BuilderScopeOverrider contains methods that are overridable.

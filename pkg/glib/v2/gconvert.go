@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -17,26 +18,51 @@ import "C"
 type ConvertError int
 
 const (
-	// NoConversion: conversion between the requested character sets is not
-	// supported.
+	// ConvertErrorNoConversion: conversion between the requested character sets
+	// is not supported.
 	ConvertErrorNoConversion ConvertError = iota
-	// IllegalSequence: invalid byte sequence in conversion input; or the
-	// character sequence could not be represented in the target character set.
+	// ConvertErrorIllegalSequence: invalid byte sequence in conversion input;
+	// or the character sequence could not be represented in the target
+	// character set.
 	ConvertErrorIllegalSequence
-	// Failed: conversion failed for some reason.
+	// ConvertErrorFailed: conversion failed for some reason.
 	ConvertErrorFailed
-	// PartialInput: partial character sequence at end of input.
+	// ConvertErrorPartialInput: partial character sequence at end of input.
 	ConvertErrorPartialInput
-	// BadURI: URI is invalid.
+	// ConvertErrorBadURI: URI is invalid.
 	ConvertErrorBadURI
-	// NotAbsolutePath: pathname is not an absolute path.
+	// ConvertErrorNotAbsolutePath: pathname is not an absolute path.
 	ConvertErrorNotAbsolutePath
-	// NoMemory: no memory available. Since: 2.40
+	// ConvertErrorNoMemory: no memory available. Since: 2.40
 	ConvertErrorNoMemory
-	// EmbeddedNUL: embedded NUL character is present in conversion output where
-	// a NUL-terminated string is expected. Since: 2.56
+	// ConvertErrorEmbeddedNUL: embedded NUL character is present in conversion
+	// output where a NUL-terminated string is expected. Since: 2.56
 	ConvertErrorEmbeddedNUL
 )
+
+// String returns the name in string for ConvertError.
+func (c ConvertError) String() string {
+	switch c {
+	case ConvertErrorNoConversion:
+		return "NoConversion"
+	case ConvertErrorIllegalSequence:
+		return "IllegalSequence"
+	case ConvertErrorFailed:
+		return "Failed"
+	case ConvertErrorPartialInput:
+		return "PartialInput"
+	case ConvertErrorBadURI:
+		return "BadURI"
+	case ConvertErrorNotAbsolutePath:
+		return "NotAbsolutePath"
+	case ConvertErrorNoMemory:
+		return "NoMemory"
+	case ConvertErrorEmbeddedNUL:
+		return "EmbeddedNUL"
+	default:
+		return fmt.Sprintf("ConvertError(%d)", c)
+	}
+}
 
 // FilenameDisplayBasename returns the display basename for the particular
 // filename, guaranteed to be valid UTF-8. The display name might not be

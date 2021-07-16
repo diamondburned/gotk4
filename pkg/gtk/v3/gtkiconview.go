@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -34,22 +35,42 @@ func init() {
 type IconViewDropPosition int
 
 const (
-	// NoDrop: no drop possible
-	IconViewDropPositionNoDrop IconViewDropPosition = iota
-	// DropInto: dropped item replaces the item
-	IconViewDropPositionDropInto
-	// DropLeft: droppped item is inserted to the left
-	IconViewDropPositionDropLeft
-	// DropRight: dropped item is inserted to the right
-	IconViewDropPositionDropRight
-	// DropAbove: dropped item is inserted above
-	IconViewDropPositionDropAbove
-	// DropBelow: dropped item is inserted below
-	IconViewDropPositionDropBelow
+	// IconViewNoDrop: no drop possible
+	IconViewNoDrop IconViewDropPosition = iota
+	// IconViewDropInto: dropped item replaces the item
+	IconViewDropInto
+	// IconViewDropLeft: droppped item is inserted to the left
+	IconViewDropLeft
+	// IconViewDropRight: dropped item is inserted to the right
+	IconViewDropRight
+	// IconViewDropAbove: dropped item is inserted above
+	IconViewDropAbove
+	// IconViewDropBelow: dropped item is inserted below
+	IconViewDropBelow
 )
 
 func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for IconViewDropPosition.
+func (i IconViewDropPosition) String() string {
+	switch i {
+	case IconViewNoDrop:
+		return "NoDrop"
+	case IconViewDropInto:
+		return "DropInto"
+	case IconViewDropLeft:
+		return "DropLeft"
+	case IconViewDropRight:
+		return "DropRight"
+	case IconViewDropAbove:
+		return "DropAbove"
+	case IconViewDropBelow:
+		return "DropBelow"
+	default:
+		return fmt.Sprintf("IconViewDropPosition(%d)", i)
+	}
 }
 
 // IconViewForeachFunc: function used by gtk_icon_view_selected_foreach() to map

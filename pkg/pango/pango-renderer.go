@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -28,20 +29,38 @@ func init() {
 type RenderPart int
 
 const (
-	// Foreground: text itself
+	// RenderPartForeground: text itself
 	RenderPartForeground RenderPart = iota
-	// Background: area behind the text
+	// RenderPartBackground: area behind the text
 	RenderPartBackground
-	// Underline: underlines
+	// RenderPartUnderline: underlines
 	RenderPartUnderline
-	// Strikethrough lines
+	// RenderPartStrikethrough lines
 	RenderPartStrikethrough
-	// Overline: overlines
+	// RenderPartOverline: overlines
 	RenderPartOverline
 )
 
 func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RenderPart.
+func (r RenderPart) String() string {
+	switch r {
+	case RenderPartForeground:
+		return "Foreground"
+	case RenderPartBackground:
+		return "Background"
+	case RenderPartUnderline:
+		return "Underline"
+	case RenderPartStrikethrough:
+		return "Strikethrough"
+	case RenderPartOverline:
+		return "Overline"
+	default:
+		return fmt.Sprintf("RenderPart(%d)", r)
+	}
 }
 
 // RendererOverrider contains methods that are overridable.

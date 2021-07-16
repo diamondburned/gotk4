@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"runtime/cgo"
 	"unsafe"
 
@@ -19,76 +20,154 @@ import "C"
 type ErrorType int
 
 const (
-	// Unknown error
-	ErrorTypeUnknown ErrorType = iota
-	// UnexpEOF: unexpected end of file
-	ErrorTypeUnexpEOF
-	// UnexpEOFInString: unterminated string constant
-	ErrorTypeUnexpEOFInString
-	// UnexpEOFInComment: unterminated comment
-	ErrorTypeUnexpEOFInComment
-	// NonDigitInConst: non-digit character in a number
-	ErrorTypeNonDigitInConst
-	// DigitRadix: digit beyond radix in a number
-	ErrorTypeDigitRadix
-	// FloatRadix: non-decimal floating point number
-	ErrorTypeFloatRadix
-	// FloatMalformed: malformed floating point number
-	ErrorTypeFloatMalformed
+	// ErrUnknown error
+	ErrUnknown ErrorType = iota
+	// ErrUnexpEOF: unexpected end of file
+	ErrUnexpEOF
+	// ErrUnexpEOFInString: unterminated string constant
+	ErrUnexpEOFInString
+	// ErrUnexpEOFInComment: unterminated comment
+	ErrUnexpEOFInComment
+	// ErrNonDigitInConst: non-digit character in a number
+	ErrNonDigitInConst
+	// ErrDigitRadix: digit beyond radix in a number
+	ErrDigitRadix
+	// ErrFloatRadix: non-decimal floating point number
+	ErrFloatRadix
+	// ErrFloatMalformed: malformed floating point number
+	ErrFloatMalformed
 )
+
+// String returns the name in string for ErrorType.
+func (e ErrorType) String() string {
+	switch e {
+	case ErrUnknown:
+		return "Unknown"
+	case ErrUnexpEOF:
+		return "UnexpEOF"
+	case ErrUnexpEOFInString:
+		return "UnexpEOFInString"
+	case ErrUnexpEOFInComment:
+		return "UnexpEOFInComment"
+	case ErrNonDigitInConst:
+		return "NonDigitInConst"
+	case ErrDigitRadix:
+		return "DigitRadix"
+	case ErrFloatRadix:
+		return "FloatRadix"
+	case ErrFloatMalformed:
+		return "FloatMalformed"
+	default:
+		return fmt.Sprintf("ErrorType(%d)", e)
+	}
+}
 
 // TokenType: possible types of token returned from each
 // g_scanner_get_next_token() call.
 type TokenType int
 
 const (
-	// EOF: end of the file
-	TokenTypeEOF TokenType = 0
-	// LeftParen: '(' character
-	TokenTypeLeftParen TokenType = 40
-	// RightParen: ')' character
-	TokenTypeRightParen TokenType = 41
-	// LeftCurly: '{' character
-	TokenTypeLeftCurly TokenType = 123
-	// RightCurly: '}' character
-	TokenTypeRightCurly TokenType = 125
-	// LeftBrace: '[' character
-	TokenTypeLeftBrace TokenType = 91
-	// RightBrace: ']' character
-	TokenTypeRightBrace TokenType = 93
-	// EqualSign: '=' character
-	TokenTypeEqualSign TokenType = 61
-	// Comma: ',' character
-	TokenTypeComma TokenType = 44
-	// None: not a token
-	TokenTypeNone TokenType = 256
-	// Error occurred
-	TokenTypeError TokenType = 257
-	// Char: character
-	TokenTypeChar TokenType = 258
-	// Binary integer
-	TokenTypeBinary TokenType = 259
-	// Octal integer
-	TokenTypeOctal TokenType = 260
-	// Int: integer
-	TokenTypeInt TokenType = 261
-	// Hex integer
-	TokenTypeHex TokenType = 262
-	// Float: floating point number
-	TokenTypeFloat TokenType = 263
-	// String: string
-	TokenTypeString TokenType = 264
-	// Symbol: symbol
-	TokenTypeSymbol TokenType = 265
-	// Identifier: identifier
-	TokenTypeIdentifier TokenType = 266
-	// IdentifierNull: null identifier
-	TokenTypeIdentifierNull TokenType = 267
-	// CommentSingle: one line comment
-	TokenTypeCommentSingle TokenType = 268
-	// CommentMulti: multi line comment
-	TokenTypeCommentMulti TokenType = 269
+	// TokenEOF: end of the file
+	TokenEOF TokenType = 0
+	// TokenLeftParen: '(' character
+	TokenLeftParen TokenType = 40
+	// TokenRightParen: ')' character
+	TokenRightParen TokenType = 41
+	// TokenLeftCurly: '{' character
+	TokenLeftCurly TokenType = 123
+	// TokenRightCurly: '}' character
+	TokenRightCurly TokenType = 125
+	// TokenLeftBrace: '[' character
+	TokenLeftBrace TokenType = 91
+	// TokenRightBrace: ']' character
+	TokenRightBrace TokenType = 93
+	// TokenEqualSign: '=' character
+	TokenEqualSign TokenType = 61
+	// TokenComma: ',' character
+	TokenComma TokenType = 44
+	// TokenNone: not a token
+	TokenNone TokenType = 256
+	// TokenError occurred
+	TokenError TokenType = 257
+	// TokenChar: character
+	TokenChar TokenType = 258
+	// TokenBinary integer
+	TokenBinary TokenType = 259
+	// TokenOctal integer
+	TokenOctal TokenType = 260
+	// TokenInt: integer
+	TokenInt TokenType = 261
+	// TokenHex integer
+	TokenHex TokenType = 262
+	// TokenFloat: floating point number
+	TokenFloat TokenType = 263
+	// TokenString: string
+	TokenString TokenType = 264
+	// TokenSymbol: symbol
+	TokenSymbol TokenType = 265
+	// TokenIdentifier: identifier
+	TokenIdentifier TokenType = 266
+	// TokenIdentifierNull: null identifier
+	TokenIdentifierNull TokenType = 267
+	// TokenCommentSingle: one line comment
+	TokenCommentSingle TokenType = 268
+	// TokenCommentMulti: multi line comment
+	TokenCommentMulti TokenType = 269
 )
+
+// String returns the name in string for TokenType.
+func (t TokenType) String() string {
+	switch t {
+	case TokenEOF:
+		return "EOF"
+	case TokenLeftParen:
+		return "LeftParen"
+	case TokenRightParen:
+		return "RightParen"
+	case TokenLeftCurly:
+		return "LeftCurly"
+	case TokenRightCurly:
+		return "RightCurly"
+	case TokenLeftBrace:
+		return "LeftBrace"
+	case TokenRightBrace:
+		return "RightBrace"
+	case TokenEqualSign:
+		return "EqualSign"
+	case TokenComma:
+		return "Comma"
+	case TokenNone:
+		return "None"
+	case TokenError:
+		return "Error"
+	case TokenChar:
+		return "Char"
+	case TokenBinary:
+		return "Binary"
+	case TokenOctal:
+		return "Octal"
+	case TokenInt:
+		return "Int"
+	case TokenHex:
+		return "Hex"
+	case TokenFloat:
+		return "Float"
+	case TokenString:
+		return "String"
+	case TokenSymbol:
+		return "Symbol"
+	case TokenIdentifier:
+		return "Identifier"
+	case TokenIdentifierNull:
+		return "IdentifierNull"
+	case TokenCommentSingle:
+		return "CommentSingle"
+	case TokenCommentMulti:
+		return "CommentMulti"
+	default:
+		return fmt.Sprintf("TokenType(%d)", t)
+	}
+}
 
 // Scanner: data structure representing a lexical scanner.
 //

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,19 +31,38 @@ func init() {
 type CornerType int
 
 const (
-	// TopLeft: place the scrollbars on the right and bottom of the widget
+	// CornerTopLeft: place the scrollbars on the right and bottom of the widget
 	// (default behaviour).
-	CornerTypeTopLeft CornerType = iota
-	// BottomLeft: place the scrollbars on the top and right of the widget.
-	CornerTypeBottomLeft
-	// TopRight: place the scrollbars on the left and bottom of the widget.
-	CornerTypeTopRight
-	// BottomRight: place the scrollbars on the top and left of the widget.
-	CornerTypeBottomRight
+	CornerTopLeft CornerType = iota
+	// CornerBottomLeft: place the scrollbars on the top and right of the
+	// widget.
+	CornerBottomLeft
+	// CornerTopRight: place the scrollbars on the left and bottom of the
+	// widget.
+	CornerTopRight
+	// CornerBottomRight: place the scrollbars on the top and left of the
+	// widget.
+	CornerBottomRight
 )
 
 func marshalCornerType(p uintptr) (interface{}, error) {
 	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CornerType.
+func (c CornerType) String() string {
+	switch c {
+	case CornerTopLeft:
+		return "TopLeft"
+	case CornerBottomLeft:
+		return "BottomLeft"
+	case CornerTopRight:
+		return "TopRight"
+	case CornerBottomRight:
+		return "BottomRight"
+	default:
+		return fmt.Sprintf("CornerType(%d)", c)
+	}
 }
 
 // PolicyType determines how the size should be computed to achieve the one of
@@ -50,23 +70,39 @@ func marshalCornerType(p uintptr) (interface{}, error) {
 type PolicyType int
 
 const (
-	// Always: scrollbar is always visible. The view size is independent of the
-	// content.
-	PolicyTypeAlways PolicyType = iota
-	// Automatic: scrollbar will appear and disappear as necessary. For example,
-	// when all of a GtkTreeView can not be seen.
-	PolicyTypeAutomatic
-	// Never: scrollbar should never appear. In this mode the content determines
-	// the size.
-	PolicyTypeNever
-	// External: don't show a scrollbar, but don't force the size to follow the
-	// content. This can be used e.g. to make multiple scrolled windows share a
-	// scrollbar.
-	PolicyTypeExternal
+	// PolicyAlways: scrollbar is always visible. The view size is independent
+	// of the content.
+	PolicyAlways PolicyType = iota
+	// PolicyAutomatic: scrollbar will appear and disappear as necessary. For
+	// example, when all of a GtkTreeView can not be seen.
+	PolicyAutomatic
+	// PolicyNever: scrollbar should never appear. In this mode the content
+	// determines the size.
+	PolicyNever
+	// PolicyExternal: don't show a scrollbar, but don't force the size to
+	// follow the content. This can be used e.g. to make multiple scrolled
+	// windows share a scrollbar.
+	PolicyExternal
 )
 
 func marshalPolicyType(p uintptr) (interface{}, error) {
 	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PolicyType.
+func (p PolicyType) String() string {
+	switch p {
+	case PolicyAlways:
+		return "Always"
+	case PolicyAutomatic:
+		return "Automatic"
+	case PolicyNever:
+		return "Never"
+	case PolicyExternal:
+		return "External"
+	default:
+		return fmt.Sprintf("PolicyType(%d)", p)
+	}
 }
 
 // ScrolledWindow: GtkScrolledWindow is a container that makes its child

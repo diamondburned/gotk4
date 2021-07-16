@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -29,26 +30,66 @@ func init() {
 type ValueType int
 
 const (
-	ValueTypeVeryWeak ValueType = iota
-	ValueTypeWeak
-	ValueTypeAcceptable
-	ValueTypeStrong
-	ValueTypeVeryStrong
-	ValueTypeVeryLow
-	ValueTypeLow
-	ValueTypeMedium
-	ValueTypeHigh
-	ValueTypeVeryHigh
-	ValueTypeVeryBad
-	ValueTypeBad
-	ValueTypeGood
-	ValueTypeVeryGood
-	ValueTypeBest
-	ValueTypeLastDefined
+	ValueVeryWeak ValueType = iota
+	ValueWeak
+	ValueAcceptable
+	ValueStrong
+	ValueVeryStrong
+	ValueVeryLow
+	ValueLow
+	ValueMedium
+	ValueHigh
+	ValueVeryHigh
+	ValueVeryBad
+	ValueBad
+	ValueGood
+	ValueVeryGood
+	ValueBest
+	ValueLastDefined
 )
 
 func marshalValueType(p uintptr) (interface{}, error) {
 	return ValueType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ValueType.
+func (v ValueType) String() string {
+	switch v {
+	case ValueVeryWeak:
+		return "VeryWeak"
+	case ValueWeak:
+		return "Weak"
+	case ValueAcceptable:
+		return "Acceptable"
+	case ValueStrong:
+		return "Strong"
+	case ValueVeryStrong:
+		return "VeryStrong"
+	case ValueVeryLow:
+		return "VeryLow"
+	case ValueLow:
+		return "Low"
+	case ValueMedium:
+		return "Medium"
+	case ValueHigh:
+		return "High"
+	case ValueVeryHigh:
+		return "VeryHigh"
+	case ValueVeryBad:
+		return "VeryBad"
+	case ValueBad:
+		return "Bad"
+	case ValueGood:
+		return "Good"
+	case ValueVeryGood:
+		return "VeryGood"
+	case ValueBest:
+		return "Best"
+	case ValueLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("ValueType(%d)", v)
+	}
 }
 
 // ValueTypeGetLocalizedName gets the localized description string describing

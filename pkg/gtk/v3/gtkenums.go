@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -87,16 +89,16 @@ func init() {
 type Align int
 
 const (
-	// Fill: stretch to fill all space if possible, center if no meaningful way
-	// to stretch
+	// AlignFill: stretch to fill all space if possible, center if no meaningful
+	// way to stretch
 	AlignFill Align = iota
-	// Start: snap to left or top side, leaving space on right or bottom
+	// AlignStart: snap to left or top side, leaving space on right or bottom
 	AlignStart
-	// End: snap to right or bottom side, leaving space on left or top
+	// AlignEnd: snap to right or bottom side, leaving space on left or top
 	AlignEnd
-	// Center natural width of widget inside the allocation
+	// AlignCenter natural width of widget inside the allocation
 	AlignCenter
-	// Baseline: align the widget according to the baseline. Since 3.10.
+	// AlignBaseline: align the widget according to the baseline. Since 3.10.
 	AlignBaseline
 )
 
@@ -104,24 +106,60 @@ func marshalAlign(p uintptr) (interface{}, error) {
 	return Align(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Align.
+func (a Align) String() string {
+	switch a {
+	case AlignFill:
+		return "Fill"
+	case AlignStart:
+		return "Start"
+	case AlignEnd:
+		return "End"
+	case AlignCenter:
+		return "Center"
+	case AlignBaseline:
+		return "Baseline"
+	default:
+		return fmt.Sprintf("Align(%d)", a)
+	}
+}
+
 // ArrowType: used to indicate the direction in which an arrow should point.
 type ArrowType int
 
 const (
-	// Up represents an upward pointing arrow.
-	ArrowTypeUp ArrowType = iota
-	// Down represents a downward pointing arrow.
-	ArrowTypeDown
-	// Left represents a left pointing arrow.
-	ArrowTypeLeft
-	// Right represents a right pointing arrow.
-	ArrowTypeRight
-	// None: no arrow. Since 2.10.
-	ArrowTypeNone
+	// ArrowUp represents an upward pointing arrow.
+	ArrowUp ArrowType = iota
+	// ArrowDown represents a downward pointing arrow.
+	ArrowDown
+	// ArrowLeft represents a left pointing arrow.
+	ArrowLeft
+	// ArrowRight represents a right pointing arrow.
+	ArrowRight
+	// ArrowNone: no arrow. Since 2.10.
+	ArrowNone
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
 	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ArrowType.
+func (a ArrowType) String() string {
+	switch a {
+	case ArrowUp:
+		return "Up"
+	case ArrowDown:
+		return "Down"
+	case ArrowLeft:
+		return "Left"
+	case ArrowRight:
+		return "Right"
+	case ArrowNone:
+		return "None"
+	default:
+		return fmt.Sprintf("ArrowType(%d)", a)
+	}
 }
 
 // BaselinePosition: whenever a container has some form of natural row it may
@@ -132,11 +170,11 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 type BaselinePosition int
 
 const (
-	// Top: align the baseline at the top
+	// BaselinePositionTop: align the baseline at the top
 	BaselinePositionTop BaselinePosition = iota
-	// Center: center the baseline
+	// BaselinePositionCenter: center the baseline
 	BaselinePositionCenter
-	// Bottom: align the baseline at the bottom
+	// BaselinePositionBottom: align the baseline at the bottom
 	BaselinePositionBottom
 )
 
@@ -144,29 +182,43 @@ func marshalBaselinePosition(p uintptr) (interface{}, error) {
 	return BaselinePosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BaselinePosition.
+func (b BaselinePosition) String() string {
+	switch b {
+	case BaselinePositionTop:
+		return "Top"
+	case BaselinePositionCenter:
+		return "Center"
+	case BaselinePositionBottom:
+		return "Bottom"
+	default:
+		return fmt.Sprintf("BaselinePosition(%d)", b)
+	}
+}
+
 // BorderStyle describes how the border of a UI element should be rendered.
 type BorderStyle int
 
 const (
-	// None: no visible border
+	// BorderStyleNone: no visible border
 	BorderStyleNone BorderStyle = iota
-	// Solid: single line segment
+	// BorderStyleSolid: single line segment
 	BorderStyleSolid
-	// Inset looks as if the content is sunken into the canvas
+	// BorderStyleInset looks as if the content is sunken into the canvas
 	BorderStyleInset
-	// Outset looks as if the content is coming out of the canvas
+	// BorderStyleOutset looks as if the content is coming out of the canvas
 	BorderStyleOutset
-	// Hidden: same as GTK_BORDER_STYLE_NONE
+	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE
 	BorderStyleHidden
-	// Dotted series of round dots
+	// BorderStyleDotted series of round dots
 	BorderStyleDotted
-	// Dashed series of square-ended dashes
+	// BorderStyleDashed series of square-ended dashes
 	BorderStyleDashed
-	// Double: two parallel lines with some space between them
+	// BorderStyleDouble: two parallel lines with some space between them
 	BorderStyleDouble
-	// Groove looks as if it were carved in the canvas
+	// BorderStyleGroove looks as if it were carved in the canvas
 	BorderStyleGroove
-	// Ridge looks as if it were coming out of the canvas
+	// BorderStyleRidge looks as if it were coming out of the canvas
 	BorderStyleRidge
 )
 
@@ -174,57 +226,129 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BorderStyle.
+func (b BorderStyle) String() string {
+	switch b {
+	case BorderStyleNone:
+		return "None"
+	case BorderStyleSolid:
+		return "Solid"
+	case BorderStyleInset:
+		return "Inset"
+	case BorderStyleOutset:
+		return "Outset"
+	case BorderStyleHidden:
+		return "Hidden"
+	case BorderStyleDotted:
+		return "Dotted"
+	case BorderStyleDashed:
+		return "Dashed"
+	case BorderStyleDouble:
+		return "Double"
+	case BorderStyleGroove:
+		return "Groove"
+	case BorderStyleRidge:
+		return "Ridge"
+	default:
+		return fmt.Sprintf("BorderStyle(%d)", b)
+	}
+}
+
 // DeleteType: see also: Entry::delete-from-cursor.
 type DeleteType int
 
 const (
-	// Chars: delete characters.
-	DeleteTypeChars DeleteType = iota
-	// WordEnds: delete only the portion of the word to the left/right of cursor
-	// if we’re in the middle of a word.
-	DeleteTypeWordEnds
-	// Words: delete words.
-	DeleteTypeWords
-	// DisplayLines: delete display-lines. Display-lines refers to the visible
-	// lines, with respect to to the current line breaks. As opposed to
+	// DeleteChars: delete characters.
+	DeleteChars DeleteType = iota
+	// DeleteWordEnds: delete only the portion of the word to the left/right of
+	// cursor if we’re in the middle of a word.
+	DeleteWordEnds
+	// DeleteWords: delete words.
+	DeleteWords
+	// DeleteDisplayLines: delete display-lines. Display-lines refers to the
+	// visible lines, with respect to to the current line breaks. As opposed to
 	// paragraphs, which are defined by line breaks in the input.
-	DeleteTypeDisplayLines
-	// DisplayLineEnds: delete only the portion of the display-line to the
+	DeleteDisplayLines
+	// DeleteDisplayLineEnds: delete only the portion of the display-line to the
 	// left/right of cursor.
-	DeleteTypeDisplayLineEnds
-	// ParagraphEnds: delete to the end of the paragraph. Like C-k in Emacs (or
-	// its reverse).
-	DeleteTypeParagraphEnds
-	// Paragraphs: delete entire line. Like C-k in pico.
-	DeleteTypeParagraphs
-	// Whitespace: delete only whitespace. Like M-\ in Emacs.
-	DeleteTypeWhitespace
+	DeleteDisplayLineEnds
+	// DeleteParagraphEnds: delete to the end of the paragraph. Like C-k in
+	// Emacs (or its reverse).
+	DeleteParagraphEnds
+	// DeleteParagraphs: delete entire line. Like C-k in pico.
+	DeleteParagraphs
+	// DeleteWhitespace: delete only whitespace. Like M-\ in Emacs.
+	DeleteWhitespace
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
 	return DeleteType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DeleteType.
+func (d DeleteType) String() string {
+	switch d {
+	case DeleteChars:
+		return "Chars"
+	case DeleteWordEnds:
+		return "WordEnds"
+	case DeleteWords:
+		return "Words"
+	case DeleteDisplayLines:
+		return "DisplayLines"
+	case DeleteDisplayLineEnds:
+		return "DisplayLineEnds"
+	case DeleteParagraphEnds:
+		return "ParagraphEnds"
+	case DeleteParagraphs:
+		return "Paragraphs"
+	case DeleteWhitespace:
+		return "Whitespace"
+	default:
+		return fmt.Sprintf("DeleteType(%d)", d)
+	}
+}
+
 // DirectionType focus movement types.
 type DirectionType int
 
 const (
-	// TabForward: move forward.
-	DirectionTypeTabForward DirectionType = iota
-	// TabBackward: move backward.
-	DirectionTypeTabBackward
-	// Up: move up.
-	DirectionTypeUp
-	// Down: move down.
-	DirectionTypeDown
-	// Left: move left.
-	DirectionTypeLeft
-	// Right: move right.
-	DirectionTypeRight
+	// DirTabForward: move forward.
+	DirTabForward DirectionType = iota
+	// DirTabBackward: move backward.
+	DirTabBackward
+	// DirUp: move up.
+	DirUp
+	// DirDown: move down.
+	DirDown
+	// DirLeft: move left.
+	DirLeft
+	// DirRight: move right.
+	DirRight
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
 	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DirectionType.
+func (d DirectionType) String() string {
+	switch d {
+	case DirTabForward:
+		return "TabForward"
+	case DirTabBackward:
+		return "TabBackward"
+	case DirUp:
+		return "Up"
+	case DirDown:
+		return "Down"
+	case DirLeft:
+		return "Left"
+	case DirRight:
+		return "Right"
+	default:
+		return fmt.Sprintf("DirectionType(%d)", d)
+	}
 }
 
 // DragResult gives an indication why a drag operation failed. The value can by
@@ -232,18 +356,18 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 type DragResult int
 
 const (
-	// Success: drag operation was successful.
+	// DragResultSuccess: drag operation was successful.
 	DragResultSuccess DragResult = iota
-	// NoTarget: no suitable drag target.
+	// DragResultNoTarget: no suitable drag target.
 	DragResultNoTarget
-	// UserCancelled: user cancelled the drag operation.
+	// DragResultUserCancelled: user cancelled the drag operation.
 	DragResultUserCancelled
-	// TimeoutExpired: drag operation timed out.
+	// DragResultTimeoutExpired: drag operation timed out.
 	DragResultTimeoutExpired
-	// GrabBroken: pointer or keyboard grab used for the drag operation was
-	// broken.
+	// DragResultGrabBroken: pointer or keyboard grab used for the drag
+	// operation was broken.
 	DragResultGrabBroken
-	// Error: drag operation failed due to some unspecified error.
+	// DragResultError: drag operation failed due to some unspecified error.
 	DragResultError
 )
 
@@ -251,20 +375,54 @@ func marshalDragResult(p uintptr) (interface{}, error) {
 	return DragResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DragResult.
+func (d DragResult) String() string {
+	switch d {
+	case DragResultSuccess:
+		return "Success"
+	case DragResultNoTarget:
+		return "NoTarget"
+	case DragResultUserCancelled:
+		return "UserCancelled"
+	case DragResultTimeoutExpired:
+		return "TimeoutExpired"
+	case DragResultGrabBroken:
+		return "GrabBroken"
+	case DragResultError:
+		return "Error"
+	default:
+		return fmt.Sprintf("DragResult(%d)", d)
+	}
+}
+
 // EventSequenceState describes the state of a EventSequence in a Gesture.
 type EventSequenceState int
 
 const (
-	// None: sequence is handled, but not grabbed.
-	EventSequenceStateNone EventSequenceState = iota
-	// Claimed: sequence is handled and grabbed.
-	EventSequenceStateClaimed
-	// Denied: sequence is denied.
-	EventSequenceStateDenied
+	// EventSequenceNone: sequence is handled, but not grabbed.
+	EventSequenceNone EventSequenceState = iota
+	// EventSequenceClaimed: sequence is handled and grabbed.
+	EventSequenceClaimed
+	// EventSequenceDenied: sequence is denied.
+	EventSequenceDenied
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
 	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for EventSequenceState.
+func (e EventSequenceState) String() string {
+	switch e {
+	case EventSequenceNone:
+		return "None"
+	case EventSequenceClaimed:
+		return "Claimed"
+	case EventSequenceDenied:
+		return "Denied"
+	default:
+		return fmt.Sprintf("EventSequenceState(%d)", e)
+	}
 }
 
 // IMPreeditStyle: style for input method preedit. See also
@@ -274,16 +432,30 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 type IMPreeditStyle int
 
 const (
-	// Nothing: deprecated
-	IMPreeditStyleNothing IMPreeditStyle = iota
-	// Callback: deprecated
-	IMPreeditStyleCallback
-	// None: deprecated
-	IMPreeditStyleNone
+	// ImPreeditNothing: deprecated
+	ImPreeditNothing IMPreeditStyle = iota
+	// ImPreeditCallback: deprecated
+	ImPreeditCallback
+	// ImPreeditNone: deprecated
+	ImPreeditNone
 )
 
 func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
 	return IMPreeditStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for IMPreeditStyle.
+func (i IMPreeditStyle) String() string {
+	switch i {
+	case ImPreeditNothing:
+		return "Nothing"
+	case ImPreeditCallback:
+		return "Callback"
+	case ImPreeditNone:
+		return "None"
+	default:
+		return fmt.Sprintf("IMPreeditStyle(%d)", i)
+	}
 }
 
 // IMStatusStyle: style for input method status. See also
@@ -293,40 +465,76 @@ func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
 type IMStatusStyle int
 
 const (
-	// Nothing: deprecated
-	IMStatusStyleNothing IMStatusStyle = iota
-	// Callback: deprecated
-	IMStatusStyleCallback
-	// None: deprecated
-	IMStatusStyleNone
+	// ImStatusNothing: deprecated
+	ImStatusNothing IMStatusStyle = iota
+	// ImStatusCallback: deprecated
+	ImStatusCallback
+	// ImStatusNone: deprecated
+	ImStatusNone
 )
 
 func marshalIMStatusStyle(p uintptr) (interface{}, error) {
 	return IMStatusStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for IMStatusStyle.
+func (i IMStatusStyle) String() string {
+	switch i {
+	case ImStatusNothing:
+		return "Nothing"
+	case ImStatusCallback:
+		return "Callback"
+	case ImStatusNone:
+		return "None"
+	default:
+		return fmt.Sprintf("IMStatusStyle(%d)", i)
+	}
+}
+
 // IconSize: built-in stock icon sizes.
 type IconSize int
 
 const (
-	// Invalid: invalid size.
+	// IconSizeInvalid: invalid size.
 	IconSizeInvalid IconSize = iota
-	// Menu: size appropriate for menus (16px).
+	// IconSizeMenu: size appropriate for menus (16px).
 	IconSizeMenu
-	// SmallToolbar: size appropriate for small toolbars (16px).
+	// IconSizeSmallToolbar: size appropriate for small toolbars (16px).
 	IconSizeSmallToolbar
-	// LargeToolbar: size appropriate for large toolbars (24px)
+	// IconSizeLargeToolbar: size appropriate for large toolbars (24px)
 	IconSizeLargeToolbar
-	// Button: size appropriate for buttons (16px)
+	// IconSizeButton: size appropriate for buttons (16px)
 	IconSizeButton
-	// Dnd: size appropriate for drag and drop (32px)
+	// IconSizeDnd: size appropriate for drag and drop (32px)
 	IconSizeDnd
-	// Dialog: size appropriate for dialogs (48px)
+	// IconSizeDialog: size appropriate for dialogs (48px)
 	IconSizeDialog
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
 	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for IconSize.
+func (i IconSize) String() string {
+	switch i {
+	case IconSizeInvalid:
+		return "Invalid"
+	case IconSizeMenu:
+		return "Menu"
+	case IconSizeSmallToolbar:
+		return "SmallToolbar"
+	case IconSizeLargeToolbar:
+		return "LargeToolbar"
+	case IconSizeButton:
+		return "Button"
+	case IconSizeDnd:
+		return "Dnd"
+	case IconSizeDialog:
+		return "Dialog"
+	default:
+		return fmt.Sprintf("IconSize(%d)", i)
+	}
 }
 
 // InputPurpose describes primary purpose of the input widget. This information
@@ -348,27 +556,28 @@ func marshalIconSize(p uintptr) (interface{}, error) {
 type InputPurpose int
 
 const (
-	// FreeForm: allow any character
+	// InputPurposeFreeForm: allow any character
 	InputPurposeFreeForm InputPurpose = iota
-	// Alpha: allow only alphabetic characters
+	// InputPurposeAlpha: allow only alphabetic characters
 	InputPurposeAlpha
-	// Digits: allow only digits
+	// InputPurposeDigits: allow only digits
 	InputPurposeDigits
-	// Number: edited field expects numbers
+	// InputPurposeNumber: edited field expects numbers
 	InputPurposeNumber
-	// Phone: edited field expects phone number
+	// InputPurposePhone: edited field expects phone number
 	InputPurposePhone
-	// URL: edited field expects URL
+	// InputPurposeURL: edited field expects URL
 	InputPurposeURL
-	// Email: edited field expects email address
+	// InputPurposeEmail: edited field expects email address
 	InputPurposeEmail
-	// Name: edited field expects the name of a person
+	// InputPurposeName: edited field expects the name of a person
 	InputPurposeName
-	// Password: like GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
+	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
+	// are hidden
 	InputPurposePassword
-	// Pin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
 	InputPurposePin
-	// Terminal: allow any character, in addition to control codes
+	// InputPurposeTerminal: allow any character, in addition to control codes
 	InputPurposeTerminal
 )
 
@@ -376,23 +585,69 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for InputPurpose.
+func (i InputPurpose) String() string {
+	switch i {
+	case InputPurposeFreeForm:
+		return "FreeForm"
+	case InputPurposeAlpha:
+		return "Alpha"
+	case InputPurposeDigits:
+		return "Digits"
+	case InputPurposeNumber:
+		return "Number"
+	case InputPurposePhone:
+		return "Phone"
+	case InputPurposeURL:
+		return "URL"
+	case InputPurposeEmail:
+		return "Email"
+	case InputPurposeName:
+		return "Name"
+	case InputPurposePassword:
+		return "Password"
+	case InputPurposePin:
+		return "Pin"
+	case InputPurposeTerminal:
+		return "Terminal"
+	default:
+		return fmt.Sprintf("InputPurpose(%d)", i)
+	}
+}
+
 // Justification: used for justifying the text inside a Label widget. (See also
 // Alignment).
 type Justification int
 
 const (
-	// Left: text is placed at the left edge of the label.
-	JustificationLeft Justification = iota
-	// Right: text is placed at the right edge of the label.
-	JustificationRight
-	// Center: text is placed in the center of the label.
-	JustificationCenter
-	// Fill: text is placed is distributed across the label.
-	JustificationFill
+	// JustifyLeft: text is placed at the left edge of the label.
+	JustifyLeft Justification = iota
+	// JustifyRight: text is placed at the right edge of the label.
+	JustifyRight
+	// JustifyCenter: text is placed in the center of the label.
+	JustifyCenter
+	// JustifyFill: text is placed is distributed across the label.
+	JustifyFill
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
 	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Justification.
+func (j Justification) String() string {
+	switch j {
+	case JustifyLeft:
+		return "Left"
+	case JustifyRight:
+		return "Right"
+	case JustifyCenter:
+		return "Center"
+	case JustifyFill:
+		return "Fill"
+	default:
+		return fmt.Sprintf("Justification(%d)", j)
+	}
 }
 
 // LevelBarMode describes how LevelBar contents should be rendered. Note that
@@ -400,9 +655,9 @@ func marshalJustification(p uintptr) (interface{}, error) {
 type LevelBarMode int
 
 const (
-	// Continuous: bar has a continuous mode
+	// LevelBarModeContinuous: bar has a continuous mode
 	LevelBarModeContinuous LevelBarMode = iota
-	// Discrete: bar has a discrete mode
+	// LevelBarModeDiscrete: bar has a discrete mode
 	LevelBarModeDiscrete
 )
 
@@ -410,43 +665,89 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for LevelBarMode.
+func (l LevelBarMode) String() string {
+	switch l {
+	case LevelBarModeContinuous:
+		return "Continuous"
+	case LevelBarModeDiscrete:
+		return "Discrete"
+	default:
+		return fmt.Sprintf("LevelBarMode(%d)", l)
+	}
+}
+
 // MenuDirectionType: enumeration representing directional movements within a
 // menu.
 type MenuDirectionType int
 
 const (
-	// Parent: to the parent menu shell
-	MenuDirectionTypeParent MenuDirectionType = iota
-	// Child: to the submenu, if any, associated with the item
-	MenuDirectionTypeChild
-	// Next: to the next menu item
-	MenuDirectionTypeNext
-	// Prev: to the previous menu item
-	MenuDirectionTypePrev
+	// MenuDirParent: to the parent menu shell
+	MenuDirParent MenuDirectionType = iota
+	// MenuDirChild: to the submenu, if any, associated with the item
+	MenuDirChild
+	// MenuDirNext: to the next menu item
+	MenuDirNext
+	// MenuDirPrev: to the previous menu item
+	MenuDirPrev
 )
 
 func marshalMenuDirectionType(p uintptr) (interface{}, error) {
 	return MenuDirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for MenuDirectionType.
+func (m MenuDirectionType) String() string {
+	switch m {
+	case MenuDirParent:
+		return "Parent"
+	case MenuDirChild:
+		return "Child"
+	case MenuDirNext:
+		return "Next"
+	case MenuDirPrev:
+		return "Prev"
+	default:
+		return fmt.Sprintf("MenuDirectionType(%d)", m)
+	}
+}
+
 // MessageType: type of message being displayed in the dialog.
 type MessageType int
 
 const (
-	// Info: informational message
-	MessageTypeInfo MessageType = iota
-	// Warning: non-fatal warning message
-	MessageTypeWarning
-	// Question: question requiring a choice
-	MessageTypeQuestion
-	// Error: fatal error message
-	MessageTypeError
-	// Other: none of the above
-	MessageTypeOther
+	// MessageInfo: informational message
+	MessageInfo MessageType = iota
+	// MessageWarning: non-fatal warning message
+	MessageWarning
+	// MessageQuestion: question requiring a choice
+	MessageQuestion
+	// MessageError: fatal error message
+	MessageError
+	// MessageOther: none of the above
+	MessageOther
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
 	return MessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MessageType.
+func (m MessageType) String() string {
+	switch m {
+	case MessageInfo:
+		return "Info"
+	case MessageWarning:
+		return "Warning"
+	case MessageQuestion:
+		return "Question"
+	case MessageError:
+		return "Error"
+	case MessageOther:
+		return "Other"
+	default:
+		return fmt.Sprintf("MessageType(%d)", m)
+	}
 }
 
 // NumberUpLayout: used to determine the layout of pages on a sheet when
@@ -454,26 +755,50 @@ func marshalMessageType(p uintptr) (interface{}, error) {
 type NumberUpLayout int
 
 const (
-	// Lrtb: ! (layout-lrtb.png)
-	NumberUpLayoutLrtb NumberUpLayout = iota
-	// Lrbt: ! (layout-lrbt.png)
-	NumberUpLayoutLrbt
-	// Rltb: ! (layout-rltb.png)
-	NumberUpLayoutRltb
-	// Rlbt: ! (layout-rlbt.png)
-	NumberUpLayoutRlbt
-	// Tblr: ! (layout-tblr.png)
-	NumberUpLayoutTblr
-	// Tbrl: ! (layout-tbrl.png)
-	NumberUpLayoutTbrl
-	// Btlr: ! (layout-btlr.png)
-	NumberUpLayoutBtlr
-	// Btrl: ! (layout-btrl.png)
-	NumberUpLayoutBtrl
+	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png)
+	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
+	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png)
+	NumberUpLayoutLeftToRightBottomToTop
+	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png)
+	NumberUpLayoutRightToLeftTopToBottom
+	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png)
+	NumberUpLayoutRightToLeftBottomToTop
+	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png)
+	NumberUpLayoutTopToBottomLeftToRight
+	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png)
+	NumberUpLayoutTopToBottomRightToLeft
+	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png)
+	NumberUpLayoutBottomToTopLeftToRight
+	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png)
+	NumberUpLayoutBottomToTopRightToLeft
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 	return NumberUpLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for NumberUpLayout.
+func (n NumberUpLayout) String() string {
+	switch n {
+	case NumberUpLayoutLeftToRightTopToBottom:
+		return "Lrtb"
+	case NumberUpLayoutLeftToRightBottomToTop:
+		return "Lrbt"
+	case NumberUpLayoutRightToLeftTopToBottom:
+		return "Rltb"
+	case NumberUpLayoutRightToLeftBottomToTop:
+		return "Rlbt"
+	case NumberUpLayoutTopToBottomLeftToRight:
+		return "Tblr"
+	case NumberUpLayoutTopToBottomRightToLeft:
+		return "Tbrl"
+	case NumberUpLayoutBottomToTopLeftToRight:
+		return "Btlr"
+	case NumberUpLayoutBottomToTopRightToLeft:
+		return "Btrl"
+	default:
+		return fmt.Sprintf("NumberUpLayout(%d)", n)
+	}
 }
 
 // Orientation represents the orientation of widgets and other objects which can
@@ -482,9 +807,9 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 type Orientation int
 
 const (
-	// Horizontal: element is in horizontal orientation.
+	// OrientationHorizontal: element is in horizontal orientation.
 	OrientationHorizontal Orientation = iota
-	// Vertical: element is in vertical orientation.
+	// OrientationVertical: element is in vertical orientation.
 	OrientationVertical
 )
 
@@ -492,18 +817,30 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Orientation.
+func (o Orientation) String() string {
+	switch o {
+	case OrientationHorizontal:
+		return "Horizontal"
+	case OrientationVertical:
+		return "Vertical"
+	default:
+		return fmt.Sprintf("Orientation(%d)", o)
+	}
+}
+
 // PackDirection determines how widgets should be packed inside menubars and
 // menuitems contained in menubars.
 type PackDirection int
 
 const (
-	// LTR widgets are packed left-to-right
+	// PackDirectionLTR widgets are packed left-to-right
 	PackDirectionLTR PackDirection = iota
-	// RTL widgets are packed right-to-left
+	// PackDirectionRTL widgets are packed right-to-left
 	PackDirectionRTL
-	// Ttb widgets are packed top-to-bottom
+	// PackDirectionTtb widgets are packed top-to-bottom
 	PackDirectionTtb
-	// Btt widgets are packed bottom-to-top
+	// PackDirectionBtt widgets are packed bottom-to-top
 	PackDirectionBtt
 )
 
@@ -511,32 +848,60 @@ func marshalPackDirection(p uintptr) (interface{}, error) {
 	return PackDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PackDirection.
+func (p PackDirection) String() string {
+	switch p {
+	case PackDirectionLTR:
+		return "LTR"
+	case PackDirectionRTL:
+		return "RTL"
+	case PackDirectionTtb:
+		return "Ttb"
+	case PackDirectionBtt:
+		return "Btt"
+	default:
+		return fmt.Sprintf("PackDirection(%d)", p)
+	}
+}
+
 // PackType represents the packing location Box children. (See: VBox, HBox, and
 // ButtonBox).
 type PackType int
 
 const (
-	// Start: child is packed into the start of the box
-	PackTypeStart PackType = iota
-	// End: child is packed into the end of the box
-	PackTypeEnd
+	// PackStart: child is packed into the start of the box
+	PackStart PackType = iota
+	// PackEnd: child is packed into the end of the box
+	PackEnd
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
 	return PackType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PackType.
+func (p PackType) String() string {
+	switch p {
+	case PackStart:
+		return "Start"
+	case PackEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("PackType(%d)", p)
+	}
+}
+
 // PageOrientation: see also gtk_print_settings_set_orientation().
 type PageOrientation int
 
 const (
-	// Portrait: portrait mode.
+	// PageOrientationPortrait: portrait mode.
 	PageOrientationPortrait PageOrientation = iota
-	// Landscape: landscape mode.
+	// PageOrientationLandscape: landscape mode.
 	PageOrientationLandscape
-	// ReversePortrait: reverse portrait mode.
+	// PageOrientationReversePortrait: reverse portrait mode.
 	PageOrientationReversePortrait
-	// ReverseLandscape: reverse landscape mode.
+	// PageOrientationReverseLandscape: reverse landscape mode.
 	PageOrientationReverseLandscape
 )
 
@@ -544,15 +909,31 @@ func marshalPageOrientation(p uintptr) (interface{}, error) {
 	return PageOrientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PageOrientation.
+func (p PageOrientation) String() string {
+	switch p {
+	case PageOrientationPortrait:
+		return "Portrait"
+	case PageOrientationLandscape:
+		return "Landscape"
+	case PageOrientationReversePortrait:
+		return "ReversePortrait"
+	case PageOrientationReverseLandscape:
+		return "ReverseLandscape"
+	default:
+		return fmt.Sprintf("PageOrientation(%d)", p)
+	}
+}
+
 // PageSet: see also gtk_print_job_set_page_set().
 type PageSet int
 
 const (
-	// All: all pages.
+	// PageSetAll: all pages.
 	PageSetAll PageSet = iota
-	// Even: even pages.
+	// PageSetEven: even pages.
 	PageSetEven
-	// Odd: odd pages.
+	// PageSetOdd: odd pages.
 	PageSetOdd
 )
 
@@ -560,17 +941,31 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PageSet.
+func (p PageSet) String() string {
+	switch p {
+	case PageSetAll:
+		return "All"
+	case PageSetEven:
+		return "Even"
+	case PageSetOdd:
+		return "Odd"
+	default:
+		return fmt.Sprintf("PageSet(%d)", p)
+	}
+}
+
 // PanDirection describes the panning direction of a GesturePan
 type PanDirection int
 
 const (
-	// Left: panned towards the left
+	// PanDirectionLeft: panned towards the left
 	PanDirectionLeft PanDirection = iota
-	// Right: panned towards the right
+	// PanDirectionRight: panned towards the right
 	PanDirectionRight
-	// Up: panned upwards
+	// PanDirectionUp: panned upwards
 	PanDirectionUp
-	// Down: panned downwards
+	// PanDirectionDown: panned downwards
 	PanDirectionDown
 )
 
@@ -578,21 +973,49 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 	return PanDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PanDirection.
+func (p PanDirection) String() string {
+	switch p {
+	case PanDirectionLeft:
+		return "Left"
+	case PanDirectionRight:
+		return "Right"
+	case PanDirectionUp:
+		return "Up"
+	case PanDirectionDown:
+		return "Down"
+	default:
+		return fmt.Sprintf("PanDirection(%d)", p)
+	}
+}
+
 // PopoverConstraint describes constraints to positioning of popovers. More
 // values may be added to this enumeration in the future.
 type PopoverConstraint int
 
 const (
-	// None: don't constrain the popover position beyond what is imposed by the
-	// implementation
+	// PopoverConstraintNone: don't constrain the popover position beyond what
+	// is imposed by the implementation
 	PopoverConstraintNone PopoverConstraint = iota
-	// Window: constrain the popover to the boundaries of the window that it is
-	// attached to
+	// PopoverConstraintWindow: constrain the popover to the boundaries of the
+	// window that it is attached to
 	PopoverConstraintWindow
 )
 
 func marshalPopoverConstraint(p uintptr) (interface{}, error) {
 	return PopoverConstraint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PopoverConstraint.
+func (p PopoverConstraint) String() string {
+	switch p {
+	case PopoverConstraintNone:
+		return "None"
+	case PopoverConstraintWindow:
+		return "Window"
+	default:
+		return fmt.Sprintf("PopoverConstraint(%d)", p)
+	}
 }
 
 // PositionType describes which edge of a widget a certain feature is positioned
@@ -601,29 +1024,45 @@ func marshalPopoverConstraint(p uintptr) (interface{}, error) {
 type PositionType int
 
 const (
-	// Left: feature is at the left edge.
-	PositionTypeLeft PositionType = iota
-	// Right: feature is at the right edge.
-	PositionTypeRight
-	// Top: feature is at the top edge.
-	PositionTypeTop
-	// Bottom: feature is at the bottom edge.
-	PositionTypeBottom
+	// PosLeft: feature is at the left edge.
+	PosLeft PositionType = iota
+	// PosRight: feature is at the right edge.
+	PosRight
+	// PosTop: feature is at the top edge.
+	PosTop
+	// PosBottom: feature is at the bottom edge.
+	PosBottom
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
 	return PositionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PositionType.
+func (p PositionType) String() string {
+	switch p {
+	case PosLeft:
+		return "Left"
+	case PosRight:
+		return "Right"
+	case PosTop:
+		return "Top"
+	case PosBottom:
+		return "Bottom"
+	default:
+		return fmt.Sprintf("PositionType(%d)", p)
+	}
+}
+
 // PrintDuplex: see also gtk_print_settings_set_duplex().
 type PrintDuplex int
 
 const (
-	// Simplex: no duplex.
+	// PrintDuplexSimplex: no duplex.
 	PrintDuplexSimplex PrintDuplex = iota
-	// Horizontal: horizontal duplex.
+	// PrintDuplexHorizontal: horizontal duplex.
 	PrintDuplexHorizontal
-	// Vertical: vertical duplex.
+	// PrintDuplexVertical: vertical duplex.
 	PrintDuplexVertical
 )
 
@@ -631,17 +1070,31 @@ func marshalPrintDuplex(p uintptr) (interface{}, error) {
 	return PrintDuplex(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintDuplex.
+func (p PrintDuplex) String() string {
+	switch p {
+	case PrintDuplexSimplex:
+		return "Simplex"
+	case PrintDuplexHorizontal:
+		return "Horizontal"
+	case PrintDuplexVertical:
+		return "Vertical"
+	default:
+		return fmt.Sprintf("PrintDuplex(%d)", p)
+	}
+}
+
 // PrintPages: see also gtk_print_job_set_pages()
 type PrintPages int
 
 const (
-	// All: all pages.
+	// PrintPagesAll: all pages.
 	PrintPagesAll PrintPages = iota
-	// Current: current page.
+	// PrintPagesCurrent: current page.
 	PrintPagesCurrent
-	// Ranges: range of pages.
+	// PrintPagesRanges: range of pages.
 	PrintPagesRanges
-	// Selection: selected pages.
+	// PrintPagesSelection: selected pages.
 	PrintPagesSelection
 )
 
@@ -649,17 +1102,33 @@ func marshalPrintPages(p uintptr) (interface{}, error) {
 	return PrintPages(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintPages.
+func (p PrintPages) String() string {
+	switch p {
+	case PrintPagesAll:
+		return "All"
+	case PrintPagesCurrent:
+		return "Current"
+	case PrintPagesRanges:
+		return "Ranges"
+	case PrintPagesSelection:
+		return "Selection"
+	default:
+		return fmt.Sprintf("PrintPages(%d)", p)
+	}
+}
+
 // PrintQuality: see also gtk_print_settings_set_quality().
 type PrintQuality int
 
 const (
-	// Low: low quality.
+	// PrintQualityLow: low quality.
 	PrintQualityLow PrintQuality = iota
-	// Normal: normal quality.
+	// PrintQualityNormal: normal quality.
 	PrintQualityNormal
-	// High: high quality.
+	// PrintQualityHigh: high quality.
 	PrintQualityHigh
-	// Draft: draft quality.
+	// PrintQualityDraft: draft quality.
 	PrintQualityDraft
 )
 
@@ -667,91 +1136,177 @@ func marshalPrintQuality(p uintptr) (interface{}, error) {
 	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintQuality.
+func (p PrintQuality) String() string {
+	switch p {
+	case PrintQualityLow:
+		return "Low"
+	case PrintQualityNormal:
+		return "Normal"
+	case PrintQualityHigh:
+		return "High"
+	case PrintQualityDraft:
+		return "Draft"
+	default:
+		return fmt.Sprintf("PrintQuality(%d)", p)
+	}
+}
+
 // PropagationPhase describes the stage at which events are fed into a
 // EventController.
 type PropagationPhase int
 
 const (
-	// None events are not delivered automatically. Those can be manually fed
-	// through gtk_event_controller_handle_event(). This should only be used
+	// PhaseNone events are not delivered automatically. Those can be manually
+	// fed through gtk_event_controller_handle_event(). This should only be used
 	// when full control about when, or whether the controller handles the event
 	// is needed.
-	PropagationPhaseNone PropagationPhase = iota
-	// Capture events are delivered in the capture phase. The capture phase
+	PhaseNone PropagationPhase = iota
+	// PhaseCapture events are delivered in the capture phase. The capture phase
 	// happens before the bubble phase, runs from the toplevel down to the event
 	// widget. This option should only be used on containers that might possibly
 	// handle events before their children do.
-	PropagationPhaseCapture
-	// Bubble events are delivered in the bubble phase. The bubble phase happens
-	// after the capture phase, and before the default handlers are run. This
-	// phase runs from the event widget, up to the toplevel.
-	PropagationPhaseBubble
-	// Target events are delivered in the default widget event handlers, note
-	// that widget implementations must chain up on button, motion, touch and
-	// grab broken handlers for controllers in this phase to be run.
-	PropagationPhaseTarget
+	PhaseCapture
+	// PhaseBubble events are delivered in the bubble phase. The bubble phase
+	// happens after the capture phase, and before the default handlers are run.
+	// This phase runs from the event widget, up to the toplevel.
+	PhaseBubble
+	// PhaseTarget events are delivered in the default widget event handlers,
+	// note that widget implementations must chain up on button, motion, touch
+	// and grab broken handlers for controllers in this phase to be run.
+	PhaseTarget
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
 	return PropagationPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PropagationPhase.
+func (p PropagationPhase) String() string {
+	switch p {
+	case PhaseNone:
+		return "None"
+	case PhaseCapture:
+		return "Capture"
+	case PhaseBubble:
+		return "Bubble"
+	case PhaseTarget:
+		return "Target"
+	default:
+		return fmt.Sprintf("PropagationPhase(%d)", p)
+	}
+}
+
 // ReliefStyle: indicated the relief to be drawn around a Button.
 type ReliefStyle int
 
 const (
-	// Normal: draw a normal relief.
-	ReliefStyleNormal ReliefStyle = iota
-	// Half relief. Deprecated in 3.14, does the same as GTK_RELIEF_NORMAL
-	ReliefStyleHalf
-	// None: no relief.
-	ReliefStyleNone
+	// ReliefNormal: draw a normal relief.
+	ReliefNormal ReliefStyle = iota
+	// ReliefHalf relief. Deprecated in 3.14, does the same as GTK_RELIEF_NORMAL
+	ReliefHalf
+	// ReliefNone: no relief.
+	ReliefNone
 )
 
 func marshalReliefStyle(p uintptr) (interface{}, error) {
 	return ReliefStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ReliefStyle.
+func (r ReliefStyle) String() string {
+	switch r {
+	case ReliefNormal:
+		return "Normal"
+	case ReliefHalf:
+		return "Half"
+	case ReliefNone:
+		return "None"
+	default:
+		return fmt.Sprintf("ReliefStyle(%d)", r)
+	}
+}
+
 // ScrollType: scrolling types.
 type ScrollType int
 
 const (
-	// None: no scrolling.
-	ScrollTypeNone ScrollType = iota
-	// Jump: jump to new location.
-	ScrollTypeJump
-	// StepBackward: step backward.
-	ScrollTypeStepBackward
-	// StepForward: step forward.
-	ScrollTypeStepForward
-	// PageBackward: page backward.
-	ScrollTypePageBackward
-	// PageForward: page forward.
-	ScrollTypePageForward
-	// StepUp: step up.
-	ScrollTypeStepUp
-	// StepDown: step down.
-	ScrollTypeStepDown
-	// PageUp: page up.
-	ScrollTypePageUp
-	// PageDown: page down.
-	ScrollTypePageDown
-	// StepLeft: step to the left.
-	ScrollTypeStepLeft
-	// StepRight: step to the right.
-	ScrollTypeStepRight
-	// PageLeft: page to the left.
-	ScrollTypePageLeft
-	// PageRight: page to the right.
-	ScrollTypePageRight
-	// Start: scroll to start.
-	ScrollTypeStart
-	// End: scroll to end.
-	ScrollTypeEnd
+	// ScrollNone: no scrolling.
+	ScrollNone ScrollType = iota
+	// ScrollJump: jump to new location.
+	ScrollJump
+	// ScrollStepBackward: step backward.
+	ScrollStepBackward
+	// ScrollStepForward: step forward.
+	ScrollStepForward
+	// ScrollPageBackward: page backward.
+	ScrollPageBackward
+	// ScrollPageForward: page forward.
+	ScrollPageForward
+	// ScrollStepUp: step up.
+	ScrollStepUp
+	// ScrollStepDown: step down.
+	ScrollStepDown
+	// ScrollPageUp: page up.
+	ScrollPageUp
+	// ScrollPageDown: page down.
+	ScrollPageDown
+	// ScrollStepLeft: step to the left.
+	ScrollStepLeft
+	// ScrollStepRight: step to the right.
+	ScrollStepRight
+	// ScrollPageLeft: page to the left.
+	ScrollPageLeft
+	// ScrollPageRight: page to the right.
+	ScrollPageRight
+	// ScrollStart: scroll to start.
+	ScrollStart
+	// ScrollEnd: scroll to end.
+	ScrollEnd
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ScrollType.
+func (s ScrollType) String() string {
+	switch s {
+	case ScrollNone:
+		return "None"
+	case ScrollJump:
+		return "Jump"
+	case ScrollStepBackward:
+		return "StepBackward"
+	case ScrollStepForward:
+		return "StepForward"
+	case ScrollPageBackward:
+		return "PageBackward"
+	case ScrollPageForward:
+		return "PageForward"
+	case ScrollStepUp:
+		return "StepUp"
+	case ScrollStepDown:
+		return "StepDown"
+	case ScrollPageUp:
+		return "PageUp"
+	case ScrollPageDown:
+		return "PageDown"
+	case ScrollStepLeft:
+		return "StepLeft"
+	case ScrollStepRight:
+		return "StepRight"
+	case ScrollPageLeft:
+		return "PageLeft"
+	case ScrollPageRight:
+		return "PageRight"
+	case ScrollStart:
+		return "Start"
+	case ScrollEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("ScrollType(%d)", s)
+	}
 }
 
 // ScrollablePolicy defines the policy to be used in a scrollable widget when
@@ -759,39 +1314,67 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 type ScrollablePolicy int
 
 const (
-	// Minimum: scrollable adjustments are based on the minimum size
-	ScrollablePolicyMinimum ScrollablePolicy = iota
-	// Natural: scrollable adjustments are based on the natural size
-	ScrollablePolicyNatural
+	// ScrollMinimum: scrollable adjustments are based on the minimum size
+	ScrollMinimum ScrollablePolicy = iota
+	// ScrollNatural: scrollable adjustments are based on the natural size
+	ScrollNatural
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
 	return ScrollablePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ScrollablePolicy.
+func (s ScrollablePolicy) String() string {
+	switch s {
+	case ScrollMinimum:
+		return "Minimum"
+	case ScrollNatural:
+		return "Natural"
+	default:
+		return fmt.Sprintf("ScrollablePolicy(%d)", s)
+	}
+}
+
 // SelectionMode: used to control what selections users are allowed to make.
 type SelectionMode int
 
 const (
-	// None: no selection is possible.
-	SelectionModeNone SelectionMode = iota
-	// Single: zero or one element may be selected.
-	SelectionModeSingle
-	// Browse: exactly one element is selected. In some circumstances, such as
-	// initially or during a search operation, it’s possible for no element to
-	// be selected with GTK_SELECTION_BROWSE. What is really enforced is that
-	// the user can’t deselect a currently selected element except by selecting
-	// another element.
-	SelectionModeBrowse
-	// Multiple: any number of elements may be selected. The Ctrl key may be
-	// used to enlarge the selection, and Shift key to select between the focus
-	// and the child pointed to. Some widgets may also allow Click-drag to
+	// SelectionNone: no selection is possible.
+	SelectionNone SelectionMode = iota
+	// SelectionSingle: zero or one element may be selected.
+	SelectionSingle
+	// SelectionBrowse: exactly one element is selected. In some circumstances,
+	// such as initially or during a search operation, it’s possible for no
+	// element to be selected with GTK_SELECTION_BROWSE. What is really enforced
+	// is that the user can’t deselect a currently selected element except by
+	// selecting another element.
+	SelectionBrowse
+	// SelectionMultiple: any number of elements may be selected. The Ctrl key
+	// may be used to enlarge the selection, and Shift key to select between the
+	// focus and the child pointed to. Some widgets may also allow Click-drag to
 	// select a range of elements.
-	SelectionModeMultiple
+	SelectionMultiple
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
 	return SelectionMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SelectionMode.
+func (s SelectionMode) String() string {
+	switch s {
+	case SelectionNone:
+		return "None"
+	case SelectionSingle:
+		return "Single"
+	case SelectionBrowse:
+		return "Browse"
+	case SelectionMultiple:
+		return "Multiple"
+	default:
+		return fmt.Sprintf("SelectionMode(%d)", s)
+	}
 }
 
 // SensitivityType determines how GTK+ handles the sensitivity of stepper arrows
@@ -799,16 +1382,30 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 type SensitivityType int
 
 const (
-	// Auto: arrow is made insensitive if the thumb is at the end
-	SensitivityTypeAuto SensitivityType = iota
-	// On: arrow is always sensitive
-	SensitivityTypeOn
-	// Off: arrow is always insensitive
-	SensitivityTypeOff
+	// SensitivityAuto: arrow is made insensitive if the thumb is at the end
+	SensitivityAuto SensitivityType = iota
+	// SensitivityOn: arrow is always sensitive
+	SensitivityOn
+	// SensitivityOff: arrow is always insensitive
+	SensitivityOff
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
 	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SensitivityType.
+func (s SensitivityType) String() string {
+	switch s {
+	case SensitivityAuto:
+		return "Auto"
+	case SensitivityOn:
+		return "On"
+	case SensitivityOff:
+		return "Off"
+	default:
+		return fmt.Sprintf("SensitivityType(%d)", s)
+	}
 }
 
 // ShadowType: used to change the appearance of an outline typically provided by
@@ -820,20 +1417,38 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 type ShadowType int
 
 const (
-	// None: no outline.
-	ShadowTypeNone ShadowType = iota
-	// In: outline is bevelled inwards.
-	ShadowTypeIn
-	// Out: outline is bevelled outwards like a button.
-	ShadowTypeOut
-	// EtchedIn: outline has a sunken 3d appearance.
-	ShadowTypeEtchedIn
-	// EtchedOut: outline has a raised 3d appearance.
-	ShadowTypeEtchedOut
+	// ShadowNone: no outline.
+	ShadowNone ShadowType = iota
+	// ShadowIn: outline is bevelled inwards.
+	ShadowIn
+	// ShadowOut: outline is bevelled outwards like a button.
+	ShadowOut
+	// ShadowEtchedIn: outline has a sunken 3d appearance.
+	ShadowEtchedIn
+	// ShadowEtchedOut: outline has a raised 3d appearance.
+	ShadowEtchedOut
 )
 
 func marshalShadowType(p uintptr) (interface{}, error) {
 	return ShadowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ShadowType.
+func (s ShadowType) String() string {
+	switch s {
+	case ShadowNone:
+		return "None"
+	case ShadowIn:
+		return "In"
+	case ShadowOut:
+		return "Out"
+	case ShadowEtchedIn:
+		return "EtchedIn"
+	case ShadowEtchedOut:
+		return "EtchedOut"
+	default:
+		return fmt.Sprintf("ShadowType(%d)", s)
+	}
 }
 
 // SizeGroupMode: mode of the size group determines the directions in which the
@@ -841,18 +1456,34 @@ func marshalShadowType(p uintptr) (interface{}, error) {
 type SizeGroupMode int
 
 const (
-	// None: group has no effect
-	SizeGroupModeNone SizeGroupMode = iota
-	// Horizontal: group affects horizontal requisition
-	SizeGroupModeHorizontal
-	// Vertical: group affects vertical requisition
-	SizeGroupModeVertical
-	// Both: group affects both horizontal and vertical requisition
-	SizeGroupModeBoth
+	// SizeGroupNone: group has no effect
+	SizeGroupNone SizeGroupMode = iota
+	// SizeGroupHorizontal: group affects horizontal requisition
+	SizeGroupHorizontal
+	// SizeGroupVertical: group affects vertical requisition
+	SizeGroupVertical
+	// SizeGroupBoth: group affects both horizontal and vertical requisition
+	SizeGroupBoth
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
 	return SizeGroupMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SizeGroupMode.
+func (s SizeGroupMode) String() string {
+	switch s {
+	case SizeGroupNone:
+		return "None"
+	case SizeGroupHorizontal:
+		return "Horizontal"
+	case SizeGroupVertical:
+		return "Vertical"
+	case SizeGroupBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("SizeGroupMode(%d)", s)
+	}
 }
 
 // SizeRequestMode specifies a preference for height-for-width or
@@ -860,30 +1491,56 @@ func marshalSizeGroupMode(p uintptr) (interface{}, error) {
 type SizeRequestMode int
 
 const (
-	// HeightForWidth: prefer height-for-width geometry management
-	SizeRequestModeHeightForWidth SizeRequestMode = iota
-	// WidthForHeight: prefer width-for-height geometry management
-	SizeRequestModeWidthForHeight
-	// ConstantSize: don’t trade height-for-width or width-for-height
-	SizeRequestModeConstantSize
+	// SizeRequestHeightForWidth: prefer height-for-width geometry management
+	SizeRequestHeightForWidth SizeRequestMode = iota
+	// SizeRequestWidthForHeight: prefer width-for-height geometry management
+	SizeRequestWidthForHeight
+	// SizeRequestConstantSize: don’t trade height-for-width or width-for-height
+	SizeRequestConstantSize
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
 	return SizeRequestMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SizeRequestMode.
+func (s SizeRequestMode) String() string {
+	switch s {
+	case SizeRequestHeightForWidth:
+		return "HeightForWidth"
+	case SizeRequestWidthForHeight:
+		return "WidthForHeight"
+	case SizeRequestConstantSize:
+		return "ConstantSize"
+	default:
+		return fmt.Sprintf("SizeRequestMode(%d)", s)
+	}
+}
+
 // SortType determines the direction of a sort.
 type SortType int
 
 const (
-	// Ascending: sorting is in ascending order.
-	SortTypeAscending SortType = iota
-	// Descending: sorting is in descending order.
-	SortTypeDescending
+	// SortAscending: sorting is in ascending order.
+	SortAscending SortType = iota
+	// SortDescending: sorting is in descending order.
+	SortDescending
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
 	return SortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SortType.
+func (s SortType) String() string {
+	switch s {
+	case SortAscending:
+		return "Ascending"
+	case SortDescending:
+		return "Descending"
+	default:
+		return fmt.Sprintf("SortType(%d)", s)
+	}
 }
 
 // StateType: this type indicates the current state of a widget; the state
@@ -896,44 +1553,81 @@ func marshalSortType(p uintptr) (interface{}, error) {
 type StateType int
 
 const (
-	// Normal: state during normal operation.
-	StateTypeNormal StateType = iota
-	// Active: state of a currently active widget, such as a depressed button.
-	StateTypeActive
-	// Prelight: state indicating that the mouse pointer is over the widget and
-	// the widget will respond to mouse clicks.
-	StateTypePrelight
-	// Selected: state of a selected item, such the selected row in a list.
-	StateTypeSelected
-	// Insensitive: state indicating that the widget is unresponsive to user
-	// actions.
-	StateTypeInsensitive
-	// Inconsistent: widget is inconsistent, such as checkbuttons or
+	// StateNormal: state during normal operation.
+	StateNormal StateType = iota
+	// StateActive: state of a currently active widget, such as a depressed
+	// button.
+	StateActive
+	// StatePrelight: state indicating that the mouse pointer is over the widget
+	// and the widget will respond to mouse clicks.
+	StatePrelight
+	// StateSelected: state of a selected item, such the selected row in a list.
+	StateSelected
+	// StateInsensitive: state indicating that the widget is unresponsive to
+	// user actions.
+	StateInsensitive
+	// StateInconsistent: widget is inconsistent, such as checkbuttons or
 	// radiobuttons that aren’t either set to TRUE nor FALSE, or buttons
 	// requiring the user attention.
-	StateTypeInconsistent
-	// Focused: widget has the keyboard focus.
-	StateTypeFocused
+	StateInconsistent
+	// StateFocused: widget has the keyboard focus.
+	StateFocused
 )
 
 func marshalStateType(p uintptr) (interface{}, error) {
 	return StateType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for StateType.
+func (s StateType) String() string {
+	switch s {
+	case StateNormal:
+		return "Normal"
+	case StateActive:
+		return "Active"
+	case StatePrelight:
+		return "Prelight"
+	case StateSelected:
+		return "Selected"
+	case StateInsensitive:
+		return "Insensitive"
+	case StateInconsistent:
+		return "Inconsistent"
+	case StateFocused:
+		return "Focused"
+	default:
+		return fmt.Sprintf("StateType(%d)", s)
+	}
+}
+
 // TextDirection: reading directions for text.
 type TextDirection int
 
 const (
-	// None: no direction.
-	TextDirectionNone TextDirection = iota
-	// LTR: left to right text direction.
-	TextDirectionLTR
-	// RTL: right to left text direction.
-	TextDirectionRTL
+	// TextDirNone: no direction.
+	TextDirNone TextDirection = iota
+	// TextDirLTR: left to right text direction.
+	TextDirLTR
+	// TextDirRTL: right to left text direction.
+	TextDirRTL
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
 	return TextDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextDirection.
+func (t TextDirection) String() string {
+	switch t {
+	case TextDirNone:
+		return "None"
+	case TextDirLTR:
+		return "LTR"
+	case TextDirRTL:
+		return "RTL"
+	default:
+		return fmt.Sprintf("TextDirection(%d)", t)
+	}
 }
 
 // ToolbarStyle: used to customize the appearance of a Toolbar. Note that
@@ -943,32 +1637,48 @@ func marshalTextDirection(p uintptr) (interface{}, error) {
 type ToolbarStyle int
 
 const (
-	// Icons buttons display only icons in the toolbar.
-	ToolbarStyleIcons ToolbarStyle = iota
-	// Text buttons display only text labels in the toolbar.
-	ToolbarStyleText
-	// Both buttons display text and icons in the toolbar.
-	ToolbarStyleBoth
-	// BothHoriz buttons display icons and text alongside each other, rather
-	// than vertically stacked
-	ToolbarStyleBothHoriz
+	// ToolbarIcons buttons display only icons in the toolbar.
+	ToolbarIcons ToolbarStyle = iota
+	// ToolbarText buttons display only text labels in the toolbar.
+	ToolbarText
+	// ToolbarBoth buttons display text and icons in the toolbar.
+	ToolbarBoth
+	// ToolbarBothHoriz buttons display icons and text alongside each other,
+	// rather than vertically stacked
+	ToolbarBothHoriz
 )
 
 func marshalToolbarStyle(p uintptr) (interface{}, error) {
 	return ToolbarStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ToolbarStyle.
+func (t ToolbarStyle) String() string {
+	switch t {
+	case ToolbarIcons:
+		return "Icons"
+	case ToolbarText:
+		return "Text"
+	case ToolbarBoth:
+		return "Both"
+	case ToolbarBothHoriz:
+		return "BothHoriz"
+	default:
+		return fmt.Sprintf("ToolbarStyle(%d)", t)
+	}
+}
+
 // TreeViewGridLines: used to indicate which grid lines to draw in a tree view.
 type TreeViewGridLines int
 
 const (
-	// None: no grid lines.
+	// TreeViewGridLinesNone: no grid lines.
 	TreeViewGridLinesNone TreeViewGridLines = iota
-	// Horizontal: horizontal grid lines.
+	// TreeViewGridLinesHorizontal: horizontal grid lines.
 	TreeViewGridLinesHorizontal
-	// Vertical: vertical grid lines.
+	// TreeViewGridLinesVertical: vertical grid lines.
 	TreeViewGridLinesVertical
-	// Both: horizontal and vertical grid lines.
+	// TreeViewGridLinesBoth: horizontal and vertical grid lines.
 	TreeViewGridLinesBoth
 )
 
@@ -976,17 +1686,33 @@ func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
 	return TreeViewGridLines(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TreeViewGridLines.
+func (t TreeViewGridLines) String() string {
+	switch t {
+	case TreeViewGridLinesNone:
+		return "None"
+	case TreeViewGridLinesHorizontal:
+		return "Horizontal"
+	case TreeViewGridLinesVertical:
+		return "Vertical"
+	case TreeViewGridLinesBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("TreeViewGridLines(%d)", t)
+	}
+}
+
 // Unit: see also gtk_print_settings_set_paper_width().
 type Unit int
 
 const (
-	// None: no units.
+	// UnitNone: no units.
 	UnitNone Unit = iota
-	// Points dimensions in points.
+	// UnitPoints dimensions in points.
 	UnitPoints
-	// Inch dimensions in inches.
+	// UnitInch dimensions in inches.
 	UnitInch
-	// Mm dimensions in millimeters
+	// UnitMm dimensions in millimeters
 	UnitMm
 )
 
@@ -994,25 +1720,57 @@ func marshalUnit(p uintptr) (interface{}, error) {
 	return Unit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Unit.
+func (u Unit) String() string {
+	switch u {
+	case UnitNone:
+		return "None"
+	case UnitPoints:
+		return "Points"
+	case UnitInch:
+		return "Inch"
+	case UnitMm:
+		return "Mm"
+	default:
+		return fmt.Sprintf("Unit(%d)", u)
+	}
+}
+
 // WrapMode describes a type of line wrapping.
 type WrapMode int
 
 const (
-	// None: do not wrap lines; just make the text area wider
-	WrapModeNone WrapMode = iota
-	// Char: wrap text, breaking lines anywhere the cursor can appear (between
-	// characters, usually - if you want to be technical, between graphemes, see
-	// pango_get_log_attrs())
-	WrapModeChar
-	// Word: wrap text, breaking lines in between words
-	WrapModeWord
-	// WordChar: wrap text, breaking lines in between words, or if that is not
-	// enough, also between graphemes
-	WrapModeWordChar
+	// WrapNone: do not wrap lines; just make the text area wider
+	WrapNone WrapMode = iota
+	// WrapChar: wrap text, breaking lines anywhere the cursor can appear
+	// (between characters, usually - if you want to be technical, between
+	// graphemes, see pango_get_log_attrs())
+	WrapChar
+	// WrapWord: wrap text, breaking lines in between words
+	WrapWord
+	// WrapWordChar: wrap text, breaking lines in between words, or if that is
+	// not enough, also between graphemes
+	WrapWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WrapMode.
+func (w WrapMode) String() string {
+	switch w {
+	case WrapNone:
+		return "None"
+	case WrapChar:
+		return "Char"
+	case WrapWord:
+		return "Word"
+	case WrapWordChar:
+		return "WordChar"
+	default:
+		return fmt.Sprintf("WrapMode(%d)", w)
+	}
 }
 
 // InputHints describes hints that might be taken into account by input methods
@@ -1027,89 +1785,213 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 type InputHints int
 
 const (
-	// InputHintsNone: no special behaviour suggested
-	InputHintsNone InputHints = 0b0
-	// InputHintsSpellcheck: suggest checking for typos
-	InputHintsSpellcheck InputHints = 0b1
-	// InputHintsNoSpellcheck: suggest not checking for typos
-	InputHintsNoSpellcheck InputHints = 0b10
-	// InputHintsWordCompletion: suggest word completion
-	InputHintsWordCompletion InputHints = 0b100
-	// InputHintsLowercase: suggest to convert all text to lowercase
-	InputHintsLowercase InputHints = 0b1000
-	// InputHintsUppercaseChars: suggest to capitalize all text
-	InputHintsUppercaseChars InputHints = 0b10000
-	// InputHintsUppercaseWords: suggest to capitalize the first character of
+	// InputHintNone: no special behaviour suggested
+	InputHintNone InputHints = 0b0
+	// InputHintSpellcheck: suggest checking for typos
+	InputHintSpellcheck InputHints = 0b1
+	// InputHintNoSpellcheck: suggest not checking for typos
+	InputHintNoSpellcheck InputHints = 0b10
+	// InputHintWordCompletion: suggest word completion
+	InputHintWordCompletion InputHints = 0b100
+	// InputHintLowercase: suggest to convert all text to lowercase
+	InputHintLowercase InputHints = 0b1000
+	// InputHintUppercaseChars: suggest to capitalize all text
+	InputHintUppercaseChars InputHints = 0b10000
+	// InputHintUppercaseWords: suggest to capitalize the first character of
 	// each word
-	InputHintsUppercaseWords InputHints = 0b100000
-	// InputHintsUppercaseSentences: suggest to capitalize the first word of
-	// each sentence
-	InputHintsUppercaseSentences InputHints = 0b1000000
-	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
+	InputHintUppercaseWords InputHints = 0b100000
+	// InputHintUppercaseSentences: suggest to capitalize the first word of each
+	// sentence
+	InputHintUppercaseSentences InputHints = 0b1000000
+	// InputHintInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
-	InputHintsInhibitOsk InputHints = 0b10000000
-	// InputHintsVerticalWriting: text is vertical. Since 3.18
-	InputHintsVerticalWriting InputHints = 0b100000000
-	// InputHintsEmoji: suggest offering Emoji support. Since 3.22.20
-	InputHintsEmoji InputHints = 0b1000000000
-	// InputHintsNoEmoji: suggest not offering Emoji support. Since 3.22.20
-	InputHintsNoEmoji InputHints = 0b10000000000
+	InputHintInhibitOsk InputHints = 0b10000000
+	// InputHintVerticalWriting: text is vertical. Since 3.18
+	InputHintVerticalWriting InputHints = 0b100000000
+	// InputHintEmoji: suggest offering Emoji support. Since 3.22.20
+	InputHintEmoji InputHints = 0b1000000000
+	// InputHintNoEmoji: suggest not offering Emoji support. Since 3.22.20
+	InputHintNoEmoji InputHints = 0b10000000000
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
 	return InputHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for InputHints.
+func (i InputHints) String() string {
+	if i == 0 {
+		return "InputHints(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(251)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case InputHintNone:
+			builder.WriteString("None|")
+		case InputHintSpellcheck:
+			builder.WriteString("Spellcheck|")
+		case InputHintNoSpellcheck:
+			builder.WriteString("NoSpellcheck|")
+		case InputHintWordCompletion:
+			builder.WriteString("WordCompletion|")
+		case InputHintLowercase:
+			builder.WriteString("Lowercase|")
+		case InputHintUppercaseChars:
+			builder.WriteString("UppercaseChars|")
+		case InputHintUppercaseWords:
+			builder.WriteString("UppercaseWords|")
+		case InputHintUppercaseSentences:
+			builder.WriteString("UppercaseSentences|")
+		case InputHintInhibitOsk:
+			builder.WriteString("InhibitOsk|")
+		case InputHintVerticalWriting:
+			builder.WriteString("VerticalWriting|")
+		case InputHintEmoji:
+			builder.WriteString("Emoji|")
+		case InputHintNoEmoji:
+			builder.WriteString("NoEmoji|")
+		default:
+			builder.WriteString(fmt.Sprintf("InputHints(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // JunctionSides describes how a rendered element connects to adjacent elements.
 type JunctionSides int
 
 const (
-	// JunctionSidesNone: no junctions.
-	JunctionSidesNone JunctionSides = 0b0
-	// JunctionSidesCornerTopleft: element connects on the top-left corner.
-	JunctionSidesCornerTopleft JunctionSides = 0b1
-	// JunctionSidesCornerTopright: element connects on the top-right corner.
-	JunctionSidesCornerTopright JunctionSides = 0b10
-	// JunctionSidesCornerBottomleft: element connects on the bottom-left
-	// corner.
-	JunctionSidesCornerBottomleft JunctionSides = 0b100
-	// JunctionSidesCornerBottomright: element connects on the bottom-right
-	// corner.
-	JunctionSidesCornerBottomright JunctionSides = 0b1000
-	// JunctionSidesTop: element connects on the top side.
-	JunctionSidesTop JunctionSides = 0b11
-	// JunctionSidesBottom: element connects on the bottom side.
-	JunctionSidesBottom JunctionSides = 0b1100
-	// JunctionSidesLeft: element connects on the left side.
-	JunctionSidesLeft JunctionSides = 0b101
-	// JunctionSidesRight: element connects on the right side.
-	JunctionSidesRight JunctionSides = 0b1010
+	// JunctionNone: no junctions.
+	JunctionNone JunctionSides = 0b0
+	// JunctionCornerTopleft: element connects on the top-left corner.
+	JunctionCornerTopleft JunctionSides = 0b1
+	// JunctionCornerTopright: element connects on the top-right corner.
+	JunctionCornerTopright JunctionSides = 0b10
+	// JunctionCornerBottomleft: element connects on the bottom-left corner.
+	JunctionCornerBottomleft JunctionSides = 0b100
+	// JunctionCornerBottomright: element connects on the bottom-right corner.
+	JunctionCornerBottomright JunctionSides = 0b1000
+	// JunctionTop: element connects on the top side.
+	JunctionTop JunctionSides = 0b11
+	// JunctionBottom: element connects on the bottom side.
+	JunctionBottom JunctionSides = 0b1100
+	// JunctionLeft: element connects on the left side.
+	JunctionLeft JunctionSides = 0b101
+	// JunctionRight: element connects on the right side.
+	JunctionRight JunctionSides = 0b1010
 )
 
 func marshalJunctionSides(p uintptr) (interface{}, error) {
 	return JunctionSides(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for JunctionSides.
+func (j JunctionSides) String() string {
+	if j == 0 {
+		return "JunctionSides(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(162)
+
+	for j != 0 {
+		next := j & (j - 1)
+		bit := j - next
+
+		switch bit {
+		case JunctionNone:
+			builder.WriteString("None|")
+		case JunctionCornerTopleft:
+			builder.WriteString("CornerTopleft|")
+		case JunctionCornerTopright:
+			builder.WriteString("CornerTopright|")
+		case JunctionCornerBottomleft:
+			builder.WriteString("CornerBottomleft|")
+		case JunctionCornerBottomright:
+			builder.WriteString("CornerBottomright|")
+		case JunctionTop:
+			builder.WriteString("Top|")
+		case JunctionBottom:
+			builder.WriteString("Bottom|")
+		case JunctionLeft:
+			builder.WriteString("Left|")
+		case JunctionRight:
+			builder.WriteString("Right|")
+		default:
+			builder.WriteString(fmt.Sprintf("JunctionSides(0b%b)|", bit))
+		}
+
+		j = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // RegionFlags describes a region within a widget.
 type RegionFlags int
 
 const (
-	// RegionFlagsEven: region has an even number within a set.
-	RegionFlagsEven RegionFlags = 0b1
-	// RegionFlagsOdd: region has an odd number within a set.
-	RegionFlagsOdd RegionFlags = 0b10
-	// RegionFlagsFirst: region is the first one within a set.
-	RegionFlagsFirst RegionFlags = 0b100
-	// RegionFlagsLast: region is the last one within a set.
-	RegionFlagsLast RegionFlags = 0b1000
-	// RegionFlagsOnly: region is the only one within a set.
-	RegionFlagsOnly RegionFlags = 0b10000
-	// RegionFlagsSorted: region is part of a sorted area.
-	RegionFlagsSorted RegionFlags = 0b100000
+	// RegionEven: region has an even number within a set.
+	RegionEven RegionFlags = 0b1
+	// RegionOdd: region has an odd number within a set.
+	RegionOdd RegionFlags = 0b10
+	// RegionFirst: region is the first one within a set.
+	RegionFirst RegionFlags = 0b100
+	// RegionLast: region is the last one within a set.
+	RegionLast RegionFlags = 0b1000
+	// RegionOnly: region is the only one within a set.
+	RegionOnly RegionFlags = 0b10000
+	// RegionSorted: region is part of a sorted area.
+	RegionSorted RegionFlags = 0b100000
 )
 
 func marshalRegionFlags(p uintptr) (interface{}, error) {
 	return RegionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for RegionFlags.
+func (r RegionFlags) String() string {
+	if r == 0 {
+		return "RegionFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(67)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case RegionEven:
+			builder.WriteString("Even|")
+		case RegionOdd:
+			builder.WriteString("Odd|")
+		case RegionFirst:
+			builder.WriteString("First|")
+		case RegionLast:
+			builder.WriteString("Last|")
+		case RegionOnly:
+			builder.WriteString("Only|")
+		case RegionSorted:
+			builder.WriteString("Sorted|")
+		default:
+			builder.WriteString(fmt.Sprintf("RegionFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // StateFlags describes a widget state. Widget states are used to match the
@@ -1118,38 +2000,90 @@ func marshalRegionFlags(p uintptr) (interface{}, error) {
 type StateFlags int
 
 const (
-	// StateFlagsNormal: state during normal operation.
-	StateFlagsNormal StateFlags = 0b0
-	// StateFlagsActive: widget is active.
-	StateFlagsActive StateFlags = 0b1
-	// StateFlagsPrelight: widget has a mouse pointer over it.
-	StateFlagsPrelight StateFlags = 0b10
-	// StateFlagsSelected: widget is selected.
-	StateFlagsSelected StateFlags = 0b100
-	// StateFlagsInsensitive: widget is insensitive.
-	StateFlagsInsensitive StateFlags = 0b1000
-	// StateFlagsInconsistent: widget is inconsistent.
-	StateFlagsInconsistent StateFlags = 0b10000
-	// StateFlagsFocused: widget has the keyboard focus.
-	StateFlagsFocused StateFlags = 0b100000
-	// StateFlagsBackdrop: widget is in a background toplevel window.
-	StateFlagsBackdrop StateFlags = 0b1000000
-	// StateFlagsDirLTR: widget is in left-to-right text direction. Since 3.8
-	StateFlagsDirLTR StateFlags = 0b10000000
-	// StateFlagsDirRTL: widget is in right-to-left text direction. Since 3.8
-	StateFlagsDirRTL StateFlags = 0b100000000
-	// StateFlagsLink: widget is a link. Since 3.12
-	StateFlagsLink StateFlags = 0b1000000000
-	// StateFlagsVisited: location the widget points to has already been
-	// visited. Since 3.12
-	StateFlagsVisited StateFlags = 0b10000000000
-	// StateFlagsChecked: widget is checked. Since 3.14
-	StateFlagsChecked StateFlags = 0b100000000000
-	// StateFlagsDropActive: widget is highlighted as a drop target for DND.
+	// StateFlagNormal: state during normal operation.
+	StateFlagNormal StateFlags = 0b0
+	// StateFlagActive: widget is active.
+	StateFlagActive StateFlags = 0b1
+	// StateFlagPrelight: widget has a mouse pointer over it.
+	StateFlagPrelight StateFlags = 0b10
+	// StateFlagSelected: widget is selected.
+	StateFlagSelected StateFlags = 0b100
+	// StateFlagInsensitive: widget is insensitive.
+	StateFlagInsensitive StateFlags = 0b1000
+	// StateFlagInconsistent: widget is inconsistent.
+	StateFlagInconsistent StateFlags = 0b10000
+	// StateFlagFocused: widget has the keyboard focus.
+	StateFlagFocused StateFlags = 0b100000
+	// StateFlagBackdrop: widget is in a background toplevel window.
+	StateFlagBackdrop StateFlags = 0b1000000
+	// StateFlagDirLTR: widget is in left-to-right text direction. Since 3.8
+	StateFlagDirLTR StateFlags = 0b10000000
+	// StateFlagDirRTL: widget is in right-to-left text direction. Since 3.8
+	StateFlagDirRTL StateFlags = 0b100000000
+	// StateFlagLink: widget is a link. Since 3.12
+	StateFlagLink StateFlags = 0b1000000000
+	// StateFlagVisited: location the widget points to has already been visited.
+	// Since 3.12
+	StateFlagVisited StateFlags = 0b10000000000
+	// StateFlagChecked: widget is checked. Since 3.14
+	StateFlagChecked StateFlags = 0b100000000000
+	// StateFlagDropActive: widget is highlighted as a drop target for DND.
 	// Since 3.20
-	StateFlagsDropActive StateFlags = 0b1000000000000
+	StateFlagDropActive StateFlags = 0b1000000000000
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
 	return StateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for StateFlags.
+func (s StateFlags) String() string {
+	if s == 0 {
+		return "StateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(245)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case StateFlagNormal:
+			builder.WriteString("Normal|")
+		case StateFlagActive:
+			builder.WriteString("Active|")
+		case StateFlagPrelight:
+			builder.WriteString("Prelight|")
+		case StateFlagSelected:
+			builder.WriteString("Selected|")
+		case StateFlagInsensitive:
+			builder.WriteString("Insensitive|")
+		case StateFlagInconsistent:
+			builder.WriteString("Inconsistent|")
+		case StateFlagFocused:
+			builder.WriteString("Focused|")
+		case StateFlagBackdrop:
+			builder.WriteString("Backdrop|")
+		case StateFlagDirLTR:
+			builder.WriteString("DirLTR|")
+		case StateFlagDirRTL:
+			builder.WriteString("DirRTL|")
+		case StateFlagLink:
+			builder.WriteString("Link|")
+		case StateFlagVisited:
+			builder.WriteString("Visited|")
+		case StateFlagChecked:
+			builder.WriteString("Checked|")
+		case StateFlagDropActive:
+			builder.WriteString("DropActive|")
+		default:
+			builder.WriteString(fmt.Sprintf("StateFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }

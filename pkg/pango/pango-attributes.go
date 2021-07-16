@@ -3,8 +3,10 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -43,73 +45,148 @@ func init() {
 type AttrType int
 
 const (
-	// Invalid does not happen
+	// AttrTypeInvalid does not happen
 	AttrTypeInvalid AttrType = iota
-	// Language (pango.AttrLanguage)
+	// AttrTypeLanguage (pango.AttrLanguage)
 	AttrTypeLanguage
-	// Family: font family name list (pango.AttrString)
+	// AttrTypeFamily: font family name list (pango.AttrString)
 	AttrTypeFamily
-	// Style: font slant style (pango.AttrInt)
+	// AttrTypeStyle: font slant style (pango.AttrInt)
 	AttrTypeStyle
-	// Weight: font weight (pango.AttrInt)
+	// AttrTypeWeight: font weight (pango.AttrInt)
 	AttrTypeWeight
-	// Variant: font variant (normal or small caps) (pango.AttrInt)
+	// AttrTypeVariant: font variant (normal or small caps) (pango.AttrInt)
 	AttrTypeVariant
-	// Stretch: font stretch (pango.AttrInt)
+	// AttrTypeStretch: font stretch (pango.AttrInt)
 	AttrTypeStretch
-	// Size: font size in points scaled by PANGO_SCALE (pango.AttrInt)
+	// AttrTypeSize: font size in points scaled by PANGO_SCALE (pango.AttrInt)
 	AttrTypeSize
-	// FontDesc: font description (pango.AttrFontDesc)
+	// AttrTypeFontDesc: font description (pango.AttrFontDesc)
 	AttrTypeFontDesc
-	// Foreground color (pango.AttrColor)
+	// AttrTypeForeground color (pango.AttrColor)
 	AttrTypeForeground
-	// Background color (pango.AttrColor)
+	// AttrTypeBackground color (pango.AttrColor)
 	AttrTypeBackground
-	// Underline: whether the text has an underline (pango.AttrInt)
+	// AttrTypeUnderline: whether the text has an underline (pango.AttrInt)
 	AttrTypeUnderline
-	// Strikethrough: whether the text is struck-through (pango.AttrInt)
+	// AttrTypeStrikethrough: whether the text is struck-through (pango.AttrInt)
 	AttrTypeStrikethrough
-	// Rise: baseline displacement (pango.AttrInt)
+	// AttrTypeRise: baseline displacement (pango.AttrInt)
 	AttrTypeRise
-	// Shape (pango.AttrShape)
+	// AttrTypeShape (pango.AttrShape)
 	AttrTypeShape
-	// Scale: font size scale factor (pango.AttrFloat)
+	// AttrTypeScale: font size scale factor (pango.AttrFloat)
 	AttrTypeScale
-	// Fallback: whether fallback is enabled (pango.AttrInt)
+	// AttrTypeFallback: whether fallback is enabled (pango.AttrInt)
 	AttrTypeFallback
-	// LetterSpacing: letter spacing (pangoattrint)
+	// AttrTypeLetterSpacing: letter spacing (pangoattrint)
 	AttrTypeLetterSpacing
-	// UnderlineColor: underline color (pango.AttrColor)
+	// AttrTypeUnderlineColor: underline color (pango.AttrColor)
 	AttrTypeUnderlineColor
-	// StrikethroughColor: strikethrough color (pango.AttrColor)
+	// AttrTypeStrikethroughColor: strikethrough color (pango.AttrColor)
 	AttrTypeStrikethroughColor
-	// AbsoluteSize: font size in pixels scaled by PANGO_SCALE (pango.AttrInt)
+	// AttrTypeAbsoluteSize: font size in pixels scaled by PANGO_SCALE
+	// (pango.AttrInt)
 	AttrTypeAbsoluteSize
-	// Gravity: base text gravity (pango.AttrInt)
+	// AttrTypeGravity: base text gravity (pango.AttrInt)
 	AttrTypeGravity
-	// GravityHint: gravity hint (pango.AttrInt)
+	// AttrTypeGravityHint: gravity hint (pango.AttrInt)
 	AttrTypeGravityHint
-	// FontFeatures: openType font features (pango.AttrString). Since 1.38
+	// AttrTypeFontFeatures: openType font features (pango.AttrString). Since
+	// 1.38
 	AttrTypeFontFeatures
-	// ForegroundAlpha: foreground alpha (pango.AttrInt). Since 1.38
+	// AttrTypeForegroundAlpha: foreground alpha (pango.AttrInt). Since 1.38
 	AttrTypeForegroundAlpha
-	// BackgroundAlpha: background alpha (pango.AttrInt). Since 1.38
+	// AttrTypeBackgroundAlpha: background alpha (pango.AttrInt). Since 1.38
 	AttrTypeBackgroundAlpha
-	// AllowBreaks: whether breaks are allowed (pango.AttrInt). Since 1.44
+	// AttrTypeAllowBreaks: whether breaks are allowed (pango.AttrInt). Since
+	// 1.44
 	AttrTypeAllowBreaks
-	// Show: how to render invisible characters (pango.AttrInt). Since 1.44
+	// AttrTypeShow: how to render invisible characters (pango.AttrInt). Since
+	// 1.44
 	AttrTypeShow
-	// InsertHyphens: whether to insert hyphens at intra-word line breaks
-	// (pango.AttrInt). Since 1.44
+	// AttrTypeInsertHyphens: whether to insert hyphens at intra-word line
+	// breaks (pango.AttrInt). Since 1.44
 	AttrTypeInsertHyphens
-	// Overline: whether the text has an overline (pango.AttrInt). Since 1.46
+	// AttrTypeOverline: whether the text has an overline (pango.AttrInt). Since
+	// 1.46
 	AttrTypeOverline
-	// OverlineColor: overline color (pango.AttrColor). Since 1.46
+	// AttrTypeOverlineColor: overline color (pango.AttrColor). Since 1.46
 	AttrTypeOverlineColor
 )
 
 func marshalAttrType(p uintptr) (interface{}, error) {
 	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AttrType.
+func (a AttrType) String() string {
+	switch a {
+	case AttrTypeInvalid:
+		return "Invalid"
+	case AttrTypeLanguage:
+		return "Language"
+	case AttrTypeFamily:
+		return "Family"
+	case AttrTypeStyle:
+		return "Style"
+	case AttrTypeWeight:
+		return "Weight"
+	case AttrTypeVariant:
+		return "Variant"
+	case AttrTypeStretch:
+		return "Stretch"
+	case AttrTypeSize:
+		return "Size"
+	case AttrTypeFontDesc:
+		return "FontDesc"
+	case AttrTypeForeground:
+		return "Foreground"
+	case AttrTypeBackground:
+		return "Background"
+	case AttrTypeUnderline:
+		return "Underline"
+	case AttrTypeStrikethrough:
+		return "Strikethrough"
+	case AttrTypeRise:
+		return "Rise"
+	case AttrTypeShape:
+		return "Shape"
+	case AttrTypeScale:
+		return "Scale"
+	case AttrTypeFallback:
+		return "Fallback"
+	case AttrTypeLetterSpacing:
+		return "LetterSpacing"
+	case AttrTypeUnderlineColor:
+		return "UnderlineColor"
+	case AttrTypeStrikethroughColor:
+		return "StrikethroughColor"
+	case AttrTypeAbsoluteSize:
+		return "AbsoluteSize"
+	case AttrTypeGravity:
+		return "Gravity"
+	case AttrTypeGravityHint:
+		return "GravityHint"
+	case AttrTypeFontFeatures:
+		return "FontFeatures"
+	case AttrTypeForegroundAlpha:
+		return "ForegroundAlpha"
+	case AttrTypeBackgroundAlpha:
+		return "BackgroundAlpha"
+	case AttrTypeAllowBreaks:
+		return "AllowBreaks"
+	case AttrTypeShow:
+		return "Show"
+	case AttrTypeInsertHyphens:
+		return "InsertHyphens"
+	case AttrTypeOverline:
+		return "Overline"
+	case AttrTypeOverlineColor:
+		return "OverlineColor"
+	default:
+		return fmt.Sprintf("AttrType(%d)", a)
+	}
 }
 
 // AttrTypeGetName fetches the attribute type name.
@@ -158,10 +235,10 @@ func AttrTypeRegister(name string) AttrType {
 type Overline int
 
 const (
-	// None: no overline should be drawn
+	// OverlineNone: no overline should be drawn
 	OverlineNone Overline = iota
-	// Single: draw a single line above the ink extents of the text being
-	// underlined.
+	// OverlineSingle: draw a single line above the ink extents of the text
+	// being underlined.
 	OverlineSingle
 )
 
@@ -169,35 +246,50 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Overline.
+func (o Overline) String() string {
+	switch o {
+	case OverlineNone:
+		return "None"
+	case OverlineSingle:
+		return "Single"
+	default:
+		return fmt.Sprintf("Overline(%d)", o)
+	}
+}
+
 // Underline: PangoUnderline enumeration is used to specify whether text should
 // be underlined, and if so, the type of underlining.
 type Underline int
 
 const (
-	// None: no underline should be drawn
+	// UnderlineNone: no underline should be drawn
 	UnderlineNone Underline = iota
-	// Single underline should be drawn
+	// UnderlineSingle underline should be drawn
 	UnderlineSingle
-	// Double underline should be drawn
+	// UnderlineDouble underline should be drawn
 	UnderlineDouble
-	// Low: single underline should be drawn at a position beneath the ink
-	// extents of the text being underlined. This should be used only for
+	// UnderlineLow: single underline should be drawn at a position beneath the
+	// ink extents of the text being underlined. This should be used only for
 	// underlining single characters, such as for keyboard accelerators.
 	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
 	UnderlineLow
-	// Error: wavy underline should be drawn below. This underline is typically
-	// used to indicate an error such as a possible mispelling; in some cases a
-	// contrasting color may automatically be used. This type of underlining is
-	// available since Pango 1.4.
+	// UnderlineError: wavy underline should be drawn below. This underline is
+	// typically used to indicate an error such as a possible mispelling; in
+	// some cases a contrasting color may automatically be used. This type of
+	// underlining is available since Pango 1.4.
 	UnderlineError
-	// SingleLine: like PANGO_UNDERLINE_SINGLE, but drawn continuously across
-	// multiple runs. This type of underlining is available since Pango 1.46.
+	// UnderlineSingleLine: like PANGO_UNDERLINE_SINGLE, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
 	UnderlineSingleLine
-	// DoubleLine: like PANGO_UNDERLINE_DOUBLE, but drawn continuously across
-	// multiple runs. This type of underlining is available since Pango 1.46.
+	// UnderlineDoubleLine: like PANGO_UNDERLINE_DOUBLE, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
 	UnderlineDoubleLine
-	// ErrorLine: like PANGO_UNDERLINE_ERROR, but drawn continuously across
-	// multiple runs. This type of underlining is available since Pango 1.46.
+	// UnderlineErrorLine: like PANGO_UNDERLINE_ERROR, but drawn continuously
+	// across multiple runs. This type of underlining is available since Pango
+	// 1.46.
 	UnderlineErrorLine
 )
 
@@ -205,23 +297,79 @@ func marshalUnderline(p uintptr) (interface{}, error) {
 	return Underline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Underline.
+func (u Underline) String() string {
+	switch u {
+	case UnderlineNone:
+		return "None"
+	case UnderlineSingle:
+		return "Single"
+	case UnderlineDouble:
+		return "Double"
+	case UnderlineLow:
+		return "Low"
+	case UnderlineError:
+		return "Error"
+	case UnderlineSingleLine:
+		return "SingleLine"
+	case UnderlineDoubleLine:
+		return "DoubleLine"
+	case UnderlineErrorLine:
+		return "ErrorLine"
+	default:
+		return fmt.Sprintf("Underline(%d)", u)
+	}
+}
+
 // ShowFlags: these flags affect how Pango treats characters that are normally
 // not visible in the output.
 type ShowFlags int
 
 const (
-	// ShowFlagsNone: no special treatment for invisible characters
-	ShowFlagsNone ShowFlags = 0b0
-	// ShowFlagsSpaces: render spaces, tabs and newlines visibly
-	ShowFlagsSpaces ShowFlags = 0b1
-	// ShowFlagsLineBreaks: render line breaks visibly
-	ShowFlagsLineBreaks ShowFlags = 0b10
-	// ShowFlagsIgnorables: render default-ignorable Unicode characters visibly
-	ShowFlagsIgnorables ShowFlags = 0b100
+	// ShowNone: no special treatment for invisible characters
+	ShowNone ShowFlags = 0b0
+	// ShowSpaces: render spaces, tabs and newlines visibly
+	ShowSpaces ShowFlags = 0b1
+	// ShowLineBreaks: render line breaks visibly
+	ShowLineBreaks ShowFlags = 0b10
+	// ShowIgnorables: render default-ignorable Unicode characters visibly
+	ShowIgnorables ShowFlags = 0b100
 )
 
 func marshalShowFlags(p uintptr) (interface{}, error) {
 	return ShowFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ShowFlags.
+func (s ShowFlags) String() string {
+	if s == 0 {
+		return "ShowFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(49)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case ShowNone:
+			builder.WriteString("None|")
+		case ShowSpaces:
+			builder.WriteString("Spaces|")
+		case ShowLineBreaks:
+			builder.WriteString("LineBreaks|")
+		case ShowIgnorables:
+			builder.WriteString("Ignorables|")
+		default:
+			builder.WriteString(fmt.Sprintf("ShowFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // AttrDataCopyFunc: type of a function that can duplicate user data for an

@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,22 +31,39 @@ func init() {
 type CoverageLevel int
 
 const (
-	// None: character is not representable with the font.
-	CoverageLevelNone CoverageLevel = iota
-	// Fallback: character is represented in a way that may be comprehensible
-	// but is not the correct graphical form. For instance, a Hangul character
-	// represented as a a sequence of Jamos, or a Latin transliteration of a
-	// Cyrillic word.
-	CoverageLevelFallback
-	// Approximate: character is represented as basically the correct graphical
-	// form, but with a stylistic variant inappropriate for the current script.
-	CoverageLevelApproximate
-	// Exact: character is represented as the correct graphical form.
-	CoverageLevelExact
+	// CoverageNone: character is not representable with the font.
+	CoverageNone CoverageLevel = iota
+	// CoverageFallback: character is represented in a way that may be
+	// comprehensible but is not the correct graphical form. For instance, a
+	// Hangul character represented as a a sequence of Jamos, or a Latin
+	// transliteration of a Cyrillic word.
+	CoverageFallback
+	// CoverageApproximate: character is represented as basically the correct
+	// graphical form, but with a stylistic variant inappropriate for the
+	// current script.
+	CoverageApproximate
+	// CoverageExact: character is represented as the correct graphical form.
+	CoverageExact
 )
 
 func marshalCoverageLevel(p uintptr) (interface{}, error) {
 	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CoverageLevel.
+func (c CoverageLevel) String() string {
+	switch c {
+	case CoverageNone:
+		return "None"
+	case CoverageFallback:
+		return "Fallback"
+	case CoverageApproximate:
+		return "Approximate"
+	case CoverageExact:
+		return "Exact"
+	default:
+		return fmt.Sprintf("CoverageLevel(%d)", c)
+	}
 }
 
 // Coverage structure is a map from Unicode characters to CoverageLevel values.

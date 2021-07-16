@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -32,16 +33,30 @@ func init() {
 type ArrowPlacement int
 
 const (
-	// Both: place one arrow on each end of the menu.
-	ArrowPlacementBoth ArrowPlacement = iota
-	// Start: place both arrows at the top of the menu.
-	ArrowPlacementStart
-	// End: place both arrows at the bottom of the menu.
-	ArrowPlacementEnd
+	// ArrowsBoth: place one arrow on each end of the menu.
+	ArrowsBoth ArrowPlacement = iota
+	// ArrowsStart: place both arrows at the top of the menu.
+	ArrowsStart
+	// ArrowsEnd: place both arrows at the bottom of the menu.
+	ArrowsEnd
 )
 
 func marshalArrowPlacement(p uintptr) (interface{}, error) {
 	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ArrowPlacement.
+func (a ArrowPlacement) String() string {
+	switch a {
+	case ArrowsBoth:
+		return "Both"
+	case ArrowsStart:
+		return "Start"
+	case ArrowsEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("ArrowPlacement(%d)", a)
+	}
 }
 
 // Menu is a MenuShell that implements a drop down menu consisting of a list of

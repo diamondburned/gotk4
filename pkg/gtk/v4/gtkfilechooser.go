@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -30,14 +31,14 @@ func init() {
 type FileChooserAction int
 
 const (
-	// Open indicates open mode. The file chooser will only let the user pick an
-	// existing file.
+	// FileChooserActionOpen indicates open mode. The file chooser will only let
+	// the user pick an existing file.
 	FileChooserActionOpen FileChooserAction = iota
-	// Save indicates save mode. The file chooser will let the user pick an
-	// existing file, or type in a new filename.
+	// FileChooserActionSave indicates save mode. The file chooser will let the
+	// user pick an existing file, or type in a new filename.
 	FileChooserActionSave
-	// SelectFolder indicates an Open mode for selecting folders. The file
-	// chooser will let the user pick an existing folder.
+	// FileChooserActionSelectFolder indicates an Open mode for selecting
+	// folders. The file chooser will let the user pick an existing folder.
 	FileChooserActionSelectFolder
 )
 
@@ -45,24 +46,55 @@ func marshalFileChooserAction(p uintptr) (interface{}, error) {
 	return FileChooserAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for FileChooserAction.
+func (f FileChooserAction) String() string {
+	switch f {
+	case FileChooserActionOpen:
+		return "Open"
+	case FileChooserActionSave:
+		return "Save"
+	case FileChooserActionSelectFolder:
+		return "SelectFolder"
+	default:
+		return fmt.Sprintf("FileChooserAction(%d)", f)
+	}
+}
+
 // FileChooserError: these identify the various errors that can occur while
 // calling GtkFileChooser functions.
 type FileChooserError int
 
 const (
-	// Nonexistent indicates that a file does not exist.
+	// FileChooserErrorNonexistent indicates that a file does not exist.
 	FileChooserErrorNonexistent FileChooserError = iota
-	// BadFilename indicates a malformed filename.
+	// FileChooserErrorBadFilename indicates a malformed filename.
 	FileChooserErrorBadFilename
-	// AlreadyExists indicates a duplicate path (e.g. when adding a bookmark).
+	// FileChooserErrorAlreadyExists indicates a duplicate path (e.g. when
+	// adding a bookmark).
 	FileChooserErrorAlreadyExists
-	// IncompleteHostname indicates an incomplete hostname (e.g. "http://foo"
-	// without a slash after that).
+	// FileChooserErrorIncompleteHostname indicates an incomplete hostname (e.g.
+	// "http://foo" without a slash after that).
 	FileChooserErrorIncompleteHostname
 )
 
 func marshalFileChooserError(p uintptr) (interface{}, error) {
 	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FileChooserError.
+func (f FileChooserError) String() string {
+	switch f {
+	case FileChooserErrorNonexistent:
+		return "Nonexistent"
+	case FileChooserErrorBadFilename:
+		return "BadFilename"
+	case FileChooserErrorAlreadyExists:
+		return "AlreadyExists"
+	case FileChooserErrorIncompleteHostname:
+		return "IncompleteHostname"
+	default:
+		return fmt.Sprintf("FileChooserError(%d)", f)
+	}
 }
 
 // FileChooser: GtkFileChooser is an interface that can be implemented by file

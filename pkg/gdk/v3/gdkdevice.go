@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -30,13 +31,13 @@ func init() {
 type DeviceType int
 
 const (
-	// Master: device is a master (or virtual) device. There will be an
-	// associated focus indicator on the screen.
+	// DeviceTypeMaster: device is a master (or virtual) device. There will be
+	// an associated focus indicator on the screen.
 	DeviceTypeMaster DeviceType = iota
-	// Slave: device is a slave (or physical) device.
+	// DeviceTypeSlave: device is a slave (or physical) device.
 	DeviceTypeSlave
-	// Floating: device is a physical device, currently not attached to any
-	// virtual device.
+	// DeviceTypeFloating: device is a physical device, currently not attached
+	// to any virtual device.
 	DeviceTypeFloating
 )
 
@@ -44,24 +45,52 @@ func marshalDeviceType(p uintptr) (interface{}, error) {
 	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DeviceType.
+func (d DeviceType) String() string {
+	switch d {
+	case DeviceTypeMaster:
+		return "Master"
+	case DeviceTypeSlave:
+		return "Slave"
+	case DeviceTypeFloating:
+		return "Floating"
+	default:
+		return fmt.Sprintf("DeviceType(%d)", d)
+	}
+}
+
 // InputMode: enumeration that describes the mode of an input device.
 type InputMode int
 
 const (
-	// Disabled: device is disabled and will not report any events.
-	InputModeDisabled InputMode = iota
-	// Screen: device is enabled. The device’s coordinate space maps to the
+	// ModeDisabled: device is disabled and will not report any events.
+	ModeDisabled InputMode = iota
+	// ModeScreen: device is enabled. The device’s coordinate space maps to the
 	// entire screen.
-	InputModeScreen
-	// Window: device is enabled. The device’s coordinate space is mapped to a
-	// single window. The manner in which this window is chosen is undefined,
+	ModeScreen
+	// ModeWindow: device is enabled. The device’s coordinate space is mapped to
+	// a single window. The manner in which this window is chosen is undefined,
 	// but it will typically be the same way in which the focus window for key
 	// events is determined.
-	InputModeWindow
+	ModeWindow
 )
 
 func marshalInputMode(p uintptr) (interface{}, error) {
 	return InputMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for InputMode.
+func (i InputMode) String() string {
+	switch i {
+	case ModeDisabled:
+		return "Disabled"
+	case ModeScreen:
+		return "Screen"
+	case ModeWindow:
+		return "Window"
+	default:
+		return fmt.Sprintf("InputMode(%d)", i)
+	}
 }
 
 // InputSource: enumeration describing the type of an input device in general
@@ -69,34 +98,60 @@ func marshalInputMode(p uintptr) (interface{}, error) {
 type InputSource int
 
 const (
-	// Mouse: device is a mouse. (This will be reported for the core pointer,
-	// even if it is something else, such as a trackball.)
-	InputSourceMouse InputSource = iota
-	// Pen: device is a stylus of a graphics tablet or similar device.
-	InputSourcePen
-	// Eraser: device is an eraser. Typically, this would be the other end of a
-	// stylus on a graphics tablet.
-	InputSourceEraser
-	// Cursor: device is a graphics tablet “puck” or similar device.
-	InputSourceCursor
-	// Keyboard: device is a keyboard.
-	InputSourceKeyboard
-	// Touchscreen: device is a direct-input touch device, such as a touchscreen
-	// or tablet. This device type has been added in 3.4.
-	InputSourceTouchscreen
-	// Touchpad: device is an indirect touch device, such as a touchpad. This
-	// device type has been added in 3.4.
-	InputSourceTouchpad
-	// Trackpoint: device is a trackpoint. This device type has been added in
-	// 3.22
-	InputSourceTrackpoint
-	// TabletPad: device is a "pad", a collection of buttons, rings and strips
-	// found in drawing tablets. This device type has been added in 3.22.
-	InputSourceTabletPad
+	// SourceMouse: device is a mouse. (This will be reported for the core
+	// pointer, even if it is something else, such as a trackball.)
+	SourceMouse InputSource = iota
+	// SourcePen: device is a stylus of a graphics tablet or similar device.
+	SourcePen
+	// SourceEraser: device is an eraser. Typically, this would be the other end
+	// of a stylus on a graphics tablet.
+	SourceEraser
+	// SourceCursor: device is a graphics tablet “puck” or similar device.
+	SourceCursor
+	// SourceKeyboard: device is a keyboard.
+	SourceKeyboard
+	// SourceTouchscreen: device is a direct-input touch device, such as a
+	// touchscreen or tablet. This device type has been added in 3.4.
+	SourceTouchscreen
+	// SourceTouchpad: device is an indirect touch device, such as a touchpad.
+	// This device type has been added in 3.4.
+	SourceTouchpad
+	// SourceTrackpoint: device is a trackpoint. This device type has been added
+	// in 3.22
+	SourceTrackpoint
+	// SourceTabletPad: device is a "pad", a collection of buttons, rings and
+	// strips found in drawing tablets. This device type has been added in 3.22.
+	SourceTabletPad
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for InputSource.
+func (i InputSource) String() string {
+	switch i {
+	case SourceMouse:
+		return "Mouse"
+	case SourcePen:
+		return "Pen"
+	case SourceEraser:
+		return "Eraser"
+	case SourceCursor:
+		return "Cursor"
+	case SourceKeyboard:
+		return "Keyboard"
+	case SourceTouchscreen:
+		return "Touchscreen"
+	case SourceTouchpad:
+		return "Touchpad"
+	case SourceTrackpoint:
+		return "Trackpoint"
+	case SourceTabletPad:
+		return "TabletPad"
+	default:
+		return fmt.Sprintf("InputSource(%d)", i)
+	}
 }
 
 // Device object represents a single input device, such as a keyboard, a mouse,

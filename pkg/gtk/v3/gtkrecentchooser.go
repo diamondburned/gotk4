@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -35,9 +36,9 @@ func init() {
 type RecentChooserError int
 
 const (
-	// NotFound indicates that a file does not exist
+	// RecentChooserErrorNotFound indicates that a file does not exist
 	RecentChooserErrorNotFound RecentChooserError = iota
-	// InvalidURI indicates a malformed URI
+	// RecentChooserErrorInvalidURI indicates a malformed URI
 	RecentChooserErrorInvalidURI
 )
 
@@ -45,24 +46,54 @@ func marshalRecentChooserError(p uintptr) (interface{}, error) {
 	return RecentChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for RecentChooserError.
+func (r RecentChooserError) String() string {
+	switch r {
+	case RecentChooserErrorNotFound:
+		return "NotFound"
+	case RecentChooserErrorInvalidURI:
+		return "InvalidURI"
+	default:
+		return fmt.Sprintf("RecentChooserError(%d)", r)
+	}
+}
+
 // RecentSortType: used to specify the sorting method to be applyed to the
 // recently used resource list.
 type RecentSortType int
 
 const (
-	// None: do not sort the returned list of recently used resources.
-	RecentSortTypeNone RecentSortType = iota
-	// Mru: sort the returned list with the most recently used items first.
-	RecentSortTypeMru
-	// Lru: sort the returned list with the least recently used items first.
-	RecentSortTypeLru
-	// Custom: sort the returned list using a custom sorting function passed
-	// using gtk_recent_chooser_set_sort_func().
-	RecentSortTypeCustom
+	// RecentSortNone: do not sort the returned list of recently used resources.
+	RecentSortNone RecentSortType = iota
+	// RecentSortMru: sort the returned list with the most recently used items
+	// first.
+	RecentSortMru
+	// RecentSortLru: sort the returned list with the least recently used items
+	// first.
+	RecentSortLru
+	// RecentSortCustom: sort the returned list using a custom sorting function
+	// passed using gtk_recent_chooser_set_sort_func().
+	RecentSortCustom
 )
 
 func marshalRecentSortType(p uintptr) (interface{}, error) {
 	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RecentSortType.
+func (r RecentSortType) String() string {
+	switch r {
+	case RecentSortNone:
+		return "None"
+	case RecentSortMru:
+		return "Mru"
+	case RecentSortLru:
+		return "Lru"
+	case RecentSortCustom:
+		return "Custom"
+	default:
+		return fmt.Sprintf("RecentSortType(%d)", r)
+	}
 }
 
 type RecentSortFunc func(a *RecentInfo, b *RecentInfo) (gint int)

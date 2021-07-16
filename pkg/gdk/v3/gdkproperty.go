@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,16 +26,30 @@ func init() {
 type PropMode int
 
 const (
-	// Replace: new data replaces the existing data.
+	// PropModeReplace: new data replaces the existing data.
 	PropModeReplace PropMode = iota
-	// Prepend: new data is prepended to the existing data.
+	// PropModePrepend: new data is prepended to the existing data.
 	PropModePrepend
-	// Append: new data is appended to the existing data.
+	// PropModeAppend: new data is appended to the existing data.
 	PropModeAppend
 )
 
 func marshalPropMode(p uintptr) (interface{}, error) {
 	return PropMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PropMode.
+func (p PropMode) String() string {
+	switch p {
+	case PropModeReplace:
+		return "Replace"
+	case PropModePrepend:
+		return "Prepend"
+	case PropModeAppend:
+		return "Append"
+	default:
+		return fmt.Sprintf("PropMode(%d)", p)
+	}
 }
 
 // UTF8ToStringTarget converts an UTF-8 string into the best possible

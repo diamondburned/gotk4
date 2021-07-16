@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -35,32 +36,60 @@ func init() {
 type CSSSectionType int
 
 const (
-	// Document: section describes a complete document. This section time is the
-	// only one where gtk_css_section_get_parent() might return NULL.
-	CSSSectionTypeDocument CSSSectionType = iota
-	// Import: section defines an import rule.
-	CSSSectionTypeImport
-	// ColorDefinition: section defines a color. This is a GTK extension to CSS.
-	CSSSectionTypeColorDefinition
-	// BindingSet: section defines a binding set. This is a GTK extension to
-	// CSS.
-	CSSSectionTypeBindingSet
-	// Ruleset: section defines a CSS ruleset.
-	CSSSectionTypeRuleset
-	// Selector: section defines a CSS selector.
-	CSSSectionTypeSelector
-	// Declaration: section defines the declaration of a CSS variable.
-	CSSSectionTypeDeclaration
-	// Value: section defines the value of a CSS declaration.
-	CSSSectionTypeValue
-	// Keyframes: section defines keyframes. See [CSS
+	// CSSSectionDocument: section describes a complete document. This section
+	// time is the only one where gtk_css_section_get_parent() might return
+	// NULL.
+	CSSSectionDocument CSSSectionType = iota
+	// CSSSectionImport: section defines an import rule.
+	CSSSectionImport
+	// CSSSectionColorDefinition: section defines a color. This is a GTK
+	// extension to CSS.
+	CSSSectionColorDefinition
+	// CSSSectionBindingSet: section defines a binding set. This is a GTK
+	// extension to CSS.
+	CSSSectionBindingSet
+	// CSSSectionRuleset: section defines a CSS ruleset.
+	CSSSectionRuleset
+	// CSSSectionSelector: section defines a CSS selector.
+	CSSSectionSelector
+	// CSSSectionDeclaration: section defines the declaration of a CSS variable.
+	CSSSectionDeclaration
+	// CSSSectionValue: section defines the value of a CSS declaration.
+	CSSSectionValue
+	// CSSSectionKeyframes: section defines keyframes. See [CSS
 	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
 	// details. Since 3.6
-	CSSSectionTypeKeyframes
+	CSSSectionKeyframes
 )
 
 func marshalCSSSectionType(p uintptr) (interface{}, error) {
 	return CSSSectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CSSSectionType.
+func (c CSSSectionType) String() string {
+	switch c {
+	case CSSSectionDocument:
+		return "Document"
+	case CSSSectionImport:
+		return "Import"
+	case CSSSectionColorDefinition:
+		return "ColorDefinition"
+	case CSSSectionBindingSet:
+		return "BindingSet"
+	case CSSSectionRuleset:
+		return "Ruleset"
+	case CSSSectionSelector:
+		return "Selector"
+	case CSSSectionDeclaration:
+		return "Declaration"
+	case CSSSectionValue:
+		return "Value"
+	case CSSSectionKeyframes:
+		return "Keyframes"
+	default:
+		return fmt.Sprintf("CSSSectionType(%d)", c)
+	}
 }
 
 // CSSSection defines a part of a CSS document. Because sections are nested into

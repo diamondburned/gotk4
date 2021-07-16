@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,14 +30,26 @@ func init() {
 type CellRendererAccelMode int
 
 const (
-	// GTK: GTK accelerators mode
+	// CellRendererAccelModeGTK: GTK accelerators mode
 	CellRendererAccelModeGTK CellRendererAccelMode = iota
-	// Other: other accelerator mode
+	// CellRendererAccelModeOther: other accelerator mode
 	CellRendererAccelModeOther
 )
 
 func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CellRendererAccelMode.
+func (c CellRendererAccelMode) String() string {
+	switch c {
+	case CellRendererAccelModeGTK:
+		return "GTK"
+	case CellRendererAccelModeOther:
+		return "Other"
+	default:
+		return fmt.Sprintf("CellRendererAccelMode(%d)", c)
+	}
 }
 
 // CellRendererAccel renders a keyboard accelerator in a cell

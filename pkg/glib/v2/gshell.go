@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -17,13 +18,27 @@ import "C"
 type ShellError int
 
 const (
-	// BadQuoting: mismatched or otherwise mangled quoting.
+	// ShellErrorBadQuoting: mismatched or otherwise mangled quoting.
 	ShellErrorBadQuoting ShellError = iota
-	// EmptyString: string to be parsed was empty.
+	// ShellErrorEmptyString: string to be parsed was empty.
 	ShellErrorEmptyString
-	// Failed: some other error.
+	// ShellErrorFailed: some other error.
 	ShellErrorFailed
 )
+
+// String returns the name in string for ShellError.
+func (s ShellError) String() string {
+	switch s {
+	case ShellErrorBadQuoting:
+		return "BadQuoting"
+	case ShellErrorEmptyString:
+		return "EmptyString"
+	case ShellErrorFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("ShellError(%d)", s)
+	}
+}
 
 // ShellParseArgv parses a command line into an argument vector, in much the
 // same way the shell would, but without many of the expansions the shell would

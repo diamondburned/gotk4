@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -31,14 +32,26 @@ func init() {
 type ToolbarSpaceStyle int
 
 const (
-	// Empty: use blank spacers.
-	ToolbarSpaceStyleEmpty ToolbarSpaceStyle = iota
-	// Line: use vertical lines for spacers.
-	ToolbarSpaceStyleLine
+	// ToolbarSpaceEmpty: use blank spacers.
+	ToolbarSpaceEmpty ToolbarSpaceStyle = iota
+	// ToolbarSpaceLine: use vertical lines for spacers.
+	ToolbarSpaceLine
 )
 
 func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
 	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ToolbarSpaceStyle.
+func (t ToolbarSpaceStyle) String() string {
+	switch t {
+	case ToolbarSpaceEmpty:
+		return "Empty"
+	case ToolbarSpaceLine:
+		return "Line"
+	default:
+		return fmt.Sprintf("ToolbarSpaceStyle(%d)", t)
+	}
 }
 
 // ToolbarOverrider contains methods that are overridable.

@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -80,24 +82,42 @@ func init() {
 type AccessibleAutocomplete int
 
 const (
-	// None: automatic suggestions are not displayed.
+	// AccessibleAutocompleteNone: automatic suggestions are not displayed.
 	AccessibleAutocompleteNone AccessibleAutocomplete = iota
-	// Inline: when a user is providing input, text suggesting one way to
-	// complete the provided input may be dynamically inserted after the caret.
+	// AccessibleAutocompleteInline: when a user is providing input, text
+	// suggesting one way to complete the provided input may be dynamically
+	// inserted after the caret.
 	AccessibleAutocompleteInline
-	// List: when a user is providing input, an element containing a collection
-	// of values that could complete the provided input may be displayed.
+	// AccessibleAutocompleteList: when a user is providing input, an element
+	// containing a collection of values that could complete the provided input
+	// may be displayed.
 	AccessibleAutocompleteList
-	// Both: when a user is providing input, an element containing a collection
-	// of values that could complete the provided input may be displayed. If
-	// displayed, one value in the collection is automatically selected, and the
-	// text needed to complete the automatically selected value appears after
-	// the caret in the input.
+	// AccessibleAutocompleteBoth: when a user is providing input, an element
+	// containing a collection of values that could complete the provided input
+	// may be displayed. If displayed, one value in the collection is
+	// automatically selected, and the text needed to complete the automatically
+	// selected value appears after the caret in the input.
 	AccessibleAutocompleteBoth
 )
 
 func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
 	return AccessibleAutocomplete(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AccessibleAutocomplete.
+func (a AccessibleAutocomplete) String() string {
+	switch a {
+	case AccessibleAutocompleteNone:
+		return "None"
+	case AccessibleAutocompleteInline:
+		return "Inline"
+	case AccessibleAutocompleteList:
+		return "List"
+	case AccessibleAutocompleteBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("AccessibleAutocomplete(%d)", a)
+	}
 }
 
 // AccessibleInvalidState: possible values for the GTK_ACCESSIBLE_STATE_INVALID
@@ -108,89 +128,156 @@ func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
 type AccessibleInvalidState int
 
 const (
-	// False: there are no detected errors in the value
-	AccessibleInvalidStateFalse AccessibleInvalidState = iota
-	// True: value entered by the user has failed validation
-	AccessibleInvalidStateTrue
-	// Grammar: grammatical error was detected
-	AccessibleInvalidStateGrammar
-	// Spelling error was detected
-	AccessibleInvalidStateSpelling
+	// AccessibleInvalidFalse: there are no detected errors in the value
+	AccessibleInvalidFalse AccessibleInvalidState = iota
+	// AccessibleInvalidTrue: value entered by the user has failed validation
+	AccessibleInvalidTrue
+	// AccessibleInvalidGrammar: grammatical error was detected
+	AccessibleInvalidGrammar
+	// AccessibleInvalidSpelling error was detected
+	AccessibleInvalidSpelling
 )
 
 func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
 	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for AccessibleInvalidState.
+func (a AccessibleInvalidState) String() string {
+	switch a {
+	case AccessibleInvalidFalse:
+		return "False"
+	case AccessibleInvalidTrue:
+		return "True"
+	case AccessibleInvalidGrammar:
+		return "Grammar"
+	case AccessibleInvalidSpelling:
+		return "Spelling"
+	default:
+		return fmt.Sprintf("AccessibleInvalidState(%d)", a)
+	}
+}
+
 // AccessibleProperty: possible accessible properties of a GtkAccessible.
 type AccessibleProperty int
 
 const (
-	// Autocomplete indicates whether inputting text could trigger display of
-	// one or more predictions of the user's intended value for a combobox,
-	// searchbox, or textbox and specifies how predictions would be presented if
-	// they were made. Value type: AccessibleAutocomplete
+	// AccessiblePropertyAutocomplete indicates whether inputting text could
+	// trigger display of one or more predictions of the user's intended value
+	// for a combobox, searchbox, or textbox and specifies how predictions would
+	// be presented if they were made. Value type: AccessibleAutocomplete
 	AccessiblePropertyAutocomplete AccessibleProperty = iota
-	// Description defines a string value that describes or annotates the
-	// current element. Value type: string
+	// AccessiblePropertyDescription defines a string value that describes or
+	// annotates the current element. Value type: string
 	AccessiblePropertyDescription
-	// HasPopup indicates the availability and type of interactive popup
-	// element, such as menu or dialog, that can be triggered by an element.
+	// AccessiblePropertyHasPopup indicates the availability and type of
+	// interactive popup element, such as menu or dialog, that can be triggered
+	// by an element.
 	AccessiblePropertyHasPopup
-	// KeyShortcuts indicates keyboard shortcuts that an author has implemented
-	// to activate or give focus to an element. Value type: string
+	// AccessiblePropertyKeyShortcuts indicates keyboard shortcuts that an
+	// author has implemented to activate or give focus to an element. Value
+	// type: string
 	AccessiblePropertyKeyShortcuts
-	// Label defines a string value that labels the current element. Value type:
-	// string
+	// AccessiblePropertyLabel defines a string value that labels the current
+	// element. Value type: string
 	AccessiblePropertyLabel
-	// Level defines the hierarchical level of an element within a structure.
-	// Value type: integer
+	// AccessiblePropertyLevel defines the hierarchical level of an element
+	// within a structure. Value type: integer
 	AccessiblePropertyLevel
-	// Modal indicates whether an element is modal when displayed. Value type:
-	// boolean
+	// AccessiblePropertyModal indicates whether an element is modal when
+	// displayed. Value type: boolean
 	AccessiblePropertyModal
-	// MultiLine indicates whether a text box accepts multiple lines of input or
-	// only a single line. Value type: boolean
+	// AccessiblePropertyMultiLine indicates whether a text box accepts multiple
+	// lines of input or only a single line. Value type: boolean
 	AccessiblePropertyMultiLine
-	// MultiSelectable indicates that the user may select more than one item
-	// from the current selectable descendants. Value type: boolean
+	// AccessiblePropertyMultiSelectable indicates that the user may select more
+	// than one item from the current selectable descendants. Value type:
+	// boolean
 	AccessiblePropertyMultiSelectable
-	// Orientation indicates whether the element's orientation is horizontal,
-	// vertical, or unknown/ambiguous. Value type: Orientation
+	// AccessiblePropertyOrientation indicates whether the element's orientation
+	// is horizontal, vertical, or unknown/ambiguous. Value type: Orientation
 	AccessiblePropertyOrientation
-	// Placeholder defines a short hint (a word or short phrase) intended to aid
-	// the user with data entry when the control has no value. A hint could be a
-	// sample value or a brief description of the expected format. Value type:
-	// string
+	// AccessiblePropertyPlaceholder defines a short hint (a word or short
+	// phrase) intended to aid the user with data entry when the control has no
+	// value. A hint could be a sample value or a brief description of the
+	// expected format. Value type: string
 	AccessiblePropertyPlaceholder
-	// ReadOnly indicates that the element is not editable, but is otherwise
-	// operable. Value type: boolean
+	// AccessiblePropertyReadOnly indicates that the element is not editable,
+	// but is otherwise operable. Value type: boolean
 	AccessiblePropertyReadOnly
-	// Required indicates that user input is required on the element before a
-	// form may be submitted. Value type: boolean
+	// AccessiblePropertyRequired indicates that user input is required on the
+	// element before a form may be submitted. Value type: boolean
 	AccessiblePropertyRequired
-	// RoleDescription defines a human-readable, author-localized description
-	// for the role of an element. Value type: string
+	// AccessiblePropertyRoleDescription defines a human-readable,
+	// author-localized description for the role of an element. Value type:
+	// string
 	AccessiblePropertyRoleDescription
-	// Sort indicates if items in a table or grid are sorted in ascending or
-	// descending order. Possible property values are in the AccessibleSort
-	// enumeration. Value type: AccessibleSort
+	// AccessiblePropertySort indicates if items in a table or grid are sorted
+	// in ascending or descending order. Possible property values are in the
+	// AccessibleSort enumeration. Value type: AccessibleSort
 	AccessiblePropertySort
-	// ValueMax defines the maximum allowed value for a range widget. Value
-	// type: double
+	// AccessiblePropertyValueMax defines the maximum allowed value for a range
+	// widget. Value type: double
 	AccessiblePropertyValueMax
-	// ValueMin defines the minimum allowed value for a range widget. Value
-	// type: double
+	// AccessiblePropertyValueMin defines the minimum allowed value for a range
+	// widget. Value type: double
 	AccessiblePropertyValueMin
-	// ValueNow defines the current value for a range widget. Value type: double
+	// AccessiblePropertyValueNow defines the current value for a range widget.
+	// Value type: double
 	AccessiblePropertyValueNow
-	// ValueText defines the human readable text alternative of aria-valuenow
-	// for a range widget. Value type: string
+	// AccessiblePropertyValueText defines the human readable text alternative
+	// of aria-valuenow for a range widget. Value type: string
 	AccessiblePropertyValueText
 )
 
 func marshalAccessibleProperty(p uintptr) (interface{}, error) {
 	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AccessibleProperty.
+func (a AccessibleProperty) String() string {
+	switch a {
+	case AccessiblePropertyAutocomplete:
+		return "Autocomplete"
+	case AccessiblePropertyDescription:
+		return "Description"
+	case AccessiblePropertyHasPopup:
+		return "HasPopup"
+	case AccessiblePropertyKeyShortcuts:
+		return "KeyShortcuts"
+	case AccessiblePropertyLabel:
+		return "Label"
+	case AccessiblePropertyLevel:
+		return "Level"
+	case AccessiblePropertyModal:
+		return "Modal"
+	case AccessiblePropertyMultiLine:
+		return "MultiLine"
+	case AccessiblePropertyMultiSelectable:
+		return "MultiSelectable"
+	case AccessiblePropertyOrientation:
+		return "Orientation"
+	case AccessiblePropertyPlaceholder:
+		return "Placeholder"
+	case AccessiblePropertyReadOnly:
+		return "ReadOnly"
+	case AccessiblePropertyRequired:
+		return "Required"
+	case AccessiblePropertyRoleDescription:
+		return "RoleDescription"
+	case AccessiblePropertySort:
+		return "Sort"
+	case AccessiblePropertyValueMax:
+		return "ValueMax"
+	case AccessiblePropertyValueMin:
+		return "ValueMin"
+	case AccessiblePropertyValueNow:
+		return "ValueNow"
+	case AccessiblePropertyValueText:
+		return "ValueText"
+	default:
+		return fmt.Sprintf("AccessibleProperty(%d)", a)
+	}
 }
 
 // AccessibleRelation: possible accessible relations of a GtkAccessible.
@@ -199,71 +286,117 @@ func marshalAccessibleProperty(p uintptr) (interface{}, error) {
 type AccessibleRelation int
 
 const (
-	// ActiveDescendant identifies the currently active element when focus is on
-	// a composite widget, combobox, textbox, group, or application. Value type:
-	// reference
+	// AccessibleRelationActiveDescendant identifies the currently active
+	// element when focus is on a composite widget, combobox, textbox, group, or
+	// application. Value type: reference
 	AccessibleRelationActiveDescendant AccessibleRelation = iota
-	// ColCount defines the total number of columns in a table, grid, or
-	// treegrid. Value type: integer
-	AccessibleRelationColCount
-	// ColIndex defines an element's column index or position with respect to
-	// the total number of columns within a table, grid, or treegrid. Value
-	// type: integer
-	AccessibleRelationColIndex
-	// ColIndexText defines a human readable text alternative of
-	// GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string
-	AccessibleRelationColIndexText
-	// ColSpan defines the number of columns spanned by a cell or gridcell
-	// within a table, grid, or treegrid. Value type: integer
-	AccessibleRelationColSpan
-	// Controls identifies the element (or elements) whose contents or presence
-	// are controlled by the current element. Value type: reference
-	AccessibleRelationControls
-	// DescribedBy identifies the element (or elements) that describes the
-	// object. Value type: reference
-	AccessibleRelationDescribedBy
-	// Details identifies the element (or elements) that provide additional
-	// information related to the object. Value type: reference
-	AccessibleRelationDetails
-	// ErrorMessage identifies the element that provides an error message for an
-	// object. Value type: reference
-	AccessibleRelationErrorMessage
-	// FlowTo identifies the next element (or elements) in an alternate reading
-	// order of content which, at the user's discretion, allows assistive
-	// technology to override the general default of reading in document source
-	// order. Value type: reference
-	AccessibleRelationFlowTo
-	// LabelledBy identifies the element (or elements) that labels the current
-	// element. Value type: reference
-	AccessibleRelationLabelledBy
-	// Owns identifies an element (or elements) in order to define a visual,
-	// functional, or contextual parent/child relationship between elements
-	// where the widget hierarchy cannot be used to represent the relationship.
-	// Value type: reference
-	AccessibleRelationOwns
-	// PosInSet defines an element's number or position in the current set of
-	// listitems or treeitems. Value type: integer
-	AccessibleRelationPosInSet
-	// RowCount defines the total number of rows in a table, grid, or treegrid.
-	// Value type: integer
-	AccessibleRelationRowCount
-	// RowIndex defines an element's row index or position with respect to the
-	// total number of rows within a table, grid, or treegrid. Value type:
-	// integer
-	AccessibleRelationRowIndex
-	// RowIndexText defines a human readable text alternative of aria-rowindex.
-	// Value type: string
-	AccessibleRelationRowIndexText
-	// RowSpan defines the number of rows spanned by a cell or gridcell within a
+	// AccessibleRelationColCount defines the total number of columns in a
 	// table, grid, or treegrid. Value type: integer
+	AccessibleRelationColCount
+	// AccessibleRelationColIndex defines an element's column index or position
+	// with respect to the total number of columns within a table, grid, or
+	// treegrid. Value type: integer
+	AccessibleRelationColIndex
+	// AccessibleRelationColIndexText defines a human readable text alternative
+	// of GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string
+	AccessibleRelationColIndexText
+	// AccessibleRelationColSpan defines the number of columns spanned by a cell
+	// or gridcell within a table, grid, or treegrid. Value type: integer
+	AccessibleRelationColSpan
+	// AccessibleRelationControls identifies the element (or elements) whose
+	// contents or presence are controlled by the current element. Value type:
+	// reference
+	AccessibleRelationControls
+	// AccessibleRelationDescribedBy identifies the element (or elements) that
+	// describes the object. Value type: reference
+	AccessibleRelationDescribedBy
+	// AccessibleRelationDetails identifies the element (or elements) that
+	// provide additional information related to the object. Value type:
+	// reference
+	AccessibleRelationDetails
+	// AccessibleRelationErrorMessage identifies the element that provides an
+	// error message for an object. Value type: reference
+	AccessibleRelationErrorMessage
+	// AccessibleRelationFlowTo identifies the next element (or elements) in an
+	// alternate reading order of content which, at the user's discretion,
+	// allows assistive technology to override the general default of reading in
+	// document source order. Value type: reference
+	AccessibleRelationFlowTo
+	// AccessibleRelationLabelledBy identifies the element (or elements) that
+	// labels the current element. Value type: reference
+	AccessibleRelationLabelledBy
+	// AccessibleRelationOwns identifies an element (or elements) in order to
+	// define a visual, functional, or contextual parent/child relationship
+	// between elements where the widget hierarchy cannot be used to represent
+	// the relationship. Value type: reference
+	AccessibleRelationOwns
+	// AccessibleRelationPosInSet defines an element's number or position in the
+	// current set of listitems or treeitems. Value type: integer
+	AccessibleRelationPosInSet
+	// AccessibleRelationRowCount defines the total number of rows in a table,
+	// grid, or treegrid. Value type: integer
+	AccessibleRelationRowCount
+	// AccessibleRelationRowIndex defines an element's row index or position
+	// with respect to the total number of rows within a table, grid, or
+	// treegrid. Value type: integer
+	AccessibleRelationRowIndex
+	// AccessibleRelationRowIndexText defines a human readable text alternative
+	// of aria-rowindex. Value type: string
+	AccessibleRelationRowIndexText
+	// AccessibleRelationRowSpan defines the number of rows spanned by a cell or
+	// gridcell within a table, grid, or treegrid. Value type: integer
 	AccessibleRelationRowSpan
-	// SetSize defines the number of items in the current set of listitems or
-	// treeitems. Value type: integer
+	// AccessibleRelationSetSize defines the number of items in the current set
+	// of listitems or treeitems. Value type: integer
 	AccessibleRelationSetSize
 )
 
 func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AccessibleRelation.
+func (a AccessibleRelation) String() string {
+	switch a {
+	case AccessibleRelationActiveDescendant:
+		return "ActiveDescendant"
+	case AccessibleRelationColCount:
+		return "ColCount"
+	case AccessibleRelationColIndex:
+		return "ColIndex"
+	case AccessibleRelationColIndexText:
+		return "ColIndexText"
+	case AccessibleRelationColSpan:
+		return "ColSpan"
+	case AccessibleRelationControls:
+		return "Controls"
+	case AccessibleRelationDescribedBy:
+		return "DescribedBy"
+	case AccessibleRelationDetails:
+		return "Details"
+	case AccessibleRelationErrorMessage:
+		return "ErrorMessage"
+	case AccessibleRelationFlowTo:
+		return "FlowTo"
+	case AccessibleRelationLabelledBy:
+		return "LabelledBy"
+	case AccessibleRelationOwns:
+		return "Owns"
+	case AccessibleRelationPosInSet:
+		return "PosInSet"
+	case AccessibleRelationRowCount:
+		return "RowCount"
+	case AccessibleRelationRowIndex:
+		return "RowIndex"
+	case AccessibleRelationRowIndexText:
+		return "RowIndexText"
+	case AccessibleRelationRowSpan:
+		return "RowSpan"
+	case AccessibleRelationSetSize:
+		return "SetSize"
+	default:
+		return fmt.Sprintf("AccessibleRelation(%d)", a)
+	}
 }
 
 // AccessibleRole: accessible role for a GtkAccessible implementation.
@@ -273,177 +406,184 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 type AccessibleRole int
 
 const (
-	// Alert: element with important, and usually time-sensitive, information
+	// AccessibleRoleAlert: element with important, and usually time-sensitive,
+	// information
 	AccessibleRoleAlert AccessibleRole = iota
-	// AlertDialog: type of dialog that contains an alert message
+	// AccessibleRoleAlertDialog: type of dialog that contains an alert message
 	AccessibleRoleAlertDialog
-	// Banner: unused
+	// AccessibleRoleBanner: unused
 	AccessibleRoleBanner
-	// Button: input element that allows for user-triggered actions when clicked
-	// or pressed
+	// AccessibleRoleButton: input element that allows for user-triggered
+	// actions when clicked or pressed
 	AccessibleRoleButton
-	// Caption: unused
+	// AccessibleRoleCaption: unused
 	AccessibleRoleCaption
-	// Cell: unused
+	// AccessibleRoleCell: unused
 	AccessibleRoleCell
-	// Checkbox: checkable input element that has three possible values: true,
-	// false, or mixed
+	// AccessibleRoleCheckbox: checkable input element that has three possible
+	// values: true, false, or mixed
 	AccessibleRoleCheckbox
-	// ColumnHeader: header in a columned list.
+	// AccessibleRoleColumnHeader: header in a columned list.
 	AccessibleRoleColumnHeader
-	// ComboBox: input that controls another element, such as a list or a grid,
-	// that can dynamically pop up to help the user set the value of the input
+	// AccessibleRoleComboBox: input that controls another element, such as a
+	// list or a grid, that can dynamically pop up to help the user set the
+	// value of the input
 	AccessibleRoleComboBox
-	// Command: abstract role.
+	// AccessibleRoleCommand: abstract role.
 	AccessibleRoleCommand
-	// Composite: abstract role.
+	// AccessibleRoleComposite: abstract role.
 	AccessibleRoleComposite
-	// Dialog is a window that is designed to interrupt the current processing
-	// of an application in order to prompt the user to enter information or
-	// require a response.
+	// AccessibleRoleDialog is a window that is designed to interrupt the
+	// current processing of an application in order to prompt the user to enter
+	// information or require a response.
 	AccessibleRoleDialog
-	// Document: unused
+	// AccessibleRoleDocument: unused
 	AccessibleRoleDocument
-	// Feed: unused
+	// AccessibleRoleFeed: unused
 	AccessibleRoleFeed
-	// Form: unused
+	// AccessibleRoleForm: unused
 	AccessibleRoleForm
-	// Generic: unused
+	// AccessibleRoleGeneric: unused
 	AccessibleRoleGeneric
-	// Grid of items.
+	// AccessibleRoleGrid of items.
 	AccessibleRoleGrid
-	// GridCell: item in a grid or tree grid.
+	// AccessibleRoleGridCell: item in a grid or tree grid.
 	AccessibleRoleGridCell
-	// Group: element that groups multiple widgets. GTK uses this role for
-	// various containers, like Box, Viewport, and HeaderBar.
+	// AccessibleRoleGroup: element that groups multiple widgets. GTK uses this
+	// role for various containers, like Box, Viewport, and HeaderBar.
 	AccessibleRoleGroup
-	// Heading: unused
+	// AccessibleRoleHeading: unused
 	AccessibleRoleHeading
-	// Img: image.
+	// AccessibleRoleImg: image.
 	AccessibleRoleImg
-	// Input: abstract role.
+	// AccessibleRoleInput: abstract role.
 	AccessibleRoleInput
-	// Label: visible name or caption for a user interface component.
+	// AccessibleRoleLabel: visible name or caption for a user interface
+	// component.
 	AccessibleRoleLabel
-	// Landmark: abstract role.
+	// AccessibleRoleLandmark: abstract role.
 	AccessibleRoleLandmark
-	// Legend: unused
+	// AccessibleRoleLegend: unused
 	AccessibleRoleLegend
-	// Link: clickable link.
+	// AccessibleRoleLink: clickable link.
 	AccessibleRoleLink
-	// List of items.
+	// AccessibleRoleList of items.
 	AccessibleRoleList
-	// ListBox: unused.
+	// AccessibleRoleListBox: unused.
 	AccessibleRoleListBox
-	// ListItem: item in a list.
+	// AccessibleRoleListItem: item in a list.
 	AccessibleRoleListItem
-	// Log: unused
+	// AccessibleRoleLog: unused
 	AccessibleRoleLog
-	// Main: unused
+	// AccessibleRoleMain: unused
 	AccessibleRoleMain
-	// Marquee: unused
+	// AccessibleRoleMarquee: unused
 	AccessibleRoleMarquee
-	// Math: unused
+	// AccessibleRoleMath: unused
 	AccessibleRoleMath
-	// Meter: element that represents a value within a known range.
-	AccessibleRoleMeter
-	// Menu: menu.
-	AccessibleRoleMenu
-	// MenuBar: menubar.
-	AccessibleRoleMenuBar
-	// MenuItem: item in a menu.
-	AccessibleRoleMenuItem
-	// MenuItemCheckbox: check item in a menu.
-	AccessibleRoleMenuItemCheckbox
-	// MenuItemRadio: radio item in a menu.
-	AccessibleRoleMenuItemRadio
-	// Navigation: unused
-	AccessibleRoleNavigation
-	// None: element that is not represented to accessibility technologies.
-	AccessibleRoleNone
-	// Note: unused
-	AccessibleRoleNote
-	// Option: unused
-	AccessibleRoleOption
-	// Presentation: element that is not represented to accessibility
-	// technologies.
-	AccessibleRolePresentation
-	// ProgressBar: element that displays the progress status for tasks that
-	// take a long time.
-	AccessibleRoleProgressBar
-	// Radio: checkable input in a group of radio roles, only one of which can
-	// be checked at a time.
-	AccessibleRoleRadio
-	// RadioGroup: unused
-	AccessibleRoleRadioGroup
-	// Range: abstract role.
-	AccessibleRoleRange
-	// Region: unused
-	AccessibleRoleRegion
-	// Row in a columned list.
-	AccessibleRoleRow
-	// RowGroup: unused
-	AccessibleRoleRowGroup
-	// RowHeader: unused
-	AccessibleRoleRowHeader
-	// Scrollbar: graphical object that controls the scrolling of content within
-	// a viewing area, regardless of whether the content is fully displayed
-	// within the viewing area.
-	AccessibleRoleScrollbar
-	// Search: unused
-	AccessibleRoleSearch
-	// SearchBox: type of textbox intended for specifying search criteria.
-	AccessibleRoleSearchBox
-	// Section: abstract role.
-	AccessibleRoleSection
-	// SectionHead: abstract role.
-	AccessibleRoleSectionHead
-	// Select: abstract role.
-	AccessibleRoleSelect
-	// Separator: divider that separates and distinguishes sections of content
-	// or groups of menuitems.
-	AccessibleRoleSeparator
-	// Slider: user input where the user selects a value from within a given
+	// AccessibleRoleMeter: element that represents a value within a known
 	// range.
+	AccessibleRoleMeter
+	// AccessibleRoleMenu: menu.
+	AccessibleRoleMenu
+	// AccessibleRoleMenuBar: menubar.
+	AccessibleRoleMenuBar
+	// AccessibleRoleMenuItem: item in a menu.
+	AccessibleRoleMenuItem
+	// AccessibleRoleMenuItemCheckbox: check item in a menu.
+	AccessibleRoleMenuItemCheckbox
+	// AccessibleRoleMenuItemRadio: radio item in a menu.
+	AccessibleRoleMenuItemRadio
+	// AccessibleRoleNavigation: unused
+	AccessibleRoleNavigation
+	// AccessibleRoleNone: element that is not represented to accessibility
+	// technologies.
+	AccessibleRoleNone
+	// AccessibleRoleNote: unused
+	AccessibleRoleNote
+	// AccessibleRoleOption: unused
+	AccessibleRoleOption
+	// AccessibleRolePresentation: element that is not represented to
+	// accessibility technologies.
+	AccessibleRolePresentation
+	// AccessibleRoleProgressBar: element that displays the progress status for
+	// tasks that take a long time.
+	AccessibleRoleProgressBar
+	// AccessibleRoleRadio: checkable input in a group of radio roles, only one
+	// of which can be checked at a time.
+	AccessibleRoleRadio
+	// AccessibleRoleRadioGroup: unused
+	AccessibleRoleRadioGroup
+	// AccessibleRoleRange: abstract role.
+	AccessibleRoleRange
+	// AccessibleRoleRegion: unused
+	AccessibleRoleRegion
+	// AccessibleRoleRow in a columned list.
+	AccessibleRoleRow
+	// AccessibleRoleRowGroup: unused
+	AccessibleRoleRowGroup
+	// AccessibleRoleRowHeader: unused
+	AccessibleRoleRowHeader
+	// AccessibleRoleScrollbar: graphical object that controls the scrolling of
+	// content within a viewing area, regardless of whether the content is fully
+	// displayed within the viewing area.
+	AccessibleRoleScrollbar
+	// AccessibleRoleSearch: unused
+	AccessibleRoleSearch
+	// AccessibleRoleSearchBox: type of textbox intended for specifying search
+	// criteria.
+	AccessibleRoleSearchBox
+	// AccessibleRoleSection: abstract role.
+	AccessibleRoleSection
+	// AccessibleRoleSectionHead: abstract role.
+	AccessibleRoleSectionHead
+	// AccessibleRoleSelect: abstract role.
+	AccessibleRoleSelect
+	// AccessibleRoleSeparator: divider that separates and distinguishes
+	// sections of content or groups of menuitems.
+	AccessibleRoleSeparator
+	// AccessibleRoleSlider: user input where the user selects a value from
+	// within a given range.
 	AccessibleRoleSlider
-	// SpinButton: form of range that expects the user to select from among
-	// discrete choices.
+	// AccessibleRoleSpinButton: form of range that expects the user to select
+	// from among discrete choices.
 	AccessibleRoleSpinButton
-	// Status: unused
+	// AccessibleRoleStatus: unused
 	AccessibleRoleStatus
-	// Structure: abstract role.
+	// AccessibleRoleStructure: abstract role.
 	AccessibleRoleStructure
-	// Switch: type of checkbox that represents on/off values, as opposed to
-	// checked/unchecked values.
+	// AccessibleRoleSwitch: type of checkbox that represents on/off values, as
+	// opposed to checked/unchecked values.
 	AccessibleRoleSwitch
-	// Tab: item in a list of tab used for switching pages.
+	// AccessibleRoleTab: item in a list of tab used for switching pages.
 	AccessibleRoleTab
-	// Table: unused
+	// AccessibleRoleTable: unused
 	AccessibleRoleTable
-	// TabList: list of tabs for switching pages.
+	// AccessibleRoleTabList: list of tabs for switching pages.
 	AccessibleRoleTabList
-	// TabPanel: page in a notebook or stack.
+	// AccessibleRoleTabPanel: page in a notebook or stack.
 	AccessibleRoleTabPanel
-	// TextBox: type of input that allows free-form text as its value.
+	// AccessibleRoleTextBox: type of input that allows free-form text as its
+	// value.
 	AccessibleRoleTextBox
-	// Time: unused
+	// AccessibleRoleTime: unused
 	AccessibleRoleTime
-	// Timer: unused
+	// AccessibleRoleTimer: unused
 	AccessibleRoleTimer
-	// Toolbar: unused
+	// AccessibleRoleToolbar: unused
 	AccessibleRoleToolbar
-	// Tooltip: unused
+	// AccessibleRoleTooltip: unused
 	AccessibleRoleTooltip
-	// Tree: unused
+	// AccessibleRoleTree: unused
 	AccessibleRoleTree
-	// TreeGrid: treeview-like, columned list.
+	// AccessibleRoleTreeGrid: treeview-like, columned list.
 	AccessibleRoleTreeGrid
-	// TreeItem: unused
+	// AccessibleRoleTreeItem: unused
 	AccessibleRoleTreeItem
-	// Widget: interactive component of a graphical user interface. This is the
-	// role that GTK uses by default for widgets.
+	// AccessibleRoleWidget: interactive component of a graphical user
+	// interface. This is the role that GTK uses by default for widgets.
 	AccessibleRoleWidget
-	// Window: application window.
+	// AccessibleRoleWindow: application window.
 	AccessibleRoleWindow
 )
 
@@ -451,19 +591,185 @@ func marshalAccessibleRole(p uintptr) (interface{}, error) {
 	return AccessibleRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for AccessibleRole.
+func (a AccessibleRole) String() string {
+	switch a {
+	case AccessibleRoleAlert:
+		return "Alert"
+	case AccessibleRoleAlertDialog:
+		return "AlertDialog"
+	case AccessibleRoleBanner:
+		return "Banner"
+	case AccessibleRoleButton:
+		return "Button"
+	case AccessibleRoleCaption:
+		return "Caption"
+	case AccessibleRoleCell:
+		return "Cell"
+	case AccessibleRoleCheckbox:
+		return "Checkbox"
+	case AccessibleRoleColumnHeader:
+		return "ColumnHeader"
+	case AccessibleRoleComboBox:
+		return "ComboBox"
+	case AccessibleRoleCommand:
+		return "Command"
+	case AccessibleRoleComposite:
+		return "Composite"
+	case AccessibleRoleDialog:
+		return "Dialog"
+	case AccessibleRoleDocument:
+		return "Document"
+	case AccessibleRoleFeed:
+		return "Feed"
+	case AccessibleRoleForm:
+		return "Form"
+	case AccessibleRoleGeneric:
+		return "Generic"
+	case AccessibleRoleGrid:
+		return "Grid"
+	case AccessibleRoleGridCell:
+		return "GridCell"
+	case AccessibleRoleGroup:
+		return "Group"
+	case AccessibleRoleHeading:
+		return "Heading"
+	case AccessibleRoleImg:
+		return "Img"
+	case AccessibleRoleInput:
+		return "Input"
+	case AccessibleRoleLabel:
+		return "Label"
+	case AccessibleRoleLandmark:
+		return "Landmark"
+	case AccessibleRoleLegend:
+		return "Legend"
+	case AccessibleRoleLink:
+		return "Link"
+	case AccessibleRoleList:
+		return "List"
+	case AccessibleRoleListBox:
+		return "ListBox"
+	case AccessibleRoleListItem:
+		return "ListItem"
+	case AccessibleRoleLog:
+		return "Log"
+	case AccessibleRoleMain:
+		return "Main"
+	case AccessibleRoleMarquee:
+		return "Marquee"
+	case AccessibleRoleMath:
+		return "Math"
+	case AccessibleRoleMeter:
+		return "Meter"
+	case AccessibleRoleMenu:
+		return "Menu"
+	case AccessibleRoleMenuBar:
+		return "MenuBar"
+	case AccessibleRoleMenuItem:
+		return "MenuItem"
+	case AccessibleRoleMenuItemCheckbox:
+		return "MenuItemCheckbox"
+	case AccessibleRoleMenuItemRadio:
+		return "MenuItemRadio"
+	case AccessibleRoleNavigation:
+		return "Navigation"
+	case AccessibleRoleNone:
+		return "None"
+	case AccessibleRoleNote:
+		return "Note"
+	case AccessibleRoleOption:
+		return "Option"
+	case AccessibleRolePresentation:
+		return "Presentation"
+	case AccessibleRoleProgressBar:
+		return "ProgressBar"
+	case AccessibleRoleRadio:
+		return "Radio"
+	case AccessibleRoleRadioGroup:
+		return "RadioGroup"
+	case AccessibleRoleRange:
+		return "Range"
+	case AccessibleRoleRegion:
+		return "Region"
+	case AccessibleRoleRow:
+		return "Row"
+	case AccessibleRoleRowGroup:
+		return "RowGroup"
+	case AccessibleRoleRowHeader:
+		return "RowHeader"
+	case AccessibleRoleScrollbar:
+		return "Scrollbar"
+	case AccessibleRoleSearch:
+		return "Search"
+	case AccessibleRoleSearchBox:
+		return "SearchBox"
+	case AccessibleRoleSection:
+		return "Section"
+	case AccessibleRoleSectionHead:
+		return "SectionHead"
+	case AccessibleRoleSelect:
+		return "Select"
+	case AccessibleRoleSeparator:
+		return "Separator"
+	case AccessibleRoleSlider:
+		return "Slider"
+	case AccessibleRoleSpinButton:
+		return "SpinButton"
+	case AccessibleRoleStatus:
+		return "Status"
+	case AccessibleRoleStructure:
+		return "Structure"
+	case AccessibleRoleSwitch:
+		return "Switch"
+	case AccessibleRoleTab:
+		return "Tab"
+	case AccessibleRoleTable:
+		return "Table"
+	case AccessibleRoleTabList:
+		return "TabList"
+	case AccessibleRoleTabPanel:
+		return "TabPanel"
+	case AccessibleRoleTextBox:
+		return "TextBox"
+	case AccessibleRoleTime:
+		return "Time"
+	case AccessibleRoleTimer:
+		return "Timer"
+	case AccessibleRoleToolbar:
+		return "Toolbar"
+	case AccessibleRoleTooltip:
+		return "Tooltip"
+	case AccessibleRoleTree:
+		return "Tree"
+	case AccessibleRoleTreeGrid:
+		return "TreeGrid"
+	case AccessibleRoleTreeItem:
+		return "TreeItem"
+	case AccessibleRoleWidget:
+		return "Widget"
+	case AccessibleRoleWindow:
+		return "Window"
+	default:
+		return fmt.Sprintf("AccessibleRole(%d)", a)
+	}
+}
+
 // AccessibleSort: possible values for the GTK_ACCESSIBLE_PROPERTY_SORT
 // accessible property.
 type AccessibleSort int
 
 const (
-	// None: there is no defined sort applied to the column.
+	// AccessibleSortNone: there is no defined sort applied to the column.
 	AccessibleSortNone AccessibleSort = iota
-	// Ascending items are sorted in ascending order by this column.
+	// AccessibleSortAscending items are sorted in ascending order by this
+	// column.
 	AccessibleSortAscending
-	// Descending items are sorted in descending order by this column.
+	// AccessibleSortDescending items are sorted in descending order by this
+	// column.
 	AccessibleSortDescending
-	// Other: sort algorithm other than ascending or descending has been
-	// applied.
+	// AccessibleSortOther: sort algorithm other than ascending or descending
+	// has been applied.
 	AccessibleSortOther
 )
 
@@ -471,40 +777,80 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for AccessibleSort.
+func (a AccessibleSort) String() string {
+	switch a {
+	case AccessibleSortNone:
+		return "None"
+	case AccessibleSortAscending:
+		return "Ascending"
+	case AccessibleSortDescending:
+		return "Descending"
+	case AccessibleSortOther:
+		return "Other"
+	default:
+		return fmt.Sprintf("AccessibleSort(%d)", a)
+	}
+}
+
 // AccessibleState: possible accessible states of a GtkAccessible.
 type AccessibleState int
 
 const (
-	// Busy: “busy” state. This state has boolean values
+	// AccessibleStateBusy: “busy” state. This state has boolean values
 	AccessibleStateBusy AccessibleState = iota
-	// Checked: “checked” state; indicates the current state of a CheckButton.
-	// Value type: AccessibleTristate
+	// AccessibleStateChecked: “checked” state; indicates the current state of a
+	// CheckButton. Value type: AccessibleTristate
 	AccessibleStateChecked
-	// Disabled: “disabled” state; corresponds to the Widget:sensitive property
-	// on Widget. It indicates a UI element that is perceivable, but not
-	// editable or operable. Value type: boolean
+	// AccessibleStateDisabled: “disabled” state; corresponds to the
+	// Widget:sensitive property on Widget. It indicates a UI element that is
+	// perceivable, but not editable or operable. Value type: boolean
 	AccessibleStateDisabled
-	// Expanded: “expanded” state; corresponds to the Expander:expanded property
-	// on Expander. Value type: boolean or undefined
+	// AccessibleStateExpanded: “expanded” state; corresponds to the
+	// Expander:expanded property on Expander. Value type: boolean or undefined
 	AccessibleStateExpanded
-	// Hidden: “hidden” state; corresponds to the Widget:visible property on
-	// Widget. You can use this state explicitly on UI elements that should not
-	// be exposed to an assistive technology. Value type: boolean See also:
-	// GTK_ACCESSIBLE_STATE_DISABLED
+	// AccessibleStateHidden: “hidden” state; corresponds to the Widget:visible
+	// property on Widget. You can use this state explicitly on UI elements that
+	// should not be exposed to an assistive technology. Value type: boolean See
+	// also: GTK_ACCESSIBLE_STATE_DISABLED
 	AccessibleStateHidden
-	// Invalid: “invalid” state; set when a widget is showing an error. Value
-	// type: AccessibleInvalidState
+	// AccessibleStateInvalid: “invalid” state; set when a widget is showing an
+	// error. Value type: AccessibleInvalidState
 	AccessibleStateInvalid
-	// Pressed: “pressed” state; indicates the current state of a ToggleButton.
-	// Value type: AccessibleTristate enumeration
+	// AccessibleStatePressed: “pressed” state; indicates the current state of a
+	// ToggleButton. Value type: AccessibleTristate enumeration
 	AccessibleStatePressed
-	// Selected: “selected” state; set when a widget is selected. Value type:
-	// boolean or undefined
+	// AccessibleStateSelected: “selected” state; set when a widget is selected.
+	// Value type: boolean or undefined
 	AccessibleStateSelected
 )
 
 func marshalAccessibleState(p uintptr) (interface{}, error) {
 	return AccessibleState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AccessibleState.
+func (a AccessibleState) String() string {
+	switch a {
+	case AccessibleStateBusy:
+		return "Busy"
+	case AccessibleStateChecked:
+		return "Checked"
+	case AccessibleStateDisabled:
+		return "Disabled"
+	case AccessibleStateExpanded:
+		return "Expanded"
+	case AccessibleStateHidden:
+		return "Hidden"
+	case AccessibleStateInvalid:
+		return "Invalid"
+	case AccessibleStatePressed:
+		return "Pressed"
+	case AccessibleStateSelected:
+		return "Selected"
+	default:
+		return fmt.Sprintf("AccessibleState(%d)", a)
+	}
 }
 
 // AccessibleTristate: possible values for the GTK_ACCESSIBLE_STATE_PRESSED
@@ -515,16 +861,30 @@ func marshalAccessibleState(p uintptr) (interface{}, error) {
 type AccessibleTristate int
 
 const (
-	// False: state is false
+	// AccessibleTristateFalse: state is false
 	AccessibleTristateFalse AccessibleTristate = iota
-	// True: state is true
+	// AccessibleTristateTrue: state is true
 	AccessibleTristateTrue
-	// Mixed: state is mixed
+	// AccessibleTristateMixed: state is mixed
 	AccessibleTristateMixed
 )
 
 func marshalAccessibleTristate(p uintptr) (interface{}, error) {
 	return AccessibleTristate(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AccessibleTristate.
+func (a AccessibleTristate) String() string {
+	switch a {
+	case AccessibleTristateFalse:
+		return "False"
+	case AccessibleTristateTrue:
+		return "True"
+	case AccessibleTristateMixed:
+		return "Mixed"
+	default:
+		return fmt.Sprintf("AccessibleTristate(%d)", a)
+	}
 }
 
 // Align controls how a widget deals with extra space in a single dimension.
@@ -544,16 +904,16 @@ func marshalAccessibleTristate(p uintptr) (interface{}, error) {
 type Align int
 
 const (
-	// Fill: stretch to fill all space if possible, center if no meaningful way
-	// to stretch
+	// AlignFill: stretch to fill all space if possible, center if no meaningful
+	// way to stretch
 	AlignFill Align = iota
-	// Start: snap to left or top side, leaving space on right or bottom
+	// AlignStart: snap to left or top side, leaving space on right or bottom
 	AlignStart
-	// End: snap to right or bottom side, leaving space on left or top
+	// AlignEnd: snap to right or bottom side, leaving space on left or top
 	AlignEnd
-	// Center natural width of widget inside the allocation
+	// AlignCenter natural width of widget inside the allocation
 	AlignCenter
-	// Baseline: align the widget according to the baseline. See Widget
+	// AlignBaseline: align the widget according to the baseline. See Widget
 	AlignBaseline
 )
 
@@ -561,24 +921,60 @@ func marshalAlign(p uintptr) (interface{}, error) {
 	return Align(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Align.
+func (a Align) String() string {
+	switch a {
+	case AlignFill:
+		return "Fill"
+	case AlignStart:
+		return "Start"
+	case AlignEnd:
+		return "End"
+	case AlignCenter:
+		return "Center"
+	case AlignBaseline:
+		return "Baseline"
+	default:
+		return fmt.Sprintf("Align(%d)", a)
+	}
+}
+
 // ArrowType: used to indicate the direction in which an arrow should point.
 type ArrowType int
 
 const (
-	// Up represents an upward pointing arrow.
-	ArrowTypeUp ArrowType = iota
-	// Down represents a downward pointing arrow.
-	ArrowTypeDown
-	// Left represents a left pointing arrow.
-	ArrowTypeLeft
-	// Right represents a right pointing arrow.
-	ArrowTypeRight
-	// None: no arrow.
-	ArrowTypeNone
+	// ArrowUp represents an upward pointing arrow.
+	ArrowUp ArrowType = iota
+	// ArrowDown represents a downward pointing arrow.
+	ArrowDown
+	// ArrowLeft represents a left pointing arrow.
+	ArrowLeft
+	// ArrowRight represents a right pointing arrow.
+	ArrowRight
+	// ArrowNone: no arrow.
+	ArrowNone
 )
 
 func marshalArrowType(p uintptr) (interface{}, error) {
 	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ArrowType.
+func (a ArrowType) String() string {
+	switch a {
+	case ArrowUp:
+		return "Up"
+	case ArrowDown:
+		return "Down"
+	case ArrowLeft:
+		return "Left"
+	case ArrowRight:
+		return "Right"
+	case ArrowNone:
+		return "None"
+	default:
+		return fmt.Sprintf("ArrowType(%d)", a)
+	}
 }
 
 // BaselinePosition: baseline position in a row of widgets.
@@ -591,11 +987,11 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 type BaselinePosition int
 
 const (
-	// Top: align the baseline at the top
+	// BaselinePositionTop: align the baseline at the top
 	BaselinePositionTop BaselinePosition = iota
-	// Center: center the baseline
+	// BaselinePositionCenter: center the baseline
 	BaselinePositionCenter
-	// Bottom: align the baseline at the bottom
+	// BaselinePositionBottom: align the baseline at the bottom
 	BaselinePositionBottom
 )
 
@@ -603,29 +999,43 @@ func marshalBaselinePosition(p uintptr) (interface{}, error) {
 	return BaselinePosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BaselinePosition.
+func (b BaselinePosition) String() string {
+	switch b {
+	case BaselinePositionTop:
+		return "Top"
+	case BaselinePositionCenter:
+		return "Center"
+	case BaselinePositionBottom:
+		return "Bottom"
+	default:
+		return fmt.Sprintf("BaselinePosition(%d)", b)
+	}
+}
+
 // BorderStyle describes how the border of a UI element should be rendered.
 type BorderStyle int
 
 const (
-	// None: no visible border
+	// BorderStyleNone: no visible border
 	BorderStyleNone BorderStyle = iota
-	// Hidden: same as GTK_BORDER_STYLE_NONE
+	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE
 	BorderStyleHidden
-	// Solid: single line segment
+	// BorderStyleSolid: single line segment
 	BorderStyleSolid
-	// Inset looks as if the content is sunken into the canvas
+	// BorderStyleInset looks as if the content is sunken into the canvas
 	BorderStyleInset
-	// Outset looks as if the content is coming out of the canvas
+	// BorderStyleOutset looks as if the content is coming out of the canvas
 	BorderStyleOutset
-	// Dotted series of round dots
+	// BorderStyleDotted series of round dots
 	BorderStyleDotted
-	// Dashed series of square-ended dashes
+	// BorderStyleDashed series of square-ended dashes
 	BorderStyleDashed
-	// Double: two parallel lines with some space between them
+	// BorderStyleDouble: two parallel lines with some space between them
 	BorderStyleDouble
-	// Groove looks as if it were carved in the canvas
+	// BorderStyleGroove looks as if it were carved in the canvas
 	BorderStyleGroove
-	// Ridge looks as if it were coming out of the canvas
+	// BorderStyleRidge looks as if it were coming out of the canvas
 	BorderStyleRidge
 )
 
@@ -633,38 +1043,66 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BorderStyle.
+func (b BorderStyle) String() string {
+	switch b {
+	case BorderStyleNone:
+		return "None"
+	case BorderStyleHidden:
+		return "Hidden"
+	case BorderStyleSolid:
+		return "Solid"
+	case BorderStyleInset:
+		return "Inset"
+	case BorderStyleOutset:
+		return "Outset"
+	case BorderStyleDotted:
+		return "Dotted"
+	case BorderStyleDashed:
+		return "Dashed"
+	case BorderStyleDouble:
+		return "Double"
+	case BorderStyleGroove:
+		return "Groove"
+	case BorderStyleRidge:
+		return "Ridge"
+	default:
+		return fmt.Sprintf("BorderStyle(%d)", b)
+	}
+}
+
 // ConstraintAttribute: widget attributes that can be used when creating a
 // GtkConstraint.
 type ConstraintAttribute int
 
 const (
-	// None: no attribute, used for constant relations
+	// ConstraintAttributeNone: no attribute, used for constant relations
 	ConstraintAttributeNone ConstraintAttribute = iota
-	// Left edge of a widget, regardless of text direction
+	// ConstraintAttributeLeft edge of a widget, regardless of text direction
 	ConstraintAttributeLeft
-	// Right edge of a widget, regardless of text direction
+	// ConstraintAttributeRight edge of a widget, regardless of text direction
 	ConstraintAttributeRight
-	// Top edge of a widget
+	// ConstraintAttributeTop edge of a widget
 	ConstraintAttributeTop
-	// Bottom edge of a widget
+	// ConstraintAttributeBottom edge of a widget
 	ConstraintAttributeBottom
-	// Start: leading edge of a widget, depending on text direction; equivalent
-	// to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages, and
-	// GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
+	// ConstraintAttributeStart: leading edge of a widget, depending on text
+	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages,
+	// and GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
 	ConstraintAttributeStart
-	// End: trailing edge of a widget, depending on text direction; equivalent
-	// to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR languages, and
-	// GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
+	// ConstraintAttributeEnd: trailing edge of a widget, depending on text
+	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
+	// languages, and GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
 	ConstraintAttributeEnd
-	// Width of a widget
+	// ConstraintAttributeWidth of a widget
 	ConstraintAttributeWidth
-	// Height of a widget
+	// ConstraintAttributeHeight of a widget
 	ConstraintAttributeHeight
-	// CenterX: center of a widget, on the horizontal axis
+	// ConstraintAttributeCenterX: center of a widget, on the horizontal axis
 	ConstraintAttributeCenterX
-	// CenterY: center of a widget, on the vertical axis
+	// ConstraintAttributeCenterY: center of a widget, on the vertical axis
 	ConstraintAttributeCenterY
-	// Baseline of a widget
+	// ConstraintAttributeBaseline of a widget
 	ConstraintAttributeBaseline
 )
 
@@ -672,20 +1110,66 @@ func marshalConstraintAttribute(p uintptr) (interface{}, error) {
 	return ConstraintAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ConstraintAttribute.
+func (c ConstraintAttribute) String() string {
+	switch c {
+	case ConstraintAttributeNone:
+		return "None"
+	case ConstraintAttributeLeft:
+		return "Left"
+	case ConstraintAttributeRight:
+		return "Right"
+	case ConstraintAttributeTop:
+		return "Top"
+	case ConstraintAttributeBottom:
+		return "Bottom"
+	case ConstraintAttributeStart:
+		return "Start"
+	case ConstraintAttributeEnd:
+		return "End"
+	case ConstraintAttributeWidth:
+		return "Width"
+	case ConstraintAttributeHeight:
+		return "Height"
+	case ConstraintAttributeCenterX:
+		return "CenterX"
+	case ConstraintAttributeCenterY:
+		return "CenterY"
+	case ConstraintAttributeBaseline:
+		return "Baseline"
+	default:
+		return fmt.Sprintf("ConstraintAttribute(%d)", c)
+	}
+}
+
 // ConstraintRelation: relation between two terms of a constraint.
 type ConstraintRelation int
 
 const (
-	// Le less than, or equal
+	// ConstraintRelationLe less than, or equal
 	ConstraintRelationLe ConstraintRelation = -1
-	// Eq: equal
+	// ConstraintRelationEq: equal
 	ConstraintRelationEq ConstraintRelation = 0
-	// Ge: greater than, or equal
+	// ConstraintRelationGe: greater than, or equal
 	ConstraintRelationGe ConstraintRelation = 1
 )
 
 func marshalConstraintRelation(p uintptr) (interface{}, error) {
 	return ConstraintRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ConstraintRelation.
+func (c ConstraintRelation) String() string {
+	switch c {
+	case ConstraintRelationLe:
+		return "Le"
+	case ConstraintRelationEq:
+		return "Eq"
+	case ConstraintRelationGe:
+		return "Ge"
+	default:
+		return fmt.Sprintf("ConstraintRelation(%d)", c)
+	}
 }
 
 // ConstraintStrength: strength of a constraint, expressed as a symbolic
@@ -696,13 +1180,14 @@ func marshalConstraintRelation(p uintptr) (interface{}, error) {
 type ConstraintStrength int
 
 const (
-	// Required: constraint is required towards solving the layout
+	// ConstraintStrengthRequired: constraint is required towards solving the
+	// layout
 	ConstraintStrengthRequired ConstraintStrength = 1001001000
-	// Strong constraint
+	// ConstraintStrengthStrong constraint
 	ConstraintStrengthStrong ConstraintStrength = 1000000000
-	// Medium constraint
+	// ConstraintStrengthMedium constraint
 	ConstraintStrengthMedium ConstraintStrength = 1000
-	// Weak constraint
+	// ConstraintStrengthWeak constraint
 	ConstraintStrengthWeak ConstraintStrength = 1
 )
 
@@ -710,95 +1195,189 @@ func marshalConstraintStrength(p uintptr) (interface{}, error) {
 	return ConstraintStrength(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ConstraintStrength.
+func (c ConstraintStrength) String() string {
+	switch c {
+	case ConstraintStrengthRequired:
+		return "Required"
+	case ConstraintStrengthStrong:
+		return "Strong"
+	case ConstraintStrengthMedium:
+		return "Medium"
+	case ConstraintStrengthWeak:
+		return "Weak"
+	default:
+		return fmt.Sprintf("ConstraintStrength(%d)", c)
+	}
+}
+
 // ConstraintVflParserError: domain for VFL parsing errors.
 type ConstraintVflParserError int
 
 const (
-	// Symbol: invalid or unknown symbol
-	ConstraintVflParserErrorSymbol ConstraintVflParserError = iota
-	// Attribute: invalid or unknown attribute
-	ConstraintVflParserErrorAttribute
-	// View: invalid or unknown view
-	ConstraintVflParserErrorView
-	// Metric: invalid or unknown metric
-	ConstraintVflParserErrorMetric
-	// Priority: invalid or unknown priority
-	ConstraintVflParserErrorPriority
-	// Relation: invalid or unknown relation
-	ConstraintVflParserErrorRelation
+	// ConstraintVflParserErrorInvalidSymbol: invalid or unknown symbol
+	ConstraintVflParserErrorInvalidSymbol ConstraintVflParserError = iota
+	// ConstraintVflParserErrorInvalidAttribute: invalid or unknown attribute
+	ConstraintVflParserErrorInvalidAttribute
+	// ConstraintVflParserErrorInvalidView: invalid or unknown view
+	ConstraintVflParserErrorInvalidView
+	// ConstraintVflParserErrorInvalidMetric: invalid or unknown metric
+	ConstraintVflParserErrorInvalidMetric
+	// ConstraintVflParserErrorInvalidPriority: invalid or unknown priority
+	ConstraintVflParserErrorInvalidPriority
+	// ConstraintVflParserErrorInvalidRelation: invalid or unknown relation
+	ConstraintVflParserErrorInvalidRelation
 )
 
 func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
 	return ConstraintVflParserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ConstraintVflParserError.
+func (c ConstraintVflParserError) String() string {
+	switch c {
+	case ConstraintVflParserErrorInvalidSymbol:
+		return "Symbol"
+	case ConstraintVflParserErrorInvalidAttribute:
+		return "Attribute"
+	case ConstraintVflParserErrorInvalidView:
+		return "View"
+	case ConstraintVflParserErrorInvalidMetric:
+		return "Metric"
+	case ConstraintVflParserErrorInvalidPriority:
+		return "Priority"
+	case ConstraintVflParserErrorInvalidRelation:
+		return "Relation"
+	default:
+		return fmt.Sprintf("ConstraintVflParserError(%d)", c)
+	}
+}
+
 // DeleteType: passed to various keybinding signals for deleting text.
 type DeleteType int
 
 const (
-	// Chars: delete characters.
-	DeleteTypeChars DeleteType = iota
-	// WordEnds: delete only the portion of the word to the left/right of cursor
-	// if we’re in the middle of a word.
-	DeleteTypeWordEnds
-	// Words: delete words.
-	DeleteTypeWords
-	// DisplayLines: delete display-lines. Display-lines refers to the visible
-	// lines, with respect to the current line breaks. As opposed to paragraphs,
-	// which are defined by line breaks in the input.
-	DeleteTypeDisplayLines
-	// DisplayLineEnds: delete only the portion of the display-line to the
+	// DeleteChars: delete characters.
+	DeleteChars DeleteType = iota
+	// DeleteWordEnds: delete only the portion of the word to the left/right of
+	// cursor if we’re in the middle of a word.
+	DeleteWordEnds
+	// DeleteWords: delete words.
+	DeleteWords
+	// DeleteDisplayLines: delete display-lines. Display-lines refers to the
+	// visible lines, with respect to the current line breaks. As opposed to
+	// paragraphs, which are defined by line breaks in the input.
+	DeleteDisplayLines
+	// DeleteDisplayLineEnds: delete only the portion of the display-line to the
 	// left/right of cursor.
-	DeleteTypeDisplayLineEnds
-	// ParagraphEnds: delete to the end of the paragraph. Like C-k in Emacs (or
-	// its reverse).
-	DeleteTypeParagraphEnds
-	// Paragraphs: delete entire line. Like C-k in pico.
-	DeleteTypeParagraphs
-	// Whitespace: delete only whitespace. Like M-\ in Emacs.
-	DeleteTypeWhitespace
+	DeleteDisplayLineEnds
+	// DeleteParagraphEnds: delete to the end of the paragraph. Like C-k in
+	// Emacs (or its reverse).
+	DeleteParagraphEnds
+	// DeleteParagraphs: delete entire line. Like C-k in pico.
+	DeleteParagraphs
+	// DeleteWhitespace: delete only whitespace. Like M-\ in Emacs.
+	DeleteWhitespace
 )
 
 func marshalDeleteType(p uintptr) (interface{}, error) {
 	return DeleteType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DeleteType.
+func (d DeleteType) String() string {
+	switch d {
+	case DeleteChars:
+		return "Chars"
+	case DeleteWordEnds:
+		return "WordEnds"
+	case DeleteWords:
+		return "Words"
+	case DeleteDisplayLines:
+		return "DisplayLines"
+	case DeleteDisplayLineEnds:
+		return "DisplayLineEnds"
+	case DeleteParagraphEnds:
+		return "ParagraphEnds"
+	case DeleteParagraphs:
+		return "Paragraphs"
+	case DeleteWhitespace:
+		return "Whitespace"
+	default:
+		return fmt.Sprintf("DeleteType(%d)", d)
+	}
+}
+
 // DirectionType focus movement types.
 type DirectionType int
 
 const (
-	// TabForward: move forward.
-	DirectionTypeTabForward DirectionType = iota
-	// TabBackward: move backward.
-	DirectionTypeTabBackward
-	// Up: move up.
-	DirectionTypeUp
-	// Down: move down.
-	DirectionTypeDown
-	// Left: move left.
-	DirectionTypeLeft
-	// Right: move right.
-	DirectionTypeRight
+	// DirTabForward: move forward.
+	DirTabForward DirectionType = iota
+	// DirTabBackward: move backward.
+	DirTabBackward
+	// DirUp: move up.
+	DirUp
+	// DirDown: move down.
+	DirDown
+	// DirLeft: move left.
+	DirLeft
+	// DirRight: move right.
+	DirRight
 )
 
 func marshalDirectionType(p uintptr) (interface{}, error) {
 	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DirectionType.
+func (d DirectionType) String() string {
+	switch d {
+	case DirTabForward:
+		return "TabForward"
+	case DirTabBackward:
+		return "TabBackward"
+	case DirUp:
+		return "Up"
+	case DirDown:
+		return "Down"
+	case DirLeft:
+		return "Left"
+	case DirRight:
+		return "Right"
+	default:
+		return fmt.Sprintf("DirectionType(%d)", d)
+	}
+}
+
 // EventSequenceState describes the state of a GdkEventSequence in a GtkGesture.
 type EventSequenceState int
 
 const (
-	// None: sequence is handled, but not grabbed.
-	EventSequenceStateNone EventSequenceState = iota
-	// Claimed: sequence is handled and grabbed.
-	EventSequenceStateClaimed
-	// Denied: sequence is denied.
-	EventSequenceStateDenied
+	// EventSequenceNone: sequence is handled, but not grabbed.
+	EventSequenceNone EventSequenceState = iota
+	// EventSequenceClaimed: sequence is handled and grabbed.
+	EventSequenceClaimed
+	// EventSequenceDenied: sequence is denied.
+	EventSequenceDenied
 )
 
 func marshalEventSequenceState(p uintptr) (interface{}, error) {
 	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for EventSequenceState.
+func (e EventSequenceState) String() string {
+	switch e {
+	case EventSequenceNone:
+		return "None"
+	case EventSequenceClaimed:
+		return "Claimed"
+	case EventSequenceDenied:
+		return "Denied"
+	default:
+		return fmt.Sprintf("EventSequenceState(%d)", e)
+	}
 }
 
 // IconSize: built-in icon sizes.
@@ -812,16 +1391,30 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 type IconSize int
 
 const (
-	// Inherit: keep the size of the parent element
+	// IconSizeInherit: keep the size of the parent element
 	IconSizeInherit IconSize = iota
-	// Normal: size similar to text size
+	// IconSizeNormal: size similar to text size
 	IconSizeNormal
-	// Large: large size, for example in an icon view
+	// IconSizeLarge: large size, for example in an icon view
 	IconSizeLarge
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
 	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for IconSize.
+func (i IconSize) String() string {
+	switch i {
+	case IconSizeInherit:
+		return "Inherit"
+	case IconSizeNormal:
+		return "Normal"
+	case IconSizeLarge:
+		return "Large"
+	default:
+		return fmt.Sprintf("IconSize(%d)", i)
+	}
 }
 
 // InputPurpose describes primary purpose of the input widget.
@@ -844,27 +1437,28 @@ func marshalIconSize(p uintptr) (interface{}, error) {
 type InputPurpose int
 
 const (
-	// FreeForm: allow any character
+	// InputPurposeFreeForm: allow any character
 	InputPurposeFreeForm InputPurpose = iota
-	// Alpha: allow only alphabetic characters
+	// InputPurposeAlpha: allow only alphabetic characters
 	InputPurposeAlpha
-	// Digits: allow only digits
+	// InputPurposeDigits: allow only digits
 	InputPurposeDigits
-	// Number: edited field expects numbers
+	// InputPurposeNumber: edited field expects numbers
 	InputPurposeNumber
-	// Phone: edited field expects phone number
+	// InputPurposePhone: edited field expects phone number
 	InputPurposePhone
-	// URL: edited field expects URL
+	// InputPurposeURL: edited field expects URL
 	InputPurposeURL
-	// Email: edited field expects email address
+	// InputPurposeEmail: edited field expects email address
 	InputPurposeEmail
-	// Name: edited field expects the name of a person
+	// InputPurposeName: edited field expects the name of a person
 	InputPurposeName
-	// Password: like GTK_INPUT_PURPOSE_FREE_FORM, but characters are hidden
+	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
+	// are hidden
 	InputPurposePassword
-	// Pin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
 	InputPurposePin
-	// Terminal: allow any character, in addition to control codes
+	// InputPurposeTerminal: allow any character, in addition to control codes
 	InputPurposeTerminal
 )
 
@@ -872,22 +1466,68 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for InputPurpose.
+func (i InputPurpose) String() string {
+	switch i {
+	case InputPurposeFreeForm:
+		return "FreeForm"
+	case InputPurposeAlpha:
+		return "Alpha"
+	case InputPurposeDigits:
+		return "Digits"
+	case InputPurposeNumber:
+		return "Number"
+	case InputPurposePhone:
+		return "Phone"
+	case InputPurposeURL:
+		return "URL"
+	case InputPurposeEmail:
+		return "Email"
+	case InputPurposeName:
+		return "Name"
+	case InputPurposePassword:
+		return "Password"
+	case InputPurposePin:
+		return "Pin"
+	case InputPurposeTerminal:
+		return "Terminal"
+	default:
+		return fmt.Sprintf("InputPurpose(%d)", i)
+	}
+}
+
 // Justification: used for justifying the text inside a GtkLabel widget.
 type Justification int
 
 const (
-	// Left: text is placed at the left edge of the label.
-	JustificationLeft Justification = iota
-	// Right: text is placed at the right edge of the label.
-	JustificationRight
-	// Center: text is placed in the center of the label.
-	JustificationCenter
-	// Fill: text is placed is distributed across the label.
-	JustificationFill
+	// JustifyLeft: text is placed at the left edge of the label.
+	JustifyLeft Justification = iota
+	// JustifyRight: text is placed at the right edge of the label.
+	JustifyRight
+	// JustifyCenter: text is placed in the center of the label.
+	JustifyCenter
+	// JustifyFill: text is placed is distributed across the label.
+	JustifyFill
 )
 
 func marshalJustification(p uintptr) (interface{}, error) {
 	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Justification.
+func (j Justification) String() string {
+	switch j {
+	case JustifyLeft:
+		return "Left"
+	case JustifyRight:
+		return "Right"
+	case JustifyCenter:
+		return "Center"
+	case JustifyFill:
+		return "Fill"
+	default:
+		return fmt.Sprintf("Justification(%d)", j)
+	}
 }
 
 // LevelBarMode describes how GtkLevelBar contents should be rendered.
@@ -897,9 +1537,9 @@ func marshalJustification(p uintptr) (interface{}, error) {
 type LevelBarMode int
 
 const (
-	// Continuous: bar has a continuous mode
+	// LevelBarModeContinuous: bar has a continuous mode
 	LevelBarModeContinuous LevelBarMode = iota
-	// Discrete: bar has a discrete mode
+	// LevelBarModeDiscrete: bar has a discrete mode
 	LevelBarModeDiscrete
 )
 
@@ -907,24 +1547,54 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for LevelBarMode.
+func (l LevelBarMode) String() string {
+	switch l {
+	case LevelBarModeContinuous:
+		return "Continuous"
+	case LevelBarModeDiscrete:
+		return "Discrete"
+	default:
+		return fmt.Sprintf("LevelBarMode(%d)", l)
+	}
+}
+
 // MessageType: type of message being displayed in a GtkMessageDialog.
 type MessageType int
 
 const (
-	// Info: informational message
-	MessageTypeInfo MessageType = iota
-	// Warning: non-fatal warning message
-	MessageTypeWarning
-	// Question: question requiring a choice
-	MessageTypeQuestion
-	// Error: fatal error message
-	MessageTypeError
-	// Other: none of the above
-	MessageTypeOther
+	// MessageInfo: informational message
+	MessageInfo MessageType = iota
+	// MessageWarning: non-fatal warning message
+	MessageWarning
+	// MessageQuestion: question requiring a choice
+	MessageQuestion
+	// MessageError: fatal error message
+	MessageError
+	// MessageOther: none of the above
+	MessageOther
 )
 
 func marshalMessageType(p uintptr) (interface{}, error) {
 	return MessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MessageType.
+func (m MessageType) String() string {
+	switch m {
+	case MessageInfo:
+		return "Info"
+	case MessageWarning:
+		return "Warning"
+	case MessageQuestion:
+		return "Question"
+	case MessageError:
+		return "Error"
+	case MessageOther:
+		return "Other"
+	default:
+		return fmt.Sprintf("MessageType(%d)", m)
+	}
 }
 
 // MovementStep: passed as argument to various keybinding signals for moving the
@@ -932,30 +1602,58 @@ func marshalMessageType(p uintptr) (interface{}, error) {
 type MovementStep int
 
 const (
-	// LogicalPositions: move forward or back by graphemes
-	MovementStepLogicalPositions MovementStep = iota
-	// VisualPositions: move left or right by graphemes
-	MovementStepVisualPositions
-	// Words: move forward or back by words
-	MovementStepWords
-	// DisplayLines: move up or down lines (wrapped lines)
-	MovementStepDisplayLines
-	// DisplayLineEnds: move to either end of a line
-	MovementStepDisplayLineEnds
-	// Paragraphs: move up or down paragraphs (newline-ended lines)
-	MovementStepParagraphs
-	// ParagraphEnds: move to either end of a paragraph
-	MovementStepParagraphEnds
-	// Pages: move by pages
-	MovementStepPages
-	// BufferEnds: move to ends of the buffer
-	MovementStepBufferEnds
-	// HorizontalPages: move horizontally by pages
-	MovementStepHorizontalPages
+	// MovementLogicalPositions: move forward or back by graphemes
+	MovementLogicalPositions MovementStep = iota
+	// MovementVisualPositions: move left or right by graphemes
+	MovementVisualPositions
+	// MovementWords: move forward or back by words
+	MovementWords
+	// MovementDisplayLines: move up or down lines (wrapped lines)
+	MovementDisplayLines
+	// MovementDisplayLineEnds: move to either end of a line
+	MovementDisplayLineEnds
+	// MovementParagraphs: move up or down paragraphs (newline-ended lines)
+	MovementParagraphs
+	// MovementParagraphEnds: move to either end of a paragraph
+	MovementParagraphEnds
+	// MovementPages: move by pages
+	MovementPages
+	// MovementBufferEnds: move to ends of the buffer
+	MovementBufferEnds
+	// MovementHorizontalPages: move horizontally by pages
+	MovementHorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
 	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MovementStep.
+func (m MovementStep) String() string {
+	switch m {
+	case MovementLogicalPositions:
+		return "LogicalPositions"
+	case MovementVisualPositions:
+		return "VisualPositions"
+	case MovementWords:
+		return "Words"
+	case MovementDisplayLines:
+		return "DisplayLines"
+	case MovementDisplayLineEnds:
+		return "DisplayLineEnds"
+	case MovementParagraphs:
+		return "Paragraphs"
+	case MovementParagraphEnds:
+		return "ParagraphEnds"
+	case MovementPages:
+		return "Pages"
+	case MovementBufferEnds:
+		return "BufferEnds"
+	case MovementHorizontalPages:
+		return "HorizontalPages"
+	default:
+		return fmt.Sprintf("MovementStep(%d)", m)
+	}
 }
 
 // NumberUpLayout: used to determine the layout of pages on a sheet when
@@ -963,26 +1661,50 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 type NumberUpLayout int
 
 const (
-	// Lrtb: ! (layout-lrtb.png)
-	NumberUpLayoutLrtb NumberUpLayout = iota
-	// Lrbt: ! (layout-lrbt.png)
-	NumberUpLayoutLrbt
-	// Rltb: ! (layout-rltb.png)
-	NumberUpLayoutRltb
-	// Rlbt: ! (layout-rlbt.png)
-	NumberUpLayoutRlbt
-	// Tblr: ! (layout-tblr.png)
-	NumberUpLayoutTblr
-	// Tbrl: ! (layout-tbrl.png)
-	NumberUpLayoutTbrl
-	// Btlr: ! (layout-btlr.png)
-	NumberUpLayoutBtlr
-	// Btrl: ! (layout-btrl.png)
-	NumberUpLayoutBtrl
+	// NumberUpLayoutLeftToRightTopToBottom: ! (layout-lrtb.png)
+	NumberUpLayoutLeftToRightTopToBottom NumberUpLayout = iota
+	// NumberUpLayoutLeftToRightBottomToTop: ! (layout-lrbt.png)
+	NumberUpLayoutLeftToRightBottomToTop
+	// NumberUpLayoutRightToLeftTopToBottom: ! (layout-rltb.png)
+	NumberUpLayoutRightToLeftTopToBottom
+	// NumberUpLayoutRightToLeftBottomToTop: ! (layout-rlbt.png)
+	NumberUpLayoutRightToLeftBottomToTop
+	// NumberUpLayoutTopToBottomLeftToRight: ! (layout-tblr.png)
+	NumberUpLayoutTopToBottomLeftToRight
+	// NumberUpLayoutTopToBottomRightToLeft: ! (layout-tbrl.png)
+	NumberUpLayoutTopToBottomRightToLeft
+	// NumberUpLayoutBottomToTopLeftToRight: ! (layout-btlr.png)
+	NumberUpLayoutBottomToTopLeftToRight
+	// NumberUpLayoutBottomToTopRightToLeft: ! (layout-btrl.png)
+	NumberUpLayoutBottomToTopRightToLeft
 )
 
 func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 	return NumberUpLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for NumberUpLayout.
+func (n NumberUpLayout) String() string {
+	switch n {
+	case NumberUpLayoutLeftToRightTopToBottom:
+		return "Lrtb"
+	case NumberUpLayoutLeftToRightBottomToTop:
+		return "Lrbt"
+	case NumberUpLayoutRightToLeftTopToBottom:
+		return "Rltb"
+	case NumberUpLayoutRightToLeftBottomToTop:
+		return "Rlbt"
+	case NumberUpLayoutTopToBottomLeftToRight:
+		return "Tblr"
+	case NumberUpLayoutTopToBottomRightToLeft:
+		return "Tbrl"
+	case NumberUpLayoutBottomToTopLeftToRight:
+		return "Btlr"
+	case NumberUpLayoutBottomToTopRightToLeft:
+		return "Btrl"
+	default:
+		return fmt.Sprintf("NumberUpLayout(%d)", n)
+	}
 }
 
 // Ordering describes the way two values can be compared.
@@ -993,16 +1715,30 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 type Ordering int
 
 const (
-	// Smaller: first value is smaller than the second
+	// OrderingSmaller: first value is smaller than the second
 	OrderingSmaller Ordering = -1
-	// Equal: two values are equal
+	// OrderingEqual: two values are equal
 	OrderingEqual Ordering = 0
-	// Larger: first value is larger than the second
+	// OrderingLarger: first value is larger than the second
 	OrderingLarger Ordering = 1
 )
 
 func marshalOrdering(p uintptr) (interface{}, error) {
 	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Ordering.
+func (o Ordering) String() string {
+	switch o {
+	case OrderingSmaller:
+		return "Smaller"
+	case OrderingEqual:
+		return "Equal"
+	case OrderingLarger:
+		return "Larger"
+	default:
+		return fmt.Sprintf("Ordering(%d)", o)
+	}
 }
 
 // OrderingFromCmpfunc converts the result of a GCompareFunc like strcmp() to a
@@ -1028,14 +1764,26 @@ func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 type Orientation int
 
 const (
-	// Horizontal: element is in horizontal orientation.
+	// OrientationHorizontal: element is in horizontal orientation.
 	OrientationHorizontal Orientation = iota
-	// Vertical: element is in vertical orientation.
+	// OrientationVertical: element is in vertical orientation.
 	OrientationVertical
 )
 
 func marshalOrientation(p uintptr) (interface{}, error) {
 	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Orientation.
+func (o Orientation) String() string {
+	switch o {
+	case OrientationHorizontal:
+		return "Horizontal"
+	case OrientationVertical:
+		return "Vertical"
+	default:
+		return fmt.Sprintf("Orientation(%d)", o)
+	}
 }
 
 // Overflow defines how content overflowing a given area should be handled.
@@ -1045,16 +1793,28 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 type Overflow int
 
 const (
-	// Visible: no change is applied. Content is drawn at the specified
+	// OverflowVisible: no change is applied. Content is drawn at the specified
 	// position.
 	OverflowVisible Overflow = iota
-	// Hidden: content is clipped to the bounds of the area. Content outside the
-	// area is not drawn and cannot be interacted with.
+	// OverflowHidden: content is clipped to the bounds of the area. Content
+	// outside the area is not drawn and cannot be interacted with.
 	OverflowHidden
 )
 
 func marshalOverflow(p uintptr) (interface{}, error) {
 	return Overflow(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Overflow.
+func (o Overflow) String() string {
+	switch o {
+	case OverflowVisible:
+		return "Visible"
+	case OverflowHidden:
+		return "Hidden"
+	default:
+		return fmt.Sprintf("Overflow(%d)", o)
+	}
 }
 
 // PackType represents the packing location of a children in its parent.
@@ -1063,27 +1823,39 @@ func marshalOverflow(p uintptr) (interface{}, error) {
 type PackType int
 
 const (
-	// Start: child is packed into the start of the widget
-	PackTypeStart PackType = iota
-	// End: child is packed into the end of the widget
-	PackTypeEnd
+	// PackStart: child is packed into the start of the widget
+	PackStart PackType = iota
+	// PackEnd: child is packed into the end of the widget
+	PackEnd
 )
 
 func marshalPackType(p uintptr) (interface{}, error) {
 	return PackType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PackType.
+func (p PackType) String() string {
+	switch p {
+	case PackStart:
+		return "Start"
+	case PackEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("PackType(%d)", p)
+	}
+}
+
 // PageOrientation: see also gtk_print_settings_set_orientation().
 type PageOrientation int
 
 const (
-	// Portrait: portrait mode.
+	// PageOrientationPortrait: portrait mode.
 	PageOrientationPortrait PageOrientation = iota
-	// Landscape: landscape mode.
+	// PageOrientationLandscape: landscape mode.
 	PageOrientationLandscape
-	// ReversePortrait: reverse portrait mode.
+	// PageOrientationReversePortrait: reverse portrait mode.
 	PageOrientationReversePortrait
-	// ReverseLandscape: reverse landscape mode.
+	// PageOrientationReverseLandscape: reverse landscape mode.
 	PageOrientationReverseLandscape
 )
 
@@ -1091,15 +1863,31 @@ func marshalPageOrientation(p uintptr) (interface{}, error) {
 	return PageOrientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PageOrientation.
+func (p PageOrientation) String() string {
+	switch p {
+	case PageOrientationPortrait:
+		return "Portrait"
+	case PageOrientationLandscape:
+		return "Landscape"
+	case PageOrientationReversePortrait:
+		return "ReversePortrait"
+	case PageOrientationReverseLandscape:
+		return "ReverseLandscape"
+	default:
+		return fmt.Sprintf("PageOrientation(%d)", p)
+	}
+}
+
 // PageSet: see also gtk_print_job_set_page_set().
 type PageSet int
 
 const (
-	// All: all pages.
+	// PageSetAll: all pages.
 	PageSetAll PageSet = iota
-	// Even: even pages.
+	// PageSetEven: even pages.
 	PageSetEven
-	// Odd: odd pages.
+	// PageSetOdd: odd pages.
 	PageSetOdd
 )
 
@@ -1107,22 +1895,52 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PageSet.
+func (p PageSet) String() string {
+	switch p {
+	case PageSetAll:
+		return "All"
+	case PageSetEven:
+		return "Even"
+	case PageSetOdd:
+		return "Odd"
+	default:
+		return fmt.Sprintf("PageSet(%d)", p)
+	}
+}
+
 // PanDirection describes the panning direction of a GtkGesturePan
 type PanDirection int
 
 const (
-	// Left: panned towards the left
+	// PanDirectionLeft: panned towards the left
 	PanDirectionLeft PanDirection = iota
-	// Right: panned towards the right
+	// PanDirectionRight: panned towards the right
 	PanDirectionRight
-	// Up: panned upwards
+	// PanDirectionUp: panned upwards
 	PanDirectionUp
-	// Down: panned downwards
+	// PanDirectionDown: panned downwards
 	PanDirectionDown
 )
 
 func marshalPanDirection(p uintptr) (interface{}, error) {
 	return PanDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PanDirection.
+func (p PanDirection) String() string {
+	switch p {
+	case PanDirectionLeft:
+		return "Left"
+	case PanDirectionRight:
+		return "Right"
+	case PanDirectionUp:
+		return "Up"
+	case PanDirectionDown:
+		return "Down"
+	default:
+		return fmt.Sprintf("PanDirection(%d)", p)
+	}
 }
 
 // PositionType describes which edge of a widget a certain feature is positioned
@@ -1132,29 +1950,45 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 type PositionType int
 
 const (
-	// Left: feature is at the left edge.
-	PositionTypeLeft PositionType = iota
-	// Right: feature is at the right edge.
-	PositionTypeRight
-	// Top: feature is at the top edge.
-	PositionTypeTop
-	// Bottom: feature is at the bottom edge.
-	PositionTypeBottom
+	// PosLeft: feature is at the left edge.
+	PosLeft PositionType = iota
+	// PosRight: feature is at the right edge.
+	PosRight
+	// PosTop: feature is at the top edge.
+	PosTop
+	// PosBottom: feature is at the bottom edge.
+	PosBottom
 )
 
 func marshalPositionType(p uintptr) (interface{}, error) {
 	return PositionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PositionType.
+func (p PositionType) String() string {
+	switch p {
+	case PosLeft:
+		return "Left"
+	case PosRight:
+		return "Right"
+	case PosTop:
+		return "Top"
+	case PosBottom:
+		return "Bottom"
+	default:
+		return fmt.Sprintf("PositionType(%d)", p)
+	}
+}
+
 // PrintDuplex: see also gtk_print_settings_set_duplex().
 type PrintDuplex int
 
 const (
-	// Simplex: no duplex.
+	// PrintDuplexSimplex: no duplex.
 	PrintDuplexSimplex PrintDuplex = iota
-	// Horizontal: horizontal duplex.
+	// PrintDuplexHorizontal: horizontal duplex.
 	PrintDuplexHorizontal
-	// Vertical: vertical duplex.
+	// PrintDuplexVertical: vertical duplex.
 	PrintDuplexVertical
 )
 
@@ -1162,17 +1996,31 @@ func marshalPrintDuplex(p uintptr) (interface{}, error) {
 	return PrintDuplex(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintDuplex.
+func (p PrintDuplex) String() string {
+	switch p {
+	case PrintDuplexSimplex:
+		return "Simplex"
+	case PrintDuplexHorizontal:
+		return "Horizontal"
+	case PrintDuplexVertical:
+		return "Vertical"
+	default:
+		return fmt.Sprintf("PrintDuplex(%d)", p)
+	}
+}
+
 // PrintPages: see also gtk_print_job_set_pages()
 type PrintPages int
 
 const (
-	// All: all pages.
+	// PrintPagesAll: all pages.
 	PrintPagesAll PrintPages = iota
-	// Current: current page.
+	// PrintPagesCurrent: current page.
 	PrintPagesCurrent
-	// Ranges: range of pages.
+	// PrintPagesRanges: range of pages.
 	PrintPagesRanges
-	// Selection: selected pages.
+	// PrintPagesSelection: selected pages.
 	PrintPagesSelection
 )
 
@@ -1180,17 +2028,33 @@ func marshalPrintPages(p uintptr) (interface{}, error) {
 	return PrintPages(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintPages.
+func (p PrintPages) String() string {
+	switch p {
+	case PrintPagesAll:
+		return "All"
+	case PrintPagesCurrent:
+		return "Current"
+	case PrintPagesRanges:
+		return "Ranges"
+	case PrintPagesSelection:
+		return "Selection"
+	default:
+		return fmt.Sprintf("PrintPages(%d)", p)
+	}
+}
+
 // PrintQuality: see also gtk_print_settings_set_quality().
 type PrintQuality int
 
 const (
-	// Low: low quality.
+	// PrintQualityLow: low quality.
 	PrintQualityLow PrintQuality = iota
-	// Normal: normal quality.
+	// PrintQualityNormal: normal quality.
 	PrintQualityNormal
-	// High: high quality.
+	// PrintQualityHigh: high quality.
 	PrintQualityHigh
-	// Draft: draft quality.
+	// PrintQualityDraft: draft quality.
 	PrintQualityDraft
 )
 
@@ -1198,21 +2062,49 @@ func marshalPrintQuality(p uintptr) (interface{}, error) {
 	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PrintQuality.
+func (p PrintQuality) String() string {
+	switch p {
+	case PrintQualityLow:
+		return "Low"
+	case PrintQualityNormal:
+		return "Normal"
+	case PrintQualityHigh:
+		return "High"
+	case PrintQualityDraft:
+		return "Draft"
+	default:
+		return fmt.Sprintf("PrintQuality(%d)", p)
+	}
+}
+
 // PropagationLimit describes limits of a GtkEventController for handling events
 // targeting other widgets.
 type PropagationLimit int
 
 const (
-	// None events are handled regardless of what their target is.
-	PropagationLimitNone PropagationLimit = iota
-	// SameNative events are only handled if their target is in the same Native
-	// as the event controllers widget. Note that some event types have two
-	// targets (origin and destination).
-	PropagationLimitSameNative
+	// LimitNone events are handled regardless of what their target is.
+	LimitNone PropagationLimit = iota
+	// LimitSameNative events are only handled if their target is in the same
+	// Native as the event controllers widget. Note that some event types have
+	// two targets (origin and destination).
+	LimitSameNative
 )
 
 func marshalPropagationLimit(p uintptr) (interface{}, error) {
 	return PropagationLimit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PropagationLimit.
+func (p PropagationLimit) String() string {
+	switch p {
+	case LimitNone:
+		return "None"
+	case LimitSameNative:
+		return "SameNative"
+	default:
+		return fmt.Sprintf("PropagationLimit(%d)", p)
+	}
 }
 
 // PropagationPhase describes the stage at which events are fed into a
@@ -1220,89 +2112,165 @@ func marshalPropagationLimit(p uintptr) (interface{}, error) {
 type PropagationPhase int
 
 const (
-	// None events are not delivered.
-	PropagationPhaseNone PropagationPhase = iota
-	// Capture events are delivered in the capture phase. The capture phase
+	// PhaseNone events are not delivered.
+	PhaseNone PropagationPhase = iota
+	// PhaseCapture events are delivered in the capture phase. The capture phase
 	// happens before the bubble phase, runs from the toplevel down to the event
 	// widget. This option should only be used on containers that might possibly
 	// handle events before their children do.
-	PropagationPhaseCapture
-	// Bubble events are delivered in the bubble phase. The bubble phase happens
-	// after the capture phase, and before the default handlers are run. This
-	// phase runs from the event widget, up to the toplevel.
-	PropagationPhaseBubble
-	// Target events are delivered in the default widget event handlers, note
-	// that widget implementations must chain up on button, motion, touch and
-	// grab broken handlers for controllers in this phase to be run.
-	PropagationPhaseTarget
+	PhaseCapture
+	// PhaseBubble events are delivered in the bubble phase. The bubble phase
+	// happens after the capture phase, and before the default handlers are run.
+	// This phase runs from the event widget, up to the toplevel.
+	PhaseBubble
+	// PhaseTarget events are delivered in the default widget event handlers,
+	// note that widget implementations must chain up on button, motion, touch
+	// and grab broken handlers for controllers in this phase to be run.
+	PhaseTarget
 )
 
 func marshalPropagationPhase(p uintptr) (interface{}, error) {
 	return PropagationPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PropagationPhase.
+func (p PropagationPhase) String() string {
+	switch p {
+	case PhaseNone:
+		return "None"
+	case PhaseCapture:
+		return "Capture"
+	case PhaseBubble:
+		return "Bubble"
+	case PhaseTarget:
+		return "Target"
+	default:
+		return fmt.Sprintf("PropagationPhase(%d)", p)
+	}
+}
+
 // ScrollStep: passed as argument to various keybinding signals.
 type ScrollStep int
 
 const (
-	// Steps: scroll in steps.
-	ScrollStepSteps ScrollStep = iota
-	// Pages: scroll by pages.
-	ScrollStepPages
-	// Ends: scroll to ends.
-	ScrollStepEnds
-	// HorizontalSteps: scroll in horizontal steps.
-	ScrollStepHorizontalSteps
-	// HorizontalPages: scroll by horizontal pages.
-	ScrollStepHorizontalPages
-	// HorizontalEnds: scroll to the horizontal ends.
-	ScrollStepHorizontalEnds
+	// ScrollSteps: scroll in steps.
+	ScrollSteps ScrollStep = iota
+	// ScrollPages: scroll by pages.
+	ScrollPages
+	// ScrollEnds: scroll to ends.
+	ScrollEnds
+	// ScrollHorizontalSteps: scroll in horizontal steps.
+	ScrollHorizontalSteps
+	// ScrollHorizontalPages: scroll by horizontal pages.
+	ScrollHorizontalPages
+	// ScrollHorizontalEnds: scroll to the horizontal ends.
+	ScrollHorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
 	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ScrollStep.
+func (s ScrollStep) String() string {
+	switch s {
+	case ScrollSteps:
+		return "Steps"
+	case ScrollPages:
+		return "Pages"
+	case ScrollEnds:
+		return "Ends"
+	case ScrollHorizontalSteps:
+		return "HorizontalSteps"
+	case ScrollHorizontalPages:
+		return "HorizontalPages"
+	case ScrollHorizontalEnds:
+		return "HorizontalEnds"
+	default:
+		return fmt.Sprintf("ScrollStep(%d)", s)
+	}
+}
+
 // ScrollType: scrolling types.
 type ScrollType int
 
 const (
-	// None: no scrolling.
-	ScrollTypeNone ScrollType = iota
-	// Jump: jump to new location.
-	ScrollTypeJump
-	// StepBackward: step backward.
-	ScrollTypeStepBackward
-	// StepForward: step forward.
-	ScrollTypeStepForward
-	// PageBackward: page backward.
-	ScrollTypePageBackward
-	// PageForward: page forward.
-	ScrollTypePageForward
-	// StepUp: step up.
-	ScrollTypeStepUp
-	// StepDown: step down.
-	ScrollTypeStepDown
-	// PageUp: page up.
-	ScrollTypePageUp
-	// PageDown: page down.
-	ScrollTypePageDown
-	// StepLeft: step to the left.
-	ScrollTypeStepLeft
-	// StepRight: step to the right.
-	ScrollTypeStepRight
-	// PageLeft: page to the left.
-	ScrollTypePageLeft
-	// PageRight: page to the right.
-	ScrollTypePageRight
-	// Start: scroll to start.
-	ScrollTypeStart
-	// End: scroll to end.
-	ScrollTypeEnd
+	// ScrollNone: no scrolling.
+	ScrollNone ScrollType = iota
+	// ScrollJump: jump to new location.
+	ScrollJump
+	// ScrollStepBackward: step backward.
+	ScrollStepBackward
+	// ScrollStepForward: step forward.
+	ScrollStepForward
+	// ScrollPageBackward: page backward.
+	ScrollPageBackward
+	// ScrollPageForward: page forward.
+	ScrollPageForward
+	// ScrollStepUp: step up.
+	ScrollStepUp
+	// ScrollStepDown: step down.
+	ScrollStepDown
+	// ScrollPageUp: page up.
+	ScrollPageUp
+	// ScrollPageDown: page down.
+	ScrollPageDown
+	// ScrollStepLeft: step to the left.
+	ScrollStepLeft
+	// ScrollStepRight: step to the right.
+	ScrollStepRight
+	// ScrollPageLeft: page to the left.
+	ScrollPageLeft
+	// ScrollPageRight: page to the right.
+	ScrollPageRight
+	// ScrollStart: scroll to start.
+	ScrollStart
+	// ScrollEnd: scroll to end.
+	ScrollEnd
 )
 
 func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ScrollType.
+func (s ScrollType) String() string {
+	switch s {
+	case ScrollNone:
+		return "None"
+	case ScrollJump:
+		return "Jump"
+	case ScrollStepBackward:
+		return "StepBackward"
+	case ScrollStepForward:
+		return "StepForward"
+	case ScrollPageBackward:
+		return "PageBackward"
+	case ScrollPageForward:
+		return "PageForward"
+	case ScrollStepUp:
+		return "StepUp"
+	case ScrollStepDown:
+		return "StepDown"
+	case ScrollPageUp:
+		return "PageUp"
+	case ScrollPageDown:
+		return "PageDown"
+	case ScrollStepLeft:
+		return "StepLeft"
+	case ScrollStepRight:
+		return "StepRight"
+	case ScrollPageLeft:
+		return "PageLeft"
+	case ScrollPageRight:
+		return "PageRight"
+	case ScrollStart:
+		return "Start"
+	case ScrollEnd:
+		return "End"
+	default:
+		return fmt.Sprintf("ScrollType(%d)", s)
+	}
 }
 
 // ScrollablePolicy defines the policy to be used in a scrollable widget when
@@ -1310,39 +2278,67 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 type ScrollablePolicy int
 
 const (
-	// Minimum: scrollable adjustments are based on the minimum size
-	ScrollablePolicyMinimum ScrollablePolicy = iota
-	// Natural: scrollable adjustments are based on the natural size
-	ScrollablePolicyNatural
+	// ScrollMinimum: scrollable adjustments are based on the minimum size
+	ScrollMinimum ScrollablePolicy = iota
+	// ScrollNatural: scrollable adjustments are based on the natural size
+	ScrollNatural
 )
 
 func marshalScrollablePolicy(p uintptr) (interface{}, error) {
 	return ScrollablePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ScrollablePolicy.
+func (s ScrollablePolicy) String() string {
+	switch s {
+	case ScrollMinimum:
+		return "Minimum"
+	case ScrollNatural:
+		return "Natural"
+	default:
+		return fmt.Sprintf("ScrollablePolicy(%d)", s)
+	}
+}
+
 // SelectionMode: used to control what selections users are allowed to make.
 type SelectionMode int
 
 const (
-	// None: no selection is possible.
-	SelectionModeNone SelectionMode = iota
-	// Single: zero or one element may be selected.
-	SelectionModeSingle
-	// Browse: exactly one element is selected. In some circumstances, such as
-	// initially or during a search operation, it’s possible for no element to
-	// be selected with GTK_SELECTION_BROWSE. What is really enforced is that
-	// the user can’t deselect a currently selected element except by selecting
-	// another element.
-	SelectionModeBrowse
-	// Multiple: any number of elements may be selected. The Ctrl key may be
-	// used to enlarge the selection, and Shift key to select between the focus
-	// and the child pointed to. Some widgets may also allow Click-drag to
+	// SelectionNone: no selection is possible.
+	SelectionNone SelectionMode = iota
+	// SelectionSingle: zero or one element may be selected.
+	SelectionSingle
+	// SelectionBrowse: exactly one element is selected. In some circumstances,
+	// such as initially or during a search operation, it’s possible for no
+	// element to be selected with GTK_SELECTION_BROWSE. What is really enforced
+	// is that the user can’t deselect a currently selected element except by
+	// selecting another element.
+	SelectionBrowse
+	// SelectionMultiple: any number of elements may be selected. The Ctrl key
+	// may be used to enlarge the selection, and Shift key to select between the
+	// focus and the child pointed to. Some widgets may also allow Click-drag to
 	// select a range of elements.
-	SelectionModeMultiple
+	SelectionMultiple
 )
 
 func marshalSelectionMode(p uintptr) (interface{}, error) {
 	return SelectionMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SelectionMode.
+func (s SelectionMode) String() string {
+	switch s {
+	case SelectionNone:
+		return "None"
+	case SelectionSingle:
+		return "Single"
+	case SelectionBrowse:
+		return "Browse"
+	case SelectionMultiple:
+		return "Multiple"
+	default:
+		return fmt.Sprintf("SelectionMode(%d)", s)
+	}
 }
 
 // SensitivityType determines how GTK handles the sensitivity of various
@@ -1350,16 +2346,31 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 type SensitivityType int
 
 const (
-	// Auto: control is made insensitive if no action can be triggered
-	SensitivityTypeAuto SensitivityType = iota
-	// On: control is always sensitive
-	SensitivityTypeOn
-	// Off: control is always insensitive
-	SensitivityTypeOff
+	// SensitivityAuto: control is made insensitive if no action can be
+	// triggered
+	SensitivityAuto SensitivityType = iota
+	// SensitivityOn: control is always sensitive
+	SensitivityOn
+	// SensitivityOff: control is always insensitive
+	SensitivityOff
 )
 
 func marshalSensitivityType(p uintptr) (interface{}, error) {
 	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SensitivityType.
+func (s SensitivityType) String() string {
+	switch s {
+	case SensitivityAuto:
+		return "Auto"
+	case SensitivityOn:
+		return "On"
+	case SensitivityOff:
+		return "Off"
+	default:
+		return fmt.Sprintf("SensitivityType(%d)", s)
+	}
 }
 
 // ShortcutScope describes where GtkShortcuts added to a GtkShortcutController
@@ -1367,12 +2378,13 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 type ShortcutScope int
 
 const (
-	// Local shortcuts are handled inside the widget the controller belongs to.
+	// ShortcutScopeLocal shortcuts are handled inside the widget the controller
+	// belongs to.
 	ShortcutScopeLocal ShortcutScope = iota
-	// Managed shortcuts are handled by the first ancestor that is a
-	// ShortcutManager
+	// ShortcutScopeManaged shortcuts are handled by the first ancestor that is
+	// a ShortcutManager
 	ShortcutScopeManaged
-	// Global shortcuts are handled by the root widget.
+	// ShortcutScopeGlobal shortcuts are handled by the root widget.
 	ShortcutScopeGlobal
 )
 
@@ -1380,23 +2392,53 @@ func marshalShortcutScope(p uintptr) (interface{}, error) {
 	return ShortcutScope(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ShortcutScope.
+func (s ShortcutScope) String() string {
+	switch s {
+	case ShortcutScopeLocal:
+		return "Local"
+	case ShortcutScopeManaged:
+		return "Managed"
+	case ShortcutScopeGlobal:
+		return "Global"
+	default:
+		return fmt.Sprintf("ShortcutScope(%d)", s)
+	}
+}
+
 // SizeGroupMode: mode of the size group determines the directions in which the
 // size group affects the requested sizes of its component widgets.
 type SizeGroupMode int
 
 const (
-	// None: group has no effect
-	SizeGroupModeNone SizeGroupMode = iota
-	// Horizontal: group affects horizontal requisition
-	SizeGroupModeHorizontal
-	// Vertical: group affects vertical requisition
-	SizeGroupModeVertical
-	// Both: group affects both horizontal and vertical requisition
-	SizeGroupModeBoth
+	// SizeGroupNone: group has no effect
+	SizeGroupNone SizeGroupMode = iota
+	// SizeGroupHorizontal: group affects horizontal requisition
+	SizeGroupHorizontal
+	// SizeGroupVertical: group affects vertical requisition
+	SizeGroupVertical
+	// SizeGroupBoth: group affects both horizontal and vertical requisition
+	SizeGroupBoth
 )
 
 func marshalSizeGroupMode(p uintptr) (interface{}, error) {
 	return SizeGroupMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SizeGroupMode.
+func (s SizeGroupMode) String() string {
+	switch s {
+	case SizeGroupNone:
+		return "None"
+	case SizeGroupHorizontal:
+		return "Horizontal"
+	case SizeGroupVertical:
+		return "Vertical"
+	case SizeGroupBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("SizeGroupMode(%d)", s)
+	}
 }
 
 // SizeRequestMode specifies a preference for height-for-width or
@@ -1404,30 +2446,56 @@ func marshalSizeGroupMode(p uintptr) (interface{}, error) {
 type SizeRequestMode int
 
 const (
-	// HeightForWidth: prefer height-for-width geometry management
-	SizeRequestModeHeightForWidth SizeRequestMode = iota
-	// WidthForHeight: prefer width-for-height geometry management
-	SizeRequestModeWidthForHeight
-	// ConstantSize: don’t trade height-for-width or width-for-height
-	SizeRequestModeConstantSize
+	// SizeRequestHeightForWidth: prefer height-for-width geometry management
+	SizeRequestHeightForWidth SizeRequestMode = iota
+	// SizeRequestWidthForHeight: prefer width-for-height geometry management
+	SizeRequestWidthForHeight
+	// SizeRequestConstantSize: don’t trade height-for-width or width-for-height
+	SizeRequestConstantSize
 )
 
 func marshalSizeRequestMode(p uintptr) (interface{}, error) {
 	return SizeRequestMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SizeRequestMode.
+func (s SizeRequestMode) String() string {
+	switch s {
+	case SizeRequestHeightForWidth:
+		return "HeightForWidth"
+	case SizeRequestWidthForHeight:
+		return "WidthForHeight"
+	case SizeRequestConstantSize:
+		return "ConstantSize"
+	default:
+		return fmt.Sprintf("SizeRequestMode(%d)", s)
+	}
+}
+
 // SortType determines the direction of a sort.
 type SortType int
 
 const (
-	// Ascending: sorting is in ascending order.
-	SortTypeAscending SortType = iota
-	// Descending: sorting is in descending order.
-	SortTypeDescending
+	// SortAscending: sorting is in ascending order.
+	SortAscending SortType = iota
+	// SortDescending: sorting is in descending order.
+	SortDescending
 )
 
 func marshalSortType(p uintptr) (interface{}, error) {
 	return SortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SortType.
+func (s SortType) String() string {
+	switch s {
+	case SortAscending:
+		return "Ascending"
+	case SortDescending:
+		return "Descending"
+	default:
+		return fmt.Sprintf("SortType(%d)", s)
+	}
 }
 
 // SystemSetting values that can be passed to the
@@ -1442,19 +2510,20 @@ func marshalSortType(p uintptr) (interface{}, error) {
 type SystemSetting int
 
 const (
-	// DPI setting has changed
+	// SystemSettingDPI setting has changed
 	SystemSettingDPI SystemSetting = iota
-	// FontName setting has changed
+	// SystemSettingFontName setting has changed
 	SystemSettingFontName
-	// FontConfig: font configuration has changed in a way that requires text to
-	// be redrawn. This can be any of the Settings:gtk-xft-antialias,
-	// Settings:gtk-xft-hinting, Settings:gtk-xft-hintstyle,
-	// Settings:gtk-xft-rgba or Settings:gtk-fontconfig-timestamp settings
+	// SystemSettingFontConfig: font configuration has changed in a way that
+	// requires text to be redrawn. This can be any of the
+	// Settings:gtk-xft-antialias, Settings:gtk-xft-hinting,
+	// Settings:gtk-xft-hintstyle, Settings:gtk-xft-rgba or
+	// Settings:gtk-fontconfig-timestamp settings
 	SystemSettingFontConfig
-	// Display has changed
+	// SystemSettingDisplay has changed
 	SystemSettingDisplay
-	// IconTheme: icon theme has changed in a way that requires icons to be
-	// looked up again
+	// SystemSettingIconTheme: icon theme has changed in a way that requires
+	// icons to be looked up again
 	SystemSettingIconTheme
 )
 
@@ -1462,33 +2531,65 @@ func marshalSystemSetting(p uintptr) (interface{}, error) {
 	return SystemSetting(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SystemSetting.
+func (s SystemSetting) String() string {
+	switch s {
+	case SystemSettingDPI:
+		return "DPI"
+	case SystemSettingFontName:
+		return "FontName"
+	case SystemSettingFontConfig:
+		return "FontConfig"
+	case SystemSettingDisplay:
+		return "Display"
+	case SystemSettingIconTheme:
+		return "IconTheme"
+	default:
+		return fmt.Sprintf("SystemSetting(%d)", s)
+	}
+}
+
 // TextDirection: reading directions for text.
 type TextDirection int
 
 const (
-	// None: no direction.
-	TextDirectionNone TextDirection = iota
-	// LTR: left to right text direction.
-	TextDirectionLTR
-	// RTL: right to left text direction.
-	TextDirectionRTL
+	// TextDirNone: no direction.
+	TextDirNone TextDirection = iota
+	// TextDirLTR: left to right text direction.
+	TextDirLTR
+	// TextDirRTL: right to left text direction.
+	TextDirRTL
 )
 
 func marshalTextDirection(p uintptr) (interface{}, error) {
 	return TextDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TextDirection.
+func (t TextDirection) String() string {
+	switch t {
+	case TextDirNone:
+		return "None"
+	case TextDirLTR:
+		return "LTR"
+	case TextDirRTL:
+		return "RTL"
+	default:
+		return fmt.Sprintf("TextDirection(%d)", t)
+	}
+}
+
 // TreeViewGridLines: used to indicate which grid lines to draw in a tree view.
 type TreeViewGridLines int
 
 const (
-	// None: no grid lines.
+	// TreeViewGridLinesNone: no grid lines.
 	TreeViewGridLinesNone TreeViewGridLines = iota
-	// Horizontal: horizontal grid lines.
+	// TreeViewGridLinesHorizontal: horizontal grid lines.
 	TreeViewGridLinesHorizontal
-	// Vertical: vertical grid lines.
+	// TreeViewGridLinesVertical: vertical grid lines.
 	TreeViewGridLinesVertical
-	// Both: horizontal and vertical grid lines.
+	// TreeViewGridLinesBoth: horizontal and vertical grid lines.
 	TreeViewGridLinesBoth
 )
 
@@ -1496,17 +2597,33 @@ func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
 	return TreeViewGridLines(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TreeViewGridLines.
+func (t TreeViewGridLines) String() string {
+	switch t {
+	case TreeViewGridLinesNone:
+		return "None"
+	case TreeViewGridLinesHorizontal:
+		return "Horizontal"
+	case TreeViewGridLinesVertical:
+		return "Vertical"
+	case TreeViewGridLinesBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("TreeViewGridLines(%d)", t)
+	}
+}
+
 // Unit: see also gtk_print_settings_set_paper_width().
 type Unit int
 
 const (
-	// None: no units.
+	// UnitNone: no units.
 	UnitNone Unit = iota
-	// Points dimensions in points.
+	// UnitPoints dimensions in points.
 	UnitPoints
-	// Inch dimensions in inches.
+	// UnitInch dimensions in inches.
 	UnitInch
-	// Mm dimensions in millimeters
+	// UnitMm dimensions in millimeters
 	UnitMm
 )
 
@@ -1514,25 +2631,57 @@ func marshalUnit(p uintptr) (interface{}, error) {
 	return Unit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Unit.
+func (u Unit) String() string {
+	switch u {
+	case UnitNone:
+		return "None"
+	case UnitPoints:
+		return "Points"
+	case UnitInch:
+		return "Inch"
+	case UnitMm:
+		return "Mm"
+	default:
+		return fmt.Sprintf("Unit(%d)", u)
+	}
+}
+
 // WrapMode describes a type of line wrapping.
 type WrapMode int
 
 const (
-	// None: do not wrap lines; just make the text area wider
-	WrapModeNone WrapMode = iota
-	// Char: wrap text, breaking lines anywhere the cursor can appear (between
-	// characters, usually - if you want to be technical, between graphemes, see
-	// pango_get_log_attrs())
-	WrapModeChar
-	// Word: wrap text, breaking lines in between words
-	WrapModeWord
-	// WordChar: wrap text, breaking lines in between words, or if that is not
-	// enough, also between graphemes
-	WrapModeWordChar
+	// WrapNone: do not wrap lines; just make the text area wider
+	WrapNone WrapMode = iota
+	// WrapChar: wrap text, breaking lines anywhere the cursor can appear
+	// (between characters, usually - if you want to be technical, between
+	// graphemes, see pango_get_log_attrs())
+	WrapChar
+	// WrapWord: wrap text, breaking lines in between words
+	WrapWord
+	// WrapWordChar: wrap text, breaking lines in between words, or if that is
+	// not enough, also between graphemes
+	WrapWordChar
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for WrapMode.
+func (w WrapMode) String() string {
+	switch w {
+	case WrapNone:
+		return "None"
+	case WrapChar:
+		return "Char"
+	case WrapWord:
+		return "Word"
+	case WrapWordChar:
+		return "WordChar"
+	default:
+		return fmt.Sprintf("WrapMode(%d)", w)
+	}
 }
 
 // InputHints describes hints that might be taken into account by input methods
@@ -1549,57 +2698,137 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 type InputHints int
 
 const (
-	// InputHintsNone: no special behaviour suggested
-	InputHintsNone InputHints = 0b0
-	// InputHintsSpellcheck: suggest checking for typos
-	InputHintsSpellcheck InputHints = 0b1
-	// InputHintsNoSpellcheck: suggest not checking for typos
-	InputHintsNoSpellcheck InputHints = 0b10
-	// InputHintsWordCompletion: suggest word completion
-	InputHintsWordCompletion InputHints = 0b100
-	// InputHintsLowercase: suggest to convert all text to lowercase
-	InputHintsLowercase InputHints = 0b1000
-	// InputHintsUppercaseChars: suggest to capitalize all text
-	InputHintsUppercaseChars InputHints = 0b10000
-	// InputHintsUppercaseWords: suggest to capitalize the first character of
+	// InputHintNone: no special behaviour suggested
+	InputHintNone InputHints = 0b0
+	// InputHintSpellcheck: suggest checking for typos
+	InputHintSpellcheck InputHints = 0b1
+	// InputHintNoSpellcheck: suggest not checking for typos
+	InputHintNoSpellcheck InputHints = 0b10
+	// InputHintWordCompletion: suggest word completion
+	InputHintWordCompletion InputHints = 0b100
+	// InputHintLowercase: suggest to convert all text to lowercase
+	InputHintLowercase InputHints = 0b1000
+	// InputHintUppercaseChars: suggest to capitalize all text
+	InputHintUppercaseChars InputHints = 0b10000
+	// InputHintUppercaseWords: suggest to capitalize the first character of
 	// each word
-	InputHintsUppercaseWords InputHints = 0b100000
-	// InputHintsUppercaseSentences: suggest to capitalize the first word of
-	// each sentence
-	InputHintsUppercaseSentences InputHints = 0b1000000
-	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
+	InputHintUppercaseWords InputHints = 0b100000
+	// InputHintUppercaseSentences: suggest to capitalize the first word of each
+	// sentence
+	InputHintUppercaseSentences InputHints = 0b1000000
+	// InputHintInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
 	// calculator that already has all the keys).
-	InputHintsInhibitOsk InputHints = 0b10000000
-	// InputHintsVerticalWriting: text is vertical
-	InputHintsVerticalWriting InputHints = 0b100000000
-	// InputHintsEmoji: suggest offering Emoji support
-	InputHintsEmoji InputHints = 0b1000000000
-	// InputHintsNoEmoji: suggest not offering Emoji support
-	InputHintsNoEmoji InputHints = 0b10000000000
-	// InputHintsPrivate: request that the input method should not update
+	InputHintInhibitOsk InputHints = 0b10000000
+	// InputHintVerticalWriting: text is vertical
+	InputHintVerticalWriting InputHints = 0b100000000
+	// InputHintEmoji: suggest offering Emoji support
+	InputHintEmoji InputHints = 0b1000000000
+	// InputHintNoEmoji: suggest not offering Emoji support
+	InputHintNoEmoji InputHints = 0b10000000000
+	// InputHintPrivate: request that the input method should not update
 	// personalized data (like typing history)
-	InputHintsPrivate InputHints = 0b100000000000
+	InputHintPrivate InputHints = 0b100000000000
 )
 
 func marshalInputHints(p uintptr) (interface{}, error) {
 	return InputHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for InputHints.
+func (i InputHints) String() string {
+	if i == 0 {
+		return "InputHints(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(268)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case InputHintNone:
+			builder.WriteString("None|")
+		case InputHintSpellcheck:
+			builder.WriteString("Spellcheck|")
+		case InputHintNoSpellcheck:
+			builder.WriteString("NoSpellcheck|")
+		case InputHintWordCompletion:
+			builder.WriteString("WordCompletion|")
+		case InputHintLowercase:
+			builder.WriteString("Lowercase|")
+		case InputHintUppercaseChars:
+			builder.WriteString("UppercaseChars|")
+		case InputHintUppercaseWords:
+			builder.WriteString("UppercaseWords|")
+		case InputHintUppercaseSentences:
+			builder.WriteString("UppercaseSentences|")
+		case InputHintInhibitOsk:
+			builder.WriteString("InhibitOsk|")
+		case InputHintVerticalWriting:
+			builder.WriteString("VerticalWriting|")
+		case InputHintEmoji:
+			builder.WriteString("Emoji|")
+		case InputHintNoEmoji:
+			builder.WriteString("NoEmoji|")
+		case InputHintPrivate:
+			builder.WriteString("Private|")
+		default:
+			builder.WriteString(fmt.Sprintf("InputHints(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // PickFlags flags that influence the behavior of gtk_widget_pick().
 type PickFlags int
 
 const (
-	// PickFlagsDefault behavior, include widgets that are receiving events
-	PickFlagsDefault PickFlags = 0b0
-	// PickFlagsInsensitive: include widgets that are insensitive
-	PickFlagsInsensitive PickFlags = 0b1
-	// PickFlagsNonTargetable: include widgets that are marked as
-	// non-targetable. See Widget:can-target
-	PickFlagsNonTargetable PickFlags = 0b10
+	// PickDefault behavior, include widgets that are receiving events
+	PickDefault PickFlags = 0b0
+	// PickInsensitive: include widgets that are insensitive
+	PickInsensitive PickFlags = 0b1
+	// PickNonTargetable: include widgets that are marked as non-targetable. See
+	// Widget:can-target
+	PickNonTargetable PickFlags = 0b10
 )
 
 func marshalPickFlags(p uintptr) (interface{}, error) {
 	return PickFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for PickFlags.
+func (p PickFlags) String() string {
+	if p == 0 {
+		return "PickFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(45)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PickDefault:
+			builder.WriteString("Default|")
+		case PickInsensitive:
+			builder.WriteString("Insensitive|")
+		case PickNonTargetable:
+			builder.WriteString("NonTargetable|")
+		default:
+			builder.WriteString(fmt.Sprintf("PickFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // StateFlags describes a widget state.
@@ -1609,40 +2838,96 @@ func marshalPickFlags(p uintptr) (interface{}, error) {
 type StateFlags int
 
 const (
-	// StateFlagsNormal: state during normal operation
-	StateFlagsNormal StateFlags = 0b0
-	// StateFlagsActive: widget is active
-	StateFlagsActive StateFlags = 0b1
-	// StateFlagsPrelight: widget has a mouse pointer over it
-	StateFlagsPrelight StateFlags = 0b10
-	// StateFlagsSelected: widget is selected
-	StateFlagsSelected StateFlags = 0b100
-	// StateFlagsInsensitive: widget is insensitive
-	StateFlagsInsensitive StateFlags = 0b1000
-	// StateFlagsInconsistent: widget is inconsistent
-	StateFlagsInconsistent StateFlags = 0b10000
-	// StateFlagsFocused: widget has the keyboard focus
-	StateFlagsFocused StateFlags = 0b100000
-	// StateFlagsBackdrop: widget is in a background toplevel window
-	StateFlagsBackdrop StateFlags = 0b1000000
-	// StateFlagsDirLTR: widget is in left-to-right text direction
-	StateFlagsDirLTR StateFlags = 0b10000000
-	// StateFlagsDirRTL: widget is in right-to-left text direction
-	StateFlagsDirRTL StateFlags = 0b100000000
-	// StateFlagsLink: widget is a link
-	StateFlagsLink StateFlags = 0b1000000000
-	// StateFlagsVisited: location the widget points to has already been visited
-	StateFlagsVisited StateFlags = 0b10000000000
-	// StateFlagsChecked: widget is checked
-	StateFlagsChecked StateFlags = 0b100000000000
-	// StateFlagsDropActive: widget is highlighted as a drop target for DND
-	StateFlagsDropActive StateFlags = 0b1000000000000
-	// StateFlagsFocusVisible: widget has the visible focus
-	StateFlagsFocusVisible StateFlags = 0b10000000000000
-	// StateFlagsFocusWithin: widget contains the keyboard focus
-	StateFlagsFocusWithin StateFlags = 0b100000000000000
+	// StateFlagNormal: state during normal operation
+	StateFlagNormal StateFlags = 0b0
+	// StateFlagActive: widget is active
+	StateFlagActive StateFlags = 0b1
+	// StateFlagPrelight: widget has a mouse pointer over it
+	StateFlagPrelight StateFlags = 0b10
+	// StateFlagSelected: widget is selected
+	StateFlagSelected StateFlags = 0b100
+	// StateFlagInsensitive: widget is insensitive
+	StateFlagInsensitive StateFlags = 0b1000
+	// StateFlagInconsistent: widget is inconsistent
+	StateFlagInconsistent StateFlags = 0b10000
+	// StateFlagFocused: widget has the keyboard focus
+	StateFlagFocused StateFlags = 0b100000
+	// StateFlagBackdrop: widget is in a background toplevel window
+	StateFlagBackdrop StateFlags = 0b1000000
+	// StateFlagDirLTR: widget is in left-to-right text direction
+	StateFlagDirLTR StateFlags = 0b10000000
+	// StateFlagDirRTL: widget is in right-to-left text direction
+	StateFlagDirRTL StateFlags = 0b100000000
+	// StateFlagLink: widget is a link
+	StateFlagLink StateFlags = 0b1000000000
+	// StateFlagVisited: location the widget points to has already been visited
+	StateFlagVisited StateFlags = 0b10000000000
+	// StateFlagChecked: widget is checked
+	StateFlagChecked StateFlags = 0b100000000000
+	// StateFlagDropActive: widget is highlighted as a drop target for DND
+	StateFlagDropActive StateFlags = 0b1000000000000
+	// StateFlagFocusVisible: widget has the visible focus
+	StateFlagFocusVisible StateFlags = 0b10000000000000
+	// StateFlagFocusWithin: widget contains the keyboard focus
+	StateFlagFocusWithin StateFlags = 0b100000000000000
 )
 
 func marshalStateFlags(p uintptr) (interface{}, error) {
 	return StateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for StateFlags.
+func (s StateFlags) String() string {
+	if s == 0 {
+		return "StateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(288)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case StateFlagNormal:
+			builder.WriteString("Normal|")
+		case StateFlagActive:
+			builder.WriteString("Active|")
+		case StateFlagPrelight:
+			builder.WriteString("Prelight|")
+		case StateFlagSelected:
+			builder.WriteString("Selected|")
+		case StateFlagInsensitive:
+			builder.WriteString("Insensitive|")
+		case StateFlagInconsistent:
+			builder.WriteString("Inconsistent|")
+		case StateFlagFocused:
+			builder.WriteString("Focused|")
+		case StateFlagBackdrop:
+			builder.WriteString("Backdrop|")
+		case StateFlagDirLTR:
+			builder.WriteString("DirLTR|")
+		case StateFlagDirRTL:
+			builder.WriteString("DirRTL|")
+		case StateFlagLink:
+			builder.WriteString("Link|")
+		case StateFlagVisited:
+			builder.WriteString("Visited|")
+		case StateFlagChecked:
+			builder.WriteString("Checked|")
+		case StateFlagDropActive:
+			builder.WriteString("DropActive|")
+		case StateFlagFocusVisible:
+			builder.WriteString("FocusVisible|")
+		case StateFlagFocusWithin:
+			builder.WriteString("FocusWithin|")
+		default:
+			builder.WriteString(fmt.Sprintf("StateFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }

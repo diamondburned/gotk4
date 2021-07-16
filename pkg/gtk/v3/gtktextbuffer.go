@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -35,16 +36,30 @@ func init() {
 type TextBufferTargetInfo int
 
 const (
-	// BufferContents: buffer contents
+	// TextBufferTargetInfoBufferContents: buffer contents
 	TextBufferTargetInfoBufferContents TextBufferTargetInfo = -1
-	// RichText: rich text
+	// TextBufferTargetInfoRichText: rich text
 	TextBufferTargetInfoRichText TextBufferTargetInfo = -2
-	// Text: text
+	// TextBufferTargetInfoText: text
 	TextBufferTargetInfoText TextBufferTargetInfo = -3
 )
 
 func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {
 	return TextBufferTargetInfo(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextBufferTargetInfo.
+func (t TextBufferTargetInfo) String() string {
+	switch t {
+	case TextBufferTargetInfoBufferContents:
+		return "BufferContents"
+	case TextBufferTargetInfoRichText:
+		return "RichText"
+	case TextBufferTargetInfoText:
+		return "Text"
+	default:
+		return fmt.Sprintf("TextBufferTargetInfo(%d)", t)
+	}
 }
 
 // TextBufferOverrider contains methods that are overridable.

@@ -3,6 +3,8 @@
 package gio
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -112,13 +114,14 @@ func init() {
 type BusType int
 
 const (
-	// Starter alias for the message bus that activated the process, if any.
+	// BusTypeStarter alias for the message bus that activated the process, if
+	// any.
 	BusTypeStarter BusType = -1
-	// None: not a message bus.
+	// BusTypeNone: not a message bus.
 	BusTypeNone BusType = 0
-	// System: system-wide message bus.
+	// BusTypeSystem: system-wide message bus.
 	BusTypeSystem BusType = 1
-	// Session: login session message bus.
+	// BusTypeSession: login session message bus.
 	BusTypeSession BusType = 2
 )
 
@@ -126,22 +129,54 @@ func marshalBusType(p uintptr) (interface{}, error) {
 	return BusType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BusType.
+func (b BusType) String() string {
+	switch b {
+	case BusTypeStarter:
+		return "Starter"
+	case BusTypeNone:
+		return "None"
+	case BusTypeSystem:
+		return "System"
+	case BusTypeSession:
+		return "Session"
+	default:
+		return fmt.Sprintf("BusType(%d)", b)
+	}
+}
+
 // ConverterResult results returned from g_converter_convert().
 type ConverterResult int
 
 const (
-	// Error: there was an error during conversion.
-	ConverterResultError ConverterResult = iota
-	// Converted: some data was consumed or produced
-	ConverterResultConverted
-	// Finished: conversion is finished
-	ConverterResultFinished
-	// Flushed: flushing is finished
-	ConverterResultFlushed
+	// ConverterError: there was an error during conversion.
+	ConverterError ConverterResult = iota
+	// ConverterConverted: some data was consumed or produced
+	ConverterConverted
+	// ConverterFinished: conversion is finished
+	ConverterFinished
+	// ConverterFlushed: flushing is finished
+	ConverterFlushed
 )
 
 func marshalConverterResult(p uintptr) (interface{}, error) {
 	return ConverterResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ConverterResult.
+func (c ConverterResult) String() string {
+	switch c {
+	case ConverterError:
+		return "Error"
+	case ConverterConverted:
+		return "Converted"
+	case ConverterFinished:
+		return "Finished"
+	case ConverterFlushed:
+		return "Flushed"
+	default:
+		return fmt.Sprintf("ConverterResult(%d)", c)
+	}
 }
 
 // CredentialsType: enumeration describing different kinds of native credential
@@ -149,21 +184,24 @@ func marshalConverterResult(p uintptr) (interface{}, error) {
 type CredentialsType int
 
 const (
-	// Invalid indicates an invalid native credential type.
+	// CredentialsTypeInvalid indicates an invalid native credential type.
 	CredentialsTypeInvalid CredentialsType = iota
-	// LinuxUcred: native credentials type is a struct ucred.
+	// CredentialsTypeLinuxUcred: native credentials type is a struct ucred.
 	CredentialsTypeLinuxUcred
-	// FreebsdCmsgcred: native credentials type is a struct cmsgcred.
+	// CredentialsTypeFreebsdCmsgcred: native credentials type is a struct
+	// cmsgcred.
 	CredentialsTypeFreebsdCmsgcred
-	// OpenbsdSockpeercred: native credentials type is a struct sockpeercred.
-	// Added in 2.30.
+	// CredentialsTypeOpenbsdSockpeercred: native credentials type is a struct
+	// sockpeercred. Added in 2.30.
 	CredentialsTypeOpenbsdSockpeercred
-	// SolarisUcred: native credentials type is a ucred_t. Added in 2.40.
+	// CredentialsTypeSolarisUcred: native credentials type is a ucred_t. Added
+	// in 2.40.
 	CredentialsTypeSolarisUcred
-	// NetbsdUnpcbid: native credentials type is a struct unpcbid. Added in
-	// 2.42.
+	// CredentialsTypeNetbsdUnpcbid: native credentials type is a struct
+	// unpcbid. Added in 2.42.
 	CredentialsTypeNetbsdUnpcbid
-	// AppleXucred: native credentials type is a struct xucred. Added in 2.66.
+	// CredentialsTypeAppleXucred: native credentials type is a struct xucred.
+	// Added in 2.66.
 	CredentialsTypeAppleXucred
 )
 
@@ -171,122 +209,157 @@ func marshalCredentialsType(p uintptr) (interface{}, error) {
 	return CredentialsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for CredentialsType.
+func (c CredentialsType) String() string {
+	switch c {
+	case CredentialsTypeInvalid:
+		return "Invalid"
+	case CredentialsTypeLinuxUcred:
+		return "LinuxUcred"
+	case CredentialsTypeFreebsdCmsgcred:
+		return "FreebsdCmsgcred"
+	case CredentialsTypeOpenbsdSockpeercred:
+		return "OpenbsdSockpeercred"
+	case CredentialsTypeSolarisUcred:
+		return "SolarisUcred"
+	case CredentialsTypeNetbsdUnpcbid:
+		return "NetbsdUnpcbid"
+	case CredentialsTypeAppleXucred:
+		return "AppleXucred"
+	default:
+		return fmt.Sprintf("CredentialsType(%d)", c)
+	}
+}
+
 // DBusError: error codes for the G_DBUS_ERROR error domain.
 type DBusError int
 
 const (
-	// Failed: generic error; "something went wrong" - see the error message for
-	// more.
+	// DBusErrorFailed: generic error; "something went wrong" - see the error
+	// message for more.
 	DBusErrorFailed DBusError = iota
-	// NoMemory: there was not enough memory to complete an operation.
+	// DBusErrorNoMemory: there was not enough memory to complete an operation.
 	DBusErrorNoMemory
-	// ServiceUnknown bus doesn't know how to launch a service to supply the bus
-	// name you wanted.
+	// DBusErrorServiceUnknown bus doesn't know how to launch a service to
+	// supply the bus name you wanted.
 	DBusErrorServiceUnknown
-	// NameHasNoOwner bus name you referenced doesn't exist (i.e. no application
-	// owns it).
+	// DBusErrorNameHasNoOwner bus name you referenced doesn't exist (i.e. no
+	// application owns it).
 	DBusErrorNameHasNoOwner
-	// NoReply: no reply to a message expecting one, usually means a timeout
-	// occurred.
+	// DBusErrorNoReply: no reply to a message expecting one, usually means a
+	// timeout occurred.
 	DBusErrorNoReply
-	// IOError: something went wrong reading or writing to a socket, for
-	// example.
+	// DBusErrorIOError: something went wrong reading or writing to a socket,
+	// for example.
 	DBusErrorIOError
-	// BadAddress d-Bus bus address was malformed.
+	// DBusErrorBadAddress d-Bus bus address was malformed.
 	DBusErrorBadAddress
-	// NotSupported: requested operation isn't supported (like ENOSYS on UNIX).
+	// DBusErrorNotSupported: requested operation isn't supported (like ENOSYS
+	// on UNIX).
 	DBusErrorNotSupported
-	// LimitsExceeded: some limited resource is exhausted.
+	// DBusErrorLimitsExceeded: some limited resource is exhausted.
 	DBusErrorLimitsExceeded
-	// AccessDenied: security restrictions don't allow doing what you're trying
-	// to do.
+	// DBusErrorAccessDenied: security restrictions don't allow doing what
+	// you're trying to do.
 	DBusErrorAccessDenied
-	// AuthFailed: authentication didn't work.
+	// DBusErrorAuthFailed: authentication didn't work.
 	DBusErrorAuthFailed
-	// NoServer: unable to connect to server (probably caused by ECONNREFUSED on
-	// a socket).
+	// DBusErrorNoServer: unable to connect to server (probably caused by
+	// ECONNREFUSED on a socket).
 	DBusErrorNoServer
-	// Timeout: certain timeout errors, possibly ETIMEDOUT on a socket. Note
-	// that G_DBUS_ERROR_NO_REPLY is used for message reply timeouts. Warning:
-	// this is confusingly-named given that G_DBUS_ERROR_TIMED_OUT also exists.
-	// We can't fix it for compatibility reasons so just be careful.
+	// DBusErrorTimeout: certain timeout errors, possibly ETIMEDOUT on a socket.
+	// Note that G_DBUS_ERROR_NO_REPLY is used for message reply timeouts.
+	// Warning: this is confusingly-named given that G_DBUS_ERROR_TIMED_OUT also
+	// exists. We can't fix it for compatibility reasons so just be careful.
 	DBusErrorTimeout
-	// NoNetwork: no network access (probably ENETUNREACH on a socket).
+	// DBusErrorNoNetwork: no network access (probably ENETUNREACH on a socket).
 	DBusErrorNoNetwork
-	// AddressInUse: can't bind a socket since its address is in use (i.e.
-	// EADDRINUSE).
+	// DBusErrorAddressInUse: can't bind a socket since its address is in use
+	// (i.e. EADDRINUSE).
 	DBusErrorAddressInUse
-	// Disconnected: connection is disconnected and you're trying to use it.
+	// DBusErrorDisconnected: connection is disconnected and you're trying to
+	// use it.
 	DBusErrorDisconnected
-	// InvalidArgs: invalid arguments passed to a method call.
+	// DBusErrorInvalidArgs: invalid arguments passed to a method call.
 	DBusErrorInvalidArgs
-	// FileNotFound: missing file.
+	// DBusErrorFileNotFound: missing file.
 	DBusErrorFileNotFound
-	// FileExists: existing file and the operation you're using does not
-	// silently overwrite.
+	// DBusErrorFileExists: existing file and the operation you're using does
+	// not silently overwrite.
 	DBusErrorFileExists
-	// UnknownMethod: method name you invoked isn't known by the object you
-	// invoked it on.
+	// DBusErrorUnknownMethod: method name you invoked isn't known by the object
+	// you invoked it on.
 	DBusErrorUnknownMethod
-	// TimedOut: certain timeout errors, e.g. while starting a service. Warning:
-	// this is confusingly-named given that G_DBUS_ERROR_TIMEOUT also exists. We
-	// can't fix it for compatibility reasons so just be careful.
+	// DBusErrorTimedOut: certain timeout errors, e.g. while starting a service.
+	// Warning: this is confusingly-named given that G_DBUS_ERROR_TIMEOUT also
+	// exists. We can't fix it for compatibility reasons so just be careful.
 	DBusErrorTimedOut
-	// MatchRuleNotFound: tried to remove or modify a match rule that didn't
-	// exist.
+	// DBusErrorMatchRuleNotFound: tried to remove or modify a match rule that
+	// didn't exist.
 	DBusErrorMatchRuleNotFound
-	// MatchRuleInvalid: match rule isn't syntactically valid.
+	// DBusErrorMatchRuleInvalid: match rule isn't syntactically valid.
 	DBusErrorMatchRuleInvalid
-	// SpawnExecFailed: while starting a new process, the exec() call failed.
+	// DBusErrorSpawnExecFailed: while starting a new process, the exec() call
+	// failed.
 	DBusErrorSpawnExecFailed
-	// SpawnForkFailed: while starting a new process, the fork() call failed.
+	// DBusErrorSpawnForkFailed: while starting a new process, the fork() call
+	// failed.
 	DBusErrorSpawnForkFailed
-	// SpawnChildExited: while starting a new process, the child exited with a
-	// status code.
+	// DBusErrorSpawnChildExited: while starting a new process, the child exited
+	// with a status code.
 	DBusErrorSpawnChildExited
-	// SpawnChildSignaled: while starting a new process, the child exited on a
-	// signal.
+	// DBusErrorSpawnChildSignaled: while starting a new process, the child
+	// exited on a signal.
 	DBusErrorSpawnChildSignaled
-	// SpawnFailed: while starting a new process, something went wrong.
+	// DBusErrorSpawnFailed: while starting a new process, something went wrong.
 	DBusErrorSpawnFailed
-	// SpawnSetupFailed: we failed to setup the environment correctly.
+	// DBusErrorSpawnSetupFailed: we failed to setup the environment correctly.
 	DBusErrorSpawnSetupFailed
-	// SpawnConfigInvalid: we failed to setup the config parser correctly.
+	// DBusErrorSpawnConfigInvalid: we failed to setup the config parser
+	// correctly.
 	DBusErrorSpawnConfigInvalid
-	// SpawnServiceInvalid bus name was not valid.
+	// DBusErrorSpawnServiceInvalid bus name was not valid.
 	DBusErrorSpawnServiceInvalid
-	// SpawnServiceNotFound: service file not found in system-services
+	// DBusErrorSpawnServiceNotFound: service file not found in system-services
 	// directory.
 	DBusErrorSpawnServiceNotFound
-	// SpawnPermissionsInvalid permissions are incorrect on the setuid helper.
+	// DBusErrorSpawnPermissionsInvalid permissions are incorrect on the setuid
+	// helper.
 	DBusErrorSpawnPermissionsInvalid
-	// SpawnFileInvalid: service file invalid (Name, User or Exec missing).
+	// DBusErrorSpawnFileInvalid: service file invalid (Name, User or Exec
+	// missing).
 	DBusErrorSpawnFileInvalid
-	// SpawnNoMemory: tried to get a UNIX process ID and it wasn't available.
-	DBusErrorSpawnNoMemory
-	// UnixProcessIDUnknown: tried to get a UNIX process ID and it wasn't
+	// DBusErrorSpawnNoMemory: tried to get a UNIX process ID and it wasn't
 	// available.
-	DBusErrorUnixProcessIDUnknown
-	// InvalidSignature: type signature is not valid.
-	DBusErrorInvalidSignature
-	// InvalidFileContent: file contains invalid syntax or is otherwise broken.
-	DBusErrorInvalidFileContent
-	// SelinuxSecurityContextUnknown: asked for SELinux security context and it
+	DBusErrorSpawnNoMemory
+	// DBusErrorUnixProcessIDUnknown: tried to get a UNIX process ID and it
 	// wasn't available.
+	DBusErrorUnixProcessIDUnknown
+	// DBusErrorInvalidSignature: type signature is not valid.
+	DBusErrorInvalidSignature
+	// DBusErrorInvalidFileContent: file contains invalid syntax or is otherwise
+	// broken.
+	DBusErrorInvalidFileContent
+	// DBusErrorSelinuxSecurityContextUnknown: asked for SELinux security
+	// context and it wasn't available.
 	DBusErrorSelinuxSecurityContextUnknown
-	// AdtAuditDataUnknown: asked for ADT audit data and it wasn't available.
+	// DBusErrorAdtAuditDataUnknown: asked for ADT audit data and it wasn't
+	// available.
 	DBusErrorAdtAuditDataUnknown
-	// ObjectPathInUse there's already an object with the requested object path.
+	// DBusErrorObjectPathInUse there's already an object with the requested
+	// object path.
 	DBusErrorObjectPathInUse
-	// UnknownObject: object you invoked a method on isn't known. Since 2.42
+	// DBusErrorUnknownObject: object you invoked a method on isn't known. Since
+	// 2.42
 	DBusErrorUnknownObject
-	// UnknownInterface: interface you invoked a method on isn't known by the
-	// object. Since 2.42
+	// DBusErrorUnknownInterface: interface you invoked a method on isn't known
+	// by the object. Since 2.42
 	DBusErrorUnknownInterface
-	// UnknownProperty: property you tried to access isn't known by the object.
-	// Since 2.42
+	// DBusErrorUnknownProperty: property you tried to access isn't known by the
+	// object. Since 2.42
 	DBusErrorUnknownProperty
-	// PropertyReadOnly: property you tried to set is read-only. Since 2.42
+	// DBusErrorPropertyReadOnly: property you tried to set is read-only. Since
+	// 2.42
 	DBusErrorPropertyReadOnly
 )
 
@@ -294,14 +367,112 @@ func marshalDBusError(p uintptr) (interface{}, error) {
 	return DBusError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DBusError.
+func (d DBusError) String() string {
+	switch d {
+	case DBusErrorFailed:
+		return "Failed"
+	case DBusErrorNoMemory:
+		return "NoMemory"
+	case DBusErrorServiceUnknown:
+		return "ServiceUnknown"
+	case DBusErrorNameHasNoOwner:
+		return "NameHasNoOwner"
+	case DBusErrorNoReply:
+		return "NoReply"
+	case DBusErrorIOError:
+		return "IOError"
+	case DBusErrorBadAddress:
+		return "BadAddress"
+	case DBusErrorNotSupported:
+		return "NotSupported"
+	case DBusErrorLimitsExceeded:
+		return "LimitsExceeded"
+	case DBusErrorAccessDenied:
+		return "AccessDenied"
+	case DBusErrorAuthFailed:
+		return "AuthFailed"
+	case DBusErrorNoServer:
+		return "NoServer"
+	case DBusErrorTimeout:
+		return "Timeout"
+	case DBusErrorNoNetwork:
+		return "NoNetwork"
+	case DBusErrorAddressInUse:
+		return "AddressInUse"
+	case DBusErrorDisconnected:
+		return "Disconnected"
+	case DBusErrorInvalidArgs:
+		return "InvalidArgs"
+	case DBusErrorFileNotFound:
+		return "FileNotFound"
+	case DBusErrorFileExists:
+		return "FileExists"
+	case DBusErrorUnknownMethod:
+		return "UnknownMethod"
+	case DBusErrorTimedOut:
+		return "TimedOut"
+	case DBusErrorMatchRuleNotFound:
+		return "MatchRuleNotFound"
+	case DBusErrorMatchRuleInvalid:
+		return "MatchRuleInvalid"
+	case DBusErrorSpawnExecFailed:
+		return "SpawnExecFailed"
+	case DBusErrorSpawnForkFailed:
+		return "SpawnForkFailed"
+	case DBusErrorSpawnChildExited:
+		return "SpawnChildExited"
+	case DBusErrorSpawnChildSignaled:
+		return "SpawnChildSignaled"
+	case DBusErrorSpawnFailed:
+		return "SpawnFailed"
+	case DBusErrorSpawnSetupFailed:
+		return "SpawnSetupFailed"
+	case DBusErrorSpawnConfigInvalid:
+		return "SpawnConfigInvalid"
+	case DBusErrorSpawnServiceInvalid:
+		return "SpawnServiceInvalid"
+	case DBusErrorSpawnServiceNotFound:
+		return "SpawnServiceNotFound"
+	case DBusErrorSpawnPermissionsInvalid:
+		return "SpawnPermissionsInvalid"
+	case DBusErrorSpawnFileInvalid:
+		return "SpawnFileInvalid"
+	case DBusErrorSpawnNoMemory:
+		return "SpawnNoMemory"
+	case DBusErrorUnixProcessIDUnknown:
+		return "UnixProcessIDUnknown"
+	case DBusErrorInvalidSignature:
+		return "InvalidSignature"
+	case DBusErrorInvalidFileContent:
+		return "InvalidFileContent"
+	case DBusErrorSelinuxSecurityContextUnknown:
+		return "SelinuxSecurityContextUnknown"
+	case DBusErrorAdtAuditDataUnknown:
+		return "AdtAuditDataUnknown"
+	case DBusErrorObjectPathInUse:
+		return "ObjectPathInUse"
+	case DBusErrorUnknownObject:
+		return "UnknownObject"
+	case DBusErrorUnknownInterface:
+		return "UnknownInterface"
+	case DBusErrorUnknownProperty:
+		return "UnknownProperty"
+	case DBusErrorPropertyReadOnly:
+		return "PropertyReadOnly"
+	default:
+		return fmt.Sprintf("DBusError(%d)", d)
+	}
+}
+
 // DBusMessageByteOrder: enumeration used to describe the byte order of a D-Bus
 // message.
 type DBusMessageByteOrder int
 
 const (
-	// BigEndian: byte order is big endian.
+	// DBusMessageByteOrderBigEndian: byte order is big endian.
 	DBusMessageByteOrderBigEndian DBusMessageByteOrder = 66
-	// LittleEndian: byte order is little endian.
+	// DBusMessageByteOrderLittleEndian: byte order is little endian.
 	DBusMessageByteOrderLittleEndian DBusMessageByteOrder = 108
 )
 
@@ -309,29 +480,44 @@ func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
 	return DBusMessageByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DBusMessageByteOrder.
+func (d DBusMessageByteOrder) String() string {
+	switch d {
+	case DBusMessageByteOrderBigEndian:
+		return "BigEndian"
+	case DBusMessageByteOrderLittleEndian:
+		return "LittleEndian"
+	default:
+		return fmt.Sprintf("DBusMessageByteOrder(%d)", d)
+	}
+}
+
 // DBusMessageHeaderField: header fields used in BusMessage.
 type DBusMessageHeaderField int
 
 const (
-	// Invalid: not a valid header field.
+	// DBusMessageHeaderFieldInvalid: not a valid header field.
 	DBusMessageHeaderFieldInvalid DBusMessageHeaderField = iota
-	// Path: object path.
+	// DBusMessageHeaderFieldPath: object path.
 	DBusMessageHeaderFieldPath
-	// Interface name.
+	// DBusMessageHeaderFieldInterface name.
 	DBusMessageHeaderFieldInterface
-	// Member: method or signal name.
+	// DBusMessageHeaderFieldMember: method or signal name.
 	DBusMessageHeaderFieldMember
-	// ErrorName: name of the error that occurred.
+	// DBusMessageHeaderFieldErrorName: name of the error that occurred.
 	DBusMessageHeaderFieldErrorName
-	// ReplySerial: serial number the message is a reply to.
+	// DBusMessageHeaderFieldReplySerial: serial number the message is a reply
+	// to.
 	DBusMessageHeaderFieldReplySerial
-	// Destination: name the message is intended for.
+	// DBusMessageHeaderFieldDestination: name the message is intended for.
 	DBusMessageHeaderFieldDestination
-	// Sender: unique name of the sender of the message (filled in by the bus).
+	// DBusMessageHeaderFieldSender: unique name of the sender of the message
+	// (filled in by the bus).
 	DBusMessageHeaderFieldSender
-	// Signature of the message body.
+	// DBusMessageHeaderFieldSignature of the message body.
 	DBusMessageHeaderFieldSignature
-	// NumUnixFds: number of UNIX file descriptors that accompany the message.
+	// DBusMessageHeaderFieldNumUnixFds: number of UNIX file descriptors that
+	// accompany the message.
 	DBusMessageHeaderFieldNumUnixFds
 )
 
@@ -339,19 +525,47 @@ func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
 	return DBusMessageHeaderField(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DBusMessageHeaderField.
+func (d DBusMessageHeaderField) String() string {
+	switch d {
+	case DBusMessageHeaderFieldInvalid:
+		return "Invalid"
+	case DBusMessageHeaderFieldPath:
+		return "Path"
+	case DBusMessageHeaderFieldInterface:
+		return "Interface"
+	case DBusMessageHeaderFieldMember:
+		return "Member"
+	case DBusMessageHeaderFieldErrorName:
+		return "ErrorName"
+	case DBusMessageHeaderFieldReplySerial:
+		return "ReplySerial"
+	case DBusMessageHeaderFieldDestination:
+		return "Destination"
+	case DBusMessageHeaderFieldSender:
+		return "Sender"
+	case DBusMessageHeaderFieldSignature:
+		return "Signature"
+	case DBusMessageHeaderFieldNumUnixFds:
+		return "NumUnixFds"
+	default:
+		return fmt.Sprintf("DBusMessageHeaderField(%d)", d)
+	}
+}
+
 // DBusMessageType: message types used in BusMessage.
 type DBusMessageType int
 
 const (
-	// Invalid: message is of invalid type.
+	// DBusMessageTypeInvalid: message is of invalid type.
 	DBusMessageTypeInvalid DBusMessageType = iota
-	// MethodCall: method call.
+	// DBusMessageTypeMethodCall: method call.
 	DBusMessageTypeMethodCall
-	// MethodReturn: method reply.
+	// DBusMessageTypeMethodReturn: method reply.
 	DBusMessageTypeMethodReturn
-	// Error: error reply.
+	// DBusMessageTypeError: error reply.
 	DBusMessageTypeError
-	// Signal: signal emission.
+	// DBusMessageTypeSignal: signal emission.
 	DBusMessageTypeSignal
 )
 
@@ -359,16 +573,35 @@ func marshalDBusMessageType(p uintptr) (interface{}, error) {
 	return DBusMessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DBusMessageType.
+func (d DBusMessageType) String() string {
+	switch d {
+	case DBusMessageTypeInvalid:
+		return "Invalid"
+	case DBusMessageTypeMethodCall:
+		return "MethodCall"
+	case DBusMessageTypeMethodReturn:
+		return "MethodReturn"
+	case DBusMessageTypeError:
+		return "Error"
+	case DBusMessageTypeSignal:
+		return "Signal"
+	default:
+		return fmt.Sprintf("DBusMessageType(%d)", d)
+	}
+}
+
 // DataStreamByteOrder is used to ensure proper endianness of streaming data
 // sources across various machine architectures.
 type DataStreamByteOrder int
 
 const (
-	// BigEndian selects Big Endian byte order.
+	// DataStreamByteOrderBigEndian selects Big Endian byte order.
 	DataStreamByteOrderBigEndian DataStreamByteOrder = iota
-	// LittleEndian selects Little Endian byte order.
+	// DataStreamByteOrderLittleEndian selects Little Endian byte order.
 	DataStreamByteOrderLittleEndian
-	// HostEndian selects endianness based on host machine's architecture.
+	// DataStreamByteOrderHostEndian selects endianness based on host machine's
+	// architecture.
 	DataStreamByteOrderHostEndian
 )
 
@@ -376,18 +609,35 @@ func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
 	return DataStreamByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DataStreamByteOrder.
+func (d DataStreamByteOrder) String() string {
+	switch d {
+	case DataStreamByteOrderBigEndian:
+		return "BigEndian"
+	case DataStreamByteOrderLittleEndian:
+		return "LittleEndian"
+	case DataStreamByteOrderHostEndian:
+		return "HostEndian"
+	default:
+		return fmt.Sprintf("DataStreamByteOrder(%d)", d)
+	}
+}
+
 // DataStreamNewlineType is used when checking for or setting the line endings
 // for a given file.
 type DataStreamNewlineType int
 
 const (
-	// Lf selects "LF" line endings, common on most modern UNIX platforms.
+	// DataStreamNewlineTypeLf selects "LF" line endings, common on most modern
+	// UNIX platforms.
 	DataStreamNewlineTypeLf DataStreamNewlineType = iota
-	// Cr selects "CR" line endings.
+	// DataStreamNewlineTypeCr selects "CR" line endings.
 	DataStreamNewlineTypeCr
-	// CrLf selects "CR, LF" line ending, common on Microsoft Windows.
+	// DataStreamNewlineTypeCrLf selects "CR, LF" line ending, common on
+	// Microsoft Windows.
 	DataStreamNewlineTypeCrLf
-	// Any: automatically try to handle any line ending type.
+	// DataStreamNewlineTypeAny: automatically try to handle any line ending
+	// type.
 	DataStreamNewlineTypeAny
 )
 
@@ -395,24 +645,40 @@ func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
 	return DataStreamNewlineType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DataStreamNewlineType.
+func (d DataStreamNewlineType) String() string {
+	switch d {
+	case DataStreamNewlineTypeLf:
+		return "Lf"
+	case DataStreamNewlineTypeCr:
+		return "Cr"
+	case DataStreamNewlineTypeCrLf:
+		return "CrLf"
+	case DataStreamNewlineTypeAny:
+		return "Any"
+	default:
+		return fmt.Sprintf("DataStreamNewlineType(%d)", d)
+	}
+}
+
 // DriveStartStopType: enumeration describing how a drive can be
 // started/stopped.
 type DriveStartStopType int
 
 const (
-	// Unknown: unknown or drive doesn't support start/stop.
+	// DriveStartStopTypeUnknown: unknown or drive doesn't support start/stop.
 	DriveStartStopTypeUnknown DriveStartStopType = iota
-	// Shutdown: stop method will physically shut down the drive and e.g. power
-	// down the port the drive is attached to.
+	// DriveStartStopTypeShutdown: stop method will physically shut down the
+	// drive and e.g. power down the port the drive is attached to.
 	DriveStartStopTypeShutdown
-	// Network: start/stop methods are used for connecting/disconnect to the
-	// drive over the network.
+	// DriveStartStopTypeNetwork: start/stop methods are used for
+	// connecting/disconnect to the drive over the network.
 	DriveStartStopTypeNetwork
-	// Multidisk: start/stop methods will assemble/disassemble a virtual drive
-	// from several physical drives.
+	// DriveStartStopTypeMultidisk: start/stop methods will assemble/disassemble
+	// a virtual drive from several physical drives.
 	DriveStartStopTypeMultidisk
-	// Password: start/stop methods will unlock/lock the disk (for example using
-	// the ATA <quote>SECURITY UNLOCK DEVICE</quote> command)
+	// DriveStartStopTypePassword: start/stop methods will unlock/lock the disk
+	// (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote> command)
 	DriveStartStopTypePassword
 )
 
@@ -420,19 +686,38 @@ func marshalDriveStartStopType(p uintptr) (interface{}, error) {
 	return DriveStartStopType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for DriveStartStopType.
+func (d DriveStartStopType) String() string {
+	switch d {
+	case DriveStartStopTypeUnknown:
+		return "Unknown"
+	case DriveStartStopTypeShutdown:
+		return "Shutdown"
+	case DriveStartStopTypeNetwork:
+		return "Network"
+	case DriveStartStopTypeMultidisk:
+		return "Multidisk"
+	case DriveStartStopTypePassword:
+		return "Password"
+	default:
+		return fmt.Sprintf("DriveStartStopType(%d)", d)
+	}
+}
+
 // EmblemOrigin is used to add information about the origin of the emblem to
 // #GEmblem.
 type EmblemOrigin int
 
 const (
-	// Unknown: emblem of unknown origin
+	// EmblemOriginUnknown: emblem of unknown origin
 	EmblemOriginUnknown EmblemOrigin = iota
-	// Device: emblem adds device-specific information
+	// EmblemOriginDevice: emblem adds device-specific information
 	EmblemOriginDevice
-	// Livemetadata: emblem depicts live metadata, such as "readonly"
+	// EmblemOriginLivemetadata: emblem depicts live metadata, such as
+	// "readonly"
 	EmblemOriginLivemetadata
-	// Tag: emblem comes from a user-defined tag, e.g. set by nautilus (in the
-	// future)
+	// EmblemOriginTag: emblem comes from a user-defined tag, e.g. set by
+	// nautilus (in the future)
 	EmblemOriginTag
 )
 
@@ -440,16 +725,32 @@ func marshalEmblemOrigin(p uintptr) (interface{}, error) {
 	return EmblemOrigin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for EmblemOrigin.
+func (e EmblemOrigin) String() string {
+	switch e {
+	case EmblemOriginUnknown:
+		return "Unknown"
+	case EmblemOriginDevice:
+		return "Device"
+	case EmblemOriginLivemetadata:
+		return "Livemetadata"
+	case EmblemOriginTag:
+		return "Tag"
+	default:
+		return fmt.Sprintf("EmblemOrigin(%d)", e)
+	}
+}
+
 // FileAttributeStatus: used by g_file_set_attributes_from_info() when setting
 // file attributes.
 type FileAttributeStatus int
 
 const (
-	// Unset: attribute value is unset (empty).
+	// FileAttributeStatusUnset: attribute value is unset (empty).
 	FileAttributeStatusUnset FileAttributeStatus = iota
-	// Set: attribute value is set.
+	// FileAttributeStatusSet: attribute value is set.
 	FileAttributeStatusSet
-	// ErrorSetting indicates an error in setting the value.
+	// FileAttributeStatusErrorSetting indicates an error in setting the value.
 	FileAttributeStatusErrorSetting
 )
 
@@ -457,29 +758,43 @@ func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
 	return FileAttributeStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for FileAttributeStatus.
+func (f FileAttributeStatus) String() string {
+	switch f {
+	case FileAttributeStatusUnset:
+		return "Unset"
+	case FileAttributeStatusSet:
+		return "Set"
+	case FileAttributeStatusErrorSetting:
+		return "ErrorSetting"
+	default:
+		return fmt.Sprintf("FileAttributeStatus(%d)", f)
+	}
+}
+
 // FileAttributeType: data types for file attributes.
 type FileAttributeType int
 
 const (
-	// Invalid indicates an invalid or uninitialized type.
+	// FileAttributeTypeInvalid indicates an invalid or uninitialized type.
 	FileAttributeTypeInvalid FileAttributeType = iota
-	// String: null terminated UTF8 string.
+	// FileAttributeTypeString: null terminated UTF8 string.
 	FileAttributeTypeString
-	// ByteString: zero terminated string of non-zero bytes.
+	// FileAttributeTypeByteString: zero terminated string of non-zero bytes.
 	FileAttributeTypeByteString
-	// Boolean value.
+	// FileAttributeTypeBoolean value.
 	FileAttributeTypeBoolean
-	// Uint32: unsigned 4-byte/32-bit integer.
+	// FileAttributeTypeUint32: unsigned 4-byte/32-bit integer.
 	FileAttributeTypeUint32
-	// Int32: signed 4-byte/32-bit integer.
+	// FileAttributeTypeInt32: signed 4-byte/32-bit integer.
 	FileAttributeTypeInt32
-	// Uint64: unsigned 8-byte/64-bit integer.
+	// FileAttributeTypeUint64: unsigned 8-byte/64-bit integer.
 	FileAttributeTypeUint64
-	// Int64: signed 8-byte/64-bit integer.
+	// FileAttributeTypeInt64: signed 8-byte/64-bit integer.
 	FileAttributeTypeInt64
-	// Object: #GObject.
+	// FileAttributeTypeObject: #GObject.
 	FileAttributeTypeObject
-	// Stringv: NULL terminated char **. Since 2.22
+	// FileAttributeTypeStringv: NULL terminated char **. Since 2.22
 	FileAttributeTypeStringv
 )
 
@@ -487,43 +802,101 @@ func marshalFileAttributeType(p uintptr) (interface{}, error) {
 	return FileAttributeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for FileAttributeType.
+func (f FileAttributeType) String() string {
+	switch f {
+	case FileAttributeTypeInvalid:
+		return "Invalid"
+	case FileAttributeTypeString:
+		return "String"
+	case FileAttributeTypeByteString:
+		return "ByteString"
+	case FileAttributeTypeBoolean:
+		return "Boolean"
+	case FileAttributeTypeUint32:
+		return "Uint32"
+	case FileAttributeTypeInt32:
+		return "Int32"
+	case FileAttributeTypeUint64:
+		return "Uint64"
+	case FileAttributeTypeInt64:
+		return "Int64"
+	case FileAttributeTypeObject:
+		return "Object"
+	case FileAttributeTypeStringv:
+		return "Stringv"
+	default:
+		return fmt.Sprintf("FileAttributeType(%d)", f)
+	}
+}
+
 // FileMonitorEvent specifies what type of event a monitor event is.
 type FileMonitorEvent int
 
 const (
-	// Changed: file changed.
+	// FileMonitorEventChanged: file changed.
 	FileMonitorEventChanged FileMonitorEvent = iota
-	// ChangesDoneHint: hint that this was probably the last change in a set of
-	// changes.
+	// FileMonitorEventChangesDoneHint: hint that this was probably the last
+	// change in a set of changes.
 	FileMonitorEventChangesDoneHint
-	// Deleted: file was deleted.
+	// FileMonitorEventDeleted: file was deleted.
 	FileMonitorEventDeleted
-	// Created: file was created.
+	// FileMonitorEventCreated: file was created.
 	FileMonitorEventCreated
-	// AttributeChanged: file attribute was changed.
+	// FileMonitorEventAttributeChanged: file attribute was changed.
 	FileMonitorEventAttributeChanged
-	// PreUnmount: file location will soon be unmounted.
+	// FileMonitorEventPreUnmount: file location will soon be unmounted.
 	FileMonitorEventPreUnmount
-	// Unmounted: file location was unmounted.
+	// FileMonitorEventUnmounted: file location was unmounted.
 	FileMonitorEventUnmounted
-	// Moved: file was moved -- only sent if the (deprecated)
+	// FileMonitorEventMoved: file was moved -- only sent if the (deprecated)
 	// G_FILE_MONITOR_SEND_MOVED flag is set
 	FileMonitorEventMoved
-	// Renamed: file was renamed within the current directory -- only sent if
-	// the G_FILE_MONITOR_WATCH_MOVES flag is set. Since: 2.46.
+	// FileMonitorEventRenamed: file was renamed within the current directory --
+	// only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set. Since: 2.46.
 	FileMonitorEventRenamed
-	// MovedIn: file was moved into the monitored directory from another
-	// location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set.
-	// Since: 2.46.
+	// FileMonitorEventMovedIn: file was moved into the monitored directory from
+	// another location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag is
+	// set. Since: 2.46.
 	FileMonitorEventMovedIn
-	// MovedOut: file was moved out of the monitored directory to another
-	// location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag is set.
-	// Since: 2.46
+	// FileMonitorEventMovedOut: file was moved out of the monitored directory
+	// to another location -- only sent if the G_FILE_MONITOR_WATCH_MOVES flag
+	// is set. Since: 2.46
 	FileMonitorEventMovedOut
 )
 
 func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
 	return FileMonitorEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FileMonitorEvent.
+func (f FileMonitorEvent) String() string {
+	switch f {
+	case FileMonitorEventChanged:
+		return "Changed"
+	case FileMonitorEventChangesDoneHint:
+		return "ChangesDoneHint"
+	case FileMonitorEventDeleted:
+		return "Deleted"
+	case FileMonitorEventCreated:
+		return "Created"
+	case FileMonitorEventAttributeChanged:
+		return "AttributeChanged"
+	case FileMonitorEventPreUnmount:
+		return "PreUnmount"
+	case FileMonitorEventUnmounted:
+		return "Unmounted"
+	case FileMonitorEventMoved:
+		return "Moved"
+	case FileMonitorEventRenamed:
+		return "Renamed"
+	case FileMonitorEventMovedIn:
+		return "MovedIn"
+	case FileMonitorEventMovedOut:
+		return "MovedOut"
+	default:
+		return fmt.Sprintf("FileMonitorEvent(%d)", f)
+	}
 }
 
 // FileType indicates the file's on-disk type.
@@ -539,25 +912,48 @@ func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
 type FileType int
 
 const (
-	// Unknown file's type is unknown.
+	// FileTypeUnknown file's type is unknown.
 	FileTypeUnknown FileType = iota
-	// Regular: file handle represents a regular file.
+	// FileTypeRegular: file handle represents a regular file.
 	FileTypeRegular
-	// Directory: file handle represents a directory.
+	// FileTypeDirectory: file handle represents a directory.
 	FileTypeDirectory
-	// SymbolicLink: file handle represents a symbolic link (Unix systems).
+	// FileTypeSymbolicLink: file handle represents a symbolic link (Unix
+	// systems).
 	FileTypeSymbolicLink
-	// Special: file is a "special" file, such as a socket, fifo, block device,
-	// or character device.
+	// FileTypeSpecial: file is a "special" file, such as a socket, fifo, block
+	// device, or character device.
 	FileTypeSpecial
-	// Shortcut: file is a shortcut (Windows systems).
+	// FileTypeShortcut: file is a shortcut (Windows systems).
 	FileTypeShortcut
-	// Mountable: file is a mountable location.
+	// FileTypeMountable: file is a mountable location.
 	FileTypeMountable
 )
 
 func marshalFileType(p uintptr) (interface{}, error) {
 	return FileType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FileType.
+func (f FileType) String() string {
+	switch f {
+	case FileTypeUnknown:
+		return "Unknown"
+	case FileTypeRegular:
+		return "Regular"
+	case FileTypeDirectory:
+		return "Directory"
+	case FileTypeSymbolicLink:
+		return "SymbolicLink"
+	case FileTypeSpecial:
+		return "Special"
+	case FileTypeShortcut:
+		return "Shortcut"
+	case FileTypeMountable:
+		return "Mountable"
+	default:
+		return fmt.Sprintf("FileType(%d)", f)
+	}
 }
 
 // FilesystemPreviewType indicates a hint from the file system whether files
@@ -566,16 +962,32 @@ func marshalFileType(p uintptr) (interface{}, error) {
 type FilesystemPreviewType int
 
 const (
-	// IfAlways: only preview files if user has explicitly requested it.
+	// FilesystemPreviewTypeIfAlways: only preview files if user has explicitly
+	// requested it.
 	FilesystemPreviewTypeIfAlways FilesystemPreviewType = iota
-	// IfLocal: preview files if user has requested preview of "local" files.
+	// FilesystemPreviewTypeIfLocal: preview files if user has requested preview
+	// of "local" files.
 	FilesystemPreviewTypeIfLocal
-	// Never: never preview files.
+	// FilesystemPreviewTypeNever: never preview files.
 	FilesystemPreviewTypeNever
 )
 
 func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 	return FilesystemPreviewType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for FilesystemPreviewType.
+func (f FilesystemPreviewType) String() string {
+	switch f {
+	case FilesystemPreviewTypeIfAlways:
+		return "IfAlways"
+	case FilesystemPreviewTypeIfLocal:
+		return "IfLocal"
+	case FilesystemPreviewTypeNever:
+		return "Never"
+	default:
+		return fmt.Sprintf("FilesystemPreviewType(%d)", f)
+	}
 }
 
 // IOErrorEnum: error codes returned by GIO functions.
@@ -599,133 +1011,250 @@ func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 type IOErrorEnum int
 
 const (
-	// Failed: generic error condition for when an operation fails and no more
-	// specific OErrorEnum value is defined.
-	IOErrorEnumFailed IOErrorEnum = 0
-	// NotFound: file not found.
-	IOErrorEnumNotFound IOErrorEnum = 1
-	// Exists: file already exists.
-	IOErrorEnumExists IOErrorEnum = 2
-	// IsDirectory: file is a directory.
-	IOErrorEnumIsDirectory IOErrorEnum = 3
-	// NotDirectory: file is not a directory.
-	IOErrorEnumNotDirectory IOErrorEnum = 4
-	// NotEmpty: file is a directory that isn't empty.
-	IOErrorEnumNotEmpty IOErrorEnum = 5
-	// NotRegularFile: file is not a regular file.
-	IOErrorEnumNotRegularFile IOErrorEnum = 6
-	// NotSymbolicLink: file is not a symbolic link.
-	IOErrorEnumNotSymbolicLink IOErrorEnum = 7
-	// NotMountableFile: file cannot be mounted.
-	IOErrorEnumNotMountableFile IOErrorEnum = 8
-	// FilenameTooLong: filename is too many characters.
-	IOErrorEnumFilenameTooLong IOErrorEnum = 9
-	// InvalidFilename: filename is invalid or contains invalid characters.
-	IOErrorEnumInvalidFilename IOErrorEnum = 10
-	// TooManyLinks: file contains too many symbolic links.
-	IOErrorEnumTooManyLinks IOErrorEnum = 11
-	// NoSpace: no space left on drive.
-	IOErrorEnumNoSpace IOErrorEnum = 12
-	// InvalidArgument: invalid argument.
-	IOErrorEnumInvalidArgument IOErrorEnum = 13
-	// PermissionDenied: permission denied.
-	IOErrorEnumPermissionDenied IOErrorEnum = 14
-	// NotSupported: operation (or one of its parameters) not supported
-	IOErrorEnumNotSupported IOErrorEnum = 15
-	// NotMounted: file isn't mounted.
-	IOErrorEnumNotMounted IOErrorEnum = 16
-	// AlreadyMounted: file is already mounted.
-	IOErrorEnumAlreadyMounted IOErrorEnum = 17
-	// Closed: file was closed.
-	IOErrorEnumClosed IOErrorEnum = 18
-	// Cancelled: operation was cancelled. See #GCancellable.
-	IOErrorEnumCancelled IOErrorEnum = 19
-	// Pending operations are still pending.
-	IOErrorEnumPending IOErrorEnum = 20
-	// ReadOnly: file is read only.
-	IOErrorEnumReadOnly IOErrorEnum = 21
-	// CantCreateBackup: backup couldn't be created.
-	IOErrorEnumCantCreateBackup IOErrorEnum = 22
-	// WrongEtag file's Entity Tag was incorrect.
-	IOErrorEnumWrongEtag IOErrorEnum = 23
-	// TimedOut: operation timed out.
-	IOErrorEnumTimedOut IOErrorEnum = 24
-	// WouldRecurse: operation would be recursive.
-	IOErrorEnumWouldRecurse IOErrorEnum = 25
-	// Busy: file is busy.
-	IOErrorEnumBusy IOErrorEnum = 26
-	// WouldBlock: operation would block.
-	IOErrorEnumWouldBlock IOErrorEnum = 27
-	// HostNotFound: host couldn't be found (remote operations).
-	IOErrorEnumHostNotFound IOErrorEnum = 28
-	// WouldMerge: operation would merge files.
-	IOErrorEnumWouldMerge IOErrorEnum = 29
-	// FailedHandled: operation failed and a helper program has already
+	// IOErrorFailed: generic error condition for when an operation fails and no
+	// more specific OErrorEnum value is defined.
+	IOErrorFailed IOErrorEnum = 0
+	// IOErrorNotFound: file not found.
+	IOErrorNotFound IOErrorEnum = 1
+	// IOErrorExists: file already exists.
+	IOErrorExists IOErrorEnum = 2
+	// IOErrorIsDirectory: file is a directory.
+	IOErrorIsDirectory IOErrorEnum = 3
+	// IOErrorNotDirectory: file is not a directory.
+	IOErrorNotDirectory IOErrorEnum = 4
+	// IOErrorNotEmpty: file is a directory that isn't empty.
+	IOErrorNotEmpty IOErrorEnum = 5
+	// IOErrorNotRegularFile: file is not a regular file.
+	IOErrorNotRegularFile IOErrorEnum = 6
+	// IOErrorNotSymbolicLink: file is not a symbolic link.
+	IOErrorNotSymbolicLink IOErrorEnum = 7
+	// IOErrorNotMountableFile: file cannot be mounted.
+	IOErrorNotMountableFile IOErrorEnum = 8
+	// IOErrorFilenameTooLong: filename is too many characters.
+	IOErrorFilenameTooLong IOErrorEnum = 9
+	// IOErrorInvalidFilename: filename is invalid or contains invalid
+	// characters.
+	IOErrorInvalidFilename IOErrorEnum = 10
+	// IOErrorTooManyLinks: file contains too many symbolic links.
+	IOErrorTooManyLinks IOErrorEnum = 11
+	// IOErrorNoSpace: no space left on drive.
+	IOErrorNoSpace IOErrorEnum = 12
+	// IOErrorInvalidArgument: invalid argument.
+	IOErrorInvalidArgument IOErrorEnum = 13
+	// IOErrorPermissionDenied: permission denied.
+	IOErrorPermissionDenied IOErrorEnum = 14
+	// IOErrorNotSupported: operation (or one of its parameters) not supported
+	IOErrorNotSupported IOErrorEnum = 15
+	// IOErrorNotMounted: file isn't mounted.
+	IOErrorNotMounted IOErrorEnum = 16
+	// IOErrorAlreadyMounted: file is already mounted.
+	IOErrorAlreadyMounted IOErrorEnum = 17
+	// IOErrorClosed: file was closed.
+	IOErrorClosed IOErrorEnum = 18
+	// IOErrorCancelled: operation was cancelled. See #GCancellable.
+	IOErrorCancelled IOErrorEnum = 19
+	// IOErrorPending operations are still pending.
+	IOErrorPending IOErrorEnum = 20
+	// IOErrorReadOnly: file is read only.
+	IOErrorReadOnly IOErrorEnum = 21
+	// IOErrorCantCreateBackup: backup couldn't be created.
+	IOErrorCantCreateBackup IOErrorEnum = 22
+	// IOErrorWrongEtag file's Entity Tag was incorrect.
+	IOErrorWrongEtag IOErrorEnum = 23
+	// IOErrorTimedOut: operation timed out.
+	IOErrorTimedOut IOErrorEnum = 24
+	// IOErrorWouldRecurse: operation would be recursive.
+	IOErrorWouldRecurse IOErrorEnum = 25
+	// IOErrorBusy: file is busy.
+	IOErrorBusy IOErrorEnum = 26
+	// IOErrorWouldBlock: operation would block.
+	IOErrorWouldBlock IOErrorEnum = 27
+	// IOErrorHostNotFound: host couldn't be found (remote operations).
+	IOErrorHostNotFound IOErrorEnum = 28
+	// IOErrorWouldMerge: operation would merge files.
+	IOErrorWouldMerge IOErrorEnum = 29
+	// IOErrorFailedHandled: operation failed and a helper program has already
 	// interacted with the user. Do not display any error dialog.
-	IOErrorEnumFailedHandled IOErrorEnum = 30
-	// TooManyOpenFiles: current process has too many files open and can't open
-	// any more. Duplicate descriptors do count toward this limit. Since 2.20
-	IOErrorEnumTooManyOpenFiles IOErrorEnum = 31
-	// NotInitialized: object has not been initialized. Since 2.22
-	IOErrorEnumNotInitialized IOErrorEnum = 32
-	// AddressInUse: requested address is already in use. Since 2.22
-	IOErrorEnumAddressInUse IOErrorEnum = 33
-	// PartialInput: need more input to finish operation. Since 2.24
-	IOErrorEnumPartialInput IOErrorEnum = 34
-	// InvalidData: input data was invalid. Since 2.24
-	IOErrorEnumInvalidData IOErrorEnum = 35
-	// DBusError: remote object generated an error that doesn't correspond to a
-	// locally registered #GError error domain. Use
+	IOErrorFailedHandled IOErrorEnum = 30
+	// IOErrorTooManyOpenFiles: current process has too many files open and
+	// can't open any more. Duplicate descriptors do count toward this limit.
+	// Since 2.20
+	IOErrorTooManyOpenFiles IOErrorEnum = 31
+	// IOErrorNotInitialized: object has not been initialized. Since 2.22
+	IOErrorNotInitialized IOErrorEnum = 32
+	// IOErrorAddressInUse: requested address is already in use. Since 2.22
+	IOErrorAddressInUse IOErrorEnum = 33
+	// IOErrorPartialInput: need more input to finish operation. Since 2.24
+	IOErrorPartialInput IOErrorEnum = 34
+	// IOErrorInvalidData: input data was invalid. Since 2.24
+	IOErrorInvalidData IOErrorEnum = 35
+	// IOErrorDBusError: remote object generated an error that doesn't
+	// correspond to a locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	IOErrorEnumDBusError IOErrorEnum = 36
-	// HostUnreachable: host unreachable. Since 2.26
-	IOErrorEnumHostUnreachable IOErrorEnum = 37
-	// NetworkUnreachable: network unreachable. Since 2.26
-	IOErrorEnumNetworkUnreachable IOErrorEnum = 38
-	// ConnectionRefused: connection refused. Since 2.26
-	IOErrorEnumConnectionRefused IOErrorEnum = 39
-	// ProxyFailed: connection to proxy server failed. Since 2.26
-	IOErrorEnumProxyFailed IOErrorEnum = 40
-	// ProxyAuthFailed: proxy authentication failed. Since 2.26
-	IOErrorEnumProxyAuthFailed IOErrorEnum = 41
-	// ProxyNeedAuth: proxy server needs authentication. Since 2.26
-	IOErrorEnumProxyNeedAuth IOErrorEnum = 42
-	// ProxyNotAllowed: proxy connection is not allowed by ruleset. Since 2.26
-	IOErrorEnumProxyNotAllowed IOErrorEnum = 43
-	// BrokenPipe: broken pipe. Since 2.36
-	IOErrorEnumBrokenPipe IOErrorEnum = 44
-	// ConnectionClosed: connection closed by peer. Note that this is the same
-	// code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
+	IOErrorDBusError IOErrorEnum = 36
+	// IOErrorHostUnreachable: host unreachable. Since 2.26
+	IOErrorHostUnreachable IOErrorEnum = 37
+	// IOErrorNetworkUnreachable: network unreachable. Since 2.26
+	IOErrorNetworkUnreachable IOErrorEnum = 38
+	// IOErrorConnectionRefused: connection refused. Since 2.26
+	IOErrorConnectionRefused IOErrorEnum = 39
+	// IOErrorProxyFailed: connection to proxy server failed. Since 2.26
+	IOErrorProxyFailed IOErrorEnum = 40
+	// IOErrorProxyAuthFailed: proxy authentication failed. Since 2.26
+	IOErrorProxyAuthFailed IOErrorEnum = 41
+	// IOErrorProxyNeedAuth: proxy server needs authentication. Since 2.26
+	IOErrorProxyNeedAuth IOErrorEnum = 42
+	// IOErrorProxyNotAllowed: proxy connection is not allowed by ruleset. Since
+	// 2.26
+	IOErrorProxyNotAllowed IOErrorEnum = 43
+	// IOErrorBrokenPipe: broken pipe. Since 2.36
+	IOErrorBrokenPipe IOErrorEnum = 44
+	// IOErrorConnectionClosed: connection closed by peer. Note that this is the
+	// same code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
 	// errors returned G_IO_ERROR_BROKEN_PIPE, but others returned
 	// G_IO_ERROR_FAILED. Now they should all return the same value, which has
 	// this more logical name. Since 2.44.
-	IOErrorEnumConnectionClosed IOErrorEnum = 44
-	// NotConnected: transport endpoint is not connected. Since 2.44
-	IOErrorEnumNotConnected IOErrorEnum = 45
-	// MessageTooLarge: message too large. Since 2.48.
-	IOErrorEnumMessageTooLarge IOErrorEnum = 46
+	IOErrorConnectionClosed IOErrorEnum = 44
+	// IOErrorNotConnected: transport endpoint is not connected. Since 2.44
+	IOErrorNotConnected IOErrorEnum = 45
+	// IOErrorMessageTooLarge: message too large. Since 2.48.
+	IOErrorMessageTooLarge IOErrorEnum = 46
 )
 
 func marshalIOErrorEnum(p uintptr) (interface{}, error) {
 	return IOErrorEnum(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for IOErrorEnum.
+func (i IOErrorEnum) String() string {
+	switch i {
+	case IOErrorFailed:
+		return "Failed"
+	case IOErrorNotFound:
+		return "NotFound"
+	case IOErrorExists:
+		return "Exists"
+	case IOErrorIsDirectory:
+		return "IsDirectory"
+	case IOErrorNotDirectory:
+		return "NotDirectory"
+	case IOErrorNotEmpty:
+		return "NotEmpty"
+	case IOErrorNotRegularFile:
+		return "NotRegularFile"
+	case IOErrorNotSymbolicLink:
+		return "NotSymbolicLink"
+	case IOErrorNotMountableFile:
+		return "NotMountableFile"
+	case IOErrorFilenameTooLong:
+		return "FilenameTooLong"
+	case IOErrorInvalidFilename:
+		return "InvalidFilename"
+	case IOErrorTooManyLinks:
+		return "TooManyLinks"
+	case IOErrorNoSpace:
+		return "NoSpace"
+	case IOErrorInvalidArgument:
+		return "InvalidArgument"
+	case IOErrorPermissionDenied:
+		return "PermissionDenied"
+	case IOErrorNotSupported:
+		return "NotSupported"
+	case IOErrorNotMounted:
+		return "NotMounted"
+	case IOErrorAlreadyMounted:
+		return "AlreadyMounted"
+	case IOErrorClosed:
+		return "Closed"
+	case IOErrorCancelled:
+		return "Cancelled"
+	case IOErrorPending:
+		return "Pending"
+	case IOErrorReadOnly:
+		return "ReadOnly"
+	case IOErrorCantCreateBackup:
+		return "CantCreateBackup"
+	case IOErrorWrongEtag:
+		return "WrongEtag"
+	case IOErrorTimedOut:
+		return "TimedOut"
+	case IOErrorWouldRecurse:
+		return "WouldRecurse"
+	case IOErrorBusy:
+		return "Busy"
+	case IOErrorWouldBlock:
+		return "WouldBlock"
+	case IOErrorHostNotFound:
+		return "HostNotFound"
+	case IOErrorWouldMerge:
+		return "WouldMerge"
+	case IOErrorFailedHandled:
+		return "FailedHandled"
+	case IOErrorTooManyOpenFiles:
+		return "TooManyOpenFiles"
+	case IOErrorNotInitialized:
+		return "NotInitialized"
+	case IOErrorAddressInUse:
+		return "AddressInUse"
+	case IOErrorPartialInput:
+		return "PartialInput"
+	case IOErrorInvalidData:
+		return "InvalidData"
+	case IOErrorDBusError:
+		return "DBusError"
+	case IOErrorHostUnreachable:
+		return "HostUnreachable"
+	case IOErrorNetworkUnreachable:
+		return "NetworkUnreachable"
+	case IOErrorConnectionRefused:
+		return "ConnectionRefused"
+	case IOErrorProxyFailed:
+		return "ProxyFailed"
+	case IOErrorProxyAuthFailed:
+		return "ProxyAuthFailed"
+	case IOErrorProxyNeedAuth:
+		return "ProxyNeedAuth"
+	case IOErrorProxyNotAllowed:
+		return "ProxyNotAllowed"
+	case IOErrorBrokenPipe:
+		return "BrokenPipe"
+	case IOErrorNotConnected:
+		return "NotConnected"
+	case IOErrorMessageTooLarge:
+		return "MessageTooLarge"
+	default:
+		return fmt.Sprintf("IOErrorEnum(%d)", i)
+	}
+}
+
 // IOModuleScopeFlags flags for use with g_io_module_scope_new().
 type IOModuleScopeFlags int
 
 const (
-	// None: no module scan flags
-	IOModuleScopeFlagsNone IOModuleScopeFlags = iota
-	// BlockDuplicates: when using this scope to load or scan modules,
-	// automatically block a modules which has the same base basename as
-	// previously loaded module.
-	IOModuleScopeFlagsBlockDuplicates
+	// IOModuleScopeNone: no module scan flags
+	IOModuleScopeNone IOModuleScopeFlags = iota
+	// IOModuleScopeBlockDuplicates: when using this scope to load or scan
+	// modules, automatically block a modules which has the same base basename
+	// as previously loaded module.
+	IOModuleScopeBlockDuplicates
 )
 
 func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 	return IOModuleScopeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for IOModuleScopeFlags.
+func (i IOModuleScopeFlags) String() string {
+	switch i {
+	case IOModuleScopeNone:
+		return "None"
+	case IOModuleScopeBlockDuplicates:
+		return "BlockDuplicates"
+	default:
+		return fmt.Sprintf("IOModuleScopeFlags(%d)", i)
+	}
 }
 
 // MemoryMonitorWarningLevel: memory availability warning levels.
@@ -738,16 +1267,18 @@ func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 type MemoryMonitorWarningLevel int
 
 const (
-	// Low: memory on the device is low, processes should free up unneeded
-	// resources (for example, in-memory caches) so they can be used elsewhere.
+	// MemoryMonitorWarningLevelLow: memory on the device is low, processes
+	// should free up unneeded resources (for example, in-memory caches) so they
+	// can be used elsewhere.
 	MemoryMonitorWarningLevelLow MemoryMonitorWarningLevel = 50
-	// Medium: same as G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has
-	// even less free memory, so processes should try harder to free up unneeded
-	// resources. If your process does not need to stay running, it is a good
-	// time for it to quit.
+	// MemoryMonitorWarningLevelMedium: same as
+	// G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has even less free
+	// memory, so processes should try harder to free up unneeded resources. If
+	// your process does not need to stay running, it is a good time for it to
+	// quit.
 	MemoryMonitorWarningLevelMedium MemoryMonitorWarningLevel = 100
-	// Critical: system will soon start terminating processes to reclaim memory,
-	// including background processes.
+	// MemoryMonitorWarningLevelCritical: system will soon start terminating
+	// processes to reclaim memory, including background processes.
 	MemoryMonitorWarningLevelCritical MemoryMonitorWarningLevel = 255
 )
 
@@ -755,22 +1286,50 @@ func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
 	return MemoryMonitorWarningLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for MemoryMonitorWarningLevel.
+func (m MemoryMonitorWarningLevel) String() string {
+	switch m {
+	case MemoryMonitorWarningLevelLow:
+		return "Low"
+	case MemoryMonitorWarningLevelMedium:
+		return "Medium"
+	case MemoryMonitorWarningLevelCritical:
+		return "Critical"
+	default:
+		return fmt.Sprintf("MemoryMonitorWarningLevel(%d)", m)
+	}
+}
+
 // MountOperationResult is returned as a result when a request for information
 // is send by the mounting operation.
 type MountOperationResult int
 
 const (
-	// Handled: request was fulfilled and the user specified data is now
-	// available
-	MountOperationResultHandled MountOperationResult = iota
-	// Aborted: user requested the mount operation to be aborted
-	MountOperationResultAborted
-	// Unhandled: request was unhandled (i.e. not implemented)
-	MountOperationResultUnhandled
+	// MountOperationHandled: request was fulfilled and the user specified data
+	// is now available
+	MountOperationHandled MountOperationResult = iota
+	// MountOperationAborted: user requested the mount operation to be aborted
+	MountOperationAborted
+	// MountOperationUnhandled: request was unhandled (i.e. not implemented)
+	MountOperationUnhandled
 )
 
 func marshalMountOperationResult(p uintptr) (interface{}, error) {
 	return MountOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MountOperationResult.
+func (m MountOperationResult) String() string {
+	switch m {
+	case MountOperationHandled:
+		return "Handled"
+	case MountOperationAborted:
+		return "Aborted"
+	case MountOperationUnhandled:
+		return "Unhandled"
+	default:
+		return fmt.Sprintf("MountOperationResult(%d)", m)
+	}
 }
 
 // NetworkConnectivity host's network connectivity state, as reported by
@@ -778,17 +1337,18 @@ func marshalMountOperationResult(p uintptr) (interface{}, error) {
 type NetworkConnectivity int
 
 const (
-	// Local: host is not configured with a route to the Internet; it may or may
-	// not be connected to a local network.
+	// NetworkConnectivityLocal: host is not configured with a route to the
+	// Internet; it may or may not be connected to a local network.
 	NetworkConnectivityLocal NetworkConnectivity = 1
-	// Limited: host is connected to a network, but does not appear to be able
-	// to reach the full Internet, perhaps due to upstream network problems.
+	// NetworkConnectivityLimited: host is connected to a network, but does not
+	// appear to be able to reach the full Internet, perhaps due to upstream
+	// network problems.
 	NetworkConnectivityLimited NetworkConnectivity = 2
-	// Portal: host is behind a captive portal and cannot reach the full
-	// Internet.
+	// NetworkConnectivityPortal: host is behind a captive portal and cannot
+	// reach the full Internet.
 	NetworkConnectivityPortal NetworkConnectivity = 3
-	// Full: host is connected to a network, and appears to be able to reach the
-	// full Internet.
+	// NetworkConnectivityFull: host is connected to a network, and appears to
+	// be able to reach the full Internet.
 	NetworkConnectivityFull NetworkConnectivity = 4
 )
 
@@ -796,29 +1356,62 @@ func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
 	return NetworkConnectivity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for NetworkConnectivity.
+func (n NetworkConnectivity) String() string {
+	switch n {
+	case NetworkConnectivityLocal:
+		return "Local"
+	case NetworkConnectivityLimited:
+		return "Limited"
+	case NetworkConnectivityPortal:
+		return "Portal"
+	case NetworkConnectivityFull:
+		return "Full"
+	default:
+		return fmt.Sprintf("NetworkConnectivity(%d)", n)
+	}
+}
+
 // NotificationPriority: priority levels for #GNotifications.
 type NotificationPriority int
 
 const (
-	// Normal: default priority, to be used for the majority of notifications
-	// (for example email messages, software updates, completed download/sync
-	// operations)
+	// NotificationPriorityNormal: default priority, to be used for the majority
+	// of notifications (for example email messages, software updates, completed
+	// download/sync operations)
 	NotificationPriorityNormal NotificationPriority = iota
-	// Low: for notifications that do not require immediate attention -
-	// typically used for contextual background information, such as contact
-	// birthdays or local weather
+	// NotificationPriorityLow: for notifications that do not require immediate
+	// attention - typically used for contextual background information, such as
+	// contact birthdays or local weather
 	NotificationPriorityLow
-	// High: for events that require more attention, usually because responses
-	// are time-sensitive (for example chat and SMS messages or alarms)
+	// NotificationPriorityHigh: for events that require more attention, usually
+	// because responses are time-sensitive (for example chat and SMS messages
+	// or alarms)
 	NotificationPriorityHigh
-	// Urgent: for urgent notifications, or notifications that require a
-	// response in a short space of time (for example phone calls or emergency
-	// warnings)
+	// NotificationPriorityUrgent: for urgent notifications, or notifications
+	// that require a response in a short space of time (for example phone calls
+	// or emergency warnings)
 	NotificationPriorityUrgent
 )
 
 func marshalNotificationPriority(p uintptr) (interface{}, error) {
 	return NotificationPriority(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for NotificationPriority.
+func (n NotificationPriority) String() string {
+	switch n {
+	case NotificationPriorityNormal:
+		return "Normal"
+	case NotificationPriorityLow:
+		return "Low"
+	case NotificationPriorityHigh:
+		return "High"
+	case NotificationPriorityUrgent:
+		return "Urgent"
+	default:
+		return fmt.Sprintf("NotificationPriority(%d)", n)
+	}
 }
 
 // PasswordSave is used to indicate the lifespan of a saved password.
@@ -828,16 +1421,30 @@ func marshalNotificationPriority(p uintptr) (interface{}, error) {
 type PasswordSave int
 
 const (
-	// Never save a password.
+	// PasswordSaveNever save a password.
 	PasswordSaveNever PasswordSave = iota
-	// ForSession: save a password for the session.
+	// PasswordSaveForSession: save a password for the session.
 	PasswordSaveForSession
-	// Permanently: save a password permanently.
+	// PasswordSavePermanently: save a password permanently.
 	PasswordSavePermanently
 )
 
 func marshalPasswordSave(p uintptr) (interface{}, error) {
 	return PasswordSave(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PasswordSave.
+func (p PasswordSave) String() string {
+	switch p {
+	case PasswordSaveNever:
+		return "Never"
+	case PasswordSaveForSession:
+		return "ForSession"
+	case PasswordSavePermanently:
+		return "Permanently"
+	default:
+		return fmt.Sprintf("PasswordSave(%d)", p)
+	}
 }
 
 // PollableReturn: return value for various IO operations that signal errors via
@@ -852,11 +1459,12 @@ func marshalPasswordSave(p uintptr) (interface{}, error) {
 type PollableReturn int
 
 const (
-	// Failed: generic error condition for when an operation fails.
+	// PollableReturnFailed: generic error condition for when an operation
+	// fails.
 	PollableReturnFailed PollableReturn = 0
-	// Ok: operation was successfully finished.
+	// PollableReturnOk: operation was successfully finished.
 	PollableReturnOk PollableReturn = 1
-	// WouldBlock: operation would block.
+	// PollableReturnWouldBlock: operation would block.
 	PollableReturnWouldBlock PollableReturn = -27
 )
 
@@ -864,22 +1472,50 @@ func marshalPollableReturn(p uintptr) (interface{}, error) {
 	return PollableReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for PollableReturn.
+func (p PollableReturn) String() string {
+	switch p {
+	case PollableReturnFailed:
+		return "Failed"
+	case PollableReturnOk:
+		return "Ok"
+	case PollableReturnWouldBlock:
+		return "WouldBlock"
+	default:
+		return fmt.Sprintf("PollableReturn(%d)", p)
+	}
+}
+
 // ResolverError: error code used with G_RESOLVER_ERROR in a #GError returned
 // from a #GResolver routine.
 type ResolverError int
 
 const (
-	// NotFound: requested name/address/service was not found
+	// ResolverErrorNotFound: requested name/address/service was not found
 	ResolverErrorNotFound ResolverError = iota
-	// TemporaryFailure: requested information could not be looked up due to a
-	// network error or similar problem
+	// ResolverErrorTemporaryFailure: requested information could not be looked
+	// up due to a network error or similar problem
 	ResolverErrorTemporaryFailure
-	// Internal: unknown error
+	// ResolverErrorInternal: unknown error
 	ResolverErrorInternal
 )
 
 func marshalResolverError(p uintptr) (interface{}, error) {
 	return ResolverError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ResolverError.
+func (r ResolverError) String() string {
+	switch r {
+	case ResolverErrorNotFound:
+		return "NotFound"
+	case ResolverErrorTemporaryFailure:
+		return "TemporaryFailure"
+	case ResolverErrorInternal:
+		return "Internal"
+	default:
+		return fmt.Sprintf("ResolverError(%d)", r)
+	}
 }
 
 // ResolverRecordType: type of record that g_resolver_lookup_records() or
@@ -915,20 +1551,38 @@ func marshalResolverError(p uintptr) (interface{}, error) {
 type ResolverRecordType int
 
 const (
-	// Srv: look up DNS SRV records for a domain
-	ResolverRecordTypeSrv ResolverRecordType = 1
-	// Mx: look up DNS MX records for a domain
-	ResolverRecordTypeMx ResolverRecordType = 2
-	// Txt: look up DNS TXT records for a name
-	ResolverRecordTypeTxt ResolverRecordType = 3
-	// Soa: look up DNS SOA records for a zone
-	ResolverRecordTypeSoa ResolverRecordType = 4
-	// Ns: look up DNS NS records for a domain
-	ResolverRecordTypeNs ResolverRecordType = 5
+	// ResolverRecordSrv: look up DNS SRV records for a domain
+	ResolverRecordSrv ResolverRecordType = 1
+	// ResolverRecordMx: look up DNS MX records for a domain
+	ResolverRecordMx ResolverRecordType = 2
+	// ResolverRecordTxt: look up DNS TXT records for a name
+	ResolverRecordTxt ResolverRecordType = 3
+	// ResolverRecordSoa: look up DNS SOA records for a zone
+	ResolverRecordSoa ResolverRecordType = 4
+	// ResolverRecordNs: look up DNS NS records for a domain
+	ResolverRecordNs ResolverRecordType = 5
 )
 
 func marshalResolverRecordType(p uintptr) (interface{}, error) {
 	return ResolverRecordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ResolverRecordType.
+func (r ResolverRecordType) String() string {
+	switch r {
+	case ResolverRecordSrv:
+		return "Srv"
+	case ResolverRecordMx:
+		return "Mx"
+	case ResolverRecordTxt:
+		return "Txt"
+	case ResolverRecordSoa:
+		return "Soa"
+	case ResolverRecordNs:
+		return "Ns"
+	default:
+		return fmt.Sprintf("ResolverRecordType(%d)", r)
+	}
 }
 
 // ResourceError: error code used with G_RESOURCE_ERROR in a #GError returned
@@ -936,14 +1590,26 @@ func marshalResolverRecordType(p uintptr) (interface{}, error) {
 type ResourceError int
 
 const (
-	// NotFound: no file was found at the requested path
+	// ResourceErrorNotFound: no file was found at the requested path
 	ResourceErrorNotFound ResourceError = iota
-	// Internal: unknown error
+	// ResourceErrorInternal: unknown error
 	ResourceErrorInternal
 )
 
 func marshalResourceError(p uintptr) (interface{}, error) {
 	return ResourceError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ResourceError.
+func (r ResourceError) String() string {
+	switch r {
+	case ResourceErrorNotFound:
+		return "NotFound"
+	case ResourceErrorInternal:
+		return "Internal"
+	default:
+		return fmt.Sprintf("ResourceError(%d)", r)
+	}
 }
 
 // SocketClientEvent describes an event occurring on a Client. See the
@@ -953,30 +1619,56 @@ func marshalResourceError(p uintptr) (interface{}, error) {
 type SocketClientEvent int
 
 const (
-	// Resolving: client is doing a DNS lookup.
-	SocketClientEventResolving SocketClientEvent = iota
-	// Resolved: client has completed a DNS lookup.
-	SocketClientEventResolved
-	// Connecting: client is connecting to a remote host (either a proxy or the
-	// destination server).
-	SocketClientEventConnecting
-	// Connected: client has connected to a remote host.
-	SocketClientEventConnected
-	// ProxyNegotiating: client is negotiating with a proxy to connect to the
-	// destination server.
-	SocketClientEventProxyNegotiating
-	// ProxyNegotiated: client has negotiated with the proxy server.
-	SocketClientEventProxyNegotiated
-	// TLSHandshaking: client is performing a TLS handshake.
-	SocketClientEventTLSHandshaking
-	// TLSHandshaked: client has performed a TLS handshake.
-	SocketClientEventTLSHandshaked
-	// Complete: client is done with a particular Connectable.
-	SocketClientEventComplete
+	// SocketClientResolving: client is doing a DNS lookup.
+	SocketClientResolving SocketClientEvent = iota
+	// SocketClientResolved: client has completed a DNS lookup.
+	SocketClientResolved
+	// SocketClientConnecting: client is connecting to a remote host (either a
+	// proxy or the destination server).
+	SocketClientConnecting
+	// SocketClientConnected: client has connected to a remote host.
+	SocketClientConnected
+	// SocketClientProxyNegotiating: client is negotiating with a proxy to
+	// connect to the destination server.
+	SocketClientProxyNegotiating
+	// SocketClientProxyNegotiated: client has negotiated with the proxy server.
+	SocketClientProxyNegotiated
+	// SocketClientTLSHandshaking: client is performing a TLS handshake.
+	SocketClientTLSHandshaking
+	// SocketClientTLSHandshaked: client has performed a TLS handshake.
+	SocketClientTLSHandshaked
+	// SocketClientComplete: client is done with a particular Connectable.
+	SocketClientComplete
 )
 
 func marshalSocketClientEvent(p uintptr) (interface{}, error) {
 	return SocketClientEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SocketClientEvent.
+func (s SocketClientEvent) String() string {
+	switch s {
+	case SocketClientResolving:
+		return "Resolving"
+	case SocketClientResolved:
+		return "Resolved"
+	case SocketClientConnecting:
+		return "Connecting"
+	case SocketClientConnected:
+		return "Connected"
+	case SocketClientProxyNegotiating:
+		return "ProxyNegotiating"
+	case SocketClientProxyNegotiated:
+		return "ProxyNegotiated"
+	case SocketClientTLSHandshaking:
+		return "TLSHandshaking"
+	case SocketClientTLSHandshaked:
+		return "TLSHandshaked"
+	case SocketClientComplete:
+		return "Complete"
+	default:
+		return fmt.Sprintf("SocketClientEvent(%d)", s)
+	}
 }
 
 // SocketFamily: protocol family of a Address. (These values are identical to
@@ -984,18 +1676,34 @@ func marshalSocketClientEvent(p uintptr) (interface{}, error) {
 type SocketFamily int
 
 const (
-	// Invalid: no address family
+	// SocketFamilyInvalid: no address family
 	SocketFamilyInvalid SocketFamily = 0
-	// Unix: UNIX domain family
+	// SocketFamilyUnix: UNIX domain family
 	SocketFamilyUnix SocketFamily = 1
-	// IPv4: IPv4 family
+	// SocketFamilyIPv4: IPv4 family
 	SocketFamilyIPv4 SocketFamily = 2
-	// IPv6: IPv6 family
+	// SocketFamilyIPv6: IPv6 family
 	SocketFamilyIPv6 SocketFamily = 10
 )
 
 func marshalSocketFamily(p uintptr) (interface{}, error) {
 	return SocketFamily(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SocketFamily.
+func (s SocketFamily) String() string {
+	switch s {
+	case SocketFamilyInvalid:
+		return "Invalid"
+	case SocketFamilyUnix:
+		return "Unix"
+	case SocketFamilyIPv4:
+		return "IPv4"
+	case SocketFamilyIPv6:
+		return "IPv6"
+	default:
+		return fmt.Sprintf("SocketFamily(%d)", s)
+	}
 }
 
 // SocketListenerEvent describes an event occurring on a Listener. See the
@@ -1005,18 +1713,35 @@ func marshalSocketFamily(p uintptr) (interface{}, error) {
 type SocketListenerEvent int
 
 const (
-	// Binding: listener is about to bind a socket.
-	SocketListenerEventBinding SocketListenerEvent = iota
-	// Bound: listener has bound a socket.
-	SocketListenerEventBound
-	// Listening: listener is about to start listening on this socket.
-	SocketListenerEventListening
-	// Listened: listener is now listening on this socket.
-	SocketListenerEventListened
+	// SocketListenerBinding: listener is about to bind a socket.
+	SocketListenerBinding SocketListenerEvent = iota
+	// SocketListenerBound: listener has bound a socket.
+	SocketListenerBound
+	// SocketListenerListening: listener is about to start listening on this
+	// socket.
+	SocketListenerListening
+	// SocketListenerListened: listener is now listening on this socket.
+	SocketListenerListened
 )
 
 func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
 	return SocketListenerEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SocketListenerEvent.
+func (s SocketListenerEvent) String() string {
+	switch s {
+	case SocketListenerBinding:
+		return "Binding"
+	case SocketListenerBound:
+		return "Bound"
+	case SocketListenerListening:
+		return "Listening"
+	case SocketListenerListened:
+		return "Listened"
+	default:
+		return fmt.Sprintf("SocketListenerEvent(%d)", s)
+	}
 }
 
 // SocketProtocol: protocol identifier is specified when creating a #GSocket,
@@ -1029,15 +1754,15 @@ func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
 type SocketProtocol int
 
 const (
-	// Unknown: protocol type is unknown
+	// SocketProtocolUnknown: protocol type is unknown
 	SocketProtocolUnknown SocketProtocol = -1
-	// Default protocol for the family/type
+	// SocketProtocolDefault protocol for the family/type
 	SocketProtocolDefault SocketProtocol = 0
-	// TCP: TCP over IP
+	// SocketProtocolTCP: TCP over IP
 	SocketProtocolTCP SocketProtocol = 6
-	// UDP: UDP over IP
+	// SocketProtocolUDP: UDP over IP
 	SocketProtocolUDP SocketProtocol = 17
-	// SCTP: SCTP over IP
+	// SocketProtocolSCTP: SCTP over IP
 	SocketProtocolSCTP SocketProtocol = 132
 )
 
@@ -1045,19 +1770,38 @@ func marshalSocketProtocol(p uintptr) (interface{}, error) {
 	return SocketProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SocketProtocol.
+func (s SocketProtocol) String() string {
+	switch s {
+	case SocketProtocolUnknown:
+		return "Unknown"
+	case SocketProtocolDefault:
+		return "Default"
+	case SocketProtocolTCP:
+		return "TCP"
+	case SocketProtocolUDP:
+		return "UDP"
+	case SocketProtocolSCTP:
+		return "SCTP"
+	default:
+		return fmt.Sprintf("SocketProtocol(%d)", s)
+	}
+}
+
 // SocketType flags used when creating a #GSocket. Some protocols may not
 // implement all the socket types.
 type SocketType int
 
 const (
-	// Invalid: type unknown or wrong
+	// SocketTypeInvalid: type unknown or wrong
 	SocketTypeInvalid SocketType = iota
-	// Stream: reliable connection-based byte streams (e.g. TCP).
+	// SocketTypeStream: reliable connection-based byte streams (e.g. TCP).
 	SocketTypeStream
-	// Datagram: connectionless, unreliable datagram passing. (e.g. UDP)
+	// SocketTypeDatagram: connectionless, unreliable datagram passing. (e.g.
+	// UDP)
 	SocketTypeDatagram
-	// Seqpacket: reliable connection-based passing of datagrams of fixed
-	// maximum length (e.g. SCTP).
+	// SocketTypeSeqpacket: reliable connection-based passing of datagrams of
+	// fixed maximum length (e.g. SCTP).
 	SocketTypeSeqpacket
 )
 
@@ -1065,20 +1809,50 @@ func marshalSocketType(p uintptr) (interface{}, error) {
 	return SocketType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SocketType.
+func (s SocketType) String() string {
+	switch s {
+	case SocketTypeInvalid:
+		return "Invalid"
+	case SocketTypeStream:
+		return "Stream"
+	case SocketTypeDatagram:
+		return "Datagram"
+	case SocketTypeSeqpacket:
+		return "Seqpacket"
+	default:
+		return fmt.Sprintf("SocketType(%d)", s)
+	}
+}
+
 // TLSAuthenticationMode: client authentication mode for a ServerConnection.
 type TLSAuthenticationMode int
 
 const (
-	// None: client authentication not required
-	TLSAuthenticationModeNone TLSAuthenticationMode = iota
-	// Requested: client authentication is requested
-	TLSAuthenticationModeRequested
-	// Required: client authentication is required
-	TLSAuthenticationModeRequired
+	// TLSAuthenticationNone: client authentication not required
+	TLSAuthenticationNone TLSAuthenticationMode = iota
+	// TLSAuthenticationRequested: client authentication is requested
+	TLSAuthenticationRequested
+	// TLSAuthenticationRequired: client authentication is required
+	TLSAuthenticationRequired
 )
 
 func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
 	return TLSAuthenticationMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSAuthenticationMode.
+func (t TLSAuthenticationMode) String() string {
+	switch t {
+	case TLSAuthenticationNone:
+		return "None"
+	case TLSAuthenticationRequested:
+		return "Requested"
+	case TLSAuthenticationRequired:
+		return "Required"
+	default:
+		return fmt.Sprintf("TLSAuthenticationMode(%d)", t)
+	}
 }
 
 // TLSCertificateRequestFlags flags for g_tls_interaction_request_certificate(),
@@ -1087,12 +1861,22 @@ func marshalTLSAuthenticationMode(p uintptr) (interface{}, error) {
 type TLSCertificateRequestFlags int
 
 const (
-	// None: no flags
-	TLSCertificateRequestFlagsNone TLSCertificateRequestFlags = iota
+	// TLSCertificateRequestNone: no flags
+	TLSCertificateRequestNone TLSCertificateRequestFlags = iota
 )
 
 func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
 	return TLSCertificateRequestFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSCertificateRequestFlags.
+func (t TLSCertificateRequestFlags) String() string {
+	switch t {
+	case TLSCertificateRequestNone:
+		return "None"
+	default:
+		return fmt.Sprintf("TLSCertificateRequestFlags(%d)", t)
+	}
 }
 
 // TLSChannelBindingError: error code used with G_TLS_CHANNEL_BINDING_ERROR in a
@@ -1100,28 +1884,47 @@ func marshalTLSCertificateRequestFlags(p uintptr) (interface{}, error) {
 type TLSChannelBindingError int
 
 const (
-	// NotImplemented: either entire binding retrieval facility or specific
-	// binding type is not implemented in the TLS backend.
+	// TLSChannelBindingErrorNotImplemented: either entire binding retrieval
+	// facility or specific binding type is not implemented in the TLS backend.
 	TLSChannelBindingErrorNotImplemented TLSChannelBindingError = iota
-	// InvalidState: handshake is not yet complete on the connection which is a
-	// strong requirement for any existing binding type.
+	// TLSChannelBindingErrorInvalidState: handshake is not yet complete on the
+	// connection which is a strong requirement for any existing binding type.
 	TLSChannelBindingErrorInvalidState
-	// NotAvailable: handshake is complete but binding data is not available.
-	// That normally indicates the TLS implementation failed to provide the
-	// binding data. For example, some implementations do not provide a peer
-	// certificate for resumed connections.
+	// TLSChannelBindingErrorNotAvailable: handshake is complete but binding
+	// data is not available. That normally indicates the TLS implementation
+	// failed to provide the binding data. For example, some implementations do
+	// not provide a peer certificate for resumed connections.
 	TLSChannelBindingErrorNotAvailable
-	// NotSupported: binding type is not supported on the current connection.
-	// This error could be triggered when requesting tls-server-end-point
-	// binding data for a certificate which has no hash function or uses
-	// multiple hash functions.
+	// TLSChannelBindingErrorNotSupported: binding type is not supported on the
+	// current connection. This error could be triggered when requesting
+	// tls-server-end-point binding data for a certificate which has no hash
+	// function or uses multiple hash functions.
 	TLSChannelBindingErrorNotSupported
-	// GeneralError: any other backend error preventing binding data retrieval.
+	// TLSChannelBindingErrorGeneralError: any other backend error preventing
+	// binding data retrieval.
 	TLSChannelBindingErrorGeneralError
 )
 
 func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
 	return TLSChannelBindingError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSChannelBindingError.
+func (t TLSChannelBindingError) String() string {
+	switch t {
+	case TLSChannelBindingErrorNotImplemented:
+		return "NotImplemented"
+	case TLSChannelBindingErrorInvalidState:
+		return "InvalidState"
+	case TLSChannelBindingErrorNotAvailable:
+		return "NotAvailable"
+	case TLSChannelBindingErrorNotSupported:
+		return "NotSupported"
+	case TLSChannelBindingErrorGeneralError:
+		return "GeneralError"
+	default:
+		return fmt.Sprintf("TLSChannelBindingError(%d)", t)
+	}
 }
 
 // TLSChannelBindingType: type of TLS channel binding data to retrieve from
@@ -1131,16 +1934,28 @@ func marshalTLSChannelBindingError(p uintptr) (interface{}, error) {
 type TLSChannelBindingType int
 
 const (
-	// Unique: tls-unique (https://tools.ietf.org/html/rfc5929#section-3)
-	// binding type
-	TLSChannelBindingTypeUnique TLSChannelBindingType = iota
-	// ServerEndPoint: tls-server-end-point
+	// TLSChannelBindingTLSUnique: tls-unique
+	// (https://tools.ietf.org/html/rfc5929#section-3) binding type
+	TLSChannelBindingTLSUnique TLSChannelBindingType = iota
+	// TLSChannelBindingTLSServerEndPoint: tls-server-end-point
 	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
-	TLSChannelBindingTypeServerEndPoint
+	TLSChannelBindingTLSServerEndPoint
 )
 
 func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
 	return TLSChannelBindingType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSChannelBindingType.
+func (t TLSChannelBindingType) String() string {
+	switch t {
+	case TLSChannelBindingTLSUnique:
+		return "Unique"
+	case TLSChannelBindingTLSServerEndPoint:
+		return "ServerEndPoint"
+	default:
+		return fmt.Sprintf("TLSChannelBindingType(%d)", t)
+	}
 }
 
 // TLSDatabaseLookupFlags flags for
@@ -1150,14 +1965,27 @@ func marshalTLSChannelBindingType(p uintptr) (interface{}, error) {
 type TLSDatabaseLookupFlags int
 
 const (
-	// None: no lookup flags
-	TLSDatabaseLookupFlagsNone TLSDatabaseLookupFlags = iota
-	// Keypair: restrict lookup to certificates that have a private key.
-	TLSDatabaseLookupFlagsKeypair
+	// TLSDatabaseLookupNone: no lookup flags
+	TLSDatabaseLookupNone TLSDatabaseLookupFlags = iota
+	// TLSDatabaseLookupKeypair: restrict lookup to certificates that have a
+	// private key.
+	TLSDatabaseLookupKeypair
 )
 
 func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
 	return TLSDatabaseLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSDatabaseLookupFlags.
+func (t TLSDatabaseLookupFlags) String() string {
+	switch t {
+	case TLSDatabaseLookupNone:
+		return "None"
+	case TLSDatabaseLookupKeypair:
+		return "Keypair"
+	default:
+		return fmt.Sprintf("TLSDatabaseLookupFlags(%d)", t)
+	}
 }
 
 // TLSError: error code used with G_TLS_ERROR in a #GError returned from a
@@ -1165,28 +1993,29 @@ func marshalTLSDatabaseLookupFlags(p uintptr) (interface{}, error) {
 type TLSError int
 
 const (
-	// Unavailable: no TLS provider is available
+	// TLSErrorUnavailable: no TLS provider is available
 	TLSErrorUnavailable TLSError = iota
-	// Misc miscellaneous TLS error
+	// TLSErrorMisc miscellaneous TLS error
 	TLSErrorMisc
-	// BadCertificate: certificate presented could not be parsed or failed
-	// validation.
+	// TLSErrorBadCertificate: certificate presented could not be parsed or
+	// failed validation.
 	TLSErrorBadCertificate
-	// NotTLS: TLS handshake failed because the peer does not seem to be a TLS
-	// server.
+	// TLSErrorNotTLS: TLS handshake failed because the peer does not seem to be
+	// a TLS server.
 	TLSErrorNotTLS
-	// Handshake: TLS handshake failed because the peer's certificate was not
-	// acceptable.
+	// TLSErrorHandshake: TLS handshake failed because the peer's certificate
+	// was not acceptable.
 	TLSErrorHandshake
-	// CertificateRequired: TLS handshake failed because the server requested a
-	// client-side certificate, but none was provided. See
+	// TLSErrorCertificateRequired: TLS handshake failed because the server
+	// requested a client-side certificate, but none was provided. See
 	// g_tls_connection_set_certificate().
 	TLSErrorCertificateRequired
-	// EOF: TLS connection was closed without proper notice, which may indicate
-	// an attack. See g_tls_connection_set_require_close_notify().
+	// TLSErrorEOF: TLS connection was closed without proper notice, which may
+	// indicate an attack. See g_tls_connection_set_require_close_notify().
 	TLSErrorEOF
-	// InappropriateFallback: TLS handshake failed because the client sent the
-	// fallback SCSV, indicating a protocol downgrade attack. Since: 2.60
+	// TLSErrorInappropriateFallback: TLS handshake failed because the client
+	// sent the fallback SCSV, indicating a protocol downgrade attack. Since:
+	// 2.60
 	TLSErrorInappropriateFallback
 )
 
@@ -1194,22 +2023,62 @@ func marshalTLSError(p uintptr) (interface{}, error) {
 	return TLSError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TLSError.
+func (t TLSError) String() string {
+	switch t {
+	case TLSErrorUnavailable:
+		return "Unavailable"
+	case TLSErrorMisc:
+		return "Misc"
+	case TLSErrorBadCertificate:
+		return "BadCertificate"
+	case TLSErrorNotTLS:
+		return "NotTLS"
+	case TLSErrorHandshake:
+		return "Handshake"
+	case TLSErrorCertificateRequired:
+		return "CertificateRequired"
+	case TLSErrorEOF:
+		return "EOF"
+	case TLSErrorInappropriateFallback:
+		return "InappropriateFallback"
+	default:
+		return fmt.Sprintf("TLSError(%d)", t)
+	}
+}
+
 // TLSInteractionResult is returned by various functions in Interaction when
 // finishing an interaction request.
 type TLSInteractionResult int
 
 const (
-	// Unhandled: interaction was unhandled (i.e. not implemented).
-	TLSInteractionResultUnhandled TLSInteractionResult = iota
-	// Handled: interaction completed, and resulting data is available.
-	TLSInteractionResultHandled
-	// Failed: interaction has failed, or was cancelled. and the operation
-	// should be aborted.
-	TLSInteractionResultFailed
+	// TLSInteractionUnhandled: interaction was unhandled (i.e. not
+	// implemented).
+	TLSInteractionUnhandled TLSInteractionResult = iota
+	// TLSInteractionHandled: interaction completed, and resulting data is
+	// available.
+	TLSInteractionHandled
+	// TLSInteractionFailed: interaction has failed, or was cancelled. and the
+	// operation should be aborted.
+	TLSInteractionFailed
 )
 
 func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
 	return TLSInteractionResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSInteractionResult.
+func (t TLSInteractionResult) String() string {
+	switch t {
+	case TLSInteractionUnhandled:
+		return "Unhandled"
+	case TLSInteractionHandled:
+		return "Handled"
+	case TLSInteractionFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("TLSInteractionResult(%d)", t)
+	}
 }
 
 // TLSRehandshakeMode: when to allow rehandshaking. See
@@ -1221,16 +2090,30 @@ func marshalTLSInteractionResult(p uintptr) (interface{}, error) {
 type TLSRehandshakeMode int
 
 const (
-	// Never: never allow rehandshaking
-	TLSRehandshakeModeNever TLSRehandshakeMode = iota
-	// Safely: allow safe rehandshaking only
-	TLSRehandshakeModeSafely
-	// Unsafely: allow unsafe rehandshaking
-	TLSRehandshakeModeUnsafely
+	// TLSRehandshakeNever: never allow rehandshaking
+	TLSRehandshakeNever TLSRehandshakeMode = iota
+	// TLSRehandshakeSafely: allow safe rehandshaking only
+	TLSRehandshakeSafely
+	// TLSRehandshakeUnsafely: allow unsafe rehandshaking
+	TLSRehandshakeUnsafely
 )
 
 func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
 	return TLSRehandshakeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TLSRehandshakeMode.
+func (t TLSRehandshakeMode) String() string {
+	switch t {
+	case TLSRehandshakeNever:
+		return "Never"
+	case TLSRehandshakeSafely:
+		return "Safely"
+	case TLSRehandshakeUnsafely:
+		return "Unsafely"
+	default:
+		return fmt.Sprintf("TLSRehandshakeMode(%d)", t)
+	}
 }
 
 // UnixSocketAddressType: type of name used by a SocketAddress.
@@ -1248,21 +2131,39 @@ func marshalTLSRehandshakeMode(p uintptr) (interface{}, error) {
 type UnixSocketAddressType int
 
 const (
-	// Invalid: invalid
-	UnixSocketAddressTypeInvalid UnixSocketAddressType = iota
-	// Anonymous: anonymous
-	UnixSocketAddressTypeAnonymous
-	// Path: filesystem path
-	UnixSocketAddressTypePath
-	// Abstract name
-	UnixSocketAddressTypeAbstract
-	// AbstractPadded: abstract name, 0-padded to the full length of a unix
-	// socket name
-	UnixSocketAddressTypeAbstractPadded
+	// UnixSocketAddressInvalid: invalid
+	UnixSocketAddressInvalid UnixSocketAddressType = iota
+	// UnixSocketAddressAnonymous: anonymous
+	UnixSocketAddressAnonymous
+	// UnixSocketAddressPath: filesystem path
+	UnixSocketAddressPath
+	// UnixSocketAddressAbstract name
+	UnixSocketAddressAbstract
+	// UnixSocketAddressAbstractPadded: abstract name, 0-padded to the full
+	// length of a unix socket name
+	UnixSocketAddressAbstractPadded
 )
 
 func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
 	return UnixSocketAddressType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for UnixSocketAddressType.
+func (u UnixSocketAddressType) String() string {
+	switch u {
+	case UnixSocketAddressInvalid:
+		return "Invalid"
+	case UnixSocketAddressAnonymous:
+		return "Anonymous"
+	case UnixSocketAddressPath:
+		return "Path"
+	case UnixSocketAddressAbstract:
+		return "Abstract"
+	case UnixSocketAddressAbstractPadded:
+		return "AbstractPadded"
+	default:
+		return fmt.Sprintf("UnixSocketAddressType(%d)", u)
+	}
 }
 
 // ZlibCompressorFormat: used to select the type of data format to use for
@@ -1270,11 +2171,11 @@ func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
 type ZlibCompressorFormat int
 
 const (
-	// Zlib: deflate compression with zlib header
+	// ZlibCompressorFormatZlib: deflate compression with zlib header
 	ZlibCompressorFormatZlib ZlibCompressorFormat = iota
-	// Gzip file format
+	// ZlibCompressorFormatGzip file format
 	ZlibCompressorFormatGzip
-	// Raw: deflate compression with no header
+	// ZlibCompressorFormatRaw: deflate compression with no header
 	ZlibCompressorFormatRaw
 )
 
@@ -1282,77 +2183,165 @@ func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
 	return ZlibCompressorFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ZlibCompressorFormat.
+func (z ZlibCompressorFormat) String() string {
+	switch z {
+	case ZlibCompressorFormatZlib:
+		return "Zlib"
+	case ZlibCompressorFormatGzip:
+		return "Gzip"
+	case ZlibCompressorFormatRaw:
+		return "Raw"
+	default:
+		return fmt.Sprintf("ZlibCompressorFormat(%d)", z)
+	}
+}
+
 // AppInfoCreateFlags flags used when creating a Info.
 type AppInfoCreateFlags int
 
 const (
-	// AppInfoCreateFlagsNone: no flags.
-	AppInfoCreateFlagsNone AppInfoCreateFlags = 0b0
-	// AppInfoCreateFlagsNeedsTerminal: application opens in a terminal window.
-	AppInfoCreateFlagsNeedsTerminal AppInfoCreateFlags = 0b1
-	// AppInfoCreateFlagsSupportsUris: application supports URI arguments.
-	AppInfoCreateFlagsSupportsUris AppInfoCreateFlags = 0b10
-	// AppInfoCreateFlagsSupportsStartupNotification: application supports
-	// startup notification. Since 2.26
-	AppInfoCreateFlagsSupportsStartupNotification AppInfoCreateFlags = 0b100
+	// AppInfoCreateNone: no flags.
+	AppInfoCreateNone AppInfoCreateFlags = 0b0
+	// AppInfoCreateNeedsTerminal: application opens in a terminal window.
+	AppInfoCreateNeedsTerminal AppInfoCreateFlags = 0b1
+	// AppInfoCreateSupportsUris: application supports URI arguments.
+	AppInfoCreateSupportsUris AppInfoCreateFlags = 0b10
+	// AppInfoCreateSupportsStartupNotification: application supports startup
+	// notification. Since 2.26
+	AppInfoCreateSupportsStartupNotification AppInfoCreateFlags = 0b100
 )
 
 func marshalAppInfoCreateFlags(p uintptr) (interface{}, error) {
 	return AppInfoCreateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for AppInfoCreateFlags.
+func (a AppInfoCreateFlags) String() string {
+	if a == 0 {
+		return "AppInfoCreateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(111)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AppInfoCreateNone:
+			builder.WriteString("None|")
+		case AppInfoCreateNeedsTerminal:
+			builder.WriteString("NeedsTerminal|")
+		case AppInfoCreateSupportsUris:
+			builder.WriteString("SupportsUris|")
+		case AppInfoCreateSupportsStartupNotification:
+			builder.WriteString("SupportsStartupNotification|")
+		default:
+			builder.WriteString(fmt.Sprintf("AppInfoCreateFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // ApplicationFlags flags used to define the behaviour of a #GApplication.
 type ApplicationFlags int
 
 const (
-	// ApplicationFlagsFlagsNone: default
-	ApplicationFlagsFlagsNone ApplicationFlags = 0b0
-	// ApplicationFlagsIsService: run as a service. In this mode, registration
-	// fails if the service is already running, and the application will
-	// initially wait up to 10 seconds for an initial activation message to
-	// arrive.
-	ApplicationFlagsIsService ApplicationFlags = 0b1
-	// ApplicationFlagsIsLauncher: don't try to become the primary instance.
-	ApplicationFlagsIsLauncher ApplicationFlags = 0b10
-	// ApplicationFlagsHandlesOpen: this application handles opening files (in
-	// the primary instance). Note that this flag only affects the default
+	// ApplicationFlagsNone: default
+	ApplicationFlagsNone ApplicationFlags = 0b0
+	// ApplicationIsService: run as a service. In this mode, registration fails
+	// if the service is already running, and the application will initially
+	// wait up to 10 seconds for an initial activation message to arrive.
+	ApplicationIsService ApplicationFlags = 0b1
+	// ApplicationIsLauncher: don't try to become the primary instance.
+	ApplicationIsLauncher ApplicationFlags = 0b10
+	// ApplicationHandlesOpen: this application handles opening files (in the
+	// primary instance). Note that this flag only affects the default
 	// implementation of local_command_line(), and has no effect if
 	// G_APPLICATION_HANDLES_COMMAND_LINE is given. See g_application_run() for
 	// details.
-	ApplicationFlagsHandlesOpen ApplicationFlags = 0b100
-	// ApplicationFlagsHandlesCommandLine: this application handles command line
+	ApplicationHandlesOpen ApplicationFlags = 0b100
+	// ApplicationHandlesCommandLine: this application handles command line
 	// arguments (in the primary instance). Note that this flag only affect the
 	// default implementation of local_command_line(). See g_application_run()
 	// for details.
-	ApplicationFlagsHandlesCommandLine ApplicationFlags = 0b1000
-	// ApplicationFlagsSendEnvironment: send the environment of the launching
-	// process to the primary instance. Set this flag if your application is
-	// expected to behave differently depending on certain environment
-	// variables. For instance, an editor might be expected to use the
-	// GIT_COMMITTER_NAME environment variable when editing a git commit
-	// message. The environment is available to the #GApplication::command-line
-	// signal handler, via g_application_command_line_getenv().
-	ApplicationFlagsSendEnvironment ApplicationFlags = 0b10000
-	// ApplicationFlagsNonUnique: make no attempts to do any of the typical
+	ApplicationHandlesCommandLine ApplicationFlags = 0b1000
+	// ApplicationSendEnvironment: send the environment of the launching process
+	// to the primary instance. Set this flag if your application is expected to
+	// behave differently depending on certain environment variables. For
+	// instance, an editor might be expected to use the GIT_COMMITTER_NAME
+	// environment variable when editing a git commit message. The environment
+	// is available to the #GApplication::command-line signal handler, via
+	// g_application_command_line_getenv().
+	ApplicationSendEnvironment ApplicationFlags = 0b10000
+	// ApplicationNonUnique: make no attempts to do any of the typical
 	// single-instance application negotiation, even if the application ID is
 	// given. The application neither attempts to become the owner of the
 	// application ID nor does it check if an existing owner already exists.
 	// Everything occurs in the local process. Since: 2.30.
-	ApplicationFlagsNonUnique ApplicationFlags = 0b100000
-	// ApplicationFlagsCanOverrideAppID: allow users to override the application
-	// ID from the command line with --gapplication-app-id. Since: 2.48
-	ApplicationFlagsCanOverrideAppID ApplicationFlags = 0b1000000
-	// ApplicationFlagsAllowReplacement: allow another instance to take over the
-	// bus name. Since: 2.60
-	ApplicationFlagsAllowReplacement ApplicationFlags = 0b10000000
-	// ApplicationFlagsReplace: take over from another instance. This flag is
-	// usually set by passing --gapplication-replace on the commandline. Since:
-	// 2.60
-	ApplicationFlagsReplace ApplicationFlags = 0b100000000
+	ApplicationNonUnique ApplicationFlags = 0b100000
+	// ApplicationCanOverrideAppID: allow users to override the application ID
+	// from the command line with --gapplication-app-id. Since: 2.48
+	ApplicationCanOverrideAppID ApplicationFlags = 0b1000000
+	// ApplicationAllowReplacement: allow another instance to take over the bus
+	// name. Since: 2.60
+	ApplicationAllowReplacement ApplicationFlags = 0b10000000
+	// ApplicationReplace: take over from another instance. This flag is usually
+	// set by passing --gapplication-replace on the commandline. Since: 2.60
+	ApplicationReplace ApplicationFlags = 0b100000000
 )
 
 func marshalApplicationFlags(p uintptr) (interface{}, error) {
 	return ApplicationFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ApplicationFlags.
+func (a ApplicationFlags) String() string {
+	if a == 0 {
+		return "ApplicationFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(239)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case ApplicationFlagsNone:
+			builder.WriteString("FlagsNone|")
+		case ApplicationIsService:
+			builder.WriteString("IsService|")
+		case ApplicationIsLauncher:
+			builder.WriteString("IsLauncher|")
+		case ApplicationHandlesOpen:
+			builder.WriteString("HandlesOpen|")
+		case ApplicationHandlesCommandLine:
+			builder.WriteString("HandlesCommandLine|")
+		case ApplicationSendEnvironment:
+			builder.WriteString("SendEnvironment|")
+		case ApplicationNonUnique:
+			builder.WriteString("NonUnique|")
+		case ApplicationCanOverrideAppID:
+			builder.WriteString("CanOverrideAppID|")
+		case ApplicationAllowReplacement:
+			builder.WriteString("AllowReplacement|")
+		case ApplicationReplace:
+			builder.WriteString("Replace|")
+		default:
+			builder.WriteString(fmt.Sprintf("ApplicationFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // AskPasswordFlags are used to request specific information from the user, or
@@ -1360,22 +2349,58 @@ func marshalApplicationFlags(p uintptr) (interface{}, error) {
 type AskPasswordFlags int
 
 const (
-	// AskPasswordFlagsNeedPassword: operation requires a password.
-	AskPasswordFlagsNeedPassword AskPasswordFlags = 0b1
-	// AskPasswordFlagsNeedUsername: operation requires a username.
-	AskPasswordFlagsNeedUsername AskPasswordFlags = 0b10
-	// AskPasswordFlagsNeedDomain: operation requires a domain.
-	AskPasswordFlagsNeedDomain AskPasswordFlags = 0b100
-	// AskPasswordFlagsSavingSupported: operation supports saving settings.
-	AskPasswordFlagsSavingSupported AskPasswordFlags = 0b1000
-	// AskPasswordFlagsAnonymousSupported: operation supports anonymous users.
-	AskPasswordFlagsAnonymousSupported AskPasswordFlags = 0b10000
-	// AskPasswordFlagsTcrypt: operation takes TCRYPT parameters (Since: 2.58)
-	AskPasswordFlagsTcrypt AskPasswordFlags = 0b100000
+	// AskPasswordNeedPassword: operation requires a password.
+	AskPasswordNeedPassword AskPasswordFlags = 0b1
+	// AskPasswordNeedUsername: operation requires a username.
+	AskPasswordNeedUsername AskPasswordFlags = 0b10
+	// AskPasswordNeedDomain: operation requires a domain.
+	AskPasswordNeedDomain AskPasswordFlags = 0b100
+	// AskPasswordSavingSupported: operation supports saving settings.
+	AskPasswordSavingSupported AskPasswordFlags = 0b1000
+	// AskPasswordAnonymousSupported: operation supports anonymous users.
+	AskPasswordAnonymousSupported AskPasswordFlags = 0b10000
+	// AskPasswordTcrypt: operation takes TCRYPT parameters (Since: 2.58)
+	AskPasswordTcrypt AskPasswordFlags = 0b100000
 )
 
 func marshalAskPasswordFlags(p uintptr) (interface{}, error) {
 	return AskPasswordFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AskPasswordFlags.
+func (a AskPasswordFlags) String() string {
+	if a == 0 {
+		return "AskPasswordFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(144)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AskPasswordNeedPassword:
+			builder.WriteString("NeedPassword|")
+		case AskPasswordNeedUsername:
+			builder.WriteString("NeedUsername|")
+		case AskPasswordNeedDomain:
+			builder.WriteString("NeedDomain|")
+		case AskPasswordSavingSupported:
+			builder.WriteString("SavingSupported|")
+		case AskPasswordAnonymousSupported:
+			builder.WriteString("AnonymousSupported|")
+		case AskPasswordTcrypt:
+			builder.WriteString("Tcrypt|")
+		default:
+			builder.WriteString(fmt.Sprintf("AskPasswordFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // BusNameOwnerFlags flags used in g_bus_own_name().
@@ -1401,6 +2426,38 @@ func marshalBusNameOwnerFlags(p uintptr) (interface{}, error) {
 	return BusNameOwnerFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for BusNameOwnerFlags.
+func (b BusNameOwnerFlags) String() string {
+	if b == 0 {
+		return "BusNameOwnerFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(108)
+
+	for b != 0 {
+		next := b & (b - 1)
+		bit := b - next
+
+		switch bit {
+		case BusNameOwnerFlagsNone:
+			builder.WriteString("None|")
+		case BusNameOwnerFlagsAllowReplacement:
+			builder.WriteString("AllowReplacement|")
+		case BusNameOwnerFlagsReplace:
+			builder.WriteString("Replace|")
+		case BusNameOwnerFlagsDoNotQueue:
+			builder.WriteString("DoNotQueue|")
+		default:
+			builder.WriteString(fmt.Sprintf("BusNameOwnerFlags(0b%b)|", bit))
+		}
+
+		b = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // BusNameWatcherFlags flags used in g_bus_watch_name().
 type BusNameWatcherFlags int
 
@@ -1416,20 +2473,78 @@ func marshalBusNameWatcherFlags(p uintptr) (interface{}, error) {
 	return BusNameWatcherFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for BusNameWatcherFlags.
+func (b BusNameWatcherFlags) String() string {
+	if b == 0 {
+		return "BusNameWatcherFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(52)
+
+	for b != 0 {
+		next := b & (b - 1)
+		bit := b - next
+
+		switch bit {
+		case BusNameWatcherFlagsNone:
+			builder.WriteString("None|")
+		case BusNameWatcherFlagsAutoStart:
+			builder.WriteString("AutoStart|")
+		default:
+			builder.WriteString(fmt.Sprintf("BusNameWatcherFlags(0b%b)|", bit))
+		}
+
+		b = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // ConverterFlags flags used when calling a g_converter_convert().
 type ConverterFlags int
 
 const (
-	// ConverterFlagsNone: no flags.
-	ConverterFlagsNone ConverterFlags = 0b0
-	// ConverterFlagsInputAtEnd: at end of input data
-	ConverterFlagsInputAtEnd ConverterFlags = 0b1
-	// ConverterFlagsFlush: flush data
-	ConverterFlagsFlush ConverterFlags = 0b10
+	// ConverterNoFlags: no flags.
+	ConverterNoFlags ConverterFlags = 0b0
+	// ConverterInputAtEnd: at end of input data
+	ConverterInputAtEnd ConverterFlags = 0b1
+	// ConverterFlush: flush data
+	ConverterFlush ConverterFlags = 0b10
 )
 
 func marshalConverterFlags(p uintptr) (interface{}, error) {
 	return ConverterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ConverterFlags.
+func (c ConverterFlags) String() string {
+	if c == 0 {
+		return "ConverterFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(51)
+
+	for c != 0 {
+		next := c & (c - 1)
+		bit := c - next
+
+		switch bit {
+		case ConverterNoFlags:
+			builder.WriteString("None|")
+		case ConverterInputAtEnd:
+			builder.WriteString("InputAtEnd|")
+		case ConverterFlush:
+			builder.WriteString("Flush|")
+		default:
+			builder.WriteString(fmt.Sprintf("ConverterFlags(0b%b)|", bit))
+		}
+
+		c = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusCallFlags flags used in g_dbus_connection_call() and similar APIs.
@@ -1450,6 +2565,36 @@ func marshalDBusCallFlags(p uintptr) (interface{}, error) {
 	return DBusCallFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusCallFlags.
+func (d DBusCallFlags) String() string {
+	if d == 0 {
+		return "DBusCallFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(85)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusCallFlagsNone:
+			builder.WriteString("None|")
+		case DBusCallFlagsNoAutoStart:
+			builder.WriteString("NoAutoStart|")
+		case DBusCallFlagsAllowInteractiveAuthorization:
+			builder.WriteString("AllowInteractiveAuthorization|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusCallFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusCapabilityFlags capabilities negotiated with the remote peer.
 type DBusCapabilityFlags int
 
@@ -1463,6 +2608,34 @@ const (
 
 func marshalDBusCapabilityFlags(p uintptr) (interface{}, error) {
 	return DBusCapabilityFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DBusCapabilityFlags.
+func (d DBusCapabilityFlags) String() string {
+	if d == 0 {
+		return "DBusCapabilityFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(56)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusCapabilityFlagsNone:
+			builder.WriteString("None|")
+		case DBusCapabilityFlagsUnixFdPassing:
+			builder.WriteString("UnixFdPassing|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusCapabilityFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusConnectionFlags flags used when creating a new BusConnection.
@@ -1498,6 +2671,44 @@ func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
 	return DBusConnectionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusConnectionFlags.
+func (d DBusConnectionFlags) String() string {
+	if d == 0 {
+		return "DBusConnectionFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(282)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusConnectionFlagsNone:
+			builder.WriteString("None|")
+		case DBusConnectionFlagsAuthenticationClient:
+			builder.WriteString("AuthenticationClient|")
+		case DBusConnectionFlagsAuthenticationServer:
+			builder.WriteString("AuthenticationServer|")
+		case DBusConnectionFlagsAuthenticationAllowAnonymous:
+			builder.WriteString("AuthenticationAllowAnonymous|")
+		case DBusConnectionFlagsMessageBusConnection:
+			builder.WriteString("MessageBusConnection|")
+		case DBusConnectionFlagsDelayMessageProcessing:
+			builder.WriteString("DelayMessageProcessing|")
+		case DBusConnectionFlagsAuthenticationRequireSameUser:
+			builder.WriteString("AuthenticationRequireSameUser|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusConnectionFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusInterfaceSkeletonFlags flags describing the behavior of a
 // BusInterfaceSkeleton instance.
 type DBusInterfaceSkeletonFlags int
@@ -1515,6 +2726,34 @@ const (
 
 func marshalDBusInterfaceSkeletonFlags(p uintptr) (interface{}, error) {
 	return DBusInterfaceSkeletonFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DBusInterfaceSkeletonFlags.
+func (d DBusInterfaceSkeletonFlags) String() string {
+	if d == 0 {
+		return "DBusInterfaceSkeletonFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(88)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusInterfaceSkeletonFlagsNone:
+			builder.WriteString("None|")
+		case DBusInterfaceSkeletonFlagsHandleMethodInvocationsInThread:
+			builder.WriteString("HandleMethodInvocationsInThread|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusInterfaceSkeletonFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusMessageFlags: message flags used in BusMessage.
@@ -1538,6 +2777,38 @@ func marshalDBusMessageFlags(p uintptr) (interface{}, error) {
 	return DBusMessageFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusMessageFlags.
+func (d DBusMessageFlags) String() string {
+	if d == 0 {
+		return "DBusMessageFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(126)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusMessageFlagsNone:
+			builder.WriteString("None|")
+		case DBusMessageFlagsNoReplyExpected:
+			builder.WriteString("NoReplyExpected|")
+		case DBusMessageFlagsNoAutoStart:
+			builder.WriteString("NoAutoStart|")
+		case DBusMessageFlagsAllowInteractiveAuthorization:
+			builder.WriteString("AllowInteractiveAuthorization|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusMessageFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusObjectManagerClientFlags flags used when constructing a
 // BusObjectManagerClient.
 type DBusObjectManagerClientFlags int
@@ -1556,6 +2827,34 @@ func marshalDBusObjectManagerClientFlags(p uintptr) (interface{}, error) {
 	return DBusObjectManagerClientFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusObjectManagerClientFlags.
+func (d DBusObjectManagerClientFlags) String() string {
+	if d == 0 {
+		return "DBusObjectManagerClientFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(75)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusObjectManagerClientFlagsNone:
+			builder.WriteString("None|")
+		case DBusObjectManagerClientFlagsDoNotAutoStart:
+			builder.WriteString("DoNotAutoStart|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusObjectManagerClientFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusPropertyInfoFlags flags describing the access control of a D-Bus
 // property.
 type DBusPropertyInfoFlags int
@@ -1571,6 +2870,36 @@ const (
 
 func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
 	return DBusPropertyInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DBusPropertyInfoFlags.
+func (d DBusPropertyInfoFlags) String() string {
+	if d == 0 {
+		return "DBusPropertyInfoFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(85)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusPropertyInfoFlagsNone:
+			builder.WriteString("None|")
+		case DBusPropertyInfoFlagsReadable:
+			builder.WriteString("Readable|")
+		case DBusPropertyInfoFlagsWritable:
+			builder.WriteString("Writable|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusPropertyInfoFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusProxyFlags flags used when constructing an instance of a BusProxy derived
@@ -1611,6 +2940,42 @@ func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
 	return DBusProxyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusProxyFlags.
+func (d DBusProxyFlags) String() string {
+	if d == 0 {
+		return "DBusProxyFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(197)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusProxyFlagsNone:
+			builder.WriteString("None|")
+		case DBusProxyFlagsDoNotLoadProperties:
+			builder.WriteString("DoNotLoadProperties|")
+		case DBusProxyFlagsDoNotConnectSignals:
+			builder.WriteString("DoNotConnectSignals|")
+		case DBusProxyFlagsDoNotAutoStart:
+			builder.WriteString("DoNotAutoStart|")
+		case DBusProxyFlagsGetInvalidatedProperties:
+			builder.WriteString("GetInvalidatedProperties|")
+		case DBusProxyFlagsDoNotAutoStartAtConstruction:
+			builder.WriteString("DoNotAutoStartAtConstruction|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusProxyFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusSendMessageFlags flags used when sending BusMessages on a BusConnection.
 type DBusSendMessageFlags int
 
@@ -1624,6 +2989,34 @@ const (
 
 func marshalDBusSendMessageFlags(p uintptr) (interface{}, error) {
 	return DBusSendMessageFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DBusSendMessageFlags.
+func (d DBusSendMessageFlags) String() string {
+	if d == 0 {
+		return "DBusSendMessageFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(59)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusSendMessageFlagsNone:
+			builder.WriteString("None|")
+		case DBusSendMessageFlagsPreserveSerial:
+			builder.WriteString("PreserveSerial|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusSendMessageFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusServerFlags flags used when creating a BusServer.
@@ -1646,6 +3039,38 @@ const (
 
 func marshalDBusServerFlags(p uintptr) (interface{}, error) {
 	return DBusServerFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DBusServerFlags.
+func (d DBusServerFlags) String() string {
+	if d == 0 {
+		return "DBusServerFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(135)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusServerFlagsNone:
+			builder.WriteString("None|")
+		case DBusServerFlagsRunInThread:
+			builder.WriteString("RunInThread|")
+		case DBusServerFlagsAuthenticationAllowAnonymous:
+			builder.WriteString("AuthenticationAllowAnonymous|")
+		case DBusServerFlagsAuthenticationRequireSameUser:
+			builder.WriteString("AuthenticationRequireSameUser|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusServerFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // DBusSignalFlags flags used when subscribing to signals via
@@ -1672,6 +3097,38 @@ func marshalDBusSignalFlags(p uintptr) (interface{}, error) {
 	return DBusSignalFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusSignalFlags.
+func (d DBusSignalFlags) String() string {
+	if d == 0 {
+		return "DBusSignalFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(109)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusSignalFlagsNone:
+			builder.WriteString("None|")
+		case DBusSignalFlagsNoMatchRule:
+			builder.WriteString("NoMatchRule|")
+		case DBusSignalFlagsMatchArg0Namespace:
+			builder.WriteString("MatchArg0Namespace|")
+		case DBusSignalFlagsMatchArg0Path:
+			builder.WriteString("MatchArg0Path|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusSignalFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DBusSubtreeFlags flags passed to g_dbus_connection_register_subtree().
 type DBusSubtreeFlags int
 
@@ -1688,216 +3145,575 @@ func marshalDBusSubtreeFlags(p uintptr) (interface{}, error) {
 	return DBusSubtreeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DBusSubtreeFlags.
+func (d DBusSubtreeFlags) String() string {
+	if d == 0 {
+		return "DBusSubtreeFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(64)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DBusSubtreeFlagsNone:
+			builder.WriteString("None|")
+		case DBusSubtreeFlagsDispatchToUnenumeratedNodes:
+			builder.WriteString("DispatchToUnenumeratedNodes|")
+		default:
+			builder.WriteString(fmt.Sprintf("DBusSubtreeFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // DriveStartFlags flags used when starting a drive.
 type DriveStartFlags int
 
 const (
-	// DriveStartFlagsNone: no flags set.
-	DriveStartFlagsNone DriveStartFlags = 0b0
+	// DriveStartNone: no flags set.
+	DriveStartNone DriveStartFlags = 0b0
 )
 
 func marshalDriveStartFlags(p uintptr) (interface{}, error) {
 	return DriveStartFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for DriveStartFlags.
+func (d DriveStartFlags) String() string {
+	if d == 0 {
+		return "DriveStartFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(14)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DriveStartNone:
+			builder.WriteString("None|")
+		default:
+			builder.WriteString(fmt.Sprintf("DriveStartFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileAttributeInfoFlags flags specifying the behaviour of an attribute.
 type FileAttributeInfoFlags int
 
 const (
-	// FileAttributeInfoFlagsNone: no flags set.
-	FileAttributeInfoFlagsNone FileAttributeInfoFlags = 0b0
-	// FileAttributeInfoFlagsCopyWithFile: copy the attribute values when the
-	// file is copied.
-	FileAttributeInfoFlagsCopyWithFile FileAttributeInfoFlags = 0b1
-	// FileAttributeInfoFlagsCopyWhenMoved: copy the attribute values when the
-	// file is moved.
-	FileAttributeInfoFlagsCopyWhenMoved FileAttributeInfoFlags = 0b10
+	// FileAttributeInfoNone: no flags set.
+	FileAttributeInfoNone FileAttributeInfoFlags = 0b0
+	// FileAttributeInfoCopyWithFile: copy the attribute values when the file is
+	// copied.
+	FileAttributeInfoCopyWithFile FileAttributeInfoFlags = 0b1
+	// FileAttributeInfoCopyWhenMoved: copy the attribute values when the file
+	// is moved.
+	FileAttributeInfoCopyWhenMoved FileAttributeInfoFlags = 0b10
 )
 
 func marshalFileAttributeInfoFlags(p uintptr) (interface{}, error) {
 	return FileAttributeInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileAttributeInfoFlags.
+func (f FileAttributeInfoFlags) String() string {
+	if f == 0 {
+		return "FileAttributeInfoFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(82)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileAttributeInfoNone:
+			builder.WriteString("None|")
+		case FileAttributeInfoCopyWithFile:
+			builder.WriteString("CopyWithFile|")
+		case FileAttributeInfoCopyWhenMoved:
+			builder.WriteString("CopyWhenMoved|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileAttributeInfoFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileCopyFlags flags used when copying or moving files.
 type FileCopyFlags int
 
 const (
-	// FileCopyFlagsNone: no flags set.
-	FileCopyFlagsNone FileCopyFlags = 0b0
-	// FileCopyFlagsOverwrite: overwrite any existing files
-	FileCopyFlagsOverwrite FileCopyFlags = 0b1
-	// FileCopyFlagsBackup: make a backup of any existing files.
-	FileCopyFlagsBackup FileCopyFlags = 0b10
-	// FileCopyFlagsNofollowSymlinks: don't follow symlinks.
-	FileCopyFlagsNofollowSymlinks FileCopyFlags = 0b100
-	// FileCopyFlagsAllMetadata: copy all file metadata instead of just default
-	// set used for copy (see Info).
-	FileCopyFlagsAllMetadata FileCopyFlags = 0b1000
-	// FileCopyFlagsNoFallbackForMove: don't use copy and delete fallback if
-	// native move not supported.
-	FileCopyFlagsNoFallbackForMove FileCopyFlags = 0b10000
-	// FileCopyFlagsTargetDefaultPerms leaves target file with default perms,
-	// instead of setting the source file perms.
-	FileCopyFlagsTargetDefaultPerms FileCopyFlags = 0b100000
+	// FileCopyNone: no flags set.
+	FileCopyNone FileCopyFlags = 0b0
+	// FileCopyOverwrite: overwrite any existing files
+	FileCopyOverwrite FileCopyFlags = 0b1
+	// FileCopyBackup: make a backup of any existing files.
+	FileCopyBackup FileCopyFlags = 0b10
+	// FileCopyNofollowSymlinks: don't follow symlinks.
+	FileCopyNofollowSymlinks FileCopyFlags = 0b100
+	// FileCopyAllMetadata: copy all file metadata instead of just default set
+	// used for copy (see Info).
+	FileCopyAllMetadata FileCopyFlags = 0b1000
+	// FileCopyNoFallbackForMove: don't use copy and delete fallback if native
+	// move not supported.
+	FileCopyNoFallbackForMove FileCopyFlags = 0b10000
+	// FileCopyTargetDefaultPerms leaves target file with default perms, instead
+	// of setting the source file perms.
+	FileCopyTargetDefaultPerms FileCopyFlags = 0b100000
 )
 
 func marshalFileCopyFlags(p uintptr) (interface{}, error) {
 	return FileCopyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileCopyFlags.
+func (f FileCopyFlags) String() string {
+	if f == 0 {
+		return "FileCopyFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(143)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileCopyNone:
+			builder.WriteString("None|")
+		case FileCopyOverwrite:
+			builder.WriteString("Overwrite|")
+		case FileCopyBackup:
+			builder.WriteString("Backup|")
+		case FileCopyNofollowSymlinks:
+			builder.WriteString("NofollowSymlinks|")
+		case FileCopyAllMetadata:
+			builder.WriteString("AllMetadata|")
+		case FileCopyNoFallbackForMove:
+			builder.WriteString("NoFallbackForMove|")
+		case FileCopyTargetDefaultPerms:
+			builder.WriteString("TargetDefaultPerms|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileCopyFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileCreateFlags flags used when an operation may create a file.
 type FileCreateFlags int
 
 const (
-	// FileCreateFlagsNone: no flags set.
-	FileCreateFlagsNone FileCreateFlags = 0b0
-	// FileCreateFlagsPrivate: create a file that can only be accessed by the
-	// current user.
-	FileCreateFlagsPrivate FileCreateFlags = 0b1
-	// FileCreateFlagsReplaceDestination: replace the destination as if it
-	// didn't exist before. Don't try to keep any old permissions, replace
-	// instead of following links. This is generally useful if you're doing a
-	// "copy over" rather than a "save new version of" replace operation. You
-	// can think of it as "unlink destination" before writing to it, although
-	// the implementation may not be exactly like that. This flag can only be
-	// used with g_file_replace() and its variants, including
+	// FileCreateNone: no flags set.
+	FileCreateNone FileCreateFlags = 0b0
+	// FileCreatePrivate: create a file that can only be accessed by the current
+	// user.
+	FileCreatePrivate FileCreateFlags = 0b1
+	// FileCreateReplaceDestination: replace the destination as if it didn't
+	// exist before. Don't try to keep any old permissions, replace instead of
+	// following links. This is generally useful if you're doing a "copy over"
+	// rather than a "save new version of" replace operation. You can think of
+	// it as "unlink destination" before writing to it, although the
+	// implementation may not be exactly like that. This flag can only be used
+	// with g_file_replace() and its variants, including
 	// g_file_replace_contents(). Since 2.20
-	FileCreateFlagsReplaceDestination FileCreateFlags = 0b10
+	FileCreateReplaceDestination FileCreateFlags = 0b10
 )
 
 func marshalFileCreateFlags(p uintptr) (interface{}, error) {
 	return FileCreateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileCreateFlags.
+func (f FileCreateFlags) String() string {
+	if f == 0 {
+		return "FileCreateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(61)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileCreateNone:
+			builder.WriteString("None|")
+		case FileCreatePrivate:
+			builder.WriteString("Private|")
+		case FileCreateReplaceDestination:
+			builder.WriteString("ReplaceDestination|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileCreateFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileMeasureFlags flags that can be used with g_file_measure_disk_usage().
 type FileMeasureFlags int
 
 const (
-	// FileMeasureFlagsNone: no flags set.
-	FileMeasureFlagsNone FileMeasureFlags = 0b0
-	// FileMeasureFlagsReportAnyError: report any error encountered while
-	// traversing the directory tree. Normally errors are only reported for the
-	// toplevel file.
-	FileMeasureFlagsReportAnyError FileMeasureFlags = 0b10
-	// FileMeasureFlagsApparentSize: tally usage based on apparent file sizes.
+	// FileMeasureNone: no flags set.
+	FileMeasureNone FileMeasureFlags = 0b0
+	// FileMeasureReportAnyError: report any error encountered while traversing
+	// the directory tree. Normally errors are only reported for the toplevel
+	// file.
+	FileMeasureReportAnyError FileMeasureFlags = 0b10
+	// FileMeasureApparentSize: tally usage based on apparent file sizes.
 	// Normally, the block-size is used, if available, as this is a more
 	// accurate representation of disk space used. Compare with du
 	// --apparent-size.
-	FileMeasureFlagsApparentSize FileMeasureFlags = 0b100
-	// FileMeasureFlagsNoXdev: do not cross mount point boundaries. Compare with
-	// du -x.
-	FileMeasureFlagsNoXdev FileMeasureFlags = 0b1000
+	FileMeasureApparentSize FileMeasureFlags = 0b100
+	// FileMeasureNoXdev: do not cross mount point boundaries. Compare with du
+	// -x.
+	FileMeasureNoXdev FileMeasureFlags = 0b1000
 )
 
 func marshalFileMeasureFlags(p uintptr) (interface{}, error) {
 	return FileMeasureFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileMeasureFlags.
+func (f FileMeasureFlags) String() string {
+	if f == 0 {
+		return "FileMeasureFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(83)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileMeasureNone:
+			builder.WriteString("None|")
+		case FileMeasureReportAnyError:
+			builder.WriteString("ReportAnyError|")
+		case FileMeasureApparentSize:
+			builder.WriteString("ApparentSize|")
+		case FileMeasureNoXdev:
+			builder.WriteString("NoXdev|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileMeasureFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileMonitorFlags flags used to set what a Monitor will watch for.
 type FileMonitorFlags int
 
 const (
-	// FileMonitorFlagsNone: no flags set.
-	FileMonitorFlagsNone FileMonitorFlags = 0b0
-	// FileMonitorFlagsWatchMounts: watch for mount events.
-	FileMonitorFlagsWatchMounts FileMonitorFlags = 0b1
-	// FileMonitorFlagsSendMoved: pair DELETED and CREATED events caused by file
+	// FileMonitorNone: no flags set.
+	FileMonitorNone FileMonitorFlags = 0b0
+	// FileMonitorWatchMounts: watch for mount events.
+	FileMonitorWatchMounts FileMonitorFlags = 0b1
+	// FileMonitorSendMoved: pair DELETED and CREATED events caused by file
 	// renames (moves) and send a single G_FILE_MONITOR_EVENT_MOVED event
 	// instead (NB: not supported on all backends; the default behaviour
 	// -without specifying this flag- is to send single DELETED and CREATED
 	// events). Deprecated since 2.46: use G_FILE_MONITOR_WATCH_MOVES instead.
-	FileMonitorFlagsSendMoved FileMonitorFlags = 0b10
-	// FileMonitorFlagsWatchHardLinks: watch for changes to the file made via
-	// another hard link. Since 2.36.
-	FileMonitorFlagsWatchHardLinks FileMonitorFlags = 0b100
-	// FileMonitorFlagsWatchMoves: watch for rename operations on a monitored
+	FileMonitorSendMoved FileMonitorFlags = 0b10
+	// FileMonitorWatchHardLinks: watch for changes to the file made via another
+	// hard link. Since 2.36.
+	FileMonitorWatchHardLinks FileMonitorFlags = 0b100
+	// FileMonitorWatchMoves: watch for rename operations on a monitored
 	// directory. This causes G_FILE_MONITOR_EVENT_RENAMED,
 	// G_FILE_MONITOR_EVENT_MOVED_IN and G_FILE_MONITOR_EVENT_MOVED_OUT events
 	// to be emitted when possible. Since: 2.46.
-	FileMonitorFlagsWatchMoves FileMonitorFlags = 0b1000
+	FileMonitorWatchMoves FileMonitorFlags = 0b1000
 )
 
 func marshalFileMonitorFlags(p uintptr) (interface{}, error) {
 	return FileMonitorFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileMonitorFlags.
+func (f FileMonitorFlags) String() string {
+	if f == 0 {
+		return "FileMonitorFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(107)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileMonitorNone:
+			builder.WriteString("None|")
+		case FileMonitorWatchMounts:
+			builder.WriteString("WatchMounts|")
+		case FileMonitorSendMoved:
+			builder.WriteString("SendMoved|")
+		case FileMonitorWatchHardLinks:
+			builder.WriteString("WatchHardLinks|")
+		case FileMonitorWatchMoves:
+			builder.WriteString("WatchMoves|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileMonitorFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // FileQueryInfoFlags flags used when querying a Info.
 type FileQueryInfoFlags int
 
 const (
-	// FileQueryInfoFlagsNone: no flags set.
-	FileQueryInfoFlagsNone FileQueryInfoFlags = 0b0
-	// FileQueryInfoFlagsNofollowSymlinks: don't follow symlinks.
-	FileQueryInfoFlagsNofollowSymlinks FileQueryInfoFlags = 0b1
+	// FileQueryInfoNone: no flags set.
+	FileQueryInfoNone FileQueryInfoFlags = 0b0
+	// FileQueryInfoNofollowSymlinks: don't follow symlinks.
+	FileQueryInfoNofollowSymlinks FileQueryInfoFlags = 0b1
 )
 
 func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
 	return FileQueryInfoFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for FileQueryInfoFlags.
+func (f FileQueryInfoFlags) String() string {
+	if f == 0 {
+		return "FileQueryInfoFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(47)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FileQueryInfoNone:
+			builder.WriteString("None|")
+		case FileQueryInfoNofollowSymlinks:
+			builder.WriteString("NofollowSymlinks|")
+		default:
+			builder.WriteString(fmt.Sprintf("FileQueryInfoFlags(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // IOStreamSpliceFlags determine how streams should be spliced.
 type IOStreamSpliceFlags int
 
 const (
-	// IOStreamSpliceFlagsNone: do not close either stream.
-	IOStreamSpliceFlagsNone IOStreamSpliceFlags = 0b0
-	// IOStreamSpliceFlagsCloseStream1: close the first stream after the splice.
-	IOStreamSpliceFlagsCloseStream1 IOStreamSpliceFlags = 0b1
-	// IOStreamSpliceFlagsCloseStream2: close the second stream after the
-	// splice.
-	IOStreamSpliceFlagsCloseStream2 IOStreamSpliceFlags = 0b10
-	// IOStreamSpliceFlagsWaitForBoth: wait for both splice operations to finish
+	// IOStreamSpliceNone: do not close either stream.
+	IOStreamSpliceNone IOStreamSpliceFlags = 0b0
+	// IOStreamSpliceCloseStream1: close the first stream after the splice.
+	IOStreamSpliceCloseStream1 IOStreamSpliceFlags = 0b1
+	// IOStreamSpliceCloseStream2: close the second stream after the splice.
+	IOStreamSpliceCloseStream2 IOStreamSpliceFlags = 0b10
+	// IOStreamSpliceWaitForBoth: wait for both splice operations to finish
 	// before calling the callback.
-	IOStreamSpliceFlagsWaitForBoth IOStreamSpliceFlags = 0b100
+	IOStreamSpliceWaitForBoth IOStreamSpliceFlags = 0b100
 )
 
 func marshalIOStreamSpliceFlags(p uintptr) (interface{}, error) {
 	return IOStreamSpliceFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for IOStreamSpliceFlags.
+func (i IOStreamSpliceFlags) String() string {
+	if i == 0 {
+		return "IOStreamSpliceFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(98)
+
+	for i != 0 {
+		next := i & (i - 1)
+		bit := i - next
+
+		switch bit {
+		case IOStreamSpliceNone:
+			builder.WriteString("None|")
+		case IOStreamSpliceCloseStream1:
+			builder.WriteString("CloseStream1|")
+		case IOStreamSpliceCloseStream2:
+			builder.WriteString("CloseStream2|")
+		case IOStreamSpliceWaitForBoth:
+			builder.WriteString("WaitForBoth|")
+		default:
+			builder.WriteString(fmt.Sprintf("IOStreamSpliceFlags(0b%b)|", bit))
+		}
+
+		i = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // MountMountFlags flags used when mounting a mount.
 type MountMountFlags int
 
 const (
-	// MountMountFlagsNone: no flags set.
-	MountMountFlagsNone MountMountFlags = 0b0
+	// MountMountNone: no flags set.
+	MountMountNone MountMountFlags = 0b0
 )
 
 func marshalMountMountFlags(p uintptr) (interface{}, error) {
 	return MountMountFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for MountMountFlags.
+func (m MountMountFlags) String() string {
+	if m == 0 {
+		return "MountMountFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(14)
+
+	for m != 0 {
+		next := m & (m - 1)
+		bit := m - next
+
+		switch bit {
+		case MountMountNone:
+			builder.WriteString("None|")
+		default:
+			builder.WriteString(fmt.Sprintf("MountMountFlags(0b%b)|", bit))
+		}
+
+		m = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // MountUnmountFlags flags used when an unmounting a mount.
 type MountUnmountFlags int
 
 const (
-	// MountUnmountFlagsNone: no flags set.
-	MountUnmountFlagsNone MountUnmountFlags = 0b0
-	// MountUnmountFlagsForce: unmount even if there are outstanding file
-	// operations on the mount.
-	MountUnmountFlagsForce MountUnmountFlags = 0b1
+	// MountUnmountNone: no flags set.
+	MountUnmountNone MountUnmountFlags = 0b0
+	// MountUnmountForce: unmount even if there are outstanding file operations
+	// on the mount.
+	MountUnmountForce MountUnmountFlags = 0b1
 )
 
 func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
 	return MountUnmountFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for MountUnmountFlags.
+func (m MountUnmountFlags) String() string {
+	if m == 0 {
+		return "MountUnmountFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(34)
+
+	for m != 0 {
+		next := m & (m - 1)
+		bit := m - next
+
+		switch bit {
+		case MountUnmountNone:
+			builder.WriteString("None|")
+		case MountUnmountForce:
+			builder.WriteString("Force|")
+		default:
+			builder.WriteString(fmt.Sprintf("MountUnmountFlags(0b%b)|", bit))
+		}
+
+		m = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // OutputStreamSpliceFlags determine how streams should be spliced.
 type OutputStreamSpliceFlags int
 
 const (
-	// OutputStreamSpliceFlagsNone: do not close either stream.
-	OutputStreamSpliceFlagsNone OutputStreamSpliceFlags = 0b0
-	// OutputStreamSpliceFlagsCloseSource: close the source stream after the
-	// splice.
-	OutputStreamSpliceFlagsCloseSource OutputStreamSpliceFlags = 0b1
-	// OutputStreamSpliceFlagsCloseTarget: close the target stream after the
-	// splice.
-	OutputStreamSpliceFlagsCloseTarget OutputStreamSpliceFlags = 0b10
+	// OutputStreamSpliceNone: do not close either stream.
+	OutputStreamSpliceNone OutputStreamSpliceFlags = 0b0
+	// OutputStreamSpliceCloseSource: close the source stream after the splice.
+	OutputStreamSpliceCloseSource OutputStreamSpliceFlags = 0b1
+	// OutputStreamSpliceCloseTarget: close the target stream after the splice.
+	OutputStreamSpliceCloseTarget OutputStreamSpliceFlags = 0b10
 )
 
 func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
 	return OutputStreamSpliceFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for OutputStreamSpliceFlags.
+func (o OutputStreamSpliceFlags) String() string {
+	if o == 0 {
+		return "OutputStreamSpliceFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(82)
+
+	for o != 0 {
+		next := o & (o - 1)
+		bit := o - next
+
+		switch bit {
+		case OutputStreamSpliceNone:
+			builder.WriteString("None|")
+		case OutputStreamSpliceCloseSource:
+			builder.WriteString("CloseSource|")
+		case OutputStreamSpliceCloseTarget:
+			builder.WriteString("CloseTarget|")
+		default:
+			builder.WriteString(fmt.Sprintf("OutputStreamSpliceFlags(0b%b)|", bit))
+		}
+
+		o = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ResourceFlags give information about a particular file inside a resource
@@ -1915,6 +3731,34 @@ func marshalResourceFlags(p uintptr) (interface{}, error) {
 	return ResourceFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for ResourceFlags.
+func (r ResourceFlags) String() string {
+	if r == 0 {
+		return "ResourceFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(41)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case ResourceFlagsNone:
+			builder.WriteString("None|")
+		case ResourceFlagsCompressed:
+			builder.WriteString("Compressed|")
+		default:
+			builder.WriteString(fmt.Sprintf("ResourceFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // ResourceLookupFlags determine how resource path lookups are handled.
 type ResourceLookupFlags int
 
@@ -1927,6 +3771,32 @@ func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
 	return ResourceLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for ResourceLookupFlags.
+func (r ResourceLookupFlags) String() string {
+	if r == 0 {
+		return "ResourceLookupFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(23)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case ResourceLookupFlagsNone:
+			builder.WriteString("None|")
+		default:
+			builder.WriteString(fmt.Sprintf("ResourceLookupFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // SocketMsgFlags flags used in g_socket_receive_message() and
 // g_socket_send_message(). The flags listed in the enum are some commonly
 // available flags, but the values used for them are the same as on the
@@ -1935,20 +3805,52 @@ func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
 type SocketMsgFlags int
 
 const (
-	// SocketMsgFlagsNone: no flags.
-	SocketMsgFlagsNone SocketMsgFlags = 0b0
-	// SocketMsgFlagsOob: request to send/receive out of band data.
-	SocketMsgFlagsOob SocketMsgFlags = 0b1
-	// SocketMsgFlagsPeek: read data from the socket without removing it from
-	// the queue.
-	SocketMsgFlagsPeek SocketMsgFlags = 0b10
-	// SocketMsgFlagsDontroute: don't use a gateway to send out the packet, only
-	// send to hosts on directly connected networks.
-	SocketMsgFlagsDontroute SocketMsgFlags = 0b100
+	// SocketMsgNone: no flags.
+	SocketMsgNone SocketMsgFlags = 0b0
+	// SocketMsgOob: request to send/receive out of band data.
+	SocketMsgOob SocketMsgFlags = 0b1
+	// SocketMsgPeek: read data from the socket without removing it from the
+	// queue.
+	SocketMsgPeek SocketMsgFlags = 0b10
+	// SocketMsgDontroute: don't use a gateway to send out the packet, only send
+	// to hosts on directly connected networks.
+	SocketMsgDontroute SocketMsgFlags = 0b100
 )
 
 func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
 	return SocketMsgFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for SocketMsgFlags.
+func (s SocketMsgFlags) String() string {
+	if s == 0 {
+		return "SocketMsgFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(59)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case SocketMsgNone:
+			builder.WriteString("None|")
+		case SocketMsgOob:
+			builder.WriteString("Oob|")
+		case SocketMsgPeek:
+			builder.WriteString("Peek|")
+		case SocketMsgDontroute:
+			builder.WriteString("Dontroute|")
+		default:
+			builder.WriteString(fmt.Sprintf("SocketMsgFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // SubprocessFlags flags to define the behaviour of a #GSubprocess.
@@ -1997,16 +3899,84 @@ func marshalSubprocessFlags(p uintptr) (interface{}, error) {
 	return SubprocessFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for SubprocessFlags.
+func (s SubprocessFlags) String() string {
+	if s == 0 {
+		return "SubprocessFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(235)
+
+	for s != 0 {
+		next := s & (s - 1)
+		bit := s - next
+
+		switch bit {
+		case SubprocessFlagsNone:
+			builder.WriteString("None|")
+		case SubprocessFlagsStdinPipe:
+			builder.WriteString("StdinPipe|")
+		case SubprocessFlagsStdinInherit:
+			builder.WriteString("StdinInherit|")
+		case SubprocessFlagsStdoutPipe:
+			builder.WriteString("StdoutPipe|")
+		case SubprocessFlagsStdoutSilence:
+			builder.WriteString("StdoutSilence|")
+		case SubprocessFlagsStderrPipe:
+			builder.WriteString("StderrPipe|")
+		case SubprocessFlagsStderrSilence:
+			builder.WriteString("StderrSilence|")
+		case SubprocessFlagsStderrMerge:
+			builder.WriteString("StderrMerge|")
+		case SubprocessFlagsInheritFds:
+			builder.WriteString("InheritFds|")
+		default:
+			builder.WriteString(fmt.Sprintf("SubprocessFlags(0b%b)|", bit))
+		}
+
+		s = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // TestDBusFlags flags to define future DBus behaviour.
 type TestDBusFlags int
 
 const (
-	// TestDBusFlagsNone: no flags.
-	TestDBusFlagsNone TestDBusFlags = 0b0
+	// TestDBusNone: no flags.
+	TestDBusNone TestDBusFlags = 0b0
 )
 
 func marshalTestDBusFlags(p uintptr) (interface{}, error) {
 	return TestDBusFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for TestDBusFlags.
+func (t TestDBusFlags) String() string {
+	if t == 0 {
+		return "TestDBusFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(12)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TestDBusNone:
+			builder.WriteString("None|")
+		default:
+			builder.WriteString(fmt.Sprintf("TestDBusFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // TLSCertificateFlags: set of flags describing TLS certification validation.
@@ -2016,61 +3986,158 @@ func marshalTestDBusFlags(p uintptr) (interface{}, error) {
 type TLSCertificateFlags int
 
 const (
-	// TLSCertificateFlagsUnknownCa: signing certificate authority is not known.
-	TLSCertificateFlagsUnknownCa TLSCertificateFlags = 0b1
-	// TLSCertificateFlagsBadIdentity: certificate does not match the expected
+	// TLSCertificateUnknownCa: signing certificate authority is not known.
+	TLSCertificateUnknownCa TLSCertificateFlags = 0b1
+	// TLSCertificateBadIdentity: certificate does not match the expected
 	// identity of the site that it was retrieved from.
-	TLSCertificateFlagsBadIdentity TLSCertificateFlags = 0b10
-	// TLSCertificateFlagsNotActivated certificate's activation time is still in
-	// the future
-	TLSCertificateFlagsNotActivated TLSCertificateFlags = 0b100
-	// TLSCertificateFlagsExpired: certificate has expired
-	TLSCertificateFlagsExpired TLSCertificateFlags = 0b1000
-	// TLSCertificateFlagsRevoked: certificate has been revoked according to the
+	TLSCertificateBadIdentity TLSCertificateFlags = 0b10
+	// TLSCertificateNotActivated certificate's activation time is still in the
+	// future
+	TLSCertificateNotActivated TLSCertificateFlags = 0b100
+	// TLSCertificateExpired: certificate has expired
+	TLSCertificateExpired TLSCertificateFlags = 0b1000
+	// TLSCertificateRevoked: certificate has been revoked according to the
 	// Connection's certificate revocation list.
-	TLSCertificateFlagsRevoked TLSCertificateFlags = 0b10000
-	// TLSCertificateFlagsInsecure certificate's algorithm is considered
-	// insecure.
-	TLSCertificateFlagsInsecure TLSCertificateFlags = 0b100000
-	// TLSCertificateFlagsGenericError: some other error occurred validating the
+	TLSCertificateRevoked TLSCertificateFlags = 0b10000
+	// TLSCertificateInsecure certificate's algorithm is considered insecure.
+	TLSCertificateInsecure TLSCertificateFlags = 0b100000
+	// TLSCertificateGenericError: some other error occurred validating the
 	// certificate
-	TLSCertificateFlagsGenericError TLSCertificateFlags = 0b1000000
-	// TLSCertificateFlagsValidateAll: combination of all of the above flags
-	TLSCertificateFlagsValidateAll TLSCertificateFlags = 0b1111111
+	TLSCertificateGenericError TLSCertificateFlags = 0b1000000
+	// TLSCertificateValidateAll: combination of all of the above flags
+	TLSCertificateValidateAll TLSCertificateFlags = 0b1111111
 )
 
 func marshalTLSCertificateFlags(p uintptr) (interface{}, error) {
 	return TLSCertificateFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for TLSCertificateFlags.
+func (t TLSCertificateFlags) String() string {
+	if t == 0 {
+		return "TLSCertificateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(196)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TLSCertificateUnknownCa:
+			builder.WriteString("UnknownCa|")
+		case TLSCertificateBadIdentity:
+			builder.WriteString("BadIdentity|")
+		case TLSCertificateNotActivated:
+			builder.WriteString("NotActivated|")
+		case TLSCertificateExpired:
+			builder.WriteString("Expired|")
+		case TLSCertificateRevoked:
+			builder.WriteString("Revoked|")
+		case TLSCertificateInsecure:
+			builder.WriteString("Insecure|")
+		case TLSCertificateGenericError:
+			builder.WriteString("GenericError|")
+		case TLSCertificateValidateAll:
+			builder.WriteString("ValidateAll|")
+		default:
+			builder.WriteString(fmt.Sprintf("TLSCertificateFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // TLSDatabaseVerifyFlags flags for g_tls_database_verify_chain().
 type TLSDatabaseVerifyFlags int
 
 const (
-	// TLSDatabaseVerifyFlagsNone: no verification flags
-	TLSDatabaseVerifyFlagsNone TLSDatabaseVerifyFlags = 0b0
+	// TLSDatabaseVerifyNone: no verification flags
+	TLSDatabaseVerifyNone TLSDatabaseVerifyFlags = 0b0
 )
 
 func marshalTLSDatabaseVerifyFlags(p uintptr) (interface{}, error) {
 	return TLSDatabaseVerifyFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the names in string for TLSDatabaseVerifyFlags.
+func (t TLSDatabaseVerifyFlags) String() string {
+	if t == 0 {
+		return "TLSDatabaseVerifyFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(21)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TLSDatabaseVerifyNone:
+			builder.WriteString("None|")
+		default:
+			builder.WriteString(fmt.Sprintf("TLSDatabaseVerifyFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
 // TLSPasswordFlags various flags for the password.
 type TLSPasswordFlags int
 
 const (
-	// TLSPasswordFlagsNone: no flags
-	TLSPasswordFlagsNone TLSPasswordFlags = 0b0
-	// TLSPasswordFlagsRetry: password was wrong, and the user should retry.
-	TLSPasswordFlagsRetry TLSPasswordFlags = 0b10
-	// TLSPasswordFlagsManyTries: hint to the user that the password has been
-	// wrong many times, and the user may not have many chances left.
-	TLSPasswordFlagsManyTries TLSPasswordFlags = 0b100
-	// TLSPasswordFlagsFinalTry: hint to the user that this is the last try to
-	// get this password right.
-	TLSPasswordFlagsFinalTry TLSPasswordFlags = 0b1000
+	// TLSPasswordNone: no flags
+	TLSPasswordNone TLSPasswordFlags = 0b0
+	// TLSPasswordRetry: password was wrong, and the user should retry.
+	TLSPasswordRetry TLSPasswordFlags = 0b10
+	// TLSPasswordManyTries: hint to the user that the password has been wrong
+	// many times, and the user may not have many chances left.
+	TLSPasswordManyTries TLSPasswordFlags = 0b100
+	// TLSPasswordFinalTry: hint to the user that this is the last try to get
+	// this password right.
+	TLSPasswordFinalTry TLSPasswordFlags = 0b1000
 )
 
 func marshalTLSPasswordFlags(p uintptr) (interface{}, error) {
 	return TLSPasswordFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for TLSPasswordFlags.
+func (t TLSPasswordFlags) String() string {
+	if t == 0 {
+		return "TLSPasswordFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(73)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TLSPasswordNone:
+			builder.WriteString("None|")
+		case TLSPasswordRetry:
+			builder.WriteString("Retry|")
+		case TLSPasswordManyTries:
+			builder.WriteString("ManyTries|")
+		case TLSPasswordFinalTry:
+			builder.WriteString("FinalTry|")
+		default:
+			builder.WriteString(fmt.Sprintf("TLSPasswordFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }

@@ -3,6 +3,8 @@
 package gdk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -40,32 +42,63 @@ func init() {
 type AxisUse int
 
 const (
-	// Ignore axis is ignored.
-	AxisUseIgnore AxisUse = iota
-	// X axis is used as the x axis.
-	AxisUseX
-	// Y axis is used as the y axis.
-	AxisUseY
-	// Pressure axis is used for pressure information.
-	AxisUsePressure
-	// Xtilt axis is used for x tilt information.
-	AxisUseXtilt
-	// Ytilt axis is used for y tilt information.
-	AxisUseYtilt
-	// Wheel axis is used for wheel information.
-	AxisUseWheel
-	// Distance axis is used for pen/tablet distance information. (Since: 3.22)
-	AxisUseDistance
-	// Rotation axis is used for pen rotation information. (Since: 3.22)
-	AxisUseRotation
-	// Slider axis is used for pen slider information. (Since: 3.22)
-	AxisUseSlider
-	// Last: constant equal to the numerically highest axis value.
-	AxisUseLast
+	// AxisIgnore axis is ignored.
+	AxisIgnore AxisUse = iota
+	// AxisX axis is used as the x axis.
+	AxisX
+	// AxisY axis is used as the y axis.
+	AxisY
+	// AxisPressure axis is used for pressure information.
+	AxisPressure
+	// AxisXtilt axis is used for x tilt information.
+	AxisXtilt
+	// AxisYtilt axis is used for y tilt information.
+	AxisYtilt
+	// AxisWheel axis is used for wheel information.
+	AxisWheel
+	// AxisDistance axis is used for pen/tablet distance information. (Since:
+	// 3.22)
+	AxisDistance
+	// AxisRotation axis is used for pen rotation information. (Since: 3.22)
+	AxisRotation
+	// AxisSlider axis is used for pen slider information. (Since: 3.22)
+	AxisSlider
+	// AxisLast: constant equal to the numerically highest axis value.
+	AxisLast
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
 	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for AxisUse.
+func (a AxisUse) String() string {
+	switch a {
+	case AxisIgnore:
+		return "Ignore"
+	case AxisX:
+		return "X"
+	case AxisY:
+		return "Y"
+	case AxisPressure:
+		return "Pressure"
+	case AxisXtilt:
+		return "Xtilt"
+	case AxisYtilt:
+		return "Ytilt"
+	case AxisWheel:
+		return "Wheel"
+	case AxisDistance:
+		return "Distance"
+	case AxisRotation:
+		return "Rotation"
+	case AxisSlider:
+		return "Slider"
+	case AxisLast:
+		return "Last"
+	default:
+		return fmt.Sprintf("AxisUse(%d)", a)
+	}
 }
 
 // ByteOrder: set of values describing the possible byte-orders for storing
@@ -76,26 +109,38 @@ const (
 	// LsbFirst values are stored with the least-significant byte first. For
 	// instance, the 32-bit value 0xffeecc would be stored in memory as 0xcc,
 	// 0xee, 0xff, 0x00.
-	ByteOrderLsbFirst ByteOrder = iota
+	LsbFirst ByteOrder = iota
 	// MsbFirst values are stored with the most-significant byte first. For
 	// instance, the 32-bit value 0xffeecc would be stored in memory as 0x00,
 	// 0xff, 0xee, 0xcc.
-	ByteOrderMsbFirst
+	MsbFirst
 )
 
 func marshalByteOrder(p uintptr) (interface{}, error) {
 	return ByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ByteOrder.
+func (b ByteOrder) String() string {
+	switch b {
+	case LsbFirst:
+		return "LsbFirst"
+	case MsbFirst:
+		return "MsbFirst"
+	default:
+		return fmt.Sprintf("ByteOrder(%d)", b)
+	}
+}
+
 // GLError: error enumeration for GLContext.
 type GLError int
 
 const (
-	// NotAvailable: openGL support is not available
+	// GLErrorNotAvailable: openGL support is not available
 	GLErrorNotAvailable GLError = iota
-	// UnsupportedFormat: requested visual format is not supported
+	// GLErrorUnsupportedFormat: requested visual format is not supported
 	GLErrorUnsupportedFormat
-	// UnsupportedProfile: requested profile is not supported
+	// GLErrorUnsupportedProfile: requested profile is not supported
 	GLErrorUnsupportedProfile
 )
 
@@ -103,20 +148,49 @@ func marshalGLError(p uintptr) (interface{}, error) {
 	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for GLError.
+func (g GLError) String() string {
+	switch g {
+	case GLErrorNotAvailable:
+		return "NotAvailable"
+	case GLErrorUnsupportedFormat:
+		return "UnsupportedFormat"
+	case GLErrorUnsupportedProfile:
+		return "UnsupportedProfile"
+	default:
+		return fmt.Sprintf("GLError(%d)", g)
+	}
+}
+
 // GrabOwnership defines how device grabs interact with other devices.
 type GrabOwnership int
 
 const (
-	// None: all other devices’ events are allowed.
-	GrabOwnershipNone GrabOwnership = iota
-	// Window: other devices’ events are blocked for the grab window.
-	GrabOwnershipWindow
-	// Application: other devices’ events are blocked for the whole application.
-	GrabOwnershipApplication
+	// OwnershipNone: all other devices’ events are allowed.
+	OwnershipNone GrabOwnership = iota
+	// OwnershipWindow: other devices’ events are blocked for the grab window.
+	OwnershipWindow
+	// OwnershipApplication: other devices’ events are blocked for the whole
+	// application.
+	OwnershipApplication
 )
 
 func marshalGrabOwnership(p uintptr) (interface{}, error) {
 	return GrabOwnership(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for GrabOwnership.
+func (g GrabOwnership) String() string {
+	switch g {
+	case OwnershipNone:
+		return "None"
+	case OwnershipWindow:
+		return "Window"
+	case OwnershipApplication:
+		return "Application"
+	default:
+		return fmt.Sprintf("GrabOwnership(%d)", g)
+	}
 }
 
 // GrabStatus: returned by gdk_device_grab(), gdk_pointer_grab() and
@@ -125,22 +199,43 @@ func marshalGrabOwnership(p uintptr) (interface{}, error) {
 type GrabStatus int
 
 const (
-	// Success: resource was successfully grabbed.
-	GrabStatusSuccess GrabStatus = iota
-	// AlreadyGrabbed: resource is actively grabbed by another client.
-	GrabStatusAlreadyGrabbed
-	// InvalidTime: resource was grabbed more recently than the specified time.
-	GrabStatusInvalidTime
-	// NotViewable: grab window or the confine_to window are not viewable.
-	GrabStatusNotViewable
-	// Frozen: resource is frozen by an active grab of another client.
-	GrabStatusFrozen
-	// Failed: grab failed for some other reason. Since 3.16
-	GrabStatusFailed
+	// GrabSuccess: resource was successfully grabbed.
+	GrabSuccess GrabStatus = iota
+	// GrabAlreadyGrabbed: resource is actively grabbed by another client.
+	GrabAlreadyGrabbed
+	// GrabInvalidTime: resource was grabbed more recently than the specified
+	// time.
+	GrabInvalidTime
+	// GrabNotViewable: grab window or the confine_to window are not viewable.
+	GrabNotViewable
+	// GrabFrozen: resource is frozen by an active grab of another client.
+	GrabFrozen
+	// GrabFailed: grab failed for some other reason. Since 3.16
+	GrabFailed
 )
 
 func marshalGrabStatus(p uintptr) (interface{}, error) {
 	return GrabStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for GrabStatus.
+func (g GrabStatus) String() string {
+	switch g {
+	case GrabSuccess:
+		return "Success"
+	case GrabAlreadyGrabbed:
+		return "AlreadyGrabbed"
+	case GrabInvalidTime:
+		return "InvalidTime"
+	case GrabNotViewable:
+		return "NotViewable"
+	case GrabFrozen:
+		return "Frozen"
+	case GrabFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("GrabStatus(%d)", g)
+	}
 }
 
 // ModifierIntent: this enum is used with gdk_keymap_get_modifier_mask() in
@@ -152,35 +247,60 @@ func marshalGrabStatus(p uintptr) (interface{}, error) {
 type ModifierIntent int
 
 const (
-	// PrimaryAccelerator: primary modifier used to invoke menu accelerators.
+	// ModifierIntentPrimaryAccelerator: primary modifier used to invoke menu
+	// accelerators.
 	ModifierIntentPrimaryAccelerator ModifierIntent = iota
-	// ContextMenu: modifier used to invoke context menus. Note that mouse
-	// button 3 always triggers context menus. When this modifier is not 0, it
-	// additionally triggers context menus when used with mouse button 1.
+	// ModifierIntentContextMenu: modifier used to invoke context menus. Note
+	// that mouse button 3 always triggers context menus. When this modifier is
+	// not 0, it additionally triggers context menus when used with mouse button
+	// 1.
 	ModifierIntentContextMenu
-	// ExtendSelection: modifier used to extend selections using modifier-click
-	// or modifier-cursor-key
+	// ModifierIntentExtendSelection: modifier used to extend selections using
+	// modifier-click or modifier-cursor-key
 	ModifierIntentExtendSelection
-	// ModifySelection: modifier used to modify selections, which in most cases
-	// means toggling the clicked item into or out of the selection.
+	// ModifierIntentModifySelection: modifier used to modify selections, which
+	// in most cases means toggling the clicked item into or out of the
+	// selection.
 	ModifierIntentModifySelection
-	// NoTextInput: when any of these modifiers is pressed, the key event cannot
-	// produce a symbol directly. This is meant to be used for input methods,
-	// and for use cases like typeahead search.
+	// ModifierIntentNoTextInput: when any of these modifiers is pressed, the
+	// key event cannot produce a symbol directly. This is meant to be used for
+	// input methods, and for use cases like typeahead search.
 	ModifierIntentNoTextInput
-	// ShiftGroup: modifier that switches between keyboard groups (AltGr on
-	// X11/Windows and Option/Alt on OS X).
+	// ModifierIntentShiftGroup: modifier that switches between keyboard groups
+	// (AltGr on X11/Windows and Option/Alt on OS X).
 	ModifierIntentShiftGroup
-	// DefaultModMask: set of modifier masks accepted as modifiers in
-	// accelerators. Needed because Command is mapped to MOD2 on OSX, which is
-	// widely used, but on X11 MOD2 is NumLock and using that for a mod key is
-	// problematic at best. Ref:
+	// ModifierIntentDefaultModMask: set of modifier masks accepted as modifiers
+	// in accelerators. Needed because Command is mapped to MOD2 on OSX, which
+	// is widely used, but on X11 MOD2 is NumLock and using that for a mod key
+	// is problematic at best. Ref:
 	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
 	ModifierIntentDefaultModMask
 )
 
 func marshalModifierIntent(p uintptr) (interface{}, error) {
 	return ModifierIntent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ModifierIntent.
+func (m ModifierIntent) String() string {
+	switch m {
+	case ModifierIntentPrimaryAccelerator:
+		return "PrimaryAccelerator"
+	case ModifierIntentContextMenu:
+		return "ContextMenu"
+	case ModifierIntentExtendSelection:
+		return "ExtendSelection"
+	case ModifierIntentModifySelection:
+		return "ModifySelection"
+	case ModifierIntentNoTextInput:
+		return "NoTextInput"
+	case ModifierIntentShiftGroup:
+		return "ShiftGroup"
+	case ModifierIntentDefaultModMask:
+		return "DefaultModMask"
+	default:
+		return fmt.Sprintf("ModifierIntent(%d)", m)
+	}
 }
 
 // WindowTypeHint: these are hints for the window manager that indicate what
@@ -194,35 +314,38 @@ func marshalModifierIntent(p uintptr) (interface{}, error) {
 type WindowTypeHint int
 
 const (
-	// Normal: normal toplevel window.
+	// WindowTypeHintNormal: normal toplevel window.
 	WindowTypeHintNormal WindowTypeHint = iota
-	// Dialog: dialog window.
+	// WindowTypeHintDialog: dialog window.
 	WindowTypeHintDialog
-	// Menu: window used to implement a menu; GTK+ uses this hint only for
-	// torn-off menus, see TearoffMenuItem.
+	// WindowTypeHintMenu: window used to implement a menu; GTK+ uses this hint
+	// only for torn-off menus, see TearoffMenuItem.
 	WindowTypeHintMenu
-	// Toolbar: window used to implement toolbars.
+	// WindowTypeHintToolbar: window used to implement toolbars.
 	WindowTypeHintToolbar
-	// Splashscreen: window used to display a splash screen during application
-	// startup.
+	// WindowTypeHintSplashscreen: window used to display a splash screen during
+	// application startup.
 	WindowTypeHintSplashscreen
-	// Utility: utility windows which are not detached toolbars or dialogs.
+	// WindowTypeHintUtility: utility windows which are not detached toolbars or
+	// dialogs.
 	WindowTypeHintUtility
-	// Dock: used for creating dock or panel windows.
+	// WindowTypeHintDock: used for creating dock or panel windows.
 	WindowTypeHintDock
-	// Desktop: used for creating the desktop background window.
+	// WindowTypeHintDesktop: used for creating the desktop background window.
 	WindowTypeHintDesktop
-	// DropdownMenu: menu that belongs to a menubar.
+	// WindowTypeHintDropdownMenu: menu that belongs to a menubar.
 	WindowTypeHintDropdownMenu
-	// PopupMenu: menu that does not belong to a menubar, e.g. a context menu.
+	// WindowTypeHintPopupMenu: menu that does not belong to a menubar, e.g. a
+	// context menu.
 	WindowTypeHintPopupMenu
-	// Tooltip: tooltip.
+	// WindowTypeHintTooltip: tooltip.
 	WindowTypeHintTooltip
-	// Notification - typically a “bubble” that belongs to a status icon.
+	// WindowTypeHintNotification - typically a “bubble” that belongs to a
+	// status icon.
 	WindowTypeHintNotification
-	// Combo: popup from a combo box.
+	// WindowTypeHintCombo: popup from a combo box.
 	WindowTypeHintCombo
-	// Dnd: window that is used to implement a DND cursor.
+	// WindowTypeHintDnd: window that is used to implement a DND cursor.
 	WindowTypeHintDnd
 )
 
@@ -230,32 +353,110 @@ func marshalWindowTypeHint(p uintptr) (interface{}, error) {
 	return WindowTypeHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for WindowTypeHint.
+func (w WindowTypeHint) String() string {
+	switch w {
+	case WindowTypeHintNormal:
+		return "Normal"
+	case WindowTypeHintDialog:
+		return "Dialog"
+	case WindowTypeHintMenu:
+		return "Menu"
+	case WindowTypeHintToolbar:
+		return "Toolbar"
+	case WindowTypeHintSplashscreen:
+		return "Splashscreen"
+	case WindowTypeHintUtility:
+		return "Utility"
+	case WindowTypeHintDock:
+		return "Dock"
+	case WindowTypeHintDesktop:
+		return "Desktop"
+	case WindowTypeHintDropdownMenu:
+		return "DropdownMenu"
+	case WindowTypeHintPopupMenu:
+		return "PopupMenu"
+	case WindowTypeHintTooltip:
+		return "Tooltip"
+	case WindowTypeHintNotification:
+		return "Notification"
+	case WindowTypeHintCombo:
+		return "Combo"
+	case WindowTypeHintDnd:
+		return "Dnd"
+	default:
+		return fmt.Sprintf("WindowTypeHint(%d)", w)
+	}
+}
+
 // AxisFlags flags describing the current capabilities of a device/tool.
 type AxisFlags int
 
 const (
-	// AxisFlagsX: x axis is present
-	AxisFlagsX AxisFlags = 0b10
-	// AxisFlagsY: y axis is present
-	AxisFlagsY AxisFlags = 0b100
-	// AxisFlagsPressure: pressure axis is present
-	AxisFlagsPressure AxisFlags = 0b1000
-	// AxisFlagsXtilt: x tilt axis is present
-	AxisFlagsXtilt AxisFlags = 0b10000
-	// AxisFlagsYtilt: y tilt axis is present
-	AxisFlagsYtilt AxisFlags = 0b100000
-	// AxisFlagsWheel: wheel axis is present
-	AxisFlagsWheel AxisFlags = 0b1000000
-	// AxisFlagsDistance: distance axis is present
-	AxisFlagsDistance AxisFlags = 0b10000000
-	// AxisFlagsRotation z-axis rotation is present
-	AxisFlagsRotation AxisFlags = 0b100000000
-	// AxisFlagsSlider: slider axis is present
-	AxisFlagsSlider AxisFlags = 0b1000000000
+	// AxisFlagX: x axis is present
+	AxisFlagX AxisFlags = 0b10
+	// AxisFlagY: y axis is present
+	AxisFlagY AxisFlags = 0b100
+	// AxisFlagPressure: pressure axis is present
+	AxisFlagPressure AxisFlags = 0b1000
+	// AxisFlagXtilt: x tilt axis is present
+	AxisFlagXtilt AxisFlags = 0b10000
+	// AxisFlagYtilt: y tilt axis is present
+	AxisFlagYtilt AxisFlags = 0b100000
+	// AxisFlagWheel: wheel axis is present
+	AxisFlagWheel AxisFlags = 0b1000000
+	// AxisFlagDistance: distance axis is present
+	AxisFlagDistance AxisFlags = 0b10000000
+	// AxisFlagRotation z-axis rotation is present
+	AxisFlagRotation AxisFlags = 0b100000000
+	// AxisFlagSlider: slider axis is present
+	AxisFlagSlider AxisFlags = 0b1000000000
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
 	return AxisFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for AxisFlags.
+func (a AxisFlags) String() string {
+	if a == 0 {
+		return "AxisFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(127)
+
+	for a != 0 {
+		next := a & (a - 1)
+		bit := a - next
+
+		switch bit {
+		case AxisFlagX:
+			builder.WriteString("X|")
+		case AxisFlagY:
+			builder.WriteString("Y|")
+		case AxisFlagPressure:
+			builder.WriteString("Pressure|")
+		case AxisFlagXtilt:
+			builder.WriteString("Xtilt|")
+		case AxisFlagYtilt:
+			builder.WriteString("Ytilt|")
+		case AxisFlagWheel:
+			builder.WriteString("Wheel|")
+		case AxisFlagDistance:
+			builder.WriteString("Distance|")
+		case AxisFlagRotation:
+			builder.WriteString("Rotation|")
+		case AxisFlagSlider:
+			builder.WriteString("Slider|")
+		default:
+			builder.WriteString(fmt.Sprintf("AxisFlags(0b%b)|", bit))
+		}
+
+		a = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // EventMask: set of bit-flags to indicate which events a window is to receive.
@@ -285,67 +486,143 @@ func marshalAxisFlags(p uintptr) (interface{}, error) {
 type EventMask int
 
 const (
-	// EventMaskExposureMask: receive expose events
-	EventMaskExposureMask EventMask = 0b10
-	// EventMaskPointerMotionMask: receive all pointer motion events
-	EventMaskPointerMotionMask EventMask = 0b100
-	// EventMaskPointerMotionHintMask: deprecated. see the explanation above
-	EventMaskPointerMotionHintMask EventMask = 0b1000
-	// EventMaskButtonMotionMask: receive pointer motion events while any button
-	// is pressed
-	EventMaskButtonMotionMask EventMask = 0b10000
-	// EventMaskButton1MotionMask: receive pointer motion events while 1 button
-	// is pressed
-	EventMaskButton1MotionMask EventMask = 0b100000
-	// EventMaskButton2MotionMask: receive pointer motion events while 2 button
-	// is pressed
-	EventMaskButton2MotionMask EventMask = 0b1000000
-	// EventMaskButton3MotionMask: receive pointer motion events while 3 button
-	// is pressed
-	EventMaskButton3MotionMask EventMask = 0b10000000
-	// EventMaskButtonPressMask: receive button press events
-	EventMaskButtonPressMask EventMask = 0b100000000
-	// EventMaskButtonReleaseMask: receive button release events
-	EventMaskButtonReleaseMask EventMask = 0b1000000000
-	// EventMaskKeyPressMask: receive key press events
-	EventMaskKeyPressMask EventMask = 0b10000000000
-	// EventMaskKeyReleaseMask: receive key release events
-	EventMaskKeyReleaseMask EventMask = 0b100000000000
-	// EventMaskEnterNotifyMask: receive window enter events
-	EventMaskEnterNotifyMask EventMask = 0b1000000000000
-	// EventMaskLeaveNotifyMask: receive window leave events
-	EventMaskLeaveNotifyMask EventMask = 0b10000000000000
-	// EventMaskFocusChangeMask: receive focus change events
-	EventMaskFocusChangeMask EventMask = 0b100000000000000
-	// EventMaskStructureMask: receive events about window configuration change
-	EventMaskStructureMask EventMask = 0b1000000000000000
-	// EventMaskPropertyChangeMask: receive property change events
-	EventMaskPropertyChangeMask EventMask = 0b10000000000000000
-	// EventMaskVisibilityNotifyMask: receive visibility change events
-	EventMaskVisibilityNotifyMask EventMask = 0b100000000000000000
-	// EventMaskProximityInMask: receive proximity in events
-	EventMaskProximityInMask EventMask = 0b1000000000000000000
-	// EventMaskProximityOutMask: receive proximity out events
-	EventMaskProximityOutMask EventMask = 0b10000000000000000000
-	// EventMaskSubstructureMask: receive events about window configuration
-	// changes of child windows
-	EventMaskSubstructureMask EventMask = 0b100000000000000000000
-	// EventMaskScrollMask: receive scroll events
-	EventMaskScrollMask EventMask = 0b1000000000000000000000
-	// EventMaskTouchMask: receive touch events. Since 3.4
-	EventMaskTouchMask EventMask = 0b10000000000000000000000
-	// EventMaskSmoothScrollMask: receive smooth scrolling events. Since 3.4
-	EventMaskSmoothScrollMask EventMask = 0b100000000000000000000000
-	// EventMaskTouchpadGestureMask: receive touchpad gesture events. Since 3.18
-	EventMaskTouchpadGestureMask EventMask = 0b1000000000000000000000000
-	// EventMaskTabletPadMask: receive tablet pad events. Since 3.22
-	EventMaskTabletPadMask EventMask = 0b10000000000000000000000000
-	// EventMaskAllEventsMask: combination of all the above event masks.
-	EventMaskAllEventsMask EventMask = 0b11111111111111111111111110
+	// ExposureMask: receive expose events
+	ExposureMask EventMask = 0b10
+	// PointerMotionMask: receive all pointer motion events
+	PointerMotionMask EventMask = 0b100
+	// PointerMotionHintMask: deprecated. see the explanation above
+	PointerMotionHintMask EventMask = 0b1000
+	// ButtonMotionMask: receive pointer motion events while any button is
+	// pressed
+	ButtonMotionMask EventMask = 0b10000
+	// Button1MotionMask: receive pointer motion events while 1 button is
+	// pressed
+	Button1MotionMask EventMask = 0b100000
+	// Button2MotionMask: receive pointer motion events while 2 button is
+	// pressed
+	Button2MotionMask EventMask = 0b1000000
+	// Button3MotionMask: receive pointer motion events while 3 button is
+	// pressed
+	Button3MotionMask EventMask = 0b10000000
+	// ButtonPressMask: receive button press events
+	ButtonPressMask EventMask = 0b100000000
+	// ButtonReleaseMask: receive button release events
+	ButtonReleaseMask EventMask = 0b1000000000
+	// KeyPressMask: receive key press events
+	KeyPressMask EventMask = 0b10000000000
+	// KeyReleaseMask: receive key release events
+	KeyReleaseMask EventMask = 0b100000000000
+	// EnterNotifyMask: receive window enter events
+	EnterNotifyMask EventMask = 0b1000000000000
+	// LeaveNotifyMask: receive window leave events
+	LeaveNotifyMask EventMask = 0b10000000000000
+	// FocusChangeMask: receive focus change events
+	FocusChangeMask EventMask = 0b100000000000000
+	// StructureMask: receive events about window configuration change
+	StructureMask EventMask = 0b1000000000000000
+	// PropertyChangeMask: receive property change events
+	PropertyChangeMask EventMask = 0b10000000000000000
+	// VisibilityNotifyMask: receive visibility change events
+	VisibilityNotifyMask EventMask = 0b100000000000000000
+	// ProximityInMask: receive proximity in events
+	ProximityInMask EventMask = 0b1000000000000000000
+	// ProximityOutMask: receive proximity out events
+	ProximityOutMask EventMask = 0b10000000000000000000
+	// SubstructureMask: receive events about window configuration changes of
+	// child windows
+	SubstructureMask EventMask = 0b100000000000000000000
+	// ScrollMask: receive scroll events
+	ScrollMask EventMask = 0b1000000000000000000000
+	// TouchMask: receive touch events. Since 3.4
+	TouchMask EventMask = 0b10000000000000000000000
+	// SmoothScrollMask: receive smooth scrolling events. Since 3.4
+	SmoothScrollMask EventMask = 0b100000000000000000000000
+	// TouchpadGestureMask: receive touchpad gesture events. Since 3.18
+	TouchpadGestureMask EventMask = 0b1000000000000000000000000
+	// TabletPadMask: receive tablet pad events. Since 3.22
+	TabletPadMask EventMask = 0b10000000000000000000000000
+	// AllEventsMask: combination of all the above event masks.
+	AllEventsMask EventMask = 0b11111111111111111111111110
 )
 
 func marshalEventMask(p uintptr) (interface{}, error) {
 	return EventMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for EventMask.
+func (e EventMask) String() string {
+	if e == 0 {
+		return "EventMask(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(423)
+
+	for e != 0 {
+		next := e & (e - 1)
+		bit := e - next
+
+		switch bit {
+		case ExposureMask:
+			builder.WriteString("ExposureMask|")
+		case PointerMotionMask:
+			builder.WriteString("PointerMotionMask|")
+		case PointerMotionHintMask:
+			builder.WriteString("PointerMotionHintMask|")
+		case ButtonMotionMask:
+			builder.WriteString("ButtonMotionMask|")
+		case Button1MotionMask:
+			builder.WriteString("Button1MotionMask|")
+		case Button2MotionMask:
+			builder.WriteString("Button2MotionMask|")
+		case Button3MotionMask:
+			builder.WriteString("Button3MotionMask|")
+		case ButtonPressMask:
+			builder.WriteString("ButtonPressMask|")
+		case ButtonReleaseMask:
+			builder.WriteString("ButtonReleaseMask|")
+		case KeyPressMask:
+			builder.WriteString("KeyPressMask|")
+		case KeyReleaseMask:
+			builder.WriteString("KeyReleaseMask|")
+		case EnterNotifyMask:
+			builder.WriteString("EnterNotifyMask|")
+		case LeaveNotifyMask:
+			builder.WriteString("LeaveNotifyMask|")
+		case FocusChangeMask:
+			builder.WriteString("FocusChangeMask|")
+		case StructureMask:
+			builder.WriteString("StructureMask|")
+		case PropertyChangeMask:
+			builder.WriteString("PropertyChangeMask|")
+		case VisibilityNotifyMask:
+			builder.WriteString("VisibilityNotifyMask|")
+		case ProximityInMask:
+			builder.WriteString("ProximityInMask|")
+		case ProximityOutMask:
+			builder.WriteString("ProximityOutMask|")
+		case SubstructureMask:
+			builder.WriteString("SubstructureMask|")
+		case ScrollMask:
+			builder.WriteString("ScrollMask|")
+		case TouchMask:
+			builder.WriteString("TouchMask|")
+		case SmoothScrollMask:
+			builder.WriteString("SmoothScrollMask|")
+		case TouchpadGestureMask:
+			builder.WriteString("TouchpadGestureMask|")
+		case TabletPadMask:
+			builder.WriteString("TabletPadMask|")
+		case AllEventsMask:
+			builder.WriteString("AllEventsMask|")
+		default:
+			builder.WriteString(fmt.Sprintf("EventMask(0b%b)|", bit))
+		}
+
+		e = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // ModifierType: set of bit-flags to indicate the state of modifier keys and
@@ -368,97 +645,170 @@ func marshalEventMask(p uintptr) (interface{}, error) {
 type ModifierType int
 
 const (
-	// ModifierTypeShiftMask: shift key.
-	ModifierTypeShiftMask ModifierType = 0b1
-	// ModifierTypeLockMask: lock key (depending on the modifier mapping of the
-	// X server this may either be CapsLock or ShiftLock).
-	ModifierTypeLockMask ModifierType = 0b10
-	// ModifierTypeControlMask: control key.
-	ModifierTypeControlMask ModifierType = 0b100
-	// ModifierTypeMod1Mask: fourth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier, but
-	// normally it is the Alt key).
-	ModifierTypeMod1Mask ModifierType = 0b1000
-	// ModifierTypeMod2Mask: fifth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod2Mask ModifierType = 0b10000
-	// ModifierTypeMod3Mask: sixth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod3Mask ModifierType = 0b100000
-	// ModifierTypeMod4Mask: seventh modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod4Mask ModifierType = 0b1000000
-	// ModifierTypeMod5Mask: eighth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod5Mask ModifierType = 0b10000000
-	// ModifierTypeButton1Mask: first mouse button.
-	ModifierTypeButton1Mask ModifierType = 0b100000000
-	// ModifierTypeButton2Mask: second mouse button.
-	ModifierTypeButton2Mask ModifierType = 0b1000000000
-	// ModifierTypeButton3Mask: third mouse button.
-	ModifierTypeButton3Mask ModifierType = 0b10000000000
-	// ModifierTypeButton4Mask: fourth mouse button.
-	ModifierTypeButton4Mask ModifierType = 0b100000000000
-	// ModifierTypeButton5Mask: fifth mouse button.
-	ModifierTypeButton5Mask ModifierType = 0b1000000000000
-	// ModifierTypeModifierReserved13Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved13Mask ModifierType = 0b10000000000000
-	// ModifierTypeModifierReserved14Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved14Mask ModifierType = 0b100000000000000
-	// ModifierTypeModifierReserved15Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved15Mask ModifierType = 0b1000000000000000
-	// ModifierTypeModifierReserved16Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved16Mask ModifierType = 0b10000000000000000
-	// ModifierTypeModifierReserved17Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved17Mask ModifierType = 0b100000000000000000
-	// ModifierTypeModifierReserved18Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved18Mask ModifierType = 0b1000000000000000000
-	// ModifierTypeModifierReserved19Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved19Mask ModifierType = 0b10000000000000000000
-	// ModifierTypeModifierReserved20Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved20Mask ModifierType = 0b100000000000000000000
-	// ModifierTypeModifierReserved21Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved21Mask ModifierType = 0b1000000000000000000000
-	// ModifierTypeModifierReserved22Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved22Mask ModifierType = 0b10000000000000000000000
-	// ModifierTypeModifierReserved23Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved23Mask ModifierType = 0b100000000000000000000000
-	// ModifierTypeModifierReserved24Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved24Mask ModifierType = 0b1000000000000000000000000
-	// ModifierTypeModifierReserved25Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved25Mask ModifierType = 0b10000000000000000000000000
-	// ModifierTypeSuperMask: super modifier. Since 2.10
-	ModifierTypeSuperMask ModifierType = 0b100000000000000000000000000
-	// ModifierTypeHyperMask: hyper modifier. Since 2.10
-	ModifierTypeHyperMask ModifierType = 0b1000000000000000000000000000
-	// ModifierTypeMetaMask: meta modifier. Since 2.10
-	ModifierTypeMetaMask ModifierType = 0b10000000000000000000000000000
-	// ModifierTypeModifierReserved29Mask: reserved bit flag; do not use in your
-	// own code
-	ModifierTypeModifierReserved29Mask ModifierType = 0b100000000000000000000000000000
-	// ModifierTypeReleaseMask: not used in GDK itself. GTK+ uses it to
-	// differentiate between (keyval, modifiers) pairs from key press and
-	// release events.
-	ModifierTypeReleaseMask ModifierType = 0b1000000000000000000000000000000
-	// ModifierTypeModifierMask: mask covering all modifier types.
-	ModifierTypeModifierMask ModifierType = 0b1011100000000000001111111111111
+	// ShiftMask: shift key.
+	ShiftMask ModifierType = 0b1
+	// LockMask: lock key (depending on the modifier mapping of the X server
+	// this may either be CapsLock or ShiftLock).
+	LockMask ModifierType = 0b10
+	// ControlMask: control key.
+	ControlMask ModifierType = 0b100
+	// Mod1Mask: fourth modifier key (it depends on the modifier mapping of the
+	// X server which key is interpreted as this modifier, but normally it is
+	// the Alt key).
+	Mod1Mask ModifierType = 0b1000
+	// Mod2Mask: fifth modifier key (it depends on the modifier mapping of the X
+	// server which key is interpreted as this modifier).
+	Mod2Mask ModifierType = 0b10000
+	// Mod3Mask: sixth modifier key (it depends on the modifier mapping of the X
+	// server which key is interpreted as this modifier).
+	Mod3Mask ModifierType = 0b100000
+	// Mod4Mask: seventh modifier key (it depends on the modifier mapping of the
+	// X server which key is interpreted as this modifier).
+	Mod4Mask ModifierType = 0b1000000
+	// Mod5Mask: eighth modifier key (it depends on the modifier mapping of the
+	// X server which key is interpreted as this modifier).
+	Mod5Mask ModifierType = 0b10000000
+	// Button1Mask: first mouse button.
+	Button1Mask ModifierType = 0b100000000
+	// Button2Mask: second mouse button.
+	Button2Mask ModifierType = 0b1000000000
+	// Button3Mask: third mouse button.
+	Button3Mask ModifierType = 0b10000000000
+	// Button4Mask: fourth mouse button.
+	Button4Mask ModifierType = 0b100000000000
+	// Button5Mask: fifth mouse button.
+	Button5Mask ModifierType = 0b1000000000000
+	// ModifierReserved13Mask: reserved bit flag; do not use in your own code
+	ModifierReserved13Mask ModifierType = 0b10000000000000
+	// ModifierReserved14Mask: reserved bit flag; do not use in your own code
+	ModifierReserved14Mask ModifierType = 0b100000000000000
+	// ModifierReserved15Mask: reserved bit flag; do not use in your own code
+	ModifierReserved15Mask ModifierType = 0b1000000000000000
+	// ModifierReserved16Mask: reserved bit flag; do not use in your own code
+	ModifierReserved16Mask ModifierType = 0b10000000000000000
+	// ModifierReserved17Mask: reserved bit flag; do not use in your own code
+	ModifierReserved17Mask ModifierType = 0b100000000000000000
+	// ModifierReserved18Mask: reserved bit flag; do not use in your own code
+	ModifierReserved18Mask ModifierType = 0b1000000000000000000
+	// ModifierReserved19Mask: reserved bit flag; do not use in your own code
+	ModifierReserved19Mask ModifierType = 0b10000000000000000000
+	// ModifierReserved20Mask: reserved bit flag; do not use in your own code
+	ModifierReserved20Mask ModifierType = 0b100000000000000000000
+	// ModifierReserved21Mask: reserved bit flag; do not use in your own code
+	ModifierReserved21Mask ModifierType = 0b1000000000000000000000
+	// ModifierReserved22Mask: reserved bit flag; do not use in your own code
+	ModifierReserved22Mask ModifierType = 0b10000000000000000000000
+	// ModifierReserved23Mask: reserved bit flag; do not use in your own code
+	ModifierReserved23Mask ModifierType = 0b100000000000000000000000
+	// ModifierReserved24Mask: reserved bit flag; do not use in your own code
+	ModifierReserved24Mask ModifierType = 0b1000000000000000000000000
+	// ModifierReserved25Mask: reserved bit flag; do not use in your own code
+	ModifierReserved25Mask ModifierType = 0b10000000000000000000000000
+	// SuperMask: super modifier. Since 2.10
+	SuperMask ModifierType = 0b100000000000000000000000000
+	// HyperMask: hyper modifier. Since 2.10
+	HyperMask ModifierType = 0b1000000000000000000000000000
+	// MetaMask: meta modifier. Since 2.10
+	MetaMask ModifierType = 0b10000000000000000000000000000
+	// ModifierReserved29Mask: reserved bit flag; do not use in your own code
+	ModifierReserved29Mask ModifierType = 0b100000000000000000000000000000
+	// ReleaseMask: not used in GDK itself. GTK+ uses it to differentiate
+	// between (keyval, modifiers) pairs from key press and release events.
+	ReleaseMask ModifierType = 0b1000000000000000000000000000000
+	// ModifierMask: mask covering all modifier types.
+	ModifierMask ModifierType = 0b1011100000000000001111111111111
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
 	return ModifierType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ModifierType.
+func (m ModifierType) String() string {
+	if m == 0 {
+		return "ModifierType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(511)
+
+	for m != 0 {
+		next := m & (m - 1)
+		bit := m - next
+
+		switch bit {
+		case ShiftMask:
+			builder.WriteString("ShiftMask|")
+		case LockMask:
+			builder.WriteString("LockMask|")
+		case ControlMask:
+			builder.WriteString("ControlMask|")
+		case Mod1Mask:
+			builder.WriteString("Mod1Mask|")
+		case Mod2Mask:
+			builder.WriteString("Mod2Mask|")
+		case Mod3Mask:
+			builder.WriteString("Mod3Mask|")
+		case Mod4Mask:
+			builder.WriteString("Mod4Mask|")
+		case Mod5Mask:
+			builder.WriteString("Mod5Mask|")
+		case Button1Mask:
+			builder.WriteString("Button1Mask|")
+		case Button2Mask:
+			builder.WriteString("Button2Mask|")
+		case Button3Mask:
+			builder.WriteString("Button3Mask|")
+		case Button4Mask:
+			builder.WriteString("Button4Mask|")
+		case Button5Mask:
+			builder.WriteString("Button5Mask|")
+		case ModifierReserved13Mask:
+			builder.WriteString("ModifierReserved13Mask|")
+		case ModifierReserved14Mask:
+			builder.WriteString("ModifierReserved14Mask|")
+		case ModifierReserved15Mask:
+			builder.WriteString("ModifierReserved15Mask|")
+		case ModifierReserved16Mask:
+			builder.WriteString("ModifierReserved16Mask|")
+		case ModifierReserved17Mask:
+			builder.WriteString("ModifierReserved17Mask|")
+		case ModifierReserved18Mask:
+			builder.WriteString("ModifierReserved18Mask|")
+		case ModifierReserved19Mask:
+			builder.WriteString("ModifierReserved19Mask|")
+		case ModifierReserved20Mask:
+			builder.WriteString("ModifierReserved20Mask|")
+		case ModifierReserved21Mask:
+			builder.WriteString("ModifierReserved21Mask|")
+		case ModifierReserved22Mask:
+			builder.WriteString("ModifierReserved22Mask|")
+		case ModifierReserved23Mask:
+			builder.WriteString("ModifierReserved23Mask|")
+		case ModifierReserved24Mask:
+			builder.WriteString("ModifierReserved24Mask|")
+		case ModifierReserved25Mask:
+			builder.WriteString("ModifierReserved25Mask|")
+		case SuperMask:
+			builder.WriteString("SuperMask|")
+		case HyperMask:
+			builder.WriteString("HyperMask|")
+		case MetaMask:
+			builder.WriteString("MetaMask|")
+		case ModifierReserved29Mask:
+			builder.WriteString("ModifierReserved29Mask|")
+		case ReleaseMask:
+			builder.WriteString("ReleaseMask|")
+		case ModifierMask:
+			builder.WriteString("ModifierMask|")
+		default:
+			builder.WriteString(fmt.Sprintf("ModifierType(0b%b)|", bit))
+		}
+
+		m = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // Point defines the x and y coordinates of a point.

@@ -3,6 +3,8 @@
 package gdk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,40 +31,76 @@ func init() {
 type FullscreenMode int
 
 const (
-	// CurrentMonitor: fullscreen on current monitor only.
-	FullscreenModeCurrentMonitor FullscreenMode = iota
-	// AllMonitors: span across all monitors when fullscreen.
-	FullscreenModeAllMonitors
+	// FullscreenOnCurrentMonitor: fullscreen on current monitor only.
+	FullscreenOnCurrentMonitor FullscreenMode = iota
+	// FullscreenOnAllMonitors: span across all monitors when fullscreen.
+	FullscreenOnAllMonitors
 )
 
 func marshalFullscreenMode(p uintptr) (interface{}, error) {
 	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for FullscreenMode.
+func (f FullscreenMode) String() string {
+	switch f {
+	case FullscreenOnCurrentMonitor:
+		return "CurrentMonitor"
+	case FullscreenOnAllMonitors:
+		return "AllMonitors"
+	default:
+		return fmt.Sprintf("FullscreenMode(%d)", f)
+	}
+}
+
 // SurfaceEdge determines a surface edge or corner.
 type SurfaceEdge int
 
 const (
-	// NorthWest: top left corner.
+	// SurfaceEdgeNorthWest: top left corner.
 	SurfaceEdgeNorthWest SurfaceEdge = iota
-	// North: top edge.
+	// SurfaceEdgeNorth: top edge.
 	SurfaceEdgeNorth
-	// NorthEast: top right corner.
+	// SurfaceEdgeNorthEast: top right corner.
 	SurfaceEdgeNorthEast
-	// West: left edge.
+	// SurfaceEdgeWest: left edge.
 	SurfaceEdgeWest
-	// East: right edge.
+	// SurfaceEdgeEast: right edge.
 	SurfaceEdgeEast
-	// SouthWest: lower left corner.
+	// SurfaceEdgeSouthWest: lower left corner.
 	SurfaceEdgeSouthWest
-	// South: lower edge.
+	// SurfaceEdgeSouth: lower edge.
 	SurfaceEdgeSouth
-	// SouthEast: lower right corner.
+	// SurfaceEdgeSouthEast: lower right corner.
 	SurfaceEdgeSouthEast
 )
 
 func marshalSurfaceEdge(p uintptr) (interface{}, error) {
 	return SurfaceEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SurfaceEdge.
+func (s SurfaceEdge) String() string {
+	switch s {
+	case SurfaceEdgeNorthWest:
+		return "NorthWest"
+	case SurfaceEdgeNorth:
+		return "North"
+	case SurfaceEdgeNorthEast:
+		return "NorthEast"
+	case SurfaceEdgeWest:
+		return "West"
+	case SurfaceEdgeEast:
+		return "East"
+	case SurfaceEdgeSouthWest:
+		return "SouthWest"
+	case SurfaceEdgeSouth:
+		return "South"
+	case SurfaceEdgeSouthEast:
+		return "SouthEast"
+	default:
+		return fmt.Sprintf("SurfaceEdge(%d)", s)
+	}
 }
 
 // ToplevelState specifies the state of a toplevel surface.
@@ -112,6 +150,62 @@ const (
 
 func marshalToplevelState(p uintptr) (interface{}, error) {
 	return ToplevelState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for ToplevelState.
+func (t ToplevelState) String() string {
+	if t == 0 {
+		return "ToplevelState(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(371)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case ToplevelStateMinimized:
+			builder.WriteString("Minimized|")
+		case ToplevelStateMaximized:
+			builder.WriteString("Maximized|")
+		case ToplevelStateSticky:
+			builder.WriteString("Sticky|")
+		case ToplevelStateFullscreen:
+			builder.WriteString("Fullscreen|")
+		case ToplevelStateAbove:
+			builder.WriteString("Above|")
+		case ToplevelStateBelow:
+			builder.WriteString("Below|")
+		case ToplevelStateFocused:
+			builder.WriteString("Focused|")
+		case ToplevelStateTiled:
+			builder.WriteString("Tiled|")
+		case ToplevelStateTopTiled:
+			builder.WriteString("TopTiled|")
+		case ToplevelStateTopResizable:
+			builder.WriteString("TopResizable|")
+		case ToplevelStateRightTiled:
+			builder.WriteString("RightTiled|")
+		case ToplevelStateRightResizable:
+			builder.WriteString("RightResizable|")
+		case ToplevelStateBottomTiled:
+			builder.WriteString("BottomTiled|")
+		case ToplevelStateBottomResizable:
+			builder.WriteString("BottomResizable|")
+		case ToplevelStateLeftTiled:
+			builder.WriteString("LeftTiled|")
+		case ToplevelStateLeftResizable:
+			builder.WriteString("LeftResizable|")
+		default:
+			builder.WriteString(fmt.Sprintf("ToplevelState(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // Toplevel: GdkToplevel is a freestanding toplevel surface.

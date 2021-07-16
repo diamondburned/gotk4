@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -25,24 +26,48 @@ func init() {
 type DeviceToolType int
 
 const (
-	// Unknown: tool is of an unknown type.
+	// DeviceToolTypeUnknown: tool is of an unknown type.
 	DeviceToolTypeUnknown DeviceToolType = iota
-	// Pen: tool is a standard tablet stylus.
+	// DeviceToolTypePen: tool is a standard tablet stylus.
 	DeviceToolTypePen
-	// Eraser: tool is standard tablet eraser.
+	// DeviceToolTypeEraser: tool is standard tablet eraser.
 	DeviceToolTypeEraser
-	// Brush: tool is a brush stylus.
+	// DeviceToolTypeBrush: tool is a brush stylus.
 	DeviceToolTypeBrush
-	// Pencil: tool is a pencil stylus.
+	// DeviceToolTypePencil: tool is a pencil stylus.
 	DeviceToolTypePencil
-	// Airbrush: tool is an airbrush stylus.
+	// DeviceToolTypeAirbrush: tool is an airbrush stylus.
 	DeviceToolTypeAirbrush
-	// Mouse: tool is a mouse.
+	// DeviceToolTypeMouse: tool is a mouse.
 	DeviceToolTypeMouse
-	// Lens: tool is a lens cursor.
+	// DeviceToolTypeLens: tool is a lens cursor.
 	DeviceToolTypeLens
 )
 
 func marshalDeviceToolType(p uintptr) (interface{}, error) {
 	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for DeviceToolType.
+func (d DeviceToolType) String() string {
+	switch d {
+	case DeviceToolTypeUnknown:
+		return "Unknown"
+	case DeviceToolTypePen:
+		return "Pen"
+	case DeviceToolTypeEraser:
+		return "Eraser"
+	case DeviceToolTypeBrush:
+		return "Brush"
+	case DeviceToolTypePencil:
+		return "Pencil"
+	case DeviceToolTypeAirbrush:
+		return "Airbrush"
+	case DeviceToolTypeMouse:
+		return "Mouse"
+	case DeviceToolTypeLens:
+		return "Lens"
+	default:
+		return fmt.Sprintf("DeviceToolType(%d)", d)
+	}
 }

@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -37,34 +38,62 @@ func init() {
 type MemoryFormat int
 
 const (
-	// B8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The color
-	// values are premultiplied with the alpha value.
-	MemoryFormatB8G8R8A8Premultiplied MemoryFormat = iota
-	// A8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue. The color
-	// values are premultiplied with the alpha value.
-	MemoryFormatA8R8G8B8Premultiplied
-	// R8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha The color
-	// values are premultiplied with the alpha value.
-	MemoryFormatR8G8B8A8Premultiplied
-	// B8G8R8A8: 4 bytes; for blue, green, red, alpha.
-	MemoryFormatB8G8R8A8
-	// A8R8G8B8: 4 bytes; for alpha, red, green, blue.
-	MemoryFormatA8R8G8B8
-	// R8G8B8A8: 4 bytes; for red, green, blue, alpha.
-	MemoryFormatR8G8B8A8
-	// A8B8G8R8: 4 bytes; for alpha, blue, green, red.
-	MemoryFormatA8B8G8R8
-	// R8G8B8: 3 bytes; for red, green, blue. The data is opaque.
-	MemoryFormatR8G8B8
-	// B8G8R8: 3 bytes; for blue, green, red. The data is opaque.
-	MemoryFormatB8G8R8
-	// NFormats: number of formats. This value will change as more formats get
-	// added, so do not rely on its concrete integer.
-	MemoryFormatNFormats
+	// MemoryB8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The
+	// color values are premultiplied with the alpha value.
+	MemoryB8G8R8A8Premultiplied MemoryFormat = iota
+	// MemoryA8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue. The
+	// color values are premultiplied with the alpha value.
+	MemoryA8R8G8B8Premultiplied
+	// MemoryR8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha The
+	// color values are premultiplied with the alpha value.
+	MemoryR8G8B8A8Premultiplied
+	// MemoryB8G8R8A8: 4 bytes; for blue, green, red, alpha.
+	MemoryB8G8R8A8
+	// MemoryA8R8G8B8: 4 bytes; for alpha, red, green, blue.
+	MemoryA8R8G8B8
+	// MemoryR8G8B8A8: 4 bytes; for red, green, blue, alpha.
+	MemoryR8G8B8A8
+	// MemoryA8B8G8R8: 4 bytes; for alpha, blue, green, red.
+	MemoryA8B8G8R8
+	// MemoryR8G8B8: 3 bytes; for red, green, blue. The data is opaque.
+	MemoryR8G8B8
+	// MemoryB8G8R8: 3 bytes; for blue, green, red. The data is opaque.
+	MemoryB8G8R8
+	// MemoryNFormats: number of formats. This value will change as more formats
+	// get added, so do not rely on its concrete integer.
+	MemoryNFormats
 )
 
 func marshalMemoryFormat(p uintptr) (interface{}, error) {
 	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MemoryFormat.
+func (m MemoryFormat) String() string {
+	switch m {
+	case MemoryB8G8R8A8Premultiplied:
+		return "B8G8R8A8Premultiplied"
+	case MemoryA8R8G8B8Premultiplied:
+		return "A8R8G8B8Premultiplied"
+	case MemoryR8G8B8A8Premultiplied:
+		return "R8G8B8A8Premultiplied"
+	case MemoryB8G8R8A8:
+		return "B8G8R8A8"
+	case MemoryA8R8G8B8:
+		return "A8R8G8B8"
+	case MemoryR8G8B8A8:
+		return "R8G8B8A8"
+	case MemoryA8B8G8R8:
+		return "A8B8G8R8"
+	case MemoryR8G8B8:
+		return "R8G8B8"
+	case MemoryB8G8R8:
+		return "B8G8R8"
+	case MemoryNFormats:
+		return "NFormats"
+	default:
+		return fmt.Sprintf("MemoryFormat(%d)", m)
+	}
 }
 
 // MemoryTexture: GdkTexture representing image data in memory.

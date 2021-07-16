@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -28,29 +29,52 @@ func init() {
 type VisualType int
 
 const (
-	// StaticGray: each pixel value indexes a grayscale value directly.
-	VisualTypeStaticGray VisualType = iota
-	// Grayscale: each pixel is an index into a color map that maps pixel values
-	// into grayscale values. The color map can be changed by an application.
-	VisualTypeGrayscale
-	// StaticColor: each pixel value is an index into a predefined, unmodifiable
-	// color map that maps pixel values into RGB values.
-	VisualTypeStaticColor
-	// PseudoColor: each pixel is an index into a color map that maps pixel
-	// values into rgb values. The color map can be changed by an application.
-	VisualTypePseudoColor
-	// TrueColor: each pixel value directly contains red, green, and blue
+	// VisualStaticGray: each pixel value indexes a grayscale value directly.
+	VisualStaticGray VisualType = iota
+	// VisualGrayscale: each pixel is an index into a color map that maps pixel
+	// values into grayscale values. The color map can be changed by an
+	// application.
+	VisualGrayscale
+	// VisualStaticColor: each pixel value is an index into a predefined,
+	// unmodifiable color map that maps pixel values into RGB values.
+	VisualStaticColor
+	// VisualPseudoColor: each pixel is an index into a color map that maps
+	// pixel values into rgb values. The color map can be changed by an
+	// application.
+	VisualPseudoColor
+	// VisualTrueColor: each pixel value directly contains red, green, and blue
 	// components. Use gdk_visual_get_red_pixel_details(), etc, to obtain
 	// information about how the components are assembled into a pixel value.
-	VisualTypeTrueColor
-	// DirectColor: each pixel value contains red, green, and blue components as
-	// for GDK_VISUAL_TRUE_COLOR, but the components are mapped via a color
-	// table into the final output table instead of being converted directly.
-	VisualTypeDirectColor
+	VisualTrueColor
+	// VisualDirectColor: each pixel value contains red, green, and blue
+	// components as for GDK_VISUAL_TRUE_COLOR, but the components are mapped
+	// via a color table into the final output table instead of being converted
+	// directly.
+	VisualDirectColor
 )
 
 func marshalVisualType(p uintptr) (interface{}, error) {
 	return VisualType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for VisualType.
+func (v VisualType) String() string {
+	switch v {
+	case VisualStaticGray:
+		return "StaticGray"
+	case VisualGrayscale:
+		return "Grayscale"
+	case VisualStaticColor:
+		return "StaticColor"
+	case VisualPseudoColor:
+		return "PseudoColor"
+	case VisualTrueColor:
+		return "TrueColor"
+	case VisualDirectColor:
+		return "DirectColor"
+	default:
+		return fmt.Sprintf("VisualType(%d)", v)
+	}
 }
 
 // QueryDepths: this function returns the available bit depths for the default

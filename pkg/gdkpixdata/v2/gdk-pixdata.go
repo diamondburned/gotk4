@@ -3,6 +3,8 @@
 package gdkpixdata
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -29,33 +31,71 @@ import "C"
 type PixdataDumpType int
 
 const (
-	// PixdataDumpTypePixdataStream: generate pixbuf data stream (a single
-	// string containing a serialized Pixdata structure in network byte order).
-	PixdataDumpTypePixdataStream PixdataDumpType = 0b0
-	// PixdataDumpTypePixdataStruct: generate Pixdata structure (needs the
-	// Pixdata structure definition from gdk-pixdata.h).
-	PixdataDumpTypePixdataStruct PixdataDumpType = 0b1
-	// PixdataDumpTypeMacros: generate <function>*_ROWSTRIDE</function>,
+	// PixdataDumpPixdataStream: generate pixbuf data stream (a single string
+	// containing a serialized Pixdata structure in network byte order).
+	PixdataDumpPixdataStream PixdataDumpType = 0b0
+	// PixdataDumpPixdataStruct: generate Pixdata structure (needs the Pixdata
+	// structure definition from gdk-pixdata.h).
+	PixdataDumpPixdataStruct PixdataDumpType = 0b1
+	// PixdataDumpMacros: generate <function>*_ROWSTRIDE</function>,
 	// <function>*_WIDTH</function>, <function>*_HEIGHT</function>,
 	// <function>*_BYTES_PER_PIXEL</function> and
 	// <function>*_RLE_PIXEL_DATA</function> or
 	// <function>*_PIXEL_DATA</function> macro definitions for the image.
-	PixdataDumpTypeMacros PixdataDumpType = 0b10
-	// PixdataDumpTypeGTypes: generate GLib data types instead of standard C
-	// data types.
-	PixdataDumpTypeGTypes PixdataDumpType = 0b0
-	// PixdataDumpTypeCtypes: generate standard C data types instead of GLib
-	// data types.
-	PixdataDumpTypeCtypes PixdataDumpType = 0b100000000
-	// PixdataDumpTypeStatic: generate static symbols.
-	PixdataDumpTypeStatic PixdataDumpType = 0b1000000000
-	// PixdataDumpTypeConst: generate const symbols.
-	PixdataDumpTypeConst PixdataDumpType = 0b10000000000
-	// PixdataDumpTypeRleDecoder: provide a
-	// <function>*_RUN_LENGTH_DECODE(image_buf, rle_data, size, bpp)</function>
-	// macro definition to decode run-length encoded image data.
-	PixdataDumpTypeRleDecoder PixdataDumpType = 0b10000000000000000
+	PixdataDumpMacros PixdataDumpType = 0b10
+	// PixdataDumpGTypes: generate GLib data types instead of standard C data
+	// types.
+	PixdataDumpGTypes PixdataDumpType = 0b0
+	// PixdataDumpCtypes: generate standard C data types instead of GLib data
+	// types.
+	PixdataDumpCtypes PixdataDumpType = 0b100000000
+	// PixdataDumpStatic: generate static symbols.
+	PixdataDumpStatic PixdataDumpType = 0b1000000000
+	// PixdataDumpConst: generate const symbols.
+	PixdataDumpConst PixdataDumpType = 0b10000000000
+	// PixdataDumpRleDecoder: provide a <function>*_RUN_LENGTH_DECODE(image_buf,
+	// rle_data, size, bpp)</function> macro definition to decode run-length
+	// encoded image data.
+	PixdataDumpRleDecoder PixdataDumpType = 0b10000000000000000
 )
+
+// String returns the names in string for PixdataDumpType.
+func (p PixdataDumpType) String() string {
+	if p == 0 {
+		return "PixdataDumpType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(160)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PixdataDumpPixdataStream:
+			builder.WriteString("PixdataStream|")
+		case PixdataDumpPixdataStruct:
+			builder.WriteString("PixdataStruct|")
+		case PixdataDumpMacros:
+			builder.WriteString("Macros|")
+		case PixdataDumpCtypes:
+			builder.WriteString("Ctypes|")
+		case PixdataDumpStatic:
+			builder.WriteString("Static|")
+		case PixdataDumpConst:
+			builder.WriteString("Const|")
+		case PixdataDumpRleDecoder:
+			builder.WriteString("RleDecoder|")
+		default:
+			builder.WriteString(fmt.Sprintf("PixdataDumpType(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // PixdataType: enumeration containing three sets of flags for a Pixdata struct:
 // one for the used colorspace, one for the width of the samples and one for the
@@ -65,28 +105,68 @@ const (
 type PixdataType int
 
 const (
-	// PixdataTypeColorTypeRGB: each pixel has red, green and blue samples.
-	PixdataTypeColorTypeRGB PixdataType = 0b1
-	// PixdataTypeColorTypeRGBA: each pixel has red, green and blue samples and
-	// an alpha value.
-	PixdataTypeColorTypeRGBA PixdataType = 0b10
-	// PixdataTypeColorTypeMask: mask for the colortype flags of the enum.
-	PixdataTypeColorTypeMask PixdataType = 0b11111111
-	// PixdataTypeSampleWidth8: each sample has 8 bits.
-	PixdataTypeSampleWidth8 PixdataType = 0b10000000000000000
-	// PixdataTypeSampleWidthMask: mask for the sample width flags of the enum.
-	PixdataTypeSampleWidthMask PixdataType = 0b11110000000000000000
-	// PixdataTypeEncodingRaw: pixel data is in raw form.
-	PixdataTypeEncodingRaw PixdataType = 0b1000000000000000000000000
-	// PixdataTypeEncodingRle: pixel data is run-length encoded. Runs may be up
-	// to 127 bytes long; their length is stored in a single byte preceding the
+	// PixdataColorTypeRGB: each pixel has red, green and blue samples.
+	PixdataColorTypeRGB PixdataType = 0b1
+	// PixdataColorTypeRGBA: each pixel has red, green and blue samples and an
+	// alpha value.
+	PixdataColorTypeRGBA PixdataType = 0b10
+	// PixdataColorTypeMask: mask for the colortype flags of the enum.
+	PixdataColorTypeMask PixdataType = 0b11111111
+	// PixdataSampleWidth8: each sample has 8 bits.
+	PixdataSampleWidth8 PixdataType = 0b10000000000000000
+	// PixdataSampleWidthMask: mask for the sample width flags of the enum.
+	PixdataSampleWidthMask PixdataType = 0b11110000000000000000
+	// PixdataEncodingRaw: pixel data is in raw form.
+	PixdataEncodingRaw PixdataType = 0b1000000000000000000000000
+	// PixdataEncodingRle: pixel data is run-length encoded. Runs may be up to
+	// 127 bytes long; their length is stored in a single byte preceding the
 	// pixel data for the run. If a run is constant, its length byte has the
 	// high bit set and the pixel data consists of a single pixel which must be
 	// repeated.
-	PixdataTypeEncodingRle PixdataType = 0b10000000000000000000000000
-	// PixdataTypeEncodingMask: mask for the encoding flags of the enum.
-	PixdataTypeEncodingMask PixdataType = 0b1111000000000000000000000000
+	PixdataEncodingRle PixdataType = 0b10000000000000000000000000
+	// PixdataEncodingMask: mask for the encoding flags of the enum.
+	PixdataEncodingMask PixdataType = 0b1111000000000000000000000000
 )
+
+// String returns the names in string for PixdataType.
+func (p PixdataType) String() string {
+	if p == 0 {
+		return "PixdataType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(162)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PixdataColorTypeRGB:
+			builder.WriteString("ColorTypeRGB|")
+		case PixdataColorTypeRGBA:
+			builder.WriteString("ColorTypeRGBA|")
+		case PixdataColorTypeMask:
+			builder.WriteString("ColorTypeMask|")
+		case PixdataSampleWidth8:
+			builder.WriteString("SampleWidth8|")
+		case PixdataSampleWidthMask:
+			builder.WriteString("SampleWidthMask|")
+		case PixdataEncodingRaw:
+			builder.WriteString("EncodingRaw|")
+		case PixdataEncodingRle:
+			builder.WriteString("EncodingRle|")
+		case PixdataEncodingMask:
+			builder.WriteString("EncodingMask|")
+		default:
+			builder.WriteString(fmt.Sprintf("PixdataType(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // PixbufFromPixdata converts a GdkPixdata to a GdkPixbuf.
 //

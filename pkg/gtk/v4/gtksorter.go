@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,18 +29,18 @@ func init() {
 type SorterChange int
 
 const (
-	// Different: sorter change cannot be described by any of the other
-	// enumeration values
+	// SorterChangeDifferent: sorter change cannot be described by any of the
+	// other enumeration values
 	SorterChangeDifferent SorterChange = iota
-	// Inverted: sort order was inverted. Comparisons that returned
+	// SorterChangeInverted: sort order was inverted. Comparisons that returned
 	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
 	// comparisons return the same values as before.
 	SorterChangeInverted
-	// LessStrict: sorter is less strict: Comparisons may now return
+	// SorterChangeLessStrict: sorter is less strict: Comparisons may now return
 	// GTK_ORDERING_EQUAL that did not do so before.
 	SorterChangeLessStrict
-	// MoreStrict: sorter is more strict: Comparisons that did return
-	// GTK_ORDERING_EQUAL may not do so anymore.
+	// SorterChangeMoreStrict: sorter is more strict: Comparisons that did
+	// return GTK_ORDERING_EQUAL may not do so anymore.
 	SorterChangeMoreStrict
 )
 
@@ -47,23 +48,53 @@ func marshalSorterChange(p uintptr) (interface{}, error) {
 	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for SorterChange.
+func (s SorterChange) String() string {
+	switch s {
+	case SorterChangeDifferent:
+		return "Different"
+	case SorterChangeInverted:
+		return "Inverted"
+	case SorterChangeLessStrict:
+		return "LessStrict"
+	case SorterChangeMoreStrict:
+		return "MoreStrict"
+	default:
+		return fmt.Sprintf("SorterChange(%d)", s)
+	}
+}
+
 // SorterOrder describes the type of order that a GtkSorter may produce.
 type SorterOrder int
 
 const (
-	// Partial order. Any Ordering is possible.
+	// SorterOrderPartial order. Any Ordering is possible.
 	SorterOrderPartial SorterOrder = iota
-	// None: no order, all elements are considered equal. gtk_sorter_compare()
-	// will only return GTK_ORDERING_EQUAL.
+	// SorterOrderNone: no order, all elements are considered equal.
+	// gtk_sorter_compare() will only return GTK_ORDERING_EQUAL.
 	SorterOrderNone
-	// Total order. gtk_sorter_compare() will only return GTK_ORDERING_EQUAL if
-	// an item is compared with itself. Two different items will never cause
-	// this value to be returned.
+	// SorterOrderTotal order. gtk_sorter_compare() will only return
+	// GTK_ORDERING_EQUAL if an item is compared with itself. Two different
+	// items will never cause this value to be returned.
 	SorterOrderTotal
 )
 
 func marshalSorterOrder(p uintptr) (interface{}, error) {
 	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SorterOrder.
+func (s SorterOrder) String() string {
+	switch s {
+	case SorterOrderPartial:
+		return "Partial"
+	case SorterOrderNone:
+		return "None"
+	case SorterOrderTotal:
+		return "Total"
+	default:
+		return fmt.Sprintf("SorterOrder(%d)", s)
+	}
 }
 
 // SorterOverrider contains methods that are overridable.

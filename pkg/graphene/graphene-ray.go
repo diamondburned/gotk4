@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -26,13 +27,27 @@ func init() {
 type RayIntersectionKind int
 
 const (
-	// None: no intersection
+	// RayIntersectionKindNone: no intersection
 	RayIntersectionKindNone RayIntersectionKind = iota
-	// Enter: ray is entering the intersected object
+	// RayIntersectionKindEnter: ray is entering the intersected object
 	RayIntersectionKindEnter
-	// Leave: ray is leaving the intersected object
+	// RayIntersectionKindLeave: ray is leaving the intersected object
 	RayIntersectionKindLeave
 )
+
+// String returns the name in string for RayIntersectionKind.
+func (r RayIntersectionKind) String() string {
+	switch r {
+	case RayIntersectionKindNone:
+		return "None"
+	case RayIntersectionKindEnter:
+		return "Enter"
+	case RayIntersectionKindLeave:
+		return "Leave"
+	default:
+		return fmt.Sprintf("RayIntersectionKind(%d)", r)
+	}
+}
 
 // Ray: ray emitted from an origin in a given direction.
 //

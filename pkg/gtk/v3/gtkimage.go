@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -38,28 +39,53 @@ func init() {
 type ImageType int
 
 const (
-	// Empty: there is no image displayed by the widget
-	ImageTypeEmpty ImageType = iota
-	// Pixbuf: widget contains a Pixbuf
-	ImageTypePixbuf
-	// Stock: widget contains a [stock item name][gtkstock]
-	ImageTypeStock
-	// IconSet: widget contains a IconSet
-	ImageTypeIconSet
-	// Animation: widget contains a PixbufAnimation
-	ImageTypeAnimation
-	// IconName: widget contains a named icon. This image type was added in GTK+
-	// 2.6
-	ImageTypeIconName
-	// GIcon: widget contains a #GIcon. This image type was added in GTK+ 2.14
-	ImageTypeGIcon
-	// Surface: widget contains a #cairo_surface_t. This image type was added in
-	// GTK+ 3.10
-	ImageTypeSurface
+	// ImageEmpty: there is no image displayed by the widget
+	ImageEmpty ImageType = iota
+	// ImagePixbuf: widget contains a Pixbuf
+	ImagePixbuf
+	// ImageStock: widget contains a [stock item name][gtkstock]
+	ImageStock
+	// ImageIconSet: widget contains a IconSet
+	ImageIconSet
+	// ImageAnimation: widget contains a PixbufAnimation
+	ImageAnimation
+	// ImageIconName: widget contains a named icon. This image type was added in
+	// GTK+ 2.6
+	ImageIconName
+	// ImageGIcon: widget contains a #GIcon. This image type was added in GTK+
+	// 2.14
+	ImageGIcon
+	// ImageSurface: widget contains a #cairo_surface_t. This image type was
+	// added in GTK+ 3.10
+	ImageSurface
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ImageType.
+func (i ImageType) String() string {
+	switch i {
+	case ImageEmpty:
+		return "Empty"
+	case ImagePixbuf:
+		return "Pixbuf"
+	case ImageStock:
+		return "Stock"
+	case ImageIconSet:
+		return "IconSet"
+	case ImageAnimation:
+		return "Animation"
+	case ImageIconName:
+		return "IconName"
+	case ImageGIcon:
+		return "GIcon"
+	case ImageSurface:
+		return "Surface"
+	default:
+		return fmt.Sprintf("ImageType(%d)", i)
+	}
 }
 
 // Image widget displays an image. Various kinds of object can be displayed as

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -30,22 +31,42 @@ func init() {
 type CSSProviderError int
 
 const (
-	// Failed: failed.
+	// CSSProviderErrorFailed: failed.
 	CSSProviderErrorFailed CSSProviderError = iota
-	// Syntax: syntax error.
+	// CSSProviderErrorSyntax: syntax error.
 	CSSProviderErrorSyntax
-	// Import: import error.
+	// CSSProviderErrorImport: import error.
 	CSSProviderErrorImport
-	// Name: name error.
+	// CSSProviderErrorName: name error.
 	CSSProviderErrorName
-	// Deprecated: deprecation error.
+	// CSSProviderErrorDeprecated: deprecation error.
 	CSSProviderErrorDeprecated
-	// UnknownValue: unknown value.
+	// CSSProviderErrorUnknownValue: unknown value.
 	CSSProviderErrorUnknownValue
 )
 
 func marshalCSSProviderError(p uintptr) (interface{}, error) {
 	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for CSSProviderError.
+func (c CSSProviderError) String() string {
+	switch c {
+	case CSSProviderErrorFailed:
+		return "Failed"
+	case CSSProviderErrorSyntax:
+		return "Syntax"
+	case CSSProviderErrorImport:
+		return "Import"
+	case CSSProviderErrorName:
+		return "Name"
+	case CSSProviderErrorDeprecated:
+		return "Deprecated"
+	case CSSProviderErrorUnknownValue:
+		return "UnknownValue"
+	default:
+		return fmt.Sprintf("CSSProviderError(%d)", c)
+	}
 }
 
 // CSSProviderOverrider contains methods that are overridable.

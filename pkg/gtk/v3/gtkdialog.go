@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -33,52 +35,112 @@ func init() {
 type ResponseType int
 
 const (
-	// None: returned if an action widget has no response id, or if the dialog
-	// gets programmatically hidden or destroyed
-	ResponseTypeNone ResponseType = -1
-	// Reject: generic response id, not used by GTK+ dialogs
-	ResponseTypeReject ResponseType = -2
-	// Accept: generic response id, not used by GTK+ dialogs
-	ResponseTypeAccept ResponseType = -3
-	// DeleteEvent: returned if the dialog is deleted
-	ResponseTypeDeleteEvent ResponseType = -4
-	// Ok: returned by OK buttons in GTK+ dialogs
-	ResponseTypeOk ResponseType = -5
-	// Cancel: returned by Cancel buttons in GTK+ dialogs
-	ResponseTypeCancel ResponseType = -6
-	// Close: returned by Close buttons in GTK+ dialogs
-	ResponseTypeClose ResponseType = -7
-	// Yes: returned by Yes buttons in GTK+ dialogs
-	ResponseTypeYes ResponseType = -8
-	// No: returned by No buttons in GTK+ dialogs
-	ResponseTypeNo ResponseType = -9
-	// Apply: returned by Apply buttons in GTK+ dialogs
-	ResponseTypeApply ResponseType = -10
-	// Help: returned by Help buttons in GTK+ dialogs
-	ResponseTypeHelp ResponseType = -11
+	// ResponseNone: returned if an action widget has no response id, or if the
+	// dialog gets programmatically hidden or destroyed
+	ResponseNone ResponseType = -1
+	// ResponseReject: generic response id, not used by GTK+ dialogs
+	ResponseReject ResponseType = -2
+	// ResponseAccept: generic response id, not used by GTK+ dialogs
+	ResponseAccept ResponseType = -3
+	// ResponseDeleteEvent: returned if the dialog is deleted
+	ResponseDeleteEvent ResponseType = -4
+	// ResponseOk: returned by OK buttons in GTK+ dialogs
+	ResponseOk ResponseType = -5
+	// ResponseCancel: returned by Cancel buttons in GTK+ dialogs
+	ResponseCancel ResponseType = -6
+	// ResponseClose: returned by Close buttons in GTK+ dialogs
+	ResponseClose ResponseType = -7
+	// ResponseYes: returned by Yes buttons in GTK+ dialogs
+	ResponseYes ResponseType = -8
+	// ResponseNo: returned by No buttons in GTK+ dialogs
+	ResponseNo ResponseType = -9
+	// ResponseApply: returned by Apply buttons in GTK+ dialogs
+	ResponseApply ResponseType = -10
+	// ResponseHelp: returned by Help buttons in GTK+ dialogs
+	ResponseHelp ResponseType = -11
 )
 
 func marshalResponseType(p uintptr) (interface{}, error) {
 	return ResponseType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ResponseType.
+func (r ResponseType) String() string {
+	switch r {
+	case ResponseNone:
+		return "None"
+	case ResponseReject:
+		return "Reject"
+	case ResponseAccept:
+		return "Accept"
+	case ResponseDeleteEvent:
+		return "DeleteEvent"
+	case ResponseOk:
+		return "Ok"
+	case ResponseCancel:
+		return "Cancel"
+	case ResponseClose:
+		return "Close"
+	case ResponseYes:
+		return "Yes"
+	case ResponseNo:
+		return "No"
+	case ResponseApply:
+		return "Apply"
+	case ResponseHelp:
+		return "Help"
+	default:
+		return fmt.Sprintf("ResponseType(%d)", r)
+	}
+}
+
 // DialogFlags flags used to influence dialog construction.
 type DialogFlags int
 
 const (
-	// DialogFlagsModal: make the constructed dialog modal, see
+	// DialogModal: make the constructed dialog modal, see
 	// gtk_window_set_modal()
-	DialogFlagsModal DialogFlags = 0b1
-	// DialogFlagsDestroyWithParent: destroy the dialog when its parent is
-	// destroyed, see gtk_window_set_destroy_with_parent()
-	DialogFlagsDestroyWithParent DialogFlags = 0b10
-	// DialogFlagsUseHeaderBar: create dialog with actions in header bar instead
-	// of action area. Since 3.12.
-	DialogFlagsUseHeaderBar DialogFlags = 0b100
+	DialogModal DialogFlags = 0b1
+	// DialogDestroyWithParent: destroy the dialog when its parent is destroyed,
+	// see gtk_window_set_destroy_with_parent()
+	DialogDestroyWithParent DialogFlags = 0b10
+	// DialogUseHeaderBar: create dialog with actions in header bar instead of
+	// action area. Since 3.12.
+	DialogUseHeaderBar DialogFlags = 0b100
 )
 
 func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DialogFlags.
+func (d DialogFlags) String() string {
+	if d == 0 {
+		return "DialogFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(54)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DialogModal:
+			builder.WriteString("Modal|")
+		case DialogDestroyWithParent:
+			builder.WriteString("DestroyWithParent|")
+		case DialogUseHeaderBar:
+			builder.WriteString("UseHeaderBar|")
+		default:
+			builder.WriteString(fmt.Sprintf("DialogFlags(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // AlternativeDialogButtonOrder returns TRUE if dialogs are expected to use an

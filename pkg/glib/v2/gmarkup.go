@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -28,25 +30,47 @@ func init() {
 type MarkupError int
 
 const (
-	// BadUTF8: text being parsed was not valid UTF-8
+	// MarkupErrorBadUTF8: text being parsed was not valid UTF-8
 	MarkupErrorBadUTF8 MarkupError = iota
-	// Empty: document contained nothing, or only whitespace
+	// MarkupErrorEmpty: document contained nothing, or only whitespace
 	MarkupErrorEmpty
-	// Parse: document was ill-formed
+	// MarkupErrorParse: document was ill-formed
 	MarkupErrorParse
-	// UnknownElement: error should be set by Parser functions; element wasn't
-	// known
+	// MarkupErrorUnknownElement: error should be set by Parser functions;
+	// element wasn't known
 	MarkupErrorUnknownElement
-	// UnknownAttribute: error should be set by Parser functions; attribute
-	// wasn't known
+	// MarkupErrorUnknownAttribute: error should be set by Parser functions;
+	// attribute wasn't known
 	MarkupErrorUnknownAttribute
-	// InvalidContent: error should be set by Parser functions; content was
-	// invalid
+	// MarkupErrorInvalidContent: error should be set by Parser functions;
+	// content was invalid
 	MarkupErrorInvalidContent
-	// MissingAttribute: error should be set by Parser functions; a required
-	// attribute was missing
+	// MarkupErrorMissingAttribute: error should be set by Parser functions; a
+	// required attribute was missing
 	MarkupErrorMissingAttribute
 )
+
+// String returns the name in string for MarkupError.
+func (m MarkupError) String() string {
+	switch m {
+	case MarkupErrorBadUTF8:
+		return "BadUTF8"
+	case MarkupErrorEmpty:
+		return "Empty"
+	case MarkupErrorParse:
+		return "Parse"
+	case MarkupErrorUnknownElement:
+		return "UnknownElement"
+	case MarkupErrorUnknownAttribute:
+		return "UnknownAttribute"
+	case MarkupErrorInvalidContent:
+		return "InvalidContent"
+	case MarkupErrorMissingAttribute:
+		return "MissingAttribute"
+	default:
+		return fmt.Sprintf("MarkupError(%d)", m)
+	}
+}
 
 // MarkupCollectType: mixed enumerated type and flags field. You must specify
 // one type (string, strdup, boolean, tristate). Additionally, you may
@@ -57,56 +81,121 @@ const (
 type MarkupCollectType int
 
 const (
-	// MarkupCollectTypeInvalid: used to terminate the list of attributes to
-	// collect
-	MarkupCollectTypeInvalid MarkupCollectType = 0b0
-	// MarkupCollectTypeString: collect the string pointer directly from the
+	// MarkupCollectInvalid: used to terminate the list of attributes to collect
+	MarkupCollectInvalid MarkupCollectType = 0b0
+	// MarkupCollectString: collect the string pointer directly from the
 	// attribute_values[] array. Expects a parameter of type (const char **). If
 	// G_MARKUP_COLLECT_OPTIONAL is specified and the attribute isn't present
 	// then the pointer will be set to NULL
-	MarkupCollectTypeString MarkupCollectType = 0b1
-	// MarkupCollectTypeStrdup as with G_MARKUP_COLLECT_STRING, but expects a
+	MarkupCollectString MarkupCollectType = 0b1
+	// MarkupCollectStrdup as with G_MARKUP_COLLECT_STRING, but expects a
 	// parameter of type (char **) and g_strdup()s the returned pointer. The
 	// pointer must be freed with g_free()
-	MarkupCollectTypeStrdup MarkupCollectType = 0b10
-	// MarkupCollectTypeBoolean expects a parameter of type (gboolean *) and
-	// parses the attribute value as a boolean. Sets FALSE if the attribute
-	// isn't present. Valid boolean values consist of (case-insensitive)
-	// "false", "f", "no", "n", "0" and "true", "t", "yes", "y", "1"
-	MarkupCollectTypeBoolean MarkupCollectType = 0b11
-	// MarkupCollectTypeTristate as with G_MARKUP_COLLECT_BOOLEAN, but in the
-	// case of a missing attribute a value is set that compares equal to neither
+	MarkupCollectStrdup MarkupCollectType = 0b10
+	// MarkupCollectBoolean expects a parameter of type (gboolean *) and parses
+	// the attribute value as a boolean. Sets FALSE if the attribute isn't
+	// present. Valid boolean values consist of (case-insensitive) "false", "f",
+	// "no", "n", "0" and "true", "t", "yes", "y", "1"
+	MarkupCollectBoolean MarkupCollectType = 0b11
+	// MarkupCollectTristate as with G_MARKUP_COLLECT_BOOLEAN, but in the case
+	// of a missing attribute a value is set that compares equal to neither
 	// FALSE nor TRUE G_MARKUP_COLLECT_OPTIONAL is implied
-	MarkupCollectTypeTristate MarkupCollectType = 0b100
-	// MarkupCollectTypeOptional: can be bitwise ORed with the other fields. If
+	MarkupCollectTristate MarkupCollectType = 0b100
+	// MarkupCollectOptional: can be bitwise ORed with the other fields. If
 	// present, allows the attribute not to appear. A default value is set
 	// depending on what value type is used
-	MarkupCollectTypeOptional MarkupCollectType = 0b10000000000000000
+	MarkupCollectOptional MarkupCollectType = 0b10000000000000000
 )
+
+// String returns the names in string for MarkupCollectType.
+func (m MarkupCollectType) String() string {
+	if m == 0 {
+		return "MarkupCollectType(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(125)
+
+	for m != 0 {
+		next := m & (m - 1)
+		bit := m - next
+
+		switch bit {
+		case MarkupCollectInvalid:
+			builder.WriteString("Invalid|")
+		case MarkupCollectString:
+			builder.WriteString("String|")
+		case MarkupCollectStrdup:
+			builder.WriteString("Strdup|")
+		case MarkupCollectBoolean:
+			builder.WriteString("Boolean|")
+		case MarkupCollectTristate:
+			builder.WriteString("Tristate|")
+		case MarkupCollectOptional:
+			builder.WriteString("Optional|")
+		default:
+			builder.WriteString(fmt.Sprintf("MarkupCollectType(0b%b)|", bit))
+		}
+
+		m = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // MarkupParseFlags flags that affect the behaviour of the parser.
 type MarkupParseFlags int
 
 const (
-	// MarkupParseFlagsDoNotUseThisUnsupportedFlag: flag you should not use
-	MarkupParseFlagsDoNotUseThisUnsupportedFlag MarkupParseFlags = 0b1
-	// MarkupParseFlagsTreatCdataAsText: when this flag is set, CDATA marked
-	// sections are not passed literally to the passthrough function of the
-	// parser. Instead, the content of the section (without the <![CDATA[ and
-	// ]]>) is passed to the text function. This flag was added in GLib 2.12
-	MarkupParseFlagsTreatCdataAsText MarkupParseFlags = 0b10
-	// MarkupParseFlagsPrefixErrorPosition: normally errors caught by GMarkup
-	// itself have line/column information prefixed to them to let the caller
-	// know the location of the error. When this flag is set the location
-	// information is also prefixed to errors generated by the Parser
-	// implementation functions
-	MarkupParseFlagsPrefixErrorPosition MarkupParseFlags = 0b100
-	// MarkupParseFlagsIgnoreQualified: ignore (don't report) qualified
-	// attributes and tags, along with their contents. A qualified attribute or
-	// tag is one that contains ':' in its name (ie: is in another namespace).
-	// Since: 2.40.
-	MarkupParseFlagsIgnoreQualified MarkupParseFlags = 0b1000
+	// MarkupDoNotUseThisUnsupportedFlag: flag you should not use
+	MarkupDoNotUseThisUnsupportedFlag MarkupParseFlags = 0b1
+	// MarkupTreatCdataAsText: when this flag is set, CDATA marked sections are
+	// not passed literally to the passthrough function of the parser. Instead,
+	// the content of the section (without the <![CDATA[ and ]]>) is passed to
+	// the text function. This flag was added in GLib 2.12
+	MarkupTreatCdataAsText MarkupParseFlags = 0b10
+	// MarkupPrefixErrorPosition: normally errors caught by GMarkup itself have
+	// line/column information prefixed to them to let the caller know the
+	// location of the error. When this flag is set the location information is
+	// also prefixed to errors generated by the Parser implementation functions
+	MarkupPrefixErrorPosition MarkupParseFlags = 0b100
+	// MarkupIgnoreQualified: ignore (don't report) qualified attributes and
+	// tags, along with their contents. A qualified attribute or tag is one that
+	// contains ':' in its name (ie: is in another namespace). Since: 2.40.
+	MarkupIgnoreQualified MarkupParseFlags = 0b1000
 )
+
+// String returns the names in string for MarkupParseFlags.
+func (m MarkupParseFlags) String() string {
+	if m == 0 {
+		return "MarkupParseFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(104)
+
+	for m != 0 {
+		next := m & (m - 1)
+		bit := m - next
+
+		switch bit {
+		case MarkupDoNotUseThisUnsupportedFlag:
+			builder.WriteString("DoNotUseThisUnsupportedFlag|")
+		case MarkupTreatCdataAsText:
+			builder.WriteString("TreatCdataAsText|")
+		case MarkupPrefixErrorPosition:
+			builder.WriteString("PrefixErrorPosition|")
+		case MarkupIgnoreQualified:
+			builder.WriteString("IgnoreQualified|")
+		default:
+			builder.WriteString(fmt.Sprintf("MarkupParseFlags(0b%b)|", bit))
+		}
+
+		m = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // MarkupEscapeText escapes text so that the markup parser will parse it
 // verbatim. Less than, greater than, ampersand, etc. are replaced with the

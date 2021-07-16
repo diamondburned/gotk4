@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -33,11 +34,11 @@ func init() {
 type TextExtendSelection int
 
 const (
-	// Word selects the current word. It is triggered by a double-click for
-	// example.
+	// TextExtendSelectionWord selects the current word. It is triggered by a
+	// double-click for example.
 	TextExtendSelectionWord TextExtendSelection = iota
-	// Line selects the current line. It is triggered by a triple-click for
-	// example.
+	// TextExtendSelectionLine selects the current line. It is triggered by a
+	// triple-click for example.
 	TextExtendSelectionLine
 )
 
@@ -45,14 +46,27 @@ func marshalTextExtendSelection(p uintptr) (interface{}, error) {
 	return TextExtendSelection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TextExtendSelection.
+func (t TextExtendSelection) String() string {
+	switch t {
+	case TextExtendSelectionWord:
+		return "Word"
+	case TextExtendSelectionLine:
+		return "Line"
+	default:
+		return fmt.Sprintf("TextExtendSelection(%d)", t)
+	}
+}
+
 // TextViewLayer: used to reference the layers of TextView for the purpose of
 // customized drawing with the ::snapshot_layer vfunc.
 type TextViewLayer int
 
 const (
-	// BelowText: layer rendered below the text (but above the background).
+	// TextViewLayerBelowText: layer rendered below the text (but above the
+	// background).
 	TextViewLayerBelowText TextViewLayer = iota
-	// AboveText: layer rendered above the text.
+	// TextViewLayerAboveText: layer rendered above the text.
 	TextViewLayerAboveText
 )
 
@@ -60,26 +74,58 @@ func marshalTextViewLayer(p uintptr) (interface{}, error) {
 	return TextViewLayer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for TextViewLayer.
+func (t TextViewLayer) String() string {
+	switch t {
+	case TextViewLayerBelowText:
+		return "BelowText"
+	case TextViewLayerAboveText:
+		return "AboveText"
+	default:
+		return fmt.Sprintf("TextViewLayer(%d)", t)
+	}
+}
+
 // TextWindowType: used to reference the parts of TextView.
 type TextWindowType int
 
 const (
-	// Widget: window that floats over scrolling areas.
-	TextWindowTypeWidget TextWindowType = 1
-	// Text: scrollable text window.
-	TextWindowTypeText TextWindowType = 2
-	// Left: left side border window.
-	TextWindowTypeLeft TextWindowType = 3
-	// Right: right side border window.
-	TextWindowTypeRight TextWindowType = 4
-	// Top: top border window.
-	TextWindowTypeTop TextWindowType = 5
-	// Bottom: bottom border window.
-	TextWindowTypeBottom TextWindowType = 6
+	// TextWindowWidget: window that floats over scrolling areas.
+	TextWindowWidget TextWindowType = 1
+	// TextWindowText: scrollable text window.
+	TextWindowText TextWindowType = 2
+	// TextWindowLeft: left side border window.
+	TextWindowLeft TextWindowType = 3
+	// TextWindowRight: right side border window.
+	TextWindowRight TextWindowType = 4
+	// TextWindowTop: top border window.
+	TextWindowTop TextWindowType = 5
+	// TextWindowBottom: bottom border window.
+	TextWindowBottom TextWindowType = 6
 )
 
 func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TextWindowType.
+func (t TextWindowType) String() string {
+	switch t {
+	case TextWindowWidget:
+		return "Widget"
+	case TextWindowText:
+		return "Text"
+	case TextWindowLeft:
+		return "Left"
+	case TextWindowRight:
+		return "Right"
+	case TextWindowTop:
+		return "Top"
+	case TextWindowBottom:
+		return "Bottom"
+	default:
+		return fmt.Sprintf("TextWindowType(%d)", t)
+	}
 }
 
 // TextViewOverrider contains methods that are overridable.

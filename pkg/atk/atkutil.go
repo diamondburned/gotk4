@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -31,33 +32,62 @@ func init() {
 type CoordType int
 
 const (
-	// Screen specifies xy coordinates relative to the screen
-	CoordTypeScreen CoordType = iota
-	// Window specifies xy coordinates relative to the widget's top-level window
-	CoordTypeWindow
-	// Parent specifies xy coordinates relative to the widget's immediate
+	// XYScreen specifies xy coordinates relative to the screen
+	XYScreen CoordType = iota
+	// XYWindow specifies xy coordinates relative to the widget's top-level
+	// window
+	XYWindow
+	// XYParent specifies xy coordinates relative to the widget's immediate
 	// parent. Since: 2.30
-	CoordTypeParent
+	XYParent
 )
 
 func marshalCoordType(p uintptr) (interface{}, error) {
 	return CoordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for CoordType.
+func (c CoordType) String() string {
+	switch c {
+	case XYScreen:
+		return "Screen"
+	case XYWindow:
+		return "Window"
+	case XYParent:
+		return "Parent"
+	default:
+		return fmt.Sprintf("CoordType(%d)", c)
+	}
+}
+
 // KeyEventType specifies the type of a keyboard evemt.
 type KeyEventType int
 
 const (
-	// Press specifies a key press event
-	KeyEventTypePress KeyEventType = iota
-	// Release specifies a key release event
-	KeyEventTypeRelease
-	// LastDefined: not a valid value; specifies end of enumeration
-	KeyEventTypeLastDefined
+	// KeyEventPress specifies a key press event
+	KeyEventPress KeyEventType = iota
+	// KeyEventRelease specifies a key release event
+	KeyEventRelease
+	// KeyEventLastDefined: not a valid value; specifies end of enumeration
+	KeyEventLastDefined
 )
 
 func marshalKeyEventType(p uintptr) (interface{}, error) {
 	return KeyEventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for KeyEventType.
+func (k KeyEventType) String() string {
+	switch k {
+	case KeyEventPress:
+		return "Press"
+	case KeyEventRelease:
+		return "Release"
+	case KeyEventLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("KeyEventType(%d)", k)
+	}
 }
 
 // KeySnoopFunc is a type of callback which is called whenever a key event

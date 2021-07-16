@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"fmt"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -35,48 +36,50 @@ func init() {
 type BlendMode int
 
 const (
-	// Default blend mode, which specifies no blending
+	// BlendModeDefault blend mode, which specifies no blending
 	BlendModeDefault BlendMode = iota
-	// Multiply: source color is multiplied by the destination and replaces the
-	// destination
+	// BlendModeMultiply: source color is multiplied by the destination and
+	// replaces the destination
 	BlendModeMultiply
-	// Screen multiplies the complements of the destination and source color
-	// values, then complements the result.
+	// BlendModeScreen multiplies the complements of the destination and source
+	// color values, then complements the result.
 	BlendModeScreen
-	// Overlay multiplies or screens the colors, depending on the destination
-	// color value. This is the inverse of hard-list
+	// BlendModeOverlay multiplies or screens the colors, depending on the
+	// destination color value. This is the inverse of hard-list
 	BlendModeOverlay
-	// Darken selects the darker of the destination and source colors
+	// BlendModeDarken selects the darker of the destination and source colors
 	BlendModeDarken
-	// Lighten selects the lighter of the destination and source colors
+	// BlendModeLighten selects the lighter of the destination and source colors
 	BlendModeLighten
-	// ColorDodge brightens the destination color to reflect the source color
+	// BlendModeColorDodge brightens the destination color to reflect the source
+	// color
 	BlendModeColorDodge
-	// ColorBurn darkens the destination color to reflect the source color
+	// BlendModeColorBurn darkens the destination color to reflect the source
+	// color
 	BlendModeColorBurn
-	// HardLight multiplies or screens the colors, depending on the source color
-	// value
+	// BlendModeHardLight multiplies or screens the colors, depending on the
+	// source color value
 	BlendModeHardLight
-	// SoftLight darkens or lightens the colors, depending on the source color
-	// value
+	// BlendModeSoftLight darkens or lightens the colors, depending on the
+	// source color value
 	BlendModeSoftLight
-	// Difference subtracts the darker of the two constituent colors from the
-	// lighter color
+	// BlendModeDifference subtracts the darker of the two constituent colors
+	// from the lighter color
 	BlendModeDifference
-	// Exclusion produces an effect similar to that of the difference mode but
-	// lower in contrast
+	// BlendModeExclusion produces an effect similar to that of the difference
+	// mode but lower in contrast
 	BlendModeExclusion
-	// Color creates a color with the hue and saturation of the source color and
-	// the luminosity of the destination color
+	// BlendModeColor creates a color with the hue and saturation of the source
+	// color and the luminosity of the destination color
 	BlendModeColor
-	// Hue creates a color with the hue of the source color and the saturation
-	// and luminosity of the destination color
+	// BlendModeHue creates a color with the hue of the source color and the
+	// saturation and luminosity of the destination color
 	BlendModeHue
-	// Saturation creates a color with the saturation of the source color and
-	// the hue and luminosity of the destination color
+	// BlendModeSaturation creates a color with the saturation of the source
+	// color and the hue and luminosity of the destination color
 	BlendModeSaturation
-	// Luminosity creates a color with the luminosity of the source color and
-	// the hue and saturation of the destination color
+	// BlendModeLuminosity creates a color with the luminosity of the source
+	// color and the hue and saturation of the destination color
 	BlendModeLuminosity
 )
 
@@ -84,22 +87,78 @@ func marshalBlendMode(p uintptr) (interface{}, error) {
 	return BlendMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for BlendMode.
+func (b BlendMode) String() string {
+	switch b {
+	case BlendModeDefault:
+		return "Default"
+	case BlendModeMultiply:
+		return "Multiply"
+	case BlendModeScreen:
+		return "Screen"
+	case BlendModeOverlay:
+		return "Overlay"
+	case BlendModeDarken:
+		return "Darken"
+	case BlendModeLighten:
+		return "Lighten"
+	case BlendModeColorDodge:
+		return "ColorDodge"
+	case BlendModeColorBurn:
+		return "ColorBurn"
+	case BlendModeHardLight:
+		return "HardLight"
+	case BlendModeSoftLight:
+		return "SoftLight"
+	case BlendModeDifference:
+		return "Difference"
+	case BlendModeExclusion:
+		return "Exclusion"
+	case BlendModeColor:
+		return "Color"
+	case BlendModeHue:
+		return "Hue"
+	case BlendModeSaturation:
+		return "Saturation"
+	case BlendModeLuminosity:
+		return "Luminosity"
+	default:
+		return fmt.Sprintf("BlendMode(%d)", b)
+	}
+}
+
 // Corner: corner indices used by RoundedRect.
 type Corner int
 
 const (
-	// TopLeft: top left corner
+	// CornerTopLeft: top left corner
 	CornerTopLeft Corner = iota
-	// TopRight: top right corner
+	// CornerTopRight: top right corner
 	CornerTopRight
-	// BottomRight: bottom right corner
+	// CornerBottomRight: bottom right corner
 	CornerBottomRight
-	// BottomLeft: bottom left corner
+	// CornerBottomLeft: bottom left corner
 	CornerBottomLeft
 )
 
 func marshalCorner(p uintptr) (interface{}, error) {
 	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Corner.
+func (c Corner) String() string {
+	switch c {
+	case CornerTopLeft:
+		return "TopLeft"
+	case CornerTopRight:
+		return "TopRight"
+	case CornerBottomRight:
+		return "BottomRight"
+	case CornerBottomLeft:
+		return "BottomLeft"
+	default:
+		return fmt.Sprintf("Corner(%d)", c)
+	}
 }
 
 // GLUniformType: this defines the types of the uniforms that GskGLShaders
@@ -110,21 +169,21 @@ func marshalCorner(p uintptr) (interface{}, error) {
 type GLUniformType int
 
 const (
-	// None: no type, used for uninitialized or unspecified values.
+	// GLUniformTypeNone: no type, used for uninitialized or unspecified values.
 	GLUniformTypeNone GLUniformType = iota
-	// Float uniform
+	// GLUniformTypeFloat uniform
 	GLUniformTypeFloat
-	// Int: GLSL int / gint32 uniform
+	// GLUniformTypeInt: GLSL int / gint32 uniform
 	GLUniformTypeInt
-	// Uint: GLSL uint / guint32 uniform
+	// GLUniformTypeUint: GLSL uint / guint32 uniform
 	GLUniformTypeUint
-	// Bool: GLSL bool / gboolean uniform
+	// GLUniformTypeBool: GLSL bool / gboolean uniform
 	GLUniformTypeBool
-	// Vec2: GLSL vec2 / graphene_vec2_t uniform
+	// GLUniformTypeVec2: GLSL vec2 / graphene_vec2_t uniform
 	GLUniformTypeVec2
-	// Vec3: GLSL vec3 / graphene_vec3_t uniform
+	// GLUniformTypeVec3: GLSL vec3 / graphene_vec3_t uniform
 	GLUniformTypeVec3
-	// Vec4: GLSL vec4 / graphene_vec4_t uniform
+	// GLUniformTypeVec4: GLSL vec4 / graphene_vec4_t uniform
 	GLUniformTypeVec4
 )
 
@@ -132,67 +191,151 @@ func marshalGLUniformType(p uintptr) (interface{}, error) {
 	return GLUniformType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for GLUniformType.
+func (g GLUniformType) String() string {
+	switch g {
+	case GLUniformTypeNone:
+		return "None"
+	case GLUniformTypeFloat:
+		return "Float"
+	case GLUniformTypeInt:
+		return "Int"
+	case GLUniformTypeUint:
+		return "Uint"
+	case GLUniformTypeBool:
+		return "Bool"
+	case GLUniformTypeVec2:
+		return "Vec2"
+	case GLUniformTypeVec3:
+		return "Vec3"
+	case GLUniformTypeVec4:
+		return "Vec4"
+	default:
+		return fmt.Sprintf("GLUniformType(%d)", g)
+	}
+}
+
 // RenderNodeType: type of a node determines what the node is rendering.
 type RenderNodeType int
 
 const (
-	// NotARenderNode: error type. No node will ever have this type.
-	RenderNodeTypeNotARenderNode RenderNodeType = iota
-	// ContainerNode: node containing a stack of children
-	RenderNodeTypeContainerNode
-	// CairoNode: node drawing a #cairo_surface_t
-	RenderNodeTypeCairoNode
-	// ColorNode: node drawing a single color rectangle
-	RenderNodeTypeColorNode
-	// LinearGradientNode: node drawing a linear gradient
-	RenderNodeTypeLinearGradientNode
-	// RepeatingLinearGradientNode: node drawing a repeating linear gradient
-	RenderNodeTypeRepeatingLinearGradientNode
-	// RadialGradientNode: node drawing a radial gradient
-	RenderNodeTypeRadialGradientNode
-	// RepeatingRadialGradientNode: node drawing a repeating radial gradient
-	RenderNodeTypeRepeatingRadialGradientNode
-	// ConicGradientNode: node drawing a conic gradient
-	RenderNodeTypeConicGradientNode
-	// BorderNode: node stroking a border around an area
-	RenderNodeTypeBorderNode
-	// TextureNode: node drawing a Texture
-	RenderNodeTypeTextureNode
-	// InsetShadowNode: node drawing an inset shadow
-	RenderNodeTypeInsetShadowNode
-	// OutsetShadowNode: node drawing an outset shadow
-	RenderNodeTypeOutsetShadowNode
-	// TransformNode: node that renders its child after applying a matrix
+	// NotARenderNodeType: error type. No node will ever have this type.
+	NotARenderNodeType RenderNodeType = iota
+	// ContainerNodeType: node containing a stack of children
+	ContainerNodeType
+	// CairoNodeType: node drawing a #cairo_surface_t
+	CairoNodeType
+	// ColorNodeType: node drawing a single color rectangle
+	ColorNodeType
+	// LinearGradientNodeType: node drawing a linear gradient
+	LinearGradientNodeType
+	// RepeatingLinearGradientNodeType: node drawing a repeating linear gradient
+	RepeatingLinearGradientNodeType
+	// RadialGradientNodeType: node drawing a radial gradient
+	RadialGradientNodeType
+	// RepeatingRadialGradientNodeType: node drawing a repeating radial gradient
+	RepeatingRadialGradientNodeType
+	// ConicGradientNodeType: node drawing a conic gradient
+	ConicGradientNodeType
+	// BorderNodeType: node stroking a border around an area
+	BorderNodeType
+	// TextureNodeType: node drawing a Texture
+	TextureNodeType
+	// InsetShadowNodeType: node drawing an inset shadow
+	InsetShadowNodeType
+	// OutsetShadowNodeType: node drawing an outset shadow
+	OutsetShadowNodeType
+	// TransformNodeType: node that renders its child after applying a matrix
 	// transform
-	RenderNodeTypeTransformNode
-	// OpacityNode: node that changes the opacity of its child
-	RenderNodeTypeOpacityNode
-	// ColorMatrixNode: node that applies a color matrix to every pixel
-	RenderNodeTypeColorMatrixNode
-	// RepeatNode: node that repeats the child's contents
-	RenderNodeTypeRepeatNode
-	// ClipNode: node that clips its child to a rectangular area
-	RenderNodeTypeClipNode
-	// RoundedClipNode: node that clips its child to a rounded rectangle
-	RenderNodeTypeRoundedClipNode
-	// ShadowNode: node that draws a shadow below its child
-	RenderNodeTypeShadowNode
-	// BlendNode: node that blends two children together
-	RenderNodeTypeBlendNode
-	// CrossFadeNode: node that cross-fades between two children
-	RenderNodeTypeCrossFadeNode
-	// TextNode: node containing a glyph string
-	RenderNodeTypeTextNode
-	// BlurNode: node that applies a blur
-	RenderNodeTypeBlurNode
-	// DebugNode: debug information that does not affect the rendering
-	RenderNodeTypeDebugNode
-	// GLShaderNode: node that uses OpenGL fragment shaders to render
-	RenderNodeTypeGLShaderNode
+	TransformNodeType
+	// OpacityNodeType: node that changes the opacity of its child
+	OpacityNodeType
+	// ColorMatrixNodeType: node that applies a color matrix to every pixel
+	ColorMatrixNodeType
+	// RepeatNodeType: node that repeats the child's contents
+	RepeatNodeType
+	// ClipNodeType: node that clips its child to a rectangular area
+	ClipNodeType
+	// RoundedClipNodeType: node that clips its child to a rounded rectangle
+	RoundedClipNodeType
+	// ShadowNodeType: node that draws a shadow below its child
+	ShadowNodeType
+	// BlendNodeType: node that blends two children together
+	BlendNodeType
+	// CrossFadeNodeType: node that cross-fades between two children
+	CrossFadeNodeType
+	// TextNodeType: node containing a glyph string
+	TextNodeType
+	// BlurNodeType: node that applies a blur
+	BlurNodeType
+	// DebugNodeType: debug information that does not affect the rendering
+	DebugNodeType
+	// GLShaderNodeType: node that uses OpenGL fragment shaders to render
+	GLShaderNodeType
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
 	return RenderNodeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for RenderNodeType.
+func (r RenderNodeType) String() string {
+	switch r {
+	case NotARenderNodeType:
+		return "NotARenderNode"
+	case ContainerNodeType:
+		return "ContainerNode"
+	case CairoNodeType:
+		return "CairoNode"
+	case ColorNodeType:
+		return "ColorNode"
+	case LinearGradientNodeType:
+		return "LinearGradientNode"
+	case RepeatingLinearGradientNodeType:
+		return "RepeatingLinearGradientNode"
+	case RadialGradientNodeType:
+		return "RadialGradientNode"
+	case RepeatingRadialGradientNodeType:
+		return "RepeatingRadialGradientNode"
+	case ConicGradientNodeType:
+		return "ConicGradientNode"
+	case BorderNodeType:
+		return "BorderNode"
+	case TextureNodeType:
+		return "TextureNode"
+	case InsetShadowNodeType:
+		return "InsetShadowNode"
+	case OutsetShadowNodeType:
+		return "OutsetShadowNode"
+	case TransformNodeType:
+		return "TransformNode"
+	case OpacityNodeType:
+		return "OpacityNode"
+	case ColorMatrixNodeType:
+		return "ColorMatrixNode"
+	case RepeatNodeType:
+		return "RepeatNode"
+	case ClipNodeType:
+		return "ClipNode"
+	case RoundedClipNodeType:
+		return "RoundedClipNode"
+	case ShadowNodeType:
+		return "ShadowNode"
+	case BlendNodeType:
+		return "BlendNode"
+	case CrossFadeNodeType:
+		return "CrossFadeNode"
+	case TextNodeType:
+		return "TextNode"
+	case BlurNodeType:
+		return "BlurNode"
+	case DebugNodeType:
+		return "DebugNode"
+	case GLShaderNodeType:
+		return "GLShaderNode"
+	default:
+		return fmt.Sprintf("RenderNodeType(%d)", r)
+	}
 }
 
 // ScalingFilter filters used when scaling texture data.
@@ -202,12 +345,12 @@ func marshalRenderNodeType(p uintptr) (interface{}, error) {
 type ScalingFilter int
 
 const (
-	// Linear interpolation filter
+	// ScalingFilterLinear interpolation filter
 	ScalingFilterLinear ScalingFilter = iota
-	// Nearest neighbor interpolation filter
+	// ScalingFilterNearest neighbor interpolation filter
 	ScalingFilterNearest
-	// Trilinear: linear interpolation along each axis, plus mipmap generation,
-	// with linear interpolation along the mipmap levels
+	// ScalingFilterTrilinear: linear interpolation along each axis, plus mipmap
+	// generation, with linear interpolation along the mipmap levels
 	ScalingFilterTrilinear
 )
 
@@ -215,20 +358,49 @@ func marshalScalingFilter(p uintptr) (interface{}, error) {
 	return ScalingFilter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ScalingFilter.
+func (s ScalingFilter) String() string {
+	switch s {
+	case ScalingFilterLinear:
+		return "Linear"
+	case ScalingFilterNearest:
+		return "Nearest"
+	case ScalingFilterTrilinear:
+		return "Trilinear"
+	default:
+		return fmt.Sprintf("ScalingFilter(%d)", s)
+	}
+}
+
 // SerializationError errors that can happen during (de)serialization.
 type SerializationError int
 
 const (
-	// UnsupportedFormat: format can not be identified
-	SerializationErrorUnsupportedFormat SerializationError = iota
-	// UnsupportedVersion: version of the data is not understood
-	SerializationErrorUnsupportedVersion
-	// InvalidData: given data may not exist in a proper serialization
-	SerializationErrorInvalidData
+	// SerializationUnsupportedFormat: format can not be identified
+	SerializationUnsupportedFormat SerializationError = iota
+	// SerializationUnsupportedVersion: version of the data is not understood
+	SerializationUnsupportedVersion
+	// SerializationInvalidData: given data may not exist in a proper
+	// serialization
+	SerializationInvalidData
 )
 
 func marshalSerializationError(p uintptr) (interface{}, error) {
 	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for SerializationError.
+func (s SerializationError) String() string {
+	switch s {
+	case SerializationUnsupportedFormat:
+		return "UnsupportedFormat"
+	case SerializationUnsupportedVersion:
+		return "UnsupportedVersion"
+	case SerializationInvalidData:
+		return "InvalidData"
+	default:
+		return fmt.Sprintf("SerializationError(%d)", s)
+	}
 }
 
 // TransformCategory categories of matrices relevant for GSK and GTK.
@@ -244,28 +416,50 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 type TransformCategory int
 
 const (
-	// Unknown: category of the matrix has not been determined.
+	// TransformCategoryUnknown: category of the matrix has not been determined.
 	TransformCategoryUnknown TransformCategory = iota
-	// Any: analyzing the matrix concluded that it does not fit in any other
-	// category.
+	// TransformCategoryAny: analyzing the matrix concluded that it does not fit
+	// in any other category.
 	TransformCategoryAny
-	// 3D: matrix is a 3D matrix. This means that the w column (the last column)
-	// has the values (0, 0, 0, 1).
+	// TransformCategory3D: matrix is a 3D matrix. This means that the w column
+	// (the last column) has the values (0, 0, 0, 1).
 	TransformCategory3D
-	// 2D: matrix is a 2D matrix. This is equivalent to graphene_matrix_is_2d()
-	// returning TRUE. In particular, this means that Cairo can deal with the
-	// matrix.
+	// TransformCategory2D: matrix is a 2D matrix. This is equivalent to
+	// graphene_matrix_is_2d() returning TRUE. In particular, this means that
+	// Cairo can deal with the matrix.
 	TransformCategory2D
-	// 2DAffine: matrix is a combination of 2D scale and 2D translation
-	// operations. In particular, this means that any rectangle can be
-	// transformed exactly using this matrix.
+	// TransformCategory2DAffine: matrix is a combination of 2D scale and 2D
+	// translation operations. In particular, this means that any rectangle can
+	// be transformed exactly using this matrix.
 	TransformCategory2DAffine
-	// 2DTranslate: matrix is a 2D translation.
+	// TransformCategory2DTranslate: matrix is a 2D translation.
 	TransformCategory2DTranslate
-	// Identity: matrix is the identity matrix.
+	// TransformCategoryIdentity: matrix is the identity matrix.
 	TransformCategoryIdentity
 )
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TransformCategory.
+func (t TransformCategory) String() string {
+	switch t {
+	case TransformCategoryUnknown:
+		return "Unknown"
+	case TransformCategoryAny:
+		return "Any"
+	case TransformCategory3D:
+		return "3D"
+	case TransformCategory2D:
+		return "2D"
+	case TransformCategory2DAffine:
+		return "2DAffine"
+	case TransformCategory2DTranslate:
+		return "2DTranslate"
+	case TransformCategoryIdentity:
+		return "Identity"
+	default:
+		return fmt.Sprintf("TransformCategory(%d)", t)
+	}
 }

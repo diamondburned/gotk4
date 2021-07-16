@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -31,13 +33,14 @@ func init() {
 type CellRendererMode int
 
 const (
-	// Inert: cell is just for display and cannot be interacted with. Note that
-	// this doesn’t mean that eg. the row being drawn can’t be selected -- just
-	// that a particular element of it cannot be individually modified.
+	// CellRendererModeInert: cell is just for display and cannot be interacted
+	// with. Note that this doesn’t mean that eg. the row being drawn can’t be
+	// selected -- just that a particular element of it cannot be individually
+	// modified.
 	CellRendererModeInert CellRendererMode = iota
-	// Activatable: cell can be clicked.
+	// CellRendererModeActivatable: cell can be clicked.
 	CellRendererModeActivatable
-	// Editable: cell can be edited or otherwise modified.
+	// CellRendererModeEditable: cell can be edited or otherwise modified.
 	CellRendererModeEditable
 )
 
@@ -45,30 +48,81 @@ func marshalCellRendererMode(p uintptr) (interface{}, error) {
 	return CellRendererMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for CellRendererMode.
+func (c CellRendererMode) String() string {
+	switch c {
+	case CellRendererModeInert:
+		return "Inert"
+	case CellRendererModeActivatable:
+		return "Activatable"
+	case CellRendererModeEditable:
+		return "Editable"
+	default:
+		return fmt.Sprintf("CellRendererMode(%d)", c)
+	}
+}
+
 // CellRendererState tells how a cell is to be rendered.
 type CellRendererState int
 
 const (
-	// CellRendererStateSelected: cell is currently selected, and probably has a
+	// CellRendererSelected: cell is currently selected, and probably has a
 	// selection colored background to render to.
-	CellRendererStateSelected CellRendererState = 0b1
-	// CellRendererStatePrelit: mouse is hovering over the cell.
-	CellRendererStatePrelit CellRendererState = 0b10
-	// CellRendererStateInsensitive: cell is drawn in an insensitive manner
-	CellRendererStateInsensitive CellRendererState = 0b100
-	// CellRendererStateSorted: cell is in a sorted row
-	CellRendererStateSorted CellRendererState = 0b1000
-	// CellRendererStateFocused: cell is in the focus row.
-	CellRendererStateFocused CellRendererState = 0b10000
-	// CellRendererStateExpandable: cell is in a row that can be expanded. Since
-	// 3.4
-	CellRendererStateExpandable CellRendererState = 0b100000
-	// CellRendererStateExpanded: cell is in a row that is expanded. Since 3.4
-	CellRendererStateExpanded CellRendererState = 0b1000000
+	CellRendererSelected CellRendererState = 0b1
+	// CellRendererPrelit: mouse is hovering over the cell.
+	CellRendererPrelit CellRendererState = 0b10
+	// CellRendererInsensitive: cell is drawn in an insensitive manner
+	CellRendererInsensitive CellRendererState = 0b100
+	// CellRendererSorted: cell is in a sorted row
+	CellRendererSorted CellRendererState = 0b1000
+	// CellRendererFocused: cell is in the focus row.
+	CellRendererFocused CellRendererState = 0b10000
+	// CellRendererExpandable: cell is in a row that can be expanded. Since 3.4
+	CellRendererExpandable CellRendererState = 0b100000
+	// CellRendererExpanded: cell is in a row that is expanded. Since 3.4
+	CellRendererExpanded CellRendererState = 0b1000000
 )
 
 func marshalCellRendererState(p uintptr) (interface{}, error) {
 	return CellRendererState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for CellRendererState.
+func (c CellRendererState) String() string {
+	if c == 0 {
+		return "CellRendererState(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(146)
+
+	for c != 0 {
+		next := c & (c - 1)
+		bit := c - next
+
+		switch bit {
+		case CellRendererSelected:
+			builder.WriteString("Selected|")
+		case CellRendererPrelit:
+			builder.WriteString("Prelit|")
+		case CellRendererInsensitive:
+			builder.WriteString("Insensitive|")
+		case CellRendererSorted:
+			builder.WriteString("Sorted|")
+		case CellRendererFocused:
+			builder.WriteString("Focused|")
+		case CellRendererExpandable:
+			builder.WriteString("Expandable|")
+		case CellRendererExpanded:
+			builder.WriteString("Expanded|")
+		default:
+			builder.WriteString(fmt.Sprintf("CellRendererState(0b%b)|", bit))
+		}
+
+		c = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // CellRendererOverrider contains methods that are overridable.

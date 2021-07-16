@@ -3,7 +3,9 @@
 package glib
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -28,318 +30,563 @@ func init() {
 type RegexError int
 
 const (
-	// Compile: compilation of the regular expression failed.
+	// RegexErrorCompile: compilation of the regular expression failed.
 	RegexErrorCompile RegexError = 0
-	// Optimize: optimization of the regular expression failed.
+	// RegexErrorOptimize: optimization of the regular expression failed.
 	RegexErrorOptimize RegexError = 1
-	// Replace: replacement failed due to an ill-formed replacement string.
+	// RegexErrorReplace: replacement failed due to an ill-formed replacement
+	// string.
 	RegexErrorReplace RegexError = 2
-	// Match process failed.
+	// RegexErrorMatch process failed.
 	RegexErrorMatch RegexError = 3
-	// Internal: internal error of the regular expression engine. Since 2.16
+	// RegexErrorInternal: internal error of the regular expression engine.
+	// Since 2.16
 	RegexErrorInternal RegexError = 4
-	// StrayBackslash: "\\" at end of pattern. Since 2.16
+	// RegexErrorStrayBackslash: "\\" at end of pattern. Since 2.16
 	RegexErrorStrayBackslash RegexError = 101
-	// MissingControlChar: "\\c" at end of pattern. Since 2.16
+	// RegexErrorMissingControlChar: "\\c" at end of pattern. Since 2.16
 	RegexErrorMissingControlChar RegexError = 102
-	// UnrecognizedEscape: unrecognized character follows "\\". Since 2.16
+	// RegexErrorUnrecognizedEscape: unrecognized character follows "\\". Since
+	// 2.16
 	RegexErrorUnrecognizedEscape RegexError = 103
-	// QuantifiersOutOfOrder numbers out of order in "{}" quantifier. Since 2.16
+	// RegexErrorQuantifiersOutOfOrder numbers out of order in "{}" quantifier.
+	// Since 2.16
 	RegexErrorQuantifiersOutOfOrder RegexError = 104
-	// QuantifierTooBig: number too big in "{}" quantifier. Since 2.16
+	// RegexErrorQuantifierTooBig: number too big in "{}" quantifier. Since 2.16
 	RegexErrorQuantifierTooBig RegexError = 105
-	// UnterminatedCharacterClass: missing terminating "]" for character class.
-	// Since 2.16
+	// RegexErrorUnterminatedCharacterClass: missing terminating "]" for
+	// character class. Since 2.16
 	RegexErrorUnterminatedCharacterClass RegexError = 106
-	// InvalidEscapeInCharacterClass: invalid escape sequence in character
-	// class. Since 2.16
+	// RegexErrorInvalidEscapeInCharacterClass: invalid escape sequence in
+	// character class. Since 2.16
 	RegexErrorInvalidEscapeInCharacterClass RegexError = 107
-	// RangeOutOfOrder: range out of order in character class. Since 2.16
+	// RegexErrorRangeOutOfOrder: range out of order in character class. Since
+	// 2.16
 	RegexErrorRangeOutOfOrder RegexError = 108
-	// NothingToRepeat: nothing to repeat. Since 2.16
+	// RegexErrorNothingToRepeat: nothing to repeat. Since 2.16
 	RegexErrorNothingToRepeat RegexError = 109
-	// UnrecognizedCharacter: unrecognized character after "(?", "(?<" or "(?P".
-	// Since 2.16
+	// RegexErrorUnrecognizedCharacter: unrecognized character after "(?", "(?<"
+	// or "(?P". Since 2.16
 	RegexErrorUnrecognizedCharacter RegexError = 112
-	// PosixNamedClassOutsideClass: POSIX named classes are supported only
-	// within a class. Since 2.16
+	// RegexErrorPosixNamedClassOutsideClass: POSIX named classes are supported
+	// only within a class. Since 2.16
 	RegexErrorPosixNamedClassOutsideClass RegexError = 113
-	// UnmatchedParenthesis: missing terminating ")" or ")" without opening "(".
-	// Since 2.16
+	// RegexErrorUnmatchedParenthesis: missing terminating ")" or ")" without
+	// opening "(". Since 2.16
 	RegexErrorUnmatchedParenthesis RegexError = 114
-	// InexistentSubpatternReference: reference to non-existent subpattern.
-	// Since 2.16
+	// RegexErrorInexistentSubpatternReference: reference to non-existent
+	// subpattern. Since 2.16
 	RegexErrorInexistentSubpatternReference RegexError = 115
-	// UnterminatedComment: missing terminating ")" after comment. Since 2.16
+	// RegexErrorUnterminatedComment: missing terminating ")" after comment.
+	// Since 2.16
 	RegexErrorUnterminatedComment RegexError = 118
-	// ExpressionTooLarge: regular expression too large. Since 2.16
+	// RegexErrorExpressionTooLarge: regular expression too large. Since 2.16
 	RegexErrorExpressionTooLarge RegexError = 120
-	// MemoryError: failed to get memory. Since 2.16
+	// RegexErrorMemoryError: failed to get memory. Since 2.16
 	RegexErrorMemoryError RegexError = 121
-	// VariableLengthLookbehind: lookbehind assertion is not fixed length. Since
-	// 2.16
+	// RegexErrorVariableLengthLookbehind: lookbehind assertion is not fixed
+	// length. Since 2.16
 	RegexErrorVariableLengthLookbehind RegexError = 125
-	// MalformedCondition: malformed number or name after "(?(". Since 2.16
-	RegexErrorMalformedCondition RegexError = 126
-	// TooManyConditionalBranches: conditional group contains more than two
-	// branches. Since 2.16
-	RegexErrorTooManyConditionalBranches RegexError = 127
-	// AssertionExpected: assertion expected after "(?(". Since 2.16
-	RegexErrorAssertionExpected RegexError = 128
-	// UnknownPosixClassName: unknown POSIX class name. Since 2.16
-	RegexErrorUnknownPosixClassName RegexError = 130
-	// PosixCollatingElementsNotSupported: POSIX collating elements are not
-	// supported. Since 2.16
-	RegexErrorPosixCollatingElementsNotSupported RegexError = 131
-	// HexCodeTooLarge: character value in "\\x{...}" sequence is too large.
-	// Since 2.16
-	RegexErrorHexCodeTooLarge RegexError = 134
-	// InvalidCondition: invalid condition "(?(0)". Since 2.16
-	RegexErrorInvalidCondition RegexError = 135
-	// SingleByteMatchInLookbehind: \\C not allowed in lookbehind assertion.
-	// Since 2.16
-	RegexErrorSingleByteMatchInLookbehind RegexError = 136
-	// InfiniteLoop: recursive call could loop indefinitely. Since 2.16
-	RegexErrorInfiniteLoop RegexError = 140
-	// MissingSubpatternNameTerminator: missing terminator in subpattern name.
-	// Since 2.16
-	RegexErrorMissingSubpatternNameTerminator RegexError = 142
-	// DuplicateSubpatternName: two named subpatterns have the same name. Since
+	// RegexErrorMalformedCondition: malformed number or name after "(?(". Since
 	// 2.16
+	RegexErrorMalformedCondition RegexError = 126
+	// RegexErrorTooManyConditionalBranches: conditional group contains more
+	// than two branches. Since 2.16
+	RegexErrorTooManyConditionalBranches RegexError = 127
+	// RegexErrorAssertionExpected: assertion expected after "(?(". Since 2.16
+	RegexErrorAssertionExpected RegexError = 128
+	// RegexErrorUnknownPosixClassName: unknown POSIX class name. Since 2.16
+	RegexErrorUnknownPosixClassName RegexError = 130
+	// RegexErrorPosixCollatingElementsNotSupported: POSIX collating elements
+	// are not supported. Since 2.16
+	RegexErrorPosixCollatingElementsNotSupported RegexError = 131
+	// RegexErrorHexCodeTooLarge: character value in "\\x{...}" sequence is too
+	// large. Since 2.16
+	RegexErrorHexCodeTooLarge RegexError = 134
+	// RegexErrorInvalidCondition: invalid condition "(?(0)". Since 2.16
+	RegexErrorInvalidCondition RegexError = 135
+	// RegexErrorSingleByteMatchInLookbehind: \\C not allowed in lookbehind
+	// assertion. Since 2.16
+	RegexErrorSingleByteMatchInLookbehind RegexError = 136
+	// RegexErrorInfiniteLoop: recursive call could loop indefinitely. Since
+	// 2.16
+	RegexErrorInfiniteLoop RegexError = 140
+	// RegexErrorMissingSubpatternNameTerminator: missing terminator in
+	// subpattern name. Since 2.16
+	RegexErrorMissingSubpatternNameTerminator RegexError = 142
+	// RegexErrorDuplicateSubpatternName: two named subpatterns have the same
+	// name. Since 2.16
 	RegexErrorDuplicateSubpatternName RegexError = 143
-	// MalformedProperty: malformed "\\P" or "\\p" sequence. Since 2.16
+	// RegexErrorMalformedProperty: malformed "\\P" or "\\p" sequence. Since
+	// 2.16
 	RegexErrorMalformedProperty RegexError = 146
-	// UnknownProperty: unknown property name after "\\P" or "\\p". Since 2.16
+	// RegexErrorUnknownProperty: unknown property name after "\\P" or "\\p".
+	// Since 2.16
 	RegexErrorUnknownProperty RegexError = 147
-	// SubpatternNameTooLong: subpattern name is too long (maximum 32
+	// RegexErrorSubpatternNameTooLong: subpattern name is too long (maximum 32
 	// characters). Since 2.16
 	RegexErrorSubpatternNameTooLong RegexError = 148
-	// TooManySubpatterns: too many named subpatterns (maximum 10,000). Since
-	// 2.16
+	// RegexErrorTooManySubpatterns: too many named subpatterns (maximum
+	// 10,000). Since 2.16
 	RegexErrorTooManySubpatterns RegexError = 149
-	// InvalidOctalValue: octal value is greater than "\\377". Since 2.16
+	// RegexErrorInvalidOctalValue: octal value is greater than "\\377". Since
+	// 2.16
 	RegexErrorInvalidOctalValue RegexError = 151
-	// TooManyBranchesInDefine: "DEFINE" group contains more than one branch.
-	// Since 2.16
+	// RegexErrorTooManyBranchesInDefine: "DEFINE" group contains more than one
+	// branch. Since 2.16
 	RegexErrorTooManyBranchesInDefine RegexError = 154
-	// DefineRepetion: repeating a "DEFINE" group is not allowed. This error is
-	// never raised. Since: 2.16 Deprecated: 2.34
+	// RegexErrorDefineRepetion: repeating a "DEFINE" group is not allowed. This
+	// error is never raised. Since: 2.16 Deprecated: 2.34
 	RegexErrorDefineRepetion RegexError = 155
-	// InconsistentNewlineOptions: inconsistent newline options. Since 2.16
+	// RegexErrorInconsistentNewlineOptions: inconsistent newline options. Since
+	// 2.16
 	RegexErrorInconsistentNewlineOptions RegexError = 156
-	// MissingBackReference: "\\g" is not followed by a braced, angle-bracketed,
-	// or quoted name or number, or by a plain number. Since: 2.16
+	// RegexErrorMissingBackReference: "\\g" is not followed by a braced,
+	// angle-bracketed, or quoted name or number, or by a plain number. Since:
+	// 2.16
 	RegexErrorMissingBackReference RegexError = 157
-	// InvalidRelativeReference: relative reference must not be zero. Since:
-	// 2.34
-	RegexErrorInvalidRelativeReference RegexError = 158
-	// BacktrackingControlVerbArgumentForbidden: backtracing control verb used
-	// does not allow an argument. Since: 2.34
-	RegexErrorBacktrackingControlVerbArgumentForbidden RegexError = 159
-	// UnknownBacktrackingControlVerb: unknown backtracing control verb. Since:
-	// 2.34
-	RegexErrorUnknownBacktrackingControlVerb RegexError = 160
-	// NumberTooBig: number is too big in escape sequence. Since: 2.34
-	RegexErrorNumberTooBig RegexError = 161
-	// MissingSubpatternName: missing subpattern name. Since: 2.34
-	RegexErrorMissingSubpatternName RegexError = 162
-	// MissingDigit: missing digit. Since 2.34
-	RegexErrorMissingDigit RegexError = 163
-	// InvalidDataCharacter: in JavaScript compatibility mode, "[" is an invalid
-	// data character. Since: 2.34
-	RegexErrorInvalidDataCharacter RegexError = 164
-	// ExtraSubpatternName: different names for subpatterns of the same number
-	// are not allowed. Since: 2.34
-	RegexErrorExtraSubpatternName RegexError = 165
-	// BacktrackingControlVerbArgumentRequired: backtracing control verb
-	// requires an argument. Since: 2.34
-	RegexErrorBacktrackingControlVerbArgumentRequired RegexError = 166
-	// InvalidControlChar: "\\c" must be followed by an ASCII character. Since:
-	// 2.34
-	RegexErrorInvalidControlChar RegexError = 168
-	// MissingName: "\\k" is not followed by a braced, angle-bracketed, or
-	// quoted name. Since: 2.34
-	RegexErrorMissingName RegexError = 169
-	// NotSupportedInClass: "\\N" is not supported in a class. Since: 2.34
-	RegexErrorNotSupportedInClass RegexError = 171
-	// TooManyForwardReferences: too many forward references. Since: 2.34
-	RegexErrorTooManyForwardReferences RegexError = 172
-	// NameTooLong: name is too long in "(*MARK)", "(*PRUNE)", "(*SKIP)", or
-	// "(*THEN)". Since: 2.34
-	RegexErrorNameTooLong RegexError = 175
-	// CharacterValueTooLarge: character value in the \\u sequence is too large.
+	// RegexErrorInvalidRelativeReference: relative reference must not be zero.
 	// Since: 2.34
+	RegexErrorInvalidRelativeReference RegexError = 158
+	// RegexErrorBacktrackingControlVerbArgumentForbidden: backtracing control
+	// verb used does not allow an argument. Since: 2.34
+	RegexErrorBacktrackingControlVerbArgumentForbidden RegexError = 159
+	// RegexErrorUnknownBacktrackingControlVerb: unknown backtracing control
+	// verb. Since: 2.34
+	RegexErrorUnknownBacktrackingControlVerb RegexError = 160
+	// RegexErrorNumberTooBig: number is too big in escape sequence. Since: 2.34
+	RegexErrorNumberTooBig RegexError = 161
+	// RegexErrorMissingSubpatternName: missing subpattern name. Since: 2.34
+	RegexErrorMissingSubpatternName RegexError = 162
+	// RegexErrorMissingDigit: missing digit. Since 2.34
+	RegexErrorMissingDigit RegexError = 163
+	// RegexErrorInvalidDataCharacter: in JavaScript compatibility mode, "[" is
+	// an invalid data character. Since: 2.34
+	RegexErrorInvalidDataCharacter RegexError = 164
+	// RegexErrorExtraSubpatternName: different names for subpatterns of the
+	// same number are not allowed. Since: 2.34
+	RegexErrorExtraSubpatternName RegexError = 165
+	// RegexErrorBacktrackingControlVerbArgumentRequired: backtracing control
+	// verb requires an argument. Since: 2.34
+	RegexErrorBacktrackingControlVerbArgumentRequired RegexError = 166
+	// RegexErrorInvalidControlChar: "\\c" must be followed by an ASCII
+	// character. Since: 2.34
+	RegexErrorInvalidControlChar RegexError = 168
+	// RegexErrorMissingName: "\\k" is not followed by a braced,
+	// angle-bracketed, or quoted name. Since: 2.34
+	RegexErrorMissingName RegexError = 169
+	// RegexErrorNotSupportedInClass: "\\N" is not supported in a class. Since:
+	// 2.34
+	RegexErrorNotSupportedInClass RegexError = 171
+	// RegexErrorTooManyForwardReferences: too many forward references. Since:
+	// 2.34
+	RegexErrorTooManyForwardReferences RegexError = 172
+	// RegexErrorNameTooLong: name is too long in "(*MARK)", "(*PRUNE)",
+	// "(*SKIP)", or "(*THEN)". Since: 2.34
+	RegexErrorNameTooLong RegexError = 175
+	// RegexErrorCharacterValueTooLarge: character value in the \\u sequence is
+	// too large. Since: 2.34
 	RegexErrorCharacterValueTooLarge RegexError = 176
 )
+
+// String returns the name in string for RegexError.
+func (r RegexError) String() string {
+	switch r {
+	case RegexErrorCompile:
+		return "Compile"
+	case RegexErrorOptimize:
+		return "Optimize"
+	case RegexErrorReplace:
+		return "Replace"
+	case RegexErrorMatch:
+		return "Match"
+	case RegexErrorInternal:
+		return "Internal"
+	case RegexErrorStrayBackslash:
+		return "StrayBackslash"
+	case RegexErrorMissingControlChar:
+		return "MissingControlChar"
+	case RegexErrorUnrecognizedEscape:
+		return "UnrecognizedEscape"
+	case RegexErrorQuantifiersOutOfOrder:
+		return "QuantifiersOutOfOrder"
+	case RegexErrorQuantifierTooBig:
+		return "QuantifierTooBig"
+	case RegexErrorUnterminatedCharacterClass:
+		return "UnterminatedCharacterClass"
+	case RegexErrorInvalidEscapeInCharacterClass:
+		return "InvalidEscapeInCharacterClass"
+	case RegexErrorRangeOutOfOrder:
+		return "RangeOutOfOrder"
+	case RegexErrorNothingToRepeat:
+		return "NothingToRepeat"
+	case RegexErrorUnrecognizedCharacter:
+		return "UnrecognizedCharacter"
+	case RegexErrorPosixNamedClassOutsideClass:
+		return "PosixNamedClassOutsideClass"
+	case RegexErrorUnmatchedParenthesis:
+		return "UnmatchedParenthesis"
+	case RegexErrorInexistentSubpatternReference:
+		return "InexistentSubpatternReference"
+	case RegexErrorUnterminatedComment:
+		return "UnterminatedComment"
+	case RegexErrorExpressionTooLarge:
+		return "ExpressionTooLarge"
+	case RegexErrorMemoryError:
+		return "MemoryError"
+	case RegexErrorVariableLengthLookbehind:
+		return "VariableLengthLookbehind"
+	case RegexErrorMalformedCondition:
+		return "MalformedCondition"
+	case RegexErrorTooManyConditionalBranches:
+		return "TooManyConditionalBranches"
+	case RegexErrorAssertionExpected:
+		return "AssertionExpected"
+	case RegexErrorUnknownPosixClassName:
+		return "UnknownPosixClassName"
+	case RegexErrorPosixCollatingElementsNotSupported:
+		return "PosixCollatingElementsNotSupported"
+	case RegexErrorHexCodeTooLarge:
+		return "HexCodeTooLarge"
+	case RegexErrorInvalidCondition:
+		return "InvalidCondition"
+	case RegexErrorSingleByteMatchInLookbehind:
+		return "SingleByteMatchInLookbehind"
+	case RegexErrorInfiniteLoop:
+		return "InfiniteLoop"
+	case RegexErrorMissingSubpatternNameTerminator:
+		return "MissingSubpatternNameTerminator"
+	case RegexErrorDuplicateSubpatternName:
+		return "DuplicateSubpatternName"
+	case RegexErrorMalformedProperty:
+		return "MalformedProperty"
+	case RegexErrorUnknownProperty:
+		return "UnknownProperty"
+	case RegexErrorSubpatternNameTooLong:
+		return "SubpatternNameTooLong"
+	case RegexErrorTooManySubpatterns:
+		return "TooManySubpatterns"
+	case RegexErrorInvalidOctalValue:
+		return "InvalidOctalValue"
+	case RegexErrorTooManyBranchesInDefine:
+		return "TooManyBranchesInDefine"
+	case RegexErrorDefineRepetion:
+		return "DefineRepetion"
+	case RegexErrorInconsistentNewlineOptions:
+		return "InconsistentNewlineOptions"
+	case RegexErrorMissingBackReference:
+		return "MissingBackReference"
+	case RegexErrorInvalidRelativeReference:
+		return "InvalidRelativeReference"
+	case RegexErrorBacktrackingControlVerbArgumentForbidden:
+		return "BacktrackingControlVerbArgumentForbidden"
+	case RegexErrorUnknownBacktrackingControlVerb:
+		return "UnknownBacktrackingControlVerb"
+	case RegexErrorNumberTooBig:
+		return "NumberTooBig"
+	case RegexErrorMissingSubpatternName:
+		return "MissingSubpatternName"
+	case RegexErrorMissingDigit:
+		return "MissingDigit"
+	case RegexErrorInvalidDataCharacter:
+		return "InvalidDataCharacter"
+	case RegexErrorExtraSubpatternName:
+		return "ExtraSubpatternName"
+	case RegexErrorBacktrackingControlVerbArgumentRequired:
+		return "BacktrackingControlVerbArgumentRequired"
+	case RegexErrorInvalidControlChar:
+		return "InvalidControlChar"
+	case RegexErrorMissingName:
+		return "MissingName"
+	case RegexErrorNotSupportedInClass:
+		return "NotSupportedInClass"
+	case RegexErrorTooManyForwardReferences:
+		return "TooManyForwardReferences"
+	case RegexErrorNameTooLong:
+		return "NameTooLong"
+	case RegexErrorCharacterValueTooLarge:
+		return "CharacterValueTooLarge"
+	default:
+		return fmt.Sprintf("RegexError(%d)", r)
+	}
+}
 
 // RegexCompileFlags flags specifying compile-time options.
 type RegexCompileFlags int
 
 const (
-	// RegexCompileFlagsCaseless letters in the pattern match both upper- and
-	// lowercase letters. This option can be changed within a pattern by a
-	// "(?i)" option setting.
-	RegexCompileFlagsCaseless RegexCompileFlags = 0b1
-	// RegexCompileFlagsMultiline: by default, GRegex treats the strings as
-	// consisting of a single line of characters (even if it actually contains
-	// newlines). The "start of line" metacharacter ("^") matches only at the
-	// start of the string, while the "end of line" metacharacter ("$") matches
-	// only at the end of the string, or before a terminating newline (unless
+	// RegexCaseless letters in the pattern match both upper- and lowercase
+	// letters. This option can be changed within a pattern by a "(?i)" option
+	// setting.
+	RegexCaseless RegexCompileFlags = 0b1
+	// RegexMultiline: by default, GRegex treats the strings as consisting of a
+	// single line of characters (even if it actually contains newlines). The
+	// "start of line" metacharacter ("^") matches only at the start of the
+	// string, while the "end of line" metacharacter ("$") matches only at the
+	// end of the string, or before a terminating newline (unless
 	// REGEX_DOLLAR_ENDONLY is set). When REGEX_MULTILINE is set, the "start of
 	// line" and "end of line" constructs match immediately following or
 	// immediately before any newline in the string, respectively, as well as at
 	// the very start and end. This can be changed within a pattern by a "(?m)"
 	// option setting.
-	RegexCompileFlagsMultiline RegexCompileFlags = 0b10
-	// RegexCompileFlagsDotall: dot metacharacter (".") in the pattern matches
-	// all characters, including newlines. Without it, newlines are excluded.
-	// This option can be changed within a pattern by a ("?s") option setting.
-	RegexCompileFlagsDotall RegexCompileFlags = 0b100
-	// RegexCompileFlagsExtended: whitespace data characters in the pattern are
-	// totally ignored except when escaped or inside a character class.
-	// Whitespace does not include the VT character (code 11). In addition,
-	// characters between an unescaped "#" outside a character class and the
-	// next newline character, inclusive, are also ignored. This can be changed
-	// within a pattern by a "(?x)" option setting.
-	RegexCompileFlagsExtended RegexCompileFlags = 0b1000
-	// RegexCompileFlagsAnchored: pattern is forced to be "anchored", that is,
-	// it is constrained to match only at the first matching point in the string
-	// that is being searched. This effect can also be achieved by appropriate
+	RegexMultiline RegexCompileFlags = 0b10
+	// RegexDotall: dot metacharacter (".") in the pattern matches all
+	// characters, including newlines. Without it, newlines are excluded. This
+	// option can be changed within a pattern by a ("?s") option setting.
+	RegexDotall RegexCompileFlags = 0b100
+	// RegexExtended: whitespace data characters in the pattern are totally
+	// ignored except when escaped or inside a character class. Whitespace does
+	// not include the VT character (code 11). In addition, characters between
+	// an unescaped "#" outside a character class and the next newline
+	// character, inclusive, are also ignored. This can be changed within a
+	// pattern by a "(?x)" option setting.
+	RegexExtended RegexCompileFlags = 0b1000
+	// RegexAnchored: pattern is forced to be "anchored", that is, it is
+	// constrained to match only at the first matching point in the string that
+	// is being searched. This effect can also be achieved by appropriate
 	// constructs in the pattern itself such as the "^" metacharacter.
-	RegexCompileFlagsAnchored RegexCompileFlags = 0b10000
-	// RegexCompileFlagsDollarEndonly: dollar metacharacter ("$") in the pattern
-	// matches only at the end of the string. Without this option, a dollar also
-	// matches immediately before the final character if it is a newline (but
-	// not before any other newlines). This option is ignored if REGEX_MULTILINE
-	// is set.
-	RegexCompileFlagsDollarEndonly RegexCompileFlags = 0b100000
-	// RegexCompileFlagsUngreedy inverts the "greediness" of the quantifiers so
-	// that they are not greedy by default, but become greedy if followed by
-	// "?". It can also be set by a "(?U)" option setting within the pattern.
-	RegexCompileFlagsUngreedy RegexCompileFlags = 0b1000000000
-	// RegexCompileFlagsRaw: usually strings must be valid UTF-8 strings, using
-	// this flag they are considered as a raw sequence of bytes.
-	RegexCompileFlagsRaw RegexCompileFlags = 0b100000000000
-	// RegexCompileFlagsNoAutoCapture disables the use of numbered capturing
-	// parentheses in the pattern. Any opening parenthesis that is not followed
-	// by "?" behaves as if it were followed by "?:" but named parentheses can
-	// still be used for capturing (and they acquire numbers in the usual way).
-	RegexCompileFlagsNoAutoCapture RegexCompileFlags = 0b1000000000000
-	// RegexCompileFlagsOptimize: optimize the regular expression. If the
-	// pattern will be used many times, then it may be worth the effort to
-	// optimize it to improve the speed of matches.
-	RegexCompileFlagsOptimize RegexCompileFlags = 0b10000000000000
-	// RegexCompileFlagsFirstline limits an unanchored pattern to match before
-	// (or at) the first newline. Since: 2.34
-	RegexCompileFlagsFirstline RegexCompileFlags = 0b1000000000000000000
-	// RegexCompileFlagsDupnames names used to identify capturing subpatterns
-	// need not be unique. This can be helpful for certain types of pattern when
-	// it is known that only one instance of the named subpattern can ever be
-	// matched.
-	RegexCompileFlagsDupnames RegexCompileFlags = 0b10000000000000000000
-	// RegexCompileFlagsNewlineCr: usually any newline character or character
-	// sequence is recognized. If this option is set, the only recognized
-	// newline character is '\r'.
-	RegexCompileFlagsNewlineCr RegexCompileFlags = 0b100000000000000000000
-	// RegexCompileFlagsNewlineLf: usually any newline character or character
-	// sequence is recognized. If this option is set, the only recognized
-	// newline character is '\n'.
-	RegexCompileFlagsNewlineLf RegexCompileFlags = 0b1000000000000000000000
-	// RegexCompileFlagsNewlineCrlf: usually any newline character or character
-	// sequence is recognized. If this option is set, the only recognized
-	// newline character sequence is '\r\n'.
-	RegexCompileFlagsNewlineCrlf RegexCompileFlags = 0b1100000000000000000000
-	// RegexCompileFlagsNewlineAnycrlf: usually any newline character or
-	// character sequence is recognized. If this option is set, the only
-	// recognized newline character sequences are '\r', '\n', and '\r\n'. Since:
-	// 2.34
-	RegexCompileFlagsNewlineAnycrlf RegexCompileFlags = 0b10100000000000000000000
-	// RegexCompileFlagsBsrAnycrlf: usually any newline character or character
-	// sequence is recognised. If this option is set, then "\R" only recognizes
-	// the newline characters '\r', '\n' and '\r\n'. Since: 2.34
-	RegexCompileFlagsBsrAnycrlf RegexCompileFlags = 0b100000000000000000000000
-	// RegexCompileFlagsJavascriptCompat changes behaviour so that it is
-	// compatible with JavaScript rather than PCRE. Since: 2.34
-	RegexCompileFlagsJavascriptCompat RegexCompileFlags = 0b10000000000000000000000000
+	RegexAnchored RegexCompileFlags = 0b10000
+	// RegexDollarEndonly: dollar metacharacter ("$") in the pattern matches
+	// only at the end of the string. Without this option, a dollar also matches
+	// immediately before the final character if it is a newline (but not before
+	// any other newlines). This option is ignored if REGEX_MULTILINE is set.
+	RegexDollarEndonly RegexCompileFlags = 0b100000
+	// RegexUngreedy inverts the "greediness" of the quantifiers so that they
+	// are not greedy by default, but become greedy if followed by "?". It can
+	// also be set by a "(?U)" option setting within the pattern.
+	RegexUngreedy RegexCompileFlags = 0b1000000000
+	// RegexRaw: usually strings must be valid UTF-8 strings, using this flag
+	// they are considered as a raw sequence of bytes.
+	RegexRaw RegexCompileFlags = 0b100000000000
+	// RegexNoAutoCapture disables the use of numbered capturing parentheses in
+	// the pattern. Any opening parenthesis that is not followed by "?" behaves
+	// as if it were followed by "?:" but named parentheses can still be used
+	// for capturing (and they acquire numbers in the usual way).
+	RegexNoAutoCapture RegexCompileFlags = 0b1000000000000
+	// RegexOptimize: optimize the regular expression. If the pattern will be
+	// used many times, then it may be worth the effort to optimize it to
+	// improve the speed of matches.
+	RegexOptimize RegexCompileFlags = 0b10000000000000
+	// RegexFirstline limits an unanchored pattern to match before (or at) the
+	// first newline. Since: 2.34
+	RegexFirstline RegexCompileFlags = 0b1000000000000000000
+	// RegexDupnames names used to identify capturing subpatterns need not be
+	// unique. This can be helpful for certain types of pattern when it is known
+	// that only one instance of the named subpattern can ever be matched.
+	RegexDupnames RegexCompileFlags = 0b10000000000000000000
+	// RegexNewlineCr: usually any newline character or character sequence is
+	// recognized. If this option is set, the only recognized newline character
+	// is '\r'.
+	RegexNewlineCr RegexCompileFlags = 0b100000000000000000000
+	// RegexNewlineLf: usually any newline character or character sequence is
+	// recognized. If this option is set, the only recognized newline character
+	// is '\n'.
+	RegexNewlineLf RegexCompileFlags = 0b1000000000000000000000
+	// RegexNewlineCrlf: usually any newline character or character sequence is
+	// recognized. If this option is set, the only recognized newline character
+	// sequence is '\r\n'.
+	RegexNewlineCrlf RegexCompileFlags = 0b1100000000000000000000
+	// RegexNewlineAnycrlf: usually any newline character or character sequence
+	// is recognized. If this option is set, the only recognized newline
+	// character sequences are '\r', '\n', and '\r\n'. Since: 2.34
+	RegexNewlineAnycrlf RegexCompileFlags = 0b10100000000000000000000
+	// RegexBsrAnycrlf: usually any newline character or character sequence is
+	// recognised. If this option is set, then "\R" only recognizes the newline
+	// characters '\r', '\n' and '\r\n'. Since: 2.34
+	RegexBsrAnycrlf RegexCompileFlags = 0b100000000000000000000000
+	// RegexJavascriptCompat changes behaviour so that it is compatible with
+	// JavaScript rather than PCRE. Since: 2.34
+	RegexJavascriptCompat RegexCompileFlags = 0b10000000000000000000000000
 )
+
+// String returns the names in string for RegexCompileFlags.
+func (r RegexCompileFlags) String() string {
+	if r == 0 {
+		return "RegexCompileFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(277)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case RegexCaseless:
+			builder.WriteString("Caseless|")
+		case RegexMultiline:
+			builder.WriteString("Multiline|")
+		case RegexDotall:
+			builder.WriteString("Dotall|")
+		case RegexExtended:
+			builder.WriteString("Extended|")
+		case RegexAnchored:
+			builder.WriteString("Anchored|")
+		case RegexDollarEndonly:
+			builder.WriteString("DollarEndonly|")
+		case RegexUngreedy:
+			builder.WriteString("Ungreedy|")
+		case RegexRaw:
+			builder.WriteString("Raw|")
+		case RegexNoAutoCapture:
+			builder.WriteString("NoAutoCapture|")
+		case RegexOptimize:
+			builder.WriteString("Optimize|")
+		case RegexFirstline:
+			builder.WriteString("Firstline|")
+		case RegexDupnames:
+			builder.WriteString("Dupnames|")
+		case RegexNewlineCr:
+			builder.WriteString("NewlineCr|")
+		case RegexNewlineLf:
+			builder.WriteString("NewlineLf|")
+		case RegexNewlineCrlf:
+			builder.WriteString("NewlineCrlf|")
+		case RegexNewlineAnycrlf:
+			builder.WriteString("NewlineAnycrlf|")
+		case RegexBsrAnycrlf:
+			builder.WriteString("BsrAnycrlf|")
+		case RegexJavascriptCompat:
+			builder.WriteString("JavascriptCompat|")
+		default:
+			builder.WriteString(fmt.Sprintf("RegexCompileFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // RegexMatchFlags flags specifying match-time options.
 type RegexMatchFlags int
 
 const (
-	// RegexMatchFlagsAnchored: pattern is forced to be "anchored", that is, it
-	// is constrained to match only at the first matching point in the string
-	// that is being searched. This effect can also be achieved by appropriate
+	// RegexMatchAnchored: pattern is forced to be "anchored", that is, it is
+	// constrained to match only at the first matching point in the string that
+	// is being searched. This effect can also be achieved by appropriate
 	// constructs in the pattern itself such as the "^" metacharacter.
-	RegexMatchFlagsAnchored RegexMatchFlags = 0b10000
-	// RegexMatchFlagsNotbol specifies that first character of the string is not
-	// the beginning of a line, so the circumflex metacharacter should not match
+	RegexMatchAnchored RegexMatchFlags = 0b10000
+	// RegexMatchNotbol specifies that first character of the string is not the
+	// beginning of a line, so the circumflex metacharacter should not match
 	// before it. Setting this without REGEX_MULTILINE (at compile time) causes
 	// circumflex never to match. This option affects only the behaviour of the
 	// circumflex metacharacter, it does not affect "\A".
-	RegexMatchFlagsNotbol RegexMatchFlags = 0b10000000
-	// RegexMatchFlagsNoteol specifies that the end of the subject string is not
-	// the end of a line, so the dollar metacharacter should not match it nor
+	RegexMatchNotbol RegexMatchFlags = 0b10000000
+	// RegexMatchNoteol specifies that the end of the subject string is not the
+	// end of a line, so the dollar metacharacter should not match it nor
 	// (except in multiline mode) a newline immediately before it. Setting this
 	// without REGEX_MULTILINE (at compile time) causes dollar never to match.
 	// This option affects only the behaviour of the dollar metacharacter, it
 	// does not affect "\Z" or "\z".
-	RegexMatchFlagsNoteol RegexMatchFlags = 0b100000000
-	// RegexMatchFlagsNotempty: empty string is not considered to be a valid
-	// match if this option is set. If there are alternatives in the pattern,
-	// they are tried. If all the alternatives match the empty string, the
-	// entire match fails. For example, if the pattern "a?b?" is applied to a
-	// string not beginning with "a" or "b", it matches the empty string at the
-	// start of the string. With this flag set, this match is not valid, so
-	// GRegex searches further into the string for occurrences of "a" or "b".
-	RegexMatchFlagsNotempty RegexMatchFlags = 0b10000000000
-	// RegexMatchFlagsPartial turns on the partial matching feature, for more
+	RegexMatchNoteol RegexMatchFlags = 0b100000000
+	// RegexMatchNotempty: empty string is not considered to be a valid match if
+	// this option is set. If there are alternatives in the pattern, they are
+	// tried. If all the alternatives match the empty string, the entire match
+	// fails. For example, if the pattern "a?b?" is applied to a string not
+	// beginning with "a" or "b", it matches the empty string at the start of
+	// the string. With this flag set, this match is not valid, so GRegex
+	// searches further into the string for occurrences of "a" or "b".
+	RegexMatchNotempty RegexMatchFlags = 0b10000000000
+	// RegexMatchPartial turns on the partial matching feature, for more
 	// documentation on partial matching see g_match_info_is_partial_match().
-	RegexMatchFlagsPartial RegexMatchFlags = 0b1000000000000000
-	// RegexMatchFlagsNewlineCr overrides the newline definition set when
-	// creating a new #GRegex, setting the '\r' character as line terminator.
-	RegexMatchFlagsNewlineCr RegexMatchFlags = 0b100000000000000000000
-	// RegexMatchFlagsNewlineLf overrides the newline definition set when
-	// creating a new #GRegex, setting the '\n' character as line terminator.
-	RegexMatchFlagsNewlineLf RegexMatchFlags = 0b1000000000000000000000
-	// RegexMatchFlagsNewlineCrlf overrides the newline definition set when
-	// creating a new #GRegex, setting the '\r\n' characters sequence as line
-	// terminator.
-	RegexMatchFlagsNewlineCrlf RegexMatchFlags = 0b1100000000000000000000
-	// RegexMatchFlagsNewlineAny overrides the newline definition set when
-	// creating a new #GRegex, any Unicode newline sequence is recognised as a
-	// newline. These are '\r', '\n' and '\rn', and the single characters U+000B
-	// LINE TABULATION, U+000C FORM FEED (FF), U+0085 NEXT LINE (NEL), U+2028
-	// LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR.
-	RegexMatchFlagsNewlineAny RegexMatchFlags = 0b10000000000000000000000
-	// RegexMatchFlagsNewlineAnycrlf overrides the newline definition set when
+	RegexMatchPartial RegexMatchFlags = 0b1000000000000000
+	// RegexMatchNewlineCr overrides the newline definition set when creating a
+	// new #GRegex, setting the '\r' character as line terminator.
+	RegexMatchNewlineCr RegexMatchFlags = 0b100000000000000000000
+	// RegexMatchNewlineLf overrides the newline definition set when creating a
+	// new #GRegex, setting the '\n' character as line terminator.
+	RegexMatchNewlineLf RegexMatchFlags = 0b1000000000000000000000
+	// RegexMatchNewlineCrlf overrides the newline definition set when creating
+	// a new #GRegex, setting the '\r\n' characters sequence as line terminator.
+	RegexMatchNewlineCrlf RegexMatchFlags = 0b1100000000000000000000
+	// RegexMatchNewlineAny overrides the newline definition set when creating a
+	// new #GRegex, any Unicode newline sequence is recognised as a newline.
+	// These are '\r', '\n' and '\rn', and the single characters U+000B LINE
+	// TABULATION, U+000C FORM FEED (FF), U+0085 NEXT LINE (NEL), U+2028 LINE
+	// SEPARATOR and U+2029 PARAGRAPH SEPARATOR.
+	RegexMatchNewlineAny RegexMatchFlags = 0b10000000000000000000000
+	// RegexMatchNewlineAnycrlf overrides the newline definition set when
 	// creating a new #GRegex; any '\r', '\n', or '\r\n' character sequence is
 	// recognized as a newline. Since: 2.34
-	RegexMatchFlagsNewlineAnycrlf RegexMatchFlags = 0b10100000000000000000000
-	// RegexMatchFlagsBsrAnycrlf overrides the newline definition for "\R" set
-	// when creating a new #GRegex; only '\r', '\n', or '\r\n' character
-	// sequences are recognized as a newline by "\R". Since: 2.34
-	RegexMatchFlagsBsrAnycrlf RegexMatchFlags = 0b100000000000000000000000
-	// RegexMatchFlagsBsrAny overrides the newline definition for "\R" set when
+	RegexMatchNewlineAnycrlf RegexMatchFlags = 0b10100000000000000000000
+	// RegexMatchBsrAnycrlf overrides the newline definition for "\R" set when
+	// creating a new #GRegex; only '\r', '\n', or '\r\n' character sequences
+	// are recognized as a newline by "\R". Since: 2.34
+	RegexMatchBsrAnycrlf RegexMatchFlags = 0b100000000000000000000000
+	// RegexMatchBsrAny overrides the newline definition for "\R" set when
 	// creating a new #GRegex; any Unicode newline character or character
 	// sequence are recognized as a newline by "\R". These are '\r', '\n' and
 	// '\rn', and the single characters U+000B LINE TABULATION, U+000C FORM FEED
 	// (FF), U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and U+2029 PARAGRAPH
 	// SEPARATOR. Since: 2.34
-	RegexMatchFlagsBsrAny RegexMatchFlags = 0b1000000000000000000000000
-	// RegexMatchFlagsPartialSoft alias for REGEX_MATCH_PARTIAL. Since: 2.34
-	RegexMatchFlagsPartialSoft RegexMatchFlags = 0b1000000000000000
-	// RegexMatchFlagsPartialHard turns on the partial matching feature. In
-	// contrast to to REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a
-	// partial match is found, without continuing to search for a possible
-	// complete match. See g_match_info_is_partial_match() for more information.
-	// Since: 2.34
-	RegexMatchFlagsPartialHard RegexMatchFlags = 0b1000000000000000000000000000
-	// RegexMatchFlagsNotemptyAtstart: like REGEX_MATCH_NOTEMPTY, but only
-	// applied to the start of the matched string. For anchored patterns this
-	// can only happen for pattern containing "\K". Since: 2.34
-	RegexMatchFlagsNotemptyAtstart RegexMatchFlags = 0b10000000000000000000000000000
+	RegexMatchBsrAny RegexMatchFlags = 0b1000000000000000000000000
+	// RegexMatchPartialSoft alias for REGEX_MATCH_PARTIAL. Since: 2.34
+	RegexMatchPartialSoft RegexMatchFlags = 0b1000000000000000
+	// RegexMatchPartialHard turns on the partial matching feature. In contrast
+	// to to REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial
+	// match is found, without continuing to search for a possible complete
+	// match. See g_match_info_is_partial_match() for more information. Since:
+	// 2.34
+	RegexMatchPartialHard RegexMatchFlags = 0b1000000000000000000000000000
+	// RegexMatchNotemptyAtstart: like REGEX_MATCH_NOTEMPTY, but only applied to
+	// the start of the matched string. For anchored patterns this can only
+	// happen for pattern containing "\K". Since: 2.34
+	RegexMatchNotemptyAtstart RegexMatchFlags = 0b10000000000000000000000000000
 )
+
+// String returns the names in string for RegexMatchFlags.
+func (r RegexMatchFlags) String() string {
+	if r == 0 {
+		return "RegexMatchFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(305)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case RegexMatchAnchored:
+			builder.WriteString("Anchored|")
+		case RegexMatchNotbol:
+			builder.WriteString("Notbol|")
+		case RegexMatchNoteol:
+			builder.WriteString("Noteol|")
+		case RegexMatchNotempty:
+			builder.WriteString("Notempty|")
+		case RegexMatchPartial:
+			builder.WriteString("Partial|")
+		case RegexMatchNewlineCr:
+			builder.WriteString("NewlineCr|")
+		case RegexMatchNewlineLf:
+			builder.WriteString("NewlineLf|")
+		case RegexMatchNewlineCrlf:
+			builder.WriteString("NewlineCrlf|")
+		case RegexMatchNewlineAny:
+			builder.WriteString("NewlineAny|")
+		case RegexMatchNewlineAnycrlf:
+			builder.WriteString("NewlineAnycrlf|")
+		case RegexMatchBsrAnycrlf:
+			builder.WriteString("BsrAnycrlf|")
+		case RegexMatchBsrAny:
+			builder.WriteString("BsrAny|")
+		case RegexMatchPartialHard:
+			builder.WriteString("PartialHard|")
+		case RegexMatchNotemptyAtstart:
+			builder.WriteString("NotemptyAtstart|")
+		default:
+			builder.WriteString(fmt.Sprintf("RegexMatchFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
 
 // MatchInfo is an opaque struct used to return information about matches.
 type MatchInfo struct {

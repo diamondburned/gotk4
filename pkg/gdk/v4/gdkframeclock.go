@@ -3,7 +3,9 @@
 package gdk
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -55,6 +57,46 @@ const (
 
 func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 	return FrameClockPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for FrameClockPhase.
+func (f FrameClockPhase) String() string {
+	if f == 0 {
+		return "FrameClockPhase(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(192)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FrameClockPhaseNone:
+			builder.WriteString("None|")
+		case FrameClockPhaseFlushEvents:
+			builder.WriteString("FlushEvents|")
+		case FrameClockPhaseBeforePaint:
+			builder.WriteString("BeforePaint|")
+		case FrameClockPhaseUpdate:
+			builder.WriteString("Update|")
+		case FrameClockPhaseLayout:
+			builder.WriteString("Layout|")
+		case FrameClockPhasePaint:
+			builder.WriteString("Paint|")
+		case FrameClockPhaseResumeEvents:
+			builder.WriteString("ResumeEvents|")
+		case FrameClockPhaseAfterPaint:
+			builder.WriteString("AfterPaint|")
+		default:
+			builder.WriteString(fmt.Sprintf("FrameClockPhase(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // FrameClock: GdkFrameClock tells the application when to update and repaint a

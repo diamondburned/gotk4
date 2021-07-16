@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -28,12 +29,22 @@ func init() {
 type TabAlign int
 
 const (
-	// Left: tab stop appears to the left of the text.
-	TabAlignLeft TabAlign = iota
+	// TabLeft: tab stop appears to the left of the text.
+	TabLeft TabAlign = iota
 )
 
 func marshalTabAlign(p uintptr) (interface{}, error) {
 	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for TabAlign.
+func (t TabAlign) String() string {
+	switch t {
+	case TabLeft:
+		return "Left"
+	default:
+		return fmt.Sprintf("TabAlign(%d)", t)
+	}
 }
 
 // TabArray: PangoTabArray contains an array of tab stops.

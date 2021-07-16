@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -32,30 +34,58 @@ func init() {
 type MovementStep int
 
 const (
-	// LogicalPositions: move forward or back by graphemes
-	MovementStepLogicalPositions MovementStep = iota
-	// VisualPositions: move left or right by graphemes
-	MovementStepVisualPositions
-	// Words: move forward or back by words
-	MovementStepWords
-	// DisplayLines: move up or down lines (wrapped lines)
-	MovementStepDisplayLines
-	// DisplayLineEnds: move to either end of a line
-	MovementStepDisplayLineEnds
-	// Paragraphs: move up or down paragraphs (newline-ended lines)
-	MovementStepParagraphs
-	// ParagraphEnds: move to either end of a paragraph
-	MovementStepParagraphEnds
-	// Pages: move by pages
-	MovementStepPages
-	// BufferEnds: move to ends of the buffer
-	MovementStepBufferEnds
-	// HorizontalPages: move horizontally by pages
-	MovementStepHorizontalPages
+	// MovementLogicalPositions: move forward or back by graphemes
+	MovementLogicalPositions MovementStep = iota
+	// MovementVisualPositions: move left or right by graphemes
+	MovementVisualPositions
+	// MovementWords: move forward or back by words
+	MovementWords
+	// MovementDisplayLines: move up or down lines (wrapped lines)
+	MovementDisplayLines
+	// MovementDisplayLineEnds: move to either end of a line
+	MovementDisplayLineEnds
+	// MovementParagraphs: move up or down paragraphs (newline-ended lines)
+	MovementParagraphs
+	// MovementParagraphEnds: move to either end of a paragraph
+	MovementParagraphEnds
+	// MovementPages: move by pages
+	MovementPages
+	// MovementBufferEnds: move to ends of the buffer
+	MovementBufferEnds
+	// MovementHorizontalPages: move horizontally by pages
+	MovementHorizontalPages
 )
 
 func marshalMovementStep(p uintptr) (interface{}, error) {
 	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for MovementStep.
+func (m MovementStep) String() string {
+	switch m {
+	case MovementLogicalPositions:
+		return "LogicalPositions"
+	case MovementVisualPositions:
+		return "VisualPositions"
+	case MovementWords:
+		return "Words"
+	case MovementDisplayLines:
+		return "DisplayLines"
+	case MovementDisplayLineEnds:
+		return "DisplayLineEnds"
+	case MovementParagraphs:
+		return "Paragraphs"
+	case MovementParagraphEnds:
+		return "ParagraphEnds"
+	case MovementPages:
+		return "Pages"
+	case MovementBufferEnds:
+		return "BufferEnds"
+	case MovementHorizontalPages:
+		return "HorizontalPages"
+	default:
+		return fmt.Sprintf("MovementStep(%d)", m)
+	}
 }
 
 type NotebookTab int
@@ -69,71 +99,185 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for NotebookTab.
+func (n NotebookTab) String() string {
+	switch n {
+	case NotebookTabFirst:
+		return "First"
+	case NotebookTabLast:
+		return "Last"
+	default:
+		return fmt.Sprintf("NotebookTab(%d)", n)
+	}
+}
+
 type ResizeMode int
 
 const (
-	// Parent pass resize request to the parent
-	ResizeModeParent ResizeMode = iota
-	// Queue: queue resizes on this widget
-	ResizeModeQueue
-	// Immediate: resize immediately. Deprecated.
-	ResizeModeImmediate
+	// ResizeParent pass resize request to the parent
+	ResizeParent ResizeMode = iota
+	// ResizeQueue: queue resizes on this widget
+	ResizeQueue
+	// ResizeImmediate: resize immediately. Deprecated.
+	ResizeImmediate
 )
 
 func marshalResizeMode(p uintptr) (interface{}, error) {
 	return ResizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ResizeMode.
+func (r ResizeMode) String() string {
+	switch r {
+	case ResizeParent:
+		return "Parent"
+	case ResizeQueue:
+		return "Queue"
+	case ResizeImmediate:
+		return "Immediate"
+	default:
+		return fmt.Sprintf("ResizeMode(%d)", r)
+	}
+}
+
 type ScrollStep int
 
 const (
-	// Steps: scroll in steps.
-	ScrollStepSteps ScrollStep = iota
-	// Pages: scroll by pages.
-	ScrollStepPages
-	// Ends: scroll to ends.
-	ScrollStepEnds
-	// HorizontalSteps: scroll in horizontal steps.
-	ScrollStepHorizontalSteps
-	// HorizontalPages: scroll by horizontal pages.
-	ScrollStepHorizontalPages
-	// HorizontalEnds: scroll to the horizontal ends.
-	ScrollStepHorizontalEnds
+	// ScrollSteps: scroll in steps.
+	ScrollSteps ScrollStep = iota
+	// ScrollPages: scroll by pages.
+	ScrollPages
+	// ScrollEnds: scroll to ends.
+	ScrollEnds
+	// ScrollHorizontalSteps: scroll in horizontal steps.
+	ScrollHorizontalSteps
+	// ScrollHorizontalPages: scroll by horizontal pages.
+	ScrollHorizontalPages
+	// ScrollHorizontalEnds: scroll to the horizontal ends.
+	ScrollHorizontalEnds
 )
 
 func marshalScrollStep(p uintptr) (interface{}, error) {
 	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for ScrollStep.
+func (s ScrollStep) String() string {
+	switch s {
+	case ScrollSteps:
+		return "Steps"
+	case ScrollPages:
+		return "Pages"
+	case ScrollEnds:
+		return "Ends"
+	case ScrollHorizontalSteps:
+		return "HorizontalSteps"
+	case ScrollHorizontalPages:
+		return "HorizontalPages"
+	case ScrollHorizontalEnds:
+		return "HorizontalEnds"
+	default:
+		return fmt.Sprintf("ScrollStep(%d)", s)
+	}
+}
+
 type DebugFlag int
 
 const (
-	DebugFlagMisc         DebugFlag = 0b1
-	DebugFlagPlugsocket   DebugFlag = 0b10
-	DebugFlagText         DebugFlag = 0b100
-	DebugFlagTree         DebugFlag = 0b1000
-	DebugFlagUpdates      DebugFlag = 0b10000
-	DebugFlagKeybindings  DebugFlag = 0b100000
-	DebugFlagMultihead    DebugFlag = 0b1000000
-	DebugFlagModules      DebugFlag = 0b10000000
-	DebugFlagGeometry     DebugFlag = 0b100000000
-	DebugFlagIcontheme    DebugFlag = 0b1000000000
-	DebugFlagPrinting     DebugFlag = 0b10000000000
-	DebugFlagBuilder      DebugFlag = 0b100000000000
-	DebugFlagSizeRequest  DebugFlag = 0b1000000000000
-	DebugFlagNoCSSCache   DebugFlag = 0b10000000000000
-	DebugFlagBaselines    DebugFlag = 0b100000000000000
-	DebugFlagPixelCache   DebugFlag = 0b1000000000000000
-	DebugFlagNoPixelCache DebugFlag = 0b10000000000000000
-	DebugFlagInteractive  DebugFlag = 0b100000000000000000
-	DebugFlagTouchscreen  DebugFlag = 0b1000000000000000000
-	DebugFlagActions      DebugFlag = 0b10000000000000000000
-	DebugFlagResize       DebugFlag = 0b100000000000000000000
-	DebugFlagLayout       DebugFlag = 0b1000000000000000000000
+	DebugMisc         DebugFlag = 0b1
+	DebugPlugsocket   DebugFlag = 0b10
+	DebugText         DebugFlag = 0b100
+	DebugTree         DebugFlag = 0b1000
+	DebugUpdates      DebugFlag = 0b10000
+	DebugKeybindings  DebugFlag = 0b100000
+	DebugMultihead    DebugFlag = 0b1000000
+	DebugModules      DebugFlag = 0b10000000
+	DebugGeometry     DebugFlag = 0b100000000
+	DebugIcontheme    DebugFlag = 0b1000000000
+	DebugPrinting     DebugFlag = 0b10000000000
+	DebugBuilder      DebugFlag = 0b100000000000
+	DebugSizeRequest  DebugFlag = 0b1000000000000
+	DebugNoCSSCache   DebugFlag = 0b10000000000000
+	DebugBaselines    DebugFlag = 0b100000000000000
+	DebugPixelCache   DebugFlag = 0b1000000000000000
+	DebugNoPixelCache DebugFlag = 0b10000000000000000
+	DebugInteractive  DebugFlag = 0b100000000000000000
+	DebugTouchscreen  DebugFlag = 0b1000000000000000000
+	DebugActions      DebugFlag = 0b10000000000000000000
+	DebugResize       DebugFlag = 0b100000000000000000000
+	DebugLayout       DebugFlag = 0b1000000000000000000000
 )
 
 func marshalDebugFlag(p uintptr) (interface{}, error) {
 	return DebugFlag(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for DebugFlag.
+func (d DebugFlag) String() string {
+	if d == 0 {
+		return "DebugFlag(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(312)
+
+	for d != 0 {
+		next := d & (d - 1)
+		bit := d - next
+
+		switch bit {
+		case DebugMisc:
+			builder.WriteString("Misc|")
+		case DebugPlugsocket:
+			builder.WriteString("Plugsocket|")
+		case DebugText:
+			builder.WriteString("Text|")
+		case DebugTree:
+			builder.WriteString("Tree|")
+		case DebugUpdates:
+			builder.WriteString("Updates|")
+		case DebugKeybindings:
+			builder.WriteString("Keybindings|")
+		case DebugMultihead:
+			builder.WriteString("Multihead|")
+		case DebugModules:
+			builder.WriteString("Modules|")
+		case DebugGeometry:
+			builder.WriteString("Geometry|")
+		case DebugIcontheme:
+			builder.WriteString("Icontheme|")
+		case DebugPrinting:
+			builder.WriteString("Printing|")
+		case DebugBuilder:
+			builder.WriteString("Builder|")
+		case DebugSizeRequest:
+			builder.WriteString("SizeRequest|")
+		case DebugNoCSSCache:
+			builder.WriteString("NoCSSCache|")
+		case DebugBaselines:
+			builder.WriteString("Baselines|")
+		case DebugPixelCache:
+			builder.WriteString("PixelCache|")
+		case DebugNoPixelCache:
+			builder.WriteString("NoPixelCache|")
+		case DebugInteractive:
+			builder.WriteString("Interactive|")
+		case DebugTouchscreen:
+			builder.WriteString("Touchscreen|")
+		case DebugActions:
+			builder.WriteString("Actions|")
+		case DebugResize:
+			builder.WriteString("Resize|")
+		case DebugLayout:
+			builder.WriteString("Layout|")
+		default:
+			builder.WriteString(fmt.Sprintf("DebugFlag(0b%b)|", bit))
+		}
+
+		d = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 type EntryIconAccessible struct {

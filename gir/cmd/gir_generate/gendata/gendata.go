@@ -77,6 +77,10 @@ var Preprocessors = []Preprocessor{
 	TypeRenamer("GLib-2.file_test", "test_file"),
 	// This collides with Native().
 	TypeRenamer("Gtk-4.Native", "NativeSurface"),
+	// These collide with structs of the same names.
+	RenameEnumMembers("Pango-1.AttrType", "ATTR_(.*)", "ATTR_TYPE_$1"),
+	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),
+	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
 
 	// Fix incorrect parameter direction.
 	// ModifyCallable("Gio-2.DBusInterfaceGetPropertyFunc",

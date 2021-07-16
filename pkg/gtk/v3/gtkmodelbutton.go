@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -29,16 +30,30 @@ func init() {
 type ButtonRole int
 
 const (
-	// Normal: plain button
+	// ButtonRoleNormal: plain button
 	ButtonRoleNormal ButtonRole = iota
-	// Check button
+	// ButtonRoleCheck button
 	ButtonRoleCheck
-	// Radio button
+	// ButtonRoleRadio button
 	ButtonRoleRadio
 )
 
 func marshalButtonRole(p uintptr) (interface{}, error) {
 	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ButtonRole.
+func (b ButtonRole) String() string {
+	switch b {
+	case ButtonRoleNormal:
+		return "Normal"
+	case ButtonRoleCheck:
+		return "Check"
+	case ButtonRoleRadio:
+		return "Radio"
+	default:
+		return fmt.Sprintf("ButtonRole(%d)", b)
+	}
 }
 
 // ModelButton is a button class that can use a #GAction as its model. In

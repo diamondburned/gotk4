@@ -3,7 +3,9 @@
 package pango
 
 import (
+	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -36,23 +38,23 @@ func init() {
 type Stretch int
 
 const (
-	// UltraCondensed: ultra condensed width
+	// StretchUltraCondensed: ultra condensed width
 	StretchUltraCondensed Stretch = iota
-	// ExtraCondensed: extra condensed width
+	// StretchExtraCondensed: extra condensed width
 	StretchExtraCondensed
-	// Condensed width
+	// StretchCondensed width
 	StretchCondensed
-	// SemiCondensed: semi condensed width
+	// StretchSemiCondensed: semi condensed width
 	StretchSemiCondensed
-	// Normal width
+	// StretchNormal width
 	StretchNormal
-	// SemiExpanded: semi expanded width
+	// StretchSemiExpanded: semi expanded width
 	StretchSemiExpanded
-	// Expanded width
+	// StretchExpanded width
 	StretchExpanded
-	// ExtraExpanded: extra expanded width
+	// StretchExtraExpanded: extra expanded width
 	StretchExtraExpanded
-	// UltraExpanded: ultra expanded width
+	// StretchUltraExpanded: ultra expanded width
 	StretchUltraExpanded
 )
 
@@ -60,15 +62,41 @@ func marshalStretch(p uintptr) (interface{}, error) {
 	return Stretch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Stretch.
+func (s Stretch) String() string {
+	switch s {
+	case StretchUltraCondensed:
+		return "UltraCondensed"
+	case StretchExtraCondensed:
+		return "ExtraCondensed"
+	case StretchCondensed:
+		return "Condensed"
+	case StretchSemiCondensed:
+		return "SemiCondensed"
+	case StretchNormal:
+		return "Normal"
+	case StretchSemiExpanded:
+		return "SemiExpanded"
+	case StretchExpanded:
+		return "Expanded"
+	case StretchExtraExpanded:
+		return "ExtraExpanded"
+	case StretchUltraExpanded:
+		return "UltraExpanded"
+	default:
+		return fmt.Sprintf("Stretch(%d)", s)
+	}
+}
+
 // Style: enumeration specifying the various slant styles possible for a font.
 type Style int
 
 const (
-	// Normal: font is upright.
+	// StyleNormal: font is upright.
 	StyleNormal Style = iota
-	// Oblique: font is slanted, but in a roman style.
+	// StyleOblique: font is slanted, but in a roman style.
 	StyleOblique
-	// Italic: font is slanted in an italic style.
+	// StyleItalic: font is slanted in an italic style.
 	StyleItalic
 )
 
@@ -76,19 +104,45 @@ func marshalStyle(p uintptr) (interface{}, error) {
 	return Style(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for Style.
+func (s Style) String() string {
+	switch s {
+	case StyleNormal:
+		return "Normal"
+	case StyleOblique:
+		return "Oblique"
+	case StyleItalic:
+		return "Italic"
+	default:
+		return fmt.Sprintf("Style(%d)", s)
+	}
+}
+
 // Variant: enumeration specifying capitalization variant of the font.
 type Variant int
 
 const (
-	// Normal font.
+	// VariantNormal font.
 	VariantNormal Variant = iota
-	// SmallCaps: font with the lower case characters replaced by smaller
+	// VariantSmallCaps: font with the lower case characters replaced by smaller
 	// variants of the capital characters.
 	VariantSmallCaps
 )
 
 func marshalVariant(p uintptr) (interface{}, error) {
 	return Variant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Variant.
+func (v Variant) String() string {
+	switch v {
+	case VariantNormal:
+		return "Normal"
+	case VariantSmallCaps:
+		return "SmallCaps"
+	default:
+		return fmt.Sprintf("Variant(%d)", v)
+	}
 }
 
 // Weight: enumeration specifying the weight (boldness) of a font.
@@ -98,34 +152,66 @@ func marshalVariant(p uintptr) (interface{}, error) {
 type Weight int
 
 const (
-	// Thin weight (= 100; Since: 1.24)
+	// WeightThin weight (= 100; Since: 1.24)
 	WeightThin Weight = 100
-	// Ultralight weight (= 200)
+	// WeightUltralight weight (= 200)
 	WeightUltralight Weight = 200
-	// Light weight (= 300)
+	// WeightLight weight (= 300)
 	WeightLight Weight = 300
-	// Semilight weight (= 350; Since: 1.36.7)
+	// WeightSemilight weight (= 350; Since: 1.36.7)
 	WeightSemilight Weight = 350
-	// Book weight (= 380; Since: 1.24)
+	// WeightBook weight (= 380; Since: 1.24)
 	WeightBook Weight = 380
-	// Normal: default weight (= 400)
+	// WeightNormal: default weight (= 400)
 	WeightNormal Weight = 400
-	// Medium: normal weight (= 500; Since: 1.24)
+	// WeightMedium: normal weight (= 500; Since: 1.24)
 	WeightMedium Weight = 500
-	// Semibold weight (= 600)
+	// WeightSemibold weight (= 600)
 	WeightSemibold Weight = 600
-	// Bold weight (= 700)
+	// WeightBold weight (= 700)
 	WeightBold Weight = 700
-	// Ultrabold weight (= 800)
+	// WeightUltrabold weight (= 800)
 	WeightUltrabold Weight = 800
-	// Heavy weight (= 900)
+	// WeightHeavy weight (= 900)
 	WeightHeavy Weight = 900
-	// Ultraheavy weight (= 1000; Since: 1.24)
+	// WeightUltraheavy weight (= 1000; Since: 1.24)
 	WeightUltraheavy Weight = 1000
 )
 
 func marshalWeight(p uintptr) (interface{}, error) {
 	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for Weight.
+func (w Weight) String() string {
+	switch w {
+	case WeightThin:
+		return "Thin"
+	case WeightUltralight:
+		return "Ultralight"
+	case WeightLight:
+		return "Light"
+	case WeightSemilight:
+		return "Semilight"
+	case WeightBook:
+		return "Book"
+	case WeightNormal:
+		return "Normal"
+	case WeightMedium:
+		return "Medium"
+	case WeightSemibold:
+		return "Semibold"
+	case WeightBold:
+		return "Bold"
+	case WeightUltrabold:
+		return "Ultrabold"
+	case WeightHeavy:
+		return "Heavy"
+	case WeightUltraheavy:
+		return "Ultraheavy"
+	default:
+		return fmt.Sprintf("Weight(%d)", w)
+	}
 }
 
 // FontMask bits in a PangoFontMask correspond to the set fields in a
@@ -153,6 +239,46 @@ const (
 
 func marshalFontMask(p uintptr) (interface{}, error) {
 	return FontMask(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for FontMask.
+func (f FontMask) String() string {
+	if f == 0 {
+		return "FontMask(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(123)
+
+	for f != 0 {
+		next := f & (f - 1)
+		bit := f - next
+
+		switch bit {
+		case FontMaskFamily:
+			builder.WriteString("Family|")
+		case FontMaskStyle:
+			builder.WriteString("Style|")
+		case FontMaskVariant:
+			builder.WriteString("Variant|")
+		case FontMaskWeight:
+			builder.WriteString("Weight|")
+		case FontMaskStretch:
+			builder.WriteString("Stretch|")
+		case FontMaskSize:
+			builder.WriteString("Size|")
+		case FontMaskGravity:
+			builder.WriteString("Gravity|")
+		case FontMaskVariations:
+			builder.WriteString("Variations|")
+		default:
+			builder.WriteString(fmt.Sprintf("FontMask(0b%b)|", bit))
+		}
+
+		f = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // FontOverrider contains methods that are overridable.

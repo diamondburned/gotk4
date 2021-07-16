@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -46,25 +48,54 @@ func init() {
 type PlacesOpenFlags int
 
 const (
-	// PlacesOpenFlagsNormal: this is the default mode that PlacesSidebar uses
-	// if no other flags are specified. It indicates that the calling
-	// application should open the selected location in the normal way, for
-	// example, in the folder view beside the sidebar.
-	PlacesOpenFlagsNormal PlacesOpenFlags = 0b1
-	// PlacesOpenFlagsNewTab: when passed to
-	// gtk_places_sidebar_set_open_flags(), this indicates that the application
-	// can open folders selected from the sidebar in new tabs. This value will
-	// be passed to the PlacesSidebar::open-location signal when the user
-	// selects that a location be opened in a new tab instead of in the standard
-	// fashion.
-	PlacesOpenFlagsNewTab PlacesOpenFlags = 0b10
-	// PlacesOpenFlagsNewWindow: similar to GTK_PLACES_OPEN_NEW_TAB, but
-	// indicates that the application can open folders in new windows.
-	PlacesOpenFlagsNewWindow PlacesOpenFlags = 0b100
+	// PlacesOpenNormal: this is the default mode that PlacesSidebar uses if no
+	// other flags are specified. It indicates that the calling application
+	// should open the selected location in the normal way, for example, in the
+	// folder view beside the sidebar.
+	PlacesOpenNormal PlacesOpenFlags = 0b1
+	// PlacesOpenNewTab: when passed to gtk_places_sidebar_set_open_flags(),
+	// this indicates that the application can open folders selected from the
+	// sidebar in new tabs. This value will be passed to the
+	// PlacesSidebar::open-location signal when the user selects that a location
+	// be opened in a new tab instead of in the standard fashion.
+	PlacesOpenNewTab PlacesOpenFlags = 0b10
+	// PlacesOpenNewWindow: similar to GTK_PLACES_OPEN_NEW_TAB, but indicates
+	// that the application can open folders in new windows.
+	PlacesOpenNewWindow PlacesOpenFlags = 0b100
 )
 
 func marshalPlacesOpenFlags(p uintptr) (interface{}, error) {
 	return PlacesOpenFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for PlacesOpenFlags.
+func (p PlacesOpenFlags) String() string {
+	if p == 0 {
+		return "PlacesOpenFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(53)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PlacesOpenNormal:
+			builder.WriteString("Normal|")
+		case PlacesOpenNewTab:
+			builder.WriteString("NewTab|")
+		case PlacesOpenNewWindow:
+			builder.WriteString("NewWindow|")
+		default:
+			builder.WriteString(fmt.Sprintf("PlacesOpenFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // PlacesSidebar is a widget that displays a list of frequently-used places in

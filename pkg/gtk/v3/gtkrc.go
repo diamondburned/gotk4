@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"fmt"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -36,22 +38,42 @@ func init() {
 type PathPriorityType int
 
 const (
-	// Lowest: deprecated
-	PathPriorityTypeLowest PathPriorityType = 0
-	// GTK: deprecated
-	PathPriorityTypeGTK PathPriorityType = 4
-	// Application: deprecated
-	PathPriorityTypeApplication PathPriorityType = 8
-	// Theme: deprecated
-	PathPriorityTypeTheme PathPriorityType = 10
-	// RC: deprecated
-	PathPriorityTypeRC PathPriorityType = 12
-	// Highest: deprecated
-	PathPriorityTypeHighest PathPriorityType = 15
+	// PathPrioLowest: deprecated
+	PathPrioLowest PathPriorityType = 0
+	// PathPrioGTK: deprecated
+	PathPrioGTK PathPriorityType = 4
+	// PathPrioApplication: deprecated
+	PathPrioApplication PathPriorityType = 8
+	// PathPrioTheme: deprecated
+	PathPrioTheme PathPriorityType = 10
+	// PathPrioRC: deprecated
+	PathPrioRC PathPriorityType = 12
+	// PathPrioHighest: deprecated
+	PathPrioHighest PathPriorityType = 15
 )
 
 func marshalPathPriorityType(p uintptr) (interface{}, error) {
 	return PathPriorityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PathPriorityType.
+func (p PathPriorityType) String() string {
+	switch p {
+	case PathPrioLowest:
+		return "Lowest"
+	case PathPrioGTK:
+		return "GTK"
+	case PathPrioApplication:
+		return "Application"
+	case PathPrioTheme:
+		return "Theme"
+	case PathPrioRC:
+		return "RC"
+	case PathPrioHighest:
+		return "Highest"
+	default:
+		return fmt.Sprintf("PathPriorityType(%d)", p)
+	}
 }
 
 // PathType: widget path types. See also gtk_binding_set_add_path().
@@ -60,16 +82,30 @@ func marshalPathPriorityType(p uintptr) (interface{}, error) {
 type PathType int
 
 const (
-	// Widget: deprecated
-	PathTypeWidget PathType = iota
-	// WidgetClass: deprecated
-	PathTypeWidgetClass
-	// Class: deprecated
-	PathTypeClass
+	// PathWidget: deprecated
+	PathWidget PathType = iota
+	// PathWidgetClass: deprecated
+	PathWidgetClass
+	// PathClass: deprecated
+	PathClass
 )
 
 func marshalPathType(p uintptr) (interface{}, error) {
 	return PathType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for PathType.
+func (p PathType) String() string {
+	switch p {
+	case PathWidget:
+		return "Widget"
+	case PathWidgetClass:
+		return "WidgetClass"
+	case PathClass:
+		return "Class"
+	default:
+		return fmt.Sprintf("PathType(%d)", p)
+	}
 }
 
 // RCTokenType enumeration represents the tokens in the RC file. It is exposed
@@ -80,108 +116,228 @@ func marshalPathType(p uintptr) (interface{}, error) {
 type RCTokenType int
 
 const (
-	// Invalid: deprecated
-	RCTokenTypeInvalid RCTokenType = 270
-	// Include: deprecated
-	RCTokenTypeInclude RCTokenType = 271
-	// Normal: deprecated
-	RCTokenTypeNormal RCTokenType = 272
-	// Active: deprecated
-	RCTokenTypeActive RCTokenType = 273
-	// Prelight: deprecated
-	RCTokenTypePrelight RCTokenType = 274
-	// Selected: deprecated
-	RCTokenTypeSelected RCTokenType = 275
-	// Insensitive: deprecated
-	RCTokenTypeInsensitive RCTokenType = 276
-	// Fg: deprecated
-	RCTokenTypeFg RCTokenType = 277
-	// Bg: deprecated
-	RCTokenTypeBg RCTokenType = 278
-	// Text: deprecated
-	RCTokenTypeText RCTokenType = 279
-	// Base: deprecated
-	RCTokenTypeBase RCTokenType = 280
-	// Xthickness: deprecated
-	RCTokenTypeXthickness RCTokenType = 281
-	// Ythickness: deprecated
-	RCTokenTypeYthickness RCTokenType = 282
-	// Font: deprecated
-	RCTokenTypeFont RCTokenType = 283
-	// Fontset: deprecated
-	RCTokenTypeFontset RCTokenType = 284
-	// FontName: deprecated
-	RCTokenTypeFontName RCTokenType = 285
-	// BgPixmap: deprecated
-	RCTokenTypeBgPixmap RCTokenType = 286
-	// PixmapPath: deprecated
-	RCTokenTypePixmapPath RCTokenType = 287
-	// Style: deprecated
-	RCTokenTypeStyle RCTokenType = 288
-	// Binding: deprecated
-	RCTokenTypeBinding RCTokenType = 289
-	// Bind: deprecated
-	RCTokenTypeBind RCTokenType = 290
-	// Widget: deprecated
-	RCTokenTypeWidget RCTokenType = 291
-	// WidgetClass: deprecated
-	RCTokenTypeWidgetClass RCTokenType = 292
-	// Class: deprecated
-	RCTokenTypeClass RCTokenType = 293
-	// Lowest: deprecated
-	RCTokenTypeLowest RCTokenType = 294
-	// GTK: deprecated
-	RCTokenTypeGTK RCTokenType = 295
-	// Application: deprecated
-	RCTokenTypeApplication RCTokenType = 296
-	// Theme: deprecated
-	RCTokenTypeTheme RCTokenType = 297
-	// RC: deprecated
-	RCTokenTypeRC RCTokenType = 298
-	// Highest: deprecated
-	RCTokenTypeHighest RCTokenType = 299
-	// Engine: deprecated
-	RCTokenTypeEngine RCTokenType = 300
-	// ModulePath: deprecated
-	RCTokenTypeModulePath RCTokenType = 301
-	// ImModulePath: deprecated
-	RCTokenTypeImModulePath RCTokenType = 302
-	// ImModuleFile: deprecated
-	RCTokenTypeImModuleFile RCTokenType = 303
-	// Stock: deprecated
-	RCTokenTypeStock RCTokenType = 304
-	// LTR: deprecated
-	RCTokenTypeLTR RCTokenType = 305
-	// RTL: deprecated
-	RCTokenTypeRTL RCTokenType = 306
-	// Color: deprecated
-	RCTokenTypeColor RCTokenType = 307
-	// Unbind: deprecated
-	RCTokenTypeUnbind RCTokenType = 308
-	// Last: deprecated
-	RCTokenTypeLast RCTokenType = 309
+	// RCTokenInvalid: deprecated
+	RCTokenInvalid RCTokenType = 270
+	// RCTokenInclude: deprecated
+	RCTokenInclude RCTokenType = 271
+	// RCTokenNormal: deprecated
+	RCTokenNormal RCTokenType = 272
+	// RCTokenActive: deprecated
+	RCTokenActive RCTokenType = 273
+	// RCTokenPrelight: deprecated
+	RCTokenPrelight RCTokenType = 274
+	// RCTokenSelected: deprecated
+	RCTokenSelected RCTokenType = 275
+	// RCTokenInsensitive: deprecated
+	RCTokenInsensitive RCTokenType = 276
+	// RCTokenFg: deprecated
+	RCTokenFg RCTokenType = 277
+	// RCTokenBg: deprecated
+	RCTokenBg RCTokenType = 278
+	// RCTokenText: deprecated
+	RCTokenText RCTokenType = 279
+	// RCTokenBase: deprecated
+	RCTokenBase RCTokenType = 280
+	// RCTokenXthickness: deprecated
+	RCTokenXthickness RCTokenType = 281
+	// RCTokenYthickness: deprecated
+	RCTokenYthickness RCTokenType = 282
+	// RCTokenFont: deprecated
+	RCTokenFont RCTokenType = 283
+	// RCTokenFontset: deprecated
+	RCTokenFontset RCTokenType = 284
+	// RCTokenFontName: deprecated
+	RCTokenFontName RCTokenType = 285
+	// RCTokenBgPixmap: deprecated
+	RCTokenBgPixmap RCTokenType = 286
+	// RCTokenPixmapPath: deprecated
+	RCTokenPixmapPath RCTokenType = 287
+	// RCTokenStyle: deprecated
+	RCTokenStyle RCTokenType = 288
+	// RCTokenBinding: deprecated
+	RCTokenBinding RCTokenType = 289
+	// RCTokenBind: deprecated
+	RCTokenBind RCTokenType = 290
+	// RCTokenWidget: deprecated
+	RCTokenWidget RCTokenType = 291
+	// RCTokenWidgetClass: deprecated
+	RCTokenWidgetClass RCTokenType = 292
+	// RCTokenClass: deprecated
+	RCTokenClass RCTokenType = 293
+	// RCTokenLowest: deprecated
+	RCTokenLowest RCTokenType = 294
+	// RCTokenGTK: deprecated
+	RCTokenGTK RCTokenType = 295
+	// RCTokenApplication: deprecated
+	RCTokenApplication RCTokenType = 296
+	// RCTokenTheme: deprecated
+	RCTokenTheme RCTokenType = 297
+	// RCTokenRC: deprecated
+	RCTokenRC RCTokenType = 298
+	// RCTokenHighest: deprecated
+	RCTokenHighest RCTokenType = 299
+	// RCTokenEngine: deprecated
+	RCTokenEngine RCTokenType = 300
+	// RCTokenModulePath: deprecated
+	RCTokenModulePath RCTokenType = 301
+	// RCTokenImModulePath: deprecated
+	RCTokenImModulePath RCTokenType = 302
+	// RCTokenImModuleFile: deprecated
+	RCTokenImModuleFile RCTokenType = 303
+	// RCTokenStock: deprecated
+	RCTokenStock RCTokenType = 304
+	// RCTokenLTR: deprecated
+	RCTokenLTR RCTokenType = 305
+	// RCTokenRTL: deprecated
+	RCTokenRTL RCTokenType = 306
+	// RCTokenColor: deprecated
+	RCTokenColor RCTokenType = 307
+	// RCTokenUnbind: deprecated
+	RCTokenUnbind RCTokenType = 308
+	// RCTokenLast: deprecated
+	RCTokenLast RCTokenType = 309
 )
 
 func marshalRCTokenType(p uintptr) (interface{}, error) {
 	return RCTokenType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// String returns the name in string for RCTokenType.
+func (r RCTokenType) String() string {
+	switch r {
+	case RCTokenInvalid:
+		return "Invalid"
+	case RCTokenInclude:
+		return "Include"
+	case RCTokenNormal:
+		return "Normal"
+	case RCTokenActive:
+		return "Active"
+	case RCTokenPrelight:
+		return "Prelight"
+	case RCTokenSelected:
+		return "Selected"
+	case RCTokenInsensitive:
+		return "Insensitive"
+	case RCTokenFg:
+		return "Fg"
+	case RCTokenBg:
+		return "Bg"
+	case RCTokenText:
+		return "Text"
+	case RCTokenBase:
+		return "Base"
+	case RCTokenXthickness:
+		return "Xthickness"
+	case RCTokenYthickness:
+		return "Ythickness"
+	case RCTokenFont:
+		return "Font"
+	case RCTokenFontset:
+		return "Fontset"
+	case RCTokenFontName:
+		return "FontName"
+	case RCTokenBgPixmap:
+		return "BgPixmap"
+	case RCTokenPixmapPath:
+		return "PixmapPath"
+	case RCTokenStyle:
+		return "Style"
+	case RCTokenBinding:
+		return "Binding"
+	case RCTokenBind:
+		return "Bind"
+	case RCTokenWidget:
+		return "Widget"
+	case RCTokenWidgetClass:
+		return "WidgetClass"
+	case RCTokenClass:
+		return "Class"
+	case RCTokenLowest:
+		return "Lowest"
+	case RCTokenGTK:
+		return "GTK"
+	case RCTokenApplication:
+		return "Application"
+	case RCTokenTheme:
+		return "Theme"
+	case RCTokenRC:
+		return "RC"
+	case RCTokenHighest:
+		return "Highest"
+	case RCTokenEngine:
+		return "Engine"
+	case RCTokenModulePath:
+		return "ModulePath"
+	case RCTokenImModulePath:
+		return "ImModulePath"
+	case RCTokenImModuleFile:
+		return "ImModuleFile"
+	case RCTokenStock:
+		return "Stock"
+	case RCTokenLTR:
+		return "LTR"
+	case RCTokenRTL:
+		return "RTL"
+	case RCTokenColor:
+		return "Color"
+	case RCTokenUnbind:
+		return "Unbind"
+	case RCTokenLast:
+		return "Last"
+	default:
+		return fmt.Sprintf("RCTokenType(%d)", r)
+	}
+}
+
 // RCFlags: deprecated
 type RCFlags int
 
 const (
-	// RCFlagsFg: deprecated
-	RCFlagsFg RCFlags = 0b1
-	// RCFlagsBg: deprecated
-	RCFlagsBg RCFlags = 0b10
-	// RCFlagsText: deprecated
-	RCFlagsText RCFlags = 0b100
-	// RCFlagsBase: deprecated
-	RCFlagsBase RCFlags = 0b1000
+	// RCFg: deprecated
+	RCFg RCFlags = 0b1
+	// RCBg: deprecated
+	RCBg RCFlags = 0b10
+	// RCText: deprecated
+	RCText RCFlags = 0b100
+	// RCBase: deprecated
+	RCBase RCFlags = 0b1000
 )
 
 func marshalRCFlags(p uintptr) (interface{}, error) {
 	return RCFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for RCFlags.
+func (r RCFlags) String() string {
+	if r == 0 {
+		return "RCFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(23)
+
+	for r != 0 {
+		next := r & (r - 1)
+		bit := r - next
+
+		switch bit {
+		case RCFg:
+			builder.WriteString("Fg|")
+		case RCBg:
+			builder.WriteString("Bg|")
+		case RCText:
+			builder.WriteString("Text|")
+		case RCBase:
+			builder.WriteString("Base|")
+		default:
+			builder.WriteString(fmt.Sprintf("RCFlags(0b%b)|", bit))
+		}
+
+		r = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // RCAddDefaultFile adds a file to the list of files to be parsed at the end of

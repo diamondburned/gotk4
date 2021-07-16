@@ -2,6 +2,10 @@
 
 package gtk
 
+import (
+	"fmt"
+)
+
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -14,17 +18,35 @@ import "C"
 type CSSParserError int
 
 const (
-	// Failed: unknown failure.
+	// CSSParserErrorFailed: unknown failure.
 	CSSParserErrorFailed CSSParserError = iota
-	// Syntax: given text does not form valid syntax
+	// CSSParserErrorSyntax: given text does not form valid syntax
 	CSSParserErrorSyntax
-	// Import: failed to import a resource
+	// CSSParserErrorImport: failed to import a resource
 	CSSParserErrorImport
-	// Name: given name has not been defined
+	// CSSParserErrorName: given name has not been defined
 	CSSParserErrorName
-	// UnknownValue: given value is not correct
+	// CSSParserErrorUnknownValue: given value is not correct
 	CSSParserErrorUnknownValue
 )
+
+// String returns the name in string for CSSParserError.
+func (c CSSParserError) String() string {
+	switch c {
+	case CSSParserErrorFailed:
+		return "Failed"
+	case CSSParserErrorSyntax:
+		return "Syntax"
+	case CSSParserErrorImport:
+		return "Import"
+	case CSSParserErrorName:
+		return "Name"
+	case CSSParserErrorUnknownValue:
+		return "UnknownValue"
+	default:
+		return fmt.Sprintf("CSSParserError(%d)", c)
+	}
+}
 
 // CSSParserWarning warnings that can occur while parsing CSS.
 //
@@ -33,11 +55,25 @@ const (
 type CSSParserWarning int
 
 const (
-	// Deprecated: given construct is deprecated and will be removed in a future
-	// version
+	// CSSParserWarningDeprecated: given construct is deprecated and will be
+	// removed in a future version
 	CSSParserWarningDeprecated CSSParserWarning = iota
-	// Syntax construct was used that should be avoided
+	// CSSParserWarningSyntax construct was used that should be avoided
 	CSSParserWarningSyntax
-	// Unimplemented: feature is not implemented
+	// CSSParserWarningUnimplemented: feature is not implemented
 	CSSParserWarningUnimplemented
 )
+
+// String returns the name in string for CSSParserWarning.
+func (c CSSParserWarning) String() string {
+	switch c {
+	case CSSParserWarningDeprecated:
+		return "Deprecated"
+	case CSSParserWarningSyntax:
+		return "Syntax"
+	case CSSParserWarningUnimplemented:
+		return "Unimplemented"
+	default:
+		return fmt.Sprintf("CSSParserWarning(%d)", c)
+	}
+}

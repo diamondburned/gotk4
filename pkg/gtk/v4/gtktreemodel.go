@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"fmt"
 	"runtime"
 	"runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -37,15 +39,42 @@ func init() {
 type TreeModelFlags int
 
 const (
-	// TreeModelFlagsItersPersist iterators survive all signals emitted by the
-	// tree
-	TreeModelFlagsItersPersist TreeModelFlags = 0b1
-	// TreeModelFlagsListOnly: model is a list only, and never has children
-	TreeModelFlagsListOnly TreeModelFlags = 0b10
+	// TreeModelItersPersist iterators survive all signals emitted by the tree
+	TreeModelItersPersist TreeModelFlags = 0b1
+	// TreeModelListOnly: model is a list only, and never has children
+	TreeModelListOnly TreeModelFlags = 0b10
 )
 
 func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the names in string for TreeModelFlags.
+func (t TreeModelFlags) String() string {
+	if t == 0 {
+		return "TreeModelFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(39)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TreeModelItersPersist:
+			builder.WriteString("ItersPersist|")
+		case TreeModelListOnly:
+			builder.WriteString("ListOnly|")
+		default:
+			builder.WriteString(fmt.Sprintf("TreeModelFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
 }
 
 // TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()

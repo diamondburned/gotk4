@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -33,22 +34,42 @@ func init() {
 type ButtonsType int
 
 const (
-	// None: no buttons at all
-	ButtonsTypeNone ButtonsType = iota
-	// Ok: OK button
-	ButtonsTypeOk
-	// Close: close button
-	ButtonsTypeClose
-	// Cancel: cancel button
-	ButtonsTypeCancel
-	// YesNo yes and No buttons
-	ButtonsTypeYesNo
-	// OkCancel: OK and Cancel buttons
-	ButtonsTypeOkCancel
+	// ButtonsNone: no buttons at all
+	ButtonsNone ButtonsType = iota
+	// ButtonsOk: OK button
+	ButtonsOk
+	// ButtonsClose: close button
+	ButtonsClose
+	// ButtonsCancel: cancel button
+	ButtonsCancel
+	// ButtonsYesNo yes and No buttons
+	ButtonsYesNo
+	// ButtonsOkCancel: OK and Cancel buttons
+	ButtonsOkCancel
 )
 
 func marshalButtonsType(p uintptr) (interface{}, error) {
 	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ButtonsType.
+func (b ButtonsType) String() string {
+	switch b {
+	case ButtonsNone:
+		return "None"
+	case ButtonsOk:
+		return "Ok"
+	case ButtonsClose:
+		return "Close"
+	case ButtonsCancel:
+		return "Cancel"
+	case ButtonsYesNo:
+		return "YesNo"
+	case ButtonsOkCancel:
+		return "OkCancel"
+	default:
+		return fmt.Sprintf("ButtonsType(%d)", b)
+	}
 }
 
 // MessageDialog: GtkMessageDialog presents a dialog with some message text.

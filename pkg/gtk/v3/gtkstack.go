@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -32,54 +33,111 @@ func init() {
 type StackTransitionType int
 
 const (
-	// None: no transition
+	// StackTransitionTypeNone: no transition
 	StackTransitionTypeNone StackTransitionType = iota
-	// Crossfade: cross-fade
+	// StackTransitionTypeCrossfade: cross-fade
 	StackTransitionTypeCrossfade
-	// SlideRight: slide from left to right
+	// StackTransitionTypeSlideRight: slide from left to right
 	StackTransitionTypeSlideRight
-	// SlideLeft: slide from right to left
+	// StackTransitionTypeSlideLeft: slide from right to left
 	StackTransitionTypeSlideLeft
-	// SlideUp: slide from bottom up
+	// StackTransitionTypeSlideUp: slide from bottom up
 	StackTransitionTypeSlideUp
-	// SlideDown: slide from top down
+	// StackTransitionTypeSlideDown: slide from top down
 	StackTransitionTypeSlideDown
-	// SlideLeftRight: slide from left or right according to the children order
+	// StackTransitionTypeSlideLeftRight: slide from left or right according to
+	// the children order
 	StackTransitionTypeSlideLeftRight
-	// SlideUpDown: slide from top down or bottom up according to the order
+	// StackTransitionTypeSlideUpDown: slide from top down or bottom up
+	// according to the order
 	StackTransitionTypeSlideUpDown
-	// OverUp: cover the old page by sliding up. Since 3.12
+	// StackTransitionTypeOverUp: cover the old page by sliding up. Since 3.12
 	StackTransitionTypeOverUp
-	// OverDown: cover the old page by sliding down. Since: 3.12
+	// StackTransitionTypeOverDown: cover the old page by sliding down. Since:
+	// 3.12
 	StackTransitionTypeOverDown
-	// OverLeft: cover the old page by sliding to the left. Since: 3.12
+	// StackTransitionTypeOverLeft: cover the old page by sliding to the left.
+	// Since: 3.12
 	StackTransitionTypeOverLeft
-	// OverRight: cover the old page by sliding to the right. Since: 3.12
+	// StackTransitionTypeOverRight: cover the old page by sliding to the right.
+	// Since: 3.12
 	StackTransitionTypeOverRight
-	// UnderUp: uncover the new page by sliding up. Since 3.12
+	// StackTransitionTypeUnderUp: uncover the new page by sliding up. Since
+	// 3.12
 	StackTransitionTypeUnderUp
-	// UnderDown: uncover the new page by sliding down. Since: 3.12
+	// StackTransitionTypeUnderDown: uncover the new page by sliding down.
+	// Since: 3.12
 	StackTransitionTypeUnderDown
-	// UnderLeft: uncover the new page by sliding to the left. Since: 3.12
+	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the
+	// left. Since: 3.12
 	StackTransitionTypeUnderLeft
-	// UnderRight: uncover the new page by sliding to the right. Since: 3.12
+	// StackTransitionTypeUnderRight: uncover the new page by sliding to the
+	// right. Since: 3.12
 	StackTransitionTypeUnderRight
-	// OverUpDown: cover the old page sliding up or uncover the new page sliding
-	// down, according to order. Since: 3.12
+	// StackTransitionTypeOverUpDown: cover the old page sliding up or uncover
+	// the new page sliding down, according to order. Since: 3.12
 	StackTransitionTypeOverUpDown
-	// OverDownUp: cover the old page sliding down or uncover the new page
-	// sliding up, according to order. Since: 3.14
+	// StackTransitionTypeOverDownUp: cover the old page sliding down or uncover
+	// the new page sliding up, according to order. Since: 3.14
 	StackTransitionTypeOverDownUp
-	// OverLeftRight: cover the old page sliding left or uncover the new page
-	// sliding right, according to order. Since: 3.14
+	// StackTransitionTypeOverLeftRight: cover the old page sliding left or
+	// uncover the new page sliding right, according to order. Since: 3.14
 	StackTransitionTypeOverLeftRight
-	// OverRightLeft: cover the old page sliding right or uncover the new page
-	// sliding left, according to order. Since: 3.14
+	// StackTransitionTypeOverRightLeft: cover the old page sliding right or
+	// uncover the new page sliding left, according to order. Since: 3.14
 	StackTransitionTypeOverRightLeft
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {
 	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for StackTransitionType.
+func (s StackTransitionType) String() string {
+	switch s {
+	case StackTransitionTypeNone:
+		return "None"
+	case StackTransitionTypeCrossfade:
+		return "Crossfade"
+	case StackTransitionTypeSlideRight:
+		return "SlideRight"
+	case StackTransitionTypeSlideLeft:
+		return "SlideLeft"
+	case StackTransitionTypeSlideUp:
+		return "SlideUp"
+	case StackTransitionTypeSlideDown:
+		return "SlideDown"
+	case StackTransitionTypeSlideLeftRight:
+		return "SlideLeftRight"
+	case StackTransitionTypeSlideUpDown:
+		return "SlideUpDown"
+	case StackTransitionTypeOverUp:
+		return "OverUp"
+	case StackTransitionTypeOverDown:
+		return "OverDown"
+	case StackTransitionTypeOverLeft:
+		return "OverLeft"
+	case StackTransitionTypeOverRight:
+		return "OverRight"
+	case StackTransitionTypeUnderUp:
+		return "UnderUp"
+	case StackTransitionTypeUnderDown:
+		return "UnderDown"
+	case StackTransitionTypeUnderLeft:
+		return "UnderLeft"
+	case StackTransitionTypeUnderRight:
+		return "UnderRight"
+	case StackTransitionTypeOverUpDown:
+		return "OverUpDown"
+	case StackTransitionTypeOverDownUp:
+		return "OverDownUp"
+	case StackTransitionTypeOverLeftRight:
+		return "OverLeftRight"
+	case StackTransitionTypeOverRightLeft:
+		return "OverRightLeft"
+	default:
+		return fmt.Sprintf("StackTransitionType(%d)", s)
+	}
 }
 
 // Stack widget is a container which only shows one of its children at a time.

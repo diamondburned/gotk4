@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,27 +31,47 @@ func init() {
 type ButtonBoxStyle int
 
 const (
-	// Spread buttons are evenly spread across the box.
-	ButtonBoxStyleSpread ButtonBoxStyle = 1
-	// Edge buttons are placed at the edges of the box.
-	ButtonBoxStyleEdge ButtonBoxStyle = 2
-	// Start buttons are grouped towards the start of the box, (on the left for
-	// a HBox, or the top for a VBox).
-	ButtonBoxStyleStart ButtonBoxStyle = 3
-	// End buttons are grouped towards the end of the box, (on the right for a
-	// HBox, or the bottom for a VBox).
-	ButtonBoxStyleEnd ButtonBoxStyle = 4
-	// Center buttons are centered in the box. Since 2.12.
-	ButtonBoxStyleCenter ButtonBoxStyle = 5
-	// Expand buttons expand to fill the box. This entails giving buttons a
-	// "linked" appearance, making button sizes homogeneous, and setting spacing
-	// to 0 (same as calling gtk_box_set_homogeneous() and gtk_box_set_spacing()
-	// manually). Since 3.12.
-	ButtonBoxStyleExpand ButtonBoxStyle = 6
+	// ButtonboxSpread buttons are evenly spread across the box.
+	ButtonboxSpread ButtonBoxStyle = 1
+	// ButtonboxEdge buttons are placed at the edges of the box.
+	ButtonboxEdge ButtonBoxStyle = 2
+	// ButtonboxStart buttons are grouped towards the start of the box, (on the
+	// left for a HBox, or the top for a VBox).
+	ButtonboxStart ButtonBoxStyle = 3
+	// ButtonboxEnd buttons are grouped towards the end of the box, (on the
+	// right for a HBox, or the bottom for a VBox).
+	ButtonboxEnd ButtonBoxStyle = 4
+	// ButtonboxCenter buttons are centered in the box. Since 2.12.
+	ButtonboxCenter ButtonBoxStyle = 5
+	// ButtonboxExpand buttons expand to fill the box. This entails giving
+	// buttons a "linked" appearance, making button sizes homogeneous, and
+	// setting spacing to 0 (same as calling gtk_box_set_homogeneous() and
+	// gtk_box_set_spacing() manually). Since 3.12.
+	ButtonboxExpand ButtonBoxStyle = 6
 )
 
 func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
 	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// String returns the name in string for ButtonBoxStyle.
+func (b ButtonBoxStyle) String() string {
+	switch b {
+	case ButtonboxSpread:
+		return "Spread"
+	case ButtonboxEdge:
+		return "Edge"
+	case ButtonboxStart:
+		return "Start"
+	case ButtonboxEnd:
+		return "End"
+	case ButtonboxCenter:
+		return "Center"
+	case ButtonboxExpand:
+		return "Expand"
+	default:
+		return fmt.Sprintf("ButtonBoxStyle(%d)", b)
+	}
 }
 
 type ButtonBox struct {

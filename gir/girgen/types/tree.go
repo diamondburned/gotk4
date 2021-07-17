@@ -15,20 +15,17 @@ import (
 type Tree struct {
 	*Resolved
 	gen FileGenerator
+	src FileGenerator
 
 	// Requires contains the direct dependencies of the current type. It may
 	// contain interfaces that are also in other interfaces, which will not
 	// build.
 	Requires []Tree
-
-	// Level sets the maximum recursion level to go. It only applies if set
-	// to something more than -1.
-	Level int
 }
 
 // NewTree creates a new empty type tree for resolving.
 func NewTree(gen FileGenerator) Tree {
-	return Tree{gen: gen, Level: -1}
+	return Tree{gen: gen, src: gen}
 }
 
 func (tree *Tree) Reset() {
@@ -60,16 +57,6 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 	tree.Reset()
 	tree.Resolved = toplevel
 
-	if toplevel.Extern != nil {
-		// Ensure the origin namespace is set correctly.
-		tree.gen = OverrideNamespace(tree.gen, toplevel.Extern.NamespaceFindResult)
-	}
-
-	if tree.Level == 0 {
-		// No omit, since we added nothing.
-		return true
-	}
-
 	// Edge cases for builtin types.
 	if tree.Resolved.Builtin != nil {
 		switch {
@@ -79,12 +66,15 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 			return true
 		}
 
-		return true
+		return false
 	}
 
 	if !tree.Resolved.Extern.IsIntrospectable() {
 		return false
 	}
+
+	// Ensure that the namespace is correct.
+	tree.gen = OverrideNamespace(tree.src, toplevel.Extern.NamespaceFindResult)
 
 	switch v := tree.Resolved.Extern.Type.(type) {
 	case *gir.Class:
@@ -97,7 +87,8 @@ func (tree *Tree) ResolveFromType(toplevel *Resolved) bool {
 		// Resolving the parent type is crucial to make the class working, so if
 		// this fails, halt and bail.
 		if !tree.resolveName(parent) {
-			tree.gen.Logln(logger.Debug, "can't resolve parent", parent, "for class", v.Name)
+			tree.gen.Logln(logger.Debug, "can't resolve parent", parent, "for class", v.Name,
+				"namespace")
 			return false
 		}
 
@@ -256,18 +247,12 @@ func firstGObjectSelector(nodes []Tree, sel string) (string, bool) {
 	return sel, false
 }
 
-func (tree *Tree) parentLevel() int {
-	if tree.Level <= 0 {
-		return tree.Level
-	}
-	return tree.Level - 1
-}
-
 // resolveName resolves and adds the resolved type into the Tree.
 func (tree *Tree) resolveName(name string) bool {
+	tree.gen.Logln(logger.Debug, "resolving type", name)
 	parent := Tree{
-		gen:   tree.gen,
-		Level: tree.parentLevel(),
+		gen: tree.gen,
+		src: tree.src,
 	}
 
 	if !parent.Resolve(name) {
@@ -283,8 +268,8 @@ func (tree *Tree) resolveName(name string) bool {
 func (tree *Tree) resolveParents(parents ...*Resolved) bool {
 	for _, parent := range parents {
 		parentTree := Tree{
-			gen:   tree.gen,
-			Level: tree.parentLevel(),
+			gen: tree.gen,
+			src: tree.src,
 		}
 
 		if !parentTree.ResolveFromType(parent) {
@@ -392,10 +377,10 @@ func (tree *Tree) wrap(obj string, h ImplImporter, gen FileGenerator) string {
 		h.ImportImpl(tree.Resolved)
 	}
 
-	typ := tree.Resolved.ImplType(needsNamespace)
+	typName := tree.Resolved.ImplType(needsNamespace)
 
 	p := pen.NewPiece()
-	p.Write(strings.TrimPrefix(typ, "*")).Char('{')
+	p.Write(strings.TrimPrefix(typName, "*")).Char('{')
 	p.EmptyLine()
 
 	for _, typ := range tree.Requires {

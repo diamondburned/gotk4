@@ -70,6 +70,21 @@ func MajorVersion(nsp *gir.Namespace) int {
 	return v
 }
 
+// LoadExternOverrides creates a map of GIR versioned namespace names to the Go
+// import path from the given list of all repositories.
+func LoadExternOverrides(mod string, repos gir.Repositories) map[string]string {
+	externs := map[string]string{}
+	modPath := ModulePath(mod, nil)
+
+	for _, repo := range repos {
+		for _, namespace := range repo.Namespaces {
+			externs[gir.VersionedNamespace(&namespace)] = modPath(&namespace)
+		}
+	}
+
+	return externs
+}
+
 // WriteNamespace generates everything in the given namespace and writes it to
 // the given basePath.
 func WriteNamespace(ng *girgen.NamespaceGenerator, basePath string) error {
@@ -98,11 +113,31 @@ func WriteNamespace(ng *girgen.NamespaceGenerator, basePath string) error {
 	return err
 }
 
+// MustLoadPackages bails if packages fail to load.
+func MustLoadPackages(pkgs []gendata.Package) gir.Repositories {
+	p, err := LoadPackages(pkgs)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return p
+}
+
 // LoadPackages loads all GIR repositories from the given list of packages.
 func LoadPackages(pkgs []gendata.Package) (gir.Repositories, error) {
 	var repos gir.Repositories
+	return repos, AddPackages(&repos, pkgs)
+}
 
-	for _, pkg := range gendata.Packages {
+// MustAddPackages bails if packages fail to be added.
+func MustAddPackages(repos *gir.Repositories, pkgs []gendata.Package) {
+	if err := AddPackages(repos, pkgs); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+// AddPackages adds the given list of packages into the repository.
+func AddPackages(repos *gir.Repositories, pkgs []gendata.Package) error {
+	for _, pkg := range pkgs {
 		var err error
 		if pkg.Namespaces != nil {
 			err = repos.AddSelected(pkg.PkgName, pkg.Namespaces)
@@ -111,10 +146,15 @@ func LoadPackages(pkgs []gendata.Package) (gir.Repositories, error) {
 		}
 
 		if err != nil {
-			return nil, errors.Wrapf(err, "error adding package %q", pkg.PkgName)
+			return errors.Wrapf(err, "error adding package %q", pkg.PkgName)
 		}
 	}
 
+	return nil
+}
+
+// PrintAddedPkgs prints to console the added packages.
+func PrintAddedPkgs(repos gir.Repositories) {
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {
 			log.Println(
@@ -124,8 +164,6 @@ func LoadPackages(pkgs []gendata.Package) (gir.Repositories, error) {
 			)
 		}
 	}
-
-	return repos, nil
 }
 
 // GenerateAll generates all namespaces inside the given generator into the
@@ -140,13 +178,6 @@ func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 
 	var errMut sync.Mutex
 	var errors []error
-
-	for _, repo := range gen.Repositories() {
-		for _, namespace := range repo.Namespaces {
-			str := gir.VersionedNamespace(&namespace)
-			log.Println(str)
-		}
-	}
 
 	for _, repo := range gen.Repositories() {
 		for _, namespace := range repo.Namespaces {
@@ -186,7 +217,7 @@ func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 func CleanDirectory(path string, except []string) error {
 	// Do a clean-up of the target directory.
 	oldFiles, _ := os.ReadDir(path)
-	pkgExceptions := StringSet(gendata.PkgExceptions)
+	pkgExceptions := StringSet(except)
 
 	for _, oldFile := range oldFiles {
 		_, except := pkgExceptions[oldFile.Name()]

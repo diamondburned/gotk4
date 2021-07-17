@@ -35,10 +35,8 @@ func init() {
 }
 
 func main() {
-	repos, err := genutil.LoadPackages(gendata.Packages)
-	if err != nil {
-		log.Fatalln("error loading packages:", err)
-	}
+	repos := genutil.MustLoadPackages(gendata.Packages)
+	genutil.PrintAddedPkgs(repos)
 
 	if listPkg {
 		return

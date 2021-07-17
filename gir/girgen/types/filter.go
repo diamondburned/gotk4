@@ -55,7 +55,8 @@ func RenameEnumMembers(enum, regex, replace string) Preprocessor {
 	return PreprocessorFunc(func(repos gir.Repositories) {
 		result := repos.FindFullType(enum)
 		if result == nil {
-			log.Panicf("GIR enum %q not found", enum)
+			log.Printf("GIR enum %q not found", enum)
+			return
 		}
 
 		enum, ok := result.Type.(*gir.Enum)
@@ -90,7 +91,8 @@ func TypeRenamer(girType, newName string) Preprocessor {
 func (ren typeRenamer) Preprocess(repos gir.Repositories) {
 	result := repos.FindFullType(ren.from)
 	if result == nil {
-		log.Panicf("GIR type %q not found", ren.from)
+		log.Printf("GIR type %q not found", ren.from)
+		return
 	}
 
 	oldName := result.Name()
@@ -127,7 +129,8 @@ func (m modifyCallable) Preprocess(repos gir.Repositories) {
 
 	result := repos.FindFullType(girType)
 	if result == nil {
-		log.Panicf("GIR type %q not found", m.girType)
+		log.Printf("GIR type %q not found", m.girType)
+		return
 	}
 
 	switch v := result.Type.(type) {
@@ -312,6 +315,17 @@ func (rf *regexFilter) Filter(gen FileGenerator, gir, c string) (omit bool) {
 // EqNamespace is used for FilterMatchers to compare types and namespaces.
 func EqNamespace(nsp, girType string) (typ string, ok bool) {
 	namespace, typ := gir.SplitGIRType(girType)
+
+	n, ver := gir.ParseVersionName(nsp)
+	if ver != "" {
+		// Wanted namespace has a version. If the type does not have a version,
+		// then pop the version off the wanted namespace.
+		_, version := gir.ParseVersionName(namespace)
+		if version == "" {
+			nsp = n
+		}
+	}
+
 	return typ, namespace == nsp
 }
 

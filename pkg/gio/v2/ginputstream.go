@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -57,7 +56,6 @@ type InputStreamOverrider interface {
 	CloseFn(cancellable *Cancellable) error
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
-	ReadFn(buffer *cgo.Handle, count uint, cancellable *Cancellable) (int, error)
 	// Skip tries to skip count bytes from the stream. Will block during the
 	// operation.
 	//

@@ -111,21 +111,18 @@ type PkgRepository struct {
 
 // AddSelected adds a single package but only searches for the given list of
 // GIR files.
-func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
+func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 	found := 0
 
 	filter := func(r *Repository) bool {
-		repoNames := r.Namespaces
-		r.Namespaces = repoNames[:0]
+		namespaces := r.Namespaces
+		r.Namespaces = namespaces[:0]
 
-		for _, fullName := range namespaces {
-			nsp, version := ParseVersionName(fullName)
+		for _, namespace := range namespaces {
+			vname := VersionedNamespace(&namespace)
 
-			for _, namespace := range repoNames {
-				if namespace.Name != nsp {
-					continue
-				}
-				if version != "" && !EqVersion(namespace.Version, version) {
+			for _, wantedName := range wantedNames {
+				if wantedName != vname {
 					continue
 				}
 
@@ -158,7 +155,7 @@ func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
 		}
 	}
 
-	if found != len(namespaces) {
+	if found != len(wantedNames) {
 		return fmt.Errorf("only %d girs found", found)
 	}
 
@@ -210,6 +207,16 @@ func (repos *Repositories) add(r Repository, pkg, path string) error {
 		Path:       path,
 	})
 
+	return nil
+}
+
+// FromPkg finds the repository from the given package name.
+func (repos Repositories) FromPkg(pkg string) *PkgRepository {
+	for i, repo := range repos {
+		if repo.Pkg == pkg {
+			return &repos[i]
+		}
+	}
 	return nil
 }
 
@@ -396,28 +403,27 @@ func (res *TypeFindResult) IsIntrospectable() bool {
 func (repos Repositories) FindInclude(
 	res *NamespaceFindResult, includes string) *NamespaceFindResult {
 
-	foundIncludes := make([]*NamespaceFindResult, 0, len(res.Repository.Includes))
+	for _, incl := range res.Repository.Includes {
+		if incl.Name != includes {
+			continue
+		}
+
+		nspIncl := repos.FindNamespace(VersionedName(incl.Name, incl.Version))
+		if nspIncl == nil {
+			// Include found but not the namespace, so it's probably not added
+			// at all.
+			return nil
+		}
+
+		return nspIncl
+	}
 
 	for _, incl := range res.Repository.Includes {
 		nspIncl := repos.FindNamespace(VersionedName(incl.Name, incl.Version))
 		if nspIncl == nil {
-			// We've already seen the import and it's not available, so early
-			// bail.
-			if incl.Name == includes {
-				return nil
-			}
-
 			continue
 		}
 
-		if incl.Name == includes {
-			return nspIncl
-		}
-
-		foundIncludes = append(foundIncludes, nspIncl)
-	}
-
-	for _, nspIncl := range foundIncludes {
 		if res := repos.FindInclude(nspIncl, includes); res != nil {
 			return res
 		}
@@ -455,6 +461,7 @@ func (repos Repositories) FindType(nsp *NamespaceFindResult, typ string) *TypeFi
 			goto gotNamespace
 		}
 
+		// log.Panicf("namespace %q of type %q in %q not found", namespace, typ, nsp.Namespace.Name)
 		return nil
 	}
 

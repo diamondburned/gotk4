@@ -81,23 +81,29 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 	// generator functions call CanGenerate on its own.
 	n.canResolve[publType] = true
 
+	// Set the right namespace for the generator.
+	var ngen types.FileGenerator = n
+	if !r.Extern.NamespaceFindResult.Eq(n.current) {
+		ngen = types.OverrideNamespace(n, r.Extern.NamespaceFindResult)
+	}
+
 	switch v := r.Extern.Type.(type) {
 	// Fast checks.
 	case *gir.Alias:
-		canResolve = generators.CanGenerateAlias(n, v)
+		canResolve = generators.CanGenerateAlias(ngen, v)
 	case *gir.Bitfield:
-		canResolve = generators.CanGenerateBitfield(n, v)
+		canResolve = generators.CanGenerateBitfield(ngen, v)
 	case *gir.Enum:
-		canResolve = generators.CanGenerateEnum(n, v)
+		canResolve = generators.CanGenerateEnum(ngen, v)
 	case *gir.Record:
-		canResolve = generators.CanGenerateRecord(n, v)
+		canResolve = generators.CanGenerateRecord(ngen, v)
 	case *gir.Class, *gir.Interface:
-		canResolve = iface.CanGenerate(n, v)
+		canResolve = iface.CanGenerate(ngen, v)
 	// Slow checks.
 	case *gir.Callback:
-		canResolve = generators.GenerateCallback(generators.StubFileGeneratorWriter(n), v)
+		canResolve = generators.GenerateCallback(generators.StubFileGeneratorWriter(ngen), v)
 	case *gir.Function:
-		canResolve = generators.GenerateFunction(generators.StubFileGeneratorWriter(n), v)
+		canResolve = generators.GenerateFunction(generators.StubFileGeneratorWriter(ngen), v)
 	}
 
 	// Actually store the correct value once we're done.

@@ -644,8 +644,9 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return builtinType("", prim, typ)
 	}
 
-	switch typ.Name {
-	case "gpointer":
+	// Treat actual gpointer types as the pseudo cgo.Handle type. Check both GIR
+	// and C type to avoid masked gpointer types that aren't actually arbitrary.
+	if typ.Name == "gpointer" && IsGpointer(typ.CType) {
 		return builtinType("runtime/cgo", "Handle", typ)
 	}
 
@@ -676,6 +677,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 
 	// Pretend that ignored types don't exist. typ is a copy, so we can do this.
 	if Filter(gen, typ.Name, typ.CType) {
+		gen.Logln(logger.Debug, "ignored type", typ.Name)
 		return nil
 	}
 

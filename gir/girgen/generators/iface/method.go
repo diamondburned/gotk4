@@ -60,13 +60,13 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 	m.reset(len(methods))
 
 	for i := range methods {
-		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
-			g.cgen.Logln(logger.Debug, "filtered method", methods[i].CIdentifier)
+		if !g.cgen.UseFromNamespace(&methods[i].CallableAttrs, g.source) {
+			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
 			continue
 		}
 
-		if !g.cgen.UseFromNamespace(&methods[i].CallableAttrs, g.source) {
-			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
+		if types.FilterMethod(g.gen, g.Name, &methods[i]) {
+			g.cgen.Logln(logger.Debug, "filtered method", methods[i].CIdentifier)
 			continue
 		}
 

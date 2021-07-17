@@ -486,13 +486,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		closure := conv.convertParam(*value.Closure)
-		if closure == nil {
+		closure := conv.param(*value.Closure)
+		if closure == nil || closure.Type == nil {
 			value.Logln(logger.Debug, exportedName, "closure", *value.Closure, "not found")
 			return false
 		}
 
-		value.header.ApplyHeader(closure.Header())
 		value.header.ImportCore("gbox")
 		value.header.AddCallback(value.Resolved.Extern.NamespaceFindResult, v)
 
@@ -515,10 +514,12 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			assign = "AssignOnce"
 		}
 
-		value.outDecl.Linef("var %s %s", closure.OutName, closure.Out.Type)
+		userDataType := types.AnyTypeCGo(closure.AnyType)
+
+		value.outDecl.Linef("var %s %s", closure.OutName, userDataType)
 		value.p.Linef(
 			"%s = %s(gbox.%s(%s))",
-			closure.Out.Set, closure.Out.Type, assign, value.InName,
+			closure.Out.Set, userDataType, assign, value.InName,
 		)
 
 		switch scope {

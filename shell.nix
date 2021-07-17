@@ -41,31 +41,15 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 				doCheck = false;
 				subPackages = [ "." ];
 			};
-			ccache = super.ccache.overrideAttrs (old: {
-				version = "tip-f2f9993";
-				doCheck = false;
-
-				buildInputs = (old.nativeBuildInputs) ++ (with super; [
-					pkgconfig
-					zstd
-					hiredis
-				]);
-
-				src = systemPkgs.fetchFromGitHub {
-					owner = "ccache";
-					repo  = "ccache";
-					rev   = "f2f9993db6042de6e5f5b55dd8bb4dc5987cf210";
-					hash  = "sha256:0f7kkbyk6hi3cbhlapaxk1km6x8jakf61493c1bidr807z25j1vz";
-				};
-			});
 		})
 	];
 };
 
-in unstable.mkShell.override { stdenv = unstable.ccacheStdenv; } {
+in unstable.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [
+		gobjectIntrospection
 		glib
 		graphene
 		gdk-pixbuf
@@ -81,29 +65,17 @@ in unstable.mkShell.override { stdenv = unstable.ccacheStdenv; } {
 		let sh = systemPkgs.writeShellScriptBin;
 		in [
 			# Build/generation dependencies.
-			gobjectIntrospection
 			pkgconfig
 			go
 
 			# Development tools.
-			ccache
 			gopls
 			goimports
 
 			# minitime is a mini-output time wrapper.
 			(sh "minitime" "command time --format $'%C -> %es\\n' \"$@\"")
-			# Alias for gocopy.
-			# (sh "gocopy" "exec $TMP/gocopy/${unstable.go.version}/go/bin/go \"$@\"")
 		];
 
-	# shellHook = ''
-	# 	[[ ! -d $TMP/gocopy/${unstable.go.version} ]] && {
-	# 		rm -rf $TMP/gocopy/${unstable.go.version}
-	# 		mkdir -p $TMP/gocopy/${unstable.go.version}
-	# 		cp -rf ${unstable.go}/share/go $TMP/gocopy/${unstable.go.version}
-	# 		chmod u+wx -R $TMP/gocopy/${unstable.go.version}
-	# 	}
-	# '';
 
 	CGO_ENABLED = "1";
 

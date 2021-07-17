@@ -184,6 +184,18 @@ func AnyTypeIsVoid(any gir.AnyType) bool {
 	return any.Type != nil && any.Type.Name == "none"
 }
 
+// cgoPrimitiveTypes contains edge cases for referencing C primitive types from
+// CGo.
+//
+// See https://gist.github.com/zchee/b9c99695463d8902cd33.
+var cgoPrimitiveTypes = map[string]string{
+	"long long": "longlong",
+
+	"unsigned int":       "uint",
+	"unsigned long":      "ulong",
+	"unsigned long long": "ulonglong",
+}
+
 // CGoTypeFromC converts a C type to a CGo type.
 func CGoTypeFromC(cType string) string {
 	originalCType := cType
@@ -297,16 +309,6 @@ func GIRPrimitiveGo(typ string) string {
 		return ""
 	}
 	return gp
-}
-
-// cgoPrimitiveTypes contains edge cases for referencing C primitive types from
-// CGo.
-//
-// See https://gist.github.com/zchee/b9c99695463d8902cd33.
-var cgoPrimitiveTypes = map[string]string{
-	"unsigned int": "uint",
-
-	// "long double":  "longdouble",
 }
 
 // FindParameter finds a parameter.

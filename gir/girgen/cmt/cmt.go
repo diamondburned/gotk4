@@ -284,6 +284,9 @@ func format(self, cmt string, opts []Option) string {
 		}
 
 		switch {
+		case strings.ToLower(nthWord(cmt, 0)) == "is": // ok cases
+		case strings.ToLower(nthWord(cmt, 0)) == "will":
+
 		case typeNamed:
 			fallthrough
 		case strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":

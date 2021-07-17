@@ -20,7 +20,7 @@ import (
 // context.Context interface.
 type Cancellable struct {
 	*glib.Object
-	done chan struct{}
+	done <-chan struct{}
 }
 
 var _ context.Context = (*Cancellable)(nil)
@@ -53,11 +53,11 @@ func (c *Cancellable) Done() <-chan struct{} {
 	return c.done
 }
 
-// Err returns context.Cancelled if the cancellable is already cancelled,
+// Err returns context.Canceled if the cancellable is already cancelled,
 // otherwise nil is returned.
 func (c *Cancellable) Err() error {
 	if c.IsCancelled() {
-		return context.Cancelled
+		return context.Canceled
 	}
 	return nil
 }
@@ -72,18 +72,18 @@ func FromContext(ctx context.Context) *Cancellable {
 		return v
 	}
 
-	cancellable := C.g_cancellable_new()
-	go cancelOnDone(ctx, cancellable)
-
-	return &Cancellable{
-		Object: glib.AssumeOwnership(unsafe.Pointer(cancellable)),
-		done:   ctx.Done,
+	cancellable := &Cancellable{
+		Object: glib.AssumeOwnership(unsafe.Pointer(C.g_cancellable_new())),
+		done:   ctx.Done(),
 	}
+
+	go cancelOnDone(ctx, cancellable)
+	return cancellable
 }
 
-func cancelOnDone(ctx context.Context, cancellable *C.GCancellable) {
+func cancelOnDone(ctx context.Context, cancellable *Cancellable) {
 	<-ctx.Done()
-	g_cancellable_cancel(cancellable)
+	cancellable.Cancel()
 }
 
 // WithCancellable creates a new context from the given cancellable object. It

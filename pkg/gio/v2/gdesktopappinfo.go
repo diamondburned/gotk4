@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -525,6 +526,38 @@ func (info *DesktopAppInfo) ListActions() []string {
 	}
 
 	return _utf8s
+}
+
+// DesktopAppInfoGetImplementations gets all applications that implement
+// interface.
+//
+// An application implements an interface if that interface is listed in the
+// Implements= line of the desktop file of the application.
+func DesktopAppInfoGetImplementations(_interface string) *externglib.List {
+	var _arg1 *C.gchar // out
+	var _cret *C.GList // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(_interface)))
+
+	_cret = C.g_desktop_app_info_get_implementations(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GDesktopAppInfo)(_p)
+		var dst DesktopAppInfo // out
+		dst = *wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
 }
 
 // DesktopAppInfoSetDesktopEnv sets the name of the desktop that the application

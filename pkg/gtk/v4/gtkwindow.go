@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -1192,6 +1193,31 @@ func WindowGetToplevels() *gio.ListModel {
 	}
 
 	return _listModel
+}
+
+// WindowListToplevels returns a list of all existing toplevel windows.
+//
+// The widgets in the list are not individually referenced. If you want to
+// iterate through the list and perform actions involving callbacks that might
+// destroy the widgets, you must call g_list_foreach (result,
+// (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
+func WindowListToplevels() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.gtk_window_list_toplevels()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // WindowSetAutoStartupNotification sets whether the window should request

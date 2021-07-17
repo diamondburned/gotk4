@@ -3,14 +3,12 @@
 package gdkpixbuf
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,6 +17,7 @@ import (
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
 // gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -160,7 +159,7 @@ func init() {
 type Pixbuf struct {
 	*externglib.Object
 
-	gio.Icon
+	gio.LoadableIcon
 }
 
 var _ gextras.Nativer = (*Pixbuf)(nil)
@@ -168,8 +167,10 @@ var _ gextras.Nativer = (*Pixbuf)(nil)
 func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	return &Pixbuf{
 		Object: obj,
-		Icon: gio.Icon{
-			Object: obj,
+		LoadableIcon: gio.LoadableIcon{
+			Icon: gio.Icon{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -1002,27 +1003,6 @@ func (pixbuf *Pixbuf) Option(key string) string {
 	return _utf8
 }
 
-// Options returns a GHashTable with a list of all the options that may have
-// been attached to the pixbuf when it was loaded, or that may have been
-// attached by another function using gdkpixbuf.Pixbuf.SetOption().
-func (pixbuf *Pixbuf) Options() *glib.HashTable {
-	var _arg0 *C.GdkPixbuf  // out
-	var _cret *C.GHashTable // in
-
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	_cret = C.gdk_pixbuf_get_options(_arg0)
-
-	var _hashTable *glib.HashTable // out
-
-	_hashTable = (*glib.HashTable)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_hashTable, func(v *glib.HashTable) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
-	})
-
-	return _hashTable
-}
-
 // Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 // between the start of a row and the start of the next row.
 func (pixbuf *Pixbuf) Rowstride() int {
@@ -1333,6 +1313,57 @@ func (pixbuf *Pixbuf) SaveToStreamv(stream gio.OutputStreamer, typ string, optio
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// SaveToStreamvAsync saves pixbuf to an output stream asynchronously.
+//
+// For more details see gdk_pixbuf_save_to_streamv(), which is the synchronous
+// version of this function.
+//
+// When the operation is finished, callback will be called in the main thread.
+//
+// You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the
+// operation.
+func (pixbuf *Pixbuf) SaveToStreamvAsync(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkPixbuf     // out
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.gchar         // out
+	var _arg3 **C.gchar
+	var _arg4 **C.gchar
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+	{
+		_arg3 = (**C.gchar)(C.malloc(C.ulong(len(optionKeys)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg3, len(optionKeys)+1)
+			var zero *C.gchar
+			out[len(optionKeys)] = zero
+			for i := range optionKeys {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionKeys[i])))
+			}
+		}
+	}
+	{
+		_arg4 = (**C.gchar)(C.malloc(C.ulong(len(optionValues)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg4, len(optionValues)+1)
+			var zero *C.gchar
+			out[len(optionValues)] = zero
+			for i := range optionValues {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionValues[i])))
+			}
+		}
+	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_pixbuf_save_to_streamv_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // Savev: vector version of gdk_pixbuf_save().

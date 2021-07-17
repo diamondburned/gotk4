@@ -44,6 +44,11 @@ func wrapContainerCellAccessible(obj *externglib.Object) *ContainerCellAccessibl
 			Component: atk.Component{
 				Object: obj,
 			},
+			TableCell: atk.TableCell{
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
+				},
+			},
 		},
 	}
 }
@@ -74,6 +79,28 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
+}
+
+// Children: get a list of children.
+func (container *ContainerCellAccessible) Children() *externglib.List {
+	var _arg0 *C.GtkContainerCellAccessible // out
+	var _cret *C.GList                      // in
+
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(container.Native()))
+
+	_cret = C.gtk_container_cell_accessible_get_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkCellAccessible)(_p)
+		var dst CellAccessible // out
+		dst = *wrapCellAccessible(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
 }
 
 func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {

@@ -26,6 +26,8 @@ func init() {
 
 type WindowAccessible struct {
 	ContainerAccessible
+
+	atk.Window
 }
 
 var _ gextras.Nativer = (*WindowAccessible)(nil)
@@ -42,6 +44,11 @@ func wrapWindowAccessible(obj *externglib.Object) *WindowAccessible {
 				Component: atk.Component{
 					Object: obj,
 				},
+			},
+		},
+		Window: atk.Window{
+			ObjectClass: atk.ObjectClass{
+				Object: obj,
 			},
 		},
 	}

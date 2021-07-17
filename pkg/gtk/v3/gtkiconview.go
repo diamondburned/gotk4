@@ -724,6 +724,41 @@ func (iconView *IconView) RowSpacing() int {
 	return _gint
 }
 
+// SelectedItems creates a list of paths of all selected items. Additionally, if
+// you are planning on modifying the model after calling this function, you may
+// want to convert the returned list into a list of TreeRowReferences. To do
+// this, you can use gtk_tree_row_reference_new().
+//
+// To free the return value, use:
+//
+//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+func (iconView *IconView) SelectedItems() *externglib.List {
+	var _arg0 *C.GtkIconView // out
+	var _cret *C.GList       // in
+
+	_arg0 = (*C.GtkIconView)(unsafe.Pointer(iconView.Native()))
+
+	_cret = C.gtk_icon_view_get_selected_items(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkTreePath)(_p)
+		var dst *TreePath // out
+		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
+}
+
 // SelectionMode gets the selection mode of the icon_view.
 func (iconView *IconView) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkIconView     // out

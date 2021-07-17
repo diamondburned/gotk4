@@ -507,3 +507,26 @@ func (menu *Menu) SetTitle(title string) {
 
 	C.gtk_menu_set_title(_arg0, _arg1)
 }
+
+// MenuGetForAttachWidget returns a list of the menus which are attached to this
+// widget. This list is owned by GTK+ and must not be modified.
+func MenuGetForAttachWidget(widget Widgetter) *externglib.List {
+	var _arg1 *C.GtkWidget // out
+	var _cret *C.GList     // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
+}

@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -138,6 +139,9 @@ type DeviceManagerer interface {
 	ClientPointer() *Device
 	// Display gets the Display associated to device_manager.
 	Display() *Display
+	// ListDevices returns the list of devices of type type currently attached
+	// to device_manager.
+	ListDevices(typ DeviceType) *externglib.List
 }
 
 var _ DeviceManagerer = (*DeviceManager)(nil)
@@ -192,4 +196,33 @@ func (deviceManager *DeviceManager) Display() *Display {
 	_display = wrapDisplay(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
+}
+
+// ListDevices returns the list of devices of type type currently attached to
+// device_manager.
+//
+// Deprecated: , use gdk_seat_get_pointer(), gdk_seat_get_keyboard() and
+// gdk_seat_get_slaves() instead.
+func (deviceManager *DeviceManager) ListDevices(typ DeviceType) *externglib.List {
+	var _arg0 *C.GdkDeviceManager // out
+	var _arg1 C.GdkDeviceType     // out
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
+	_arg1 = C.GdkDeviceType(typ)
+
+	_cret = C.gdk_device_manager_list_devices(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDevice)(_p)
+		var dst Device // out
+		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }

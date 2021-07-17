@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -16,6 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -51,6 +53,19 @@ type ContentProviderOverrider interface {
 	//
 	// This can be assumed to be a subset of gdk.ContentProvider.RefFormats().
 	RefStorableFormats() *ContentFormats
+	// WriteMIMETypeAsync: asynchronously writes the contents of provider to
+	// stream in the given mime_type.
+	//
+	// When the operation is finished callback will be called. You must then
+	// call gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the
+	// operation.
+	//
+	// The given mime type does not need to be listed in the formats returned by
+	// gdk.ContentProvider.RefFormats(). However, if the given GType is not
+	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
+	//
+	// The given stream will not be closed.
+	WriteMIMETypeAsync(mimeType string, stream gio.OutputStreamer, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -217,6 +232,37 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	})
 
 	return _contentFormats
+}
+
+// WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
+// in the given mime_type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
+//
+// The given mime type does not need to be listed in the formats returned by
+// gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// supported, IO_ERROR_NOT_SUPPORTED will be reported.
+//
+// The given stream will not be closed.
+func (provider *ContentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStreamer, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GOutputStream      // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation.

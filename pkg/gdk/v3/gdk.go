@@ -282,6 +282,22 @@ func (context *DragContext) SuggestedAction() DragAction {
 	return _dragAction
 }
 
+// ListTargets retrieves the list of targets of the context.
+func (context *DragContext) ListTargets() *externglib.List {
+	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GList          // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
+
+	_cret = C.gdk_drag_context_list_targets(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+
+	return _list
+}
+
 // ManageDnd requests the drag and drop operation to be managed by context. When
 // a drag and drop operation becomes managed, the DragContext will internally
 // handle all input and source-side EventDND events as required by the windowing

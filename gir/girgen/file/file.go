@@ -24,7 +24,7 @@ type Headerer interface {
 func ApplyHeader(dst Headerer, srcs ...Headerer) {
 	dstHeader := dst.Header()
 	for _, src := range srcs {
-		src.Header().ApplyHeader(dstHeader)
+		dstHeader.ApplyFrom(src.Header())
 	}
 }
 
@@ -285,9 +285,14 @@ func (h *Header) NeedsGLibObject() {
 	h.AddPackage("glib-2.0")
 }
 
-// ApplyHeader applies the side effects of the conversion. The caller is
-// responsible for calling this.
-func (h *Header) ApplyHeader(dst *Header) {
+// ApplyFrom is ApplyTo but reversed.
+func (h *Header) ApplyFrom(src *Header) {
+	src.ApplyTo(h)
+}
+
+// ApplyTo applies the headers into the given one. The caller is responsible for
+// calling this.
+func (h *Header) ApplyTo(dst *Header) {
 	if h.stop || dst.stop {
 		return
 	}

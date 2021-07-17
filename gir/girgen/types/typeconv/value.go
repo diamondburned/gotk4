@@ -69,6 +69,10 @@ type ConversionValue struct {
 
 	// KeepType overrides the abstract type if true.
 	KeepType bool
+
+	// InContainer, if true, will increment the C type pointer by 1 to indicate
+	// that the type is stored indirectly as a pointer in a container.
+	InContainer bool
 }
 
 // NewValue creates a new ConversionValue from the given parameter attributes.
@@ -420,6 +424,9 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	value.NeedsNamespace = value.Resolved.NeedsNamespace(conv.currentNamespace)
 
 	cgoType := value.Resolved.CGoType()
+	if value.InContainer {
+		cgoType = "*" + cgoType
+	}
 
 	if value.Direction == ConvertCToGo {
 		value.In.Type = cgoType
@@ -638,6 +645,15 @@ func (value *ValueConverted) OutCast(want int) string {
 		return value.Out.Type
 	}
 	return fmt.Sprintf("%s(%s%s)", ptr, ptr, value.Out.Type)
+}
+
+// OutInNamePtr is like InNamePtr but for OutInPtr.
+func (value *ValueConverted) OutInNamePtr(want int) string {
+	ptr := value.OutInPtr(want)
+	if ptr == "" {
+		return value.Out.Name
+	}
+	return fmt.Sprintf("(%s%s)", ptr, value.Out.Name)
 }
 
 // OutInPtr returns the left-hand side for the output name and type SPECIFICALLY

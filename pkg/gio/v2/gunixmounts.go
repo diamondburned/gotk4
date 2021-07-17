@@ -436,6 +436,37 @@ func UnixMountPointsChangedSince(time uint64) bool {
 	return _ok
 }
 
+// UnixMountPointsGet gets a #GList of MountPoint containing the unix mount
+// points. If time_read is set, it will be filled with the mount timestamp,
+// allowing for checking if the mounts have changed with
+// g_unix_mount_points_changed_since().
+func UnixMountPointsGet() (uint64, *externglib.List) {
+	var _arg1 C.guint64 // in
+	var _cret *C.GList  // in
+
+	_cret = C.g_unix_mount_points_get(&_arg1)
+
+	var _timeRead uint64       // out
+	var _list *externglib.List // out
+
+	_timeRead = uint64(_arg1)
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GUnixMountPoint)(_p)
+		var dst *UnixMountPoint // out
+		dst = (*UnixMountPoint)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_unix_mount_point_free((*C.GUnixMountPoint)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _timeRead, _list
+}
+
 // UnixMountsChangedSince checks if the unix mounts have changed since a given
 // unix time.
 func UnixMountsChangedSince(time uint64) bool {
@@ -453,6 +484,36 @@ func UnixMountsChangedSince(time uint64) bool {
 	}
 
 	return _ok
+}
+
+// UnixMountsGet gets a #GList of MountEntry containing the unix mounts. If
+// time_read is set, it will be filled with the mount timestamp, allowing for
+// checking if the mounts have changed with g_unix_mounts_changed_since().
+func UnixMountsGet() (uint64, *externglib.List) {
+	var _arg1 C.guint64 // in
+	var _cret *C.GList  // in
+
+	_cret = C.g_unix_mounts_get(&_arg1)
+
+	var _timeRead uint64       // out
+	var _list *externglib.List // out
+
+	_timeRead = uint64(_arg1)
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GUnixMountEntry)(_p)
+		var dst *UnixMountEntry // out
+		dst = (*UnixMountEntry)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.free(unsafe.Pointer((*C.GUnixMountEntry)(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _timeRead, _list
 }
 
 // UnixMountMonitor watches Mounts for changes.

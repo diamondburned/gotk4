@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -79,6 +80,29 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
 	C.gtk_window_group_add_window(_arg0, _arg1)
+}
+
+// ListWindows returns a list of the GtkWindows that belong to window_group.
+func (windowGroup *WindowGroup) ListWindows() *externglib.List {
+	var _arg0 *C.GtkWindowGroup // out
+	var _cret *C.GList          // in
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(windowGroup.Native()))
+
+	_cret = C.gtk_window_group_list_windows(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // RemoveWindow removes a window from a GtkWindowGroup.

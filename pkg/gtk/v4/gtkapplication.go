@@ -334,6 +334,34 @@ func (application *Application) ActiveWindow() *Window {
 	return _window
 }
 
+// MenuByID gets a menu from automatically loaded resources.
+//
+// See the section on Automatic resources
+// (class.Application.html#automatic-resources) for more information.
+func (application *Application) MenuByID(id string) *gio.Menu {
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.char           // out
+	var _cret *C.GMenu          // in
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
+
+	_cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
+
+	var _menu *gio.Menu // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_menu = &gio.Menu{
+			MenuModel: gio.MenuModel{
+				Object: obj,
+			},
+		}
+	}
+
+	return _menu
+}
+
 // Menubar returns the menu model that has been set with
 // gtk.Application.SetMenubar().
 func (application *Application) Menubar() *gio.MenuModel {
@@ -375,6 +403,35 @@ func (application *Application) WindowByID(id uint) *Window {
 	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
+}
+
+// Windows gets a list of the gtk.Window instances associated with application.
+//
+// The list is sorted by most recently focused window, such that the first
+// element is the currently focused window. (Useful for choosing a parent for a
+// transient window.)
+//
+// The list that is returned should not be modified in any way. It will only
+// remain valid until the next focus change or window creation or deletion.
+func (application *Application) Windows() *externglib.List {
+	var _arg0 *C.GtkApplication // out
+	var _cret *C.GList          // in
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
+
+	_cret = C.gtk_application_get_windows(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
 }
 
 // Inhibit: inform the session manager that certain types of actions should be

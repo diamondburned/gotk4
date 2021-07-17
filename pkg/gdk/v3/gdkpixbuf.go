@@ -46,8 +46,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -102,8 +104,10 @@ func PixbufGetFromWindow(window Windowwer, srcX int, srcY int, width int, height
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

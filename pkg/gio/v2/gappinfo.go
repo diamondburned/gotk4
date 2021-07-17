@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -694,6 +695,67 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	return _appInfo, _goerr
 }
 
+// AppInfoGetAll gets a list of all of the applications currently registered on
+// this system.
+//
+// For desktop files, this includes applications that have NoDisplay=true set or
+// are excluded from display by means of OnlyShowIn or NotShowIn. See
+// g_app_info_should_show(). The returned list does not include applications
+// which have the Hidden key set.
+func AppInfoGetAll() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.g_app_info_get_all()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GAppInfo)(_p)
+		var dst AppInfo // out
+		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
+}
+
+// AppInfoGetAllForType gets a list of all Infos for a given content type,
+// including the recommended and fallback Infos. See
+// g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
+func AppInfoGetAllForType(contentType string) *externglib.List {
+	var _arg1 *C.char  // out
+	var _cret *C.GList // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+
+	_cret = C.g_app_info_get_all_for_type(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GAppInfo)(_p)
+		var dst AppInfo // out
+		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
+}
+
 // AppInfoGetDefaultForType gets the default Info for a given content type.
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
 	var _arg1 *C.char     // out
@@ -730,6 +792,68 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appInfo
+}
+
+// AppInfoGetFallbackForType gets a list of fallback Infos for a given content
+// type, i.e. those applications which claim to support the given content type
+// by MIME type subclassing and not directly.
+func AppInfoGetFallbackForType(contentType string) *externglib.List {
+	var _arg1 *C.gchar // out
+	var _cret *C.GList // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
+
+	_cret = C.g_app_info_get_fallback_for_type(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GAppInfo)(_p)
+		var dst AppInfo // out
+		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
+}
+
+// AppInfoGetRecommendedForType gets a list of recommended Infos for a given
+// content type, i.e. those applications which claim to support the given
+// content type exactly, and not by MIME type subclassing. Note that the first
+// application of the list is the last used one, i.e. the last one for which
+// g_app_info_set_as_last_used_for_type() has been called.
+func AppInfoGetRecommendedForType(contentType string) *externglib.List {
+	var _arg1 *C.gchar // out
+	var _cret *C.GList // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
+
+	_cret = C.g_app_info_get_recommended_for_type(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GAppInfo)(_p)
+		var dst AppInfo // out
+		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
 }
 
 // AppInfoLaunchDefaultForURI: utility function that launches the default

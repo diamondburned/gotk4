@@ -484,3 +484,33 @@ func PaperSizeGetDefault() string {
 
 	return _utf8
 }
+
+// PaperSizeGetPaperSizes creates a list of known paper sizes.
+func PaperSizeGetPaperSizes(includeCustom bool) *externglib.List {
+	var _arg1 C.gboolean // out
+	var _cret *C.GList   // in
+
+	if includeCustom {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C.gtk_paper_size_get_paper_sizes(_arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkPaperSize)(_p)
+		var dst *PaperSize // out
+		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.gtk_paper_size_free((*C.GtkPaperSize)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
+}

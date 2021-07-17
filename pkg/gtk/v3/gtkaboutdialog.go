@@ -411,8 +411,10 @@ func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
 		obj := externglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

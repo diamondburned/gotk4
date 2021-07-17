@@ -368,17 +368,12 @@ type MenuModelOverrider interface {
 	// If the attribute does not exist, or does not match the expected type then
 	// NULL is returned.
 	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// ItemAttributes gets all the attributes associated with the item in the
-	// menu model.
-	ItemAttributes(itemIndex int) *glib.HashTable
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//
 	// If the link exists, the linked Model is returned. If the link does not
 	// exist, NULL is returned.
 	ItemLink(itemIndex int, link string) *MenuModel
-	// ItemLinks gets all the links associated with the item in the menu model.
-	ItemLinks(itemIndex int) *glib.HashTable
 	// NItems: query the number of items in model.
 	NItems() int
 	// IsMutable queries if model is mutable.

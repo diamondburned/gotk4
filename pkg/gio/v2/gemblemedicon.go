@@ -98,6 +98,28 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
+// Emblems gets the list of emblems for the icon.
+func (emblemed *EmblemedIcon) Emblems() *externglib.List {
+	var _arg0 *C.GEmblemedIcon // out
+	var _cret *C.GList         // in
+
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(emblemed.Native()))
+
+	_cret = C.g_emblemed_icon_get_emblems(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GEmblem)(_p)
+		var dst Emblem // out
+		dst = *wrapEmblem(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
+}
+
 // GetIcon gets the main icon for emblemed.
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out

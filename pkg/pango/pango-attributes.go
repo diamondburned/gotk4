@@ -405,7 +405,7 @@ func _gotk4_pango1_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) (cret
 
 	attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg0)))
 	runtime.SetFinalizer(attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	fn := v.(AttrFilterFunc)
@@ -436,7 +436,7 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -455,7 +455,7 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -478,7 +478,7 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -503,7 +503,7 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -522,7 +522,7 @@ func NewAttrFamily(family string) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -541,7 +541,7 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -564,7 +564,7 @@ func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -583,7 +583,7 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -602,7 +602,7 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -626,7 +626,7 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -645,7 +645,7 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -671,7 +671,7 @@ func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -690,7 +690,7 @@ func NewAttrOverline(overline Overline) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -709,7 +709,7 @@ func NewAttrRise(rise int) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -731,7 +731,7 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -751,7 +751,7 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -770,7 +770,7 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -796,7 +796,7 @@ func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -817,7 +817,7 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -836,7 +836,7 @@ func NewAttrStyle(style Style) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -862,7 +862,7 @@ func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -881,7 +881,7 @@ func NewAttrUnderline(underline Underline) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -900,7 +900,7 @@ func NewAttrVariant(variant Variant) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -919,7 +919,7 @@ func NewAttrWeight(weight Weight) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1129,7 +1129,7 @@ func AttrFontDescNew(desc *FontDescription) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1169,7 +1169,7 @@ func AttrFontFeaturesNew(features string) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1225,7 +1225,7 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 
 	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attrIterator
@@ -1334,7 +1334,7 @@ func AttrLanguageNew(language *Language) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1479,7 +1479,7 @@ func (list *AttrList) Iterator() *AttrIterator {
 
 	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attrIterator, func(v *AttrIterator) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attrIterator
@@ -1645,7 +1645,7 @@ func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1686,7 +1686,7 @@ func AttrSizeNew(size int) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1705,7 +1705,7 @@ func AttrSizeNewAbsolute(size int) *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute
@@ -1778,7 +1778,7 @@ func (attr *Attribute) Copy() *Attribute {
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_attribute, func(v *Attribute) {
-		C.free(gextras.StructNative(unsafe.Pointer(v)))
+		C.pango_attribute_destroy((*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(v))))
 	})
 
 	return _attribute

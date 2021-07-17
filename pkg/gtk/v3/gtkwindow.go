@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -726,13 +727,49 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 		obj := externglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
 
 	return _pixbuf
+}
+
+// IconList retrieves the list of icons set by gtk_window_set_icon_list(). The
+// list is copied, but the reference count on each member won’t be incremented.
+func (window *Window) IconList() *externglib.List {
+	var _arg0 *C.GtkWindow // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+
+	_cret = C.gtk_window_get_icon_list(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkPixbuf)(_p)
+		var dst gdkpixbuf.Pixbuf // out
+		{
+			obj := externglib.Take(unsafe.Pointer(src))
+			dst = gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // IconName returns the name of the themed icon for the window, see
@@ -2412,6 +2449,39 @@ func (window *Window) Unstick() {
 	C.gtk_window_unstick(_arg0)
 }
 
+// WindowGetDefaultIconList gets the value set by
+// gtk_window_set_default_icon_list(). The list is a copy and should be freed
+// with g_list_free(), but the pixbufs in the list have not had their reference
+// count incremented.
+func WindowGetDefaultIconList() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.gtk_window_get_default_icon_list()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkPixbuf)(_p)
+		var dst gdkpixbuf.Pixbuf // out
+		{
+			obj := externglib.Take(unsafe.Pointer(src))
+			dst = gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // WindowGetDefaultIconName returns the fallback icon name for windows that has
 // been set with gtk_window_set_default_icon_name(). The returned string is
 // owned by GTK+ and should not be modified. It is only valid until the next
@@ -2426,6 +2496,30 @@ func WindowGetDefaultIconName() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// WindowListToplevels returns a list of all existing toplevel windows. The
+// widgets in the list are not individually referenced. If you want to iterate
+// through the list and perform actions involving callbacks that might destroy
+// the widgets, you must call g_list_foreach (result, (GFunc)g_object_ref, NULL)
+// first, and then unref all the widgets afterwards.
+func WindowListToplevels() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.gtk_window_list_toplevels()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // WindowSetAutoStartupNotification: by default, after showing the first Window,

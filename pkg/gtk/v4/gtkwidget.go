@@ -792,6 +792,9 @@ type Widgetter interface {
 	IsVisible() bool
 	// KeynavFailed emits the ::keynav-failed signal on the widget.
 	KeynavFailed(direction DirectionType) bool
+	// ListMnemonicLabels returns the widgets for which this widget is the
+	// target of a mnemonic.
+	ListMnemonicLabels() *externglib.List
 	// Map causes a widget to be mapped if it isn’t already.
 	Map()
 	// Measure measures widget in the orientation orientation and for the given
@@ -3125,6 +3128,38 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	}
 
 	return _ok
+}
+
+// ListMnemonicLabels returns the widgets for which this widget is the target of
+// a mnemonic.
+//
+// Typically, these widgets will be labels. See, for example,
+// gtk.Label.SetMnemonicWidget().
+//
+// The widgets in the list are not individually referenced. If you want to
+// iterate through the list and perform actions involving callbacks that might
+// destroy the widgets, you must call g_list_foreach (result,
+// (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
+func (widget *Widget) ListMnemonicLabels() *externglib.List {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // Map causes a widget to be mapped if it isn’t already.

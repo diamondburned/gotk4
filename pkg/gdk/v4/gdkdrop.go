@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -16,6 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -62,8 +64,14 @@ type Dropper interface {
 	Formats() *ContentFormats
 	// Surface returns the GdkSurface performing the drop.
 	Surface() *Surface
+	// ReadAsync: asynchronously read the dropped data from a GdkDrop in a
+	// format that complies with one of the mime types.
+	ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish finishes an async drop read operation.
 	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
+	// ReadValueAsync: asynchronously request the drag operation's contents
+	// converted to the given type.
+	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadValueFinish finishes an async drop read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 	// Status selects all actions that are potentially supported by the
@@ -214,6 +222,36 @@ func (self *Drop) Surface() *Surface {
 	return _surface
 }
 
+// ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
+// that complies with one of the mime types.
+func (self *Drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkDrop // out
+	var _arg1 **C.char
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	{
+		_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
+			var zero *C.char
+			out[len(mimeTypes)] = zero
+			for i := range mimeTypes {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+			}
+		}
+	}
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_drop_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
 // ReadFinish finishes an async drop read operation.
 //
 // Note that you must not use blocking read calls on the returned stream in the
@@ -249,6 +287,33 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr
+}
+
+// ReadValueAsync: asynchronously request the drag operation's contents
+// converted to the given type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Drop.ReadValueFinish() to get the resulting GValue.
+//
+// For local drag'n'drop operations that are available in the given GType, the
+// value will be copied directly. Otherwise, GDK will try to use
+// gdk.ContentDeserializeAsync() to convert the data.
+func (self *Drop) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkDrop            // out
+	var _arg1 C.GType               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg5 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_drop_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // ReadValueFinish finishes an async drop read.

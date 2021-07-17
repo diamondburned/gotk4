@@ -212,8 +212,10 @@ func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state 
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -247,8 +249,10 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int) *gdkpi
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -463,8 +467,10 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 		obj := externglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -826,8 +832,10 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

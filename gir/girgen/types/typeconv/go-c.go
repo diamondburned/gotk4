@@ -83,6 +83,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		return false
 	}
 
+	// Set the array value's resolved type to the inner type.
+	value.Resolved = inner.Resolved
+	value.NeedsNamespace = inner.NeedsNamespace
+
 	// These cases have invalid inner type names that aren't useful to us, so we
 	// handle them on our own.
 	switch {
@@ -148,7 +152,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		// Target fixed array, so we can directly set the data over. The memory
 		// is ours, and allocation is handled by Go.
-		value.header.ApplyHeader(inner.Header())
+		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
 		if !value.MustRealloc() {
@@ -205,7 +209,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			return true
 		}
 
-		value.header.ApplyHeader(inner.Header())
+		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
 		value.p.Linef(
@@ -238,7 +242,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("defer C.g_array_unref(%s)", value.OutName)
 		}
 
-		value.header.ApplyHeader(inner.Header())
+		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
 		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.InName)
@@ -293,7 +297,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
 
-		value.header.ApplyHeader(inner.Header())
+		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
 		value.p.Linef("out := unsafe.Slice(%s, len(%s)+1)", value.OutName, value.InName)

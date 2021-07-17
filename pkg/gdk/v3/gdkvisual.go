@@ -77,6 +77,33 @@ func (v VisualType) String() string {
 	}
 }
 
+// ListVisuals lists the available visuals for the default screen. (See
+// gdk_screen_list_visuals()) A visual describes a hardware image data format.
+// For example, a visual might support 24-bit color, or 8-bit color, and might
+// expect pixels to be in a certain format.
+//
+// Call g_list_free() on the return value when you’re finished with it.
+//
+// Deprecated: Use gdk_screen_list_visuals (gdk_screen_get_default ()).
+func ListVisuals() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.gdk_list_visuals()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkVisual)(_p)
+		var dst Visual // out
+		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // QueryDepths: this function returns the available bit depths for the default
 // screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
 // looking at the depth field in each visual, removing duplicates.

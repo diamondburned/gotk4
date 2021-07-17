@@ -232,6 +232,38 @@ func (manager *RecentManager) AddItem(uri string) bool {
 	return _ok
 }
 
+// Items gets the list of recently used resources.
+func (manager *RecentManager) Items() *externglib.List {
+	var _arg0 *C.GtkRecentManager // out
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+
+	_cret = C.gtk_recent_manager_get_items(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkRecentInfo)(_p)
+		var dst *RecentInfo // out
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.gtk_recent_info_ref(src)
+		runtime.SetFinalizer(dst, func(v *RecentInfo) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
+}
+
 // HasItem checks whether there is a recently used resource registered with uri
 // inside the recent manager.
 func (manager *RecentManager) HasItem(uri string) bool {
@@ -631,8 +663,10 @@ func (info *RecentInfo) Icon(size int) *gdkpixbuf.Pixbuf {
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

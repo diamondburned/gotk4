@@ -927,9 +927,17 @@ type Widgetter interface {
 	// KeynavFailed: this function should be called whenever keyboard navigation
 	// within a single widget hits a boundary.
 	KeynavFailed(direction DirectionType) bool
+	// ListAccelClosures lists the closures used by widget for accelerator group
+	// connections with gtk_accel_group_connect_by_path() or
+	// gtk_accel_group_connect().
+	ListAccelClosures() *externglib.List
 	// ListActionPrefixes retrieves a NULL-terminated array of strings
 	// containing the prefixes of Group's available to widget.
 	ListActionPrefixes() []string
+	// ListMnemonicLabels returns a newly allocated list of the widgets,
+	// normally labels, for which this widget is the target of a mnemonic (see
+	// for example, gtk_label_set_mnemonic_widget()).
+	ListMnemonicLabels() *externglib.List
 	// Map: this function is only for use in widget implementations.
 	Map()
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
@@ -4253,6 +4261,28 @@ func (widget *Widget) KeynavFailed(direction DirectionType) bool {
 	return _ok
 }
 
+// ListAccelClosures lists the closures used by widget for accelerator group
+// connections with gtk_accel_group_connect_by_path() or
+// gtk_accel_group_connect(). The closures can be used to monitor accelerator
+// changes on widget, by connecting to the GtkAccelGroup::accel-changed signal
+// of the AccelGroup of a closure which can be found out with
+// gtk_accel_group_from_accel_closure().
+func (widget *Widget) ListAccelClosures() *externglib.List {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_list_accel_closures(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // ListActionPrefixes retrieves a NULL-terminated array of strings containing
 // the prefixes of Group's available to widget.
 func (widget *Widget) ListActionPrefixes() []string {
@@ -4281,6 +4311,36 @@ func (widget *Widget) ListActionPrefixes() []string {
 	}
 
 	return _utf8s
+}
+
+// ListMnemonicLabels returns a newly allocated list of the widgets, normally
+// labels, for which this widget is the target of a mnemonic (see for example,
+// gtk_label_set_mnemonic_widget()).
+//
+// The widgets in the list are not individually referenced. If you want to
+// iterate through the list and perform actions involving callbacks that might
+// destroy the widgets, you must call g_list_foreach (result,
+// (GFunc)g_object_ref, NULL) first, and then unref all the widgets afterwards.
+func (widget *Widget) ListMnemonicLabels() *externglib.List {
+	var _arg0 *C.GtkWidget // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+
+	_cret = C.gtk_widget_list_mnemonic_labels(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // Map: this function is only for use in widget implementations. Causes a widget
@@ -4884,8 +4944,10 @@ func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpi
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -4921,8 +4983,10 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

@@ -140,6 +140,12 @@ type RecentChooserOverrider interface {
 	AddFilter(filter *RecentFilter)
 	// CurrentURI gets the URI currently selected by chooser.
 	CurrentURI() string
+	// Items gets the list of recently used resources in form of RecentInfo
+	// objects.
+	//
+	// The return value of this function is affected by the “sort-type” and
+	// “limit” properties of chooser.
+	Items() *externglib.List
 	ItemActivated()
 	// RemoveFilter removes filter from the list of RecentFilter objects held by
 	// chooser.
@@ -191,6 +197,9 @@ type RecentChooserer interface {
 	// Filter gets the RecentFilter object currently used by chooser to affect
 	// the display of the recently used resources.
 	Filter() *RecentFilter
+	// Items gets the list of recently used resources in form of RecentInfo
+	// objects.
+	Items() *externglib.List
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
 	Limit() int
@@ -339,6 +348,41 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 	_recentFilter = wrapRecentFilter(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
+}
+
+// Items gets the list of recently used resources in form of RecentInfo objects.
+//
+// The return value of this function is affected by the “sort-type” and “limit”
+// properties of chooser.
+func (chooser *RecentChooser) Items() *externglib.List {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(chooser.Native()))
+
+	_cret = C.gtk_recent_chooser_get_items(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkRecentInfo)(_p)
+		var dst *RecentInfo // out
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.gtk_recent_info_ref(src)
+		runtime.SetFinalizer(dst, func(v *RecentInfo) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(v))))
+		})
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
 }
 
 // Limit gets the number of items returned by gtk_recent_chooser_get_items() and

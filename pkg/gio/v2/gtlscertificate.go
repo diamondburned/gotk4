@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -303,4 +304,38 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
 	return _tlsCertificateFlags
+}
+
+// TLSCertificateListNewFromFile creates one or more Certificates from the
+// PEM-encoded data in file. If file cannot be read or parsed, the function will
+// return NULL and set error. If file does not contain any PEM-encoded
+// certificates, this will return an empty list and not set error.
+func TlsCertificateListNewFromFile(file string) (*externglib.List, error) {
+	var _arg1 *C.gchar  // out
+	var _cret *C.GList  // in
+	var _cerr *C.GError // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+
+	_cret = C.g_tls_certificate_list_new_from_file(_arg1, &_cerr)
+
+	var _list *externglib.List // out
+	var _goerr error           // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GTlsCertificate)(_p)
+		var dst TLSCertificate // out
+		dst = *wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _list, _goerr
 }

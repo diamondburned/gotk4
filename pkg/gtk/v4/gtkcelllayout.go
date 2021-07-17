@@ -74,6 +74,8 @@ type CellLayoutOverrider interface {
 	// Area returns the underlying CellArea which might be cell_layout if called
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() *CellArea
+	// Cells returns the cell renderers which have been added to cell_layout.
+	Cells() *externglib.List
 	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
 	// the cell is allocated no more space than it needs. Any unused space is
 	// divided evenly between cells for which expand is TRUE.
@@ -208,6 +210,8 @@ type CellLayouter interface {
 	// Area returns the underlying CellArea which might be cell_layout if called
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
 	Area() *CellArea
+	// Cells returns the cell renderers which have been added to cell_layout.
+	Cells() *externglib.List
 	// PackEnd adds the cell to the end of cell_layout.
 	PackEnd(cell CellRendererer, expand bool)
 	// PackStart packs the cell into the beginning of cell_layout.
@@ -289,6 +293,29 @@ func (cellLayout *CellLayout) Area() *CellArea {
 	_cellArea = wrapCellArea(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellArea
+}
+
+// Cells returns the cell renderers which have been added to cell_layout.
+func (cellLayout *CellLayout) Cells() *externglib.List {
+	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GList         // in
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(cellLayout.Native()))
+
+	_cret = C.gtk_cell_layout_get_cells(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkCellRenderer)(_p)
+		var dst CellRenderer // out
+		dst = *wrapCellRenderer(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then the

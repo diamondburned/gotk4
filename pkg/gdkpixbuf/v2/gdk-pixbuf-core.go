@@ -17,6 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -207,6 +208,60 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// PixbufNewFromStreamAsync creates a new pixbuf by asynchronously loading an
+// image from an input stream.
+//
+// For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
+// version of this function.
+//
+// When the operation is finished, callback will be called in the main thread.
+// You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
+// the operation.
+func PixbufNewFromStreamAsync(stream gio.InputStreamer, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.GInputStream       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_pixbuf_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
+}
+
+// PixbufNewFromStreamAtScaleAsync creates a new pixbuf by asynchronously
+// loading an image from an input stream.
+//
+// For more details see gdk_pixbuf_new_from_stream_at_scale(), which is the
+// synchronous version of this function.
+//
+// When the operation is finished, callback will be called in the main thread.
+// You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
+// the operation.
+func PixbufNewFromStreamAtScaleAsync(stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.GInputStream       // out
+	var _arg2 C.gint                // out
+	var _arg3 C.gint                // out
+	var _arg4 C.gboolean            // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = C.gint(width)
+	_arg3 = C.gint(height)
+	if preserveAspectRatio {
+		_arg4 = C.TRUE
+	}
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_pixbuf_new_from_stream_at_scale_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // PixbufSaveToStreamFinish finishes an asynchronous pixbuf save operation

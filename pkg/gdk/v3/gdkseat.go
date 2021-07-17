@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -126,6 +127,8 @@ type Seater interface {
 	Keyboard() *Device
 	// Pointer returns the master device that routes pointer events.
 	Pointer() *Device
+	// Slaves returns the slave devices that match the given capabilities.
+	Slaves(capabilities SeatCapabilities) *externglib.List
 	// Ungrab releases a grab added through gdk_seat_grab().
 	Ungrab()
 }
@@ -206,6 +209,31 @@ func (seat *Seat) Pointer() *Device {
 	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
+}
+
+// Slaves returns the slave devices that match the given capabilities.
+func (seat *Seat) Slaves(capabilities SeatCapabilities) *externglib.List {
+	var _arg0 *C.GdkSeat            // out
+	var _arg1 C.GdkSeatCapabilities // out
+	var _cret *C.GList              // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg1 = C.GdkSeatCapabilities(capabilities)
+
+	_cret = C.gdk_seat_get_slaves(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDevice)(_p)
+		var dst Device // out
+		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // Ungrab releases a grab added through gdk_seat_grab().

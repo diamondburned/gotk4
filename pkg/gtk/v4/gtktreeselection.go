@@ -198,6 +198,44 @@ func (selection *TreeSelection) Selected() (*TreeModel, TreeIter, bool) {
 	return _model, _iter, _ok
 }
 
+// SelectedRows creates a list of path of all selected rows. Additionally, if
+// you are planning on modifying the model after calling this function, you may
+// want to convert the returned list into a list of TreeRowReferences. To do
+// this, you can use gtk_tree_row_reference_new().
+//
+// To free the return value, use:
+//
+//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+func (selection *TreeSelection) SelectedRows() (*TreeModel, *externglib.List) {
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreeModel     // in
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(selection.Native()))
+
+	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
+
+	var _model *TreeModel      // out
+	var _list *externglib.List // out
+
+	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg1)))
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkTreePath)(_p)
+		var dst *TreePath // out
+		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.gtk_tree_path_free((*C.GtkTreePath)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _model, _list
+}
+
 // TreeView returns the tree view associated with selection.
 func (selection *TreeSelection) TreeView() *TreeView {
 	var _arg0 *C.GtkTreeSelection // out

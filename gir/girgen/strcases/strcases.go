@@ -51,6 +51,9 @@ func initPascalRegex() {
 	fullRegex.WriteByte('(')
 
 	for i, special := range pascalSpecials {
+		if special == "" {
+			continue
+		}
 		if i > 0 {
 			fullRegex.WriteByte('|')
 		}
@@ -66,6 +69,13 @@ func initPascalRegex() {
 	pascalRegex = regexp.MustCompile(fullRegex.String())
 }
 
+// AddPascalSpecials adds the given list of regexes into the list of cases that
+// will be fully capitalized during case conversion to Go.
+func AddPascalSpecials(regexes []string) {
+	pascalSpecials = append(pascalSpecials, regexes...)
+	initPascalRegex()
+}
+
 func initPascalPostReplacer() {
 	postReplacerArgs := make([]string, len(pascalWords)*2)
 	for from, to := range pascalWords {
@@ -75,25 +85,18 @@ func initPascalPostReplacer() {
 	pascalPostReplacer = strings.NewReplacer(postReplacerArgs...)
 }
 
-func init() {
-	initPascalWords()
-	initPascalRegex()
-	initPascalPostReplacer()
-}
-
-// AddPascalSpecials adds the given list of regexes into the list of cases that
-// will be fully capitalized during case conversion to Go.
-func AddPascalSpecials(regexes []string) {
-	pascalSpecials = append(pascalSpecials, regexes...)
-	initPascalRegex()
-}
-
 // SetPascalWords sets the given map of words to be replaced after the pascal
 // specials stage as a method of fixing edge cases.
 func SetPascalWords(words map[string]string) {
 	for from, to := range words {
 		pascalWords[from] = to
 	}
+	initPascalPostReplacer()
+}
+
+func init() {
+	initPascalWords()
+	initPascalRegex()
 	initPascalPostReplacer()
 }
 

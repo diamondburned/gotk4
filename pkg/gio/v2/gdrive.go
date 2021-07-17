@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -87,6 +88,11 @@ type DriveOverrider interface {
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
 	SymbolicIcon() *Icon
+	// Volumes: get a list of mountable volumes for drive.
+	//
+	// The returned list should be freed with g_list_free(), after its elements
+	// have been unreffed with g_object_unref().
+	Volumes() *externglib.List
 	// HasMedia checks if the drive has media. Note that the OS may not be
 	// polling the drive for media changes; see
 	// g_drive_is_media_check_automatic() for more details.
@@ -192,6 +198,8 @@ type Driver interface {
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
 	SymbolicIcon() *Icon
+	// Volumes: get a list of mountable volumes for drive.
+	Volumes() *externglib.List
 	// HasMedia checks if the drive has media.
 	HasMedia() bool
 	// HasVolumes: check if drive has any mountable volumes.
@@ -535,6 +543,37 @@ func (drive *Drive) SymbolicIcon() *Icon {
 	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
+}
+
+// Volumes: get a list of mountable volumes for drive.
+//
+// The returned list should be freed with g_list_free(), after its elements have
+// been unreffed with g_object_unref().
+func (drive *Drive) Volumes() *externglib.List {
+	var _arg0 *C.GDrive // out
+	var _cret *C.GList  // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(drive.Native()))
+
+	_cret = C.g_drive_get_volumes(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GVolume)(_p)
+		var dst Volume // out
+		dst = *wrapVolume(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
 }
 
 // HasMedia checks if the drive has media. Note that the OS may not be polling

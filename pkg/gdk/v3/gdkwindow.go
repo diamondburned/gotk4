@@ -814,6 +814,11 @@ type Windowwer interface {
 	// BackgroundPattern gets the pattern used to clear the background on
 	// window.
 	BackgroundPattern() *cairo.Pattern
+	// Children gets the list of children of window known to GDK.
+	Children() *externglib.List
+	// ChildrenWithUserData gets the list of children of window known to GDK
+	// with a particular user_data set on it.
+	ChildrenWithUserData(userData cgo.Handle) *externglib.List
 	// ClipRegion computes the region of a window that potentially can be
 	// written to by drawing primitives.
 	ClipRegion() *cairo.Region
@@ -975,6 +980,9 @@ type Windowwer interface {
 	MoveResize(x int, y int, width int, height int)
 	// MoveToRect moves window to rect, aligning their anchor points.
 	MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int)
+	// PeekChildren: like gdk_window_get_children(), but does not copy the list
+	// of children, so the list does not need to be freed.
+	PeekChildren() *externglib.List
 	// ProcessUpdates sends one or more expose events to window.
 	ProcessUpdates(updateChildren bool)
 	// Raise raises window to the top of the Z-order (stacking order), so that
@@ -1811,6 +1819,64 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 	})
 
 	return _pattern
+}
+
+// Children gets the list of children of window known to GDK. This function only
+// returns children created via GDK, so for example it’s useless when used with
+// the root window; it only returns windows an application created itself.
+//
+// The returned list must be freed, but the elements in the list need not be.
+func (window *Window) Children() *externglib.List {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	_cret = C.gdk_window_get_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
+// ChildrenWithUserData gets the list of children of window known to GDK with a
+// particular user_data set on it.
+//
+// The returned list must be freed, but the elements in the list need not be.
+//
+// The list is returned in (relative) stacking order, i.e. the lowest window is
+// first.
+func (window *Window) ChildrenWithUserData(userData cgo.Handle) *externglib.List {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
+
+	_cret = C.gdk_window_get_children_with_user_data(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // ClipRegion computes the region of a window that potentially can be written to
@@ -3122,6 +3188,29 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnch
 	_arg6 = C.gint(rectAnchorDy)
 
 	C.gdk_window_move_to_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+}
+
+// PeekChildren: like gdk_window_get_children(), but does not copy the list of
+// children, so the list does not need to be freed.
+func (window *Window) PeekChildren() *externglib.List {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+
+	_cret = C.gdk_window_peek_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
 }
 
 // ProcessUpdates sends one or more expose events to window. The areas in each

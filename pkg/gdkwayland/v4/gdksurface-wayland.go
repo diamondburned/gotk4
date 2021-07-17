@@ -30,6 +30,8 @@ func init() {
 // WaylandPopup: wayland implementation of GdkPopup.
 type WaylandPopup struct {
 	WaylandSurface
+
+	gdk.Popup
 }
 
 var _ gextras.Nativer = (*WaylandPopup)(nil)
@@ -41,6 +43,11 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 				Object: obj,
 			},
 		},
+		Popup: gdk.Popup{
+			Surface: gdk.Surface{
+				Object: obj,
+			},
+		},
 	}
 }
 
@@ -48,6 +55,12 @@ func marshalWaylandPopupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandPopup(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *WaylandPopup) Native() uintptr {
+	return v.WaylandSurface.Surface.Object.Native()
 }
 
 func (*WaylandPopup) privateWaylandPopup() {}
@@ -86,6 +99,8 @@ func (*WaylandSurface) privateWaylandSurface() {}
 // gdkwayland.WaylandToplevel.SetTransientForExported().
 type WaylandToplevel struct {
 	WaylandSurface
+
+	gdk.Toplevel
 }
 
 var _ gextras.Nativer = (*WaylandToplevel)(nil)
@@ -97,6 +112,11 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 				Object: obj,
 			},
 		},
+		Toplevel: gdk.Toplevel{
+			Surface: gdk.Surface{
+				Object: obj,
+			},
+		},
 	}
 }
 
@@ -104,6 +124,12 @@ func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandToplevel(obj), nil
+}
+
+// Native implements gextras.Nativer. It returns the underlying GObject
+// field.
+func (v *WaylandToplevel) Native() uintptr {
+	return v.WaylandSurface.Surface.Object.Native()
 }
 
 // ExportHandle: asynchronously obtains a handle for a surface that can be

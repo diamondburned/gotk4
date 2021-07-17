@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -394,6 +395,29 @@ func (box *FlowBox) RowSpacing() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// SelectedChildren creates a list of all selected children.
+func (box *FlowBox) SelectedChildren() *externglib.List {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(box.Native()))
+
+	_cret = C.gtk_flow_box_get_selected_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkFlowBoxChild)(_p)
+		var dst FlowBoxChild // out
+		dst = *wrapFlowBoxChild(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // SelectionMode gets the selection mode of box.

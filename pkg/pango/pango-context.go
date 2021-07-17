@@ -22,6 +22,99 @@ func init() {
 	})
 }
 
+// Itemize breaks a piece of text into segments with consistent directional
+// level and font.
+//
+// Each byte of text will be contained in exactly one of the items in the
+// returned list; the generated list of items will be in logical order (the
+// start offsets of the items are ascending).
+//
+// cached_iter should be an iterator over attrs currently positioned at a range
+// before or containing start_index; cached_iter will be advanced to the range
+// covering the position just after start_index + length. (i.e. if itemizing in
+// a loop, just keep passing in the same cached_iter).
+func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *externglib.List {
+	var _arg1 *C.PangoContext      // out
+	var _arg2 *C.char              // out
+	var _arg3 C.int                // out
+	var _arg4 C.int                // out
+	var _arg5 *C.PangoAttrList     // out
+	var _arg6 *C.PangoAttrIterator // out
+	var _cret *C.GList             // in
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg3 = C.int(startIndex)
+	_arg4 = C.int(length)
+	_arg5 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	_arg6 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+
+	_cret = C.pango_itemize(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.PangoItem)(_p)
+		var dst Item // out
+		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.pango_item_free((*C.PangoItem)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
+}
+
+// ItemizeWithBaseDir: like pango_itemize(), but with an explicitly specified
+// base direction.
+//
+// The base direction is used when computing bidirectional levels. (see
+// pango.Context.SetBaseDir()). itemize gets the base direction from the
+// PangoContext.
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *externglib.List {
+	var _arg1 *C.PangoContext      // out
+	var _arg2 C.PangoDirection     // out
+	var _arg3 *C.char              // out
+	var _arg4 C.int                // out
+	var _arg5 C.int                // out
+	var _arg6 *C.PangoAttrList     // out
+	var _arg7 *C.PangoAttrIterator // out
+	var _cret *C.GList             // in
+
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.PangoDirection(baseDir)
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	_arg4 = C.int(startIndex)
+	_arg5 = C.int(length)
+	_arg6 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+	_arg7 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
+
+	_cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.PangoItem)(_p)
+		var dst Item // out
+		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.pango_item_free((*C.PangoItem)(v.(unsafe.Pointer)))
+		})
+	})
+
+	return _list
+}
+
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //

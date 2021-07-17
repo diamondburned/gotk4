@@ -764,6 +764,42 @@ func (context *StyleContext) Invalidate() {
 	C.gtk_style_context_invalidate(_arg0)
 }
 
+// ListClasses returns the list of classes currently defined in context.
+func (context *StyleContext) ListClasses() *externglib.List {
+	var _arg0 *C.GtkStyleContext // out
+	var _cret *C.GList           // in
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+
+	_cret = C.gtk_style_context_list_classes(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
+// ListRegions returns the list of regions currently defined in context.
+//
+// Deprecated: since version 3.14.
+func (context *StyleContext) ListRegions() *externglib.List {
+	var _arg0 *C.GtkStyleContext // out
+	var _cret *C.GList           // in
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+
+	_cret = C.gtk_style_context_list_regions(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // LookupColor looks up and resolves a color name in the context color map.
 func (context *StyleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out

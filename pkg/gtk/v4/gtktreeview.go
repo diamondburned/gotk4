@@ -775,6 +775,30 @@ func (treeView *TreeView) Column(n int) *TreeViewColumn {
 	return _treeViewColumn
 }
 
+// Columns returns a #GList of all the TreeViewColumn s currently in tree_view.
+// The returned list must be freed with g_list_free ().
+func (treeView *TreeView) Columns() *externglib.List {
+	var _arg0 *C.GtkTreeView // out
+	var _cret *C.GList       // in
+
+	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(treeView.Native()))
+
+	_cret = C.gtk_tree_view_get_columns(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkTreeViewColumn)(_p)
+		var dst TreeViewColumn // out
+		dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // Cursor fills in path and focus_column with the current path and focus column.
 // If the cursor isn’t currently set, then *path will be NULL. If no column
 // currently has focus, then *focus_column will be NULL.

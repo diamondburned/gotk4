@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -13,6 +14,7 @@ import (
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // ShowURI: this function launches the default application for showing a given
@@ -27,6 +29,32 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	_arg3 = C.guint32(timestamp)
 
 	C.gtk_show_uri(_arg1, _arg2, _arg3)
+}
+
+// ShowURIFull: this function launches the default application for showing a
+// given uri.
+//
+// The callback will be called when the launch is completed. It should call
+// gtk_show_uri_full_finish() to obtain the result.
+//
+// This is the recommended call to be used as it passes information necessary
+// for sandbox helpers to parent their dialogs properly.
+func ShowURIFull(parent *Window, uri string, timestamp uint32, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.GtkWindow          // out
+	var _arg2 *C.char               // out
+	var _arg3 C.guint32             // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	_arg3 = C.guint32(timestamp)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg6 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of

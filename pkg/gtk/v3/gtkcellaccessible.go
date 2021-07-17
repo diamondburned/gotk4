@@ -37,6 +37,7 @@ type CellAccessible struct {
 
 	atk.Action
 	atk.Component
+	atk.TableCell
 }
 
 var _ gextras.Nativer = (*CellAccessible)(nil)
@@ -53,6 +54,11 @@ func wrapCellAccessible(obj *externglib.Object) *CellAccessible {
 		},
 		Component: atk.Component{
 			Object: obj,
+		},
+		TableCell: atk.TableCell{
+			ObjectClass: atk.ObjectClass{
+				Object: obj,
+			},
 		},
 	}
 }

@@ -63,6 +63,7 @@ func RecordIsOpaque(rec gir.Record) bool {
 var acceptableFreeNames = []string{
 	"unref",
 	"free",
+	"destroy",
 }
 
 // methodCanCallDirectly returns true if the method is generated, has no
@@ -80,7 +81,13 @@ func methodCanCallDirectly(method *gir.Method) bool {
 
 // RecordHasFree returns the free/unref method if it has one.
 func RecordHasFree(record *gir.Record) *gir.Method {
-	return findMethodName(record, "free")
+	if m := findMethodName(record, "free"); m != nil {
+		return m
+	}
+	if m := findMethodName(record, "destroy"); m != nil {
+		return m
+	}
+	return nil
 }
 
 // RecordHasUnref returns the unref method if it has one.

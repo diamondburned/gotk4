@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -366,4 +367,25 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 	}
 
 	C.g_content_type_set_mime_dirs(_arg1)
+}
+
+// ContentTypesGetRegistered gets a list of strings containing all the
+// registered content types known to the system. The list and its data should be
+// freed using g_list_free_full (list, g_free).
+func ContentTypesGetRegistered() *externglib.List {
+	var _cret *C.GList // in
+
+	_cret = C.g_content_types_get_registered()
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.free(v.(unsafe.Pointer))
+		})
+	})
+
+	return _list
 }

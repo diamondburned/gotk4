@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -102,12 +103,16 @@ var _ gextras.Nativer = (*Seat)(nil)
 type Seater interface {
 	// Capabilities returns the capabilities this GdkSeat currently has.
 	Capabilities() SeatCapabilities
+	// Devices returns the devices that match the given capabilities.
+	Devices(capabilities SeatCapabilities) *externglib.List
 	// Display returns the GdkDisplay this seat belongs to.
 	Display() *Display
 	// Keyboard returns the device that routes keyboard events.
 	Keyboard() *Device
 	// Pointer returns the device that routes pointer events.
 	Pointer() *Device
+	// Tools returns all GdkDeviceTools that are known to the application.
+	Tools() *externglib.List
 }
 
 var _ Seater = (*Seat)(nil)
@@ -138,6 +143,31 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 	_seatCapabilities = SeatCapabilities(_cret)
 
 	return _seatCapabilities
+}
+
+// Devices returns the devices that match the given capabilities.
+func (seat *Seat) Devices(capabilities SeatCapabilities) *externglib.List {
+	var _arg0 *C.GdkSeat            // out
+	var _arg1 C.GdkSeatCapabilities // out
+	var _cret *C.GList              // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+	_arg1 = C.GdkSeatCapabilities(capabilities)
+
+	_cret = C.gdk_seat_get_devices(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDevice)(_p)
+		var dst Device // out
+		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // Display returns the GdkDisplay this seat belongs to.
@@ -186,4 +216,27 @@ func (seat *Seat) Pointer() *Device {
 	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _device
+}
+
+// Tools returns all GdkDeviceTools that are known to the application.
+func (seat *Seat) Tools() *externglib.List {
+	var _arg0 *C.GdkSeat // out
+	var _cret *C.GList   // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(seat.Native()))
+
+	_cret = C.gdk_seat_get_tools(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDeviceTool)(_p)
+		var dst DeviceTool // out
+		dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }

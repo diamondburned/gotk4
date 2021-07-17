@@ -242,7 +242,16 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 // convertInner is used while converting arrays; it returns the result of the
 // inner value converted.
 func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueConverted {
-	if of.AnyType.Array == nil {
+	var inner *gir.AnyType
+
+	switch {
+	case of.AnyType.Array != nil:
+		inner = &of.AnyType.Array.AnyType
+	case of.AnyType.Type.Type != nil:
+		inner = &of.AnyType.Type.AnyType
+	}
+
+	if inner == nil || inner.Type == nil {
 		return nil
 	}
 
@@ -253,16 +262,7 @@ func (conv *Converter) convertInner(of *ValueConverted, in, out string) *ValueCo
 		owner = "none"
 	}
 
-	result := conv.convertType(of, in, out, of.AnyType.Array.AnyType, owner)
-	if result == nil {
-		return nil
-	}
-
-	// Set the array value's resolved type to the inner type.
-	of.Resolved = result.Resolved
-	of.NeedsNamespace = result.NeedsNamespace
-
-	return result
+	return conv.convertType(of, in, out, *inner, owner)
 }
 
 // convertType converts a manually-crafted value with the given type.
@@ -279,7 +279,14 @@ func (conv *Converter) convertType(
 		Direction:      of.Direction,
 		ParameterIndex: UnknownValueIndex,
 		ParameterAttrs: attrs,
+		InContainer:    of.Type != nil && of.Type.Type != nil, // is container type
 	})
+
+	// If the value is in a container, then its direction is always in. This is
+	// because container-inner types are converted in a callback.
+	if result.InContainer {
+		result.ParameterAttrs.Direction = "in"
+	}
 
 	if !conv.convert(&result) {
 		return nil

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -91,6 +92,9 @@ type FileEnumeratorOverrider interface {
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
 	NextFilesAsync(numFiles int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	// NextFilesFinish finishes the asynchronous operation started with
+	// g_file_enumerator_next_files_async().
+	NextFilesFinish(result AsyncResulter) (*externglib.List, error)
 }
 
 // FileEnumerator allows you to operate on a set of #GFiles, returning a Info
@@ -406,6 +410,40 @@ func (enumerator *FileEnumerator) NextFilesAsync(numFiles int, ioPriority int, c
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+}
+
+// NextFilesFinish finishes the asynchronous operation started with
+// g_file_enumerator_next_files_async().
+func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) (*externglib.List, error) {
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GList           // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(enumerator.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer((result).(gextras.Nativer).Native()))
+
+	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
+
+	var _list *externglib.List // out
+	var _goerr error           // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GFileInfo)(_p)
+		var dst FileInfo // out
+		dst = *wrapFileInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _list, _goerr
 }
 
 // SetPending sets the file enumerator as having pending operations.

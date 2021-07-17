@@ -47,6 +47,11 @@ func wrapTextCellAccessible(obj *externglib.Object) *TextCellAccessible {
 				Component: atk.Component{
 					Object: obj,
 				},
+				TableCell: atk.TableCell{
+					ObjectClass: atk.ObjectClass{
+						Object: obj,
+					},
+				},
 			},
 		},
 		Text: atk.Text{

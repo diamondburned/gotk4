@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -402,6 +403,29 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 	_listBoxRow = wrapListBoxRow(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _listBoxRow
+}
+
+// SelectedRows creates a list of all selected children.
+func (box *ListBox) SelectedRows() *externglib.List {
+	var _arg0 *C.GtkListBox // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(box.Native()))
+
+	_cret = C.gtk_list_box_get_selected_rows(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkListBoxRow)(_p)
+		var dst ListBoxRow // out
+		dst = *wrapListBoxRow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // SelectionMode gets the selection mode of the listbox.

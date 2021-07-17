@@ -75,6 +75,9 @@ type DBusInterfaceSkeletonner interface {
 	// Connection gets the first connection that interface_ is exported on, if
 	// any.
 	Connection() *DBusConnection
+	// Connections gets a list of the connections that interface_ is exported
+	// on.
+	Connections() *externglib.List
 	// Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
 	// of interface_
 	Flags() DBusInterfaceSkeletonFlags
@@ -167,6 +170,34 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	_dBusConnection = wrapDBusConnection(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
+}
+
+// Connections gets a list of the connections that interface_ is exported on.
+func (interface_ *DBusInterfaceSkeleton) Connections() *externglib.List {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _cret *C.GList                  // in
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+
+	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GDBusConnection)(_p)
+		var dst DBusConnection // out
+		dst = *wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
 }
 
 // Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of

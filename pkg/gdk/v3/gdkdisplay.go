@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -488,6 +489,54 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 	_arg1 = C.guint32(time_)
 
 	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
+}
+
+// ListDevices returns the list of available input devices attached to display.
+// The list is statically allocated and should not be freed.
+//
+// Deprecated: Use gdk_device_manager_list_devices() instead.
+func (display *Display) ListDevices() *externglib.List {
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	_cret = C.gdk_display_list_devices(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDevice)(_p)
+		var dst Device // out
+		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
+}
+
+// ListSeats returns the list of seats known to display.
+func (display *Display) ListSeats() *externglib.List {
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+
+	_cret = C.gdk_display_list_seats(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkSeat)(_p)
+		var dst Seat // out
+		dst = *wrapSeat(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the application

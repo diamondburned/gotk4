@@ -45,6 +45,11 @@ func wrapPlugAccessible(obj *externglib.Object) *PlugAccessible {
 					},
 				},
 			},
+			Window: atk.Window{
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
+				},
+			},
 		},
 	}
 }

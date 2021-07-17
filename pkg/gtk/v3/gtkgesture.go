@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -141,6 +142,8 @@ type Gesturer interface {
 	// Device returns the master Device that is currently operating on gesture,
 	// or NULL if the gesture is not being interacted.
 	Device() *gdk.Device
+	// GetGroup returns all gestures in the group of gesture
+	GetGroup() *externglib.List
 	// LastUpdatedSequence returns the EventSequence that was last updated on
 	// gesture.
 	LastUpdatedSequence() *gdk.EventSequence
@@ -150,6 +153,9 @@ type Gesturer interface {
 	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
 	// SequenceState returns the sequence state, as seen by gesture.
 	SequenceState(sequence *gdk.EventSequence) EventSequenceState
+	// Sequences returns the list of EventSequences currently being interpreted
+	// by gesture.
+	Sequences() *externglib.List
 	// Window returns the user-defined window that receives the events handled
 	// by gesture.
 	Window() *gdk.Window
@@ -269,6 +275,29 @@ func (gesture *Gesture) Device() *gdk.Device {
 	return _device
 }
 
+// GetGroup returns all gestures in the group of gesture
+func (gesture *Gesture) GetGroup() *externglib.List {
+	var _arg0 *C.GtkGesture // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+
+	_cret = C.gtk_gesture_get_group(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkGesture)(_p)
+		var dst Gesture // out
+		dst = *wrapGesture(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // LastUpdatedSequence returns the EventSequence that was last updated on
 // gesture.
 func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
@@ -330,6 +359,33 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 	_eventSequenceState = EventSequenceState(_cret)
 
 	return _eventSequenceState
+}
+
+// Sequences returns the list of EventSequences currently being interpreted by
+// gesture.
+func (gesture *Gesture) Sequences() *externglib.List {
+	var _arg0 *C.GtkGesture // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(gesture.Native()))
+
+	_cret = C.gtk_gesture_get_sequences(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkEventSequence)(_p)
+		var dst *gdk.EventSequence // out
+		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(dst, func(v *gdk.EventSequence) {
+			C.free(gextras.StructNative(unsafe.Pointer(v)))
+		})
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // Window returns the user-defined window that receives the events handled by

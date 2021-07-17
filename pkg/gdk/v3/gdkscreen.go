@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -515,6 +516,34 @@ func (screen *Screen) SystemVisual() *Visual {
 	return _visual
 }
 
+// ToplevelWindows obtains a list of all toplevel windows known to GDK on the
+// screen screen. A toplevel window is a child of the root window (see
+// gdk_get_default_root_window()).
+//
+// The returned list should be freed with g_list_free(), but its elements need
+// not be freed.
+func (screen *Screen) ToplevelWindows() *externglib.List {
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	_cret = C.gdk_screen_get_toplevel_windows(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
 // Width gets the width of screen in pixels. The returned size is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
@@ -557,6 +586,47 @@ func (screen *Screen) WidthMm() int {
 	return _gint
 }
 
+// WindowStack returns a #GList of Windows representing the current window
+// stack.
+//
+// On X11, this is done by inspecting the _NET_CLIENT_LIST_STACKING property on
+// the root window, as described in the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec). If the window manager does
+// not support the _NET_CLIENT_LIST_STACKING hint, this function returns NULL.
+//
+// On other platforms, this function may return NULL, depending on whether it is
+// implementable on that platform.
+//
+// The returned list is newly allocated and owns references to the windows it
+// contains, so it should be freed using g_list_free() and its windows unrefed
+// using g_object_unref() when no longer needed.
+func (screen *Screen) WindowStack() *externglib.List {
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	_cret = C.gdk_screen_get_window_stack(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
+}
+
 // IsComposited returns whether windows with an RGBA visual can reasonably be
 // expected to have their alpha channel drawn correctly on the screen.
 //
@@ -577,6 +647,34 @@ func (screen *Screen) IsComposited() bool {
 	}
 
 	return _ok
+}
+
+// ListVisuals lists the available visuals for the specified screen. A visual
+// describes a hardware image data format. For example, a visual might support
+// 24-bit color, or 8-bit color, and might expect pixels to be in a certain
+// format.
+//
+// Call g_list_free() on the return value when you’re finished with it.
+func (screen *Screen) ListVisuals() *externglib.List {
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+
+	_cret = C.gdk_screen_list_visuals(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkVisual)(_p)
+		var dst Visual // out
+		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // MakeDisplayName determines the name to pass to gdk_display_open() to get a

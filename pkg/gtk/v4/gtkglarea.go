@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,6 +28,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type GLAreaOverrider interface {
+	Render(context gdk.GLContexter) bool
 	Resize(width int, height int)
 }
 
@@ -206,6 +208,29 @@ func (area *GLArea) AutoRender() bool {
 	}
 
 	return _ok
+}
+
+// Context retrieves the GdkGLContext used by area.
+func (area *GLArea) Context() *gdk.GLContext {
+	var _arg0 *C.GtkGLArea    // out
+	var _cret *C.GdkGLContext // in
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(area.Native()))
+
+	_cret = C.gtk_gl_area_get_context(_arg0)
+
+	var _glContext *gdk.GLContext // out
+
+	{
+		obj := externglib.Take(unsafe.Pointer(_cret))
+		_glContext = &gdk.GLContext{
+			DrawContext: gdk.DrawContext{
+				Object: obj,
+			},
+		}
+	}
+
+	return _glContext
 }
 
 // Error gets the current error set on the area.

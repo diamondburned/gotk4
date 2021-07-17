@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -220,6 +221,13 @@ type Devicer interface {
 	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable.
 	Grab(window Windowwer, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
+	// ListAxes returns a #GList of Atoms, containing the labels for the axes
+	// that device currently has.
+	ListAxes() *externglib.List
+	// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
+	// will return the list of slave devices attached to it, otherwise it will
+	// return NULL
+	ListSlaveDevices() *externglib.List
 	// SetAxisUse specifies how an axis of a device is used.
 	SetAxisUse(index_ uint, use AxisUse)
 	// SetKey specifies the X key event to generate when a macro button of a
@@ -714,6 +722,49 @@ func (device *Device) Grab(window Windowwer, grabOwnership GrabOwnership, ownerE
 	_grabStatus = GrabStatus(_cret)
 
 	return _grabStatus
+}
+
+// ListAxes returns a #GList of Atoms, containing the labels for the axes that
+// device currently has.
+func (device *Device) ListAxes() *externglib.List {
+	var _arg0 *C.GdkDevice // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	_cret = C.gdk_device_list_axes(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
+// ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it will
+// return the list of slave devices attached to it, otherwise it will return
+// NULL
+func (device *Device) ListSlaveDevices() *externglib.List {
+	var _arg0 *C.GdkDevice // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+
+	_cret = C.gdk_device_list_slave_devices(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GdkDevice)(_p)
+		var dst Device // out
+		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // SetAxisUse specifies how an axis of a device is used.

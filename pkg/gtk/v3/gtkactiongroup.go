@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -265,6 +266,31 @@ func (actionGroup *ActionGroup) Visible() bool {
 	}
 
 	return _ok
+}
+
+// ListActions lists the actions in the action group.
+//
+// Deprecated: since version 3.10.
+func (actionGroup *ActionGroup) ListActions() *externglib.List {
+	var _arg0 *C.GtkActionGroup // out
+	var _cret *C.GList          // in
+
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+
+	_cret = C.gtk_action_group_list_actions(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkAction)(_p)
+		var dst Action // out
+		dst = *wrapAction(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }
 
 // RemoveAction removes an action object from the action group.

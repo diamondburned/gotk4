@@ -45,6 +45,11 @@ func wrapBooleanCellAccessible(obj *externglib.Object) *BooleanCellAccessible {
 				Component: atk.Component{
 					Object: obj,
 				},
+				TableCell: atk.TableCell{
+					ObjectClass: atk.ObjectClass{
+						Object: obj,
+					},
+				},
 			},
 		},
 	}

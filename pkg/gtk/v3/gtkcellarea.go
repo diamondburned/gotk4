@@ -390,6 +390,8 @@ type CellAreaer interface {
 	// FocusFromSibling gets the CellRenderer which is expected to be focusable
 	// for which renderer is, or may be a sibling.
 	FocusFromSibling(renderer CellRendererer) *CellRenderer
+	// FocusSiblings gets the focus sibling cell renderers for renderer.
+	FocusSiblings(renderer CellRendererer) *externglib.List
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight int, naturalHeight int)
@@ -876,6 +878,30 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) *CellRenderer {
 	_cellRenderer = wrapCellRenderer(externglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRenderer
+}
+
+// FocusSiblings gets the focus sibling cell renderers for renderer.
+func (area *CellArea) FocusSiblings(renderer CellRendererer) *externglib.List {
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _cret *C.GList           // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer((renderer).(gextras.Nativer).Native()))
+
+	_cret = C.gtk_cell_area_get_focus_siblings(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkCellRenderer)(_p)
+		var dst CellRenderer // out
+		dst = *wrapCellRenderer(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
 }
 
 // PreferredHeight retrieves a cell area’s initial minimum and natural height.

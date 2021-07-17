@@ -19,6 +19,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -178,6 +179,29 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _width, _height, _pixbufFormat
+}
+
+// PixbufGetFileInfoAsync: asynchronously parses an image file far enough to
+// determine its format and size.
+//
+// For more details see gdk_pixbuf_get_file_info(), which is the synchronous
+// version of this function.
+//
+// When the operation is finished, callback will be called in the main thread.
+// You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
+// operation.
+func PixbufGetFileInfoAsync(filename string, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
 }
 
 // PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation

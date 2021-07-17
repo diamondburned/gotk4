@@ -47,6 +47,11 @@ func wrapImageCellAccessible(obj *externglib.Object) *ImageCellAccessible {
 				Component: atk.Component{
 					Object: obj,
 				},
+				TableCell: atk.TableCell{
+					ObjectClass: atk.ObjectClass{
+						Object: obj,
+					},
+				},
 			},
 		},
 		Image: atk.Image{

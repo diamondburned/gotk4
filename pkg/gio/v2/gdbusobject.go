@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -39,6 +40,8 @@ type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
 	Interface(interfaceName string) *DBusInterface
+	// Interfaces gets the D-Bus interfaces associated with object.
+	Interfaces() *externglib.List
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 	InterfaceAdded(interface_ DBusInterfacer)
@@ -59,6 +62,8 @@ type DBusObjector interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
 	Interface(interfaceName string) *DBusInterface
+	// Interfaces gets the D-Bus interfaces associated with object.
+	Interfaces() *externglib.List
 	// ObjectPath gets the object path for object.
 	ObjectPath() string
 }
@@ -94,6 +99,34 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusInterface
+}
+
+// Interfaces gets the D-Bus interfaces associated with object.
+func (object *DBusObject) Interfaces() *externglib.List {
+	var _arg0 *C.GDBusObject // out
+	var _cret *C.GList       // in
+
+	_arg0 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+
+	_cret = C.g_dbus_object_get_interfaces(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GDBusInterface)(_p)
+		var dst DBusInterface // out
+		dst = *wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
+		})
+	})
+
+	return _list
 }
 
 // ObjectPath gets the object path for object.

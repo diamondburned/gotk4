@@ -5,6 +5,7 @@ package gdkpixbuf
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -16,6 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -341,6 +343,29 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	}
 
 	return _ok
+}
+
+// PixbufAnimationNewFromStreamAsync creates a new animation by asynchronously
+// loading an image from an input stream.
+//
+// For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
+// version of this function.
+//
+// When the operation is finished, callback will be called in the main thread.
+// You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
+// result of the operation.
+func PixbufAnimationNewFromStreamAsync(stream gio.InputStreamer, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.GInputStream       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gdk_pixbuf_animation_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
 }
 
 // PixbufAnimationIterOverrider contains methods that are overridable.

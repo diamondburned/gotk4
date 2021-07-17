@@ -286,6 +286,11 @@ type Containerer interface {
 	Foreach(callback Callback)
 	// BorderWidth retrieves the border width of the container.
 	BorderWidth() uint
+	// Children returns the container’s non-internal children.
+	Children() *externglib.List
+	// FocusChain retrieves the focus chain of the container, if one has been
+	// set explicitly.
+	FocusChain() (*externglib.List, bool)
 	// FocusChild returns the current focus child widget inside container.
 	FocusChild() *Widget
 	// FocusHAdjustment retrieves the horizontal focus adjustment for the
@@ -507,6 +512,64 @@ func (container *Container) BorderWidth() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// Children returns the container’s non-internal children. See
+// gtk_container_forall() for details on what constitutes an "internal" child.
+func (container *Container) Children() *externglib.List {
+	var _arg0 *C.GtkContainer // out
+	var _cret *C.GList        // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
+
+	_cret = C.gtk_container_get_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
+}
+
+// FocusChain retrieves the focus chain of the container, if one has been set
+// explicitly. If no focus chain has been explicitly set, GTK+ computes the
+// focus chain based on the positions of the children. In that case, GTK+ stores
+// NULL in focusable_widgets and returns FALSE.
+//
+// Deprecated: For overriding focus behavior, use the GtkWidgetClass::focus
+// signal.
+func (container *Container) FocusChain() (*externglib.List, bool) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GList        // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(container.Native()))
+
+	_cret = C.gtk_container_get_focus_chain(_arg0, &_arg1)
+
+	var _focusableWidgets *externglib.List // out
+	var _ok bool                           // out
+
+	_focusableWidgets = externglib.WrapList(uintptr(unsafe.Pointer(_arg1)))
+	_focusableWidgets.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_focusableWidgets, (*externglib.List).Free)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _focusableWidgets, _ok
 }
 
 // FocusChild returns the current focus child widget inside container. This is

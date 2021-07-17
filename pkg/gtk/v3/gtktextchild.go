@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -80,4 +81,28 @@ func (anchor *TextChildAnchor) Deleted() bool {
 	}
 
 	return _ok
+}
+
+// Widgets gets a list of all widgets anchored at this child anchor. The
+// returned list should be freed with g_list_free().
+func (anchor *TextChildAnchor) Widgets() *externglib.List {
+	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret *C.GList              // in
+
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(anchor.Native()))
+
+	_cret = C.gtk_text_child_anchor_get_widgets(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWidget)(_p)
+		var dst Widget // out
+		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+	runtime.SetFinalizer(_list, (*externglib.List).Free)
+
+	return _list
 }

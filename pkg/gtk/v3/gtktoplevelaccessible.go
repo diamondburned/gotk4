@@ -44,4 +44,23 @@ func marshalToplevelAccessibler(p uintptr) (interface{}, error) {
 	return wrapToplevelAccessible(obj), nil
 }
 
-func (*ToplevelAccessible) privateToplevelAccessible() {}
+func (accessible *ToplevelAccessible) Children() *externglib.List {
+	var _arg0 *C.GtkToplevelAccessible // out
+	var _cret *C.GList                 // in
+
+	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(accessible.Native()))
+
+	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
+		src := (*C.GtkWindow)(_p)
+		var dst Window // out
+		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		return dst
+	})
+
+	return _list
+}

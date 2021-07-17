@@ -44,6 +44,11 @@ func wrapRendererCellAccessible(obj *externglib.Object) *RendererCellAccessible 
 			Component: atk.Component{
 				Object: obj,
 			},
+			TableCell: atk.TableCell{
+				ObjectClass: atk.ObjectClass{
+					Object: obj,
+				},
+			},
 		},
 	}
 }

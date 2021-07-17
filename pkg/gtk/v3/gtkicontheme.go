@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -23,6 +24,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 func init() {
@@ -267,8 +269,10 @@ func (iconInfo *IconInfo) BuiltinPixbuf() *gdkpixbuf.Pixbuf {
 		obj := externglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -382,14 +386,35 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _pixbuf, _goerr
+}
+
+// LoadIconAsync: asynchronously load, render and scale an icon previously
+// looked up from the icon theme using gtk_icon_theme_lookup_icon().
+//
+// For more details, see gtk_icon_info_load_icon() which is the synchronous
+// version of this call.
+func (iconInfo *IconInfo) LoadIconAsync(cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GtkIconInfo        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg3 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_icon_info_load_icon_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // LoadIconFinish finishes an async icon load, see
@@ -412,8 +437,10 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -502,14 +529,43 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _wasSymbolic, _pixbuf, _goerr
+}
+
+// LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
+// previously looked up from the icon theme using gtk_icon_theme_lookup_icon().
+//
+// For more details, see gtk_icon_info_load_symbolic() which is the synchronous
+// version of this call.
+func (iconInfo *IconInfo) LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GtkIconInfo        // out
+	var _arg1 *C.GdkRGBA            // out
+	var _arg2 *C.GdkRGBA            // out
+	var _arg3 *C.GdkRGBA            // out
+	var _arg4 *C.GdkRGBA            // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
+	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
+	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
+	_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg7 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_icon_info_load_symbolic_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // LoadSymbolicFinish finishes an async icon load, see
@@ -537,8 +593,10 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -580,14 +638,38 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _wasSymbolic, _pixbuf, _goerr
+}
+
+// LoadSymbolicForContextAsync: asynchronously load, render and scale a symbolic
+// icon previously looked up from the icon theme using
+// gtk_icon_theme_lookup_icon().
+//
+// For more details, see gtk_icon_info_load_symbolic_for_context() which is the
+// synchronous version of this call.
+func (iconInfo *IconInfo) LoadSymbolicForContextAsync(context *StyleContext, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GtkIconInfo        // out
+	var _arg1 *C.GtkStyleContext    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+	_arg4 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_icon_info_load_symbolic_for_context_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // LoadSymbolicForContextFinish finishes an async icon load, see
@@ -615,8 +697,10 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -660,8 +744,10 @@ func (iconInfo *IconInfo) LoadSymbolicForStyle(style *Style, state StateType) (b
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -1009,6 +1095,61 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 	return _ok
 }
 
+// ListContexts gets the list of contexts available within the current hierarchy
+// of icon themes. See gtk_icon_theme_list_icons() for details about contexts.
+func (iconTheme *IconTheme) ListContexts() *externglib.List {
+	var _arg0 *C.GtkIconTheme // out
+	var _cret *C.GList        // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+
+	_cret = C.gtk_icon_theme_list_contexts(_arg0)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.free(v.(unsafe.Pointer))
+		})
+	})
+
+	return _list
+}
+
+// ListIcons lists the icons in the current icon theme. Only a subset of the
+// icons can be listed by providing a context string. The set of values for the
+// context string is system dependent, but will typically include such values as
+// “Applications” and “MimeTypes”. Contexts are explained in the Icon Theme
+// Specification
+// (http://www.freedesktop.org/wiki/Specifications/icon-theme-spec). The
+// standard contexts are listed in the Icon Naming Specification
+// (http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also see
+// gtk_icon_theme_list_contexts().
+func (iconTheme *IconTheme) ListIcons(context string) *externglib.List {
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GList        // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(context)))
+
+	_cret = C.gtk_icon_theme_list_icons(_arg0, _arg1)
+
+	var _list *externglib.List // out
+
+	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_list, func(l *externglib.List) {
+		l.DataWrapper(nil)
+		l.FreeFull(func(v interface{}) {
+			C.free(v.(unsafe.Pointer))
+		})
+	})
+
+	return _list
+}
+
 // LoadIcon looks up an icon in an icon theme, scales it to the given size and
 // renders it into a pixbuf. This is a convenience function; if more details
 // about the icon are needed, use gtk_icon_theme_lookup_icon() followed by
@@ -1042,8 +1183,10 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookup
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}
@@ -1087,8 +1230,10 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
-			Icon: gio.Icon{
-				Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
 			},
 		}
 	}

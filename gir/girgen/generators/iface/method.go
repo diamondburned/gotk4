@@ -70,7 +70,7 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 			continue
 		}
 
-		g.cgen.Header().ApplyHeader(&g.header)
+		g.header.ApplyFrom(g.cgen.Header())
 		*m = append(*m, newMethod(&g.cgen))
 	}
 }

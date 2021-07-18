@@ -133,7 +133,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
@@ -172,7 +172,7 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr

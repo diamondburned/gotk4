@@ -360,7 +360,7 @@ func (device *Device) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -402,7 +402,7 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface S
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _winX, _winY, _surface
 }

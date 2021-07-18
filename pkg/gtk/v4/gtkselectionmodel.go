@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeler},
+		{T: externglib.Type(C.gtk_selection_model_get_type()), F: marshalSelectionModeller},
 	})
 }
 
@@ -126,8 +126,8 @@ type SelectionModel struct {
 
 var _ gextras.Nativer = (*SelectionModel)(nil)
 
-// SelectionModeler describes SelectionModel's abstract methods.
-type SelectionModeler interface {
+// SelectionModeller describes SelectionModel's abstract methods.
+type SelectionModeller interface {
 	// Selection gets the set containing all currently selected items in the
 	// model.
 	Selection() *Bitset
@@ -154,7 +154,7 @@ type SelectionModeler interface {
 	UnselectRange(position uint, nItems uint) bool
 }
 
-var _ SelectionModeler = (*SelectionModel)(nil)
+var _ SelectionModeller = (*SelectionModel)(nil)
 
 func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	return &SelectionModel{
@@ -164,7 +164,7 @@ func wrapSelectionModel(obj *externglib.Object) *SelectionModel {
 	}
 }
 
-func marshalSelectionModeler(p uintptr) (interface{}, error) {
+func marshalSelectionModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSelectionModel(obj), nil

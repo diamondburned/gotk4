@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymaper},
+		{T: externglib.Type(C.gdk_keymap_get_type()), F: marshalKeymapper},
 	})
 }
 
@@ -199,7 +199,7 @@ func wrapKeymap(obj *externglib.Object) *Keymap {
 	}
 }
 
-func marshalKeymaper(p uintptr) (interface{}, error) {
+func marshalKeymapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapKeymap(obj), nil
@@ -487,10 +487,10 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state Modifie
 	return _keyval, _effectiveGroup, _level, _consumedModifiers, _ok
 }
 
-// KeymapDefault returns the Keymap attached to the default display.
+// KeymapGetDefault returns the Keymap attached to the default display.
 //
 // Deprecated: Use gdk_keymap_get_for_display() instead.
-func KeymapDefault() *Keymap {
+func KeymapGetDefault() *Keymap {
 	var _cret *C.GdkKeymap // in
 
 	_cret = C.gdk_keymap_get_default()
@@ -502,8 +502,8 @@ func KeymapDefault() *Keymap {
 	return _keymap
 }
 
-// KeymapForDisplay returns the Keymap attached to display.
-func KeymapForDisplay(display *Display) *Keymap {
+// KeymapGetForDisplay returns the Keymap attached to display.
+func KeymapGetForDisplay(display *Display) *Keymap {
 	var _arg1 *C.GdkDisplay // out
 	var _cret *C.GdkKeymap  // in
 

@@ -838,17 +838,17 @@ func (resolver *Resolver) SetDefault() {
 	C.g_resolver_set_default(_arg0)
 }
 
-// ResolverDefault gets the default #GResolver. You should unref it when you are
-// done with it. #GResolver may use its reference count as a hint about how many
-// threads it should allocate for concurrent DNS resolutions.
-func ResolverDefault() Resolverer {
+// ResolverGetDefault gets the default #GResolver. You should unref it when you
+// are done with it. #GResolver may use its reference count as a hint about how
+// many threads it should allocate for concurrent DNS resolutions.
+func ResolverGetDefault() Resolverer {
 	var _cret *C.GResolver // in
 
 	_cret = C.g_resolver_get_default()
 
 	var _resolver Resolverer // out
 
-	_resolver = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Resolverer)
+	_resolver = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Resolverer)
 
 	return _resolver
 }

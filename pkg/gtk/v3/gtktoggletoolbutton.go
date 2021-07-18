@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtoner},
+		{T: externglib.Type(C.gtk_toggle_tool_button_get_type()), F: marshalToggleToolButtonner},
 	})
 }
 
@@ -86,7 +86,7 @@ func wrapToggleToolButton(obj *externglib.Object) *ToggleToolButton {
 	}
 }
 
-func marshalToggleToolButtoner(p uintptr) (interface{}, error) {
+func marshalToggleToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToggleToolButton(obj), nil

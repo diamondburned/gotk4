@@ -233,11 +233,11 @@ func (provider *CSSProvider) String() string {
 	return _utf8
 }
 
-// CSSProviderDefault returns the provider containing the style settings used as
-// a fallback for all widgets.
+// CSSProviderGetDefault returns the provider containing the style settings used
+// as a fallback for all widgets.
 //
 // Deprecated: Use gtk_css_provider_new() instead.
-func CssProviderDefault() *CSSProvider {
+func CssProviderGetDefault() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
 
 	_cret = C.gtk_css_provider_get_default()
@@ -249,8 +249,8 @@ func CssProviderDefault() *CSSProvider {
 	return _cssProvider
 }
 
-// CSSProviderNamed loads a theme from the usual theme paths
-func CssProviderNamed(name string, variant string) *CSSProvider {
+// CSSProviderGetNamed loads a theme from the usual theme paths
+func CssProviderGetNamed(name string, variant string) *CSSProvider {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _cret *C.GtkCssProvider // in

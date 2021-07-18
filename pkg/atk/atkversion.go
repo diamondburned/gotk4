@@ -7,9 +7,9 @@ package atk
 // #include <atk/atk.h>
 import "C"
 
-// BinaryAge returns the binary age as passed to libtool when building the ATK
-// library the process is running against.
-func BinaryAge() uint {
+// GetBinaryAge returns the binary age as passed to libtool when building the
+// ATK library the process is running against.
+func GetBinaryAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_binary_age()
@@ -21,9 +21,9 @@ func BinaryAge() uint {
 	return _guint
 }
 
-// InterfaceAge returns the interface age as passed to libtool when building the
-// ATK library the process is running against.
-func InterfaceAge() uint {
+// GetInterfaceAge returns the interface age as passed to libtool when building
+// the ATK library the process is running against.
+func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_interface_age()
@@ -35,13 +35,13 @@ func InterfaceAge() uint {
 	return _guint
 }
 
-// MajorVersion returns the major version number of the ATK library. (e.g. in
+// GetMajorVersion returns the major version number of the ATK library. (e.g. in
 // ATK version 2.7.4 this is 2.)
 //
 // This function is in the library, so it represents the ATK library your code
 // is running against. In contrast, the K_MAJOR_VERSION macro represents the
 // major version of the ATK headers you have included when compiling your code.
-func MajorVersion() uint {
+func GetMajorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_major_version()
@@ -53,13 +53,13 @@ func MajorVersion() uint {
 	return _guint
 }
 
-// MicroVersion returns the micro version number of the ATK library. (e.g. in
+// GetMicroVersion returns the micro version number of the ATK library. (e.g. in
 // ATK version 2.7.4 this is 4.)
 //
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MICRO_VERSION macro represents the
 // micro version of the ATK headers you have included when compiling your code.
-func MicroVersion() uint {
+func GetMicroVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_micro_version()
@@ -71,13 +71,13 @@ func MicroVersion() uint {
 	return _guint
 }
 
-// MinorVersion returns the minor version number of the ATK library. (e.g. in
+// GetMinorVersion returns the minor version number of the ATK library. (e.g. in
 // ATK version 2.7.4 this is 7.)
 //
 // This function is in the library, so it represents the ATK library your code
 // is are running against. In contrast, the K_MINOR_VERSION macro represents the
 // minor version of the ATK headers you have included when compiling your code.
-func MinorVersion() uint {
+func GetMinorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_minor_version()

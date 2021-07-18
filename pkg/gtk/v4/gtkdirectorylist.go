@@ -138,7 +138,7 @@ func (self *DirectoryList) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }

@@ -115,7 +115,7 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }

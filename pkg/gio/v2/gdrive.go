@@ -78,7 +78,7 @@ type DriveOverrider interface {
 	// g_drive_get_identifier() to obtain the identifiers themselves.
 	EnumerateIdentifiers() []string
 	// Icon gets the icon for drive.
-	Icon() Iconer
+	Icon() Iconner
 	// Identifier gets the identifier of the given kind for drive. The only
 	// identifier currently available is DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
 	Identifier(kind string) string
@@ -89,7 +89,7 @@ type DriveOverrider interface {
 	// StartStopType gets a hint about how a drive can be started/stopped.
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// Volumes: get a list of mountable volumes for drive.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -189,7 +189,7 @@ type Driver interface {
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
 	EnumerateIdentifiers() []string
 	// Icon gets the icon for drive.
-	Icon() Iconer
+	Icon() Iconner
 	// Identifier gets the identifier of the given kind for drive.
 	Identifier(kind string) string
 	// Name gets the name of drive.
@@ -199,7 +199,7 @@ type Driver interface {
 	// StartStopType gets a hint about how a drive can be started/stopped.
 	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// Volumes: get a list of mountable volumes for drive.
 	Volumes() *externglib.List
 	// HasMedia checks if the drive has media.
@@ -455,7 +455,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 }
 
 // Icon gets the icon for drive.
-func (drive *Drive) Icon() Iconer {
+func (drive *Drive) Icon() Iconner {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -463,9 +463,9 @@ func (drive *Drive) Icon() Iconer {
 
 	_cret = C.g_drive_get_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -540,7 +540,7 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 }
 
 // SymbolicIcon gets the icon for drive.
-func (drive *Drive) SymbolicIcon() Iconer {
+func (drive *Drive) SymbolicIcon() Iconner {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
 
@@ -548,9 +548,9 @@ func (drive *Drive) SymbolicIcon() Iconer {
 
 	_cret = C.g_drive_get_symbolic_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -573,7 +573,7 @@ func (drive *Drive) Volumes() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GVolume)(_p)
 		var dst Volumer // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

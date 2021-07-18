@@ -23,7 +23,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
 }
 
@@ -378,8 +378,8 @@ type Cursor struct {
 
 var _ gextras.Nativer = (*Cursor)(nil)
 
-// Cursorer describes Cursor's abstract methods.
-type Cursorer interface {
+// Cursorrer describes Cursor's abstract methods.
+type Cursorrer interface {
 	// CursorType returns the cursor type for this cursor.
 	CursorType() CursorType
 	// Display returns the display on which the Cursor is defined.
@@ -390,13 +390,13 @@ type Cursorer interface {
 	// cursor.
 	Surface() (xHot float64, yHot float64, surface *cairo.Surface)
 	// Ref adds a reference to cursor.
-	ref() Cursorer
+	ref() Cursorrer
 	// Unref removes a reference from cursor, deallocating the cursor if no
 	// references remain.
 	unref()
 }
 
-var _ Cursorer = (*Cursor)(nil)
+var _ Cursorrer = (*Cursor)(nil)
 
 func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{
@@ -404,7 +404,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 	}
 }
 
-func marshalCursorer(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil
@@ -705,7 +705,7 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 // Ref adds a reference to cursor.
 //
 // Deprecated: Use g_object_ref() instead.
-func (cursor *Cursor) ref() Cursorer {
+func (cursor *Cursor) ref() Cursorrer {
 	var _arg0 *C.GdkCursor // out
 	var _cret *C.GdkCursor // in
 
@@ -713,9 +713,9 @@ func (cursor *Cursor) ref() Cursorer {
 
 	_cret = C.gdk_cursor_ref(_arg0)
 
-	var _ret Cursorer // out
+	var _ret Cursorrer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Cursorer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Cursorrer)
 
 	return _ret
 }

@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixeder},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixedder},
 	})
 }
 
@@ -85,7 +85,7 @@ func wrapFixed(obj *externglib.Object) *Fixed {
 	}
 }
 
-func marshalFixeder(p uintptr) (interface{}, error) {
+func marshalFixedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFixed(obj), nil
@@ -105,7 +105,7 @@ func NewFixed() *Fixed {
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (fixed *Fixed) Move(widget Widgeter, x int, y int) {
+func (fixed *Fixed) Move(widget Widgetter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -120,7 +120,7 @@ func (fixed *Fixed) Move(widget Widgeter, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (fixed *Fixed) Put(widget Widgeter, x int, y int) {
+func (fixed *Fixed) Put(widget Widgetter, x int, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -139,9 +139,9 @@ type FixedChild struct {
 	native *C.GtkFixedChild
 }
 
-func (f *FixedChild) Widget() Widgeter {
-	var v Widgeter // out
-	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(Widgeter)
+func (f *FixedChild) Widget() Widgetter {
+	var v Widgetter // out
+	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(f.native.widget)))).(Widgetter)
 	return v
 }
 

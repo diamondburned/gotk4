@@ -54,12 +54,12 @@ func _gotk4_glib2_SourceFunc(arg0 C.gpointer) (cret C.gboolean) {
 	return cret
 }
 
-// CurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
+// GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
 //
 // You may find g_get_real_time() to be more convenient.
 //
 // Deprecated: Val is not year-2038-safe. Use g_get_real_time() instead.
-func CurrentTime(result *TimeVal) {
+func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
 	_arg1 = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(result)))
@@ -67,7 +67,7 @@ func CurrentTime(result *TimeVal) {
 	C.g_get_current_time(_arg1)
 }
 
-// MonotonicTime queries the system monotonic time.
+// GetMonotonicTime queries the system monotonic time.
 //
 // The monotonic clock will always increase and doesn't suffer discontinuities
 // when the user (or NTP) changes the system time. It may or may not continue to
@@ -76,7 +76,7 @@ func CurrentTime(result *TimeVal) {
 // We try to use the clock that corresponds as closely as possible to the
 // passage of time as measured by system calls such as poll() but it may not
 // always be possible to do this.
-func MonotonicTime() int64 {
+func GetMonotonicTime() int64 {
 	var _cret C.gint64 // in
 
 	_cret = C.g_get_monotonic_time()
@@ -88,7 +88,7 @@ func MonotonicTime() int64 {
 	return _gint64
 }
 
-// RealTime queries the system wall-clock time.
+// GetRealTime queries the system wall-clock time.
 //
 // This call is functionally equivalent to g_get_current_time() except that the
 // return value is often more convenient than dealing with a Val.
@@ -96,7 +96,7 @@ func MonotonicTime() int64 {
 // You should only use this call if you are actually interested in the real
 // wall-clock time. g_get_monotonic_time() is probably more useful for measuring
 // intervals.
-func RealTime() int64 {
+func GetRealTime() int64 {
 	var _cret C.gint64 // in
 
 	_cret = C.g_get_real_time()
@@ -722,7 +722,7 @@ func MainContextDefault() *MainContext {
 	return _mainContext
 }
 
-// MainContextThreadDefault gets the thread-default Context for this thread.
+// MainContextGetThreadDefault gets the thread-default Context for this thread.
 // Asynchronous operations that want to be able to be run in contexts other than
 // the default one should call this method or
 // g_main_context_ref_thread_default() to get a Context to add their #GSources
@@ -732,7 +732,7 @@ func MainContextDefault() *MainContext {
 //
 // If you need to hold a reference on the context, use
 // g_main_context_ref_thread_default() instead.
-func MainContextThreadDefault() *MainContext {
+func MainContextGetThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
 	_cret = C.g_main_context_get_thread_default()

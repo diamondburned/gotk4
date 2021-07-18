@@ -32,7 +32,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketer},
+		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocketter},
 	})
 }
 
@@ -106,7 +106,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketer(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil
@@ -414,7 +414,7 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 	return _goerr
 }
 
-// ConnectSocketer: connect the socket to the specified remote address.
+// ConnectSocketter: connect the socket to the specified remote address.
 //
 // For connection oriented socket this generally means we attempt to make a
 // connection to the address. For a connection-less socket it sets the default
@@ -430,7 +430,7 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 // can be notified of the connection finishing by waiting for the G_IO_OUT
 // condition. The result of the connection must then be checked with
 // g_socket_check_connect_result().
-func (socket *Socket) ConnectSocketer(ctx context.Context, address SocketAddresser) error {
+func (socket *Socket) ConnectSocketter(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocket        // out
 	var _arg2 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
@@ -660,7 +660,7 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -768,7 +768,7 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

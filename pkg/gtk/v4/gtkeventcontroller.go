@@ -62,7 +62,7 @@ type EventControllerer interface {
 	// events.
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
-	Widget() Widgeter
+	Widget() Widgetter
 	// Reset resets the controller to a clean state.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
@@ -101,7 +101,7 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 
 	var _event gdk.Eventer // out
 
-	_event = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
+	_event = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
 
 	return _event
 }
@@ -118,7 +118,7 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 
 	return _device
 }
@@ -207,7 +207,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (controller *EventController) Widget() Widgeter {
+func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
@@ -215,9 +215,9 @@ func (controller *EventController) Widget() Widgeter {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_toolbar_space_style_get_type()), F: marshalToolbarSpaceStyle},
-		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbarer},
+		{T: externglib.Type(C.gtk_toolbar_get_type()), F: marshalToolbarrer},
 	})
 }
 
@@ -131,7 +131,7 @@ func wrapToolbar(obj *externglib.Object) *Toolbar {
 	}
 }
 
-func marshalToolbarer(p uintptr) (interface{}, error) {
+func marshalToolbarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolbar(obj), nil

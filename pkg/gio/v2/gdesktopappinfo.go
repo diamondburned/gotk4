@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookuper},
+		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
 		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
 }
@@ -61,15 +61,15 @@ type DesktopAppInfoLookup struct {
 
 var _ gextras.Nativer = (*DesktopAppInfoLookup)(nil)
 
-// DesktopAppInfoLookuper describes DesktopAppInfoLookup's abstract methods.
-type DesktopAppInfoLookuper interface {
+// DesktopAppInfoLookupper describes DesktopAppInfoLookup's abstract methods.
+type DesktopAppInfoLookupper interface {
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
 	// implementation.
 	DefaultForURIScheme(uriScheme string) AppInfor
 }
 
-var _ DesktopAppInfoLookuper = (*DesktopAppInfoLookup)(nil)
+var _ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
 
 func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	return &DesktopAppInfoLookup{
@@ -77,7 +77,7 @@ func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	}
 }
 
-func marshalDesktopAppInfoLookuper(p uintptr) (interface{}, error) {
+func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDesktopAppInfoLookup(obj), nil
@@ -104,7 +104,7 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInf
 
 	var _appInfo AppInfor // out
 
-	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
@@ -527,11 +527,12 @@ func (info *DesktopAppInfo) ListActions() []string {
 	return _utf8s
 }
 
-// DesktopAppInfoImplementations gets all applications that implement interface.
+// DesktopAppInfoGetImplementations gets all applications that implement
+// interface.
 //
 // An application implements an interface if that interface is listed in the
 // Implements= line of the desktop file of the application.
-func DesktopAppInfoImplementations(_interface string) *externglib.List {
+func DesktopAppInfoGetImplementations(_interface string) *externglib.List {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 

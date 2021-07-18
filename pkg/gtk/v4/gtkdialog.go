@@ -21,7 +21,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
 		{T: externglib.Type(C.gtk_dialog_flags_get_type()), F: marshalDialogFlags},
-		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialoger},
+		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialogger},
 	})
 }
 
@@ -316,7 +316,7 @@ func wrapDialog(obj *externglib.Object) *Dialog {
 	}
 }
 
-func marshalDialoger(p uintptr) (interface{}, error) {
+func marshalDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDialog(obj), nil
@@ -346,7 +346,7 @@ func NewDialog() *Dialog {
 //
 // If you want to add a non-activatable widget, simply pack it into the
 // action_area field of the GtkDialog struct.
-func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.int        // out
@@ -364,7 +364,7 @@ func (dialog *Dialog) AddActionWidget(child Widgeter, responseId int) {
 // gtk.Dialog::response signal with the given response_id. The button is
 // appended to the end of the dialog’s action area. The button widget is
 // returned, but usually you don’t need it.
-func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgeter {
+func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -376,9 +376,9 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgeter {
 
 	_cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -420,7 +420,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 // ResponseForWidget gets the response id of a widget in the action area of a
 // dialog.
-func (dialog *Dialog) ResponseForWidget(widget Widgeter) int {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.int        // in
@@ -439,7 +439,7 @@ func (dialog *Dialog) ResponseForWidget(widget Widgeter) int {
 
 // WidgetForResponse gets the widget button that uses the given response ID in
 // the action area of a dialog.
-func (dialog *Dialog) WidgetForResponse(responseId int) Widgeter {
+func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.int        // out
 	var _cret *C.GtkWidget // in
@@ -449,9 +449,9 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgeter {
 
 	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

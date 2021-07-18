@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarer},
+		{T: externglib.Type(C.gtk_menu_bar_get_type()), F: marshalMenuBarrer},
 	})
 }
 
@@ -58,7 +58,7 @@ func wrapMenuBar(obj *externglib.Object) *MenuBar {
 	}
 }
 
-func marshalMenuBarer(p uintptr) (interface{}, error) {
+func marshalMenuBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuBar(obj), nil
@@ -83,7 +83,7 @@ func NewMenuBar() *MenuBar {
 // The created menu items are connected to actions found in the
 // ApplicationWindow to which the menu bar belongs - typically by means of being
 // contained within the ApplicationWindows widget hierarchy.
-func NewMenuBarFromModel(model gio.MenuModeler) *MenuBar {
+func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 

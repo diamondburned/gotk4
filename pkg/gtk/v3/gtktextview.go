@@ -160,7 +160,7 @@ type TextViewOverrider interface {
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	PopulatePopup(popup Widgeter)
+	PopulatePopup(popup Widgetter)
 	SetAnchor()
 	ToggleOverwrite()
 }
@@ -268,7 +268,7 @@ func (v *TextView) Native() uintptr {
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
-func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnchor) {
+func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -289,7 +289,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnch
 // scrolling is irrelevant, the child floats above all scrollable areas. But
 // when placing a child in one of the scrollable windows (border windows or text
 // window) it will move with the scrolling as needed.
-func (textView *TextView) AddChildInWindow(child Widgeter, whichWindow TextWindowType, xpos int, ypos int) {
+func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWindowType, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkTextWindowType // out
@@ -1042,7 +1042,7 @@ func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -1133,7 +1133,7 @@ func (textView *TextView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 
 // MoveChild updates the position of a child, as for
 // gtk_text_view_add_child_in_window().
-func (textView *TextView) MoveChild(child Widgeter, xpos int, ypos int) {
+func (textView *TextView) MoveChild(child Widgetter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gint         // out

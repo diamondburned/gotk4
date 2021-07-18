@@ -37,11 +37,6 @@ func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix 
 		return false
 	}
 
-	// Collision is up to the user to handle.
-	if strings.HasPrefix(callableGen.Name, "Get") {
-		callableGen.Name = strings.TrimPrefix(callableGen.Name, "Get")
-	}
-
 	if prefix != "" {
 		// Check if this function is actually a constructor.
 		if strings.HasPrefix(callableGen.Name, "New") {

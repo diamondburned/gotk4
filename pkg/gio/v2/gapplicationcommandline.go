@@ -159,7 +159,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -339,7 +339,7 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }

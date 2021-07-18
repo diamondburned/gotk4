@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtoner},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
 	})
 }
 
@@ -100,7 +100,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 	}
 }
 
-func marshalLockButtoner(p uintptr) (interface{}, error) {
+func marshalLockButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLockButton(obj), nil
@@ -133,7 +133,7 @@ func (button *LockButton) Permission() gio.Permissioner {
 
 	var _permission gio.Permissioner // out
 
-	_permission = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Permissioner)
+	_permission = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Permissioner)
 
 	return _permission
 }

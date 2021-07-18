@@ -89,7 +89,7 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }

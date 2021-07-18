@@ -219,7 +219,7 @@ type Devicer interface {
 	// Grab grabs the device so that all events coming from this device are
 	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable.
-	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus
+	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
 	// ListAxes returns a #GList of Atoms, containing the labels for the axes
 	// that device currently has.
 	ListAxes() *externglib.List
@@ -274,7 +274,7 @@ func (device *Device) AssociatedDevice() Devicer {
 
 	var _ret Devicer // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _ret
 }
@@ -406,7 +406,7 @@ func (device *Device) LastEventWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -554,7 +554,7 @@ func (device *Device) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -637,7 +637,7 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -666,7 +666,7 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -694,7 +694,7 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_seat_grab() instead.
-func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus {
+func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.GdkGrabOwnership // out
@@ -758,7 +758,7 @@ func (device *Device) ListSlaveDevices() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
 		var dst Devicer // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -876,7 +876,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _ownerEvents bool    // out
 	var _ok bool             // out
 
-	_grabWindow = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
+	_grabWindow = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
 	if _arg4 != 0 {
 		_ownerEvents = true
 	}

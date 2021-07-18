@@ -292,13 +292,13 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	return _utf8
 }
 
-// ApplicationName gets a human-readable name for the application, as set by
+// GetApplicationName gets a human-readable name for the application, as set by
 // g_set_application_name(). This name should be localized if possible, and is
 // intended for display to the user. Contrast with g_get_prgname(), which gets a
 // non-localized name. If g_set_application_name() has not been called, returns
 // the result of g_get_prgname() (which may be NULL if g_set_prgname() has also
 // not been called).
-func ApplicationName() string {
+func GetApplicationName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_application_name()
@@ -310,7 +310,7 @@ func ApplicationName() string {
 	return _utf8
 }
 
-// HomeDir gets the current user's home directory.
+// GetHomeDir gets the current user's home directory.
 //
 // As with most UNIX tools, this function will return the value of the HOME
 // environment variable if it is set to an existing absolute path name, falling
@@ -330,7 +330,7 @@ func ApplicationName() string {
 // that the new behaviour is in effect) then you should either directly check
 // the HOME environment variable yourself or unset it before calling any
 // functions in GLib.
-func HomeDir() string {
+func GetHomeDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_home_dir()
@@ -342,7 +342,7 @@ func HomeDir() string {
 	return _filename
 }
 
-// HostName: return a name for the machine.
+// GetHostName: return a name for the machine.
 //
 // The returned name is not necessarily a fully-qualified domain name, or even
 // present in DNS or some other name service at all. It need not even be unique
@@ -354,7 +354,7 @@ func HomeDir() string {
 // be determined, a default fixed string "localhost" is returned.
 //
 // The encoding of the returned string is UTF-8.
-func HostName() string {
+func GetHostName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_host_name()
@@ -366,7 +366,7 @@ func HostName() string {
 	return _utf8
 }
 
-// OsInfo: get information about the operating system.
+// GetOsInfo: get information about the operating system.
 //
 // On Linux this comes from the /etc/os-release file. On other systems, it may
 // come from a variety of sources. You can either use the standard key names
@@ -374,7 +374,7 @@ func HostName() string {
 // /etc/os-release provides a number of other less commonly used values that may
 // be useful. No key is guaranteed to be provided, so the caller should always
 // check if the result is NULL.
-func OsInfo(keyName string) string {
+func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 
@@ -390,14 +390,14 @@ func OsInfo(keyName string) string {
 	return _utf8
 }
 
-// Prgname gets the name of the program. This name should not be localized, in
-// contrast to g_get_application_name().
+// GetPrgname gets the name of the program. This name should not be localized,
+// in contrast to g_get_application_name().
 //
 // If you are using #GApplication the program name is set in
 // g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
 // called by gtk_init() and the Application::startup handler. The program name
 // is found by taking the last component of argv[0].
-func Prgname() string {
+func GetPrgname() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_prgname()
@@ -409,11 +409,11 @@ func Prgname() string {
 	return _utf8
 }
 
-// RealName gets the real name of the user. This usually comes from the user's
-// entry in the passwd file. The encoding of the returned string is
+// GetRealName gets the real name of the user. This usually comes from the
+// user's entry in the passwd file. The encoding of the returned string is
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
-func RealName() string {
+func GetRealName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_real_name()
@@ -425,7 +425,7 @@ func RealName() string {
 	return _filename
 }
 
-// SystemConfigDirs returns an ordered list of base directories in which to
+// GetSystemConfigDirs returns an ordered list of base directories in which to
 // access system-wide configuration information.
 //
 // On UNIX platforms this is determined using the mechanisms described in the
@@ -444,7 +444,7 @@ func RealName() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func SystemConfigDirs() []string {
+func GetSystemConfigDirs() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_system_config_dirs()
@@ -469,8 +469,8 @@ func SystemConfigDirs() []string {
 	return _filenames
 }
 
-// SystemDataDirs returns an ordered list of base directories in which to access
-// system-wide application data.
+// GetSystemDataDirs returns an ordered list of base directories in which to
+// access system-wide application data.
 //
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
@@ -500,7 +500,7 @@ func SystemConfigDirs() []string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func SystemDataDirs() []string {
+func GetSystemDataDirs() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_system_data_dirs()
@@ -525,7 +525,7 @@ func SystemDataDirs() []string {
 	return _filenames
 }
 
-// TmpDir gets the directory to use for temporary files.
+// GetTmpDir gets the directory to use for temporary files.
 //
 // On UNIX, this is taken from the TMPDIR environment variable. If the variable
 // is not set, P_tmpdir is used, as defined by the system C library. Failing
@@ -536,7 +536,7 @@ func SystemDataDirs() []string {
 //
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never NULL or the empty string.
-func TmpDir() string {
+func GetTmpDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_tmp_dir()
@@ -548,8 +548,8 @@ func TmpDir() string {
 	return _filename
 }
 
-// UserCacheDir returns a base directory in which to store non-essential, cached
-// data specific to particular user.
+// GetUserCacheDir returns a base directory in which to store non-essential,
+// cached data specific to particular user.
 //
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
@@ -565,7 +565,7 @@ func TmpDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func UserCacheDir() string {
+func GetUserCacheDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_cache_dir()
@@ -577,7 +577,7 @@ func UserCacheDir() string {
 	return _filename
 }
 
-// UserConfigDir returns a base directory in which to store user-specific
+// GetUserConfigDir returns a base directory in which to store user-specific
 // application configuration information such as user preferences and settings.
 //
 // On UNIX platforms this is determined using the mechanisms described in the
@@ -595,7 +595,7 @@ func UserCacheDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func UserConfigDir() string {
+func GetUserConfigDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_config_dir()
@@ -607,8 +607,8 @@ func UserConfigDir() string {
 	return _filename
 }
 
-// UserDataDir returns a base directory in which to access application data such
-// as icons that is customized for a particular user.
+// GetUserDataDir returns a base directory in which to access application data
+// such as icons that is customized for a particular user.
 //
 // On UNIX platforms this is determined using the mechanisms described in the
 // XDG Base Directory Specification
@@ -625,7 +625,7 @@ func UserConfigDir() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func UserDataDir() string {
+func GetUserDataDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_data_dir()
@@ -637,11 +637,11 @@ func UserDataDir() string {
 	return _filename
 }
 
-// UserName gets the user name of the current user. The encoding of the returned
-// string is system-defined. On UNIX, it might be the preferred file name
-// encoding, or something else, and there is no guarantee that it is even
+// GetUserName gets the user name of the current user. The encoding of the
+// returned string is system-defined. On UNIX, it might be the preferred file
+// name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
-func UserName() string {
+func GetUserName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_name()
@@ -653,8 +653,8 @@ func UserName() string {
 	return _filename
 }
 
-// UserRuntimeDir returns a directory that is unique to the current user on the
-// local system.
+// GetUserRuntimeDir returns a directory that is unique to the current user on
+// the local system.
 //
 // This is determined using the mechanisms described in the XDG Base Directory
 // Specification (http://www.freedesktop.org/Standards/basedir-spec). This is
@@ -664,7 +664,7 @@ func UserName() string {
 //
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
-func UserRuntimeDir() string {
+func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_runtime_dir()
@@ -676,8 +676,8 @@ func UserRuntimeDir() string {
 	return _filename
 }
 
-// UserSpecialDir returns the full path of a special directory using its logical
-// id.
+// GetUserSpecialDir returns the full path of a special directory using its
+// logical id.
 //
 // On UNIX this is done using the XDG special user directories. For
 // compatibility with existing practise, G_USER_DIRECTORY_DESKTOP falls back to
@@ -686,7 +686,7 @@ func UserRuntimeDir() string {
 // Depending on the platform, the user might be able to change the path of the
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
-func UserSpecialDir(directory UserDirectory) string {
+func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
 	var _cret *C.gchar         // in
 

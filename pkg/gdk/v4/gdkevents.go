@@ -632,7 +632,7 @@ func marshalDNDEventer(p uintptr) (interface{}, error) {
 }
 
 // Drop gets the GdkDrop object from a DND event.
-func (event *DNDEvent) Drop() Droper {
+func (event *DNDEvent) Drop() Dropper {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
@@ -640,9 +640,9 @@ func (event *DNDEvent) Drop() Droper {
 
 	_cret = C.gdk_dnd_event_get_drop(_arg0)
 
-	var _drop Droper // out
+	var _drop Dropper // out
 
-	_drop = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Droper)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dropper)
 
 	return _drop
 }
@@ -797,7 +797,7 @@ func (event *Event) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -948,7 +948,7 @@ func (event *Event) Seat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -964,7 +964,7 @@ func (event *Event) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -999,7 +999,7 @@ func (event *Event) ref() Eventer {
 
 	var _ret Eventer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Eventer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Eventer)
 
 	return _ret
 }
@@ -1111,7 +1111,7 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

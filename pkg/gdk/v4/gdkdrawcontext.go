@@ -176,7 +176,7 @@ func (context *DrawContext) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

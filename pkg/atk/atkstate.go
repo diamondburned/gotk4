@@ -368,8 +368,8 @@ func StateTypeForName(name string) StateType {
 	return _stateType
 }
 
-// StateTypeName gets the description string describing the StateType type.
-func StateTypeName(typ StateType) string {
+// StateTypeGetName gets the description string describing the StateType type.
+func StateTypeGetName(typ StateType) string {
 	var _arg1 C.AtkStateType // out
 	var _cret *C.gchar       // in
 

@@ -92,7 +92,7 @@ func (interface_ *DBusInterface) DupObject() DBusObjector {
 
 	var _dBusObject DBusObjector // out
 
-	_dBusObject = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
 
 	return _dBusObject
 }

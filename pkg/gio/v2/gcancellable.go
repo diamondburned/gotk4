@@ -314,8 +314,8 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	return _source
 }
 
-// CancellableCurrent gets the top cancellable from the stack.
-func CancellableCurrent() *Cancellable {
+// CancellableGetCurrent gets the top cancellable from the stack.
+func CancellableGetCurrent() *Cancellable {
 	var _cret *C.GCancellable // in
 
 	_cret = C.g_cancellable_get_current()

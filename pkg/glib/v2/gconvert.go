@@ -250,10 +250,10 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 	return _bytesRead, _bytesWritten, _utf8, _goerr
 }
 
-// FilenameCharsets determines the preferred character sets used for filenames.
-// The first character set from the charsets is the filename encoding, the
-// subsequent character sets are used when trying to generate a displayable
-// representation of a filename, see g_filename_display_name().
+// GetFilenameCharsets determines the preferred character sets used for
+// filenames. The first character set from the charsets is the filename
+// encoding, the subsequent character sets are used when trying to generate a
+// displayable representation of a filename, see g_filename_display_name().
 //
 // On Unix, the character sets are determined by consulting the environment
 // variables G_FILENAME_ENCODING and G_BROKEN_FILENAMES. On Windows, the
@@ -273,7 +273,7 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten u
 // Note that on Unix, regardless of the locale character set or
 // G_FILENAME_ENCODING value, the actual file names present on a system might be
 // in any random encoding or just gibberish.
-func FilenameCharsets() ([]string, bool) {
+func GetFilenameCharsets() ([]string, bool) {
 	var _arg1 **C.gchar
 	var _cret C.gboolean // in
 

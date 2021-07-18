@@ -159,7 +159,7 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	var _goerr error                   // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr
@@ -260,7 +260,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	var _texture Texturer // out
 	var _goerr error      // out
 
-	_texture = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
+	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _texture, _goerr

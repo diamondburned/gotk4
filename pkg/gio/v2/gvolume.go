@@ -89,7 +89,7 @@ type VolumeOverrider interface {
 	// Drive gets the drive for the volume.
 	Drive() Driver
 	// Icon gets the icon for volume.
-	Icon() Iconer
+	Icon() Iconner
 	// Identifier gets the identifier of the given kind for volume. See the
 	// [introduction][volume-identifier] for more information about volume
 	// identifiers.
@@ -101,7 +101,7 @@ type VolumeOverrider interface {
 	// SortKey gets the sort key for volume, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for volume.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// UUID gets the UUID for the volume. The reference is typically based on
 	// the file system UUID for the volume in question and should be considered
 	// an opaque string. Returns NULL if there is no UUID available.
@@ -185,7 +185,7 @@ type Volumer interface {
 	// Drive gets the drive for the volume.
 	Drive() Driver
 	// Icon gets the icon for volume.
-	Icon() Iconer
+	Icon() Iconner
 	// Identifier gets the identifier of the given kind for volume.
 	Identifier(kind string) string
 	// GetMount gets the mount for the volume.
@@ -195,7 +195,7 @@ type Volumer interface {
 	// SortKey gets the sort key for volume, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for volume.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// UUID gets the UUID for the volume.
 	UUID() string
 	// Mount mounts a volume.
@@ -402,7 +402,7 @@ func (volume *Volume) ActivationRoot() Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -418,13 +418,13 @@ func (volume *Volume) Drive() Driver {
 
 	var _drive Driver // out
 
-	_drive = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
 
 	return _drive
 }
 
 // Icon gets the icon for volume.
-func (volume *Volume) Icon() Iconer {
+func (volume *Volume) Icon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -432,9 +432,9 @@ func (volume *Volume) Icon() Iconer {
 
 	_cret = C.g_volume_get_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -471,7 +471,7 @@ func (volume *Volume) GetMount() Mounter {
 
 	var _mount Mounter // out
 
-	_mount = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 
 	return _mount
 }
@@ -510,7 +510,7 @@ func (volume *Volume) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for volume.
-func (volume *Volume) SymbolicIcon() Iconer {
+func (volume *Volume) SymbolicIcon() Iconner {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
 
@@ -518,9 +518,9 @@ func (volume *Volume) SymbolicIcon() Iconer {
 
 	_cret = C.g_volume_get_symbolic_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }

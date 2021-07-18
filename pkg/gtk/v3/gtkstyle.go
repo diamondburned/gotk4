@@ -70,7 +70,7 @@ func (e ExpanderStyle) String() string {
 // parameters. arrow_type determines the direction of the arrow.
 //
 // Deprecated: Use gtk_render_arrow() instead.
-func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int) {
+func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -105,7 +105,7 @@ func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType
 // PaintBox draws a box on cr with the given parameters.
 //
 // Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -135,7 +135,7 @@ func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 // type, leaving a gap in one side.
 //
 // Deprecated: Use gtk_render_frame_gap() instead.
-func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
+func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -171,7 +171,7 @@ func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 // the given parameters.
 //
 // Deprecated: Use gtk_render_check() instead.
-func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -201,7 +201,7 @@ func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType
 // parameters.
 //
 // Deprecated: Use cairo instead.
-func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -237,7 +237,7 @@ func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 // position.
 //
 // Deprecated: Use gtk_render_expander() instead.
-func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, expanderStyle ExpanderStyle) {
+func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x int, y int, expanderStyle ExpanderStyle) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -262,7 +262,7 @@ func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget 
 // PaintExtension draws an extension, i.e. a notebook tab.
 //
 // Deprecated: Use gtk_render_extension() instead.
-func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType) {
+func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -293,7 +293,7 @@ func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadow
 // PaintFlatBox draws a flat box on cr with the given parameters.
 //
 // Deprecated: Use gtk_render_frame() and gtk_render_background() instead.
-func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -323,7 +323,7 @@ func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 // given style.
 //
 // Deprecated: Use gtk_render_focus() instead.
-func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -350,7 +350,7 @@ func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 // PaintHandle draws a handle as used in HandleBox and Paned.
 //
 // Deprecated: Use gtk_render_handle() instead.
-func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
+func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -382,7 +382,7 @@ func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 // given style and state.
 //
 // Deprecated: Use gtk_render_line() instead.
-func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x1 int, x2 int, y int) {
+func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1 int, x2 int, y int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -407,7 +407,7 @@ func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 // PaintLayout draws a layout on cr using the given parameters.
 //
 // Deprecated: Use gtk_render_layout() instead.
-func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout *pango.Layout) {
+func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x int, y int, layout *pango.Layout) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -437,7 +437,7 @@ func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText b
 // the given parameters.
 //
 // Deprecated: Use gtk_render_option() instead.
-func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -467,7 +467,7 @@ func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 // given parameters.
 //
 // Deprecated: Use gtk_render_handle() instead.
-func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int) {
+func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -497,7 +497,7 @@ func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widge
 // style and state and shadow type.
 //
 // Deprecated: Use gtk_render_frame() instead.
-func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -527,7 +527,7 @@ func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 // given style and state and shadow type, leaving a gap in one side.
 //
 // Deprecated: Use gtk_render_frame_gap() instead.
-func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
+func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -563,7 +563,7 @@ func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadow
 // and orientation.
 //
 // Deprecated: Use gtk_render_slider() instead.
-func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation) {
+func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -595,7 +595,7 @@ func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //
 // Deprecated: Use gtk_render_icon() and the StyleContext you are drawing
 // instead.
-func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, step uint, x int, y int, width int, height int) {
+func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -625,7 +625,7 @@ func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget W
 // the given rectangle on cr using the given parameters.
 //
 // Deprecated: Use cairo instead.
-func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int) {
+func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -655,7 +655,7 @@ func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 // given style and state.
 //
 // Deprecated: Use gtk_render_line() instead.
-func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgeter, detail string, y1 int, y2 int, x int) {
+func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1 int, y2 int, x int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -683,33 +683,33 @@ func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 // yet, so the interface currently has no use.
 type StyleOverrider interface {
 	Copy(src *Style)
-	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int)
-	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
-	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, expanderStyle ExpanderStyle)
-	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType)
-	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation)
-	DrawHline(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, x1 int, x2 int, y int)
-	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgeter, detail string, x int, y int, layout *pango.Layout)
-	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int)
-	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
-	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int, orientation Orientation)
-	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, step uint, x int, y int, width int, height int)
-	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgeter, detail string, x int, y int, width int, height int)
-	DrawVline(cr *cairo.Context, stateType StateType, widget Widgeter, detail string, y1 int, y2 int, x int)
+	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int)
+	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x int, y int, expanderStyle ExpanderStyle)
+	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType)
+	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, orientation Orientation)
+	DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1 int, x2 int, y int)
+	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x int, y int, layout *pango.Layout)
+	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x int, y int, width int, height int)
+	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int, orientation Orientation)
+	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x int, y int, width int, height int)
+	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x int, y int, width int, height int)
+	DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1 int, y2 int, x int)
 	InitFromRC(rcStyle *RCStyle)
 	Realize()
 	// RenderIcon renders the icon specified by source at the given size
 	// according to the given parameters and returns the result in a pixbuf.
 	//
 	// Deprecated: Use gtk_render_icon_pixbuf() instead.
-	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf
+	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	// SetBackground sets the background of window to the background color or
 	// pixmap specified by style for the given state.
 	//
@@ -913,7 +913,7 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 // to the given parameters and returns the result in a pixbuf.
 //
 // Deprecated: Use gtk_render_icon_pixbuf() instead.
-func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf {
+func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
 	var _arg1 *C.GtkIconSource   // out
 	var _arg2 C.GtkTextDirection // out
@@ -966,11 +966,12 @@ func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 	C.gtk_style_set_background(_arg0, _arg1, _arg2)
 }
 
-// WidgetDefaultStyle returns the default style used by all widgets initially.
+// WidgetGetDefaultStyle returns the default style used by all widgets
+// initially.
 //
 // Deprecated: Use StyleContext instead, and gtk_css_provider_get_default() to
 // obtain a StyleProvider with the default widget style information.
-func WidgetDefaultStyle() *Style {
+func WidgetGetDefaultStyle() *Style {
 	var _cret *C.GtkStyle // in
 
 	_cret = C.gtk_widget_get_default_style()

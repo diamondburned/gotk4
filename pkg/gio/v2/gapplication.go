@@ -1097,7 +1097,7 @@ func (application *Application) WithdrawNotification(id string) {
 	C.g_application_withdraw_notification(_arg0, _arg1)
 }
 
-// ApplicationDefault returns the default #GApplication instance for this
+// ApplicationGetDefault returns the default #GApplication instance for this
 // process.
 //
 // Normally there is only one #GApplication per process and it becomes the
@@ -1105,7 +1105,7 @@ func (application *Application) WithdrawNotification(id string) {
 // g_application_set_default().
 //
 // If there is no default application then NULL is returned.
-func ApplicationDefault() *Application {
+func ApplicationGetDefault() *Application {
 	var _cret *C.GApplication // in
 
 	_cret = C.g_application_get_default()

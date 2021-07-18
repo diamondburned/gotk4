@@ -162,7 +162,7 @@ func (display *Display) DefaultSeat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -195,7 +195,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //
 // You can listen to the GListModel::items-changed signal on this list to
 // monitor changes to the monitor of this display.
-func (self *Display) Monitors() gio.ListModeler {
+func (self *Display) Monitors() gio.ListModeller {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GListModel // in
 
@@ -203,9 +203,9 @@ func (self *Display) Monitors() gio.ListModeler {
 
 	_cret = C.gdk_display_get_monitors(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -371,7 +371,7 @@ func (display *Display) ListSeats() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkSeat)(_p)
 		var dst Seater // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -582,11 +582,11 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 	return _keyval, _effectiveGroup, _level, _consumed, _ok
 }
 
-// DisplayDefault gets the default GdkDisplay.
+// DisplayGetDefault gets the default GdkDisplay.
 //
 // This is a convenience function for: gdk_display_manager_get_default_display
 // (gdk_display_manager_get ()).
-func DisplayDefault() *Display {
+func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_display_get_default()

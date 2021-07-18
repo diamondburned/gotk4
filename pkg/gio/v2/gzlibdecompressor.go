@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorer},
+		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressorrer},
 	})
 }
 
@@ -49,7 +49,7 @@ func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	}
 }
 
-func marshalZlibDecompressorer(p uintptr) (interface{}, error) {
+func marshalZlibDecompressorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapZlibDecompressor(obj), nil

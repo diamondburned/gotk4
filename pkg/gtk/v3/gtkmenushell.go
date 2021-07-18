@@ -40,11 +40,11 @@ type MenuShellOverrider interface {
 	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
-	Insert(child Widgeter, position int)
+	Insert(child Widgetter, position int)
 	MoveCurrent(direction MenuDirectionType)
 	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
-	SelectItem(menuItem Widgeter)
+	SelectItem(menuItem Widgetter)
 	SelectionDone()
 }
 
@@ -81,11 +81,11 @@ var _ gextras.Nativer = (*MenuShell)(nil)
 // MenuSheller describes MenuShell's abstract methods.
 type MenuSheller interface {
 	// ActivateItem activates the menu item within the menu shell.
-	ActivateItem(menuItem Widgeter, forceDeactivate bool)
+	ActivateItem(menuItem Widgetter, forceDeactivate bool)
 	// Append adds a new MenuItem to the end of the menu shell's item list.
 	Append(child *MenuItem)
 	// BindModel establishes a binding between a MenuShell and a Model.
-	BindModel(model gio.MenuModeler, actionNamespace string, withSeparators bool)
+	BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool)
 	// Cancel cancels the selection within the menu shell.
 	Cancel()
 	// Deactivate deactivates the menu shell.
@@ -94,23 +94,23 @@ type MenuSheller interface {
 	// any.
 	Deselect()
 	// ParentShell gets the parent menu shell.
-	ParentShell() Widgeter
+	ParentShell() Widgetter
 	// SelectedItem gets the currently selected item.
-	SelectedItem() Widgeter
+	SelectedItem() Widgetter
 	// TakeFocus returns TRUE if the menu shell will take the keyboard focus on
 	// popup.
 	TakeFocus() bool
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
-	Insert(child Widgeter, position int)
+	Insert(child Widgetter, position int)
 	// Prepend adds a new MenuItem to the beginning of the menu shell's item
 	// list.
-	Prepend(child Widgeter)
+	Prepend(child Widgetter)
 	// SelectFirst: select the first visible or selectable child of the menu
 	// shell; don’t select tearoff items unless the only item is a tearoff item.
 	SelectFirst(searchSensitive bool)
 	// SelectItem selects the menu item from the menu shell.
-	SelectItem(menuItem Widgeter)
+	SelectItem(menuItem Widgetter)
 	// SetTakeFocus: if take_focus is TRUE (the default) the menu shell will
 	// take the keyboard focus so that it will receive all keyboard events which
 	// is needed to enable keyboard navigation in menus.
@@ -144,7 +144,7 @@ func marshalMenuSheller(p uintptr) (interface{}, error) {
 }
 
 // ActivateItem activates the menu item within the menu shell.
-func (menuShell *MenuShell) ActivateItem(menuItem Widgeter, forceDeactivate bool) {
+func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -197,7 +197,7 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 // For most cases you are probably better off using gtk_menu_new_from_model() or
 // gtk_menu_bar_new_from_model() or just directly passing the Model to
 // gtk_application_set_app_menu() or gtk_application_set_menubar().
-func (menuShell *MenuShell) BindModel(model gio.MenuModeler, actionNamespace string, withSeparators bool) {
+func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GMenuModel   // out
 	var _arg2 *C.gchar        // out
@@ -246,7 +246,7 @@ func (menuShell *MenuShell) Deselect() {
 //
 // The parent menu shell of a submenu is the Menu or MenuBar from which it was
 // opened up.
-func (menuShell *MenuShell) ParentShell() Widgeter {
+func (menuShell *MenuShell) ParentShell() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
 
@@ -254,15 +254,15 @@ func (menuShell *MenuShell) ParentShell() Widgeter {
 
 	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // SelectedItem gets the currently selected item.
-func (menuShell *MenuShell) SelectedItem() Widgeter {
+func (menuShell *MenuShell) SelectedItem() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
 	var _cret *C.GtkWidget    // in
 
@@ -270,9 +270,9 @@ func (menuShell *MenuShell) SelectedItem() Widgeter {
 
 	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -298,7 +298,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position
 // indicated by position.
-func (menuShell *MenuShell) Insert(child Widgeter, position int) {
+func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out
@@ -311,7 +311,7 @@ func (menuShell *MenuShell) Insert(child Widgeter, position int) {
 }
 
 // Prepend adds a new MenuItem to the beginning of the menu shell's item list.
-func (menuShell *MenuShell) Prepend(child Widgeter) {
+func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -336,7 +336,7 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 }
 
 // SelectItem selects the menu item from the menu shell.
-func (menuShell *MenuShell) SelectItem(menuItem Widgeter) {
+func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 

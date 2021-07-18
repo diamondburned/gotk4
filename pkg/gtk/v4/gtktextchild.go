@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorer},
+		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorrer},
 	})
 }
 
@@ -37,7 +37,7 @@ func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	}
 }
 
-func marshalTextChildAnchorer(p uintptr) (interface{}, error) {
+func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextChildAnchor(obj), nil

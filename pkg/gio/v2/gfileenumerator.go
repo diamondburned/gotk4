@@ -33,7 +33,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorer},
+		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumeratorrer},
 	})
 }
 
@@ -134,7 +134,7 @@ func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	}
 }
 
-func marshalFileEnumeratorer(p uintptr) (interface{}, error) {
+func marshalFileEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileEnumerator(obj), nil
@@ -242,7 +242,7 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -258,7 +258,7 @@ func (enumerator *FileEnumerator) Container() Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -353,7 +353,7 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, Filer, e
 	var _goerr error       // out
 
 	_outInfo = wrapFileInfo(externglib.Take(unsafe.Pointer(_arg1)))
-	_outChild = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
+	_outChild = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outInfo, _outChild, _goerr

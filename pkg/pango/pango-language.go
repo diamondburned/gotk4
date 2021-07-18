@@ -163,7 +163,7 @@ func LanguageFromString(language string) *Language {
 	return _ret
 }
 
-// LanguageDefault returns the PangoLanguage for the current locale of the
+// LanguageGetDefault returns the PangoLanguage for the current locale of the
 // process.
 //
 // On Unix systems, this is the return value is derived from setlocale
@@ -187,7 +187,7 @@ func LanguageFromString(language string) *Language {
 // calling gtk_set_locale()). See the setlocale() manpage for more details.
 //
 // Note that the default language can change over the life of an application.
-func LanguageDefault() *Language {
+func LanguageGetDefault() *Language {
 	var _cret *C.PangoLanguage // in
 
 	_cret = C.pango_language_get_default()

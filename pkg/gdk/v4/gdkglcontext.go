@@ -222,7 +222,7 @@ func (context *GLContext) SharedContext() GLContexter {
 
 	var _glContext GLContexter // out
 
-	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 
 	return _glContext
 }
@@ -238,7 +238,7 @@ func (context *GLContext) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -432,15 +432,15 @@ func GLContextClearCurrent() {
 	C.gdk_gl_context_clear_current()
 }
 
-// GLContextCurrent retrieves the current GdkGLContext.
-func GLContextCurrent() GLContexter {
+// GLContextGetCurrent retrieves the current GdkGLContext.
+func GLContextGetCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in
 
 	_cret = C.gdk_gl_context_get_current()
 
 	var _glContext GLContexter // out
 
-	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 
 	return _glContext
 }

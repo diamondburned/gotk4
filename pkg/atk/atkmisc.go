@@ -97,10 +97,11 @@ func (misc *Misc) ThreadsLeave() {
 	C.atk_misc_threads_leave(_arg0)
 }
 
-// MiscInstance: obtain the singleton instance of AtkMisc for this application.
+// MiscGetInstance: obtain the singleton instance of AtkMisc for this
+// application.
 //
 // Deprecated: Since 2.12.
-func MiscInstance() *Misc {
+func MiscGetInstance() *Misc {
 	var _cret *C.AtkMisc // in
 
 	_cret = C.atk_misc_get_instance()

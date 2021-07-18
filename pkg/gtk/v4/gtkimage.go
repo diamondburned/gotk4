@@ -182,7 +182,7 @@ func NewImageFromFile(filename string) *Image {
 // If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconer) *Image {
+func NewImageFromGIcon(icon gio.Iconner) *Image {
 	var _arg1 *C.GIcon     // out
 	var _cret *C.GtkWidget // in
 
@@ -310,7 +310,7 @@ func (image *Image) Clear() {
 // The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk.Image.GetStorageType()). The caller of this function does not own a
 // reference to the returned GIcon.
-func (image *Image) GIcon() gio.Iconer {
+func (image *Image) GIcon() gio.Iconner {
 	var _arg0 *C.GtkImage // out
 	var _cret *C.GIcon    // in
 
@@ -318,9 +318,9 @@ func (image *Image) GIcon() gio.Iconer {
 
 	_cret = C.gtk_image_get_gicon(_arg0)
 
-	var _icon gio.Iconer // out
+	var _icon gio.Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }
@@ -376,7 +376,7 @@ func (image *Image) Paintable() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }
@@ -432,7 +432,7 @@ func (image *Image) SetFromFile(filename string) {
 // SetFromGIcon sets a GtkImage to show a GIcon.
 //
 // See gtk.Image.NewFromGIcon for details.
-func (image *Image) SetFromGIcon(icon gio.Iconer) {
+func (image *Image) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkImage // out
 	var _arg1 *C.GIcon    // out
 

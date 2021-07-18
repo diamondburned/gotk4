@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtoner},
+		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButtonner},
 	})
 }
 
@@ -55,7 +55,7 @@ func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
 	}
 }
 
-func marshalVolumeButtoner(p uintptr) (interface{}, error) {
+func marshalVolumeButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVolumeButton(obj), nil

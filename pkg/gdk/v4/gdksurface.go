@@ -175,7 +175,7 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 
 	var _cairoContext CairoContexter // out
 
-	_cairoContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
+	_cairoContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
 
 	return _cairoContext
 }
@@ -198,7 +198,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -258,7 +258,7 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _vulkanContext VulkanContexter // out
 	var _goerr error                   // out
 
-	_vulkanContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
+	_vulkanContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
@@ -384,7 +384,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }

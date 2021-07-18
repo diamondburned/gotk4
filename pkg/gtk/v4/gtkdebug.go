@@ -7,11 +7,11 @@ package gtk
 // #include <gtk/gtk.h>
 import "C"
 
-// DebugFlags returns the GTK debug flags that are currently active.
+// GetDebugFlags returns the GTK debug flags that are currently active.
 //
 // This function is intended for GTK modules that want to adjust their debug
 // output based on GTK debug flags.
-func DebugFlags() DebugFlags {
+func GetDebugFlags() DebugFlags {
 	var _cret C.GtkDebugFlags // in
 
 	_cret = C.gtk_get_debug_flags()

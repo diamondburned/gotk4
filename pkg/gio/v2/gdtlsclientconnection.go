@@ -85,7 +85,7 @@ func (conn *DTLSClientConnection) ServerIdentity() SocketConnectabler {
 
 	var _socketConnectable SocketConnectabler // out
 
-	_socketConnectable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
+	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
 
 	return _socketConnectable
 }
@@ -136,7 +136,7 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 // NewDTLSClientConnection creates a new ClientConnection wrapping base_socket
 // which is assumed to communicate with the server identified by
 // server_identity.
-func NewDtlsClientConnection(baseSocket DatagramBaseder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
+func NewDtlsClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (DTLSClientConnectioner, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GDatagramBased     // in
@@ -150,7 +150,7 @@ func NewDtlsClientConnection(baseSocket DatagramBaseder, serverIdentity SocketCo
 	var _dtlsClientConnection DTLSClientConnectioner // out
 	var _goerr error                                 // out
 
-	_dtlsClientConnection = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSClientConnectioner)
+	_dtlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSClientConnectioner)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dtlsClientConnection, _goerr

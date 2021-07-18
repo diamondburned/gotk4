@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIconer},
+		{T: externglib.Type(C.gtk_numerable_icon_get_type()), F: marshalNumerableIconner},
 	})
 }
 
@@ -48,7 +48,7 @@ func wrapNumerableIcon(obj *externglib.Object) *NumerableIcon {
 	}
 }
 
-func marshalNumerableIconer(p uintptr) (interface{}, error) {
+func marshalNumerableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNumerableIcon(obj), nil
@@ -59,7 +59,7 @@ func marshalNumerableIconer(p uintptr) (interface{}, error) {
 // to the returned #GIcon.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) BackgroundGIcon() gio.Iconer {
+func (self *NumerableIcon) BackgroundGIcon() gio.Iconner {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret *C.GIcon            // in
 
@@ -67,9 +67,9 @@ func (self *NumerableIcon) BackgroundGIcon() gio.Iconer {
 
 	_cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
 
-	var _icon gio.Iconer // out
+	var _icon gio.Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }
@@ -158,7 +158,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
-func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconer) {
+func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 *C.GIcon            // out
 
@@ -250,7 +250,7 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 // NewNumerableIcon creates a new unthemed NumerableIcon.
 //
 // Deprecated: since version 3.14.
-func NewNumerableIcon(baseIcon gio.Iconer) gio.Iconer {
+func NewNumerableIcon(baseIcon gio.Iconner) gio.Iconner {
 	var _arg1 *C.GIcon // out
 	var _cret *C.GIcon // in
 
@@ -258,9 +258,9 @@ func NewNumerableIcon(baseIcon gio.Iconer) gio.Iconer {
 
 	_cret = C.gtk_numerable_icon_new(_arg1)
 
-	var _icon gio.Iconer // out
+	var _icon gio.Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }
@@ -270,7 +270,7 @@ func NewNumerableIcon(baseIcon gio.Iconer) gio.Iconer {
 // constructor that calls gtk_numerable_icon_set_style_context() internally.
 //
 // Deprecated: since version 3.14.
-func NewNumerableIconWithStyleContext(baseIcon gio.Iconer, context *StyleContext) gio.Iconer {
+func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) gio.Iconner {
 	var _arg1 *C.GIcon           // out
 	var _arg2 *C.GtkStyleContext // out
 	var _cret *C.GIcon           // in
@@ -280,9 +280,9 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconer, context *StyleContext
 
 	_cret = C.gtk_numerable_icon_new_with_style_context(_arg1, _arg2)
 
-	var _icon gio.Iconer // out
+	var _icon gio.Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconner)
 
 	return _icon
 }

@@ -553,7 +553,7 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 
 	var _socketAddress SocketAddresser // out
 
-	_socketAddress = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
 
 	return _socketAddress
 }
@@ -589,7 +589,7 @@ func (client *SocketClient) ProxyResolver() ProxyResolverer {
 
 	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
+	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
 
 	return _proxyResolver
 }

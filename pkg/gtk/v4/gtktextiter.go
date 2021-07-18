@@ -1556,7 +1556,7 @@ func (iter *TextIter) Paintable() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

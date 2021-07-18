@@ -20,14 +20,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontseter},
+		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontsetter},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimpler},
 	})
 }
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset Fontseter, font Fonter) (ok bool)
+type FontsetForeachFunc func(fontset Fontsetter, font Fonter) (ok bool)
 
 //export _gotk4_pango1_FontsetForeachFunc
 func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
@@ -36,11 +36,11 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		panic(`callback not found`)
 	}
 
-	var fontset Fontseter // out
-	var font Fonter       // out
+	var fontset Fontsetter // out
+	var font Fonter        // out
 
-	fontset = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Fontseter)
-	font = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Fonter)
+	fontset = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Fontsetter)
+	font = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Fonter)
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font)
@@ -83,8 +83,8 @@ type Fontset struct {
 
 var _ gextras.Nativer = (*Fontset)(nil)
 
-// Fontseter describes Fontset's abstract methods.
-type Fontseter interface {
+// Fontsetter describes Fontset's abstract methods.
+type Fontsetter interface {
 	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	Foreach(fn FontsetForeachFunc)
@@ -95,7 +95,7 @@ type Fontseter interface {
 	Metrics() *FontMetrics
 }
 
-var _ Fontseter = (*Fontset)(nil)
+var _ Fontsetter = (*Fontset)(nil)
 
 func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{
@@ -103,7 +103,7 @@ func wrapFontset(obj *externglib.Object) *Fontset {
 	}
 }
 
-func marshalFontseter(p uintptr) (interface{}, error) {
+func marshalFontsetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontset(obj), nil
@@ -140,7 +140,7 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 
 	var _font Fonter // out
 
-	_font = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
+	_font = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 
 	return _font
 }

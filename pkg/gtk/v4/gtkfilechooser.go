@@ -170,16 +170,16 @@ type FileChooserer interface {
 	File() gio.Filer
 	// Files lists all the selected files and subfolders in the current folder
 	// of chooser as #GFile.
-	Files() gio.ListModeler
+	Files() gio.ListModeller
 	// Filter gets the current filter.
 	Filter() *FileFilter
 	// Filters gets the current set of user-selectable filters, as a list model.
-	Filters() gio.ListModeler
+	Filters() gio.ListModeller
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
 	// ShortcutFolders queries the list of shortcut folders in the file chooser.
-	ShortcutFolders() gio.ListModeler
+	ShortcutFolders() gio.ListModeller
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -367,7 +367,7 @@ func (chooser *FileChooser) CurrentFolder() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -409,14 +409,14 @@ func (chooser *FileChooser) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
 
 // Files lists all the selected files and subfolders in the current folder of
 // chooser as #GFile.
-func (chooser *FileChooser) Files() gio.ListModeler {
+func (chooser *FileChooser) Files() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -424,9 +424,9 @@ func (chooser *FileChooser) Files() gio.ListModeler {
 
 	_cret = C.gtk_file_chooser_get_files(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -454,7 +454,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //
 // You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
-func (chooser *FileChooser) Filters() gio.ListModeler {
+func (chooser *FileChooser) Filters() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -462,9 +462,9 @@ func (chooser *FileChooser) Filters() gio.ListModeler {
 
 	_cret = C.gtk_file_chooser_get_filters(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -492,7 +492,7 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //
 // You should not modify the returned list model. Future changes to chooser may
 // or may not affect the returned model.
-func (chooser *FileChooser) ShortcutFolders() gio.ListModeler {
+func (chooser *FileChooser) ShortcutFolders() gio.ListModeller {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GListModel     // in
 
@@ -500,9 +500,9 @@ func (chooser *FileChooser) ShortcutFolders() gio.ListModeler {
 
 	_cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }

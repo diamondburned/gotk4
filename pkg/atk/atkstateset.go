@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSeter},
+		{T: externglib.Type(C.atk_state_set_get_type()), F: marshalStateSetter},
 	})
 }
 
@@ -36,7 +36,7 @@ func wrapStateSet(obj *externglib.Object) *StateSet {
 	}
 }
 
-func marshalStateSeter(p uintptr) (interface{}, error) {
+func marshalStateSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStateSet(obj), nil

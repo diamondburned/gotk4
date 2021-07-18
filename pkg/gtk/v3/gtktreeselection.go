@@ -31,7 +31,7 @@ func init() {
 // TreeSelectionForeachFunc: function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForeachFunc func(model TreeModeler, path *TreePath, iter *TreeIter)
+type TreeSelectionForeachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
 
 //export _gotk4_gtk3_TreeSelectionForeachFunc
 func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
@@ -40,11 +40,11 @@ func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 		panic(`callback not found`)
 	}
 
-	var model TreeModeler // out
-	var path *TreePath    // out
-	var iter *TreeIter    // out
+	var model TreeModeller // out
+	var path *TreePath     // out
+	var iter *TreeIter     // out
 
-	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -62,7 +62,7 @@ func _gotk4_gtk3_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeP
 // to filter whether or not a row may be selected. It is called whenever a row's
 // state might change. A return value of TRUE indicates to selection that it is
 // okay to change the selection.
-type TreeSelectionFunc func(selection *TreeSelection, model TreeModeler, path *TreePath, pathCurrentlySelected bool) (ok bool)
+type TreeSelectionFunc func(selection *TreeSelection, model TreeModeller, path *TreePath, pathCurrentlySelected bool) (ok bool)
 
 //export _gotk4_gtk3_TreeSelectionFunc
 func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) (cret C.gboolean) {
@@ -72,12 +72,12 @@ func _gotk4_gtk3_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeMode
 	}
 
 	var selection *TreeSelection   // out
-	var model TreeModeler          // out
+	var model TreeModeller         // out
 	var path *TreePath             // out
 	var pathCurrentlySelected bool // out
 
 	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
-	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(TreeModeler)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(TreeModeller)
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -181,7 +181,7 @@ func (selection *TreeSelection) Mode() SelectionMode {
 // to test if selection has any selected nodes. model is filled with the current
 // model as a convenience. This function will not work if you use selection is
 // K_SELECTION_MULTIPLE.
-func (selection *TreeSelection) Selected() (TreeModeler, TreeIter, bool) {
+func (selection *TreeSelection) Selected() (TreeModeller, TreeIter, bool) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _arg2 C.GtkTreeIter       // in
@@ -191,11 +191,11 @@ func (selection *TreeSelection) Selected() (TreeModeler, TreeIter, bool) {
 
 	_cret = C.gtk_tree_selection_get_selected(_arg0, &_arg1, &_arg2)
 
-	var _model TreeModeler // out
-	var _iter TreeIter     // out
-	var _ok bool           // out
+	var _model TreeModeller // out
+	var _iter TreeIter      // out
+	var _ok bool            // out
 
-	_model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeler)
+	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
 	_iter = *(*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 	if _cret != 0 {
 		_ok = true
@@ -212,7 +212,7 @@ func (selection *TreeSelection) Selected() (TreeModeler, TreeIter, bool) {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (selection *TreeSelection) SelectedRows() (TreeModeler, *externglib.List) {
+func (selection *TreeSelection) SelectedRows() (TreeModeller, *externglib.List) {
 	var _arg0 *C.GtkTreeSelection // out
 	var _arg1 *C.GtkTreeModel     // in
 	var _cret *C.GList            // in
@@ -221,10 +221,10 @@ func (selection *TreeSelection) SelectedRows() (TreeModeler, *externglib.List) {
 
 	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
 
-	var _model TreeModeler     // out
+	var _model TreeModeller    // out
 	var _list *externglib.List // out
 
-	_model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeler)
+	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(TreeModeller)
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkTreePath)(_p)

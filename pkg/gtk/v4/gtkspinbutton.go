@@ -20,7 +20,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
 		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtoner},
+		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButtonner},
 	})
 }
 
@@ -277,7 +277,7 @@ func wrapSpinButton(obj *externglib.Object) *SpinButton {
 	}
 }
 
-func marshalSpinButtoner(p uintptr) (interface{}, error) {
+func marshalSpinButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSpinButton(obj), nil

@@ -109,7 +109,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -195,7 +195,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	var _texture gdk.Texturer // out
 
-	_texture = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
+	_texture = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
 
 	return _texture
 }

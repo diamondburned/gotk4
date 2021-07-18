@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtoner},
+		{T: externglib.Type(C.gtk_tool_button_get_type()), F: marshalToolButtonner},
 	})
 }
 
@@ -99,7 +99,7 @@ func wrapToolButton(obj *externglib.Object) *ToolButton {
 	}
 }
 
-func marshalToolButtoner(p uintptr) (interface{}, error) {
+func marshalToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolButton(obj), nil
@@ -107,7 +107,7 @@ func marshalToolButtoner(p uintptr) (interface{}, error) {
 
 // NewToolButton creates a new ToolButton using icon_widget as contents and
 // label as label.
-func NewToolButton(iconWidget Widgeter, label string) *ToolButton {
+func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -172,7 +172,7 @@ func (button *ToolButton) IconName() string {
 
 // IconWidget: return the widget used as icon widget on button. See
 // gtk_tool_button_set_icon_widget().
-func (button *ToolButton) IconWidget() Widgeter {
+func (button *ToolButton) IconWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
@@ -180,9 +180,9 @@ func (button *ToolButton) IconWidget() Widgeter {
 
 	_cret = C.gtk_tool_button_get_icon_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -207,7 +207,7 @@ func (button *ToolButton) Label() string {
 
 // LabelWidget returns the widget used as label on button. See
 // gtk_tool_button_set_label_widget().
-func (button *ToolButton) LabelWidget() Widgeter {
+func (button *ToolButton) LabelWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
 	var _cret *C.GtkWidget     // in
 
@@ -215,9 +215,9 @@ func (button *ToolButton) LabelWidget() Widgeter {
 
 	_cret = C.gtk_tool_button_get_label_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -279,7 +279,7 @@ func (button *ToolButton) SetIconName(iconName string) {
 // SetIconWidget sets icon as the widget used as icon on button. If icon_widget
 // is NULL the icon is determined by the ToolButton:stock-id property. If the
 // ToolButton:stock-id property is also NULL, button will not have an icon.
-func (button *ToolButton) SetIconWidget(iconWidget Widgeter) {
+func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -310,7 +310,7 @@ func (button *ToolButton) SetLabel(label string) {
 // label. If ToolButton:label is also NULL, the label in the stock item
 // determined by the ToolButton:stock-id property is used as label. If
 // ToolButton:stock-id is also NULL, button does not have a label.
-func (button *ToolButton) SetLabelWidget(labelWidget Widgeter) {
+func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
 	var _arg1 *C.GtkWidget     // out
 

@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletoner},
+		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletonner},
 	})
 }
 
@@ -65,8 +65,8 @@ type DBusInterfaceSkeleton struct {
 
 var _ gextras.Nativer = (*DBusInterfaceSkeleton)(nil)
 
-// DBusInterfaceSkeletoner describes DBusInterfaceSkeleton's abstract methods.
-type DBusInterfaceSkeletoner interface {
+// DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's abstract methods.
+type DBusInterfaceSkeletonner interface {
 	// Export exports interface_ at object_path on connection.
 	Export(connection *DBusConnection, objectPath string) error
 	// Flush: if interface_ has outstanding changes, request for these changes
@@ -98,7 +98,7 @@ type DBusInterfaceSkeletoner interface {
 	UnexportFromConnection(connection *DBusConnection)
 }
 
-var _ DBusInterfaceSkeletoner = (*DBusInterfaceSkeleton)(nil)
+var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
 
 func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{
@@ -109,7 +109,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	}
 }
 
-func marshalDBusInterfaceSkeletoner(p uintptr) (interface{}, error) {
+func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusInterfaceSkeleton(obj), nil

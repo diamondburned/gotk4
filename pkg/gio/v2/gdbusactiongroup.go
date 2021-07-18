@@ -23,7 +23,7 @@ import (
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
-// DBusActionGroup obtains a BusActionGroup for the action group which is
+// DBusActionGroupGet obtains a BusActionGroup for the action group which is
 // exported at the given bus_name and object_path.
 //
 // The thread default main context is taken at the time of this call. All
@@ -36,7 +36,7 @@ import "C"
 // be filled in. The correct thing to do is connect the signals for the action
 // group to monitor for changes and then to call g_action_group_list_actions()
 // to get the initial list.
-func DBusActionGroup(connection *DBusConnection, busName string, objectPath string) *DBusActionGroup {
+func DBusActionGroupGet(connection *DBusConnection, busName string, objectPath string) *DBusActionGroup {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
 	var _arg3 *C.gchar            // out

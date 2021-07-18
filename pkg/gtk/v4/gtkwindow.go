@@ -243,7 +243,7 @@ func (window *Window) Application() *Application {
 }
 
 // Child gets the child widget of window.
-func (window *Window) Child() Widgeter {
+func (window *Window) Child() Widgetter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -251,9 +251,9 @@ func (window *Window) Child() Widgeter {
 
 	_cret = C.gtk_window_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -300,7 +300,7 @@ func (window *Window) DefaultSize() (width int, height int) {
 }
 
 // DefaultWidget returns the default widget for window.
-func (window *Window) DefaultWidget() Widgeter {
+func (window *Window) DefaultWidget() Widgetter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -308,9 +308,9 @@ func (window *Window) DefaultWidget() Widgeter {
 
 	_cret = C.gtk_window_get_default_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -357,7 +357,7 @@ func (window *Window) DestroyWithParent() bool {
 // Note that this is the widget that would have the focus if the toplevel window
 // focused; if the toplevel window is not focused then gtk_widget_has_focus
 // (widget) will not be TRUE for the widget.
-func (window *Window) Focus() Widgeter {
+func (window *Window) Focus() Widgetter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -365,9 +365,9 @@ func (window *Window) Focus() Widgeter {
 
 	_cret = C.gtk_window_get_focus(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -534,7 +534,7 @@ func (window *Window) Title() string {
 
 // Titlebar returns the custom titlebar that has been set with
 // gtk_window_set_titlebar().
-func (window *Window) Titlebar() Widgeter {
+func (window *Window) Titlebar() Widgetter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -542,9 +542,9 @@ func (window *Window) Titlebar() Widgeter {
 
 	_cret = C.gtk_window_get_titlebar(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -763,7 +763,7 @@ func (window *Window) SetApplication(application *Application) {
 }
 
 // SetChild sets the child widget of window.
-func (window *Window) SetChild(child Widgeter) {
+func (window *Window) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -836,7 +836,7 @@ func (window *Window) SetDefaultSize(width int, height int) {
 //
 // The default widget is the widget that is activated when the user presses
 // Enter in a dialog (for example).
-func (window *Window) SetDefaultWidget(defaultWidget Widgeter) {
+func (window *Window) SetDefaultWidget(defaultWidget Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -907,7 +907,7 @@ func (window *Window) SetDisplay(display *gdk.Display) {
 // this window. To set the focus to a particular widget in the toplevel, it is
 // usually more convenient to use gtk.Widget.GrabFocus() instead of this
 // function.
-func (window *Window) SetFocus(focus Widgeter) {
+func (window *Window) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1072,7 +1072,7 @@ func (window *Window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the system,
 // this function may not work for a window that is already visible, so you set
 // the titlebar before calling gtk.Widget.Show().
-func (window *Window) SetTitlebar(titlebar Widgeter) {
+func (window *Window) SetTitlebar(titlebar Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1156,11 +1156,11 @@ func (window *Window) Unminimize() {
 	C.gtk_window_unminimize(_arg0)
 }
 
-// WindowDefaultIconName returns the fallback icon name for windows.
+// WindowGetDefaultIconName returns the fallback icon name for windows.
 //
 // The returned string is owned by GTK and should not be modified. It is only
 // valid until the next call to gtk.Window().SetDefaultIconName.
-func WindowDefaultIconName() string {
+func WindowGetDefaultIconName() string {
 	var _cret *C.char // in
 
 	_cret = C.gtk_window_get_default_icon_name()
@@ -1172,19 +1172,19 @@ func WindowDefaultIconName() string {
 	return _utf8
 }
 
-// WindowToplevels returns a list of all existing toplevel windows.
+// WindowGetToplevels returns a list of all existing toplevel windows.
 //
 // If you want to iterate through the list and perform actions involving
 // callbacks that might destroy the widgets or add new ones, be aware that the
 // list of toplevels will change and emit the "items-changed" signal.
-func WindowToplevels() gio.ListModeler {
+func WindowGetToplevels() gio.ListModeller {
 	var _cret *C.GListModel // in
 
 	_cret = C.gtk_window_get_toplevels()
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -1205,8 +1205,8 @@ func WindowListToplevels() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widgeter // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
+		var dst Widgetter // out
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		return dst
 	})
 	_list.AttachFinalizer(nil)

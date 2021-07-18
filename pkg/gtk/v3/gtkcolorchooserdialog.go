@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialoger},
+		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialogger},
 	})
 }
 
@@ -61,7 +61,7 @@ func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
 	}
 }
 
-func marshalColorChooserDialoger(p uintptr) (interface{}, error) {
+func marshalColorChooserDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorChooserDialog(obj), nil

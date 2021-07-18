@@ -116,7 +116,7 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -185,7 +185,7 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

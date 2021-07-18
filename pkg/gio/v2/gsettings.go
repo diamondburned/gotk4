@@ -671,7 +671,7 @@ func (settings *Settings) CreateAction(key string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
+	_action = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

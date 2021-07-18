@@ -136,7 +136,7 @@ type PaintableOverrider interface {
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
 	// width and height are not larger than zero, this function will do nothing.
-	Snapshot(snapshot Snapshoter, width float64, height float64)
+	Snapshot(snapshot Snapshotter, width float64, height float64)
 }
 
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
@@ -214,7 +214,7 @@ type Paintabler interface {
 	// their size.
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given width and height.
-	Snapshot(snapshot Snapshoter, width float64, height float64)
+	Snapshot(snapshot Snapshotter, width float64, height float64)
 }
 
 var _ Paintabler = (*Paintable)(nil)
@@ -284,7 +284,7 @@ func (paintable *Paintable) CurrentImage() Paintabler {
 
 	var _ret Paintabler // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _ret
 }
@@ -433,7 +433,7 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the snapshot. If width
 // and height are not larger than zero, this function will do nothing.
-func (paintable *Paintable) Snapshot(snapshot Snapshoter, width float64, height float64) {
+func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out
 	var _arg2 C.double        // out
@@ -466,7 +466,7 @@ func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 
 	var _paintable Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _paintable
 }

@@ -39,7 +39,7 @@ var _ gextras.Nativer = (*LayoutChild)(nil)
 // LayoutChilder describes LayoutChild's abstract methods.
 type LayoutChilder interface {
 	// ChildWidget retrieves the GtkWidget associated to the given layout_child.
-	ChildWidget() Widgeter
+	ChildWidget() Widgetter
 	// LayoutManager retrieves the GtkLayoutManager instance that created the
 	// given layout_child.
 	LayoutManager() LayoutManagerer
@@ -60,7 +60,7 @@ func marshalLayoutChilder(p uintptr) (interface{}, error) {
 }
 
 // ChildWidget retrieves the GtkWidget associated to the given layout_child.
-func (layoutChild *LayoutChild) ChildWidget() Widgeter {
+func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	var _arg0 *C.GtkLayoutChild // out
 	var _cret *C.GtkWidget      // in
 
@@ -68,9 +68,9 @@ func (layoutChild *LayoutChild) ChildWidget() Widgeter {
 
 	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -87,7 +87,7 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 
 	var _layoutManager LayoutManagerer // out
 
-	_layoutManager = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
+	_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
 
 	return _layoutManager
 }

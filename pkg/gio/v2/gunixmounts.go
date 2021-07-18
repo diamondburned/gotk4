@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorer},
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitorrer},
 		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
 		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
 	})
@@ -308,7 +308,7 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessIcon guesses the icon of a Unix mount.
-func UnixMountGuessIcon(mountEntry *UnixMountEntry) Iconer {
+func UnixMountGuessIcon(mountEntry *UnixMountEntry) Iconner {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
 
@@ -316,9 +316,9 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Iconer {
 
 	_cret = C.g_unix_mount_guess_icon(_arg1)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -361,7 +361,7 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 }
 
 // UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
-func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Iconer {
+func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Iconner {
 	var _arg1 *C.GUnixMountEntry // out
 	var _cret *C.GIcon           // in
 
@@ -369,9 +369,9 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Iconer {
 
 	_cret = C.g_unix_mount_guess_symbolic_icon(_arg1)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -523,7 +523,7 @@ func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	}
 }
 
-func marshalUnixMountMonitorer(p uintptr) (interface{}, error) {
+func marshalUnixMountMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUnixMountMonitor(obj), nil
@@ -564,7 +564,7 @@ func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 	C.g_unix_mount_monitor_set_rate_limit(_arg0, _arg1)
 }
 
-// UnixMountMonitor gets the MountMonitor for the current thread-default main
+// UnixMountMonitorGet gets the MountMonitor for the current thread-default main
 // context.
 //
 // The mount monitor can be used to monitor for changes to the list of mounted
@@ -572,7 +572,7 @@ func (mountMonitor *UnixMountMonitor) SetRateLimit(limitMsec int) {
 //
 // You must only call g_object_unref() on the return value from under the same
 // main context as you called this function.
-func UnixMountMonitor() *UnixMountMonitor {
+func UnixMountMonitorGet() *UnixMountMonitor {
 	var _cret *C.GUnixMountMonitor // in
 
 	_cret = C.g_unix_mount_monitor_get()
@@ -737,7 +737,7 @@ func (mountPoint *UnixMountPoint) GuessCanEject() bool {
 }
 
 // GuessIcon guesses the icon of a Unix mount point.
-func (mountPoint *UnixMountPoint) GuessIcon() Iconer {
+func (mountPoint *UnixMountPoint) GuessIcon() Iconner {
 	var _arg0 *C.GUnixMountPoint // out
 	var _cret *C.GIcon           // in
 
@@ -745,9 +745,9 @@ func (mountPoint *UnixMountPoint) GuessIcon() Iconer {
 
 	_cret = C.g_unix_mount_point_guess_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -771,7 +771,7 @@ func (mountPoint *UnixMountPoint) GuessName() string {
 }
 
 // GuessSymbolicIcon guesses the symbolic icon of a Unix mount point.
-func (mountPoint *UnixMountPoint) GuessSymbolicIcon() Iconer {
+func (mountPoint *UnixMountPoint) GuessSymbolicIcon() Iconner {
 	var _arg0 *C.GUnixMountPoint // out
 	var _cret *C.GIcon           // in
 
@@ -779,9 +779,9 @@ func (mountPoint *UnixMountPoint) GuessSymbolicIcon() Iconer {
 
 	_cret = C.g_unix_mount_point_guess_symbolic_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }

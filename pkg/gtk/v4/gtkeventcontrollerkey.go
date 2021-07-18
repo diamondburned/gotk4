@@ -62,7 +62,7 @@ func NewEventControllerKey() *EventControllerKey {
 // This function can only be used in handlers for the
 // gtk.EventControllerKey::key-pressed, gtk.EventControllerKey::key-released or
 // gtk.EventControllerKey::modifiers signals.
-func (controller *EventControllerKey) Forward(widget Widgeter) bool {
+func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -110,7 +110,7 @@ func (controller *EventControllerKey) ImContext() IMContexter {
 
 	var _imContext IMContexter // out
 
-	_imContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IMContexter)
+	_imContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IMContexter)
 
 	return _imContext
 }

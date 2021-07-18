@@ -169,7 +169,7 @@ func (node *RenderNode) ref() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }

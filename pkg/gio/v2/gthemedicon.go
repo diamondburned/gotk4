@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconer},
+		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIconner},
 	})
 }
 
@@ -54,7 +54,7 @@ func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	}
 }
 
-func marshalThemedIconer(p uintptr) (interface{}, error) {
+func marshalThemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapThemedIcon(obj), nil

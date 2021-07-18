@@ -132,7 +132,7 @@ func (v *SearchEntry) Native() uintptr {
 }
 
 // KeyCaptureWidget gets the widget that entry is capturing key events from.
-func (entry *SearchEntry) KeyCaptureWidget() Widgeter {
+func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 	var _arg0 *C.GtkSearchEntry // out
 	var _cret *C.GtkWidget      // in
 
@@ -140,9 +140,9 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgeter {
 
 	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -161,7 +161,7 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgeter {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
-func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgeter) {
+func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchEntry // out
 	var _arg1 *C.GtkWidget      // out
 

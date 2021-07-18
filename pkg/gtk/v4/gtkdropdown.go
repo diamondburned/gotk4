@@ -86,7 +86,7 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // You may want to call gtk.DropDown.SetFactory() to set up a way to map its
 // items to widgets.
-func NewDropDown(model gio.ListModeler, expression Expressioner) *DropDown {
+func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
@@ -161,7 +161,7 @@ func (self *DropDown) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -204,7 +204,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 }
 
 // Model gets the model that provides the displayed items.
-func (self *DropDown) Model() gio.ListModeler {
+func (self *DropDown) Model() gio.ListModeller {
 	var _arg0 *C.GtkDropDown // out
 	var _cret *C.GListModel  // in
 
@@ -212,9 +212,9 @@ func (self *DropDown) Model() gio.ListModeler {
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -307,7 +307,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 }
 
 // SetModel sets the GListModel to use.
-func (self *DropDown) SetModel(model gio.ListModeler) {
+func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 

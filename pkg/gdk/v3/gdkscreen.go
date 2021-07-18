@@ -75,7 +75,7 @@ func (screen *Screen) ActiveWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -468,7 +468,7 @@ func (screen *Screen) RootWindow() Windower {
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -535,7 +535,7 @@ func (screen *Screen) ToplevelWindows() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
 		var dst Windower // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -613,7 +613,7 @@ func (screen *Screen) WindowStack() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
 		var dst Windower // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -721,9 +721,9 @@ func (screen *Screen) SetResolution(dpi float64) {
 	C.gdk_screen_set_resolution(_arg0, _arg1)
 }
 
-// ScreenDefault gets the default screen for the default display. (See
+// ScreenGetDefault gets the default screen for the default display. (See
 // gdk_display_get_default ()).
-func ScreenDefault() *Screen {
+func ScreenGetDefault() *Screen {
 	var _cret *C.GdkScreen // in
 
 	_cret = C.gdk_screen_get_default()

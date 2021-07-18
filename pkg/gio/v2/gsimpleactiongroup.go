@@ -129,7 +129,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

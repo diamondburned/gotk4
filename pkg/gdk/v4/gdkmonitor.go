@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorer},
+		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitorrer},
 	})
 }
 
@@ -84,7 +84,7 @@ func wrapMonitor(obj *externglib.Object) *Monitor {
 	}
 }
 
-func marshalMonitorer(p uintptr) (interface{}, error) {
+func marshalMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMonitor(obj), nil

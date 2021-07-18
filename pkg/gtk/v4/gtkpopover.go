@@ -216,7 +216,7 @@ func (popover *Popover) CascadePopdown() bool {
 }
 
 // Child gets the child widget of popover.
-func (popover *Popover) Child() Widgeter {
+func (popover *Popover) Child() Widgetter {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
@@ -224,9 +224,9 @@ func (popover *Popover) Child() Widgeter {
 
 	_cret = C.gtk_popover_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -399,7 +399,7 @@ func (popover *Popover) SetCascadePopdown(cascadePopdown bool) {
 }
 
 // SetChild sets the child widget of popover.
-func (popover *Popover) SetChild(child Widgeter) {
+func (popover *Popover) SetChild(child Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -414,7 +414,7 @@ func (popover *Popover) SetChild(child Widgeter) {
 // The default widget is the widget that’s activated when the user presses Enter
 // in a dialog (for example). This function sets or unsets the default widget
 // for a GtkPopover.
-func (popover *Popover) SetDefaultWidget(widget Widgeter) {
+func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 

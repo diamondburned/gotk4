@@ -100,7 +100,7 @@ func (converterStream *ConverterInputStream) Converter() Converterer {
 
 	var _converter Converterer // out
 
-	_converter = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Converterer)
+	_converter = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Converterer)
 
 	return _converter
 }

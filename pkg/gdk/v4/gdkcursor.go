@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorer},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursorrer},
 	})
 }
 
@@ -65,7 +65,7 @@ func wrapCursor(obj *externglib.Object) *Cursor {
 	}
 }
 
-func marshalCursorer(p uintptr) (interface{}, error) {
+func marshalCursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCursor(obj), nil
@@ -232,7 +232,7 @@ func (cursor *Cursor) Texture() Texturer {
 
 	var _texture Texturer // out
 
-	_texture = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
+	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Texturer)
 
 	return _texture
 }

@@ -688,7 +688,7 @@ func (builder *Builder) Scope() BuilderScoper {
 
 	var _builderScope BuilderScoper // out
 
-	_builderScope = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
+	_builderScope = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
 
 	return _builderScope
 }

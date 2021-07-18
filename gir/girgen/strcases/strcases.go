@@ -124,10 +124,15 @@ func IsLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
 }
 
+// GuessSnake guesses if the given name is snake-cased or not.
+func GuessSnake(name string) (snake bool) {
+	return strings.Contains(name, "_") || IsLower(name)
+}
+
 // Go converts either pascal or snake case to the Go name. The original casing
 // is inferred from the given name.
 func Go(name string) string {
-	if strings.Contains(name, "_") || IsLower(name) {
+	if GuessSnake(name) {
 		return SnakeToGo(true, name)
 	} else {
 		return PascalToGo(name)
@@ -307,6 +312,7 @@ var vowels = [255]bool{
 func Interfacify(word string) string {
 	// https://www.englishclub.com/spelling/rules-add-er-est.htm
 	// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-er-or-ar.htm
+	// https://ginsengenglish.com/blog/cvc-words
 	switch {
 	case wordConsonantAndSuffix(word, 'e'):
 		fallthrough
@@ -324,8 +330,8 @@ func Interfacify(word string) string {
 		return word + "or"
 
 	// CVC form is bad. It's ugly.
-	// case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
-	// 	return word + string(word[len(word)-1]) + "er"
+	case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
+		return word + string(word[len(word)-1]) + "er"
 
 	case wordEndsInConsonant(word):
 		fallthrough
@@ -361,6 +367,12 @@ func wordEndsInConsonant(word string) bool {
 	return len(word) > 1 && !vowels[word[len(word)-1]]
 }
 
+var cvcExceptions = [255]bool{
+	'w': true,
+	'x': true,
+	'y': true,
+}
+
 // wordIsCVC returns true if the given word follows the C+V+C form.
 func wordIsCVC(word string) bool {
 	if len(word) < 3 {
@@ -368,5 +380,7 @@ func wordIsCVC(word string) bool {
 	}
 
 	last3 := word[len(word)-3:]
-	return !vowels[last3[0]] && vowels[last3[1]] && !vowels[last3[2]]
+
+	return !cvcExceptions[last3[2]] &&
+		!vowels[last3[0]] && vowels[last3[1]] && !vowels[last3[2]]
 }

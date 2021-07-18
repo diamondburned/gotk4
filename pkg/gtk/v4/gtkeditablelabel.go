@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeler},
+		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabeller},
 	})
 }
 
@@ -89,7 +89,7 @@ func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
 	}
 }
 
-func marshalEditableLabeler(p uintptr) (interface{}, error) {
+func marshalEditableLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEditableLabel(obj), nil

@@ -169,7 +169,7 @@ func (context *CellAreaContext) Area() CellAreaer {
 
 	var _cellArea CellAreaer // out
 
-	_cellArea = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+	_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
 
 	return _cellArea
 }

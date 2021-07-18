@@ -51,13 +51,13 @@ func DBusErrorEncodeGError(err error) string {
 	return _utf8
 }
 
-// DBusErrorRemoteError gets the D-Bus error name used for error, if any.
+// DBusErrorGetRemoteError gets the D-Bus error name used for error, if any.
 //
 // This function is guaranteed to return a D-Bus error name for all #GErrors
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on error.
-func DBusErrorRemoteError(err error) string {
+func DBusErrorGetRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 

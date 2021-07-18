@@ -383,7 +383,7 @@ func (application *Application) ActiveWindow() *Window {
 
 // AppMenu returns the menu model that has been set with
 // gtk_application_set_app_menu().
-func (application *Application) AppMenu() gio.MenuModeler {
+func (application *Application) AppMenu() gio.MenuModeller {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
@@ -391,9 +391,9 @@ func (application *Application) AppMenu() gio.MenuModeler {
 
 	_cret = C.gtk_application_get_app_menu(_arg0)
 
-	var _menuModel gio.MenuModeler // out
+	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -426,7 +426,7 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 // Menubar returns the menu model that has been set with
 // gtk_application_set_menubar().
-func (application *Application) Menubar() gio.MenuModeler {
+func (application *Application) Menubar() gio.MenuModeller {
 	var _arg0 *C.GtkApplication // out
 	var _cret *C.GMenuModel     // in
 
@@ -434,9 +434,9 @@ func (application *Application) Menubar() gio.MenuModeler {
 
 	_cret = C.gtk_application_get_menubar(_arg0)
 
-	var _menuModel gio.MenuModeler // out
+	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -710,7 +710,7 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetAppMenu(appMenu gio.MenuModeler) {
+func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 
@@ -737,7 +737,7 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeler) {
 //
 // Use the base Map interface to add actions, to respond to the user selecting
 // these menu items.
-func (application *Application) SetMenubar(menubar gio.MenuModeler) {
+func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 *C.GMenuModel     // out
 

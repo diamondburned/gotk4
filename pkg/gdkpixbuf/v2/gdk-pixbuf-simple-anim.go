@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnimer},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnimmer},
 	})
 }
 
@@ -36,7 +36,7 @@ func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 	}
 }
 
-func marshalPixbufSimpleAnimer(p uintptr) (interface{}, error) {
+func marshalPixbufSimpleAnimmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPixbufSimpleAnim(obj), nil

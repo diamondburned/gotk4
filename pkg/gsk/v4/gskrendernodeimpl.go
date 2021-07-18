@@ -120,7 +120,7 @@ func (node *BlendNode) BottomChild() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -136,7 +136,7 @@ func (node *BlendNode) TopChild() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -191,7 +191,7 @@ func (node *BlurNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -438,7 +438,7 @@ func (node *ClipNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -520,7 +520,7 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -795,7 +795,7 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -869,7 +869,7 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -902,7 +902,7 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -962,7 +962,7 @@ func (node *DebugNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1017,7 +1017,7 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1346,7 +1346,7 @@ func (node *OpacityNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1717,7 +1717,7 @@ func (node *RepeatNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1901,7 +1901,7 @@ func (node *RoundedClipNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1978,7 +1978,7 @@ func (node *ShadowNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -2089,7 +2089,7 @@ func (node *TextNode) Font() pango.Fonter {
 
 	var _font pango.Fonter // out
 
-	_font = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.Fonter)
+	_font = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.Fonter)
 
 	return _font
 }
@@ -2195,7 +2195,7 @@ func (node *TextureNode) Texture() gdk.Texturer {
 
 	var _texture gdk.Texturer // out
 
-	_texture = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Texturer)
+	_texture = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Texturer)
 
 	return _texture
 }
@@ -2251,7 +2251,7 @@ func (node *TransformNode) Child() RenderNoder {
 
 	var _renderNode RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }

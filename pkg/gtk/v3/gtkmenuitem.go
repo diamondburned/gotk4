@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemer},
+		{T: externglib.Type(C.gtk_menu_item_get_type()), F: marshalMenuItemmer},
 	})
 }
 
@@ -110,7 +110,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemer(p uintptr) (interface{}, error) {
+func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil
@@ -265,7 +265,7 @@ func (menuItem *MenuItem) RightJustified() bool {
 
 // Submenu gets the submenu underneath this menu item, if any. See
 // gtk_menu_item_set_submenu().
-func (menuItem *MenuItem) Submenu() Widgeter {
+func (menuItem *MenuItem) Submenu() Widgetter {
 	var _arg0 *C.GtkMenuItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -273,9 +273,9 @@ func (menuItem *MenuItem) Submenu() Widgeter {
 
 	_cret = C.gtk_menu_item_get_submenu(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

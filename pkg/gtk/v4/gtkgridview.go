@@ -101,7 +101,7 @@ func marshalGridViewer(p uintptr) (interface{}, error) {
 //
 //    grid_view = gtk_grid_view_new (create_model (),
 //      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
-func NewGridView(model SelectionModeler, factory *ListItemFactory) *GridView {
+func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -186,7 +186,7 @@ func (self *GridView) MinColumns() uint {
 }
 
 // Model gets the model that's currently used to read the items displayed.
-func (self *GridView) Model() SelectionModeler {
+func (self *GridView) Model() SelectionModeller {
 	var _arg0 *C.GtkGridView       // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -194,9 +194,9 @@ func (self *GridView) Model() SelectionModeler {
 
 	_cret = C.gtk_grid_view_get_model(_arg0)
 
-	var _selectionModel SelectionModeler // out
+	var _selectionModel SelectionModeller // out
 
-	_selectionModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeler)
+	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
 
 	return _selectionModel
 }
@@ -280,7 +280,7 @@ func (self *GridView) SetMinColumns(minColumns uint) {
 // SetModel sets the imodel to use.
 //
 // This must be a gtk.SelectionModel.
-func (self *GridView) SetModel(model SelectionModeler) {
+func (self *GridView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkGridView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

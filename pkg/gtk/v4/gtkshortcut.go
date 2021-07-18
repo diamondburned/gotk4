@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcuter},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcutter},
 	})
 }
 
@@ -49,7 +49,7 @@ func wrapShortcut(obj *externglib.Object) *Shortcut {
 	}
 }
 
-func marshalShortcuter(p uintptr) (interface{}, error) {
+func marshalShortcutter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcut(obj), nil
@@ -85,7 +85,7 @@ func (self *Shortcut) Action() ShortcutActioner {
 
 	var _shortcutAction ShortcutActioner // out
 
-	_shortcutAction = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutActioner)
+	_shortcutAction = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutActioner)
 
 	return _shortcutAction
 }
@@ -120,7 +120,7 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }

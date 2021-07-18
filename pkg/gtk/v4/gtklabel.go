@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeler},
+		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabeller},
 	})
 }
 
@@ -222,7 +222,7 @@ func wrapLabel(obj *externglib.Object) *Label {
 	}
 }
 
-func marshalLabeler(p uintptr) (interface{}, error) {
+func marshalLabeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLabel(obj), nil
@@ -342,7 +342,7 @@ func (self *Label) Ellipsize() pango.EllipsizeMode {
 // ExtraMenu gets the extra menu model of label.
 //
 // See gtk.Label.SetExtraMenu().
-func (self *Label) ExtraMenu() gio.MenuModeler {
+func (self *Label) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkLabel   // out
 	var _cret *C.GMenuModel // in
 
@@ -350,9 +350,9 @@ func (self *Label) ExtraMenu() gio.MenuModeler {
 
 	_cret = C.gtk_label_get_extra_menu(_arg0)
 
-	var _menuModel gio.MenuModeler // out
+	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -506,7 +506,7 @@ func (self *Label) MnemonicKeyval() uint {
 // this label.
 //
 // See gtk.Label.SetMnemonicWidget().
-func (self *Label) MnemonicWidget() Widgeter {
+func (self *Label) MnemonicWidget() Widgetter {
 	var _arg0 *C.GtkLabel  // out
 	var _cret *C.GtkWidget // in
 
@@ -514,9 +514,9 @@ func (self *Label) MnemonicWidget() Widgeter {
 
 	_cret = C.gtk_label_get_mnemonic_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -785,7 +785,7 @@ func (self *Label) SetEllipsize(mode pango.EllipsizeMode) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // label.
-func (self *Label) SetExtraMenu(model gio.MenuModeler) {
+func (self *Label) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkLabel   // out
 	var _arg1 *C.GMenuModel // out
 
@@ -923,7 +923,7 @@ func (self *Label) SetMaxWidthChars(nChars int) {
 // gtkwidget::mnemonic-activate signal on it. The default handler for this
 // signal will activate the widget if there are no mnemonic collisions and
 // toggle focus between the colliding widgets otherwise.
-func (self *Label) SetMnemonicWidget(widget Widgeter) {
+func (self *Label) SetMnemonicWidget(widget Widgetter) {
 	var _arg0 *C.GtkLabel  // out
 	var _arg1 *C.GtkWidget // out
 

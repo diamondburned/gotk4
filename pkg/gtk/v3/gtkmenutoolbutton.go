@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButtoner},
+		{T: externglib.Type(C.gtk_menu_tool_button_get_type()), F: marshalMenuToolButtonner},
 	})
 }
 
@@ -97,7 +97,7 @@ func wrapMenuToolButton(obj *externglib.Object) *MenuToolButton {
 	}
 }
 
-func marshalMenuToolButtoner(p uintptr) (interface{}, error) {
+func marshalMenuToolButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuToolButton(obj), nil
@@ -105,7 +105,7 @@ func marshalMenuToolButtoner(p uintptr) (interface{}, error) {
 
 // NewMenuToolButton creates a new MenuToolButton using icon_widget as icon and
 // label as label.
-func NewMenuToolButton(iconWidget Widgeter, label string) *MenuToolButton {
+func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.gchar       // out
 	var _cret *C.GtkToolItem // in
@@ -143,7 +143,7 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 }
 
 // Menu gets the Menu associated with MenuToolButton.
-func (button *MenuToolButton) Menu() Widgeter {
+func (button *MenuToolButton) Menu() Widgetter {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _cret *C.GtkWidget         // in
 
@@ -151,9 +151,9 @@ func (button *MenuToolButton) Menu() Widgeter {
 
 	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -186,7 +186,7 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 
 // SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
 // menu is NULL, the arrow button becomes insensitive.
-func (button *MenuToolButton) SetMenu(menu Widgeter) {
+func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg0 *C.GtkMenuToolButton // out
 	var _arg1 *C.GtkWidget         // out
 

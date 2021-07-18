@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarer},
+		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBarrer},
 	})
 }
 
@@ -92,7 +92,7 @@ func wrapLevelBar(obj *externglib.Object) *LevelBar {
 	}
 }
 
-func marshalLevelBarer(p uintptr) (interface{}, error) {
+func marshalLevelBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLevelBar(obj), nil

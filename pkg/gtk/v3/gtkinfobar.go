@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
 	})
 }
 
@@ -133,7 +133,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	}
 }
 
-func marshalInfoBarer(p uintptr) (interface{}, error) {
+func marshalInfoBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -156,7 +156,7 @@ func NewInfoBar() *InfoBar {
 // connecting a signal handler that will emit the InfoBar::response signal on
 // the message area when the widget is activated. The widget is appended to the
 // end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out

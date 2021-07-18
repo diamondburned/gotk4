@@ -9,11 +9,11 @@ package gtk
 // #include <gtk/gtkx.h>
 import "C"
 
-// DebugFlags returns the GTK+ debug flags.
+// GetDebugFlags returns the GTK+ debug flags.
 //
 // This function is intended for GTK+ modules that want to adjust their debug
 // output based on GTK+ debug flags.
-func DebugFlags() uint {
+func GetDebugFlags() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_debug_flags()

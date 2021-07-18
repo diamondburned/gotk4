@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarer},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
 	})
 }
 
@@ -90,7 +90,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	}
 }
 
-func marshalSearchBarer(p uintptr) (interface{}, error) {
+func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSearchBar(obj), nil
@@ -129,7 +129,7 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 }
 
 // Child gets the child widget of bar.
-func (bar *SearchBar) Child() Widgeter {
+func (bar *SearchBar) Child() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -137,15 +137,15 @@ func (bar *SearchBar) Child() Widgeter {
 
 	_cret = C.gtk_search_bar_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // KeyCaptureWidget gets the widget that bar is capturing key events from.
-func (bar *SearchBar) KeyCaptureWidget() Widgeter {
+func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -153,9 +153,9 @@ func (bar *SearchBar) KeyCaptureWidget() Widgeter {
 
 	_cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -197,7 +197,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 }
 
 // SetChild sets the child widget of bar.
-func (bar *SearchBar) SetChild(child Widgeter) {
+func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -218,7 +218,7 @@ func (bar *SearchBar) SetChild(child Widgeter) {
 // receive text input before it gets captured. If that is not desired, you can
 // capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
-func (bar *SearchBar) SetKeyCaptureWidget(widget Widgeter) {
+func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkWidget    // out
 

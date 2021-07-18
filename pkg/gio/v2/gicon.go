@@ -31,7 +31,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconer},
+		{T: externglib.Type(C.g_icon_get_type()), F: marshalIconner},
 	})
 }
 
@@ -41,7 +41,7 @@ func init() {
 // yet, so the interface currently has no use.
 type IconOverrider interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Iconer) bool
+	Equal(icon2 Iconner) bool
 	// Hash gets a hash for an icon.
 	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -84,10 +84,10 @@ type Icon struct {
 
 var _ gextras.Nativer = (*Icon)(nil)
 
-// Iconer describes Icon's abstract methods.
-type Iconer interface {
+// Iconner describes Icon's abstract methods.
+type Iconner interface {
 	// Equal checks if two icons are equal.
-	Equal(icon2 Iconer) bool
+	Equal(icon2 Iconner) bool
 	// Serialize serializes a #GIcon into a #GVariant.
 	Serialize() *glib.Variant
 	// String generates a textual representation of icon that can be used for
@@ -96,7 +96,7 @@ type Iconer interface {
 	String() string
 }
 
-var _ Iconer = (*Icon)(nil)
+var _ Iconner = (*Icon)(nil)
 
 func wrapIcon(obj *externglib.Object) *Icon {
 	return &Icon{
@@ -104,14 +104,14 @@ func wrapIcon(obj *externglib.Object) *Icon {
 	}
 }
 
-func marshalIconer(p uintptr) (interface{}, error) {
+func marshalIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapIcon(obj), nil
 }
 
 // Equal checks if two icons are equal.
-func (icon1 *Icon) Equal(icon2 Iconer) bool {
+func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
 	var _cret C.gboolean // in
@@ -187,7 +187,7 @@ func (icon *Icon) String() string {
 
 // IconDeserialize deserializes a #GIcon previously serialized using
 // g_icon_serialize().
-func IconDeserialize(value *glib.Variant) Iconer {
+func IconDeserialize(value *glib.Variant) Iconner {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
 
@@ -195,9 +195,9 @@ func IconDeserialize(value *glib.Variant) Iconer {
 
 	_cret = C.g_icon_deserialize(_arg1)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -224,7 +224,7 @@ func IconHash(icon cgo.Handle) uint {
 // If your application or library provides one or more #GIcon implementations
 // you need to ensure that each #GType is registered with the type system prior
 // to calling g_icon_new_for_string().
-func NewIconForString(str string) (Iconer, error) {
+func NewIconForString(str string) (Iconner, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GIcon  // in
 	var _cerr *C.GError // in
@@ -233,10 +233,10 @@ func NewIconForString(str string) (Iconer, error) {
 
 	_cret = C.g_icon_new_for_string(_arg1, &_cerr)
 
-	var _icon Iconer // out
-	var _goerr error // out
+	var _icon Iconner // out
+	var _goerr error  // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _icon, _goerr

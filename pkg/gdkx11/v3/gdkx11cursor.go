@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorer},
+		{T: externglib.Type(C.gdk_x11_cursor_get_type()), F: marshalX11Cursorrer},
 	})
 }
 
@@ -36,7 +36,7 @@ func wrapX11Cursor(obj *externglib.Object) *X11Cursor {
 	}
 }
 
-func marshalX11Cursorer(p uintptr) (interface{}, error) {
+func marshalX11Cursorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Cursor(obj), nil

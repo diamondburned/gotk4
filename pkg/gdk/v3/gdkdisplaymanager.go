@@ -119,13 +119,13 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }
 
-// DisplayManager gets the singleton DisplayManager object.
+// DisplayManagerGet gets the singleton DisplayManager object.
 //
 // When called for the first time, this function consults the GDK_BACKEND
 // environment variable to find out which of the supported GDK backends to use
 // (in case GDK has been compiled with multiple backends). Applications can use
 // gdk_set_allowed_backends() to limit what backends can be used.
-func DisplayManager() *DisplayManager {
+func DisplayManagerGet() *DisplayManager {
 	var _cret *C.GdkDisplayManager // in
 
 	_cret = C.gdk_display_manager_get()

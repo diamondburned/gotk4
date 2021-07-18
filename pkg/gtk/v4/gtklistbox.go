@@ -32,7 +32,7 @@ func init() {
 
 // ListBoxCreateWidgetFunc: called for list boxes that are bound to a GListModel
 // with gtk_list_box_bind_model() for each item that gets added to the model.
-type ListBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgeter)
+type ListBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk4_ListBoxCreateWidgetFunc
 func _gotk4_gtk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
@@ -244,7 +244,7 @@ func NewListBox() *ListBox {
 //
 // If a sort function is set, the widget will actually be inserted at the
 // calculated position.
-func (box *ListBox) Append(child Widgeter) {
+func (box *ListBox) Append(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -268,7 +268,7 @@ func (box *ListBox) Append(child Widgeter) {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkListBox. When using a model, filtering and sorting should
 // be implemented by the model.
-func (box *ListBox) BindModel(model gio.ListModeler, createWidgetFunc ListBoxCreateWidgetFunc) {
+func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkListBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkListBoxCreateWidgetFunc // out
@@ -469,7 +469,7 @@ func (box *ListBox) ShowSeparators() bool {
 //
 // If position is -1, or larger than the total number of items in the box, then
 // the child will be appended to the end.
-func (box *ListBox) Insert(child Widgeter, position int) {
+func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -523,7 +523,7 @@ func (box *ListBox) InvalidateSort() {
 //
 // If a sort function is set, the widget will actually be inserted at the
 // calculated position.
-func (box *ListBox) Prepend(child Widgeter) {
+func (box *ListBox) Prepend(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -534,7 +534,7 @@ func (box *ListBox) Prepend(child Widgeter) {
 }
 
 // Remove removes a child from box.
-func (box *ListBox) Remove(child Widgeter) {
+func (box *ListBox) Remove(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -679,7 +679,7 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 
 // SetPlaceholder sets the placeholder widget that is shown in the list when it
 // doesn't display any visible children.
-func (box *ListBox) SetPlaceholder(placeholder Widgeter) {
+func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -880,7 +880,7 @@ func (row *ListBoxRow) Activatable() bool {
 }
 
 // Child gets the child widget of row.
-func (row *ListBoxRow) Child() Widgeter {
+func (row *ListBoxRow) Child() Widgetter {
 	var _arg0 *C.GtkListBoxRow // out
 	var _cret *C.GtkWidget     // in
 
@@ -888,9 +888,9 @@ func (row *ListBoxRow) Child() Widgeter {
 
 	_cret = C.gtk_list_box_row_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -899,7 +899,7 @@ func (row *ListBoxRow) Child() Widgeter {
 //
 // This can be used in a gtk.ListBoxUpdateHeaderFunc to see if there is a header
 // set already, and if so to update the state of it.
-func (row *ListBoxRow) Header() Widgeter {
+func (row *ListBoxRow) Header() Widgetter {
 	var _arg0 *C.GtkListBoxRow // out
 	var _cret *C.GtkWidget     // in
 
@@ -907,9 +907,9 @@ func (row *ListBoxRow) Header() Widgeter {
 
 	_cret = C.gtk_list_box_row_get_header(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -981,7 +981,7 @@ func (row *ListBoxRow) SetActivatable(activatable bool) {
 }
 
 // SetChild sets the child widget of self.
-func (row *ListBoxRow) SetChild(child Widgeter) {
+func (row *ListBoxRow) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListBoxRow // out
 	var _arg1 *C.GtkWidget     // out
 
@@ -996,7 +996,7 @@ func (row *ListBoxRow) SetChild(child Widgeter) {
 // This is only allowed to be called from a gtk.ListBoxUpdateHeaderFunc. It will
 // replace any existing header in the row, and be shown in front of the row in
 // the listbox.
-func (row *ListBoxRow) SetHeader(header Widgeter) {
+func (row *ListBoxRow) SetHeader(header Widgetter) {
 	var _arg0 *C.GtkListBoxRow // out
 	var _arg1 *C.GtkWidget     // out
 

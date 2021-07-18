@@ -26,7 +26,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_tree_model_flags_get_type()), F: marshalTreeModelFlags},
-		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModeler},
+		{T: externglib.Type(C.gtk_tree_model_get_type()), F: marshalTreeModeller},
 		{T: externglib.Type(C.gtk_tree_iter_get_type()), F: marshalTreeIter},
 		{T: externglib.Type(C.gtk_tree_path_get_type()), F: marshalTreePath},
 		{T: externglib.Type(C.gtk_tree_row_reference_get_type()), F: marshalTreeRowReference},
@@ -81,7 +81,7 @@ func (t TreeModelFlags) String() string {
 
 // TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
 // to iterate over the rows in a tree model.
-type TreeModelForeachFunc func(model TreeModeler, path *TreePath, iter *TreeIter) (ok bool)
+type TreeModelForeachFunc func(model TreeModeller, path *TreePath, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeModelForeachFunc
 func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.gboolean) {
@@ -90,11 +90,11 @@ func _gotk4_gtk3_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath,
 		panic(`callback not found`)
 	}
 
-	var model TreeModeler // out
-	var path *TreePath    // out
-	var iter *TreeIter    // out
+	var model TreeModeller // out
+	var path *TreePath     // out
+	var iter *TreeIter     // out
 
-	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -381,11 +381,11 @@ type TreeModel struct {
 
 var _ gextras.Nativer = (*TreeModel)(nil)
 
-// TreeModeler describes TreeModel's abstract methods.
-type TreeModeler interface {
+// TreeModeller describes TreeModel's abstract methods.
+type TreeModeller interface {
 	// NewFilter creates a new TreeModel, with child_model as the child_model
 	// and root as the virtual root.
-	NewFilter(root *TreePath) TreeModeler
+	NewFilter(root *TreePath) TreeModeller
 	// Foreach calls func on each node in model in a depth-first fashion.
 	Foreach(fn TreeModelForeachFunc)
 	// ColumnType returns the type of the column.
@@ -442,7 +442,7 @@ type TreeModeler interface {
 	UnrefNode(iter *TreeIter)
 }
 
-var _ TreeModeler = (*TreeModel)(nil)
+var _ TreeModeller = (*TreeModel)(nil)
 
 func wrapTreeModel(obj *externglib.Object) *TreeModel {
 	return &TreeModel{
@@ -450,7 +450,7 @@ func wrapTreeModel(obj *externglib.Object) *TreeModel {
 	}
 }
 
-func marshalTreeModeler(p uintptr) (interface{}, error) {
+func marshalTreeModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeModel(obj), nil
@@ -458,7 +458,7 @@ func marshalTreeModeler(p uintptr) (interface{}, error) {
 
 // NewFilter creates a new TreeModel, with child_model as the child_model and
 // root as the virtual root.
-func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeler {
+func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeller {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _cret *C.GtkTreeModel // in
@@ -468,9 +468,9 @@ func (childModel *TreeModel) NewFilter(root *TreePath) TreeModeler {
 
 	_cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }
@@ -1360,7 +1360,7 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.
-func NewTreeRowReference(model TreeModeler, path *TreePath) *TreeRowReference {
+func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GtkTreeModel        // out
 	var _arg2 *C.GtkTreePath         // out
 	var _cret *C.GtkTreeRowReference // in
@@ -1381,7 +1381,7 @@ func NewTreeRowReference(model TreeModeler, path *TreePath) *TreeRowReference {
 }
 
 // NewTreeRowReferenceProxy constructs a struct TreeRowReference.
-func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeler, path *TreePath) *TreeRowReference {
+func NewTreeRowReferenceProxy(proxy *externglib.Object, model TreeModeller, path *TreePath) *TreeRowReference {
 	var _arg1 *C.GObject             // out
 	var _arg2 *C.GtkTreeModel        // out
 	var _arg3 *C.GtkTreePath         // out
@@ -1432,7 +1432,7 @@ func (reference *TreeRowReference) free() {
 }
 
 // Model returns the model that the row reference is monitoring.
-func (reference *TreeRowReference) Model() TreeModeler {
+func (reference *TreeRowReference) Model() TreeModeller {
 	var _arg0 *C.GtkTreeRowReference // out
 	var _cret *C.GtkTreeModel        // in
 
@@ -1440,9 +1440,9 @@ func (reference *TreeRowReference) Model() TreeModeler {
 
 	_cret = C.gtk_tree_row_reference_get_model(_arg0)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }

@@ -471,9 +471,9 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)
 }
 
-// PaperSizeDefault returns the name of the default paper size, which depends on
-// the current locale.
-func PaperSizeDefault() string {
+// PaperSizeGetDefault returns the name of the default paper size, which depends
+// on the current locale.
+func PaperSizeGetDefault() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_paper_size_get_default()
@@ -485,8 +485,8 @@ func PaperSizeDefault() string {
 	return _utf8
 }
 
-// PaperSizePaperSizes creates a list of known paper sizes.
-func PaperSizePaperSizes(includeCustom bool) *externglib.List {
+// PaperSizeGetPaperSizes creates a list of known paper sizes.
+func PaperSizeGetPaperSizes(includeCustom bool) *externglib.List {
 	var _arg1 C.gboolean // out
 	var _cret *C.GList   // in
 

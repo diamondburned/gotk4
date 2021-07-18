@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconer},
+		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIconner},
 	})
 }
 
@@ -54,14 +54,14 @@ func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	}
 }
 
-func marshalEmblemedIconer(p uintptr) (interface{}, error) {
+func marshalEmblemedIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEmblemedIcon(obj), nil
 }
 
 // NewEmblemedIcon creates a new emblemed icon for icon with the emblem emblem.
-func NewEmblemedIcon(icon Iconer, emblem *Emblem) *EmblemedIcon {
+func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -121,7 +121,7 @@ func (emblemed *EmblemedIcon) Emblems() *externglib.List {
 }
 
 // GetIcon gets the main icon for emblemed.
-func (emblemed *EmblemedIcon) GetIcon() Iconer {
+func (emblemed *EmblemedIcon) GetIcon() Iconner {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
 
@@ -129,9 +129,9 @@ func (emblemed *EmblemedIcon) GetIcon() Iconer {
 
 	_cret = C.g_emblemed_icon_get_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }

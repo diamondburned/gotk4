@@ -102,8 +102,8 @@ func _gotk4_gtk3_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 	var family pango.FontFamilier // out
 	var face pango.FontFacer      // out
 
-	family = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(pango.FontFamilier)
-	face = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(pango.FontFacer)
+	family = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(pango.FontFamilier)
+	face = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(pango.FontFacer)
 
 	fn := v.(FontFilterFunc)
 	ok := fn(family, face)
@@ -133,7 +133,7 @@ type FontChooserOverrider interface {
 	FontFamily() pango.FontFamilier
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
-	FontMap() pango.FontMaper
+	FontMap() pango.FontMapper
 	// FontSize: selected font size.
 	FontSize() int
 	// SetFilterFunc adds a filter function that decides which fonts to display
@@ -159,7 +159,7 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMaper)
+	SetFontMap(fontmap pango.FontMapper)
 }
 
 // FontChooser is an interface that can be implemented by widgets displaying the
@@ -187,7 +187,7 @@ type FontChooserer interface {
 	FontFeatures() string
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
-	FontMap() pango.FontMaper
+	FontMap() pango.FontMapper
 	// FontSize: selected font size.
 	FontSize() int
 	// Language gets the language that is used for font features.
@@ -206,7 +206,7 @@ type FontChooserer interface {
 	// SetFontDesc sets the currently-selected font from font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget.
-	SetFontMap(fontmap pango.FontMaper)
+	SetFontMap(fontmap pango.FontMapper)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -297,7 +297,7 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 
 	var _fontFace pango.FontFacer // out
 
-	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
 
 	return _fontFace
 }
@@ -316,7 +316,7 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 
 	var _fontFamily pango.FontFamilier // out
 
-	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
+	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
 
 	return _fontFamily
 }
@@ -340,7 +340,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 
 // FontMap gets the custom font map of this font chooser widget, or NULL if it
 // does not have one.
-func (fontchooser *FontChooser) FontMap() pango.FontMaper {
+func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontMap   // in
 
@@ -348,9 +348,9 @@ func (fontchooser *FontChooser) FontMap() pango.FontMaper {
 
 	_cret = C.gtk_font_chooser_get_font_map(_arg0)
 
-	var _fontMap pango.FontMaper // out
+	var _fontMap pango.FontMapper // out
 
-	_fontMap = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMaper)
+	_fontMap = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMapper)
 
 	return _fontMap
 }
@@ -497,7 +497,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMaper) {
+func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
 

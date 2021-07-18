@@ -191,7 +191,7 @@ func (self *MediaFile) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -209,7 +209,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 
 	var _inputStream gio.InputStreamer // out
 
-	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 
 	return _inputStream
 }

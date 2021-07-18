@@ -128,7 +128,7 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget gets the center widget, or NULL if there is none.
-func (self *CenterBox) CenterWidget() Widgeter {
+func (self *CenterBox) CenterWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
@@ -136,15 +136,15 @@ func (self *CenterBox) CenterWidget() Widgeter {
 
 	_cret = C.gtk_center_box_get_center_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // EndWidget gets the end widget, or NULL if there is none.
-func (self *CenterBox) EndWidget() Widgeter {
+func (self *CenterBox) EndWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
@@ -152,15 +152,15 @@ func (self *CenterBox) EndWidget() Widgeter {
 
 	_cret = C.gtk_center_box_get_end_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // StartWidget gets the start widget, or NULL if there is none.
-func (self *CenterBox) StartWidget() Widgeter {
+func (self *CenterBox) StartWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
 	var _cret *C.GtkWidget    // in
 
@@ -168,9 +168,9 @@ func (self *CenterBox) StartWidget() Widgeter {
 
 	_cret = C.gtk_center_box_get_start_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -194,7 +194,7 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 // SetCenterWidget sets the center widget.
 //
 // To remove the existing center widget, pas NULL.
-func (self *CenterBox) SetCenterWidget(child Widgeter) {
+func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -207,7 +207,7 @@ func (self *CenterBox) SetCenterWidget(child Widgeter) {
 // SetEndWidget sets the end widget.
 //
 // To remove the existing end widget, pass NULL.
-func (self *CenterBox) SetEndWidget(child Widgeter) {
+func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -220,7 +220,7 @@ func (self *CenterBox) SetEndWidget(child Widgeter) {
 // SetStartWidget sets the start widget.
 //
 // To remove the existing start widget, pass NULL.
-func (self *CenterBox) SetStartWidget(child Widgeter) {
+func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
 	var _arg1 *C.GtkWidget    // out
 

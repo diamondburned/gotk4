@@ -58,7 +58,7 @@ func ValueDupExpression(value *externglib.Value) Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
+	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -74,7 +74,7 @@ func ValueGetExpression(value *externglib.Value) Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -485,7 +485,7 @@ func (self *Expression) ref() Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
+	_expression = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -654,7 +654,7 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 
 	var _ret Expressioner // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _ret
 }

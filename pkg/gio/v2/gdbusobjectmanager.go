@@ -106,7 +106,7 @@ func (manager *DBusObjectManager) Interface(objectPath string, interfaceName str
 
 	var _dBusInterface DBusInterfacer // out
 
-	_dBusInterface = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
 
 	return _dBusInterface
 }
@@ -124,7 +124,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) DBusObjector {
 
 	var _dBusObject DBusObjector // out
 
-	_dBusObject = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
+	_dBusObject = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
 
 	return _dBusObject
 }
@@ -160,7 +160,7 @@ func (manager *DBusObjectManager) Objects() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GDBusObject)(_p)
 		var dst DBusObjector // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusObjector)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusObjector)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

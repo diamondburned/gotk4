@@ -128,7 +128,7 @@ func (proxy *Proxy) ConnectProxier(ctx context.Context, connection IOStreamer, p
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
@@ -172,7 +172,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
 
-	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ioStream, _goerr
@@ -201,9 +201,9 @@ func (proxy *Proxy) SupportsHostname() bool {
 	return _ok
 }
 
-// ProxyDefaultForProtocol: find the gio-proxy extension point for a proxy
+// ProxyGetDefaultForProtocol: find the gio-proxy extension point for a proxy
 // implementation that supports the specified protocol.
-func ProxyDefaultForProtocol(protocol string) Proxier {
+func ProxyGetDefaultForProtocol(protocol string) Proxier {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in
 
@@ -213,7 +213,7 @@ func ProxyDefaultForProtocol(protocol string) Proxier {
 
 	var _proxy Proxier // out
 
-	_proxy = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
+	_proxy = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Proxier)
 
 	return _proxy
 }

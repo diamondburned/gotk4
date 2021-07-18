@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconer},
+		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIconner},
 	})
 }
 
@@ -78,7 +78,7 @@ func wrapDragIcon(obj *externglib.Object) *DragIcon {
 	}
 }
 
-func marshalDragIconer(p uintptr) (interface{}, error) {
+func marshalDragIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDragIcon(obj), nil
@@ -91,7 +91,7 @@ func (v *DragIcon) Native() uintptr {
 }
 
 // Child gets the widget currently used as drag icon.
-func (self *DragIcon) Child() Widgeter {
+func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out
 	var _cret *C.GtkWidget   // in
 
@@ -99,15 +99,15 @@ func (self *DragIcon) Child() Widgeter {
 
 	_cret = C.gtk_drag_icon_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // SetChild sets the widget to display as the drag icon.
-func (self *DragIcon) SetChild(child Widgeter) {
+func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -126,7 +126,7 @@ func (self *DragIcon) SetChild(child Widgeter) {
 // This method is used to set the default drag icon on drag'n'drop operations
 // started by GtkDragSource, so you don't need to set a drag icon using this
 // function there.
-func DragIconCreateWidgetForValue(value *externglib.Value) Widgeter {
+func DragIconCreateWidgetForValue(value *externglib.Value) Widgetter {
 	var _arg1 *C.GValue    // out
 	var _cret *C.GtkWidget // in
 
@@ -134,17 +134,17 @@ func DragIconCreateWidgetForValue(value *externglib.Value) Widgeter {
 
 	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
-// DragIconForDrag gets the GtkDragIcon in use with drag.
+// DragIconGetForDrag gets the GtkDragIcon in use with drag.
 //
 // If no drag icon exists yet, a new one will be created and shown.
-func DragIconForDrag(drag gdk.Drager) Widgeter {
+func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out
 	var _cret *C.GtkWidget // in
 
@@ -152,9 +152,9 @@ func DragIconForDrag(drag gdk.Drager) Widgeter {
 
 	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -164,7 +164,7 @@ func DragIconForDrag(drag gdk.Drager) Widgeter {
 //
 // The hotspot position on the paintable is aligned with the hotspot of the
 // cursor.
-func DragIconSetFromPaintable(drag gdk.Drager, paintable gdk.Paintabler, hotX int, hotY int) {
+func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX int, hotY int) {
 	var _arg1 *C.GdkDrag      // out
 	var _arg2 *C.GdkPaintable // out
 	var _arg3 C.int           // out

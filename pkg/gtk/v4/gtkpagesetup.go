@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetuper},
+		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetupper},
 	})
 }
 
@@ -76,7 +76,7 @@ func wrapPageSetup(obj *externglib.Object) *PageSetup {
 	}
 }
 
-func marshalPageSetuper(p uintptr) (interface{}, error) {
+func marshalPageSetupper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPageSetup(obj), nil

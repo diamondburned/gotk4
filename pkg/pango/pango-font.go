@@ -304,7 +304,7 @@ type FontOverrider interface {
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
-	FontMap() FontMaper
+	FontMap() FontMapper
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -336,7 +336,7 @@ type Fonter interface {
 	// Face gets the PangoFontFace to which font belongs.
 	Face() FontFacer
 	// FontMap gets the font map for which the font was created.
-	FontMap() FontMaper
+	FontMap() FontMapper
 	// Metrics gets overall metric information for a font.
 	Metrics(language *Language) *FontMetrics
 	// HasChar returns whether the font provides a glyph for this character.
@@ -430,7 +430,7 @@ func (font *Font) Face() FontFacer {
 
 	var _fontFace FontFacer // out
 
-	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 
 	return _fontFace
 }
@@ -445,7 +445,7 @@ func (font *Font) Face() FontFacer {
 // It is the responsibility of the user to ensure that the font map is kept
 // alive. In most uses this is not an issue as a Context holds a reference to
 // the font map.
-func (font *Font) FontMap() FontMaper {
+func (font *Font) FontMap() FontMapper {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
 
@@ -453,9 +453,9 @@ func (font *Font) FontMap() FontMaper {
 
 	_cret = C.pango_font_get_font_map(_arg0)
 
-	var _fontMap FontMaper // out
+	var _fontMap FontMapper // out
 
-	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMaper)
+	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMapper)
 
 	return _fontMap
 }
@@ -647,7 +647,7 @@ func (face *FontFace) Family() FontFamilier {
 
 	var _fontFamily FontFamilier // out
 
-	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
+	_fontFamily = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
 
 	return _fontFamily
 }
@@ -786,7 +786,7 @@ func (family *FontFamily) Face(name string) FontFacer {
 
 	var _fontFace FontFacer // out
 
-	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
+	_fontFace = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 
 	return _fontFace
 }
@@ -879,7 +879,7 @@ func (family *FontFamily) ListFaces() []FontFacer {
 		src := unsafe.Slice(_arg1, _arg2)
 		_faces = make([]FontFacer, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
+			_faces[i] = (gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
 		}
 	}
 

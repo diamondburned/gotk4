@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSeter},
+		{T: externglib.Type(C.atk_relation_set_get_type()), F: marshalRelationSetter},
 	})
 }
 
@@ -39,7 +39,7 @@ func wrapRelationSet(obj *externglib.Object) *RelationSet {
 	}
 }
 
-func marshalRelationSeter(p uintptr) (interface{}, error) {
+func marshalRelationSetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRelationSet(obj), nil

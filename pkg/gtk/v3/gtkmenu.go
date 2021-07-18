@@ -140,7 +140,7 @@ func NewMenu() *Menu {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the
 // menu's attach widget or on any of its parent widgets.
-func NewMenuFromModel(model gio.MenuModeler) *Menu {
+func NewMenuFromModel(model gio.MenuModeller) *Menu {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -162,7 +162,7 @@ func NewMenuFromModel(model gio.MenuModeler) *Menu {
 // zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (menu *Menu) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (menu *Menu) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -226,7 +226,7 @@ func (menu *Menu) AccelPath() string {
 
 // Active returns the selected menu item from the menu. This is used by the
 // ComboBox.
-func (menu *Menu) Active() Widgeter {
+func (menu *Menu) Active() Widgetter {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
 
@@ -234,15 +234,15 @@ func (menu *Menu) Active() Widgeter {
 
 	_cret = C.gtk_menu_get_active(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // AttachWidget returns the Widget that the menu is attached to.
-func (menu *Menu) AttachWidget() Widgeter {
+func (menu *Menu) AttachWidget() Widgetter {
 	var _arg0 *C.GtkMenu   // out
 	var _cret *C.GtkWidget // in
 
@@ -250,9 +250,9 @@ func (menu *Menu) AttachWidget() Widgeter {
 
 	_cret = C.gtk_menu_get_attach_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -352,7 +352,7 @@ func (menu *Menu) Popdown() {
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
-func (menu *Menu) ReorderChild(child Widgeter, position int) {
+func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -508,9 +508,9 @@ func (menu *Menu) SetTitle(title string) {
 	C.gtk_menu_set_title(_arg0, _arg1)
 }
 
-// MenuForAttachWidget returns a list of the menus which are attached to this
+// MenuGetForAttachWidget returns a list of the menus which are attached to this
 // widget. This list is owned by GTK+ and must not be modified.
-func MenuForAttachWidget(widget Widgeter) *externglib.List {
+func MenuGetForAttachWidget(widget Widgetter) *externglib.List {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GList     // in
 
@@ -523,8 +523,8 @@ func MenuForAttachWidget(widget Widgeter) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widgeter // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
+		var dst Widgetter // out
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		return dst
 	})
 

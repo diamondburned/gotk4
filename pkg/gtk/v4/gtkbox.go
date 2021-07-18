@@ -116,7 +116,7 @@ func (v *Box) Native() uintptr {
 }
 
 // Append adds child as the last child to box.
-func (box *Box) Append(child Widgeter) {
+func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -181,7 +181,7 @@ func (box *Box) Spacing() int {
 // box children.
 //
 // If sibling is NULL, insert child at the first position.
-func (box *Box) InsertChildAfter(child Widgeter, sibling Widgeter) {
+func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -194,7 +194,7 @@ func (box *Box) InsertChildAfter(child Widgeter, sibling Widgeter) {
 }
 
 // Prepend adds child as the first child to box.
-func (box *Box) Prepend(child Widgeter) {
+func (box *Box) Prepend(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -208,7 +208,7 @@ func (box *Box) Prepend(child Widgeter) {
 //
 // The child must have been added before with gtk.Box.Append(),
 // gtk.Box.Prepend(), or gtk.Box.InsertChildAfter().
-func (box *Box) Remove(child Widgeter) {
+func (box *Box) Remove(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -222,7 +222,7 @@ func (box *Box) Remove(child Widgeter) {
 // box children.
 //
 // If sibling is NULL, move child to the first position.
-func (box *Box) ReorderChildAfter(child Widgeter, sibling Widgeter) {
+func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out

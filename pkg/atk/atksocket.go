@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketer},
+		{T: externglib.Type(C.atk_socket_get_type()), F: marshalSocketter},
 	})
 }
 
@@ -76,7 +76,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketer(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil

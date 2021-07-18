@@ -243,7 +243,7 @@ func (self *Text) EnableEmojiCompletion() bool {
 }
 
 // ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
-func (self *Text) ExtraMenu() gio.MenuModeler {
+func (self *Text) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkText    // out
 	var _cret *C.GMenuModel // in
 
@@ -251,9 +251,9 @@ func (self *Text) ExtraMenu() gio.MenuModeler {
 
 	_cret = C.gtk_text_get_extra_menu(_arg0)
 
-	var _menuModel gio.MenuModeler // out
+	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -540,7 +540,7 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // self.
-func (self *Text) SetExtraMenu(model gio.MenuModeler) {
+func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkText    // out
 	var _arg1 *C.GMenuModel // out
 

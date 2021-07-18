@@ -85,7 +85,7 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 
 // Drop returns the GdkDrop of a current Drag-and-Drop operation over the widget
 // of self.
-func (self *DropControllerMotion) Drop() gdk.Droper {
+func (self *DropControllerMotion) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropControllerMotion // out
 	var _cret *C.GdkDrop                 // in
 
@@ -93,9 +93,9 @@ func (self *DropControllerMotion) Drop() gdk.Droper {
 
 	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 
-	var _drop gdk.Droper // out
+	var _drop gdk.Dropper // out
 
-	_drop = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Droper)
+	_drop = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dropper)
 
 	return _drop
 }

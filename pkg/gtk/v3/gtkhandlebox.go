@@ -29,8 +29,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
-	ChildAttached(child Widgeter)
-	ChildDetached(child Widgeter)
+	ChildAttached(child Widgetter)
+	ChildDetached(child Widgetter)
 }
 
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin

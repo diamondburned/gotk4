@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeletoner},
+		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeletonner},
 	})
 }
 
@@ -36,7 +36,7 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type DBusObjectSkeletonOverrider interface {
-	AuthorizeMethod(interface_ DBusInterfaceSkeletoner, invocation *DBusMethodInvocation) bool
+	AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 }
 
 // DBusObjectSkeleton instance is essentially a group of D-Bus interfaces. The
@@ -61,7 +61,7 @@ func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	}
 }
 
-func marshalDBusObjectSkeletoner(p uintptr) (interface{}, error) {
+func marshalDBusObjectSkeletonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusObjectSkeleton(obj), nil
@@ -90,7 +90,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 //
 // Note that object takes its own reference on interface_ and holds it until
 // removed.
-func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletoner) {
+func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 
@@ -111,7 +111,7 @@ func (object *DBusObjectSkeleton) Flush() {
 }
 
 // RemoveInterface removes interface_ from object.
-func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletoner) {
+func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
 

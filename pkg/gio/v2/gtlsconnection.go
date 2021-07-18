@@ -206,7 +206,7 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }
@@ -263,7 +263,7 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	_tlsDatabase = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
 
 	return _tlsDatabase
 }
@@ -321,7 +321,7 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }

@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarer},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBarrer},
 	})
 }
 
@@ -74,7 +74,7 @@ func wrapSearchBar(obj *externglib.Object) *SearchBar {
 	}
 }
 
-func marshalSearchBarer(p uintptr) (interface{}, error) {
+func marshalSearchBarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSearchBar(obj), nil

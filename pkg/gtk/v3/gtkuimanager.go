@@ -115,9 +115,9 @@ func (u UIManagerItemType) String() string {
 // yet, so the interface currently has no use.
 type UIManagerOverrider interface {
 	ActionsChanged()
-	AddWidget(widget Widgeter)
-	ConnectProxy(action *Action, proxy Widgeter)
-	DisconnectProxy(action *Action, proxy Widgeter)
+	AddWidget(widget Widgetter)
+	ConnectProxy(action *Action, proxy Widgetter)
+	DisconnectProxy(action *Action, proxy Widgetter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
 	//
@@ -139,7 +139,7 @@ type UIManagerOverrider interface {
 	// destruction of the ui manager.
 	//
 	// Deprecated: since version 3.10.
-	Widget(path string) Widgeter
+	Widget(path string) Widgetter
 	PostActivate(action *Action)
 	PreActivate(action *Action)
 }
@@ -652,7 +652,7 @@ func (manager *UIManager) Ui() string {
 // of the ui manager.
 //
 // Deprecated: since version 3.10.
-func (manager *UIManager) Widget(path string) Widgeter {
+func (manager *UIManager) Widget(path string) Widgetter {
 	var _arg0 *C.GtkUIManager // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GtkWidget    // in
@@ -662,9 +662,9 @@ func (manager *UIManager) Widget(path string) Widgeter {
 
 	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

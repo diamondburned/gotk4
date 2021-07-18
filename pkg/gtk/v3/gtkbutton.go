@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
 	})
 }
 
@@ -118,7 +118,7 @@ func wrapButton(obj *externglib.Object) *Button {
 	}
 }
 
-func marshalButtoner(p uintptr) (interface{}, error) {
+func marshalButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -304,7 +304,7 @@ func (button *Button) EventWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -333,7 +333,7 @@ func (button *Button) FocusOnClick() bool {
 // Image gets the widget that is currenty set as the image of button. This may
 // have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
-func (button *Button) Image() Widgeter {
+func (button *Button) Image() Widgetter {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
 
@@ -341,9 +341,9 @@ func (button *Button) Image() Widgeter {
 
 	_cret = C.gtk_button_get_image(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -527,7 +527,7 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of button to the given widget. The image will be
 // displayed if the label text is NULL or if Button:always-show-image is TRUE.
 // You don’t have to call gtk_widget_show() on image yourself.
-func (button *Button) SetImage(image Widgeter) {
+func (button *Button) SetImage(image Widgetter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 

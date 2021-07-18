@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_constraint_target_get_type()), F: marshalConstraintTargeter},
+		{T: externglib.Type(C.gtk_constraint_target_get_type()), F: marshalConstraintTargetter},
 		{T: externglib.Type(C.gtk_constraint_get_type()), F: marshalConstrainter},
 	})
 }
@@ -32,12 +32,12 @@ type ConstraintTarget struct {
 
 var _ gextras.Nativer = (*ConstraintTarget)(nil)
 
-// ConstraintTargeter describes ConstraintTarget's abstract methods.
-type ConstraintTargeter interface {
+// ConstraintTargetter describes ConstraintTarget's abstract methods.
+type ConstraintTargetter interface {
 	privateConstraintTarget()
 }
 
-var _ ConstraintTargeter = (*ConstraintTarget)(nil)
+var _ ConstraintTargetter = (*ConstraintTarget)(nil)
 
 func wrapConstraintTarget(obj *externglib.Object) *ConstraintTarget {
 	return &ConstraintTarget{
@@ -45,7 +45,7 @@ func wrapConstraintTarget(obj *externglib.Object) *ConstraintTarget {
 	}
 }
 
-func marshalConstraintTargeter(p uintptr) (interface{}, error) {
+func marshalConstraintTargetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapConstraintTarget(obj), nil
@@ -87,7 +87,7 @@ func marshalConstrainter(p uintptr) (interface{}, error) {
 
 // NewConstraint creates a new constraint representing a relation between a
 // layout attribute on a source and a layout attribute on a target.
-func NewConstraint(target ConstraintTargeter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargeter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint {
+func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -118,7 +118,7 @@ func NewConstraint(target ConstraintTargeter, targetAttribute ConstraintAttribut
 
 // NewConstraintConstant creates a new constraint representing a relation
 // between a layout attribute on a target and a constant value.
-func NewConstraintConstant(target ConstraintTargeter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
+func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -195,7 +195,7 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 //
 // If the source is set to NULL at creation, the constraint will use the widget
 // using the gtk.ConstraintLayout as the source.
-func (constraint *Constraint) Source() ConstraintTargeter {
+func (constraint *Constraint) Source() ConstraintTargetter {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -203,9 +203,9 @@ func (constraint *Constraint) Source() ConstraintTargeter {
 
 	_cret = C.gtk_constraint_get_source(_arg0)
 
-	var _constraintTarget ConstraintTargeter // out
+	var _constraintTarget ConstraintTargetter // out
 
-	_constraintTarget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargeter)
+	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
 
 	return _constraintTarget
 }
@@ -248,7 +248,7 @@ func (constraint *Constraint) Strength() int {
 //
 // If the targe is set to NULL at creation, the constraint will use the widget
 // using the gtk.ConstraintLayout as the target.
-func (constraint *Constraint) Target() ConstraintTargeter {
+func (constraint *Constraint) Target() ConstraintTargetter {
 	var _arg0 *C.GtkConstraint       // out
 	var _cret *C.GtkConstraintTarget // in
 
@@ -256,9 +256,9 @@ func (constraint *Constraint) Target() ConstraintTargeter {
 
 	_cret = C.gtk_constraint_get_target(_arg0)
 
-	var _constraintTarget ConstraintTargeter // out
+	var _constraintTarget ConstraintTargetter // out
 
-	_constraintTarget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargeter)
+	_constraintTarget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ConstraintTargetter)
 
 	return _constraintTarget
 }

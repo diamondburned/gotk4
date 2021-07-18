@@ -1298,7 +1298,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 // gdk_window_get_scale_factor(). Instead, you should use
 // gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a given
 // scaling factor may be different.
-func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1322,7 +1322,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconL
 // LookupByGIconForScale looks up an icon and returns a IconInfo containing
 // information such as the filename of the icon. The icon can then be rendered
 // into a pixbuf using gtk_icon_info_load_icon().
-func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1519,9 +1519,9 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	C.gtk_icon_theme_add_builtin_icon(_arg1, _arg2, _arg3)
 }
 
-// IconThemeDefault gets the icon theme for the default screen. See
+// IconThemeGetDefault gets the icon theme for the default screen. See
 // gtk_icon_theme_get_for_screen().
-func IconThemeDefault() *IconTheme {
+func IconThemeGetDefault() *IconTheme {
 	var _cret *C.GtkIconTheme // in
 
 	_cret = C.gtk_icon_theme_get_default()
@@ -1533,14 +1533,14 @@ func IconThemeDefault() *IconTheme {
 	return _iconTheme
 }
 
-// IconThemeForScreen gets the icon theme object associated with screen; if this
-// function has not previously been called for the given screen, a new icon
+// IconThemeGetForScreen gets the icon theme object associated with screen; if
+// this function has not previously been called for the given screen, a new icon
 // theme object will be created and associated with the screen. Icon theme
 // objects are fairly expensive to create, so using this function is usually a
 // better choice than calling than gtk_icon_theme_new() and setting the screen
 // yourself; by using this function a single icon theme object will be shared
 // between users.
-func IconThemeForScreen(screen *gdk.Screen) *IconTheme {
+func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.GtkIconTheme // in
 

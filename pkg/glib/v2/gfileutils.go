@@ -678,7 +678,7 @@ func TestFile(filename string, test FileTest) bool {
 	return _ok
 }
 
-// CurrentDir gets the current directory.
+// GetCurrentDir gets the current directory.
 //
 // The returned string should be freed when no longer needed. The encoding of
 // the returned string is system defined. On Windows, it is always UTF-8.
@@ -687,7 +687,7 @@ func TestFile(filename string, test FileTest) bool {
 // variable if it is set and it happens to be the same as the current directory.
 // This can make a difference in the case that the current directory is the
 // target of a symbolic link.
-func CurrentDir() string {
+func GetCurrentDir() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_current_dir()

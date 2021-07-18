@@ -550,8 +550,8 @@ func ScriptForUnichar(ch uint32) Script {
 	return _script
 }
 
-// ScriptSampleLanguage finds a language tag that is reasonably representative
-// of script.
+// ScriptGetSampleLanguage finds a language tag that is reasonably
+// representative of script.
 //
 // The language will usually be the most widely spoken or used language written
 // in that script: for instance, the sample language for PANGO_SCRIPT_CYRILLIC
@@ -575,7 +575,7 @@ func ScriptForUnichar(ch uint32) Script {
 // instead of Arabic (ar) when a segment of Arabic text is found in an otherwise
 // non-Arabic text. The same trick can be used to choose a default language for
 // PANGO_SCRIPT_HAN when setting context language is not feasible.
-func ScriptSampleLanguage(script Script) *Language {
+func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out
 	var _cret *C.PangoLanguage // in
 

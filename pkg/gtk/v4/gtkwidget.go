@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgeter},
+		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgetter},
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
@@ -39,7 +39,7 @@ type Allocation = gdk.Rectangle
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget Widgeter, frameClock gdk.FrameClocker) (ok bool)
+type TickCallback func(widget Widgetter, frameClock gdk.FrameClocker) (ok bool)
 
 //export _gotk4_gtk4_TickCallback
 func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
@@ -48,11 +48,11 @@ func _gotk4_gtk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		panic(`callback not found`)
 	}
 
-	var widget Widgeter             // out
+	var widget Widgetter            // out
 	var frameClock gdk.FrameClocker // out
 
-	widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgeter)
-	frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
+	widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgetter)
+	frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
@@ -165,7 +165,7 @@ type WidgetOverrider interface {
 	//
 	// This function is only suitable for widget implementations. If you want a
 	// certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
-	SetFocusChild(child Widgeter)
+	SetFocusChild(child Widgetter)
 	// Show flags a widget to be displayed.
 	//
 	// Any widget that isn’t shown will not appear on the screen.
@@ -550,8 +550,8 @@ type Widget struct {
 
 var _ gextras.Nativer = (*Widget)(nil)
 
-// Widgeter describes Widget's abstract methods.
-type Widgeter interface {
+// Widgetter describes Widget's abstract methods.
+type Widgetter interface {
 	// ActionSetEnabled: enable or disable an action installed with
 	// gtk_widget_class_install_action().
 	ActionSetEnabled(actionName string, enabled bool)
@@ -569,7 +569,7 @@ type Widgeter interface {
 	AddCSSClass(cssClass string)
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
-	AddMnemonicLabel(label Widgeter)
+	AddMnemonicLabel(label Widgetter)
 	// AddTickCallback queues an animation frame update and adds a callback to
 	// be called before each frame.
 	AddTickCallback(callback TickCallback) uint
@@ -581,16 +581,16 @@ type Widgeter interface {
 	ChildFocus(direction DirectionType) bool
 	// ComputeBounds computes the bounds for widget in the coordinate space of
 	// target.
-	ComputeBounds(target Widgeter) (graphene.Rect, bool)
+	ComputeBounds(target Widgetter) (graphene.Rect, bool)
 	// ComputeExpand computes whether a container should give this widget extra
 	// space when possible.
 	ComputeExpand(orientation Orientation) bool
 	// ComputePoint translates the given point in widget's coordinates to
 	// coordinates relative to target’s coordinate system.
-	ComputePoint(target Widgeter, point *graphene.Point) (graphene.Point, bool)
+	ComputePoint(target Widgetter, point *graphene.Point) (graphene.Point, bool)
 	// ComputeTransform computes a matrix suitable to describe a transformation
 	// from widget's coordinate system into target's coordinate system.
-	ComputeTransform(target Widgeter) (graphene.Matrix, bool)
+	ComputeTransform(target Widgetter) (graphene.Matrix, bool)
 	// Contains tests if the point at (x, y) is contained in widget.
 	Contains(x float64, y float64) bool
 	// CreatePangoContext creates a new PangoContext with the appropriate font
@@ -616,7 +616,7 @@ type Widgeter interface {
 	// widget.
 	AllocatedWidth() int
 	// Ancestor gets the first ancestor of widget with type widget_type.
-	Ancestor(widgetType externglib.Type) Widgeter
+	Ancestor(widgetType externglib.Type) Widgetter
 	// CanFocus determines whether the input focus can enter widget or any of
 	// its children.
 	CanFocus() bool
@@ -638,16 +638,16 @@ type Widgeter interface {
 	// widget.
 	Display() *gdk.Display
 	// FirstChild returns the widgets first child.
-	FirstChild() Widgeter
+	FirstChild() Widgetter
 	// FocusChild returns the current focus child of widget.
-	FocusChild() Widgeter
+	FocusChild() Widgetter
 	// FocusOnClick returns whether the widget should grab focus when it is
 	// clicked with the mouse.
 	FocusOnClick() bool
 	// Focusable determines whether widget can own the input focus.
 	Focusable() bool
 	// FontMap gets the font map of widget.
-	FontMap() pango.FontMaper
+	FontMap() pango.FontMapper
 	// FontOptions returns the cairo_font_options_t used for Pango rendering.
 	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
@@ -665,7 +665,7 @@ type Widgeter interface {
 	// explicitly set the expand flag on this widget.
 	HExpandSet() bool
 	// LastChild returns the widgets last child.
-	LastChild() Widgeter
+	LastChild() Widgetter
 	// LayoutManager retrieves the layout manager used by widget See
 	// gtk.Widget.SetLayoutManager().
 	LayoutManager() LayoutManagerer
@@ -684,7 +684,7 @@ type Widgeter interface {
 	// GetNative returns the GtkNative widget that contains widget.
 	GetNative() NativeSurfacer
 	// NextSibling returns the widgets next sibling.
-	NextSibling() Widgeter
+	NextSibling() Widgetter
 	// Opacity the requested opacity for this widget.
 	Opacity() float64
 	// Overflow returns the widgets overflow value.
@@ -693,12 +693,12 @@ type Widgeter interface {
 	// description, and base direction for this widget.
 	PangoContext() *pango.Context
 	// Parent returns the parent widget of widget.
-	Parent() Widgeter
+	Parent() Widgetter
 	// PreferredSize retrieves the minimum and natural size of a widget, taking
 	// into account the widget’s preference for height-for-width management.
 	PreferredSize() (minimumSize Requisition, naturalSize Requisition)
 	// PrevSibling returns the widgets previous sibling.
-	PrevSibling() Widgeter
+	PrevSibling() Widgetter
 	// PrimaryClipboard gets the primary clipboard of widget.
 	PrimaryClipboard() *gdk.Clipboard
 	// Realized determines whether widget is realized.
@@ -770,12 +770,12 @@ type Widgeter interface {
 	// InsertActionGroup inserts group into widget.
 	InsertActionGroup(name string, group gio.ActionGrouper)
 	// InsertAfter inserts widget into the child widget list of parent.
-	InsertAfter(parent Widgeter, previousSibling Widgeter)
+	InsertAfter(parent Widgetter, previousSibling Widgetter)
 	// InsertBefore inserts widget into the child widget list of parent.
-	InsertBefore(parent Widgeter, nextSibling Widgeter)
+	InsertBefore(parent Widgetter, nextSibling Widgetter)
 	// IsAncestor determines whether widget is somewhere inside ancestor,
 	// possibly with intermediate containers.
-	IsAncestor(ancestor Widgeter) bool
+	IsAncestor(ancestor Widgetter) bool
 	// IsDrawable determines whether widget can be drawn to.
 	IsDrawable() bool
 	// IsFocus determines if the widget is the focus widget within its toplevel.
@@ -798,13 +798,13 @@ type Widgeter interface {
 	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
 	// ObserveChildren returns a GListModel to track the children of widget.
-	ObserveChildren() gio.ListModeler
+	ObserveChildren() gio.ListModeller
 	// ObserveControllers returns a GListModel to track the gtk.EventControllers
 	// of widget.
-	ObserveControllers() gio.ListModeler
+	ObserveControllers() gio.ListModeller
 	// Pick finds the descendant of widget closest to the screen at the point
 	// (x, y).
-	Pick(x float64, y float64, flags PickFlags) Widgeter
+	Pick(x float64, y float64, flags PickFlags) Widgetter
 	// QueueAllocate flags the widget for a rerun of the
 	// GtkWidgetClass::size_allocate function.
 	QueueAllocate()
@@ -822,7 +822,7 @@ type Widgeter interface {
 	RemoveCSSClass(cssClass string)
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget.
-	RemoveMnemonicLabel(label Widgeter)
+	RemoveMnemonicLabel(label Widgetter)
 	// RemoveTickCallback removes a tick callback previously registered with
 	// gtk_widget_add_tick_callback().
 	RemoveTickCallback(id uint)
@@ -846,14 +846,14 @@ type Widgeter interface {
 	// SetDirection sets the reading direction on a particular widget.
 	SetDirection(dir TextDirection)
 	// SetFocusChild: set child as the current focus child of widget.
-	SetFocusChild(child Widgeter)
+	SetFocusChild(child Widgetter)
 	// SetFocusOnClick sets whether the widget should grab focus when it is
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
 	// SetFocusable specifies whether widget can own the input focus.
 	SetFocusable(focusable bool)
 	// SetFontMap sets the font map to use for Pango rendering.
-	SetFontMap(fontMap pango.FontMaper)
+	SetFontMap(fontMap pango.FontMapper)
 	// SetFontOptions sets the cairo_font_options_t used for Pango rendering in
 	// this widget.
 	SetFontOptions(options *cairo.FontOptions)
@@ -885,7 +885,7 @@ type Widgeter interface {
 	// widget's content area.
 	SetOverflow(overflow Overflow)
 	// SetParent sets parent as the parent widget of widget.
-	SetParent(parent Widgeter)
+	SetParent(parent Widgetter)
 	// SetReceivesDefault specifies whether widget will be treated as the
 	// default widget within its toplevel when it has the focus, even if another
 	// widget is the default.
@@ -916,10 +916,10 @@ type Widgeter interface {
 	// Show flags a widget to be displayed.
 	Show()
 	// SnapshotChild: snapshot the a child of widget.
-	SnapshotChild(child Widgeter, snapshot *Snapshot)
+	SnapshotChild(child Widgetter, snapshot *Snapshot)
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgeter, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
+	TranslateCoordinates(destWidget Widgetter, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -934,7 +934,7 @@ type Widgeter interface {
 	UnsetStateFlags(flags StateFlags)
 }
 
-var _ Widgeter = (*Widget)(nil)
+var _ Widgetter = (*Widget)(nil)
 
 func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{
@@ -953,7 +953,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 	}
 }
 
-func marshalWidgeter(p uintptr) (interface{}, error) {
+func marshalWidgetter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
@@ -1088,7 +1088,7 @@ func (widget *Widget) AddCSSClass(cssClass string) {
 // widget is cleared when the widget is destroyed, so the caller must make sure
 // to update its internal state at this point as well, by using a connection to
 // the gtk.Widget::destroy signal or a weak notifier.
-func (widget *Widget) AddMnemonicLabel(label Widgeter) {
+func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1212,7 +1212,7 @@ func (widget *Widget) ChildFocus(direction DirectionType) bool {
 // to the zero rectangle.
 //
 // It is valid for widget and target to be the same widget.
-func (widget *Widget) ComputeBounds(target Widgeter) (graphene.Rect, bool) {
+func (widget *Widget) ComputeBounds(target Widgetter) (graphene.Rect, bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.graphene_rect_t // in
@@ -1270,7 +1270,7 @@ func (widget *Widget) ComputeExpand(orientation Orientation) bool {
 //
 // In order to perform this operation, both widgets must share a common
 // ancestor.
-func (widget *Widget) ComputePoint(target Widgeter, point *graphene.Point) (graphene.Point, bool) {
+func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (graphene.Point, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 *C.graphene_point_t // out
@@ -1296,7 +1296,7 @@ func (widget *Widget) ComputePoint(target Widgeter, point *graphene.Point) (grap
 
 // ComputeTransform computes a matrix suitable to describe a transformation from
 // widget's coordinate system into target's coordinate system.
-func (widget *Widget) ComputeTransform(target Widgeter) (graphene.Matrix, bool) {
+func (widget *Widget) ComputeTransform(target Widgetter) (graphene.Matrix, bool) {
 	var _arg0 *C.GtkWidget        // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.graphene_matrix_t // in
@@ -1501,7 +1501,7 @@ func (widget *Widget) AllocatedWidth() int {
 //
 // Note that unlike gtk.Widget.IsAncestor(), this function considers widget to
 // be an ancestor of itself.
-func (widget *Widget) Ancestor(widgetType externglib.Type) Widgeter {
+func (widget *Widget) Ancestor(widgetType externglib.Type) Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
 	var _cret *C.GtkWidget // in
@@ -1511,9 +1511,9 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) Widgeter {
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -1724,7 +1724,7 @@ func (widget *Widget) Display() *gdk.Display {
 // FirstChild returns the widgets first child.
 //
 // This API is primarily meant for widget implementations.
-func (widget *Widget) FirstChild() Widgeter {
+func (widget *Widget) FirstChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -1732,15 +1732,15 @@ func (widget *Widget) FirstChild() Widgeter {
 
 	_cret = C.gtk_widget_get_first_child(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
 
 // FocusChild returns the current focus child of widget.
-func (widget *Widget) FocusChild() Widgeter {
+func (widget *Widget) FocusChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -1748,9 +1748,9 @@ func (widget *Widget) FocusChild() Widgeter {
 
 	_cret = C.gtk_widget_get_focus_child(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -1799,7 +1799,7 @@ func (widget *Widget) Focusable() bool {
 // FontMap gets the font map of widget.
 //
 // See gtk.Widget.SetFontMap().
-func (widget *Widget) FontMap() pango.FontMaper {
+func (widget *Widget) FontMap() pango.FontMapper {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoFontMap // in
 
@@ -1807,9 +1807,9 @@ func (widget *Widget) FontMap() pango.FontMaper {
 
 	_cret = C.gtk_widget_get_font_map(_arg0)
 
-	var _fontMap pango.FontMaper // out
+	var _fontMap pango.FontMapper // out
 
-	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMaper)
+	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
 
 	return _fontMap
 }
@@ -1862,7 +1862,7 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 
 	var _frameClock gdk.FrameClocker // out
 
-	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 
 	return _frameClock
 }
@@ -1986,7 +1986,7 @@ func (widget *Widget) HExpandSet() bool {
 // LastChild returns the widgets last child.
 //
 // This API is primarily meant for widget implementations.
-func (widget *Widget) LastChild() Widgeter {
+func (widget *Widget) LastChild() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -1994,9 +1994,9 @@ func (widget *Widget) LastChild() Widgeter {
 
 	_cret = C.gtk_widget_get_last_child(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -2014,7 +2014,7 @@ func (widget *Widget) LayoutManager() LayoutManagerer {
 
 	var _layoutManager LayoutManagerer // out
 
-	_layoutManager = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
+	_layoutManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(LayoutManagerer)
 
 	return _layoutManager
 }
@@ -2135,7 +2135,7 @@ func (widget *Widget) GetNative() NativeSurfacer {
 
 	var _native NativeSurfacer // out
 
-	_native = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
+	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
 
 	return _native
 }
@@ -2143,7 +2143,7 @@ func (widget *Widget) GetNative() NativeSurfacer {
 // NextSibling returns the widgets next sibling.
 //
 // This API is primarily meant for widget implementations.
-func (widget *Widget) NextSibling() Widgeter {
+func (widget *Widget) NextSibling() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -2151,9 +2151,9 @@ func (widget *Widget) NextSibling() Widgeter {
 
 	_cret = C.gtk_widget_get_next_sibling(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -2221,7 +2221,7 @@ func (widget *Widget) PangoContext() *pango.Context {
 }
 
 // Parent returns the parent widget of widget.
-func (widget *Widget) Parent() Widgeter {
+func (widget *Widget) Parent() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -2229,9 +2229,9 @@ func (widget *Widget) Parent() Widgeter {
 
 	_cret = C.gtk_widget_get_parent(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -2271,7 +2271,7 @@ func (widget *Widget) PreferredSize() (minimumSize Requisition, naturalSize Requ
 // PrevSibling returns the widgets previous sibling.
 //
 // This API is primarily meant for widget implementations.
-func (widget *Widget) PrevSibling() Widgeter {
+func (widget *Widget) PrevSibling() Widgetter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -2279,9 +2279,9 @@ func (widget *Widget) PrevSibling() Widgeter {
 
 	_cret = C.gtk_widget_get_prev_sibling(_arg0)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -2389,7 +2389,7 @@ func (widget *Widget) Root() Rooter {
 
 	var _root Rooter // out
 
-	_root = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Rooter)
+	_root = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Rooter)
 
 	return _root
 }
@@ -2931,7 +2931,7 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
-func (widget *Widget) InsertAfter(parent Widgeter, previousSibling Widgeter) {
+func (widget *Widget) InsertAfter(parent Widgetter, previousSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -2955,7 +2955,7 @@ func (widget *Widget) InsertAfter(parent Widgeter, previousSibling Widgeter) {
 //
 // This API is primarily meant for widget implementations; if you are just using
 // a widget, you *must* use its own API for adding children.
-func (widget *Widget) InsertBefore(parent Widgeter, nextSibling Widgeter) {
+func (widget *Widget) InsertBefore(parent Widgetter, nextSibling Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -2969,7 +2969,7 @@ func (widget *Widget) InsertBefore(parent Widgeter, nextSibling Widgeter) {
 
 // IsAncestor determines whether widget is somewhere inside ancestor, possibly
 // with intermediate containers.
-func (widget *Widget) IsAncestor(ancestor Widgeter) bool {
+func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -3138,8 +3138,8 @@ func (widget *Widget) ListMnemonicLabels() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widgeter // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
+		var dst Widgetter // out
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgetter)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -3226,7 +3226,7 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
-func (widget *Widget) ObserveChildren() gio.ListModeler {
+func (widget *Widget) ObserveChildren() gio.ListModeller {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -3234,9 +3234,9 @@ func (widget *Widget) ObserveChildren() gio.ListModeler {
 
 	_cret = C.gtk_widget_observe_children(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -3250,7 +3250,7 @@ func (widget *Widget) ObserveChildren() gio.ListModeler {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
-func (widget *Widget) ObserveControllers() gio.ListModeler {
+func (widget *Widget) ObserveControllers() gio.ListModeller {
 	var _arg0 *C.GtkWidget  // out
 	var _cret *C.GListModel // in
 
@@ -3258,9 +3258,9 @@ func (widget *Widget) ObserveControllers() gio.ListModeler {
 
 	_cret = C.gtk_widget_observe_controllers(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -3278,7 +3278,7 @@ func (widget *Widget) ObserveControllers() gio.ListModeler {
 //
 // This function is used on the toplevel to determine the widget below the mouse
 // cursor for purposes of hover highlighting and delivering events.
-func (widget *Widget) Pick(x float64, y float64, flags PickFlags) Widgeter {
+func (widget *Widget) Pick(x float64, y float64, flags PickFlags) Widgetter {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 C.double       // out
 	var _arg2 C.double       // out
@@ -3292,9 +3292,9 @@ func (widget *Widget) Pick(x float64, y float64, flags PickFlags) Widgeter {
 
 	_cret = C.gtk_widget_pick(_arg0, _arg1, _arg2, _arg3)
 
-	var _ret Widgeter // out
+	var _ret Widgetter // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _ret
 }
@@ -3405,7 +3405,7 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 //
 // See gtk.Widget.ListMnemonicLabels(). The widget must have previously been
 // added to the list with gtk.Widget.AddMnemonicLabel().
-func (widget *Widget) RemoveMnemonicLabel(label Widgeter) {
+func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -3574,7 +3574,7 @@ func (widget *Widget) SetDirection(dir TextDirection) {
 //
 // This function is only suitable for widget implementations. If you want a
 // certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
-func (widget *Widget) SetFocusChild(child Widgeter) {
+func (widget *Widget) SetFocusChild(child Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -3632,7 +3632,7 @@ func (widget *Widget) SetFocusable(focusable bool) {
 // application-specific fonts to the set of available fonts.
 //
 // When not set, the widget will inherit the font map from its parent.
-func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
+func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -3872,7 +3872,7 @@ func (widget *Widget) SetOverflow(overflow Overflow) {
 // gtk.Widget.Unparent().
 //
 // This function is useful only when implementing subclasses of GtkWidget.
-func (widget *Widget) SetParent(parent Widgeter) {
+func (widget *Widget) SetParent(parent Widgetter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4124,7 +4124,7 @@ func (widget *Widget) Show() {
 // and deciding whether the child needs to be snapshot.
 //
 // This function does nothing for children that implement GtkNative.
-func (widget *Widget) SnapshotChild(child Widgeter, snapshot *Snapshot) {
+func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 	var _arg0 *C.GtkWidget   // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkSnapshot // out
@@ -4140,7 +4140,7 @@ func (widget *Widget) SnapshotChild(child Widgeter, snapshot *Snapshot) {
 // allocation to coordinates relative to dest_widget’s allocations.
 //
 // In order to perform this operation, both widget must share a common ancestor.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgeter, srcX float64, srcY float64) (destX float64, destY float64, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX float64, srcY float64) (destX float64, destY float64, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.double     // out
@@ -4229,10 +4229,10 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	C.gtk_widget_unset_state_flags(_arg0, _arg1)
 }
 
-// WidgetDefaultDirection obtains the current default reading direction.
+// WidgetGetDefaultDirection obtains the current default reading direction.
 //
 // See gtk.Widget().SetDefaultDirection.
-func WidgetDefaultDirection() TextDirection {
+func WidgetGetDefaultDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
 	_cret = C.gtk_widget_get_default_direction()

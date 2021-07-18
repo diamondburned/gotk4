@@ -176,7 +176,7 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 }
 
 // Drag returns the underlying GdkDrag object for an ongoing drag.
-func (source *DragSource) Drag() gdk.Drager {
+func (source *DragSource) Drag() gdk.Dragger {
 	var _arg0 *C.GtkDragSource // out
 	var _cret *C.GdkDrag       // in
 
@@ -184,9 +184,9 @@ func (source *DragSource) Drag() gdk.Drager {
 
 	_cret = C.gtk_drag_source_get_drag(_arg0)
 
-	var _drag gdk.Drager // out
+	var _drag gdk.Dragger // out
 
-	_drag = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Drager)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Dragger)
 
 	return _drag
 }

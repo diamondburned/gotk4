@@ -296,7 +296,7 @@ func (typ *Resolved) PublicIsInterface() bool {
 	if typ.Builtin != nil {
 		return typ.IsExternGLib("Object") || typ.IsExternGLib("InitiallyUnowned")
 	}
-	return typ.IsClass() || typ.IsInterface()
+	return typ.IsAbstract()
 }
 
 // IsPrimitive returns true if the resolved type is a builtin type that can be

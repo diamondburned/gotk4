@@ -175,7 +175,7 @@ func NewTable(rows uint, columns uint, homogeneous bool) *Table {
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
+func (table *Table) Attach(child Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -209,7 +209,7 @@ func (table *Table) Attach(child Widgeter, leftAttach uint, rightAttach uint, to
 //
 // Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
 // differ between those two functions.
-func (table *Table) AttachDefaults(widget Widgeter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (table *Table) AttachDefaults(widget Widgetter, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -452,9 +452,9 @@ type TableChild struct {
 	native *C.GtkTableChild
 }
 
-func (t *TableChild) Widget() Widgeter {
-	var v Widgeter // out
-	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget)))).(Widgeter)
+func (t *TableChild) Widget() Widgetter {
+	var v Widgetter // out
+	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget)))).(Widgetter)
 	return v
 }
 

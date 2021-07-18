@@ -33,7 +33,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorer},
+		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumeratorrer},
 	})
 }
 
@@ -86,8 +86,8 @@ type SocketAddressEnumerator struct {
 
 var _ gextras.Nativer = (*SocketAddressEnumerator)(nil)
 
-// SocketAddressEnumeratorer describes SocketAddressEnumerator's abstract methods.
-type SocketAddressEnumeratorer interface {
+// SocketAddressEnumeratorrer describes SocketAddressEnumerator's abstract methods.
+type SocketAddressEnumeratorrer interface {
 	// Next retrieves the next Address from enumerator.
 	Next(ctx context.Context) (SocketAddresser, error)
 	// NextAsync: asynchronously retrieves the next Address from enumerator and
@@ -99,7 +99,7 @@ type SocketAddressEnumeratorer interface {
 	NextFinish(result AsyncResulter) (SocketAddresser, error)
 }
 
-var _ SocketAddressEnumeratorer = (*SocketAddressEnumerator)(nil)
+var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
 
 func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerator {
 	return &SocketAddressEnumerator{
@@ -107,7 +107,7 @@ func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerato
 	}
 }
 
-func marshalSocketAddressEnumeratorer(p uintptr) (interface{}, error) {
+func marshalSocketAddressEnumeratorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocketAddressEnumerator(obj), nil
@@ -142,7 +142,7 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -189,7 +189,7 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

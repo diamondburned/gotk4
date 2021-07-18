@@ -194,7 +194,7 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketCont
 
 	var _socketControlMessage SocketControlMessager // out
 
-	_socketControlMessage = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketControlMessager)
+	_socketControlMessage = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketControlMessager)
 
 	return _socketControlMessage
 }

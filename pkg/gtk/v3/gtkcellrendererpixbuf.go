@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbufer},
+		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuffer},
 	})
 }
 
@@ -50,7 +50,7 @@ func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
 	}
 }
 
-func marshalCellRendererPixbufer(p uintptr) (interface{}, error) {
+func marshalCellRendererPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererPixbuf(obj), nil

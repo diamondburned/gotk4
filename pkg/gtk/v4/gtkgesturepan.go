@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePaner},
+		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePanner},
 	})
 }
 
@@ -54,7 +54,7 @@ func wrapGesturePan(obj *externglib.Object) *GesturePan {
 	}
 }
 
-func marshalGesturePaner(p uintptr) (interface{}, error) {
+func marshalGesturePanner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGesturePan(obj), nil

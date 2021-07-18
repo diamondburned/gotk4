@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGrider},
+		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGridder},
 	})
 }
 
@@ -70,7 +70,7 @@ func wrapGrid(obj *externglib.Object) *Grid {
 	}
 }
 
-func marshalGrider(p uintptr) (interface{}, error) {
+func marshalGridder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGrid(obj), nil
@@ -99,7 +99,7 @@ func (v *Grid) Native() uintptr {
 //
 // The position of child is determined by left and top. The number of “cells”
 // that child will occupy is determined by width and height.
-func (grid *Grid) Attach(child Widgeter, left int, top int, width int, height int) {
+func (grid *Grid) Attach(child Widgetter, left int, top int, width int, height int) {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -125,7 +125,7 @@ func (grid *Grid) Attach(child Widgeter, left int, top int, width int, height in
 //
 // Attaching widgets labeled [1], [2], [3] with sibling == NULL and side ==
 // GTK_POS_LEFT yields a layout of [3][2][1].
-func (grid *Grid) AttachNextTo(child Widgeter, sibling Widgeter, side PositionType, width int, height int) {
+func (grid *Grid) AttachNextTo(child Widgetter, sibling Widgetter, side PositionType, width int, height int) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 *C.GtkWidget      // out
@@ -161,7 +161,7 @@ func (grid *Grid) BaselineRow() int {
 
 // ChildAt gets the child of grid whose area covers the grid cell whose upper
 // left corner is at left, top.
-func (grid *Grid) ChildAt(left int, top int) Widgeter {
+func (grid *Grid) ChildAt(left int, top int) Widgetter {
 	var _arg0 *C.GtkGrid   // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -173,9 +173,9 @@ func (grid *Grid) ChildAt(left int, top int) Widgeter {
 
 	_cret = C.gtk_grid_get_child_at(_arg0, _arg1, _arg2)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -288,7 +288,7 @@ func (grid *Grid) InsertColumn(position int) {
 // The new row or column is placed next to sibling, on the side determined by
 // side. If side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted. If side is
 // GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
-func (grid *Grid) InsertNextTo(sibling Widgeter, side PositionType) {
+func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
 	var _arg0 *C.GtkGrid        // out
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.GtkPositionType // out

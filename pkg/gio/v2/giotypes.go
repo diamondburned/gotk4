@@ -55,7 +55,7 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 
 	var res AsyncResulter // out
 
-	res = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
+	res = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
 
 	fn := v.(AsyncReadyCallback)
 	fn(res)
@@ -121,7 +121,7 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased DatagramBaseder, condition glib.IOCondition) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased DatagramBasedder, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_DatagramBasedSourceFunc
 func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -130,10 +130,10 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 		panic(`callback not found`)
 	}
 
-	var datagramBased DatagramBaseder // out
-	var condition glib.IOCondition    // out
+	var datagramBased DatagramBasedder // out
+	var condition glib.IOCondition     // out
 
-	datagramBased = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBaseder)
+	datagramBased = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBasedder)
 	condition = glib.IOCondition(arg1)
 
 	fn := v.(DatagramBasedSourceFunc)
@@ -824,7 +824,7 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr

@@ -34,7 +34,7 @@ func init() {
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgeter)
+type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk3_FlowBoxCreateWidgetFunc
 func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
@@ -249,7 +249,7 @@ func (v *FlowBox) Native() uintptr {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting should
 // be implemented by the model.
-func (box *FlowBox) BindModel(model gio.ListModeler, createWidgetFunc FlowBoxCreateWidgetFunc) {
+func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
@@ -451,7 +451,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgeter, position int) {
+func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out

@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemer},
+		{T: externglib.Type(C.gtk_separator_tool_item_get_type()), F: marshalSeparatorToolItemmer},
 	})
 }
 
@@ -69,7 +69,7 @@ func wrapSeparatorToolItem(obj *externglib.Object) *SeparatorToolItem {
 	}
 }
 
-func marshalSeparatorToolItemer(p uintptr) (interface{}, error) {
+func marshalSeparatorToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSeparatorToolItem(obj), nil

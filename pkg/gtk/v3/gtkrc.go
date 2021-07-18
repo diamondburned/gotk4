@@ -487,7 +487,7 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyle(widget Widgeter) *Style {
+func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 

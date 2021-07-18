@@ -109,7 +109,7 @@ func (context *DrawingContext) Window() Windower {
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }

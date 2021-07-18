@@ -91,7 +91,7 @@ func (self *ATContext) Accessible() Accessibler {
 
 	var _accessible Accessibler // out
 
-	_accessible = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
+	_accessible = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
 
 	return _accessible
 }

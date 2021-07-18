@@ -84,7 +84,7 @@ func (s StyleContextPrintFlags) String() string {
 // shape.
 //
 // Deprecated: Use gtk_render_insertion_cursor() instead.
-func DrawInsertionCursor(widget Widgeter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
+func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkRectangle    // out
@@ -461,7 +461,7 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 
 	var _frameClock gdk.FrameClocker // out
 
-	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
+	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 
 	return _frameClock
 }

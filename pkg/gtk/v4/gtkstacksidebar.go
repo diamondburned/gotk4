@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarer},
+		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebarrer},
 	})
 }
 
@@ -61,7 +61,7 @@ func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
 	}
 }
 
-func marshalStackSidebarer(p uintptr) (interface{}, error) {
+func marshalStackSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStackSidebar(obj), nil

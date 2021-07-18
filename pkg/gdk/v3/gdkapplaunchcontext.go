@@ -111,7 +111,7 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 // notification.
 //
 // See also gdk_app_launch_context_set_icon_name().
-func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
+func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

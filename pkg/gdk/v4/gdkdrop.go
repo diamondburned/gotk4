@@ -24,7 +24,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDroper},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
 	})
 }
 
@@ -48,8 +48,8 @@ type Drop struct {
 
 var _ gextras.Nativer = (*Drop)(nil)
 
-// Droper describes Drop's abstract methods.
-type Droper interface {
+// Dropper describes Drop's abstract methods.
+type Dropper interface {
 	// Finish ends the drag operation after a drop.
 	Finish(action DragAction)
 	// Actions returns the possible actions for this GdkDrop.
@@ -60,7 +60,7 @@ type Droper interface {
 	Display() *Display
 	// Drag: if this is an in-app drag-and-drop operation, returns the GdkDrag
 	// that corresponds to this drop.
-	Drag() Drager
+	Drag() Dragger
 	// Formats returns the GdkContentFormats that the drop offers the data to be
 	// read in.
 	Formats() *ContentFormats
@@ -81,7 +81,7 @@ type Droper interface {
 	Status(actions DragAction, preferred DragAction)
 }
 
-var _ Droper = (*Drop)(nil)
+var _ Dropper = (*Drop)(nil)
 
 func wrapDrop(obj *externglib.Object) *Drop {
 	return &Drop{
@@ -89,7 +89,7 @@ func wrapDrop(obj *externglib.Object) *Drop {
 	}
 }
 
-func marshalDroper(p uintptr) (interface{}, error) {
+func marshalDropper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrop(obj), nil
@@ -148,7 +148,7 @@ func (self *Drop) Device() Devicer {
 
 	var _device Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -173,7 +173,7 @@ func (self *Drop) Display() *Display {
 // corresponds to this drop.
 //
 // If it is not, NULL is returned.
-func (self *Drop) Drag() Drager {
+func (self *Drop) Drag() Dragger {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
@@ -181,9 +181,9 @@ func (self *Drop) Drag() Drager {
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
-	var _drag Drager // out
+	var _drag Dragger // out
 
-	_drag = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Drager)
+	_drag = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Dragger)
 
 	return _drag
 }
@@ -219,7 +219,7 @@ func (self *Drop) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -284,7 +284,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr

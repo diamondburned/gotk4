@@ -47,6 +47,24 @@ func girTypeMustBeVersioned(girType string) {
 	}
 }
 
+// PreserveGetName matches a type and prepends "get_" or "Get" into it to
+// preserve the getter name in case of collision.
+func PreserveGetName(girType string) Preprocessor {
+	girTypeMustBeVersioned(girType)
+	return PreprocessorFunc(func(repos gir.Repositories) {
+		result := repos.FindFullType(girType)
+		if result == nil {
+			log.Printf("GIR type %q not found", girType)
+		}
+
+		if name := result.Name(); strcases.GuessSnake(name) {
+			result.SetName("get_" + name)
+		} else {
+			result.SetName("Get" + name)
+		}
+	})
+}
+
 // RenameEnumMembers renames all members of the matched enums. It is primarily
 // used to avoid collisions.
 func RenameEnumMembers(enum, regex, replace string) Preprocessor {

@@ -155,7 +155,7 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -180,7 +180,7 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _socketAddress SocketAddresser // out
 	var _goerr error                   // out
 
-	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
+	_socketAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

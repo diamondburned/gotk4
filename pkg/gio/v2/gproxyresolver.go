@@ -236,15 +236,15 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	return _utf8s, _goerr
 }
 
-// ProxyResolverDefault gets the default Resolver for the system.
-func ProxyResolverDefault() ProxyResolverer {
+// ProxyResolverGetDefault gets the default Resolver for the system.
+func ProxyResolverGetDefault() ProxyResolverer {
 	var _cret *C.GProxyResolver // in
 
 	_cret = C.g_proxy_resolver_get_default()
 
 	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
+	_proxyResolver = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
 
 	return _proxyResolver
 }

@@ -241,7 +241,7 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
+	_tlsCertificate = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }
@@ -325,7 +325,7 @@ func TlsCertificateListNewFromFile(file string) (*externglib.List, error) {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GTlsCertificate)(_p)
 		var dst TLSCertificater // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

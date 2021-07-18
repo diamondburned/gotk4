@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMaper},
+		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
 	})
 }
 
@@ -66,8 +66,8 @@ type ActionMap struct {
 
 var _ gextras.Nativer = (*ActionMap)(nil)
 
-// ActionMaper describes ActionMap's abstract methods.
-type ActionMaper interface {
+// ActionMapper describes ActionMap's abstract methods.
+type ActionMapper interface {
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
@@ -79,7 +79,7 @@ type ActionMaper interface {
 	RemoveAction(actionName string)
 }
 
-var _ ActionMaper = (*ActionMap)(nil)
+var _ ActionMapper = (*ActionMap)(nil)
 
 func wrapActionMap(obj *externglib.Object) *ActionMap {
 	return &ActionMap{
@@ -87,7 +87,7 @@ func wrapActionMap(obj *externglib.Object) *ActionMap {
 	}
 }
 
-func marshalActionMaper(p uintptr) (interface{}, error) {
+func marshalActionMapper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapActionMap(obj), nil
@@ -175,7 +175,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 
 	var _action Actioner // out
 
-	_action = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
+	_action = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

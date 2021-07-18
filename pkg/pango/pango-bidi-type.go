@@ -159,13 +159,13 @@ func FindBaseDir(text string, length int) Direction {
 	return _direction
 }
 
-// MirrorChar returns the mirrored character of a Unicode character.
+// GetMirrorChar returns the mirrored character of a Unicode character.
 //
 // Mirror characters are determined by the Unicode mirrored property.
 //
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
-func MirrorChar(ch uint32, mirroredCh *uint32) bool {
+func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
 	var _cret C.gboolean  // in

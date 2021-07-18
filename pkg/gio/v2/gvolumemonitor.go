@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorer},
+		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitorrer},
 	})
 }
 
@@ -92,7 +92,7 @@ func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	}
 }
 
-func marshalVolumeMonitorer(p uintptr) (interface{}, error) {
+func marshalVolumeMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVolumeMonitor(obj), nil
@@ -116,7 +116,7 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GDrive)(_p)
 		var dst Driver // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Driver)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -139,7 +139,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) Mounter {
 
 	var _mount Mounter // out
 
-	_mount = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 
 	return _mount
 }
@@ -162,7 +162,7 @@ func (volumeMonitor *VolumeMonitor) Mounts() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GMount)(_p)
 		var dst Mounter // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Mounter)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -185,7 +185,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 
 	return _volume
 }
@@ -208,7 +208,7 @@ func (volumeMonitor *VolumeMonitor) Volumes() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GVolume)(_p)
 		var dst Volumer // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Volumer)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {
@@ -261,13 +261,13 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 
 	return _volume
 }
 
-// VolumeMonitor gets the volume monitor used by gio.
-func VolumeMonitor() *VolumeMonitor {
+// VolumeMonitorGet gets the volume monitor used by gio.
+func VolumeMonitorGet() *VolumeMonitor {
 	var _cret *C.GVolumeMonitor // in
 
 	_cret = C.g_volume_monitor_get()

@@ -186,7 +186,7 @@ func (iconSet *IconSet) ref() *IconSet {
 // load), a default "missing image" icon will be returned instead.
 //
 // Deprecated: Use gtk_icon_set_render_icon_pixbuf() instead.
-func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int, widget Widgeter, detail string) *gdkpixbuf.Pixbuf {
+func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkIconSet      // out
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 C.GtkTextDirection // out
@@ -1107,7 +1107,7 @@ func NewWidgetPath() *WidgetPath {
 // represented by path. This function is a shortcut for adding information from
 // widget to the given path. This includes setting the name or adding the style
 // classes from widget.
-func (path *WidgetPath) AppendForWidget(widget Widgeter) int {
+func (path *WidgetPath) AppendForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkWidgetPath // out
 	var _arg1 *C.GtkWidget     // out
 	var _cret C.gint           // in

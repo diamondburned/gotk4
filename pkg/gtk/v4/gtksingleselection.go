@@ -55,7 +55,7 @@ func marshalSingleSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewSingleSelection creates a new selection to handle model.
-func NewSingleSelection(model gio.ListModeler) *SingleSelection {
+func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 	var _arg1 *C.GListModel         // out
 	var _cret *C.GtkSingleSelection // in
 
@@ -109,7 +109,7 @@ func (self *SingleSelection) CanUnselect() bool {
 }
 
 // Model gets the model that self is wrapping.
-func (self *SingleSelection) Model() gio.ListModeler {
+func (self *SingleSelection) Model() gio.ListModeller {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret *C.GListModel         // in
 
@@ -117,9 +117,9 @@ func (self *SingleSelection) Model() gio.ListModeler {
 
 	_cret = C.gtk_single_selection_get_model(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -198,7 +198,7 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 // SetModel sets the model that self should wrap.
 //
 // If model is NULL, self will be empty.
-func (self *SingleSelection) SetModel(model gio.ListModeler) {
+func (self *SingleSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 *C.GListModel         // out
 

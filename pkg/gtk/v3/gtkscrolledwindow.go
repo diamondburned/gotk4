@@ -264,7 +264,7 @@ func NewScrolledWindow(hadjustment *Adjustment, vadjustment *Adjustment) *Scroll
 //
 // Deprecated: gtk_container_add() will automatically add a Viewport if the
 // child doesn’t implement Scrollable.
-func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgeter) {
+func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgetter) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 *C.GtkWidget         // out
 
@@ -312,7 +312,7 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 }
 
 // Hscrollbar returns the horizontal scrollbar of scrolled_window.
-func (scrolledWindow *ScrolledWindow) Hscrollbar() Widgeter {
+func (scrolledWindow *ScrolledWindow) Hscrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 
@@ -320,9 +320,9 @@ func (scrolledWindow *ScrolledWindow) Hscrollbar() Widgeter {
 
 	_cret = C.gtk_scrolled_window_get_hscrollbar(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -542,7 +542,7 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 }
 
 // Vscrollbar returns the vertical scrollbar of scrolled_window.
-func (scrolledWindow *ScrolledWindow) Vscrollbar() Widgeter {
+func (scrolledWindow *ScrolledWindow) Vscrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret *C.GtkWidget         // in
 
@@ -550,9 +550,9 @@ func (scrolledWindow *ScrolledWindow) Vscrollbar() Widgeter {
 
 	_cret = C.gtk_scrolled_window_get_vscrollbar(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

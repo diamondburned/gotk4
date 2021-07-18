@@ -33,7 +33,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorer},
+		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
 	})
 }
 
@@ -85,8 +85,8 @@ type NetworkMonitor struct {
 
 var _ gextras.Nativer = (*NetworkMonitor)(nil)
 
-// NetworkMonitorer describes NetworkMonitor's abstract methods.
-type NetworkMonitorer interface {
+// NetworkMonitorrer describes NetworkMonitor's abstract methods.
+type NetworkMonitorrer interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// connectable can be reached, without actually trying to connect to it.
 	CanReach(ctx context.Context, connectable SocketConnectabler) error
@@ -105,7 +105,7 @@ type NetworkMonitorer interface {
 	NetworkMetered() bool
 }
 
-var _ NetworkMonitorer = (*NetworkMonitor)(nil)
+var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
 
 func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
@@ -115,7 +115,7 @@ func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	}
 }
 
-func marshalNetworkMonitorer(p uintptr) (interface{}, error) {
+func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNetworkMonitor(obj), nil
@@ -280,15 +280,15 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	return _ok
 }
 
-// NetworkMonitorDefault gets the default Monitor for the system.
-func NetworkMonitorDefault() NetworkMonitorer {
+// NetworkMonitorGetDefault gets the default Monitor for the system.
+func NetworkMonitorGetDefault() NetworkMonitorrer {
 	var _cret *C.GNetworkMonitor // in
 
 	_cret = C.g_network_monitor_get_default()
 
-	var _networkMonitor NetworkMonitorer // out
+	var _networkMonitor NetworkMonitorrer // out
 
-	_networkMonitor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NetworkMonitorer)
+	_networkMonitor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NetworkMonitorrer)
 
 	return _networkMonitor
 }

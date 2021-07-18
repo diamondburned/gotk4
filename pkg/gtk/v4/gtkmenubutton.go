@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtoner},
+		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButtonner},
 	})
 }
 
@@ -129,7 +129,7 @@ func wrapMenuButton(obj *externglib.Object) *MenuButton {
 	}
 }
 
-func marshalMenuButtoner(p uintptr) (interface{}, error) {
+func marshalMenuButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuButton(obj), nil
@@ -218,7 +218,7 @@ func (menuButton *MenuButton) Label() string {
 }
 
 // MenuModel returns the GMenuModel used to generate the popup.
-func (menuButton *MenuButton) MenuModel() gio.MenuModeler {
+func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkMenuButton // out
 	var _cret *C.GMenuModel    // in
 
@@ -226,9 +226,9 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeler {
 
 	_cret = C.gtk_menu_button_get_menu_model(_arg0)
 
-	var _menuModel gio.MenuModeler // out
+	var _menuModel gio.MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeller)
 
 	return _menuModel
 }
@@ -379,7 +379,7 @@ func (menuButton *MenuButton) SetLabel(label string) {
 //
 // If gtk.MenuButton:popover is already set, it will be dissociated from the
 // menu_button, and the property is set to NULL.
-func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
+func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GMenuModel    // out
 
@@ -396,7 +396,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeler) {
 //
 // If gtk.MenuButton:menu-model is set, the menu model is dissociated from the
 // menu_button, and the property is set to NULL.
-func (menuButton *MenuButton) SetPopover(popover Widgeter) {
+func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
 	var _arg1 *C.GtkWidget     // out
 

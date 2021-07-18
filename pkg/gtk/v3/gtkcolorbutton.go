@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtoner},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButtonner},
 	})
 }
 
@@ -91,7 +91,7 @@ func wrapColorButton(obj *externglib.Object) *ColorButton {
 	}
 }
 
-func marshalColorButtoner(p uintptr) (interface{}, error) {
+func marshalColorButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorButton(obj), nil

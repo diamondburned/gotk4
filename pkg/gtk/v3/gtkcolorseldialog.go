@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialoger},
+		{T: externglib.Type(C.gtk_color_selection_dialog_get_type()), F: marshalColorSelectionDialogger},
 	})
 }
 
@@ -54,7 +54,7 @@ func wrapColorSelectionDialog(obj *externglib.Object) *ColorSelectionDialog {
 	}
 }
 
-func marshalColorSelectionDialoger(p uintptr) (interface{}, error) {
+func marshalColorSelectionDialogger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapColorSelectionDialog(obj), nil
@@ -77,7 +77,7 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the dialog.
-func (colorsel *ColorSelectionDialog) ColorSelection() Widgeter {
+func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	var _arg0 *C.GtkColorSelectionDialog // out
 	var _cret *C.GtkWidget               // in
 
@@ -85,9 +85,9 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgeter {
 
 	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

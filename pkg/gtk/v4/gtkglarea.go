@@ -221,7 +221,7 @@ func (area *GLArea) Context() gdk.GLContexter {
 
 	var _glContext gdk.GLContexter // out
 
-	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
+	_glContext = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
 
 	return _glContext
 }

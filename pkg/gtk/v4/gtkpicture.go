@@ -267,7 +267,7 @@ func (self *Picture) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -302,7 +302,7 @@ func (self *Picture) Paintable() gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

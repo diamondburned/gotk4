@@ -25,7 +25,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarer},
+		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
 	})
 }
 
@@ -164,7 +164,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	}
 }
 
-func marshalPlacesSidebarer(p uintptr) (interface{}, error) {
+func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlacesSidebar(obj), nil
@@ -244,7 +244,7 @@ func (sidebar *PlacesSidebar) Location() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -265,7 +265,7 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }

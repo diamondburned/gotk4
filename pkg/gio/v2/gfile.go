@@ -443,7 +443,7 @@ type FileOverrider interface {
 	// directories. It is not possible to monitor all the files in a directory
 	// for changes made via hard links; if you want to do this then you must
 	// register individual watches with g_file_monitor().
-	MonitorDir(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error)
+	MonitorDir(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MonitorFile obtains a file monitor for the given file. If no file
 	// notification mechanism exists, then regular polling of the file is used.
 	//
@@ -457,7 +457,7 @@ type FileOverrider interface {
 	// through the filename contained in file to be reported. Using this flag
 	// may result in an increase in resource usage, and may not have any effect
 	// depending on the Monitor backend and/or filesystem type.
-	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error)
+	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MountEnclosingVolume starts a mount_operation, mounting the volume that
 	// contains the file location.
 	//
@@ -1152,11 +1152,11 @@ type Filer interface {
 	MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64, numDirs uint64, numFiles uint64, goerr error)
 	// Monitor obtains a file or directory monitor for the given file, depending
 	// on the type of the file.
-	Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error)
+	Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MonitorDirectory obtains a directory monitor for the given file.
-	MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error)
+	MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MonitorFile obtains a file monitor for the given file.
-	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error)
+	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MountEnclosingVolume starts a mount_operation, mounting the volume that
 	// contains the file location.
 	MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
@@ -1881,7 +1881,7 @@ func (file *File) Dup() Filer {
 
 	var _ret Filer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _ret
 }
@@ -2140,7 +2140,7 @@ func (file *File) FindEnclosingMount(ctx context.Context) (Mounter, error) {
 	var _mount Mounter // out
 	var _goerr error   // out
 
-	_mount = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -2189,7 +2189,7 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (Mounter, error) {
 	var _mount Mounter // out
 	var _goerr error   // out
 
-	_mount = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
+	_mount = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Mounter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _mount, _goerr
@@ -2244,7 +2244,7 @@ func (file *File) Child(name string) Filer {
 
 	var _ret Filer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _ret
 }
@@ -2270,7 +2270,7 @@ func (file *File) ChildForDisplayName(displayName string) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -2290,7 +2290,7 @@ func (file *File) Parent() Filer {
 
 	var _ret Filer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _ret
 }
@@ -2865,7 +2865,7 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage uint64
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error) {
+func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -2882,10 +2882,10 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 
 	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
 
-	var _fileMonitor FileMonitorer // out
-	var _goerr error               // out
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
 
-	_fileMonitor = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorer)
+	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -2903,7 +2903,7 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 // monitor all the files in a directory for changes made via hard links; if you
 // want to do this then you must register individual watches with
 // g_file_monitor().
-func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error) {
+func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -2920,10 +2920,10 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 
 	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
 
-	var _fileMonitor FileMonitorer // out
-	var _goerr error               // out
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
 
-	_fileMonitor = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorer)
+	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -2942,7 +2942,7 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 // filename contained in file to be reported. Using this flag may result in an
 // increase in resource usage, and may not have any effect depending on the
 // Monitor backend and/or filesystem type.
-func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorer, error) {
+func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
 	var _arg1 C.GFileMonitorFlags // out
@@ -2959,10 +2959,10 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 
 	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
 
-	var _fileMonitor FileMonitorer // out
-	var _goerr error               // out
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
 
-	_fileMonitor = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorer)
+	_fileMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(FileMonitorrer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileMonitor, _goerr
@@ -3070,7 +3070,7 @@ func (file *File) MountMountableFinish(result AsyncResulter) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -3318,7 +3318,7 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (AppInfor, error) {
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -3361,7 +3361,7 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (AppInfor, err
 	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
+	_appInfo = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -4179,7 +4179,7 @@ func (file *File) ResolveRelativePath(relativePath string) Filer {
 
 	var _ret Filer // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _ret
 }
@@ -4545,7 +4545,7 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (Filer
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -4596,7 +4596,7 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (Filer, error) {
 	var _ret Filer   // out
 	var _goerr error // out
 
-	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_ret = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _ret, _goerr
@@ -4929,7 +4929,7 @@ func NewFileForCommandlineArg(arg string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -4957,7 +4957,7 @@ func NewFileForCommandlineArgAndCwd(arg string, cwd string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -4975,7 +4975,7 @@ func NewFileForPath(path string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -4993,7 +4993,7 @@ func NewFileForURI(uri string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -5023,7 +5023,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, Filer, error) {
 	var _goerr error            // out
 
 	_iostream = wrapFileIOStream(externglib.AssumeOwnership(unsafe.Pointer(_arg2)))
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _iostream, _file, _goerr
@@ -5043,7 +5043,7 @@ func FileParseName(parseName string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }

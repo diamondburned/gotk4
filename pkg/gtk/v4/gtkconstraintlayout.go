@@ -272,7 +272,7 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
-func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeler {
+func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -280,9 +280,9 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeler {
 
 	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -296,7 +296,7 @@ func (layout *ConstraintLayout) ObserveConstraints() gio.ListModeler {
 //
 // Applications should try hard to avoid calling this function because of the
 // slowdowns.
-func (layout *ConstraintLayout) ObserveGuides() gio.ListModeler {
+func (layout *ConstraintLayout) ObserveGuides() gio.ListModeller {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _cret *C.GListModel          // in
 
@@ -304,9 +304,9 @@ func (layout *ConstraintLayout) ObserveGuides() gio.ListModeler {
 
 	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }

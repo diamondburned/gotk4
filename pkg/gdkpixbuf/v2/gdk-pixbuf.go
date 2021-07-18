@@ -25,7 +25,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbufer},
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuffer},
 	})
 }
 
@@ -178,7 +178,7 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	}
 }
 
-func marshalPixbufer(p uintptr) (interface{}, error) {
+func marshalPixbuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPixbuf(obj), nil

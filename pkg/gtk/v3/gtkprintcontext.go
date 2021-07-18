@@ -270,7 +270,7 @@ func (context *PrintContext) PageSetup() *PageSetup {
 
 // PangoFontmap returns a FontMap that is suitable for use with the
 // PrintContext.
-func (context *PrintContext) PangoFontmap() pango.FontMaper {
+func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _arg0 *C.GtkPrintContext // out
 	var _cret *C.PangoFontMap    // in
 
@@ -278,9 +278,9 @@ func (context *PrintContext) PangoFontmap() pango.FontMaper {
 
 	_cret = C.gtk_print_context_get_pango_fontmap(_arg0)
 
-	var _fontMap pango.FontMaper // out
+	var _fontMap pango.FontMapper // out
 
-	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMaper)
+	_fontMap = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMapper)
 
 	return _fontMap
 }

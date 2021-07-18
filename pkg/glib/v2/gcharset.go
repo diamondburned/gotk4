@@ -11,7 +11,7 @@ import (
 // #include <glib.h>
 import "C"
 
-// Charset obtains the character set for the [current locale][setlocale]; you
+// GetCharset obtains the character set for the [current locale][setlocale]; you
 // might use this character set as an argument to g_convert(), to convert from
 // the current locale's encoding to some other encoding. (Frequently
 // g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
@@ -29,7 +29,7 @@ import "C"
 // can perhaps avoid calling g_convert().
 //
 // The string returned in charset is not allocated, and should not be freed.
-func Charset() (string, bool) {
+func GetCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
 
@@ -46,8 +46,8 @@ func Charset() (string, bool) {
 	return _charset, _ok
 }
 
-// Codeset gets the character set for the current locale.
-func Codeset() string {
+// GetCodeset gets the character set for the current locale.
+func GetCodeset() string {
 	var _cret *C.gchar // in
 
 	_cret = C.g_get_codeset()
@@ -60,8 +60,8 @@ func Codeset() string {
 	return _utf8
 }
 
-// ConsoleCharset obtains the character set used by the console attached to the
-// process, which is suitable for printing output to the terminal.
+// GetConsoleCharset obtains the character set used by the console attached to
+// the process, which is suitable for printing output to the terminal.
 //
 // Usually this matches the result returned by g_get_charset(), but in
 // environments where the locale's character set does not match the encoding of
@@ -76,7 +76,7 @@ func Codeset() string {
 // can perhaps avoid calling g_convert().
 //
 // The string returned in charset is not allocated, and should not be freed.
-func ConsoleCharset() (string, bool) {
+func GetConsoleCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
 
@@ -93,17 +93,17 @@ func ConsoleCharset() (string, bool) {
 	return _charset, _ok
 }
 
-// LanguageNames computes a list of applicable locale names, which can be used
-// to e.g. construct locale-dependent filenames or search paths. The returned
-// list is sorted from most desirable to least desirable and always contains the
-// default locale "C".
+// GetLanguageNames computes a list of applicable locale names, which can be
+// used to e.g. construct locale-dependent filenames or search paths. The
+// returned list is sorted from most desirable to least desirable and always
+// contains the default locale "C".
 //
 // For example, if LANGUAGE=de:en_US, then the returned list is "de", "en_US",
 // "en", "C".
 //
 // This function consults the environment variables LANGUAGE, LC_ALL,
 // LC_MESSAGES and LANG to find the list of locales specified by the user.
-func LanguageNames() []string {
+func GetLanguageNames() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_language_names()
@@ -128,8 +128,8 @@ func LanguageNames() []string {
 	return _utf8s
 }
 
-// LanguageNamesWithCategory computes a list of applicable locale names with a
-// locale category name, which can be used to construct the fallback
+// GetLanguageNamesWithCategory computes a list of applicable locale names with
+// a locale category name, which can be used to construct the fallback
 // locale-dependent filenames or search paths. The returned list is sorted from
 // most desirable to least desirable and always contains the default locale "C".
 //
@@ -138,7 +138,7 @@ func LanguageNames() []string {
 //
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
-func LanguageNamesWithCategory(categoryName string) []string {
+func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar // out
 	var _cret **C.gchar
 
@@ -166,7 +166,7 @@ func LanguageNamesWithCategory(categoryName string) []string {
 	return _utf8s
 }
 
-// LocaleVariants returns a list of derived variants of locale, which can be
+// GetLocaleVariants returns a list of derived variants of locale, which can be
 // used to e.g. construct locale-dependent filenames or search paths. The
 // returned list is sorted from most desirable to least desirable. This function
 // handles territory, charset and extra locale modifiers. See setlocale(3)
@@ -180,7 +180,7 @@ func LanguageNamesWithCategory(categoryName string) []string {
 //
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
-func LocaleVariants(locale string) []string {
+func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar // out
 	var _cret **C.gchar
 

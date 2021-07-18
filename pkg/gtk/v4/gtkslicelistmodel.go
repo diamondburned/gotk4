@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeler},
+		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModeller},
 	})
 }
 
@@ -45,7 +45,7 @@ func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
 	}
 }
 
-func marshalSliceListModeler(p uintptr) (interface{}, error) {
+func marshalSliceListModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSliceListModel(obj), nil
@@ -54,7 +54,7 @@ func marshalSliceListModeler(p uintptr) (interface{}, error) {
 // NewSliceListModel creates a new slice model.
 //
 // It presents the slice from offset to offset + size of the given model.
-func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceListModel {
+func NewSliceListModel(model gio.ListModeller, offset uint, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out
@@ -74,7 +74,7 @@ func NewSliceListModel(model gio.ListModeler, offset uint, size uint) *SliceList
 }
 
 // Model gets the model that is currently being used or NULL if none.
-func (self *SliceListModel) Model() gio.ListModeler {
+func (self *SliceListModel) Model() gio.ListModeller {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret *C.GListModel        // in
 
@@ -82,9 +82,9 @@ func (self *SliceListModel) Model() gio.ListModeler {
 
 	_cret = C.gtk_slice_list_model_get_model(_arg0)
 
-	var _listModel gio.ListModeler // out
+	var _listModel gio.ListModeller // out
 
-	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
+	_listModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeller)
 
 	return _listModel
 }
@@ -124,7 +124,7 @@ func (self *SliceListModel) Size() uint {
 // SetModel sets the model to show a slice of.
 //
 // The model's item type must conform to self's item type.
-func (self *SliceListModel) SetModel(model gio.ListModeler) {
+func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 *C.GListModel        // out
 

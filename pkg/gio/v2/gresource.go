@@ -109,7 +109,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr

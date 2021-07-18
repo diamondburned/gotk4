@@ -97,7 +97,7 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 
 	var _renderer gsk.Rendererer // out
 
-	_renderer = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
+	_renderer = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
 
 	return _renderer
 }
@@ -113,7 +113,7 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
+	_surface = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -162,8 +162,8 @@ func (self *NativeSurface) Unrealize() {
 	C.gtk_native_unrealize(_arg0)
 }
 
-// NativeSurfaceForSurface finds the GtkNative associated with the surface.
-func NativeSurfaceForSurface(surface gdk.Surfacer) NativeSurfacer {
+// NativeSurfaceGetForSurface finds the GtkNative associated with the surface.
+func NativeSurfaceGetForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
@@ -173,7 +173,7 @@ func NativeSurfaceForSurface(surface gdk.Surfacer) NativeSurfacer {
 
 	var _native NativeSurfacer // out
 
-	_native = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
+	_native = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
 
 	return _native
 }

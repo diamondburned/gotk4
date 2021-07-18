@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketer},
+		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketter},
 	})
 }
 
@@ -104,7 +104,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketer(p uintptr) (interface{}, error) {
+func marshalSocketter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil
@@ -135,7 +135,7 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

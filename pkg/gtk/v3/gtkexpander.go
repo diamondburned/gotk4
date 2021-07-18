@@ -195,7 +195,7 @@ func (expander *Expander) LabelFill() bool {
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_expander_set_label_widget().
-func (expander *Expander) LabelWidget() Widgeter {
+func (expander *Expander) LabelWidget() Widgetter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
@@ -203,9 +203,9 @@ func (expander *Expander) LabelWidget() Widgeter {
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -332,7 +332,7 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 
 // SetLabelWidget: set the label widget for the expander. This is the widget
 // that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

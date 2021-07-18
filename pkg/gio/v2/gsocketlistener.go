@@ -300,7 +300,7 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	var _effectiveAddress SocketAddresser // out
 	var _goerr error                      // out
 
-	_effectiveAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
+	_effectiveAddress = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _effectiveAddress, _goerr

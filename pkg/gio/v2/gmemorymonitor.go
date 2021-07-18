@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorer},
+		{T: externglib.Type(C.g_memory_monitor_get_type()), F: marshalMemoryMonitorrer},
 	})
 }
 
@@ -96,12 +96,12 @@ type MemoryMonitor struct {
 
 var _ gextras.Nativer = (*MemoryMonitor)(nil)
 
-// MemoryMonitorer describes MemoryMonitor's abstract methods.
-type MemoryMonitorer interface {
+// MemoryMonitorrer describes MemoryMonitor's abstract methods.
+type MemoryMonitorrer interface {
 	privateMemoryMonitor()
 }
 
-var _ MemoryMonitorer = (*MemoryMonitor)(nil)
+var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
 
 func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 	return &MemoryMonitor{
@@ -111,7 +111,7 @@ func wrapMemoryMonitor(obj *externglib.Object) *MemoryMonitor {
 	}
 }
 
-func marshalMemoryMonitorer(p uintptr) (interface{}, error) {
+func marshalMemoryMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMemoryMonitor(obj), nil
@@ -121,14 +121,14 @@ func (*MemoryMonitor) privateMemoryMonitor() {}
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the
 // system.
-func MemoryMonitorDupDefault() MemoryMonitorer {
+func MemoryMonitorDupDefault() MemoryMonitorrer {
 	var _cret *C.GMemoryMonitor // in
 
 	_cret = C.g_memory_monitor_dup_default()
 
-	var _memoryMonitor MemoryMonitorer // out
+	var _memoryMonitor MemoryMonitorrer // out
 
-	_memoryMonitor = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MemoryMonitorer)
+	_memoryMonitor = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MemoryMonitorrer)
 
 	return _memoryMonitor
 }

@@ -189,14 +189,14 @@ func (a AttrType) String() string {
 	}
 }
 
-// AttrTypeName fetches the attribute type name.
+// AttrTypeGetName fetches the attribute type name.
 //
 // The attribute type name is the string passed in when registering the type
 // using attr_type_register.
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
-func AttrTypeName(typ AttrType) string {
+func AttrTypeGetName(typ AttrType) string {
 	var _arg1 C.PangoAttrType // out
 	var _cret *C.char         // in
 

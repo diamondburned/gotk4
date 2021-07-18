@@ -631,7 +631,7 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 
 	var window Windower // out
 
-	window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
+	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window)
@@ -643,16 +643,16 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 	return cret
 }
 
-// DefaultRootWindow obtains the root window (parent all other windows are
+// GetDefaultRootWindow obtains the root window (parent all other windows are
 // inside) for the default display and screen.
-func DefaultRootWindow() Windower {
+func GetDefaultRootWindow() Windower {
 	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_get_default_root_window()
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -668,7 +668,7 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -826,13 +826,13 @@ type Windower interface {
 	Composited() bool
 	// Cursor retrieves a Cursor pointer for the cursor currently set on the
 	// specified Window, or NULL.
-	Cursor() Cursorer
+	Cursor() Cursorrer
 	// Decorations returns the decorations set on the GdkWindow with
 	// gdk_window_set_decorations().
 	Decorations() (WMDecoration, bool)
 	// DeviceCursor retrieves a Cursor pointer for the device currently set on
 	// the specified Window, or NULL.
-	DeviceCursor(device Devicer) Cursorer
+	DeviceCursor(device Devicer) Cursorrer
 	// DeviceEvents returns the event mask for window corresponding to an
 	// specific device.
 	DeviceEvents(device Devicer) EventMask
@@ -1021,13 +1021,13 @@ type Windower interface {
 	// SetComposited sets a Window as composited, or unsets it.
 	SetComposited(composited bool)
 	// SetCursor sets the default mouse pointer for a Window.
-	SetCursor(cursor Cursorer)
+	SetCursor(cursor Cursorrer)
 	// SetDecorations: “Decorations” are the features the window manager adds to
 	// a toplevel Window.
 	SetDecorations(decorations WMDecoration)
 	// SetDeviceCursor sets a specific Cursor for a given device when it gets
 	// inside window.
-	SetDeviceCursor(device Devicer, cursor Cursorer)
+	SetDeviceCursor(device Devicer, cursor Cursorrer)
 	// SetDeviceEvents sets the event mask for a given device (Normally a
 	// floating device, not attached to any visible pointer) to window.
 	SetDeviceEvents(device Devicer, eventMask EventMask)
@@ -1492,7 +1492,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
-	_glContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
+	_glContext = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -1840,7 +1840,7 @@ func (window *Window) Children() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
 		var dst Windower // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -1871,7 +1871,7 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) *externglib.List
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
 		var dst Windower // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -1932,7 +1932,7 @@ func (window *Window) Composited() bool {
 // specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
-func (window *Window) Cursor() Cursorer {
+func (window *Window) Cursor() Cursorrer {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkCursor // in
 
@@ -1940,9 +1940,9 @@ func (window *Window) Cursor() Cursorer {
 
 	_cret = C.gdk_window_get_cursor(_arg0)
 
-	var _cursor Cursorer // out
+	var _cursor Cursorrer // out
 
-	_cursor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorer)
+	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
 
 	return _cursor
 }
@@ -1973,7 +1973,7 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 // specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
-func (window *Window) DeviceCursor(device Devicer) Cursorer {
+func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _cret *C.GdkCursor // in
@@ -1983,9 +1983,9 @@ func (window *Window) DeviceCursor(device Devicer) Cursorer {
 
 	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 
-	var _cursor Cursorer // out
+	var _cursor Cursorrer // out
 
-	_cursor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorer)
+	_cursor = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorrer)
 
 	return _cursor
 }
@@ -2034,7 +2034,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	_x = int(_arg2)
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2063,7 +2063,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2097,7 +2097,7 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _target Windower           // out
 	var _dragProtocol DragProtocol // out
 
-	_target = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
+	_target = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
 	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
@@ -2118,7 +2118,7 @@ func (window *Window) EffectiveParent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2139,7 +2139,7 @@ func (window *Window) EffectiveToplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2210,7 +2210,7 @@ func (window *Window) FrameClock() FrameClocker {
 
 	var _frameClock FrameClocker // out
 
-	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
+	_frameClock = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }
@@ -2304,7 +2304,7 @@ func (window *Window) Group() Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2392,7 +2392,7 @@ func (window *Window) Parent() Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2441,7 +2441,7 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) 
 	_x = int(_arg1)
 	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2631,7 +2631,7 @@ func (window *Window) Toplevel() Windower {
 
 	var _ret Windower // out
 
-	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_ret = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -3206,7 +3206,7 @@ func (window *Window) PeekChildren() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
 		var dst Windower // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 
@@ -3474,7 +3474,7 @@ func (window *Window) SetComposited(composited bool) {
 // the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR. Passing NULL
 // for the cursor argument to gdk_window_set_cursor() means that window will use
 // the cursor of its parent window. Most windows should use this default.
-func (window *Window) SetCursor(cursor Cursorer) {
+func (window *Window) SetCursor(cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkCursor // out
 
@@ -3513,7 +3513,7 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 // Passing NULL for the cursor argument to gdk_window_set_cursor() means that
 // window will use the cursor of its parent window. Most windows should use this
 // default.
-func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorer) {
+func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _arg2 *C.GdkCursor // out
@@ -4282,7 +4282,7 @@ func WindowAtPointer() (winX int, winY int, window Windower) {
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -4561,9 +4561,9 @@ func (w *WindowAttr) WindowType() WindowType {
 }
 
 // Cursor: cursor for the window (see gdk_window_set_cursor())
-func (w *WindowAttr) Cursor() Cursorer {
-	var v Cursorer // out
-	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorer)
+func (w *WindowAttr) Cursor() Cursorrer {
+	var v Cursorrer // out
+	v = (gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorrer)
 	return v
 }
 

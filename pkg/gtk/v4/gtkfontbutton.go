@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtoner},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButtonner},
 	})
 }
 
@@ -67,7 +67,7 @@ func wrapFontButton(obj *externglib.Object) *FontButton {
 	}
 }
 
-func marshalFontButtoner(p uintptr) (interface{}, error) {
+func marshalFontButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontButton(obj), nil

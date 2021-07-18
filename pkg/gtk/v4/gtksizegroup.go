@@ -133,7 +133,7 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will be
 // removed from the size group.
-func (sizeGroup *SizeGroup) AddWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -160,7 +160,7 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 }
 
 // RemoveWidget removes a widget from a GtkSizeGroup.
-func (sizeGroup *SizeGroup) RemoveWidget(widget Widgeter) {
+func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _arg0 *C.GtkSizeGroup // out
 	var _arg1 *C.GtkWidget    // out
 

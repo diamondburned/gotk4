@@ -178,7 +178,7 @@ func (self *Video) File() gio.Filer {
 
 	var _file gio.Filer // out
 
-	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
+	_file = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -212,7 +212,7 @@ func (self *Video) MediaStream() MediaStreamer {
 
 	var _mediaStream MediaStreamer // out
 
-	_mediaStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
+	_mediaStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
 
 	return _mediaStream
 }

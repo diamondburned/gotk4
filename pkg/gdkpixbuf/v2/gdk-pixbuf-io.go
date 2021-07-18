@@ -160,9 +160,9 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, ar
 	fn(pixbuf, x, y, width, height)
 }
 
-// PixbufFileInfo parses an image file far enough to determine its format and
+// PixbufGetFileInfo parses an image file far enough to determine its format and
 // size.
-func PixbufFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
+func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in
@@ -183,7 +183,7 @@ func PixbufFileInfo(filename string) (width int, height int, pixbufFormat *Pixbu
 	return _width, _height, _pixbufFormat
 }
 
-// PixbufFileInfoAsync: asynchronously parses an image file far enough to
+// PixbufGetFileInfoAsync: asynchronously parses an image file far enough to
 // determine its format and size.
 //
 // For more details see gdk_pixbuf_get_file_info(), which is the synchronous
@@ -192,7 +192,7 @@ func PixbufFileInfo(filename string) (width int, height int, pixbufFormat *Pixbu
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
 // operation.
-func PixbufFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
+func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
 	var _arg3 C.GAsyncReadyCallback // out
@@ -210,9 +210,9 @@ func PixbufFileInfoAsync(ctx context.Context, filename string, callback gio.Asyn
 	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
 }
 
-// PixbufFileInfoFinish finishes an asynchronous pixbuf parsing operation
+// PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
 // started with gdk_pixbuf_get_file_info_async().
-func PixbufFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
+func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in

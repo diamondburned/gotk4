@@ -82,7 +82,7 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 
 // CurrentDeviceGrab returns the current grab widget for device, or NULL if
 // none.
-func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgeter {
+func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _arg1 *C.GdkDevice      // out
 	var _cret *C.GtkWidget      // in
@@ -92,16 +92,16 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgeter {
 
 	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
-func (windowGroup *WindowGroup) CurrentGrab() Widgeter {
+func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
 	var _cret *C.GtkWidget      // in
 
@@ -109,9 +109,9 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgeter {
 
 	_cret = C.gtk_window_group_get_current_grab(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }

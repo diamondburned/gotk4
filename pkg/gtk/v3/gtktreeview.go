@@ -161,7 +161,7 @@ func _gotk4_gtk3_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, a
 // pointed to by iter should be rendered as a separator. A common way to
 // implement this is to have a boolean column in the model, whose values the
 // TreeViewRowSeparatorFunc returns.
-type TreeViewRowSeparatorFunc func(model TreeModeler, iter *TreeIter) (ok bool)
+type TreeViewRowSeparatorFunc func(model TreeModeller, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewRowSeparatorFunc
 func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -170,10 +170,10 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		panic(`callback not found`)
 	}
 
-	var model TreeModeler // out
-	var iter *TreeIter    // out
+	var model TreeModeller // out
+	var iter *TreeIter     // out
 
-	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -193,7 +193,7 @@ func _gotk4_gtk3_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model TreeModeler, column int, key string, iter *TreeIter) (ok bool)
+type TreeViewSearchEqualFunc func(model TreeModeller, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeViewSearchEqualFunc
 func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
@@ -202,12 +202,12 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 		panic(`callback not found`)
 	}
 
-	var model TreeModeler // out
-	var column int        // out
-	var key string        // out
-	var iter *TreeIter    // out
+	var model TreeModeller // out
+	var column int         // out
+	var key string         // out
+	var iter *TreeIter     // out
 
-	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
+	model = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeller)
 	column = int(arg1)
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
@@ -226,7 +226,7 @@ func _gotk4_gtk3_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.gint, arg2
 	return cret
 }
 
-type TreeViewSearchPositionFunc func(treeView *TreeView, searchDialog Widgeter)
+type TreeViewSearchPositionFunc func(treeView *TreeView, searchDialog Widgetter)
 
 //export _gotk4_gtk3_TreeViewSearchPositionFunc
 func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidget, arg2 C.gpointer) {
@@ -235,11 +235,11 @@ func _gotk4_gtk3_TreeViewSearchPositionFunc(arg0 *C.GtkTreeView, arg1 *C.GtkWidg
 		panic(`callback not found`)
 	}
 
-	var treeView *TreeView    // out
-	var searchDialog Widgeter // out
+	var treeView *TreeView     // out
+	var searchDialog Widgetter // out
 
 	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
-	searchDialog = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Widgeter)
+	searchDialog = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Widgetter)
 
 	fn := v.(TreeViewSearchPositionFunc)
 	fn(treeView, searchDialog)
@@ -391,7 +391,7 @@ func NewTreeView() *TreeView {
 
 // NewTreeViewWithModel creates a new TreeView widget with the model initialized
 // to model.
-func NewTreeViewWithModel(model TreeModeler) *TreeView {
+func NewTreeViewWithModel(model TreeModeller) *TreeView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -781,7 +781,7 @@ func (treeView *TreeView) BinWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -1138,7 +1138,7 @@ func (treeView *TreeView) LevelIndentation() int {
 
 // Model returns the model the TreeView is based on. Returns NULL if the model
 // is unset.
-func (treeView *TreeView) Model() TreeModeler {
+func (treeView *TreeView) Model() TreeModeller {
 	var _arg0 *C.GtkTreeView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -1146,9 +1146,9 @@ func (treeView *TreeView) Model() TreeModeler {
 
 	_cret = C.gtk_tree_view_get_model(_arg0)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }
@@ -1986,7 +1986,7 @@ func (treeView *TreeView) SetLevelIndentation(indentation int) {
 // SetModel sets the model for a TreeView. If the tree_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
-func (treeView *TreeView) SetModel(model TreeModeler) {
+func (treeView *TreeView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 *C.GtkTreeModel // out
 

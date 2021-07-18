@@ -187,7 +187,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 }
 
 // NewIconViewWithModel creates a new IconView widget with the model model.
-func NewIconViewWithModel(model TreeModeler) *IconView {
+func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -222,7 +222,7 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }
@@ -359,7 +359,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_cell = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
+	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(CellRendererer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -444,7 +444,7 @@ func (iconView *IconView) ItemAtPos(x int, y int) (*TreePath, CellRendererer, bo
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
 	})
-	_cell = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
+	_cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(CellRendererer)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -573,7 +573,7 @@ func (iconView *IconView) MarkupColumn() int {
 
 // Model returns the model the IconView is based on. Returns NULL if the model
 // is unset.
-func (iconView *IconView) Model() TreeModeler {
+func (iconView *IconView) Model() TreeModeller {
 	var _arg0 *C.GtkIconView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -581,9 +581,9 @@ func (iconView *IconView) Model() TreeModeler {
 
 	_cret = C.gtk_icon_view_get_model(_arg0)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }
@@ -769,7 +769,7 @@ func (iconView *IconView) TooltipColumn() int {
 // the item returned will be the cursor item. When TRUE, then any of model, path
 // and iter which have been provided will be set to point to that row and the
 // corresponding model.
-func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModeler, *TreePath, TreeIter, bool) {
+func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModeller, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -788,12 +788,12 @@ func (iconView *IconView) TooltipContext(x int, y int, keyboardTip bool) (TreeMo
 
 	_cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
-	var _model TreeModeler // out
-	var _path *TreePath    // out
-	var _iter TreeIter     // out
-	var _ok bool           // out
+	var _model TreeModeller // out
+	var _path *TreePath     // out
+	var _iter TreeIter      // out
+	var _ok bool            // out
 
-	_model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeler)
+	_model = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeller)
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -1081,7 +1081,7 @@ func (iconView *IconView) SetMarkupColumn(column int) {
 // SetModel sets the model for a IconView. If the icon_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
-func (iconView *IconView) SetModel(model TreeModeler) {
+func (iconView *IconView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkIconView  // out
 	var _arg1 *C.GtkTreeModel // out
 

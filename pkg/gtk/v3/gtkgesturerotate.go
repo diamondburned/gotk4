@@ -50,7 +50,7 @@ func marshalGestureRotater(p uintptr) (interface{}, error) {
 
 // NewGestureRotate returns a newly created Gesture that recognizes 2-touch
 // rotation gestures.
-func NewGestureRotate(widget Widgeter) *GestureRotate {
+func NewGestureRotate(widget Widgetter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

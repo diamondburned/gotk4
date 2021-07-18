@@ -180,7 +180,7 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 
 	var _outputStream gio.OutputStreamer // out
 
-	_outputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
+	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
 
 	return _outputStream
 }

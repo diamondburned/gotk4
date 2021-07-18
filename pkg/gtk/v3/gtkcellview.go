@@ -234,7 +234,7 @@ func (cellView *CellView) FitModel() bool {
 }
 
 // Model returns the model for cell_view. If no model is used NULL is returned.
-func (cellView *CellView) Model() TreeModeler {
+func (cellView *CellView) Model() TreeModeller {
 	var _arg0 *C.GtkCellView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -242,9 +242,9 @@ func (cellView *CellView) Model() TreeModeler {
 
 	_cret = C.gtk_cell_view_get_model(_arg0)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }
@@ -354,7 +354,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 // SetModel sets the model for cell_view. If cell_view already has a model set,
 // it will remove it before setting the new model. If model is NULL, then it
 // will unset the old model.
-func (cellView *CellView) SetModel(model TreeModeler) {
+func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out
 	var _arg1 *C.GtkTreeModel // out
 

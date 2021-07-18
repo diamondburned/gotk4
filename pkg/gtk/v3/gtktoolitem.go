@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemer},
+		{T: externglib.Type(C.gtk_tool_item_get_type()), F: marshalToolItemmer},
 	})
 }
 
@@ -77,7 +77,7 @@ func wrapToolItem(obj *externglib.Object) *ToolItem {
 	}
 }
 
-func marshalToolItemer(p uintptr) (interface{}, error) {
+func marshalToolItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToolItem(obj), nil
@@ -220,7 +220,7 @@ func (toolItem *ToolItem) Orientation() Orientation {
 // item when the ToolItem changes. That the menu_item_ids must match ensures
 // that a ToolItem will not inadvertently change a menu item that they did not
 // create.
-func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgeter {
+func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _cret *C.GtkWidget   // in
@@ -230,9 +230,9 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgeter {
 
 	_cret = C.gtk_tool_item_get_proxy_menu_item(_arg0, _arg1)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -415,7 +415,7 @@ func (toolItem *ToolItem) RebuildMenu() {
 // RetrieveProxyMenuItem returns the MenuItem that was last set by
 // gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to appear
 // in the overflow menu.
-func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgeter {
+func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	var _arg0 *C.GtkToolItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -423,9 +423,9 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgeter {
 
 	_cret = C.gtk_tool_item_retrieve_proxy_menu_item(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -483,7 +483,7 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 // be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgeter) {
+func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
 	var _arg0 *C.GtkToolItem // out
 	var _arg1 *C.gchar       // out
 	var _arg2 *C.GtkWidget   // out

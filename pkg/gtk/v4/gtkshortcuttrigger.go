@@ -86,7 +86,7 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -104,7 +104,7 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
+	_shortcutTrigger = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -266,11 +266,11 @@ func marshalNeverTriggerer(p uintptr) (interface{}, error) {
 
 func (*NeverTrigger) privateNeverTrigger() {}
 
-// NeverTrigger gets the never trigger.
+// NeverTriggerGet gets the never trigger.
 //
 // This is a singleton for a trigger that never triggers. Use this trigger
 // instead of NULL because it implements all virtual functions.
-func NeverTrigger() *NeverTrigger {
+func NeverTriggerGet() *NeverTrigger {
 	var _cret *C.GtkShortcutTrigger // in
 
 	_cret = C.gtk_never_trigger_get()

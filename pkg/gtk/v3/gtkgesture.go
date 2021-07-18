@@ -265,7 +265,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	var _device gdk.Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 
 	return _device
 }
@@ -285,7 +285,7 @@ func (gesture *Gesture) GetGroup() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkGesture)(_p)
 		var dst Gesturer // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -395,7 +395,7 @@ func (gesture *Gesture) Window() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

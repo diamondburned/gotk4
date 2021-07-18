@@ -148,9 +148,9 @@ func (settings *Settings) SetStringProperty(name string, vString string, origin 
 	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SettingsDefault gets the Settings object for the default GDK screen, creating
-// it if necessary. See gtk_settings_get_for_screen().
-func SettingsDefault() *Settings {
+// SettingsGetDefault gets the Settings object for the default GDK screen,
+// creating it if necessary. See gtk_settings_get_for_screen().
+func SettingsGetDefault() *Settings {
 	var _cret *C.GtkSettings // in
 
 	_cret = C.gtk_settings_get_default()
@@ -162,9 +162,9 @@ func SettingsDefault() *Settings {
 	return _settings
 }
 
-// SettingsForScreen gets the Settings object for screen, creating it if
+// SettingsGetForScreen gets the Settings object for screen, creating it if
 // necessary.
-func SettingsForScreen(screen *gdk.Screen) *Settings {
+func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out
 	var _cret *C.GtkSettings // in
 

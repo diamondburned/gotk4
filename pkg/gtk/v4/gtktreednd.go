@@ -26,7 +26,7 @@ func init() {
 
 // TreeCreateRowDragContent creates a content provider for dragging path from
 // tree_model.
-func TreeCreateRowDragContent(treeModel TreeModeler, path *TreePath) *gdk.ContentProvider {
+func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
 	var _arg2 *C.GtkTreePath        // out
 	var _cret *C.GdkContentProvider // in
@@ -52,7 +52,7 @@ func TreeCreateRowDragContent(treeModel TreeModeler, path *TreePath) *gdk.Conten
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *externglib.Value) (TreeModeler, *TreePath, bool) {
+func TreeGetRowDragData(value *externglib.Value) (TreeModeller, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GtkTreeModel // in
 	var _arg3 *C.GtkTreePath  // in
@@ -62,11 +62,11 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModeler, *TreePath, bool) 
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 
-	var _treeModel TreeModeler // out
-	var _path *TreePath        // out
-	var _ok bool               // out
+	var _treeModel TreeModeller // out
+	var _path *TreePath         // out
+	var _ok bool                // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))

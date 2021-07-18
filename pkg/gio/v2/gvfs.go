@@ -124,7 +124,7 @@ func (vfs *VFS) FileForPath(path string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -145,7 +145,7 @@ func (vfs *VFS) FileForURI(uri string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -212,7 +212,7 @@ func (vfs *VFS) ParseName(parseName string) Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -289,8 +289,8 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	return _ok
 }
 
-// VFSDefault gets the default #GVfs for the system.
-func VfsDefault() *VFS {
+// VFSGetDefault gets the default #GVfs for the system.
+func VfsGetDefault() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_default()
@@ -302,8 +302,8 @@ func VfsDefault() *VFS {
 	return _vfs
 }
 
-// VFSLocal gets the local #GVfs for the system.
-func VfsLocal() *VFS {
+// VFSGetLocal gets the local #GVfs for the system.
+func VfsGetLocal() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_local()

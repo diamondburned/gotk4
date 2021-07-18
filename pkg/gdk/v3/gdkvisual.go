@@ -366,12 +366,12 @@ func (visual *Visual) VisualType() VisualType {
 	return _visualType
 }
 
-// VisualBest: get the visual with the most available colors for the default GDK
-// screen. The return value should not be freed.
+// VisualGetBest: get the visual with the most available colors for the default
+// GDK screen. The return value should not be freed.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBest() *Visual {
+func VisualGetBest() *Visual {
 	var _cret *C.GdkVisual // in
 
 	_cret = C.gdk_visual_get_best()
@@ -383,13 +383,13 @@ func VisualBest() *Visual {
 	return _visual
 }
 
-// VisualBestDepth: get the best available depth for the default GDK screen.
+// VisualGetBestDepth: get the best available depth for the default GDK screen.
 // “Best” means “largest,” i.e. 32 preferred over 24 preferred over 8 bits per
 // pixel.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBestDepth() int {
+func VisualGetBestDepth() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_best_depth()
@@ -401,12 +401,12 @@ func VisualBestDepth() int {
 	return _gint
 }
 
-// VisualBestType: return the best available visual type for the default GDK
+// VisualGetBestType: return the best available visual type for the default GDK
 // screen.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBestType() VisualType {
+func VisualGetBestType() VisualType {
 	var _cret C.GdkVisualType // in
 
 	_cret = C.gdk_visual_get_best_type()
@@ -418,12 +418,12 @@ func VisualBestType() VisualType {
 	return _visualType
 }
 
-// VisualBestWithBoth combines gdk_visual_get_best_with_depth() and
+// VisualGetBestWithBoth combines gdk_visual_get_best_with_depth() and
 // gdk_visual_get_best_with_type().
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBestWithBoth(depth int, visualType VisualType) *Visual {
+func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	var _arg1 C.gint          // out
 	var _arg2 C.GdkVisualType // out
 	var _cret *C.GdkVisual    // in
@@ -440,14 +440,14 @@ func VisualBestWithBoth(depth int, visualType VisualType) *Visual {
 	return _visual
 }
 
-// VisualBestWithDepth: get the best visual with depth depth for the default GDK
-// screen. Color visuals and visuals with mutable colormaps are preferred over
-// grayscale or fixed-colormap visuals. The return value should not be freed.
-// NULL may be returned if no visual supports depth.
+// VisualGetBestWithDepth: get the best visual with depth depth for the default
+// GDK screen. Color visuals and visuals with mutable colormaps are preferred
+// over grayscale or fixed-colormap visuals. The return value should not be
+// freed. NULL may be returned if no visual supports depth.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBestWithDepth(depth int) *Visual {
+func VisualGetBestWithDepth(depth int) *Visual {
 	var _arg1 C.gint       // out
 	var _cret *C.GdkVisual // in
 
@@ -462,14 +462,14 @@ func VisualBestWithDepth(depth int) *Visual {
 	return _visual
 }
 
-// VisualBestWithType: get the best visual of the given visual_type for the
+// VisualGetBestWithType: get the best visual of the given visual_type for the
 // default GDK screen. Visuals with higher color depths are considered better.
 // The return value should not be freed. NULL may be returned if no visual has
 // type visual_type.
 //
 // Deprecated: Visual selection should be done using
 // gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual().
-func VisualBestWithType(visualType VisualType) *Visual {
+func VisualGetBestWithType(visualType VisualType) *Visual {
 	var _arg1 C.GdkVisualType // out
 	var _cret *C.GdkVisual    // in
 
@@ -484,12 +484,12 @@ func VisualBestWithType(visualType VisualType) *Visual {
 	return _visual
 }
 
-// VisualSystem: get the system’s default visual for the default GDK screen.
+// VisualGetSystem: get the system’s default visual for the default GDK screen.
 // This is the visual for the root window of the display. The return value
 // should not be freed.
 //
 // Deprecated: Use gdk_screen_get_system_visual (gdk_screen_get_default ()).
-func VisualSystem() *Visual {
+func VisualGetSystem() *Visual {
 	var _cret *C.GdkVisual // in
 
 	_cret = C.gdk_visual_get_system()

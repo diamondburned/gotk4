@@ -29,7 +29,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of cell_layout’s cell
 // renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeModel TreeModeler, iter *TreeIter)
+type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk3_CellLayoutDataFunc
 func _gotk4_gtk3_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -40,12 +40,12 @@ func _gotk4_gtk3_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 
 	var cellLayout CellLayouter // out
 	var cell CellRendererer     // out
-	var treeModel TreeModeler   // out
+	var treeModel TreeModeller  // out
 	var iter *TreeIter          // out
 
-	cellLayout = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
-	cell = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
-	treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeler)
+	cellLayout = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
+	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
+	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -290,7 +290,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	var _cellArea CellAreaer // out
 
-	_cellArea = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
+	_cellArea = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
 
 	return _cellArea
 }
@@ -310,7 +310,7 @@ func (cellLayout *CellLayout) Cells() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkCellRenderer)(_p)
 		var dst CellRendererer // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
 		return dst
 	})
 	_list.AttachFinalizer(nil)

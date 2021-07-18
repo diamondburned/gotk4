@@ -118,7 +118,7 @@ func (self *StringFilter) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
+	_expression = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }

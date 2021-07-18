@@ -158,7 +158,7 @@ func (display *Display) DefaultGroup() Windower {
 
 	var _window Windower // out
 
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -190,7 +190,7 @@ func (display *Display) DefaultSeat() Seater {
 
 	var _seat Seater // out
 
-	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
+	_seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -208,7 +208,7 @@ func (display *Display) DeviceManager() DeviceManagerer {
 
 	var _deviceManager DeviceManagerer // out
 
-	_deviceManager = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
+	_deviceManager = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
 
 	return _deviceManager
 }
@@ -435,7 +435,7 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) 
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
+	_window = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -508,7 +508,7 @@ func (display *Display) ListDevices() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
 		var dst Devicer // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
 
@@ -530,7 +530,7 @@ func (display *Display) ListSeats() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkSeat)(_p)
 		var dst Seater // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
 		return dst
 	})
 	_list.AttachFinalizer(nil)
@@ -795,9 +795,9 @@ func (display *Display) WarpPointer(screen *Screen, x int, y int) {
 	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
 }
 
-// DisplayDefault gets the default Display. This is a convenience function for:
-// gdk_display_manager_get_default_display (gdk_display_manager_get ()).
-func DisplayDefault() *Display {
+// DisplayGetDefault gets the default Display. This is a convenience function
+// for: gdk_display_manager_get_default_display (gdk_display_manager_get ()).
+func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_display_get_default()

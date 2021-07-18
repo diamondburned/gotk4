@@ -102,8 +102,8 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 	var seat Seater     // out
 	var window Windower // out
 
-	seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
-	window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
+	seat = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
+	window = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window)
@@ -189,7 +189,7 @@ func (seat *Seat) Keyboard() Devicer {
 
 	var _device Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -205,7 +205,7 @@ func (seat *Seat) Pointer() Devicer {
 
 	var _device Devicer // out
 
-	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
+	_device = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -227,7 +227,7 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
 		var dst Devicer // out
-		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
+		dst = (gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
 	_list.AttachFinalizer(nil)

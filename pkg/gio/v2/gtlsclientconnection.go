@@ -163,7 +163,7 @@ func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 
 	var _socketConnectable SocketConnectabler // out
 
-	_socketConnectable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
+	_socketConnectable = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
 
 	return _socketConnectable
 }
@@ -276,7 +276,7 @@ func NewTlsClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _tlsClientConnection TLSClientConnectioner // out
 	var _goerr error                               // out
 
-	_tlsClientConnection = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
+	_tlsClientConnection = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsClientConnection, _goerr

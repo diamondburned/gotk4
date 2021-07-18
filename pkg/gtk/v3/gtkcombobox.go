@@ -187,7 +187,7 @@ func NewComboBoxWithEntry() *ComboBox {
 
 // NewComboBoxWithModel creates a new ComboBox with the model initialized to
 // model.
-func NewComboBoxWithModel(model TreeModeler) *ComboBox {
+func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -204,7 +204,7 @@ func NewComboBoxWithModel(model TreeModeler) *ComboBox {
 
 // NewComboBoxWithModelAndEntry creates a new empty ComboBox with an entry and
 // with the model initialized to model.
-func NewComboBoxWithModelAndEntry(model TreeModeler) *ComboBox {
+func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -419,7 +419,7 @@ func (comboBox *ComboBox) IDColumn() int {
 }
 
 // Model returns the TreeModel which is acting as data source for combo_box.
-func (comboBox *ComboBox) Model() TreeModeler {
+func (comboBox *ComboBox) Model() TreeModeller {
 	var _arg0 *C.GtkComboBox  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -427,9 +427,9 @@ func (comboBox *ComboBox) Model() TreeModeler {
 
 	_cret = C.gtk_combo_box_get_model(_arg0)
 
-	var _treeModel TreeModeler // out
+	var _treeModel TreeModeller // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeller)
 
 	return _treeModel
 }
@@ -714,7 +714,7 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 // Note that this function does not clear the cell renderers, you have to call
 // gtk_cell_layout_clear() yourself if you need to set up different cell
 // renderers for the new model.
-func (comboBox *ComboBox) SetModel(model TreeModeler) {
+func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkComboBox  // out
 	var _arg1 *C.GtkTreeModel // out
 

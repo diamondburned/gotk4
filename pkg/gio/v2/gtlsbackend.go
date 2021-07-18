@@ -143,7 +143,7 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
+	_tlsDatabase = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
 
 	return _tlsDatabase
 }
@@ -271,15 +271,15 @@ func (backend *TLSBackend) SupportsTLS() bool {
 	return _ok
 }
 
-// TLSBackendDefault gets the default Backend for the system.
-func TlsBackendDefault() TLSBackender {
+// TLSBackendGetDefault gets the default Backend for the system.
+func TlsBackendGetDefault() TLSBackender {
 	var _cret *C.GTlsBackend // in
 
 	_cret = C.g_tls_backend_get_default()
 
 	var _tlsBackend TLSBackender // out
 
-	_tlsBackend = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
+	_tlsBackend = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
 
 	return _tlsBackend
 }

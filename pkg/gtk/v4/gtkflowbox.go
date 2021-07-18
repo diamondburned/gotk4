@@ -33,7 +33,7 @@ func init() {
 // GListModel.
 //
 // This function is called for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgeter)
+type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk4_FlowBoxCreateWidgetFunc
 func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
@@ -240,7 +240,7 @@ func (v *FlowBox) Native() uintptr {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting should
 // be implemented by the model.
-func (box *FlowBox) BindModel(model gio.ListModeler, createWidgetFunc FlowBoxCreateWidgetFunc) {
+func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
@@ -442,7 +442,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgeter, position int) {
+func (box *FlowBox) Insert(widget Widgetter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -481,7 +481,7 @@ func (box *FlowBox) InvalidateSort() {
 }
 
 // Remove removes a child from box.
-func (box *FlowBox) Remove(widget Widgeter) {
+func (box *FlowBox) Remove(widget Widgetter) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -807,7 +807,7 @@ func (child *FlowBoxChild) Changed() {
 }
 
 // Child gets the child widget of self.
-func (self *FlowBoxChild) Child() Widgeter {
+func (self *FlowBoxChild) Child() Widgetter {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _cret *C.GtkWidget       // in
 
@@ -815,9 +815,9 @@ func (self *FlowBoxChild) Child() Widgeter {
 
 	_cret = C.gtk_flow_box_child_get_child(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -858,7 +858,7 @@ func (child *FlowBoxChild) IsSelected() bool {
 }
 
 // SetChild sets the child widget of self.
-func (self *FlowBoxChild) SetChild(child Widgeter) {
+func (self *FlowBoxChild) SetChild(child Widgetter) {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _arg1 *C.GtkWidget       // out
 

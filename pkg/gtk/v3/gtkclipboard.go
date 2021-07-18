@@ -559,9 +559,9 @@ func (clipboard *Clipboard) WaitIsUrisAvailable() bool {
 	return _ok
 }
 
-// ClipboardDefault returns the default clipboard object for use with
+// ClipboardGetDefault returns the default clipboard object for use with
 // cut/copy/paste menu items and keyboard shortcuts.
-func ClipboardDefault(display *gdk.Display) *Clipboard {
+func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkClipboard // in
 

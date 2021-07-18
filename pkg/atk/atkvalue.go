@@ -92,9 +92,9 @@ func (v ValueType) String() string {
 	}
 }
 
-// ValueTypeLocalizedName gets the localized description string describing the
-// ValueType value_type.
-func ValueTypeLocalizedName(valueType ValueType) string {
+// ValueTypeGetLocalizedName gets the localized description string describing
+// the ValueType value_type.
+func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
 
@@ -109,9 +109,9 @@ func ValueTypeLocalizedName(valueType ValueType) string {
 	return _utf8
 }
 
-// ValueTypeName gets the description string describing the ValueType
+// ValueTypeGetName gets the description string describing the ValueType
 // value_type.
-func ValueTypeName(valueType ValueType) string {
+func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
 

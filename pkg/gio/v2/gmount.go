@@ -77,7 +77,7 @@ type MountOverrider interface {
 	// object to get the #GDrive.
 	Drive() Driver
 	// Icon gets the icon for mount.
-	Icon() Iconer
+	Icon() Iconner
 	// Name gets the name of mount.
 	Name() string
 	// Root gets the root directory on mount.
@@ -85,7 +85,7 @@ type MountOverrider interface {
 	// SortKey gets the sort key for mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for mount.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// UUID gets the UUID for the mount. The reference is typically based on the
 	// file system UUID for the mount in question and should be considered an
 	// opaque string. Returns NULL if there is no UUID available.
@@ -199,7 +199,7 @@ type Mounter interface {
 	// Drive gets the drive for the mount.
 	Drive() Driver
 	// Icon gets the icon for mount.
-	Icon() Iconer
+	Icon() Iconner
 	// Name gets the name of mount.
 	Name() string
 	// Root gets the root directory on mount.
@@ -207,7 +207,7 @@ type Mounter interface {
 	// SortKey gets the sort key for mount, if any.
 	SortKey() string
 	// SymbolicIcon gets the symbolic icon for mount.
-	SymbolicIcon() Iconer
+	SymbolicIcon() Iconner
 	// UUID gets the UUID for the mount.
 	UUID() string
 	// Volume gets the volume for the mount.
@@ -393,7 +393,7 @@ func (mount *Mount) DefaultLocation() Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -412,13 +412,13 @@ func (mount *Mount) Drive() Driver {
 
 	var _drive Driver // out
 
-	_drive = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
+	_drive = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Driver)
 
 	return _drive
 }
 
 // Icon gets the icon for mount.
-func (mount *Mount) Icon() Iconer {
+func (mount *Mount) Icon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -426,9 +426,9 @@ func (mount *Mount) Icon() Iconer {
 
 	_cret = C.g_mount_get_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -461,7 +461,7 @@ func (mount *Mount) Root() Filer {
 
 	var _file Filer // out
 
-	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
+	_file = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -483,7 +483,7 @@ func (mount *Mount) SortKey() string {
 }
 
 // SymbolicIcon gets the symbolic icon for mount.
-func (mount *Mount) SymbolicIcon() Iconer {
+func (mount *Mount) SymbolicIcon() Iconner {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
 
@@ -491,9 +491,9 @@ func (mount *Mount) SymbolicIcon() Iconer {
 
 	_cret = C.g_mount_get_symbolic_icon(_arg0)
 
-	var _icon Iconer // out
+	var _icon Iconner // out
 
-	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
+	_icon = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconner)
 
 	return _icon
 }
@@ -528,7 +528,7 @@ func (mount *Mount) Volume() Volumer {
 
 	var _volume Volumer // out
 
-	_volume = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
+	_volume = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Volumer)
 
 	return _volume
 }

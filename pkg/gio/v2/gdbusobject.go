@@ -95,7 +95,7 @@ func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 
 	var _dBusInterface DBusInterfacer // out
 
-	_dBusInterface = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
+	_dBusInterface = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
 
 	return _dBusInterface
 }
@@ -115,7 +115,7 @@ func (object *DBusObject) Interfaces() *externglib.List {
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GDBusInterface)(_p)
 		var dst DBusInterfacer // out
-		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusInterfacer)
+		dst = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusInterfacer)
 		return dst
 	})
 	_list.AttachFinalizer(func(v uintptr) {

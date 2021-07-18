@@ -70,7 +70,7 @@ func (t TreeViewColumnSizing) String() string {
 // from the tree_model, and render it to the “text” attribute of “cell” by
 // converting it to its written equivalent. This is set by calling
 // gtk_tree_view_column_set_cell_data_func()
-type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeler, iter *TreeIter)
+type TreeCellDataFunc func(treeColumn *TreeViewColumn, cell CellRendererer, treeModel TreeModeller, iter *TreeIter)
 
 //export _gotk4_gtk3_TreeCellDataFunc
 func _gotk4_gtk3_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -81,12 +81,12 @@ func _gotk4_gtk3_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRend
 
 	var treeColumn *TreeViewColumn // out
 	var cell CellRendererer        // out
-	var treeModel TreeModeler      // out
+	var treeModel TreeModeller     // out
 	var iter *TreeIter             // out
 
 	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
-	cell = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
-	treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeler)
+	cell = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
+	treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeller)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -278,7 +278,7 @@ func (treeColumn *TreeViewColumn) CellIsVisible() bool {
 // is, for every attribute mapping in tree_column, it will get a value from the
 // set column on the iter, and use that value to set the attribute on the cell
 // renderer. This is used primarily by the TreeView.
-func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeler, iter *TreeIter, isExpander bool, isExpanded bool) {
+func (treeColumn *TreeViewColumn) CellSetCellData(treeModel TreeModeller, iter *TreeIter, isExpander bool, isExpanded bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkTreeModel      // out
 	var _arg2 *C.GtkTreeIter       // out
@@ -359,7 +359,7 @@ func (treeColumn *TreeViewColumn) Alignment() float32 {
 }
 
 // Button returns the button used in the treeview column header
-func (treeColumn *TreeViewColumn) Button() Widgeter {
+func (treeColumn *TreeViewColumn) Button() Widgetter {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret *C.GtkWidget         // in
 
@@ -367,9 +367,9 @@ func (treeColumn *TreeViewColumn) Button() Widgeter {
 
 	_cret = C.gtk_tree_view_column_get_button(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -601,7 +601,7 @@ func (treeColumn *TreeViewColumn) Title() string {
 
 // TreeView returns the TreeView wherein tree_column has been inserted. If
 // column is currently not inserted in any tree view, NULL is returned.
-func (treeColumn *TreeViewColumn) TreeView() Widgeter {
+func (treeColumn *TreeViewColumn) TreeView() Widgetter {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret *C.GtkWidget         // in
 
@@ -609,9 +609,9 @@ func (treeColumn *TreeViewColumn) TreeView() Widgeter {
 
 	_cret = C.gtk_tree_view_column_get_tree_view(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -636,7 +636,7 @@ func (treeColumn *TreeViewColumn) Visible() bool {
 
 // Widget returns the Widget in the button on the column header. If a custom
 // widget has not been set then NULL is returned.
-func (treeColumn *TreeViewColumn) Widget() Widgeter {
+func (treeColumn *TreeViewColumn) Widget() Widgetter {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret *C.GtkWidget         // in
 
@@ -644,9 +644,9 @@ func (treeColumn *TreeViewColumn) Widget() Widgeter {
 
 	_cret = C.gtk_tree_view_column_get_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
@@ -969,7 +969,7 @@ func (treeColumn *TreeViewColumn) SetVisible(visible bool) {
 
 // SetWidget sets the widget in the header to be widget. If widget is NULL, then
 // the header button is set with a Label set to the title of tree_column.
-func (treeColumn *TreeViewColumn) SetWidget(widget Widgeter) {
+func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkWidget         // out
 

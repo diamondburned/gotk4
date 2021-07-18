@@ -23,7 +23,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshoter},
+		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshotter},
 	})
 }
 
@@ -53,7 +53,7 @@ func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	}
 }
 
-func marshalSnapshoter(p uintptr) (interface{}, error) {
+func marshalSnapshotter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSnapshot(obj), nil
@@ -710,7 +710,7 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 
 	var _renderNode gsk.RenderNoder // out
 
-	_renderNode = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
+	_renderNode = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
 
 	return _renderNode
 }
@@ -733,7 +733,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 
 	var _paintable gdk.Paintabler // out
 
-	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
+	_paintable = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

@@ -37,17 +37,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorer},
-		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconer},
+		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
+		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
-		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeler},
+		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeller},
 		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessager},
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocationer},
 		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerer},
 		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenuer},
-		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemer},
+		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemmer},
 		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotificationer},
 		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyActioner},
 		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleActioner},
@@ -55,7 +55,7 @@ func init() {
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermissioner},
 		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocesser},
 		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncherer},
-		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBuser},
+		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBusser},
 	})
 }
 
@@ -86,7 +86,7 @@ func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	}
 }
 
-func marshalAppInfoMonitorer(p uintptr) (interface{}, error) {
+func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppInfoMonitor(obj), nil
@@ -115,7 +115,7 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	}
 }
 
-func marshalBytesIconer(p uintptr) (interface{}, error) {
+func marshalBytesIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBytesIcon(obj), nil
@@ -998,7 +998,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // You can unexport the menu model using g_dbus_connection_unexport_menu_model()
 // with the return value of this function.
-func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeler) (uint, error) {
+func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -1218,7 +1218,7 @@ func (connection *DBusConnection) Stream() IOStreamer {
 
 	var _ioStream IOStreamer // out
 
-	_ioStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
+	_ioStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }
@@ -1690,7 +1690,7 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	}
 }
 
-func marshalDBusMenuModeler(p uintptr) (interface{}, error) {
+func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusMenuModel(obj), nil
@@ -3037,7 +3037,7 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 // AppendSection: convenience function for appending a section menu item to the
 // end of menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSection(label string, section MenuModeler) {
+func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3052,7 +3052,7 @@ func (menu *Menu) AppendSection(label string, section MenuModeler) {
 // AppendSubmenu: convenience function for appending a submenu menu item to the
 // end of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSubmenu(label string, submenu MenuModeler) {
+func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3127,7 +3127,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 // InsertSection: convenience function for inserting a section menu item into
 // menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSection(position int, label string, section MenuModeler) {
+func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3144,7 +3144,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeler)
 // InsertSubmenu: convenience function for inserting a submenu menu item into
 // menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeler) {
+func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3189,7 +3189,7 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 // PrependSection: convenience function for prepending a section menu item to
 // the start of menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSection(label string, section MenuModeler) {
+func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3204,7 +3204,7 @@ func (menu *Menu) PrependSection(label string, section MenuModeler) {
 // PrependSubmenu: convenience function for prepending a submenu menu item to
 // the start of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSubmenu(label string, submenu MenuModeler) {
+func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3259,7 +3259,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemer(p uintptr) (interface{}, error) {
+func marshalMenuItemmer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil
@@ -3294,7 +3294,7 @@ func NewMenuItem(label string, detailedAction string) *MenuItem {
 //
 // item_index must be valid (ie: be sure to call g_menu_model_get_n_items()
 // first).
-func NewMenuItemFromModel(model MenuModeler, itemIndex int) *MenuItem {
+func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
@@ -3368,7 +3368,7 @@ func NewMenuItemFromModel(model MenuModeler, itemIndex int) *MenuItem {
 //        </link>
 //      </item>
 //    </menu>
-func NewMenuItemSection(label string, section MenuModeler) *MenuItem {
+func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3389,7 +3389,7 @@ func NewMenuItemSection(label string, section MenuModeler) *MenuItem {
 //
 // This is a convenience API around g_menu_item_new() and
 // g_menu_item_set_submenu().
-func NewMenuItemSubmenu(label string, submenu MenuModeler) *MenuItem {
+func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3434,7 +3434,7 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 }
 
 // Link queries the named link on menu_item.
-func (menuItem *MenuItem) Link(link string) MenuModeler {
+func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GMenuModel // in
@@ -3444,9 +3444,9 @@ func (menuItem *MenuItem) Link(link string) MenuModeler {
 
 	_cret = C.g_menu_item_get_link(_arg0, _arg1)
 
-	var _menuModel MenuModeler // out
+	var _menuModel MenuModeller // out
 
-	_menuModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeler)
+	_menuModel = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeller)
 
 	return _menuModel
 }
@@ -3559,7 +3559,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 // corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 //
 // If icon is NULL then the icon is unset.
-func (menuItem *MenuItem) SetIcon(icon Iconer) {
+func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
@@ -3593,7 +3593,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 // lowercase characters, numbers and '-'. Furthermore, the names must begin with
 // a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
-func (menuItem *MenuItem) SetLink(link string, model MenuModeler) {
+func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3611,7 +3611,7 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeler) {
 // sounds: the items from section become a direct part of the menu that
 // menu_item is added to. See g_menu_item_new_section() for more information
 // about what it means for a menu item to be a section.
-func (menuItem *MenuItem) SetSection(section MenuModeler) {
+func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3628,7 +3628,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeler) {
 //
 // The effect of having one menu appear as a submenu of another is exactly as it
 // sounds.
-func (menuItem *MenuItem) SetSubmenu(submenu MenuModeler) {
+func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3787,7 +3787,7 @@ func (notification *Notification) SetDefaultActionAndTargetValue(action string, 
 }
 
 // SetIcon sets the icon of notification to icon.
-func (notification *Notification) SetIcon(icon Iconer) {
+func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
@@ -4484,7 +4484,7 @@ func (subprocess *Subprocess) StderrPipe() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }
@@ -4504,7 +4504,7 @@ func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 
 	var _outputStream OutputStreamer // out
 
-	_outputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
+	_outputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
 
 	return _outputStream
 }
@@ -4524,7 +4524,7 @@ func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 
 	var _inputStream InputStreamer // out
 
-	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }
@@ -5207,7 +5207,7 @@ func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	}
 }
 
-func marshalTestDBuser(p uintptr) (interface{}, error) {
+func marshalTestDBusser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTestDBus(obj), nil

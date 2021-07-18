@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtoner},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButtonner},
 	})
 }
 
@@ -125,7 +125,7 @@ func wrapCheckButton(obj *externglib.Object) *CheckButton {
 	}
 }
 
-func marshalCheckButtoner(p uintptr) (interface{}, error) {
+func marshalCheckButtonner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckButton(obj), nil

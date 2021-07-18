@@ -518,7 +518,12 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 
 	if value.IsPublic {
 		// Require the abstract cast if we have an abstract type.
-		goto abstract
+		value.header.ImportCore("gextras")
+		// CastObject returns an interface.
+		value.p.LineTmpl(m,
+			"<.Value.Out.Set> = (< .Value.OutPtr 0 ->gextras.CastObject(externglib.<.Func>("+
+				"unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))).(<.Value.Out.Type>)")
+		return true
 	}
 
 	if !value.NeedsNamespace {
@@ -545,13 +550,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		return true
 	}
 
-abstract:
-	value.header.ImportCore("gextras")
-	value.p.LineTmpl(m,
-		"<.Value.Out.Set> = (< .Value.OutPtr 1 ->gextras.CastObject(externglib.<.Func>("+
-			"unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))).(<.Value.Out.Type>)")
-
-	return true
+	return false
 }
 
 func (value *ValueConverted) cmalloc(lenOf string, add1 bool) string {

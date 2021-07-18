@@ -33,7 +33,7 @@ func init() {
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
 // current process. The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(selectionData *SelectionData) (TreeModeler, *TreePath, bool) {
+func TreeGetRowDragData(selectionData *SelectionData) (TreeModeller, *TreePath, bool) {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // in
 	var _arg3 *C.GtkTreePath      // in
@@ -43,11 +43,11 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeler, *TreePath, b
 
 	_cret = C.gtk_tree_get_row_drag_data(_arg1, &_arg2, &_arg3)
 
-	var _treeModel TreeModeler // out
-	var _path *TreePath        // out
-	var _ok bool               // out
+	var _treeModel TreeModeller // out
+	var _path *TreePath         // out
+	var _ok bool                // out
 
-	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeler)
+	_treeModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2)))).(TreeModeller)
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -61,7 +61,7 @@ func TreeGetRowDragData(selectionData *SelectionData) (TreeModeler, *TreePath, b
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
-func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeler, path *TreePath) bool {
+func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModeller, path *TreePath) bool {
 	var _arg1 *C.GtkSelectionData // out
 	var _arg2 *C.GtkTreeModel     // out
 	var _arg3 *C.GtkTreePath      // out

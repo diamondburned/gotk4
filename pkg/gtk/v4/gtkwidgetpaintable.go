@@ -65,7 +65,7 @@ func marshalWidgetPaintabler(p uintptr) (interface{}, error) {
 }
 
 // NewWidgetPaintable creates a new widget paintable observing the given widget.
-func NewWidgetPaintable(widget Widgeter) *WidgetPaintable {
+func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GdkPaintable // in
 
@@ -81,7 +81,7 @@ func NewWidgetPaintable(widget Widgeter) *WidgetPaintable {
 }
 
 // Widget returns the widget that is observed or NULL if none.
-func (self *WidgetPaintable) Widget() Widgeter {
+func (self *WidgetPaintable) Widget() Widgetter {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _cret *C.GtkWidget          // in
 
@@ -89,15 +89,15 @@ func (self *WidgetPaintable) Widget() Widgeter {
 
 	_cret = C.gtk_widget_paintable_get_widget(_arg0)
 
-	var _widget Widgeter // out
+	var _widget Widgetter // out
 
-	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
+	_widget = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgetter)
 
 	return _widget
 }
 
 // SetWidget sets the widget that should be observed.
-func (self *WidgetPaintable) SetWidget(widget Widgeter) {
+func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out
 	var _arg1 *C.GtkWidget          // out
 

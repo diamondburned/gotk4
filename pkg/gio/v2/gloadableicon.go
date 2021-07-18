@@ -33,7 +33,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconer},
+		{T: externglib.Type(C.g_loadable_icon_get_type()), F: marshalLoadableIconner},
 	})
 }
 
@@ -62,8 +62,8 @@ type LoadableIcon struct {
 
 var _ gextras.Nativer = (*LoadableIcon)(nil)
 
-// LoadableIconer describes LoadableIcon's abstract methods.
-type LoadableIconer interface {
+// LoadableIconner describes LoadableIcon's abstract methods.
+type LoadableIconner interface {
 	// Load loads a loadable icon.
 	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously.
@@ -73,7 +73,7 @@ type LoadableIconer interface {
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
 }
 
-var _ LoadableIconer = (*LoadableIcon)(nil)
+var _ LoadableIconner = (*LoadableIcon)(nil)
 
 func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	return &LoadableIcon{
@@ -83,7 +83,7 @@ func wrapLoadableIcon(obj *externglib.Object) *LoadableIcon {
 	}
 }
 
-func marshalLoadableIconer(p uintptr) (interface{}, error) {
+func marshalLoadableIconner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLoadableIcon(obj), nil
@@ -115,7 +115,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 
 	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr
@@ -164,7 +164,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 
 	_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
+	_inputStream = (gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _typ, _inputStream, _goerr

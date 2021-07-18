@@ -162,7 +162,7 @@ func marshalListViewer(p uintptr) (interface{}, error) {
 //
 //    list_view = gtk_list_view_new (create_model (),
 //      gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
-func NewListView(model SelectionModeler, factory *ListItemFactory) *ListView {
+func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
 	var _arg2 *C.GtkListItemFactory // out
 	var _cret *C.GtkWidget          // in
@@ -215,7 +215,7 @@ func (self *ListView) Factory() *ListItemFactory {
 }
 
 // Model gets the model that's currently used to read the items displayed.
-func (self *ListView) Model() SelectionModeler {
+func (self *ListView) Model() SelectionModeller {
 	var _arg0 *C.GtkListView       // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -223,9 +223,9 @@ func (self *ListView) Model() SelectionModeler {
 
 	_cret = C.gtk_list_view_get_model(_arg0)
 
-	var _selectionModel SelectionModeler // out
+	var _selectionModel SelectionModeller // out
 
-	_selectionModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeler)
+	_selectionModel = (gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeller)
 
 	return _selectionModel
 }
@@ -296,7 +296,7 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 // SetModel sets the model to use.
 //
 // This must be a gtk.SelectionModel to use.
-func (self *ListView) SetModel(model SelectionModeler) {
+func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
 	var _arg1 *C.GtkSelectionModel // out
 

@@ -32,7 +32,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBaseder},
+		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBasedder},
 	})
 }
 
@@ -249,8 +249,8 @@ type DatagramBased struct {
 
 var _ gextras.Nativer = (*DatagramBased)(nil)
 
-// DatagramBaseder describes DatagramBased's abstract methods.
-type DatagramBaseder interface {
+// DatagramBasedder describes DatagramBased's abstract methods.
+type DatagramBasedder interface {
 	// ConditionCheck checks on the readiness of datagram_based to perform
 	// operations.
 	ConditionCheck(condition glib.IOCondition) glib.IOCondition
@@ -268,7 +268,7 @@ type DatagramBaseder interface {
 	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
-var _ DatagramBaseder = (*DatagramBased)(nil)
+var _ DatagramBasedder = (*DatagramBased)(nil)
 
 func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	return &DatagramBased{
@@ -276,7 +276,7 @@ func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	}
 }
 
-func marshalDatagramBaseder(p uintptr) (interface{}, error) {
+func marshalDatagramBasedder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDatagramBased(obj), nil

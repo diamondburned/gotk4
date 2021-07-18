@@ -1,5 +1,19 @@
 # gotk4
 
+## README!
+
+The following are currently needed for gotk4 to run:
+
+- Pull request https://github.com/gotk3/gotk3/pull/806
+
+	replace github.com/gotk3/gotk3 => github.com/diamondburned/gotk3 v0.0.0-20210718041231-5c77b7599f37
+
+- Go 1.17
+
+These list items will be deleted as they're released or merged.
+
+---
+
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
 A GTK4 bindings generator for Go.

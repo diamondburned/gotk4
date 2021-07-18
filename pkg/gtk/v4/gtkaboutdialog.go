@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialogger},
+		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialoger},
 	})
 }
 
@@ -211,7 +211,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	}
 }
 
-func marshalAboutDialogger(p uintptr) (interface{}, error) {
+func marshalAboutDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAboutDialog(obj), nil
@@ -408,7 +408,7 @@ func (about *AboutDialog) LicenseType() License {
 }
 
 // Logo returns the paintable displayed as logo in the about dialog.
-func (about *AboutDialog) Logo() *gdk.Paintable {
+func (about *AboutDialog) Logo() gdk.Paintabler {
 	var _arg0 *C.GtkAboutDialog // out
 	var _cret *C.GdkPaintable   // in
 
@@ -416,14 +416,9 @@ func (about *AboutDialog) Logo() *gdk.Paintable {
 
 	_cret = C.gtk_about_dialog_get_logo(_arg0)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

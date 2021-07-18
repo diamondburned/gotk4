@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -71,15 +74,19 @@ func marshalSocketConnectioner(p uintptr) (interface{}, error) {
 
 // ConnectSocketConnectioner: connect connection to the specified remote
 // address.
-func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddresser, cancellable *Cancellable) error {
+func (connection *SocketConnection) ConnectSocketConnectioner(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocketConnection // out
-	var _arg1 *C.GSocketAddress    // out
 	var _arg2 *C.GCancellable      // out
+	var _arg1 *C.GSocketAddress    // out
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -97,16 +104,20 @@ func (connection *SocketConnection) ConnectSocketConnectioner(address SocketAddr
 // it is currently set.
 //
 // Use g_socket_connection_connect_finish() to retrieve the result.
-func (connection *SocketConnection) ConnectAsync(address SocketAddresser, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
-	var _arg1 *C.GSocketAddress     // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketAddress     // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer((address).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -132,7 +143,7 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 }
 
 // LocalAddress: try to get the local address of a socket connection.
-func (connection *SocketConnection) LocalAddress() (*SocketAddress, error) {
+func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
@@ -141,10 +152,10 @@ func (connection *SocketConnection) LocalAddress() (*SocketAddress, error) {
 
 	_cret = C.g_socket_connection_get_local_address(_arg0, &_cerr)
 
-	var _socketAddress *SocketAddress // out
-	var _goerr error                  // out
+	var _socketAddress SocketAddresser // out
+	var _goerr error                   // out
 
-	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr
@@ -157,7 +168,7 @@ func (connection *SocketConnection) LocalAddress() (*SocketAddress, error) {
 // G_SOCKET_CLIENT_CONNECTING, this function will return the remote address that
 // will be used for the connection. This allows applications to print e.g.
 // "Connecting to example.com (10.42.77.3)...".
-func (connection *SocketConnection) RemoteAddress() (*SocketAddress, error) {
+func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
 	var _cerr *C.GError            // in
@@ -166,10 +177,10 @@ func (connection *SocketConnection) RemoteAddress() (*SocketAddress, error) {
 
 	_cret = C.g_socket_connection_get_remote_address(_arg0, &_cerr)
 
-	var _socketAddress *SocketAddress // out
-	var _goerr error                  // out
+	var _socketAddress SocketAddresser // out
+	var _goerr error                   // out
 
-	_socketAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _socketAddress, _goerr

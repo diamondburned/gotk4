@@ -3,10 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -65,7 +67,7 @@ type ContentProviderOverrider interface {
 	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
 	//
 	// The given stream will not be closed.
-	WriteMIMETypeAsync(mimeType string, stream gio.OutputStreamer, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
+	WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -245,20 +247,24 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given stream will not be closed.
-func (provider *ContentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStreamer, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider // out
+	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out
 	var _arg2 *C.GOutputStream      // out
 	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(provider.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	_arg2 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 

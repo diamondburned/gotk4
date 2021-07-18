@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -28,7 +27,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_window_position_get_type()), F: marshalWindowPosition},
 		{T: externglib.Type(C.gtk_window_type_get_type()), F: marshalWindowType},
-		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindowwer},
+		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindower},
 	})
 }
 
@@ -124,7 +123,7 @@ type WindowOverrider interface {
 	// focus widget for this window. To set the focus to a particular widget in
 	// the toplevel, it is usually more convenient to use
 	// gtk_widget_grab_focus() instead of this function.
-	SetFocus(focus Widgetter)
+	SetFocus(focus Widgeter)
 }
 
 // Window is a toplevel window which can contain other widgets. Windows normally
@@ -205,7 +204,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindowwer(p uintptr) (interface{}, error) {
+func marshalWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil
@@ -320,7 +319,7 @@ func (window *Window) AddAccelGroup(accelGroup *AccelGroup) {
 }
 
 // AddMnemonic adds a mnemonic to this window.
-func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
+func (window *Window) AddMnemonic(keyval uint, target Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -473,7 +472,7 @@ func (window *Window) Application() *Application {
 
 // AttachedTo fetches the attach widget for this window. See
 // gtk_window_set_attached_to().
-func (window *Window) AttachedTo() *Widget {
+func (window *Window) AttachedTo() Widgeter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -481,9 +480,9 @@ func (window *Window) AttachedTo() *Widget {
 
 	_cret = C.gtk_window_get_attached_to(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -530,7 +529,7 @@ func (window *Window) DefaultSize() (width int, height int) {
 
 // DefaultWidget returns the default widget for window. See
 // gtk_window_set_default() for more details.
-func (window *Window) DefaultWidget() *Widget {
+func (window *Window) DefaultWidget() Widgeter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -538,9 +537,9 @@ func (window *Window) DefaultWidget() *Widget {
 
 	_cret = C.gtk_window_get_default_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -587,7 +586,7 @@ func (window *Window) DestroyWithParent() bool {
 // is the widget that would have the focus if the toplevel window focused; if
 // the toplevel window is not focused then gtk_widget_has_focus (widget) will
 // not be TRUE for the widget.
-func (window *Window) Focus() *Widget {
+func (window *Window) Focus() Widgeter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -595,9 +594,9 @@ func (window *Window) Focus() *Widget {
 
 	_cret = C.gtk_window_get_focus(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -767,7 +766,7 @@ func (window *Window) IconList() *externglib.List {
 		}
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1106,7 +1105,7 @@ func (window *Window) Title() string {
 
 // Titlebar returns the custom titlebar that has been set with
 // gtk_window_set_titlebar().
-func (window *Window) Titlebar() *Widget {
+func (window *Window) Titlebar() Widgeter {
 	var _arg0 *C.GtkWindow // out
 	var _cret *C.GtkWidget // in
 
@@ -1114,9 +1113,9 @@ func (window *Window) Titlebar() *Widget {
 
 	_cret = C.gtk_window_get_titlebar(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -1542,7 +1541,7 @@ func (window *Window) RemoveAccelGroup(accelGroup *AccelGroup) {
 }
 
 // RemoveMnemonic removes a mnemonic from this window.
-func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
+func (window *Window) RemoveMnemonic(keyval uint, target Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -1693,7 +1692,7 @@ func (window *Window) SetApplication(application *Application) {
 // between two toplevels instead.
 //
 // Passing NULL for attach_widget detaches the window.
-func (window *Window) SetAttachedTo(attachWidget Widgetter) {
+func (window *Window) SetAttachedTo(attachWidget Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1731,7 +1730,7 @@ func (window *Window) SetDecorated(setting bool) {
 // widget it’s generally easier to call gtk_widget_grab_default() on the widget.
 // Before making a widget the default widget, you must call
 // gtk_widget_set_can_default() on the widget you’d like to make the default.
-func (window *Window) SetDefault(defaultWidget Widgetter) {
+func (window *Window) SetDefault(defaultWidget Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1846,7 +1845,7 @@ func (window *Window) SetDestroyWithParent(setting bool) {
 // for this window. To set the focus to a particular widget in the toplevel, it
 // is usually more convenient to use gtk_widget_grab_focus() instead of this
 // function.
-func (window *Window) SetFocus(focus Widgetter) {
+func (window *Window) SetFocus(focus Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1888,7 +1887,7 @@ func (window *Window) SetFocusVisible(setting bool) {
 // resized by the user. You can set a minimum and maximum size; allowed resize
 // increments (e.g. for xterm, you can only resize by the size of a character);
 // aspect ratios; and more. See the Geometry struct.
-func (window *Window) SetGeometryHints(geometryWidget Widgetter, geometry *gdk.Geometry, geomMask gdk.WindowHints) {
+func (window *Window) SetGeometryHints(geometryWidget Widgeter, geometry *gdk.Geometry, geomMask gdk.WindowHints) {
 	var _arg0 *C.GtkWindow     // out
 	var _arg1 *C.GtkWidget     // out
 	var _arg2 *C.GdkGeometry   // out
@@ -2294,7 +2293,7 @@ func (window *Window) SetTitle(title string) {
 // manager not to put its own titlebar on the window. Depending on the system,
 // this function may not work for a window that is already visible, so you set
 // the titlebar before calling gtk_widget_show().
-func (window *Window) SetTitlebar(titlebar Widgetter) {
+func (window *Window) SetTitlebar(titlebar Widgeter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GtkWidget // out
 
@@ -2449,11 +2448,11 @@ func (window *Window) Unstick() {
 	C.gtk_window_unstick(_arg0)
 }
 
-// WindowGetDefaultIconList gets the value set by
+// WindowDefaultIconList gets the value set by
 // gtk_window_set_default_icon_list(). The list is a copy and should be freed
 // with g_list_free(), but the pixbufs in the list have not had their reference
 // count incremented.
-func WindowGetDefaultIconList() *externglib.List {
+func WindowDefaultIconList() *externglib.List {
 	var _cret *C.GList // in
 
 	_cret = C.gtk_window_get_default_icon_list()
@@ -2477,16 +2476,16 @@ func WindowGetDefaultIconList() *externglib.List {
 		}
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
 
-// WindowGetDefaultIconName returns the fallback icon name for windows that has
+// WindowDefaultIconName returns the fallback icon name for windows that has
 // been set with gtk_window_set_default_icon_name(). The returned string is
 // owned by GTK+ and should not be modified. It is only valid until the next
 // call to gtk_window_set_default_icon_name().
-func WindowGetDefaultIconName() string {
+func WindowDefaultIconName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gtk_window_get_default_icon_name()
@@ -2513,11 +2512,11 @@ func WindowListToplevels() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widget // out
-		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		var dst Widgeter // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

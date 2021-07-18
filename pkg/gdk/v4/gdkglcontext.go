@@ -91,9 +91,9 @@ type GLContexter interface {
 	RequiredVersion() (major int, minor int)
 	// SharedContext retrieves the GdkGLContext that this context share data
 	// with.
-	SharedContext() *GLContext
+	SharedContext() GLContexter
 	// Surface retrieves the surface used by the context.
-	Surface() *Surface
+	Surface() Surfacer
 	// UseES checks whether the context is using an OpenGL or OpenGL ES profile.
 	UseES() bool
 	// Version retrieves the OpenGL version of the context.
@@ -212,7 +212,7 @@ func (context *GLContext) RequiredVersion() (major int, minor int) {
 }
 
 // SharedContext retrieves the GdkGLContext that this context share data with.
-func (context *GLContext) SharedContext() *GLContext {
+func (context *GLContext) SharedContext() GLContexter {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
 
@@ -220,15 +220,15 @@ func (context *GLContext) SharedContext() *GLContext {
 
 	_cret = C.gdk_gl_context_get_shared_context(_arg0)
 
-	var _glContext *GLContext // out
+	var _glContext GLContexter // out
 
-	_glContext = wrapGLContext(externglib.Take(unsafe.Pointer(_cret)))
+	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 
 	return _glContext
 }
 
 // Surface retrieves the surface used by the context.
-func (context *GLContext) Surface() *Surface {
+func (context *GLContext) Surface() Surfacer {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkSurface   // in
 
@@ -236,9 +236,9 @@ func (context *GLContext) Surface() *Surface {
 
 	_cret = C.gdk_gl_context_get_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -432,15 +432,15 @@ func GLContextClearCurrent() {
 	C.gdk_gl_context_clear_current()
 }
 
-// GLContextGetCurrent retrieves the current GdkGLContext.
-func GLContextGetCurrent() *GLContext {
+// GLContextCurrent retrieves the current GdkGLContext.
+func GLContextCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in
 
 	_cret = C.gdk_gl_context_get_current()
 
-	var _glContext *GLContext // out
+	var _glContext GLContexter // out
 
-	_glContext = wrapGLContext(externglib.Take(unsafe.Pointer(_cret)))
+	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(GLContexter)
 
 	return _glContext
 }

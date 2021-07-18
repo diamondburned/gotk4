@@ -5,9 +5,11 @@ import (
 	"sync/atomic"
 )
 
-// nilValue is a sentinel value that marks a value as empty, since we can't set
-// it to nil.
-var nilValue = new(struct{})
+// atomicContainer is a struct containing an interface that is used for swapping
+// into Value.
+type atomicContainer struct {
+	data interface{}
+}
 
 type slabEntry struct {
 	Value atomic.Value
@@ -27,7 +29,12 @@ type Slab struct {
 // retrieved using Get, it will also be wiped off the list.
 func (s *Slab) Put(entry interface{}, once bool) uintptr {
 	slabEntry := slabEntry{atomic.Value{}, 0, once}
-	slabEntry.Value.Store(entry)
+	if once {
+		// Wrap the entry value inside an atomic container for type consistency.
+		slabEntry.Value.Store(atomicContainer{entry})
+	} else {
+		slabEntry.Value.Store(entry)
+	}
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -62,15 +69,15 @@ func (s *Slab) Get(i uintptr) interface{} {
 
 	// Perform an atomic value retrieve.
 	if entry.Once {
-		// Use Swap here, so that future Get is guaranteed to return nil while
-		// we're acquiring the lock in Pop.
-		v = entry.Value.Swap(nilValue)
+		// Use Swap here, so that future Get is guaranteed to return an empty
+		// atomicContainer while we're acquiring the lock in Pop.
+		container := entry.Value.Swap(atomicContainer{}).(atomicContainer)
 		s.mu.RUnlock()
 		// Reacquire the lock and free the entry in the list.
 		s.Delete(i)
-		// If we got the nilValue, then nil out the actual value.
-		if v == nilValue {
-			v = nil
+		// Set v if the container is not empty.
+		if container.data != nil {
+			v = container.data
 		}
 	} else {
 		v = entry.Value.Load()

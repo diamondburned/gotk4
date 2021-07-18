@@ -27,7 +27,7 @@ func init() {
 
 // CellLayoutDataFunc: function which should set the value of cell_layout’s cell
 // renderer(s) as appropriate.
-type CellLayoutDataFunc func(cellLayout *CellLayout, cell *CellRenderer, treeModel *TreeModel, iter *TreeIter)
+type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeModel TreeModeler, iter *TreeIter)
 
 //export _gotk4_gtk4_CellLayoutDataFunc
 func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
@@ -36,14 +36,14 @@ func _gotk4_gtk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRender
 		panic(`callback not found`)
 	}
 
-	var cellLayout *CellLayout // out
-	var cell *CellRenderer     // out
-	var treeModel *TreeModel   // out
-	var iter *TreeIter         // out
+	var cellLayout CellLayouter // out
+	var cell CellRendererer     // out
+	var treeModel TreeModeler   // out
+	var iter *TreeIter          // out
 
-	cellLayout = wrapCellLayout(externglib.Take(unsafe.Pointer(arg0)))
-	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
-	treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(arg2)))
+	cellLayout = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(CellLayouter)
+	cell = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(CellRendererer)
+	treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg2)))).(TreeModeler)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -73,7 +73,7 @@ type CellLayoutOverrider interface {
 	ClearAttributes(cell CellRendererer)
 	// Area returns the underlying CellArea which might be cell_layout if called
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
-	Area() *CellArea
+	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
 	Cells() *externglib.List
 	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then
@@ -209,7 +209,7 @@ type CellLayouter interface {
 	ClearAttributes(cell CellRendererer)
 	// Area returns the underlying CellArea which might be cell_layout if called
 	// on a CellArea or might be NULL if no CellArea is used by cell_layout.
-	Area() *CellArea
+	Area() CellAreaer
 	// Cells returns the cell renderers which have been added to cell_layout.
 	Cells() *externglib.List
 	// PackEnd adds the cell to the end of cell_layout.
@@ -280,7 +280,7 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 
 // Area returns the underlying CellArea which might be cell_layout if called on
 // a CellArea or might be NULL if no CellArea is used by cell_layout.
-func (cellLayout *CellLayout) Area() *CellArea {
+func (cellLayout *CellLayout) Area() CellAreaer {
 	var _arg0 *C.GtkCellLayout // out
 	var _cret *C.GtkCellArea   // in
 
@@ -288,9 +288,9 @@ func (cellLayout *CellLayout) Area() *CellArea {
 
 	_cret = C.gtk_cell_layout_get_area(_arg0)
 
-	var _cellArea *CellArea // out
+	var _cellArea CellAreaer // out
 
-	_cellArea = wrapCellArea(externglib.Take(unsafe.Pointer(_cret)))
+	_cellArea = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
 
 	return _cellArea
 }
@@ -309,11 +309,11 @@ func (cellLayout *CellLayout) Cells() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkCellRenderer)(_p)
-		var dst CellRenderer // out
-		dst = *wrapCellRenderer(externglib.Take(unsafe.Pointer(src)))
+		var dst CellRendererer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(CellRendererer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

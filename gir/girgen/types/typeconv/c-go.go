@@ -11,6 +11,10 @@ import (
 
 // C to Go type conversions.
 
+func (conv *Converter) cgoParameterOverrides(value *ValueConverted) {
+	// noop
+}
+
 func (conv *Converter) cgoConvert(value *ValueConverted) bool {
 	switch {
 	case value.AnyType.Array != nil:
@@ -248,15 +252,16 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 }
 
 func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
-	if value.AnyType.Type.Type == nil {
-		return conv.cgoConverter(value)
-	}
-
 	if !value.resolveType(conv) {
 		value.Logln(logger.Debug, "cannot resolve type")
 		return false
 	}
 
+	if value.AnyType.Type.Type == nil {
+		return conv.cgoConverter(value)
+	}
+
+	// TODO: GHashTable.
 	switch {
 	case value.Resolved.IsExternGLib("List"):
 		value.header.Import("unsafe")
@@ -276,15 +281,10 @@ func (conv *Converter) cgoConvertNested(value *ValueConverted) bool {
 
 		switch value.TransferOwnership.TransferOwnership {
 		case "container":
-			value.header.Import("runtime")
-			value.vtmpl("runtime.SetFinalizer(<.OutInNamePtr 1>, (*externglib.List).Free)")
+			value.vtmpl("<.OutInNamePtr 1>.AttachFinalizer(nil)")
 		case "full":
-			value.header.Import("runtime")
-			value.vtmpl("runtime.SetFinalizer(<.OutInNamePtr 1>, func(l *externglib.List) {")
-			value.p.Linef("  l.DataWrapper(nil)") // expose raw pointer
-			value.p.Linef("  l.FreeFull(func(v interface{}) {")
-			value.p.Linef("    " + conv.cFree(inner, "v.(unsafe.Pointer)"))
-			value.p.Linef("  })")
+			value.p.Linef("%s.AttachFinalizer(func(v uintptr) {", value.OutInNamePtr(1))
+			value.p.Linef("  " + conv.cFree(inner, "unsafe.Pointer(v)"))
 			value.p.Linef("})")
 		}
 
@@ -314,7 +314,7 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 	ptr := v
 	v = fmt.Sprintf("(%s)(%s)", value.In.Type, v)
 
-	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
+	switch value.Resolved.GType {
 	case "GObject.Value": // *externglib.Value
 		return fmt.Sprintf("C.g_value_unset(%s)", v)
 	case "cairo.Context":
@@ -362,18 +362,6 @@ func (conv *Converter) cFree(value *ValueConverted, v string) string {
 }
 
 func (conv *Converter) cgoConverter(value *ValueConverted) bool {
-	// Check nested types.
-	for _, unsupported := range types.UnsupportedCTypes {
-		if unsupported == value.AnyType.Type.Name {
-			return false
-		}
-	}
-
-	if !value.resolveType(conv) {
-		value.Logln(logger.Debug, "cannot resolve type")
-		return false
-	}
-
 	// TODO: make the freeing use cFree().
 
 	switch {
@@ -387,6 +375,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
+			value.Logln(logger.Debug, "weird string pointer rule")
 			return false
 		}
 
@@ -427,6 +416,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
+			value.Logln(logger.Debug, "weird GError pointer")
 			return false
 		}
 
@@ -453,7 +443,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	}
 
 	// Resolve special-case GLib types.
-	switch name := types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name); name {
+	switch value.Resolved.GType {
 	case "GObject.Type", "GType":
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
@@ -490,7 +480,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.header.Import("runtime")
 
-		switch name {
+		switch value.Resolved.GType {
 		case "cairo.Context":
 			ref = "cairo_reference"
 			unref = "cairo_destroy"
@@ -550,6 +540,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	// TODO: handle unions.
 
 	if value.Resolved.Extern == nil {
+		value.Logln(logger.Debug, "unknown built-in")
 		return false
 	}
 
@@ -569,6 +560,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.vtmpl(
 			"<.Out.Set> = <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))")
 		if value.fail {
+			value.Logln(logger.Debug, "record set fail")
 			return false
 		}
 
@@ -591,8 +583,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		if value.ShouldFree() || unref {
 			value.header.Import("runtime")
 			value.vtmpl(
-				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {",
-			)
+				"runtime.SetFinalizer(<.OutInPtr 1><.OutName>, func(v <.OutPtr 1><.Out.Type>) {")
+			if value.fail {
+				value.Logln(logger.Debug, "SetFinalizer set fail")
+			}
+
 			if free != nil {
 				value.p.Linef(
 					"C.%s((%s%s)(gextras.StructNative(unsafe.Pointer(v))))",
@@ -625,6 +620,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 	if value.Optional {
 		value.p.Linef("var %s %s // unsupported", value.OutName, value.Out.Type)
+		return true
 	}
 
 	return false

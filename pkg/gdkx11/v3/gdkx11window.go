@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windowwer},
+		{T: externglib.Type(C.gdk_x11_window_get_type()), F: marshalX11Windower},
 	})
 }
 
@@ -52,7 +52,7 @@ func wrapX11Window(obj *externglib.Object) *X11Window {
 	}
 }
 
-func marshalX11Windowwer(p uintptr) (interface{}, error) {
+func marshalX11Windower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Window(obj), nil

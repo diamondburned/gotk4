@@ -3,12 +3,14 @@
 package gtk
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -403,14 +405,18 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 //
 // For more details, see gtk_icon_info_load_icon() which is the synchronous
 // version of this call.
-func (iconInfo *IconInfo) LoadIconAsync(cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (iconInfo *IconInfo) LoadIconAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -459,7 +465,7 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 // behaviour can be changed by passing the GTK_ICON_LOOKUP_FORCE_SIZE flag when
 // obtaining the IconInfo. If this flag has been specified, the pixbuf returned
 // by this function will be scaled to the exact size.
-func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windowwer) (*cairo.Surface, error) {
+func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, error) {
 	var _arg0 *C.GtkIconInfo     // out
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
@@ -546,22 +552,26 @@ func (iconInfo *IconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, war
 //
 // For more details, see gtk_icon_info_load_symbolic() which is the synchronous
 // version of this call.
-func (iconInfo *IconInfo) LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (iconInfo *IconInfo) LoadSymbolicAsync(ctx context.Context, fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo        // out
+	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GdkRGBA            // out
 	var _arg2 *C.GdkRGBA            // out
 	var _arg3 *C.GdkRGBA            // out
 	var _arg4 *C.GdkRGBA            // out
-	var _arg5 *C.GCancellable       // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(fg)))
 	_arg2 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(successColor)))
 	_arg3 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(warningColor)))
 	_arg4 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(errorColor)))
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -656,16 +666,20 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 //
 // For more details, see gtk_icon_info_load_symbolic_for_context() which is the
 // synchronous version of this call.
-func (iconInfo *IconInfo) LoadSymbolicForContextAsync(context *StyleContext, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (iconInfo *IconInfo) LoadSymbolicForContextAsync(ctx context.Context, context *StyleContext, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo        // out
-	var _arg1 *C.GtkStyleContext    // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GtkStyleContext    // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(iconInfo.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -1108,11 +1122,8 @@ func (iconTheme *IconTheme) ListContexts() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.free(v.(unsafe.Pointer))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _list
@@ -1140,11 +1151,8 @@ func (iconTheme *IconTheme) ListIcons(context string) *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.free(v.(unsafe.Pointer))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _list
@@ -1249,7 +1257,7 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size int, scale in
 //
 // Note that you probably want to listen for icon theme changes and update the
 // icon. This is usually done by connecting to the GtkWidget::style-set signal.
-func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, forWindow gdk.Windowwer, flags IconLookupFlags) (*cairo.Surface, error) {
+func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error) {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -1290,7 +1298,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size int, scale int, fo
 // gdk_window_get_scale_factor(). Instead, you should use
 // gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a given
 // scaling factor may be different.
-func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconer, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1314,7 +1322,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags Icon
 // LookupByGIconForScale looks up an icon and returns a IconInfo containing
 // information such as the filename of the icon. The icon can then be rendered
 // into a pixbuf using gtk_icon_info_load_icon().
-func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size int, scale int, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconer, size int, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1511,9 +1519,9 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 	C.gtk_icon_theme_add_builtin_icon(_arg1, _arg2, _arg3)
 }
 
-// IconThemeGetDefault gets the icon theme for the default screen. See
+// IconThemeDefault gets the icon theme for the default screen. See
 // gtk_icon_theme_get_for_screen().
-func IconThemeGetDefault() *IconTheme {
+func IconThemeDefault() *IconTheme {
 	var _cret *C.GtkIconTheme // in
 
 	_cret = C.gtk_icon_theme_get_default()
@@ -1525,14 +1533,14 @@ func IconThemeGetDefault() *IconTheme {
 	return _iconTheme
 }
 
-// IconThemeGetForScreen gets the icon theme object associated with screen; if
-// this function has not previously been called for the given screen, a new icon
+// IconThemeForScreen gets the icon theme object associated with screen; if this
+// function has not previously been called for the given screen, a new icon
 // theme object will be created and associated with the screen. Icon theme
 // objects are fairly expensive to create, so using this function is usually a
 // better choice than calling than gtk_icon_theme_new() and setting the screen
 // yourself; by using this function a single icon theme object will be shared
 // between users.
-func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
+func IconThemeForScreen(screen *gdk.Screen) *IconTheme {
 	var _arg1 *C.GdkScreen    // out
 	var _cret *C.GtkIconTheme // in
 

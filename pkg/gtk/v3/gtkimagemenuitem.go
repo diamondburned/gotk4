@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemmer},
+		{T: externglib.Type(C.gtk_image_menu_item_get_type()), F: marshalImageMenuItemer},
 	})
 }
 
@@ -92,7 +92,7 @@ func wrapImageMenuItem(obj *externglib.Object) *ImageMenuItem {
 	}
 }
 
-func marshalImageMenuItemmer(p uintptr) (interface{}, error) {
+func marshalImageMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapImageMenuItem(obj), nil
@@ -204,7 +204,7 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 // See gtk_image_menu_item_set_image().
 //
 // Deprecated: since version 3.10.
-func (imageMenuItem *ImageMenuItem) Image() *Widget {
+func (imageMenuItem *ImageMenuItem) Image() Widgeter {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _cret *C.GtkWidget        // in
 
@@ -212,9 +212,9 @@ func (imageMenuItem *ImageMenuItem) Image() *Widget {
 
 	_cret = C.gtk_image_menu_item_get_image(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -283,7 +283,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 // or not.
 //
 // Deprecated: since version 3.10.
-func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
+func (imageMenuItem *ImageMenuItem) SetImage(image Widgeter) {
 	var _arg0 *C.GtkImageMenuItem // out
 	var _arg1 *C.GtkWidget        // out
 

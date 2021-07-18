@@ -154,7 +154,7 @@ func (context *CellAreaContext) Allocation() (width int, height int) {
 // For instance at CellAreaContextClass.allocate() time it’s important to know
 // details about any cell spacing that the CellArea is configured with in order
 // to compute a proper allocation.
-func (context *CellAreaContext) Area() *CellArea {
+func (context *CellAreaContext) Area() CellAreaer {
 	var _arg0 *C.GtkCellAreaContext // out
 	var _cret *C.GtkCellArea        // in
 
@@ -162,9 +162,9 @@ func (context *CellAreaContext) Area() *CellArea {
 
 	_cret = C.gtk_cell_area_context_get_area(_arg0)
 
-	var _cellArea *CellArea // out
+	var _cellArea CellAreaer // out
 
-	_cellArea = wrapCellArea(externglib.Take(unsafe.Pointer(_cret)))
+	_cellArea = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(CellAreaer)
 
 	return _cellArea
 }

@@ -60,7 +60,7 @@ func DragFinish(context *gdk.DragContext, success bool, del bool, time_ uint32) 
 }
 
 // DragGetSourceWidget determines the source widget for a drag.
-func DragGetSourceWidget(context *gdk.DragContext) *Widget {
+func DragGetSourceWidget(context *gdk.DragContext) Widgeter {
 	var _arg1 *C.GdkDragContext // out
 	var _cret *C.GtkWidget      // in
 
@@ -68,9 +68,9 @@ func DragGetSourceWidget(context *gdk.DragContext) *Widget {
 
 	_cret = C.gtk_drag_get_source_widget(_arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -87,7 +87,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 // DragSetIconGIcon sets the icon for a given drag from the given icon. See the
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX int, hotY int) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconer, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out
@@ -171,7 +171,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 // DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
-func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX int, hotY int) {
+func DragSetIconWidget(context *gdk.DragContext, widget Widgeter, hotX int, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out

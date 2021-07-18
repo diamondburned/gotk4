@@ -91,7 +91,7 @@ type IMContextOverrider interface {
 	// Window in which the input appears. This window is used in order to
 	// correctly position status windows, and may also be used for purposes
 	// internal to the input method.
-	SetClientWindow(window gdk.Windowwer)
+	SetClientWindow(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made. The location is relative to the client window.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -177,7 +177,7 @@ type IMContexter interface {
 	Reset()
 	// SetClientWindow: set the client window for the input context; this is the
 	// Window in which the input appears.
-	SetClientWindow(window gdk.Windowwer)
+	SetClientWindow(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -363,7 +363,7 @@ func (context *IMContext) Reset() {
 // Window in which the input appears. This window is used in order to correctly
 // position status windows, and may also be used for purposes internal to the
 // input method.
-func (context *IMContext) SetClientWindow(window gdk.Windowwer) {
+func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GdkWindow    // out
 

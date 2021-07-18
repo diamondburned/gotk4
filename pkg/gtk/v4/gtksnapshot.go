@@ -23,7 +23,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshotter},
+		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshoter},
 	})
 }
 
@@ -53,7 +53,7 @@ func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	}
 }
 
-func marshalSnapshotter(p uintptr) (interface{}, error) {
+func marshalSnapshoter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSnapshot(obj), nil
@@ -700,7 +700,7 @@ func (snapshot *Snapshot) Scale3D(factorX float32, factorY float32, factorZ floa
 // After calling this function, it is no longer possible to add more nodes to
 // snapshot. The only function that should be called after this is
 // g_object_unref().
-func (snapshot *Snapshot) ToNode() *gsk.RenderNode {
+func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	var _arg0 *C.GtkSnapshot   // out
 	var _cret *C.GskRenderNode // in
 
@@ -708,14 +708,9 @@ func (snapshot *Snapshot) ToNode() *gsk.RenderNode {
 
 	_cret = C.gtk_snapshot_to_node(_arg0)
 
-	var _renderNode *gsk.RenderNode // out
+	var _renderNode gsk.RenderNoder // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_renderNode = &gsk.RenderNode{
-			Object: obj,
-		}
-	}
+	_renderNode = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gsk.RenderNoder)
 
 	return _renderNode
 }
@@ -726,7 +721,7 @@ func (snapshot *Snapshot) ToNode() *gsk.RenderNode {
 // After calling this function, it is no longer possible to add more nodes to
 // snapshot. The only function that should be called after this is
 // g_object_unref().
-func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
+func (snapshot *Snapshot) ToPaintable(size *graphene.Size) gdk.Paintabler {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.graphene_size_t // out
 	var _cret *C.GdkPaintable    // in
@@ -736,14 +731,9 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 
 	_cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

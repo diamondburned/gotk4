@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemmer},
+		{T: externglib.Type(C.gtk_tearoff_menu_item_get_type()), F: marshalTearoffMenuItemer},
 	})
 }
 
@@ -82,7 +82,7 @@ func wrapTearoffMenuItem(obj *externglib.Object) *TearoffMenuItem {
 	}
 }
 
-func marshalTearoffMenuItemmer(p uintptr) (interface{}, error) {
+func marshalTearoffMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTearoffMenuItem(obj), nil

@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketter},
+		{T: externglib.Type(C.gtk_socket_get_type()), F: marshalSocketer},
 	})
 }
 
@@ -104,7 +104,7 @@ func wrapSocket(obj *externglib.Object) *Socket {
 	}
 }
 
-func marshalSocketter(p uintptr) (interface{}, error) {
+func marshalSocketer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSocket(obj), nil
@@ -125,7 +125,7 @@ func NewSocket() *Socket {
 
 // PlugWindow retrieves the window of the plug. Use this to check if the plug
 // has been created inside of the socket.
-func (socket_ *Socket) PlugWindow() *gdk.Window {
+func (socket_ *Socket) PlugWindow() gdk.Windower {
 	var _arg0 *C.GtkSocket // out
 	var _cret *C.GdkWindow // in
 
@@ -133,14 +133,9 @@ func (socket_ *Socket) PlugWindow() *gdk.Window {
 
 	_cret = C.gtk_socket_get_plug_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

@@ -135,7 +135,7 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
-func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
+func (self *DropTargetAsync) RejectDrop(drop gdk.Droper) {
 	var _arg0 *C.GtkDropTargetAsync // out
 	var _arg1 *C.GdkDrop            // out
 

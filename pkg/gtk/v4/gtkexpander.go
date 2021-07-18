@@ -183,7 +183,7 @@ func NewExpanderWithMnemonic(label string) *Expander {
 }
 
 // Child gets the child widget of expander.
-func (expander *Expander) Child() *Widget {
+func (expander *Expander) Child() Widgeter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
@@ -191,9 +191,9 @@ func (expander *Expander) Child() *Widget {
 
 	_cret = C.gtk_expander_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -240,7 +240,7 @@ func (expander *Expander) Label() string {
 }
 
 // LabelWidget retrieves the label widget for the frame.
-func (expander *Expander) LabelWidget() *Widget {
+func (expander *Expander) LabelWidget() Widgeter {
 	var _arg0 *C.GtkExpander // out
 	var _cret *C.GtkWidget   // in
 
@@ -248,9 +248,9 @@ func (expander *Expander) LabelWidget() *Widget {
 
 	_cret = C.gtk_expander_get_label_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -311,7 +311,7 @@ func (expander *Expander) UseUnderline() bool {
 }
 
 // SetChild sets the child widget of expander.
-func (expander *Expander) SetChild(child Widgetter) {
+func (expander *Expander) SetChild(child Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -353,7 +353,7 @@ func (expander *Expander) SetLabel(label string) {
 // SetLabelWidget: set the label widget for the expander.
 //
 // This is the widget that will appear embedded alongside the expander arrow.
-func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
+func (expander *Expander) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 *C.GtkWidget   // out
 

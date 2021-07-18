@@ -59,7 +59,7 @@ func marshalGestureMultiPresser(p uintptr) (interface{}, error) {
 
 // NewGestureMultiPress returns a newly created Gesture that recognizes single
 // and multiple presses.
-func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
+func NewGestureMultiPress(widget Widgeter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

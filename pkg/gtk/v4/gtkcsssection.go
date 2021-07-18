@@ -81,7 +81,7 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //
 // If no such file exists, for example because the CSS was loaded via
 // gtk.CSSProvider.LoadFromData(), then NULL is returned.
-func (section *CSSSection) File() *gio.File {
+func (section *CSSSection) File() gio.Filer {
 	var _arg0 *C.GtkCssSection // out
 	var _cret *C.GFile         // in
 
@@ -89,14 +89,9 @@ func (section *CSSSection) File() *gio.File {
 
 	_cret = C.gtk_css_section_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }

@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarrer},
+		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBarer},
 	})
 }
 
@@ -98,7 +98,7 @@ func wrapProgressBar(obj *externglib.Object) *ProgressBar {
 	}
 }
 
-func marshalProgressBarrer(p uintptr) (interface{}, error) {
+func marshalProgressBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapProgressBar(obj), nil

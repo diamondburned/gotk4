@@ -7,6 +7,7 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 // Generator is a big generator that manages multiple repositories.
@@ -17,7 +18,8 @@ type Generator struct {
 	repos   gir.Repositories
 	modPath types.ModulePathFunc
 
-	filters []types.FilterMatcher
+	filters   []types.FilterMatcher
+	convProcs []typeconv.ConversionProcessor
 
 	preprocs    []types.Preprocessor
 	preprocOnce sync.Once
@@ -42,6 +44,18 @@ func (g *Generator) AddFilters(filters []types.FilterMatcher) {
 // Filters returns the generator's list of type filters.
 func (g *Generator) Filters() []types.FilterMatcher {
 	return g.filters
+}
+
+// AddProcessConverters adds the given list of conversion processors.
+func (g *Generator) AddProcessConverters(processors []typeconv.ConversionProcessor) {
+	g.convProcs = append(g.convProcs, processors...)
+}
+
+// ProcessConverter satisfies the typeconv.ConversionProcessor interface.
+func (g *Generator) ProcessConverter(converter *typeconv.Converter) {
+	for _, proc := range g.convProcs {
+		proc.ProcessConverter(converter)
+	}
 }
 
 // AddPreprocessors applies the given list of preprocessors.

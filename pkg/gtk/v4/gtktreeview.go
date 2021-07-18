@@ -131,7 +131,7 @@ func _gotk4_gtk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, a
 // pointed to by iter should be rendered as a separator. A common way to
 // implement this is to have a boolean column in the model, whose values the
 // TreeViewRowSeparatorFunc returns.
-type TreeViewRowSeparatorFunc func(model *TreeModel, iter *TreeIter) (ok bool)
+type TreeViewRowSeparatorFunc func(model TreeModeler, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeViewRowSeparatorFunc
 func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -140,10 +140,10 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel // out
-	var iter *TreeIter   // out
+	var model TreeModeler // out
+	var iter *TreeIter    // out
 
-	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
+	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -163,7 +163,7 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model *TreeModel, column int, key string, iter *TreeIter) (ok bool)
+type TreeViewSearchEqualFunc func(model TreeModeler, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeViewSearchEqualFunc
 func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.gboolean) {
@@ -172,12 +172,12 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel // out
-	var column int       // out
-	var key string       // out
-	var iter *TreeIter   // out
+	var model TreeModeler // out
+	var column int        // out
+	var key string        // out
+	var iter *TreeIter    // out
 
-	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
+	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
 	column = int(arg1)
 	key = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	defer C.free(unsafe.Pointer(arg2))
@@ -359,7 +359,7 @@ func NewTreeView() *TreeView {
 
 // NewTreeViewWithModel creates a new TreeView widget with the model initialized
 // to model.
-func NewTreeViewWithModel(model TreeModeller) *TreeView {
+func NewTreeViewWithModel(model TreeModeler) *TreeView {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkWidget    // in
 
@@ -585,7 +585,7 @@ func (treeView *TreeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty 
 
 // CreateRowDragIcon creates a #cairo_surface_t representation of the row at
 // path. This image is used for a drag icon.
-func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *gdk.Paintable {
+func (treeView *TreeView) CreateRowDragIcon(path *TreePath) gdk.Paintabler {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 *C.GtkTreePath  // out
 	var _cret *C.GdkPaintable // in
@@ -595,14 +595,9 @@ func (treeView *TreeView) CreateRowDragIcon(path *TreePath) *gdk.Paintable {
 
 	_cret = C.gtk_tree_view_create_row_drag_icon(_arg0, _arg1)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }
@@ -794,7 +789,7 @@ func (treeView *TreeView) Columns() *externglib.List {
 		dst = *wrapTreeViewColumn(externglib.Take(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1063,7 +1058,7 @@ func (treeView *TreeView) LevelIndentation() int {
 
 // Model returns the model the TreeView is based on. Returns NULL if the model
 // is unset.
-func (treeView *TreeView) Model() *TreeModel {
+func (treeView *TreeView) Model() TreeModeler {
 	var _arg0 *C.GtkTreeView  // out
 	var _cret *C.GtkTreeModel // in
 
@@ -1071,9 +1066,9 @@ func (treeView *TreeView) Model() *TreeModel {
 
 	_cret = C.gtk_tree_view_get_model(_arg0)
 
-	var _treeModel *TreeModel // out
+	var _treeModel TreeModeler // out
 
-	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
+	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
 
 	return _treeModel
 }
@@ -1204,7 +1199,7 @@ func (treeView *TreeView) SearchColumn() int {
 // SearchEntry returns the Entry which is currently in use as interactive search
 // entry for tree_view. In case the built-in entry is being used, NULL will be
 // returned.
-func (treeView *TreeView) SearchEntry() *Editable {
+func (treeView *TreeView) SearchEntry() Editabler {
 	var _arg0 *C.GtkTreeView // out
 	var _cret *C.GtkEditable // in
 
@@ -1212,9 +1207,9 @@ func (treeView *TreeView) SearchEntry() *Editable {
 
 	_cret = C.gtk_tree_view_get_search_entry(_arg0)
 
-	var _editable *Editable // out
+	var _editable Editabler // out
 
-	_editable = wrapEditable(externglib.Take(unsafe.Pointer(_cret)))
+	_editable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
 
 	return _editable
 }
@@ -1281,7 +1276,7 @@ func (treeView *TreeView) TooltipColumn() int {
 // and iter which have been provided will be set to point to that row and the
 // corresponding model. x and y will always be converted to be relative to
 // tree_view’s bin_window if keyboard_tooltip is FALSE.
-func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (*TreeModel, *TreePath, TreeIter, bool) {
+func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModeler, *TreePath, TreeIter, bool) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -1300,12 +1295,12 @@ func (treeView *TreeView) TooltipContext(x int, y int, keyboardTip bool) (*TreeM
 
 	_cret = C.gtk_tree_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
-	var _model *TreeModel // out
-	var _path *TreePath   // out
-	var _iter TreeIter    // out
-	var _ok bool          // out
+	var _model TreeModeler // out
+	var _path *TreePath    // out
+	var _iter TreeIter     // out
+	var _ok bool           // out
 
-	_model = wrapTreeModel(externglib.Take(unsafe.Pointer(_arg4)))
+	_model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4)))).(TreeModeler)
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
 	runtime.SetFinalizer(_path, func(v *TreePath) {
 		C.gtk_tree_path_free((*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(v))))
@@ -1889,7 +1884,7 @@ func (treeView *TreeView) SetLevelIndentation(indentation int) {
 // SetModel sets the model for a TreeView. If the tree_view already has a model
 // set, it will remove it before setting the new model. If model is NULL, then
 // it will unset the old model.
-func (treeView *TreeView) SetModel(model TreeModeller) {
+func (treeView *TreeView) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 *C.GtkTreeModel // out
 

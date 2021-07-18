@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_font_selection_get_type()), F: marshalFontSelectioner},
-		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialogger},
+		{T: externglib.Type(C.gtk_font_selection_dialog_get_type()), F: marshalFontSelectionDialoger},
 	})
 }
 
@@ -80,7 +80,7 @@ func NewFontSelection() *FontSelection {
 // family, slant, weight, width, etc).
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) Face() *pango.FontFace {
+func (fontsel *FontSelection) Face() pango.FontFacer {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFace    // in
 
@@ -88,14 +88,9 @@ func (fontsel *FontSelection) Face() *pango.FontFace {
 
 	_cret = C.gtk_font_selection_get_face(_arg0)
 
-	var _fontFace *pango.FontFace // out
+	var _fontFace pango.FontFacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_fontFace = &pango.FontFace{
-			Object: obj,
-		}
-	}
+	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
 
 	return _fontFace
 }
@@ -104,7 +99,7 @@ func (fontsel *FontSelection) Face() *pango.FontFace {
 // selected font. For example, “Regular”, “Bold”, etc.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) FaceList() *Widget {
+func (fontsel *FontSelection) FaceList() Widgeter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -112,9 +107,9 @@ func (fontsel *FontSelection) FaceList() *Widget {
 
 	_cret = C.gtk_font_selection_get_face_list(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -122,7 +117,7 @@ func (fontsel *FontSelection) FaceList() *Widget {
 // Family gets the FontFamily representing the selected font family.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) Family() *pango.FontFamily {
+func (fontsel *FontSelection) Family() pango.FontFamilier {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.PangoFontFamily  // in
 
@@ -130,14 +125,9 @@ func (fontsel *FontSelection) Family() *pango.FontFamily {
 
 	_cret = C.gtk_font_selection_get_family(_arg0)
 
-	var _fontFamily *pango.FontFamily // out
+	var _fontFamily pango.FontFamilier // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_fontFamily = &pango.FontFamily{
-			Object: obj,
-		}
-	}
+	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
 
 	return _fontFamily
 }
@@ -146,7 +136,7 @@ func (fontsel *FontSelection) Family() *pango.FontFamily {
 // “Sans”, “Serif”, etc.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) FamilyList() *Widget {
+func (fontsel *FontSelection) FamilyList() Widgeter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -154,9 +144,9 @@ func (fontsel *FontSelection) FamilyList() *Widget {
 
 	_cret = C.gtk_font_selection_get_family_list(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -190,7 +180,7 @@ func (fontsel *FontSelection) FontName() string {
 // PreviewEntry: this returns the Entry used to display the font as a preview.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) PreviewEntry() *Widget {
+func (fontsel *FontSelection) PreviewEntry() Widgeter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -198,9 +188,9 @@ func (fontsel *FontSelection) PreviewEntry() *Widget {
 
 	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -245,7 +235,7 @@ func (fontsel *FontSelection) Size() int {
 // number manually instead of selecting it from the list of font sizes.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) SizeEntry() *Widget {
+func (fontsel *FontSelection) SizeEntry() Widgeter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -253,9 +243,9 @@ func (fontsel *FontSelection) SizeEntry() *Widget {
 
 	_cret = C.gtk_font_selection_get_size_entry(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -263,7 +253,7 @@ func (fontsel *FontSelection) SizeEntry() *Widget {
 // SizeList: this returns the TreeView used to list font sizes.
 //
 // Deprecated: Use FontChooser.
-func (fontsel *FontSelection) SizeList() *Widget {
+func (fontsel *FontSelection) SizeList() Widgeter {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret *C.GtkWidget        // in
 
@@ -271,9 +261,9 @@ func (fontsel *FontSelection) SizeList() *Widget {
 
 	_cret = C.gtk_font_selection_get_size_list(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -348,7 +338,7 @@ func wrapFontSelectionDialog(obj *externglib.Object) *FontSelectionDialog {
 	}
 }
 
-func marshalFontSelectionDialogger(p uintptr) (interface{}, error) {
+func marshalFontSelectionDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontSelectionDialog(obj), nil
@@ -375,7 +365,7 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 // CancelButton gets the “Cancel” button.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialog) CancelButton() *Widget {
+func (fsd *FontSelectionDialog) CancelButton() Widgeter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -383,9 +373,9 @@ func (fsd *FontSelectionDialog) CancelButton() *Widget {
 
 	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -419,7 +409,7 @@ func (fsd *FontSelectionDialog) FontName() string {
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialog) FontSelection() *Widget {
+func (fsd *FontSelectionDialog) FontSelection() Widgeter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -427,9 +417,9 @@ func (fsd *FontSelectionDialog) FontSelection() *Widget {
 
 	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -437,7 +427,7 @@ func (fsd *FontSelectionDialog) FontSelection() *Widget {
 // OkButton gets the “OK” button.
 //
 // Deprecated: Use FontChooserDialog.
-func (fsd *FontSelectionDialog) OkButton() *Widget {
+func (fsd *FontSelectionDialog) OkButton() Widgeter {
 	var _arg0 *C.GtkFontSelectionDialog // out
 	var _cret *C.GtkWidget              // in
 
@@ -445,9 +435,9 @@ func (fsd *FontSelectionDialog) OkButton() *Widget {
 
 	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

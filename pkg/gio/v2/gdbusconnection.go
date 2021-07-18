@@ -3,11 +3,13 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -418,14 +420,18 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gcha
 //
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
-func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallback) {
-	var _arg1 C.GBusType            // out
+func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GBusType            // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GBusType(busType)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -474,14 +480,18 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to TRUE.
-func BusGetSync(busType BusType, cancellable *Cancellable) (*DBusConnection, error) {
-	var _arg1 C.GBusType         // out
+func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	var _arg2 *C.GCancellable    // out
+	var _arg1 C.GBusType         // out
 	var _cret *C.GDBusConnection // in
 	var _cerr *C.GError          // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GBusType(busType)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_bus_get_sync(_arg1, _arg2, &_cerr)
 
@@ -511,27 +521,31 @@ func BusGetSync(busType BusType, cancellable *Cancellable) (*DBusConnection, err
 //
 // This is an asynchronous failable constructor. See
 // g_dbus_connection_new_sync() for the synchronous version.
-func DBusConnectionNew(stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable, callback AsyncReadyCallback) {
+func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
+	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
 	var _arg2 *C.gchar               // out
 	var _arg3 C.GDBusConnectionFlags // out
 	var _arg4 *C.GDBusAuthObserver   // out
-	var _arg5 *C.GCancellable        // out
 	var _arg6 C.GAsyncReadyCallback  // out
 	var _arg7 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-// DBusConnectionNewForAddress: asynchronously connects and sets up a D-Bus
+// NewDBusConnectionForAddress: asynchronously connects and sets up a D-Bus
 // client connection for exchanging D-Bus messages with an endpoint specified by
 // address which must be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
@@ -550,18 +564,22 @@ func DBusConnectionNew(stream IOStreamer, guid string, flags DBusConnectionFlags
 //
 // This is an asynchronous failable constructor. See
 // g_dbus_connection_new_for_address_sync() for the synchronous version.
-func DBusConnectionNewForAddress(address string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable, callback AsyncReadyCallback) {
+func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
+	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GDBusConnectionFlags // out
 	var _arg3 *C.GDBusAuthObserver   // out
-	var _arg4 *C.GCancellable        // out
 	var _arg5 C.GAsyncReadyCallback  // out
 	var _arg6 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	_arg2 = C.GDBusConnectionFlags(flags)
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 

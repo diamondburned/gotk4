@@ -164,7 +164,7 @@ func (area *GLArea) AutoRender() bool {
 }
 
 // Context retrieves the GLContext used by area.
-func (area *GLArea) Context() *gdk.GLContext {
+func (area *GLArea) Context() gdk.GLContexter {
 	var _arg0 *C.GtkGLArea    // out
 	var _cret *C.GdkGLContext // in
 
@@ -172,14 +172,9 @@ func (area *GLArea) Context() *gdk.GLContext {
 
 	_cret = C.gtk_gl_area_get_context(_arg0)
 
-	var _glContext *gdk.GLContext // out
+	var _glContext gdk.GLContexter // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_glContext = &gdk.GLContext{
-			Object: obj,
-		}
-	}
+	_glContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.GLContexter)
 
 	return _glContext
 }

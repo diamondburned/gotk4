@@ -126,7 +126,7 @@ func marshalColumnViewer(p uintptr) (interface{}, error) {
 //
 // You most likely want to call gtk.ColumnView.AppendColumn() to add columns
 // next.
-func NewColumnView(model SelectionModeller) *ColumnView {
+func NewColumnView(model SelectionModeler) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
 	var _cret *C.GtkWidget         // in
 
@@ -162,7 +162,7 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 //
 // This list is constant over the lifetime of self and can be used to monitor
 // changes to the columns of self by connecting to the ::items-changed signal.
-func (self *ColumnView) Columns() *gio.ListModel {
+func (self *ColumnView) Columns() gio.ListModeler {
 	var _arg0 *C.GtkColumnView // out
 	var _cret *C.GListModel    // in
 
@@ -170,14 +170,9 @@ func (self *ColumnView) Columns() *gio.ListModel {
 
 	_cret = C.gtk_column_view_get_columns(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -202,7 +197,7 @@ func (self *ColumnView) EnableRubberband() bool {
 }
 
 // Model gets the model that's currently used to read the items displayed.
-func (self *ColumnView) Model() *SelectionModel {
+func (self *ColumnView) Model() SelectionModeler {
 	var _arg0 *C.GtkColumnView     // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -210,9 +205,9 @@ func (self *ColumnView) Model() *SelectionModel {
 
 	_cret = C.gtk_column_view_get_model(_arg0)
 
-	var _selectionModel *SelectionModel // out
+	var _selectionModel SelectionModeler // out
 
-	_selectionModel = wrapSelectionModel(externglib.Take(unsafe.Pointer(_cret)))
+	_selectionModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SelectionModeler)
 
 	return _selectionModel
 }
@@ -367,7 +362,7 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 // SetModel sets the model to use.
 //
 // This must be a gtk.SelectionModel.
-func (self *ColumnView) SetModel(model SelectionModeller) {
+func (self *ColumnView) SetModel(model SelectionModeler) {
 	var _arg0 *C.GtkColumnView     // out
 	var _arg1 *C.GtkSelectionModel // out
 

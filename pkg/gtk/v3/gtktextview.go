@@ -160,7 +160,7 @@ type TextViewOverrider interface {
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	PopulatePopup(popup Widgetter)
+	PopulatePopup(popup Widgeter)
 	SetAnchor()
 	ToggleOverwrite()
 }
@@ -268,7 +268,7 @@ func (v *TextView) Native() uintptr {
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
-func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
+func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -289,7 +289,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 // scrolling is irrelevant, the child floats above all scrollable areas. But
 // when placing a child in one of the scrollable windows (border windows or text
 // window) it will move with the scrolling as needed.
-func (textView *TextView) AddChildInWindow(child Widgetter, whichWindow TextWindowType, xpos int, ypos int) {
+func (textView *TextView) AddChildInWindow(child Widgeter, whichWindow TextWindowType, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkTextWindowType // out
@@ -1030,7 +1030,7 @@ func (textView *TextView) VisibleRect() gdk.Rectangle {
 // left, right, top, bottom, and the window that displays the text buffer.
 // Windows are NULL and nonexistent if their width or height is 0, and are
 // nonexistent before the widget has been realized.
-func (textView *TextView) Window(win TextWindowType) *gdk.Window {
+func (textView *TextView) Window(win TextWindowType) gdk.Windower {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _cret *C.GdkWindow        // in
@@ -1040,14 +1040,9 @@ func (textView *TextView) Window(win TextWindowType) *gdk.Window {
 
 	_cret = C.gtk_text_view_get_window(_arg0, _arg1)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -1056,7 +1051,7 @@ func (textView *TextView) Window(win TextWindowType) *gdk.Window {
 //
 // If you connect to an event signal on text_view, this function should be
 // called on event->window to see which window it was.
-func (textView *TextView) WindowType(window gdk.Windowwer) TextWindowType {
+func (textView *TextView) WindowType(window gdk.Windower) TextWindowType {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 *C.GdkWindow        // out
 	var _cret C.GtkTextWindowType // in
@@ -1138,7 +1133,7 @@ func (textView *TextView) ImContextFilterKeypress(event *gdk.EventKey) bool {
 
 // MoveChild updates the position of a child, as for
 // gtk_text_view_add_child_in_window().
-func (textView *TextView) MoveChild(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) MoveChild(child Widgeter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.gint         // out

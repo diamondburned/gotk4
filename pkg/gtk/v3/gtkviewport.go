@@ -106,7 +106,7 @@ func (v *Viewport) Native() uintptr {
 }
 
 // BinWindow gets the bin window of the Viewport.
-func (viewport *Viewport) BinWindow() *gdk.Window {
+func (viewport *Viewport) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GdkWindow   // in
 
@@ -114,14 +114,9 @@ func (viewport *Viewport) BinWindow() *gdk.Window {
 
 	_cret = C.gtk_viewport_get_bin_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -180,7 +175,7 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 }
 
 // ViewWindow gets the view window of the Viewport.
-func (viewport *Viewport) ViewWindow() *gdk.Window {
+func (viewport *Viewport) ViewWindow() gdk.Windower {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GdkWindow   // in
 
@@ -188,14 +183,9 @@ func (viewport *Viewport) ViewWindow() *gdk.Window {
 
 	_cret = C.gtk_viewport_get_view_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

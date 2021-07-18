@@ -168,7 +168,7 @@ func (self *Video) Autoplay() bool {
 }
 
 // File gets the file played by self or NULL if not playing back a file.
-func (self *Video) File() *gio.File {
+func (self *Video) File() gio.Filer {
 	var _arg0 *C.GtkVideo // out
 	var _cret *C.GFile    // in
 
@@ -176,14 +176,9 @@ func (self *Video) File() *gio.File {
 
 	_cret = C.gtk_video_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -207,7 +202,7 @@ func (self *Video) Loop() bool {
 }
 
 // MediaStream gets the media stream managed by self or NULL if none.
-func (self *Video) MediaStream() *MediaStream {
+func (self *Video) MediaStream() MediaStreamer {
 	var _arg0 *C.GtkVideo       // out
 	var _cret *C.GtkMediaStream // in
 
@@ -215,9 +210,9 @@ func (self *Video) MediaStream() *MediaStream {
 
 	_cret = C.gtk_video_get_media_stream(_arg0)
 
-	var _mediaStream *MediaStream // out
+	var _mediaStream MediaStreamer // out
 
-	_mediaStream = wrapMediaStream(externglib.Take(unsafe.Pointer(_cret)))
+	_mediaStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
 
 	return _mediaStream
 }

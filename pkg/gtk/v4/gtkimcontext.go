@@ -119,7 +119,7 @@ type IMContextOverrider interface {
 	// This is the GtkWidget holding the input focus. This widget is used in
 	// order to correctly position status windows, and may also be used for
 	// purposes internal to the input method.
-	SetClientWidget(widget Widgetter)
+	SetClientWidget(widget Widgeter)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	//
@@ -218,7 +218,7 @@ type IMContexter interface {
 	// position has been made.
 	Reset()
 	// SetClientWidget: set the client widget for the input context.
-	SetClientWidget(widget Widgetter)
+	SetClientWidget(widget Widgeter)
 	// SetCursorLocation: notify the input method that a change in cursor
 	// position has been made.
 	SetCursorLocation(area *gdk.Rectangle)
@@ -499,7 +499,7 @@ func (context *IMContext) Reset() {
 // This is the GtkWidget holding the input focus. This widget is used in order
 // to correctly position status windows, and may also be used for purposes
 // internal to the input method.
-func (context *IMContext) SetClientWidget(widget Widgetter) {
+func (context *IMContext) SetClientWidget(widget Widgeter) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.GtkWidget    // out
 

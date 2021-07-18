@@ -231,7 +231,12 @@ func (g *CallbackGenerator) renderBlock() bool {
 		callbackValues = append(callbackValues, value)
 	}
 
-	convert := typeconv.NewConverter(g.gen, callbackValues)
+	typ := &gir.TypeFindResult{
+		NamespaceFindResult: g.gen.Namespace(),
+		Type:                g.Callback,
+	}
+
+	convert := typeconv.NewConverter(g.gen, typ, callbackValues)
 	convert.UseLogger(g)
 
 	results := convert.ConvertAll()

@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -66,7 +65,7 @@ func marshalScreener(p uintptr) (interface{}, error) {
 // needed.
 //
 // Deprecated: since version 3.22.
-func (screen *Screen) ActiveWindow() *Window {
+func (screen *Screen) ActiveWindow() Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
 
@@ -74,9 +73,9 @@ func (screen *Screen) ActiveWindow() *Window {
 
 	_cret = C.gdk_screen_get_active_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -183,7 +182,7 @@ func (screen *Screen) MonitorAtPoint(x int, y int) int {
 // of the bounding rectangle of window resides.
 //
 // Deprecated: Use gdk_display_get_monitor_at_window() instead.
-func (screen *Screen) MonitorAtWindow(window Windowwer) int {
+func (screen *Screen) MonitorAtWindow(window Windower) int {
 	var _arg0 *C.GdkScreen // out
 	var _arg1 *C.GdkWindow // out
 	var _cret C.gint       // in
@@ -459,7 +458,7 @@ func (screen *Screen) RGBAVisual() *Visual {
 }
 
 // RootWindow gets the root window of screen.
-func (screen *Screen) RootWindow() *Window {
+func (screen *Screen) RootWindow() Windower {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.GdkWindow // in
 
@@ -467,9 +466,9 @@ func (screen *Screen) RootWindow() *Window {
 
 	_cret = C.gdk_screen_get_root_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -535,11 +534,11 @@ func (screen *Screen) ToplevelWindows() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst Windower // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -613,15 +612,12 @@ func (screen *Screen) WindowStack() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
-		var dst Window // out
-		dst = *wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst Windower // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list
@@ -672,7 +668,7 @@ func (screen *Screen) ListVisuals() *externglib.List {
 		dst = *wrapVisual(externglib.Take(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -725,9 +721,9 @@ func (screen *Screen) SetResolution(dpi float64) {
 	C.gdk_screen_set_resolution(_arg0, _arg1)
 }
 
-// ScreenGetDefault gets the default screen for the default display. (See
+// ScreenDefault gets the default screen for the default display. (See
 // gdk_display_get_default ()).
-func ScreenGetDefault() *Screen {
+func ScreenDefault() *Screen {
 	var _cret *C.GdkScreen // in
 
 	_cret = C.gdk_screen_get_default()

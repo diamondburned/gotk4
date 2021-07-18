@@ -80,7 +80,7 @@ func NewWindowHandle() *WindowHandle {
 }
 
 // Child gets the child widget of self.
-func (self *WindowHandle) Child() *Widget {
+func (self *WindowHandle) Child() Widgeter {
 	var _arg0 *C.GtkWindowHandle // out
 	var _cret *C.GtkWidget       // in
 
@@ -88,15 +88,15 @@ func (self *WindowHandle) Child() *Widget {
 
 	_cret = C.gtk_window_handle_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
 
 // SetChild sets the child widget of self.
-func (self *WindowHandle) SetChild(child Widgetter) {
+func (self *WindowHandle) SetChild(child Widgeter) {
 	var _arg0 *C.GtkWindowHandle // out
 	var _arg1 *C.GtkWidget       // out
 

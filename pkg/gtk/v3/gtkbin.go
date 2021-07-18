@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBinner},
+		{T: externglib.Type(C.gtk_bin_get_type()), F: marshalBiner},
 	})
 }
 
@@ -36,14 +36,14 @@ type Bin struct {
 
 var _ gextras.Nativer = (*Bin)(nil)
 
-// Binner describes Bin's abstract methods.
-type Binner interface {
+// Biner describes Bin's abstract methods.
+type Biner interface {
 	// Child gets the child of the Bin, or NULL if the bin contains no child
 	// widget.
-	Child() *Widget
+	Child() Widgeter
 }
 
-var _ Binner = (*Bin)(nil)
+var _ Biner = (*Bin)(nil)
 
 func wrapBin(obj *externglib.Object) *Bin {
 	return &Bin{
@@ -63,7 +63,7 @@ func wrapBin(obj *externglib.Object) *Bin {
 	}
 }
 
-func marshalBinner(p uintptr) (interface{}, error) {
+func marshalBiner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBin(obj), nil
@@ -72,7 +72,7 @@ func marshalBinner(p uintptr) (interface{}, error) {
 // Child gets the child of the Bin, or NULL if the bin contains no child widget.
 // The returned widget does not have a reference added, so you do not need to
 // unref it.
-func (bin *Bin) Child() *Widget {
+func (bin *Bin) Child() Widgeter {
 	var _arg0 *C.GtkBin    // out
 	var _cret *C.GtkWidget // in
 
@@ -80,9 +80,9 @@ func (bin *Bin) Child() *Widget {
 
 	_cret = C.gtk_bin_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

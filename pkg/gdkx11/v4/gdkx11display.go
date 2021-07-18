@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayyer},
+		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Displayer},
 	})
 }
 
@@ -50,7 +50,7 @@ func wrapX11Display(obj *externglib.Object) *X11Display {
 	}
 }
 
-func marshalX11Displayyer(p uintptr) (interface{}, error) {
+func marshalX11Displayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Display(obj), nil
@@ -105,7 +105,7 @@ func (display *X11Display) ErrorTrapPush() {
 // DefaultGroup returns the default group leader surface for all toplevel
 // surfaces on display. This surface is implicitly created by GDK. See
 // gdk_x11_surface_set_group().
-func (display *X11Display) DefaultGroup() *gdk.Surface {
+func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSurface // in
 
@@ -113,20 +113,15 @@ func (display *X11Display) DefaultGroup() *gdk.Surface {
 
 	_cret = C.gdk_x11_display_get_default_group(_arg0)
 
-	var _surface *gdk.Surface // out
+	var _surface gdk.Surfacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_surface = &gdk.Surface{
-			Object: obj,
-		}
-	}
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
 
-// GlxVersion retrieves the version of the GLX implementation.
-func (display *X11Display) GlxVersion() (major int, minor int, ok bool) {
+// GLXVersion retrieves the version of the GLX implementation.
+func (display *X11Display) GLXVersion() (major int, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // in
 	var _arg2 C.int         // in

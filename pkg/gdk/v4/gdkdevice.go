@@ -113,14 +113,14 @@ type Devicer interface {
 	// keyboard is locked.
 	ScrollLockState() bool
 	// Seat returns the GdkSeat the device belongs to.
-	Seat() *Seat
+	Seat() Seater
 	// Source determines the type of the device.
 	Source() InputSource
 	// SurfaceAtPosition obtains the surface underneath device, returning the
 	// location of the device in win_x and win_y Returns NULL if the surface
 	// tree under device is not known to GDK (for example, belongs to another
 	// application).
-	SurfaceAtPosition() (winX float64, winY float64, surface *Surface)
+	SurfaceAtPosition() (winX float64, winY float64, surface Surfacer)
 	// Timestamp returns the timestamp of the last activity for this device.
 	Timestamp() uint32
 	// VendorID returns the vendor ID of this device.
@@ -350,7 +350,7 @@ func (device *Device) ScrollLockState() bool {
 }
 
 // Seat returns the GdkSeat the device belongs to.
-func (device *Device) Seat() *Seat {
+func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
@@ -358,9 +358,9 @@ func (device *Device) Seat() *Seat {
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
-	var _seat *Seat // out
+	var _seat Seater // out
 
-	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
+	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -386,7 +386,7 @@ func (device *Device) Source() InputSource {
 //
 // Returns NULL if the surface tree under device is not known to GDK (for
 // example, belongs to another application).
-func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface *Surface) {
+func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface Surfacer) {
 	var _arg0 *C.GdkDevice  // out
 	var _arg1 C.double      // in
 	var _arg2 C.double      // in
@@ -398,11 +398,11 @@ func (device *Device) SurfaceAtPosition() (winX float64, winY float64, surface *
 
 	var _winX float64     // out
 	var _winY float64     // out
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _winX, _winY, _surface
 }

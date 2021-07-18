@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemmer},
+		{T: externglib.Type(C.gtk_radio_menu_item_get_type()), F: marshalRadioMenuItemer},
 	})
 }
 
@@ -95,7 +95,7 @@ func wrapRadioMenuItem(obj *externglib.Object) *RadioMenuItem {
 	}
 }
 
-func marshalRadioMenuItemmer(p uintptr) (interface{}, error) {
+func marshalRadioMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapRadioMenuItem(obj), nil

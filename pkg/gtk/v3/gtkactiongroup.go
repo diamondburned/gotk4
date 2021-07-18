@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -288,7 +287,7 @@ func (actionGroup *ActionGroup) ListActions() *externglib.List {
 		dst = *wrapAction(externglib.Take(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

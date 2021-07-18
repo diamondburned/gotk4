@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModeller},
+		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModeler},
 	})
 }
 
@@ -48,7 +48,7 @@ func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
 	}
 }
 
-func marshalFilterListModeller(p uintptr) (interface{}, error) {
+func marshalFilterListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFilterListModel(obj), nil
@@ -56,7 +56,7 @@ func marshalFilterListModeller(p uintptr) (interface{}, error) {
 
 // NewFilterListModel creates a new GtkFilterListModel that will filter model
 // using the given filter.
-func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel {
+func NewFilterListModel(model gio.ListModeler, filter *Filter) *FilterListModel {
 	var _arg1 *C.GListModel         // out
 	var _arg2 *C.GtkFilter          // out
 	var _cret *C.GtkFilterListModel // in
@@ -110,7 +110,7 @@ func (self *FilterListModel) Incremental() bool {
 }
 
 // Model gets the model currently filtered or NULL if none.
-func (self *FilterListModel) Model() *gio.ListModel {
+func (self *FilterListModel) Model() gio.ListModeler {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret *C.GListModel         // in
 
@@ -118,14 +118,9 @@ func (self *FilterListModel) Model() *gio.ListModel {
 
 	_cret = C.gtk_filter_list_model_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -203,7 +198,7 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 // Note that GTK makes no effort to ensure that model conforms to the item type
 // of self. It assumes that the caller knows what they are doing and have set up
 // an appropriate filter to ensure that item types match.
-func (self *FilterListModel) SetModel(model gio.ListModeller) {
+func (self *FilterListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkFilterListModel // out
 	var _arg1 *C.GListModel         // out
 

@@ -156,7 +156,7 @@ func NewIconPaintableForFile(file gio.Filer, size int, scale int) *IconPaintable
 // File gets the GFile that was used to load the icon.
 //
 // Returns NULL if the icon was not loaded from a file.
-func (self *IconPaintable) File() *gio.File {
+func (self *IconPaintable) File() gio.Filer {
 	var _arg0 *C.GtkIconPaintable // out
 	var _cret *C.GFile            // in
 
@@ -164,14 +164,9 @@ func (self *IconPaintable) File() *gio.File {
 
 	_cret = C.gtk_icon_paintable_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -483,7 +478,7 @@ func (self *IconTheme) ThemeName() string {
 
 // HasGIcon checks whether an icon theme includes an icon for a particular
 // GIcon.
-func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
+func (self *IconTheme) HasGIcon(gicon gio.Iconer) bool {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.GIcon        // out
 	var _cret C.gboolean      // in
@@ -526,7 +521,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
-func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconer, size int, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out
@@ -653,7 +648,7 @@ func (self *IconTheme) SetThemeName(themeName string) {
 	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
 }
 
-// IconThemeGetForDisplay gets the icon theme object associated with display.
+// IconThemeForDisplay gets the icon theme object associated with display.
 //
 // If this function has not previously been called for the given display, a new
 // icon theme object will be created and associated with the display. Icon theme
@@ -661,7 +656,7 @@ func (self *IconTheme) SetThemeName(themeName string) {
 // better choice than calling gtk.IconTheme.New and setting the display
 // yourself; by using this function a single icon theme object will be shared
 // between users.
-func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
+func IconThemeForDisplay(display *gdk.Display) *IconTheme {
 	var _arg1 *C.GdkDisplay   // out
 	var _cret *C.GtkIconTheme // in
 

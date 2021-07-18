@@ -3,10 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -140,7 +142,7 @@ func (clipboard *Clipboard) IsLocal() bool {
 // ReadFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadAsync().
-func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error) {
+func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -152,17 +154,12 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.I
 
 	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _outMimeType string           // out
-	var _inputStream *gio.InputStream // out
-	var _goerr error                  // out
+	var _outMimeType string            // out
+	var _inputStream gio.InputStreamer // out
+	var _goerr error                   // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_inputStream = &gio.InputStream{
-			Object: obj,
-		}
-	}
+	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr
@@ -177,14 +174,18 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, *gio.I
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
 // the operation.
-func (clipboard *Clipboard) ReadTextAsync(cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -224,14 +225,18 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync directly if you need more control over
 // the operation.
-func (clipboard *Clipboard) ReadTextureAsync(cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -241,7 +246,7 @@ func (clipboard *Clipboard) ReadTextureAsync(cancellable *gio.Cancellable, callb
 // ReadTextureFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextureAsync().
-func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Texture, error) {
+func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkTexture   // in
@@ -252,10 +257,10 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Textur
 
 	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
 
-	var _texture *Texture // out
+	var _texture Texturer // out
 	var _goerr error      // out
 
-	_texture = wrapTexture(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_texture = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Texturer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _texture, _goerr
@@ -270,18 +275,22 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (*Textur
 // For local clipboard contents that are available in the given GType, the value
 // will be copied directly. Otherwise, GDK will try to use
 // content_deserialize_async to convert the clipboard's data.
-func (clipboard *Clipboard) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GType(typ)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -366,16 +375,20 @@ func (clipboard *Clipboard) SetValue(value *externglib.Value) {
 //
 // This function is called automatically when a gtk.Application is shut down, so
 // you likely don't need to call it.
-func (clipboard *Clipboard) StoreAsync(ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(clipboard.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 

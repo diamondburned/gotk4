@@ -95,7 +95,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 // data.
 //
 // lookup_flags controls the behaviour of the lookup.
-func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputStream, error) {
+func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
 	var _cret *C.GInputStream        // in
@@ -106,10 +106,10 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (*InputSt
 
 	_cret = C.g_resources_open_stream(_arg1, _arg2, &_cerr)
 
-	var _inputStream *InputStream // out
-	var _goerr error              // out
+	var _inputStream InputStreamer // out
+	var _goerr error               // out
 
-	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr

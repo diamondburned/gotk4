@@ -3,10 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -22,7 +24,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDropper},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDroper},
 	})
 }
 
@@ -46,32 +48,32 @@ type Drop struct {
 
 var _ gextras.Nativer = (*Drop)(nil)
 
-// Dropper describes Drop's abstract methods.
-type Dropper interface {
+// Droper describes Drop's abstract methods.
+type Droper interface {
 	// Finish ends the drag operation after a drop.
 	Finish(action DragAction)
 	// Actions returns the possible actions for this GdkDrop.
 	Actions() DragAction
 	// Device returns the GdkDevice performing the drop.
-	Device() *Device
+	Device() Devicer
 	// Display gets the GdkDisplay that self was created for.
 	Display() *Display
 	// Drag: if this is an in-app drag-and-drop operation, returns the GdkDrag
 	// that corresponds to this drop.
-	Drag() *Drag
+	Drag() Drager
 	// Formats returns the GdkContentFormats that the drop offers the data to be
 	// read in.
 	Formats() *ContentFormats
 	// Surface returns the GdkSurface performing the drop.
-	Surface() *Surface
+	Surface() Surfacer
 	// ReadAsync: asynchronously read the dropped data from a GdkDrop in a
 	// format that complies with one of the mime types.
-	ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
+	ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback)
 	// ReadFinish finishes an async drop read operation.
-	ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error)
+	ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error)
 	// ReadValueAsync: asynchronously request the drag operation's contents
 	// converted to the given type.
-	ReadValueAsync(typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback)
+	ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback)
 	// ReadValueFinish finishes an async drop read.
 	ReadValueFinish(result gio.AsyncResulter) (*externglib.Value, error)
 	// Status selects all actions that are potentially supported by the
@@ -79,7 +81,7 @@ type Dropper interface {
 	Status(actions DragAction, preferred DragAction)
 }
 
-var _ Dropper = (*Drop)(nil)
+var _ Droper = (*Drop)(nil)
 
 func wrapDrop(obj *externglib.Object) *Drop {
 	return &Drop{
@@ -87,7 +89,7 @@ func wrapDrop(obj *externglib.Object) *Drop {
 	}
 }
 
-func marshalDropper(p uintptr) (interface{}, error) {
+func marshalDroper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrop(obj), nil
@@ -136,7 +138,7 @@ func (self *Drop) Actions() DragAction {
 }
 
 // Device returns the GdkDevice performing the drop.
-func (self *Drop) Device() *Device {
+func (self *Drop) Device() Devicer {
 	var _arg0 *C.GdkDrop   // out
 	var _cret *C.GdkDevice // in
 
@@ -144,9 +146,9 @@ func (self *Drop) Device() *Device {
 
 	_cret = C.gdk_drop_get_device(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -171,7 +173,7 @@ func (self *Drop) Display() *Display {
 // corresponds to this drop.
 //
 // If it is not, NULL is returned.
-func (self *Drop) Drag() *Drag {
+func (self *Drop) Drag() Drager {
 	var _arg0 *C.GdkDrop // out
 	var _cret *C.GdkDrag // in
 
@@ -179,9 +181,9 @@ func (self *Drop) Drag() *Drag {
 
 	_cret = C.gdk_drop_get_drag(_arg0)
 
-	var _drag *Drag // out
+	var _drag Drager // out
 
-	_drag = wrapDrag(externglib.Take(unsafe.Pointer(_cret)))
+	_drag = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Drager)
 
 	return _drag
 }
@@ -207,7 +209,7 @@ func (self *Drop) Formats() *ContentFormats {
 }
 
 // Surface returns the GdkSurface performing the drop.
-func (self *Drop) Surface() *Surface {
+func (self *Drop) Surface() Surfacer {
 	var _arg0 *C.GdkDrop    // out
 	var _cret *C.GdkSurface // in
 
@@ -215,24 +217,29 @@ func (self *Drop) Surface() *Surface {
 
 	_cret = C.gdk_drop_get_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
 
 // ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
 // that complies with one of the mime types.
-func (self *Drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkDrop // out
+func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg3 *C.GCancellable // out
 	var _arg1 **C.char
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	{
 		_arg1 = (**C.char)(C.malloc(C.ulong(len(mimeTypes)+1) * C.ulong(unsafe.Sizeof(uint(0)))))
 		{
@@ -245,7 +252,6 @@ func (self *Drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio
 		}
 	}
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -260,7 +266,7 @@ func (self *Drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable *gio
 // g_input_stream_read_bytes_async().
 //
 // See gdk.Drop.ReadAsync().
-func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream, error) {
+func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.char         // in
@@ -272,18 +278,13 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 
 	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _outMimeType string           // out
-	var _inputStream *gio.InputStream // out
-	var _goerr error                  // out
+	var _outMimeType string            // out
+	var _inputStream gio.InputStreamer // out
+	var _goerr error                   // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_inputStream = &gio.InputStream{
-			Object: obj,
-		}
-	}
+	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outMimeType, _inputStream, _goerr
@@ -298,18 +299,22 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, *gio.InputStream
 // For local drag'n'drop operations that are available in the given GType, the
 // value will be copied directly. Otherwise, GDK will try to use
 // gdk.ContentDeserializeAsync() to convert the data.
-func (self *Drop) ReadValueAsync(typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (self *Drop) ReadValueAsync(ctx context.Context, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GdkDrop)(unsafe.Pointer(self.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GType(typ)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 

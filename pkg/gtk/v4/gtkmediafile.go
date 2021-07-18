@@ -51,9 +51,9 @@ type MediaFiler interface {
 	// Clear resets the media file to be empty.
 	Clear()
 	// File returns the file that self is currently playing from.
-	File() *gio.File
+	File() gio.Filer
 	// InputStream returns the stream that self is currently playing from.
-	InputStream() *gio.InputStream
+	InputStream() gio.InputStreamer
 	// SetFile sets the GtkMediaFile to play the given file.
 	SetFile(file gio.Filer)
 	// SetFilename sets the `GtkMediaFile to play the given file.
@@ -181,7 +181,7 @@ func (self *MediaFile) Clear() {
 // File returns the file that self is currently playing from.
 //
 // When self is not playing or not playing from a file, NULL is returned.
-func (self *MediaFile) File() *gio.File {
+func (self *MediaFile) File() gio.Filer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GFile        // in
 
@@ -189,14 +189,9 @@ func (self *MediaFile) File() *gio.File {
 
 	_cret = C.gtk_media_file_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -204,7 +199,7 @@ func (self *MediaFile) File() *gio.File {
 // InputStream returns the stream that self is currently playing from.
 //
 // When self is not playing or not playing from a stream, NULL is returned.
-func (self *MediaFile) InputStream() *gio.InputStream {
+func (self *MediaFile) InputStream() gio.InputStreamer {
 	var _arg0 *C.GtkMediaFile // out
 	var _cret *C.GInputStream // in
 
@@ -212,14 +207,9 @@ func (self *MediaFile) InputStream() *gio.InputStream {
 
 	_cret = C.gtk_media_file_get_input_stream(_arg0)
 
-	var _inputStream *gio.InputStream // out
+	var _inputStream gio.InputStreamer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_inputStream = &gio.InputStream{
-			Object: obj,
-		}
-	}
+	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 
 	return _inputStream
 }

@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpinner},
+		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpiner},
 	})
 }
 
@@ -54,7 +54,7 @@ func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
 	}
 }
 
-func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
+func marshalCellRendererSpiner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererSpin(obj), nil

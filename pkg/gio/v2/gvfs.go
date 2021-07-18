@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"context"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -71,24 +72,24 @@ func _gotk4_gio2_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) 
 type VFSOverrider interface {
 	AddWritableNamespaces(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for path.
-	FileForPath(path string) *File
+	FileForPath(path string) Filer
 	// FileForURI gets a #GFile for uri.
 	//
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
-	FileForURI(uri string) *File
+	FileForURI(uri string) Filer
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
 	IsActive() bool
 	LocalFileMoved(source string, dest string)
 	LocalFileRemoved(filename string)
-	LocalFileSetAttributes(filename string, info *FileInfo, flags FileQueryInfoFlags, cancellable *Cancellable) error
+	LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
-	ParseName(parseName string) *File
+	ParseName(parseName string) Filer
 }
 
 // VFS: entry point for using GIO functionality.
@@ -111,7 +112,7 @@ func marshalVFSer(p uintptr) (interface{}, error) {
 }
 
 // FileForPath gets a #GFile for path.
-func (vfs *VFS) FileForPath(path string) *File {
+func (vfs *VFS) FileForPath(path string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -121,9 +122,9 @@ func (vfs *VFS) FileForPath(path string) *File {
 
 	_cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
-	var _file *File // out
+	var _file Filer // out
 
-	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -132,7 +133,7 @@ func (vfs *VFS) FileForPath(path string) *File {
 //
 // This operation never fails, but the returned object might not support any I/O
 // operation if the URI is malformed or if the URI scheme is not supported.
-func (vfs *VFS) FileForURI(uri string) *File {
+func (vfs *VFS) FileForURI(uri string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -142,9 +143,9 @@ func (vfs *VFS) FileForURI(uri string) *File {
 
 	_cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
-	var _file *File // out
+	var _file Filer // out
 
-	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -199,7 +200,7 @@ func (vfs *VFS) IsActive() bool {
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the parse_name cannot be parsed by the #GVfs
 // module.
-func (vfs *VFS) ParseName(parseName string) *File {
+func (vfs *VFS) ParseName(parseName string) Filer {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -209,9 +210,9 @@ func (vfs *VFS) ParseName(parseName string) *File {
 
 	_cret = C.g_vfs_parse_name(_arg0, _arg1)
 
-	var _file *File // out
+	var _file Filer // out
 
-	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -288,8 +289,8 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	return _ok
 }
 
-// VFSGetDefault gets the default #GVfs for the system.
-func VfsGetDefault() *VFS {
+// VFSDefault gets the default #GVfs for the system.
+func VfsDefault() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_default()
@@ -301,8 +302,8 @@ func VfsGetDefault() *VFS {
 	return _vfs
 }
 
-// VFSGetLocal gets the local #GVfs for the system.
-func VfsGetLocal() *VFS {
+// VFSLocal gets the local #GVfs for the system.
+func VfsLocal() *VFS {
 	var _cret *C.GVfs // in
 
 	_cret = C.g_vfs_get_local()

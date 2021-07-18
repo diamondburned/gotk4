@@ -85,7 +85,7 @@ func (t TargetFlags) String() string {
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
-func SelectionRemoveAll(widget Widgetter) {
+func SelectionRemoveAll(widget Widgeter) {
 	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer((widget).(gextras.Nativer).Native()))
@@ -340,20 +340,4 @@ func (list *TargetList) unref() {
 type TargetPair struct {
 	nocopy gextras.NoCopy
 	native *C.GtkTargetPair
-}
-
-// Flags for DND
-func (t *TargetPair) Flags() uint {
-	var v uint // out
-	v = uint(t.native.flags)
-	return v
-}
-
-// Info: application-assigned integer ID which will get passed as a parameter to
-// e.g the Widget::selection-get signal. It allows the application to identify
-// the target type without extensive string compares.
-func (t *TargetPair) Info() uint {
-	var v uint // out
-	v = uint(t.native.info)
-	return v
 }

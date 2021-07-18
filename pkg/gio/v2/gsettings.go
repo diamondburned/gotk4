@@ -659,7 +659,7 @@ func (settings *Settings) BindWritable(key string, object *externglib.Object, pr
 // For boolean-valued keys, action activations take no parameter and result in
 // the toggling of the value. For all other types, activations take the new
 // value for the key (which must have the correct type).
-func (settings *Settings) CreateAction(key string) *Action {
+func (settings *Settings) CreateAction(key string) Actioner {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
 	var _cret *C.GAction   // in
@@ -669,9 +669,9 @@ func (settings *Settings) CreateAction(key string) *Action {
 
 	_cret = C.g_settings_create_action(_arg0, _arg1)
 
-	var _action *Action // out
+	var _action Actioner // out
 
-	_action = wrapAction(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_action = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

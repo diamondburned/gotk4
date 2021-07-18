@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargetter},
+		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTargeter},
 	})
 }
 
@@ -106,7 +106,7 @@ func wrapDropTarget(obj *externglib.Object) *DropTarget {
 	}
 }
 
-func marshalDropTargetter(p uintptr) (interface{}, error) {
+func marshalDropTargeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDropTarget(obj), nil
@@ -152,7 +152,7 @@ func (self *DropTarget) Actions() gdk.DragAction {
 // Drop gets the currently handled drop operation.
 //
 // If no drop operation is going on, NULL is returned.
-func (self *DropTarget) Drop() *gdk.Drop {
+func (self *DropTarget) Drop() gdk.Droper {
 	var _arg0 *C.GtkDropTarget // out
 	var _cret *C.GdkDrop       // in
 
@@ -160,14 +160,9 @@ func (self *DropTarget) Drop() *gdk.Drop {
 
 	_cret = C.gtk_drop_target_get_drop(_arg0)
 
-	var _drop *gdk.Drop // out
+	var _drop gdk.Droper // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_drop = &gdk.Drop{
-			Object: obj,
-		}
-	}
+	_drop = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Droper)
 
 	return _drop
 }

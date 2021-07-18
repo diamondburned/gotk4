@@ -66,7 +66,7 @@ func marshalDTLSServerConnectioner(p uintptr) (interface{}, error) {
 func (*DTLSServerConnection) privateDTLSServerConnection() {}
 
 // NewDTLSServerConnection creates a new ServerConnection wrapping base_socket.
-func DtlsServerConnectionNew(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
+func NewDtlsServerConnection(baseSocket DatagramBaseder, certificate TLSCertificater) (DTLSServerConnectioner, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out
 	var _cret *C.GDatagramBased  // in
@@ -77,10 +77,10 @@ func DtlsServerConnectionNew(baseSocket DatagramBasedder, certificate TLSCertifi
 
 	_cret = C.g_dtls_server_connection_new(_arg1, _arg2, &_cerr)
 
-	var _dtlsServerConnection *DTLSServerConnection // out
-	var _goerr error                                // out
+	var _dtlsServerConnection DTLSServerConnectioner // out
+	var _goerr error                                 // out
 
-	_dtlsServerConnection = wrapDTLSServerConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dtlsServerConnection = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DTLSServerConnectioner)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _dtlsServerConnection, _goerr

@@ -150,7 +150,7 @@ func NewRevealer() *Revealer {
 }
 
 // Child gets the child widget of revealer.
-func (revealer *Revealer) Child() *Widget {
+func (revealer *Revealer) Child() Widgeter {
 	var _arg0 *C.GtkRevealer // out
 	var _cret *C.GtkWidget   // in
 
@@ -158,9 +158,9 @@ func (revealer *Revealer) Child() *Widget {
 
 	_cret = C.gtk_revealer_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -243,7 +243,7 @@ func (revealer *Revealer) TransitionType() RevealerTransitionType {
 }
 
 // SetChild sets the child widget of revealer.
-func (revealer *Revealer) SetChild(child Widgetter) {
+func (revealer *Revealer) SetChild(child Widgeter) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 *C.GtkWidget   // out
 

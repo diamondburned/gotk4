@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarrer},
+		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBarer},
 	})
 }
 
@@ -62,7 +62,7 @@ func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
 	}
 }
 
-func marshalHeaderBarrer(p uintptr) (interface{}, error) {
+func marshalHeaderBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHeaderBar(obj), nil
@@ -83,7 +83,7 @@ func NewHeaderBar() *HeaderBar {
 
 // CustomTitle retrieves the custom title widget of the header. See
 // gtk_header_bar_set_custom_title().
-func (bar *HeaderBar) CustomTitle() *Widget {
+func (bar *HeaderBar) CustomTitle() Widgeter {
 	var _arg0 *C.GtkHeaderBar // out
 	var _cret *C.GtkWidget    // in
 
@@ -91,9 +91,9 @@ func (bar *HeaderBar) CustomTitle() *Widget {
 
 	_cret = C.gtk_header_bar_get_custom_title(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -187,7 +187,7 @@ func (bar *HeaderBar) Title() string {
 }
 
 // PackEnd adds child to bar, packed with reference to the end of the bar.
-func (bar *HeaderBar) PackEnd(child Widgetter) {
+func (bar *HeaderBar) PackEnd(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -198,7 +198,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 }
 
 // PackStart adds child to bar, packed with reference to the start of the bar.
-func (bar *HeaderBar) PackStart(child Widgetter) {
+func (bar *HeaderBar) PackStart(child Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -217,7 +217,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // You should set the custom title to NULL, for the header title label to be
 // visible again.
-func (bar *HeaderBar) SetCustomTitle(titleWidget Widgetter) {
+func (bar *HeaderBar) SetCustomTitle(titleWidget Widgeter) {
 	var _arg0 *C.GtkHeaderBar // out
 	var _arg1 *C.GtkWidget    // out
 

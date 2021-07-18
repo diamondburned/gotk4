@@ -3,9 +3,12 @@
 package gdkpixbuf
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -22,7 +25,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuffer},
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbufer},
 	})
 }
 
@@ -175,7 +178,7 @@ func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	}
 }
 
-func marshalPixbuffer(p uintptr) (interface{}, error) {
+func marshalPixbufer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPixbuf(obj), nil
@@ -462,14 +465,18 @@ func NewPixbufFromResourceAtScale(resourcePath string, width int, height int, pr
 // Other possible errors are in the GDK_PIXBUF_ERROR and G_IO_ERROR domains.
 //
 // The stream is not closed.
-func NewPixbufFromStream(stream gio.InputStreamer, cancellable *gio.Cancellable) (*Pixbuf, error) {
-	var _arg1 *C.GInputStream // out
+func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf, error) {
 	var _arg2 *C.GCancellable // out
+	var _arg1 *C.GInputStream // out
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -503,22 +510,26 @@ func NewPixbufFromStream(stream gio.InputStreamer, cancellable *gio.Cancellable)
 // the image at all in that dimension.
 //
 // The stream is not closed.
-func NewPixbufFromStreamAtScale(stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, cancellable *gio.Cancellable) (*Pixbuf, error) {
+func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width int, height int, preserveAspectRatio bool) (*Pixbuf, error) {
+	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gint          // out
 	var _arg3 C.gint          // out
 	var _arg4 C.gboolean      // out
-	var _arg5 *C.GCancellable // out
 	var _cret *C.GdkPixbuf    // in
 	var _cerr *C.GError       // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = C.gint(width)
 	_arg3 = C.gint(height)
 	if preserveAspectRatio {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_new_from_stream_at_scale(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -1270,16 +1281,21 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 // Supported file formats are currently "jpeg", "tiff", "png", "ico" or "bmp".
 //
 // See gdkpixbuf.Pixbuf.SaveToStream() for more details.
-func (pixbuf *Pixbuf) SaveToStreamv(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable *gio.Cancellable) error {
+func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf     // out
+	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.char          // out
 	var _arg3 **C.char
 	var _arg4 **C.char
-	var _arg5 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typ)))
 	{
@@ -1304,7 +1320,6 @@ func (pixbuf *Pixbuf) SaveToStreamv(stream gio.OutputStreamer, typ string, optio
 			}
 		}
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.gdk_pixbuf_save_to_streamv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -1324,17 +1339,22 @@ func (pixbuf *Pixbuf) SaveToStreamv(stream gio.OutputStreamer, typ string, optio
 //
 // You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the
 // operation.
-func (pixbuf *Pixbuf) SaveToStreamvAsync(stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys []string, optionValues []string, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkPixbuf     // out
+	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.gchar         // out
 	var _arg3 **C.gchar
 	var _arg4 **C.gchar
-	var _arg5 *C.GCancellable       // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
 	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
 	{
@@ -1359,7 +1379,6 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(stream gio.OutputStreamer, typ string, 
 			}
 		}
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 

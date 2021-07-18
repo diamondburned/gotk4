@@ -132,11 +132,11 @@ type Gesturer interface {
 	BoundingBoxCenter() (x float64, y float64, ok bool)
 	// Device returns the logical GdkDevice that is currently operating on
 	// gesture.
-	Device() *gdk.Device
+	Device() gdk.Devicer
 	// GetGroup returns all gestures in the group of gesture
 	GetGroup() *externglib.List
 	// LastEvent returns the last event that was processed for sequence.
-	LastEvent(sequence *gdk.EventSequence) *gdk.Event
+	LastEvent(sequence *gdk.EventSequence) gdk.Eventer
 	// LastUpdatedSequence returns the GdkEventSequence that was last updated on
 	// gesture.
 	LastUpdatedSequence() *gdk.EventSequence
@@ -246,7 +246,7 @@ func (gesture *Gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 // Device returns the logical GdkDevice that is currently operating on gesture.
 //
 // This returns NULL if the gesture is not being interacted.
-func (gesture *Gesture) Device() *gdk.Device {
+func (gesture *Gesture) Device() gdk.Devicer {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkDevice  // in
 
@@ -254,14 +254,9 @@ func (gesture *Gesture) Device() *gdk.Device {
 
 	_cret = C.gtk_gesture_get_device(_arg0)
 
-	var _device *gdk.Device // out
+	var _device gdk.Devicer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_device = &gdk.Device{
-			Object: obj,
-		}
-	}
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 
 	return _device
 }
@@ -280,11 +275,11 @@ func (gesture *Gesture) GetGroup() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkGesture)(_p)
-		var dst Gesture // out
-		dst = *wrapGesture(externglib.Take(unsafe.Pointer(src)))
+		var dst Gesturer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -293,7 +288,7 @@ func (gesture *Gesture) GetGroup() *externglib.List {
 //
 // Note that the returned pointer is only valid as long as the sequence is still
 // interpreted by the gesture. If in doubt, you should make a copy of the event.
-func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) *gdk.Event {
+func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 	var _arg0 *C.GtkGesture       // out
 	var _arg1 *C.GdkEventSequence // out
 	var _cret *C.GdkEvent         // in
@@ -303,14 +298,9 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) *gdk.Event {
 
 	_cret = C.gtk_gesture_get_last_event(_arg0, _arg1)
 
-	var _event *gdk.Event // out
+	var _event gdk.Eventer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_event = &gdk.Event{
-			Object: obj,
-		}
-	}
+	_event = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
 
 	return _event
 }
@@ -402,7 +392,7 @@ func (gesture *Gesture) Sequences() *externglib.List {
 		})
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

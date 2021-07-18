@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 	"unsafe"
 
@@ -91,7 +90,7 @@ func (s SeatCapabilities) String() string {
 // SeatGrabPrepareFunc: type of the callback used to set up window so it can be
 // grabbed. A typical action would be ensuring the window is visible, although
 // there's room for other initialization actions.
-type SeatGrabPrepareFunc func(seat *Seat, window *Window)
+type SeatGrabPrepareFunc func(seat Seater, window Windower)
 
 //export _gotk4_gdk3_SeatGrabPrepareFunc
 func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
@@ -100,11 +99,11 @@ func _gotk4_gdk3_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.
 		panic(`callback not found`)
 	}
 
-	var seat *Seat     // out
-	var window *Window // out
+	var seat Seater     // out
+	var window Windower // out
 
-	seat = wrapSeat(externglib.Take(unsafe.Pointer(arg0)))
-	window = wrapWindow(externglib.Take(unsafe.Pointer(arg1)))
+	seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Seater)
+	window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Windower)
 
 	fn := v.(SeatGrabPrepareFunc)
 	fn(seat, window)
@@ -124,9 +123,9 @@ type Seater interface {
 	// Display returns the Display this seat belongs to.
 	Display() *Display
 	// Keyboard returns the master device that routes keyboard events.
-	Keyboard() *Device
+	Keyboard() Devicer
 	// Pointer returns the master device that routes pointer events.
-	Pointer() *Device
+	Pointer() Devicer
 	// Slaves returns the slave devices that match the given capabilities.
 	Slaves(capabilities SeatCapabilities) *externglib.List
 	// Ungrab releases a grab added through gdk_seat_grab().
@@ -180,7 +179,7 @@ func (seat *Seat) Display() *Display {
 }
 
 // Keyboard returns the master device that routes keyboard events.
-func (seat *Seat) Keyboard() *Device {
+func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -188,15 +187,15 @@ func (seat *Seat) Keyboard() *Device {
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
 
 // Pointer returns the master device that routes pointer events.
-func (seat *Seat) Pointer() *Device {
+func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -204,9 +203,9 @@ func (seat *Seat) Pointer() *Device {
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -227,11 +226,11 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
-		var dst Device // out
-		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		var dst Devicer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

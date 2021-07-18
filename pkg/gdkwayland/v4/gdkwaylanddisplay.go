@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayyer},
+		{T: externglib.Type(C.gdk_wayland_display_get_type()), F: marshalWaylandDisplayer},
 	})
 }
 
@@ -45,7 +45,7 @@ func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
 	}
 }
 
-func marshalWaylandDisplayyer(p uintptr) (interface{}, error) {
+func marshalWaylandDisplayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandDisplay(obj), nil

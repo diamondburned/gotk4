@@ -3,9 +3,12 @@
 package gdkpixbuf
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -178,14 +181,18 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 // Other possible errors are in the GDK_PIXBUF_ERROR and G_IO_ERROR domains.
 //
 // The stream is not closed.
-func NewPixbufAnimationFromStream(stream gio.InputStreamer, cancellable *gio.Cancellable) (*PixbufAnimation, error) {
-	var _arg1 *C.GInputStream       // out
+func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GInputStream       // out
 	var _cret *C.GdkPixbufAnimation // in
 	var _cerr *C.GError             // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
 
@@ -345,7 +352,7 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	return _ok
 }
 
-// PixbufAnimationNewFromStreamAsync creates a new animation by asynchronously
+// NewPixbufAnimationFromStreamAsync creates a new animation by asynchronously
 // loading an image from an input stream.
 //
 // For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
@@ -354,14 +361,18 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
 // result of the operation.
-func PixbufAnimationNewFromStreamAsync(stream gio.InputStreamer, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg1 *C.GInputStream       // out
+func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GInputStream       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 

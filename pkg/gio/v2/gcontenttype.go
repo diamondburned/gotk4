@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -123,7 +122,7 @@ func ContentTypeGetGenericIconName(typ string) string {
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(typ string) *Icon {
+func ContentTypeGetIcon(typ string) Iconer {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -131,9 +130,9 @@ func ContentTypeGetIcon(typ string) *Icon {
 
 	_cret = C.g_content_type_get_icon(_arg1)
 
-	var _icon *Icon // out
+	var _icon Iconer // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
 
 	return _icon
 }
@@ -184,7 +183,7 @@ func ContentTypeGetMIMEType(typ string) string {
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(typ string) *Icon {
+func ContentTypeGetSymbolicIcon(typ string) Iconer {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
 
@@ -192,9 +191,9 @@ func ContentTypeGetSymbolicIcon(typ string) *Icon {
 
 	_cret = C.g_content_type_get_symbolic_icon(_arg1)
 
-	var _icon *Icon // out
+	var _icon Iconer // out
 
-	_icon = wrapIcon(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Iconer)
 
 	return _icon
 }
@@ -380,11 +379,8 @@ func ContentTypesGetRegistered() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.free(v.(unsafe.Pointer))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _list

@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -40,11 +39,8 @@ func IOModulesLoadAllInDirectory(dirname string) *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.free(v.(unsafe.Pointer))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.free(unsafe.Pointer(v))
 	})
 
 	return _list

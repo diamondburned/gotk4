@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPlugger},
+		{T: externglib.Type(C.gtk_plug_get_type()), F: marshalPluger},
 	})
 }
 
@@ -77,7 +77,7 @@ func wrapPlug(obj *externglib.Object) *Plug {
 	}
 }
 
-func marshalPlugger(p uintptr) (interface{}, error) {
+func marshalPluger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlug(obj), nil
@@ -102,7 +102,7 @@ func (plug *Plug) Embedded() bool {
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
-func (plug *Plug) SocketWindow() *gdk.Window {
+func (plug *Plug) SocketWindow() gdk.Windower {
 	var _arg0 *C.GtkPlug   // out
 	var _cret *C.GdkWindow // in
 
@@ -110,14 +110,9 @@ func (plug *Plug) SocketWindow() *gdk.Window {
 
 	_cret = C.gtk_plug_get_socket_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }

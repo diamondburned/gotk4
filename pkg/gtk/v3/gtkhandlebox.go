@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBoxxer},
+		{T: externglib.Type(C.gtk_handle_box_get_type()), F: marshalHandleBoxer},
 	})
 }
 
@@ -29,8 +29,8 @@ func init() {
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type HandleBoxOverrider interface {
-	ChildAttached(child Widgetter)
-	ChildDetached(child Widgetter)
+	ChildAttached(child Widgeter)
+	ChildDetached(child Widgeter)
 }
 
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin
@@ -81,7 +81,7 @@ func wrapHandleBox(obj *externglib.Object) *HandleBox {
 	}
 }
 
-func marshalHandleBoxxer(p uintptr) (interface{}, error) {
+func marshalHandleBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHandleBox(obj), nil

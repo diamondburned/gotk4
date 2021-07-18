@@ -110,7 +110,7 @@ func (node *BlendNode) BlendMode() BlendMode {
 }
 
 // BottomChild retrieves the bottom GskRenderNode child of the node.
-func (node *BlendNode) BottomChild() *RenderNode {
+func (node *BlendNode) BottomChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -118,15 +118,15 @@ func (node *BlendNode) BottomChild() *RenderNode {
 
 	_cret = C.gsk_blend_node_get_bottom_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
 
 // TopChild retrieves the top GskRenderNode child of the node.
-func (node *BlendNode) TopChild() *RenderNode {
+func (node *BlendNode) TopChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -134,9 +134,9 @@ func (node *BlendNode) TopChild() *RenderNode {
 
 	_cret = C.gsk_blend_node_get_top_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -181,7 +181,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 }
 
 // Child retrieves the child GskRenderNode of the blur node.
-func (node *BlurNode) Child() *RenderNode {
+func (node *BlurNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -189,9 +189,9 @@ func (node *BlurNode) Child() *RenderNode {
 
 	_cret = C.gsk_blur_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -428,7 +428,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 }
 
 // Child gets the child node that is getting clipped by the given node.
-func (node *ClipNode) Child() *RenderNode {
+func (node *ClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -436,9 +436,9 @@ func (node *ClipNode) Child() *RenderNode {
 
 	_cret = C.gsk_clip_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -510,7 +510,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 
 // Child gets the child node that is getting its colors modified by the given
 // node.
-func (node *ColorMatrixNode) Child() *RenderNode {
+func (node *ColorMatrixNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -518,9 +518,9 @@ func (node *ColorMatrixNode) Child() *RenderNode {
 
 	_cret = C.gsk_color_matrix_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -783,7 +783,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 }
 
 // Child gets one of the children of container.
-func (node *ContainerNode) Child(idx uint) *RenderNode {
+func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -793,9 +793,9 @@ func (node *ContainerNode) Child(idx uint) *RenderNode {
 
 	_cret = C.gsk_container_node_get_child(_arg0, _arg1)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -859,7 +859,7 @@ func NewCrossFadeNode(start RenderNoder, end RenderNoder, progress float32) *Cro
 }
 
 // EndChild retrieves the child GskRenderNode at the end of the cross-fade.
-func (node *CrossFadeNode) EndChild() *RenderNode {
+func (node *CrossFadeNode) EndChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -867,9 +867,9 @@ func (node *CrossFadeNode) EndChild() *RenderNode {
 
 	_cret = C.gsk_cross_fade_node_get_end_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -892,7 +892,7 @@ func (node *CrossFadeNode) Progress() float32 {
 
 // StartChild retrieves the child GskRenderNode at the beginning of the
 // cross-fade.
-func (node *CrossFadeNode) StartChild() *RenderNode {
+func (node *CrossFadeNode) StartChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -900,9 +900,9 @@ func (node *CrossFadeNode) StartChild() *RenderNode {
 
 	_cret = C.gsk_cross_fade_node_get_start_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -952,7 +952,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 }
 
 // Child gets the child node that is getting drawn by the given node.
-func (node *DebugNode) Child() *RenderNode {
+func (node *DebugNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -960,9 +960,9 @@ func (node *DebugNode) Child() *RenderNode {
 
 	_cret = C.gsk_debug_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1005,7 +1005,7 @@ func marshalGLShaderNoder(p uintptr) (interface{}, error) {
 }
 
 // Child gets one of the children.
-func (node *GLShaderNode) Child(idx uint) *RenderNode {
+func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
 	var _cret *C.GskRenderNode // in
@@ -1015,9 +1015,9 @@ func (node *GLShaderNode) Child(idx uint) *RenderNode {
 
 	_cret = C.gsk_gl_shader_node_get_child(_arg0, _arg1)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1336,7 +1336,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 }
 
 // Child gets the child node that is getting opacityed by the given node.
-func (node *OpacityNode) Child() *RenderNode {
+func (node *OpacityNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1344,9 +1344,9 @@ func (node *OpacityNode) Child() *RenderNode {
 
 	_cret = C.gsk_opacity_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1707,7 +1707,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 }
 
 // Child retrieves the child of node.
-func (node *RepeatNode) Child() *RenderNode {
+func (node *RepeatNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1715,9 +1715,9 @@ func (node *RepeatNode) Child() *RenderNode {
 
 	_cret = C.gsk_repeat_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1891,7 +1891,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 }
 
 // Child gets the child node that is getting clipped by the given node.
-func (node *RoundedClipNode) Child() *RenderNode {
+func (node *RoundedClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1899,9 +1899,9 @@ func (node *RoundedClipNode) Child() *RenderNode {
 
 	_cret = C.gsk_rounded_clip_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -1968,7 +1968,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 }
 
 // Child retrieves the child GskRenderNode of the shadow node.
-func (node *ShadowNode) Child() *RenderNode {
+func (node *ShadowNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -1976,9 +1976,9 @@ func (node *ShadowNode) Child() *RenderNode {
 
 	_cret = C.gsk_shadow_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }
@@ -2079,7 +2079,7 @@ func (node *TextNode) Color() *gdk.RGBA {
 }
 
 // Font returns the font used by the text node.
-func (node *TextNode) Font() *pango.Font {
+func (node *TextNode) Font() pango.Fonter {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.PangoFont     // in
 
@@ -2087,14 +2087,9 @@ func (node *TextNode) Font() *pango.Font {
 
 	_cret = C.gsk_text_node_get_font(_arg0)
 
-	var _font *pango.Font // out
+	var _font pango.Fonter // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_font = &pango.Font{
-			Object: obj,
-		}
-	}
+	_font = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.Fonter)
 
 	return _font
 }
@@ -2190,7 +2185,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 }
 
 // Texture retrieves the GdkTexture used when creating this GskRenderNode.
-func (node *TextureNode) Texture() *gdk.Texture {
+func (node *TextureNode) Texture() gdk.Texturer {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkTexture    // in
 
@@ -2198,17 +2193,9 @@ func (node *TextureNode) Texture() *gdk.Texture {
 
 	_cret = C.gsk_texture_node_get_texture(_arg0)
 
-	var _texture *gdk.Texture // out
+	var _texture gdk.Texturer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_texture = &gdk.Texture{
-			Object: obj,
-			Paintable: gdk.Paintable{
-				Object: obj,
-			},
-		}
-	}
+	_texture = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Texturer)
 
 	return _texture
 }
@@ -2254,7 +2241,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 }
 
 // Child gets the child node that is getting transformed by the given node.
-func (node *TransformNode) Child() *RenderNode {
+func (node *TransformNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -2262,9 +2249,9 @@ func (node *TransformNode) Child() *RenderNode {
 
 	_cret = C.gsk_transform_node_get_child(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.Take(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }

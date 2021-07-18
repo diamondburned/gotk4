@@ -90,7 +90,7 @@ func (v *ConverterOutputStream) Native() uintptr {
 }
 
 // Converter gets the #GConverter that is used by converter_stream.
-func (converterStream *ConverterOutputStream) Converter() *Converter {
+func (converterStream *ConverterOutputStream) Converter() Converterer {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
 
@@ -98,9 +98,9 @@ func (converterStream *ConverterOutputStream) Converter() *Converter {
 
 	_cret = C.g_converter_output_stream_get_converter(_arg0)
 
-	var _converter *Converter // out
+	var _converter Converterer // out
 
-	_converter = wrapConverter(externglib.Take(unsafe.Pointer(_cret)))
+	_converter = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Converterer)
 
 	return _converter
 }

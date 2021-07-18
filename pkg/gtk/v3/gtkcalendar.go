@@ -26,7 +26,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_calendar_display_options_get_type()), F: marshalCalendarDisplayOptions},
-		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarrer},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendarer},
 	})
 }
 
@@ -176,7 +176,7 @@ func wrapCalendar(obj *externglib.Object) *Calendar {
 	}
 }
 
-func marshalCalendarrer(p uintptr) (interface{}, error) {
+func marshalCalendarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCalendar(obj), nil

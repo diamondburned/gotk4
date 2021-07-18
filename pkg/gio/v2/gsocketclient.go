@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -131,16 +134,20 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 //
 // If a local address is specified with g_socket_client_set_local_address() the
 // socket will be bound to this address before connecting.
-func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler, cancellable *Cancellable) (*SocketConnection, error) {
+func (client *SocketClient) ConnectSocketClienter(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
 	var _cret *C.GSocketConnection  // in
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
 
@@ -165,16 +172,20 @@ func (client *SocketClient) ConnectSocketClienter(connectable SocketConnectabler
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_finish() to get the result of the operation.
-func (client *SocketClient) ConnectAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
-	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -232,18 +243,22 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) NULL is returned and error (if non-NULL) is set accordingly.
-func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort string, defaultPort uint16) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
-	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -261,18 +276,22 @@ func (client *SocketClient) ConnectToHost(hostAndPort string, defaultPort uint16
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_to_host_finish() to get the result of the operation.
-func (client *SocketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -314,18 +333,22 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) NULL is returned and error (if non-NULL) is set accordingly.
-func (client *SocketClient) ConnectToService(domain string, service string, cancellable *Cancellable) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToService(ctx context.Context, domain string, service string) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
-	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -340,18 +363,22 @@ func (client *SocketClient) ConnectToService(domain string, service string, canc
 
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
-func (client *SocketClient) ConnectToServiceAsync(domain string, service string, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain string, service string, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -399,18 +426,22 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 //
 // In the event of any failure (DNS error, service not found, no hosts
 // connectable) NULL is returned and error (if non-NULL) is set accordingly.
-func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancellable *Cancellable) (*SocketConnection, error) {
+func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaultPort uint16) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.guint16            // out
-	var _arg3 *C.GCancellable      // out
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -428,18 +459,22 @@ func (client *SocketClient) ConnectToURI(uri string, defaultPort uint16, cancell
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_client_connect_to_uri_finish() to get the result of the operation.
-func (client *SocketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(client.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = C.guint16(defaultPort)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -508,7 +543,7 @@ func (client *SocketClient) Family() SocketFamily {
 // LocalAddress gets the local address of the socket client.
 //
 // See g_socket_client_set_local_address() for details.
-func (client *SocketClient) LocalAddress() *SocketAddress {
+func (client *SocketClient) LocalAddress() SocketAddresser {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GSocketAddress // in
 
@@ -516,9 +551,9 @@ func (client *SocketClient) LocalAddress() *SocketAddress {
 
 	_cret = C.g_socket_client_get_local_address(_arg0)
 
-	var _socketAddress *SocketAddress // out
+	var _socketAddress SocketAddresser // out
 
-	_socketAddress = wrapSocketAddress(externglib.Take(unsafe.Pointer(_cret)))
+	_socketAddress = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketAddresser)
 
 	return _socketAddress
 }
@@ -544,7 +579,7 @@ func (client *SocketClient) Protocol() SocketProtocol {
 // ProxyResolver gets the Resolver being used by client. Normally, this will be
 // the resolver returned by g_proxy_resolver_get_default(), but you can override
 // it with g_socket_client_set_proxy_resolver().
-func (client *SocketClient) ProxyResolver() *ProxyResolver {
+func (client *SocketClient) ProxyResolver() ProxyResolverer {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
 
@@ -552,9 +587,9 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 
 	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 
-	var _proxyResolver *ProxyResolver // out
+	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
+	_proxyResolver = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
 
 	return _proxyResolver
 }

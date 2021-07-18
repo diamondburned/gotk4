@@ -68,7 +68,7 @@ func (*TLSFileDatabase) privateTLSFileDatabase() {}
 // authorities in anchors to verify certificate chains.
 //
 // The certificates in anchors must be PEM encoded.
-func TlsFileDatabaseNew(anchors string) (*TLSFileDatabase, error) {
+func NewTlsFileDatabase(anchors string) (TLSFileDatabaser, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in
 	var _cerr *C.GError       // in
@@ -77,10 +77,10 @@ func TlsFileDatabaseNew(anchors string) (*TLSFileDatabase, error) {
 
 	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
 
-	var _tlsFileDatabase *TLSFileDatabase // out
+	var _tlsFileDatabase TLSFileDatabaser // out
 	var _goerr error                      // out
 
-	_tlsFileDatabase = wrapTLSFileDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsFileDatabase = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSFileDatabaser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsFileDatabase, _goerr

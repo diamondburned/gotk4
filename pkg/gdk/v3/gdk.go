@@ -167,7 +167,7 @@ func (context *DragContext) Actions() DragAction {
 }
 
 // DestWindow returns the destination window for the DND operation.
-func (context *DragContext) DestWindow() *Window {
+func (context *DragContext) DestWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -175,15 +175,15 @@ func (context *DragContext) DestWindow() *Window {
 
 	_cret = C.gdk_drag_context_get_dest_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
 
 // Device returns the Device associated to the drag context.
-func (context *DragContext) Device() *Device {
+func (context *DragContext) Device() Devicer {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkDevice      // in
 
@@ -191,9 +191,9 @@ func (context *DragContext) Device() *Device {
 
 	_cret = C.gdk_drag_context_get_device(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -203,7 +203,7 @@ func (context *DragContext) Device() *Device {
 // the drag operation has begun. GDK will move the window in accordance with the
 // ongoing drag operation. The window is owned by context and will be destroyed
 // when the drag operation is over.
-func (context *DragContext) DragWindow() *Window {
+func (context *DragContext) DragWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -211,9 +211,9 @@ func (context *DragContext) DragWindow() *Window {
 
 	_cret = C.gdk_drag_context_get_drag_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -251,7 +251,7 @@ func (context *DragContext) SelectedAction() DragAction {
 }
 
 // SourceWindow returns the Window where the DND operation started.
-func (context *DragContext) SourceWindow() *Window {
+func (context *DragContext) SourceWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
 	var _cret *C.GdkWindow      // in
 
@@ -259,9 +259,9 @@ func (context *DragContext) SourceWindow() *Window {
 
 	_cret = C.gdk_drag_context_get_source_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -318,7 +318,7 @@ func (context *DragContext) ListTargets() *externglib.List {
 // - The DragContext::cancel signal if the drag and drop operation is finished
 // but doesn't happen over an accepting destination, or is cancelled through
 // other means.
-func (context *DragContext) ManageDnd(ipcWindow Windowwer, actions DragAction) bool {
+func (context *DragContext) ManageDnd(ipcWindow Windower, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragAction   // out

@@ -48,7 +48,7 @@ var _ gextras.Nativer = (*AppChooser)(nil)
 // AppChooserer describes AppChooser's abstract methods.
 type AppChooserer interface {
 	// AppInfo returns the currently selected application.
-	AppInfo() *gio.AppInfo
+	AppInfo() gio.AppInfor
 	// ContentType returns the content type for which the GtkAppChooser shows
 	// applications.
 	ContentType() string
@@ -84,7 +84,7 @@ func marshalAppChooserer(p uintptr) (interface{}, error) {
 }
 
 // AppInfo returns the currently selected application.
-func (self *AppChooser) AppInfo() *gio.AppInfo {
+func (self *AppChooser) AppInfo() gio.AppInfor {
 	var _arg0 *C.GtkAppChooser // out
 	var _cret *C.GAppInfo      // in
 
@@ -92,14 +92,9 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 
 	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 
-	var _appInfo *gio.AppInfo // out
+	var _appInfo gio.AppInfor // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_appInfo = &gio.AppInfo{
-			Object: obj,
-		}
-	}
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
 
 	return _appInfo
 }

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -20,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorrer},
+		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchorer},
 	})
 }
 
@@ -39,7 +38,7 @@ func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
 	}
 }
 
-func marshalTextChildAnchorrer(p uintptr) (interface{}, error) {
+func marshalTextChildAnchorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTextChildAnchor(obj), nil
@@ -98,11 +97,11 @@ func (anchor *TextChildAnchor) Widgets() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widget // out
-		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		var dst Widgeter // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

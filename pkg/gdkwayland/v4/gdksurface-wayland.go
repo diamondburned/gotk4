@@ -21,9 +21,9 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_wayland_popup_get_type()), F: marshalWaylandPopupper},
+		{T: externglib.Type(C.gdk_wayland_popup_get_type()), F: marshalWaylandPopuper},
 		{T: externglib.Type(C.gdk_wayland_surface_get_type()), F: marshalWaylandSurfacer},
-		{T: externglib.Type(C.gdk_wayland_toplevel_get_type()), F: marshalWaylandTopleveller},
+		{T: externglib.Type(C.gdk_wayland_toplevel_get_type()), F: marshalWaylandTopleveler},
 	})
 }
 
@@ -51,7 +51,7 @@ func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
 	}
 }
 
-func marshalWaylandPopupper(p uintptr) (interface{}, error) {
+func marshalWaylandPopuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandPopup(obj), nil
@@ -120,7 +120,7 @@ func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
 	}
 }
 
-func marshalWaylandTopleveller(p uintptr) (interface{}, error) {
+func marshalWaylandTopleveler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWaylandToplevel(obj), nil

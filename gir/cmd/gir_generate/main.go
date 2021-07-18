@@ -44,8 +44,9 @@ func main() {
 
 	gen := girgen.NewGenerator(repos, genutil.ModulePath(module, gendata.ImportOverrides))
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
-	gen.AddFilters(gendata.Filters)
 	gen.ApplyPreprocessors(gendata.Preprocessors)
+	gen.AddFilters(gendata.Filters)
+	gen.AddProcessConverters(gendata.ConversionProcessors)
 
 	if verbose {
 		gen.LogLevel = logger.Debug

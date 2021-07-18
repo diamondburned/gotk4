@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -35,17 +37,17 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorrer},
-		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconner},
+		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitorer},
+		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIconer},
 		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGrouper},
 		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserverer},
 		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnectioner},
-		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeller},
+		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModeler},
 		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessager},
 		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocationer},
 		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServerer},
 		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenuer},
-		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemmer},
+		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItemer},
 		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotificationer},
 		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyActioner},
 		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleActioner},
@@ -53,7 +55,7 @@ func init() {
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermissioner},
 		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocesser},
 		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncherer},
-		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBusser},
+		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBuser},
 	})
 }
 
@@ -84,7 +86,7 @@ func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	}
 }
 
-func marshalAppInfoMonitorrer(p uintptr) (interface{}, error) {
+func marshalAppInfoMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppInfoMonitor(obj), nil
@@ -113,7 +115,7 @@ func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	}
 }
 
-func marshalBytesIconner(p uintptr) (interface{}, error) {
+func marshalBytesIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBytesIcon(obj), nil
@@ -392,18 +394,22 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 // g_dbus_connection_new_for_address() for the asynchronous version.
 //
 // If observer is not NULL it may be used to control the authentication process.
-func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable) (*DBusConnection, error) {
+func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
+	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
 	var _arg2 C.GDBusConnectionFlags // out
 	var _arg3 *C.GDBusAuthObserver   // out
-	var _arg4 *C.GCancellable        // out
 	var _cret *C.GDBusConnection     // in
 	var _cerr *C.GError              // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	_arg2 = C.GDBusConnectionFlags(flags)
 	_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_new_for_address_sync(_arg1, _arg2, _arg3, _arg4, &_cerr)
 
@@ -430,20 +436,24 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 //
 // This is a synchronous failable constructor. See g_dbus_connection_new() for
 // the asynchronous version.
-func NewDBusConnectionSync(stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable) (*DBusConnection, error) {
+func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
+	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
 	var _arg2 *C.gchar               // out
 	var _arg3 C.GDBusConnectionFlags // out
 	var _arg4 *C.GDBusAuthObserver   // out
-	var _arg5 *C.GCancellable        // out
 	var _cret *C.GDBusConnection     // in
 	var _cerr *C.GError              // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GIOStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	_arg3 = C.GDBusConnectionFlags(flags)
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -543,8 +553,9 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
 // G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-func (connection *DBusConnection) Call(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Call(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
+	var _arg9 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
 	var _arg3 *C.gchar               // out
@@ -553,11 +564,15 @@ func (connection *DBusConnection) Call(busName string, objectPath string, interf
 	var _arg6 *C.GVariantType        // out
 	var _arg7 C.GDBusCallFlags       // out
 	var _arg8 C.gint                 // out
-	var _arg9 *C.GCancellable        // out
 	var _arg10 C.GAsyncReadyCallback // out
 	var _arg11 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -566,7 +581,6 @@ func (connection *DBusConnection) Call(busName string, objectPath string, interf
 	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
-	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg10 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg11 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -629,8 +643,9 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
-func (connection *DBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable *Cancellable) (*glib.Variant, error) {
+func (connection *DBusConnection) CallSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
+	var _arg9 *C.GCancellable    // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out
@@ -639,11 +654,15 @@ func (connection *DBusConnection) CallSync(busName string, objectPath string, in
 	var _arg6 *C.GVariantType    // out
 	var _arg7 C.GDBusCallFlags   // out
 	var _arg8 C.gint             // out
-	var _arg9 *C.GCancellable    // out
 	var _cret *C.GVariant        // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -652,7 +671,6 @@ func (connection *DBusConnection) CallSync(busName string, objectPath string, in
 	_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
-	_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_call_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_cerr)
 
@@ -685,8 +703,9 @@ func (connection *DBusConnection) CallSync(busName string, objectPath string, in
 // G_VARIANT_TYPE_HANDLE in the body of the message.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *DBusConnection) CallWithUnixFdList(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
+	var _arg10 *C.GCancellable       // out
 	var _arg1 *C.gchar               // out
 	var _arg2 *C.gchar               // out
 	var _arg3 *C.gchar               // out
@@ -696,11 +715,15 @@ func (connection *DBusConnection) CallWithUnixFdList(busName string, objectPath 
 	var _arg7 C.GDBusCallFlags       // out
 	var _arg8 C.gint                 // out
 	var _arg9 *C.GUnixFDList         // out
-	var _arg10 *C.GCancellable       // out
 	var _arg11 C.GAsyncReadyCallback // out
 	var _arg12 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg10 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -710,7 +733,6 @@ func (connection *DBusConnection) CallWithUnixFdList(busName string, objectPath 
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	_arg10 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg11 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg12 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -761,8 +783,9 @@ func (connection *DBusConnection) CallWithUnixFdListFinish(res AsyncResulter) (*
 // g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
-func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList, cancellable *Cancellable) (*UnixFDList, *glib.Variant, error) {
+func (connection *DBusConnection) CallWithUnixFdListSync(ctx context.Context, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList *UnixFDList) (*UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
+	var _arg11 *C.GCancellable   // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
 	var _arg3 *C.gchar           // out
@@ -773,11 +796,15 @@ func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectP
 	var _arg8 C.gint             // out
 	var _arg9 *C.GUnixFDList     // out
 	var _arg10 *C.GUnixFDList    // in
-	var _arg11 *C.GCancellable   // out
 	var _cret *C.GVariant        // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
 	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
@@ -787,7 +814,6 @@ func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectP
 	_arg7 = C.GDBusCallFlags(flags)
 	_arg8 = C.gint(timeoutMsec)
 	_arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-	_arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_call_with_unix_fd_list_sync(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, &_arg10, _arg11, &_cerr)
 
@@ -827,14 +853,18 @@ func (connection *DBusConnection) CallWithUnixFdListSync(busName string, objectP
 // this method from. You can then call g_dbus_connection_close_finish() to get
 // the result of the operation. See g_dbus_connection_close_sync() for the
 // synchronous version.
-func (connection *DBusConnection) Close(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -862,13 +892,17 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 // CloseSync: synchronously closes connection. The calling thread is blocked
 // until this is done. See g_dbus_connection_close() for the asynchronous
 // version of this method and more details about what it does.
-func (connection *DBusConnection) CloseSync(cancellable *Cancellable) error {
+func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_dbus_connection_close_sync(_arg0, _arg1, &_cerr)
 
@@ -964,7 +998,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // You can unexport the menu model using g_dbus_connection_unexport_menu_model()
 // with the return value of this function.
-func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
+func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeler) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GMenuModel      // out
@@ -999,14 +1033,18 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 // this method from. You can then call g_dbus_connection_flush_finish() to get
 // the result of the operation. See g_dbus_connection_flush_sync() for the
 // synchronous version.
-func (connection *DBusConnection) Flush(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -1034,13 +1072,17 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 // FlushSync: synchronously flushes connection. The calling thread is blocked
 // until this is done. See g_dbus_connection_flush() for the asynchronous
 // version of this method and more details about what it does.
-func (connection *DBusConnection) FlushSync(cancellable *Cancellable) error {
+func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_dbus_connection_flush_sync(_arg0, _arg1, &_cerr)
 
@@ -1166,7 +1208,7 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 //
 // While the BusConnection is active, it will interact with this stream from a
 // worker thread, so it is not safe to interact with the stream directly.
-func (connection *DBusConnection) Stream() *IOStream {
+func (connection *DBusConnection) Stream() IOStreamer {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GIOStream       // in
 
@@ -1174,9 +1216,9 @@ func (connection *DBusConnection) Stream() *IOStream {
 
 	_cret = C.g_dbus_connection_get_stream(_arg0)
 
-	var _ioStream *IOStream // out
+	var _ioStream IOStreamer // out
 
-	_ioStream = wrapIOStream(externglib.Take(unsafe.Pointer(_cret)))
+	_ioStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }
@@ -1306,21 +1348,25 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (connection *DBusConnection) SendMessageWithReply(message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable *Cancellable, callback AsyncReadyCallback) uint32 {
+func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
+	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
 	var _arg3 C.gint                  // out
 	var _arg4 C.guint32               // in
-	var _arg5 *C.GCancellable         // out
 	var _arg6 C.GAsyncReadyCallback   // out
 	var _arg7 C.gpointer
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 	_arg2 = C.GDBusSendMessageFlags(flags)
 	_arg3 = C.gint(timeoutMsec)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -1392,21 +1438,25 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //
 // Note that message must be unlocked, unless flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (connection *DBusConnection) SendMessageWithReplySync(message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable *Cancellable) (uint32, *DBusMessage, error) {
+func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
+	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
 	var _arg2 C.GDBusSendMessageFlags // out
 	var _arg3 C.gint                  // out
 	var _arg4 C.guint32               // in
-	var _arg5 *C.GCancellable         // out
 	var _cret *C.GDBusMessage         // in
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 	_arg2 = C.GDBusSendMessageFlags(flags)
 	_arg3 = C.gint(timeoutMsec)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_connection_send_message_with_reply_sync(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, &_cerr)
 
@@ -1640,7 +1690,7 @@ func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	}
 }
 
-func marshalDBusMenuModeller(p uintptr) (interface{}, error) {
+func marshalDBusMenuModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusMenuModel(obj), nil
@@ -2798,20 +2848,24 @@ func marshalDBusServerer(p uintptr) (interface{}, error) {
 //
 // This is a synchronous failable constructor. There is currently no
 // asynchronous version.
-func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver, cancellable *Cancellable) (*DBusServer, error) {
+func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver) (*DBusServer, error) {
+	var _arg5 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.GDBusServerFlags   // out
 	var _arg3 *C.gchar             // out
 	var _arg4 *C.GDBusAuthObserver // out
-	var _arg5 *C.GCancellable      // out
 	var _cret *C.GDBusServer       // in
 	var _cerr *C.GError            // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
 	_arg2 = C.GDBusServerFlags(flags)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
 	_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_server_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -2983,7 +3037,7 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 // AppendSection: convenience function for appending a section menu item to the
 // end of menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSection(label string, section MenuModeller) {
+func (menu *Menu) AppendSection(label string, section MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -2998,7 +3052,7 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 // AppendSubmenu: convenience function for appending a submenu menu item to the
 // end of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
 // more flexible alternative.
-func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
+func (menu *Menu) AppendSubmenu(label string, submenu MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3073,7 +3127,7 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 // InsertSection: convenience function for inserting a section menu item into
 // menu. Combine g_menu_item_new_section() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
+func (menu *Menu) InsertSection(position int, label string, section MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3090,7 +3144,7 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 // InsertSubmenu: convenience function for inserting a submenu menu item into
 // menu. Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
 // flexible alternative.
-func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
+func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -3135,7 +3189,7 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 // PrependSection: convenience function for prepending a section menu item to
 // the start of menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSection(label string, section MenuModeller) {
+func (menu *Menu) PrependSection(label string, section MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3150,7 +3204,7 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 // PrependSubmenu: convenience function for prepending a submenu menu item to
 // the start of menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 // for a more flexible alternative.
-func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
+func (menu *Menu) PrependSubmenu(label string, submenu MenuModeler) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3205,7 +3259,7 @@ func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	}
 }
 
-func marshalMenuItemmer(p uintptr) (interface{}, error) {
+func marshalMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMenuItem(obj), nil
@@ -3240,7 +3294,7 @@ func NewMenuItem(label string, detailedAction string) *MenuItem {
 //
 // item_index must be valid (ie: be sure to call g_menu_model_get_n_items()
 // first).
-func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
+func NewMenuItemFromModel(model MenuModeler, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in
@@ -3314,7 +3368,7 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 //        </link>
 //      </item>
 //    </menu>
-func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
+func NewMenuItemSection(label string, section MenuModeler) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3335,7 +3389,7 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 //
 // This is a convenience API around g_menu_item_new() and
 // g_menu_item_set_submenu().
-func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
+func NewMenuItemSubmenu(label string, submenu MenuModeler) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GMenuItem  // in
@@ -3380,7 +3434,7 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 }
 
 // Link queries the named link on menu_item.
-func (menuItem *MenuItem) Link(link string) *MenuModel {
+func (menuItem *MenuItem) Link(link string) MenuModeler {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GMenuModel // in
@@ -3390,9 +3444,9 @@ func (menuItem *MenuItem) Link(link string) *MenuModel {
 
 	_cret = C.g_menu_item_get_link(_arg0, _arg1)
 
-	var _menuModel *MenuModel // out
+	var _menuModel MenuModeler // out
 
-	_menuModel = wrapMenuModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_menuModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(MenuModeler)
 
 	return _menuModel
 }
@@ -3505,7 +3559,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 // corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 //
 // If icon is NULL then the icon is unset.
-func (menuItem *MenuItem) SetIcon(icon Iconner) {
+func (menuItem *MenuItem) SetIcon(icon Iconer) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
 
@@ -3539,7 +3593,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 // lowercase characters, numbers and '-'. Furthermore, the names must begin with
 // a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
-func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
+func (menuItem *MenuItem) SetLink(link string, model MenuModeler) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -3557,7 +3611,7 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 // sounds: the items from section become a direct part of the menu that
 // menu_item is added to. See g_menu_item_new_section() for more information
 // about what it means for a menu item to be a section.
-func (menuItem *MenuItem) SetSection(section MenuModeller) {
+func (menuItem *MenuItem) SetSection(section MenuModeler) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3574,7 +3628,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 //
 // The effect of having one menu appear as a submenu of another is exactly as it
 // sounds.
-func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
+func (menuItem *MenuItem) SetSubmenu(submenu MenuModeler) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
 
@@ -3733,7 +3787,7 @@ func (notification *Notification) SetDefaultActionAndTargetValue(action string, 
 }
 
 // SetIcon sets the icon of notification to icon.
-func (notification *Notification) SetIcon(icon Iconner) {
+func (notification *Notification) SetIcon(icon Iconer) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
 
@@ -4209,17 +4263,21 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) (*Subprocess, error) {
 //
 // On error, stdout_buf and stderr_buf will be set to undefined values and
 // should not be used.
-func (subprocess *Subprocess) CommunicateUTF8(stdinBuf string, cancellable *Cancellable) (stdoutBuf string, stderrBuf string, goerr error) {
+func (subprocess *Subprocess) CommunicateUTF8(ctx context.Context, stdinBuf string) (stdoutBuf string, stderrBuf string, goerr error) {
 	var _arg0 *C.GSubprocess  // out
-	var _arg1 *C.char         // out
 	var _arg2 *C.GCancellable // out
+	var _arg1 *C.char         // out
 	var _arg3 *C.char         // in
 	var _arg4 *C.char         // in
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(stdinBuf)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_subprocess_communicate_utf8(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
@@ -4238,16 +4296,20 @@ func (subprocess *Subprocess) CommunicateUTF8(stdinBuf string, cancellable *Canc
 
 // CommunicateUTF8Async asynchronous version of g_subprocess_communicate_utf8().
 // Complete invocation with g_subprocess_communicate_utf8_finish().
-func (subprocess *Subprocess) CommunicateUTF8Async(stdinBuf string, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (subprocess *Subprocess) CommunicateUTF8Async(ctx context.Context, stdinBuf string, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
-	var _arg1 *C.char               // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.char               // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(stdinBuf)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -4412,7 +4474,7 @@ func (subprocess *Subprocess) Status() int {
 //
 // The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
 // otherwise NULL will be returned.
-func (subprocess *Subprocess) StderrPipe() *InputStream {
+func (subprocess *Subprocess) StderrPipe() InputStreamer {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
 
@@ -4420,9 +4482,9 @@ func (subprocess *Subprocess) StderrPipe() *InputStream {
 
 	_cret = C.g_subprocess_get_stderr_pipe(_arg0)
 
-	var _inputStream *InputStream // out
+	var _inputStream InputStreamer // out
 
-	_inputStream = wrapInputStream(externglib.Take(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }
@@ -4432,7 +4494,7 @@ func (subprocess *Subprocess) StderrPipe() *InputStream {
 //
 // The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and not
 // G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise NULL will be returned.
-func (subprocess *Subprocess) StdinPipe() *OutputStream {
+func (subprocess *Subprocess) StdinPipe() OutputStreamer {
 	var _arg0 *C.GSubprocess   // out
 	var _cret *C.GOutputStream // in
 
@@ -4440,9 +4502,9 @@ func (subprocess *Subprocess) StdinPipe() *OutputStream {
 
 	_cret = C.g_subprocess_get_stdin_pipe(_arg0)
 
-	var _outputStream *OutputStream // out
+	var _outputStream OutputStreamer // out
 
-	_outputStream = wrapOutputStream(externglib.Take(unsafe.Pointer(_cret)))
+	_outputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(OutputStreamer)
 
 	return _outputStream
 }
@@ -4452,7 +4514,7 @@ func (subprocess *Subprocess) StdinPipe() *OutputStream {
 //
 // The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
 // otherwise NULL will be returned.
-func (subprocess *Subprocess) StdoutPipe() *InputStream {
+func (subprocess *Subprocess) StdoutPipe() InputStreamer {
 	var _arg0 *C.GSubprocess  // out
 	var _cret *C.GInputStream // in
 
@@ -4460,9 +4522,9 @@ func (subprocess *Subprocess) StdoutPipe() *InputStream {
 
 	_cret = C.g_subprocess_get_stdout_pipe(_arg0)
 
-	var _inputStream *InputStream // out
+	var _inputStream InputStreamer // out
 
-	_inputStream = wrapInputStream(externglib.Take(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }
@@ -4538,13 +4600,17 @@ func (subprocess *Subprocess) SendSignal(signalNum int) {
 //
 // Cancelling cancellable doesn't kill the subprocess. Call
 // g_subprocess_force_exit() if it is desirable.
-func (subprocess *Subprocess) Wait(cancellable *Cancellable) error {
+func (subprocess *Subprocess) Wait(ctx context.Context) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_subprocess_wait(_arg0, _arg1, &_cerr)
 
@@ -4558,14 +4624,18 @@ func (subprocess *Subprocess) Wait(cancellable *Cancellable) error {
 // WaitAsync: wait for the subprocess to terminate.
 //
 // This is the asynchronous version of g_subprocess_wait().
-func (subprocess *Subprocess) WaitAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (subprocess *Subprocess) WaitAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -4573,13 +4643,17 @@ func (subprocess *Subprocess) WaitAsync(cancellable *Cancellable, callback Async
 }
 
 // WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-func (subprocess *Subprocess) WaitCheck(cancellable *Cancellable) error {
+func (subprocess *Subprocess) WaitCheck(ctx context.Context) error {
 	var _arg0 *C.GSubprocess  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_subprocess_wait_check(_arg0, _arg1, &_cerr)
 
@@ -4594,14 +4668,18 @@ func (subprocess *Subprocess) WaitCheck(cancellable *Cancellable) error {
 // g_spawn_check_exit_status().
 //
 // This is the asynchronous version of g_subprocess_wait_check().
-func (subprocess *Subprocess) WaitCheckAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (subprocess *Subprocess) WaitCheckAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSubprocess        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSubprocess)(unsafe.Pointer(subprocess.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -5129,7 +5207,7 @@ func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	}
 }
 
-func marshalTestDBusser(p uintptr) (interface{}, error) {
+func marshalTestDBuser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTestDBus(obj), nil

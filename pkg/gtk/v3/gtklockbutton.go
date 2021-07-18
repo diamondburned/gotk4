@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtonner},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButtoner},
 	})
 }
 
@@ -99,7 +99,7 @@ func wrapLockButton(obj *externglib.Object) *LockButton {
 	}
 }
 
-func marshalLockButtonner(p uintptr) (interface{}, error) {
+func marshalLockButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapLockButton(obj), nil
@@ -122,7 +122,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 }
 
 // Permission obtains the #GPermission object that controls button.
-func (button *LockButton) Permission() *gio.Permission {
+func (button *LockButton) Permission() gio.Permissioner {
 	var _arg0 *C.GtkLockButton // out
 	var _cret *C.GPermission   // in
 
@@ -130,14 +130,9 @@ func (button *LockButton) Permission() *gio.Permission {
 
 	_cret = C.gtk_lock_button_get_permission(_arg0)
 
-	var _permission *gio.Permission // out
+	var _permission gio.Permissioner // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_permission = &gio.Permission{
-			Object: obj,
-		}
-	}
+	_permission = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Permissioner)
 
 	return _permission
 }

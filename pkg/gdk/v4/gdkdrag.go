@@ -20,7 +20,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDragger},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrager},
 	})
 }
 
@@ -91,8 +91,8 @@ type Drag struct {
 
 var _ gextras.Nativer = (*Drag)(nil)
 
-// Dragger describes Drag's abstract methods.
-type Dragger interface {
+// Drager describes Drag's abstract methods.
+type Drager interface {
 	// DropDone informs GDK that the drop ended.
 	DropDone(success bool)
 	// Actions determines the bitmask of possible actions proposed by the
@@ -101,24 +101,24 @@ type Dragger interface {
 	// Content returns the GdkContentProvider associated to the GdkDrag object.
 	Content() *ContentProvider
 	// Device returns the GdkDevice associated to the GdkDrag object.
-	Device() *Device
+	Device() Devicer
 	// Display gets the GdkDisplay that the drag object was created for.
 	Display() *Display
 	// DragSurface returns the surface on which the drag icon should be rendered
 	// during the drag operation.
-	DragSurface() *Surface
+	DragSurface() Surfacer
 	// Formats retrieves the formats supported by this GdkDrag object.
 	Formats() *ContentFormats
 	// SelectedAction determines the action chosen by the drag destination.
 	SelectedAction() DragAction
 	// Surface returns the GdkSurface where the drag originates.
-	Surface() *Surface
+	Surface() Surfacer
 	// SetHotspot sets the position of the drag surface that will be kept under
 	// the cursor hotspot.
 	SetHotspot(hotX int, hotY int)
 }
 
-var _ Dragger = (*Drag)(nil)
+var _ Drager = (*Drag)(nil)
 
 func wrapDrag(obj *externglib.Object) *Drag {
 	return &Drag{
@@ -126,7 +126,7 @@ func wrapDrag(obj *externglib.Object) *Drag {
 	}
 }
 
-func marshalDragger(p uintptr) (interface{}, error) {
+func marshalDrager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDrag(obj), nil
@@ -187,7 +187,7 @@ func (drag *Drag) Content() *ContentProvider {
 }
 
 // Device returns the GdkDevice associated to the GdkDrag object.
-func (drag *Drag) Device() *Device {
+func (drag *Drag) Device() Devicer {
 	var _arg0 *C.GdkDrag   // out
 	var _cret *C.GdkDevice // in
 
@@ -195,9 +195,9 @@ func (drag *Drag) Device() *Device {
 
 	_cret = C.gdk_drag_get_device(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -225,7 +225,7 @@ func (drag *Drag) Display() *Display {
 // begun. GDK will move the surface in accordance with the ongoing drag
 // operation. The surface is owned by drag and will be destroyed when the drag
 // operation is over.
-func (drag *Drag) DragSurface() *Surface {
+func (drag *Drag) DragSurface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -233,9 +233,9 @@ func (drag *Drag) DragSurface() *Surface {
 
 	_cret = C.gdk_drag_get_drag_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -276,7 +276,7 @@ func (drag *Drag) SelectedAction() DragAction {
 }
 
 // Surface returns the GdkSurface where the drag originates.
-func (drag *Drag) Surface() *Surface {
+func (drag *Drag) Surface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
 
@@ -284,9 +284,9 @@ func (drag *Drag) Surface() *Surface {
 
 	_cret = C.gdk_drag_get_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -319,7 +319,7 @@ func (drag *Drag) SetHotspot(hotX int, hotY int) {
 // Note: if actions include GDK_ACTION_MOVE, you need to listen for the
 // gdk.Drag::dnd-finished signal and delete the data at the source if
 // gdk.Drag.GetSelectedAction() returns GDK_ACTION_MOVE.
-func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx float64, dy float64) *Drag {
+func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx float64, dy float64) Drager {
 	var _arg1 *C.GdkSurface         // out
 	var _arg2 *C.GdkDevice          // out
 	var _arg3 *C.GdkContentProvider // out
@@ -337,9 +337,9 @@ func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actio
 
 	_cret = C.gdk_drag_begin(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var _drag *Drag // out
+	var _drag Drager // out
 
-	_drag = wrapDrag(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_drag = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Drager)
 
 	return _drag
 }

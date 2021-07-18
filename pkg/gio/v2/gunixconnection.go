@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -87,14 +90,18 @@ func marshalUnixConnectioner(p uintptr) (interface{}, error) {
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection *UnixConnection) ReceiveCredentials(cancellable *Cancellable) (*Credentials, error) {
+func (connection *UnixConnection) ReceiveCredentials(ctx context.Context) (*Credentials, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret *C.GCredentials    // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, &_cerr)
 
@@ -115,14 +122,18 @@ func (connection *UnixConnection) ReceiveCredentials(cancellable *Cancellable) (
 // When the operation is finished, callback will be called. You can then call
 // g_unix_connection_receive_credentials_finish() to get the result of the
 // operation.
-func (connection *UnixConnection) ReceiveCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *UnixConnection) ReceiveCredentialsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -156,14 +167,18 @@ func (connection *UnixConnection) ReceiveCredentialsFinish(result AsyncResulter)
 //
 // As well as reading the fd this also reads a single byte from the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) ReceiveFd(cancellable *Cancellable) (int, error) {
+func (connection *UnixConnection) ReceiveFd(ctx context.Context) (int, error) {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cret C.gint             // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, &_cerr)
 
@@ -199,13 +214,17 @@ func (connection *UnixConnection) ReceiveFd(cancellable *Cancellable) (int, erro
 //
 // Other ways to exchange credentials with a foreign peer includes the
 // CredentialsMessage type and g_socket_get_credentials() function.
-func (connection *UnixConnection) SendCredentials(cancellable *Cancellable) error {
+func (connection *UnixConnection) SendCredentials(ctx context.Context) error {
 	var _arg0 *C.GUnixConnection // out
 	var _arg1 *C.GCancellable    // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_unix_connection_send_credentials(_arg0, _arg1, &_cerr)
 
@@ -224,14 +243,18 @@ func (connection *UnixConnection) SendCredentials(cancellable *Cancellable) erro
 // When the operation is finished, callback will be called. You can then call
 // g_unix_connection_send_credentials_finish() to get the result of the
 // operation.
-func (connection *UnixConnection) SendCredentialsAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (connection *UnixConnection) SendCredentialsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -263,15 +286,19 @@ func (connection *UnixConnection) SendCredentialsFinish(result AsyncResulter) er
 //
 // As well as sending the fd this also writes a single byte to the stream, as
 // this is required for fd passing to work on some implementations.
-func (connection *UnixConnection) SendFd(fd int, cancellable *Cancellable) error {
+func (connection *UnixConnection) SendFd(ctx context.Context, fd int) error {
 	var _arg0 *C.GUnixConnection // out
-	var _arg1 C.gint             // out
 	var _arg2 *C.GCancellable    // out
+	var _arg1 C.gint             // out
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(connection.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gint(fd)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_unix_connection_send_fd(_arg0, _arg1, _arg2, &_cerr)
 

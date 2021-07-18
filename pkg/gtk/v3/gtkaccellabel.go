@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_accel_label_get_type()), F: marshalAccelLabeller},
+		{T: externglib.Type(C.gtk_accel_label_get_type()), F: marshalAccelLabeler},
 	})
 }
 
@@ -83,7 +83,7 @@ func wrapAccelLabel(obj *externglib.Object) *AccelLabel {
 	}
 }
 
-func marshalAccelLabeller(p uintptr) (interface{}, error) {
+func marshalAccelLabeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAccelLabel(obj), nil
@@ -126,7 +126,7 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 
 // AccelWidget fetches the widget monitored by this accelerator label. See
 // gtk_accel_label_set_accel_widget().
-func (accelLabel *AccelLabel) AccelWidget() *Widget {
+func (accelLabel *AccelLabel) AccelWidget() Widgeter {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret *C.GtkWidget     // in
 
@@ -134,9 +134,9 @@ func (accelLabel *AccelLabel) AccelWidget() *Widget {
 
 	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -201,7 +201,7 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing NULL for accel_widget will dissociate accel_label from its current
 // widget, if any.
-func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
+func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgeter) {
 	var _arg0 *C.GtkAccelLabel // out
 	var _arg1 *C.GtkWidget     // out
 

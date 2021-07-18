@@ -3,9 +3,12 @@
 package gtk
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -39,18 +42,22 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIFull(parent *Window, uri string, timestamp uint32, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
+	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.GtkWindow          // out
 	var _arg2 *C.char               // out
 	var _arg3 C.guint32             // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	_arg3 = C.guint32(timestamp)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 

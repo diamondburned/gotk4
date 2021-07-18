@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtonner},
+		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButtoner},
 	})
 }
 
@@ -92,7 +92,7 @@ func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
 	}
 }
 
-func marshalAppChooserButtonner(p uintptr) (interface{}, error) {
+func marshalAppChooserButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserButton(obj), nil
@@ -129,7 +129,7 @@ func (v *AppChooserButton) Native() uintptr {
 // callback for the activation of a particular custom item in the list.
 //
 // See also gtk.AppChooserButton.AppendSeparator().
-func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconner) {
+func (self *AppChooserButton) AppendCustomItem(name string, label string, icon gio.Iconer) {
 	var _arg0 *C.GtkAppChooserButton // out
 	var _arg1 *C.char                // out
 	var _arg2 *C.char                // out

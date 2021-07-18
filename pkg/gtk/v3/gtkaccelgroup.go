@@ -462,12 +462,6 @@ type AccelGroupEntry struct {
 	native *C.GtkAccelGroupEntry
 }
 
-func (a *AccelGroupEntry) Key() AccelKey {
-	var v AccelKey // out
-	v = *(*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&a.native.key))))
-	return v
-}
-
 type AccelKey struct {
 	nocopy gextras.NoCopy
 	native *C.GtkAccelKey

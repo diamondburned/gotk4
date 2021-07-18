@@ -34,7 +34,7 @@ type Generator struct {
 	GoArgs  pen.Joints
 	GoRets  pen.Joints
 
-	src *gir.NamespaceFindResult
+	typ *gir.TypeFindResult
 	pen *pen.BlockSections
 	hdr file.Header
 	gen FileGenerator
@@ -72,6 +72,8 @@ func (g *Generator) Reset() {
 		hdr:    g.hdr,
 		GoArgs: g.GoArgs,
 		GoRets: g.GoRets,
+
+		constructor: g.constructor,
 	}
 }
 
@@ -87,37 +89,31 @@ func (g *Generator) FileGenerator() FileGenerator {
 	return g.gen
 }
 
-// Use uses the given CallableAttrs for the generator.
-func (g *Generator) Use(cattrs *gir.CallableAttrs) bool {
-	return g.UseFromNamespace(cattrs, g.gen.Namespace())
-}
-
 // UseConstructor calls Use with the constructor flag.
-func (g *Generator) UseConstructor(cattrs *gir.CallableAttrs) bool {
+func (g *Generator) UseConstructor(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	g.constructor = true
-	ok := g.Use(cattrs)
+	ok := g.Use(typ, call)
 	g.constructor = false
 	return ok
 }
 
-// UseFromNamespace uses the given CallableAttrs from the given namespace
-// instead of the current namespace.
-func (g *Generator) UseFromNamespace(cattrs *gir.CallableAttrs, n *gir.NamespaceFindResult) bool {
+// Use uses the given CallableAttrs for the generator.
+func (g *Generator) Use(typ *gir.TypeFindResult, call *gir.CallableAttrs) bool {
 	g.Reset()
-	g.Name = strcases.SnakeToGo(true, cattrs.Name)
-	g.CallableAttrs = cattrs
-	g.src = n
+	g.Name = strcases.SnakeToGo(true, call.Name)
+	g.CallableAttrs = call
+	g.typ = typ
 
-	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
+	if call.ShadowedBy != "" || call.MovedTo != "" {
 		// Skip this one. Hope the caller reaches the Shadows method,
 		// eventually.
 		return false
 	}
-	if !cattrs.IsIntrospectable() {
+	if !call.IsIntrospectable() {
 		return false
 	}
 	// Double-check that the C identifier is allowed.
-	if cattrs.CIdentifier != "" && types.FilterCType(g.gen, cattrs.CIdentifier) {
+	if call.CIdentifier != "" && types.FilterCType(g.gen, call.CIdentifier) {
 		return false
 	}
 
@@ -174,6 +170,8 @@ func (g *Generator) renderBlock() bool {
 			))
 		}
 
+		contextParamIx := findGCancellableParam(g.gen, g.Parameters.Parameters)
+
 		for i, param := range g.Parameters.Parameters {
 			var in string
 			var out string
@@ -190,6 +188,11 @@ func (g *Generator) renderBlock() bool {
 				dir = typeconv.ConvertCToGo
 			default:
 				return false
+			}
+
+			if contextParamIx == i {
+				// Idiomatic context naming.
+				in = "ctx"
 			}
 
 			value := typeconv.NewValue(in, out, i, dir, param)
@@ -223,9 +226,8 @@ func (g *Generator) renderBlock() bool {
 		callableValues = append(callableValues, typeconv.NewThrowValue("_cerr", "_goerr"))
 	}
 
-	g.Conv = typeconv.NewConverter(g.gen, callableValues)
+	g.Conv = typeconv.NewConverter(g.gen, g.typ, callableValues)
 	g.Conv.UseLogger(g)
-	g.Conv.SetSourceNamespace(g.src)
 
 	g.Results = g.Conv.ConvertAll()
 	if g.Results == nil {
@@ -236,14 +238,26 @@ func (g *Generator) renderBlock() bool {
 	// Apply imports and such.
 	file.ApplyHeader(g, g.Conv)
 
+	// Do a bit of trickery: if we have a GCancellable in the function, then it
+	// should be the first parameter. The GCancellable will then be resolved to
+	// a context.Context during conversion.
+	resultParams := g.Results
+	if instanceParam {
+		// Don't count the instance parameter.
+		resultParams = resultParams[1:]
+	}
+	if ix := findContextResult(g.gen, resultParams); ix > 0 {
+		cancellable := resultParams[ix]
+		// Shift everything up to the cancellable value up 1 value.
+		copy(resultParams[1:], resultParams[:ix])
+		// Set the first value to the cancellable one.
+		resultParams[0] = cancellable
+	}
+
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
 	for i, converted := range g.Results {
-		if converted.Skip {
-			continue
-		}
-
 		switch converted.Direction {
 		case typeconv.ConvertGoToC: // parameter
 			// Skip the instance parameter if any.
@@ -297,6 +311,58 @@ func (g *Generator) renderBlock() bool {
 
 func (g *Generator) Logln(lvl logger.Level, v ...interface{}) {
 	g.gen.Logln(lvl, logger.Prefix(v, fmt.Sprintf("callable %s (C.%s)", g.Name, g.CIdentifier))...)
+}
+
+// findGCancellableParam finds the GCancellable type from the given list of
+// parameters, but only if the list has one instance. -1 is returned otherwise.
+func findGCancellableParam(g FileGenerator, params []gir.Parameter) int {
+	found := -1
+
+	for i, v := range params {
+		if v.Skip || types.GuessParameterOutput(&v) != "in" || v.Type == nil {
+			continue
+		}
+
+		gType := types.EnsureNamespace(g.Namespace(), v.Type.Name)
+		cType := v.Type.CType
+
+		// Ensure that the pointer level is what we expect.
+		if gType == "Gio.Cancellable" && cType == "GCancellable*" {
+			if found != -1 {
+				// More than one instance; bail.
+				return -1
+			}
+
+			found = i
+		}
+	}
+
+	return found
+}
+
+// findContextResult finds the context.Context type from the given list of
+// callable results, but only if the list has one instance. -1 is returned
+// otherwise.
+func findContextResult(g FileGenerator, result []typeconv.ValueConverted) int {
+	found := -1
+
+	for i, v := range result {
+		if v.ConversionValue == nil || v.Resolved == nil {
+			continue
+		}
+
+		// Ensure that the pointer level is what we expect.
+		if v.Resolved.IsBuiltin("context.Context") {
+			if found != -1 {
+				// More than one instance; bail.
+				return -1
+			}
+
+			found = i
+		}
+	}
+
+	return found
 }
 
 func formatReturnSig(joints pen.Joints) string {

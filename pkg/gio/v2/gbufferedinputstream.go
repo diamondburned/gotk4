@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -63,14 +66,14 @@ type BufferedInputStreamOverrider interface {
 	//
 	// For the asynchronous, non-blocking, version of this function, see
 	// g_buffered_input_stream_fill_async().
-	Fill(count int, cancellable *Cancellable) (int, error)
+	Fill(ctx context.Context, count int) (int, error)
 	// FillAsync reads data into stream's buffer asynchronously, up to count
 	// size. io_priority can be used to prioritize reads. For the synchronous
 	// version of this function, see g_buffered_input_stream_fill().
 	//
 	// If count is -1 then the attempted read size is equal to the number of
 	// bytes that are required to fill the buffer.
-	FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback)
 	// FillFinish finishes an asynchronous read.
 	FillFinish(result AsyncResulter) (int, error)
 }
@@ -176,16 +179,20 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 //
 // For the asynchronous, non-blocking, version of this function, see
 // g_buffered_input_stream_fill_async().
-func (stream *BufferedInputStream) Fill(count int, cancellable *Cancellable) (int, error) {
+func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
-	var _arg1 C.gssize                // out
 	var _arg2 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
 	var _cret C.gssize                // in
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gssize(count)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 
@@ -204,18 +211,22 @@ func (stream *BufferedInputStream) Fill(count int, cancellable *Cancellable) (in
 //
 // If count is -1 then the attempted read size is equal to the number of bytes
 // that are required to fill the buffer.
-func (stream *BufferedInputStream) FillAsync(count int, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
+	var _arg3 *C.GCancellable         // out
 	var _arg1 C.gssize                // out
 	var _arg2 C.int                   // out
-	var _arg3 *C.GCancellable         // out
 	var _arg4 C.GAsyncReadyCallback   // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gssize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -313,14 +324,18 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 // be returned, without an error.
 //
 // On error -1 is returned and error is set accordingly.
-func (stream *BufferedInputStream) ReadByte(cancellable *Cancellable) (int, error) {
+func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
 	var _cerr *C.GError               // in
 
 	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 

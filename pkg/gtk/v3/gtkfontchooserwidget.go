@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgetter},
+		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidgeter},
 	})
 }
 
@@ -75,7 +75,7 @@ func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
 	}
 }
 
-func marshalFontChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFontChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontChooserWidget(obj), nil

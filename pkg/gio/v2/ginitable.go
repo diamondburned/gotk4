@@ -3,8 +3,11 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -75,7 +78,7 @@ type InitableOverrider interface {
 	// pattern, a caller would expect to be able to call g_initable_init() on
 	// the result of g_object_new(), regardless of whether it is in fact a new
 	// instance.
-	Init(cancellable *Cancellable) error
+	Init(ctx context.Context) error
 }
 
 // Initable is implemented by objects that can fail during initialization. If an
@@ -109,7 +112,7 @@ var _ gextras.Nativer = (*Initable)(nil)
 // Initabler describes Initable's abstract methods.
 type Initabler interface {
 	// Init initializes the object implementing the interface.
-	Init(cancellable *Cancellable) error
+	Init(ctx context.Context) error
 }
 
 var _ Initabler = (*Initable)(nil)
@@ -163,13 +166,17 @@ func marshalInitabler(p uintptr) (interface{}, error) {
 // that sometimes returns an existing instance. In this pattern, a caller would
 // expect to be able to call g_initable_init() on the result of g_object_new(),
 // regardless of whether it is in fact a new instance.
-func (initable *Initable) Init(cancellable *Cancellable) error {
+func (initable *Initable) Init(ctx context.Context) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInitable)(unsafe.Pointer(initable.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_initable_init(_arg0, _arg1, &_cerr)
 

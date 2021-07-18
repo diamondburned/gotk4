@@ -26,14 +26,14 @@ func DisableSetlocale() {
 	C.gtk_disable_setlocale()
 }
 
-// GetDefaultLanguage returns the Language for the default language currently in
+// DefaultLanguage returns the Language for the default language currently in
 // effect. (Note that this can change over the life of an application.) The
 // default language is derived from the current locale. It determines, for
 // example, whether GTK uses the right-to-left or left-to-right text direction.
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() *pango.Language {
+func DefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
 
 	_cret = C.gtk_get_default_language()
@@ -45,7 +45,7 @@ func GetDefaultLanguage() *pango.Language {
 	return _language
 }
 
-// GetLocaleDirection: get the direction of the current locale. This is the
+// LocaleDirection: get the direction of the current locale. This is the
 // expected reading direction for text and UI.
 //
 // This function depends on the current locale being set with setlocale() and
@@ -63,7 +63,7 @@ func GetDefaultLanguage() *pango.Language {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() TextDirection {
+func LocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
 	_cret = C.gtk_get_locale_direction()

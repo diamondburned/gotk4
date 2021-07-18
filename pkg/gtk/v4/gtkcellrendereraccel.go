@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceller},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAcceler},
 	})
 }
 
@@ -75,7 +75,7 @@ func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
 	}
 }
 
-func marshalCellRendererAcceller(p uintptr) (interface{}, error) {
+func marshalCellRendererAcceler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellRendererAccel(obj), nil

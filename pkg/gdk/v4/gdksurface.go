@@ -45,15 +45,15 @@ type Surfacer interface {
 	Beep()
 	// CreateCairoContext creates a new GdkCairoContext for rendering on
 	// surface.
-	CreateCairoContext() *CairoContext
+	CreateCairoContext() CairoContexter
 	// CreateGLContext creates a new GdkGLContext for the GdkSurface.
-	CreateGLContext() (*GLContext, error)
+	CreateGLContext() (GLContexter, error)
 	// CreateSimilarSurface: create a new Cairo surface that is as compatible as
 	// possible with the given surface.
 	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 	// CreateVulkanContext creates a new GdkVulkanContext for rendering on
 	// surface.
-	CreateVulkanContext() (*VulkanContext, error)
+	CreateVulkanContext() (VulkanContexter, error)
 	// Destroy destroys the window system resources associated with surface and
 	// decrements surface's reference count.
 	Destroy()
@@ -68,7 +68,7 @@ type Surfacer interface {
 	// Display gets the GdkDisplay associated with a GdkSurface.
 	Display() *Display
 	// FrameClock gets the frame clock for the surface.
-	FrameClock() *FrameClock
+	FrameClock() FrameClocker
 	// Height returns the height of the given surface.
 	Height() int
 	// Mapped checks whether the surface has been mapped.
@@ -165,7 +165,7 @@ func (surface *Surface) Beep() {
 }
 
 // CreateCairoContext creates a new GdkCairoContext for rendering on surface.
-func (surface *Surface) CreateCairoContext() *CairoContext {
+func (surface *Surface) CreateCairoContext() CairoContexter {
 	var _arg0 *C.GdkSurface      // out
 	var _cret *C.GdkCairoContext // in
 
@@ -173,9 +173,9 @@ func (surface *Surface) CreateCairoContext() *CairoContext {
 
 	_cret = C.gdk_surface_create_cairo_context(_arg0)
 
-	var _cairoContext *CairoContext // out
+	var _cairoContext CairoContexter // out
 
-	_cairoContext = wrapCairoContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cairoContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(CairoContexter)
 
 	return _cairoContext
 }
@@ -186,7 +186,7 @@ func (surface *Surface) CreateCairoContext() *CairoContext {
 // creation of the GdkGLContext failed, error will be set. Before using the
 // returned GdkGLContext, you will need to call gdk.GLContext.MakeCurrent() or
 // gdk.GLContext.Realize().
-func (surface *Surface) CreateGLContext() (*GLContext, error) {
+func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
 	var _cerr *C.GError       // in
@@ -195,10 +195,10 @@ func (surface *Surface) CreateGLContext() (*GLContext, error) {
 
 	_cret = C.gdk_surface_create_gl_context(_arg0, &_cerr)
 
-	var _glContext *GLContext // out
-	var _goerr error          // out
+	var _glContext GLContexter // out
+	var _goerr error           // out
 
-	_glContext = wrapGLContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_glContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -246,7 +246,7 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width int, h
 // CreateVulkanContext creates a new GdkVulkanContext for rendering on surface.
 //
 // If the creation of the GdkVulkanContext failed, error will be set.
-func (surface *Surface) CreateVulkanContext() (*VulkanContext, error) {
+func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
 	var _cerr *C.GError           // in
@@ -255,10 +255,10 @@ func (surface *Surface) CreateVulkanContext() (*VulkanContext, error) {
 
 	_cret = C.gdk_surface_create_vulkan_context(_arg0, &_cerr)
 
-	var _vulkanContext *VulkanContext // out
-	var _goerr error                  // out
+	var _vulkanContext VulkanContexter // out
+	var _goerr error                   // out
 
-	_vulkanContext = wrapVulkanContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_vulkanContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(VulkanContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _vulkanContext, _goerr
@@ -374,7 +374,7 @@ func (surface *Surface) Display() *Display {
 //
 // The frame clock for a surface never changes unless the surface is reparented
 // to a new toplevel surface.
-func (surface *Surface) FrameClock() *FrameClock {
+func (surface *Surface) FrameClock() FrameClocker {
 	var _arg0 *C.GdkSurface    // out
 	var _cret *C.GdkFrameClock // in
 
@@ -382,9 +382,9 @@ func (surface *Surface) FrameClock() *FrameClock {
 
 	_cret = C.gdk_surface_get_frame_clock(_arg0)
 
-	var _frameClock *FrameClock // out
+	var _frameClock FrameClocker // out
 
-	_frameClock = wrapFrameClock(externglib.Take(unsafe.Pointer(_cret)))
+	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }

@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbarrer},
+		{T: externglib.Type(C.gtk_vscrollbar_get_type()), F: marshalVScrollbarer},
 	})
 }
 
@@ -60,7 +60,7 @@ func wrapVScrollbar(obj *externglib.Object) *VScrollbar {
 	}
 }
 
-func marshalVScrollbarrer(p uintptr) (interface{}, error) {
+func marshalVScrollbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVScrollbar(obj), nil

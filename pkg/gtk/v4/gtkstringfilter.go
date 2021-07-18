@@ -108,7 +108,7 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 
 // Expression gets the expression that the string filter uses to obtain strings
 // from items.
-func (self *StringFilter) Expression() *Expression {
+func (self *StringFilter) Expression() Expressioner {
 	var _arg0 *C.GtkStringFilter // out
 	var _cret *C.GtkExpression   // in
 
@@ -116,9 +116,9 @@ func (self *StringFilter) Expression() *Expression {
 
 	_cret = C.gtk_string_filter_get_expression(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }

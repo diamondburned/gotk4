@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -71,7 +70,7 @@ var _ gextras.Nativer = (*TLSCertificate)(nil)
 // TLSCertificater describes TLSCertificate's abstract methods.
 type TLSCertificater interface {
 	// Issuer gets the Certificate representing cert's issuer, if known
-	Issuer() *TLSCertificate
+	Issuer() TLSCertificater
 	// IsSame: check if two Certificate objects represent the same certificate.
 	IsSame(certTwo TLSCertificater) bool
 	// Verify: this verifies cert and returns a set of CertificateFlags
@@ -232,7 +231,7 @@ func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri strin
 }
 
 // Issuer gets the Certificate representing cert's issuer, if known
-func (cert *TLSCertificate) Issuer() *TLSCertificate {
+func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
 
@@ -240,9 +239,9 @@ func (cert *TLSCertificate) Issuer() *TLSCertificate {
 
 	_cret = C.g_tls_certificate_get_issuer(_arg0)
 
-	var _tlsCertificate *TLSCertificate // out
+	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
+	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }
@@ -325,15 +324,12 @@ func TlsCertificateListNewFromFile(file string) (*externglib.List, error) {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GTlsCertificate)(_p)
-		var dst TLSCertificate // out
-		dst = *wrapTLSCertificate(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst TLSCertificater // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(TLSCertificater)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

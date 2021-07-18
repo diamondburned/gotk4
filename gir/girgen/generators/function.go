@@ -1,6 +1,8 @@
 package generators
 
 import (
+	"strings"
+
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
@@ -25,13 +27,29 @@ func GeneratePrefixedFunction(gen FileGeneratorWriter, fn *gir.Function, prefix 
 		return false
 	}
 
+	typ := gir.TypeFindResult{
+		NamespaceFindResult: gen.Namespace(),
+		Type:                fn,
+	}
+
 	callableGen := callable.NewGenerator(gen)
-	if !callableGen.Use(&fn.CallableAttrs) {
+	if !callableGen.Use(&typ, &fn.CallableAttrs) {
 		return false
 	}
 
+	// Collision is up to the user to handle.
+	if strings.HasPrefix(callableGen.Name, "Get") {
+		callableGen.Name = strings.TrimPrefix(callableGen.Name, "Get")
+	}
+
 	if prefix != "" {
-		callableGen.Name = prefix + callableGen.Name
+		// Check if this function is actually a constructor.
+		if strings.HasPrefix(callableGen.Name, "New") {
+			callableGen.Name = strings.TrimPrefix(callableGen.Name, "New")
+			callableGen.Name = "New" + prefix + callableGen.Name
+		} else {
+			callableGen.Name = prefix + callableGen.Name
+		}
 	}
 
 	writer := FileWriterFromType(gen, fn)

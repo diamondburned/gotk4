@@ -22,7 +22,7 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.atk_coord_type_get_type()), F: marshalCoordType},
 		{T: externglib.Type(C.atk_key_event_type_get_type()), F: marshalKeyEventType},
-		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiller},
+		{T: externglib.Type(C.atk_util_get_type()), F: marshalUtiler},
 	})
 }
 
@@ -133,8 +133,8 @@ func FocusTrackerNotify(object *ObjectClass) {
 	C.atk_focus_tracker_notify(_arg1)
 }
 
-// GetFocusObject gets the currently focused object.
-func GetFocusObject() *ObjectClass {
+// FocusObject gets the currently focused object.
+func FocusObject() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_focus_object()
@@ -146,8 +146,8 @@ func GetFocusObject() *ObjectClass {
 	return _object
 }
 
-// GetRoot gets the root accessible container for the current application.
-func GetRoot() *ObjectClass {
+// Root gets the root accessible container for the current application.
+func Root() *ObjectClass {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_root()
@@ -159,9 +159,9 @@ func GetRoot() *ObjectClass {
 	return _object
 }
 
-// GetToolkitName gets name string for the GUI toolkit implementing ATK for this
+// ToolkitName gets name string for the GUI toolkit implementing ATK for this
 // application.
-func GetToolkitName() string {
+func ToolkitName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.atk_get_toolkit_name()
@@ -173,9 +173,9 @@ func GetToolkitName() string {
 	return _utf8
 }
 
-// GetToolkitVersion gets version string for the GUI toolkit implementing ATK
-// for this application.
-func GetToolkitVersion() string {
+// ToolkitVersion gets version string for the GUI toolkit implementing ATK for
+// this application.
+func ToolkitVersion() string {
 	var _cret *C.gchar // in
 
 	_cret = C.atk_get_toolkit_version()
@@ -187,8 +187,8 @@ func GetToolkitVersion() string {
 	return _utf8
 }
 
-// GetVersion gets the current version for ATK.
-func GetVersion() string {
+// Version gets the current version for ATK.
+func Version() string {
 	var _cret *C.gchar // in
 
 	_cret = C.atk_get_version()
@@ -261,7 +261,7 @@ func wrapUtil(obj *externglib.Object) *Util {
 	}
 }
 
-func marshalUtiller(p uintptr) (interface{}, error) {
+func marshalUtiler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapUtil(obj), nil

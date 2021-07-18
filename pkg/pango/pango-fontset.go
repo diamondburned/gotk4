@@ -20,14 +20,14 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontsetter},
+		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontseter},
 		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimpler},
 	})
 }
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset *Fontset, font *Font) (ok bool)
+type FontsetForeachFunc func(fontset Fontseter, font Fonter) (ok bool)
 
 //export _gotk4_pango1_FontsetForeachFunc
 func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) (cret C.gboolean) {
@@ -36,11 +36,11 @@ func _gotk4_pango1_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, a
 		panic(`callback not found`)
 	}
 
-	var fontset *Fontset // out
-	var font *Font       // out
+	var fontset Fontseter // out
+	var font Fonter       // out
 
-	fontset = wrapFontset(externglib.Take(unsafe.Pointer(arg0)))
-	font = wrapFont(externglib.Take(unsafe.Pointer(arg1)))
+	fontset = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Fontseter)
+	font = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(Fonter)
 
 	fn := v.(FontsetForeachFunc)
 	ok := fn(fontset, font)
@@ -64,7 +64,7 @@ type FontsetOverrider interface {
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
-	Font(wc uint) *Font
+	Font(wc uint) Fonter
 	Language() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
@@ -83,19 +83,19 @@ type Fontset struct {
 
 var _ gextras.Nativer = (*Fontset)(nil)
 
-// Fontsetter describes Fontset's abstract methods.
-type Fontsetter interface {
+// Fontseter describes Fontset's abstract methods.
+type Fontseter interface {
 	// Foreach iterates through all the fonts in a fontset, calling func for
 	// each one.
 	Foreach(fn FontsetForeachFunc)
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
-	Font(wc uint) *Font
+	Font(wc uint) Fonter
 	// Metrics: get overall metric information for the fonts in the fontset.
 	Metrics() *FontMetrics
 }
 
-var _ Fontsetter = (*Fontset)(nil)
+var _ Fontseter = (*Fontset)(nil)
 
 func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{
@@ -103,7 +103,7 @@ func wrapFontset(obj *externglib.Object) *Fontset {
 	}
 }
 
-func marshalFontsetter(p uintptr) (interface{}, error) {
+func marshalFontseter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontset(obj), nil
@@ -128,7 +128,7 @@ func (fontset *Fontset) Foreach(fn FontsetForeachFunc) {
 
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
-func (fontset *Fontset) Font(wc uint) *Font {
+func (fontset *Fontset) Font(wc uint) Fonter {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
 	var _cret *C.PangoFont    // in
@@ -138,9 +138,9 @@ func (fontset *Fontset) Font(wc uint) *Font {
 
 	_cret = C.pango_fontset_get_font(_arg0, _arg1)
 
-	var _font *Font // out
+	var _font Fonter // out
 
-	_font = wrapFont(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_font = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 
 	return _font
 }

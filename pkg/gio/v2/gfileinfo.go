@@ -485,7 +485,7 @@ func (info *FileInfo) FileType() FileType {
 }
 
 // Icon gets the icon for a file.
-func (info *FileInfo) Icon() *Icon {
+func (info *FileInfo) Icon() Iconer {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -493,9 +493,9 @@ func (info *FileInfo) Icon() *Icon {
 
 	_cret = C.g_file_info_get_icon(_arg0)
 
-	var _icon *Icon // out
+	var _icon Iconer // out
 
-	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconer)
 
 	return _icon
 }
@@ -626,7 +626,7 @@ func (info *FileInfo) SortOrder() int32 {
 }
 
 // SymbolicIcon gets the symbolic icon for a file.
-func (info *FileInfo) SymbolicIcon() *Icon {
+func (info *FileInfo) SymbolicIcon() Iconer {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
 
@@ -634,9 +634,9 @@ func (info *FileInfo) SymbolicIcon() *Icon {
 
 	_cret = C.g_file_info_get_symbolic_icon(_arg0)
 
-	var _icon *Icon // out
+	var _icon Iconer // out
 
-	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconer)
 
 	return _icon
 }
@@ -983,7 +983,7 @@ func (info *FileInfo) SetFileType(typ FileType) {
 }
 
 // SetIcon sets the icon for a given Info. See G_FILE_ATTRIBUTE_STANDARD_ICON.
-func (info *FileInfo) SetIcon(icon Iconner) {
+func (info *FileInfo) SetIcon(icon Iconer) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 
@@ -1075,7 +1075,7 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 
 // SetSymbolicIcon sets the symbolic icon for a given Info. See
 // G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
+func (info *FileInfo) SetSymbolicIcon(icon Iconer) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
 

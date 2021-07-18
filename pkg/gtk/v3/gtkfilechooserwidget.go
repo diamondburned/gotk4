@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgetter},
+		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidgeter},
 	})
 }
 
@@ -66,7 +66,7 @@ func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
 	}
 }
 
-func marshalFileChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalFileChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileChooserWidget(obj), nil

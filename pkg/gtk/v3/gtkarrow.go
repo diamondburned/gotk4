@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrowwer},
+		{T: externglib.Type(C.gtk_arrow_get_type()), F: marshalArrower},
 	})
 }
 
@@ -66,7 +66,7 @@ func wrapArrow(obj *externglib.Object) *Arrow {
 	}
 }
 
-func marshalArrowwer(p uintptr) (interface{}, error) {
+func marshalArrower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapArrow(obj), nil

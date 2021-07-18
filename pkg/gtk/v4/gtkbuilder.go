@@ -678,7 +678,7 @@ func (builder *Builder) GetObject(name string) *externglib.Object {
 }
 
 // Scope gets the scope in use that was set via gtk_builder_set_scope().
-func (builder *Builder) Scope() *BuilderScope {
+func (builder *Builder) Scope() BuilderScoper {
 	var _arg0 *C.GtkBuilder      // out
 	var _cret *C.GtkBuilderScope // in
 
@@ -686,9 +686,9 @@ func (builder *Builder) Scope() *BuilderScope {
 
 	_cret = C.gtk_builder_get_scope(_arg0)
 
-	var _builderScope *BuilderScope // out
+	var _builderScope BuilderScoper // out
 
-	_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
+	_builderScope = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
 
 	return _builderScope
 }

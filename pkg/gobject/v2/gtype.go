@@ -2,8 +2,15 @@
 
 package gobject
 
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
 
@@ -31,3 +38,323 @@ const TYPE_RESERVED_GLIB_LAST = 31
 // TYPERESERVEDUSERFIRST: first available fundamental type number to create new
 // fundamental type id with G_TYPE_MAKE_FUNDAMENTAL().
 const TYPE_RESERVED_USER_FIRST = 49
+
+// TypeAddClassPrivate registers a private class structure for a classed type;
+// when the class is allocated, the private structures for the class and all of
+// its parent types are allocated sequentially in the same memory block as the
+// public structures, and are zero-filled.
+//
+// This function should be called in the type's get_type() function after the
+// type is registered. The private structure can be retrieved using the
+// G_TYPE_CLASS_GET_PRIVATE() macro.
+func TypeAddClassPrivate(classType externglib.Type, privateSize uint) {
+	var _arg1 C.GType // out
+	var _arg2 C.gsize // out
+
+	_arg1 = C.GType(classType)
+	_arg2 = C.gsize(privateSize)
+
+	C.g_type_add_class_private(_arg1, _arg2)
+}
+
+func TypeAddInstancePrivate(classType externglib.Type, privateSize uint) int {
+	var _arg1 C.GType // out
+	var _arg2 C.gsize // out
+	var _cret C.gint  // in
+
+	_arg1 = C.GType(classType)
+	_arg2 = C.gsize(privateSize)
+
+	_cret = C.g_type_add_instance_private(_arg1, _arg2)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+func TypeCheckIsValueType(typ externglib.Type) bool {
+	var _arg1 C.GType    // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.GType(typ)
+
+	_cret = C.g_type_check_is_value_type(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func TypeCheckValue(value *externglib.Value) bool {
+	var _arg1 *C.GValue  // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+
+	_cret = C.g_type_check_value(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func TypeCheckValueHolds(value *externglib.Value, typ externglib.Type) bool {
+	var _arg1 *C.GValue  // out
+	var _arg2 C.GType    // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(&value.GValue))
+	_arg2 = C.GType(typ)
+
+	_cret = C.g_type_check_value_holds(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TypeDepth returns the length of the ancestry of the passed in type. This
+// includes the type itself, so that e.g. a fundamental type has depth 1.
+func TypeDepth(typ externglib.Type) uint {
+	var _arg1 C.GType // out
+	var _cret C.guint // in
+
+	_arg1 = C.GType(typ)
+
+	_cret = C.g_type_depth(_arg1)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// TypeEnsure ensures that the indicated type has been registered with the type
+// system, and its _class_init() method has been run.
+//
+// In theory, simply calling the type's _get_type() method (or using the
+// corresponding macro) is supposed take care of this. However, _get_type()
+// methods are often marked G_GNUC_CONST for performance reasons, even though
+// this is technically incorrect (since G_GNUC_CONST requires that the function
+// not have side effects, which _get_type() methods do on the first call). As a
+// result, if you write a bare call to a _get_type() macro, it may get optimized
+// out by the compiler. Using g_type_ensure() guarantees that the type's
+// _get_type() method is called.
+func TypeEnsure(typ externglib.Type) {
+	var _arg1 C.GType // out
+
+	_arg1 = C.GType(typ)
+
+	C.g_type_ensure(_arg1)
+}
+
+// TypeFromName: look up the type ID from a given type name, returning 0 if no
+// type has been registered under this name (this is the preferred method to
+// find out by name whether a specific type has been registered yet).
+func TypeFromName(name string) externglib.Type {
+	var _arg1 *C.gchar // out
+	var _cret C.GType  // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+
+	_cret = C.g_type_from_name(_arg1)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+// TypeFundamental: internal function, used to extract the fundamental type ID
+// portion. Use G_TYPE_FUNDAMENTAL() instead.
+func TypeFundamental(typeId externglib.Type) externglib.Type {
+	var _arg1 C.GType // out
+	var _cret C.GType // in
+
+	_arg1 = C.GType(typeId)
+
+	_cret = C.g_type_fundamental(_arg1)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+// TypeFundamentalNext returns the next free fundamental type id which can be
+// used to register a new fundamental type with g_type_register_fundamental().
+// The returned type ID represents the highest currently registered fundamental
+// type identifier.
+func TypeFundamentalNext() externglib.Type {
+	var _cret C.GType // in
+
+	_cret = C.g_type_fundamental_next()
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+// TypeGetInstanceCount returns the number of instances allocated of the
+// particular type; this is only available if GLib is built with debugging
+// support and the instance_count debug flag is set (by setting the
+// GOBJECT_DEBUG variable to include instance-count).
+func TypeGetInstanceCount(typ externglib.Type) int {
+	var _arg1 C.GType // out
+	var _cret C.int   // in
+
+	_arg1 = C.GType(typ)
+
+	_cret = C.g_type_get_instance_count(_arg1)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// TypeGetTypeRegistrationSerial returns an opaque serial number that represents
+// the state of the set of registered types. Any time a type is registered this
+// serial changes, which means you can cache information based on type lookups
+// (such as g_type_from_name()) and know if the cache is still valid at a later
+// time by comparing the current serial with the one at the type lookup.
+func TypeGetTypeRegistrationSerial() uint {
+	var _cret C.guint // in
+
+	_cret = C.g_type_get_type_registration_serial()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// TypeInit: this function used to initialise the type system. Since GLib 2.36,
+// the type system is initialised automatically and this function does nothing.
+//
+// Deprecated: the type system is now initialised automatically.
+func TypeInit() {
+	C.g_type_init()
+}
+
+// TypeIsA: if is_a_type is a derivable type, check whether type is a descendant
+// of is_a_type. If is_a_type is an interface, check whether type conforms to
+// it.
+func TypeIsA(typ externglib.Type, isAType externglib.Type) bool {
+	var _arg1 C.GType    // out
+	var _arg2 C.GType    // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.GType(typ)
+	_arg2 = C.GType(isAType)
+
+	_cret = C.g_type_is_a(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TypeName: get the unique name that is assigned to a type ID. Note that this
+// function (like all other GType API) cannot cope with invalid type IDs.
+// G_TYPE_INVALID may be passed to this function, as may be any other validly
+// registered type ID, but randomized type IDs should not be passed in and will
+// most likely lead to a crash.
+func TypeName(typ externglib.Type) string {
+	var _arg1 C.GType  // out
+	var _cret *C.gchar // in
+
+	_arg1 = C.GType(typ)
+
+	_cret = C.g_type_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TypeNextBase: given a leaf_type and a root_type which is contained in its
+// ancestry, return the type that root_type is the immediate parent of. In other
+// words, this function determines the type that is derived directly from
+// root_type which is also a base class of leaf_type. Given a root type and a
+// leaf type, this function can be used to determine the types and order in
+// which the leaf type is descended from the root type.
+func TypeNextBase(leafType externglib.Type, rootType externglib.Type) externglib.Type {
+	var _arg1 C.GType // out
+	var _arg2 C.GType // out
+	var _cret C.GType // in
+
+	_arg1 = C.GType(leafType)
+	_arg2 = C.GType(rootType)
+
+	_cret = C.g_type_next_base(_arg1, _arg2)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+// TypeParent: return the direct parent type of the passed in type. If the
+// passed in type has no parent, i.e. is a fundamental type, 0 is returned.
+func TypeParent(typ externglib.Type) externglib.Type {
+	var _arg1 C.GType // out
+	var _cret C.GType // in
+
+	_arg1 = C.GType(typ)
+
+	_cret = C.g_type_parent(_arg1)
+
+	var _gType externglib.Type // out
+
+	_gType = externglib.Type(_cret)
+
+	return _gType
+}
+
+func TypeTestFlags(typ externglib.Type, flags uint) bool {
+	var _arg1 C.GType    // out
+	var _arg2 C.guint    // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.GType(typ)
+	_arg2 = C.guint(flags)
+
+	_cret = C.g_type_test_flags(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}

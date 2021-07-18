@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgetter},
+		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidgeter},
 	})
 }
 
@@ -85,7 +85,7 @@ func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
 	}
 }
 
-func marshalAppChooserWidgetter(p uintptr) (interface{}, error) {
+func marshalAppChooserWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserWidget(obj), nil

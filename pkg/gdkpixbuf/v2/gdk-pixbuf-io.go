@@ -3,12 +3,14 @@
 package gdkpixbuf
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -158,9 +160,9 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, ar
 	fn(pixbuf, x, y, width, height)
 }
 
-// PixbufGetFileInfo parses an image file far enough to determine its format and
+// PixbufFileInfo parses an image file far enough to determine its format and
 // size.
-func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
+func PixbufFileInfo(filename string) (width int, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in
@@ -181,7 +183,7 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 	return _width, _height, _pixbufFormat
 }
 
-// PixbufGetFileInfoAsync: asynchronously parses an image file far enough to
+// PixbufFileInfoAsync: asynchronously parses an image file far enough to
 // determine its format and size.
 //
 // For more details see gdk_pixbuf_get_file_info(), which is the synchronous
@@ -190,23 +192,27 @@ func PixbufGetFileInfo(filename string) (width int, height int, pixbufFormat *Pi
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
 // operation.
-func PixbufGetFileInfoAsync(filename string, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg1 *C.gchar              // out
+func PixbufFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
 }
 
-// PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
+// PixbufFileInfoFinish finishes an asynchronous pixbuf parsing operation
 // started with gdk_pixbuf_get_file_info_async().
-func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
+func PixbufFileInfoFinish(asyncResult gio.AsyncResulter) (width int, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in

@@ -176,7 +176,7 @@ func (message *SocketControlMessage) Serialize(data cgo.Handle) {
 //
 // If there is no implementation for this kind of control message, NULL will be
 // returned.
-func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketControlMessage {
+func SocketControlMessageDeserialize(level int, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int // out
 	var _arg2 C.int // out
 	var _arg4 C.gpointer
@@ -192,9 +192,9 @@ func SocketControlMessageDeserialize(level int, typ int, data []byte) *SocketCon
 
 	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
 
-	var _socketControlMessage *SocketControlMessage // out
+	var _socketControlMessage SocketControlMessager // out
 
-	_socketControlMessage = wrapSocketControlMessage(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketControlMessage = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SocketControlMessager)
 
 	return _socketControlMessage
 }

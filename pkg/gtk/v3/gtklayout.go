@@ -99,7 +99,7 @@ func (v *Layout) Native() uintptr {
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing operations.
-func (layout *Layout) BinWindow() *gdk.Window {
+func (layout *Layout) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkLayout // out
 	var _cret *C.GdkWindow // in
 
@@ -107,14 +107,9 @@ func (layout *Layout) BinWindow() *gdk.Window {
 
 	_cret = C.gtk_layout_get_bin_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -186,7 +181,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 }
 
 // Move moves a current child of layout to a new position.
-func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Move(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -202,7 +197,7 @@ func (layout *Layout) Move(childWidget Widgetter, x int, y int) {
 
 // Put adds child_widget to layout, at position (x,y). layout becomes the new
 // parent container of child_widget.
-func (layout *Layout) Put(childWidget Widgetter, x int, y int) {
+func (layout *Layout) Put(childWidget Widgeter, x int, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out

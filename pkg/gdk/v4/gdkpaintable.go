@@ -82,7 +82,7 @@ type PaintableOverrider interface {
 	// for example to take a screenshot of a running animation.
 	//
 	// If the paintable is already immutable, it will return itself.
-	CurrentImage() *Paintable
+	CurrentImage() Paintabler
 	// Flags: get flags for the paintable.
 	//
 	// This is oftentimes useful for optimizations.
@@ -136,7 +136,7 @@ type PaintableOverrider interface {
 	//
 	// The paintable is drawn at the current (0,0) offset of the snapshot. If
 	// width and height are not larger than zero, this function will do nothing.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshoter, width float64, height float64)
 }
 
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
@@ -195,7 +195,7 @@ type Paintabler interface {
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
-	CurrentImage() *Paintable
+	CurrentImage() Paintabler
 	// Flags: get flags for the paintable.
 	Flags() PaintableFlags
 	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
@@ -214,7 +214,7 @@ type Paintabler interface {
 	// their size.
 	InvalidateSize()
 	// Snapshot snapshots the given paintable with the given width and height.
-	Snapshot(snapshot Snapshotter, width float64, height float64)
+	Snapshot(snapshot Snapshoter, width float64, height float64)
 }
 
 var _ Paintabler = (*Paintable)(nil)
@@ -274,7 +274,7 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth float64, specifie
 // example to take a screenshot of a running animation.
 //
 // If the paintable is already immutable, it will return itself.
-func (paintable *Paintable) CurrentImage() *Paintable {
+func (paintable *Paintable) CurrentImage() Paintabler {
 	var _arg0 *C.GdkPaintable // out
 	var _cret *C.GdkPaintable // in
 
@@ -282,9 +282,9 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 
 	_cret = C.gdk_paintable_get_current_image(_arg0)
 
-	var _ret *Paintable // out
+	var _ret Paintabler // out
 
-	_ret = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _ret
 }
@@ -433,7 +433,7 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The paintable is drawn at the current (0,0) offset of the snapshot. If width
 // and height are not larger than zero, this function will do nothing.
-func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height float64) {
+func (paintable *Paintable) Snapshot(snapshot Snapshoter, width float64, height float64) {
 	var _arg0 *C.GdkPaintable // out
 	var _arg1 *C.GdkSnapshot  // out
 	var _arg2 C.double        // out
@@ -447,14 +447,14 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width float64, height
 	C.gdk_paintable_snapshot(_arg0, _arg1, _arg2, _arg3)
 }
 
-// PaintableNewEmpty returns a paintable that has the given intrinsic size and
+// NewPaintableEmpty returns a paintable that has the given intrinsic size and
 // draws nothing.
 //
 // This is often useful for implementing the
 // PaintableInterface.get_current_image() virtual function when the paintable is
 // in an incomplete state (like a gtk.MediaStream before receiving the first
 // frame).
-func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) *Paintable {
+func NewPaintableEmpty(intrinsicWidth int, intrinsicHeight int) Paintabler {
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
 	var _cret *C.GdkPaintable // in
@@ -464,9 +464,9 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) *Paintable {
 
 	_cret = C.gdk_paintable_new_empty(_arg1, _arg2)
 
-	var _paintable *Paintable // out
+	var _paintable Paintabler // out
 
-	_paintable = wrapPaintable(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_paintable = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Paintabler)
 
 	return _paintable
 }

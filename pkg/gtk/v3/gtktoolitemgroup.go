@@ -205,7 +205,7 @@ func (group *ToolItemGroup) Label() string {
 
 // LabelWidget gets the label widget of group. See
 // gtk_tool_item_group_set_label_widget().
-func (group *ToolItemGroup) LabelWidget() *Widget {
+func (group *ToolItemGroup) LabelWidget() Widgeter {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _cret *C.GtkWidget        // in
 
@@ -213,9 +213,9 @@ func (group *ToolItemGroup) LabelWidget() *Widget {
 
 	_cret = C.gtk_tool_item_group_get_label_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -331,7 +331,7 @@ func (group *ToolItemGroup) SetLabel(label string) {
 
 // SetLabelWidget sets the label of the tool item group. The label widget is
 // displayed in the header of the group, in place of the usual label.
-func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
+func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkToolItemGroup // out
 	var _arg1 *C.GtkWidget        // out
 

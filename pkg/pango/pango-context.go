@@ -60,11 +60,8 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.pango_item_free((*C.PangoItem)(v.(unsafe.Pointer)))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _list
@@ -105,11 +102,8 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 		dst = *(*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.pango_item_free((*C.PangoItem)(v.(unsafe.Pointer)))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.pango_item_free((*C.PangoItem)(unsafe.Pointer(v)))
 	})
 
 	return _list
@@ -230,7 +224,7 @@ func (context *Context) FontDescription() *FontDescription {
 }
 
 // FontMap gets the PangoFontMap used to look up fonts for this context.
-func (context *Context) FontMap() *FontMap {
+func (context *Context) FontMap() FontMaper {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoFontMap // in
 
@@ -238,9 +232,9 @@ func (context *Context) FontMap() *FontMap {
 
 	_cret = C.pango_context_get_font_map(_arg0)
 
-	var _fontMap *FontMap // out
+	var _fontMap FontMaper // out
 
-	_fontMap = wrapFontMap(externglib.Take(unsafe.Pointer(_cret)))
+	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMaper)
 
 	return _fontMap
 }
@@ -401,7 +395,7 @@ func (context *Context) Serial() uint {
 }
 
 // ListFamilies: list all families for a context.
-func (context *Context) ListFamilies() []*FontFamily {
+func (context *Context) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoContext // out
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
@@ -410,14 +404,14 @@ func (context *Context) ListFamilies() []*FontFamily {
 
 	C.pango_context_list_families(_arg0, &_arg1, &_arg2)
 
-	var _families []*FontFamily
+	var _families []FontFamilier
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice(_arg1, _arg2)
-		_families = make([]*FontFamily, _arg2)
+		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = wrapFontFamily(externglib.Take(unsafe.Pointer(src[i])))
+			_families[i] = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
 		}
 	}
 
@@ -426,7 +420,7 @@ func (context *Context) ListFamilies() []*FontFamily {
 
 // LoadFont loads the font in one of the fontmaps in the context that is the
 // closest match for desc.
-func (context *Context) LoadFont(desc *FontDescription) *Font {
+func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoFont            // in
@@ -436,16 +430,16 @@ func (context *Context) LoadFont(desc *FontDescription) *Font {
 
 	_cret = C.pango_context_load_font(_arg0, _arg1)
 
-	var _font *Font // out
+	var _font Fonter // out
 
-	_font = wrapFont(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_font = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 
 	return _font
 }
 
 // LoadFontset: load a set of fonts in the context that can be used to render a
 // font matching desc.
-func (context *Context) LoadFontset(desc *FontDescription, language *Language) *Fontset {
+func (context *Context) LoadFontset(desc *FontDescription, language *Language) Fontseter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
 	var _arg2 *C.PangoLanguage        // out
@@ -457,9 +451,9 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) *
 
 	_cret = C.pango_context_load_fontset(_arg0, _arg1, _arg2)
 
-	var _fontset *Fontset // out
+	var _fontset Fontseter // out
 
-	_fontset = wrapFontset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fontset = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontseter)
 
 	return _fontset
 }
@@ -511,7 +505,7 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 //
 // This is only for internal use by Pango backends, a PangoContext obtained via
 // one of the recommended methods should already have a suitable font map.
-func (context *Context) SetFontMap(fontMap FontMapper) {
+func (context *Context) SetFontMap(fontMap FontMaper) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
 

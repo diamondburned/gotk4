@@ -3,11 +3,13 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -234,15 +236,19 @@ func marshalTasker(p uintptr) (interface{}, error) {
 // cancellation may imply that other objects that the task depends on have been
 // destroyed. If you do not want this behavior, you can use
 // g_task_set_check_cancellable() to change it.
-func NewTask(sourceObject *externglib.Object, cancellable *Cancellable, callback AsyncReadyCallback) *Task {
-	var _arg1 C.gpointer            // out
+func NewTask(ctx context.Context, sourceObject *externglib.Object, callback AsyncReadyCallback) *Task {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.gpointer            // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 	var _cret *C.GTask // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 

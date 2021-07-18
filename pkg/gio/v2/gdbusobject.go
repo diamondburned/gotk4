@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -39,7 +38,7 @@ func init() {
 type DBusObjectOverrider interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
-	Interface(interfaceName string) *DBusInterface
+	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
 	Interfaces() *externglib.List
 	// ObjectPath gets the object path for object.
@@ -61,7 +60,7 @@ var _ gextras.Nativer = (*DBusObject)(nil)
 type DBusObjector interface {
 	// Interface gets the D-Bus interface with name interface_name associated
 	// with object, if any.
-	Interface(interfaceName string) *DBusInterface
+	Interface(interfaceName string) DBusInterfacer
 	// Interfaces gets the D-Bus interfaces associated with object.
 	Interfaces() *externglib.List
 	// ObjectPath gets the object path for object.
@@ -84,7 +83,7 @@ func marshalDBusObjector(p uintptr) (interface{}, error) {
 
 // Interface gets the D-Bus interface with name interface_name associated with
 // object, if any.
-func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
+func (object *DBusObject) Interface(interfaceName string) DBusInterfacer {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
 	var _cret *C.GDBusInterface // in
@@ -94,9 +93,9 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 
 	_cret = C.g_dbus_object_get_interface(_arg0, _arg1)
 
-	var _dBusInterface *DBusInterface // out
+	var _dBusInterface DBusInterfacer // out
 
-	_dBusInterface = wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusInterface = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusInterfacer)
 
 	return _dBusInterface
 }
@@ -115,15 +114,12 @@ func (object *DBusObject) Interfaces() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GDBusInterface)(_p)
-		var dst DBusInterface // out
-		dst = *wrapDBusInterface(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst DBusInterfacer // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(DBusInterfacer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list

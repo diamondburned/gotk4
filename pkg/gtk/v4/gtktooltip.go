@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltipper},
+		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltiper},
 	})
 }
 
@@ -58,7 +58,7 @@ func wrapTooltip(obj *externglib.Object) *Tooltip {
 	}
 }
 
-func marshalTooltipper(p uintptr) (interface{}, error) {
+func marshalTooltiper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTooltip(obj), nil
@@ -68,7 +68,7 @@ func marshalTooltipper(p uintptr) (interface{}, error) {
 // custom_widget does not get destroyed when the tooltip goes away. By default a
 // box with a Image and Label is embedded in the tooltip, which can be
 // configured using gtk_tooltip_set_markup() and gtk_tooltip_set_icon().
-func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
+func (tooltip *Tooltip) SetCustom(customWidget Widgeter) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -93,7 +93,7 @@ func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
 // to be the icon indicated by gicon with the size indicated by size. If gicon
 // is NULL, the image will be hidden.
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconer) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 

@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -54,13 +57,13 @@ type PermissionOverrider interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_acquire_async() for the
 	// non-blocking version.
-	Acquire(cancellable *Cancellable) error
+	Acquire(ctx context.Context) error
 	// AcquireAsync attempts to acquire the permission represented by
 	// permission.
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_acquire().
-	AcquireAsync(cancellable *Cancellable, callback AsyncReadyCallback)
+	AcquireAsync(ctx context.Context, callback AsyncReadyCallback)
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
 	//
@@ -82,13 +85,13 @@ type PermissionOverrider interface {
 	// This call is blocking, likely for a very long time (in the case that user
 	// interaction is required). See g_permission_release_async() for the
 	// non-blocking version.
-	Release(cancellable *Cancellable) error
+	Release(ctx context.Context) error
 	// ReleaseAsync attempts to release the permission represented by
 	// permission.
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_release().
-	ReleaseAsync(cancellable *Cancellable, callback AsyncReadyCallback)
+	ReleaseAsync(ctx context.Context, callback AsyncReadyCallback)
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
 	//
@@ -119,10 +122,10 @@ var _ gextras.Nativer = (*Permission)(nil)
 // Permissioner describes Permission's abstract methods.
 type Permissioner interface {
 	// Acquire attempts to acquire the permission represented by permission.
-	Acquire(cancellable *Cancellable) error
+	Acquire(ctx context.Context) error
 	// AcquireAsync attempts to acquire the permission represented by
 	// permission.
-	AcquireAsync(cancellable *Cancellable, callback AsyncReadyCallback)
+	AcquireAsync(ctx context.Context, callback AsyncReadyCallback)
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
 	AcquireFinish(result AsyncResulter) error
@@ -136,10 +139,10 @@ type Permissioner interface {
 	// update the properties of the permission.
 	ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
 	// Release attempts to release the permission represented by permission.
-	Release(cancellable *Cancellable) error
+	Release(ctx context.Context) error
 	// ReleaseAsync attempts to release the permission represented by
 	// permission.
-	ReleaseAsync(cancellable *Cancellable, callback AsyncReadyCallback)
+	ReleaseAsync(ctx context.Context, callback AsyncReadyCallback)
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
 	ReleaseFinish(result AsyncResulter) error
@@ -174,13 +177,17 @@ func marshalPermissioner(p uintptr) (interface{}, error) {
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
-func (permission *Permission) Acquire(cancellable *Cancellable) error {
+func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_permission_acquire(_arg0, _arg1, &_cerr)
 
@@ -194,14 +201,18 @@ func (permission *Permission) Acquire(cancellable *Cancellable) error {
 // AcquireAsync attempts to acquire the permission represented by permission.
 //
 // This is the first half of the asynchronous version of g_permission_acquire().
-func (permission *Permission) AcquireAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -330,13 +341,17 @@ func (permission *Permission) ImplUpdate(allowed bool, canAcquire bool, canRelea
 // This call is blocking, likely for a very long time (in the case that user
 // interaction is required). See g_permission_release_async() for the
 // non-blocking version.
-func (permission *Permission) Release(cancellable *Cancellable) error {
+func (permission *Permission) Release(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_permission_release(_arg0, _arg1, &_cerr)
 
@@ -350,14 +365,18 @@ func (permission *Permission) Release(cancellable *Cancellable) error {
 // ReleaseAsync attempts to release the permission represented by permission.
 //
 // This is the first half of the asynchronous version of g_permission_release().
-func (permission *Permission) ReleaseAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 

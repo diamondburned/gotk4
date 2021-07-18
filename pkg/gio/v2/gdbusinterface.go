@@ -38,7 +38,7 @@ func init() {
 // yet, so the interface currently has no use.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that interface_ belongs to, if any.
-	DupObject() *DBusObject
+	DupObject() DBusObjector
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
 	Info() *DBusInterfaceInfo
@@ -59,7 +59,7 @@ var _ gextras.Nativer = (*DBusInterface)(nil)
 // DBusInterfacer describes DBusInterface's abstract methods.
 type DBusInterfacer interface {
 	// DupObject gets the BusObject that interface_ belongs to, if any.
-	DupObject() *DBusObject
+	DupObject() DBusObjector
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
 	Info() *DBusInterfaceInfo
@@ -82,7 +82,7 @@ func marshalDBusInterfacer(p uintptr) (interface{}, error) {
 }
 
 // DupObject gets the BusObject that interface_ belongs to, if any.
-func (interface_ *DBusInterface) DupObject() *DBusObject {
+func (interface_ *DBusInterface) DupObject() DBusObjector {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
 
@@ -90,9 +90,9 @@ func (interface_ *DBusInterface) DupObject() *DBusObject {
 
 	_cret = C.g_dbus_interface_dup_object(_arg0)
 
-	var _dBusObject *DBusObject // out
+	var _dBusObject DBusObjector // out
 
-	_dBusObject = wrapDBusObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObject = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(DBusObjector)
 
 	return _dBusObject
 }

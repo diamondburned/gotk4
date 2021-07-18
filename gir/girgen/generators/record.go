@@ -156,6 +156,7 @@ type RecordGenerator struct {
 	// TODO: make a []callableGenerator for constructors
 	Callable callable.Generator
 
+	typ gir.TypeFindResult
 	hdr file.Header
 	gen FileGenerator
 }
@@ -192,6 +193,9 @@ func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 		rg.hdr.NeedsGLibObject()
 	}
 
+	rg.typ.NamespaceFindResult = rg.gen.Namespace()
+	rg.typ.Type = rec
+
 	rg.Record = rec
 	rg.GoName = strcases.PascalToGo(rec.Name)
 	rg.Methods = rg.methods()
@@ -201,7 +205,7 @@ func (rg *RecordGenerator) Use(rec *gir.Record) bool {
 }
 
 func (rg *RecordGenerator) UseConstructor(ctor *gir.Constructor, className string) bool {
-	if !rg.Callable.Use(&ctor.CallableAttrs) {
+	if !rg.Callable.Use(&rg.typ, &ctor.CallableAttrs) {
 		return false
 	}
 
@@ -219,7 +223,7 @@ func (rg *RecordGenerator) methods() []callable.Generator {
 		method := &rg.Record.Methods[i]
 
 		cbgen := callable.NewGenerator(rg.gen)
-		if !cbgen.Use(&method.CallableAttrs) {
+		if !cbgen.Use(&rg.typ, &method.CallableAttrs) {
 			rg.Logln(logger.Skip, "record", rg.Name, "method", method.Name)
 			continue
 		}
@@ -276,7 +280,7 @@ func (rg *RecordGenerator) getters() []recordGetter {
 		fields = append(fields, value)
 	}
 
-	converter := typeconv.NewConverter(rg.gen, fields)
+	converter := typeconv.NewConverter(rg.gen, &rg.typ, fields)
 	converter.UseLogger(rg)
 
 	for i := range fields {

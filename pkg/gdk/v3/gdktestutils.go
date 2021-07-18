@@ -18,7 +18,7 @@ import "C"
 //
 // This function is intended to be used to synchronize with rendering pipelines,
 // to benchmark windowing system rendering operations.
-func TestRenderSync(window Windowwer) {
+func TestRenderSync(window Windower) {
 	var _arg1 *C.GdkWindow // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer((window).(gextras.Nativer).Native()))
@@ -37,7 +37,7 @@ func TestRenderSync(window Windowwer) {
 // testing purposes, gtk_test_widget_click() is the right function to call which
 // will generate a button press event followed by its accompanying button
 // release event.
-func TestSimulateButton(window Windowwer, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
+func TestSimulateButton(window Windower, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
@@ -78,7 +78,7 @@ func TestSimulateButton(window Windowwer, x int, y int, button uint, modifiers M
 // testing purposes, gtk_test_widget_send_key() is the right function to call
 // which will generate a key press event followed by its accompanying key
 // release event.
-func TestSimulateKey(window Windowwer, x int, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
+func TestSimulateKey(window Windower, x int, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out

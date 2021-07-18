@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtonner},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButtoner},
 	})
 }
 
@@ -118,7 +118,7 @@ func wrapButton(obj *externglib.Object) *Button {
 	}
 }
 
-func marshalButtonner(p uintptr) (interface{}, error) {
+func marshalButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapButton(obj), nil
@@ -294,7 +294,7 @@ func (button *Button) AlwaysShowImage() bool {
 
 // EventWindow returns the button’s event window if it is realized, NULL
 // otherwise. This function should be rarely needed.
-func (button *Button) EventWindow() *gdk.Window {
+func (button *Button) EventWindow() gdk.Windower {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GdkWindow // in
 
@@ -302,14 +302,9 @@ func (button *Button) EventWindow() *gdk.Window {
 
 	_cret = C.gtk_button_get_event_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -338,7 +333,7 @@ func (button *Button) FocusOnClick() bool {
 // Image gets the widget that is currenty set as the image of button. This may
 // have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
-func (button *Button) Image() *Widget {
+func (button *Button) Image() Widgeter {
 	var _arg0 *C.GtkButton // out
 	var _cret *C.GtkWidget // in
 
@@ -346,9 +341,9 @@ func (button *Button) Image() *Widget {
 
 	_cret = C.gtk_button_get_image(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -532,7 +527,7 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 // SetImage: set the image of button to the given widget. The image will be
 // displayed if the label text is NULL or if Button:always-show-image is TRUE.
 // You don’t have to call gtk_widget_show() on image yourself.
-func (button *Button) SetImage(image Widgetter) {
+func (button *Button) SetImage(image Widgeter) {
 	var _arg0 *C.GtkButton // out
 	var _arg1 *C.GtkWidget // out
 

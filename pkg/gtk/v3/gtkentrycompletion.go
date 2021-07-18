@@ -70,9 +70,9 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.gc
 // yet, so the interface currently has no use.
 type EntryCompletionOverrider interface {
 	ActionActivated(index_ int)
-	CursorOnMatch(model TreeModeller, iter *TreeIter) bool
+	CursorOnMatch(model TreeModeler, iter *TreeIter) bool
 	InsertPrefix(prefix string) bool
-	MatchSelected(model TreeModeller, iter *TreeIter) bool
+	MatchSelected(model TreeModeler, iter *TreeIter) bool
 	NoMatches()
 }
 
@@ -237,7 +237,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 }
 
 // Entry gets the entry completion has been attached to.
-func (completion *EntryCompletion) Entry() *Widget {
+func (completion *EntryCompletion) Entry() Widgeter {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkWidget          // in
 
@@ -245,9 +245,9 @@ func (completion *EntryCompletion) Entry() *Widget {
 
 	_cret = C.gtk_entry_completion_get_entry(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -307,7 +307,7 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 
 // Model returns the model the EntryCompletion is using as data source. Returns
 // NULL if the model is unset.
-func (completion *EntryCompletion) Model() *TreeModel {
+func (completion *EntryCompletion) Model() TreeModeler {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -315,9 +315,9 @@ func (completion *EntryCompletion) Model() *TreeModel {
 
 	_cret = C.gtk_entry_completion_get_model(_arg0)
 
-	var _treeModel *TreeModel // out
+	var _treeModel TreeModeler // out
 
-	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
+	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
 
 	return _treeModel
 }
@@ -498,7 +498,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 // SetModel sets the model for a EntryCompletion. If completion already has a
 // model set, it will remove it before setting the new model. If model is NULL,
 // then it will unset the model.
-func (completion *EntryCompletion) SetModel(model TreeModeller) {
+func (completion *EntryCompletion) SetModel(model TreeModeler) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 *C.GtkTreeModel       // out
 

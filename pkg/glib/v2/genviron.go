@@ -132,7 +132,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 	return _filenames
 }
 
-// GetEnviron gets the list of environment variables for the current process.
+// Environ gets the list of environment variables for the current process.
 //
 // The list is NULL terminated and each item in the list is of the form
 // 'NAME=VALUE'.
@@ -142,7 +142,7 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
-func GetEnviron() []string {
+func Environ() []string {
 	var _cret **C.gchar
 
 	_cret = C.g_get_environ()
@@ -166,13 +166,13 @@ func GetEnviron() []string {
 	return _filenames
 }
 
-// Getenv returns the value of an environment variable.
+// Env returns the value of an environment variable.
 //
 // On UNIX, the name and value are byte strings which might or might not be in
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
-func Getenv(variable string) string {
+func env(variable string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
 

@@ -35,7 +35,7 @@ func init() {
 		{T: externglib.Type(C.gdk_wm_function_get_type()), F: marshalWMFunction},
 		{T: externglib.Type(C.gdk_window_attributes_type_get_type()), F: marshalWindowAttributesType},
 		{T: externglib.Type(C.gdk_window_hints_get_type()), F: marshalWindowHints},
-		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindowwer},
+		{T: externglib.Type(C.gdk_window_get_type()), F: marshalWindower},
 	})
 }
 
@@ -620,7 +620,7 @@ func (w WindowHints) String() string {
 // WindowChildFunc: function of this type is passed to
 // gdk_window_invalidate_maybe_recurse(). It gets called for each child of the
 // window to determine whether to recursively invalidate it or now.
-type WindowChildFunc func(window *Window) (ok bool)
+type WindowChildFunc func(window Windower) (ok bool)
 
 //export _gotk4_gdk3_WindowChildFunc
 func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gboolean) {
@@ -629,9 +629,9 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 		panic(`callback not found`)
 	}
 
-	var window *Window // out
+	var window Windower // out
 
-	window = wrapWindow(externglib.Take(unsafe.Pointer(arg0)))
+	window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Windower)
 
 	fn := v.(WindowChildFunc)
 	ok := fn(window)
@@ -643,22 +643,22 @@ func _gotk4_gdk3_WindowChildFunc(arg0 *C.GdkWindow, arg1 C.gpointer) (cret C.gbo
 	return cret
 }
 
-// GetDefaultRootWindow obtains the root window (parent all other windows are
+// DefaultRootWindow obtains the root window (parent all other windows are
 // inside) for the default display and screen.
-func GetDefaultRootWindow() *Window {
+func DefaultRootWindow() Windower {
 	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_get_default_root_window()
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
 
 // OffscreenWindowGetEmbedder gets the window that window is embedded in.
-func OffscreenWindowGetEmbedder(window Windowwer) *Window {
+func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _arg1 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -666,9 +666,9 @@ func OffscreenWindowGetEmbedder(window Windowwer) *Window {
 
 	_cret = C.gdk_offscreen_window_get_embedder(_arg1)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -676,7 +676,7 @@ func OffscreenWindowGetEmbedder(window Windowwer) *Window {
 // OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
 // renders into. If you need to keep this around over window resizes, you need
 // to add a reference to it.
-func OffscreenWindowGetSurface(window Windowwer) *cairo.Surface {
+func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
 	var _cret *C.cairo_surface_t // in
 
@@ -700,7 +700,7 @@ func OffscreenWindowGetSurface(window Windowwer) *cairo.Surface {
 // is also necessary to handle the Window::pick-embedded-child signal on the
 // embedder and the Window::to-embedder and Window::from-embedder signals on
 // window.
-func OffscreenWindowSetEmbedder(window Windowwer, embedder Windowwer) {
+func OffscreenWindowSetEmbedder(window Windower, embedder Windower) {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 *C.GdkWindow // out
 
@@ -726,8 +726,8 @@ type Window struct {
 
 var _ gextras.Nativer = (*Window)(nil)
 
-// Windowwer describes Window's abstract methods.
-type Windowwer interface {
+// Windower describes Window's abstract methods.
+type Windower interface {
 	// Beep emits a short beep associated to window in the appropriate display,
 	// if supported.
 	Beep()
@@ -765,7 +765,7 @@ type Windowwer interface {
 	CoordsToParent(x float64, y float64) (parentX float64, parentY float64)
 	// CreateGLContext creates a new GLContext matching the framebuffer format
 	// to the visual of the Window.
-	CreateGLContext() (*GLContext, error)
+	CreateGLContext() (GLContexter, error)
 	// CreateSimilarImageSurface: create a new image surface that is efficient
 	// to draw on the given window.
 	CreateSimilarImageSurface(format cairo.Format, width int, height int, scale int) *cairo.Surface
@@ -826,29 +826,29 @@ type Windowwer interface {
 	Composited() bool
 	// Cursor retrieves a Cursor pointer for the cursor currently set on the
 	// specified Window, or NULL.
-	Cursor() *Cursor
+	Cursor() Cursorer
 	// Decorations returns the decorations set on the GdkWindow with
 	// gdk_window_set_decorations().
 	Decorations() (WMDecoration, bool)
 	// DeviceCursor retrieves a Cursor pointer for the device currently set on
 	// the specified Window, or NULL.
-	DeviceCursor(device Devicer) *Cursor
+	DeviceCursor(device Devicer) Cursorer
 	// DeviceEvents returns the event mask for window corresponding to an
 	// specific device.
 	DeviceEvents(device Devicer) EventMask
 	// DevicePosition obtains the current device position and modifier state.
-	DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret *Window)
+	DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret Windower)
 	// DevicePositionDouble obtains the current device position in doubles and
 	// modifier state.
-	DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret *Window)
+	DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret Windower)
 	// Display gets the Display associated with a Window.
 	Display() *Display
 	// DragProtocol finds out the DND protocol supported by a window.
-	DragProtocol() (*Window, DragProtocol)
+	DragProtocol() (Windower, DragProtocol)
 	// EffectiveParent obtains the parent of window, as known to GDK.
-	EffectiveParent() *Window
+	EffectiveParent() Windower
 	// EffectiveToplevel gets the toplevel window that’s an ancestor of window.
-	EffectiveToplevel() *Window
+	EffectiveToplevel() Windower
 	// EventCompression: get the current event compression setting for this
 	// window.
 	EventCompression() bool
@@ -859,7 +859,7 @@ type Windowwer interface {
 	// mapped.
 	FocusOnMap() bool
 	// FrameClock gets the frame clock for the window.
-	FrameClock() *FrameClock
+	FrameClock() FrameClocker
 	// FrameExtents obtains the bounding box of the window, including window
 	// manager titlebar/borders if any.
 	FrameExtents() Rectangle
@@ -869,7 +869,7 @@ type Windowwer interface {
 	// NULL, if you aren’t interested in getting the value of that field.
 	Geometry() (x int, y int, width int, height int)
 	// Group returns the group leader window for window.
-	Group() *Window
+	Group() Windower
 	// Height returns the height of the given window.
 	Height() int
 	// ModalHint determines whether or not the window manager is hinted that
@@ -878,12 +878,12 @@ type Windowwer interface {
 	// Origin obtains the position of a window in root window coordinates.
 	Origin() (x int, y int, gint int)
 	// Parent obtains the parent of window, as known to GDK.
-	Parent() *Window
+	Parent() Windower
 	// PassThrough returns whether input to the window is passed through to the
 	// window below.
 	PassThrough() bool
 	// Pointer obtains the current pointer position and modifier state.
-	Pointer() (x int, y int, mask ModifierType, ret *Window)
+	Pointer() (x int, y int, mask ModifierType, ret Windower)
 	// Position obtains the position of the window as reported in the
 	// most-recently-processed EventConfigure.
 	Position() (x int, y int)
@@ -908,7 +908,7 @@ type Windowwer interface {
 	// of multiple devices.
 	SupportMultidevice() bool
 	// Toplevel gets the toplevel window that’s an ancestor of window.
-	Toplevel() *Window
+	Toplevel() Windower
 	// TypeHint: this function returns the type hint set for a window.
 	TypeHint() WindowTypeHint
 	// UpdateArea transfers ownership of the update area from window to the
@@ -991,14 +991,14 @@ type Windowwer interface {
 	// RegisterDnd registers a window as a potential drop destination.
 	RegisterDnd()
 	// Reparent reparents window into the given new_parent.
-	Reparent(newParent Windowwer, x int, y int)
+	Reparent(newParent Windower, x int, y int)
 	// Resize resizes window; for toplevel windows, asks the window manager to
 	// resize the window.
 	Resize(width int, height int)
 	// Restack changes the position of window in the Z-order (stacking order),
 	// so that it is above sibling (if above is TRUE) or below sibling (if above
 	// is FALSE).
-	Restack(sibling Windowwer, above bool)
+	Restack(sibling Windower, above bool)
 	// Scroll the contents of window, both pixels and children, by the given
 	// amount.
 	Scroll(dx int, dy int)
@@ -1021,13 +1021,13 @@ type Windowwer interface {
 	// SetComposited sets a Window as composited, or unsets it.
 	SetComposited(composited bool)
 	// SetCursor sets the default mouse pointer for a Window.
-	SetCursor(cursor Cursorrer)
+	SetCursor(cursor Cursorer)
 	// SetDecorations: “Decorations” are the features the window manager adds to
 	// a toplevel Window.
 	SetDecorations(decorations WMDecoration)
 	// SetDeviceCursor sets a specific Cursor for a given device when it gets
 	// inside window.
-	SetDeviceCursor(device Devicer, cursor Cursorrer)
+	SetDeviceCursor(device Devicer, cursor Cursorer)
 	// SetDeviceEvents sets the event mask for a given device (Normally a
 	// floating device, not attached to any visible pointer) to window.
 	SetDeviceEvents(device Devicer, eventMask EventMask)
@@ -1051,7 +1051,7 @@ type Windowwer interface {
 	// SetGeometryHints sets the geometry hints for window.
 	SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 	// SetGroup sets the group leader window for window.
-	SetGroup(leader Windowwer)
+	SetGroup(leader Windower)
 	// SetIconName windows may have a name used while minimized, distinct from
 	// the name they display in their titlebar.
 	SetIconName(name string)
@@ -1105,7 +1105,7 @@ type Windowwer interface {
 	SetTitle(title string)
 	// SetTransientFor indicates to the window manager that window is a
 	// transient dialog associated with the application window parent.
-	SetTransientFor(parent Windowwer)
+	SetTransientFor(parent Windower)
 	// SetTypeHint: application can use this call to provide a hint to the
 	// window manager about the functionality of a window.
 	SetTypeHint(hint WindowTypeHint)
@@ -1145,7 +1145,7 @@ type Windowwer interface {
 	Withdraw()
 }
 
-var _ Windowwer = (*Window)(nil)
+var _ Windower = (*Window)(nil)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -1153,7 +1153,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindowwer(p uintptr) (interface{}, error) {
+func marshalWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil
@@ -1162,7 +1162,7 @@ func marshalWindowwer(p uintptr) (interface{}, error) {
 // NewWindow creates a new Window using the attributes from attributes. See
 // WindowAttr and WindowAttributesType for more details. Note: to use this on
 // displays other than the default display, parent must be specified.
-func NewWindow(parent Windowwer, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
+func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
 	var _arg1 *C.GdkWindow     // out
 	var _arg2 *C.GdkWindowAttr // out
 	var _arg3 C.gint           // out
@@ -1480,7 +1480,7 @@ func (window *Window) CoordsToParent(x float64, y float64) (parentX float64, par
 //
 // Before using the returned GLContext, you will need to call
 // gdk_gl_context_make_current() or gdk_gl_context_realize().
-func (window *Window) CreateGLContext() (*GLContext, error) {
+func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkWindow    // out
 	var _cret *C.GdkGLContext // in
 	var _cerr *C.GError       // in
@@ -1489,10 +1489,10 @@ func (window *Window) CreateGLContext() (*GLContext, error) {
 
 	_cret = C.gdk_window_create_gl_context(_arg0, &_cerr)
 
-	var _glContext *GLContext // out
-	var _goerr error          // out
+	var _glContext GLContexter // out
+	var _goerr error           // out
 
-	_glContext = wrapGLContext(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_glContext = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(GLContexter)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _glContext, _goerr
@@ -1839,11 +1839,11 @@ func (window *Window) Children() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst Windower // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1870,11 +1870,11 @@ func (window *Window) ChildrenWithUserData(userData cgo.Handle) *externglib.List
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst Windower // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -1932,7 +1932,7 @@ func (window *Window) Composited() bool {
 // specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
-func (window *Window) Cursor() *Cursor {
+func (window *Window) Cursor() Cursorer {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkCursor // in
 
@@ -1940,9 +1940,9 @@ func (window *Window) Cursor() *Cursor {
 
 	_cret = C.gdk_window_get_cursor(_arg0)
 
-	var _cursor *Cursor // out
+	var _cursor Cursorer // out
 
-	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	_cursor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorer)
 
 	return _cursor
 }
@@ -1973,7 +1973,7 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 // specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
-func (window *Window) DeviceCursor(device Devicer) *Cursor {
+func (window *Window) DeviceCursor(device Devicer) Cursorer {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _cret *C.GdkCursor // in
@@ -1983,9 +1983,9 @@ func (window *Window) DeviceCursor(device Devicer) *Cursor {
 
 	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 
-	var _cursor *Cursor // out
+	var _cursor Cursorer // out
 
-	_cursor = wrapCursor(externglib.Take(unsafe.Pointer(_cret)))
+	_cursor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Cursorer)
 
 	return _cursor
 }
@@ -2013,7 +2013,7 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 // position is given in coordinates relative to the upper left corner of window.
 //
 // Use gdk_window_get_device_position_double() if you need subpixel precision.
-func (window *Window) DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret *Window) {
+func (window *Window) DevicePosition(device Devicer) (x int, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkDevice      // out
 	var _arg2 C.gint            // in
@@ -2029,12 +2029,12 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 	var _x int             // out
 	var _y int             // out
 	var _mask ModifierType // out
-	var _ret *Window       // out
+	var _ret Windower      // out
 
 	_x = int(_arg2)
 	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2042,7 +2042,7 @@ func (window *Window) DevicePosition(device Devicer) (x int, y int, mask Modifie
 // DevicePositionDouble obtains the current device position in doubles and
 // modifier state. The position is given in coordinates relative to the upper
 // left corner of window.
-func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret *Window) {
+func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkDevice      // out
 	var _arg2 C.gdouble         // in
@@ -2058,12 +2058,12 @@ func (window *Window) DevicePositionDouble(device Devicer) (x float64, y float64
 	var _x float64         // out
 	var _y float64         // out
 	var _mask ModifierType // out
-	var _ret *Window       // out
+	var _ret Windower      // out
 
 	_x = float64(_arg2)
 	_y = float64(_arg3)
 	_mask = ModifierType(_arg4)
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2085,7 +2085,7 @@ func (window *Window) Display() *Display {
 }
 
 // DragProtocol finds out the DND protocol supported by a window.
-func (window *Window) DragProtocol() (*Window, DragProtocol) {
+func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 *C.GdkWindow      // in
 	var _cret C.GdkDragProtocol // in
@@ -2094,10 +2094,10 @@ func (window *Window) DragProtocol() (*Window, DragProtocol) {
 
 	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
 
-	var _target *Window            // out
+	var _target Windower           // out
 	var _dragProtocol DragProtocol // out
 
-	_target = wrapWindow(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))
+	_target = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg1)))).(Windower)
 	_dragProtocol = DragProtocol(_cret)
 
 	return _target, _dragProtocol
@@ -2108,7 +2108,7 @@ func (window *Window) DragProtocol() (*Window, DragProtocol) {
 // for offscreen windows.
 //
 // See also: gdk_offscreen_window_get_embedder()
-func (window *Window) EffectiveParent() *Window {
+func (window *Window) EffectiveParent() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -2116,9 +2116,9 @@ func (window *Window) EffectiveParent() *Window {
 
 	_cret = C.gdk_window_get_effective_parent(_arg0)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2129,7 +2129,7 @@ func (window *Window) EffectiveParent() *Window {
 // embedder as its parent, using gdk_window_get_effective_parent().
 //
 // See also: gdk_offscreen_window_get_embedder()
-func (window *Window) EffectiveToplevel() *Window {
+func (window *Window) EffectiveToplevel() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -2137,9 +2137,9 @@ func (window *Window) EffectiveToplevel() *Window {
 
 	_cret = C.gdk_window_get_effective_toplevel(_arg0)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2200,7 +2200,7 @@ func (window *Window) FocusOnMap() bool {
 
 // FrameClock gets the frame clock for the window. The frame clock for a window
 // never changes unless the window is reparented to a new toplevel window.
-func (window *Window) FrameClock() *FrameClock {
+func (window *Window) FrameClock() FrameClocker {
 	var _arg0 *C.GdkWindow     // out
 	var _cret *C.GdkFrameClock // in
 
@@ -2208,9 +2208,9 @@ func (window *Window) FrameClock() *FrameClock {
 
 	_cret = C.gdk_window_get_frame_clock(_arg0)
 
-	var _frameClock *FrameClock // out
+	var _frameClock FrameClocker // out
 
-	_frameClock = wrapFrameClock(externglib.Take(unsafe.Pointer(_cret)))
+	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FrameClocker)
 
 	return _frameClock
 }
@@ -2294,7 +2294,7 @@ func (window *Window) Geometry() (x int, y int, width int, height int) {
 }
 
 // Group returns the group leader window for window. See gdk_window_set_group().
-func (window *Window) Group() *Window {
+func (window *Window) Group() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -2302,9 +2302,9 @@ func (window *Window) Group() *Window {
 
 	_cret = C.gdk_window_get_group(_arg0)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2382,7 +2382,7 @@ func (window *Window) Origin() (x int, y int, gint int) {
 // generic code that walks up a window hierarchy, because
 // gdk_window_get_parent() will most likely not do what you expect if there are
 // offscreen windows in the hierarchy.
-func (window *Window) Parent() *Window {
+func (window *Window) Parent() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -2390,9 +2390,9 @@ func (window *Window) Parent() *Window {
 
 	_cret = C.gdk_window_get_parent(_arg0)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -2422,7 +2422,7 @@ func (window *Window) PassThrough() bool {
 // is given in coordinates relative to the upper left corner of window.
 //
 // Deprecated: Use gdk_window_get_device_position() instead.
-func (window *Window) Pointer() (x int, y int, mask ModifierType, ret *Window) {
+func (window *Window) Pointer() (x int, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
 	var _arg1 C.gint            // in
 	var _arg2 C.gint            // in
@@ -2436,12 +2436,12 @@ func (window *Window) Pointer() (x int, y int, mask ModifierType, ret *Window) {
 	var _x int             // out
 	var _y int             // out
 	var _mask ModifierType // out
-	var _ret *Window       // out
+	var _ret Windower      // out
 
 	_x = int(_arg1)
 	_y = int(_arg2)
 	_mask = ModifierType(_arg3)
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _x, _y, _mask, _ret
 }
@@ -2621,7 +2621,7 @@ func (window *Window) SupportMultidevice() bool {
 // get to a window’s toplevel as seen on screen, because
 // gdk_window_get_toplevel() will most likely not do what you expect if there
 // are offscreen windows in the hierarchy.
-func (window *Window) Toplevel() *Window {
+func (window *Window) Toplevel() Windower {
 	var _arg0 *C.GdkWindow // out
 	var _cret *C.GdkWindow // in
 
@@ -2629,9 +2629,9 @@ func (window *Window) Toplevel() *Window {
 
 	_cret = C.gdk_window_get_toplevel(_arg0)
 
-	var _ret *Window // out
+	var _ret Windower // out
 
-	_ret = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _ret
 }
@@ -3205,8 +3205,8 @@ func (window *Window) PeekChildren() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkWindow)(_p)
-		var dst Window // out
-		dst = *wrapWindow(externglib.Take(unsafe.Pointer(src)))
+		var dst Windower // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Windower)
 		return dst
 	})
 
@@ -3261,7 +3261,7 @@ func (window *Window) RegisterDnd() {
 
 // Reparent reparents window into the given new_parent. The window being
 // reparented will be unmapped as a side effect.
-func (window *Window) Reparent(newParent Windowwer, x int, y int) {
+func (window *Window) Reparent(newParent Windower, x int, y int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out
@@ -3305,7 +3305,7 @@ func (window *Window) Resize(width int, height int) {
 // If window is a toplevel, the window manager may choose to deny the request to
 // move the window in the Z-order, gdk_window_restack() only requests the
 // restack, does not guarantee it.
-func (window *Window) Restack(sibling Windowwer, above bool) {
+func (window *Window) Restack(sibling Windower, above bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gboolean   // out
@@ -3474,7 +3474,7 @@ func (window *Window) SetComposited(composited bool) {
 // the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR. Passing NULL
 // for the cursor argument to gdk_window_set_cursor() means that window will use
 // the cursor of its parent window. Most windows should use this default.
-func (window *Window) SetCursor(cursor Cursorrer) {
+func (window *Window) SetCursor(cursor Cursorer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkCursor // out
 
@@ -3513,7 +3513,7 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 // Passing NULL for the cursor argument to gdk_window_set_cursor() means that
 // window will use the cursor of its parent window. Most windows should use this
 // default.
-func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
+func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorer) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkDevice // out
 	var _arg2 *C.GdkCursor // out
@@ -3688,7 +3688,7 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 // minimize/unminimize all windows belonging to an application at once. You
 // should only set a non-default group window if your application pretends to be
 // multiple applications.
-func (window *Window) SetGroup(leader Windowwer) {
+func (window *Window) SetGroup(leader Windower) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4052,7 +4052,7 @@ func (window *Window) SetTitle(title string) {
 // parent.
 //
 // See gtk_window_set_transient_for() if you’re using Window or Dialog.
-func (window *Window) SetTransientFor(parent Windowwer) {
+func (window *Window) SetTransientFor(parent Windower) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4269,20 +4269,20 @@ func (window *Window) Withdraw() {
 // gdk_display_get_window_at_pointer() instead.
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
-func WindowAtPointer() (winX int, winY int, window *Window) {
+func WindowAtPointer() (winX int, winY int, window Windower) {
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
 	var _cret *C.GdkWindow // in
 
 	_cret = C.gdk_window_at_pointer(&_arg1, &_arg2)
 
-	var _winX int       // out
-	var _winY int       // out
-	var _window *Window // out
+	var _winX int        // out
+	var _winY int        // out
+	var _window Windower // out
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -4561,9 +4561,9 @@ func (w *WindowAttr) WindowType() WindowType {
 }
 
 // Cursor: cursor for the window (see gdk_window_set_cursor())
-func (w *WindowAttr) Cursor() *Cursor {
-	var v *Cursor // out
-	v = wrapCursor(externglib.Take(unsafe.Pointer(w.native.cursor)))
+func (w *WindowAttr) Cursor() Cursorer {
+	var v Cursorer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(w.native.cursor)))).(Cursorer)
 	return v
 }
 

@@ -84,7 +84,7 @@ func (s StyleContextPrintFlags) String() string {
 // shape.
 //
 // Deprecated: Use gtk_render_insertion_cursor() instead.
-func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
+func DrawInsertionCursor(widget Widgeter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 *C.GdkRectangle    // out
@@ -451,7 +451,7 @@ func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 }
 
 // FrameClock returns the FrameClock to which context is attached.
-func (context *StyleContext) FrameClock() *gdk.FrameClock {
+func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret *C.GdkFrameClock   // in
 
@@ -459,14 +459,9 @@ func (context *StyleContext) FrameClock() *gdk.FrameClock {
 
 	_cret = C.gtk_style_context_get_frame_clock(_arg0)
 
-	var _frameClock *gdk.FrameClock // out
+	var _frameClock gdk.FrameClocker // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_frameClock = &gdk.FrameClock{
-			Object: obj,
-		}
-	}
+	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 
 	return _frameClock
 }
@@ -776,7 +771,7 @@ func (context *StyleContext) ListClasses() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -795,7 +790,7 @@ func (context *StyleContext) ListRegions() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -876,7 +871,7 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 // the style places the transition under the :hover pseudo-class.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) NotifyStateChange(window gdk.Windowwer, regionId cgo.Handle, state StateType, stateValue bool) {
+func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId cgo.Handle, state StateType, stateValue bool) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gpointer         // out
@@ -992,7 +987,7 @@ func (context *StyleContext) Save() {
 // animation are scrolled together with it.
 //
 // Deprecated: This function does nothing.
-func (context *StyleContext) ScrollAnimations(window gdk.Windowwer, dx int, dy int) {
+func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx int, dy int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.gint             // out
@@ -1012,7 +1007,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windowwer, dx int, dy i
 // Deprecated: Use gtk_render_background() instead. Note that clients still
 // using this function are now responsible for calling this function again
 // whenever context is invalidated.
-func (context *StyleContext) SetBackground(window gdk.Windowwer) {
+func (context *StyleContext) SetBackground(window gdk.Windower) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 *C.GdkWindow       // out
 

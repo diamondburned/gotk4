@@ -78,7 +78,7 @@ func (s ShortcutActionFlags) String() string {
 }
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
-type ShortcutFunc func(widget *Widget, args *glib.Variant) (ok bool)
+type ShortcutFunc func(widget Widgeter, args *glib.Variant) (ok bool)
 
 //export _gotk4_gtk4_ShortcutFunc
 func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) (cret C.gboolean) {
@@ -87,10 +87,10 @@ func _gotk4_gtk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpoint
 		panic(`callback not found`)
 	}
 
-	var widget *Widget     // out
+	var widget Widgeter    // out
 	var args *glib.Variant // out
 
-	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
+	widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgeter)
 	args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
 	runtime.SetFinalizer(args, func(v *glib.Variant) {
@@ -130,11 +130,11 @@ func marshalActivateActioner(p uintptr) (interface{}, error) {
 
 func (*ActivateAction) privateActivateAction() {}
 
-// ActivateActionGet gets the activate action.
+// ActivateAction gets the activate action.
 //
 // This is an action that calls gtk_widget_activate() on the given widget upon
 // activation.
-func ActivateActionGet() *ActivateAction {
+func ActivateAction() *ActivateAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_cret = C.gtk_activate_action_get()
@@ -213,11 +213,11 @@ func marshalMnemonicActioner(p uintptr) (interface{}, error) {
 
 func (*MnemonicAction) privateMnemonicAction() {}
 
-// MnemonicActionGet gets the mnemonic action.
+// MnemonicAction gets the mnemonic action.
 //
 // This is an action that calls gtk_widget_mnemonic_activate() on the given
 // widget upon activation.
-func MnemonicActionGet() *MnemonicAction {
+func MnemonicAction() *MnemonicAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_cret = C.gtk_mnemonic_action_get()
@@ -310,10 +310,10 @@ func marshalNothingActioner(p uintptr) (interface{}, error) {
 
 func (*NothingAction) privateNothingAction() {}
 
-// NothingActionGet gets the nothing action.
+// NothingAction gets the nothing action.
 //
 // This is an action that does nothing and where activating it always fails.
-func NothingActionGet() *NothingAction {
+func NothingAction() *NothingAction {
 	var _cret *C.GtkShortcutAction // in
 
 	_cret = C.gtk_nothing_action_get()
@@ -361,7 +361,7 @@ var _ gextras.Nativer = (*ShortcutAction)(nil)
 // ShortcutActioner describes ShortcutAction's abstract methods.
 type ShortcutActioner interface {
 	// Activate activates the action on the widget with the given args.
-	Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool
+	Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool
 	// String prints the given action into a human-readable string.
 	String() string
 }
@@ -418,7 +418,7 @@ func NewShortcutActionParseString(_string string) *ShortcutAction {
 // Activation of an action can fail for various reasons. If the action is not
 // supported by the widget, if the args don't match the action or if the
 // activation otherwise had no effect, FALSE will be returned.
-func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
+func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgeter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
 	var _arg1 C.GtkShortcutActionFlags // out
 	var _arg2 *C.GtkWidget             // out

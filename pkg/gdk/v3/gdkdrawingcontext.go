@@ -99,7 +99,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 }
 
 // Window retrieves the window that created the drawing context.
-func (context *DrawingContext) Window() *Window {
+func (context *DrawingContext) Window() Windower {
 	var _arg0 *C.GdkDrawingContext // out
 	var _cret *C.GdkWindow         // in
 
@@ -107,9 +107,9 @@ func (context *DrawingContext) Window() *Window {
 
 	_cret = C.gdk_drawing_context_get_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }

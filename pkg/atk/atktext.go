@@ -206,8 +206,8 @@ func TextAttributeForName(name string) TextAttribute {
 	return _textAttribute
 }
 
-// TextAttributeGetName gets the name corresponding to the TextAttribute
-func TextAttributeGetName(attr TextAttribute) string {
+// TextAttributeName gets the name corresponding to the TextAttribute
+func TextAttributeName(attr TextAttribute) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _cret *C.gchar           // in
 
@@ -222,8 +222,8 @@ func TextAttributeGetName(attr TextAttribute) string {
 	return _utf8
 }
 
-// TextAttributeGetValue gets the value for the index of the TextAttribute
-func TextAttributeGetValue(attr TextAttribute, index_ int) string {
+// TextAttributeValue gets the value for the index of the TextAttribute
+func TextAttributeValue(attr TextAttribute, index_ int) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _arg2 C.gint             // out
 	var _cret *C.gchar           // in

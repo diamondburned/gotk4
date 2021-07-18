@@ -22,7 +22,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconner},
+		{T: externglib.Type(C.gtk_status_icon_get_type()), F: marshalStatusIconer},
 	})
 }
 
@@ -86,7 +86,7 @@ func wrapStatusIcon(obj *externglib.Object) *StatusIcon {
 	}
 }
 
-func marshalStatusIconner(p uintptr) (interface{}, error) {
+func marshalStatusIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusIcon(obj), nil
@@ -135,7 +135,7 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications.
-func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
+func NewStatusIconFromGIcon(icon gio.Iconer) *StatusIcon {
 	var _arg1 *C.GIcon         // out
 	var _cret *C.GtkStatusIcon // in
 
@@ -270,7 +270,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, gdk.Rectangle, Orientatio
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function.
-func (statusIcon *StatusIcon) GIcon() *gio.Icon {
+func (statusIcon *StatusIcon) GIcon() gio.Iconer {
 	var _arg0 *C.GtkStatusIcon // out
 	var _cret *C.GIcon         // in
 
@@ -278,14 +278,9 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 
 	_cret = C.gtk_status_icon_get_gicon(_arg0)
 
-	var _icon *gio.Icon // out
+	var _icon gio.Iconer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
 
 	return _icon
 }
@@ -615,7 +610,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; you can use g_notification_set_icon() to associate a #GIcon
 // with a notification.
-func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
+func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkStatusIcon // out
 	var _arg1 *C.GIcon         // out
 

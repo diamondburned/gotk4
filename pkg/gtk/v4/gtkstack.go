@@ -238,7 +238,7 @@ func NewStack() *Stack {
 }
 
 // AddChild adds a child to stack.
-func (stack *Stack) AddChild(child Widgetter) *StackPage {
+func (stack *Stack) AddChild(child Widgeter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GtkStackPage // in
@@ -258,7 +258,7 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 // AddNamed adds a child to stack.
 //
 // The child is identified by the name.
-func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
+func (stack *Stack) AddNamed(child Widgeter, name string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -281,7 +281,7 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 //
 // The child is identified by the name. The title will be used by
 // GtkStackSwitcher to represent child in a tab bar, so it should be short.
-func (stack *Stack) AddTitled(child Widgetter, name string, title string) *StackPage {
+func (stack *Stack) AddTitled(child Widgeter, name string, title string) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -305,7 +305,7 @@ func (stack *Stack) AddTitled(child Widgetter, name string, title string) *Stack
 // ChildByName finds the child with the name given as the argument.
 //
 // Returns NULL if there is no child with this name.
-func (stack *Stack) ChildByName(name string) *Widget {
+func (stack *Stack) ChildByName(name string) Widgeter {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.char      // out
 	var _cret *C.GtkWidget // in
@@ -315,9 +315,9 @@ func (stack *Stack) ChildByName(name string) *Widget {
 
 	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -360,7 +360,7 @@ func (stack *Stack) InterpolateSize() bool {
 }
 
 // Page returns the GtkStackPage object for child.
-func (stack *Stack) Page(child Widgetter) *StackPage {
+func (stack *Stack) Page(child Widgeter) *StackPage {
 	var _arg0 *C.GtkStack     // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.GtkStackPage // in
@@ -381,7 +381,7 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 //
 // This can be used to keep an up-to-date view. The model also implements
 // gtk.SelectionModel and can be used to track and modify the visible page.
-func (stack *Stack) Pages() *SelectionModel {
+func (stack *Stack) Pages() SelectionModeler {
 	var _arg0 *C.GtkStack          // out
 	var _cret *C.GtkSelectionModel // in
 
@@ -389,9 +389,9 @@ func (stack *Stack) Pages() *SelectionModel {
 
 	_cret = C.gtk_stack_get_pages(_arg0)
 
-	var _selectionModel *SelectionModel // out
+	var _selectionModel SelectionModeler // out
 
-	_selectionModel = wrapSelectionModel(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_selectionModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(SelectionModeler)
 
 	return _selectionModel
 }
@@ -470,7 +470,7 @@ func (stack *Stack) Vhomogeneous() bool {
 // VisibleChild gets the currently visible child of stack.
 //
 // Returns NULL if there are no visible children.
-func (stack *Stack) VisibleChild() *Widget {
+func (stack *Stack) VisibleChild() Widgeter {
 	var _arg0 *C.GtkStack  // out
 	var _cret *C.GtkWidget // in
 
@@ -478,9 +478,9 @@ func (stack *Stack) VisibleChild() *Widget {
 
 	_cret = C.gtk_stack_get_visible_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -504,7 +504,7 @@ func (stack *Stack) VisibleChildName() string {
 }
 
 // Remove removes a child widget from stack.
-func (stack *Stack) Remove(child Widgetter) {
+func (stack *Stack) Remove(child Widgeter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -603,7 +603,7 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //
 // Note that the child widget has to be visible itself (see gtk.Widget.Show())
 // in order to become the visible child of stack.
-func (stack *Stack) SetVisibleChild(child Widgetter) {
+func (stack *Stack) SetVisibleChild(child Widgeter) {
 	var _arg0 *C.GtkStack  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -671,7 +671,7 @@ func marshalStackPager(p uintptr) (interface{}, error) {
 }
 
 // Child returns the stack child to which self belongs.
-func (self *StackPage) Child() *Widget {
+func (self *StackPage) Child() Widgeter {
 	var _arg0 *C.GtkStackPage // out
 	var _cret *C.GtkWidget    // in
 
@@ -679,9 +679,9 @@ func (self *StackPage) Child() *Widget {
 
 	_cret = C.gtk_stack_page_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

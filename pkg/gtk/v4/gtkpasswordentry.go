@@ -124,7 +124,7 @@ func (v *PasswordEntry) Native() uintptr {
 }
 
 // ExtraMenu gets the menu model set with gtk_password_entry_set_extra_menu().
-func (entry *PasswordEntry) ExtraMenu() *gio.MenuModel {
+func (entry *PasswordEntry) ExtraMenu() gio.MenuModeler {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _cret *C.GMenuModel       // in
 
@@ -132,14 +132,9 @@ func (entry *PasswordEntry) ExtraMenu() *gio.MenuModel {
 
 	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 
-	var _menuModel *gio.MenuModel // out
+	var _menuModel gio.MenuModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menuModel = &gio.MenuModel{
-			Object: obj,
-		}
-	}
+	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
 
 	return _menuModel
 }
@@ -165,7 +160,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // entry.
-func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
+func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkPasswordEntry // out
 	var _arg1 *C.GMenuModel       // out
 

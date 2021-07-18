@@ -34,7 +34,7 @@ func init() {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model *TreeModel, iter *TreeIter, column int) (value externglib.Value)
+type TreeModelFilterModifyFunc func(model TreeModeler, iter *TreeIter, column int) (value externglib.Value)
 
 //export _gotk4_gtk3_TreeModelFilterModifyFunc
 func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.gint, arg4 C.gpointer) {
@@ -43,11 +43,11 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel // out
-	var iter *TreeIter   // out
-	var column int       // out
+	var model TreeModeler // out
+	var iter *TreeIter    // out
+	var column int        // out
 
-	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
+	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -62,7 +62,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTree
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
 // by iter is visible.
-type TreeModelFilterVisibleFunc func(model *TreeModel, iter *TreeIter) (ok bool)
+type TreeModelFilterVisibleFunc func(model TreeModeler, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk3_TreeModelFilterVisibleFunc
 func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) (cret C.gboolean) {
@@ -71,10 +71,10 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel // out
-	var iter *TreeIter   // out
+	var model TreeModeler // out
+	var iter *TreeIter    // out
 
-	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
+	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
 	iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(iter, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))
@@ -95,8 +95,8 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 // As of right now, interface overriding and subclassing is not supported
 // yet, so the interface currently has no use.
 type TreeModelFilterOverrider interface {
-	Modify(childModel TreeModeller, iter *TreeIter, value *externglib.Value, column int)
-	Visible(childModel TreeModeller, iter *TreeIter) bool
+	Modify(childModel TreeModeler, iter *TreeIter, value *externglib.Value, column int)
+	Visible(childModel TreeModeler, iter *TreeIter) bool
 }
 
 // TreeModelFilter is a tree model which wraps another tree model, and can do
@@ -296,7 +296,7 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 }
 
 // Model returns a pointer to the child model of filter.
-func (filter *TreeModelFilter) Model() *TreeModel {
+func (filter *TreeModelFilter) Model() TreeModeler {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _cret *C.GtkTreeModel       // in
 
@@ -304,9 +304,9 @@ func (filter *TreeModelFilter) Model() *TreeModel {
 
 	_cret = C.gtk_tree_model_filter_get_model(_arg0)
 
-	var _treeModel *TreeModel // out
+	var _treeModel TreeModeler // out
 
-	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
+	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
 
 	return _treeModel
 }

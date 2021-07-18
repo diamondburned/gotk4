@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarrer},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBarer},
 	})
 }
 
@@ -119,7 +119,7 @@ func wrapInfoBar(obj *externglib.Object) *InfoBar {
 	}
 }
 
-func marshalInfoBarrer(p uintptr) (interface{}, error) {
+func marshalInfoBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapInfoBar(obj), nil
@@ -144,7 +144,7 @@ func NewInfoBar() *InfoBar {
 // This also connects a signal handler that will emit the gtk.InfoBar::response
 // signal on the message area when the widget is activated. The widget is
 // appended to the end of the message areas action area.
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
+func (infoBar *InfoBar) AddActionWidget(child Widgeter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -181,7 +181,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 }
 
 // AddChild adds a widget to the content area of the info bar.
-func (infoBar *InfoBar) AddChild(widget Widgetter) {
+func (infoBar *InfoBar) AddChild(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -248,7 +248,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 // The widget must have been put there by a call to
 // gtk.InfoBar.AddActionWidget() or gtk.InfoBar.AddButton().
-func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
+func (infoBar *InfoBar) RemoveActionWidget(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -259,7 +259,7 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 }
 
 // RemoveChild removes a widget from the content area of the info bar.
-func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
+func (infoBar *InfoBar) RemoveChild(widget Widgeter) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 

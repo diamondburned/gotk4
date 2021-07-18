@@ -257,7 +257,7 @@ func (self *Picture) CanShrink() bool {
 //
 // If self is not displaying a file, for example when gtk.Picture.SetPaintable()
 // was used, then NULL is returned.
-func (self *Picture) File() *gio.File {
+func (self *Picture) File() gio.Filer {
 	var _arg0 *C.GtkPicture // out
 	var _cret *C.GFile      // in
 
@@ -265,14 +265,9 @@ func (self *Picture) File() *gio.File {
 
 	_cret = C.gtk_picture_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -297,7 +292,7 @@ func (self *Picture) KeepAspectRatio() bool {
 }
 
 // Paintable gets the GdkPaintable being displayed by the GtkPicture.
-func (self *Picture) Paintable() *gdk.Paintable {
+func (self *Picture) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkPicture   // out
 	var _cret *C.GdkPaintable // in
 
@@ -305,14 +300,9 @@ func (self *Picture) Paintable() *gdk.Paintable {
 
 	_cret = C.gtk_picture_get_paintable(_arg0)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

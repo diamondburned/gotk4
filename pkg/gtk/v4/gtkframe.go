@@ -113,7 +113,7 @@ func NewFrame(label string) *Frame {
 }
 
 // Child gets the child widget of frame.
-func (frame *Frame) Child() *Widget {
+func (frame *Frame) Child() Widgeter {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
@@ -121,9 +121,9 @@ func (frame *Frame) Child() *Widget {
 
 	_cret = C.gtk_frame_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -163,7 +163,7 @@ func (frame *Frame) LabelAlign() float32 {
 }
 
 // LabelWidget retrieves the label widget for the frame.
-func (frame *Frame) LabelWidget() *Widget {
+func (frame *Frame) LabelWidget() Widgeter {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
@@ -171,15 +171,15 @@ func (frame *Frame) LabelWidget() *Widget {
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
 
 // SetChild sets the child widget of frame.
-func (frame *Frame) SetChild(child Widgetter) {
+func (frame *Frame) SetChild(child Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -218,7 +218,7 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 //
 // This is the widget that will appear embedded in the top edge of the frame as
 // a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

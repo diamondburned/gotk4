@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialogger},
+		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialoger},
 	})
 }
 
@@ -91,7 +91,7 @@ func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
 	}
 }
 
-func marshalFontChooserDialogger(p uintptr) (interface{}, error) {
+func marshalFontChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontChooserDialog(obj), nil

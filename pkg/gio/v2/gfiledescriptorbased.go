@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBasedder},
+		{T: externglib.Type(C.g_file_descriptor_based_get_type()), F: marshalFileDescriptorBaseder},
 	})
 }
 
@@ -52,13 +52,13 @@ type FileDescriptorBased struct {
 
 var _ gextras.Nativer = (*FileDescriptorBased)(nil)
 
-// FileDescriptorBasedder describes FileDescriptorBased's abstract methods.
-type FileDescriptorBasedder interface {
+// FileDescriptorBaseder describes FileDescriptorBased's abstract methods.
+type FileDescriptorBaseder interface {
 	// Fd gets the underlying file descriptor.
 	Fd() int
 }
 
-var _ FileDescriptorBasedder = (*FileDescriptorBased)(nil)
+var _ FileDescriptorBaseder = (*FileDescriptorBased)(nil)
 
 func wrapFileDescriptorBased(obj *externglib.Object) *FileDescriptorBased {
 	return &FileDescriptorBased{
@@ -66,7 +66,7 @@ func wrapFileDescriptorBased(obj *externglib.Object) *FileDescriptorBased {
 	}
 }
 
-func marshalFileDescriptorBasedder(p uintptr) (interface{}, error) {
+func marshalFileDescriptorBaseder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileDescriptorBased(obj), nil

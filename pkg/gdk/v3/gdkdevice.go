@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -171,7 +170,7 @@ type Devicer interface {
 	// AssociatedDevice returns the associated device to device, if device is of
 	// type GDK_DEVICE_TYPE_MASTER, it will return the paired pointer or
 	// keyboard.
-	AssociatedDevice() *Device
+	AssociatedDevice() Devicer
 	// Axes returns the axes currently available on the device.
 	Axes() AxisFlags
 	// AxisUse returns the axis use for index_.
@@ -188,7 +187,7 @@ type Devicer interface {
 	// LastEventWindow gets information about which window the given pointer
 	// device is in, based on events that have been received so far from the
 	// display server.
-	LastEventWindow() *Window
+	LastEventWindow() Windower
 	// Mode determines the mode of the device.
 	Mode() InputMode
 	// NAxes returns the number of axes the device currently has.
@@ -205,7 +204,7 @@ type Devicer interface {
 	// information couldn't be obtained.
 	ProductID() string
 	// Seat returns the Seat the device belongs to.
-	Seat() *Seat
+	Seat() Seater
 	// Source determines the type of the device.
 	Source() InputSource
 	// VendorID returns the vendor ID of this device, or NULL if this
@@ -213,14 +212,14 @@ type Devicer interface {
 	VendorID() string
 	// WindowAtPosition obtains the window underneath device, returning the
 	// location of the device in win_x and win_y.
-	WindowAtPosition() (winX int, winY int, window *Window)
+	WindowAtPosition() (winX int, winY int, window Windower)
 	// WindowAtPositionDouble obtains the window underneath device, returning
 	// the location of the device in win_x and win_y in double precision.
-	WindowAtPositionDouble() (winX float64, winY float64, window *Window)
+	WindowAtPositionDouble() (winX float64, winY float64, window Windower)
 	// Grab grabs the device so that all events coming from this device are
 	// passed to this application until the device is ungrabbed with
 	// gdk_device_ungrab(), or the window becomes unviewable.
-	Grab(window Windowwer, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus
+	Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus
 	// ListAxes returns a #GList of Atoms, containing the labels for the axes
 	// that device currently has.
 	ListAxes() *externglib.List
@@ -265,7 +264,7 @@ func marshalDevicer(p uintptr) (interface{}, error) {
 //
 // If device is of type GDK_DEVICE_TYPE_FLOATING, NULL will be returned, as
 // there is no associated device.
-func (device *Device) AssociatedDevice() *Device {
+func (device *Device) AssociatedDevice() Devicer {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkDevice // in
 
@@ -273,9 +272,9 @@ func (device *Device) AssociatedDevice() *Device {
 
 	_cret = C.gdk_device_get_associated_device(_arg0)
 
-	var _ret *Device // out
+	var _ret Devicer // out
 
-	_ret = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _ret
 }
@@ -397,7 +396,7 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 // server. If another application has a pointer grab, or this application has a
 // grab with owner_events = FALSE, NULL may be returned even if the pointer is
 // physically over one of this application's windows.
-func (device *Device) LastEventWindow() *Window {
+func (device *Device) LastEventWindow() Windower {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkWindow // in
 
@@ -405,9 +404,9 @@ func (device *Device) LastEventWindow() *Window {
 
 	_cret = C.gdk_device_get_last_event_window(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -545,7 +544,7 @@ func (device *Device) ProductID() string {
 }
 
 // Seat returns the Seat the device belongs to.
-func (device *Device) Seat() *Seat {
+func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.GdkSeat   // in
 
@@ -553,9 +552,9 @@ func (device *Device) Seat() *Seat {
 
 	_cret = C.gdk_device_get_seat(_arg0)
 
-	var _seat *Seat // out
+	var _seat Seater // out
 
-	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
+	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -622,7 +621,7 @@ func (device *Device) VendorID() string {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
-func (device *Device) WindowAtPosition() (winX int, winY int, window *Window) {
+func (device *Device) WindowAtPosition() (winX int, winY int, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -632,13 +631,13 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window *Window) {
 
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 
-	var _winX int       // out
-	var _winY int       // out
-	var _window *Window // out
+	var _winX int        // out
+	var _winY int        // out
+	var _window Windower // out
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -651,7 +650,7 @@ func (device *Device) WindowAtPosition() (winX int, winY int, window *Window) {
 // As a slave device coordinates are those of its master pointer, This function
 // may not be called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is
 // an ongoing grab on them, see gdk_device_grab().
-func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, window *Window) {
+func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gdouble    // in
 	var _arg2 C.gdouble    // in
@@ -661,13 +660,13 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 
 	_cret = C.gdk_device_get_window_at_position_double(_arg0, &_arg1, &_arg2)
 
-	var _winX float64   // out
-	var _winY float64   // out
-	var _window *Window // out
+	var _winX float64    // out
+	var _winY float64    // out
+	var _window Windower // out
 
 	_winX = float64(_arg1)
 	_winY = float64(_arg2)
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -695,7 +694,7 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_seat_grab() instead.
-func (device *Device) Grab(window Windowwer, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
+func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
 	var _arg1 *C.GdkWindow       // out
 	var _arg2 C.GdkGrabOwnership // out
@@ -737,7 +736,7 @@ func (device *Device) ListAxes() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -758,11 +757,11 @@ func (device *Device) ListSlaveDevices() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
-		var dst Device // out
-		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		var dst Devicer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -861,7 +860,7 @@ func (device *Device) Warp(screen *Screen, x int, y int) {
 // grab. This is not public API and must not be used by applications.
 //
 // Deprecated: The symbol was never meant to be used outside of GTK+.
-func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow *Window, ownerEvents bool, ok bool) {
+func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents bool, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkDevice  // out
 	var _arg3 *C.GdkWindow  // in
@@ -873,11 +872,11 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow *Win
 
 	_cret = C.gdk_device_grab_info_libgtk_only(_arg1, _arg2, &_arg3, &_arg4)
 
-	var _grabWindow *Window // out
-	var _ownerEvents bool   // out
-	var _ok bool            // out
+	var _grabWindow Windower // out
+	var _ownerEvents bool    // out
+	var _ok bool             // out
 
-	_grabWindow = wrapWindow(externglib.Take(unsafe.Pointer(_arg3)))
+	_grabWindow = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg3)))).(Windower)
 	if _arg4 != 0 {
 		_ownerEvents = true
 	}

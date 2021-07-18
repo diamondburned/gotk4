@@ -3,10 +3,13 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -404,12 +407,16 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 // g_simple_async_result_set_handle_cancellation() function.
 //
 // Deprecated: Use #GTask instead.
-func (simple *SimpleAsyncResult) SetCheckCancellable(checkCancellable *Cancellable) {
+func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
 
 	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(simple.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(checkCancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
 }

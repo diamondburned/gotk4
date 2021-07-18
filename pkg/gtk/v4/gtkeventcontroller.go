@@ -44,10 +44,10 @@ var _ gextras.Nativer = (*EventController)(nil)
 type EventControllerer interface {
 	// CurrentEvent returns the event that is currently being handled by the
 	// controller, and NULL at other times.
-	CurrentEvent() *gdk.Event
+	CurrentEvent() gdk.Eventer
 	// CurrentEventDevice returns the device of the event that is currently
 	// being handled by the controller, and NULL otherwise.
-	CurrentEventDevice() *gdk.Device
+	CurrentEventDevice() gdk.Devicer
 	// CurrentEventState returns the modifier state of the event that is
 	// currently being handled by the controller, and 0 otherwise.
 	CurrentEventState() gdk.ModifierType
@@ -62,7 +62,7 @@ type EventControllerer interface {
 	// events.
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
-	Widget() *Widget
+	Widget() Widgeter
 	// Reset resets the controller to a clean state.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
@@ -91,7 +91,7 @@ func marshalEventControllerer(p uintptr) (interface{}, error) {
 
 // CurrentEvent returns the event that is currently being handled by the
 // controller, and NULL at other times.
-func (controller *EventController) CurrentEvent() *gdk.Event {
+func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkEvent           // in
 
@@ -99,21 +99,16 @@ func (controller *EventController) CurrentEvent() *gdk.Event {
 
 	_cret = C.gtk_event_controller_get_current_event(_arg0)
 
-	var _event *gdk.Event // out
+	var _event gdk.Eventer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_event = &gdk.Event{
-			Object: obj,
-		}
-	}
+	_event = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Eventer)
 
 	return _event
 }
 
 // CurrentEventDevice returns the device of the event that is currently being
 // handled by the controller, and NULL otherwise.
-func (controller *EventController) CurrentEventDevice() *gdk.Device {
+func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GdkDevice          // in
 
@@ -121,14 +116,9 @@ func (controller *EventController) CurrentEventDevice() *gdk.Device {
 
 	_cret = C.gtk_event_controller_get_current_event_device(_arg0)
 
-	var _device *gdk.Device // out
+	var _device gdk.Devicer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_device = &gdk.Device{
-			Object: obj,
-		}
-	}
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 
 	return _device
 }
@@ -217,7 +207,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (controller *EventController) Widget() *Widget {
+func (controller *EventController) Widget() Widgeter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
@@ -225,9 +215,9 @@ func (controller *EventController) Widget() *Widget {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

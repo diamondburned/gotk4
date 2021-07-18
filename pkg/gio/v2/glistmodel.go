@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeller},
+		{T: externglib.Type(C.g_list_model_get_type()), F: marshalListModeler},
 	})
 }
 
@@ -104,8 +104,8 @@ type ListModel struct {
 
 var _ gextras.Nativer = (*ListModel)(nil)
 
-// ListModeller describes ListModel's abstract methods.
-type ListModeller interface {
+// ListModeler describes ListModel's abstract methods.
+type ListModeler interface {
 	// ItemType gets the type of the items in list.
 	ItemType() externglib.Type
 	// NItems gets the number of items in list.
@@ -116,7 +116,7 @@ type ListModeller interface {
 	ItemsChanged(position uint, removed uint, added uint)
 }
 
-var _ ListModeller = (*ListModel)(nil)
+var _ ListModeler = (*ListModel)(nil)
 
 func wrapListModel(obj *externglib.Object) *ListModel {
 	return &ListModel{
@@ -124,7 +124,7 @@ func wrapListModel(obj *externglib.Object) *ListModel {
 	}
 }
 
-func marshalListModeller(p uintptr) (interface{}, error) {
+func marshalListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListModel(obj), nil

@@ -3,10 +3,13 @@
 package gdkpixbuf
 
 import (
+	"context"
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -210,7 +213,7 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 	return _gint
 }
 
-// PixbufNewFromStreamAsync creates a new pixbuf by asynchronously loading an
+// NewPixbufFromStreamAsync creates a new pixbuf by asynchronously loading an
 // image from an input stream.
 //
 // For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
@@ -219,21 +222,25 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
 // the operation.
-func PixbufNewFromStreamAsync(stream gio.InputStreamer, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg1 *C.GInputStream       // out
+func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GInputStream       // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
 	C.gdk_pixbuf_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
 }
 
-// PixbufNewFromStreamAtScaleAsync creates a new pixbuf by asynchronously
+// NewPixbufFromStreamAtScaleAsync creates a new pixbuf by asynchronously
 // loading an image from an input stream.
 //
 // For more details see gdk_pixbuf_new_from_stream_at_scale(), which is the
@@ -242,22 +249,26 @@ func PixbufNewFromStreamAsync(stream gio.InputStreamer, cancellable *gio.Cancell
 // When the operation is finished, callback will be called in the main thread.
 // You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
 // the operation.
-func PixbufNewFromStreamAtScaleAsync(stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width int, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
+	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
 	var _arg2 C.gint                // out
 	var _arg3 C.gint                // out
 	var _arg4 C.gboolean            // out
-	var _arg5 *C.GCancellable       // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = C.gint(width)
 	_arg3 = C.gint(height)
 	if preserveAspectRatio {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 

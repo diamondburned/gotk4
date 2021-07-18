@@ -37,7 +37,7 @@ var _ gextras.Nativer = (*ATContext)(nil)
 // ATContexter describes ATContext's abstract methods.
 type ATContexter interface {
 	// Accessible retrieves the GtkAccessible using this context.
-	Accessible() *Accessible
+	Accessible() Accessibler
 	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
 }
@@ -81,7 +81,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 }
 
 // Accessible retrieves the GtkAccessible using this context.
-func (self *ATContext) Accessible() *Accessible {
+func (self *ATContext) Accessible() Accessibler {
 	var _arg0 *C.GtkATContext  // out
 	var _cret *C.GtkAccessible // in
 
@@ -89,9 +89,9 @@ func (self *ATContext) Accessible() *Accessible {
 
 	_cret = C.gtk_at_context_get_accessible(_arg0)
 
-	var _accessible *Accessible // out
+	var _accessible Accessibler // out
 
-	_accessible = wrapAccessible(externglib.Take(unsafe.Pointer(_cret)))
+	_accessible = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Accessibler)
 
 	return _accessible
 }

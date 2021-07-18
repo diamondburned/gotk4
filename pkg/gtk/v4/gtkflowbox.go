@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -25,7 +24,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxxer},
+		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBoxer},
 		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChilder},
 	})
 }
@@ -34,7 +33,7 @@ func init() {
 // GListModel.
 //
 // This function is called for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgetter)
+type FlowBoxCreateWidgetFunc func(item *externglib.Object) (widget Widgeter)
 
 //export _gotk4_gtk4_FlowBoxCreateWidgetFunc
 func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GtkWidget) {
@@ -202,7 +201,7 @@ func wrapFlowBox(obj *externglib.Object) *FlowBox {
 	}
 }
 
-func marshalFlowBoxxer(p uintptr) (interface{}, error) {
+func marshalFlowBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFlowBox(obj), nil
@@ -241,7 +240,7 @@ func (v *FlowBox) Native() uintptr {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting should
 // be implemented by the model.
-func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
+func (box *FlowBox) BindModel(model gio.ListModeler, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkFlowBox                // out
 	var _arg1 *C.GListModel                // out
 	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
@@ -415,7 +414,7 @@ func (box *FlowBox) SelectedChildren() *externglib.List {
 		dst = *wrapFlowBoxChild(externglib.Take(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -443,7 +442,7 @@ func (box *FlowBox) SelectionMode() SelectionMode {
 //
 // If position is -1, or larger than the total number of children in the box,
 // then the widget will be appended to the end.
-func (box *FlowBox) Insert(widget Widgetter, position int) {
+func (box *FlowBox) Insert(widget Widgeter, position int) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -482,7 +481,7 @@ func (box *FlowBox) InvalidateSort() {
 }
 
 // Remove removes a child from box.
-func (box *FlowBox) Remove(widget Widgetter) {
+func (box *FlowBox) Remove(widget Widgeter) {
 	var _arg0 *C.GtkFlowBox // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -808,7 +807,7 @@ func (child *FlowBoxChild) Changed() {
 }
 
 // Child gets the child widget of self.
-func (self *FlowBoxChild) Child() *Widget {
+func (self *FlowBoxChild) Child() Widgeter {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _cret *C.GtkWidget       // in
 
@@ -816,9 +815,9 @@ func (self *FlowBoxChild) Child() *Widget {
 
 	_cret = C.gtk_flow_box_child_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -859,7 +858,7 @@ func (child *FlowBoxChild) IsSelected() bool {
 }
 
 // SetChild sets the child widget of self.
-func (self *FlowBoxChild) SetChild(child Widgetter) {
+func (self *FlowBoxChild) SetChild(child Widgeter) {
 	var _arg0 *C.GtkFlowBoxChild // out
 	var _arg1 *C.GtkWidget       // out
 

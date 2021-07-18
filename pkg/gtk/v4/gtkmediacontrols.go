@@ -75,7 +75,7 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 }
 
 // MediaStream gets the media stream managed by controls or NULL if none.
-func (controls *MediaControls) MediaStream() *MediaStream {
+func (controls *MediaControls) MediaStream() MediaStreamer {
 	var _arg0 *C.GtkMediaControls // out
 	var _cret *C.GtkMediaStream   // in
 
@@ -83,9 +83,9 @@ func (controls *MediaControls) MediaStream() *MediaStream {
 
 	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 
-	var _mediaStream *MediaStream // out
+	var _mediaStream MediaStreamer // out
 
-	_mediaStream = wrapMediaStream(externglib.Take(unsafe.Pointer(_cret)))
+	_mediaStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(MediaStreamer)
 
 	return _mediaStream
 }

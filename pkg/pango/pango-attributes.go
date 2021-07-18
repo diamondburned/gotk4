@@ -189,14 +189,14 @@ func (a AttrType) String() string {
 	}
 }
 
-// AttrTypeGetName fetches the attribute type name.
+// AttrTypeName fetches the attribute type name.
 //
 // The attribute type name is the string passed in when registering the type
 // using attr_type_register.
 //
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
-func AttrTypeGetName(typ AttrType) string {
+func AttrTypeName(typ AttrType) string {
 	var _arg1 C.PangoAttrType // out
 	var _cret *C.char         // in
 
@@ -1117,7 +1117,7 @@ func (a *AttrFontDesc) Desc() *FontDescription {
 //
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
-func AttrFontDescNew(desc *FontDescription) *Attribute {
+func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoAttribute       // in
 
@@ -1157,7 +1157,7 @@ func (a *AttrFontFeatures) Features() string {
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
-func AttrFontFeaturesNew(features string) *Attribute {
+func NewAttrFontFeatures(features string) *Attribute {
 	var _arg1 *C.gchar          // out
 	var _cret *C.PangoAttribute // in
 
@@ -1322,7 +1322,7 @@ func (a *AttrLanguage) Value() *Language {
 }
 
 // NewAttrLanguage: create a new language tag attribute.
-func AttrLanguageNew(language *Language) *Attribute {
+func NewAttrLanguage(language *Language) *Attribute {
 	var _arg1 *C.PangoLanguage  // out
 	var _cret *C.PangoAttribute // in
 
@@ -1598,40 +1598,12 @@ type AttrShape struct {
 	native *C.PangoAttrShape
 }
 
-// Attr: common portion of the attribute
-func (a *AttrShape) Attr() Attribute {
-	var v Attribute // out
-	v = *(*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// InkRect: ink rectangle to restrict to
-func (a *AttrShape) InkRect() Rectangle {
-	var v Rectangle // out
-	v = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&a.native.ink_rect))))
-	return v
-}
-
-// LogicalRect: logical rectangle to restrict to
-func (a *AttrShape) LogicalRect() Rectangle {
-	var v Rectangle // out
-	v = *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&a.native.logical_rect))))
-	return v
-}
-
-// Data: user data set (see pango.AttrShape.NewWithData)
-func (a *AttrShape) Data() cgo.Handle {
-	var v cgo.Handle // out
-	v = (cgo.Handle)(unsafe.Pointer(a.native.data))
-	return v
-}
-
 // NewAttrShape: create a new shape attribute.
 //
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a PangoLayout.
-func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
+func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
 	var _cret *C.PangoAttribute // in
@@ -1674,7 +1646,7 @@ func (a *AttrSize) Size() int {
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
-func AttrSizeNew(size int) *Attribute {
+func NewAttrSize(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -1692,8 +1664,8 @@ func AttrSizeNew(size int) *Attribute {
 	return _attribute
 }
 
-// AttrSizeNewAbsolute: create a new font-size attribute in device units.
-func AttrSizeNewAbsolute(size int) *Attribute {
+// NewAttrSizeAbsolute: create a new font-size attribute in device units.
+func NewAttrSizeAbsolute(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
 
@@ -1748,21 +1720,6 @@ type Attribute struct {
 func marshalAttribute(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return &Attribute{native: (*C.PangoAttribute)(unsafe.Pointer(b))}, nil
-}
-
-// StartIndex: start index of the range (in bytes).
-func (a *Attribute) StartIndex() uint {
-	var v uint // out
-	v = uint(a.native.start_index)
-	return v
-}
-
-// EndIndex: end index of the range (in bytes). The character at this index is
-// not included in the range.
-func (a *Attribute) EndIndex() uint {
-	var v uint // out
-	v = uint(a.native.end_index)
-	return v
 }
 
 // Copy: make a copy of an attribute.

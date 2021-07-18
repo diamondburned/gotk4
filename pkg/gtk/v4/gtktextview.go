@@ -264,7 +264,7 @@ func (v *TextView) Native() uintptr {
 }
 
 // AddChildAtAnchor adds a child widget in the text buffer, at the given anchor.
-func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnchor) {
+func (textView *TextView) AddChildAtAnchor(child Widgeter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextView        // out
 	var _arg1 *C.GtkWidget          // out
 	var _arg2 *C.GtkTextChildAnchor // out
@@ -285,7 +285,7 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 //
 // If instead you want a widget that will not move with the GtkTextView contents
 // see Overlay.
-func (textView *TextView) AddOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) AddOverlay(child Widgeter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -570,7 +570,7 @@ func (textView *TextView) Editable() bool {
 
 // ExtraMenu gets the menu model that gets added to the context menu or NULL if
 // none has been set.
-func (textView *TextView) ExtraMenu() *gio.MenuModel {
+func (textView *TextView) ExtraMenu() gio.MenuModeler {
 	var _arg0 *C.GtkTextView // out
 	var _cret *C.GMenuModel  // in
 
@@ -578,14 +578,9 @@ func (textView *TextView) ExtraMenu() *gio.MenuModel {
 
 	_cret = C.gtk_text_view_get_extra_menu(_arg0)
 
-	var _menuModel *gio.MenuModel // out
+	var _menuModel gio.MenuModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menuModel = &gio.MenuModel{
-			Object: obj,
-		}
-	}
+	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
 
 	return _menuModel
 }
@@ -596,7 +591,7 @@ func (textView *TextView) ExtraMenu() *gio.MenuModel {
 //
 // win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
 // GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
-func (textView *TextView) Gutter(win TextWindowType) *Widget {
+func (textView *TextView) Gutter(win TextWindowType) Widgeter {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _cret *C.GtkWidget        // in
@@ -606,9 +601,9 @@ func (textView *TextView) Gutter(win TextWindowType) *Widget {
 
 	_cret = C.gtk_text_view_get_gutter(_arg0, _arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -1095,7 +1090,7 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 // MoveOverlay updates the position of a child.
 //
 // See gtk.TextView.AddOverlay().
-func (textView *TextView) MoveOverlay(child Widgetter, xpos int, ypos int) {
+func (textView *TextView) MoveOverlay(child Widgeter, xpos int, ypos int) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -1161,7 +1156,7 @@ func (textView *TextView) PlaceCursorOnscreen() bool {
 }
 
 // Remove removes a child widget from text_view.
-func (textView *TextView) Remove(child Widgetter) {
+func (textView *TextView) Remove(child Widgeter) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GtkWidget   // out
 
@@ -1365,7 +1360,7 @@ func (textView *TextView) SetEditable(setting bool) {
 // text_view.
 //
 // You can pass NULL to remove a previously set extra menu.
-func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
+func (textView *TextView) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkTextView // out
 	var _arg1 *C.GMenuModel  // out
 
@@ -1379,7 +1374,7 @@ func (textView *TextView) SetExtraMenu(model gio.MenuModeller) {
 //
 // win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
 // GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
-func (textView *TextView) SetGutter(win TextWindowType, widget Widgetter) {
+func (textView *TextView) SetGutter(win TextWindowType, widget Widgeter) {
 	var _arg0 *C.GtkTextView      // out
 	var _arg1 C.GtkTextWindowType // out
 	var _arg2 *C.GtkWidget        // out

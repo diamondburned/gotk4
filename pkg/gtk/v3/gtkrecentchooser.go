@@ -375,11 +375,8 @@ func (chooser *RecentChooser) Items() *externglib.List {
 		})
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(v.(unsafe.Pointer)))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
 
 	return _list

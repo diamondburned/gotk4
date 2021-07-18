@@ -48,7 +48,7 @@ func _gotk4_gtk4_ExpressionNotify(arg0 C.gpointer) {
 
 // ValueDupExpression retrieves the GtkExpression stored inside the given value,
 // and acquires a reference to it.
-func ValueDupExpression(value *externglib.Value) *Expression {
+func ValueDupExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
@@ -56,15 +56,15 @@ func ValueDupExpression(value *externglib.Value) *Expression {
 
 	_cret = C.gtk_value_dup_expression(_arg1)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
 
 // ValueGetExpression retrieves the GtkExpression stored inside the given value.
-func ValueGetExpression(value *externglib.Value) *Expression {
+func ValueGetExpression(value *externglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
 	var _cret *C.GtkExpression // in
 
@@ -72,9 +72,9 @@ func ValueGetExpression(value *externglib.Value) *Expression {
 
 	_cret = C.gtk_value_get_expression(_arg1)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -345,7 +345,7 @@ type Expressioner interface {
 	// IsStatic checks if the expression is static.
 	IsStatic() bool
 	// Ref acquires a reference on the given GtkExpression.
-	ref() *Expression
+	ref() Expressioner
 	// Unref releases a reference on the given GtkExpression.
 	unref()
 	// Watch installs a watch for the given expression that calls the notify
@@ -475,7 +475,7 @@ func (self *Expression) IsStatic() bool {
 }
 
 // Ref acquires a reference on the given GtkExpression.
-func (self *Expression) ref() *Expression {
+func (self *Expression) ref() Expressioner {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
@@ -483,9 +483,9 @@ func (self *Expression) ref() *Expression {
 
 	_cret = C.gtk_expression_ref(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -644,7 +644,7 @@ func NewPropertyExpression(thisType externglib.Type, expression Expressioner, pr
 
 // GetExpression gets the expression specifying the object of a property
 // expression.
-func (expression *PropertyExpression) GetExpression() *Expression {
+func (expression *PropertyExpression) GetExpression() Expressioner {
 	var _arg0 *C.GtkExpression // out
 	var _cret *C.GtkExpression // in
 
@@ -652,9 +652,9 @@ func (expression *PropertyExpression) GetExpression() *Expression {
 
 	_cret = C.gtk_property_expression_get_expression(_arg0)
 
-	var _ret *Expression // out
+	var _ret Expressioner // out
 
-	_ret = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _ret
 }

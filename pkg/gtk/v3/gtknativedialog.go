@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialogger},
+		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialoger},
 	})
 }
 
@@ -64,8 +64,8 @@ type NativeDialog struct {
 
 var _ gextras.Nativer = (*NativeDialog)(nil)
 
-// NativeDialogger describes NativeDialog's abstract methods.
-type NativeDialogger interface {
+// NativeDialoger describes NativeDialog's abstract methods.
+type NativeDialoger interface {
 	// Destroy destroys a dialog.
 	Destroy()
 	// Modal returns whether the dialog is modal.
@@ -93,7 +93,7 @@ type NativeDialogger interface {
 	Show()
 }
 
-var _ NativeDialogger = (*NativeDialog)(nil)
+var _ NativeDialoger = (*NativeDialog)(nil)
 
 func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	return &NativeDialog{
@@ -101,7 +101,7 @@ func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
 	}
 }
 
-func marshalNativeDialogger(p uintptr) (interface{}, error) {
+func marshalNativeDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeDialog(obj), nil

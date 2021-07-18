@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindowwer},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindower},
 	})
 }
 
@@ -104,7 +104,7 @@ func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
 	}
 }
 
-func marshalShortcutsWindowwer(p uintptr) (interface{}, error) {
+func marshalShortcutsWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcutsWindow(obj), nil

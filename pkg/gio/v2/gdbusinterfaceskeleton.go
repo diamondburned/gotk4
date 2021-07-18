@@ -30,7 +30,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletonner},
+		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeletoner},
 	})
 }
 
@@ -65,8 +65,8 @@ type DBusInterfaceSkeleton struct {
 
 var _ gextras.Nativer = (*DBusInterfaceSkeleton)(nil)
 
-// DBusInterfaceSkeletonner describes DBusInterfaceSkeleton's abstract methods.
-type DBusInterfaceSkeletonner interface {
+// DBusInterfaceSkeletoner describes DBusInterfaceSkeleton's abstract methods.
+type DBusInterfaceSkeletoner interface {
 	// Export exports interface_ at object_path on connection.
 	Export(connection *DBusConnection, objectPath string) error
 	// Flush: if interface_ has outstanding changes, request for these changes
@@ -98,7 +98,7 @@ type DBusInterfaceSkeletonner interface {
 	UnexportFromConnection(connection *DBusConnection)
 }
 
-var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
+var _ DBusInterfaceSkeletoner = (*DBusInterfaceSkeleton)(nil)
 
 func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{
@@ -109,7 +109,7 @@ func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	}
 }
 
-func marshalDBusInterfaceSkeletonner(p uintptr) (interface{}, error) {
+func marshalDBusInterfaceSkeletoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDBusInterfaceSkeleton(obj), nil
@@ -190,11 +190,8 @@ func (interface_ *DBusInterfaceSkeleton) Connections() *externglib.List {
 		dst = *wrapDBusConnection(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list

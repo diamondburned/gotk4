@@ -61,7 +61,7 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 
 // Expression gets the expression that the filter uses to evaluate if an item
 // should be filtered.
-func (self *BoolFilter) Expression() *Expression {
+func (self *BoolFilter) Expression() Expressioner {
 	var _arg0 *C.GtkBoolFilter // out
 	var _cret *C.GtkExpression // in
 
@@ -69,9 +69,9 @@ func (self *BoolFilter) Expression() *Expression {
 
 	_cret = C.gtk_bool_filter_get_expression(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }

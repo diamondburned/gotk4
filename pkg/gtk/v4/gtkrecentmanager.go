@@ -262,11 +262,8 @@ func (manager *RecentManager) Items() *externglib.List {
 		})
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(v.(unsafe.Pointer)))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.gtk_recent_info_unref((*C.GtkRecentInfo)(unsafe.Pointer(v)))
 	})
 
 	return _list
@@ -382,9 +379,9 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	return _goerr
 }
 
-// RecentManagerGetDefault gets a unique instance of GtkRecentManager that you
-// can share in your application without caring about memory management.
-func RecentManagerGetDefault() *RecentManager {
+// RecentManagerDefault gets a unique instance of GtkRecentManager that you can
+// share in your application without caring about memory management.
+func RecentManagerDefault() *RecentManager {
 	var _cret *C.GtkRecentManager // in
 
 	_cret = C.gtk_recent_manager_get_default()
@@ -486,7 +483,7 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 }
 
 // CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo
-func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
+func (info *RecentInfo) CreateAppInfo(appName string) (gio.AppInfor, error) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
 	var _cret *C.GAppInfo      // in
@@ -497,15 +494,10 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 
 	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
 
-	var _appInfo *gio.AppInfo // out
+	var _appInfo gio.AppInfor // out
 	var _goerr error          // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_appInfo = &gio.AppInfo{
-			Object: obj,
-		}
-	}
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.AppInfor)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
@@ -582,7 +574,7 @@ func (info *RecentInfo) DisplayName() string {
 }
 
 // GIcon retrieves the icon associated to the resource MIME type.
-func (info *RecentInfo) GIcon() *gio.Icon {
+func (info *RecentInfo) GIcon() gio.Iconer {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret *C.GIcon         // in
 
@@ -590,14 +582,9 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 
 	_cret = C.gtk_recent_info_get_gicon(_arg0)
 
-	var _icon *gio.Icon // out
+	var _icon gio.Iconer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_icon = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Iconer)
 
 	return _icon
 }

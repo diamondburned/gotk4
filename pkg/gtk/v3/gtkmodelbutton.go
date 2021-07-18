@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
-		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtonner},
+		{T: externglib.Type(C.gtk_model_button_get_type()), F: marshalModelButtoner},
 	})
 }
 
@@ -169,7 +169,7 @@ func wrapModelButton(obj *externglib.Object) *ModelButton {
 	}
 }
 
-func marshalModelButtonner(p uintptr) (interface{}, error) {
+func marshalModelButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapModelButton(obj), nil

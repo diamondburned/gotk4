@@ -45,9 +45,9 @@ func (a *Analysis) LangEngine() cgo.Handle {
 }
 
 // Font: font for this segment.
-func (a *Analysis) Font() *Font {
-	var v *Font // out
-	v = wrapFont(externglib.Take(unsafe.Pointer(a.native.font)))
+func (a *Analysis) Font() Fonter {
+	var v Fonter // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(a.native.font)))).(Fonter)
 	return v
 }
 

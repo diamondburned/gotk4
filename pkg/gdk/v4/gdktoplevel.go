@@ -22,7 +22,7 @@ func init() {
 		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
 		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: externglib.Type(C.gdk_toplevel_state_get_type()), F: marshalToplevelState},
-		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveller},
+		{T: externglib.Type(C.gdk_toplevel_get_type()), F: marshalTopleveler},
 	})
 }
 
@@ -219,8 +219,8 @@ type Toplevel struct {
 
 var _ gextras.Nativer = (*Toplevel)(nil)
 
-// Topleveller describes Toplevel's abstract methods.
-type Topleveller interface {
+// Topleveler describes Toplevel's abstract methods.
+type Topleveler interface {
 	// BeginMove begins an interactive move operation.
 	BeginMove(device Devicer, button int, x float64, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
@@ -261,7 +261,7 @@ type Topleveller interface {
 	SupportsEdgeConstraints() bool
 }
 
-var _ Topleveller = (*Toplevel)(nil)
+var _ Topleveler = (*Toplevel)(nil)
 
 func wrapToplevel(obj *externglib.Object) *Toplevel {
 	return &Toplevel{
@@ -271,7 +271,7 @@ func wrapToplevel(obj *externglib.Object) *Toplevel {
 	}
 }
 
-func marshalTopleveller(p uintptr) (interface{}, error) {
+func marshalTopleveler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapToplevel(obj), nil

@@ -44,7 +44,7 @@ var _ gextras.Nativer = (*FilterInputStream)(nil)
 // FilterInputStreamer describes FilterInputStream's abstract methods.
 type FilterInputStreamer interface {
 	// BaseStream gets the base stream for the filter stream.
-	BaseStream() *InputStream
+	BaseStream() InputStreamer
 	// CloseBaseStream returns whether the base stream will be closed when
 	// stream is closed.
 	CloseBaseStream() bool
@@ -70,7 +70,7 @@ func marshalFilterInputStreamer(p uintptr) (interface{}, error) {
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (stream *FilterInputStream) BaseStream() *InputStream {
+func (stream *FilterInputStream) BaseStream() InputStreamer {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
 
@@ -78,9 +78,9 @@ func (stream *FilterInputStream) BaseStream() *InputStream {
 
 	_cret = C.g_filter_input_stream_get_base_stream(_arg0)
 
-	var _inputStream *InputStream // out
+	var _inputStream InputStreamer // out
 
-	_inputStream = wrapInputStream(externglib.Take(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }

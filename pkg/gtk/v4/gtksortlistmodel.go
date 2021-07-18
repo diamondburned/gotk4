@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModeller},
+		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModeler},
 	})
 }
 
@@ -49,7 +49,7 @@ func wrapSortListModel(obj *externglib.Object) *SortListModel {
 	}
 }
 
-func marshalSortListModeller(p uintptr) (interface{}, error) {
+func marshalSortListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSortListModel(obj), nil
@@ -57,7 +57,7 @@ func marshalSortListModeller(p uintptr) (interface{}, error) {
 
 // NewSortListModel creates a new sort list model that uses the sorter to sort
 // model.
-func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
+func NewSortListModel(model gio.ListModeler, sorter *Sorter) *SortListModel {
 	var _arg1 *C.GListModel       // out
 	var _arg2 *C.GtkSorter        // out
 	var _cret *C.GtkSortListModel // in
@@ -95,7 +95,7 @@ func (self *SortListModel) Incremental() bool {
 }
 
 // Model gets the model currently sorted or NULL if none.
-func (self *SortListModel) Model() *gio.ListModel {
+func (self *SortListModel) Model() gio.ListModeler {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret *C.GListModel       // in
 
@@ -103,14 +103,9 @@ func (self *SortListModel) Model() *gio.ListModel {
 
 	_cret = C.gtk_sort_list_model_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -192,7 +187,7 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 // SetModel sets the model to be sorted.
 //
 // The model's item type must conform to the item type of self.
-func (self *SortListModel) SetModel(model gio.ListModeller) {
+func (self *SortListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkSortListModel // out
 	var _arg1 *C.GListModel       // out
 

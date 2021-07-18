@@ -25,7 +25,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_places_open_flags_get_type()), F: marshalPlacesOpenFlags},
-		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarrer},
+		{T: externglib.Type(C.gtk_places_sidebar_get_type()), F: marshalPlacesSidebarer},
 	})
 }
 
@@ -164,7 +164,7 @@ func wrapPlacesSidebar(obj *externglib.Object) *PlacesSidebar {
 	}
 }
 
-func marshalPlacesSidebarrer(p uintptr) (interface{}, error) {
+func marshalPlacesSidebarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPlacesSidebar(obj), nil
@@ -234,7 +234,7 @@ func (sidebar *PlacesSidebar) LocalOnly() bool {
 // connect to the PlacesSidebar::populate-popup signal, you can use this
 // function to get the location that is being referred to during the callbacks
 // for your menu items.
-func (sidebar *PlacesSidebar) Location() *gio.File {
+func (sidebar *PlacesSidebar) Location() gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _cret *C.GFile            // in
 
@@ -242,14 +242,9 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 
 	_cret = C.gtk_places_sidebar_get_location(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -258,7 +253,7 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 // places sidebar, and returns one of them. This function is used by FileChooser
 // to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which activate the
 // cooresponding bookmark.
-func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
+func (sidebar *PlacesSidebar) NthBookmark(n int) gio.Filer {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
 	var _cret *C.GFile            // in
@@ -268,14 +263,9 @@ func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
 
 	_cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }

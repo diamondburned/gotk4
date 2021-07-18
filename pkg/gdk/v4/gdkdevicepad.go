@@ -19,7 +19,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePadder},
+		{T: externglib.Type(C.gdk_device_pad_get_type()), F: marshalDevicePader},
 	})
 }
 
@@ -76,8 +76,8 @@ type DevicePad struct {
 
 var _ gextras.Nativer = (*DevicePad)(nil)
 
-// DevicePadder describes DevicePad's abstract methods.
-type DevicePadder interface {
+// DevicePader describes DevicePad's abstract methods.
+type DevicePader interface {
 	// FeatureGroup returns the group the given feature and idx belong to.
 	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that group may have.
@@ -88,7 +88,7 @@ type DevicePadder interface {
 	NGroups() int
 }
 
-var _ DevicePadder = (*DevicePad)(nil)
+var _ DevicePader = (*DevicePad)(nil)
 
 func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	return &DevicePad{
@@ -98,7 +98,7 @@ func wrapDevicePad(obj *externglib.Object) *DevicePad {
 	}
 }
 
-func marshalDevicePadder(p uintptr) (interface{}, error) {
+func marshalDevicePader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDevicePad(obj), nil

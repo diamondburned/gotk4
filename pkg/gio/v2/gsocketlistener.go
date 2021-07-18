@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -96,15 +99,19 @@ func NewSocketListener() *SocketListener {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (listener *SocketListener) Accept(cancellable *Cancellable) (*externglib.Object, *SocketConnection, error) {
+func (listener *SocketListener) Accept(ctx context.Context) (*externglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
-	var _arg1 *C.GObject           // in
 	var _arg2 *C.GCancellable      // out
+	var _arg1 *C.GObject           // in
 	var _cret *C.GSocketConnection // in
 	var _cerr *C.GError            // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_socket_listener_accept(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -123,14 +130,18 @@ func (listener *SocketListener) Accept(cancellable *Cancellable) (*externglib.Ob
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_listener_accept_socket() to get the result of the operation.
-func (listener *SocketListener) AcceptAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -174,15 +185,19 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*externglib.
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (listener *SocketListener) AcceptSocket(cancellable *Cancellable) (*externglib.Object, *Socket, error) {
+func (listener *SocketListener) AcceptSocket(ctx context.Context) (*externglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
-	var _arg1 *C.GObject         // in
 	var _arg2 *C.GCancellable    // out
+	var _arg1 *C.GObject         // in
 	var _cret *C.GSocket         // in
 	var _cerr *C.GError          // in
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_socket_listener_accept_socket(_arg0, &_arg1, _arg2, &_cerr)
 
@@ -202,14 +217,18 @@ func (listener *SocketListener) AcceptSocket(cancellable *Cancellable) (*externg
 //
 // When the operation is finished callback will be called. You can then call
 // g_socket_listener_accept_socket_finish() to get the result of the operation.
-func (listener *SocketListener) AcceptSocketAsync(cancellable *Cancellable, callback AsyncReadyCallback) {
+func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
 	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSocketListener)(unsafe.Pointer(listener.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg3 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -261,7 +280,7 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*exter
 // Call g_socket_listener_close() to stop listening on address; this will not be
 // done automatically when you drop your final reference to listener, as
 // references may be held internally.
-func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (*SocketAddress, error) {
+func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *externglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
 	var _arg2 C.GSocketType      // out
@@ -278,10 +297,10 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 
 	C.g_socket_listener_add_address(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_cerr)
 
-	var _effectiveAddress *SocketAddress // out
-	var _goerr error                     // out
+	var _effectiveAddress SocketAddresser // out
+	var _goerr error                      // out
 
-	_effectiveAddress = wrapSocketAddress(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))
+	_effectiveAddress = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg5)))).(SocketAddresser)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _effectiveAddress, _goerr

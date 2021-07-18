@@ -76,7 +76,7 @@ func NewAlternativeTrigger(first ShortcutTriggerer, second ShortcutTriggerer) *A
 // First gets the first of the two alternative triggers that may trigger self.
 //
 // gtk.AlternativeTrigger.GetSecond() will return the other one.
-func (self *AlternativeTrigger) First() *ShortcutTrigger {
+func (self *AlternativeTrigger) First() ShortcutTriggerer {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
@@ -84,9 +84,9 @@ func (self *AlternativeTrigger) First() *ShortcutTrigger {
 
 	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 
-	var _shortcutTrigger *ShortcutTrigger // out
+	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
+	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -94,7 +94,7 @@ func (self *AlternativeTrigger) First() *ShortcutTrigger {
 // Second gets the second of the two alternative triggers that may trigger self.
 //
 // gtk.AlternativeTrigger.GetFirst() will return the other one.
-func (self *AlternativeTrigger) Second() *ShortcutTrigger {
+func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	var _arg0 *C.GtkAlternativeTrigger // out
 	var _cret *C.GtkShortcutTrigger    // in
 
@@ -102,9 +102,9 @@ func (self *AlternativeTrigger) Second() *ShortcutTrigger {
 
 	_cret = C.gtk_alternative_trigger_get_second(_arg0)
 
-	var _shortcutTrigger *ShortcutTrigger // out
+	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
+	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }
@@ -266,11 +266,11 @@ func marshalNeverTriggerer(p uintptr) (interface{}, error) {
 
 func (*NeverTrigger) privateNeverTrigger() {}
 
-// NeverTriggerGet gets the never trigger.
+// NeverTrigger gets the never trigger.
 //
 // This is a singleton for a trigger that never triggers. Use this trigger
 // instead of NULL because it implements all virtual functions.
-func NeverTriggerGet() *NeverTrigger {
+func NeverTrigger() *NeverTrigger {
 	var _cret *C.GtkShortcutTrigger // in
 
 	_cret = C.gtk_never_trigger_get()

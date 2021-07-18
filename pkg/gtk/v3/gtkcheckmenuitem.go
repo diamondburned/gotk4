@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_check_menu_item_get_type()), F: marshalCheckMenuItemmer},
+		{T: externglib.Type(C.gtk_check_menu_item_get_type()), F: marshalCheckMenuItemer},
 	})
 }
 
@@ -93,7 +93,7 @@ func wrapCheckMenuItem(obj *externglib.Object) *CheckMenuItem {
 	}
 }
 
-func marshalCheckMenuItemmer(p uintptr) (interface{}, error) {
+func marshalCheckMenuItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCheckMenuItem(obj), nil

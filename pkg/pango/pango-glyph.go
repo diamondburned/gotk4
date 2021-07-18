@@ -187,20 +187,6 @@ type GlyphInfo struct {
 	native *C.PangoGlyphInfo
 }
 
-// Geometry: positional information about the glyph.
-func (g *GlyphInfo) Geometry() GlyphGeometry {
-	var v GlyphGeometry // out
-	v = *(*GlyphGeometry)(gextras.NewStructNative(unsafe.Pointer((&g.native.geometry))))
-	return v
-}
-
-// Attr: visual attributes of the glyph.
-func (g *GlyphInfo) Attr() GlyphVisAttr {
-	var v GlyphVisAttr // out
-	v = *(*GlyphVisAttr)(gextras.NewStructNative(unsafe.Pointer((&g.native.attr))))
-	return v
-}
-
 // GlyphString: PangoGlyphString is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -230,21 +216,6 @@ func NewGlyphString() *GlyphString {
 	})
 
 	return _glyphString
-}
-
-// NumGlyphs: number of the glyphs in this glyph string.
-func (g *GlyphString) NumGlyphs() int {
-	var v int // out
-	v = int(g.native.num_glyphs)
-	return v
-}
-
-// LogClusters: logical cluster info, indexed by the byte index within the text
-// corresponding to the glyph string.
-func (g *GlyphString) LogClusters() *int {
-	var v *int // out
-	v = (*int)(unsafe.Pointer(g.native.log_clusters))
-	return v
 }
 
 // Copy a glyph string and associated storage.

@@ -10,32 +10,43 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
-type Converter struct {
-	results []ValueConverted
-	fgen    types.FileGenerator
-	logger  logger.LineLogger
-	header  file.Header
+// // ValueProcessor is a processor that can override each conversion value.
+// type ValueProcessor interface {
+// 	Process(value *ValueConverted)
+// }
 
-	// CurrentNamespace is the current namespace that this converter is
-	// generating for.
-	currentNamespace *gir.NamespaceFindResult
-	// SourceNamespace is the namespace that the values are from.
-	sourceNamespace *gir.NamespaceFindResult
+type Converter struct {
+	Parent  *gir.TypeFindResult
+	Results []ValueConverted
+
+	fgen   types.FileGenerator
+	logger logger.LineLogger
+	header file.Header
+
+	final []ValueConverted
 }
 
 // NewConverter creates a new type converter from the given file generator.
 // The converter will add no side effects to the given file generator.
-func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter {
-	conv := Converter{
-		fgen:             fgen,
-		results:          make([]ValueConverted, len(values)),
-		sourceNamespace:  fgen.Namespace(),
-		currentNamespace: fgen.Namespace(),
+func NewConverter(
+	fgen types.FileGenerator, parent *gir.TypeFindResult, values []ConversionValue) *Converter {
+
+	if fgen == nil {
+		panic("missing fgen")
+	}
+	if parent == nil || parent.NamespaceFindResult == nil || parent.Type == nil {
+		panic("missing parent")
 	}
 
-	for i := range conv.results {
+	conv := Converter{
+		Parent:  parent,
+		Results: make([]ValueConverted, len(values)),
+		fgen:    fgen,
+	}
+
+	for i := range conv.Results {
 		// Fill up the results list after transforming the values.
-		conv.results[i] = newValueConverted(&conv, &values[i])
+		conv.Results[i] = newValueConverted(&conv, &values[i])
 	}
 
 	// skip marks the value at the given parameter index to be skipped.
@@ -66,7 +77,7 @@ func NewConverter(fgen types.FileGenerator, values []ConversionValue) *Converter
 
 		if value.ParameterAttrs.Direction == "out" && !types.AnyTypeIsPtr(value.AnyType) {
 			// Output direction but not pointer parameter is invalid; bail.
-			conv.Logln(logger.Debug,
+			conv.Logln(logger.Error,
 				"value type", types.AnyTypeC(value.AnyType), "is output but no ptr")
 			return nil
 		}
@@ -99,9 +110,9 @@ func (conv *Converter) CCallParams() []string {
 		return nil
 	}
 
-	params := make([]string, 0, len(conv.results))
+	params := make([]string, 0, len(conv.Results))
 
-	for _, result := range conv.results {
+	for _, result := range conv.Results {
 		switch result.Direction {
 		case ConvertGoToC:
 			params = append(params, result.Out.Call)
@@ -113,22 +124,6 @@ func (conv *Converter) CCallParams() []string {
 	}
 
 	return params
-}
-
-// SetSourceNamespace sets the converter's source namespace, which is the
-// namespace that all the values originate from.
-func (conv *Converter) SetSourceNamespace(ns *gir.NamespaceFindResult) {
-	if conv != nil {
-		conv.sourceNamespace = ns
-	}
-}
-
-// SetSCurrentNamespace sets the converter's current namespace, which is the
-// namespace that the converter is generating for.
-func (conv *Converter) SetCurrentNamespace(ns *gir.NamespaceFindResult) {
-	if conv != nil {
-		conv.currentNamespace = ns
-	}
 }
 
 // UseLogger sets the logger to be used instead of the given NamespaceGenrator.
@@ -153,30 +148,40 @@ func (conv *Converter) ConvertAll() []ValueConverted {
 		return nil
 	}
 
-	results := make([]ValueConverted, 0, len(conv.results))
+	if conv.final != nil {
+		return conv.final
+	}
 
 	// Convert everything in one go.
-	for i := range conv.results {
-		if !conv.convert(&conv.results[i]) || conv.results[i].fail {
+	for i := range conv.Results {
+		if !conv.convert(&conv.Results[i]) || conv.Results[i].fail {
 			// final is true if the value is already manually handled.
 			// Otherwise, exit.
-			if !conv.results[i].final {
+			if !conv.Results[i].final {
 				return nil
 			}
 		}
 	}
 
-	for i, result := range conv.results {
+	if proc, ok := conv.fgen.(ConversionProcessor); ok {
+		proc.ProcessConverter(conv)
+	}
+
+	conv.final = make([]ValueConverted, 0, len(conv.Results))
+
+	for i, result := range conv.Results {
+		// Finalize all results.
+		result.finalize()
+
 		if result.Skip {
 			continue
 		}
 
-		result.finalize()
-		file.ApplyHeader(conv, &conv.results[i])
-		results = append(results, result)
+		file.ApplyHeader(conv, &conv.Results[i])
+		conv.final = append(conv.final, result)
 	}
 
-	return results
+	return conv.final
 }
 
 // Convert converts the value at the given index.
@@ -186,18 +191,16 @@ func (conv *Converter) Convert(i int) *ValueConverted {
 	}
 
 	// Bound check.
-	if i >= len(conv.results) {
+	if i >= len(conv.Results) {
 		return nil
 	}
 
-	result := &conv.results[i]
-	if !conv.convert(result) || result.Skip {
+	// Ensure that all values are converted.
+	if conv.ConvertAll() == nil {
 		return nil
 	}
 
-	result.finalize()
-	file.ApplyHeader(conv, result)
-	return result
+	return &conv.Results[i]
 }
 
 func (conv *Converter) convert(result *ValueConverted) bool {
@@ -298,8 +301,8 @@ func (conv *Converter) convertType(
 
 // param returns the unconverted value.
 func (conv *Converter) param(at int) *ValueConverted {
-	for i := range conv.results {
-		result := &conv.results[i]
+	for i := range conv.Results {
+		result := &conv.Results[i]
 
 		if result.ParameterIndex.Is(at) {
 			return result
@@ -320,17 +323,17 @@ func (conv *Converter) convertParam(at int) *ValueConverted {
 	}
 
 	// Fast path.
-	if at < len(conv.results) {
-		for i := at; i < at+2 && i < len(conv.results); i++ {
-			result := &conv.results[i]
+	if at < len(conv.Results) {
+		for i := at; i < at+2 && i < len(conv.Results); i++ {
+			result := &conv.Results[i]
 			if result.ParameterIndex.Is(at) {
 				return convert(result)
 			}
 		}
 	}
 
-	for i := range conv.results {
-		result := &conv.results[i]
+	for i := range conv.Results {
+		result := &conv.Results[i]
 		if result.ParameterIndex.Is(at) {
 			return convert(result)
 		}

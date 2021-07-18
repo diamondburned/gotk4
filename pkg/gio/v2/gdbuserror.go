@@ -51,13 +51,13 @@ func DBusErrorEncodeGError(err error) string {
 	return _utf8
 }
 
-// DBusErrorGetRemoteError gets the D-Bus error name used for error, if any.
+// DBusErrorRemoteError gets the D-Bus error name used for error, if any.
 //
 // This function is guaranteed to return a D-Bus error name for all #GErrors
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on error.
-func DBusErrorGetRemoteError(err error) string {
+func DBusErrorRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
 
@@ -93,7 +93,7 @@ func DBusErrorIsRemoteError(err error) bool {
 	return _ok
 }
 
-// DBusErrorNewForDBusError creates a #GError based on the contents of
+// NewDBusErrorForDBusError creates a #GError based on the contents of
 // dbus_error_name and dbus_error_message.
 //
 // Errors registered with g_dbus_error_register_error() will be looked up using
@@ -118,7 +118,7 @@ func DBusErrorIsRemoteError(err error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) error {
+func NewDBusErrorForDBusError(dbusErrorName string, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
 	var _cret *C.GError // in

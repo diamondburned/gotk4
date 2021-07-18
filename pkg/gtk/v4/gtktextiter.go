@@ -1546,7 +1546,7 @@ func (iter *TextIter) Offset() int {
 // Paintable: if the element at iter is a paintable, the paintable is returned.
 //
 // Otherwise, NULL is returned.
-func (iter *TextIter) Paintable() *gdk.Paintable {
+func (iter *TextIter) Paintable() gdk.Paintabler {
 	var _arg0 *C.GtkTextIter  // out
 	var _cret *C.GdkPaintable // in
 
@@ -1554,14 +1554,9 @@ func (iter *TextIter) Paintable() *gdk.Paintable {
 
 	_cret = C.gtk_text_iter_get_paintable(_arg0)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }

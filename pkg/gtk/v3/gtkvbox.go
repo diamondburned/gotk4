@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxxer},
+		{T: externglib.Type(C.gtk_vbox_get_type()), F: marshalVBoxer},
 	})
 }
 
@@ -76,7 +76,7 @@ func wrapVBox(obj *externglib.Object) *VBox {
 	}
 }
 
-func marshalVBoxxer(p uintptr) (interface{}, error) {
+func marshalVBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVBox(obj), nil

@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtonner},
+		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButtoner},
 	})
 }
 
@@ -70,7 +70,7 @@ func wrapScaleButton(obj *externglib.Object) *ScaleButton {
 	}
 }
 
-func marshalScaleButtonner(p uintptr) (interface{}, error) {
+func marshalScaleButtoner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapScaleButton(obj), nil
@@ -168,7 +168,7 @@ func (button *ScaleButton) PlusButton() *Button {
 }
 
 // Popup retrieves the popup of the GtkScaleButton.
-func (button *ScaleButton) Popup() *Widget {
+func (button *ScaleButton) Popup() Widgeter {
 	var _arg0 *C.GtkScaleButton // out
 	var _cret *C.GtkWidget      // in
 
@@ -176,9 +176,9 @@ func (button *ScaleButton) Popup() *Widget {
 
 	_cret = C.gtk_scale_button_get_popup(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

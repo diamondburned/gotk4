@@ -3,8 +3,11 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -711,13 +714,17 @@ func (application *Application) Quit() {
 // Note: the return value of this function is not an indicator that this
 // instance is or is not the primary instance of the application. See
 // g_application_get_is_remote() for that.
-func (application *Application) Register(cancellable *Cancellable) error {
+func (application *Application) Register(ctx context.Context) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(application.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_application_register(_arg0, _arg1, &_cerr)
 
@@ -1090,7 +1097,7 @@ func (application *Application) WithdrawNotification(id string) {
 	C.g_application_withdraw_notification(_arg0, _arg1)
 }
 
-// ApplicationGetDefault returns the default #GApplication instance for this
+// ApplicationDefault returns the default #GApplication instance for this
 // process.
 //
 // Normally there is only one #GApplication per process and it becomes the
@@ -1098,7 +1105,7 @@ func (application *Application) WithdrawNotification(id string) {
 // g_application_set_default().
 //
 // If there is no default application then NULL is returned.
-func ApplicationGetDefault() *Application {
+func ApplicationDefault() *Application {
 	var _cret *C.GApplication // in
 
 	_cret = C.g_application_get_default()

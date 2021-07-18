@@ -81,7 +81,7 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 
 // Widget gets the Widget corresponding to the Accessible. The returned widget
 // does not have a reference added, so you do not need to unref it.
-func (accessible *Accessible) Widget() *Widget {
+func (accessible *Accessible) Widget() Widgeter {
 	var _arg0 *C.GtkAccessible // out
 	var _cret *C.GtkWidget     // in
 
@@ -89,9 +89,9 @@ func (accessible *Accessible) Widget() *Widget {
 
 	_cret = C.gtk_accessible_get_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -101,7 +101,7 @@ func (accessible *Accessible) Widget() *Widget {
 // accessible will not hold a reference to widget. It is the caller’s
 // responsibility to ensure that when widget is destroyed, the widget is unset
 // by calling this function again with widget set to NULL.
-func (accessible *Accessible) SetWidget(widget Widgetter) {
+func (accessible *Accessible) SetWidget(widget Widgeter) {
 	var _arg0 *C.GtkAccessible // out
 	var _arg1 *C.GtkWidget     // out
 

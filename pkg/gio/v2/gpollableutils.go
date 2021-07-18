@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -55,15 +57,19 @@ func NewPollableSource(pollableStream *externglib.Object) *glib.Source {
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
 // also attaching child_source (with a dummy callback), and cancellable, if they
 // are non-NULL.
-func PollableSourceNewFull(pollableStream *externglib.Object, childSource *glib.Source, cancellable *Cancellable) *glib.Source {
+func PollableSourceNewFull(ctx context.Context, pollableStream *externglib.Object, childSource *glib.Source) *glib.Source {
+	var _arg3 *C.GCancellable // out
 	var _arg1 C.gpointer      // out
 	var _arg2 *C.GSource      // out
-	var _arg3 *C.GCancellable // out
 	var _cret *C.GSource      // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
 	_arg2 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 
@@ -87,15 +93,20 @@ func PollableSourceNewFull(pollableStream *externglib.Object, childSource *glib.
 // g_pollable_input_stream_can_poll() returns TRUE, or else the behavior is
 // undefined. If blocking is TRUE, then stream does not need to be a
 // InputStream.
-func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, cancellable *Cancellable) (int, error) {
+func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
+	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean      // out
-	var _arg5 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _arg4 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
@@ -104,7 +115,6 @@ func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, canc
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
@@ -126,15 +136,20 @@ func PollableStreamRead(stream InputStreamer, buffer []byte, blocking bool, canc
 // g_pollable_output_stream_can_poll() returns TRUE or else the behavior is
 // undefined. If blocking is TRUE, then stream does not need to be a
 // OutputStream.
-func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, cancellable *Cancellable) (int, error) {
+func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
+	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean      // out
-	var _arg5 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _arg4 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
@@ -143,7 +158,6 @@ func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, ca
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 
@@ -172,15 +186,20 @@ func PollableStreamWrite(stream OutputStreamer, buffer []byte, blocking bool, ca
 // a OutputStream for which g_pollable_output_stream_can_poll() returns TRUE or
 // else the behavior is undefined. If blocking is TRUE, then stream does not
 // need to be a OutputStream.
-func PollableStreamWriteAll(stream OutputStreamer, buffer []byte, blocking bool, cancellable *Cancellable) (uint, error) {
+func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
+	var _arg6 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean      // out
-	var _arg5 C.gsize         // in
-	var _arg6 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _arg4 C.gboolean // out
+	var _arg5 C.gsize    // in
+	var _cerr *C.GError  // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
@@ -189,7 +208,6 @@ func PollableStreamWriteAll(stream OutputStreamer, buffer []byte, blocking bool,
 	if blocking {
 		_arg4 = C.TRUE
 	}
-	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_pollable_stream_write_all(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, &_arg5, _arg6, &_cerr)
 

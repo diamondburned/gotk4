@@ -81,7 +81,7 @@ func NewCancellable() *Cancellable {
 	return _cancellable
 }
 
-// Cancel: will set cancellable to cancelled, and will emit the
+// Cancel will set cancellable to cancelled, and will emit the
 // #GCancellable::cancelled signal. (However, see the warning about race
 // conditions in the documentation for that signal if you are planning to
 // connect to it.)
@@ -314,8 +314,8 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 	return _source
 }
 
-// CancellableGetCurrent gets the top cancellable from the stack.
-func CancellableGetCurrent() *Cancellable {
+// CancellableCurrent gets the top cancellable from the stack.
+func CancellableCurrent() *Cancellable {
 	var _cret *C.GCancellable // in
 
 	_cret = C.g_cancellable_get_current()

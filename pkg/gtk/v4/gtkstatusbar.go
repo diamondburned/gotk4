@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarrer},
+		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbarer},
 	})
 }
 
@@ -82,7 +82,7 @@ func wrapStatusbar(obj *externglib.Object) *Statusbar {
 	}
 }
 
-func marshalStatusbarrer(p uintptr) (interface{}, error) {
+func marshalStatusbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapStatusbar(obj), nil

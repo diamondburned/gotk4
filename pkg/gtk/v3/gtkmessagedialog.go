@@ -22,7 +22,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialogger},
+		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialoger},
 	})
 }
 
@@ -140,7 +140,7 @@ func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
 	}
 }
 
-func marshalMessageDialogger(p uintptr) (interface{}, error) {
+func marshalMessageDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapMessageDialog(obj), nil
@@ -149,7 +149,7 @@ func marshalMessageDialogger(p uintptr) (interface{}, error) {
 // Image gets the dialog’s image.
 //
 // Deprecated: Use Dialog for dialogs with images.
-func (dialog *MessageDialog) Image() *Widget {
+func (dialog *MessageDialog) Image() Widgeter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
@@ -157,9 +157,9 @@ func (dialog *MessageDialog) Image() *Widget {
 
 	_cret = C.gtk_message_dialog_get_image(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -169,7 +169,7 @@ func (dialog *MessageDialog) Image() *Widget {
 // content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
-func (messageDialog *MessageDialog) MessageArea() *Widget {
+func (messageDialog *MessageDialog) MessageArea() Widgeter {
 	var _arg0 *C.GtkMessageDialog // out
 	var _cret *C.GtkWidget        // in
 
@@ -177,9 +177,9 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 
 	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -187,7 +187,7 @@ func (messageDialog *MessageDialog) MessageArea() *Widget {
 // SetImage sets the dialog’s image to image.
 //
 // Deprecated: Use Dialog to create dialogs with images.
-func (dialog *MessageDialog) SetImage(image Widgetter) {
+func (dialog *MessageDialog) SetImage(image Widgeter) {
 	var _arg0 *C.GtkMessageDialog // out
 	var _arg1 *C.GtkWidget        // out
 

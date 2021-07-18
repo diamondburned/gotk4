@@ -24,7 +24,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialogger},
+		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialoger},
 	})
 }
 
@@ -199,7 +199,7 @@ func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
 	}
 }
 
-func marshalAboutDialogger(p uintptr) (interface{}, error) {
+func marshalAboutDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAboutDialog(obj), nil

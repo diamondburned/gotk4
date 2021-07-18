@@ -31,7 +31,7 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
-		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgetter},
+		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidgeter},
 		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
 	})
 }
@@ -70,7 +70,7 @@ func (w WidgetHelpType) String() string {
 
 // Callback: type of the callback functions used for e.g. iterating over the
 // children of a container, see gtk_container_foreach().
-type Callback func(widget *Widget)
+type Callback func(widget Widgeter)
 
 //export _gotk4_gtk3_Callback
 func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
@@ -79,9 +79,9 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var widget *Widget // out
+	var widget Widgeter // out
 
-	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
+	widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgeter)
 
 	fn := v.(Callback)
 	fn(widget)
@@ -89,7 +89,7 @@ func _gotk4_gtk3_Callback(arg0 *C.GtkWidget, arg1 C.gpointer) {
 
 // TickCallback: callback type for adding a function to update animations. See
 // gtk_widget_add_tick_callback().
-type TickCallback func(widget *Widget, frameClock *gdk.FrameClock) (ok bool)
+type TickCallback func(widget Widgeter, frameClock gdk.FrameClocker) (ok bool)
 
 //export _gotk4_gtk3_TickCallback
 func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) (cret C.gboolean) {
@@ -98,16 +98,11 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 		panic(`callback not found`)
 	}
 
-	var widget *Widget             // out
-	var frameClock *gdk.FrameClock // out
+	var widget Widgeter             // out
+	var frameClock gdk.FrameClocker // out
 
-	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
-	{
-		obj := externglib.Take(unsafe.Pointer(arg1))
-		frameClock = &gdk.FrameClock{
-			Object: obj,
-		}
-	}
+	widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(Widgeter)
+	frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(gdk.FrameClocker)
 
 	fn := v.(TickCallback)
 	ok := fn(widget, frameClock)
@@ -127,7 +122,7 @@ func _gotk4_gtk3_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.g
 // system this function will return TRUE for all windows, so you need to draw
 // the bottommost window first. Also, do not use “else if” statements to check
 // which window should be drawn.
-func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windowwer) bool {
+func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -154,7 +149,7 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windowwer) bool {
 // expose event to be emitted with the Widget::draw signal. It is intended to
 // help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
 // GTK+ 3.
-func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Windowwer) {
+func CairoTransformToWindow(cr *cairo.Context, widget Widgeter, window gdk.Windower) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GtkWidget // out
 	var _arg3 *C.GdkWindow // out
@@ -322,7 +317,7 @@ type WidgetOverrider interface {
 	// Hide reverses the effects of gtk_widget_show(), causing the widget to be
 	// hidden (invisible to the user).
 	Hide()
-	HierarchyChanged(previousToplevel Widgetter)
+	HierarchyChanged(previousToplevel Widgeter)
 	KeyPressEvent(event *gdk.EventKey) bool
 	KeyReleaseEvent(event *gdk.EventKey) bool
 	// KeynavFailed: this function should be called whenever keyboard navigation
@@ -361,7 +356,7 @@ type WidgetOverrider interface {
 	MnemonicActivate(groupCycling bool) bool
 	MotionNotifyEvent(event *gdk.EventMotion) bool
 	MoveFocus(direction DirectionType)
-	ParentSet(previousParent Widgetter)
+	ParentSet(previousParent Widgeter)
 	PopupMenu() bool
 	PropertyNotifyEvent(event *gdk.EventProperty) bool
 	ProximityInEvent(event *gdk.EventProximity) bool
@@ -541,8 +536,8 @@ type Widget struct {
 
 var _ gextras.Nativer = (*Widget)(nil)
 
-// Widgetter describes Widget's abstract methods.
-type Widgetter interface {
+// Widgeter describes Widget's abstract methods.
+type Widgeter interface {
 	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
 	// this function activates them.
 	Activate() bool
@@ -557,7 +552,7 @@ type Widgetter interface {
 	AddEvents(events int)
 	// AddMnemonicLabel adds a widget to the list of mnemonic labels for this
 	// widget.
-	AddMnemonicLabel(label Widgetter)
+	AddMnemonicLabel(label Widgeter)
 	// AddTickCallback queues an animation frame update and adds a callback to
 	// be called before each frame.
 	AddTickCallback(callback TickCallback) uint
@@ -614,7 +609,7 @@ type Widgetter interface {
 	// default behaviors.
 	DragDestSet(flags DestDefaults, targets []TargetEntry, actions gdk.DragAction)
 	// DragDestSetProxy sets this widget as a proxy for drops to another window.
-	DragDestSetProxy(proxyWindow gdk.Windowwer, protocol gdk.DragProtocol, useCoordinates bool)
+	DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool)
 	// DragDestSetTargetList sets the target types that this widget can accept
 	// from drag-and-drop.
 	DragDestSetTargetList(targetList *TargetList)
@@ -644,7 +639,7 @@ type Widgetter interface {
 	DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction)
 	// DragSourceSetIconGIcon sets the icon that will be used for drags from a
 	// particular source to icon.
-	DragSourceSetIconGIcon(icon gio.Iconner)
+	DragSourceSetIconGIcon(icon gio.Iconer)
 	// DragSourceSetIconName sets the icon that will be used for drags from a
 	// particular source to a themed icon.
 	DragSourceSetIconName(iconName string)
@@ -675,7 +670,7 @@ type Widgetter interface {
 	// assistive technology.
 	Accessible() *atk.ObjectClass
 	// ActionGroup retrieves the Group that was registered using prefix.
-	ActionGroup(prefix string) *gio.ActionGroup
+	ActionGroup(prefix string) gio.ActionGrouper
 	// AllocatedBaseline returns the baseline that has currently been allocated
 	// to widget.
 	AllocatedBaseline() int
@@ -686,7 +681,7 @@ type Widgetter interface {
 	// widget.
 	AllocatedWidth() int
 	// Ancestor gets the first ancestor of widget with type widget_type.
-	Ancestor(widgetType externglib.Type) *Widget
+	Ancestor(widgetType externglib.Type) Widgeter
 	// AppPaintable determines whether the application intends to draw on the
 	// widget in an Widget::draw handler.
 	AppPaintable() bool
@@ -721,11 +716,11 @@ type Widgetter interface {
 	FocusOnClick() bool
 	// FontMap gets the font map that has been set with
 	// gtk_widget_set_font_map().
-	FontMap() *pango.FontMap
+	FontMap() pango.FontMaper
 	// FontOptions returns the #cairo_font_options_t used for Pango rendering.
 	FontOptions() *cairo.FontOptions
 	// FrameClock obtains the frame clock for a widget.
-	FrameClock() *gdk.FrameClock
+	FrameClock() gdk.FrameClocker
 	// HAlign gets the value of the Widget:halign property.
 	HAlign() Align
 	// HasTooltip returns the current value of the has-tooltip property.
@@ -769,10 +764,10 @@ type Widgetter interface {
 	// description, and base direction for this widget.
 	PangoContext() *pango.Context
 	// Parent returns the parent container of widget.
-	Parent() *Widget
+	Parent() Widgeter
 	// ParentWindow gets widget’s parent window, or NULL if it does not have
 	// one.
-	ParentWindow() *gdk.Window
+	ParentWindow() gdk.Windower
 	// GetPath returns the WidgetPath representing widget, if the widget is not
 	// connected to a toplevel widget, a partial path will be created.
 	GetPath() *WidgetPath
@@ -807,7 +802,7 @@ type Widgetter interface {
 	// Requisition retrieves the widget’s requisition.
 	Requisition() Requisition
 	// RootWindow: get the root window where this widget is located.
-	RootWindow() *gdk.Window
+	RootWindow() gdk.Windower
 	// ScaleFactor retrieves the internal scale factor that maps from window
 	// coordinates to the actual device pixels.
 	ScaleFactor() int
@@ -844,7 +839,7 @@ type Widgetter interface {
 	TooltipWindow() *Window
 	// Toplevel: this function returns the topmost widget in the container
 	// hierarchy widget is a part of.
-	Toplevel() *Widget
+	Toplevel() Widgeter
 	// VAlign gets the value of the Widget:valign property.
 	VAlign() Align
 	// VAlignWithBaseline gets the value of the Widget:valign property,
@@ -861,7 +856,7 @@ type Widgetter interface {
 	// Visual gets the visual that will be used to render widget.
 	Visual() *gdk.Visual
 	// Window returns the widget’s window if it is realized, NULL otherwise
-	Window() *gdk.Window
+	Window() gdk.Windower
 	// GrabAdd makes widget the current grabbed widget.
 	GrabAdd()
 	// GrabDefault causes widget to become the default widget.
@@ -908,7 +903,7 @@ type Widgetter interface {
 	Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool)
 	// IsAncestor determines whether widget is somewhere inside ancestor,
 	// possibly with intermediate containers.
-	IsAncestor(ancestor Widgetter) bool
+	IsAncestor(ancestor Widgeter) bool
 	// IsComposited: whether widget can rely on having its alpha channel drawn
 	// correctly.
 	IsComposited() bool
@@ -998,13 +993,13 @@ type Widgetter interface {
 	RegionIntersect(region *cairo.Region) *cairo.Region
 	// RegisterWindow registers a Window with the widget and sets it up so that
 	// the widget receives events for it.
-	RegisterWindow(window gdk.Windowwer)
+	RegisterWindow(window gdk.Windower)
 	// RemoveAccelerator removes an accelerator from widget, previously
 	// installed with gtk_widget_add_accelerator().
 	RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool
 	// RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 	// this widget.
-	RemoveMnemonicLabel(label Widgetter)
+	RemoveMnemonicLabel(label Widgeter)
 	// RemoveTickCallback removes a tick callback previously registered with
 	// gtk_widget_add_tick_callback().
 	RemoveTickCallback(id uint)
@@ -1016,7 +1011,7 @@ type Widgetter interface {
 	RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf
 	// Reparent moves a widget from one Container to another, handling reference
 	// count issues to avoid destroying the widget.
-	Reparent(newParent Widgetter)
+	Reparent(newParent Widgeter)
 	// ResetRCStyles: reset the styles of widget and all descendents, so when
 	// they are looked up again, they get the correct values for the currently
 	// loaded RC file settings.
@@ -1057,7 +1052,7 @@ type Widgetter interface {
 	// clicked with the mouse.
 	SetFocusOnClick(focusOnClick bool)
 	// SetFontMap sets the font map to use for Pango rendering.
-	SetFontMap(fontMap pango.FontMapper)
+	SetFontMap(fontMap pango.FontMaper)
 	// SetFontOptions sets the #cairo_font_options_t used for Pango rendering in
 	// this widget.
 	SetFontOptions(options *cairo.FontOptions)
@@ -1098,9 +1093,9 @@ type Widgetter interface {
 	SetOpacity(opacity float64)
 	// SetParent: this function is useful only when implementing subclasses of
 	// Container.
-	SetParent(parent Widgetter)
+	SetParent(parent Widgeter)
 	// SetParentWindow sets a non default parent window for widget.
-	SetParentWindow(parentWindow gdk.Windowwer)
+	SetParentWindow(parentWindow gdk.Windower)
 	// SetRealized marks the widget as being realized.
 	SetRealized(realized bool)
 	// SetReceivesDefault specifies whether widget will be treated as the
@@ -1145,7 +1140,7 @@ type Widgetter interface {
 	// children for creating Windows.
 	SetVisual(visual *gdk.Visual)
 	// SetWindow sets a widget’s window.
-	SetWindow(window gdk.Windowwer)
+	SetWindow(window gdk.Windower)
 	// ShapeCombineRegion sets a shape for this widget’s GDK window.
 	ShapeCombineRegion(region *cairo.Region)
 	// Show flags a widget to be displayed.
@@ -1168,7 +1163,7 @@ type Widgetter interface {
 	ThawChildNotify()
 	// TranslateCoordinates: translate coordinates relative to src_widget’s
 	// allocation to coordinates relative to dest_widget’s allocations.
-	TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool)
+	TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool)
 	// TriggerTooltipQuery triggers a tooltip query on the display where the
 	// toplevel of widget is located.
 	TriggerTooltipQuery()
@@ -1180,12 +1175,12 @@ type Widgetter interface {
 	Unrealize()
 	// UnregisterWindow unregisters a Window from the widget that was previously
 	// set up with gtk_widget_register_window().
-	UnregisterWindow(window gdk.Windowwer)
+	UnregisterWindow(window gdk.Windower)
 	// UnsetStateFlags: this function is for use in widget implementations.
 	UnsetStateFlags(flags StateFlags)
 }
 
-var _ Widgetter = (*Widget)(nil)
+var _ Widgeter = (*Widget)(nil)
 
 func wrapWidget(obj *externglib.Object) *Widget {
 	return &Widget{
@@ -1201,7 +1196,7 @@ func wrapWidget(obj *externglib.Object) *Widget {
 	}
 }
 
-func marshalWidgetter(p uintptr) (interface{}, error) {
+func marshalWidgeter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
@@ -1292,7 +1287,7 @@ func (widget *Widget) AddEvents(events int) {
 // labels for the widget is cleared when the widget is destroyed, so the caller
 // must make sure to update its internal state at this point as well, by using a
 // connection to the Widget::destroy signal or a weak notifier.
-func (widget *Widget) AddMnemonicLabel(label Widgetter) {
+func (widget *Widget) AddMnemonicLabel(label Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -1750,7 +1745,7 @@ func (widget *Widget) DragDestSet(flags DestDefaults, targets []TargetEntry, act
 // DragDestSetProxy sets this widget as a proxy for drops to another window.
 //
 // Deprecated: since version 3.22.
-func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windowwer, protocol gdk.DragProtocol, useCoordinates bool) {
+func (widget *Widget) DragDestSetProxy(proxyWindow gdk.Windower, protocol gdk.DragProtocol, useCoordinates bool) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.GdkDragProtocol // out
@@ -1896,7 +1891,7 @@ func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []
 
 // DragSourceSetIconGIcon sets the icon that will be used for drags from a
 // particular source to icon. See the docs for IconTheme for more details.
-func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
+func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GIcon     // out
 
@@ -2081,7 +2076,7 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 // ancestry.
 //
 // If no action group was found matching prefix, then NULL is returned.
-func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
+func (widget *Widget) ActionGroup(prefix string) gio.ActionGrouper {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.GActionGroup // in
@@ -2091,14 +2086,9 @@ func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
 
 	_cret = C.gtk_widget_get_action_group(_arg0, _arg1)
 
-	var _actionGroup *gio.ActionGroup // out
+	var _actionGroup gio.ActionGrouper // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_actionGroup = &gio.ActionGroup{
-			Object: obj,
-		}
-	}
+	_actionGroup = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ActionGrouper)
 
 	return _actionGroup
 }
@@ -2166,7 +2156,7 @@ func (widget *Widget) AllocatedWidth() int {
 //
 // Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
 // considers widget to be an ancestor of itself.
-func (widget *Widget) Ancestor(widgetType externglib.Type) *Widget {
+func (widget *Widget) Ancestor(widgetType externglib.Type) Widgeter {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.GType      // out
 	var _cret *C.GtkWidget // in
@@ -2176,9 +2166,9 @@ func (widget *Widget) Ancestor(widgetType externglib.Type) *Widget {
 
 	_cret = C.gtk_widget_get_ancestor(_arg0, _arg1)
 
-	var _ret *Widget // out
+	var _ret Widgeter // out
 
-	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _ret
 }
@@ -2464,7 +2454,7 @@ func (widget *Widget) FocusOnClick() bool {
 }
 
 // FontMap gets the font map that has been set with gtk_widget_set_font_map().
-func (widget *Widget) FontMap() *pango.FontMap {
+func (widget *Widget) FontMap() pango.FontMaper {
 	var _arg0 *C.GtkWidget    // out
 	var _cret *C.PangoFontMap // in
 
@@ -2472,14 +2462,9 @@ func (widget *Widget) FontMap() *pango.FontMap {
 
 	_cret = C.gtk_widget_get_font_map(_arg0)
 
-	var _fontMap *pango.FontMap // out
+	var _fontMap pango.FontMaper // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_fontMap = &pango.FontMap{
-			Object: obj,
-		}
-	}
+	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontMaper)
 
 	return _fontMap
 }
@@ -2520,7 +2505,7 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 // widget’s frame clock.
 //
 // Unrealized widgets do not have a frame clock.
-func (widget *Widget) FrameClock() *gdk.FrameClock {
+func (widget *Widget) FrameClock() gdk.FrameClocker {
 	var _arg0 *C.GtkWidget     // out
 	var _cret *C.GdkFrameClock // in
 
@@ -2528,14 +2513,9 @@ func (widget *Widget) FrameClock() *gdk.FrameClock {
 
 	_cret = C.gtk_widget_get_frame_clock(_arg0)
 
-	var _frameClock *gdk.FrameClock // out
+	var _frameClock gdk.FrameClocker // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_frameClock = &gdk.FrameClock{
-			Object: obj,
-		}
-	}
+	_frameClock = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.FrameClocker)
 
 	return _frameClock
 }
@@ -2902,7 +2882,7 @@ func (widget *Widget) PangoContext() *pango.Context {
 }
 
 // Parent returns the parent container of widget.
-func (widget *Widget) Parent() *Widget {
+func (widget *Widget) Parent() Widgeter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -2910,15 +2890,15 @@ func (widget *Widget) Parent() *Widget {
 
 	_cret = C.gtk_widget_get_parent(_arg0)
 
-	var _ret *Widget // out
+	var _ret Widgeter // out
 
-	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _ret
 }
 
 // ParentWindow gets widget’s parent window, or NULL if it does not have one.
-func (widget *Widget) ParentWindow() *gdk.Window {
+func (widget *Widget) ParentWindow() gdk.Windower {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
@@ -2926,14 +2906,9 @@ func (widget *Widget) ParentWindow() *gdk.Window {
 
 	_cret = C.gtk_widget_get_parent_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -3256,7 +3231,7 @@ func (widget *Widget) Requisition() Requisition {
 // resources when the widget is unrealized.
 //
 // Deprecated: Use gdk_screen_get_root_window() instead.
-func (widget *Widget) RootWindow() *gdk.Window {
+func (widget *Widget) RootWindow() gdk.Windower {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
@@ -3264,14 +3239,9 @@ func (widget *Widget) RootWindow() *gdk.Window {
 
 	_cret = C.gtk_widget_get_root_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -3588,7 +3558,7 @@ func (widget *Widget) TooltipWindow() *Window {
 //
 //      return NULL;
 //    }
-func (widget *Widget) Toplevel() *Widget {
+func (widget *Widget) Toplevel() Widgeter {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -3596,9 +3566,9 @@ func (widget *Widget) Toplevel() *Widget {
 
 	_cret = C.gtk_widget_get_toplevel(_arg0)
 
-	var _ret *Widget // out
+	var _ret Widgeter // out
 
-	_ret = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _ret
 }
@@ -3730,7 +3700,7 @@ func (widget *Widget) Visual() *gdk.Visual {
 }
 
 // Window returns the widget’s window if it is realized, NULL otherwise
-func (widget *Widget) Window() *gdk.Window {
+func (widget *Widget) Window() gdk.Windower {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.GdkWindow // in
 
@@ -3738,14 +3708,9 @@ func (widget *Widget) Window() *gdk.Window {
 
 	_cret = C.gtk_widget_get_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -4072,7 +4037,7 @@ func (widget *Widget) Intersect(area *gdk.Rectangle) (gdk.Rectangle, bool) {
 
 // IsAncestor determines whether widget is somewhere inside ancestor, possibly
 // with intermediate containers.
-func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
+func (widget *Widget) IsAncestor(ancestor Widgeter) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gboolean   // in
@@ -4278,7 +4243,7 @@ func (widget *Widget) ListAccelClosures() *externglib.List {
 	var _list *externglib.List // out
 
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -4334,11 +4299,11 @@ func (widget *Widget) ListMnemonicLabels() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkWidget)(_p)
-		var dst Widget // out
-		dst = *wrapWidget(externglib.Take(unsafe.Pointer(src)))
+		var dst Widgeter // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Widgeter)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -4852,7 +4817,7 @@ func (widget *Widget) RegionIntersect(region *cairo.Region) *cairo.Region {
 // up. This is now deprecated and you should use gtk_widget_register_window()
 // instead. Old code will keep working as is, although some new features like
 // transparency might not work perfectly.
-func (widget *Widget) RegisterWindow(window gdk.Windowwer) {
+func (widget *Widget) RegisterWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -4890,7 +4855,7 @@ func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, a
 // RemoveMnemonicLabel removes a widget from the list of mnemonic labels for
 // this widget. (See gtk_widget_list_mnemonic_labels()). The widget must have
 // previously been added to the list with gtk_widget_add_mnemonic_label().
-func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
+func (widget *Widget) RemoveMnemonicLabel(label Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -4998,7 +4963,7 @@ func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixb
 // count issues to avoid destroying the widget.
 //
 // Deprecated: Use gtk_container_remove() and gtk_container_add().
-func (widget *Widget) Reparent(newParent Widgetter) {
+func (widget *Widget) Reparent(newParent Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -5297,7 +5262,7 @@ func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 
 // SetFontMap sets the font map to use for Pango rendering. When not set, the
 // widget will inherit the font map from its parent.
-func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
+func (widget *Widget) SetFontMap(fontMap pango.FontMaper) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 *C.PangoFontMap // out
 
@@ -5581,7 +5546,7 @@ func (widget *Widget) SetOpacity(opacity float64) {
 // Container. Sets the container as the parent of widget, and takes care of some
 // details such as updating the state and style of the child to reflect its new
 // location. The opposite function is gtk_widget_unparent().
-func (widget *Widget) SetParent(parent Widgetter) {
+func (widget *Widget) SetParent(parent Widgeter) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 
@@ -5597,7 +5562,7 @@ func (widget *Widget) SetParent(parent Widgetter) {
 // toplevel window or can be embedded into other widgets.
 //
 // For Window classes, this needs to be called before the window is realized.
-func (widget *Widget) SetParentWindow(parentWindow gdk.Windowwer) {
+func (widget *Widget) SetParentWindow(parentWindow gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -5929,7 +5894,7 @@ func (widget *Widget) SetVisual(visual *gdk.Visual) {
 // function.
 //
 // Note that this function does not add any reference to window.
-func (widget *Widget) SetWindow(window gdk.Windowwer) {
+func (widget *Widget) SetWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -6069,7 +6034,7 @@ func (widget *Widget) ThawChildNotify() {
 // allocation to coordinates relative to dest_widget’s allocations. In order to
 // perform this operation, both widgets must be realized, and must share a
 // common toplevel.
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX int, srcY int) (destX int, destY int, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgeter, srcX int, srcY int) (destX int, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -6144,7 +6109,7 @@ func (widget *Widget) Unrealize() {
 // UnregisterWindow unregisters a Window from the widget that was previously set
 // up with gtk_widget_register_window(). You need to call this when the window
 // is no longer used by the widget, such as when you destroy it.
-func (widget *Widget) UnregisterWindow(window gdk.Windowwer) {
+func (widget *Widget) UnregisterWindow(window gdk.Windower) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkWindow // out
 
@@ -6167,9 +6132,9 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	C.gtk_widget_unset_state_flags(_arg0, _arg1)
 }
 
-// WidgetGetDefaultDirection obtains the current default reading direction. See
+// WidgetDefaultDirection obtains the current default reading direction. See
 // gtk_widget_set_default_direction().
-func WidgetGetDefaultDirection() TextDirection {
+func WidgetDefaultDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
 
 	_cret = C.gtk_widget_get_default_direction()

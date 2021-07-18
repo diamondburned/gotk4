@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -30,7 +32,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBasedder},
+		{T: externglib.Type(C.g_datagram_based_get_type()), F: marshalDatagramBaseder},
 	})
 }
 
@@ -83,7 +85,7 @@ type DatagramBasedOverrider interface {
 	// If cancellable is cancelled before the condition is met, or if timeout is
 	// reached before the condition is met, then FALSE is returned and error is
 	// set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) error
+	ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified condition on the Based. The
 	// #GSource keeps a reference to the datagram_based.
@@ -98,7 +100,7 @@ type DatagramBasedOverrider interface {
 	// likely 0 unless cancellation happened at the same time as a condition
 	// change). You can check for this in the callback using
 	// g_cancellable_is_cancelled().
-	CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source
+	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
 	// ReceiveMessages: receive one or more data messages from datagram_based in
 	// one go.
 	//
@@ -149,7 +151,7 @@ type DatagramBasedOverrider interface {
 	// messages successfully received before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
-	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
 	//
@@ -193,7 +195,7 @@ type DatagramBasedOverrider interface {
 	// messages successfully sent before the error will be returned. If
 	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 	// other error.
-	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
 // DatagramBased is a networking interface for representing datagram-based
@@ -247,26 +249,26 @@ type DatagramBased struct {
 
 var _ gextras.Nativer = (*DatagramBased)(nil)
 
-// DatagramBasedder describes DatagramBased's abstract methods.
-type DatagramBasedder interface {
+// DatagramBaseder describes DatagramBased's abstract methods.
+type DatagramBaseder interface {
 	// ConditionCheck checks on the readiness of datagram_based to perform
 	// operations.
 	ConditionCheck(condition glib.IOCondition) glib.IOCondition
 	// ConditionWait waits for up to timeout microseconds for condition to
 	// become true on datagram_based.
-	ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) error
+	ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified condition on the Based.
-	CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source
+	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
 	// ReceiveMessages: receive one or more data messages from datagram_based in
 	// one go.
-	ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
-	SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
-var _ DatagramBasedder = (*DatagramBased)(nil)
+var _ DatagramBaseder = (*DatagramBased)(nil)
 
 func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	return &DatagramBased{
@@ -274,7 +276,7 @@ func wrapDatagramBased(obj *externglib.Object) *DatagramBased {
 	}
 }
 
-func marshalDatagramBasedder(p uintptr) (interface{}, error) {
+func marshalDatagramBaseder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDatagramBased(obj), nil
@@ -340,17 +342,21 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 // If cancellable is cancelled before the condition is met, or if timeout is
 // reached before the condition is met, then FALSE is returned and error is set
 // appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
-func (datagramBased *DatagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) error {
+func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
 	var _arg0 *C.GDatagramBased // out
+	var _arg3 *C.GCancellable   // out
 	var _arg1 C.GIOCondition    // out
 	var _arg2 C.gint64          // out
-	var _arg3 *C.GCancellable   // out
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GIOCondition(condition)
 	_arg2 = C.gint64(timeout)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -374,15 +380,19 @@ func (datagramBased *DatagramBased) ConditionWait(condition glib.IOCondition, ti
 // the source to trigger, reporting the current condition (which is likely 0
 // unless cancellation happened at the same time as a condition change). You can
 // check for this in the callback using g_cancellable_is_cancelled().
-func (datagramBased *DatagramBased) CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source {
+func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
 	var _arg0 *C.GDatagramBased // out
-	var _arg1 C.GIOCondition    // out
 	var _arg2 *C.GCancellable   // out
+	var _arg1 C.GIOCondition    // out
 	var _cret *C.GSource        // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GIOCondition(condition)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
 
@@ -444,24 +454,28 @@ func (datagramBased *DatagramBased) CreateSource(condition glib.IOCondition, can
 // returned if zero messages could be received; otherwise the number of messages
 // successfully received before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (datagramBased *DatagramBased) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error) {
+func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
+	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GInputMessage
 	var _arg2 C.guint
-	var _arg3 C.gint          // out
-	var _arg4 C.gint64        // out
-	var _arg5 *C.GCancellable // out
-	var _cret C.gint          // in
-	var _cerr *C.GError       // in
+	var _arg3 C.gint    // out
+	var _arg4 C.gint64  // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.guint)(len(messages))
 	if len(messages) > 0 {
 		_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
 	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
@@ -513,24 +527,28 @@ func (datagramBased *DatagramBased) ReceiveMessages(messages []InputMessage, fla
 // returned if zero messages could be sent; otherwise the number of messages
 // successfully sent before the error will be returned. If cancellable is
 // cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
-func (datagramBased *DatagramBased) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable *Cancellable) (int, error) {
+func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
+	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GOutputMessage
 	var _arg2 C.guint
-	var _arg3 C.gint          // out
-	var _arg4 C.gint64        // out
-	var _arg5 *C.GCancellable // out
-	var _cret C.gint          // in
-	var _cerr *C.GError       // in
+	var _arg3 C.gint    // out
+	var _arg4 C.gint64  // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(datagramBased.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.guint)(len(messages))
 	if len(messages) > 0 {
 		_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
 	}
 	_arg3 = C.gint(flags)
 	_arg4 = C.gint64(timeout)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 

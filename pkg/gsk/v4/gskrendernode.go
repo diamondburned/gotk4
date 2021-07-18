@@ -84,7 +84,7 @@ type RenderNoder interface {
 	// NodeType returns the type of the node.
 	NodeType() RenderNodeType
 	// Ref acquires a reference on the given GskRenderNode.
-	ref() *RenderNode
+	ref() RenderNoder
 	// Unref releases a reference on the given GskRenderNode.
 	unref()
 	// WriteToFile: this function is equivalent to calling
@@ -159,7 +159,7 @@ func (node *RenderNode) NodeType() RenderNodeType {
 }
 
 // Ref acquires a reference on the given GskRenderNode.
-func (node *RenderNode) ref() *RenderNode {
+func (node *RenderNode) ref() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
 
@@ -167,9 +167,9 @@ func (node *RenderNode) ref() *RenderNode {
 
 	_cret = C.gsk_render_node_ref(_arg0)
 
-	var _renderNode *RenderNode // out
+	var _renderNode RenderNoder // out
 
-	_renderNode = wrapRenderNode(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_renderNode = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(RenderNoder)
 
 	return _renderNode
 }

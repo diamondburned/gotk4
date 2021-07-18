@@ -244,7 +244,7 @@ func NewImageFromFile(filename string) *Image {
 // theme. If the icon name isn’t known, a “broken image” icon will be displayed
 // instead. If the current icon theme is changed, the icon will be updated
 // appropriately.
-func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
+func NewImageFromGIcon(icon gio.Iconer, size int) *Image {
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -441,7 +441,7 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 // of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
 // reference to the returned #GIcon.
-func (image *Image) GIcon() (*gio.Icon, int) {
+func (image *Image) GIcon() (gio.Iconer, int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // in
 	var _arg2 C.GtkIconSize // in
@@ -450,15 +450,10 @@ func (image *Image) GIcon() (*gio.Icon, int) {
 
 	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
 
-	var _gicon *gio.Icon // out
-	var _size int        // out
+	var _gicon gio.Iconer // out
+	var _size int         // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_arg1))
-		_gicon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_gicon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1)))).(gio.Iconer)
 	_size = int(_arg2)
 
 	return _gicon, _size
@@ -623,7 +618,7 @@ func (image *Image) SetFromFile(filename string) {
 }
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
-func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
+func (image *Image) SetFromGIcon(icon gio.Iconer, size int) {
 	var _arg0 *C.GtkImage   // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out

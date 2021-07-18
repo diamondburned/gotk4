@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBoxxer},
+		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBoxer},
 	})
 }
 
@@ -65,7 +65,7 @@ func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
 	}
 }
 
-func marshalCellAreaBoxxer(p uintptr) (interface{}, error) {
+func marshalCellAreaBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapCellAreaBox(obj), nil

@@ -152,7 +152,7 @@ func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 
 // LabelWidget retrieves the label widget for the frame. See
 // gtk_frame_set_label_widget().
-func (frame *Frame) LabelWidget() *Widget {
+func (frame *Frame) LabelWidget() Widgeter {
 	var _arg0 *C.GtkFrame  // out
 	var _cret *C.GtkWidget // in
 
@@ -160,9 +160,9 @@ func (frame *Frame) LabelWidget() *Widget {
 
 	_cret = C.gtk_frame_get_label_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -212,7 +212,7 @@ func (frame *Frame) SetLabelAlign(xalign float32, yalign float32) {
 
 // SetLabelWidget sets the Frame:label-widget for the frame. This is the widget
 // that will appear embedded in the top edge of the frame as a title.
-func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
+func (frame *Frame) SetLabelWidget(labelWidget Widgeter) {
 	var _arg0 *C.GtkFrame  // out
 	var _arg1 *C.GtkWidget // out
 

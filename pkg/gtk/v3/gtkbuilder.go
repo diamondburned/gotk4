@@ -673,7 +673,7 @@ func (builder *Builder) ExposeObject(name string, object *externglib.Object) {
 //
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
-func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType externglib.Type, buffer string, length uint) (uint, error) {
+func (builder *Builder) ExtendWithTemplate(widget Widgeter, templateType externglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.GType       // out

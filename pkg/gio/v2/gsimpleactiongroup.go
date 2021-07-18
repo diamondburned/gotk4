@@ -117,7 +117,7 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 // If no such action exists, returns NULL.
 //
 // Deprecated: Use g_action_map_lookup_action().
-func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
+func (simple *SimpleActionGroup) Lookup(actionName string) Actioner {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
 	var _cret *C.GAction            // in
@@ -127,9 +127,9 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 
 	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 
-	var _action *Action // out
+	var _action Actioner // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
+	_action = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

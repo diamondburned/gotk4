@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Dragger},
+		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Drager},
 	})
 }
 
@@ -36,7 +36,7 @@ func wrapX11Drag(obj *externglib.Object) *X11Drag {
 	}
 }
 
-func marshalX11Dragger(p uintptr) (interface{}, error) {
+func marshalX11Drager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapX11Drag(obj), nil

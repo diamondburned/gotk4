@@ -150,7 +150,7 @@ func (self *ColumnViewColumn) FixedWidth() int {
 
 // HeaderMenu gets the menu model that is used to create the context menu for
 // the column header.
-func (self *ColumnViewColumn) HeaderMenu() *gio.MenuModel {
+func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeler {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret *C.GMenuModel          // in
 
@@ -158,14 +158,9 @@ func (self *ColumnViewColumn) HeaderMenu() *gio.MenuModel {
 
 	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
 
-	var _menuModel *gio.MenuModel // out
+	var _menuModel gio.MenuModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menuModel = &gio.MenuModel{
-			Object: obj,
-		}
-	}
+	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
 
 	return _menuModel
 }
@@ -283,7 +278,7 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 
 // SetHeaderMenu sets the menu model that is used to create the context menu for
 // the column header.
-func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
+func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeler) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 *C.GMenuModel          // out
 

@@ -79,7 +79,7 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 }
 
 // BaseIOStream gets conn's base OStream
-func (conn *TCPWrapperConnection) BaseIOStream() *IOStream {
+func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
 
@@ -87,9 +87,9 @@ func (conn *TCPWrapperConnection) BaseIOStream() *IOStream {
 
 	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 
-	var _ioStream *IOStream // out
+	var _ioStream IOStreamer // out
 
-	_ioStream = wrapIOStream(externglib.Take(unsafe.Pointer(_cret)))
+	_ioStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IOStreamer)
 
 	return _ioStream
 }

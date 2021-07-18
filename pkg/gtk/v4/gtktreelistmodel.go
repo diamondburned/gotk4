@@ -21,8 +21,8 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModeller},
-		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRowwer},
+		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModeler},
+		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRower},
 	})
 }
 
@@ -33,7 +33,7 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeller)
+type TreeListModelCreateModelFunc func(item *externglib.Object) (listModel gio.ListModeler)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
 func _gotk4_gtk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) (cret *C.GListModel) {
@@ -73,7 +73,7 @@ func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
 	}
 }
 
-func marshalTreeListModeller(p uintptr) (interface{}, error) {
+func marshalTreeListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeListModel(obj), nil
@@ -81,7 +81,7 @@ func marshalTreeListModeller(p uintptr) (interface{}, error) {
 
 // NewTreeListModel creates a new empty GtkTreeListModel displaying root with
 // all rows collapsed.
-func NewTreeListModel(root gio.ListModeller, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
+func NewTreeListModel(root gio.ListModeler, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
 	var _arg2 C.gboolean                        // out
 	var _arg3 C.gboolean                        // out
@@ -157,7 +157,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 }
 
 // Model gets the root model that self was created with.
-func (self *TreeListModel) Model() *gio.ListModel {
+func (self *TreeListModel) Model() gio.ListModeler {
 	var _arg0 *C.GtkTreeListModel // out
 	var _cret *C.GListModel       // in
 
@@ -165,14 +165,9 @@ func (self *TreeListModel) Model() *gio.ListModel {
 
 	_cret = C.gtk_tree_list_model_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -274,7 +269,7 @@ func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
 	}
 }
 
-func marshalTreeListRowwer(p uintptr) (interface{}, error) {
+func marshalTreeListRower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapTreeListRow(obj), nil
@@ -305,7 +300,7 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 // This model is the model created by the gtk.TreeListModelCreateModelFunc and
 // contains the original items, no matter what value
 // gtk.TreeListModel:passthrough is set to.
-func (self *TreeListRow) Children() *gio.ListModel {
+func (self *TreeListRow) Children() gio.ListModeler {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret *C.GListModel     // in
 
@@ -313,14 +308,9 @@ func (self *TreeListRow) Children() *gio.ListModel {
 
 	_cret = C.gtk_tree_list_row_get_children(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }

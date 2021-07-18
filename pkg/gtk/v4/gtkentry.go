@@ -355,7 +355,7 @@ func (entry *Entry) CurrentIconDragSource() int {
 }
 
 // ExtraMenu gets the menu model set with gtk_entry_set_extra_menu().
-func (entry *Entry) ExtraMenu() *gio.MenuModel {
+func (entry *Entry) ExtraMenu() gio.MenuModeler {
 	var _arg0 *C.GtkEntry   // out
 	var _cret *C.GMenuModel // in
 
@@ -363,14 +363,9 @@ func (entry *Entry) ExtraMenu() *gio.MenuModel {
 
 	_cret = C.gtk_entry_get_extra_menu(_arg0)
 
-	var _menuModel *gio.MenuModel // out
+	var _menuModel gio.MenuModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menuModel = &gio.MenuModel{
-			Object: obj,
-		}
-	}
+	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
 
 	return _menuModel
 }
@@ -466,7 +461,7 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 //
 // NULL will be returned if there is no icon or if the icon was set by some
 // other method (e.g., by GdkPaintable or icon name).
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconer {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -476,14 +471,9 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 
 	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
 
-	var _icon *gio.Icon // out
+	var _icon gio.Iconer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
 
 	return _icon
 }
@@ -512,7 +502,7 @@ func (entry *Entry) IconName(iconPos EntryIconPosition) string {
 // IconPaintable retrieves the GdkPaintable used for the icon.
 //
 // If no GdkPaintable was used for the icon, NULL is returned.
-func (entry *Entry) IconPaintable(iconPos EntryIconPosition) *gdk.Paintable {
+func (entry *Entry) IconPaintable(iconPos EntryIconPosition) gdk.Paintabler {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GdkPaintable        // in
@@ -522,14 +512,9 @@ func (entry *Entry) IconPaintable(iconPos EntryIconPosition) *gdk.Paintable {
 
 	_cret = C.gtk_entry_get_icon_paintable(_arg0, _arg1)
 
-	var _paintable *gdk.Paintable // out
+	var _paintable gdk.Paintabler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_paintable = &gdk.Paintable{
-			Object: obj,
-		}
-	}
+	_paintable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Paintabler)
 
 	return _paintable
 }
@@ -939,7 +924,7 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 
 // SetExtraMenu sets a menu model to add when constructing the context menu for
 // entry.
-func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
+func (entry *Entry) SetExtraMenu(model gio.MenuModeler) {
 	var _arg0 *C.GtkEntry   // out
 	var _arg1 *C.GMenuModel // out
 
@@ -1001,7 +986,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, provider *gdk.C
 // If the icon isn’t known, a “broken image” icon will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

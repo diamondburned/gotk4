@@ -81,7 +81,7 @@ type TLSClientConnectioner interface {
 	// another, for use in TLS session resumption.
 	CopySessionState(source TLSClientConnectioner)
 	// ServerIdentity gets conn's expected server identity
-	ServerIdentity() *SocketConnectable
+	ServerIdentity() SocketConnectabler
 	// UseSSL3: SSL 3.0 is no longer supported.
 	UseSSL3() bool
 	// ValidationFlags gets conn's validation flags
@@ -153,7 +153,7 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 }
 
 // ServerIdentity gets conn's expected server identity
-func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
+func (conn *TLSClientConnection) ServerIdentity() SocketConnectabler {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
 
@@ -161,9 +161,9 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 
 	_cret = C.g_tls_client_connection_get_server_identity(_arg0)
 
-	var _socketConnectable *SocketConnectable // out
+	var _socketConnectable SocketConnectabler // out
 
-	_socketConnectable = wrapSocketConnectable(externglib.Take(unsafe.Pointer(_cret)))
+	_socketConnectable = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(SocketConnectabler)
 
 	return _socketConnectable
 }
@@ -262,7 +262,7 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the base_io_stream after this function
 // has returned.
-func TlsClientConnectionNew(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
+func NewTlsClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (TLSClientConnectioner, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out
 	var _cret *C.GIOStream          // in
@@ -273,10 +273,10 @@ func TlsClientConnectionNew(baseIoStream IOStreamer, serverIdentity SocketConnec
 
 	_cret = C.g_tls_client_connection_new(_arg1, _arg2, &_cerr)
 
-	var _tlsClientConnection *TLSClientConnection // out
-	var _goerr error                              // out
+	var _tlsClientConnection TLSClientConnectioner // out
+	var _goerr error                               // out
 
-	_tlsClientConnection = wrapTLSClientConnection(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsClientConnection = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSClientConnectioner)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _tlsClientConnection, _goerr

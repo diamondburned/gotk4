@@ -73,9 +73,9 @@ func (g Gravity) String() string {
 	}
 }
 
-// GravityGetForMatrix finds the gravity that best matches the rotation
-// component in a PangoMatrix.
-func GravityGetForMatrix(matrix *Matrix) Gravity {
+// GravityForMatrix finds the gravity that best matches the rotation component
+// in a PangoMatrix.
+func GravityForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
 	var _cret C.PangoGravity // in
 
@@ -90,14 +90,14 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 	return _gravity
 }
 
-// GravityGetForScript returns the gravity to use in laying out a PangoItem.
+// GravityForScript returns the gravity to use in laying out a PangoItem.
 //
 // The gravity is determined based on the script, base gravity, and hint.
 //
 // If base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of script. To get the preferred gravity of a script, pass
 // PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
-func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
+func GravityForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.PangoGravity     // out
 	var _arg3 C.PangoGravityHint // out
@@ -116,7 +116,7 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 	return _gravity
 }
 
-// GravityGetForScriptAndWidth returns the gravity to use in laying out a single
+// GravityForScriptAndWidth returns the gravity to use in laying out a single
 // character or PangoItem.
 //
 // The gravity is determined based on the script, East Asian width, base
@@ -130,7 +130,7 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 //
 // If base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of script.
-func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
+func GravityForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.gboolean         // out
 	var _arg3 C.PangoGravity     // out

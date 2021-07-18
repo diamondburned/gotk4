@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxxer},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxer},
 	})
 }
 
@@ -85,7 +85,7 @@ func wrapBox(obj *externglib.Object) *Box {
 	}
 }
 
-func marshalBoxxer(p uintptr) (interface{}, error) {
+func marshalBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBox(obj), nil
@@ -116,7 +116,7 @@ func (v *Box) Native() uintptr {
 }
 
 // Append adds child as the last child to box.
-func (box *Box) Append(child Widgetter) {
+func (box *Box) Append(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -181,7 +181,7 @@ func (box *Box) Spacing() int {
 // box children.
 //
 // If sibling is NULL, insert child at the first position.
-func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) InsertChildAfter(child Widgeter, sibling Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out
@@ -194,7 +194,7 @@ func (box *Box) InsertChildAfter(child Widgetter, sibling Widgetter) {
 }
 
 // Prepend adds child as the first child to box.
-func (box *Box) Prepend(child Widgetter) {
+func (box *Box) Prepend(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -208,7 +208,7 @@ func (box *Box) Prepend(child Widgetter) {
 //
 // The child must have been added before with gtk.Box.Append(),
 // gtk.Box.Prepend(), or gtk.Box.InsertChildAfter().
-func (box *Box) Remove(child Widgetter) {
+func (box *Box) Remove(child Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -222,7 +222,7 @@ func (box *Box) Remove(child Widgetter) {
 // box children.
 //
 // If sibling is NULL, move child to the first position.
-func (box *Box) ReorderChildAfter(child Widgetter, sibling Widgetter) {
+func (box *Box) ReorderChildAfter(child Widgeter, sibling Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 *C.GtkWidget // out

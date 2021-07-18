@@ -240,7 +240,7 @@ type FileChooserer interface {
 	// CurrentFolder gets the current folder of chooser as a local filename.
 	CurrentFolder() string
 	// CurrentFolderFile gets the current folder of chooser as #GFile.
-	CurrentFolderFile() *gio.File
+	CurrentFolderFile() gio.Filer
 	// CurrentFolderURI gets the current folder of chooser as an URI.
 	CurrentFolderURI() string
 	// CurrentName gets the current name in the file selector, as entered by the
@@ -251,10 +251,10 @@ type FileChooserer interface {
 	DoOverwriteConfirmation() bool
 	// ExtraWidget gets the current extra widget; see
 	// gtk_file_chooser_set_extra_widget().
-	ExtraWidget() *Widget
+	ExtraWidget() Widgeter
 	// File gets the #GFile for the currently selected file in the file
 	// selector.
-	File() *gio.File
+	File() gio.Filer
 	// Filename gets the filename for the currently selected file in the file
 	// selector.
 	Filename() string
@@ -265,7 +265,7 @@ type FileChooserer interface {
 	LocalOnly() bool
 	// PreviewFile gets the #GFile that should be previewed in a custom preview
 	// Internal function, see gtk_file_chooser_get_preview_uri().
-	PreviewFile() *gio.File
+	PreviewFile() gio.Filer
 	// PreviewFilename gets the filename that should be previewed in a custom
 	// preview widget.
 	PreviewFilename() string
@@ -274,7 +274,7 @@ type FileChooserer interface {
 	PreviewURI() string
 	// PreviewWidget gets the current preview widget; see
 	// gtk_file_chooser_set_preview_widget().
-	PreviewWidget() *Widget
+	PreviewWidget() Widgeter
 	// PreviewWidgetActive gets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename.
@@ -335,7 +335,7 @@ type FileChooserer interface {
 	SetDoOverwriteConfirmation(doOverwriteConfirmation bool)
 	// SetExtraWidget sets an application-supplied widget to provide extra
 	// options to the user.
-	SetExtraWidget(extraWidget Widgetter)
+	SetExtraWidget(extraWidget Widgeter)
 	// SetFile sets file as the current filename for the file chooser, by
 	// changing to the file’s parent folder and actually selecting the file in
 	// list.
@@ -352,7 +352,7 @@ type FileChooserer interface {
 	SetLocalOnly(localOnly bool)
 	// SetPreviewWidget sets an application-supplied widget to use to display a
 	// custom preview of the currently selected file.
-	SetPreviewWidget(previewWidget Widgetter)
+	SetPreviewWidget(previewWidget Widgeter)
 	// SetPreviewWidgetActive sets whether the preview widget set by
 	// gtk_file_chooser_set_preview_widget() should be shown for the current
 	// filename.
@@ -579,7 +579,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 
 // CurrentFolderFile gets the current folder of chooser as #GFile. See
 // gtk_file_chooser_get_current_folder_uri().
-func (chooser *FileChooser) CurrentFolderFile() *gio.File {
+func (chooser *FileChooser) CurrentFolderFile() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -587,14 +587,9 @@ func (chooser *FileChooser) CurrentFolderFile() *gio.File {
 
 	_cret = C.gtk_file_chooser_get_current_folder_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -670,7 +665,7 @@ func (chooser *FileChooser) DoOverwriteConfirmation() bool {
 
 // ExtraWidget gets the current extra widget; see
 // gtk_file_chooser_set_extra_widget().
-func (chooser *FileChooser) ExtraWidget() *Widget {
+func (chooser *FileChooser) ExtraWidget() Widgeter {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkWidget      // in
 
@@ -678,9 +673,9 @@ func (chooser *FileChooser) ExtraWidget() *Widget {
 
 	_cret = C.gtk_file_chooser_get_extra_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -690,7 +685,7 @@ func (chooser *FileChooser) ExtraWidget() *Widget {
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
-func (chooser *FileChooser) File() *gio.File {
+func (chooser *FileChooser) File() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -698,14 +693,9 @@ func (chooser *FileChooser) File() *gio.File {
 
 	_cret = C.gtk_file_chooser_get_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -769,7 +759,7 @@ func (chooser *FileChooser) LocalOnly() bool {
 
 // PreviewFile gets the #GFile that should be previewed in a custom preview
 // Internal function, see gtk_file_chooser_get_preview_uri().
-func (chooser *FileChooser) PreviewFile() *gio.File {
+func (chooser *FileChooser) PreviewFile() gio.Filer {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GFile          // in
 
@@ -777,14 +767,9 @@ func (chooser *FileChooser) PreviewFile() *gio.File {
 
 	_cret = C.gtk_file_chooser_get_preview_file(_arg0)
 
-	var _file *gio.File // out
+	var _file gio.Filer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_file = &gio.File{
-			Object: obj,
-		}
-	}
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.Filer)
 
 	return _file
 }
@@ -827,7 +812,7 @@ func (chooser *FileChooser) PreviewURI() string {
 
 // PreviewWidget gets the current preview widget; see
 // gtk_file_chooser_set_preview_widget().
-func (chooser *FileChooser) PreviewWidget() *Widget {
+func (chooser *FileChooser) PreviewWidget() Widgeter {
 	var _arg0 *C.GtkFileChooser // out
 	var _cret *C.GtkWidget      // in
 
@@ -835,9 +820,9 @@ func (chooser *FileChooser) PreviewWidget() *Widget {
 
 	_cret = C.gtk_file_chooser_get_preview_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -1235,7 +1220,7 @@ func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation b
 
 // SetExtraWidget sets an application-supplied widget to provide extra options
 // to the user.
-func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
+func (chooser *FileChooser) SetExtraWidget(extraWidget Widgeter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 
@@ -1390,7 +1375,7 @@ func (chooser *FileChooser) SetLocalOnly(localOnly bool) {
 // When there is no application-supplied preview widget, or the
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
-func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
+func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgeter) {
 	var _arg0 *C.GtkFileChooser // out
 	var _arg1 *C.GtkWidget      // out
 

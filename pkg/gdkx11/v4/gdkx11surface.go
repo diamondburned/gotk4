@@ -75,7 +75,7 @@ func (surface *X11Surface) Desktop() uint32 {
 }
 
 // Group returns the group this surface belongs to.
-func (surface *X11Surface) Group() *gdk.Surface {
+func (surface *X11Surface) Group() gdk.Surfacer {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
 
@@ -83,14 +83,9 @@ func (surface *X11Surface) Group() *gdk.Surface {
 
 	_cret = C.gdk_x11_surface_get_group(_arg0)
 
-	var _ret *gdk.Surface // out
+	var _ret gdk.Surfacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_ret = &gdk.Surface{
-			Object: obj,
-		}
-	}
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _ret
 }

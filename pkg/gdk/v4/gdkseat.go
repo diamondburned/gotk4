@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 	"unsafe"
 
@@ -108,9 +107,9 @@ type Seater interface {
 	// Display returns the GdkDisplay this seat belongs to.
 	Display() *Display
 	// Keyboard returns the device that routes keyboard events.
-	Keyboard() *Device
+	Keyboard() Devicer
 	// Pointer returns the device that routes pointer events.
-	Pointer() *Device
+	Pointer() Devicer
 	// Tools returns all GdkDeviceTools that are known to the application.
 	Tools() *externglib.List
 }
@@ -161,11 +160,11 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
-		var dst Device // out
-		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		var dst Devicer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -187,7 +186,7 @@ func (seat *Seat) Display() *Display {
 }
 
 // Keyboard returns the device that routes keyboard events.
-func (seat *Seat) Keyboard() *Device {
+func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -195,15 +194,15 @@ func (seat *Seat) Keyboard() *Device {
 
 	_cret = C.gdk_seat_get_keyboard(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
 
 // Pointer returns the device that routes pointer events.
-func (seat *Seat) Pointer() *Device {
+func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
 	var _cret *C.GdkDevice // in
 
@@ -211,9 +210,9 @@ func (seat *Seat) Pointer() *Device {
 
 	_cret = C.gdk_seat_get_pointer(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -236,7 +235,7 @@ func (seat *Seat) Tools() *externglib.List {
 		dst = *wrapDeviceTool(externglib.Take(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

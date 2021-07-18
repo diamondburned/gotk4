@@ -48,9 +48,9 @@ var _ gextras.Nativer = (*NativeSurface)(nil)
 // NativeSurfacer describes NativeSurface's abstract methods.
 type NativeSurfacer interface {
 	// Renderer returns the renderer that is used for this GtkNative.
-	Renderer() *gsk.Renderer
+	Renderer() gsk.Rendererer
 	// Surface returns the surface of this GtkNative.
-	Surface() *gdk.Surface
+	Surface() gdk.Surfacer
 	// SurfaceTransform retrieves the surface transform of self.
 	SurfaceTransform() (x float64, y float64)
 	// Realize realizes a GtkNative.
@@ -87,7 +87,7 @@ func marshalNativeSurfacer(p uintptr) (interface{}, error) {
 }
 
 // Renderer returns the renderer that is used for this GtkNative.
-func (self *NativeSurface) Renderer() *gsk.Renderer {
+func (self *NativeSurface) Renderer() gsk.Rendererer {
 	var _arg0 *C.GtkNative   // out
 	var _cret *C.GskRenderer // in
 
@@ -95,20 +95,15 @@ func (self *NativeSurface) Renderer() *gsk.Renderer {
 
 	_cret = C.gtk_native_get_renderer(_arg0)
 
-	var _renderer *gsk.Renderer // out
+	var _renderer gsk.Rendererer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_renderer = &gsk.Renderer{
-			Object: obj,
-		}
-	}
+	_renderer = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gsk.Rendererer)
 
 	return _renderer
 }
 
 // Surface returns the surface of this GtkNative.
-func (self *NativeSurface) Surface() *gdk.Surface {
+func (self *NativeSurface) Surface() gdk.Surfacer {
 	var _arg0 *C.GtkNative  // out
 	var _cret *C.GdkSurface // in
 
@@ -116,14 +111,9 @@ func (self *NativeSurface) Surface() *gdk.Surface {
 
 	_cret = C.gtk_native_get_surface(_arg0)
 
-	var _surface *gdk.Surface // out
+	var _surface gdk.Surfacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_surface = &gdk.Surface{
-			Object: obj,
-		}
-	}
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -172,8 +162,8 @@ func (self *NativeSurface) Unrealize() {
 	C.gtk_native_unrealize(_arg0)
 }
 
-// NativeSurfaceGetForSurface finds the GtkNative associated with the surface.
-func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
+// NativeSurfaceForSurface finds the GtkNative associated with the surface.
+func NativeSurfaceForSurface(surface gdk.Surfacer) NativeSurfacer {
 	var _arg1 *C.GdkSurface // out
 	var _cret *C.GtkNative  // in
 
@@ -181,9 +171,9 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 
 	_cret = C.gtk_native_get_for_surface(_arg1)
 
-	var _native *NativeSurface // out
+	var _native NativeSurfacer // out
 
-	_native = wrapNativeSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_native = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NativeSurfacer)
 
 	return _native
 }

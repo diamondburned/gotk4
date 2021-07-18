@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -75,7 +78,7 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
 	InitFinish(res AsyncResulter) error
@@ -188,7 +191,7 @@ var _ gextras.Nativer = (*AsyncInitable)(nil)
 type AsyncInitabler interface {
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface.
-	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
@@ -246,16 +249,20 @@ func marshalAsyncInitabler(p uintptr) (interface{}, error) {
 // thread, so if you want to support asynchronous initialization via threads,
 // just implement the Initable interface without overriding any interface
 // methods.
-func (initable *AsyncInitable) InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(initable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 

@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_popover_menu_bar_get_type()), F: marshalPopoverMenuBarrer},
+		{T: externglib.Type(C.gtk_popover_menu_bar_get_type()), F: marshalPopoverMenuBarer},
 	})
 }
 
@@ -74,14 +74,14 @@ func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
 	}
 }
 
-func marshalPopoverMenuBarrer(p uintptr) (interface{}, error) {
+func marshalPopoverMenuBarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPopoverMenuBar(obj), nil
 }
 
 // NewPopoverMenuBarFromModel creates a GtkPopoverMenuBar from a GMenuModel.
-func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
+func NewPopoverMenuBarFromModel(model gio.MenuModeler) *PopoverMenuBar {
 	var _arg1 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
 
@@ -100,7 +100,7 @@ func NewPopoverMenuBarFromModel(model gio.MenuModeller) *PopoverMenuBar {
 //
 // For this to work, the menu model of bar must have an item with a custom
 // attribute that matches id.
-func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
+func (bar *PopoverMenuBar) AddChild(child Widgeter, id string) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _arg2 *C.char              // out
@@ -122,7 +122,7 @@ func (bar *PopoverMenuBar) AddChild(child Widgetter, id string) bool {
 }
 
 // MenuModel returns the model from which the contents of bar are taken.
-func (bar *PopoverMenuBar) MenuModel() *gio.MenuModel {
+func (bar *PopoverMenuBar) MenuModel() gio.MenuModeler {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _cret *C.GMenuModel        // in
 
@@ -130,21 +130,16 @@ func (bar *PopoverMenuBar) MenuModel() *gio.MenuModel {
 
 	_cret = C.gtk_popover_menu_bar_get_menu_model(_arg0)
 
-	var _menuModel *gio.MenuModel // out
+	var _menuModel gio.MenuModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_menuModel = &gio.MenuModel{
-			Object: obj,
-		}
-	}
+	_menuModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.MenuModeler)
 
 	return _menuModel
 }
 
 // RemoveChild removes a widget that has previously been added with
 // gtk_popover_menu_bar_add_child().
-func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
+func (bar *PopoverMenuBar) RemoveChild(child Widgeter) bool {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GtkWidget         // out
 	var _cret C.gboolean           // in
@@ -164,7 +159,7 @@ func (bar *PopoverMenuBar) RemoveChild(child Widgetter) bool {
 }
 
 // SetMenuModel sets a menu model from which bar should take its contents.
-func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeller) {
+func (bar *PopoverMenuBar) SetMenuModel(model gio.MenuModeler) {
 	var _arg0 *C.GtkPopoverMenuBar // out
 	var _arg1 *C.GMenuModel        // out
 

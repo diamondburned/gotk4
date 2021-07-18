@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDragger},
+		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrager},
 	})
 }
 
@@ -46,14 +46,14 @@ func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
 	}
 }
 
-func marshalGestureDragger(p uintptr) (interface{}, error) {
+func marshalGestureDrager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapGestureDrag(obj), nil
 }
 
 // NewGestureDrag returns a newly created Gesture that recognizes drags.
-func NewGestureDrag(widget Widgetter) *GestureDrag {
+func NewGestureDrag(widget Widgeter) *GestureDrag {
 	var _arg1 *C.GtkWidget  // out
 	var _cret *C.GtkGesture // in
 

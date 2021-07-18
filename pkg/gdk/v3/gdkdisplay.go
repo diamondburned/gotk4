@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -18,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayyer},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplayer},
 	})
 }
 
@@ -50,7 +49,7 @@ func wrapDisplay(obj *externglib.Object) *Display {
 	}
 }
 
-func marshalDisplayyer(p uintptr) (interface{}, error) {
+func marshalDisplayer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDisplay(obj), nil
@@ -149,7 +148,7 @@ func (display *Display) DefaultCursorSize() uint {
 // DefaultGroup returns the default group leader window for all toplevel windows
 // on display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
-func (display *Display) DefaultGroup() *Window {
+func (display *Display) DefaultGroup() Windower {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkWindow  // in
 
@@ -157,9 +156,9 @@ func (display *Display) DefaultGroup() *Window {
 
 	_cret = C.gdk_display_get_default_group(_arg0)
 
-	var _window *Window // out
+	var _window Windower // out
 
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _window
 }
@@ -181,7 +180,7 @@ func (display *Display) DefaultScreen() *Screen {
 }
 
 // DefaultSeat returns the default Seat for this display.
-func (display *Display) DefaultSeat() *Seat {
+func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GdkSeat    // in
 
@@ -189,9 +188,9 @@ func (display *Display) DefaultSeat() *Seat {
 
 	_cret = C.gdk_display_get_default_seat(_arg0)
 
-	var _seat *Seat // out
+	var _seat Seater // out
 
-	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
+	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
@@ -199,7 +198,7 @@ func (display *Display) DefaultSeat() *Seat {
 // DeviceManager returns the DeviceManager associated to display.
 //
 // Deprecated: Use gdk_display_get_default_seat() and Seat operations.
-func (display *Display) DeviceManager() *DeviceManager {
+func (display *Display) DeviceManager() DeviceManagerer {
 	var _arg0 *C.GdkDisplay       // out
 	var _cret *C.GdkDeviceManager // in
 
@@ -207,9 +206,9 @@ func (display *Display) DeviceManager() *DeviceManager {
 
 	_cret = C.gdk_display_get_device_manager(_arg0)
 
-	var _deviceManager *DeviceManager // out
+	var _deviceManager DeviceManagerer // out
 
-	_deviceManager = wrapDeviceManager(externglib.Take(unsafe.Pointer(_cret)))
+	_deviceManager = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(DeviceManagerer)
 
 	return _deviceManager
 }
@@ -274,7 +273,7 @@ func (display *Display) MonitorAtPoint(x int, y int) *Monitor {
 
 // MonitorAtWindow gets the monitor in which the largest area of window resides,
 // or a monitor close to window if it is outside of all monitors.
-func (display *Display) MonitorAtWindow(window Windowwer) *Monitor {
+func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkWindow  // out
 	var _cret *C.GdkMonitor // in
@@ -420,7 +419,7 @@ func (display *Display) Screen(screenNum int) *Screen {
 // example, belongs to another application).
 //
 // Deprecated: Use gdk_device_get_window_at_position() instead.
-func (display *Display) WindowAtPointer() (winX int, winY int, window *Window) {
+func (display *Display) WindowAtPointer() (winX int, winY int, window Windower) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // in
 	var _arg2 C.gint        // in
@@ -430,13 +429,13 @@ func (display *Display) WindowAtPointer() (winX int, winY int, window *Window) {
 
 	_cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
 
-	var _winX int       // out
-	var _winY int       // out
-	var _window *Window // out
+	var _winX int        // out
+	var _winY int        // out
+	var _window Windower // out
 
 	_winX = int(_arg1)
 	_winY = int(_arg2)
-	_window = wrapWindow(externglib.Take(unsafe.Pointer(_cret)))
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Windower)
 
 	return _winX, _winY, _window
 }
@@ -508,8 +507,8 @@ func (display *Display) ListDevices() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
-		var dst Device // out
-		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		var dst Devicer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
 
@@ -530,11 +529,11 @@ func (display *Display) ListSeats() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkSeat)(_p)
-		var dst Seat // out
-		dst = *wrapSeat(externglib.Take(unsafe.Pointer(src)))
+		var dst Seater // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Seater)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -796,9 +795,9 @@ func (display *Display) WarpPointer(screen *Screen, x int, y int) {
 	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
 }
 
-// DisplayGetDefault gets the default Display. This is a convenience function
-// for: gdk_display_manager_get_default_display (gdk_display_manager_get ()).
-func DisplayGetDefault() *Display {
+// DisplayDefault gets the default Display. This is a convenience function for:
+// gdk_display_manager_get_default_display (gdk_display_manager_get ()).
+func DisplayDefault() *Display {
 	var _cret *C.GdkDisplay // in
 
 	_cret = C.gdk_display_get_default()

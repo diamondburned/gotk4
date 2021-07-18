@@ -141,7 +141,7 @@ type Gesturer interface {
 	BoundingBoxCenter() (x float64, y float64, ok bool)
 	// Device returns the master Device that is currently operating on gesture,
 	// or NULL if the gesture is not being interacted.
-	Device() *gdk.Device
+	Device() gdk.Devicer
 	// GetGroup returns all gestures in the group of gesture
 	GetGroup() *externglib.List
 	// LastUpdatedSequence returns the EventSequence that was last updated on
@@ -158,7 +158,7 @@ type Gesturer interface {
 	Sequences() *externglib.List
 	// Window returns the user-defined window that receives the events handled
 	// by gesture.
-	Window() *gdk.Window
+	Window() gdk.Windower
 	// Group adds gesture to the same group than group_gesture.
 	Group(gesture Gesturer)
 	// HandlesSequence returns TRUE if gesture is currently handling events
@@ -177,7 +177,7 @@ type Gesturer interface {
 	SetState(state EventSequenceState) bool
 	// SetWindow sets a specific window to receive events about, so gesture will
 	// effectively handle only events targeting window, or a child of it.
-	SetWindow(window gdk.Windowwer)
+	SetWindow(window gdk.Windower)
 	// Ungroup separates gesture into an isolated group.
 	Ungroup()
 }
@@ -255,7 +255,7 @@ func (gesture *Gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 
 // Device returns the master Device that is currently operating on gesture, or
 // NULL if the gesture is not being interacted.
-func (gesture *Gesture) Device() *gdk.Device {
+func (gesture *Gesture) Device() gdk.Devicer {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkDevice  // in
 
@@ -263,14 +263,9 @@ func (gesture *Gesture) Device() *gdk.Device {
 
 	_cret = C.gtk_gesture_get_device(_arg0)
 
-	var _device *gdk.Device // out
+	var _device gdk.Devicer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_device = &gdk.Device{
-			Object: obj,
-		}
-	}
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Devicer)
 
 	return _device
 }
@@ -289,11 +284,11 @@ func (gesture *Gesture) GetGroup() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GtkGesture)(_p)
-		var dst Gesture // out
-		dst = *wrapGesture(externglib.Take(unsafe.Pointer(src)))
+		var dst Gesturer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Gesturer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
@@ -383,14 +378,14 @@ func (gesture *Gesture) Sequences() *externglib.List {
 		})
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }
 
 // Window returns the user-defined window that receives the events handled by
 // gesture. See gtk_gesture_set_window() for more information.
-func (gesture *Gesture) Window() *gdk.Window {
+func (gesture *Gesture) Window() gdk.Windower {
 	var _arg0 *C.GtkGesture // out
 	var _cret *C.GdkWindow  // in
 
@@ -398,14 +393,9 @@ func (gesture *Gesture) Window() *gdk.Window {
 
 	_cret = C.gtk_gesture_get_window(_arg0)
 
-	var _window *gdk.Window // out
+	var _window gdk.Windower // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_window = &gdk.Window{
-			Object: obj,
-		}
-	}
+	_window = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Windower)
 
 	return _window
 }
@@ -592,7 +582,7 @@ func (gesture *Gesture) SetState(state EventSequenceState) bool {
 // SetWindow sets a specific window to receive events about, so gesture will
 // effectively handle only events targeting window, or a child of it. window
 // must pertain to gtk_event_controller_get_widget().
-func (gesture *Gesture) SetWindow(window gdk.Windowwer) {
+func (gesture *Gesture) SetWindow(window gdk.Windower) {
 	var _arg0 *C.GtkGesture // out
 	var _arg1 *C.GdkWindow  // out
 

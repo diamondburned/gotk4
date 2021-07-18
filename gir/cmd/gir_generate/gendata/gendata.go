@@ -5,6 +5,7 @@ package gendata
 import (
 	"github.com/diamondburned/gotk4/gir"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
+	. "github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 type Package struct {
@@ -106,6 +107,13 @@ var Preprocessors = []Preprocessor{
 	// 		FindParameter(cattrs, "error").Direction = "out"
 	// 	},
 	// ),
+}
+
+var ConversionProcessors = []ConversionProcessor{
+	ProcessCallback("Gio-2.AsyncReadyCallback", func(conv *Converter) {
+		// Don't include the first parameter in Go.
+		conv.Results[0].Skip = true
+	}),
 }
 
 // Filters defines a list of GIR types to be filtered. The map key is the

@@ -119,14 +119,15 @@ func Dots(parts ...string) string {
 	return strings.Join(nonEmptyParts, ".")
 }
 
-func isLower(s string) bool {
+// IsLower returns true if the string is all lower-cased.
+func IsLower(s string) bool {
 	return strings.IndexFunc(s, unicode.IsUpper) == -1
 }
 
 // Go converts either pascal or snake case to the Go name. The original casing
 // is inferred from the given name.
 func Go(name string) string {
-	if strings.Contains(name, "_") || isLower(name) {
+	if strings.Contains(name, "_") || IsLower(name) {
 		return SnakeToGo(true, name)
 	} else {
 		return PascalToGo(name)
@@ -323,8 +324,8 @@ func Interfacify(word string) string {
 		return word + "or"
 
 	// CVC form is bad. It's ugly.
-	case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
-		return word + string(word[len(word)-1]) + "er"
+	// case wordIsCVC(word) && !strings.HasSuffix(word, "er"):
+	// 	return word + string(word[len(word)-1]) + "er"
 
 	case wordEndsInConsonant(word):
 		fallthrough

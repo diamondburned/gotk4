@@ -102,7 +102,7 @@ func (v *Viewport) Native() uintptr {
 }
 
 // Child gets the child widget of viewport.
-func (viewport *Viewport) Child() *Widget {
+func (viewport *Viewport) Child() Widgeter {
 	var _arg0 *C.GtkViewport // out
 	var _cret *C.GtkWidget   // in
 
@@ -110,9 +110,9 @@ func (viewport *Viewport) Child() *Widget {
 
 	_cret = C.gtk_viewport_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -137,7 +137,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 }
 
 // SetChild sets the child widget of viewport.
-func (viewport *Viewport) SetChild(child Widgetter) {
+func (viewport *Viewport) SetChild(child Widgeter) {
 	var _arg0 *C.GtkViewport // out
 	var _arg1 *C.GtkWidget   // out
 

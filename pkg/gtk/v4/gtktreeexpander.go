@@ -105,7 +105,7 @@ func NewTreeExpander() *TreeExpander {
 }
 
 // Child gets the child widget displayed by self.
-func (self *TreeExpander) Child() *Widget {
+func (self *TreeExpander) Child() Widgeter {
 	var _arg0 *C.GtkTreeExpander // out
 	var _cret *C.GtkWidget       // in
 
@@ -113,9 +113,9 @@ func (self *TreeExpander) Child() *Widget {
 
 	_cret = C.gtk_tree_expander_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -157,7 +157,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 }
 
 // SetChild sets the content widget to display.
-func (self *TreeExpander) SetChild(child Widgetter) {
+func (self *TreeExpander) SetChild(child Widgeter) {
 	var _arg0 *C.GtkTreeExpander // out
 	var _arg1 *C.GtkWidget       // out
 

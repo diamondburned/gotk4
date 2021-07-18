@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -49,11 +52,11 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
-	CloseFn(cancellable *Cancellable) error
+	CloseFn(ctx context.Context) error
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
 	// Skip tries to skip count bytes from the stream. Will block during the
@@ -71,7 +74,7 @@ type InputStreamOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Skip(count uint, cancellable *Cancellable) (int, error)
+	Skip(ctx context.Context, count uint) (int, error)
 	// SkipAsync: request an asynchronous skip of count bytes from the stream.
 	// When the operation is finished callback will be called. You can then call
 	// g_input_stream_skip_finish() to get the result of the operation.
@@ -95,7 +98,7 @@ type InputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one, you must override all.
-	SkipAsync(count uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	SkipFinish(result AsyncResulter) (int, error)
 }
@@ -122,10 +125,10 @@ type InputStreamer interface {
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
 	// Close closes the stream, releasing resources related to it.
-	Close(cancellable *Cancellable) error
+	Close(ctx context.Context) error
 	// CloseAsync requests an asynchronous closes of the stream, releasing
 	// resources related to it.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResulter) error
@@ -138,15 +141,15 @@ type InputStreamer interface {
 	ReadAllFinish(result AsyncResulter) (uint, error)
 	// ReadBytesAsync: request an asynchronous read of count bytes from the
 	// stream into a new #GBytes.
-	ReadBytesAsync(count uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResulter) (int, error)
 	// SetPending sets stream to have actions pending.
 	SetPending() error
 	// Skip tries to skip count bytes from the stream.
-	Skip(count uint, cancellable *Cancellable) (int, error)
+	Skip(ctx context.Context, count uint) (int, error)
 	// SkipAsync: request an asynchronous skip of count bytes from the stream.
-	SkipAsync(count uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	SkipFinish(result AsyncResulter) (int, error)
 }
@@ -197,13 +200,17 @@ func (stream *InputStream) ClearPending() {
 // the error G_IO_ERROR_CANCELLED will be returned. Cancelling a close will
 // still leave the stream closed, but some streams can use a faster close that
 // doesn't block to e.g. check errors.
-func (stream *InputStream) Close(cancellable *Cancellable) error {
+func (stream *InputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_input_stream_close(_arg0, _arg1, &_cerr)
 
@@ -224,16 +231,20 @@ func (stream *InputStream) Close(cancellable *Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *InputStream) CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -343,18 +354,22 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 // Any outstanding I/O request with higher priority (lower numerical value) will
 // be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
-func (stream *InputStream) ReadBytesAsync(count uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gsize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -414,16 +429,20 @@ func (stream *InputStream) SetPending() error {
 // the error G_IO_ERROR_CANCELLED will be returned. If an operation was
 // partially finished when the operation was cancelled the partial result will
 // be returned, without an error.
-func (stream *InputStream) Skip(count uint, cancellable *Cancellable) (int, error) {
+func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	var _arg0 *C.GInputStream // out
-	var _arg1 C.gsize         // out
 	var _arg2 *C.GCancellable // out
+	var _arg1 C.gsize         // out
 	var _cret C.gssize        // in
 	var _cerr *C.GError       // in
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gsize(count)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, &_cerr)
 
@@ -459,18 +478,22 @@ func (stream *InputStream) Skip(count uint, cancellable *Cancellable) (int, erro
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one, you must override all.
-func (stream *InputStream) SkipAsync(count uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.gsize(count)
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 

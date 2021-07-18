@@ -2,8 +2,15 @@
 
 package gobject
 
+import (
+	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <glib-object.h>
 import "C"
 
@@ -12,3 +19,205 @@ const SIGNAL_FLAGS_MASK = 511
 
 // SIGNALMATCHMASK: mask for all MatchType bits.
 const SIGNAL_MATCH_MASK = 63
+
+// ClearSignalHandler disconnects a handler from instance so it will not be
+// called during any future or currently ongoing emissions of the signal it has
+// been connected to. The handler_id_ptr is then set to zero, which is never a
+// valid handler ID value (see g_signal_connect()).
+//
+// If the handler ID is 0 then this function does nothing.
+//
+// There is also a macro version of this function so that the code will be
+// inlined.
+func ClearSignalHandler(handlerIdPtr *uint32, instance *externglib.Object) {
+	var _arg1 *C.gulong  // out
+	var _arg2 C.gpointer // out
+
+	_arg1 = (*C.gulong)(unsafe.Pointer(handlerIdPtr))
+	_arg2 = C.gpointer(unsafe.Pointer(instance.Native()))
+
+	C.g_clear_signal_handler(_arg1, _arg2)
+}
+
+// SignalHandlerBlock blocks a handler of an instance so it will not be called
+// during any signal emissions unless it is unblocked again. Thus "blocking" a
+// signal handler means to temporarily deactivate it, a signal handler has to be
+// unblocked exactly the same amount of times it has been blocked before to
+// become active again.
+//
+// The handler_id has to be a valid signal handler id, connected to a signal of
+// instance.
+func SignalHandlerBlock(instance *externglib.Object, handlerId uint32) {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gulong   // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+	_arg2 = C.gulong(handlerId)
+
+	C.g_signal_handler_block(_arg1, _arg2)
+}
+
+// SignalHandlerDisconnect disconnects a handler from an instance so it will not
+// be called during any future or currently ongoing emissions of the signal it
+// has been connected to. The handler_id becomes invalid and may be reused.
+//
+// The handler_id has to be a valid signal handler id, connected to a signal of
+// instance.
+func SignalHandlerDisconnect(instance *externglib.Object, handlerId uint32) {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gulong   // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+	_arg2 = C.gulong(handlerId)
+
+	C.g_signal_handler_disconnect(_arg1, _arg2)
+}
+
+// SignalHandlerIsConnected returns whether handler_id is the ID of a handler
+// connected to instance.
+func SignalHandlerIsConnected(instance *externglib.Object, handlerId uint32) bool {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gulong   // out
+	var _cret C.gboolean // in
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+	_arg2 = C.gulong(handlerId)
+
+	_cret = C.g_signal_handler_is_connected(_arg1, _arg2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SignalHandlerUnblock undoes the effect of a previous g_signal_handler_block()
+// call. A blocked handler is skipped during signal emissions and will not be
+// invoked, unblocking it (for exactly the amount of times it has been blocked
+// before) reverts its "blocked" state, so the handler will be recognized by the
+// signal system and is called upon future or currently ongoing signal emissions
+// (since the order in which handlers are called during signal emissions is
+// deterministic, whether the unblocked handler in question is called as part of
+// a currently ongoing emission depends on how far that emission has proceeded
+// yet).
+//
+// The handler_id has to be a valid id of a signal handler that is connected to
+// a signal of instance and is currently blocked.
+func SignalHandlerUnblock(instance *externglib.Object, handlerId uint32) {
+	var _arg1 C.gpointer // out
+	var _arg2 C.gulong   // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+	_arg2 = C.gulong(handlerId)
+
+	C.g_signal_handler_unblock(_arg1, _arg2)
+}
+
+// SignalHandlersDestroy: destroy all signal handlers of a type instance. This
+// function is an implementation detail of the #GObject dispose implementation,
+// and should not be used outside of the type system.
+func SignalHandlersDestroy(instance *externglib.Object) {
+	var _arg1 C.gpointer // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+
+	C.g_signal_handlers_destroy(_arg1)
+}
+
+// SignalIsValidName: validate a signal name. This can be useful for
+// dynamically-generated signals which need to be validated at run-time before
+// actually trying to create them.
+//
+// See [canonical parameter names][canonical-parameter-names] for details of the
+// rules for valid names. The rules for signal names are the same as those for
+// property names.
+func SignalIsValidName(name string) bool {
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+
+	_cret = C.g_signal_is_valid_name(_arg1)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SignalLookup: given the name of the signal and the type of object it connects
+// to, gets the signal's identifying integer. Emitting the signal by number is
+// somewhat faster than using the name each time.
+//
+// Also tries the ancestors of the given type.
+//
+// The type class passed as itype must already have been instantiated (for
+// example, using g_type_class_ref()) for this function to work, as signals are
+// always installed during class initialization.
+//
+// See g_signal_new() for details on allowed signal names.
+func SignalLookup(name string, itype externglib.Type) uint {
+	var _arg1 *C.gchar // out
+	var _arg2 C.GType  // out
+	var _cret C.guint  // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg2 = C.GType(itype)
+
+	_cret = C.g_signal_lookup(_arg1, _arg2)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// SignalName: given the signal's identifier, finds its name.
+//
+// Two different signals may have the same name, if they have differing types.
+func SignalName(signalId uint) string {
+	var _arg1 C.guint  // out
+	var _cret *C.gchar // in
+
+	_arg1 = C.guint(signalId)
+
+	_cret = C.g_signal_name(_arg1)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// SignalRemoveEmissionHook deletes an emission hook.
+func SignalRemoveEmissionHook(signalId uint, hookId uint32) {
+	var _arg1 C.guint  // out
+	var _arg2 C.gulong // out
+
+	_arg1 = C.guint(signalId)
+	_arg2 = C.gulong(hookId)
+
+	C.g_signal_remove_emission_hook(_arg1, _arg2)
+}
+
+// SignalStopEmissionByName stops a signal's current emission.
+//
+// This is just like g_signal_stop_emission() except it will look up the signal
+// id for you.
+func SignalStopEmissionByName(instance *externglib.Object, detailedSignal string) {
+	var _arg1 C.gpointer // out
+	var _arg2 *C.gchar   // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(instance.Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedSignal)))
+
+	C.g_signal_stop_emission_by_name(_arg1, _arg2)
+}

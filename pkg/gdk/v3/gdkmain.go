@@ -106,11 +106,11 @@ func Flush() {
 	C.gdk_flush()
 }
 
-// GetDisplay gets the name of the display, which usually comes from the DISPLAY
+// Display gets the name of the display, which usually comes from the DISPLAY
 // environment variable or the --display command line option.
 //
 // Deprecated: Call gdk_display_get_name (gdk_display_get_default ())) instead.
-func GetDisplay() string {
+func Display() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gdk_get_display()
@@ -123,9 +123,9 @@ func GetDisplay() string {
 	return _utf8
 }
 
-// GetDisplayArgName gets the display name specified in the command line
-// arguments passed to gdk_init() or gdk_parse_args(), if any.
-func GetDisplayArgName() string {
+// DisplayArgName gets the display name specified in the command line arguments
+// passed to gdk_init() or gdk_parse_args(), if any.
+func DisplayArgName() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gdk_get_display_arg_name()
@@ -137,11 +137,11 @@ func GetDisplayArgName() string {
 	return _utf8
 }
 
-// GetProgramClass gets the program class. Unless the program class has
-// explicitly been set with gdk_set_program_class() or with the --class
-// commandline option, the default value is the program name (determined with
-// g_get_prgname()) with the first character converted to uppercase.
-func GetProgramClass() string {
+// ProgramClass gets the program class. Unless the program class has explicitly
+// been set with gdk_set_program_class() or with the --class commandline option,
+// the default value is the program name (determined with g_get_prgname()) with
+// the first character converted to uppercase.
+func ProgramClass() string {
 	var _cret *C.gchar // in
 
 	_cret = C.gdk_get_program_class()
@@ -162,7 +162,7 @@ func GetProgramClass() string {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
-func KeyboardGrab(window Windowwer, ownerEvents bool, time_ uint32) GrabStatus {
+func KeyboardGrab(window Windower, ownerEvents bool, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.guint32       // out
@@ -242,7 +242,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 // emitted when the grab ends unvoluntarily.
 //
 // Deprecated: Use gdk_device_grab() instead.
-func PointerGrab(window Windowwer, ownerEvents bool, eventMask EventMask, confineTo Windowwer, cursor Cursorrer, time_ uint32) GrabStatus {
+func PointerGrab(window Windower, ownerEvents bool, eventMask EventMask, confineTo Windower, cursor Cursorer, time_ uint32) GrabStatus {
 	var _arg1 *C.GdkWindow    // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.GdkEventMask  // out

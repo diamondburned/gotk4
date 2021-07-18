@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -47,7 +50,7 @@ type FileInputStreamOverrider interface {
 	// While the stream is blocked, the stream will set the pending flag
 	// internally, and any other operations on the stream will fail with
 	// G_IO_ERROR_PENDING.
-	QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error)
+	QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoAsync queries the stream information asynchronously. When the
 	// operation is finished callback will be called. You can then call
 	// g_file_input_stream_query_info_finish() to get the result of the
@@ -59,10 +62,10 @@ type FileInputStreamOverrider interface {
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
-	QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
-	Seek(offset int64, typ glib.SeekType, cancellable *Cancellable) error
+	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
 	Tell() int64
 }
 
@@ -110,16 +113,20 @@ func (v *FileInputStream) Native() uintptr {
 // of this function, see g_file_input_stream_query_info_async(). While the
 // stream is blocked, the stream will set the pending flag internally, and any
 // other operations on the stream will fail with G_IO_ERROR_PENDING.
-func (stream *FileInputStream) QueryInfo(attributes string, cancellable *Cancellable) (*FileInfo, error) {
+func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
-	var _arg1 *C.char             // out
 	var _arg2 *C.GCancellable     // out
+	var _arg1 *C.char             // out
 	var _cret *C.GFileInfo        // in
 	var _cerr *C.GError           // in
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_file_input_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 
@@ -142,18 +149,22 @@ func (stream *FileInputStream) QueryInfo(attributes string, cancellable *Cancell
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be set
-func (stream *FileInputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
+	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
 	var _arg2 C.int                 // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	_arg2 = C.int(ioPriority)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 

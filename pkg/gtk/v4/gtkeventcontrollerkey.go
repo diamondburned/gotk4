@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyyer},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKeyer},
 	})
 }
 
@@ -37,7 +37,7 @@ func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
 	}
 }
 
-func marshalEventControllerKeyyer(p uintptr) (interface{}, error) {
+func marshalEventControllerKeyer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapEventControllerKey(obj), nil
@@ -62,7 +62,7 @@ func NewEventControllerKey() *EventControllerKey {
 // This function can only be used in handlers for the
 // gtk.EventControllerKey::key-pressed, gtk.EventControllerKey::key-released or
 // gtk.EventControllerKey::modifiers signals.
-func (controller *EventControllerKey) Forward(widget Widgetter) bool {
+func (controller *EventControllerKey) Forward(widget Widgeter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _arg1 *C.GtkWidget             // out
 	var _cret C.gboolean               // in
@@ -100,7 +100,7 @@ func (controller *EventControllerKey) Group() uint {
 }
 
 // ImContext gets the input method context of the key controller.
-func (controller *EventControllerKey) ImContext() *IMContext {
+func (controller *EventControllerKey) ImContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret *C.GtkIMContext          // in
 
@@ -108,9 +108,9 @@ func (controller *EventControllerKey) ImContext() *IMContext {
 
 	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
 
-	var _imContext *IMContext // out
+	var _imContext IMContexter // out
 
-	_imContext = wrapIMContext(externglib.Take(unsafe.Pointer(_cret)))
+	_imContext = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(IMContexter)
 
 	return _imContext
 }

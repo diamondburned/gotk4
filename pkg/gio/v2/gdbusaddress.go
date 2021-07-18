@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -55,14 +58,18 @@ func DBusAddressEscapeValue(_string string) string {
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string, error) {
-	var _arg1 C.GBusType      // out
+func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
 	var _arg2 *C.GCancellable // out
+	var _arg1 C.GBusType      // out
 	var _cret *C.gchar        // in
 	var _cerr *C.GError       // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.GBusType(busType)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
 
@@ -87,14 +94,18 @@ func DBusAddressGetForBusSync(busType BusType, cancellable *Cancellable) (string
 //
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
-func DBusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback) {
-	var _arg1 *C.gchar              // out
+func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -106,7 +117,7 @@ func DBusAddressGetStream(address string, cancellable *Cancellable, callback Asy
 //
 // A server is not required to set a GUID, so out_guid may be set to NULL even
 // on success.
-func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
+func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
 	var _cret *C.GIOStream    // in
@@ -116,13 +127,13 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 
 	_cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, &_cerr)
 
-	var _outGuid string     // out
-	var _ioStream *IOStream // out
-	var _goerr error        // out
+	var _outGuid string      // out
+	var _ioStream IOStreamer // out
+	var _goerr error         // out
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr
@@ -139,25 +150,29 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, *IOStream, error) {
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DBusAddressGetStreamSync(address string, cancellable *Cancellable) (string, *IOStream, error) {
+func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
+	var _arg3 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // in
-	var _arg3 *C.GCancellable // out
 	var _cret *C.GIOStream    // in
 	var _cerr *C.GError       // in
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_dbus_address_get_stream_sync(_arg1, &_arg2, _arg3, &_cerr)
 
-	var _outGuid string     // out
-	var _ioStream *IOStream // out
-	var _goerr error        // out
+	var _outGuid string      // out
+	var _ioStream IOStreamer // out
+	var _goerr error         // out
 
 	_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = wrapIOStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ioStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(IOStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _outGuid, _ioStream, _goerr

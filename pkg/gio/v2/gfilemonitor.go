@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorrer},
+		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitorer},
 	})
 }
 
@@ -58,8 +58,8 @@ type FileMonitor struct {
 
 var _ gextras.Nativer = (*FileMonitor)(nil)
 
-// FileMonitorrer describes FileMonitor's abstract methods.
-type FileMonitorrer interface {
+// FileMonitorer describes FileMonitor's abstract methods.
+type FileMonitorer interface {
 	// Cancel cancels a file monitor.
 	Cancel() bool
 	// EmitEvent emits the Monitor::changed signal if a change has taken place.
@@ -71,7 +71,7 @@ type FileMonitorrer interface {
 	SetRateLimit(limitMsecs int)
 }
 
-var _ FileMonitorrer = (*FileMonitor)(nil)
+var _ FileMonitorer = (*FileMonitor)(nil)
 
 func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	return &FileMonitor{
@@ -79,7 +79,7 @@ func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	}
 }
 
-func marshalFileMonitorrer(p uintptr) (interface{}, error) {
+func marshalFileMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileMonitor(obj), nil

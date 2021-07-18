@@ -37,27 +37,27 @@ type ActionOverrider interface {
 	//
 	// Deprecated: Use g_action_group_activate_action() on a #GAction instead.
 	Activate()
-	ConnectProxy(proxy Widgetter)
+	ConnectProxy(proxy Widgeter)
 	// CreateMenu: if action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
 	//
 	// Deprecated: Use #GAction and Model instead, and create a Menu with
 	// gtk_menu_new_from_model().
-	CreateMenu() *Widget
+	CreateMenu() Widgeter
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: Use g_menu_item_new() and associate it with a #GAction
 	// instead.
-	CreateMenuItem() *Widget
+	CreateMenuItem() Widgeter
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
 	//
 	// Deprecated: Use a ToolItem and associate it with a #GAction using
 	// gtk_actionable_set_action_name() instead.
-	CreateToolItem() *Widget
-	DisconnectProxy(proxy Widgetter)
+	CreateToolItem() Widgeter
+	DisconnectProxy(proxy Widgeter)
 }
 
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
@@ -207,7 +207,7 @@ func (action *Action) ConnectAccelerator() {
 //
 // Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
 // gtk_container_add() to add a Image to a Button.
-func (action *Action) CreateIcon(iconSize int) *Widget {
+func (action *Action) CreateIcon(iconSize int) Widgeter {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in
@@ -217,9 +217,9 @@ func (action *Action) CreateIcon(iconSize int) *Widget {
 
 	_cret = C.gtk_action_create_icon(_arg0, _arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -230,7 +230,7 @@ func (action *Action) CreateIcon(iconSize int) *Widget {
 //
 // Deprecated: Use #GAction and Model instead, and create a Menu with
 // gtk_menu_new_from_model().
-func (action *Action) CreateMenu() *Widget {
+func (action *Action) CreateMenu() Widgeter {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -238,9 +238,9 @@ func (action *Action) CreateMenu() *Widget {
 
 	_cret = C.gtk_action_create_menu(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -248,7 +248,7 @@ func (action *Action) CreateMenu() *Widget {
 // CreateMenuItem creates a menu item widget that proxies for the given action.
 //
 // Deprecated: Use g_menu_item_new() and associate it with a #GAction instead.
-func (action *Action) CreateMenuItem() *Widget {
+func (action *Action) CreateMenuItem() Widgeter {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -256,9 +256,9 @@ func (action *Action) CreateMenuItem() *Widget {
 
 	_cret = C.gtk_action_create_menu_item(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -268,7 +268,7 @@ func (action *Action) CreateMenuItem() *Widget {
 //
 // Deprecated: Use a ToolItem and associate it with a #GAction using
 // gtk_actionable_set_action_name() instead.
-func (action *Action) CreateToolItem() *Widget {
+func (action *Action) CreateToolItem() Widgeter {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GtkWidget // in
 
@@ -276,9 +276,9 @@ func (action *Action) CreateToolItem() *Widget {
 
 	_cret = C.gtk_action_create_tool_item(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -340,7 +340,7 @@ func (action *Action) AlwaysShowImage() bool {
 //
 // Deprecated: Use #GAction instead, and g_menu_item_get_attribute_value() to
 // get an icon from a Item associated with a #GAction.
-func (action *Action) GIcon() *gio.Icon {
+func (action *Action) GIcon() gio.Iconer {
 	var _arg0 *C.GtkAction // out
 	var _cret *C.GIcon     // in
 
@@ -348,14 +348,9 @@ func (action *Action) GIcon() *gio.Icon {
 
 	_cret = C.gtk_action_get_gicon(_arg0)
 
-	var _icon *gio.Icon // out
+	var _icon gio.Iconer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
 
 	return _icon
 }
@@ -681,7 +676,7 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 // Deprecated: Use #GAction instead, and g_menu_item_set_icon() to set an icon
 // on a Item associated with a #GAction, or gtk_container_add() to add a Image
 // to a Button.
-func (action *Action) SetGIcon(icon gio.Iconner) {
+func (action *Action) SetGIcon(icon gio.Iconer) {
 	var _arg0 *C.GtkAction // out
 	var _arg1 *C.GIcon     // out
 

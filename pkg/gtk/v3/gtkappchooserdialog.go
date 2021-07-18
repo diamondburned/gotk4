@@ -21,7 +21,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialogger},
+		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialoger},
 	})
 }
 
@@ -79,7 +79,7 @@ func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
 	}
 }
 
-func marshalAppChooserDialogger(p uintptr) (interface{}, error) {
+func marshalAppChooserDialoger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapAppChooserDialog(obj), nil
@@ -150,7 +150,7 @@ func (self *AppChooserDialog) Heading() string {
 }
 
 // Widget returns the AppChooserWidget of this dialog.
-func (self *AppChooserDialog) Widget() *Widget {
+func (self *AppChooserDialog) Widget() Widgeter {
 	var _arg0 *C.GtkAppChooserDialog // out
 	var _cret *C.GtkWidget           // in
 
@@ -158,9 +158,9 @@ func (self *AppChooserDialog) Widget() *Widget {
 
 	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

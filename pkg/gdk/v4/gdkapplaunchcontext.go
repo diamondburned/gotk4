@@ -102,7 +102,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 // notification.
 //
 // See also gdk.AppLaunchContext.SetIconName().
-func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
+func (context *AppLaunchContext) SetIcon(icon gio.Iconer) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
 

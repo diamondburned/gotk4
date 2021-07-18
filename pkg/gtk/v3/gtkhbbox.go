@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hbutton_box_get_type()), F: marshalHButtonBoxxer},
+		{T: externglib.Type(C.gtk_hbutton_box_get_type()), F: marshalHButtonBoxer},
 	})
 }
 
@@ -55,7 +55,7 @@ func wrapHButtonBox(obj *externglib.Object) *HButtonBox {
 	}
 }
 
-func marshalHButtonBoxxer(p uintptr) (interface{}, error) {
+func marshalHButtonBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHButtonBox(obj), nil

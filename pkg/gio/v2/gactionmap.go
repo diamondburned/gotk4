@@ -28,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMapper},
+		{T: externglib.Type(C.g_action_map_get_type()), F: marshalActionMaper},
 	})
 }
 
@@ -47,7 +47,7 @@ type ActionMapOverrider interface {
 	// LookupAction looks up the action with the name action_name in action_map.
 	//
 	// If no such action exists, returns NULL.
-	LookupAction(actionName string) *Action
+	LookupAction(actionName string) Actioner
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -66,20 +66,20 @@ type ActionMap struct {
 
 var _ gextras.Nativer = (*ActionMap)(nil)
 
-// ActionMapper describes ActionMap's abstract methods.
-type ActionMapper interface {
+// ActionMaper describes ActionMap's abstract methods.
+type ActionMaper interface {
 	// AddAction adds an action to the action_map.
 	AddAction(action Actioner)
 	// AddActionEntries: convenience function for creating multiple Action
 	// instances and adding them to a Map.
 	AddActionEntries(entries []ActionEntry, userData cgo.Handle)
 	// LookupAction looks up the action with the name action_name in action_map.
-	LookupAction(actionName string) *Action
+	LookupAction(actionName string) Actioner
 	// RemoveAction removes the named action from the action map.
 	RemoveAction(actionName string)
 }
 
-var _ ActionMapper = (*ActionMap)(nil)
+var _ ActionMaper = (*ActionMap)(nil)
 
 func wrapActionMap(obj *externglib.Object) *ActionMap {
 	return &ActionMap{
@@ -87,7 +87,7 @@ func wrapActionMap(obj *externglib.Object) *ActionMap {
 	}
 }
 
-func marshalActionMapper(p uintptr) (interface{}, error) {
+func marshalActionMaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapActionMap(obj), nil
@@ -163,7 +163,7 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData cgo
 // LookupAction looks up the action with the name action_name in action_map.
 //
 // If no such action exists, returns NULL.
-func (actionMap *ActionMap) LookupAction(actionName string) *Action {
+func (actionMap *ActionMap) LookupAction(actionName string) Actioner {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
 	var _cret *C.GAction    // in
@@ -173,9 +173,9 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 
 	_cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
-	var _action *Action // out
+	var _action Actioner // out
 
-	_action = wrapAction(externglib.Take(unsafe.Pointer(_cret)))
+	_action = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Actioner)
 
 	return _action
 }

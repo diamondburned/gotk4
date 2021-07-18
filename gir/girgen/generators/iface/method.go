@@ -60,7 +60,7 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 	m.reset(len(methods))
 
 	for i := range methods {
-		if !g.cgen.UseFromNamespace(&methods[i].CallableAttrs, g.source) {
+		if !g.cgen.Use(&g.Root, &methods[i].CallableAttrs) {
 			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
 			continue
 		}
@@ -79,12 +79,10 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 	m.reset(len(virtuals))
 
 	for i := range virtuals {
-		if !g.cgen.UseFromNamespace(&virtuals[i].CallableAttrs, g.source) {
+		if !g.cgen.Use(&g.Root, &virtuals[i].CallableAttrs) {
 			g.cgen.Logln(logger.Debug, "setVirtuals skipped", virtuals[i].CIdentifier)
 			continue
 		}
-
-		// g.cgen.Header().ApplyHeader(&g.header)
 
 		// Don't apply the headers naively. We only import the types, since
 		// we're not yet converting these.

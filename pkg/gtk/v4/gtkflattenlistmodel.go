@@ -18,7 +18,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeller},
+		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModeler},
 	})
 }
 
@@ -44,14 +44,14 @@ func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
 	}
 }
 
-func marshalFlattenListModeller(p uintptr) (interface{}, error) {
+func marshalFlattenListModeler(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFlattenListModel(obj), nil
 }
 
 // NewFlattenListModel creates a new GtkFlattenListModel that flattens list.
-func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
+func NewFlattenListModel(model gio.ListModeler) *FlattenListModel {
 	var _arg1 *C.GListModel          // out
 	var _cret *C.GtkFlattenListModel // in
 
@@ -67,7 +67,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 }
 
 // Model gets the model set via gtk_flatten_list_model_set_model().
-func (self *FlattenListModel) Model() *gio.ListModel {
+func (self *FlattenListModel) Model() gio.ListModeler {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _cret *C.GListModel          // in
 
@@ -75,20 +75,15 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 
 	_cret = C.gtk_flatten_list_model_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
 
 // ModelForItem returns the model containing the item at the given position.
-func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
+func (self *FlattenListModel) ModelForItem(position uint) gio.ListModeler {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 C.guint                // out
 	var _cret *C.GListModel          // in
@@ -98,20 +93,15 @@ func (self *FlattenListModel) ModelForItem(position uint) *gio.ListModel {
 
 	_cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
 
 // SetModel sets a new model to be flattened.
-func (self *FlattenListModel) SetModel(model gio.ListModeller) {
+func (self *FlattenListModel) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkFlattenListModel // out
 	var _arg1 *C.GListModel          // out
 

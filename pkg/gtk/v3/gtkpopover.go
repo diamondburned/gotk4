@@ -125,7 +125,7 @@ func marshalPopoverer(p uintptr) (interface{}, error) {
 }
 
 // NewPopover creates a new popover to point to relative_to
-func NewPopover(relativeTo Widgetter) *Popover {
+func NewPopover(relativeTo Widgeter) *Popover {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkWidget // in
 
@@ -149,7 +149,7 @@ func NewPopover(relativeTo Widgetter) *Popover {
 //
 // Actions can also be added using gtk_widget_insert_action_group() on the menus
 // attach widget or on any of its parent widgets.
-func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover {
+func NewPopoverFromModel(relativeTo Widgeter, model gio.MenuModeler) *Popover {
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 *C.GMenuModel // out
 	var _cret *C.GtkWidget  // in
@@ -186,7 +186,7 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 // using gtk_widget_insert_action_group(). As an example, if you created a group
 // with a “quit” action and inserted it with the name “mygroup” then you would
 // use the action name “mygroup.quit” in your Model.
-func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string) {
+func (popover *Popover) BindModel(model gio.MenuModeler, actionNamespace string) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GMenuModel // out
 	var _arg2 *C.gchar      // out
@@ -217,7 +217,7 @@ func (popover *Popover) ConstrainTo() PopoverConstraint {
 
 // DefaultWidget gets the widget that should be set as the default while the
 // popover is shown.
-func (popover *Popover) DefaultWidget() *Widget {
+func (popover *Popover) DefaultWidget() Widgeter {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
@@ -225,9 +225,9 @@ func (popover *Popover) DefaultWidget() *Widget {
 
 	_cret = C.gtk_popover_get_default_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -291,7 +291,7 @@ func (popover *Popover) Position() PositionType {
 }
 
 // RelativeTo returns the widget popover is currently attached to
-func (popover *Popover) RelativeTo() *Widget {
+func (popover *Popover) RelativeTo() Widgeter {
 	var _arg0 *C.GtkPopover // out
 	var _cret *C.GtkWidget  // in
 
@@ -299,9 +299,9 @@ func (popover *Popover) RelativeTo() *Widget {
 
 	_cret = C.gtk_popover_get_relative_to(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -368,7 +368,7 @@ func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 // SetDefaultWidget sets the widget that should be set as default widget while
 // the popover is shown (see gtk_window_set_default()). Popover remembers the
 // previous default widget and reestablishes it when the popover is dismissed.
-func (popover *Popover) SetDefaultWidget(widget Widgetter) {
+func (popover *Popover) SetDefaultWidget(widget Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 
@@ -430,7 +430,7 @@ func (popover *Popover) SetPosition(position PositionType) {
 // so if relative_to is set to NULL on an attached popover, it will be detached
 // from its previous widget, and consequently destroyed unless extra references
 // are kept.
-func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
+func (popover *Popover) SetRelativeTo(relativeTo Widgeter) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 *C.GtkWidget  // out
 

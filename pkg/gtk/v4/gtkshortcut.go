@@ -19,7 +19,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcutter},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcuter},
 	})
 }
 
@@ -49,7 +49,7 @@ func wrapShortcut(obj *externglib.Object) *Shortcut {
 	}
 }
 
-func marshalShortcutter(p uintptr) (interface{}, error) {
+func marshalShortcuter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapShortcut(obj), nil
@@ -75,7 +75,7 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 }
 
 // Action gets the action that is activated by this shortcut.
-func (self *Shortcut) Action() *ShortcutAction {
+func (self *Shortcut) Action() ShortcutActioner {
 	var _arg0 *C.GtkShortcut       // out
 	var _cret *C.GtkShortcutAction // in
 
@@ -83,9 +83,9 @@ func (self *Shortcut) Action() *ShortcutAction {
 
 	_cret = C.gtk_shortcut_get_action(_arg0)
 
-	var _shortcutAction *ShortcutAction // out
+	var _shortcutAction ShortcutActioner // out
 
-	_shortcutAction = wrapShortcutAction(externglib.Take(unsafe.Pointer(_cret)))
+	_shortcutAction = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutActioner)
 
 	return _shortcutAction
 }
@@ -110,7 +110,7 @@ func (self *Shortcut) Arguments() *glib.Variant {
 }
 
 // Trigger gets the trigger used to trigger self.
-func (self *Shortcut) Trigger() *ShortcutTrigger {
+func (self *Shortcut) Trigger() ShortcutTriggerer {
 	var _arg0 *C.GtkShortcut        // out
 	var _cret *C.GtkShortcutTrigger // in
 
@@ -118,9 +118,9 @@ func (self *Shortcut) Trigger() *ShortcutTrigger {
 
 	_cret = C.gtk_shortcut_get_trigger(_arg0)
 
-	var _shortcutTrigger *ShortcutTrigger // out
+	var _shortcutTrigger ShortcutTriggerer // out
 
-	_shortcutTrigger = wrapShortcutTrigger(externglib.Take(unsafe.Pointer(_cret)))
+	_shortcutTrigger = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ShortcutTriggerer)
 
 	return _shortcutTrigger
 }

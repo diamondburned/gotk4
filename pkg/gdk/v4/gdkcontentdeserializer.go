@@ -3,10 +3,13 @@
 package gdk
 
 import (
+	"context"
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -34,20 +37,24 @@ func init() {
 //
 // When the operation is finished, callback will be called. You must then call
 // content_deserialize_finish to get the result of the operation.
-func ContentDeserializeAsync(stream gio.InputStreamer, mimeType string, typ externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ externglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
 	var _arg2 *C.char               // out
 	var _arg3 C.GType               // out
 	var _arg4 C.int                 // out
-	var _arg5 *C.GCancellable       // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	_arg3 = C.GType(typ)
 	_arg4 = C.int(ioPriority)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -148,7 +155,7 @@ func (deserializer *ContentDeserializer) GType() externglib.Type {
 // InputStream gets the input stream for the current operation.
 //
 // This is the stream that was passed to content_deserialize_async.
-func (deserializer *ContentDeserializer) InputStream() *gio.InputStream {
+func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GInputStream           // in
 
@@ -156,14 +163,9 @@ func (deserializer *ContentDeserializer) InputStream() *gio.InputStream {
 
 	_cret = C.gdk_content_deserializer_get_input_stream(_arg0)
 
-	var _inputStream *gio.InputStream // out
+	var _inputStream gio.InputStreamer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_inputStream = &gio.InputStream{
-			Object: obj,
-		}
-	}
+	_inputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.InputStreamer)
 
 	return _inputStream
 }

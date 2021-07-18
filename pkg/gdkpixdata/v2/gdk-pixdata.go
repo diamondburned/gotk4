@@ -223,51 +223,6 @@ type Pixdata struct {
 	native *C.GdkPixdata
 }
 
-// Magic: magic number. A valid GdkPixdata structure must have
-// GDK_PIXBUF_MAGIC_NUMBER here
-func (p *Pixdata) Magic() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.magic)
-	return v
-}
-
-// Length less than 1 to disable length checks, otherwise
-// GDK_PIXDATA_HEADER_LENGTH plus the length of pixel_data
-func (p *Pixdata) Length() int32 {
-	var v int32 // out
-	v = int32(p.native.length)
-	return v
-}
-
-// PixdataType: information about colorspace, sample width and encoding, in a
-// GdkPixdataType
-func (p *Pixdata) PixdataType() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.pixdata_type)
-	return v
-}
-
-// Rowstride: distance in bytes between rows
-func (p *Pixdata) Rowstride() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.rowstride)
-	return v
-}
-
-// Width of the image in pixels
-func (p *Pixdata) Width() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.width)
-	return v
-}
-
-// Height of the image in pixels
-func (p *Pixdata) Height() uint32 {
-	var v uint32 // out
-	v = uint32(p.native.height)
-	return v
-}
-
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte
 // stream.
 //

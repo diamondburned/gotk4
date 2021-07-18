@@ -50,7 +50,7 @@ func marshalMultiSelectioner(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSelection creates a new selection to handle model.
-func NewMultiSelection(model gio.ListModeller) *MultiSelection {
+func NewMultiSelection(model gio.ListModeler) *MultiSelection {
 	var _arg1 *C.GListModel        // out
 	var _cret *C.GtkMultiSelection // in
 
@@ -66,7 +66,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 }
 
 // Model returns the underlying model of self.
-func (self *MultiSelection) Model() *gio.ListModel {
+func (self *MultiSelection) Model() gio.ListModeler {
 	var _arg0 *C.GtkMultiSelection // out
 	var _cret *C.GListModel        // in
 
@@ -74,14 +74,9 @@ func (self *MultiSelection) Model() *gio.ListModel {
 
 	_cret = C.gtk_multi_selection_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -89,7 +84,7 @@ func (self *MultiSelection) Model() *gio.ListModel {
 // SetModel sets the model that self should wrap.
 //
 // If model is NULL, self will be empty.
-func (self *MultiSelection) SetModel(model gio.ListModeller) {
+func (self *MultiSelection) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkMultiSelection // out
 	var _arg1 *C.GListModel        // out
 

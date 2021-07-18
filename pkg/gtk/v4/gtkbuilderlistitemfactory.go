@@ -100,7 +100,7 @@ func (self *BuilderListItemFactory) Resource() string {
 }
 
 // Scope gets the scope used when constructing listitems.
-func (self *BuilderListItemFactory) Scope() *BuilderScope {
+func (self *BuilderListItemFactory) Scope() BuilderScoper {
 	var _arg0 *C.GtkBuilderListItemFactory // out
 	var _cret *C.GtkBuilderScope           // in
 
@@ -108,9 +108,9 @@ func (self *BuilderListItemFactory) Scope() *BuilderScope {
 
 	_cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 
-	var _builderScope *BuilderScope // out
+	var _builderScope BuilderScoper // out
 
-	_builderScope = wrapBuilderScope(externglib.Take(unsafe.Pointer(_cret)))
+	_builderScope = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(BuilderScoper)
 
 	return _builderScope
 }

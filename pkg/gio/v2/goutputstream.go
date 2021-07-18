@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -49,10 +52,10 @@ type OutputStreamOverrider interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish closes an output stream.
 	CloseFinish(result AsyncResulter) error
-	CloseFn(cancellable *Cancellable) error
+	CloseFn(ctx context.Context) error
 	// Flush forces a write of all user-space buffered data for the given
 	// stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -62,24 +65,24 @@ type OutputStreamOverrider interface {
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Flush(cancellable *Cancellable) error
+	Flush(ctx context.Context) error
 	// FlushAsync forces an asynchronous write of all user-space buffered data
 	// for the given stream. For behaviour details see g_output_stream_flush().
 	//
 	// When the operation is finished callback will be called. You can then call
 	// g_output_stream_flush_finish() to get the result of the operation.
-	FlushAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FlushFinish finishes flushing an output stream.
 	FlushFinish(result AsyncResulter) error
 	// Splice splices an input stream into an output stream.
-	Splice(source InputStreamer, flags OutputStreamSpliceFlags, cancellable *Cancellable) (int, error)
+	Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
 	// SpliceAsync splices a stream asynchronously. When the operation is
 	// finished callback will be called. You can then call
 	// g_output_stream_splice_finish() to get the result of the operation.
 	//
 	// For the synchronous, blocking version of this function, see
 	// g_output_stream_splice().
-	SpliceAsync(source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	SpliceFinish(result AsyncResulter) (int, error)
 	// WriteAsync: request an asynchronous write of count bytes from buffer into
@@ -117,7 +120,7 @@ type OutputStreamOverrider interface {
 	// callback is called. See g_output_stream_write_bytes_async() for a #GBytes
 	// version that will automatically hold a reference to the contents (without
 	// copying) for the duration of the call.
-	WriteAsync(buffer []byte, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteFinish finishes a stream write operation.
 	WriteFinish(result AsyncResulter) (int, error)
 	// WriteFn tries to write count bytes from buffer into the stream. Will
@@ -139,7 +142,7 @@ type OutputStreamOverrider interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and error is set accordingly.
-	WriteFn(buffer []byte, cancellable *Cancellable) (int, error)
+	WriteFn(ctx context.Context, buffer []byte) (int, error)
 	// WritevAsync: request an asynchronous write of the bytes contained in
 	// n_vectors vectors into the stream. When the operation is finished
 	// callback will be called. You can then call
@@ -170,7 +173,7 @@ type OutputStreamOverrider interface {
 	//
 	// Note that no copy of vectors will be made, so it must stay valid until
 	// callback is called.
-	WritevAsync(vectors []OutputVector, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResulter) (uint, error)
 	// WritevFn tries to write the bytes contained in the n_vectors vectors into
@@ -196,7 +199,7 @@ type OutputStreamOverrider interface {
 	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
 	// these are exceeded. For example, when writing to a local file on UNIX
 	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	WritevFn(vectors []OutputVector, cancellable *Cancellable) (uint, error)
+	WritevFn(ctx context.Context, vectors []OutputVector) (uint, error)
 }
 
 // OutputStream has functions to write to a stream (g_output_stream_write()), to
@@ -221,18 +224,18 @@ type OutputStreamer interface {
 	// ClearPending clears the pending flag on stream.
 	ClearPending()
 	// Close closes the stream, releasing resources related to it.
-	Close(cancellable *Cancellable) error
+	Close(ctx context.Context) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it.
-	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish closes an output stream.
 	CloseFinish(result AsyncResulter) error
 	// Flush forces a write of all user-space buffered data for the given
 	// stream.
-	Flush(cancellable *Cancellable) error
+	Flush(ctx context.Context) error
 	// FlushAsync forces an asynchronous write of all user-space buffered data
 	// for the given stream.
-	FlushAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FlushFinish finishes flushing an output stream.
 	FlushFinish(result AsyncResulter) error
 	// HasPending checks if an output stream has pending actions.
@@ -244,43 +247,43 @@ type OutputStreamer interface {
 	// SetPending sets stream to have actions pending.
 	SetPending() error
 	// Splice splices an input stream into an output stream.
-	Splice(source InputStreamer, flags OutputStreamSpliceFlags, cancellable *Cancellable) (int, error)
+	Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
 	// SpliceAsync splices a stream asynchronously.
-	SpliceAsync(source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback)
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	SpliceFinish(result AsyncResulter) (int, error)
 	// Write tries to write count bytes from buffer into the stream.
-	Write(buffer []byte, cancellable *Cancellable) (int, error)
+	Write(ctx context.Context, buffer []byte) (int, error)
 	// WriteAll tries to write count bytes from buffer into the stream.
-	WriteAll(buffer []byte, cancellable *Cancellable) (uint, error)
+	WriteAll(ctx context.Context, buffer []byte) (uint, error)
 	// WriteAllAsync: request an asynchronous write of count bytes from buffer
 	// into the stream.
-	WriteAllAsync(buffer []byte, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_write_all_async().
 	WriteAllFinish(result AsyncResulter) (uint, error)
 	// WriteAsync: request an asynchronous write of count bytes from buffer into
 	// the stream.
-	WriteAsync(buffer []byte, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback)
 	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
 	WriteBytesFinish(result AsyncResulter) (int, error)
 	// WriteFinish finishes a stream write operation.
 	WriteFinish(result AsyncResulter) (int, error)
 	// Writev tries to write the bytes contained in the n_vectors vectors into
 	// the stream.
-	Writev(vectors []OutputVector, cancellable *Cancellable) (uint, error)
+	Writev(ctx context.Context, vectors []OutputVector) (uint, error)
 	// WritevAll tries to write the bytes contained in the n_vectors vectors
 	// into the stream.
-	WritevAll(vectors []OutputVector, cancellable *Cancellable) (uint, error)
+	WritevAll(ctx context.Context, vectors []OutputVector) (uint, error)
 	// WritevAllAsync: request an asynchronous write of the bytes contained in
 	// the n_vectors vectors into the stream.
-	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	WritevAllFinish(result AsyncResulter) (uint, error)
 	// WritevAsync: request an asynchronous write of the bytes contained in
 	// n_vectors vectors into the stream.
-	WritevAsync(vectors []OutputVector, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResulter) (uint, error)
 }
@@ -336,13 +339,17 @@ func (stream *OutputStream) ClearPending() {
 // still leave the stream closed, but there some streams can use a faster close
 // that doesn't block to e.g. check errors. On cancellation (as with any error)
 // there is no guarantee that all written data will reach the target.
-func (stream *OutputStream) Close(cancellable *Cancellable) error {
+func (stream *OutputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_output_stream_close(_arg0, _arg1, &_cerr)
 
@@ -363,16 +370,20 @@ func (stream *OutputStream) Close(cancellable *Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (stream *OutputStream) CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -406,13 +417,17 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
 // the error G_IO_ERROR_CANCELLED will be returned.
-func (stream *OutputStream) Flush(cancellable *Cancellable) error {
+func (stream *OutputStream) Flush(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
 	var _cerr *C.GError        // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_output_stream_flush(_arg0, _arg1, &_cerr)
 
@@ -428,16 +443,20 @@ func (stream *OutputStream) Flush(cancellable *Cancellable) error {
 //
 // When the operation is finished callback will be called. You can then call
 // g_output_stream_flush_finish() to get the result of the operation.
-func (stream *OutputStream) FlushAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -536,18 +555,22 @@ func (stream *OutputStream) SetPending() error {
 }
 
 // Splice splices an input stream into an output stream.
-func (stream *OutputStream) Splice(source InputStreamer, flags OutputStreamSpliceFlags, cancellable *Cancellable) (int, error) {
+func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) {
 	var _arg0 *C.GOutputStream           // out
+	var _arg3 *C.GCancellable            // out
 	var _arg1 *C.GInputStream            // out
 	var _arg2 C.GOutputStreamSpliceFlags // out
-	var _arg3 *C.GCancellable            // out
 	var _cret C.gssize                   // in
 	var _cerr *C.GError                  // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((source).(gextras.Nativer).Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_output_stream_splice(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
@@ -566,20 +589,24 @@ func (stream *OutputStream) Splice(source InputStreamer, flags OutputStreamSplic
 //
 // For the synchronous, blocking version of this function, see
 // g_output_stream_splice().
-func (stream *OutputStream) SpliceAsync(source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream           // out
+	var _arg4 *C.GCancellable            // out
 	var _arg1 *C.GInputStream            // out
 	var _arg2 C.GOutputStreamSpliceFlags // out
 	var _arg3 C.int                      // out
-	var _arg4 *C.GCancellable            // out
 	var _arg5 C.GAsyncReadyCallback      // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GInputStream)(unsafe.Pointer((source).(gextras.Nativer).Native()))
 	_arg2 = C.GOutputStreamSpliceFlags(flags)
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -626,20 +653,24 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 // be returned, without an error.
 //
 // On error -1 is returned and error is set accordingly.
-func (stream *OutputStream) Write(buffer []byte, cancellable *Cancellable) (int, error) {
+func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GOutputStream // out
+	var _arg3 *C.GCancellable  // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
-	var _arg3 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_output_stream_write(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 
@@ -670,20 +701,24 @@ func (stream *OutputStream) Write(buffer []byte, cancellable *Cancellable) (int,
 // error was encountered. This functionality is only available from C. If you
 // need it from another language then you must write your own loop around
 // g_output_stream_write().
-func (stream *OutputStream) WriteAll(buffer []byte, cancellable *Cancellable) (uint, error) {
+func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
-	var _arg3 C.gsize         // in
-	var _arg4 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_write_all(_arg0, unsafe.Pointer(_arg1), _arg2, &_arg3, _arg4, &_cerr)
 
@@ -711,22 +746,26 @@ func (stream *OutputStream) WriteAll(buffer []byte, cancellable *Cancellable) (u
 //
 // Note that no copy of buffer will be made, so it must stay valid until
 // callback is called.
-func (stream *OutputStream) WriteAllAsync(buffer []byte, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -796,22 +835,26 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 // callback is called. See g_output_stream_write_bytes_async() for a #GBytes
 // version that will automatically hold a reference to the contents (without
 // copying) for the duration of the call.
-func (stream *OutputStream) WriteAsync(buffer []byte, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -883,20 +926,24 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 // aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if these
 // are exceeded. For example, when writing to a local file on UNIX platforms,
 // the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-func (stream *OutputStream) Writev(vectors []OutputVector, cancellable *Cancellable) (uint, error) {
+func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg3 C.gsize         // in
-	var _arg4 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_writev(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
@@ -930,20 +977,24 @@ func (stream *OutputStream) Writev(vectors []OutputVector, cancellable *Cancella
 //
 // The content of the individual elements of vectors might be changed by this
 // function.
-func (stream *OutputStream) WritevAll(vectors []OutputVector, cancellable *Cancellable) (uint, error) {
+func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
-	var _arg3 C.gsize         // in
-	var _arg4 *C.GCancellable // out
-	var _cerr *C.GError       // in
+	var _arg3 C.gsize   // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_output_stream_writev_all(_arg0, _arg1, _arg2, &_arg3, _arg4, &_cerr)
 
@@ -972,22 +1023,26 @@ func (stream *OutputStream) WritevAll(vectors []OutputVector, cancellable *Cance
 // Note that no copy of vectors will be made, so it must stay valid until
 // callback is called. The content of the individual elements of vectors might
 // be changed by this function.
-func (stream *OutputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -1053,22 +1108,26 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 //
 // Note that no copy of vectors will be made, so it must stay valid until
 // callback is called.
-func (stream *OutputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector
 	var _arg2 C.gsize
 	var _arg3 C.int                 // out
-	var _arg4 *C.GCancellable       // out
 	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(vectors))
 	if len(vectors) > 0 {
 		_arg1 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
 	}
 	_arg3 = C.int(ioPriority)
-	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg6 = C.gpointer(gbox.AssignOnce(callback))
 

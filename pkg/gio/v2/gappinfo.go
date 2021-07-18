@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -59,7 +61,7 @@ type AppInfoOverrider interface {
 	// g_app_info_can_delete().
 	DoDelete() bool
 	// Dup creates a duplicate of a Info.
-	Dup() *AppInfo
+	Dup() AppInfor
 	// Equal checks if two Infos are equal.
 	//
 	// Note that the check *may not* compare each individual field, and only
@@ -78,7 +80,7 @@ type AppInfoOverrider interface {
 	// Executable gets the executable's name for the installed application.
 	Executable() string
 	// Icon gets the icon for the application.
-	Icon() *Icon
+	Icon() Iconer
 	// ID gets the ID of an application. An id is a string that identifies the
 	// application. The exact format of the id is platform dependent. For
 	// instance, on Unix this is the desktop file id from the xdg menu
@@ -183,7 +185,7 @@ type AppInfor interface {
 	// Delete tries to delete a Info.
 	Delete() bool
 	// Dup creates a duplicate of a Info.
-	Dup() *AppInfo
+	Dup() AppInfor
 	// Equal checks if two Infos are equal.
 	Equal(appinfo2 AppInfor) bool
 	// Commandline gets the commandline with which the application will be
@@ -197,7 +199,7 @@ type AppInfor interface {
 	// Executable gets the executable's name for the installed application.
 	Executable() string
 	// Icon gets the icon for the application.
-	Icon() *Icon
+	Icon() Iconer
 	// ID gets the ID of an application.
 	ID() string
 	// Name gets the installed name of the application.
@@ -324,7 +326,7 @@ func (appinfo *AppInfo) Delete() bool {
 }
 
 // Dup creates a duplicate of a Info.
-func (appinfo *AppInfo) Dup() *AppInfo {
+func (appinfo *AppInfo) Dup() AppInfor {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
 
@@ -332,9 +334,9 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 
 	_cret = C.g_app_info_dup(_arg0)
 
-	var _appInfo *AppInfo // out
+	var _appInfo AppInfor // out
 
-	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
@@ -429,7 +431,7 @@ func (appinfo *AppInfo) Executable() string {
 }
 
 // Icon gets the icon for the application.
-func (appinfo *AppInfo) Icon() *Icon {
+func (appinfo *AppInfo) Icon() Iconer {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
 
@@ -437,9 +439,9 @@ func (appinfo *AppInfo) Icon() *Icon {
 
 	_cret = C.g_app_info_get_icon(_arg0)
 
-	var _icon *Icon // out
+	var _icon Iconer // out
 
-	_icon = wrapIcon(externglib.Take(unsafe.Pointer(_cret)))
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Iconer)
 
 	return _icon
 }
@@ -673,7 +675,7 @@ func (appinfo *AppInfo) SupportsUris() bool {
 // example, if the commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
-func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
+func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) (AppInfor, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
 	var _arg3 C.GAppInfoCreateFlags // out
@@ -686,23 +688,23 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 
 	_cret = C.g_app_info_create_from_commandline(_arg1, _arg2, _arg3, &_cerr)
 
-	var _appInfo *AppInfo // out
+	var _appInfo AppInfor // out
 	var _goerr error      // out
 
-	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _appInfo, _goerr
 }
 
-// AppInfoGetAll gets a list of all of the applications currently registered on
+// AppInfoAll gets a list of all of the applications currently registered on
 // this system.
 //
 // For desktop files, this includes applications that have NoDisplay=true set or
 // are excluded from display by means of OnlyShowIn or NotShowIn. See
 // g_app_info_should_show(). The returned list does not include applications
 // which have the Hidden key set.
-func AppInfoGetAll() *externglib.List {
+func AppInfoAll() *externglib.List {
 	var _cret *C.GList // in
 
 	_cret = C.g_app_info_get_all()
@@ -712,24 +714,21 @@ func AppInfoGetAll() *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GAppInfo)(_p)
-		var dst AppInfo // out
-		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst AppInfor // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list
 }
 
-// AppInfoGetAllForType gets a list of all Infos for a given content type,
+// AppInfoAllForType gets a list of all Infos for a given content type,
 // including the recommended and fallback Infos. See
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
-func AppInfoGetAllForType(contentType string) *externglib.List {
+func AppInfoAllForType(contentType string) *externglib.List {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
 
@@ -742,22 +741,19 @@ func AppInfoGetAllForType(contentType string) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GAppInfo)(_p)
-		var dst AppInfo // out
-		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst AppInfor // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list
 }
 
-// AppInfoGetDefaultForType gets the default Info for a given content type.
-func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
+// AppInfoDefaultForType gets the default Info for a given content type.
+func AppInfoDefaultForType(contentType string, mustSupportUris bool) AppInfor {
 	var _arg1 *C.char     // out
 	var _arg2 C.gboolean  // out
 	var _cret *C.GAppInfo // in
@@ -769,17 +765,17 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 
 	_cret = C.g_app_info_get_default_for_type(_arg1, _arg2)
 
-	var _appInfo *AppInfo // out
+	var _appInfo AppInfor // out
 
-	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
 
-// AppInfoGetDefaultForURIScheme gets the default application for handling URIs
+// AppInfoDefaultForURIScheme gets the default application for handling URIs
 // with the given URI scheme. A URI scheme is the initial part of the URI, up to
 // but not including the ':', e.g. "http", "ftp" or "sip".
-func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
+func AppInfoDefaultForURIScheme(uriScheme string) AppInfor {
 	var _arg1 *C.char     // out
 	var _cret *C.GAppInfo // in
 
@@ -787,17 +783,17 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 
 	_cret = C.g_app_info_get_default_for_uri_scheme(_arg1)
 
-	var _appInfo *AppInfo // out
+	var _appInfo AppInfor // out
 
-	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
 
-// AppInfoGetFallbackForType gets a list of fallback Infos for a given content
+// AppInfoFallbackForType gets a list of fallback Infos for a given content
 // type, i.e. those applications which claim to support the given content type
 // by MIME type subclassing and not directly.
-func AppInfoGetFallbackForType(contentType string) *externglib.List {
+func AppInfoFallbackForType(contentType string) *externglib.List {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -810,26 +806,23 @@ func AppInfoGetFallbackForType(contentType string) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GAppInfo)(_p)
-		var dst AppInfo // out
-		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst AppInfor // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list
 }
 
-// AppInfoGetRecommendedForType gets a list of recommended Infos for a given
+// AppInfoRecommendedForType gets a list of recommended Infos for a given
 // content type, i.e. those applications which claim to support the given
 // content type exactly, and not by MIME type subclassing. Note that the first
 // application of the list is the last used one, i.e. the last one for which
 // g_app_info_set_as_last_used_for_type() has been called.
-func AppInfoGetRecommendedForType(contentType string) *externglib.List {
+func AppInfoRecommendedForType(contentType string) *externglib.List {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -842,15 +835,12 @@ func AppInfoGetRecommendedForType(contentType string) *externglib.List {
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GAppInfo)(_p)
-		var dst AppInfo // out
-		dst = *wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
+		var dst AppInfor // out
+		dst = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(src)))).(AppInfor)
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list
@@ -890,16 +880,20 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 // This is also useful if you want to be sure that the D-Bus–activated
 // applications are really started before termination and if you are interested
 // in receiving error information from their activation.
-func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback) {
+func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
 	var _arg2 *C.GAppLaunchContext  // out
-	var _arg3 *C.GCancellable       // out
 	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
 	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg5 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -935,7 +929,7 @@ func AppInfoResetTypeAssociations(contentType string) {
 	C.g_app_info_reset_type_associations(_arg1)
 }
 
-// AppInfoMonitorGet gets the InfoMonitor for the current thread-default main
+// AppInfoMonitor gets the InfoMonitor for the current thread-default main
 // context.
 //
 // The InfoMonitor will emit a "changed" signal in the thread-default main
@@ -944,7 +938,7 @@ func AppInfoResetTypeAssociations(contentType string) {
 //
 // You must only call g_object_unref() on the return value from under the same
 // main context as you created it.
-func AppInfoMonitorGet() *AppInfoMonitor {
+func AppInfoMonitor() *AppInfoMonitor {
 	var _cret *C.GAppInfoMonitor // in
 
 	_cret = C.g_app_info_monitor_get()

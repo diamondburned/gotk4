@@ -278,7 +278,7 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 // yet, so the interface currently has no use.
 type PrintOperationOverrider interface {
 	BeginPrint(context *PrintContext)
-	CustomWidgetApply(widget Widgetter)
+	CustomWidgetApply(widget Widgeter)
 	Done(result PrintOperationResult)
 	DrawPage(context *PrintContext, pageNr int)
 	EndPrint(context *PrintContext)
@@ -286,7 +286,7 @@ type PrintOperationOverrider interface {
 	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	StatusChanged()
-	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+	UpdateCustomWidget(widget Widgeter, setup *PageSetup, settings *PrintSettings)
 }
 
 // PrintOperation: GtkPrintOperation is the high-level, portable printing API.

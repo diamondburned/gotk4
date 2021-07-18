@@ -38,7 +38,7 @@ type EventControllerer interface {
 	// events.
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
-	Widget() *Widget
+	Widget() Widgeter
 	// Reset resets the controller to a clean state.
 	Reset()
 	// SetPropagationPhase sets the propagation phase at which a controller
@@ -78,7 +78,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 }
 
 // Widget returns the Widget this controller relates to.
-func (controller *EventController) Widget() *Widget {
+func (controller *EventController) Widget() Widgeter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
 
@@ -86,9 +86,9 @@ func (controller *EventController) Widget() *Widget {
 
 	_cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

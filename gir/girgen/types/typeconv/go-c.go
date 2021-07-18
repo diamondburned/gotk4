@@ -12,12 +12,24 @@ import (
 
 // Go to C type conversions.
 
+func (conv *Converter) gocParameterOverrides(value *ValueConverted) {
+	if value.Resolved.Ptr != 1 || value.ParameterIndex.Index() == -1 {
+		return
+	}
+
+	switch value.Resolved.GType {
+	case "Gio.Cancellable":
+		value.Resolved = types.BuiltinType("context", "Context", *value.AnyType.Type)
+		value.Resolved.Ptr--
+	}
+}
+
 func (conv *Converter) gocConvert(value *ValueConverted) bool {
 	switch {
-	case value.AnyType.Type != nil:
-		return conv.gocConverter(value)
 	case value.AnyType.Array != nil:
 		return conv.gocArrayConverter(value)
+	case value.AnyType.Type != nil:
+		return conv.gocConvertNested(value)
 	default:
 		return false
 	}
@@ -319,6 +331,15 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 	return false
 }
 
+func (conv *Converter) gocConvertNested(value *ValueConverted) bool {
+	if value.AnyType.Type.Type == nil {
+		return conv.gocConverter(value)
+	}
+
+	// TODO: gocConvertNested.
+	return false
+}
+
 func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	for _, unsupported := range types.UnsupportedCTypes {
 		if unsupported == types.CleanCType(value.AnyType.Type.CType, true) {
@@ -342,6 +363,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("string"):
 		if !value.isPtr(1) {
+			value.Logln(logger.Debug, "weird string pointer rule")
 			return false
 		}
 
@@ -380,6 +402,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case value.Resolved.IsBuiltin("error"):
 		if !value.isPtr(1) {
+			value.Logln(logger.Debug, "weird GError pointer")
 			return false
 		}
 
@@ -394,6 +417,21 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		// 	value.p.Linef("  defer C.g_error_free(%s)", value.Out.Set)
 		// 	value.p.Linef("}")
 		// }
+		return true
+
+	case value.Resolved.IsBuiltin("context.Context"):
+		value.header.ImportCore("gcancel")
+		value.header.Import("runtime")
+		value.header.Import("unsafe")
+
+		// Ensure that the cancellable object is kept alive for the duration of
+		// the function so that Go doesn't unreference the cancellable before
+		// the function exits.
+		value.vtmpl(`{
+			cancellable := gcancel.GCancellableFromContext(<.In.Name>)
+			defer runtime.KeepAlive(cancellable)
+			<.Out.Name> = (<.Out.Type>)(unsafe.Pointer(cancellable.Native()))
+		}`)
 		return true
 
 	case value.Resolved.IsPrimitive():
@@ -411,7 +449,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		return true
 	}
 
-	switch types.EnsureNamespace(conv.sourceNamespace, value.AnyType.Type.Name) {
+	switch value.Resolved.GType {
 	case "GObject.Type", "GType":
 		value.header.NeedsGLibObject()
 		value.p.LineTmpl(value, "<.Out.Set> = <.OutCast 0>(<.InNamePtr 0>)")
@@ -440,6 +478,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	}
 
 	if value.Resolved.Extern == nil {
+		value.Logln(logger.Debug, "unknown built-in")
 		return false
 	}
 

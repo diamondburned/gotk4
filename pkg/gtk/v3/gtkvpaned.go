@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPanedder},
+		{T: externglib.Type(C.gtk_vpaned_get_type()), F: marshalVPaneder},
 	})
 }
 
@@ -58,7 +58,7 @@ func wrapVPaned(obj *externglib.Object) *VPaned {
 	}
 }
 
-func marshalVPanedder(p uintptr) (interface{}, error) {
+func marshalVPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapVPaned(obj), nil

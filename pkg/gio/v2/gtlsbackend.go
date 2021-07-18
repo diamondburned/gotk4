@@ -37,7 +37,7 @@ func init() {
 // yet, so the interface currently has no use.
 type TLSBackendOverrider interface {
 	// DefaultDatabase gets the default Database used to verify TLS connections.
-	DefaultDatabase() *TLSDatabase
+	DefaultDatabase() TLSDatabaser
 	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
 	// available even if TLS support is available, and vice-versa.
 	SupportsDTLS() bool
@@ -61,7 +61,7 @@ type TLSBackender interface {
 	// implementation.
 	ClientConnectionType() externglib.Type
 	// DefaultDatabase gets the default Database used to verify TLS connections.
-	DefaultDatabase() *TLSDatabase
+	DefaultDatabase() TLSDatabaser
 	// DTLSClientConnectionType gets the #GType of backend’s ClientConnection
 	// implementation.
 	DTLSClientConnectionType() externglib.Type
@@ -133,7 +133,7 @@ func (backend *TLSBackend) ClientConnectionType() externglib.Type {
 }
 
 // DefaultDatabase gets the default Database used to verify TLS connections.
-func (backend *TLSBackend) DefaultDatabase() *TLSDatabase {
+func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _arg0 *C.GTlsBackend  // out
 	var _cret *C.GTlsDatabase // in
 
@@ -141,9 +141,9 @@ func (backend *TLSBackend) DefaultDatabase() *TLSDatabase {
 
 	_cret = C.g_tls_backend_get_default_database(_arg0)
 
-	var _tlsDatabase *TLSDatabase // out
+	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = wrapTLSDatabase(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsDatabase = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(TLSDatabaser)
 
 	return _tlsDatabase
 }
@@ -271,15 +271,15 @@ func (backend *TLSBackend) SupportsTLS() bool {
 	return _ok
 }
 
-// TLSBackendGetDefault gets the default Backend for the system.
-func TlsBackendGetDefault() *TLSBackend {
+// TLSBackendDefault gets the default Backend for the system.
+func TlsBackendDefault() TLSBackender {
 	var _cret *C.GTlsBackend // in
 
 	_cret = C.g_tls_backend_get_default()
 
-	var _tlsBackend *TLSBackend // out
+	var _tlsBackend TLSBackender // out
 
-	_tlsBackend = wrapTLSBackend(externglib.Take(unsafe.Pointer(_cret)))
+	_tlsBackend = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSBackender)
 
 	return _tlsBackend
 }

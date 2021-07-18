@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -55,10 +58,10 @@ type ProxyResolverOverrider interface {
 	//
 	// direct:// is used when no proxy is needed. Direct connection should not
 	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable *Cancellable) ([]string, error)
+	Lookup(ctx context.Context, uri string) ([]string, error)
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
-	LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback)
+	LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
@@ -84,9 +87,9 @@ type ProxyResolverer interface {
 	IsSupported() bool
 	// Lookup looks into the system proxy configuration to determine what proxy,
 	// if any, to use to connect to uri.
-	Lookup(uri string, cancellable *Cancellable) ([]string, error)
+	Lookup(ctx context.Context, uri string) ([]string, error)
 	// LookupAsync asynchronous lookup of proxy.
-	LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback)
+	LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete.
 	LookupFinish(result AsyncResulter) ([]string, error)
@@ -138,16 +141,20 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 // direct:// is used when no proxy is needed. Direct connection should not be
 // attempted unless it is part of the returned array of proxies.
-func (resolver *ProxyResolver) Lookup(uri string, cancellable *Cancellable) ([]string, error) {
+func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
-	var _arg1 *C.gchar          // out
 	var _arg2 *C.GCancellable   // out
+	var _arg1 *C.gchar          // out
 	var _cret **C.gchar
 	var _cerr *C.GError // in
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
@@ -174,16 +181,20 @@ func (resolver *ProxyResolver) Lookup(uri string, cancellable *Cancellable) ([]s
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
 // more details.
-func (resolver *ProxyResolver) LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
-	var _arg1 *C.gchar              // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(resolver.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -225,15 +236,15 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	return _utf8s, _goerr
 }
 
-// ProxyResolverGetDefault gets the default Resolver for the system.
-func ProxyResolverGetDefault() *ProxyResolver {
+// ProxyResolverDefault gets the default Resolver for the system.
+func ProxyResolverDefault() ProxyResolverer {
 	var _cret *C.GProxyResolver // in
 
 	_cret = C.g_proxy_resolver_get_default()
 
-	var _proxyResolver *ProxyResolver // out
+	var _proxyResolver ProxyResolverer // out
 
-	_proxyResolver = wrapProxyResolver(externglib.Take(unsafe.Pointer(_cret)))
+	_proxyResolver = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(ProxyResolverer)
 
 	return _proxyResolver
 }

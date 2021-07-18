@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemmer},
+		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItemer},
 	})
 }
 
@@ -47,7 +47,7 @@ func wrapListItem(obj *externglib.Object) *ListItem {
 	}
 }
 
-func marshalListItemmer(p uintptr) (interface{}, error) {
+func marshalListItemer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapListItem(obj), nil
@@ -74,7 +74,7 @@ func (self *ListItem) Activatable() bool {
 
 // Child gets the child previously set via gtk_list_item_set_child() or NULL if
 // none was set.
-func (self *ListItem) Child() *Widget {
+func (self *ListItem) Child() Widgeter {
 	var _arg0 *C.GtkListItem // out
 	var _cret *C.GtkWidget   // in
 
@@ -82,9 +82,9 @@ func (self *ListItem) Child() *Widget {
 
 	_cret = C.gtk_list_item_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -191,7 +191,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // This function is typically called by applications when setting up a listitem
 // so that the widget can be reused when binding it multiple times.
-func (self *ListItem) SetChild(child Widgetter) {
+func (self *ListItem) SetChild(child Widgeter) {
 	var _arg0 *C.GtkListItem // out
 	var _arg1 *C.GtkWidget   // out
 

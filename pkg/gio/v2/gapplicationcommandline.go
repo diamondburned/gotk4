@@ -47,7 +47,7 @@ type ApplicationCommandLineOverrider interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	Stdin() *InputStream
+	Stdin() InputStreamer
 	PrintLiteral(message string)
 	PrinterrLiteral(message string)
 }
@@ -147,7 +147,7 @@ func marshalApplicationCommandLiner(p uintptr) (interface{}, error) {
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
 // process rather than the local process.
-func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
+func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) Filer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
 	var _cret *C.GFile                   // in
@@ -157,9 +157,9 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 
 	_cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
 
-	var _file *File // out
+	var _file Filer // out
 
-	_file = wrapFile(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }
@@ -329,7 +329,7 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
-func (cmdline *ApplicationCommandLine) Stdin() *InputStream {
+func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
 
@@ -337,9 +337,9 @@ func (cmdline *ApplicationCommandLine) Stdin() *InputStream {
 
 	_cret = C.g_application_command_line_get_stdin(_arg0)
 
-	var _inputStream *InputStream // out
+	var _inputStream InputStreamer // out
 
-	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 
 	return _inputStream
 }

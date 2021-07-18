@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarrer},
+		{T: externglib.Type(C.gtk_hscrollbar_get_type()), F: marshalHScrollbarer},
 	})
 }
 
@@ -60,7 +60,7 @@ func wrapHScrollbar(obj *externglib.Object) *HScrollbar {
 	}
 }
 
-func marshalHScrollbarrer(p uintptr) (interface{}, error) {
+func marshalHScrollbarer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapHScrollbar(obj), nil

@@ -21,13 +21,13 @@ func init() {
 	})
 }
 
-// GetDefaultRegistry gets a default implementation of the ObjectFactory/type
+// DefaultRegistry gets a default implementation of the ObjectFactory/type
 // registry. Note: For most toolkit maintainers, this will be the correct
 // registry for registering new Object factories. Following a call to this
 // function, maintainers may call atk_registry_set_factory_type() to associate
 // an ObjectFactory subclass with the GType of objects for whom accessibility
 // information will be provided.
-func GetDefaultRegistry() *Registry {
+func DefaultRegistry() *Registry {
 	var _cret *C.AtkRegistry // in
 
 	_cret = C.atk_get_default_registry()

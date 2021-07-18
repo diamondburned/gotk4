@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -70,10 +72,10 @@ type TLSConnectionOverrider interface {
 	// initial handshake, so calling this function manually is not recommended.
 	//
 	// Connection::accept_certificate may be emitted during the handshake.
-	Handshake(cancellable *Cancellable) error
+	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 	// g_tls_connection_handshake() for more information.
-	HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation. See
 	// g_tls_connection_handshake() for more information.
 	HandshakeFinish(result AsyncResulter) error
@@ -98,13 +100,13 @@ type TLSConnectioner interface {
 	EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
 	// Certificate gets conn's certificate, as set by
 	// g_tls_connection_set_certificate().
-	Certificate() *TLSCertificate
+	Certificate() TLSCertificater
 	// ChannelBindingData: query the TLS backend for TLS channel binding data of
 	// type for conn.
 	ChannelBindingData(typ TLSChannelBindingType) ([]byte, error)
 	// Database gets the certificate database that conn uses to verify peer
 	// certificates.
-	Database() *TLSDatabase
+	Database() TLSDatabaser
 	// Interaction: get the object that will be used to interact with the user.
 	Interaction() *TLSInteraction
 	// NegotiatedProtocol gets the name of the application-layer protocol
@@ -112,7 +114,7 @@ type TLSConnectioner interface {
 	NegotiatedProtocol() string
 	// PeerCertificate gets conn's peer's certificate after the handshake has
 	// completed or failed.
-	PeerCertificate() *TLSCertificate
+	PeerCertificate() TLSCertificater
 	// PeerCertificateErrors gets the errors associated with validating conn's
 	// peer's certificate, after the handshake has completed or failed.
 	PeerCertificateErrors() TLSCertificateFlags
@@ -125,9 +127,9 @@ type TLSConnectioner interface {
 	// verify peer certificates.
 	UseSystemCertDB() bool
 	// Handshake attempts a TLS handshake on conn.
-	Handshake(cancellable *Cancellable) error
+	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
-	HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback)
+	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -194,7 +196,7 @@ func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, error
 
 // Certificate gets conn's certificate, as set by
 // g_tls_connection_set_certificate().
-func (conn *TLSConnection) Certificate() *TLSCertificate {
+func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
 
@@ -202,9 +204,9 @@ func (conn *TLSConnection) Certificate() *TLSCertificate {
 
 	_cret = C.g_tls_connection_get_certificate(_arg0)
 
-	var _tlsCertificate *TLSCertificate // out
+	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
+	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }
@@ -251,7 +253,7 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 
 // Database gets the certificate database that conn uses to verify peer
 // certificates. See g_tls_connection_set_database().
-func (conn *TLSConnection) Database() *TLSDatabase {
+func (conn *TLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.GTlsDatabase   // in
 
@@ -259,9 +261,9 @@ func (conn *TLSConnection) Database() *TLSDatabase {
 
 	_cret = C.g_tls_connection_get_database(_arg0)
 
-	var _tlsDatabase *TLSDatabase // out
+	var _tlsDatabase TLSDatabaser // out
 
-	_tlsDatabase = wrapTLSDatabase(externglib.Take(unsafe.Pointer(_cret)))
+	_tlsDatabase = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSDatabaser)
 
 	return _tlsDatabase
 }
@@ -309,7 +311,7 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 // PeerCertificate gets conn's peer's certificate after the handshake has
 // completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.)
-func (conn *TLSConnection) PeerCertificate() *TLSCertificate {
+func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
 
@@ -317,9 +319,9 @@ func (conn *TLSConnection) PeerCertificate() *TLSCertificate {
 
 	_cret = C.g_tls_connection_get_peer_certificate(_arg0)
 
-	var _tlsCertificate *TLSCertificate // out
+	var _tlsCertificate TLSCertificater // out
 
-	_tlsCertificate = wrapTLSCertificate(externglib.Take(unsafe.Pointer(_cret)))
+	_tlsCertificate = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TLSCertificater)
 
 	return _tlsCertificate
 }
@@ -431,13 +433,17 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 // handshake, so calling this function manually is not recommended.
 //
 // Connection::accept_certificate may be emitted during the handshake.
-func (conn *TLSConnection) Handshake(cancellable *Cancellable) error {
+func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
 	var _cerr *C.GError         // in
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	C.g_tls_connection_handshake(_arg0, _arg1, &_cerr)
 
@@ -450,16 +456,20 @@ func (conn *TLSConnection) Handshake(cancellable *Cancellable) error {
 
 // HandshakeAsync: asynchronously performs a TLS handshake on conn. See
 // g_tls_connection_handshake() for more information.
-func (conn *TLSConnection) HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsConnection     // out
-	var _arg1 C.int                 // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(conn.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = C.int(ioPriority)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 

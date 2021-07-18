@@ -794,9 +794,9 @@ func RoleForName(name string) Role {
 	return _role
 }
 
-// RoleGetLocalizedName gets the localized description string describing the
-// Role role.
-func RoleGetLocalizedName(role Role) string {
+// RoleLocalizedName gets the localized description string describing the Role
+// role.
+func RoleLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
 
@@ -811,8 +811,8 @@ func RoleGetLocalizedName(role Role) string {
 	return _utf8
 }
 
-// RoleGetName gets the description string describing the Role role.
-func RoleGetName(role Role) string {
+// RoleName gets the description string describing the Role role.
+func RoleName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
 

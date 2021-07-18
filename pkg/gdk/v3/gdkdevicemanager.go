@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -136,7 +135,7 @@ var _ gextras.Nativer = (*DeviceManager)(nil)
 type DeviceManagerer interface {
 	// ClientPointer returns the client pointer, that is, the master pointer
 	// that acts as the core pointer for this application.
-	ClientPointer() *Device
+	ClientPointer() Devicer
 	// Display gets the Display associated to device_manager.
 	Display() *Display
 	// ListDevices returns the list of devices of type type currently attached
@@ -167,7 +166,7 @@ func marshalDeviceManagerer(p uintptr) (interface{}, error) {
 // Event and there aren’t other means to get a meaningful Device to operate on.
 //
 // Deprecated: Use gdk_seat_get_pointer() instead.
-func (deviceManager *DeviceManager) ClientPointer() *Device {
+func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	var _arg0 *C.GdkDeviceManager // out
 	var _cret *C.GdkDevice        // in
 
@@ -175,9 +174,9 @@ func (deviceManager *DeviceManager) ClientPointer() *Device {
 
 	_cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -218,11 +217,11 @@ func (deviceManager *DeviceManager) ListDevices(typ DeviceType) *externglib.List
 	_list = externglib.WrapList(uintptr(unsafe.Pointer(_cret)))
 	_list.DataWrapper(func(_p unsafe.Pointer) interface{} {
 		src := (*C.GdkDevice)(_p)
-		var dst Device // out
-		dst = *wrapDevice(externglib.Take(unsafe.Pointer(src)))
+		var dst Devicer // out
+		dst = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src)))).(Devicer)
 		return dst
 	})
-	runtime.SetFinalizer(_list, (*externglib.List).Free)
+	_list.AttachFinalizer(nil)
 
 	return _list
 }

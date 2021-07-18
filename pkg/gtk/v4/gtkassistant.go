@@ -220,7 +220,7 @@ func NewAssistant() *Assistant {
 }
 
 // AddActionWidget adds a widget to the action area of a GtkAssistant.
-func (assistant *Assistant) AddActionWidget(child Widgetter) {
+func (assistant *Assistant) AddActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -231,7 +231,7 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 }
 
 // AppendPage appends a page to the assistant.
-func (assistant *Assistant) AppendPage(page Widgetter) int {
+func (assistant *Assistant) AppendPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -298,7 +298,7 @@ func (assistant *Assistant) NPages() int {
 }
 
 // NthPage returns the child widget contained in page number page_num.
-func (assistant *Assistant) NthPage(pageNum int) *Widget {
+func (assistant *Assistant) NthPage(pageNum int) Widgeter {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 	var _cret *C.GtkWidget    // in
@@ -308,15 +308,15 @@ func (assistant *Assistant) NthPage(pageNum int) *Widget {
 
 	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
 
 // Page returns the GtkAssistantPage object for child.
-func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
+func (assistant *Assistant) Page(child Widgeter) *AssistantPage {
 	var _arg0 *C.GtkAssistant     // out
 	var _arg1 *C.GtkWidget        // out
 	var _cret *C.GtkAssistantPage // in
@@ -334,7 +334,7 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 }
 
 // PageComplete gets whether page is complete.
-func (assistant *Assistant) PageComplete(page Widgetter) bool {
+func (assistant *Assistant) PageComplete(page Widgeter) bool {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.gboolean      // in
@@ -354,7 +354,7 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 }
 
 // PageTitle gets the title for page.
-func (assistant *Assistant) PageTitle(page Widgetter) string {
+func (assistant *Assistant) PageTitle(page Widgeter) string {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret *C.char         // in
@@ -372,7 +372,7 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 }
 
 // PageType gets the page type of page.
-func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
+func (assistant *Assistant) PageType(page Widgeter) AssistantPageType {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _cret C.GtkAssistantPageType // in
@@ -390,7 +390,7 @@ func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
 }
 
 // Pages gets a list model of the assistant pages.
-func (assistant *Assistant) Pages() *gio.ListModel {
+func (assistant *Assistant) Pages() gio.ListModeler {
 	var _arg0 *C.GtkAssistant // out
 	var _cret *C.GListModel   // in
 
@@ -398,20 +398,15 @@ func (assistant *Assistant) Pages() *gio.ListModel {
 
 	_cret = C.gtk_assistant_get_pages(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
 
 // InsertPage inserts a page in the assistant at a given position.
-func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
+func (assistant *Assistant) InsertPage(page Widgeter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.int           // out
@@ -445,7 +440,7 @@ func (assistant *Assistant) NextPage() {
 }
 
 // PrependPage prepends a page to the assistant.
-func (assistant *Assistant) PrependPage(page Widgetter) int {
+func (assistant *Assistant) PrependPage(page Widgeter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -478,7 +473,7 @@ func (assistant *Assistant) PreviousPage() {
 }
 
 // RemoveActionWidget removes a widget from the action area of a GtkAssistant.
-func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
+func (assistant *Assistant) RemoveActionWidget(child Widgeter) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 
@@ -537,7 +532,7 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 //
 // This will make assistant update the buttons state to be able to continue the
 // task.
-func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
+func (assistant *Assistant) SetPageComplete(page Widgeter, complete bool) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gboolean      // out
@@ -555,7 +550,7 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 //
 // The title is displayed in the header area of the assistant when page is the
 // current page.
-func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
+func (assistant *Assistant) SetPageTitle(page Widgeter, title string) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 *C.char         // out
@@ -570,7 +565,7 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 // SetPageType sets the page type for page.
 //
 // The page type determines the page behavior in the assistant.
-func (assistant *Assistant) SetPageType(page Widgetter, typ AssistantPageType) {
+func (assistant *Assistant) SetPageType(page Widgeter, typ AssistantPageType) {
 	var _arg0 *C.GtkAssistant        // out
 	var _arg1 *C.GtkWidget           // out
 	var _arg2 C.GtkAssistantPageType // out
@@ -619,7 +614,7 @@ func marshalAssistantPager(p uintptr) (interface{}, error) {
 }
 
 // Child returns the child to which page belongs.
-func (page *AssistantPage) Child() *Widget {
+func (page *AssistantPage) Child() Widgeter {
 	var _arg0 *C.GtkAssistantPage // out
 	var _cret *C.GtkWidget        // in
 
@@ -627,9 +622,9 @@ func (page *AssistantPage) Child() *Widget {
 
 	_cret = C.gtk_assistant_page_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }

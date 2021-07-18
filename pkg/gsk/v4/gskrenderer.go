@@ -43,7 +43,7 @@ var _ gextras.Nativer = (*Renderer)(nil)
 // Rendererer describes Renderer's abstract methods.
 type Rendererer interface {
 	// Surface retrieves the GdkSurface set using gsk_enderer_realize().
-	Surface() *gdk.Surface
+	Surface() gdk.Surfacer
 	// IsRealized checks whether the renderer is realized or not.
 	IsRealized() bool
 	// Realize creates the resources needed by the renderer to render the scene
@@ -54,7 +54,7 @@ type Rendererer interface {
 	Render(root RenderNoder, region *cairo.Region)
 	// RenderTexture renders the scene graph, described by a tree of
 	// GskRenderNode instances, to a GdkTexture.
-	RenderTexture(root RenderNoder, viewport *graphene.Rect) *gdk.Texture
+	RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer
 	// Unrealize releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
@@ -99,7 +99,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 // Surface retrieves the GdkSurface set using gsk_enderer_realize().
 //
 // If the renderer has not been realized yet, NULL will be returned.
-func (renderer *Renderer) Surface() *gdk.Surface {
+func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
 
@@ -107,14 +107,9 @@ func (renderer *Renderer) Surface() *gdk.Surface {
 
 	_cret = C.gsk_renderer_get_surface(_arg0)
 
-	var _surface *gdk.Surface // out
+	var _surface gdk.Surfacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_surface = &gdk.Surface{
-			Object: obj,
-		}
-	}
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gdk.Surfacer)
 
 	return _surface
 }
@@ -186,7 +181,7 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 //
 // If you want to apply any transformations to root, you should put it into a
 // transform node and pass that node instead.
-func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) *gdk.Texture {
+func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -198,17 +193,9 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 
 	_cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 
-	var _texture *gdk.Texture // out
+	var _texture gdk.Texturer // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_texture = &gdk.Texture{
-			Object: obj,
-			Paintable: gdk.Paintable{
-				Object: obj,
-			},
-		}
-	}
+	_texture = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(gdk.Texturer)
 
 	return _texture
 }

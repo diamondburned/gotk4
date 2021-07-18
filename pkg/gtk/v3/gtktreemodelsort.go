@@ -110,7 +110,7 @@ func marshalTreeModelSorter(p uintptr) (interface{}, error) {
 
 // NewTreeModelSortWithModel creates a new TreeModelSort, with child_model as
 // the child model.
-func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
+func NewTreeModelSortWithModel(childModel TreeModeler) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
 	var _cret *C.GtkTreeModel // in
 
@@ -233,7 +233,7 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 }
 
 // Model returns the model the TreeModelSort is sorting.
-func (treeModel *TreeModelSort) Model() *TreeModel {
+func (treeModel *TreeModelSort) Model() TreeModeler {
 	var _arg0 *C.GtkTreeModelSort // out
 	var _cret *C.GtkTreeModel     // in
 
@@ -241,9 +241,9 @@ func (treeModel *TreeModelSort) Model() *TreeModel {
 
 	_cret = C.gtk_tree_model_sort_get_model(_arg0)
 
-	var _treeModel *TreeModel // out
+	var _treeModel TreeModeler // out
 
-	_treeModel = wrapTreeModel(externglib.Take(unsafe.Pointer(_cret)))
+	_treeModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(TreeModeler)
 
 	return _treeModel
 }

@@ -640,7 +640,7 @@ func (source *SettingsSchemaSource) unref() {
 	C.g_settings_schema_source_unref(_arg0)
 }
 
-// SettingsSchemaSourceGetDefault gets the default system schema source.
+// SettingsSchemaSourceDefault gets the default system schema source.
 //
 // This function is not required for normal uses of #GSettings but it may be
 // useful to authors of plugin management systems or to those who want to
@@ -652,7 +652,7 @@ func (source *SettingsSchemaSource) unref() {
 // different directories, depending on which directories were given in
 // XDG_DATA_DIRS and GSETTINGS_SCHEMA_DIR. For this reason, all lookups
 // performed against the default source should probably be done recursively.
-func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
+func SettingsSchemaSourceDefault() *SettingsSchemaSource {
 	var _cret *C.GSettingsSchemaSource // in
 
 	_cret = C.g_settings_schema_source_get_default()

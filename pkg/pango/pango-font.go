@@ -304,7 +304,7 @@ type FontOverrider interface {
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
-	FontMap() *FontMap
+	FontMap() FontMaper
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -334,9 +334,9 @@ type Fonter interface {
 	// Coverage computes the coverage map for a given font and language tag.
 	Coverage(language *Language) *Coverage
 	// Face gets the PangoFontFace to which font belongs.
-	Face() *FontFace
+	Face() FontFacer
 	// FontMap gets the font map for which the font was created.
-	FontMap() *FontMap
+	FontMap() FontMaper
 	// Metrics gets overall metric information for a font.
 	Metrics(language *Language) *FontMetrics
 	// HasChar returns whether the font provides a glyph for this character.
@@ -420,7 +420,7 @@ func (font *Font) Coverage(language *Language) *Coverage {
 }
 
 // Face gets the PangoFontFace to which font belongs.
-func (font *Font) Face() *FontFace {
+func (font *Font) Face() FontFacer {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
 
@@ -428,9 +428,9 @@ func (font *Font) Face() *FontFace {
 
 	_cret = C.pango_font_get_face(_arg0)
 
-	var _fontFace *FontFace // out
+	var _fontFace FontFacer // out
 
-	_fontFace = wrapFontFace(externglib.Take(unsafe.Pointer(_cret)))
+	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 
 	return _fontFace
 }
@@ -445,7 +445,7 @@ func (font *Font) Face() *FontFace {
 // It is the responsibility of the user to ensure that the font map is kept
 // alive. In most uses this is not an issue as a Context holds a reference to
 // the font map.
-func (font *Font) FontMap() *FontMap {
+func (font *Font) FontMap() FontMaper {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
 
@@ -453,9 +453,9 @@ func (font *Font) FontMap() *FontMap {
 
 	_cret = C.pango_font_get_font_map(_arg0)
 
-	var _fontMap *FontMap // out
+	var _fontMap FontMaper // out
 
-	_fontMap = wrapFontMap(externglib.Take(unsafe.Pointer(_cret)))
+	_fontMap = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontMaper)
 
 	return _fontMap
 }
@@ -543,7 +543,7 @@ type FontFaceOverrider interface {
 	// for displaying to users.
 	FaceName() string
 	// Family gets the PangoFontFamily that face belongs to.
-	Family() *FontFamily
+	Family() FontFamilier
 	// IsSynthesized returns whether a PangoFontFace is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
@@ -574,7 +574,7 @@ type FontFacer interface {
 	// different faces in the PangoFontFamily for the face.
 	FaceName() string
 	// Family gets the PangoFontFamily that face belongs to.
-	Family() *FontFamily
+	Family() FontFamilier
 	// IsSynthesized returns whether a PangoFontFace is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
@@ -637,7 +637,7 @@ func (face *FontFace) FaceName() string {
 }
 
 // Family gets the PangoFontFamily that face belongs to.
-func (face *FontFace) Family() *FontFamily {
+func (face *FontFace) Family() FontFamilier {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
 
@@ -645,9 +645,9 @@ func (face *FontFace) Family() *FontFamily {
 
 	_cret = C.pango_font_face_get_family(_arg0)
 
-	var _fontFamily *FontFamily // out
+	var _fontFamily FontFamilier // out
 
-	_fontFamily = wrapFontFamily(externglib.Take(unsafe.Pointer(_cret)))
+	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
 
 	return _fontFamily
 }
@@ -701,7 +701,7 @@ func (face *FontFace) ListSizes() []int {
 // yet, so the interface currently has no use.
 type FontFamilyOverrider interface {
 	// Face gets the PangoFontFace of family with the given name.
-	Face(name string) *FontFace
+	Face(name string) FontFacer
 	// Name gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
@@ -729,7 +729,7 @@ type FontFamilyOverrider interface {
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
-	ListFaces() []*FontFace
+	ListFaces() []FontFacer
 }
 
 // FontFamily: PangoFontFamily is used to represent a family of related font
@@ -746,7 +746,7 @@ var _ gextras.Nativer = (*FontFamily)(nil)
 // FontFamilier describes FontFamily's abstract methods.
 type FontFamilier interface {
 	// Face gets the PangoFontFace of family with the given name.
-	Face(name string) *FontFace
+	Face(name string) FontFacer
 	// Name gets the name of the family.
 	Name() string
 	// IsMonospace: monospace font is a font designed for text display where the
@@ -756,7 +756,7 @@ type FontFamilier interface {
 	// to produce different faces.
 	IsVariable() bool
 	// ListFaces lists the different font faces that make up family.
-	ListFaces() []*FontFace
+	ListFaces() []FontFacer
 }
 
 var _ FontFamilier = (*FontFamily)(nil)
@@ -774,7 +774,7 @@ func marshalFontFamilier(p uintptr) (interface{}, error) {
 }
 
 // Face gets the PangoFontFace of family with the given name.
-func (family *FontFamily) Face(name string) *FontFace {
+func (family *FontFamily) Face(name string) FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFace   // in
@@ -784,9 +784,9 @@ func (family *FontFamily) Face(name string) *FontFace {
 
 	_cret = C.pango_font_family_get_face(_arg0, _arg1)
 
-	var _fontFace *FontFace // out
+	var _fontFace FontFacer // out
 
-	_fontFace = wrapFontFace(externglib.Take(unsafe.Pointer(_cret)))
+	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFacer)
 
 	return _fontFace
 }
@@ -863,7 +863,7 @@ func (family *FontFamily) IsVariable() bool {
 //
 // The faces in a family share a common design, but differ in slant, weight,
 // width and other aspects.
-func (family *FontFamily) ListFaces() []*FontFace {
+func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace
 	var _arg2 C.int // in
@@ -872,14 +872,14 @@ func (family *FontFamily) ListFaces() []*FontFace {
 
 	C.pango_font_family_list_faces(_arg0, &_arg1, &_arg2)
 
-	var _faces []*FontFace
+	var _faces []FontFacer
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice(_arg1, _arg2)
-		_faces = make([]*FontFace, _arg2)
+		_faces = make([]FontFacer, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_faces[i] = wrapFontFace(externglib.Take(unsafe.Pointer(src[i])))
+			_faces[i] = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFacer)
 		}
 	}
 

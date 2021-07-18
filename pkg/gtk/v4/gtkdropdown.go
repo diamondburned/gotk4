@@ -86,7 +86,7 @@ func marshalDropDowner(p uintptr) (interface{}, error) {
 //
 // You may want to call gtk.DropDown.SetFactory() to set up a way to map its
 // items to widgets.
-func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
+func NewDropDown(model gio.ListModeler, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
 	var _arg2 *C.GtkExpression // out
 	var _cret *C.GtkWidget     // in
@@ -151,7 +151,7 @@ func (self *DropDown) EnableSearch() bool {
 // Expression gets the expression set that is used to obtain strings from items.
 //
 // See gtk.DropDown.SetExpression().
-func (self *DropDown) Expression() *Expression {
+func (self *DropDown) Expression() Expressioner {
 	var _arg0 *C.GtkDropDown   // out
 	var _cret *C.GtkExpression // in
 
@@ -159,9 +159,9 @@ func (self *DropDown) Expression() *Expression {
 
 	_cret = C.gtk_drop_down_get_expression(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }
@@ -204,7 +204,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 }
 
 // Model gets the model that provides the displayed items.
-func (self *DropDown) Model() *gio.ListModel {
+func (self *DropDown) Model() gio.ListModeler {
 	var _arg0 *C.GtkDropDown // out
 	var _cret *C.GListModel  // in
 
@@ -212,14 +212,9 @@ func (self *DropDown) Model() *gio.ListModel {
 
 	_cret = C.gtk_drop_down_get_model(_arg0)
 
-	var _listModel *gio.ListModel // out
+	var _listModel gio.ListModeler // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_listModel = &gio.ListModel{
-			Object: obj,
-		}
-	}
+	_listModel = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.ListModeler)
 
 	return _listModel
 }
@@ -312,7 +307,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 }
 
 // SetModel sets the GListModel to use.
-func (self *DropDown) SetModel(model gio.ListModeller) {
+func (self *DropDown) SetModel(model gio.ListModeler) {
 	var _arg0 *C.GtkDropDown // out
 	var _arg1 *C.GListModel  // out
 

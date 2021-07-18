@@ -70,7 +70,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 
 // Expression gets the expression that is evaluated to obtain strings from
 // items.
-func (self *StringSorter) Expression() *Expression {
+func (self *StringSorter) Expression() Expressioner {
 	var _arg0 *C.GtkStringSorter // out
 	var _cret *C.GtkExpression   // in
 
@@ -78,9 +78,9 @@ func (self *StringSorter) Expression() *Expression {
 
 	_cret = C.gtk_string_sorter_get_expression(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }

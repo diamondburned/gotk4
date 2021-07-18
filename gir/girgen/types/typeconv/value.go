@@ -400,12 +400,29 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return true
 	}
 
-	// Proritize hard-coded types over ignored types.
-	resolveNamespace := types.OverrideNamespace(conv.fgen, conv.sourceNamespace)
+	// Check nested types.
+	for _, unsupported := range types.UnsupportedCTypes {
+		if unsupported == value.AnyType.Type.Name {
+			return false
+		}
+	}
+
+	// Ensure the correct namespace is searched from.
+	resolveNamespace := types.OverrideNamespace(conv.fgen, conv.Parent.NamespaceFindResult)
 	value.Resolved = types.Resolve(resolveNamespace, *value.AnyType.Type)
 	if value.Resolved == nil {
 		conv.Logln(logger.Debug, "can't resolve", types.AnyTypeCGo(value.AnyType))
 		return false
+	}
+
+	// Idiomatic context.Context for C function wrapper. See go-c.go.
+	if value.ParameterIndex.Index() != -1 && !value.ParameterIsOutput() {
+		switch value.Direction {
+		case ConvertCToGo:
+			conv.cgoParameterOverrides(value)
+		case ConvertGoToC:
+			conv.gocParameterOverrides(value)
+		}
 	}
 
 	if value.Resolved.IsCallback() {
@@ -421,25 +438,27 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		value.Resolved.Ptr--
 	}
 
-	value.NeedsNamespace = value.Resolved.NeedsNamespace(conv.currentNamespace)
+	value.NeedsNamespace = value.Resolved.NeedsNamespace(conv.fgen.Namespace())
 
 	cgoType := value.Resolved.CGoType()
 	if value.InContainer {
 		cgoType = "*" + cgoType
 	}
 
+	var goType string
+	if !value.KeepType && value.Resolved.IsAbstract() {
+		goType = value.Resolved.PublicType(value.NeedsNamespace)
+		value.IsPublic = true
+	} else {
+		goType = value.Resolved.ImplType(value.NeedsNamespace)
+	}
+
 	if value.Direction == ConvertCToGo {
 		value.In.Type = cgoType
-		// Go output can be the implementation type.
-		value.Out.Type = value.Resolved.ImplType(value.NeedsNamespace)
+		value.Out.Type = goType
 	} else {
 		value.Out.Type = cgoType
-		if !value.KeepType && value.Resolved.IsAbstract() {
-			value.In.Type = value.Resolved.PublicType(value.NeedsNamespace)
-			value.IsPublic = true
-		} else {
-			value.In.Type = value.Resolved.ImplType(value.NeedsNamespace)
-		}
+		value.In.Type = goType
 	}
 
 	if value.NeedsNamespace {
@@ -511,7 +530,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	}
 
 	if tree := types.NewTree(conv.fgen); tree.ResolveFromType(value.Resolved) {
-		wrap := tree.WrapInNamespace("obj", &value.header, conv.sourceNamespace)
+		wrap := tree.WrapInNamespace("obj", &value.header, conv.Parent.NamespaceFindResult)
 		if value.OutPtr(1) == "*" {
 			// Dereference the wrapped struct value by removing the &.
 			wrap = strings.TrimPrefix(wrap, "&")

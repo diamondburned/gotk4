@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindowwer},
+		{T: externglib.Type(C.atk_window_get_type()), F: marshalWindower},
 	})
 }
 
@@ -29,12 +29,12 @@ type Window struct {
 
 var _ gextras.Nativer = (*Window)(nil)
 
-// Windowwer describes Window's abstract methods.
-type Windowwer interface {
+// Windower describes Window's abstract methods.
+type Windower interface {
 	privateWindow()
 }
 
-var _ Windowwer = (*Window)(nil)
+var _ Windower = (*Window)(nil)
 
 func wrapWindow(obj *externglib.Object) *Window {
 	return &Window{
@@ -44,7 +44,7 @@ func wrapWindow(obj *externglib.Object) *Window {
 	}
 }
 
-func marshalWindowwer(p uintptr) (interface{}, error) {
+func marshalWindower(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWindow(obj), nil

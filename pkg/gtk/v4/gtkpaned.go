@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPanedder},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaneder},
 	})
 }
 
@@ -113,7 +113,7 @@ func wrapPaned(obj *externglib.Object) *Paned {
 	}
 }
 
-func marshalPanedder(p uintptr) (interface{}, error) {
+func marshalPaneder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPaned(obj), nil
@@ -144,7 +144,7 @@ func (v *Paned) Native() uintptr {
 // EndChild retrieves the end child of the given GtkPaned.
 //
 // See also: GtkPaned:end-child
-func (paned *Paned) EndChild() *Widget {
+func (paned *Paned) EndChild() Widgeter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
@@ -152,9 +152,9 @@ func (paned *Paned) EndChild() *Widget {
 
 	_cret = C.gtk_paned_get_end_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -250,7 +250,7 @@ func (paned *Paned) ShrinkStartChild() bool {
 // StartChild retrieves the start child of the given GtkPaned.
 //
 // See also: GtkPaned:start-child
-func (paned *Paned) StartChild() *Widget {
+func (paned *Paned) StartChild() Widgeter {
 	var _arg0 *C.GtkPaned  // out
 	var _cret *C.GtkWidget // in
 
@@ -258,9 +258,9 @@ func (paned *Paned) StartChild() *Widget {
 
 	_cret = C.gtk_paned_get_start_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -284,7 +284,7 @@ func (paned *Paned) WideHandle() bool {
 }
 
 // SetEndChild sets the end child of paned to child.
-func (paned *Paned) SetEndChild(child Widgetter) {
+func (paned *Paned) SetEndChild(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 
@@ -358,7 +358,7 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 }
 
 // SetStartChild sets the start child of paned to child.
-func (paned *Paned) SetStartChild(child Widgetter) {
+func (paned *Paned) SetStartChild(child Widgeter) {
 	var _arg0 *C.GtkPaned  // out
 	var _arg1 *C.GtkWidget // out
 

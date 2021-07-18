@@ -42,11 +42,11 @@ func IconSizeFromName(name string) int {
 	return _gint
 }
 
-// IconSizeGetName gets the canonical name of the given icon size. The returned
+// IconSizeName gets the canonical name of the given icon size. The returned
 // string is statically allocated and should not be freed.
 //
 // Deprecated: Use IconTheme instead.
-func IconSizeGetName(size int) string {
+func IconSizeName(size int) string {
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.gchar      // in
 

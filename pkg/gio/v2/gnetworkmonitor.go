@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"context"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -30,7 +33,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorrer},
+		{T: externglib.Type(C.g_network_monitor_get_type()), F: marshalNetworkMonitorer},
 	})
 }
 
@@ -54,7 +57,7 @@ type NetworkMonitorOverrider interface {
 	// may still block for a brief period of time (eg, trying to do multicast
 	// DNS on the local network), so if you do not want to block, you should use
 	// g_network_monitor_can_reach_async().
-	CanReach(connectable SocketConnectabler, cancellable *Cancellable) error
+	CanReach(ctx context.Context, connectable SocketConnectabler) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by connectable can be reached, without actually trying to
 	// connect to it.
@@ -64,7 +67,7 @@ type NetworkMonitorOverrider interface {
 	// When the operation is finished, callback will be called. You can then
 	// call g_network_monitor_can_reach_finish() to get the result of the
 	// operation.
-	CanReachAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback)
+	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
 	CanReachFinish(result AsyncResulter) error
@@ -82,15 +85,15 @@ type NetworkMonitor struct {
 
 var _ gextras.Nativer = (*NetworkMonitor)(nil)
 
-// NetworkMonitorrer describes NetworkMonitor's abstract methods.
-type NetworkMonitorrer interface {
+// NetworkMonitorer describes NetworkMonitor's abstract methods.
+type NetworkMonitorer interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// connectable can be reached, without actually trying to connect to it.
-	CanReach(connectable SocketConnectabler, cancellable *Cancellable) error
+	CanReach(ctx context.Context, connectable SocketConnectabler) error
 	// CanReachAsync: asynchronously attempts to determine whether or not the
 	// host pointed to by connectable can be reached, without actually trying to
 	// connect to it.
-	CanReachAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback)
+	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test.
 	CanReachFinish(result AsyncResulter) error
 	// Connectivity gets a more detailed networking state than
@@ -102,7 +105,7 @@ type NetworkMonitorrer interface {
 	NetworkMetered() bool
 }
 
-var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
+var _ NetworkMonitorer = (*NetworkMonitor)(nil)
 
 func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
@@ -112,7 +115,7 @@ func wrapNetworkMonitor(obj *externglib.Object) *NetworkMonitor {
 	}
 }
 
-func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
+func marshalNetworkMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNetworkMonitor(obj), nil
@@ -133,15 +136,19 @@ func marshalNetworkMonitorrer(p uintptr) (interface{}, error) {
 // still block for a brief period of time (eg, trying to do multicast DNS on the
 // local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
-func (monitor *NetworkMonitor) CanReach(connectable SocketConnectabler, cancellable *Cancellable) error {
+func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
 	var _arg0 *C.GNetworkMonitor    // out
-	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 
@@ -160,16 +167,20 @@ func (monitor *NetworkMonitor) CanReach(connectable SocketConnectabler, cancella
 //
 // When the operation is finished, callback will be called. You can then call
 // g_network_monitor_can_reach_finish() to get the result of the operation.
-func (monitor *NetworkMonitor) CanReachAsync(connectable SocketConnectabler, cancellable *Cancellable, callback AsyncReadyCallback) {
+func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
-	var _arg1 *C.GSocketConnectable // out
 	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
 	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(monitor.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer((connectable).(gextras.Nativer).Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg4 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -269,15 +280,15 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 	return _ok
 }
 
-// NetworkMonitorGetDefault gets the default Monitor for the system.
-func NetworkMonitorGetDefault() *NetworkMonitor {
+// NetworkMonitorDefault gets the default Monitor for the system.
+func NetworkMonitorDefault() NetworkMonitorer {
 	var _cret *C.GNetworkMonitor // in
 
 	_cret = C.g_network_monitor_get_default()
 
-	var _networkMonitor *NetworkMonitor // out
+	var _networkMonitor NetworkMonitorer // out
 
-	_networkMonitor = wrapNetworkMonitor(externglib.Take(unsafe.Pointer(_cret)))
+	_networkMonitor = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(NetworkMonitorer)
 
 	return _networkMonitor
 }

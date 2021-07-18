@@ -3,10 +3,13 @@
 package gdk
 
 import (
+	"context"
+	"runtime"
 	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -34,20 +37,24 @@ func init() {
 //
 // When the operation is finished, callback will be called. You must then call
 // content_serialize_finish to get the result of the operation.
-func ContentSerializeAsync(stream gio.OutputStreamer, mimeType string, value *externglib.Value, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback) {
+func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *externglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GOutputStream      // out
 	var _arg2 *C.char               // out
 	var _arg3 *C.GValue             // out
 	var _arg4 C.int                 // out
-	var _arg5 *C.GCancellable       // out
 	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer((stream).(gextras.Nativer).Native()))
 	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	_arg3 = (*C.GValue)(unsafe.Pointer(&value.GValue))
 	_arg4 = C.int(ioPriority)
-	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 	_arg7 = C.gpointer(gbox.AssignOnce(callback))
 
@@ -163,7 +170,7 @@ func (serializer *ContentSerializer) MIMEType() string {
 // OutputStream gets the output stream for the current operation.
 //
 // This is the stream that was passed to content_serialize_async.
-func (serializer *ContentSerializer) OutputStream() *gio.OutputStream {
+func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GOutputStream        // in
 
@@ -171,14 +178,9 @@ func (serializer *ContentSerializer) OutputStream() *gio.OutputStream {
 
 	_cret = C.gdk_content_serializer_get_output_stream(_arg0)
 
-	var _outputStream *gio.OutputStream // out
+	var _outputStream gio.OutputStreamer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_outputStream = &gio.OutputStream{
-			Object: obj,
-		}
-	}
+	_outputStream = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.OutputStreamer)
 
 	return _outputStream
 }

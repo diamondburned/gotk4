@@ -47,7 +47,7 @@ type EditableOverrider interface {
 	// implementation to.
 	//
 	// Typically, the delegate is a gtk.Text widget.
-	Delegate() *Editable
+	Delegate() Editabler
 	// SelectionBounds retrieves the selection bound of the editable.
 	//
 	// start_pos will be filled with the start of the selection and end_pos with
@@ -213,7 +213,7 @@ type Editabler interface {
 	Chars(startPos int, endPos int) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
-	Delegate() *Editable
+	Delegate() Editabler
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for editable
@@ -372,7 +372,7 @@ func (editable *Editable) Chars(startPos int, endPos int) string {
 // to.
 //
 // Typically, the delegate is a gtk.Text widget.
-func (editable *Editable) Delegate() *Editable {
+func (editable *Editable) Delegate() Editabler {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.GtkEditable // in
 
@@ -380,9 +380,9 @@ func (editable *Editable) Delegate() *Editable {
 
 	_cret = C.gtk_editable_get_delegate(_arg0)
 
-	var _ret *Editable // out
+	var _ret Editabler // out
 
-	_ret = wrapEditable(externglib.Take(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Editabler)
 
 	return _ret
 }

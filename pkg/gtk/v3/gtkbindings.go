@@ -295,24 +295,3 @@ type BindingSignal struct {
 	nocopy gextras.NoCopy
 	native *C.GtkBindingSignal
 }
-
-// Next: implementation detail
-func (b *BindingSignal) Next() *BindingSignal {
-	var v *BindingSignal // out
-	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(b.native.next)))
-	return v
-}
-
-// SignalName: action signal to be emitted
-func (b *BindingSignal) SignalName() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(b.native.signal_name)))
-	return v
-}
-
-// NArgs: number of arguments specified for the signal
-func (b *BindingSignal) NArgs() uint {
-	var v uint // out
-	v = uint(b.native.n_args)
-	return v
-}

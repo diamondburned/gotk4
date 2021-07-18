@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopupper},
+		{T: externglib.Type(C.gdk_popup_get_type()), F: marshalPopuper},
 	})
 }
 
@@ -33,12 +33,12 @@ type Popup struct {
 
 var _ gextras.Nativer = (*Popup)(nil)
 
-// Popupper describes Popup's abstract methods.
-type Popupper interface {
+// Popuper describes Popup's abstract methods.
+type Popuper interface {
 	// Autohide returns whether this popup is set to hide on outside clicks.
 	Autohide() bool
 	// Parent returns the parent surface of a popup.
-	Parent() *Surface
+	Parent() Surfacer
 	// PositionX obtains the position of the popup relative to its parent.
 	PositionX() int
 	// PositionY obtains the position of the popup relative to its parent.
@@ -51,7 +51,7 @@ type Popupper interface {
 	Present(width int, height int, layout *PopupLayout) bool
 }
 
-var _ Popupper = (*Popup)(nil)
+var _ Popuper = (*Popup)(nil)
 
 func wrapPopup(obj *externglib.Object) *Popup {
 	return &Popup{
@@ -61,7 +61,7 @@ func wrapPopup(obj *externglib.Object) *Popup {
 	}
 }
 
-func marshalPopupper(p uintptr) (interface{}, error) {
+func marshalPopuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapPopup(obj), nil
@@ -86,7 +86,7 @@ func (popup *Popup) Autohide() bool {
 }
 
 // Parent returns the parent surface of a popup.
-func (popup *Popup) Parent() *Surface {
+func (popup *Popup) Parent() Surfacer {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
 
@@ -94,9 +94,9 @@ func (popup *Popup) Parent() *Surface {
 
 	_cret = C.gdk_popup_get_parent(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

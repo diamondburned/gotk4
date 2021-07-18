@@ -179,7 +179,7 @@ func (v *ToolPalette) Native() uintptr {
 // AddDragDest sets palette as drag source (see
 // gtk_tool_palette_set_drag_source()) and sets widget as a drag destination for
 // drags from palette. See gtk_drag_dest_set().
-func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
+func (palette *ToolPalette) AddDragDest(widget Widgeter, flags DestDefaults, targets ToolPaletteDragTargets, actions gdk.DragAction) {
 	var _arg0 *C.GtkToolPalette           // out
 	var _arg1 *C.GtkWidget                // out
 	var _arg2 C.GtkDestDefaults           // out
@@ -197,7 +197,7 @@ func (palette *ToolPalette) AddDragDest(widget Widgetter, flags DestDefaults, ta
 
 // DragItem: get the dragged item from the selection. This could be a ToolItem
 // or a ToolItemGroup.
-func (palette *ToolPalette) DragItem(selection *SelectionData) *Widget {
+func (palette *ToolPalette) DragItem(selection *SelectionData) Widgeter {
 	var _arg0 *C.GtkToolPalette   // out
 	var _arg1 *C.GtkSelectionData // out
 	var _cret *C.GtkWidget        // in
@@ -207,9 +207,9 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) *Widget {
 
 	_cret = C.gtk_tool_palette_get_drag_item(_arg0, _arg1)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -487,9 +487,8 @@ func (palette *ToolPalette) UnsetStyle() {
 	C.gtk_tool_palette_unset_style(_arg0)
 }
 
-// ToolPaletteGetDragTargetGroup: get the target entry for a dragged
-// ToolItemGroup.
-func ToolPaletteGetDragTargetGroup() *TargetEntry {
+// ToolPaletteDragTargetGroup: get the target entry for a dragged ToolItemGroup.
+func ToolPaletteDragTargetGroup() *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 
 	_cret = C.gtk_tool_palette_get_drag_target_group()
@@ -501,8 +500,8 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 	return _targetEntry
 }
 
-// ToolPaletteGetDragTargetItem gets the target entry for a dragged ToolItem.
-func ToolPaletteGetDragTargetItem() *TargetEntry {
+// ToolPaletteDragTargetItem gets the target entry for a dragged ToolItem.
+func ToolPaletteDragTargetItem() *TargetEntry {
 	var _cret *C.GtkTargetEntry // in
 
 	_cret = C.gtk_tool_palette_get_drag_target_item()

@@ -44,7 +44,7 @@ func init() {
 // the [thread-default main context][g-main-context-push-thread-default] where
 // the #GTask was created. All other users of ReadyCallback must likewise call
 // it asynchronously in a later iteration of the main context.
-type AsyncReadyCallback func(sourceObject *externglib.Object, res *AsyncResult)
+type AsyncReadyCallback func(res AsyncResulter)
 
 //export _gotk4_gio2_AsyncReadyCallback
 func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
@@ -53,14 +53,12 @@ func _gotk4_gio2_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 
 		panic(`callback not found`)
 	}
 
-	var sourceObject *externglib.Object // out
-	var res *AsyncResult                // out
+	var res AsyncResulter // out
 
-	sourceObject = externglib.Take(unsafe.Pointer(arg0))
-	res = wrapAsyncResult(externglib.Take(unsafe.Pointer(arg1)))
+	res = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(AsyncResulter)
 
 	fn := v.(AsyncReadyCallback)
-	fn(sourceObject, res)
+	fn(res)
 }
 
 // CancellableSourceFunc: this is the function type of the callback used for the
@@ -123,7 +121,7 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gch
 
 // DatagramBasedSourceFunc: this is the function type of the callback used for
 // the #GSource returned by g_datagram_based_create_source().
-type DatagramBasedSourceFunc func(datagramBased *DatagramBased, condition glib.IOCondition) (ok bool)
+type DatagramBasedSourceFunc func(datagramBased DatagramBaseder, condition glib.IOCondition) (ok bool)
 
 //export _gotk4_gio2_DatagramBasedSourceFunc
 func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) (cret C.gboolean) {
@@ -132,10 +130,10 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondi
 		panic(`callback not found`)
 	}
 
-	var datagramBased *DatagramBased // out
-	var condition glib.IOCondition   // out
+	var datagramBased DatagramBaseder // out
+	var condition glib.IOCondition    // out
 
-	datagramBased = wrapDatagramBased(externglib.Take(unsafe.Pointer(arg0)))
+	datagramBased = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(DatagramBaseder)
 	condition = glib.IOCondition(arg1)
 
 	fn := v.(DatagramBasedSourceFunc)
@@ -523,35 +521,6 @@ type InputMessage struct {
 	native *C.GInputMessage
 }
 
-// NumVectors: number of input vectors pointed to by vectors
-func (i *InputMessage) NumVectors() uint {
-	var v uint // out
-	v = uint(i.native.num_vectors)
-	return v
-}
-
-// BytesReceived: will be set to the number of bytes that have been received
-func (i *InputMessage) BytesReceived() uint {
-	var v uint // out
-	v = uint(i.native.bytes_received)
-	return v
-}
-
-// Flags: collection of MsgFlags for the received message, outputted by the call
-func (i *InputMessage) Flags() int {
-	var v int // out
-	v = int(i.native.flags)
-	return v
-}
-
-// NumControlMessages: return location for the number of elements in
-// control_messages
-func (i *InputMessage) NumControlMessages() *uint {
-	var v *uint // out
-	v = (*uint)(unsafe.Pointer(i.native.num_control_messages))
-	return v
-}
-
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -584,42 +553,6 @@ func (i *InputVector) Size() uint {
 type OutputMessage struct {
 	nocopy gextras.NoCopy
 	native *C.GOutputMessage
-}
-
-// Address or NULL
-func (o *OutputMessage) Address() *SocketAddress {
-	var v *SocketAddress // out
-	v = wrapSocketAddress(externglib.Take(unsafe.Pointer(o.native.address)))
-	return v
-}
-
-// Vectors: pointer to an array of output vectors
-func (o *OutputMessage) Vectors() *OutputVector {
-	var v *OutputVector // out
-	v = (*OutputVector)(gextras.NewStructNative(unsafe.Pointer(o.native.vectors)))
-	return v
-}
-
-// NumVectors: number of output vectors pointed to by vectors.
-func (o *OutputMessage) NumVectors() uint {
-	var v uint // out
-	v = uint(o.native.num_vectors)
-	return v
-}
-
-// BytesSent: initialize to 0. Will be set to the number of bytes that have been
-// sent
-func (o *OutputMessage) BytesSent() uint {
-	var v uint // out
-	v = uint(o.native.bytes_sent)
-	return v
-}
-
-// NumControlMessages: number of elements in control_messages.
-func (o *OutputMessage) NumControlMessages() uint {
-	var v uint // out
-	v = uint(o.native.num_control_messages)
-	return v
 }
 
 // OutputVector: structure used for scatter/gather data output. You generally
@@ -875,7 +808,7 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 // a Stream that lets you read the data.
 //
 // lookup_flags controls the behaviour of the lookup.
-func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (*InputStream, error) {
+func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -888,10 +821,10 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 
 	_cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, &_cerr)
 
-	var _inputStream *InputStream // out
-	var _goerr error              // out
+	var _inputStream InputStreamer // out
+	var _goerr error               // out
 
-	_inputStream = wrapInputStream(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inputStream = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(InputStreamer)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _inputStream, _goerr

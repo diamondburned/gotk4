@@ -770,8 +770,8 @@ func EventsPending() bool {
 	return _ok
 }
 
-// GetShowEvents gets whether event debugging output is enabled.
-func GetShowEvents() bool {
+// ShowEvents gets whether event debugging output is enabled.
+func ShowEvents() bool {
 	var _cret C.gboolean // in
 
 	_cret = C.gdk_get_show_events()
@@ -834,9 +834,9 @@ func (e *EventAny) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventAny) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventAny) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -905,9 +905,9 @@ func (e *EventButton) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventButton) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventButton) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -966,9 +966,9 @@ func (e *EventButton) Button() uint {
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventButton) Device() *Device {
-	var v *Device // out
-	v = wrapDevice(externglib.Take(unsafe.Pointer(e.native.device)))
+func (e *EventButton) Device() Devicer {
+	var v Devicer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
 	return v
 }
 
@@ -1000,9 +1000,9 @@ func (e *EventConfigure) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventConfigure) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventConfigure) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1055,9 +1055,9 @@ func (e *EventCrossing) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventCrossing) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventCrossing) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1069,9 +1069,9 @@ func (e *EventCrossing) SendEvent() int8 {
 }
 
 // Subwindow: window that was entered or left.
-func (e *EventCrossing) Subwindow() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.subwindow)))
+func (e *EventCrossing) Subwindow() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.subwindow)))).(Windower)
 	return v
 }
 
@@ -1162,9 +1162,9 @@ func (e *EventDND) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventDND) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventDND) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1220,9 +1220,9 @@ func (e *EventExpose) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventExpose) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventExpose) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1277,9 +1277,9 @@ func (e *EventFocus) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventFocus) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventFocus) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1317,9 +1317,9 @@ func (e *EventGrabBroken) Type() EventType {
 
 // Window: window which received the event, i.e. the window that previously
 // owned the grab
-func (e *EventGrabBroken) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventGrabBroken) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1351,9 +1351,9 @@ func (e *EventGrabBroken) Implicit() bool {
 
 // GrabWindow: if this event is caused by another grab in the same application,
 // grab_window contains the new grab window. Otherwise grab_window is NULL.
-func (e *EventGrabBroken) GrabWindow() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.grab_window)))
+func (e *EventGrabBroken) GrabWindow() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.grab_window)))).(Windower)
 	return v
 }
 
@@ -1371,9 +1371,9 @@ func (e *EventKey) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventKey) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventKey) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1457,9 +1457,9 @@ func (e *EventMotion) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventMotion) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventMotion) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1516,9 +1516,9 @@ func (e *EventMotion) IsHint() int16 {
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventMotion) Device() *Device {
-	var v *Device // out
-	v = wrapDevice(externglib.Take(unsafe.Pointer(e.native.device)))
+func (e *EventMotion) Device() Devicer {
+	var v Devicer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
 	return v
 }
 
@@ -1544,55 +1544,6 @@ type EventOwnerChange struct {
 	native *C.GdkEventOwnerChange
 }
 
-// Type: type of the event (GDK_OWNER_CHANGE).
-func (e *EventOwnerChange) Type() EventType {
-	var v EventType // out
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window: window which received the event
-func (e *EventOwnerChange) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
-	return v
-}
-
-// SendEvent: TRUE if the event was sent explicitly.
-func (e *EventOwnerChange) SendEvent() int8 {
-	var v int8 // out
-	v = int8(e.native.send_event)
-	return v
-}
-
-// Owner: new owner of the selection, or NULL if there is none
-func (e *EventOwnerChange) Owner() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.owner)))
-	return v
-}
-
-// Reason: reason for the ownership change as a OwnerChange value
-func (e *EventOwnerChange) Reason() OwnerChange {
-	var v OwnerChange // out
-	v = OwnerChange(e.native.reason)
-	return v
-}
-
-// Time: timestamp of the event
-func (e *EventOwnerChange) Time() uint32 {
-	var v uint32 // out
-	v = uint32(e.native.time)
-	return v
-}
-
-// SelectionTime: time at which the selection ownership was taken over
-func (e *EventOwnerChange) SelectionTime() uint32 {
-	var v uint32 // out
-	v = uint32(e.native.selection_time)
-	return v
-}
-
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
 // sensors.
 type EventPadAxis struct {
@@ -1608,9 +1559,9 @@ func (e *EventPadAxis) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventPadAxis) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventPadAxis) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1673,9 +1624,9 @@ func (e *EventPadButton) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventPadButton) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventPadButton) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1731,9 +1682,9 @@ func (e *EventPadGroupMode) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventPadGroupMode) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventPadGroupMode) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1773,42 +1724,6 @@ type EventProperty struct {
 	native *C.GdkEventProperty
 }
 
-// Type: type of the event (GDK_PROPERTY_NOTIFY).
-func (e *EventProperty) Type() EventType {
-	var v EventType // out
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window: window which received the event.
-func (e *EventProperty) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
-	return v
-}
-
-// SendEvent: TRUE if the event was sent explicitly.
-func (e *EventProperty) SendEvent() int8 {
-	var v int8 // out
-	v = int8(e.native.send_event)
-	return v
-}
-
-// Time: time of the event in milliseconds.
-func (e *EventProperty) Time() uint32 {
-	var v uint32 // out
-	v = uint32(e.native.time)
-	return v
-}
-
-// State: whether the property was changed (GDK_PROPERTY_NEW_VALUE) or deleted
-// (GDK_PROPERTY_DELETE).
-func (e *EventProperty) State() PropertyState {
-	var v PropertyState // out
-	v = PropertyState(e.native.state)
-	return v
-}
-
 // EventProximity: proximity events are generated when using GDK’s wrapper for
 // the XInput extension. The XInput extension is an add-on for standard X that
 // allows you to use nonstandard devices such as graphics tablets. A proximity
@@ -1831,9 +1746,9 @@ func (e *EventProximity) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventProximity) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventProximity) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1853,9 +1768,9 @@ func (e *EventProximity) Time() uint32 {
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventProximity) Device() *Device {
-	var v *Device // out
-	v = wrapDevice(externglib.Take(unsafe.Pointer(e.native.device)))
+func (e *EventProximity) Device() Devicer {
+	var v Devicer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
 	return v
 }
 
@@ -1879,9 +1794,9 @@ func (e *EventScroll) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventScroll) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventScroll) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -1931,9 +1846,9 @@ func (e *EventScroll) Direction() ScrollDirection {
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventScroll) Device() *Device {
-	var v *Device // out
-	v = wrapDevice(externglib.Take(unsafe.Pointer(e.native.device)))
+func (e *EventScroll) Device() Devicer {
+	var v Devicer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
 	return v
 }
 
@@ -1972,42 +1887,6 @@ type EventSelection struct {
 	native *C.GdkEventSelection
 }
 
-// Type: type of the event (GDK_SELECTION_CLEAR, GDK_SELECTION_NOTIFY or
-// GDK_SELECTION_REQUEST).
-func (e *EventSelection) Type() EventType {
-	var v EventType // out
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window: window which received the event.
-func (e *EventSelection) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
-	return v
-}
-
-// SendEvent: TRUE if the event was sent explicitly.
-func (e *EventSelection) SendEvent() int8 {
-	var v int8 // out
-	v = int8(e.native.send_event)
-	return v
-}
-
-// Time: time of the event in milliseconds.
-func (e *EventSelection) Time() uint32 {
-	var v uint32 // out
-	v = uint32(e.native.time)
-	return v
-}
-
-// Requestor: window on which to place property or NULL if none.
-func (e *EventSelection) Requestor() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.requestor)))
-	return v
-}
-
 type EventSequence struct {
 	nocopy gextras.NoCopy
 	native *C.GdkEventSequence
@@ -2032,9 +1911,9 @@ func (e *EventSetting) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventSetting) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventSetting) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -2083,9 +1962,9 @@ func (e *EventTouch) Type() EventType {
 }
 
 // Window: window which received the event
-func (e *EventTouch) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventTouch) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -2151,9 +2030,9 @@ func (e *EventTouch) EmulatingPointer() bool {
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
-func (e *EventTouch) Device() *Device {
-	var v *Device // out
-	v = wrapDevice(externglib.Take(unsafe.Pointer(e.native.device)))
+func (e *EventTouch) Device() Devicer {
+	var v Devicer // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device)))).(Devicer)
 	return v
 }
 
@@ -2185,9 +2064,9 @@ func (e *EventTouchpadPinch) Type() EventType {
 }
 
 // Window: window which received the event
-func (e *EventTouchpadPinch) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventTouchpadPinch) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -2299,9 +2178,9 @@ func (e *EventTouchpadSwipe) Type() EventType {
 }
 
 // Window: window which received the event
-func (e *EventTouchpadSwipe) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventTouchpadSwipe) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -2401,9 +2280,9 @@ func (e *EventVisibility) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventVisibility) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventVisibility) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 
@@ -2436,9 +2315,9 @@ func (e *EventWindowState) Type() EventType {
 }
 
 // Window: window which received the event.
-func (e *EventWindowState) Window() *Window {
-	var v *Window // out
-	v = wrapWindow(externglib.Take(unsafe.Pointer(e.native.window)))
+func (e *EventWindowState) Window() Windower {
+	var v Windower // out
+	v = (*gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window)))).(Windower)
 	return v
 }
 

@@ -38,9 +38,9 @@ func RelationTypeForName(name string) RelationType {
 	return _relationType
 }
 
-// RelationTypeGetName gets the description string describing the RelationType
+// RelationTypeName gets the description string describing the RelationType
 // type.
-func RelationTypeGetName(typ RelationType) string {
+func RelationTypeName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.gchar          // in
 

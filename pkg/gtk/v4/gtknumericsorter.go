@@ -65,7 +65,7 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 
 // Expression gets the expression that is evaluated to obtain numbers from
 // items.
-func (self *NumericSorter) Expression() *Expression {
+func (self *NumericSorter) Expression() Expressioner {
 	var _arg0 *C.GtkNumericSorter // out
 	var _cret *C.GtkExpression    // in
 
@@ -73,9 +73,9 @@ func (self *NumericSorter) Expression() *Expression {
 
 	_cret = C.gtk_numeric_sorter_get_expression(_arg0)
 
-	var _expression *Expression // out
+	var _expression Expressioner // out
 
-	_expression = wrapExpression(externglib.Take(unsafe.Pointer(_cret)))
+	_expression = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Expressioner)
 
 	return _expression
 }

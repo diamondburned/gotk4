@@ -487,7 +487,7 @@ func RCGetModuleDir() string {
 // not be created.)
 //
 // Deprecated: Use StyleContext instead.
-func RCGetStyle(widget Widgetter) *Style {
+func RCGetStyle(widget Widgeter) *Style {
 	var _arg1 *C.GtkWidget // out
 	var _cret *C.GtkStyle  // in
 
@@ -801,11 +801,4 @@ func (orig *RCStyle) Copy() *RCStyle {
 type RCProperty struct {
 	nocopy gextras.NoCopy
 	native *C.GtkRcProperty
-}
-
-// Origin: field similar to one found in SettingsValue
-func (r *RCProperty) Origin() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.origin)))
-	return v
 }

@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshotter},
+		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshoter},
 	})
 }
 
@@ -30,12 +30,12 @@ type Snapshot struct {
 
 var _ gextras.Nativer = (*Snapshot)(nil)
 
-// Snapshotter describes Snapshot's abstract methods.
-type Snapshotter interface {
+// Snapshoter describes Snapshot's abstract methods.
+type Snapshoter interface {
 	privateSnapshot()
 }
 
-var _ Snapshotter = (*Snapshot)(nil)
+var _ Snapshoter = (*Snapshot)(nil)
 
 func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{
@@ -43,7 +43,7 @@ func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	}
 }
 
-func marshalSnapshotter(p uintptr) (interface{}, error) {
+func marshalSnapshoter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapSnapshot(obj), nil

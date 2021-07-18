@@ -20,7 +20,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxxer},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBoxer},
 	})
 }
 
@@ -98,7 +98,7 @@ func wrapBox(obj *externglib.Object) *Box {
 	}
 }
 
-func marshalBoxxer(p uintptr) (interface{}, error) {
+func marshalBoxer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapBox(obj), nil
@@ -145,7 +145,7 @@ func (box *Box) BaselinePosition() BaselinePosition {
 }
 
 // CenterWidget retrieves the center widget of the box.
-func (box *Box) CenterWidget() *Widget {
+func (box *Box) CenterWidget() Widgeter {
 	var _arg0 *C.GtkBox    // out
 	var _cret *C.GtkWidget // in
 
@@ -153,9 +153,9 @@ func (box *Box) CenterWidget() *Widget {
 
 	_cret = C.gtk_box_get_center_widget(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -198,7 +198,7 @@ func (box *Box) Spacing() int {
 // PackEnd adds child to box, packed with reference to the end of box. The child
 // is packed after (away from end of) any other child packed with reference to
 // the end of box.
-func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
+func (box *Box) PackEnd(child Widgeter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -221,7 +221,7 @@ func (box *Box) PackEnd(child Widgetter, expand bool, fill bool, padding uint) {
 // PackStart adds child to box, packed with reference to the start of box. The
 // child is packed after any other child packed with reference to the start of
 // box.
-func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint) {
+func (box *Box) PackStart(child Widgeter, expand bool, fill bool, padding uint) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gboolean   // out
@@ -242,7 +242,7 @@ func (box *Box) PackStart(child Widgetter, expand bool, fill bool, padding uint)
 }
 
 // QueryChildPacking obtains information about how child is packed into box.
-func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padding uint, packType PackType) {
+func (box *Box) QueryChildPacking(child Widgeter) (expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // in
@@ -280,7 +280,7 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand bool, fill bool, padd
 // packed into box. A child widget at some position in the list will be packed
 // just after all other widgets of the same packing type that appear earlier in
 // the list.
-func (box *Box) ReorderChild(child Widgetter, position int) {
+func (box *Box) ReorderChild(child Widgeter, position int) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -310,7 +310,7 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 // SetCenterWidget sets a center widget; that is a child widget that will be
 // centered with respect to the full width of the box, even if the children at
 // either side take up different amounts of space.
-func (box *Box) SetCenterWidget(widget Widgetter) {
+func (box *Box) SetCenterWidget(widget Widgeter) {
 	var _arg0 *C.GtkBox    // out
 	var _arg1 *C.GtkWidget // out
 
@@ -321,7 +321,7 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 }
 
 // SetChildPacking sets the way child is packed into box.
-func (box *Box) SetChildPacking(child Widgetter, expand bool, fill bool, padding uint, packType PackType) {
+func (box *Box) SetChildPacking(child Widgeter, expand bool, fill bool, padding uint, packType PackType) {
 	var _arg0 *C.GtkBox     // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gboolean    // out

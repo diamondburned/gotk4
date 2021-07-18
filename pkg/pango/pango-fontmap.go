@@ -17,7 +17,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMapper},
+		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMaper},
 	})
 }
 
@@ -34,7 +34,7 @@ type FontMapOverrider interface {
 	// they have attached extra data to the context and such data is changed.
 	Changed()
 	// Family gets a font family by name.
-	Family(name string) *FontFamily
+	Family(name string) FontFamilier
 	// Serial returns the current serial number of fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -49,13 +49,13 @@ type FontMapOverrider interface {
 	// in PangoContext.
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() []*FontFamily
+	ListFamilies() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
-	LoadFont(context *Context, desc *FontDescription) *Font
+	LoadFont(context *Context, desc *FontDescription) Fonter
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching desc.
-	LoadFontset(context *Context, desc *FontDescription, language *Language) *Fontset
+	LoadFontset(context *Context, desc *FontDescription, language *Language) Fontseter
 }
 
 // FontMap: PangoFontMap represents the set of fonts available for a particular
@@ -69,28 +69,28 @@ type FontMap struct {
 
 var _ gextras.Nativer = (*FontMap)(nil)
 
-// FontMapper describes FontMap's abstract methods.
-type FontMapper interface {
+// FontMaper describes FontMap's abstract methods.
+type FontMaper interface {
 	// Changed forces a change in the context, which will cause any PangoContext
 	// using this fontmap to change.
 	Changed()
 	// CreateContext creates a PangoContext connected to fontmap.
 	CreateContext() *Context
 	// Family gets a font family by name.
-	Family(name string) *FontFamily
+	Family(name string) FontFamilier
 	// Serial returns the current serial number of fontmap.
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() []*FontFamily
+	ListFamilies() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
-	LoadFont(context *Context, desc *FontDescription) *Font
+	LoadFont(context *Context, desc *FontDescription) Fonter
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching desc.
-	LoadFontset(context *Context, desc *FontDescription, language *Language) *Fontset
+	LoadFontset(context *Context, desc *FontDescription, language *Language) Fontseter
 }
 
-var _ FontMapper = (*FontMap)(nil)
+var _ FontMaper = (*FontMap)(nil)
 
 func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{
@@ -98,7 +98,7 @@ func wrapFontMap(obj *externglib.Object) *FontMap {
 	}
 }
 
-func marshalFontMapper(p uintptr) (interface{}, error) {
+func marshalFontMaper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFontMap(obj), nil
@@ -142,7 +142,7 @@ func (fontmap *FontMap) CreateContext() *Context {
 }
 
 // Family gets a font family by name.
-func (fontmap *FontMap) Family(name string) *FontFamily {
+func (fontmap *FontMap) Family(name string) FontFamilier {
 	var _arg0 *C.PangoFontMap    // out
 	var _arg1 *C.char            // out
 	var _cret *C.PangoFontFamily // in
@@ -152,9 +152,9 @@ func (fontmap *FontMap) Family(name string) *FontFamily {
 
 	_cret = C.pango_font_map_get_family(_arg0, _arg1)
 
-	var _fontFamily *FontFamily // out
+	var _fontFamily FontFamilier // out
 
-	_fontFamily = wrapFontFamily(externglib.Take(unsafe.Pointer(_cret)))
+	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(FontFamilier)
 
 	return _fontFamily
 }
@@ -187,7 +187,7 @@ func (fontmap *FontMap) Serial() uint {
 }
 
 // ListFamilies: list all families for a fontmap.
-func (fontmap *FontMap) ListFamilies() []*FontFamily {
+func (fontmap *FontMap) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoFontMap // out
 	var _arg1 **C.PangoFontFamily
 	var _arg2 C.int // in
@@ -196,14 +196,14 @@ func (fontmap *FontMap) ListFamilies() []*FontFamily {
 
 	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 
-	var _families []*FontFamily
+	var _families []FontFamilier
 
 	defer C.free(unsafe.Pointer(_arg1))
 	{
 		src := unsafe.Slice(_arg1, _arg2)
-		_families = make([]*FontFamily, _arg2)
+		_families = make([]FontFamilier, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_families[i] = wrapFontFamily(externglib.Take(unsafe.Pointer(src[i])))
+			_families[i] = (*gextras.CastObject(externglib.Take(unsafe.Pointer(src[i])))).(FontFamilier)
 		}
 	}
 
@@ -211,7 +211,7 @@ func (fontmap *FontMap) ListFamilies() []*FontFamily {
 }
 
 // LoadFont: load the font in the fontmap that is the closest match for desc.
-func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) *Font {
+func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out
@@ -223,16 +223,16 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) *Font 
 
 	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 
-	var _font *Font // out
+	var _font Fonter // out
 
-	_font = wrapFont(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_font = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fonter)
 
 	return _font
 }
 
 // LoadFontset: load a set of fonts in the fontmap that can be used to render a
 // font matching desc.
-func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) *Fontset {
+func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) Fontseter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.PangoFontDescription // out
@@ -246,9 +246,9 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 
 	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
 
-	var _fontset *Fontset // out
+	var _fontset Fontseter // out
 
-	_fontset = wrapFontset(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fontset = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Fontseter)
 
 	return _fontset
 }

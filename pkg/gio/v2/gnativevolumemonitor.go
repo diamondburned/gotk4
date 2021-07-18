@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorrer},
+		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitorer},
 	})
 }
 
@@ -37,12 +37,12 @@ type NativeVolumeMonitor struct {
 
 var _ gextras.Nativer = (*NativeVolumeMonitor)(nil)
 
-// NativeVolumeMonitorrer describes NativeVolumeMonitor's abstract methods.
-type NativeVolumeMonitorrer interface {
+// NativeVolumeMonitorer describes NativeVolumeMonitor's abstract methods.
+type NativeVolumeMonitorer interface {
 	privateNativeVolumeMonitor()
 }
 
-var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
+var _ NativeVolumeMonitorer = (*NativeVolumeMonitor)(nil)
 
 func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	return &NativeVolumeMonitor{
@@ -52,7 +52,7 @@ func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	}
 }
 
-func marshalNativeVolumeMonitorrer(p uintptr) (interface{}, error) {
+func marshalNativeVolumeMonitorer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapNativeVolumeMonitor(obj), nil

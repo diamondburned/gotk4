@@ -27,7 +27,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconner},
+		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIconer},
 	})
 }
 
@@ -51,7 +51,7 @@ func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	}
 }
 
-func marshalFileIconner(p uintptr) (interface{}, error) {
+func marshalFileIconer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapFileIcon(obj), nil
@@ -74,7 +74,7 @@ func NewFileIcon(file Filer) *FileIcon {
 }
 
 // File gets the #GFile associated with the given icon.
-func (icon *FileIcon) File() *File {
+func (icon *FileIcon) File() Filer {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
 
@@ -82,9 +82,9 @@ func (icon *FileIcon) File() *File {
 
 	_cret = C.g_file_icon_get_file(_arg0)
 
-	var _file *File // out
+	var _file Filer // out
 
-	_file = wrapFile(externglib.Take(unsafe.Pointer(_cret)))
+	_file = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Filer)
 
 	return _file
 }

@@ -51,7 +51,7 @@ type DrawContexter interface {
 	// FrameRegion retrieves the region that is currently being repainted.
 	FrameRegion() *cairo.Region
 	// Surface retrieves the surface that context is bound to.
-	Surface() *Surface
+	Surface() Surfacer
 	// IsInFrame returns TRUE if context is in the process of drawing to its
 	// surface.
 	IsInFrame() bool
@@ -166,7 +166,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 }
 
 // Surface retrieves the surface that context is bound to.
-func (context *DrawContext) Surface() *Surface {
+func (context *DrawContext) Surface() Surfacer {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
 
@@ -174,9 +174,9 @@ func (context *DrawContext) Surface() *Surface {
 
 	_cret = C.gdk_draw_context_get_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

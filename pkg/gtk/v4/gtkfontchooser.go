@@ -91,7 +91,7 @@ func (f FontChooserLevel) String() string {
 // shown in a GtkFontChooser.
 //
 // See gtk.FontChooser.SetFilterFunc().
-type FontFilterFunc func(family *pango.FontFamily, face *pango.FontFace) (ok bool)
+type FontFilterFunc func(family pango.FontFamilier, face pango.FontFacer) (ok bool)
 
 //export _gotk4_gtk4_FontFilterFunc
 func _gotk4_gtk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) (cret C.gboolean) {
@@ -100,21 +100,11 @@ func _gotk4_gtk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, 
 		panic(`callback not found`)
 	}
 
-	var family *pango.FontFamily // out
-	var face *pango.FontFace     // out
+	var family pango.FontFamilier // out
+	var face pango.FontFacer      // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(arg0))
-		family = &pango.FontFamily{
-			Object: obj,
-		}
-	}
-	{
-		obj := externglib.Take(unsafe.Pointer(arg1))
-		face = &pango.FontFace{
-			Object: obj,
-		}
-	}
+	family = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(pango.FontFamilier)
+	face = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg1)))).(pango.FontFacer)
 
 	fn := v.(FontFilterFunc)
 	ok := fn(family, face)
@@ -136,17 +126,17 @@ type FontChooserOverrider interface {
 	// details (i.e. family, slant, weight, width, etc).
 	//
 	// If the selected font is not installed, returns NULL.
-	FontFace() *pango.FontFace
+	FontFace() pango.FontFacer
 	// FontFamily gets the PangoFontFamily representing the selected font
 	// family.
 	//
 	// Font families are a collection of font faces.
 	//
 	// If the selected font is not installed, returns NULL.
-	FontFamily() *pango.FontFamily
+	FontFamily() pango.FontFamilier
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
-	FontMap() *pango.FontMap
+	FontMap() pango.FontMaper
 	// FontSize: selected font size.
 	FontSize() int
 	// SetFilterFunc adds a filter function that decides which fonts to display
@@ -174,7 +164,7 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(fontmap pango.FontMapper)
+	SetFontMap(fontmap pango.FontMaper)
 }
 
 // FontChooser: GtkFontChooser is an interface that can be implemented by
@@ -196,15 +186,15 @@ type FontChooserer interface {
 	FontDesc() *pango.FontDescription
 	// FontFace gets the PangoFontFace representing the selected font group
 	// details (i.e.
-	FontFace() *pango.FontFace
+	FontFace() pango.FontFacer
 	// FontFamily gets the PangoFontFamily representing the selected font
 	// family.
-	FontFamily() *pango.FontFamily
+	FontFamily() pango.FontFamilier
 	// FontFeatures gets the currently-selected font features.
 	FontFeatures() string
 	// FontMap gets the custom font map of this font chooser widget, or NULL if
 	// it does not have one.
-	FontMap() *pango.FontMap
+	FontMap() pango.FontMaper
 	// FontSize: selected font size.
 	FontSize() int
 	// Language gets the language that is used for font features.
@@ -223,7 +213,7 @@ type FontChooserer interface {
 	// SetFontDesc sets the currently-selected font from font_desc.
 	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetFontMap sets a custom font map to use for this font chooser widget.
-	SetFontMap(fontmap pango.FontMapper)
+	SetFontMap(fontmap pango.FontMaper)
 	// SetLanguage sets the language to use for font features.
 	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
@@ -304,7 +294,7 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 // (i.e. family, slant, weight, width, etc).
 //
 // If the selected font is not installed, returns NULL.
-func (fontchooser *FontChooser) FontFace() *pango.FontFace {
+func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontFace  // in
 
@@ -312,14 +302,9 @@ func (fontchooser *FontChooser) FontFace() *pango.FontFace {
 
 	_cret = C.gtk_font_chooser_get_font_face(_arg0)
 
-	var _fontFace *pango.FontFace // out
+	var _fontFace pango.FontFacer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_fontFace = &pango.FontFace{
-			Object: obj,
-		}
-	}
+	_fontFace = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFacer)
 
 	return _fontFace
 }
@@ -329,7 +314,7 @@ func (fontchooser *FontChooser) FontFace() *pango.FontFace {
 // Font families are a collection of font faces.
 //
 // If the selected font is not installed, returns NULL.
-func (fontchooser *FontChooser) FontFamily() *pango.FontFamily {
+func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 	var _arg0 *C.GtkFontChooser  // out
 	var _cret *C.PangoFontFamily // in
 
@@ -337,14 +322,9 @@ func (fontchooser *FontChooser) FontFamily() *pango.FontFamily {
 
 	_cret = C.gtk_font_chooser_get_font_family(_arg0)
 
-	var _fontFamily *pango.FontFamily // out
+	var _fontFamily pango.FontFamilier // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_fontFamily = &pango.FontFamily{
-			Object: obj,
-		}
-	}
+	_fontFamily = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(pango.FontFamilier)
 
 	return _fontFamily
 }
@@ -368,7 +348,7 @@ func (fontchooser *FontChooser) FontFeatures() string {
 
 // FontMap gets the custom font map of this font chooser widget, or NULL if it
 // does not have one.
-func (fontchooser *FontChooser) FontMap() *pango.FontMap {
+func (fontchooser *FontChooser) FontMap() pango.FontMaper {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret *C.PangoFontMap   // in
 
@@ -376,14 +356,9 @@ func (fontchooser *FontChooser) FontMap() *pango.FontMap {
 
 	_cret = C.gtk_font_chooser_get_font_map(_arg0)
 
-	var _fontMap *pango.FontMap // out
+	var _fontMap pango.FontMaper // out
 
-	{
-		obj := externglib.AssumeOwnership(unsafe.Pointer(_cret))
-		_fontMap = &pango.FontMap{
-			Object: obj,
-		}
-	}
+	_fontMap = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(pango.FontMaper)
 
 	return _fontMap
 }
@@ -532,7 +507,7 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
+func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMaper) {
 	var _arg0 *C.GtkFontChooser // out
 	var _arg1 *C.PangoFontMap   // out
 

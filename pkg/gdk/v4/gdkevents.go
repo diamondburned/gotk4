@@ -632,7 +632,7 @@ func marshalDNDEventer(p uintptr) (interface{}, error) {
 }
 
 // Drop gets the GdkDrop object from a DND event.
-func (event *DNDEvent) Drop() *Drop {
+func (event *DNDEvent) Drop() Droper {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkDrop  // in
 
@@ -640,9 +640,9 @@ func (event *DNDEvent) Drop() *Drop {
 
 	_cret = C.gdk_dnd_event_get_drop(_arg0)
 
-	var _drop *Drop // out
+	var _drop Droper // out
 
-	_drop = wrapDrop(externglib.Take(unsafe.Pointer(_cret)))
+	_drop = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Droper)
 
 	return _drop
 }
@@ -690,7 +690,7 @@ type Eventer interface {
 	// structure.
 	Axis(axisUse AxisUse) (float64, bool)
 	// Device returns the device of an event.
-	Device() *Device
+	Device() Devicer
 	// DeviceTool returns a GdkDeviceTool representing the tool that caused the
 	// event.
 	DeviceTool() *DeviceTool
@@ -709,13 +709,13 @@ type Eventer interface {
 	// event.
 	Position() (x float64, y float64, ok bool)
 	// Seat returns the seat that originated the event.
-	Seat() *Seat
+	Seat() Seater
 	// Surface extracts the surface associated with an event.
-	Surface() *Surface
+	Surface() Surfacer
 	// Time returns the timestamp of event.
 	Time() uint32
 	// Ref: increase the ref count of event.
-	ref() *Event
+	ref() Eventer
 	// TriggersContextMenu returns whether a GdkEvent should trigger a context
 	// menu, according to platform conventions.
 	TriggersContextMenu() bool
@@ -787,7 +787,7 @@ func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 }
 
 // Device returns the device of an event.
-func (event *Event) Device() *Device {
+func (event *Event) Device() Devicer {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
 
@@ -795,9 +795,9 @@ func (event *Event) Device() *Device {
 
 	_cret = C.gdk_event_get_device(_arg0)
 
-	var _device *Device // out
+	var _device Devicer // out
 
-	_device = wrapDevice(externglib.Take(unsafe.Pointer(_cret)))
+	_device = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Devicer)
 
 	return _device
 }
@@ -938,7 +938,7 @@ func (event *Event) Position() (x float64, y float64, ok bool) {
 }
 
 // Seat returns the seat that originated the event.
-func (event *Event) Seat() *Seat {
+func (event *Event) Seat() Seater {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
 
@@ -946,15 +946,15 @@ func (event *Event) Seat() *Seat {
 
 	_cret = C.gdk_event_get_seat(_arg0)
 
-	var _seat *Seat // out
+	var _seat Seater // out
 
-	_seat = wrapSeat(externglib.Take(unsafe.Pointer(_cret)))
+	_seat = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Seater)
 
 	return _seat
 }
 
 // Surface extracts the surface associated with an event.
-func (event *Event) Surface() *Surface {
+func (event *Event) Surface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -962,9 +962,9 @@ func (event *Event) Surface() *Surface {
 
 	_cret = C.gdk_event_get_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }
@@ -989,7 +989,7 @@ func (event *Event) Time() uint32 {
 }
 
 // Ref: increase the ref count of event.
-func (event *Event) ref() *Event {
+func (event *Event) ref() Eventer {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkEvent // in
 
@@ -997,9 +997,9 @@ func (event *Event) ref() *Event {
 
 	_cret = C.gdk_event_ref(_arg0)
 
-	var _ret *Event // out
+	var _ret Eventer // out
 
-	_ret = wrapEvent(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(Eventer)
 
 	return _ret
 }
@@ -1101,7 +1101,7 @@ func marshalGrabBrokenEventer(p uintptr) (interface{}, error) {
 }
 
 // GrabSurface extracts the grab surface from a grab broken event.
-func (event *GrabBrokenEvent) GrabSurface() *Surface {
+func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
 
@@ -1109,9 +1109,9 @@ func (event *GrabBrokenEvent) GrabSurface() *Surface {
 
 	_cret = C.gdk_grab_broken_event_get_grab_surface(_arg0)
 
-	var _surface *Surface // out
+	var _surface Surfacer // out
 
-	_surface = wrapSurface(externglib.Take(unsafe.Pointer(_cret)))
+	_surface = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Surfacer)
 
 	return _surface
 }

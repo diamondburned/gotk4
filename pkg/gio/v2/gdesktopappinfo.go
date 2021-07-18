@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,7 +28,7 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookupper},
+		{T: externglib.Type(C.g_desktop_app_info_lookup_get_type()), F: marshalDesktopAppInfoLookuper},
 		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfor},
 	})
 }
@@ -49,7 +48,7 @@ type DesktopAppInfoLookupOverrider interface {
 	// g_app_info_get_default_for_uri_scheme().
 	//
 	// Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
-	DefaultForURIScheme(uriScheme string) *AppInfo
+	DefaultForURIScheme(uriScheme string) AppInfor
 }
 
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
@@ -62,15 +61,15 @@ type DesktopAppInfoLookup struct {
 
 var _ gextras.Nativer = (*DesktopAppInfoLookup)(nil)
 
-// DesktopAppInfoLookupper describes DesktopAppInfoLookup's abstract methods.
-type DesktopAppInfoLookupper interface {
+// DesktopAppInfoLookuper describes DesktopAppInfoLookup's abstract methods.
+type DesktopAppInfoLookuper interface {
 	// DefaultForURIScheme gets the default application for launching
 	// applications using this URI scheme for a particular AppInfoLookup
 	// implementation.
-	DefaultForURIScheme(uriScheme string) *AppInfo
+	DefaultForURIScheme(uriScheme string) AppInfor
 }
 
-var _ DesktopAppInfoLookupper = (*DesktopAppInfoLookup)(nil)
+var _ DesktopAppInfoLookuper = (*DesktopAppInfoLookup)(nil)
 
 func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	return &DesktopAppInfoLookup{
@@ -78,7 +77,7 @@ func wrapDesktopAppInfoLookup(obj *externglib.Object) *DesktopAppInfoLookup {
 	}
 }
 
-func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
+func marshalDesktopAppInfoLookuper(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapDesktopAppInfoLookup(obj), nil
@@ -93,7 +92,7 @@ func marshalDesktopAppInfoLookupper(p uintptr) (interface{}, error) {
 // g_app_info_get_default_for_uri_scheme().
 //
 // Deprecated: The AppInfoLookup interface is deprecated and unused by GIO.
-func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppInfo {
+func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfor {
 	var _arg0 *C.GDesktopAppInfoLookup // out
 	var _arg1 *C.char                  // out
 	var _cret *C.GAppInfo              // in
@@ -103,9 +102,9 @@ func (lookup *DesktopAppInfoLookup) DefaultForURIScheme(uriScheme string) *AppIn
 
 	_cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
 
-	var _appInfo *AppInfo // out
+	var _appInfo AppInfor // out
 
-	_appInfo = wrapAppInfo(externglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appInfo = (*gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret)))).(AppInfor)
 
 	return _appInfo
 }
@@ -528,12 +527,11 @@ func (info *DesktopAppInfo) ListActions() []string {
 	return _utf8s
 }
 
-// DesktopAppInfoGetImplementations gets all applications that implement
-// interface.
+// DesktopAppInfoImplementations gets all applications that implement interface.
 //
 // An application implements an interface if that interface is listed in the
 // Implements= line of the desktop file of the application.
-func DesktopAppInfoGetImplementations(_interface string) *externglib.List {
+func DesktopAppInfoImplementations(_interface string) *externglib.List {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
 
@@ -550,11 +548,8 @@ func DesktopAppInfoGetImplementations(_interface string) *externglib.List {
 		dst = *wrapDesktopAppInfo(externglib.AssumeOwnership(unsafe.Pointer(src)))
 		return dst
 	})
-	runtime.SetFinalizer(_list, func(l *externglib.List) {
-		l.DataWrapper(nil)
-		l.FreeFull(func(v interface{}) {
-			C.g_object_unref(C.gpointer(uintptr(v.(unsafe.Pointer))))
-		})
+	_list.AttachFinalizer(func(v uintptr) {
+		C.g_object_unref(C.gpointer(uintptr(unsafe.Pointer(v))))
 	})
 
 	return _list

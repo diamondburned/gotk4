@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -55,7 +57,7 @@ type PollableInputStreamOverrider interface {
 	// stream may not actually be readable even after the source triggers, so
 	// you should use g_pollable_input_stream_read_nonblocking() rather than
 	// g_input_stream_read() from the callback.
-	CreateSource(cancellable *Cancellable) *glib.Source
+	CreateSource(ctx context.Context) *glib.Source
 	// IsReadable checks if stream can be read.
 	//
 	// Note that some stream types may not be able to implement this 100%
@@ -92,12 +94,12 @@ type PollableInputStreamer interface {
 	CanPoll() bool
 	// CreateSource creates a #GSource that triggers when stream can be read, or
 	// cancellable is triggered or an error occurs.
-	CreateSource(cancellable *Cancellable) *glib.Source
+	CreateSource(ctx context.Context) *glib.Source
 	// IsReadable checks if stream can be read.
 	IsReadable() bool
 	// ReadNonblocking attempts to read up to count bytes from stream into
 	// buffer, as with g_input_stream_read().
-	ReadNonblocking(buffer []byte, cancellable *Cancellable) (int, error)
+	ReadNonblocking(ctx context.Context, buffer []byte) (int, error)
 }
 
 var _ PollableInputStreamer = (*PollableInputStream)(nil)
@@ -148,13 +150,17 @@ func (stream *PollableInputStream) CanPoll() bool {
 // may not actually be readable even after the source triggers, so you should
 // use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
-func (stream *PollableInputStream) CreateSource(cancellable *Cancellable) *glib.Source {
+func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret *C.GSource              // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 
 	_cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
@@ -203,20 +209,24 @@ func (stream *PollableInputStream) IsReadable() bool {
 // to cancel it. However, it will return an error if cancellable has already
 // been cancelled when you call, which may happen if you call this method after
 // a source triggers due to having been cancelled.
-func (stream *PollableInputStream) ReadNonblocking(buffer []byte, cancellable *Cancellable) (int, error) {
+func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
+	var _arg3 *C.GCancellable         // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
-	var _arg3 *C.GCancellable // out
-	var _cret C.gssize        // in
-	var _cerr *C.GError       // in
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
 	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(stream.Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
 	_arg2 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
 		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
 

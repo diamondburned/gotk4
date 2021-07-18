@@ -40,6 +40,11 @@ var goContainerTypes = []string{
 	"interface{}",
 }
 
+// BuiltinType is a convenient function to make a new built-in *Resolved.
+func BuiltinType(imp, typ string, girType gir.Type) *Resolved {
+	return builtinType(imp, typ, girType)
+}
+
 // builtinType is a convenient function to make a new resolvedType.
 func builtinType(imp, typ string, girType gir.Type) *Resolved {
 	var pkg string
@@ -399,12 +404,10 @@ func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 }
 
 // FullGType returns the GType with the namespace.
+//
+// Deprecated: Use typ.GType.
 func (typ *Resolved) FullGType() string {
-	if typ.Extern == nil {
-		return typ.GType
-	}
-
-	return EnsureNamespace(typ.Extern.NamespaceFindResult, typ.GType)
+	return typ.GType
 }
 
 // GoImplType is a convenient function around ResolvedType.ImplType.
@@ -640,6 +643,9 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		}
 	}
 
+	// Fill namespace.
+	typ.Name = EnsureNamespace(gen.Namespace(), typ.Name)
+
 	if prim, ok := girToBuiltin[typ.Name]; ok {
 		return builtinType("", prim, typ)
 	}
@@ -651,7 +657,7 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	}
 
 	// Resolve the unknown namespace that is GLib and primitive types.
-	switch typ.Name = EnsureNamespace(gen.Namespace(), typ.Name); typ.Name {
+	switch typ.Name {
 	// TODO: ignore field
 	case "GLib.Error":
 		return builtinType("", "error", typ)

@@ -35,7 +35,7 @@ func init() {
 //
 // For example, if model is a product catalogue, then a compare function for the
 // “price” column could be one which returns price_of(a) - price_of(b).
-type TreeIterCompareFunc func(model *TreeModel, a *TreeIter, b *TreeIter) (gint int)
+type TreeIterCompareFunc func(model TreeModeler, a *TreeIter, b *TreeIter) (gint int)
 
 //export _gotk4_gtk4_TreeIterCompareFunc
 func _gotk4_gtk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) (cret C.int) {
@@ -44,11 +44,11 @@ func _gotk4_gtk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, 
 		panic(`callback not found`)
 	}
 
-	var model *TreeModel // out
-	var a *TreeIter      // out
-	var b *TreeIter      // out
+	var model TreeModeler // out
+	var a *TreeIter       // out
+	var b *TreeIter       // out
 
-	model = wrapTreeModel(externglib.Take(unsafe.Pointer(arg0)))
+	model = (*gextras.CastObject(externglib.Take(unsafe.Pointer(arg0)))).(TreeModeler)
 	a = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	runtime.SetFinalizer(a, func(v *TreeIter) {
 		C.gtk_tree_iter_free((*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(v))))

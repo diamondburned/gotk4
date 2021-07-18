@@ -75,7 +75,7 @@ type EntryOverrider interface {
 	InsertEmoji()
 	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
-	PopulatePopup(popup Widgetter)
+	PopulatePopup(popup Widgeter)
 	ToggleOverwrite()
 }
 
@@ -440,7 +440,7 @@ func (entry *Entry) IconAtPos(x int, y int) int {
 // IconGIcon retrieves the #GIcon used for the icon, or NULL if there is no icon
 // or if the icon was set by some other method (e.g., by stock, pixbuf, or icon
 // name).
-func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) gio.Iconer {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _cret *C.GIcon               // in
@@ -450,14 +450,9 @@ func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
 
 	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
 
-	var _icon *gio.Icon // out
+	var _icon gio.Iconer // out
 
-	{
-		obj := externglib.Take(unsafe.Pointer(_cret))
-		_icon = &gio.Icon{
-			Object: obj,
-		}
-	}
+	_icon = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(gio.Iconer)
 
 	return _icon
 }
@@ -1203,7 +1198,7 @@ func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *Tar
 // will be displayed instead.
 //
 // If icon is NULL, no icon will be shown in the specified position.
-func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconer) {
 	var _arg0 *C.GtkEntry            // out
 	var _arg1 C.GtkEntryIconPosition // out
 	var _arg2 *C.GIcon               // out

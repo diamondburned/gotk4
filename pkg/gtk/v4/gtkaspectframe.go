@@ -86,7 +86,7 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 }
 
 // Child gets the child widget of self.
-func (self *AspectFrame) Child() *Widget {
+func (self *AspectFrame) Child() Widgeter {
 	var _arg0 *C.GtkAspectFrame // out
 	var _cret *C.GtkWidget      // in
 
@@ -94,9 +94,9 @@ func (self *AspectFrame) Child() *Widget {
 
 	_cret = C.gtk_aspect_frame_get_child(_arg0)
 
-	var _widget *Widget // out
+	var _widget Widgeter // out
 
-	_widget = wrapWidget(externglib.Take(unsafe.Pointer(_cret)))
+	_widget = (*gextras.CastObject(externglib.Take(unsafe.Pointer(_cret)))).(Widgeter)
 
 	return _widget
 }
@@ -171,7 +171,7 @@ func (self *AspectFrame) YAlign() float32 {
 }
 
 // SetChild sets the child widget of self.
-func (self *AspectFrame) SetChild(child Widgetter) {
+func (self *AspectFrame) SetChild(child Widgeter) {
 	var _arg0 *C.GtkAspectFrame // out
 	var _arg1 *C.GtkWidget      // out
 

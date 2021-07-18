@@ -20,7 +20,7 @@ func CanGenerate(gen types.FileGenerator, v interface{}) bool {
 }
 
 type Generator struct {
-	root interface{}
+	Root gir.TypeFindResult
 
 	Name         string
 	CType        string
@@ -37,14 +37,11 @@ type Generator struct {
 
 	Tree types.Tree
 
-	// Abstract is true if the generator is generating an interface or abstract
-	// class.
-	Abstract bool
+	// Abstract bool
 
 	methods  []gir.Method
 	virtuals []gir.VirtualMethod
 
-	source *gir.NamespaceFindResult
 	header file.Header
 	gen    types.FileGenerator
 	cgen   callable.Generator
@@ -80,10 +77,22 @@ func (g *Generator) Reset() {
 		Methods:  g.Methods,
 		Virtuals: g.Virtuals,
 
-		source: g.source,
 		header: g.header,
 		cgen:   g.cgen,
 		gen:    g.gen,
+	}
+}
+
+// Abstract returns true if the generator is generating an interface or abstract
+// class.
+func (g *Generator) Abstract() bool {
+	switch v := g.Root.Type.(type) {
+	case *gir.Class:
+		return v.Abstract
+	case *gir.Interface:
+		return true
+	default:
+		panic("unknown root type")
 	}
 }
 
@@ -94,18 +103,19 @@ func (g *Generator) Header() *file.Header {
 
 func (g *Generator) init(typ interface{}) bool {
 	resolved := types.TypeFromResult(g.gen, typ)
-	if resolved == nil {
+	if resolved == nil || resolved.Extern == nil {
 		return false
 	}
 
-	g.root = typ
+	g.Root.Type = typ
+	g.Root.NamespaceFindResult = g.gen.Namespace()
+
 	g.CType = resolved.CType
 	g.StructName = resolved.ImplName()
 	g.InterfaceName = resolved.PublicName()
 
 	switch typ := typ.(type) {
 	case *gir.Class:
-		g.Abstract = typ.Abstract
 		g.Name = typ.Name
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
@@ -127,7 +137,7 @@ func (g *Generator) init(typ interface{}) bool {
 			// Copy and bodge this so the constructors and stuff are named properly.
 			// This copies things safely, so class is not modified.
 			ctor := bodgeClassCtor(typ, ctor)
-			if !g.cgen.UseConstructor(&ctor.CallableAttrs) {
+			if !g.cgen.UseConstructor(&g.Root, &ctor.CallableAttrs) {
 				continue
 			}
 
@@ -136,7 +146,6 @@ func (g *Generator) init(typ interface{}) bool {
 		}
 
 	case *gir.Interface:
-		g.Abstract = true
 		g.Name = typ.Name
 		g.GLibGetType = typ.GLibGetType
 		g.InfoAttrs = &typ.InfoAttrs
@@ -170,7 +179,6 @@ func (g *Generator) Use(typ interface{}) bool {
 		return false
 	}
 
-	g.source = g.gen.Namespace()
 	g.header.NeedsExternGLib()
 
 	g.Methods.setMethods(g, g.methods)
